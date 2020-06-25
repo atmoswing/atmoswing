@@ -618,8 +618,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
         wxXmlNode *nodeMethod = new wxXmlNode(wxXML_ELEMENT_NODE, "method");
         nodeMethod->AddChild(fileExport.CreateNodeWithValue("id", m_forecasts[methodRow][0]->GetMethodId()));
         nodeMethod->AddChild(fileExport.CreateNodeWithValue("name", m_forecasts[methodRow][0]->GetMethodIdDisplay()));
-        nodeMethod->AddChild(
-            fileExport.CreateNodeWithValue("description", m_forecasts[methodRow][0]->GetDescription()));
+        nodeMethod->AddChild(fileExport.CreateNodeWithValue("description", m_forecasts[methodRow][0]->GetDescription()));
         fileExport.AddChild(nodeMethod);
 
         // Reference axis
@@ -627,8 +626,8 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
             a1f refAxis = m_forecasts[methodRow][0]->GetReferenceAxis();
             wxXmlNode *nodeReferenceAxis = new wxXmlNode(wxXML_ELEMENT_NODE, "reference_axis");
             for (int i = 0; i < refAxis.size(); i++) {
-                nodeReferenceAxis->AddChild(
-                    fileExport.CreateNodeWithValue("reference", wxString::Format("%.2f", refAxis[i])));
+                nodeReferenceAxis->AddChild(fileExport.CreateNodeWithValue("reference",
+                                            wxString::Format("%.2f", refAxis[i])));
             }
             fileExport.AddChild(nodeReferenceAxis);
         }
@@ -638,10 +637,8 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
         wxXmlNode *nodeTargetDates = new wxXmlNode(wxXML_ELEMENT_NODE, "target_dates");
         for (int i = 0; i < targetDates.size(); i++) {
             wxXmlNode *nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
-            nodeTargetDate->AddChild(
-                fileExport.CreateNodeWithValue("date", asTime::GetStringTime(targetDates[i], "DD.MM.YYYY")));
-            nodeTargetDate->AddChild(
-                fileExport.CreateNodeWithValue("analogs_nb", m_forecasts[methodRow][0]->GetAnalogsNumber(i)));
+            nodeTargetDate->AddChild(fileExport.CreateNodeWithValue("date", asTime::GetStringTime(targetDates[i], "DD.MM.YYYY")));
+            nodeTargetDate->AddChild(fileExport.CreateNodeWithValue("analogs_nb", m_forecasts[methodRow][0]->GetAnalogsNumber(i)));
             nodeTargetDates->AddChild(nodeTargetDate);
         }
         fileExport.AddChild(nodeTargetDates);
@@ -649,15 +646,17 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
         // Quantiles
         wxXmlNode *nodeQuantiles = new wxXmlNode(wxXML_ELEMENT_NODE, "quantile_names");
         for (int i = 0; i < quantiles.size(); i++) {
-            nodeQuantiles->AddChild(
-                fileExport.CreateNodeWithValue("quantile", wxString::Format("%d", (int)quantiles[i])));
+            nodeQuantiles->AddChild(fileExport.CreateNodeWithValue("quantile", wxString::Format("%d", (int)quantiles[i])));
         }
         fileExport.AddChild(nodeQuantiles);
 
         // Results per station
         a1i stationIds = m_forecasts[methodRow][0]->GetStationIds();
-        a2f referenceValues = m_forecasts[methodRow][0]->GetReferenceValues();
-        wxASSERT(referenceValues.rows() == stationIds.size());
+        a2f referenceValues;
+        if (m_forecasts[methodRow][0]->HasReferenceValues()) {
+            referenceValues = m_forecasts[methodRow][0]->GetReferenceValues();
+            wxASSERT(referenceValues.rows() == stationIds.size());
+        }
         wxXmlNode *nodeStations = new wxXmlNode(wxXML_ELEMENT_NODE, "stations");
         for (int i = 0; i < stationIds.size(); i++) {
             // Get specific forecast
@@ -672,8 +671,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
             nodeStation->AddChild(fileExport.CreateNodeWithValue("x", forecast->GetStationXCoord(i)));
             nodeStation->AddChild(fileExport.CreateNodeWithValue("y", forecast->GetStationYCoord(i)));
             nodeStation->AddChild(fileExport.CreateNodeWithValue("height", forecast->GetStationHeight(i)));
-            nodeStation->AddChild(
-                fileExport.CreateNodeWithValue("specific_parameters", forecast->GetSpecificTagDisplay()));
+            nodeStation->AddChild(fileExport.CreateNodeWithValue("specific_parameters", forecast->GetSpecificTagDisplay()));
 
             // Set reference values
             if (forecast->HasReferenceValues()) {
@@ -697,12 +695,9 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
                 wxXmlNode *nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
                 for (int k = 0; k < wxMin(10, analogValues.size()); k++) {
                     wxXmlNode *nodeAnalog = new wxXmlNode(wxXML_ELEMENT_NODE, "analog");
-                    nodeAnalog->AddChild(
-                        fileExport.CreateNodeWithValue("date", asTime::GetStringTime(analogDates[k], "DD.MM.YYYY")));
-                    nodeAnalog->AddChild(
-                        fileExport.CreateNodeWithValue("value", wxString::Format("%.1f", analogValues[k])));
-                    nodeAnalog->AddChild(
-                        fileExport.CreateNodeWithValue("criteria", wxString::Format("%.1f", analogCriteria[k])));
+                    nodeAnalog->AddChild(fileExport.CreateNodeWithValue("date", asTime::GetStringTime(analogDates[k], "DD.MM.YYYY")));
+                    nodeAnalog->AddChild(fileExport.CreateNodeWithValue("value", wxString::Format("%.1f", analogValues[k])));
+                    nodeAnalog->AddChild(fileExport.CreateNodeWithValue("criteria", wxString::Format("%.1f", analogCriteria[k])));
 
                     nodeTargetDate->AddChild(nodeAnalog);
                 }
@@ -718,12 +713,22 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
                 wxXmlNode *nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
                 for (int k = 0; k < wxMin(10, quantiles.size()); k++) {
                     float pcVal = asGetValueForQuantile(analogValues, quantiles[k] / 100);
-                    nodeTargetDate->AddChild(
-                        fileExport.CreateNodeWithValue("quantile", wxString::Format("%.1f", pcVal)));
+                    nodeTargetDate->AddChild(fileExport.CreateNodeWithValue("quantile", wxString::Format("%.1f", pcVal)));
                 }
                 nodeAnalogsQuantiles->AddChild(nodeTargetDate);
             }
             nodeStation->AddChild(nodeAnalogsQuantiles);
+
+            // Set mean
+            wxXmlNode *nodeAnalogsMean = new wxXmlNode(wxXML_ELEMENT_NODE, "analogs_mean");
+            for (int j = 0; j < targetDates.size(); j++) {
+                a1f analogValues = forecast->GetAnalogsValuesRaw(j, i);
+                wxXmlNode *nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
+                float mean = analogValues.mean();
+                nodeTargetDate->AddChild(fileExport.CreateNodeWithValue("mean", wxString::Format("%.1f", mean)));
+                nodeAnalogsMean->AddChild(nodeTargetDate);
+            }
+            nodeStation->AddChild(nodeAnalogsMean);
 
             nodeStations->AddChild(nodeStation);
         }
