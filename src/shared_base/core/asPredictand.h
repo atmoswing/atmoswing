@@ -89,6 +89,10 @@ class asPredictand : public wxObject {
     virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir, const wxString &patternDir,
                                    const wxString &destinationDir) = 0;
 
+    virtual bool HasReferenceAxis() const {
+        return false;
+    }
+
     virtual a1f GetReferenceAxis() const {
         a1f nodata(1);
         nodata << NaNf;

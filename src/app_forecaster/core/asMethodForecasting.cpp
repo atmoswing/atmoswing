@@ -1588,10 +1588,12 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast &results, asParamet
     results.SetStationHeights(m_predictandDB->GetStationHeightsArray());
     results.SetStationXCoords(m_predictandDB->GetStationXCoordsArray());
     results.SetStationYCoords(m_predictandDB->GetStationYCoordsArray());
-    a1f refAxis = m_predictandDB->GetReferenceAxis();
-    results.SetReferenceAxis(refAxis);
-    a2f refValues = m_predictandDB->GetReferenceValuesArray();
-    results.SetReferenceValues(refValues);
+    if (m_predictandDB->HasReferenceAxis()) {
+        a1f refAxis = m_predictandDB->GetReferenceAxis();
+        results.SetReferenceAxis(refAxis);
+        a2f refValues = m_predictandDB->GetReferenceValuesArray();
+        results.SetReferenceValues(refValues);
+    }
 
     a1f leadTimes = results.GetTargetDates();
 

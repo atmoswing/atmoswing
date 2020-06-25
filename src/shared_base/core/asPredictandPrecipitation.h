@@ -47,6 +47,10 @@ class asPredictandPrecipitation : public asPredictand {
                            const wxString &patternDir = wxEmptyString,
                            const wxString &destinationDir = wxEmptyString) override;
 
+    bool HasReferenceAxis() const override {
+        return true;
+    }
+
     a1f GetReferenceAxis() const override {
         return m_returnPeriods;
     }
