@@ -27,7 +27,7 @@
 
 #include "asFramePredictandDB.h"
 
-#include "asPredictandLightnings.h"
+#include "asPredictandLightning.h"
 #include "asPredictandPrecipitation.h"
 #include "asPredictandTemperature.h"
 
@@ -106,7 +106,7 @@ void asFramePredictandDB::OnDataSelection(wxCommandEvent &event) {
         case 2:  // lightnings
         {
             m_panelProcessing =
-                new asPanelProcessingLightnings(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+                new asPanelProcessingLightning(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
             m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
             break;
         }
@@ -258,14 +258,14 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event) {
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
-            case 2:  // Lightnings
+            case 2:  // Lightning
             {
                 wxASSERT(m_panelProcessing);
-                auto *panel = dynamic_cast<asPanelProcessingLightnings *>(m_panelProcessing);
+                auto *panel = dynamic_cast<asPanelProcessingLightning *>(m_panelProcessing);
                 wxASSERT(panel->m_checkBoxLog);
 
                 // Instantiate a predictand object
-                asPredictandLightnings predictand(asPredictand::Lightnings, temporalResol, spatialAggr);
+                asPredictandLightning predictand(asPredictand::Lightning, temporalResol, spatialAggr);
                 predictand.SetHasReferenceValues(panel->m_checkBoxLog->GetValue());
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;

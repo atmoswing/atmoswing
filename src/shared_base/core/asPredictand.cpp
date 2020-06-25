@@ -31,7 +31,7 @@
 #include "asCatalogPredictands.h"
 #include "asFileDat.h"
 #include "asFileNetcdf.h"
-#include "asPredictandLightnings.h"
+#include "asPredictandLightning.h"
 #include "asPredictandPrecipitation.h"
 #include "asPredictandTemperature.h"
 #include "asTimeArray.h"
@@ -56,8 +56,8 @@ asPredictand::Parameter asPredictand::StringToParameterEnum(const wxString &para
         return Precipitation;
     } else if (parameterStr.CmpNoCase("AirTemperature") == 0) {
         return AirTemperature;
-    } else if (parameterStr.CmpNoCase("Lightnings") == 0) {
-        return Lightnings;
+    } else if (parameterStr.CmpNoCase("Lightning") == 0) {
+        return Lightning;
     } else if (parameterStr.CmpNoCase("Wind") == 0) {
         return Wind;
     } else {
@@ -72,8 +72,8 @@ wxString asPredictand::ParameterEnumToString(asPredictand::Parameter parameter) 
             return "Precipitation";
         case (AirTemperature):
             return "AirTemperature";
-        case (Lightnings):
-            return "Lightnings";
+        case (Lightning):
+            return "Lightning";
         case (Wind):
             return "Wind";
         default:
@@ -222,8 +222,8 @@ asPredictand *asPredictand::GetInstance(Parameter parameter, TemporalResolution 
             asPredictand *db = new asPredictandTemperature(parameter, temporalResolution, spatialAggregation);
             return db;
         }
-        case (Lightnings): {
-            asPredictand *db = new asPredictandLightnings(parameter, temporalResolution, spatialAggregation);
+        case (Lightning): {
+            asPredictand *db = new asPredictandLightning(parameter, temporalResolution, spatialAggregation);
             return db;
         }
         default:

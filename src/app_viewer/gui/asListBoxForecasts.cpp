@@ -94,8 +94,8 @@ void asListBoxForecasts::Update() {
             case asPredictand::AirTemperature:
                 image = asListBoxForecasts::TreeCtrlIcon_Temperature;
                 break;
-            case asPredictand::Lightnings:
-                image = asListBoxForecasts::TreeCtrlIcon_Lightnings;
+            case asPredictand::Lightning:
+                image = asListBoxForecasts::TreeCtrlIcon_Lightning;
                 break;
             case asPredictand::Wind:
                 image = asListBoxForecasts::TreeCtrlIcon_Wind;

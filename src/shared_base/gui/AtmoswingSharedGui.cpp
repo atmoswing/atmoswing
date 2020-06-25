@@ -104,7 +104,7 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual(wxWindow* parent, wxWindo
     m_staticTextDataParam->Wrap(-1);
     fgSizer2->Add(m_staticTextDataParam, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxString m_choiceDataParamChoices[] = {_("Precipitation"), _("Temperature"), _("Lightnings"), _("Other")};
+    wxString m_choiceDataParamChoices[] = {_("Precipitation"), _("Temperature"), _("Lightning"), _("Other")};
     int m_choiceDataParamNChoices = sizeof(m_choiceDataParamChoices) / sizeof(wxString);
     m_choiceDataParam = new wxChoice(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceDataParamNChoices,
                                      m_choiceDataParamChoices, 0);
@@ -266,14 +266,14 @@ asPanelProcessingPrecipitation::asPanelProcessingPrecipitation(wxWindow* parent,
 
 asPanelProcessingPrecipitation::~asPanelProcessingPrecipitation() {}
 
-asPanelProcessingLightnings::asPanelProcessingLightnings(wxWindow* parent, wxWindowID id, const wxPoint& pos,
+asPanelProcessingLightning::asPanelProcessingLightning(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                                                          const wxSize& size, long style, const wxString& name)
     : wxPanel(parent, id, pos, size, style, name) {
     wxBoxSizer* bSizer19;
     bSizer19 = new wxBoxSizer(wxVERTICAL);
 
     m_staticText23 =
-        new wxStaticText(this, wxID_ANY, _("Lightnings data normalization"), wxDefaultPosition, wxDefaultSize, 0);
+        new wxStaticText(this, wxID_ANY, _("Lightning data normalization"), wxDefaultPosition, wxDefaultSize, 0);
     m_staticText23->Wrap(-1);
     bSizer19->Add(m_staticText23, 0, 0, 5);
 
@@ -291,7 +291,7 @@ asPanelProcessingLightnings::asPanelProcessingLightnings(wxWindow* parent, wxWin
     bSizer19->Fit(this);
 }
 
-asPanelProcessingLightnings::~asPanelProcessingLightnings() {}
+asPanelProcessingLightning::~asPanelProcessingLightning() {}
 
 asFrameAboutVirtual::asFrameAboutVirtual(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos,
                                          const wxSize& size, long style)

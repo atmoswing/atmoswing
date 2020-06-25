@@ -26,24 +26,24 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asPredictandLightnings.h"
+#include "asPredictandLightning.h"
 
 #include "asCatalogPredictands.h"
 #include "asFileNetcdf.h"
 #include "asTimeArray.h"
 
-asPredictandLightnings::asPredictandLightnings(Parameter dataParameter, TemporalResolution dataTemporalResolution,
+asPredictandLightning::asPredictandLightning(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                                                SpatialAggregation dataSpatialAggregation)
     : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation) {
     m_hasNormalizedData = false;
     m_hasReferenceValues = false;
 }
 
-bool asPredictandLightnings::InitContainers() {
+bool asPredictandLightning::InitContainers() {
     return InitBaseContainers();
 }
 
-bool asPredictandLightnings::Load(const wxString &filePath) {
+bool asPredictandLightning::Load(const wxString &filePath) {
     // Open the NetCDF file
     wxLogVerbose(_("Opening the file %s"), filePath);
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
@@ -71,7 +71,7 @@ bool asPredictandLightnings::Load(const wxString &filePath) {
     return true;
 }
 
-bool asPredictandLightnings::Save(const wxString &destinationDir) const {
+bool asPredictandLightning::Save(const wxString &destinationDir) const {
     // Get the file path
     wxString predictandDBFilePath = GetDBFilePathSaving(destinationDir);
 
@@ -118,7 +118,7 @@ bool asPredictandLightnings::Save(const wxString &destinationDir) const {
     return true;
 }
 
-bool asPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
+bool asPredictandLightning::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
                                                const wxString &patternDir, const wxString &destinationDir) {
     if (!g_unitTesting) {
         wxLogVerbose(_("Building the predictand DB."));
@@ -154,7 +154,7 @@ bool asPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePath, 
     return true;
 }
 
-bool asPredictandLightnings::BuildDataNormalized() {
+bool asPredictandLightning::BuildDataNormalized() {
     for (int iStat = 0; iStat < m_stationsNb; iStat++) {
         for (int iTime = 0; iTime < m_timeLength; iTime++) {
             m_dataNormalized(iTime, iStat) = log10(m_dataRaw(iTime, iStat) + 1);

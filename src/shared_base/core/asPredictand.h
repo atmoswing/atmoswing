@@ -37,7 +37,7 @@ class asFileNetcdf;
 
 class asPredictand : public wxObject {
   public:
-    enum Parameter { Precipitation, AirTemperature, Lightnings, Wind };
+    enum Parameter { Precipitation, AirTemperature, Lightning, Wind };
 
     enum Unit { nb, mm, m, in, percent, degC, degK };
 

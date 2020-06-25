@@ -75,7 +75,7 @@ class asListBoxForecasts : public wxTreeCtrl {
     enum {
         TreeCtrlIcon_Precipitation,
         TreeCtrlIcon_Temperature,
-        TreeCtrlIcon_Lightnings,
+        TreeCtrlIcon_Lightning,
         TreeCtrlIcon_Wind,
         TreeCtrlIcon_Other
     };

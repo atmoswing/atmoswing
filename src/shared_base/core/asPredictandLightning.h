@@ -32,12 +32,12 @@
 #include "asIncludes.h"
 #include "asPredictand.h"
 
-class asPredictandLightnings : public asPredictand {
+class asPredictandLightning : public asPredictand {
   public:
-    asPredictandLightnings(Parameter dataParameter, TemporalResolution dataTemporalResolution,
+    asPredictandLightning(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                            SpatialAggregation dataSpatialAggregation);
 
-    ~asPredictandLightnings() override = default;
+    ~asPredictandLightning() override = default;
 
     bool Load(const wxString &filePath) override;
 

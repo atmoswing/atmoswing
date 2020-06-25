@@ -140,9 +140,9 @@ class asPanelProcessingPrecipitation : public wxPanel {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asPanelProcessingLightnings
+/// Class asPanelProcessingLightning
 ///////////////////////////////////////////////////////////////////////////////
-class asPanelProcessingLightnings : public wxPanel {
+class asPanelProcessingLightning : public wxPanel {
   private:
   protected:
     wxStaticText* m_staticText23;
@@ -150,10 +150,10 @@ class asPanelProcessingLightnings : public wxPanel {
   public:
     wxCheckBox* m_checkBoxLog;
 
-    asPanelProcessingLightnings(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
+    asPanelProcessingLightning(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
                                 const wxSize& size = wxSize(-1, -1), long style = wxTAB_TRAVERSAL,
                                 const wxString& name = wxEmptyString);
-    ~asPanelProcessingLightnings();
+    ~asPanelProcessingLightning();
 };
 
 ///////////////////////////////////////////////////////////////////////////////
