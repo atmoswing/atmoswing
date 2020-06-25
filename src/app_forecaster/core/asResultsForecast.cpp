@@ -703,7 +703,9 @@ bool asResultsForecast::IsCompatibleWith(asResultsForecast *otherForecast) const
         compatible = false;
     } else {
         for (int i = 0; i < m_referenceAxis.size(); i++) {
-            if (m_referenceAxis[i] != referenceAxis[i]) compatible = false;
+            if (!asIsNaN(m_referenceAxis[i]) && m_referenceAxis[i] != referenceAxis[i]){
+                compatible = false;
+            }
         }
     }
 
