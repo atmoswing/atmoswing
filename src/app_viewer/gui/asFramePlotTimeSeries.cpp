@@ -437,7 +437,9 @@ bool asFramePlotTimeSeries::Plot() {
     if (DoPlotInterpretation) PlotInterpretation();
 
     // Set the view rectangle
-    wxRect2DDouble view(m_leadTimes[0] - 2.5, 0, m_leadTimes.size() + 2, m_maxVal * 1.1);
+    double dt = m_leadTimes[1] - m_leadTimes[0];
+    double nbPerDay = 1.0 / dt;
+    wxRect2DDouble view(m_leadTimes[0] - 2.5 / nbPerDay, 0, (m_leadTimes.size() + 2) / nbPerDay, m_maxVal * 1.1);
     plotctrl->SetViewRect(view);
 
     // Redraw
