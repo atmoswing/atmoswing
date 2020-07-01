@@ -465,7 +465,11 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
 
         // Store time array
         m_time = timeArray.GetTimeArray();
-        m_fInd.timeStep = wxMax(timeArray.GetTimeStepHours() / m_fStr.timeStep, 1);
+        if (m_fStr.timeStep == 0) {
+            m_fInd.timeStep = 1;
+        } else {
+            m_fInd.timeStep = wxMax(timeArray.GetTimeStepHours() / m_fStr.timeStep, 1);
+        }
 
         // Number of composites
         int compositesNb = 1;
@@ -863,17 +867,17 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile) {
     switch (ncTypeTime) {
         case NC_DOUBLE:
             timeFirstVal = ncFile.GetVarOneDouble(m_fStr.dimTimeName, 0);
-            timeSecondVal = ncFile.GetVarOneDouble(m_fStr.dimTimeName, 1);
+            timeSecondVal = ncFile.GetVarOneDouble(m_fStr.dimTimeName, wxMin(1, m_fStr.timeLength - 1));
             timeLastVal = ncFile.GetVarOneDouble(m_fStr.dimTimeName, m_fStr.timeLength - 1);
             break;
         case NC_FLOAT:
             timeFirstVal = (double)ncFile.GetVarOneFloat(m_fStr.dimTimeName, 0);
-            timeSecondVal = (double)ncFile.GetVarOneFloat(m_fStr.dimTimeName, 1);
+            timeSecondVal = (double)ncFile.GetVarOneFloat(m_fStr.dimTimeName, wxMin(1, m_fStr.timeLength - 1));
             timeLastVal = (double)ncFile.GetVarOneFloat(m_fStr.dimTimeName, m_fStr.timeLength - 1);
             break;
         case NC_INT:
             timeFirstVal = (double)ncFile.GetVarOneInt(m_fStr.dimTimeName, 0);
-            timeSecondVal = (double)ncFile.GetVarOneInt(m_fStr.dimTimeName, 1);
+            timeSecondVal = (double)ncFile.GetVarOneInt(m_fStr.dimTimeName, wxMin(1, m_fStr.timeLength - 1));
             timeLastVal = (double)ncFile.GetVarOneInt(m_fStr.dimTimeName, m_fStr.timeLength - 1);
             break;
         default:
