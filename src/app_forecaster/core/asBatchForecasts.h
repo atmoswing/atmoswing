@@ -69,6 +69,14 @@ class asBatchForecasts : public wxObject {
         m_exportSyntheticXml = val;
     }
 
+    bool ExportSyntheticTxt() const {
+        return m_exportSyntheticTxt;
+    }
+
+    void SetExportSyntheticTxt(bool val) {
+        m_exportSyntheticTxt = val;
+    }
+
     void SetHasChanged(bool val) {
         m_hasChanged = val;
     }
@@ -135,6 +143,7 @@ class asBatchForecasts : public wxObject {
   private:
     bool m_hasChanged;
     bool m_exportSyntheticXml;
+    bool m_exportSyntheticTxt;
     wxString m_filePath;
     wxString m_forecastsOutputDirectory;
     wxString m_exportsOutputDirectory;

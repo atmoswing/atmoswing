@@ -32,7 +32,7 @@
 
 asResults::asResults()
     : m_fileVersionMajor(2),
-      m_fileVersionMinor(0),
+      m_fileVersionMinor(1),
       m_currentStep(0),
       m_dateProcessed(0),
       m_subFolder(wxEmptyString),
@@ -98,8 +98,8 @@ bool asResults::DefAnalogsNbAttributes(asFileNetcdf &ncFile) const {
 }
 
 bool asResults::DefTargetValuesNormAttributes(asFileNetcdf &ncFile) const {
-    ncFile.PutAtt("long_name", "Target predictand normalized values", "target_values_norm");
-    ncFile.PutAtt("var_desc", "Observed predictand values in a nomalized form", "target_values_norm");
+    ncFile.PutAtt("long_name", "Target predictand transformed values", "target_values_norm");
+    ncFile.PutAtt("var_desc", "Observed predictand values in a transformed form", "target_values_norm");
     return true;
 }
 

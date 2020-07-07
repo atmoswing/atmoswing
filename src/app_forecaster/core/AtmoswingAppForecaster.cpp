@@ -540,7 +540,7 @@ int AtmoswingAppForecaster::OnRun() {
         filePaths.Open();
 
         for (const auto &file : filePathsVect) {
-            filePaths.AddLine(file);
+            filePaths.AddContent(file);
         }
         filePaths.Close();
     }

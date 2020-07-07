@@ -78,6 +78,7 @@ void asFramePreferencesForecaster::LoadPreferences() {
 
     // Exports
     m_checkBoxExportSyntheticXml->SetValue(m_batchForecasts->ExportSyntheticXml());
+    m_checkBoxExportSyntheticTxt->SetValue(m_batchForecasts->ExportSyntheticTxt());
 
     /*
      * General
@@ -179,6 +180,7 @@ void asFramePreferencesForecaster::SavePreferences() {
 
     // Exports
     m_batchForecasts->SetExportSyntheticXml(m_checkBoxExportSyntheticXml->GetValue());
+    m_batchForecasts->SetExportSyntheticTxt(m_checkBoxExportSyntheticTxt->GetValue());
 
     /*
      * General

@@ -99,6 +99,8 @@ class asResultsForecastAggregator : public wxObject {
 
     bool ExportSyntheticXml(const wxString &dirPath) const;
 
+    bool ExportSyntheticTxt(const wxString &dirPath) const;
+
   protected:
   private:
     std::vector<std::vector<asResultsForecast *> > m_forecasts;

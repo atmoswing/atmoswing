@@ -1144,8 +1144,8 @@ bool asParameters::PrintAndSaveTemp(const wxString &filePath) const {
 
     wxString header;
     header = _("AtmoSwing current parameters\n");
-    fileRes.AddLine(header);
-    fileRes.AddLine(content);
+    fileRes.AddContent(header);
+    fileRes.AddContent(content);
     fileRes.Close();
 
     return true;

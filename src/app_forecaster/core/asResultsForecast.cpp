@@ -59,6 +59,7 @@ void asResultsForecast::Init(asParametersForecast &params, double leadTimeOrigin
     m_analogsCriteria.resize(0);
     m_analogsDates.resize(0);
     m_analogsValuesRaw.resize(0);
+    m_analogsValuesNorm.resize(0);
     m_stationXCoords.resize(0);
     m_stationYCoords.resize(0);
     m_referenceAxis.resize(0);
@@ -128,6 +129,7 @@ bool asResultsForecast::Save() {
     wxASSERT(!m_analogsCriteria.empty());
     wxASSERT(!m_analogsDates.empty());
     wxASSERT(!m_analogsValuesRaw.empty());
+    wxASSERT(!m_analogsValuesNorm.empty());
     wxASSERT(m_stationXCoords.size() > 0);
     wxASSERT(m_stationYCoords.size() > 0);
 
@@ -215,8 +217,10 @@ bool asResultsForecast::Save() {
     ncFile.DefVar("station_y_coords", NC_DOUBLE, 1, dimNamesStations);
     ncFile.DefVar("analog_criteria", NC_FLOAT, 1, dimNamesAnalogsTot);
     ncFile.DefVar("analog_dates", NC_FLOAT, 1, dimNamesAnalogsTot);
-    ncFile.DefVar("analog_values", NC_FLOAT, 2, dimNamesAnalogsStations);
-    ncFile.DefVarDeflate("analog_values");
+    ncFile.DefVar("analog_values_raw", NC_FLOAT, 2, dimNamesAnalogsStations);
+    ncFile.DefVar("analog_values_norm", NC_FLOAT, 2, dimNamesAnalogsStations);
+    ncFile.DefVarDeflate("analog_values_raw");
+    ncFile.DefVarDeflate("analog_values_norm");
     if (m_hasReferenceValues) {
         ncFile.DefVar("reference_axis", NC_FLOAT, 1, dimNameReferenceAxis);
         ncFile.DefVar("reference_values", NC_FLOAT, 2, dimNameReferenceValues);
@@ -228,7 +232,8 @@ bool asResultsForecast::Save() {
     DefStationOfficialIdsAttributes(ncFile);
     DefAnalogsNbAttributes(ncFile);
     DefAnalogsCriteriaAttributes(ncFile);
-    DefAnalogsValuesAttributes(ncFile);
+    DefAnalogsValuesRawAttributes(ncFile);
+    DefAnalogsValuesNormAttributes(ncFile);
     DefAnalogsDatesAttributes(ncFile);
 
     ncFile.PutAtt("long_name", "Station names", "station_names");
@@ -266,6 +271,7 @@ bool asResultsForecast::Save() {
     vf analogsCriteria(nAnalogsTot);
     vf analogsDates(nAnalogsTot);
     vf analogsValuesRaw(nAnalogsTot * nStations);
+    vf analogsValuesNorm(nAnalogsTot * nStations);
 
     int ind = 0;
     for (int iTime = 0; iTime < nLeadtime; iTime++) {
@@ -281,6 +287,7 @@ bool asResultsForecast::Save() {
         for (int iTime = 0; iTime < nLeadtime; iTime++) {
             for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
                 analogsValuesRaw[indVal] = m_analogsValuesRaw[iTime](iStat, iAnalog);
+                analogsValuesNorm[indVal] = m_analogsValuesNorm[iTime](iStat, iAnalog);
                 indVal++;
             }
         }
@@ -297,7 +304,8 @@ bool asResultsForecast::Save() {
     ncFile.PutVarArray("station_y_coords", startStations, countStations, &m_stationYCoords(0));
     ncFile.PutVarArray("analog_criteria", startAnalogsTot, countAnalogsTot, &analogsCriteria[0]);
     ncFile.PutVarArray("analog_dates", startAnalogsTot, countAnalogsTot, &analogsDates[0]);
-    ncFile.PutVarArray("analog_values", startAnalogsStations, countAnalogsStations, &analogsValuesRaw[0]);
+    ncFile.PutVarArray("analog_values_raw", startAnalogsStations, countAnalogsStations, &analogsValuesRaw[0]);
+    ncFile.PutVarArray("analog_values_norm", startAnalogsStations, countAnalogsStations, &analogsValuesNorm[0]);
     if (m_hasReferenceValues) {
         size_t startReferenceAxis[] = {0};
         size_t countReferenceAxis[] = {nReferenceAxis};
@@ -323,7 +331,7 @@ bool asResultsForecast::Load() {
 
     int nLeadtime, nAnalogsTot, nStations;
     int versionMajor, versionMinor;
-    vf analogsCriteria, analogsDates, analogsValuesRaw;
+    vf analogsCriteria, analogsDates, analogsValuesRaw, analogsValuesNorm;
 
     asFileNetcdf ncFile(m_filePath, asFileNetcdf::ReadOnly);
 
@@ -508,6 +516,7 @@ bool asResultsForecast::Load() {
         analogsCriteria.resize(nAnalogsTot);
         analogsDates.resize(nAnalogsTot);
         analogsValuesRaw.resize(nAnalogsTot * nStations);
+        analogsValuesNorm.resize(nAnalogsTot * nStations);
 
         // Get data
         size_t indexStart1D[] = {0};
@@ -522,10 +531,15 @@ bool asResultsForecast::Load() {
             ncFile.GetVarArray("analogs_criteria", indexStart1D, indexCount1D, &analogsCriteria[0]);
             ncFile.GetVarArray("analogs_dates", indexStart1D, indexCount1D, &analogsDates[0]);
             ncFile.GetVarArray("analogs_values_gross", indexStart2D, indexCount2D, &analogsValuesRaw[0]);
-        } else {
+        } else if ((versionMajor < 2) || (versionMajor == 2 && versionMinor == 0)) {
             ncFile.GetVarArray("analog_criteria", indexStart1D, indexCount1D, &analogsCriteria[0]);
             ncFile.GetVarArray("analog_dates", indexStart1D, indexCount1D, &analogsDates[0]);
             ncFile.GetVarArray("analog_values", indexStart2D, indexCount2D, &analogsValuesRaw[0]);
+        } else {
+            ncFile.GetVarArray("analog_criteria", indexStart1D, indexCount1D, &analogsCriteria[0]);
+            ncFile.GetVarArray("analog_dates", indexStart1D, indexCount1D, &analogsDates[0]);
+            ncFile.GetVarArray("analog_values_raw", indexStart2D, indexCount2D, &analogsValuesRaw[0]);
+            ncFile.GetVarArray("analog_values_norm", indexStart2D, indexCount2D, &analogsValuesNorm[0]);
         }
 
         ncFile.Close();
@@ -562,28 +576,33 @@ bool asResultsForecast::Load() {
     if (versionMajor == 1 && versionMinor == 0) {
         for (int iTime = 0; iTime < nLeadtime; iTime++) {
             a2f analogsValuesRawLeadTime(nStations, m_analogsNb[iTime]);
+            a2f analogsValuesNormLeadTime(nStations, m_analogsNb[iTime]);
 
             for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
                 for (int iStat = 0; iStat < nStations; iStat++) {
                     analogsValuesRawLeadTime(iStat, iAnalog) = analogsValuesRaw[indVal];
+                    analogsValuesNormLeadTime(iStat, iAnalog) = analogsValuesNorm[indVal];
                     indVal++;
                 }
             }
 
             m_analogsValuesRaw.push_back(analogsValuesRawLeadTime);
+            m_analogsValuesNorm.push_back(analogsValuesNormLeadTime);
         }
     } else {
         // Create containers
         for (int iTime = 0; iTime < nLeadtime; iTime++) {
-            a2f analogsValuesRawLeadTime(nStations, m_analogsNb[iTime]);
-            analogsValuesRawLeadTime.fill(NaNf);
-            m_analogsValuesRaw.push_back(analogsValuesRawLeadTime);
+            a2f analogsValuesLeadTime(nStations, m_analogsNb[iTime]);
+            analogsValuesLeadTime.fill(NaNf);
+            m_analogsValuesRaw.push_back(analogsValuesLeadTime);
+            m_analogsValuesNorm.push_back(analogsValuesLeadTime);
         }
 
         for (int iStat = 0; iStat < nStations; iStat++) {
             for (int iTime = 0; iTime < nLeadtime; iTime++) {
                 for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
                     m_analogsValuesRaw[iTime](iStat, iAnalog) = analogsValuesRaw[indVal];
+                    m_analogsValuesNorm[iTime](iStat, iAnalog) = analogsValuesNorm[indVal];
                     indVal++;
                 }
             }

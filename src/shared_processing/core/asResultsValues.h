@@ -74,6 +74,10 @@ class asResultsValues : public asResults {
         return m_analogsValuesNorm;
     }
 
+    va2f &GetAnalogsValuesNorm() {
+        return m_analogsValuesNorm;
+    }
+
     void SetAnalogsValuesNorm(va2f &analogsValuesNorm) {
         m_analogsValuesNorm = analogsValuesNorm;
     }

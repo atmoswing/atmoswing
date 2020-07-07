@@ -155,6 +155,11 @@ bool asMethodForecasting::Manager() {
                     wxLogError(_("The export of the synthetic xml failed."));
                 }
             }
+            if (m_batchForecasts->ExportSyntheticTxt()) {
+                if (!m_aggregator.ExportSyntheticTxt(m_batchForecasts->GetExportsOutputDirectory())) {
+                    wxLogError(_("The export of the synthetic xml failed."));
+                }
+            }
         }
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
@@ -1644,6 +1649,11 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast &results, asParamet
             wxASSERT(valuesRaw[0].rows() == 1);
             a1f rowValuesRaw = valuesRaw[0].row(0);
             results.SetAnalogsValuesRaw(iLead, iStat, rowValuesRaw);
+
+            va2f valuesNorm = anaValues.GetAnalogsValuesNorm();
+            wxASSERT(valuesNorm[0].rows() == 1);
+            a1f rowValuesNorm = valuesNorm[0].row(0);
+            results.SetAnalogsValuesNorm(iLead, iStat, rowValuesNorm);
         }
     }
 

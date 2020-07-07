@@ -307,6 +307,35 @@ class asResultsForecast : public asResults {
         }
     }
 
+    a2f &GetAnalogsValuesNorm(int iLead) {
+        wxASSERT(m_analogsValuesNorm.size() > iLead);
+        return m_analogsValuesNorm[iLead];
+    }
+
+    a1f GetAnalogsValuesNorm(int iLead, int iStat) const {
+        wxASSERT(m_analogsValuesNorm.size() > iLead);
+        wxASSERT(m_analogsValuesNorm[iLead].rows() > iStat);
+        a1f vals = m_analogsValuesNorm[iLead].row(iStat);
+        return vals;
+    }
+
+    void SetAnalogsValuesNorm(int iLead, int iStat, const a1f &analogsValuesNorm) {
+        if (m_analogsValuesNorm.size() >= iLead + 1) {
+            wxASSERT(m_analogsValuesNorm[iLead].rows() > iStat);
+            wxASSERT(m_analogsValuesNorm[iLead].cols() == analogsValuesNorm.size());
+            m_analogsValuesNorm[iLead].row(iStat) = analogsValuesNorm;
+        } else if (m_analogsValuesNorm.size() == iLead) {
+            a2f emptyBlock(m_stationIds.size(), m_analogsNb[iLead]);
+            m_analogsValuesNorm.push_back(emptyBlock);
+
+            wxASSERT(m_analogsValuesNorm[iLead].rows() > iStat);
+            wxASSERT(m_analogsValuesNorm[iLead].cols() == analogsValuesNorm.size());
+            m_analogsValuesNorm[iLead].row(iStat) = analogsValuesNorm;
+        } else {
+            asThrowException(_("The size of the values array does not fit with the required index."));
+        }
+    }
+
     int GetAnalogsNumber(int i) const {
         wxASSERT(m_analogsDates.size() > i);
         return (int)m_analogsDates[i].size();
@@ -363,6 +392,7 @@ class asResultsForecast : public asResults {
     a2f m_referenceValues;
     va1f m_analogsCriteria;
     va2f m_analogsValuesRaw;
+    va2f m_analogsValuesNorm;
     va1f m_analogsDates;
 };
 

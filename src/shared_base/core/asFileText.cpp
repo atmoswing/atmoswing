@@ -68,7 +68,7 @@ bool asFileText::Close() {
     return true;
 }
 
-void asFileText::AddLine(const wxString &lineContent) {
+void asFileText::AddContent(const wxString &lineContent) {
     wxASSERT(m_opened);
 
     m_file << lineContent.mb_str();

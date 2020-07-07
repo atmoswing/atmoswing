@@ -27,7 +27,11 @@
 
 #include "asBatchForecasts.h"
 
-asBatchForecasts::asBatchForecasts() : wxObject(), m_hasChanged(false), m_exportSyntheticXml(false) {
+asBatchForecasts::asBatchForecasts()
+    : wxObject(),
+      m_hasChanged(false),
+      m_exportSyntheticXml(false),
+      m_exportSyntheticTxt(false) {
     wxString baseDir = asConfig::GetDocumentsDir() + "AtmoSwing" + DS;
     m_filePath = baseDir + "Parameters" + DS + "BatchForecasts.asfb";
     m_forecastsOutputDirectory = baseDir + "Forecasts";
@@ -70,6 +74,8 @@ bool asBatchForecasts::Load(const wxString &filePath) {
             m_predictandDBDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "export_synthetic_xml") {
             m_exportSyntheticXml = asFileBatchForecasts::GetBool(node);
+        } else if (node->GetName() == "export_synthetic_txt") {
+            m_exportSyntheticTxt = asFileBatchForecasts::GetBool(node);
         } else if (node->GetName() == "forecasts") {
             wxXmlNode *nodeForecast = node->GetChildren();
             while (nodeForecast) {
@@ -107,6 +113,7 @@ bool asBatchForecasts::Save() const {
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_realtime_directory", m_predictorsRealtimeDirectory));
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictand_db_directory", m_predictandDBDirectory));
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("export_synthetic_xml", m_exportSyntheticXml));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("export_synthetic_txt", m_exportSyntheticTxt));
 
     // Forecasts
     wxXmlNode *nodeForecasts = new wxXmlNode(wxXML_ELEMENT_NODE, "forecasts");
@@ -135,5 +142,5 @@ void asBatchForecasts::AddForecast() {
 }
 
 bool asBatchForecasts::HasExports() const {
-    return m_exportSyntheticXml;
+    return m_exportSyntheticXml || m_exportSyntheticTxt;
 }

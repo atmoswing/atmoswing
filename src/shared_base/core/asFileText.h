@@ -46,7 +46,7 @@ class asFileText : public asFile {
 
     bool Close() override;
 
-    void AddLine(const wxString &lineContent = wxEmptyString);
+    void AddContent(const wxString &lineContent = wxEmptyString);
 
     wxString GetNextLine();
 
