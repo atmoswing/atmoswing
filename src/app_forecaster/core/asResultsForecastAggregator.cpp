@@ -788,11 +788,11 @@ bool asResultsForecastAggregator::ExportSyntheticTxt(const wxString &dirPath) co
         // Quantiles
         wxString headerQuantiles;
         for (int k = 0; k < quantiles.size(); k++) {
-            headerQuantiles.Append(wxString::Format("q%d raw; q%d norm; ", (int)quantiles[k], (int)quantiles[k]));
+            headerQuantiles.Append(wxString::Format("q%d raw; q%d transformed; ", (int)quantiles[k], (int)quantiles[k]));
         }
 
         // Headers
-        fileExport.AddContent(wxString::Format("station; lead time; nb analogs; mean raw; mean norm; %s\n", headerQuantiles));
+        fileExport.AddContent(wxString::Format("station; lead time; nb analogs; mean raw; mean transformed; %s\n", headerQuantiles));
 
         for (int i = 0; i < stationIds.size(); i++) {
             // Get specific forecast
