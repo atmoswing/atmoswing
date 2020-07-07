@@ -765,7 +765,7 @@ bool asResultsForecastAggregator::ExportSyntheticTxt(const wxString &dirPath) co
         if (!fileExport.Open()) return false;
 
         // Method description
-        fileExport.AddContent(wxString::Format("method: %s | %s | %s\n",
+        fileExport.AddContent(wxString::Format("method: %s | %s\n",
                                                m_forecasts[methodRow][0]->GetMethodId(),
                                                m_forecasts[methodRow][0]->GetMethodIdDisplay()));
 
