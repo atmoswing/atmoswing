@@ -158,7 +158,7 @@ bool asResultsParametersArray::Print(int fromIndex) const {
     if (!fileExists) {
         wxString header;
         header = wxString::Format(_("Optimization processed %s\n"), asTime::GetStringTime(asTime::NowMJD(asLOCAL)));
-        fileRes.AddLine(header);
+        fileRes.AddContent(header);
     }
 
     wxString content = wxEmptyString;
@@ -195,7 +195,7 @@ bool asResultsParametersArray::Print(int fromIndex) const {
         content.Append("\n");
     }
 
-    fileRes.AddLine(content);
+    fileRes.AddContent(content);
 
     fileRes.Close();
 

@@ -874,7 +874,7 @@ bool asMethodOptimizerGeneticAlgorithms::SaveOperators(const wxString &filePath)
         content.Append("\n");
     }
 
-    fileRes.AddLine(content);
+    fileRes.AddContent(content);
 
     fileRes.Close();
 
