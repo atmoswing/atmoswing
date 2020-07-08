@@ -41,9 +41,25 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     libwxbase3.0-dev \
     sqlite3
 
+# Build Jasper
+ARG JASPER_VERSION=2.0.16
+RUN wget --no-check-certificate --tries=20 -O jasper.tar.gz \
+        https://github.com/mdadams/jasper/archive/version-${JASPER_VERSION}.tar.gz \
+    && tar -xzf jasper.tar.gz \
+    && rm -f jasper.tar.gz \
+    && cd jasper-version-${JASPER_VERSION} \
+    && mkdir bld \
+    && cd bld \
+    && cmake .. -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${LIB_DIR} \
+    && make -j$(nproc) \
+    && make install \
+    && cd .. \
+    && cd .. \
+    && rm -rf jasper-version-${JASPER_VERSION}
+
 # Build Proj
 ARG PROJ_VERSION=7.0.0
-RUN wget --no-check-certificate --tries=20 -O proj.tar.gz --no-check-certificate \
+RUN wget --no-check-certificate --tries=20 -O proj.tar.gz \
         https://download.osgeo.org/proj/proj-${PROJ_VERSION}.tar.gz \
     && tar -xzf proj.tar.gz \
     && rm -f proj.tar.gz \
