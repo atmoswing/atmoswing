@@ -77,8 +77,8 @@ void asFramePreferencesForecaster::LoadPreferences() {
     m_dirPickerParameters->SetPath(m_batchForecasts->GetParametersFileDirectory());
 
     // Exports
-    m_checkBoxExportSyntheticXml->SetValue(m_batchForecasts->ExportSyntheticXml());
-    m_checkBoxExportSyntheticTxt->SetValue(m_batchForecasts->ExportSyntheticTxt());
+    //m_checkBoxExportSyntheticXml->SetValue(m_batchForecasts->ExportSyntheticXml());
+    //m_checkBoxExportSyntheticTxt->SetValue(m_batchForecasts->ExportSyntheticTxt());
 
     /*
      * General
@@ -179,8 +179,8 @@ void asFramePreferencesForecaster::SavePreferences() {
     m_batchForecasts->SetParametersFileDirectory(m_dirPickerParameters->GetPath());
 
     // Exports
-    m_batchForecasts->SetExportSyntheticXml(m_checkBoxExportSyntheticXml->GetValue());
-    m_batchForecasts->SetExportSyntheticTxt(m_checkBoxExportSyntheticTxt->GetValue());
+    //m_batchForecasts->SetExportSyntheticXml(m_checkBoxExportSyntheticXml->GetValue());
+    //m_batchForecasts->SetExportSyntheticTxt(m_checkBoxExportSyntheticTxt->GetValue());
 
     /*
      * General

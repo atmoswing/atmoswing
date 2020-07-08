@@ -363,11 +363,21 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_dirPickerForecastResultsExports = new wxDirPickerCtrl( m_panelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	m_sizerPanelPaths->Add( m_dirPickerForecastResultsExports, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_checkBoxExportSyntheticXml = new wxCheckBox( m_panelPathsCommon, wxID_ANY, _("Export forecasts as synthetic xml"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_sizerPanelPaths->Add( m_checkBoxExportSyntheticXml, 0, wxALL, 5 );
+	wxBoxSizer* bSizer33;
+	bSizer33 = new wxBoxSizer( wxHORIZONTAL );
 
-	m_checkBoxExportSyntheticTxt = new wxCheckBox( m_panelPathsCommon, wxID_ANY, _("Export forecasts as synthetic text file"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_sizerPanelPaths->Add( m_checkBoxExportSyntheticTxt, 0, wxALL, 5 );
+	m_staticTextExport = new wxStaticText( m_panelPathsCommon, wxID_ANY, _("Export:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextExport->Wrap( -1 );
+	bSizer33->Add( m_staticTextExport, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxString m_choiceExportsChoices[] = { _("Full XML"), _("Small CSV"), _("Custom CSV for FVG"), _("Custom FVG"), _("Full XML") };
+	int m_choiceExportsNChoices = sizeof( m_choiceExportsChoices ) / sizeof( wxString );
+	m_choiceExports = new wxChoice( m_panelPathsCommon, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceExportsNChoices, m_choiceExportsChoices, 0 );
+	m_choiceExports->SetSelection( 0 );
+	bSizer33->Add( m_choiceExports, 0, wxALL, 5 );
+
+
+	m_sizerPanelPaths->Add( bSizer33, 0, wxEXPAND, 5 );
 
 
 	m_panelPathsCommon->SetSizer( m_sizerPanelPaths );

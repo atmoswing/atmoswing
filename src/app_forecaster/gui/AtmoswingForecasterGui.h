@@ -32,8 +32,9 @@
 #include <wx/toolbar.h>
 #include <wx/frame.h>
 #include <wx/filepicker.h>
-#include <wx/checkbox.h>
+#include <wx/choice.h>
 #include <wx/radiobut.h>
+#include <wx/checkbox.h>
 #include <wx/statbox.h>
 #include <wx/radiobox.h>
 #include <wx/slider.h>
@@ -152,8 +153,8 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 		wxDirPickerCtrl* m_dirPickerForecastResults;
 		wxStaticText* m_staticTextForecastResultsExportsDir;
 		wxDirPickerCtrl* m_dirPickerForecastResultsExports;
-		wxCheckBox* m_checkBoxExportSyntheticXml;
-		wxCheckBox* m_checkBoxExportSyntheticTxt;
+		wxStaticText* m_staticTextExport;
+		wxChoice* m_choiceExports;
 		wxPanel* m_panelGeneralCommon;
 		wxRadioButton* m_radioBtnLogLevel1;
 		wxRadioButton* m_radioBtnLogLevel2;
