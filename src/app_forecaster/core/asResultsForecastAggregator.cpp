@@ -598,14 +598,14 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString &dirPath
         // Filename
         wxString filePath = dirPath;
         filePath.Append(DS);
-        wxString dirstructure = "YYYY";
-        dirstructure.Append(DS).Append("MM").Append(DS).Append("DD");
-        wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirstructure);
+        wxString dirStructure = "YYYY";
+        dirStructure.Append(DS).Append("MM").Append(DS).Append("DD");
+        wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirStructure);
         filePath.Append(directory).Append(DS);
-        wxString forecastname = m_forecasts[methodRow][0]->GetMethodId();
-        wxString nowstr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
+        wxString forecastName = m_forecasts[methodRow][0]->GetMethodId();
+        wxString nowStr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
         wxString ext = "xml";
-        wxString filename = wxString::Format("%s.%s.%s", nowstr, forecastname, ext);
+        wxString filename = wxString::Format("%s.%s.%s", nowStr, forecastName, ext);
         filePath.Append(filename);
 
         // Create file
@@ -751,13 +751,13 @@ bool asResultsForecastAggregator::ExportSyntheticSmallCsv(const wxString &dirPat
         // Filename
         wxString filePath = dirPath;
         filePath.Append(DS);
-        wxString dirstructure = "YYYY";
-        dirstructure.Append(DS).Append("MM").Append(DS).Append("DD");
-        wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirstructure);
+        wxString dirStructure = "YYYY";
+        dirStructure.Append(DS).Append("MM").Append(DS).Append("DD");
+        wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirStructure);
         filePath.Append(directory).Append(DS);
-        wxString forecastname = m_forecasts[methodRow][0]->GetMethodId();
-        wxString nowstr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
-        wxString filename = wxString::Format("%s.%s.%s", nowstr, forecastname, "txt");
+        wxString forecastName = m_forecasts[methodRow][0]->GetMethodId();
+        wxString nowStr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
+        wxString filename = wxString::Format("%s.%s.%s", nowStr, forecastName, "txt");
         filePath.Append(filename);
 
         // Create file
@@ -838,13 +838,13 @@ bool asResultsForecastAggregator::ExportSyntheticCustomCsvFVG(const wxString &di
         // Filename
         wxString filePath = dirPath;
         filePath.Append(DS);
-        wxString dirstructure = "YYYY";
-        dirstructure.Append(DS).Append("MM").Append(DS).Append("DD");
-        wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirstructure);
+        wxString dirStructure = "YYYY";
+        dirStructure.Append(DS).Append("MM").Append(DS).Append("DD");
+        wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirStructure);
         filePath.Append(directory).Append(DS);
-        wxString forecastname = m_forecasts[methodRow][0]->GetMethodId();
-        wxString nowstr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
-        wxString filename = wxString::Format("%s.%s.%s", nowstr, forecastname, "txt");
+        wxString forecastName = m_forecasts[methodRow][0]->GetMethodId();
+        wxString nowStr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
+        wxString filename = wxString::Format("%s.%s.%s", nowStr, forecastName, "txt");
         filePath.Append(filename);
 
         // Create file
@@ -877,18 +877,33 @@ bool asResultsForecastAggregator::ExportSyntheticCustomCsvFVG(const wxString &di
                 wxString valuesQuantiles;
                 for (int k = 0; k < quantiles.size(); k++) {
                     float pcValNorm = asGetValueForQuantile(analogValuesNorm, quantiles[k] / 100);
+                    if (asIsNaN(pcValNorm)) {
+                        valuesQuantiles.Append("-9999; ");
+                        continue;
+                    }
                     valuesQuantiles.Append(wxString::Format("%.2f; ", pcValNorm));
                 }
 
                 int hourForecast = int (24 * (targetDates[j] - forecast->GetLeadTimeOrigin()));
+                float meanRaw = analogValuesRaw.mean();
+                float meanNorm = analogValuesNorm.mean();
+                if (asIsNaN(meanRaw) || asIsNaN(meanNorm)) {
+                    fileExport.AddContent(wxString::Format("%d; %s; %02d; %d; -9999; -9999; %s\n",
+                                                           stationIds[i] - 2,
+                                                           asTime::GetStringTime(targetDates[j], "YYYYMMDDHH"),
+                                                           hourForecast,
+                                                           forecast->GetAnalogsNumber(j),
+                                                           valuesQuantiles));
+                    continue;
+                }
 
                 fileExport.AddContent(wxString::Format("%d; %s; %02d; %d; %.2f; %.2f; %s\n",
                                                        stationIds[i] - 2,
                                                        asTime::GetStringTime(targetDates[j], "YYYYMMDDHH"),
                                                        hourForecast,
                                                        forecast->GetAnalogsNumber(j),
-                                                       analogValuesRaw.mean(),
-                                                       analogValuesNorm.mean(),
+                                                       meanRaw,
+                                                       meanNorm,
                                                        valuesQuantiles));
             }
         }
