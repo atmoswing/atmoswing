@@ -857,7 +857,7 @@ bool asResultsForecastAggregator::ExportSyntheticCustomCsvFVG(const wxString &di
         // Quantiles
         wxString headerQuantiles;
         for (int k = 0; k < quantiles.size(); k++) {
-            headerQuantiles.Append(wxString::Format("q%d (transf.); ", (int)quantiles[k]));
+            headerQuantiles.Append(wxString::Format("q%d; ", (int)quantiles[k]));
         }
 
         // Headers
@@ -881,7 +881,7 @@ bool asResultsForecastAggregator::ExportSyntheticCustomCsvFVG(const wxString &di
                 }
 
                 int hourForecast = int (24 * (targetDates[j] - forecast->GetLeadTimeOrigin()));
-                
+
                 fileExport.AddContent(wxString::Format("%d; %s; %02d; %d; %.2f; %.2f; %s\n",
                                                        stationIds[i] - 2,
                                                        asTime::GetStringTime(targetDates[j], "YYYYMMDDHH"),

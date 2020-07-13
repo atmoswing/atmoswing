@@ -40,6 +40,7 @@ asPredictorOperCustomFvgForecast::asPredictorOperCustomFvgForecast(const wxStrin
     m_restrictDownloads = false;
     m_runHourStart = 0;
     m_runUpdate = 24;
+    m_percentMissingAllowed = 70;
 }
 
 bool asPredictorOperCustomFvgForecast::Init() {

@@ -363,6 +363,10 @@ class asPredictor : public wxObject {
         return m_wasDumped;
     }
 
+    int GetPercentMissingAllowed() const {
+        return m_percentMissingAllowed;
+    }
+
   protected:
     struct FileStructure {
         wxString dimLatName;
@@ -442,6 +446,7 @@ class asPredictor : public wxObject {
     wxString m_fileExtension;
     wxString m_preprocessMethod;
     vwxs m_files;
+    int m_percentMissingAllowed;
 
     virtual void ListFiles(asTimeArray &timeArray);
 

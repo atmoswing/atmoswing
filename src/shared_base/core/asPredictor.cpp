@@ -79,7 +79,8 @@ asPredictor::asPredictor(const wxString &dataId)
       m_canBeClipped(true),
       m_parseTimeReference(false),
       m_warnMissingFiles(true),
-      m_warnMissingLevels(true) {
+      m_warnMissingLevels(true),
+      m_percentMissingAllowed(5) {
     m_fStr.hasLevelDim = true;
     m_fStr.singleLevel = false;
     m_fStr.singleTimeStep = false;
@@ -412,7 +413,7 @@ bool asPredictor::CheckFilesPresence() {
     }
 
     float percentMissing = 100.0 * float(countMissing) / float(m_files.size());
-    if (percentMissing > 5) {
+    if (percentMissing > m_percentMissingAllowed) {
         wxLogError(_("%.2f percent of the files are missing (%s, %s)."), percentMissing, m_datasetId, m_dataId);
         return false;
     }

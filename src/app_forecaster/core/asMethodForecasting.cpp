@@ -119,7 +119,7 @@ bool asMethodForecasting::Manager() {
             // Forecast
             if (!Forecast(params)) {
                 asLog::PrintToConsole(_("FAILED!\n"));
-                wxLogError(_("The forecast could not be achived"));
+                wxLogError(_("The forecast could not be achieved"));
 
 #if wxUSE_GUI
                 // Send event
@@ -515,18 +515,18 @@ bool asMethodForecasting::GetFiles(asParametersForecast &params, asPredictorOper
             }
         } else {
             // Check that files exist
-            bool fileMissing = false;
+            int countMissing = 0;
 
             vwxs fileNames = predictorRealtime->GetFileNames();
 
             for (const auto& fileName : fileNames) {
                 wxString filePath = m_batchForecasts->GetPredictorsRealtimeDirectory() + DS + fileName;
                 if (!wxFileName::FileExists(filePath)) {
-                    fileMissing = true;
+                    countMissing++;
                 }
             }
 
-            if (!fileMissing) {
+            if (100 * countMissing / fileNames.size() <= predictorRealtime->GetPercentMissingAllowed()) {
                 break;
             }
 
