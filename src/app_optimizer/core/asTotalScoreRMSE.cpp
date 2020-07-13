@@ -31,5 +31,5 @@
 asTotalScoreRMSE::asTotalScoreRMSE(const wxString &periodString) : asTotalScoreMSE(periodString) {}
 
 float asTotalScoreRMSE::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
-  return std::sqrt(asTotalScoreMSE::Assess(targetDates, scores, timeArray));
+    return std::sqrt(asTotalScoreMSE::Assess(targetDates, scores, timeArray));
 }

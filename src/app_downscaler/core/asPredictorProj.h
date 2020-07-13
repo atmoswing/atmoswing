@@ -34,19 +34,19 @@
 class asArea;
 
 class asPredictorProj : public asPredictor {
- public:
-  asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario);
+  public:
+    asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario);
 
-  ~asPredictorProj() override = default;
+    ~asPredictorProj() override = default;
 
-  static asPredictorProj *GetInstance(const wxString &datasetId, const wxString &model, const wxString &scenario,
-                                      const wxString &dataId, const wxString &directory = wxEmptyString);
+    static asPredictorProj *GetInstance(const wxString &datasetId, const wxString &model, const wxString &scenario,
+                                        const wxString &dataId, const wxString &directory = wxEmptyString);
 
- protected:
-  wxString m_model;
-  wxString m_scenario;
+  protected:
+    wxString m_model;
+    wxString m_scenario;
 
- private:
+  private:
 };
 
 #endif

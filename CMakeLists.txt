@@ -42,12 +42,18 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/google/googletest.git
         GIT_TAG release-1.10.0)
 
+FetchContent_Declare(
+        googlebenchmark
+        GIT_REPOSITORY https://github.com/google/benchmark.git
+        GIT_TAG v1.5.0)
+
+
 ##### OPTIONS
 
 # Version number
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "1")
-set(VERSION_PATCH "2")
+set(VERSION_PATCH "3")
 add_definitions(-DATMOSWING_MAJOR_VERSION=${VERSION_MAJOR})
 add_definitions(-DATMOSWING_MINOR_VERSION=${VERSION_MINOR})
 add_definitions(-DATMOSWING_PATCH_VERSION=${VERSION_PATCH})

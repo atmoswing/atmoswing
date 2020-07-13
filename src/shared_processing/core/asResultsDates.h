@@ -33,67 +33,67 @@
 #include "asResults.h"
 
 class asResultsDates : public asResults {
- public:
-  asResultsDates();
+  public:
+    asResultsDates();
 
-  virtual ~asResultsDates();
+    virtual ~asResultsDates();
 
-  void Init(asParameters *params);
+    void Init(asParameters *params);
 
-  a1f &GetTargetDates() {
-    return m_targetDates;
-  }
-
-  void SetTargetDates(a1d &refDates) {
-    m_targetDates.resize(refDates.rows());
-    for (int i = 0; i < refDates.size(); i++) {
-      m_targetDates[i] = (float)refDates[i];
-      wxASSERT_MSG(m_targetDates[i] > 1, _("The target time array has unconsistent values"));
+    a1f &GetTargetDates() {
+        return m_targetDates;
     }
-  }
 
-  void SetTargetDates(a1f &refDates) {
-    m_targetDates.resize(refDates.rows());
-    m_targetDates = refDates;
-  }
+    void SetTargetDates(a1d &refDates) {
+        m_targetDates.resize(refDates.rows());
+        for (int i = 0; i < refDates.size(); i++) {
+            m_targetDates[i] = (float)refDates[i];
+            wxASSERT_MSG(m_targetDates[i] > 1, _("The target time array has unconsistent values"));
+        }
+    }
 
-  a2f &GetAnalogsCriteria() {
-    return m_analogsCriteria;
-  }
+    void SetTargetDates(a1f &refDates) {
+        m_targetDates.resize(refDates.rows());
+        m_targetDates = refDates;
+    }
 
-  void SetAnalogsCriteria(a2f &analogsCriteria) {
-    m_analogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
-    m_analogsCriteria = analogsCriteria;
-  }
+    a2f &GetAnalogsCriteria() {
+        return m_analogsCriteria;
+    }
 
-  a2f &GetAnalogsDates() {
-    return m_analogsDates;
-  }
+    void SetAnalogsCriteria(a2f &analogsCriteria) {
+        m_analogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
+        m_analogsCriteria = analogsCriteria;
+    }
 
-  void SetAnalogsDates(a2f &analogsDates) {
-    m_analogsDates.resize(analogsDates.rows(), analogsDates.cols());
-    m_analogsDates = analogsDates;
-  }
+    a2f &GetAnalogsDates() {
+        return m_analogsDates;
+    }
 
-  int GetTargetDatesLength() const {
-    return (int)m_targetDates.size();
-  }
+    void SetAnalogsDates(a2f &analogsDates) {
+        m_analogsDates.resize(analogsDates.rows(), analogsDates.cols());
+        m_analogsDates = analogsDates;
+    }
 
-  int GetAnalogsDatesLength() const {
-    return (int)m_analogsDates.cols();
-  }
+    int GetTargetDatesLength() const {
+        return (int)m_targetDates.size();
+    }
 
-  bool Save();
+    int GetAnalogsDatesLength() const {
+        return (int)m_analogsDates.cols();
+    }
 
-  bool Load();
+    bool Save();
 
- protected:
-  void BuildFileName();
+    bool Load();
 
- private:
-  a1f m_targetDates;
-  a2f m_analogsCriteria;
-  a2f m_analogsDates;
+  protected:
+    void BuildFileName();
+
+  private:
+    a1f m_targetDates;
+    a2f m_analogsCriteria;
+    a2f m_analogsDates;
 };
 
 #endif

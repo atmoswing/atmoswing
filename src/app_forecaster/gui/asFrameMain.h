@@ -39,80 +39,80 @@
 #include "asPanelsManagerForecasts.h"
 
 class asFrameMain : public asFrameMainVirtual {
- public:
-  explicit asFrameMain(wxWindow *parent);
+  public:
+    explicit asFrameMain(wxWindow *parent);
 
-  ~asFrameMain() override;
+    ~asFrameMain() override;
 
-  void OnInit();
+    void OnInit();
 
-  double GetForecastDate() const;
+    double GetForecastDate() const;
 
-  void SetForecastDate(double date);
+    void SetForecastDate(double date);
 
- protected:
-  asLogWindow *m_logWindow;
-  asMethodForecasting *m_forecaster;
-  awxLed *m_ledDownloading;
-  awxLed *m_ledLoading;
-  awxLed *m_ledProcessing;
-  awxLed *m_ledSaving;
-  asBatchForecasts m_batchForecasts;
+  protected:
+    asLogWindow *m_logWindow;
+    asMethodForecasting *m_forecaster;
+    awxLed *m_ledDownloading;
+    awxLed *m_ledLoading;
+    awxLed *m_ledProcessing;
+    awxLed *m_ledSaving;
+    asBatchForecasts m_batchForecasts;
 
-  void OnOpenBatchForecasts(wxCommandEvent &event) override;
+    void OnOpenBatchForecasts(wxCommandEvent &event) override;
 
-  void OnSaveBatchForecasts(wxCommandEvent &event) override;
+    void OnSaveBatchForecasts(wxCommandEvent &event) override;
 
-  void OnSaveBatchForecastsAs(wxCommandEvent &event) override;
+    void OnSaveBatchForecastsAs(wxCommandEvent &event) override;
 
-  bool SaveBatchForecasts();
+    bool SaveBatchForecasts();
 
-  bool UpdateBatchForecasts();
+    bool UpdateBatchForecasts();
 
-  void OnNewBatchForecasts(wxCommandEvent &event) override;
+    void OnNewBatchForecasts(wxCommandEvent &event) override;
 
-  bool OpenBatchForecasts();
+    bool OpenBatchForecasts();
 
-  void Update() override;
+    void Update() override;
 
-  void OpenFramePredictandDB(wxCommandEvent &event) override;
+    void OpenFramePredictandDB(wxCommandEvent &event) override;
 
-  void OnConfigureDirectories(wxCommandEvent &event) override;
+    void OnConfigureDirectories(wxCommandEvent &event) override;
 
-  void OpenFramePreferences(wxCommandEvent &event) override;
+    void OpenFramePreferences(wxCommandEvent &event) override;
 
-  void OpenFrameAbout(wxCommandEvent &event) override;
+    void OpenFrameAbout(wxCommandEvent &event) override;
 
-  void OnShowLog(wxCommandEvent &event) override;
+    void OnShowLog(wxCommandEvent &event) override;
 
-  void OnLogLevel1(wxCommandEvent &event) override;
+    void OnLogLevel1(wxCommandEvent &event) override;
 
-  void OnLogLevel2(wxCommandEvent &event) override;
+    void OnLogLevel2(wxCommandEvent &event) override;
 
-  void OnLogLevel3(wxCommandEvent &event) override;
+    void OnLogLevel3(wxCommandEvent &event) override;
 
-  void OnStatusMethodUpdate(wxCommandEvent &event);
+    void OnStatusMethodUpdate(wxCommandEvent &event);
 
-  void OnSetPresentDate(wxCommandEvent &event) override;
+    void OnSetPresentDate(wxCommandEvent &event) override;
 
-  void DisplayLogLevelMenu();
+    void DisplayLogLevelMenu();
 
-  void LaunchForecasting(wxCommandEvent &event);
+    void LaunchForecasting(wxCommandEvent &event);
 
-  void CancelForecasting(wxCommandEvent &event);
+    void CancelForecasting(wxCommandEvent &event);
 
-  void AddForecast(wxCommandEvent &event) override;
+    void AddForecast(wxCommandEvent &event) override;
 
-  void SetPresentDate();
+    void SetPresentDate();
 
-  void InitOverallProgress();
+    void InitOverallProgress();
 
-  void IncrementOverallProgress();
+    void IncrementOverallProgress();
 
- private:
-  asPanelsManagerForecasts *m_panelsManager;
+  private:
+    asPanelsManagerForecasts *m_panelsManager;
 
-  DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

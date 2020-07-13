@@ -32,17 +32,17 @@
 #include "asIncludes.h"
 
 class asFileWorkspace : public asFileXml {
- public:
-  explicit asFileWorkspace(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
+  public:
+    explicit asFileWorkspace(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
-  ~asFileWorkspace() override = default;
+    ~asFileWorkspace() override = default;
 
-  bool EditRootElement() const;
+    bool EditRootElement() const;
 
-  bool CheckRootElement() const override;
+    bool CheckRootElement() const override;
 
- protected:
- private:
+  protected:
+  private:
 };
 
 #endif

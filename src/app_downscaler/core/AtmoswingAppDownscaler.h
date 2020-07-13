@@ -32,6 +32,7 @@
 #include <wx/cmdline.h>
 #include <wx/snglinst.h>
 #include <wx/socket.h>
+
 #include "asIncludes.h"
 
 #if wxUSE_GUI
@@ -42,45 +43,45 @@ class AtmoswingAppDownscaler : public wxApp
 class AtmoswingAppDownscaler : public wxAppConsole
 #endif
 {
- public:
-  virtual ~AtmoswingAppDownscaler(){};
+  public:
+    virtual ~AtmoswingAppDownscaler(){};
 
-  virtual bool OnInit();
+    virtual bool OnInit();
 
-  virtual int OnRun();
+    virtual int OnRun();
 
-  virtual int OnExit();
+    virtual int OnExit();
 
-  void CleanUp();
+    void CleanUp();
 
-  virtual void OnInitCmdLine(wxCmdLineParser &parser);
+    virtual void OnInitCmdLine(wxCmdLineParser &parser);
 
-  wxString GetLocalPath();
+    wxString GetLocalPath();
 
-  bool InitLog();
+    bool InitLog();
 
-  bool SetUseAsCmdLine();
+    bool SetUseAsCmdLine();
 
-  bool InitForCmdLineOnly();
+    bool InitForCmdLineOnly();
 
-  virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
+    virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
 
-  virtual bool OnExceptionInMainLoop();
+    virtual bool OnExceptionInMainLoop();
 
-  virtual void OnFatalException();
+    virtual void OnFatalException();
 
-  virtual void OnUnhandledException();
+    virtual void OnUnhandledException();
 
- private:
-  wxString m_downscalingParamsFile;
-  wxString m_downscalingMethod;
-  wxString m_predictandDB;
-  wxString m_predictorsArchiveDir;
-  wxString m_predictorsScenarioDir;
-  vi m_predictandStationIds;
-  bool m_doProcessing;
+  private:
+    wxString m_downscalingParamsFile;
+    wxString m_downscalingMethod;
+    wxString m_predictandDB;
+    wxString m_predictorsArchiveDir;
+    wxString m_predictorsScenarioDir;
+    vi m_predictandStationIds;
+    bool m_doProcessing;
 #if wxUSE_GUI
-  wxSingleInstanceChecker *m_singleInstanceChecker;
+    wxSingleInstanceChecker *m_singleInstanceChecker;
 #endif
 };
 

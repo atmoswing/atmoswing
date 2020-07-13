@@ -28,32 +28,32 @@
 #include "asCriteriaDMV.h"
 
 asCriteriaDMV::asCriteriaDMV() : asCriteria("DMV", _("Absolute difference in mean value (nonspatial)"), Asc) {
-  m_canUseInline = true;
+    m_canUseInline = true;
 }
 
 asCriteriaDMV::~asCriteriaDMV() = default;
 
 float asCriteriaDMV::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
-  wxASSERT(refData.rows() == evalData.rows());
-  wxASSERT(refData.cols() == evalData.cols());
-  wxASSERT(refData.rows() == rowsNb);
-  wxASSERT(refData.cols() == colsNb);
-  wxASSERT(evalData.rows() == rowsNb);
-  wxASSERT(evalData.cols() == colsNb);
+    wxASSERT(refData.rows() == evalData.rows());
+    wxASSERT(refData.cols() == evalData.cols());
+    wxASSERT(refData.rows() == rowsNb);
+    wxASSERT(refData.cols() == colsNb);
+    wxASSERT(evalData.rows() == rowsNb);
+    wxASSERT(evalData.cols() == colsNb);
 
-  if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
-    return std::fabs(refData.mean() - evalData.mean());
+    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+        return std::fabs(refData.mean() - evalData.mean());
 
-  } else {
-    int size = (!evalData.isNaN() && !refData.isNaN()).count();
-    if (size == 0) {
-      wxLogVerbose(_("Only NaNs in the DMV criteria calculation."));
-      return m_scaleWorst;
+    } else {
+        int size = (!evalData.isNaN() && !refData.isNaN()).count();
+        if (size == 0) {
+            wxLogVerbose(_("Only NaNs in the DMV criteria calculation."));
+            return NaNf;
+        }
+
+        float refMean = ((!evalData.isNaN() && !refData.isNaN()).select(refData, 0)).sum() / float(size);
+        float evalMean = ((!evalData.isNaN() && !refData.isNaN()).select(evalData, 0)).sum() / float(size);
+
+        return std::fabs(refMean - evalMean);
     }
-
-    float refMean = ((!evalData.isNaN() && !refData.isNaN()).select(refData, 0)).sum() / float(size);
-    float evalMean = ((!evalData.isNaN() && !refData.isNaN()).select(evalData, 0)).sum() / float(size);
-
-    return std::fabs(refMean - evalMean);
-  }
 }

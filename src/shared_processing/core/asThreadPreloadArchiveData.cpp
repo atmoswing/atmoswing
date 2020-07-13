@@ -42,15 +42,15 @@ asThreadPreloadArchiveData::asThreadPreloadArchiveData(asMethodStandard *method,
 asThreadPreloadArchiveData::~asThreadPreloadArchiveData() {}
 
 wxThread::ExitCode asThreadPreloadArchiveData::Entry() {
-  if (!m_params->NeedsPreprocessing(m_iStep, m_iProt)) {
-    if (!m_method->PreloadArchiveDataWithoutPreprocessing(m_params, m_iStep, m_iProt, m_iDat)) {
-      return (wxThread::ExitCode)-1;
+    if (!m_params->NeedsPreprocessing(m_iStep, m_iProt)) {
+        if (!m_method->PreloadArchiveDataWithoutPreprocessing(m_params, m_iStep, m_iProt, m_iDat)) {
+            return (wxThread::ExitCode)-1;
+        }
+    } else {
+        if (!m_method->PreloadArchiveDataWithPreprocessing(m_params, m_iStep, m_iProt)) {
+            return (wxThread::ExitCode)-1;
+        }
     }
-  } else {
-    if (!m_method->PreloadArchiveDataWithPreprocessing(m_params, m_iStep, m_iProt)) {
-      return (wxThread::ExitCode)-1;
-    }
-  }
 
-  return (wxThread::ExitCode)0;
+    return (wxThread::ExitCode)0;
 }

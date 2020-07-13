@@ -22,8 +22,7 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2019-2020 Pascal Horton, University of Bern.
  */
 
 #ifndef AS_PREDICTOR_OPER_IFS_FORECAST_H
@@ -31,23 +30,22 @@
 
 #include "asIncludes.h"
 #include "asPredictorEcmwfIfsGrib.h"
-
 #include "asPredictorOper.h"
 
 class asArea;
 
 class asPredictorOperIfsForecast : public asPredictorOper {
- public:
-  explicit asPredictorOperIfsForecast(const wxString &dataId);
+  public:
+    explicit asPredictorOperIfsForecast(const wxString &dataId);
 
-  ~asPredictorOperIfsForecast() override = default;
+    ~asPredictorOperIfsForecast() override = default;
 
-  bool Init() override;
+    bool Init() override;
 
- protected:
-  double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
+  protected:
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
- private:
+  private:
 };
 
 #endif

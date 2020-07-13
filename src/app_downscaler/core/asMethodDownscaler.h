@@ -28,9 +28,9 @@
 #ifndef AS_METHOD_DOWNSCALER_H
 #define AS_METHOD_DOWNSCALER_H
 
-#include "asMethodStandard.h"
-
 #include <utility>
+
+#include "asMethodStandard.h"
 
 class asResultsDates;
 class asParametersDownscaling;
@@ -39,78 +39,79 @@ class asPredictorProj;
 class asCriteria;
 
 class asMethodDownscaler : public asMethodStandard {
- public:
-  asMethodDownscaler();
+  public:
+    asMethodDownscaler();
 
-  ~asMethodDownscaler() override;
+    ~asMethodDownscaler() override;
 
-  bool GetAnalogsDates(asResultsDates &results, asParametersDownscaling *params, int iStep, bool &containsNaNs);
+    bool GetAnalogsDates(asResultsDates &results, asParametersDownscaling *params, int iStep, bool &containsNaNs);
 
-  bool GetAnalogsSubDates(asResultsDates &results, asParametersDownscaling *params, asResultsDates &anaDates, int iStep,
-                          bool &containsNaNs);
+    bool GetAnalogsSubDates(asResultsDates &results, asParametersDownscaling *params, asResultsDates &anaDates,
+                            int iStep, bool &containsNaNs);
 
-  bool GetAnalogsValues(asResultsValues &results, asParametersDownscaling *params, asResultsDates &anaDates, int iStep);
+    bool GetAnalogsValues(asResultsValues &results, asParametersDownscaling *params, asResultsDates &anaDates,
+                          int iStep);
 
-  void ClearAll();
+    void ClearAll();
 
-  bool Manager() override;
+    bool Manager() override;
 
-  bool IsArchivePointerCopy(int iStep, int iPtor, int iPre) const {
-    return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
-  }
+    bool IsArchivePointerCopy(int iStep, int iPtor, int iPre) const {
+        return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
+    }
 
-  bool IsProjectionPointerCopy(int iStep, int iPtor, int iPre) const {
-    return m_preloadedProjectionPointerCopy[iStep][iPtor][iPre];
-  }
+    bool IsProjectionPointerCopy(int iStep, int iPtor, int iPre) const {
+        return m_preloadedProjectionPointerCopy[iStep][iPtor][iPre];
+    }
 
-  void SetPredictandStationIds(vi val) {
-    m_predictandStationIds = val;
-  }
+    void SetPredictandStationIds(vi val) {
+        m_predictandStationIds = val;
+    }
 
-  void SetPredictorProjectionDataDir(const wxString &val) {
-    m_predictorProjectionDataDir = val;
-  }
+    void SetPredictorProjectionDataDir(const wxString &val) {
+        m_predictorProjectionDataDir = val;
+    }
 
- protected:
-  wxString m_predictorProjectionDataDir;
-  vi m_predictandStationIds;
-  std::vector<asParametersDownscaling> m_parameters;
+  protected:
+    wxString m_predictorProjectionDataDir;
+    vi m_predictandStationIds;
+    std::vector<asParametersDownscaling> m_parameters;
 
-  virtual bool Downscale(asParametersDownscaling &params) = 0;
+    virtual bool Downscale(asParametersDownscaling &params) = 0;
 
-  bool LoadProjectionData(std::vector<asPredictor *> &predictors, asParametersDownscaling *params, int iStep,
-                          double timeStartData, double timeEndData);
+    bool LoadProjectionData(std::vector<asPredictor *> &predictors, asParametersDownscaling *params, int iStep,
+                            double timeStartData, double timeEndData);
 
-  bool ExtractProjectionDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
-                                                 asParametersDownscaling *params, int iStep, int iPtor,
-                                                 double timeStartData, double timeEndData);
+    bool ExtractProjectionDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
+                                                   asParametersDownscaling *params, int iStep, int iPtor,
+                                                   double timeStartData, double timeEndData);
 
-  bool ExtractProjectionDataWithPreprocessing(std::vector<asPredictor *> &predictors, asParametersDownscaling *params,
-                                              int iStep, int iPtor, double timeStartData, double timeEndData);
+    bool ExtractProjectionDataWithPreprocessing(std::vector<asPredictor *> &predictors, asParametersDownscaling *params,
+                                                int iStep, int iPtor, double timeStartData, double timeEndData);
 
-  bool Preprocess(std::vector<asPredictorProj *> predictors, const wxString &method, asPredictor *result);
+    bool Preprocess(std::vector<asPredictorProj *> predictors, const wxString &method, asPredictor *result);
 
-  bool SaveDetails(asParametersDownscaling *params);
+    bool SaveDetails(asParametersDownscaling *params);
 
-  void Cleanup(std::vector<asPredictorProj *> predictors);
+    void Cleanup(std::vector<asPredictorProj *> predictors);
 
-  void Cleanup(std::vector<asPredictor *> predictors) override;
+    void Cleanup(std::vector<asPredictor *> predictors) override;
 
-  void Cleanup(std::vector<asCriteria *> criteria) override;
+    void Cleanup(std::vector<asCriteria *> criteria) override;
 
- private:
-  std::vector<std::vector<std::vector<std::vector<std::vector<asPredictor *> > > > > m_preloadedArchive;
-  std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorProj *> > > > > m_preloadedProjection;
-  std::vector<vvb> m_preloadedArchivePointerCopy;
-  std::vector<vvb> m_preloadedProjectionPointerCopy;
+  private:
+    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictor *> > > > > m_preloadedArchive;
+    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorProj *> > > > > m_preloadedProjection;
+    std::vector<vvb> m_preloadedArchivePointerCopy;
+    std::vector<vvb> m_preloadedProjectionPointerCopy;
 
-  double GetTimeStartDownscaling(asParametersDownscaling *params) const;
+    double GetTimeStartDownscaling(asParametersDownscaling *params) const;
 
-  double GetTimeEndDownscaling(asParametersDownscaling *params) const;
+    double GetTimeEndDownscaling(asParametersDownscaling *params) const;
 
-  double GetEffectiveArchiveDataStart(asParameters *params) const override;
+    double GetEffectiveArchiveDataStart(asParameters *params) const override;
 
-  double GetEffectiveArchiveDataEnd(asParameters *params) const override;
+    double GetEffectiveArchiveDataEnd(asParameters *params) const override;
 };
 
 #endif

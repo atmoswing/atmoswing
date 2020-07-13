@@ -56,179 +56,179 @@ const int asID_MENU_POPUP_LAYER = wxID_HIGHEST + 2 + as_POPUP_OFFSET;
 class asFrameForecast;
 
 class vroomDropFiles : public wxFileDropTarget {
- private:
-  asFrameForecast *m_loaderFrame;
+  private:
+    asFrameForecast *m_loaderFrame;
 
- public:
-  explicit vroomDropFiles(asFrameForecast *parent);
+  public:
+    explicit vroomDropFiles(asFrameForecast *parent);
 
-  bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames) override;
+    bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames) override;
 };
 
 /** Implementing forecastDropFiles */
 class asFrameForecast;
 
 class forecastDropFiles : public wxFileDropTarget {
- private:
-  asFrameForecast *m_loaderFrame;
+  private:
+    asFrameForecast *m_loaderFrame;
 
- public:
-  explicit forecastDropFiles(asFrameForecast *parent);
+  public:
+    explicit forecastDropFiles(asFrameForecast *parent);
 
-  bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames) override;
+    bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames) override;
 };
 
 class asFrameForecast : public asFrameForecastVirtual {
- public:
-  explicit asFrameForecast(wxWindow *parent, wxWindowID id = asWINDOW_MAIN);
+  public:
+    explicit asFrameForecast(wxWindow *parent, wxWindowID id = asWINDOW_MAIN);
 
-  ~asFrameForecast() override;
+    ~asFrameForecast() override;
 
-  void Init();
+    void Init();
 
-  bool OpenLayers(const wxArrayString &names);
+    bool OpenLayers(const wxArrayString &names);
 
-  bool OpenForecast(const wxArrayString &names);
+    bool OpenForecast(const wxArrayString &names);
 
-  asWorkspace *GetWorkspace() {
-    return &m_workspace;
-  }
+    asWorkspace *GetWorkspace() {
+        return &m_workspace;
+    }
 
- protected:
- private:
-  wxProcess *m_processForecast;
-  vrLayerManager *m_layerManager;
-  vrViewerLayerManager *m_viewerLayerManager;
-  vrViewerDisplay *m_displayCtrl;
-  wxKeyboardState m_keyBoardState;
-  asForecastManager *m_forecastManager;
-  asForecastViewer *m_forecastViewer;
-  asPanelSidebarGisLayers *m_panelSidebarGisLayers;
-  asPanelSidebarForecasts *m_panelSidebarForecasts;
-  asPanelSidebarStationsList *m_panelSidebarStationsList;
-  asPanelSidebarCaptionForecastDots *m_panelSidebarCaptionForecastDots;
-  asPanelSidebarAnalogDates *m_panelSidebarAnalogDates;
-  asPanelSidebarCaptionForecastRing *m_panelSidebarCaptionForecastRing;
-  asPanelSidebarAlarms *m_panelSidebarAlarms;
-  asLeadTimeSwitcher *m_leadTimeSwitcher;
-  asWorkspace m_workspace;
-  bool m_launchedPresentForecast;
+  protected:
+  private:
+    wxProcess *m_processForecast;
+    vrLayerManager *m_layerManager;
+    vrViewerLayerManager *m_viewerLayerManager;
+    vrViewerDisplay *m_displayCtrl;
+    wxKeyboardState m_keyBoardState;
+    asForecastManager *m_forecastManager;
+    asForecastViewer *m_forecastViewer;
+    asPanelSidebarGisLayers *m_panelSidebarGisLayers;
+    asPanelSidebarForecasts *m_panelSidebarForecasts;
+    asPanelSidebarStationsList *m_panelSidebarStationsList;
+    asPanelSidebarCaptionForecastDots *m_panelSidebarCaptionForecastDots;
+    asPanelSidebarAnalogDates *m_panelSidebarAnalogDates;
+    asPanelSidebarCaptionForecastRing *m_panelSidebarCaptionForecastRing;
+    asPanelSidebarAlarms *m_panelSidebarAlarms;
+    asLeadTimeSwitcher *m_leadTimeSwitcher;
+    asWorkspace m_workspace;
+    bool m_launchedPresentForecast;
 
 #if defined(__WIN32__)
-  wxCriticalSection m_critSectionViewerLayerManager;
+    wxCriticalSection m_critSectionViewerLayerManager;
 #endif
 
-  void OpenForecastsFromTmpList();
+    void OpenForecastsFromTmpList();
 
-  bool OpenRecentForecasts();
+    bool OpenRecentForecasts();
 
-  void OnLoadPreviousForecast(wxCommandEvent &event) override;
+    void OnLoadPreviousForecast(wxCommandEvent &event) override;
 
-  void OnLoadNextForecast(wxCommandEvent &event) override;
+    void OnLoadNextForecast(wxCommandEvent &event) override;
 
-  void OnLoadPreviousDay(wxCommandEvent &event) override;
+    void OnLoadPreviousDay(wxCommandEvent &event) override;
 
-  void OnLoadNextDay(wxCommandEvent &event) override;
+    void OnLoadNextDay(wxCommandEvent &event) override;
 
-  void SwitchForecast(double increment);
+    void SwitchForecast(double increment);
 
-  void OnOpenWorkspace(wxCommandEvent &event) override;
+    void OnOpenWorkspace(wxCommandEvent &event) override;
 
-  void OnSaveWorkspace(wxCommandEvent &event) override;
+    void OnSaveWorkspace(wxCommandEvent &event) override;
 
-  void OnSaveWorkspaceAs(wxCommandEvent &event) override;
+    void OnSaveWorkspaceAs(wxCommandEvent &event) override;
 
-  bool SaveWorkspace();
+    bool SaveWorkspace();
 
-  void OnNewWorkspace(wxCommandEvent &event) override;
+    void OnNewWorkspace(wxCommandEvent &event) override;
 
-  bool OpenWorkspace(bool openRecentForecasts = true);
+    bool OpenWorkspace(bool openRecentForecasts = true);
 
-  void UpdateLeadTimeSwitch();
+    void UpdateLeadTimeSwitch();
 
-  void OpenFramePlots(wxCommandEvent &event);
+    void OpenFramePlots(wxCommandEvent &event);
 
-  void OpenFrameGrid(wxCommandEvent &event);
+    void OpenFrameGrid(wxCommandEvent &event);
 
-  void OpenFramePredictandDB(wxCommandEvent &event) override;
+    void OpenFramePredictandDB(wxCommandEvent &event) override;
 
-  void OpenFramePreferences(wxCommandEvent &event) override;
+    void OpenFramePreferences(wxCommandEvent &event) override;
 
-  void OpenFrameAbout(wxCommandEvent &event) override;
+    void OpenFrameAbout(wxCommandEvent &event) override;
 
-  void OnLogLevel1(wxCommandEvent &event) override;
+    void OnLogLevel1(wxCommandEvent &event) override;
 
-  void OnLogLevel2(wxCommandEvent &event) override;
+    void OnLogLevel2(wxCommandEvent &event) override;
 
-  void OnLogLevel3(wxCommandEvent &event) override;
+    void OnLogLevel3(wxCommandEvent &event) override;
 
-  void DisplayLogLevelMenu();
+    void DisplayLogLevelMenu();
 
-  void OnForecastRatioSelectionChange(wxCommandEvent &event);
+    void OnForecastRatioSelectionChange(wxCommandEvent &event);
 
-  void OnForecastForecastSelectionChange(wxCommandEvent &event);
+    void OnForecastForecastSelectionChange(wxCommandEvent &event);
 
-  void OnForecastForecastSelectFirst(wxCommandEvent &event);
+    void OnForecastForecastSelectFirst(wxCommandEvent &event);
 
-  void OnForecastQuantileSelectionChange(wxCommandEvent &event);
+    void OnForecastQuantileSelectionChange(wxCommandEvent &event);
 
-  void DrawPlotStation(int stationRow);
+    void DrawPlotStation(int stationRow);
 
-  void OnOpenLayer(wxCommandEvent &event) override;
+    void OnOpenLayer(wxCommandEvent &event) override;
 
-  void OnCloseLayer(wxCommandEvent &event) override;
+    void OnCloseLayer(wxCommandEvent &event) override;
 
-  void OnOpenForecast(wxCommandEvent &event) override;
+    void OnOpenForecast(wxCommandEvent &event) override;
 
-  void OnMoveLayer(wxCommandEvent &event) override;
+    void OnMoveLayer(wxCommandEvent &event) override;
 
-  void OnChangeLeadTime(wxCommandEvent &event);
+    void OnChangeLeadTime(wxCommandEvent &event);
 
-  void OnToolSelect(wxCommandEvent &event);
+    void OnToolSelect(wxCommandEvent &event);
 
-  void OnToolZoomIn(wxCommandEvent &event);
+    void OnToolZoomIn(wxCommandEvent &event);
 
-  void OnToolZoomOut(wxCommandEvent &event);
+    void OnToolZoomOut(wxCommandEvent &event);
 
-  void OnToolPan(wxCommandEvent &event);
+    void OnToolPan(wxCommandEvent &event);
 
-  void OnKeyDown(wxKeyEvent &event);
+    void OnKeyDown(wxKeyEvent &event);
 
-  void OnKeyUp(wxKeyEvent &event);
+    void OnKeyUp(wxKeyEvent &event);
 
-  void OnToolAction(wxCommandEvent &event);
+    void OnToolAction(wxCommandEvent &event);
 
-  void OnToolZoomToFit(wxCommandEvent &event);
+    void OnToolZoomToFit(wxCommandEvent &event);
 
-  void FitExtentToForecasts();
+    void FitExtentToForecasts();
 
-  void OnStationSelection(wxCommandEvent &event);
+    void OnStationSelection(wxCommandEvent &event);
 
-  void OnForecastClear(wxCommandEvent &event);
+    void OnForecastClear(wxCommandEvent &event);
 
-  void OnClose(wxCloseEvent &event);
+    void OnClose(wxCloseEvent &event);
 
-  void OnQuit(wxCommandEvent &event) override;
+    void OnQuit(wxCommandEvent &event) override;
 
-  void OnForecastNewAdded(wxCommandEvent &event);
+    void OnForecastNewAdded(wxCommandEvent &event);
 
-  void ReloadViewerLayerManager();
+    void ReloadViewerLayerManager();
 
-  void UpdateHeaderTexts();
+    void UpdateHeaderTexts();
 
-  void UpdatePanelCaptionAll();
+    void UpdatePanelCaptionAll();
 
-  void UpdatePanelCaptionColorbar();
+    void UpdatePanelCaptionColorbar();
 
-  void UpdatePanelAnalogDates();
+    void UpdatePanelAnalogDates();
 
-  void UpdatePanelStationsList();
+    void UpdatePanelStationsList();
 
-  virtual void OnRightClick(wxMouseEvent &event) {
-    event.Skip();
-  }
+    virtual void OnRightClick(wxMouseEvent &event) {
+        event.Skip();
+    }
 
-  DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

@@ -33,15 +33,15 @@
 #include "asIncludes.h"
 
 class asCriteriaRMSE : public asCriteria {
- public:
-  asCriteriaRMSE();
+  public:
+    asCriteriaRMSE();
 
-  ~asCriteriaRMSE() override;
+    ~asCriteriaRMSE() override;
 
-  float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
+    float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
 
- protected:
- private:
+  protected:
+  private:
 };
 
 #endif

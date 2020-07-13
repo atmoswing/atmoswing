@@ -29,155 +29,210 @@
 #ifndef AS_PARAMETERS_FORECAST_H
 #define AS_PARAMETERS_FORECAST_H
 
-#include "asParameters.h"
-
 #include "asIncludes.h"
+#include "asParameters.h"
 
 class asFileParametersForecast;
 
 class asParametersForecast : public asParameters {
- public:
-  typedef struct {
-    wxString archiveDatasetId;
-    wxString archiveDataId;
-    int archiveMembersNb;
-    wxString realtimeDatasetId;
-    wxString realtimeDataId;
-    int realtimeMembersNb;
-    vwxs preprocessArchiveDatasetIds;
-    vwxs preprocessArchiveDataIds;
-    int preprocessArchiveMembersNb;
-    vwxs preprocessRealtimeDatasetIds;
-    vwxs preprocessRealtimeDataIds;
-    int preprocessRealtimeMembersNb;
-  } ParamsPredictorForecast;
+  public:
+    typedef struct {
+        wxString archiveDatasetId;
+        wxString archiveDataId;
+        bool archiveStandardize;
+        double archiveStandardizeMean;
+        double archiveStandardizeSd;
+        int archiveMembersNb;
+        wxString realtimeDatasetId;
+        wxString realtimeDataId;
+        bool realtimeStandardize;
+        double realtimeStandardizeMean;
+        double realtimeStandardizeSd;
+        int realtimeMembersNb;
+        vwxs preprocessArchiveDatasetIds;
+        vwxs preprocessArchiveDataIds;
+        int preprocessArchiveMembersNb;
+        vwxs preprocessRealtimeDatasetIds;
+        vwxs preprocessRealtimeDataIds;
+        int preprocessRealtimeMembersNb;
+    } ParamsPredictorForecast;
 
-  typedef std::vector<ParamsPredictorForecast> VectorParamsPredictorsForecast;
+    typedef std::vector<ParamsPredictorForecast> VectorParamsPredictorsForecast;
 
-  typedef struct {
-    vi analogsNumberLeadTime;
-    VectorParamsPredictorsForecast predictors;
-  } ParamsStepForecast;
+    typedef struct {
+        vi analogsNumberLeadTime;
+        VectorParamsPredictorsForecast predictors;
+    } ParamsStepForecast;
 
-  typedef std::vector<ParamsStepForecast> VectorParamsStepForecast;
+    typedef std::vector<ParamsStepForecast> VectorParamsStepForecast;
 
-  asParametersForecast();
+    asParametersForecast();
 
-  ~asParametersForecast() override;
+    ~asParametersForecast() override;
 
-  void AddStep() override;
+    void AddStep() override;
 
-  void AddPredictorForecast(ParamsStepForecast &step);
+    void AddPredictorForecast(ParamsStepForecast &step);
 
-  bool LoadFromFile(const wxString &filePath) override;
+    bool LoadFromFile(const wxString &filePath) override;
 
-  bool InputsOK() const override;
+    bool InputsOK() const override;
 
-  void InitValues();
+    void InitValues();
 
-  wxString GetPredictandDatabase() const {
-    return m_predictandDatabase;
-  }
+    wxString GetPredictandDatabase() const {
+        return m_predictandDatabase;
+    }
 
-  void SetPredictandDatabase(const wxString &val);
+    void SetPredictandDatabase(const wxString &val);
 
-  int GetLeadTimeNb() const {
-    return (int)m_leadTimeDaysVect.size();
-  }
+    int GetLeadTimeNb() const {
+        return (int)m_leadTimeDaysVect.size();
+    }
 
-  bool SetLeadTimeDaysVector(vi val);
+    void SetLeadTimeDaysVector(vd val);
 
-  vi GetLeadTimeDaysVector() const {
-    return m_leadTimeDaysVect;
-  }
+    void SetLeadTimeHoursVector(vd val);
 
-  bool SetAnalogsNumberLeadTimeVector(int iStep, vi val);
+    vd GetLeadTimeDaysVector() const {
+        return m_leadTimeDaysVect;
+    }
 
-  vi GetAnalogsNumberLeadTimeVector(int iStep) const {
-    return m_stepsForecast[iStep].analogsNumberLeadTime;
-  }
+    void SetAnalogsNumberLeadTimeVector(int iStep, vi val);
 
-  int GetAnalogsNumberLeadTime(int iStep, int iLead) const {
-    wxASSERT((int)m_stepsForecast[iStep].analogsNumberLeadTime.size() > iLead);
-    return m_stepsForecast[iStep].analogsNumberLeadTime[iLead];
-  }
+    vi GetAnalogsNumberLeadTimeVector(int iStep) const {
+        return m_stepsForecast[iStep].analogsNumberLeadTime;
+    }
 
-  wxString GetPredictorArchiveDatasetId(int iStep, int iPtor) const {
-    return m_stepsForecast[iStep].predictors[iPtor].archiveDatasetId;
-  }
+    int GetAnalogsNumberLeadTime(int iStep, int iLead) const {
+        wxASSERT((int)m_stepsForecast[iStep].analogsNumberLeadTime.size() > iLead);
+        return m_stepsForecast[iStep].analogsNumberLeadTime[iLead];
+    }
 
-  bool SetPredictorArchiveDatasetId(int iStep, int iPtor, const wxString &val);
+    wxString GetPredictorArchiveDatasetId(int iStep, int iPtor) const {
+        return m_stepsForecast[iStep].predictors[iPtor].archiveDatasetId;
+    }
 
-  wxString GetPredictorArchiveDataId(int iStep, int iPtor) const {
-    return m_stepsForecast[iStep].predictors[iPtor].archiveDataId;
-  }
+    void SetPredictorArchiveDatasetId(int iStep, int iPtor, const wxString &val);
 
-  bool SetPredictorArchiveDataId(int iStep, int iPtor, const wxString &val);
+    wxString GetPredictorArchiveDataId(int iStep, int iPtor) const {
+        return m_stepsForecast[iStep].predictors[iPtor].archiveDataId;
+    }
 
-  wxString GetPredictorRealtimeDatasetId(int iStep, int iPtor) const {
-    return m_stepsForecast[iStep].predictors[iPtor].realtimeDatasetId;
-  }
+    void SetPredictorArchiveDataId(int iStep, int iPtor, const wxString &val);
 
-  bool SetPredictorRealtimeDatasetId(int iStep, int iPtor, const wxString &val);
+    wxString GetPredictorRealtimeDatasetId(int iStep, int iPtor) const {
+        return m_stepsForecast[iStep].predictors[iPtor].realtimeDatasetId;
+    }
 
-  wxString GetPredictorRealtimeDataId(int iStep, int iPtor) const {
-    return m_stepsForecast[iStep].predictors[iPtor].realtimeDataId;
-  }
+    void SetPredictorRealtimeDatasetId(int iStep, int iPtor, const wxString &val);
 
-  bool SetPredictorRealtimeDataId(int iStep, int iPtor, const wxString &val);
+    wxString GetPredictorRealtimeDataId(int iStep, int iPtor) const {
+        return m_stepsForecast[iStep].predictors[iPtor].realtimeDataId;
+    }
 
-  int GetPreprocessSize(int iStep, int iPtor) const override {
-    return (int)m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size();
-  }
+    void SetPredictorRealtimeDataId(int iStep, int iPtor, const wxString &val);
 
-  wxString GetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre) const;
+    int GetPreprocessSize(int iStep, int iPtor) const override {
+        return (int)m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size();
+    }
 
-  bool SetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetRealtimeStandardize(int iStep, int iPtor, const bool &val) {
+        m_stepsForecast[iStep].predictors[iPtor].realtimeStandardize = val;
+    }
 
-  wxString GetPreprocessArchiveDataId(int iStep, int iPtor, int iPre) const;
+    bool GetRealtimeStandardize(int iStep, int iPtor) {
+        return m_stepsForecast[iStep].predictors[iPtor].realtimeStandardize;
+    }
 
-  bool SetPreprocessArchiveDataId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetRealtimeStandardizeMean(int iStep, int iPtor, const double &val) {
+        m_stepsForecast[iStep].predictors[iPtor].realtimeStandardizeMean = val;
+    }
 
-  wxString GetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre) const;
+    double GetRealtimeStandardizeMean(int iStep, int iPtor) {
+        return m_stepsForecast[iStep].predictors[iPtor].realtimeStandardizeMean;
+    }
 
-  bool SetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetRealtimeStandardizeSd(int iStep, int iPtor, const double &val) {
+        m_stepsForecast[iStep].predictors[iPtor].realtimeStandardizeSd = val;
+    }
 
-  wxString GetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre) const;
+    double GetRealtimeStandardizeSd(int iStep, int iPtor) {
+        return m_stepsForecast[iStep].predictors[iPtor].realtimeStandardizeSd;
+    }
 
-  bool SetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetArchiveStandardize(int iStep, int iPtor, const bool &val) {
+        m_stepsForecast[iStep].predictors[iPtor].archiveStandardize = val;
+    }
 
-  int GetPredictorArchiveMembersNb(int iStep, int iPtor) const {
-    return m_stepsForecast[iStep].predictors[iPtor].archiveMembersNb;
-  }
+    bool GetArchiveStandardize(int iStep, int iPtor) {
+        return m_stepsForecast[iStep].predictors[iPtor].archiveStandardize;
+    }
 
-  int GetPredictorRealtimeMembersNb(int iStep, int iPtor) const {
-    return m_stepsForecast[iStep].predictors[iPtor].realtimeMembersNb;
-  }
+    void SetArchiveStandardizeMean(int iStep, int iPtor, const double &val) {
+        m_stepsForecast[iStep].predictors[iPtor].archiveStandardizeMean = val;
+    }
 
-  int GetPreprocessArchiveMembersNb(int iStep, int iPtor, int iPre) const {
-    return m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveMembersNb;
-  }
+    double GetArchiveStandardizeMean(int iStep, int iPtor) {
+        return m_stepsForecast[iStep].predictors[iPtor].archiveStandardizeMean;
+    }
 
-  int GetPreprocessRealtimeMembersNb(int iStep, int iPtor, int iPre) const {
-    return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeMembersNb;
-  }
+    void SetArchiveStandardizeSd(int iStep, int iPtor, const double &val) {
+        m_stepsForecast[iStep].predictors[iPtor].archiveStandardizeSd = val;
+    }
 
- protected:
- private:
-  vi m_leadTimeDaysVect;
-  VectorParamsStepForecast m_stepsForecast;
-  wxString m_predictandDatabase;
+    double GetArchiveStandardizeSd(int iStep, int iPtor) {
+        return m_stepsForecast[iStep].predictors[iPtor].archiveStandardizeSd;
+    }
 
-  bool ParseDescription(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess);
+    wxString GetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre) const;
 
-  bool ParseTimeProperties(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess);
+    void SetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
 
-  bool ParseAnalogDatesParams(asFileParametersForecast &fileParams, int iStep, const wxXmlNode *nodeProcess);
+    wxString GetPreprocessArchiveDataId(int iStep, int iPtor, int iPre) const;
 
-  bool ParsePreprocessedPredictors(asFileParametersForecast &fileParams, int iStep, int iPtor,
-                                   const wxXmlNode *nodeParam);
+    void SetPreprocessArchiveDataId(int iStep, int iPtor, int iPre, const wxString &val);
 
-  bool ParseAnalogValuesParams(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess);
+    wxString GetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre) const;
+
+    void SetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
+
+    wxString GetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre) const;
+
+    void SetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre, const wxString &val);
+
+    int GetPredictorArchiveMembersNb(int iStep, int iPtor) const {
+        return m_stepsForecast[iStep].predictors[iPtor].archiveMembersNb;
+    }
+
+    int GetPredictorRealtimeMembersNb(int iStep, int iPtor) const {
+        return m_stepsForecast[iStep].predictors[iPtor].realtimeMembersNb;
+    }
+
+    int GetPreprocessArchiveMembersNb(int iStep, int iPtor, int iPre) const {
+        return m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveMembersNb;
+    }
+
+    int GetPreprocessRealtimeMembersNb(int iStep, int iPtor, int iPre) const {
+        return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeMembersNb;
+    }
+
+  protected:
+  private:
+    vd m_leadTimeDaysVect;
+    VectorParamsStepForecast m_stepsForecast;
+    wxString m_predictandDatabase;
+
+    bool ParseDescription(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseTimeProperties(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseAnalogDatesParams(asFileParametersForecast &fileParams, int iStep, const wxXmlNode *nodeProcess);
+
+    bool ParsePreprocessedPredictors(asFileParametersForecast &fileParams, int iStep, int iPtor,
+                                     const wxXmlNode *nodeParam);
+
+    bool ParseAnalogValuesParams(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess);
 };
 
 #endif

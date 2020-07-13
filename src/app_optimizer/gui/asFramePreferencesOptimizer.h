@@ -29,28 +29,27 @@
 #ifndef AS_FRAME_PREFERENCES_OPTIMIZER
 #define AS_FRAME_PREFERENCES_OPTIMIZER
 
+#include "AtmoswingOptimizerGui.h"
 #include "asIncludes.h"
 
-#include "AtmoswingOptimizerGui.h"
-
 class asFramePreferencesOptimizer : public asFramePreferencesOptimizerVirtual {
- public:
-  explicit asFramePreferencesOptimizer(wxWindow *parent, wxWindowID id = asWINDOW_PREFERENCES);
+  public:
+    explicit asFramePreferencesOptimizer(wxWindow *parent, wxWindowID id = asWINDOW_PREFERENCES);
 
- protected:
-  void CloseFrame(wxCommandEvent &event) override;
+  protected:
+    void CloseFrame(wxCommandEvent &event) override;
 
-  void Update() override;
+    void Update() override;
 
-  void LoadPreferences();
+    void LoadPreferences();
 
-  void SavePreferences() const;
+    void SavePreferences() const;
 
-  void SaveAndClose(wxCommandEvent &event) override;
+    void SaveAndClose(wxCommandEvent &event) override;
 
-  void ApplyChanges(wxCommandEvent &event) override;
+    void ApplyChanges(wxCommandEvent &event) override;
 
-  void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
+    void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
 };
 
 #endif

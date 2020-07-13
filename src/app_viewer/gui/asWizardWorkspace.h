@@ -33,26 +33,26 @@
 #include "asWorkspace.h"
 
 class asWizardWorkspace : public asWizardWorkspaceVirtual {
- public:
-  asWizardWorkspace(wxWindow *parent, wxWindowID id = wxID_ANY);
+  public:
+    asWizardWorkspace(wxWindow *parent, wxWindowID id = wxID_ANY);
 
-  ~asWizardWorkspace();
+    ~asWizardWorkspace();
 
-  wxWizardPage *GetFirstPage() const {
-    return m_pages.Item(0);
-  }
+    wxWizardPage *GetFirstPage() const {
+        return m_pages.Item(0);
+    }
 
-  wxWizardPage *GetSecondPage() const {
-    return m_pages.Item(1);
-  }
+    wxWizardPage *GetSecondPage() const {
+        return m_pages.Item(1);
+    }
 
- protected:
-  void OnWizardFinished(wxWizardEvent &event);
+  protected:
+    void OnWizardFinished(wxWizardEvent &event);
 
-  void OnLoadExistingWorkspace(wxCommandEvent &event);
+    void OnLoadExistingWorkspace(wxCommandEvent &event);
 
- private:
-  asWorkspace m_workspace;
+  private:
+    asWorkspace m_workspace;
 };
 
 #endif

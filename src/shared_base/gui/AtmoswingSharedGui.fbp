@@ -568,7 +568,7 @@
                                             <property name="caption"></property>
                                             <property name="caption_visible">1</property>
                                             <property name="center_pane">0</property>
-                                            <property name="choices">&quot;Precipitation&quot; &quot;Temperature&quot; &quot;Lightnings&quot; &quot;Other&quot;</property>
+                                            <property name="choices">&quot;Precipitation&quot; &quot;Temperature&quot; &quot;Lightning&quot; &quot;Other&quot;</property>
                                             <property name="close_button">1</property>
                                             <property name="context_help"></property>
                                             <property name="context_menu">1</property>
@@ -1794,7 +1794,7 @@
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
             <property name="minimum_size"></property>
-            <property name="name">asPanelProcessingLightnings</property>
+            <property name="name">asPanelProcessingLightning</property>
             <property name="pos"></property>
             <property name="size">-1,-1</property>
             <property name="subclass">; ; forward_declare</property>
@@ -1839,7 +1839,7 @@
                         <property name="gripper">0</property>
                         <property name="hidden">0</property>
                         <property name="id">wxID_ANY</property>
-                        <property name="label">Lightnings data normalization</property>
+                        <property name="label">Lightning data normalization</property>
                         <property name="markup">0</property>
                         <property name="max_size"></property>
                         <property name="maximize_button">0</property>

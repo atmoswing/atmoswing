@@ -35,33 +35,33 @@
 asPanelSidebarCaptionForecastRing::asPanelSidebarCaptionForecastRing(wxWindow *parent, wxWindowID id,
                                                                      const wxPoint &pos, const wxSize &size, long style)
     : asPanelSidebar(parent, id, pos, size, style) {
-  m_header->SetLabelText(_("Forecast caption"));
+    m_header->SetLabelText(_("Forecast caption"));
 
-  m_panelDrawing = new asPanelSidebarCaptionForecastRingDrawing(
-      this, wxID_ANY, wxDefaultPosition, wxSize(240 * g_ppiScaleDc, 240 * g_ppiScaleDc), wxTAB_TRAVERSAL);
-  m_sizerContent->Add(m_panelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
+    m_panelDrawing = new asPanelSidebarCaptionForecastRingDrawing(
+        this, wxID_ANY, wxDefaultPosition, wxSize(240 * g_ppiScaleDc, 240 * g_ppiScaleDc), wxTAB_TRAVERSAL);
+    m_sizerContent->Add(m_panelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
 
-  Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastRing::OnPaint), nullptr, this);
+    Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastRing::OnPaint), nullptr, this);
 
-  Layout();
-  m_sizerMain->Fit(this);
-  FitInside();
+    Layout();
+    m_sizerMain->Fit(this);
+    FitInside();
 }
 
 asPanelSidebarCaptionForecastRing::~asPanelSidebarCaptionForecastRing() {
-  Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastRing::OnPaint), nullptr, this);
+    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastRing::OnPaint), nullptr, this);
 }
 
 void asPanelSidebarCaptionForecastRing::OnPaint(wxPaintEvent &event) {
-  event.Skip();
+    event.Skip();
 }
 
 void asPanelSidebarCaptionForecastRing::SetDates(a1f &dates) {
-  m_panelDrawing->DrawDates(dates);
+    m_panelDrawing->DrawDates(dates);
 }
 
 void asPanelSidebarCaptionForecastRing::SetColorbarMax(double valmax) {
-  m_panelDrawing->DrawColorbar(valmax);
+    m_panelDrawing->DrawColorbar(valmax);
 }
 
 /*
@@ -72,312 +72,312 @@ asPanelSidebarCaptionForecastRingDrawing::asPanelSidebarCaptionForecastRingDrawi
                                                                                    const wxPoint &pos,
                                                                                    const wxSize &size, long style)
     : wxPanel(parent, id, pos, size, style) {
-  m_bmpDates = nullptr;
-  m_bmpColorbar = nullptr;
-  m_gdc = nullptr;
+    m_bmpDates = nullptr;
+    m_bmpColorbar = nullptr;
+    m_gdc = nullptr;
 
-  Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastRingDrawing::OnPaint), nullptr, this);
+    Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastRingDrawing::OnPaint), nullptr, this);
 
-  a1f emptyDates;
-  DrawDates(emptyDates);
-  DrawColorbar(1);
+    a1f emptyDates;
+    DrawDates(emptyDates);
+    DrawColorbar(1);
 
-  Layout();
+    Layout();
 }
 
 asPanelSidebarCaptionForecastRingDrawing::~asPanelSidebarCaptionForecastRingDrawing() {
-  Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastRingDrawing::OnPaint), nullptr, this);
-  wxDELETE(m_bmpDates);
-  wxDELETE(m_bmpColorbar);
+    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastRingDrawing::OnPaint), nullptr, this);
+    wxDELETE(m_bmpDates);
+    wxDELETE(m_bmpColorbar);
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::DrawDates(a1f &dates) {
-  auto *bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(182 * g_ppiScaleDc));
-  wxASSERT(bmp);
+    auto *bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(182 * g_ppiScaleDc));
+    wxASSERT(bmp);
 
-  // Create device context
-  wxMemoryDC dc(*bmp);
-  dc.SetBackground(*wxWHITE_BRUSH);
-  dc.Clear();
+    // Create device context
+    wxMemoryDC dc(*bmp);
+    dc.SetBackground(*wxWHITE_BRUSH);
+    dc.Clear();
 
-  // Create graphics context
-  wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
+    // Create graphics context
+    wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
 
-  if (gc) {
-    gc->SetPen(*wxBLACK);
-    wxFont defFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-    gc->SetFont(defFont, *wxBLACK);
-    wxGraphicsPath path = gc->CreatePath();
+    if (gc) {
+        gc->SetPen(*wxBLACK);
+        wxFont defFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+        gc->SetFont(defFont, *wxBLACK);
+        wxGraphicsPath path = gc->CreatePath();
 
-    wxPoint center(120 * g_ppiScaleDc, 91 * g_ppiScaleDc);  // Looks better than 105
+        wxPoint center(120 * g_ppiScaleDc, 91 * g_ppiScaleDc);  // Looks better than 105
 
-    int segmentsTot = dates.size();
-    const double scale = 0.9 * g_ppiScaleDc;
+        int segmentsTot = dates.size();
+        const double scale = 0.9 * g_ppiScaleDc;
 
-    if (segmentsTot == 0) {
-      CreateDatesPath(path, center, scale, 1, 0);
-    } else {
-      for (int iLead = 0; iLead < segmentsTot; iLead++) {
-        CreateDatesPath(path, center, scale, segmentsTot, iLead);
-        wxString dateStr = asTime::GetStringTime(dates[iLead], "DD.MM");
-        CreateDatesText(gc, center, scale, segmentsTot, iLead, dateStr);
-      }
+        if (segmentsTot == 0) {
+            CreateDatesPath(path, center, scale, 1, 0);
+        } else {
+            for (int iLead = 0; iLead < segmentsTot; iLead++) {
+                CreateDatesPath(path, center, scale, segmentsTot, iLead);
+                wxString dateStr = asTime::GetStringTime(dates[iLead], "DD.MM");
+                CreateDatesText(gc, center, scale, segmentsTot, iLead, dateStr);
+            }
+        }
+
+        gc->StrokePath(path);
+
+        wxDELETE(gc);
     }
 
-    gc->StrokePath(path);
+    dc.SelectObject(wxNullBitmap);
 
-    wxDELETE(gc);
-  }
+    this->SetBitmapDates(bmp);
+    wxDELETE(bmp);
+    wxASSERT(!bmp);
 
-  dc.SelectObject(wxNullBitmap);
-
-  this->SetBitmapDates(bmp);
-  wxDELETE(bmp);
-  wxASSERT(!bmp);
-
-  Refresh();
+    Refresh();
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::DrawColorbar(double valmax) {
-  auto *bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(50 * g_ppiScaleDc));
-  wxASSERT(bmp);
+    auto *bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(50 * g_ppiScaleDc));
+    wxASSERT(bmp);
 
-  // Create device context
-  wxMemoryDC dc(*bmp);
-  dc.SetBackground(*wxWHITE_BRUSH);
-  dc.Clear();
+    // Create device context
+    wxMemoryDC dc(*bmp);
+    dc.SetBackground(*wxWHITE_BRUSH);
+    dc.Clear();
 
-  // Create graphics context
-  wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
+    // Create graphics context
+    wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
 
-  if (gc) {
-    gc->SetPen(*wxBLACK);
-    wxFont defFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-    gc->SetFont(defFont, *wxBLACK);
-    wxGraphicsPath path = gc->CreatePath();
+    if (gc) {
+        gc->SetPen(*wxBLACK);
+        wxFont defFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+        gc->SetFont(defFont, *wxBLACK);
+        wxGraphicsPath path = gc->CreatePath();
 
-    CreateColorbarPath(path);
-    FillColorbar(gc, path);
-    CreateColorbarText(gc, path, valmax);
-    CreateColorbarOtherClasses(gc, path);
+        CreateColorbarPath(path);
+        FillColorbar(gc, path);
+        CreateColorbarText(gc, path, valmax);
+        CreateColorbarOtherClasses(gc, path);
 
-    wxDELETE(gc);
-  }
+        wxDELETE(gc);
+    }
 
-  dc.SelectObject(wxNullBitmap);
+    dc.SelectObject(wxNullBitmap);
 
-  this->SetBitmapColorbar(bmp);
-  wxDELETE(bmp);
-  wxASSERT(!bmp);
+    this->SetBitmapColorbar(bmp);
+    wxDELETE(bmp);
+    wxASSERT(!bmp);
 
-  Refresh();
+    Refresh();
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::SetBitmapDates(wxBitmap *bmp) {
-  wxDELETE(m_bmpDates);
-  wxASSERT(!m_bmpDates);
+    wxDELETE(m_bmpDates);
+    wxASSERT(!m_bmpDates);
 
-  if (bmp != nullptr) {
-    wxASSERT(bmp);
-    m_bmpDates = new wxBitmap(*bmp);
-    wxASSERT(m_bmpDates);
-  }
+    if (bmp != nullptr) {
+        wxASSERT(bmp);
+        m_bmpDates = new wxBitmap(*bmp);
+        wxASSERT(m_bmpDates);
+    }
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::SetBitmapColorbar(wxBitmap *bmp) {
-  wxDELETE(m_bmpColorbar);
-  wxASSERT(!m_bmpColorbar);
+    wxDELETE(m_bmpColorbar);
+    wxASSERT(!m_bmpColorbar);
 
-  if (bmp != nullptr) {
-    wxASSERT(bmp);
-    m_bmpColorbar = new wxBitmap(*bmp);
-    wxASSERT(m_bmpColorbar);
-  }
+    if (bmp != nullptr) {
+        wxASSERT(bmp);
+        m_bmpColorbar = new wxBitmap(*bmp);
+        wxASSERT(m_bmpColorbar);
+    }
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::OnPaint(wxPaintEvent &event) {
-  wxPaintDC dc(this);
+    wxPaintDC dc(this);
 
-  if (m_bmpDates != nullptr) {
-    dc.DrawBitmap(*m_bmpDates, 0, 0, true);
-  }
+    if (m_bmpDates != nullptr) {
+        dc.DrawBitmap(*m_bmpDates, 0, 0, true);
+    }
 
-  if (m_bmpColorbar != nullptr) {
-    dc.DrawBitmap(*m_bmpColorbar, 0, 190 * g_ppiScaleDc, true);
-  }
+    if (m_bmpColorbar != nullptr) {
+        dc.DrawBitmap(*m_bmpColorbar, 0, 190 * g_ppiScaleDc, true);
+    }
 
-  Layout();
+    Layout();
 
-  event.Skip();
+    event.Skip();
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::CreateDatesPath(wxGraphicsPath &path, const wxPoint &center,
                                                                double scale, int segmentsTotNb, int segmentNb) {
-  const wxDouble radiusOut = 100 * scale;
-  const wxDouble radiusIn = 40 * scale;
+    const wxDouble radiusOut = 100 * scale;
+    const wxDouble radiusIn = 40 * scale;
 
-  wxDouble segmentStart = -0.5 * M_PI + ((double)segmentNb / (double)segmentsTotNb) * (1.5 * M_PI);
-  wxDouble segmentEnd = -0.5 * M_PI + ((double)(segmentNb + 1) / (double)segmentsTotNb) * (1.5 * M_PI);
-  auto centerX = (wxDouble)center.x;
-  auto centerY = (wxDouble)center.y;
+    wxDouble segmentStart = -0.5 * M_PI + ((double)segmentNb / (double)segmentsTotNb) * (1.5 * M_PI);
+    wxDouble segmentEnd = -0.5 * M_PI + ((double)(segmentNb + 1) / (double)segmentsTotNb) * (1.5 * M_PI);
+    auto centerX = (wxDouble)center.x;
+    auto centerY = (wxDouble)center.y;
 
-  // Get starting point
-  double dX = cos(segmentStart) * radiusOut;
-  double dY = sin(segmentStart) * radiusOut;
-  wxDouble startPointX = centerX + dX;
-  wxDouble startPointY = centerY + dY;
+    // Get starting point
+    double dX = cos(segmentStart) * radiusOut;
+    double dY = sin(segmentStart) * radiusOut;
+    wxDouble startPointX = centerX + dX;
+    wxDouble startPointY = centerY + dY;
 
-  path.MoveToPoint(startPointX, startPointY);
+    path.MoveToPoint(startPointX, startPointY);
 
-  path.AddArc(centerX, centerY, radiusOut, segmentStart, segmentEnd, true);
+    path.AddArc(centerX, centerY, radiusOut, segmentStart, segmentEnd, true);
 
-  const wxDouble radiusRatio = ((radiusOut - radiusIn) / radiusOut);
-  wxPoint2DDouble currentPoint = path.GetCurrentPoint();
-  wxDouble newPointX = currentPoint.m_x - (currentPoint.m_x - centerX) * radiusRatio;
-  wxDouble newPointY = currentPoint.m_y - (currentPoint.m_y - centerY) * radiusRatio;
+    const wxDouble radiusRatio = ((radiusOut - radiusIn) / radiusOut);
+    wxPoint2DDouble currentPoint = path.GetCurrentPoint();
+    wxDouble newPointX = currentPoint.m_x - (currentPoint.m_x - centerX) * radiusRatio;
+    wxDouble newPointY = currentPoint.m_y - (currentPoint.m_y - centerY) * radiusRatio;
 
-  path.AddLineToPoint(newPointX, newPointY);
+    path.AddLineToPoint(newPointX, newPointY);
 
-  path.AddArc(centerX, centerY, radiusIn, segmentEnd, segmentStart, false);
+    path.AddArc(centerX, centerY, radiusIn, segmentEnd, segmentStart, false);
 
-  path.CloseSubpath();
+    path.CloseSubpath();
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::CreateDatesText(wxGraphicsContext *gc, const wxPoint &center,
                                                                double scale, int segmentsTotNb, int segmentNb,
                                                                const wxString &label) {
-  // Get geometric elements
-  const wxDouble radiusMean = 70 * scale;
-  wxDouble segmentMean = -0.5 * M_PI + ((segmentNb + 0.5) / segmentsTotNb) * (1.5 * M_PI);
-  auto centerX = (wxDouble)center.x;
-  auto centerY = (wxDouble)center.y;
+    // Get geometric elements
+    const wxDouble radiusMean = 70 * scale;
+    wxDouble segmentMean = -0.5 * M_PI + ((segmentNb + 0.5) / segmentsTotNb) * (1.5 * M_PI);
+    auto centerX = (wxDouble)center.x;
+    auto centerY = (wxDouble)center.y;
 
-  // Text extent
-  wxDouble w, h;
-  gc->GetTextExtent(label, &w, &h);
+    // Text extent
+    wxDouble w, h;
+    gc->GetTextExtent(label, &w, &h);
 
-  // Get point coordinates
-  double dX = cos(segmentMean) * radiusMean;
-  double dY = sin(segmentMean) * radiusMean;
-  wxDouble newPointX = centerX + dX - w / 2.0;
-  wxDouble newPointY = centerY + dY - h / 2.0;
+    // Get point coordinates
+    double dX = cos(segmentMean) * radiusMean;
+    double dY = sin(segmentMean) * radiusMean;
+    wxDouble newPointX = centerX + dX - w / 2.0;
+    wxDouble newPointY = centerY + dY - h / 2.0;
 
-  // Draw text
-  gc->DrawText(label, newPointX, newPointY);
+    // Draw text
+    gc->DrawText(label, newPointX, newPointY);
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::CreateColorbarPath(wxGraphicsPath &path) {
-  int startX = 30;
-  int endX = 210 * g_ppiScaleDc;
-  int startY = 2 * g_ppiScaleDc;
-  int endY = 11 * g_ppiScaleDc;
+    int startX = 30;
+    int endX = 210 * g_ppiScaleDc;
+    int startY = 2 * g_ppiScaleDc;
+    int endY = 11 * g_ppiScaleDc;
 
-  path.MoveToPoint(startX, startY);
-  path.AddLineToPoint(endX, startY);
-  path.AddLineToPoint(endX, endY);
-  path.AddLineToPoint(startX, endY);
-  path.CloseSubpath();
+    path.MoveToPoint(startX, startY);
+    path.AddLineToPoint(endX, startY);
+    path.AddLineToPoint(endX, endY);
+    path.AddLineToPoint(startX, endY);
+    path.CloseSubpath();
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::FillColorbar(wxGraphicsContext *gc, wxGraphicsPath &path) {
-  // Get the path box
-  wxDouble x, y, w, h;
-  path.GetBox(&x, &y, &w, &h);
+    // Get the path box
+    wxDouble x, y, w, h;
+    path.GetBox(&x, &y, &w, &h);
 
-  wxGraphicsGradientStops stops(wxColour(200, 255, 200), wxColour(255, 0, 0));
-  stops.Add(wxColour(255, 255, 0), 0.5);
-  wxGraphicsBrush brush = gc->CreateLinearGradientBrush(x, y, x + w, y, stops);
-  gc->SetBrush(brush);
-  gc->DrawPath(path);
+    wxGraphicsGradientStops stops(wxColour(200, 255, 200), wxColour(255, 0, 0));
+    stops.Add(wxColour(255, 255, 0), 0.5);
+    wxGraphicsBrush brush = gc->CreateLinearGradientBrush(x, y, x + w, y, stops);
+    gc->SetBrush(brush);
+    gc->DrawPath(path);
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::CreateColorbarText(wxGraphicsContext *gc, wxGraphicsPath &path,
                                                                   double valmax) {
-  gc->SetPen(*wxBLACK);
+    gc->SetPen(*wxBLACK);
 
-  // Get the path box
-  wxDouble x, y, w, h;
-  path.GetBox(&x, &y, &w, &h);
+    // Get the path box
+    wxDouble x, y, w, h;
+    path.GetBox(&x, &y, &w, &h);
 
-  // Correction of the coordinates needed on Linux
+    // Correction of the coordinates needed on Linux
 #if defined(__WXMSW__)
-  int corr = 0;
+    int corr = 0;
 #elif defined(__WXMAC__)
-  int corr = 0;
+    int corr = 0;
 #elif defined(__UNIX__)
-  int corr = 1;
+    int corr = 1;
 #endif
 
-  // Set ticks
-  wxGraphicsPath pathTickStart = gc->CreatePath();
-  pathTickStart.MoveToPoint(x + corr, y + corr);
-  pathTickStart.AddLineToPoint(x + corr, y + corr + h + 5);
-  gc->StrokePath(pathTickStart);
-  wxGraphicsPath pathTickMid = gc->CreatePath();
-  pathTickMid.MoveToPoint(x + w / 2, y + corr);
-  pathTickMid.AddLineToPoint(x + w / 2, y + corr + h + 5);
-  gc->StrokePath(pathTickMid);
-  wxGraphicsPath pathTickEnd = gc->CreatePath();
-  pathTickEnd.MoveToPoint(x - corr + w, y + corr);
-  pathTickEnd.AddLineToPoint(x - corr + w, y + corr + h + 5);
-  gc->StrokePath(pathTickEnd);
+    // Set ticks
+    wxGraphicsPath pathTickStart = gc->CreatePath();
+    pathTickStart.MoveToPoint(x + corr, y + corr);
+    pathTickStart.AddLineToPoint(x + corr, y + corr + h + 5);
+    gc->StrokePath(pathTickStart);
+    wxGraphicsPath pathTickMid = gc->CreatePath();
+    pathTickMid.MoveToPoint(x + w / 2, y + corr);
+    pathTickMid.AddLineToPoint(x + w / 2, y + corr + h + 5);
+    gc->StrokePath(pathTickMid);
+    wxGraphicsPath pathTickEnd = gc->CreatePath();
+    pathTickEnd.MoveToPoint(x - corr + w, y + corr);
+    pathTickEnd.AddLineToPoint(x - corr + w, y + corr + h + 5);
+    gc->StrokePath(pathTickEnd);
 
-  // Set labels
-  wxString labelStart = "0";
-  wxString labelMid = wxString::Format("%g", valmax / 2.0);
-  wxString labelEnd = wxString::Format("%g", valmax);
+    // Set labels
+    wxString labelStart = "0";
+    wxString labelMid = wxString::Format("%g", valmax / 2.0);
+    wxString labelEnd = wxString::Format("%g", valmax);
 
-  // Draw text
-  int dy = 12 * g_ppiScaleDc;
-  gc->DrawText(labelStart, x + 4, y + dy);
-  gc->DrawText(labelMid, x + w / 2 + 4, y + dy);
-  gc->DrawText(labelEnd, x + w + 4, y + dy);
+    // Draw text
+    int dy = 12 * g_ppiScaleDc;
+    gc->DrawText(labelStart, x + 4, y + dy);
+    gc->DrawText(labelMid, x + w / 2 + 4, y + dy);
+    gc->DrawText(labelEnd, x + w + 4, y + dy);
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::CreateColorbarOtherClasses(wxGraphicsContext *gc, wxGraphicsPath &path) {
-  gc->SetPen(*wxBLACK);
+    gc->SetPen(*wxBLACK);
 
-  // Get the path box
-  wxDouble x, y, w, h;
-  path.GetBox(&x, &y, &w, &h);
-  int dh1 = 20 * g_ppiScaleDc;
-  int dh2 = 10 * g_ppiScaleDc;
-  int dw = 10 * g_ppiScaleDc;
-  int halfWidth = w / 2;
+    // Get the path box
+    wxDouble x, y, w, h;
+    path.GetBox(&x, &y, &w, &h);
+    int dh1 = 20 * g_ppiScaleDc;
+    int dh2 = 10 * g_ppiScaleDc;
+    int dw = 10 * g_ppiScaleDc;
+    int halfWidth = w / 2;
 
-  // Create first box
-  wxGraphicsPath pathBox1 = gc->CreatePath();
-  pathBox1.MoveToPoint(x, y + h + dh1);
-  pathBox1.AddLineToPoint(x, y + h + dh1 + dh2);
-  pathBox1.AddLineToPoint(x + dw, y + h + dh1 + dh2);
-  pathBox1.AddLineToPoint(x + dw, y + h + dh1);
-  pathBox1.CloseSubpath();
+    // Create first box
+    wxGraphicsPath pathBox1 = gc->CreatePath();
+    pathBox1.MoveToPoint(x, y + h + dh1);
+    pathBox1.AddLineToPoint(x, y + h + dh1 + dh2);
+    pathBox1.AddLineToPoint(x + dw, y + h + dh1 + dh2);
+    pathBox1.AddLineToPoint(x + dw, y + h + dh1);
+    pathBox1.CloseSubpath();
 
-  wxColour colour = wxColour();
-  colour.Set(255, 255, 255);
-  wxBrush brush1(colour, wxBRUSHSTYLE_SOLID);
-  gc->SetBrush(brush1);
-  gc->DrawPath(pathBox1);
+    wxColour colour = wxColour();
+    colour.Set(255, 255, 255);
+    wxBrush brush1(colour, wxBRUSHSTYLE_SOLID);
+    gc->SetBrush(brush1);
+    gc->DrawPath(pathBox1);
 
-  // Create second box
-  wxGraphicsPath pathBox2 = gc->CreatePath();
-  pathBox2.MoveToPoint(x + halfWidth, y + h + dh1);
-  pathBox2.AddLineToPoint(x + halfWidth, y + h + dh1 + dh2);
-  pathBox2.AddLineToPoint(x + halfWidth + dw, y + h + dh1 + dh2);
-  pathBox2.AddLineToPoint(x + halfWidth + dw, y + h + dh1);
-  pathBox2.CloseSubpath();
+    // Create second box
+    wxGraphicsPath pathBox2 = gc->CreatePath();
+    pathBox2.MoveToPoint(x + halfWidth, y + h + dh1);
+    pathBox2.AddLineToPoint(x + halfWidth, y + h + dh1 + dh2);
+    pathBox2.AddLineToPoint(x + halfWidth + dw, y + h + dh1 + dh2);
+    pathBox2.AddLineToPoint(x + halfWidth + dw, y + h + dh1);
+    pathBox2.CloseSubpath();
 
-  colour.Set(150, 150, 150);
-  wxBrush brush2(colour, wxBRUSHSTYLE_SOLID);
-  gc->SetBrush(brush2);
-  gc->DrawPath(pathBox2);
+    colour.Set(150, 150, 150);
+    wxBrush brush2(colour, wxBRUSHSTYLE_SOLID);
+    gc->SetBrush(brush2);
+    gc->DrawPath(pathBox2);
 
-  // Set labels
-  wxString label1 = _("No rainfall");
-  wxString label2 = _("Missing data");
+    // Set labels
+    wxString label1 = _("No rainfall");
+    wxString label2 = _("Missing data");
 
-  // Draw text
-  int dwLabel = 14 * g_ppiScaleDc;
-  gc->DrawText(label1, x + dwLabel, y + h + dh1 - 1);
-  gc->DrawText(label2, x + halfWidth + dwLabel, y + h + dh1 - 1);
+    // Draw text
+    int dwLabel = 14 * g_ppiScaleDc;
+    gc->DrawText(label1, x + dwLabel, y + h + dh1 - 1);
+    gc->DrawText(label2, x + halfWidth + dwLabel, y + h + dh1 - 1);
 }

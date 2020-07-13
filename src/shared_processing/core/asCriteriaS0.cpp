@@ -28,41 +28,43 @@
 #include "asCriteriaS0.h"
 
 asCriteriaS0::asCriteriaS0() : asCriteria("S0", _("Teweles-Wobus on raw data"), Asc) {
-  m_minPointsNb = 1;
-  m_scaleWorst = 200;
-  m_canUseInline = true;
+    m_minPointsNb = 1;
+    m_scaleWorst = 200;
+    m_canUseInline = true;
 }
 
 asCriteriaS0::~asCriteriaS0() = default;
 
 float asCriteriaS0::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
-  wxASSERT(refData.rows() == evalData.rows());
-  wxASSERT(refData.cols() == evalData.cols());
-  wxASSERT(refData.rows() > 0);
-  wxASSERT(refData.cols() > 0);
+    wxASSERT(refData.rows() == evalData.rows());
+    wxASSERT(refData.cols() == evalData.cols());
+    wxASSERT(refData.rows() > 0);
+    wxASSERT(refData.cols() > 0);
 
-  float dividend = 0, divisor = 0;
+    float dividend = 0, divisor = 0;
 
-  if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
-    dividend = ((refData - evalData).abs()).sum();
-    divisor = (refData.abs().max(evalData.abs())).sum();
+    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+        dividend = ((refData - evalData).abs()).sum();
+        divisor = (refData.abs().max(evalData.abs())).sum();
 
-  } else {
-    a2f refDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(refData, 0);
-    a2f evalDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(evalData, 0);
-
-    dividend = ((refDataCorr - evalDataCorr).abs()).sum();
-    divisor = (refDataCorr.abs().max(evalDataCorr.abs())).sum();
-  }
-
-  if (divisor > 0) {
-    return 100.0f * (dividend / divisor);  // Can be NaN
-  } else {
-    if (dividend == 0) {
-      wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
-      return m_scaleWorst;
     } else {
-      return m_scaleWorst;
+        a2f refDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(refData, 0);
+        a2f evalDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(evalData, 0);
+
+        dividend = ((refDataCorr - evalDataCorr).abs()).sum();
+        divisor = (refDataCorr.abs().max(evalDataCorr.abs())).sum();
     }
-  }
+
+    if (divisor > 0) {
+        return 100.0f * (dividend / divisor);  // Can be NaN
+    } else {
+        if (dividend == 0) {
+            wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
+            return m_scaleWorst;
+        } else if (asIsNaN(divisor) || asIsNaN(dividend)) {
+            return NaNf;
+        } else {
+            return m_scaleWorst;
+        }
+    }
 }

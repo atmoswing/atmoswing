@@ -37,33 +37,33 @@
 #include "asPanelSidebar.h"
 
 class asPanelSidebarForecasts : public asPanelSidebar {
- public:
-  asPanelSidebarForecasts(wxWindow *parent, asForecastManager *forecastManager, wxWindowID id = wxID_ANY,
-                          const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
-                          long style = wxTAB_TRAVERSAL);
+  public:
+    asPanelSidebarForecasts(wxWindow *parent, asForecastManager *forecastManager, wxWindowID id = wxID_ANY,
+                            const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
+                            long style = wxTAB_TRAVERSAL);
 
-  ~asPanelSidebarForecasts() override = default;
+    ~asPanelSidebarForecasts() override = default;
 
-  void ClearForecasts();
+    void ClearForecasts();
 
-  void Update() override;
+    void Update() override;
 
-  asListBoxForecasts *GetForecastsCtrl() const {
-    return m_forecastsCtrl;
-  }
+    asListBoxForecasts *GetForecastsCtrl() const {
+        return m_forecastsCtrl;
+    }
 
-  asListBoxQuantiles *GetQuantilesCtrl() const {
-    return m_quantilesCtrl;
-  }
+    asListBoxQuantiles *GetQuantilesCtrl() const {
+        return m_quantilesCtrl;
+    }
 
-  asListBoxForecastDisplay *GetForecastDisplayCtrl() const {
-    return m_forecastDisplayCtrl;
-  }
+    asListBoxForecastDisplay *GetForecastDisplayCtrl() const {
+        return m_forecastDisplayCtrl;
+    }
 
- private:
-  asListBoxForecasts *m_forecastsCtrl;
-  asListBoxQuantiles *m_quantilesCtrl;
-  asListBoxForecastDisplay *m_forecastDisplayCtrl;
+  private:
+    asListBoxForecasts *m_forecastsCtrl;
+    asListBoxQuantiles *m_quantilesCtrl;
+    asListBoxForecastDisplay *m_forecastDisplayCtrl;
 };
 
 #endif

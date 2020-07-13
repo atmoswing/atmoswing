@@ -31,220 +31,220 @@
 asFramePreferencesViewer::asFramePreferencesViewer(wxWindow *parent, asWorkspace *workspace, wxWindowID id)
     : asFramePreferencesViewerVirtual(parent, id),
       m_workspace(workspace) {
-  LoadPreferences();
-  Fit();
+    LoadPreferences();
+    Fit();
 
-  // Icon
+    // Icon
 #ifdef __WXMSW__
-  SetIcon(wxICON(myicon));
+    SetIcon(wxICON(myicon));
 #endif
 }
 
 void asFramePreferencesViewer::CloseFrame(wxCommandEvent &event) {
-  Close();
+    Close();
 }
 
 void asFramePreferencesViewer::Update() {
-  LoadPreferences();
+    LoadPreferences();
 }
 
 void asFramePreferencesViewer::LoadPreferences() {
-  wxConfigBase *pConfig;
-  pConfig = wxFileConfig::Get();
+    wxConfigBase *pConfig;
+    pConfig = wxFileConfig::Get();
 
-  // Fix the color of the file/dir pickers
-  wxColour col = m_notebookBase->GetThemeBackgroundColour();
-  if (col.IsOk()) {
-    m_dirPickerForecastResults->SetBackgroundColour(col);
-  }
+    // Fix the color of the file/dir pickers
+    wxColour col = m_notebookBase->GetThemeBackgroundColour();
+    if (col.IsOk()) {
+        m_dirPickerForecastResults->SetBackgroundColour(col);
+    }
 
-  /*
-   * Workspace
-   */
+    /*
+     * Workspace
+     */
 
-  // Directories
-  m_dirPickerForecastResults->SetPath(m_workspace->GetForecastsDirectory());
+    // Directories
+    m_dirPickerForecastResults->SetPath(m_workspace->GetForecastsDirectory());
 
-  // Forecast display
-  wxString colorbarMaxValue = wxString::Format("%g", m_workspace->GetColorbarMaxValue());
-  m_textCtrlColorbarMaxValue->SetValue(colorbarMaxValue);
-  wxString pastDaysNb = wxString::Format("%d", m_workspace->GetTimeSeriesPlotPastDaysNb());
-  m_textCtrlPastDaysNb->SetValue(pastDaysNb);
+    // Forecast display
+    wxString colorbarMaxValue = wxString::Format("%g", m_workspace->GetColorbarMaxValue());
+    m_textCtrlColorbarMaxValue->SetValue(colorbarMaxValue);
+    wxString pastDaysNb = wxString::Format("%d", m_workspace->GetTimeSeriesPlotPastDaysNb());
+    m_textCtrlPastDaysNb->SetValue(pastDaysNb);
 
-  // Alarms panel
-  int alarmsReturnPeriod = m_workspace->GetAlarmsPanelReturnPeriod();
-  switch (alarmsReturnPeriod) {
-    case 2:
-      m_choiceAlarmsReturnPeriod->SetSelection(0);
-      break;
-    case 5:
-      m_choiceAlarmsReturnPeriod->SetSelection(1);
-      break;
-    case 10:
-      m_choiceAlarmsReturnPeriod->SetSelection(2);
-      break;
-    case 20:
-      m_choiceAlarmsReturnPeriod->SetSelection(3);
-      break;
-    case 50:
-      m_choiceAlarmsReturnPeriod->SetSelection(4);
-      break;
-    case 100:
-      m_choiceAlarmsReturnPeriod->SetSelection(5);
-      break;
-    default:
-      m_choiceAlarmsReturnPeriod->SetSelection(2);
-  }
-  wxString alarmsQuantile = wxString::Format("%g", m_workspace->GetAlarmsPanelQuantile());
-  m_textCtrlAlarmsQuantile->SetValue(alarmsQuantile);
+    // Alarms panel
+    int alarmsReturnPeriod = m_workspace->GetAlarmsPanelReturnPeriod();
+    switch (alarmsReturnPeriod) {
+        case 2:
+            m_choiceAlarmsReturnPeriod->SetSelection(0);
+            break;
+        case 5:
+            m_choiceAlarmsReturnPeriod->SetSelection(1);
+            break;
+        case 10:
+            m_choiceAlarmsReturnPeriod->SetSelection(2);
+            break;
+        case 20:
+            m_choiceAlarmsReturnPeriod->SetSelection(3);
+            break;
+        case 50:
+            m_choiceAlarmsReturnPeriod->SetSelection(4);
+            break;
+        case 100:
+            m_choiceAlarmsReturnPeriod->SetSelection(5);
+            break;
+        default:
+            m_choiceAlarmsReturnPeriod->SetSelection(2);
+    }
+    wxString alarmsQuantile = wxString::Format("%g", m_workspace->GetAlarmsPanelQuantile());
+    m_textCtrlAlarmsQuantile->SetValue(alarmsQuantile);
 
-  /*
-   * General
-   */
+    /*
+     * General
+     */
 
-  // Log
-  long logLevel = pConfig->ReadLong("/General/LogLevel", 1);
-  if (logLevel == 1) {
-    m_radioBtnLogLevel1->SetValue(true);
-  } else if (logLevel == 2) {
-    m_radioBtnLogLevel2->SetValue(true);
-  } else if (logLevel == 3) {
-    m_radioBtnLogLevel3->SetValue(true);
-  } else {
-    m_radioBtnLogLevel1->SetValue(true);
-  }
-  m_checkBoxDisplayLogWindow->SetValue(pConfig->ReadBool("/General/DisplayLogWindow", false));
+    // Log
+    long logLevel = pConfig->ReadLong("/General/LogLevel", 1);
+    if (logLevel == 1) {
+        m_radioBtnLogLevel1->SetValue(true);
+    } else if (logLevel == 2) {
+        m_radioBtnLogLevel2->SetValue(true);
+    } else if (logLevel == 3) {
+        m_radioBtnLogLevel3->SetValue(true);
+    } else {
+        m_radioBtnLogLevel1->SetValue(true);
+    }
+    m_checkBoxDisplayLogWindow->SetValue(pConfig->ReadBool("/General/DisplayLogWindow", false));
 
-  // Proxy
-  m_checkBoxProxy->SetValue(pConfig->ReadBool("/Internet/UsesProxy", false));
-  m_textCtrlProxyAddress->SetValue(pConfig->Read("/Internet/ProxyAddress", wxEmptyString));
-  m_textCtrlProxyPort->SetValue(pConfig->Read("/Internet/ProxyPort", wxEmptyString));
-  m_textCtrlProxyUser->SetValue(pConfig->Read("/Internet/ProxyUser", wxEmptyString));
-  m_textCtrlProxyPasswd->SetValue(pConfig->Read("/Internet/ProxyPasswd", wxEmptyString));
+    // Proxy
+    m_checkBoxProxy->SetValue(pConfig->ReadBool("/Internet/UsesProxy", false));
+    m_textCtrlProxyAddress->SetValue(pConfig->Read("/Internet/ProxyAddress", wxEmptyString));
+    m_textCtrlProxyPort->SetValue(pConfig->Read("/Internet/ProxyPort", wxEmptyString));
+    m_textCtrlProxyUser->SetValue(pConfig->Read("/Internet/ProxyUser", wxEmptyString));
+    m_textCtrlProxyPasswd->SetValue(pConfig->Read("/Internet/ProxyPasswd", wxEmptyString));
 
-  /*
-   * Advanced
-   */
+    /*
+     * Advanced
+     */
 
-  // Advanced options
-  m_checkBoxMultiInstancesViewer->SetValue(pConfig->ReadBool("/General/MultiInstances", false));
+    // Advanced options
+    m_checkBoxMultiInstancesViewer->SetValue(pConfig->ReadBool("/General/MultiInstances", false));
 
-  // User directories
-  wxString userpath = asConfig::GetUserDataDir();
-  m_staticTextUserDir->SetLabel(userpath);
-  wxString logpathViewer = asConfig::GetLogDir();
-  logpathViewer.Append("AtmoSwingForecaster.log");
-  m_staticTextLogFile->SetLabel(logpathViewer);
-  m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir() + "AtmoSwingViewer.ini");
+    // User directories
+    wxString userpath = asConfig::GetUserDataDir();
+    m_staticTextUserDir->SetLabel(userpath);
+    wxString logpathViewer = asConfig::GetLogDir();
+    logpathViewer.Append("AtmoSwingForecaster.log");
+    m_staticTextLogFile->SetLabel(logpathViewer);
+    m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir() + "AtmoSwingViewer.ini");
 }
 
 void asFramePreferencesViewer::SavePreferences() {
-  wxBusyCursor wait;
+    wxBusyCursor wait;
 
-  wxConfigBase *pConfig;
-  pConfig = wxFileConfig::Get();
+    wxConfigBase *pConfig;
+    pConfig = wxFileConfig::Get();
 
-  /*
-   * Workspace
-   */
+    /*
+     * Workspace
+     */
 
-  // Directories
-  wxString forecastResultsDir = m_dirPickerForecastResults->GetPath();
-  m_workspace->SetForecastsDirectory(forecastResultsDir);
+    // Directories
+    wxString forecastResultsDir = m_dirPickerForecastResults->GetPath();
+    m_workspace->SetForecastsDirectory(forecastResultsDir);
 
-  // Forecast display
-  wxString colorbarMaxValue = m_textCtrlColorbarMaxValue->GetValue();
-  double colorbarMaxValueDouble;
-  colorbarMaxValue.ToDouble(&colorbarMaxValueDouble);
-  m_workspace->SetColorbarMaxValue(colorbarMaxValueDouble);
-  wxString pastDaysNb = m_textCtrlPastDaysNb->GetValue();
-  long pastDaysNbLong;
-  if (!pastDaysNb.ToLong(&pastDaysNbLong)) {
-    m_workspace->SetTimeSeriesPlotPastDaysNb(int(pastDaysNbLong));
-  } else {
-    m_workspace->SetTimeSeriesPlotPastDaysNb(5);
-  }
+    // Forecast display
+    wxString colorbarMaxValue = m_textCtrlColorbarMaxValue->GetValue();
+    double colorbarMaxValueDouble;
+    colorbarMaxValue.ToDouble(&colorbarMaxValueDouble);
+    m_workspace->SetColorbarMaxValue(colorbarMaxValueDouble);
+    wxString pastDaysNb = m_textCtrlPastDaysNb->GetValue();
+    long pastDaysNbLong;
+    if (!pastDaysNb.ToLong(&pastDaysNbLong)) {
+        m_workspace->SetTimeSeriesPlotPastDaysNb(int(pastDaysNbLong));
+    } else {
+        m_workspace->SetTimeSeriesPlotPastDaysNb(5);
+    }
 
-  // Alarms panel
-  int alarmsReturnPeriod;
-  int alarmsReturnPeriodSlct = m_choiceAlarmsReturnPeriod->GetSelection();
-  switch (alarmsReturnPeriodSlct) {
-    case 0:
-      alarmsReturnPeriod = 2;
-      break;
-    case 1:
-      alarmsReturnPeriod = 5;
-      break;
-    case 2:
-      alarmsReturnPeriod = 10;
-      break;
-    case 3:
-      alarmsReturnPeriod = 20;
-      break;
-    case 4:
-      alarmsReturnPeriod = 50;
-      break;
-    case 5:
-      alarmsReturnPeriod = 100;
-      break;
-    default:
-      alarmsReturnPeriod = 10;
-  }
-  m_workspace->SetAlarmsPanelReturnPeriod(alarmsReturnPeriod);
-  wxString alarmsQuantile = m_textCtrlAlarmsQuantile->GetValue();
-  double alarmsQuantileVal;
-  alarmsQuantile.ToDouble(&alarmsQuantileVal);
-  if (alarmsQuantileVal > 1) alarmsQuantileVal = 0.9;
-  if (alarmsQuantileVal < 0) alarmsQuantileVal = 0.9;
-  m_workspace->SetAlarmsPanelQuantile(alarmsQuantileVal);
+    // Alarms panel
+    int alarmsReturnPeriod;
+    int alarmsReturnPeriodSlct = m_choiceAlarmsReturnPeriod->GetSelection();
+    switch (alarmsReturnPeriodSlct) {
+        case 0:
+            alarmsReturnPeriod = 2;
+            break;
+        case 1:
+            alarmsReturnPeriod = 5;
+            break;
+        case 2:
+            alarmsReturnPeriod = 10;
+            break;
+        case 3:
+            alarmsReturnPeriod = 20;
+            break;
+        case 4:
+            alarmsReturnPeriod = 50;
+            break;
+        case 5:
+            alarmsReturnPeriod = 100;
+            break;
+        default:
+            alarmsReturnPeriod = 10;
+    }
+    m_workspace->SetAlarmsPanelReturnPeriod(alarmsReturnPeriod);
+    wxString alarmsQuantile = m_textCtrlAlarmsQuantile->GetValue();
+    double alarmsQuantileVal;
+    alarmsQuantile.ToDouble(&alarmsQuantileVal);
+    if (alarmsQuantileVal > 1) alarmsQuantileVal = 0.9;
+    if (alarmsQuantileVal < 0) alarmsQuantileVal = 0.9;
+    m_workspace->SetAlarmsPanelQuantile(alarmsQuantileVal);
 
-  /*
-   * General
-   */
+    /*
+     * General
+     */
 
-  // Log
-  long logLevel = 1;
-  if (m_radioBtnLogLevel1->GetValue()) {
-    logLevel = 1;
-  } else if (m_radioBtnLogLevel2->GetValue()) {
-    logLevel = 2;
-  } else if (m_radioBtnLogLevel3->GetValue()) {
-    logLevel = 3;
-  }
-  pConfig->Write("/General/LogLevel", logLevel);
-  bool displayLogWindowViewer = m_checkBoxDisplayLogWindow->GetValue();
-  pConfig->Write("/General/DisplayLogWindow", displayLogWindowViewer);
+    // Log
+    long logLevel = 1;
+    if (m_radioBtnLogLevel1->GetValue()) {
+        logLevel = 1;
+    } else if (m_radioBtnLogLevel2->GetValue()) {
+        logLevel = 2;
+    } else if (m_radioBtnLogLevel3->GetValue()) {
+        logLevel = 3;
+    }
+    pConfig->Write("/General/LogLevel", logLevel);
+    bool displayLogWindowViewer = m_checkBoxDisplayLogWindow->GetValue();
+    pConfig->Write("/General/DisplayLogWindow", displayLogWindowViewer);
 
-  // Proxy
-  bool checkBoxProxy = m_checkBoxProxy->GetValue();
-  pConfig->Write("/Internet/UsesProxy", checkBoxProxy);
-  wxString proxyAddress = m_textCtrlProxyAddress->GetValue();
-  pConfig->Write("/Internet/ProxyAddress", proxyAddress);
-  wxString proxyPort = m_textCtrlProxyPort->GetValue();
-  pConfig->Write("/Internet/ProxyPort", proxyPort);
-  wxString proxyUser = m_textCtrlProxyUser->GetValue();
-  pConfig->Write("/Internet/ProxyUser", proxyUser);
-  wxString proxyPasswd = m_textCtrlProxyPasswd->GetValue();
-  pConfig->Write("/Internet/ProxyPasswd", proxyPasswd);
+    // Proxy
+    bool checkBoxProxy = m_checkBoxProxy->GetValue();
+    pConfig->Write("/Internet/UsesProxy", checkBoxProxy);
+    wxString proxyAddress = m_textCtrlProxyAddress->GetValue();
+    pConfig->Write("/Internet/ProxyAddress", proxyAddress);
+    wxString proxyPort = m_textCtrlProxyPort->GetValue();
+    pConfig->Write("/Internet/ProxyPort", proxyPort);
+    wxString proxyUser = m_textCtrlProxyUser->GetValue();
+    pConfig->Write("/Internet/ProxyUser", proxyUser);
+    wxString proxyPasswd = m_textCtrlProxyPasswd->GetValue();
+    pConfig->Write("/Internet/ProxyPasswd", proxyPasswd);
 
-  /*
-   * Advanced
-   */
+    /*
+     * Advanced
+     */
 
-  // Advanced options
-  bool multiViewer = m_checkBoxMultiInstancesViewer->GetValue();
-  pConfig->Write("/General/MultiInstances", multiViewer);
+    // Advanced options
+    bool multiViewer = m_checkBoxMultiInstancesViewer->GetValue();
+    pConfig->Write("/General/MultiInstances", multiViewer);
 
-  GetParent()->Update();
-  pConfig->Flush();
-  m_workspace->Save();
+    GetParent()->Update();
+    pConfig->Flush();
+    m_workspace->Save();
 }
 
 void asFramePreferencesViewer::SaveAndClose(wxCommandEvent &event) {
-  SavePreferences();
-  Close();
+    SavePreferences();
+    Close();
 }
 
 void asFramePreferencesViewer::ApplyChanges(wxCommandEvent &event) {
-  SavePreferences();
+    SavePreferences();
 }

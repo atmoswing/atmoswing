@@ -30,145 +30,144 @@
 #define AS_CATALOG_PREDICTAND_H
 
 #include "asIncludes.h"
-
 #include "asPredictand.h"
 
 class asCatalogPredictands : public wxObject {
- public:
-  //!< Structure for data information
-  struct DataStruct {
-    int id;
-    wxString officialId;
-    wxString name;
-    wxString fileName;
-    wxString filePattern;
-    double startDate;
-    double endDate;
-    Coo coord;
-    float height;
-  };
+  public:
+    //!< Structure for data information
+    struct DataStruct {
+        int id;
+        wxString officialId;
+        wxString name;
+        wxString fileName;
+        wxString filePattern;
+        double startDate;
+        double endDate;
+        Coo coord;
+        float height;
+    };
 
-  explicit asCatalogPredictands(const wxString &filePath);
+    explicit asCatalogPredictands(const wxString &filePath);
 
-  ~asCatalogPredictands() override = default;
+    ~asCatalogPredictands() override = default;
 
-  bool Load();
+    bool Load();
 
-  wxString GetSetId() const {
-    return m_setId;
-  }
+    wxString GetSetId() const {
+        return m_setId;
+    }
 
-  wxString GetName() const {
-    return m_name;
-  }
+    wxString GetName() const {
+        return m_name;
+    }
 
-  wxString GetDescription() const {
-    return m_description;
-  }
+    wxString GetDescription() const {
+        return m_description;
+    }
 
-  double GetStart() const {
-    return m_start;
-  }
+    double GetStart() const {
+        return m_start;
+    }
 
-  double GetEnd() const {
-    return m_end;
-  }
+    double GetEnd() const {
+        return m_end;
+    }
 
-  float GetTimeZoneHours() const {
-    return m_timeZoneHours;
-  }
+    float GetTimeZoneHours() const {
+        return m_timeZoneHours;
+    }
 
-  double GetTimeStepHours() const {
-    return m_timeStepHours;
-  }
+    double GetTimeStepHours() const {
+        return m_timeStepHours;
+    }
 
-  double GetTimeStepDays() const {
-    return m_timeStepHours / 24;
-  }
+    double GetTimeStepDays() const {
+        return m_timeStepHours / 24;
+    }
 
-  double GetFirstTimeStepHours() const {
-    return m_firstTimeStepHour;
-  }
+    double GetFirstTimeStepHours() const {
+        return m_firstTimeStepHour;
+    }
 
-  wxString GetDataPath() const {
-    return m_dataPath;
-  }
+    wxString GetDataPath() const {
+        return m_dataPath;
+    }
 
-  vwxs GetNan() const {
-    return m_nan;
-  }
+    vwxs GetNan() const {
+        return m_nan;
+    }
 
-  wxString GetCoordSys() const {
-    return m_coordSys;
-  }
+    wxString GetCoordSys() const {
+        return m_coordSys;
+    }
 
-  asPredictand::Parameter GetParameter() const {
-    return m_parameter;
-  }
+    asPredictand::Parameter GetParameter() const {
+        return m_parameter;
+    }
 
-  asPredictand::Unit GetUnit() const {
-    return m_unit;
-  }
+    asPredictand::Unit GetUnit() const {
+        return m_unit;
+    }
 
-  int GetStationId(int index) const {
-    return m_stations[index].id;
-  }
+    int GetStationId(int index) const {
+        return m_stations[index].id;
+    }
 
-  wxString GetStationOfficialId(int index) const {
-    return m_stations[index].officialId;
-  }
+    wxString GetStationOfficialId(int index) const {
+        return m_stations[index].officialId;
+    }
 
-  wxString GetStationName(int index) const {
-    return m_stations[index].name;
-  }
+    wxString GetStationName(int index) const {
+        return m_stations[index].name;
+    }
 
-  wxString GetStationFilename(int index) const {
-    return m_stations[index].fileName;
-  }
+    wxString GetStationFilename(int index) const {
+        return m_stations[index].fileName;
+    }
 
-  wxString GetStationFilepattern(int index) const {
-    return m_stations[index].filePattern;
-  }
+    wxString GetStationFilepattern(int index) const {
+        return m_stations[index].filePattern;
+    }
 
-  double GetStationStart(int index) const {
-    return m_stations[index].startDate;
-  }
+    double GetStationStart(int index) const {
+        return m_stations[index].startDate;
+    }
 
-  double GetStationEnd(int index) const {
-    return m_stations[index].endDate;
-  }
+    double GetStationEnd(int index) const {
+        return m_stations[index].endDate;
+    }
 
-  Coo GetStationCoord(int index) const {
-    return m_stations[index].coord;
-  }
+    Coo GetStationCoord(int index) const {
+        return m_stations[index].coord;
+    }
 
-  float GetStationHeight(int index) const {
-    return m_stations[index].height;
-  }
+    float GetStationHeight(int index) const {
+        return m_stations[index].height;
+    }
 
-  int GetStationsNb() const {
-    return int(m_stations.size());
-  }
+    int GetStationsNb() const {
+        return int(m_stations.size());
+    }
 
- protected:
- private:
-  wxString m_catalogFilePath;
-  wxString m_setId;
-  wxString m_name;
-  wxString m_description;
-  double m_start;
-  double m_end;
-  float m_timeZoneHours;
-  double m_timeStepHours;
-  double m_firstTimeStepHour;
-  wxString m_dataPath;
-  vwxs m_nan;
-  wxString m_coordSys;
-  asPredictand::Parameter m_parameter;
-  asPredictand::Unit m_unit;
-  std::vector<DataStruct> m_stations;
-  asPredictand::TemporalResolution m_temporalResolution;
-  asPredictand::SpatialAggregation m_spatialAggregation;
+  protected:
+  private:
+    wxString m_catalogFilePath;
+    wxString m_setId;
+    wxString m_name;
+    wxString m_description;
+    double m_start;
+    double m_end;
+    float m_timeZoneHours;
+    double m_timeStepHours;
+    double m_firstTimeStepHour;
+    wxString m_dataPath;
+    vwxs m_nan;
+    wxString m_coordSys;
+    asPredictand::Parameter m_parameter;
+    asPredictand::Unit m_unit;
+    std::vector<DataStruct> m_stations;
+    asPredictand::TemporalResolution m_temporalResolution;
+    asPredictand::SpatialAggregation m_spatialAggregation;
 };
 
 #endif

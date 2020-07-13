@@ -49,64 +49,64 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotMarker;
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerBase : public wxObject {
- public:
-  wxPlotDrawerBase(wxPlotCtrl *owner) : wxObject(), m_owner(owner), m_pen_scale(1), m_font_scale(1) {}
+  public:
+    wxPlotDrawerBase(wxPlotCtrl *owner) : wxObject(), m_owner(owner), m_pen_scale(1), m_font_scale(1) {}
 
-  virtual void Draw(wxDC *dc, bool refresh) = 0;
+    virtual void Draw(wxDC *dc, bool refresh) = 0;
 
-  // Get/Set the owner plotctrl
-  wxPlotCtrl *GetOwner() const {
-    return m_owner;
-  }
+    // Get/Set the owner plotctrl
+    wxPlotCtrl *GetOwner() const {
+        return m_owner;
+    }
 
-  void SetOwner(wxPlotCtrl *owner) {
-    m_owner = owner;
-  }
+    void SetOwner(wxPlotCtrl *owner) {
+        m_owner = owner;
+    }
 
-  // Get/Set the rect in the DC to draw on
-  void SetDCRect(const wxRect &rect) {
-    m_dcRect = rect;
-  }
+    // Get/Set the rect in the DC to draw on
+    void SetDCRect(const wxRect &rect) {
+        m_dcRect = rect;
+    }
 
-  const wxRect &GetDCRect() const {
-    return m_dcRect;
-  }
+    const wxRect &GetDCRect() const {
+        return m_dcRect;
+    }
 
-  // Get/Set the rect of the visible area in the plot window
-  void SetPlotViewRect(const wxRect2DDouble &rect) {
-    m_plotViewRect = rect;
-  }
+    // Get/Set the rect of the visible area in the plot window
+    void SetPlotViewRect(const wxRect2DDouble &rect) {
+        m_plotViewRect = rect;
+    }
 
-  const wxRect2DDouble &GetPlotViewRect() const {
-    return m_plotViewRect;
-  }
+    const wxRect2DDouble &GetPlotViewRect() const {
+        return m_plotViewRect;
+    }
 
-  // Get/Set the scaling for drawing, fonts, pens, etc are scaled
-  void SetPenScale(double scale) {
-    m_pen_scale = scale;
-  }
+    // Get/Set the scaling for drawing, fonts, pens, etc are scaled
+    void SetPenScale(double scale) {
+        m_pen_scale = scale;
+    }
 
-  double GetPenScale() const {
-    return m_pen_scale;
-  }
+    double GetPenScale() const {
+        return m_pen_scale;
+    }
 
-  void SetFontScale(double scale) {
-    m_font_scale = scale;
-  }
+    void SetFontScale(double scale) {
+        m_font_scale = scale;
+    }
 
-  double GetFontScale() const {
-    return m_font_scale;
-  }
+    double GetFontScale() const {
+        return m_font_scale;
+    }
 
- protected:
-  wxPlotCtrl *m_owner;
-  wxRect m_dcRect;
-  wxRect2DDouble m_plotViewRect;
-  double m_pen_scale;   // width scaling factor for pens
-  double m_font_scale;  // scaling factor for font sizes
+  protected:
+    wxPlotCtrl *m_owner;
+    wxRect m_dcRect;
+    wxRect2DDouble m_plotViewRect;
+    double m_pen_scale;   // width scaling factor for pens
+    double m_font_scale;  // scaling factor for font sizes
 
- private:
-  DECLARE_ABSTRACT_CLASS(wxPlotDrawerBase)
+  private:
+    DECLARE_ABSTRACT_CLASS(wxPlotDrawerBase)
 };
 
 //-----------------------------------------------------------------------------
@@ -114,13 +114,13 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerBase : public wxObject {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerArea : public wxPlotDrawerBase {
- public:
-  wxPlotDrawerArea(wxPlotCtrl *owner) : wxPlotDrawerBase(owner) {}
+  public:
+    wxPlotDrawerArea(wxPlotCtrl *owner) : wxPlotDrawerBase(owner) {}
 
-  virtual void Draw(wxDC *dc, bool refresh);
+    virtual void Draw(wxDC *dc, bool refresh);
 
- private:
-  DECLARE_ABSTRACT_CLASS(wxPlotDrawerArea)
+  private:
+    DECLARE_ABSTRACT_CLASS(wxPlotDrawerArea)
 };
 
 //-----------------------------------------------------------------------------
@@ -128,63 +128,63 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerArea : public wxPlotDrawerBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerAxisBase : public wxPlotDrawerBase {
- public:
-  wxPlotDrawerAxisBase(wxPlotCtrl *owner);
+  public:
+    wxPlotDrawerAxisBase(wxPlotCtrl *owner);
 
-  virtual void Draw(wxDC *dc, bool refresh) = 0;
+    virtual void Draw(wxDC *dc, bool refresh) = 0;
 
-  void SetTickFont(const wxFont &font) {
-    m_tickFont = font;
-  }
+    void SetTickFont(const wxFont &font) {
+        m_tickFont = font;
+    }
 
-  void SetLabelFont(const wxFont &font) {
-    m_labelFont = font;
-  }
+    void SetLabelFont(const wxFont &font) {
+        m_labelFont = font;
+    }
 
-  void SetTickColour(const wxGenericColour &colour) {
-    m_tickColour = colour;
-  }
+    void SetTickColour(const wxGenericColour &colour) {
+        m_tickColour = colour;
+    }
 
-  void SetLabelColour(const wxGenericColour &colour) {
-    m_labelColour = colour;
-  }
+    void SetLabelColour(const wxGenericColour &colour) {
+        m_labelColour = colour;
+    }
 
-  void SetTickPen(const wxGenericPen &pen) {
-    m_tickPen = pen;
-  }
+    void SetTickPen(const wxGenericPen &pen) {
+        m_tickPen = pen;
+    }
 
-  void SetBackgroundBrush(const wxGenericBrush &brush) {
-    m_backgroundBrush = brush;
-  }
+    void SetBackgroundBrush(const wxGenericBrush &brush) {
+        m_backgroundBrush = brush;
+    }
 
-  void SetTickPositions(const wxArrayInt &pos) {
-    m_tickPositions = pos;
-  }
+    void SetTickPositions(const wxArrayInt &pos) {
+        m_tickPositions = pos;
+    }
 
-  void SetTickLabels(const wxArrayString &labels) {
-    m_tickLabels = labels;
-  }
+    void SetTickLabels(const wxArrayString &labels) {
+        m_tickLabels = labels;
+    }
 
-  void SetLabel(const wxString &label) {
-    m_label = label;
-  }
+    void SetLabel(const wxString &label) {
+        m_label = label;
+    }
 
-  // implementation
-  wxArrayInt m_tickPositions;
-  wxArrayString m_tickLabels;
+    // implementation
+    wxArrayInt m_tickPositions;
+    wxArrayString m_tickLabels;
 
-  wxString m_label;
+    wxString m_label;
 
-  wxFont m_tickFont;
-  wxFont m_labelFont;
-  wxGenericColour m_tickColour;
-  wxGenericColour m_labelColour;
+    wxFont m_tickFont;
+    wxFont m_labelFont;
+    wxGenericColour m_tickColour;
+    wxGenericColour m_labelColour;
 
-  wxGenericPen m_tickPen;
-  wxGenericBrush m_backgroundBrush;
+    wxGenericPen m_tickPen;
+    wxGenericBrush m_backgroundBrush;
 
- private:
-  DECLARE_ABSTRACT_CLASS(wxPlotDrawerAxisBase)
+  private:
+    DECLARE_ABSTRACT_CLASS(wxPlotDrawerAxisBase)
 };
 
 //-----------------------------------------------------------------------------
@@ -192,13 +192,13 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerAxisBase : public wxPlotDrawerBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerXAxis : public wxPlotDrawerAxisBase {
- public:
-  wxPlotDrawerXAxis(wxPlotCtrl *owner) : wxPlotDrawerAxisBase(owner) {}
+  public:
+    wxPlotDrawerXAxis(wxPlotCtrl *owner) : wxPlotDrawerAxisBase(owner) {}
 
-  virtual void Draw(wxDC *dc, bool refresh);
+    virtual void Draw(wxDC *dc, bool refresh);
 
- private:
-  DECLARE_ABSTRACT_CLASS(wxPlotDrawerXAxis)
+  private:
+    DECLARE_ABSTRACT_CLASS(wxPlotDrawerXAxis)
 };
 
 //-----------------------------------------------------------------------------
@@ -206,13 +206,13 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerXAxis : public wxPlotDrawerAxisBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerYAxis : public wxPlotDrawerAxisBase {
- public:
-  wxPlotDrawerYAxis(wxPlotCtrl *owner) : wxPlotDrawerAxisBase(owner) {}
+  public:
+    wxPlotDrawerYAxis(wxPlotCtrl *owner) : wxPlotDrawerAxisBase(owner) {}
 
-  virtual void Draw(wxDC *dc, bool refresh);
+    virtual void Draw(wxDC *dc, bool refresh);
 
- private:
-  DECLARE_ABSTRACT_CLASS(wxPlotDrawerYAxis)
+  private:
+    DECLARE_ABSTRACT_CLASS(wxPlotDrawerYAxis)
 };
 
 //-----------------------------------------------------------------------------
@@ -220,37 +220,37 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerYAxis : public wxPlotDrawerAxisBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerKey : public wxPlotDrawerBase {
- public:
-  wxPlotDrawerKey(wxPlotCtrl *owner);
+  public:
+    wxPlotDrawerKey(wxPlotCtrl *owner);
 
-  virtual void Draw(wxDC *WXUNUSED(dc), bool WXUNUSED(refresh)) {}  // unused
-  virtual void Draw(wxDC *dc, const wxString &keyString);
+    virtual void Draw(wxDC *WXUNUSED(dc), bool WXUNUSED(refresh)) {}  // unused
+    virtual void Draw(wxDC *dc, const wxString &keyString);
 
-  void SetFont(const wxFont &font) {
-    m_font = font;
-  }
+    void SetFont(const wxFont &font) {
+        m_font = font;
+    }
 
-  void SetFontColour(const wxGenericColour &colour) {
-    m_fontColour = colour;
-  }
+    void SetFontColour(const wxGenericColour &colour) {
+        m_fontColour = colour;
+    }
 
-  void SetKeyPosition(const wxPoint &pos) {
-    m_keyPosition = pos;
-  }
+    void SetKeyPosition(const wxPoint &pos) {
+        m_keyPosition = pos;
+    }
 
-  // implementation
-  wxFont m_font;
-  wxGenericColour m_fontColour;
+    // implementation
+    wxFont m_font;
+    wxGenericColour m_fontColour;
 
-  wxPoint m_keyPosition;
-  bool m_key_inside;
-  bool m_key_bottom;
-  int m_border;
-  int m_key_line_width;   // length of line to draw for curve
-  int m_key_line_margin;  // margin between line and key text
+    wxPoint m_keyPosition;
+    bool m_key_inside;
+    bool m_key_bottom;
+    int m_border;
+    int m_key_line_width;   // length of line to draw for curve
+    int m_key_line_margin;  // margin between line and key text
 
- private:
-  DECLARE_ABSTRACT_CLASS(wxPlotDrawerKey)
+  private:
+    DECLARE_ABSTRACT_CLASS(wxPlotDrawerKey)
 };
 
 //-----------------------------------------------------------------------------
@@ -258,16 +258,16 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerKey : public wxPlotDrawerBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerCurve : public wxPlotDrawerBase {
- public:
-  wxPlotDrawerCurve(wxPlotCtrl *owner) : wxPlotDrawerBase(owner) {}
+  public:
+    wxPlotDrawerCurve(wxPlotCtrl *owner) : wxPlotDrawerBase(owner) {}
 
-  virtual void Draw(wxDC *WXUNUSED(dc), bool WXUNUSED(refresh)) {}  // unused
-  virtual void Draw(wxGraphicsContext *gc, wxPlotCurve *curve, int curve_index);
+    virtual void Draw(wxDC *WXUNUSED(dc), bool WXUNUSED(refresh)) {}  // unused
+    virtual void Draw(wxGraphicsContext *gc, wxPlotCurve *curve, int curve_index);
 
-  virtual void Draw(wxDC *dc, wxPlotCurve *curve, int curve_index);
+    virtual void Draw(wxDC *dc, wxPlotCurve *curve, int curve_index);
 
- private:
-  DECLARE_ABSTRACT_CLASS(wxPlotDrawerCurve)
+  private:
+    DECLARE_ABSTRACT_CLASS(wxPlotDrawerCurve)
 };
 
 //-----------------------------------------------------------------------------
@@ -275,16 +275,16 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerCurve : public wxPlotDrawerBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerDataCurve : public wxPlotDrawerBase {
- public:
-  wxPlotDrawerDataCurve(wxPlotCtrl *owner) : wxPlotDrawerBase(owner) {}
+  public:
+    wxPlotDrawerDataCurve(wxPlotCtrl *owner) : wxPlotDrawerBase(owner) {}
 
-  virtual void Draw(wxDC *WXUNUSED(dc), bool WXUNUSED(refresh)) {}  // unused
-  virtual void Draw(wxGraphicsContext *gc, wxPlotData *plotData, int curve_index);
+    virtual void Draw(wxDC *WXUNUSED(dc), bool WXUNUSED(refresh)) {}  // unused
+    virtual void Draw(wxGraphicsContext *gc, wxPlotData *plotData, int curve_index);
 
-  virtual void Draw(wxDC *dc, wxPlotData *plotData, int curve_index);
+    virtual void Draw(wxDC *dc, wxPlotData *plotData, int curve_index);
 
- private:
-  DECLARE_ABSTRACT_CLASS(wxPlotDrawerDataCurve)
+  private:
+    DECLARE_ABSTRACT_CLASS(wxPlotDrawerDataCurve)
 };
 
 //-----------------------------------------------------------------------------
@@ -292,16 +292,16 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerDataCurve : public wxPlotDrawerBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerMarker : public wxPlotDrawerBase {
- public:
-  wxPlotDrawerMarker(wxPlotCtrl *owner) : wxPlotDrawerBase(owner) {}
+  public:
+    wxPlotDrawerMarker(wxPlotCtrl *owner) : wxPlotDrawerBase(owner) {}
 
-  virtual void Draw(wxDC *WXUNUSED(dc), bool WXUNUSED(refresh)) {}  // unused
-  virtual void Draw(wxDC *dc, const wxArrayPlotMarker &markers);
+    virtual void Draw(wxDC *WXUNUSED(dc), bool WXUNUSED(refresh)) {}  // unused
+    virtual void Draw(wxDC *dc, const wxArrayPlotMarker &markers);
 
-  virtual void Draw(wxDC *dc, const wxPlotMarker &marker);
+    virtual void Draw(wxDC *dc, const wxPlotMarker &marker);
 
- private:
-  DECLARE_ABSTRACT_CLASS(wxPlotDrawerMarker)
+  private:
+    DECLARE_ABSTRACT_CLASS(wxPlotDrawerMarker)
 };
 
 #endif  // _WX_PLOTDRAW_H_

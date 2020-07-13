@@ -17,6 +17,42 @@ if(!(Test-Path -Path "$LIB_DIR\include\zlib.h") -Or $REBUILD_ZLIB) {
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
 
+# Install Jasper (for ecCodes)
+if(!(Test-Path -Path "$LIB_DIR\include\jasper") -Or $REBUILD_JASPER) {
+  Init-Build "jasper"
+  Download-Lib "jasper" $JASPER_URL
+  7z x jasper.zip -o"$TMP_DIR" > $null
+  move "$TMP_DIR\jasper-*" "$TMP_DIR\jasper"
+  cd "$TMP_DIR\jasper"
+  mkdir bld > $null
+  cd bld
+  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_BUILD_TYPE=Release -DJAS_ENABLE_SHARED=OFF -DJAS_ENABLE_LIBJPEG=ON -DJAS_ENABLE_PROGRAMS=OFF -DCMAKE_INCLUDE_PATH="$LIB_DIR\include" -DCMAKE_LIBRARY_PATH="$LIB_DIR\lib" > $null
+  cmake --build . --config release > $null
+  cmake --build . --config release --target INSTALL > $null
+} else {
+  Write-Host "`nJasper has been found in cache and will not be built" -ForegroundColor Yellow
+}
+
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
+
+# Install Jpeg
+if(!(Test-Path -Path "$LIB_DIR\include\jpeglib.h") -Or $REBUILD_JPEG) {
+  Init-Build "jpeg"
+  Download-Lib "jpeg" $JPEG_URL
+  7z x jpeg.zip -o"$TMP_DIR" > $null
+  move "$TMP_DIR\libjpeg-*" "$TMP_DIR\jpeg"
+  cd "$TMP_DIR\jpeg"
+  mkdir bld > $null
+  cd bld
+  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DBUILD_STATIC=ON -DBUILD_EXECUTABLES=OFF > $null
+  cmake --build . --config release > $null
+  cmake --build . --config release --target INSTALL > $null
+} else {
+  Write-Host "`nJpeg has been found in cache and will not be built" -ForegroundColor Yellow
+}
+
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
+
 # Install Open Jpeg (for ecCodes)
 if(!(Test-Path -Path "$LIB_DIR\lib\openjp2.lib") -Or $REBUILD_JPEG) {
   Init-Build "openjpeg"

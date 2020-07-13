@@ -34,21 +34,21 @@ asFileParametersCalibration::asFileParametersCalibration(const wxString &fileNam
 asFileParametersCalibration::~asFileParametersCalibration() {}
 
 bool asFileParametersCalibration::EditRootElement() {
-  if (!GetRoot()) return false;
-  GetRoot()->AddAttribute("target", "optimizer");
-  return true;
+    if (!GetRoot()) return false;
+    GetRoot()->AddAttribute("target", "optimizer");
+    return true;
 }
 
 bool asFileParametersCalibration::CheckRootElement() const {
-  if (!GetRoot()) return false;
-  if (!IsAnAtmoSwingFile()) return false;
-  if (!FileVersionIsOrAbove(1.0)) return false;
+    if (!GetRoot()) return false;
+    if (!IsAnAtmoSwingFile()) return false;
+    if (!FileVersionIsOrAbove(1.0)) return false;
 
-  if (!GetRoot()->GetAttribute("target").IsSameAs("optimizer", false) &
-      !GetRoot()->GetAttribute("target").IsSameAs("calibrator", false)) {
-    wxLogError(_("The file %s is not a parameters file for the Optimizer in calibration mode."),
-               m_fileName.GetFullName());
-    return false;
-  }
-  return true;
+    if (!GetRoot()->GetAttribute("target").IsSameAs("optimizer", false) &
+        !GetRoot()->GetAttribute("target").IsSameAs("calibrator", false)) {
+        wxLogError(_("The file %s is not a parameters file for the Optimizer in calibration mode."),
+                   m_fileName.GetFullName());
+        return false;
+    }
+    return true;
 }

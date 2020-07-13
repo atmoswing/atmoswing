@@ -30,21 +30,20 @@
 #define AS_SCORE_CRPS_AR_H
 
 #include "asIncludes.h"
-
 #include "asScore.h"
 
 class asScoreCRPSAR : public asScore {
- public:
-  asScoreCRPSAR();
+  public:
+    asScoreCRPSAR();
 
-  ~asScoreCRPSAR() override = default;
+    ~asScoreCRPSAR() override = default;
 
-  float Assess(float obs, const a1f &values, int nbElements) const override;
+    float Assess(float obs, const a1f &values, int nbElements) const override;
 
-  bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
+    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 
- protected:
- private:
+  protected:
+  private:
 };
 
 #endif

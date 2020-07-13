@@ -31,57 +31,57 @@
 asTotalScoreGSS::asTotalScoreGSS(const wxString &periodString) : asTotalScore(periodString) {}
 
 float asTotalScoreGSS::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
-  wxASSERT(targetDates.rows() > 1);
-  wxASSERT(scores.rows() > 1);
+    wxASSERT(targetDates.rows() > 1);
+    wxASSERT(scores.rows() > 1);
 
-  int countA = 0, countB = 0, countC = 0, countD = 0, countTot = 0;
+    int countA = 0, countB = 0, countC = 0, countD = 0, countTot = 0;
 
-  switch (m_period) {
-    case (asTotalScore::Total): {
-      for (int i = 0; i < scores.size(); i++) {
-        countTot++;
-        if (scores[i] == 1) {
-          countA++;
-        } else if (scores[i] == 2) {
-          countB++;
-        } else if (scores[i] == 3) {
-          countC++;
-        } else if (scores[i] == 4) {
-          countD++;
-        } else {
-          wxLogError(_("The GSS score (%f) is not an authorized value."), scores[i]);
-          return NaNf;
+    switch (m_period) {
+        case (asTotalScore::Total): {
+            for (int i = 0; i < scores.size(); i++) {
+                countTot++;
+                if (scores[i] == 1) {
+                    countA++;
+                } else if (scores[i] == 2) {
+                    countB++;
+                } else if (scores[i] == 3) {
+                    countC++;
+                } else if (scores[i] == 4) {
+                    countD++;
+                } else {
+                    wxLogError(_("The GSS score (%f) is not an authorized value."), scores[i]);
+                    return NaNf;
+                }
+            }
+            break;
         }
-      }
-      break;
+
+        default: {
+            asThrowException(_("Period not yet implemented in asTotalScoreGSS."));
+        }
     }
 
-    default: {
-      asThrowException(_("Period not yet implemented in asTotalScoreGSS."));
-    }
-  }
+    float score;
 
-  float score;
-
-  if (countTot > 0) {
-    float a = (float)countA;
-    float b = (float)countB;
-    float c = (float)countC;
-    float d = (float)countD;
-    float aref;
-    if ((a + b + c + d) > 0) {
-      aref = (a + b) * (a + c) / (a + b + c + d);
+    if (countTot > 0) {
+        float a = (float)countA;
+        float b = (float)countB;
+        float c = (float)countC;
+        float d = (float)countD;
+        float aref;
+        if ((a + b + c + d) > 0) {
+            aref = (a + b) * (a + c) / (a + b + c + d);
+        } else {
+            return 0;
+        }
+        if ((a - aref + b + c) > 0) {
+            score = (a - aref) / (a - aref + b + c);
+        } else {
+            return 0;
+        }
     } else {
-      return 0;
+        score = NaNf;
     }
-    if ((a - aref + b + c) > 0) {
-      score = (a - aref) / (a - aref + b + c);
-    } else {
-      return 0;
-    }
-  } else {
-    score = NaNf;
-  }
 
-  return score;
+    return score;
 }

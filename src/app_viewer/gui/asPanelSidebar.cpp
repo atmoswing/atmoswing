@@ -32,39 +32,39 @@
 
 asPanelSidebar::asPanelSidebar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
     : asPanelSidebarVirtual(parent, id, pos, size, style) {
-  m_bitmapCaret->SetBitmap(*_img_shown);
+    m_bitmapCaret->SetBitmap(*_img_shown);
 }
 
 void asPanelSidebar::OnReducePanel(wxMouseEvent &event) {
-  GetParent()->Freeze();
+    GetParent()->Freeze();
 
-  if (m_sizerMain->IsShown(m_sizerContent)) {
-    m_sizerMain->Hide(m_sizerContent, true);
-    m_bitmapCaret->SetBitmap(*_img_hidden);
-  } else {
-    m_sizerMain->Show(m_sizerContent, true);
-    m_bitmapCaret->SetBitmap(*_img_shown);
-  }
+    if (m_sizerMain->IsShown(m_sizerContent)) {
+        m_sizerMain->Hide(m_sizerContent, true);
+        m_bitmapCaret->SetBitmap(*_img_hidden);
+    } else {
+        m_sizerMain->Show(m_sizerContent, true);
+        m_bitmapCaret->SetBitmap(*_img_shown);
+    }
 
-  // Refresh elements
-  m_sizerMain->Layout();
-  Layout();
+    // Refresh elements
+    m_sizerMain->Layout();
+    Layout();
 
-  GetParent()->FitInside();
+    GetParent()->FitInside();
 
-  GetParent()->Thaw();
+    GetParent()->Thaw();
 }
 
 void asPanelSidebar::ReducePanel() {
-  if (m_sizerMain->IsShown(m_sizerContent)) {
-    m_sizerMain->Hide(m_sizerContent, true);
-    m_bitmapCaret->SetBitmap(*_img_hidden);
-  } else {
-    m_sizerMain->Show(m_sizerContent, true);
-    m_bitmapCaret->SetBitmap(*_img_shown);
-  }
+    if (m_sizerMain->IsShown(m_sizerContent)) {
+        m_sizerMain->Hide(m_sizerContent, true);
+        m_bitmapCaret->SetBitmap(*_img_hidden);
+    } else {
+        m_sizerMain->Show(m_sizerContent, true);
+        m_bitmapCaret->SetBitmap(*_img_shown);
+    }
 }
 
 void asPanelSidebar::OnPaint(wxCommandEvent &event) {
-  event.Skip();
+    event.Skip();
 }

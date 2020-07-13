@@ -35,20 +35,20 @@
 #include "asThread.h"
 
 class asThreadRandomSet : public asThread {
- public:
-  asThreadRandomSet(asMethodOptimizerRandomSet *optimizer, asParametersOptimization *params, float *finalScoreCalib,
-                    vf *scoreClimatology);
+  public:
+    asThreadRandomSet(asMethodOptimizerRandomSet *optimizer, asParametersOptimization *params, float *finalScoreCalib,
+                      vf *scoreClimatology);
 
-  virtual ~asThreadRandomSet();
+    virtual ~asThreadRandomSet();
 
-  ExitCode Entry();
+    ExitCode Entry();
 
- protected:
- private:
-  asMethodOptimizerRandomSet *m_optimizer;
-  asParametersOptimization *m_params;
-  float *m_finalScoreCalib;
-  vf *m_scoreClimatology;
+  protected:
+  private:
+    asMethodOptimizerRandomSet *m_optimizer;
+    asParametersOptimization *m_params;
+    float *m_finalScoreCalib;
+    vf *m_scoreClimatology;
 };
 
 #endif

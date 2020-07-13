@@ -30,21 +30,20 @@
 #define AS_SCORE_CRPS_SHARPNESS_EP_H
 
 #include "asIncludes.h"
-
 #include "asScore.h"
 
 class asScoreCRPSsharpEP : public asScore {
- public:
-  asScoreCRPSsharpEP();
+  public:
+    asScoreCRPSsharpEP();
 
-  ~asScoreCRPSsharpEP();
+    ~asScoreCRPSsharpEP();
 
-  float Assess(float obs, const a1f &values, int nbElements) const;
+    float Assess(float obs, const a1f &values, int nbElements) const;
 
-  bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
+    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
 
- protected:
- private:
+  protected:
+  private:
 };
 
 #endif
