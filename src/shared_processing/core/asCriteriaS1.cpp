@@ -53,20 +53,15 @@ float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, 
 
     dividend = (((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)) -
                  (evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)))
-                    .abs())
-                   .sum() +
+                    .abs()).sum() +
                (((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)) -
                  (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)))
-                    .abs())
-                   .sum();
+                    .abs()).sum();
 
-    divisor =
-        ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1))
-             .abs()
+    divisor = ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)).abs()
              .max((evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)).abs()))
             .sum() +
-        ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb))
-             .abs()
+        ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)).abs()
              .max((evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)).abs()))
             .sum();
 
@@ -95,6 +90,8 @@ float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, 
         if (dividend == 0) {
             wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
             return m_scaleWorst;
+        } else if (asIsNaN(divisor) || asIsNaN(dividend)) {
+            return NaNf;
         } else {
             return m_scaleWorst;
         }

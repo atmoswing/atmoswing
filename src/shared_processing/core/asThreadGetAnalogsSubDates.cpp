@@ -129,6 +129,12 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
 
             // Loop through the previous analogs for candidate data
             for (int iPrevAnalog = 0; iPrevAnalog < analogsNbPrevious; iPrevAnalog++) {
+
+                if (asIsNaN(currentAnalogsDates[iPrevAnalog])) {
+                    *m_pContainsNaNs = true;
+                    continue;
+                }
+
                 // Find row in the predictor time array
                 int iTimeArch = asFind(&timeArchiveData[0], &timeArchiveData[timeArchiveDataSize - 1],
                                        currentAnalogsDates[iPrevAnalog], 0.01);
@@ -157,6 +163,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
                     }
                     if (asIsNaN(thisscore)) {
                         *m_pContainsNaNs = true;
+                        continue;
                     }
 
                     // Check if the array is already full
@@ -195,19 +202,12 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
 
                     counter++;
                 } else {
-                    wxLogError(
-                        _("The date was not found in the array (Analogs subdates fct). That should not happen."));
+                    wxLogError(_("The date was not found in the array (Analogs subdates fct). "
+                        "That should not happen."));
                     *m_success = false;
                     return (wxThread::ExitCode)-1;
                 }
             }
-        }
-
-        if (counter < analogsNb) {
-            wxLogWarning(
-                _("There is not enough available data to satisfy the number of analogs (in "
-                  "asThreadGetAnalogsSubDates)."));
-            wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
         }
 
         // Copy results

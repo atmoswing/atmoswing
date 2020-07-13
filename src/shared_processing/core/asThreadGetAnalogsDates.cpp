@@ -164,15 +164,15 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
                         }
                         if (asIsNaN(thisScore)) {
                             *m_pContainsNaNs = true;
+                            continue;
                         }
 
                         // Avoid duplicate analog dates
                         if (!m_allowDuplicateDates && iMem > 0) {
                             if (counter <= analogsNb - 1) {
                                 wxFAIL;
-                                wxLogError(
-                                    _("It should not happen that the array of analogue dates is not full when adding "
-                                      "members."));
+                                wxLogError(_("It should not happen that the array of "
+                                    "analogue dates is not full when adding members."));
                                 *m_success = false;
                                 return (wxThread::ExitCode)-1;
                             }
@@ -185,22 +185,14 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
 
                         counter++;
                     } else {
-                        wxLogError(
-                            _("The date was not found in the array (Analogs Dates fct, multithreaded option). That "
-                              "should not happen."));
+                        wxLogError(_("The date was not found in the array (Analogs Dates fct, "
+                            "multithreaded option). That should not happen."));
                         wxLogError(_("Start: %g, end: %g, desired value: %g."), timeArchiveData[iTimeArchStart],
                                    timeArchiveData[timeArchiveData.size() - 1], dateArrayArchiveSelection[iDateArch]);
                         *m_success = false;
                         return (wxThread::ExitCode)-1;
                     }
                 }
-            }
-
-            if (counter < analogsNb) {
-                wxLogWarning(
-                    _("There is not enough available data to satisfy the number of analogs (in "
-                      "asThreadGetAnalogsDates)."));
-                wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
             }
 
             // Copy results
