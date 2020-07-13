@@ -150,14 +150,17 @@ bool asMethodForecasting::Manager() {
 
         // Optional exports
         if (m_batchForecasts->HasExports()) {
-            if (m_batchForecasts->ExportSyntheticXml()) {
-                if (!m_aggregator.ExportSyntheticXml(m_batchForecasts->GetExportsOutputDirectory())) {
+            if (m_batchForecasts->GetExport() == asBatchForecasts::FullXml) {
+                if (!m_aggregator.ExportSyntheticFullXml(m_batchForecasts->GetExportsOutputDirectory())) {
                     wxLogError(_("The export of the synthetic xml failed."));
                 }
-            }
-            if (m_batchForecasts->ExportSyntheticTxt()) {
-                if (!m_aggregator.ExportSyntheticTxt(m_batchForecasts->GetExportsOutputDirectory())) {
-                    wxLogError(_("The export of the synthetic xml failed."));
+            } else if (m_batchForecasts->GetExport() == asBatchForecasts::SmallCsv) {
+                if (!m_aggregator.ExportSyntheticSmallCsv(m_batchForecasts->GetExportsOutputDirectory())) {
+                    wxLogError(_("The export of the synthetic csv failed."));
+                }
+            } else if (m_batchForecasts->GetExport() == asBatchForecasts::CustomCsvFVG) {
+                if (!m_aggregator.ExportSyntheticCustomCsvFVG(m_batchForecasts->GetExportsOutputDirectory())) {
+                    wxLogError(_("The export of the synthetic csv failed."));
                 }
             }
         }

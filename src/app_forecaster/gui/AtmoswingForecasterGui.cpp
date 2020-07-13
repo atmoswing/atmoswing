@@ -370,7 +370,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_staticTextExport->Wrap( -1 );
 	bSizer33->Add( m_staticTextExport, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	wxString m_choiceExportsChoices[] = { _("Full XML"), _("Small CSV"), _("Custom CSV for FVG"), _("Custom FVG"), _("Full XML") };
+	wxString m_choiceExportsChoices[] = { _("None"), _("Full XML"), _("Small CSV"), _("Custom CSV for FVG") };
 	int m_choiceExportsNChoices = sizeof( m_choiceExportsChoices ) / sizeof( wxString );
 	m_choiceExports = new wxChoice( m_panelPathsCommon, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceExportsNChoices, m_choiceExportsChoices, 0 );
 	m_choiceExports->SetSelection( 0 );

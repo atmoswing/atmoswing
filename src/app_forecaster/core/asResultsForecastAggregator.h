@@ -97,9 +97,11 @@ class asResultsForecastAggregator : public wxObject {
 
     a1f GetOverallMaxValues(a1f &dates, int returnPeriodRef, float quantileThreshold) const;
 
-    bool ExportSyntheticXml(const wxString &dirPath) const;
+    bool ExportSyntheticFullXml(const wxString &dirPath) const;
 
-    bool ExportSyntheticTxt(const wxString &dirPath) const;
+    bool ExportSyntheticSmallCsv(const wxString &dirPath) const;
+
+    bool ExportSyntheticCustomCsvFVG(const wxString &dirPath) const;
 
   protected:
   private:

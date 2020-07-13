@@ -31,8 +31,17 @@
 #include "asFileBatchForecasts.h"
 #include "asIncludes.h"
 
+
+
 class asBatchForecasts : public wxObject {
   public:
+    enum Export {
+        None = 0,
+        FullXml = 10,
+        SmallCsv = 20,
+        CustomCsvFVG = 30,
+    };
+
     asBatchForecasts();
 
     ~asBatchForecasts() override = default;
@@ -61,20 +70,12 @@ class asBatchForecasts : public wxObject {
 
     bool HasExports() const;
 
-    bool ExportSyntheticXml() const {
-        return m_exportSyntheticXml;
+    Export GetExport() const {
+        return m_export;
     }
 
-    void SetExportSyntheticXml(bool val) {
-        m_exportSyntheticXml = val;
-    }
-
-    bool ExportSyntheticTxt() const {
-        return m_exportSyntheticTxt;
-    }
-
-    void SetExportSyntheticTxt(bool val) {
-        m_exportSyntheticTxt = val;
+    void SetExport(Export val) {
+        m_export = val;
     }
 
     void SetHasChanged(bool val) {
@@ -142,8 +143,7 @@ class asBatchForecasts : public wxObject {
   protected:
   private:
     bool m_hasChanged;
-    bool m_exportSyntheticXml;
-    bool m_exportSyntheticTxt;
+    Export m_export;
     wxString m_filePath;
     wxString m_forecastsOutputDirectory;
     wxString m_exportsOutputDirectory;

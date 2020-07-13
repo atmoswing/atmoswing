@@ -36,6 +36,8 @@
 
 #include "AtmoswingAppForecaster.h"
 
+#include "asBatchForecasts.h"
+
 #if wxUSE_GUI
 
 #include "AtmoswingMainForecaster.h"
@@ -398,7 +400,7 @@ int AtmoswingAppForecaster::OnRun() {
         // Exports
         std::cout << _("Do you want to export synthetic xml files of the forecasts ?\n");
         wxString currVal;
-        if (batchForecasts.ExportSyntheticXml()) {
+        if (batchForecasts.HasExports()) {
             currVal = "Y";
         } else {
             currVal = "N";
@@ -411,10 +413,10 @@ int AtmoswingAppForecaster::OnRun() {
             wxinVal = wxString(stdinVal);
             if (!wxinVal.IsEmpty()) {
                 if (wxinVal.IsSameAs("Y", false)) {
-                    batchForecasts.SetExportSyntheticXml(true);
+                    batchForecasts.SetExport(asBatchForecasts::FullXml);
                     acceptValue = true;
                 } else if (wxinVal.IsSameAs("N", false)) {
-                    batchForecasts.SetExportSyntheticXml(false);
+                    batchForecasts.SetExport(asBatchForecasts::None);
                     acceptValue = true;
                 } else {
                     std::cout << _("The provided value is not allowed. Please enter Y or N.\n");

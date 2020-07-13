@@ -588,7 +588,7 @@ a1f asResultsForecastAggregator::GetOverallMaxValues(a1f &dates, int returnPerio
     return values;
 }
 
-bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) const {
+bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString &dirPath) const {
     // Quantile values
     a1f quantiles(3);
     quantiles << 20, 60, 90;
@@ -741,7 +741,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
     return true;
 }
 
-bool asResultsForecastAggregator::ExportSyntheticTxt(const wxString &dirPath) const {
+bool asResultsForecastAggregator::ExportSyntheticSmallCsv(const wxString &dirPath) const {
     // Quantile values
     a1f quantiles(6);
     quantiles << 0, 25, 50, 75, 90, 100;
@@ -815,6 +815,77 @@ bool asResultsForecastAggregator::ExportSyntheticTxt(const wxString &dirPath) co
                 fileExport.AddContent(wxString::Format("%d; %s; %d; %.2f; %.2f; %s\n",
                                                        stationIds[i],
                                                        asTime::GetStringTime(targetDates[j], "DD.MM.YYYY HH"),
+                                                       forecast->GetAnalogsNumber(j),
+                                                       analogValuesRaw.mean(),
+                                                       analogValuesNorm.mean(),
+                                                       valuesQuantiles));
+            }
+        }
+
+        fileExport.Close();
+    }
+
+    return true;
+}
+
+bool asResultsForecastAggregator::ExportSyntheticCustomCsvFVG(const wxString &dirPath) const {
+    // Quantile values
+    a1f quantiles(6);
+    quantiles << 0, 25, 50, 75, 90, 100;
+
+    // Create 1 file per method
+    for (int methodRow = 0; methodRow < (int)m_forecasts.size(); methodRow++) {
+        // Filename
+        wxString filePath = dirPath;
+        filePath.Append(DS);
+        wxString dirstructure = "YYYY";
+        dirstructure.Append(DS).Append("MM").Append(DS).Append("DD");
+        wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirstructure);
+        filePath.Append(directory).Append(DS);
+        wxString forecastname = m_forecasts[methodRow][0]->GetMethodId();
+        wxString nowstr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
+        wxString filename = wxString::Format("%s.%s.%s", nowstr, forecastname, "txt");
+        filePath.Append(filename);
+
+        // Create file
+        asFileText fileExport(filePath, asFile::Replace);
+        if (!fileExport.Open()) return false;
+
+        // Results per station
+        a1i stationIds = m_forecasts[methodRow][0]->GetStationIds();
+
+        // Quantiles
+        wxString headerQuantiles;
+        for (int k = 0; k < quantiles.size(); k++) {
+            headerQuantiles.Append(wxString::Format("q%d (transf.); ", (int)quantiles[k]));
+        }
+
+        // Headers
+        fileExport.AddContent(wxString::Format("area; lead time; forecast; nb analogs; mean raw; mean transformed; %s\n", headerQuantiles));
+
+        for (int i = 0; i < stationIds.size(); i++) {
+            // Get specific forecast
+            int forecastRow = GetForecastRowSpecificForStationId(methodRow, stationIds[i]);
+            asResultsForecast *forecast = m_forecasts[methodRow][forecastRow];
+
+            // Target dates
+            a1f targetDates = forecast->GetTargetDates();
+            for (int j = 0; j < targetDates.size(); j++) {
+                a1f analogValuesRaw = forecast->GetAnalogsValuesRaw(j, i);
+                a1f analogValuesNorm = forecast->GetAnalogsValuesNorm(j, i);
+
+                wxString valuesQuantiles;
+                for (int k = 0; k < quantiles.size(); k++) {
+                    float pcValNorm = asGetValueForQuantile(analogValuesNorm, quantiles[k] / 100);
+                    valuesQuantiles.Append(wxString::Format("%.2f; ", pcValNorm));
+                }
+
+                int hourForecast = int (24 * (targetDates[j] - forecast->GetLeadTimeOrigin()));
+                
+                fileExport.AddContent(wxString::Format("%d; %s; %02d; %d; %.2f; %.2f; %s\n",
+                                                       stationIds[i] - 2,
+                                                       asTime::GetStringTime(targetDates[j], "YYYYMMDDHH"),
+                                                       hourForecast,
                                                        forecast->GetAnalogsNumber(j),
                                                        analogValuesRaw.mean(),
                                                        analogValuesNorm.mean(),

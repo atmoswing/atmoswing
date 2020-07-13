@@ -77,8 +77,23 @@ void asFramePreferencesForecaster::LoadPreferences() {
     m_dirPickerParameters->SetPath(m_batchForecasts->GetParametersFileDirectory());
 
     // Exports
-    //m_checkBoxExportSyntheticXml->SetValue(m_batchForecasts->ExportSyntheticXml());
-    //m_checkBoxExportSyntheticTxt->SetValue(m_batchForecasts->ExportSyntheticTxt());
+    switch (m_batchForecasts->GetExport()) {
+        case asBatchForecasts::None:
+            m_choiceExports->SetSelection(0);
+            break;
+        case asBatchForecasts::FullXml:
+            m_choiceExports->SetSelection(1);
+            break;
+        case asBatchForecasts::SmallCsv:
+            m_choiceExports->SetSelection(2);
+            break;
+        case asBatchForecasts::CustomCsvFVG:
+            m_choiceExports->SetSelection(3);
+            break;
+        default:
+            m_choiceExports->SetSelection(0);
+            break;
+    }
 
     /*
      * General
@@ -179,8 +194,22 @@ void asFramePreferencesForecaster::SavePreferences() {
     m_batchForecasts->SetParametersFileDirectory(m_dirPickerParameters->GetPath());
 
     // Exports
-    //m_batchForecasts->SetExportSyntheticXml(m_checkBoxExportSyntheticXml->GetValue());
-    //m_batchForecasts->SetExportSyntheticTxt(m_checkBoxExportSyntheticTxt->GetValue());
+    switch (m_choiceExports->GetSelection()) {
+        case 0:
+            m_batchForecasts->SetExport(asBatchForecasts::None);
+            break;
+        case 1:
+            m_batchForecasts->SetExport(asBatchForecasts::FullXml);
+            break;
+        case 2:
+            m_batchForecasts->SetExport(asBatchForecasts::SmallCsv);
+            break;
+        case 3:
+            m_batchForecasts->SetExport(asBatchForecasts::CustomCsvFVG);
+            break;
+        default:
+            m_batchForecasts->SetExport(asBatchForecasts::None);
+    }
 
     /*
      * General
