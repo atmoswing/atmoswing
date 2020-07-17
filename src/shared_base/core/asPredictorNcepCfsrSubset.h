@@ -44,7 +44,7 @@ class asPredictorNcepCfsrSubset : public asPredictor {
   protected:
     void ListFiles(asTimeArray &timeArray) override;
 
-    double ConvertToMjd(double timeValue, double refValue) const override;
+    void ConvertToMjd(a1d &time, double refValue) const override;
 
   private:
 };

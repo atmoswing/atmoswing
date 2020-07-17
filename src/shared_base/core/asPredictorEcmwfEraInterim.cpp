@@ -366,9 +366,6 @@ void asPredictorEcmwfEraInterim::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-double asPredictorEcmwfEraInterim::ConvertToMjd(double timeValue, double refValue) const {
-    timeValue = (timeValue / 24.0);           // hours to days
-    timeValue += asTime::GetMJD(1900, 1, 1);  // to MJD: add a negative time span
-
-    return timeValue;
+void asPredictorEcmwfEraInterim::ConvertToMjd(a1d &time, double refValue) const {
+    time = (time / 24.0) + asTime::GetMJD(1900, 1, 1);
 }

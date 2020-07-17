@@ -128,9 +128,6 @@ void asPredictorNasaMerra2::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-double asPredictorNasaMerra2::ConvertToMjd(double timeValue, double refValue) const {
-    wxASSERT(refValue > 30000);
-    wxASSERT(refValue < 70000);
-
-    return refValue + (timeValue / 1440.0);  // minutes to days
+void asPredictorNasaMerra2::ConvertToMjd(a1d &time, double refValue) const {
+    time = (time / 1440.0) + refValue;
 }

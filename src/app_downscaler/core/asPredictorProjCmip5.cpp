@@ -203,8 +203,6 @@ void asPredictorProjCmip5::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-double asPredictorProjCmip5::ConvertToMjd(double timeValue, double refValue) const {
-    wxASSERT(refValue < 70000);
-
-    return refValue + timeValue;
+void asPredictorProjCmip5::ConvertToMjd(a1d &time, double refValue) const {
+    time += refValue;
 }

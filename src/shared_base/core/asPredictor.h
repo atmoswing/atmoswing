@@ -380,12 +380,10 @@ class asPredictor : public wxObject {
         a1d lons;
         a1d lats;
         a1d levels;
+        a1d time;
         a1i members;
-        double timeStart;
-        double timeEnd;
         double timeStep;
         double firstHour;
-        size_t timeLength;
     };
     struct FileIndexesArea {
         int lonStart;
@@ -397,13 +395,13 @@ class asPredictor : public wxObject {
         std::vector<FileIndexesArea> areas;
         int lonStep;
         int latStep;
-        int timeStart;
-        int timeCount;
-        int timeArrayCount;
+        int timeStartFile;
+        int timeStartStorage;
+        int timeCountFile;
+        int timeCountStorage;
+        bool timeConsistent;
         int timeStep;
         int level;
-        int cutStart;
-        int cutEnd;
         int memberStart;
         int memberCount;
     };
@@ -454,7 +452,7 @@ class asPredictor : public wxObject {
 
     bool ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
+    virtual void ConvertToMjd(a1d &time, double refValue = NaNd) const;
 
     virtual bool CheckTimeArray(asTimeArray &timeArray);
 

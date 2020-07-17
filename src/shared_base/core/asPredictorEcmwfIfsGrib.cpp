@@ -112,9 +112,6 @@ bool asPredictorEcmwfIfsGrib::Init() {
     return true;
 }
 
-double asPredictorEcmwfIfsGrib::ConvertToMjd(double timeValue, double refValue) const {
-    wxASSERT(refValue > 30000);
-    wxASSERT(refValue < 70000);
-
-    return refValue + (timeValue / 24.0);  // hours to days
+void asPredictorEcmwfIfsGrib::ConvertToMjd(a1d &time, double refValue) const {
+    time = (time / 24.0) + refValue;
 }

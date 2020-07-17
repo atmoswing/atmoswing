@@ -157,9 +157,6 @@ void asPredictorNoaa20Cr2c::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-double asPredictorNoaa20Cr2c::ConvertToMjd(double timeValue, double refValue) const {
-    timeValue = (timeValue / 24.0);           // hours to days
-    timeValue += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
-
-    return timeValue;
+void asPredictorNoaa20Cr2c::ConvertToMjd(a1d &time, double refValue) const {
+    time = (time / 24.0) + asTime::GetMJD(1800, 1, 1);
 }

@@ -147,11 +147,8 @@ bool asPredictorOperCustomFvgForecast::Init() {
     return true;
 }
 
-double asPredictorOperCustomFvgForecast::ConvertToMjd(double timeValue, double refValue) const {
-    wxASSERT(refValue > 30000);
-    wxASSERT(refValue < 70000);
-
-    return refValue + (timeValue / 24.0);  // hours to days
+void asPredictorOperCustomFvgForecast::ConvertToMjd(a1d &time, double refValue) const {
+    time = (time / 24.0) + refValue;
 }
 
 wxString asPredictorOperCustomFvgForecast::GetDirStructure(const double date) {
