@@ -395,13 +395,13 @@ class asPredictor : public wxObject {
         std::vector<FileIndexesArea> areas;
         int lonStep;
         int latStep;
-        int timeStart;
-        int timeCount;
-        int timeArrayCount;
+        int timeStartFile;
+        int timeStartStorage;
+        int timeCountFile;
+        int timeCountStorage;
+        bool timeConsistent;
         int timeStep;
         int level;
-        int cutStart;
-        int cutEnd;
         int memberStart;
         int memberCount;
     };
