@@ -85,9 +85,6 @@ asPredictor::asPredictor(const wxString &dataId)
     m_fStr.singleLevel = false;
     m_fStr.singleTimeStep = false;
     m_fStr.timeStep = 0;
-    m_fStr.timeStart = 0;
-    m_fStr.timeEnd = 0;
-    m_fStr.timeLength = 0;
     m_fInd.memberStart = 0;
     m_fInd.memberCount = 1;
     m_fInd.cutEnd = 0;
@@ -860,27 +857,26 @@ bool asPredictor::ParseFileStructure(asFileNetcdf &ncFile) {
 }
 
 bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile) {
-    // Time dimension takes ages to load !! Avoid and get the first value.
-    m_fStr.timeLength = ncFile.GetVarLength(m_fStr.dimTimeName);
+    m_fStr.time = a1d(ncFile.GetVarLength(m_fStr.dimTimeName));
 
-    double timeFirstVal, timeSecondVal, timeLastVal;
-    nc_type ncTypeTime = ncFile.GetVarType(m_fStr.dimTimeName);
-    switch (ncTypeTime) {
+    switch (ncFile.GetVarType(m_fStr.dimTimeName)) {
         case NC_DOUBLE:
-            timeFirstVal = ncFile.GetVarOneDouble(m_fStr.dimTimeName, 0);
-            timeSecondVal = ncFile.GetVarOneDouble(m_fStr.dimTimeName, wxMin(1, m_fStr.timeLength - 1));
-            timeLastVal = ncFile.GetVarOneDouble(m_fStr.dimTimeName, m_fStr.timeLength - 1);
+            ncFile.GetVar(m_fStr.dimTimeName, &m_fStr.time[0]);
             break;
-        case NC_FLOAT:
-            timeFirstVal = (double)ncFile.GetVarOneFloat(m_fStr.dimTimeName, 0);
-            timeSecondVal = (double)ncFile.GetVarOneFloat(m_fStr.dimTimeName, wxMin(1, m_fStr.timeLength - 1));
-            timeLastVal = (double)ncFile.GetVarOneFloat(m_fStr.dimTimeName, m_fStr.timeLength - 1);
-            break;
-        case NC_INT:
-            timeFirstVal = (double)ncFile.GetVarOneInt(m_fStr.dimTimeName, 0);
-            timeSecondVal = (double)ncFile.GetVarOneInt(m_fStr.dimTimeName, wxMin(1, m_fStr.timeLength - 1));
-            timeLastVal = (double)ncFile.GetVarOneInt(m_fStr.dimTimeName, m_fStr.timeLength - 1);
-            break;
+        case NC_FLOAT: {
+            a1f axisTimeFloat(ncFile.GetVarLength(m_fStr.dimTimeName));
+            ncFile.GetVar(m_fStr.dimTimeName, &axisTimeFloat[0]);
+            for (int i = 0; i < axisTimeFloat.size(); ++i) {
+                m_fStr.time[i] = (double)axisTimeFloat[i];
+            }
+        } break;
+        case NC_INT: {
+            a1i axisTimeInt(ncFile.GetVarLength(m_fStr.dimTimeName));
+            ncFile.GetVar(m_fStr.dimTimeName, &axisTimeInt[0]);
+            for (int i = 0; i < axisTimeInt.size(); ++i) {
+                m_fStr.time[i] = (double)axisTimeInt[i];
+            }
+        } break;
         default:
             wxLogError(_("Variable type not supported yet for the time dimension."));
             return false;
@@ -903,10 +899,12 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile) {
         }
     }
 
-    m_fStr.timeStart = ConvertToMjd(timeFirstVal, refValue);
-    m_fStr.timeEnd = ConvertToMjd(timeLastVal, refValue);
-    m_fStr.timeStep = 24.0 * (ConvertToMjd(timeSecondVal, refValue) - m_fStr.timeStart);
-    m_fStr.firstHour = 24 * fmod(m_fStr.timeStart, 1);
+    for (int i = 0; i < m_fStr.time.size(); ++i) {
+        m_fStr.time[i] = ConvertToMjd(m_fStr.time[i], refValue);
+    }
+
+    m_fStr.timeStep = 24.0 * (m_fStr.time[wxMin(1, m_fStr.time.size())] - m_fStr.time[0]);
+    m_fStr.firstHour = 24 * fmod(m_fStr.time[0], 1);
 
     return true;
 }
@@ -1023,13 +1021,15 @@ bool asPredictor::ParseFileStructure(asFileGrib *gbFile0) {
     gbFile0->GetLevels(m_fStr.levels);
 
     // Time properties
-    m_fStr.timeLength = gbFile0->GetTimeLength();
-    m_fStr.timeStart = gbFile0->GetTimeStart();
-    m_fStr.timeEnd = gbFile0->GetTimeEnd();
+    vd timeArray = gbFile0->GetRealTimeArray();
+    m_fStr.time.resize(timeArray.size());
+    for (int i = 0; i < timeArray.size(); ++i) {
+        m_fStr.time[i] = timeArray[i];
+    }
 
-    if (m_fStr.timeLength > 1) {
+    if (timeArray.size() > 1) {
         m_fStr.timeStep = gbFile0->GetTimeStepHours();
-        m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
+        m_fStr.firstHour = fmod(24 * m_fStr.time[0], m_fStr.timeStep);
     }
 
     return CheckFileStructure();
@@ -1042,12 +1042,14 @@ bool asPredictor::ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1) {
     gbFile0->GetLevels(m_fStr.levels);
 
     // Time properties
-    m_fStr.timeLength = gbFile0->GetTimeLength();
-    m_fStr.timeStart = gbFile0->GetTimeStart();
-    m_fStr.timeEnd = gbFile0->GetTimeEnd();
+    vd timeArray = gbFile0->GetRealTimeArray();
+    m_fStr.time.resize(timeArray.size());
+    for (int i = 0; i < timeArray.size(); ++i) {
+        m_fStr.time[i] = timeArray[i];
+    }
 
     m_fStr.timeStep = asRound(24 * (gbFile1->GetTimeStart() - gbFile0->GetTimeStart()));
-    m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
+    m_fStr.firstHour = fmod(24 * m_fStr.time[0], m_fStr.timeStep);
 
     return CheckFileStructure();
 }
@@ -1171,9 +1173,9 @@ bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArr
     m_fInd.areas.clear();
 
     // Get the time length
-    if (m_fStr.timeLength > 1) {
-        double timeArrayIndexStart = timeArray.GetIndexFirstAfter(m_fStr.timeStart, m_fStr.timeStep);
-        double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(m_fStr.timeEnd, m_fStr.timeStep);
+    if (m_fStr.time.size() > 1) {
+        double timeArrayIndexStart = timeArray.GetIndexFirstAfter(m_fStr.time[0], m_fStr.timeStep);
+        double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(m_fStr.time[m_fStr.time.size()-1], m_fStr.timeStep);
         if (timeArrayIndexStart == asOUT_OF_RANGE || timeArrayIndexEnd == asOUT_OF_RANGE) {
             m_fInd.timeArrayCount = 0;
             m_fInd.timeCount = 0;
@@ -1184,9 +1186,9 @@ bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArr
         }
 
         // In case of missing time steps
-        if (m_fStr.timeLength > m_fInd.timeCount) {
+        if (m_fStr.time.size() > m_fInd.timeCount) {
             // Correct the time start and end
-            double valFirstTime = m_fStr.timeStart;
+            double valFirstTime = m_fStr.time[0];
             m_fInd.timeStart = 0;
             m_fInd.cutStart = 0;
             bool firstFile = (compositeData[0].empty());
@@ -1198,7 +1200,7 @@ bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArr
                 valFirstTime += m_fStr.timeStep / 24.0;
                 m_fInd.timeStart++;
             }
-            if (m_fInd.timeStart + (m_fInd.timeCount - 1) * m_fInd.timeStep > m_fStr.timeLength) {
+            if (m_fInd.timeStart + (m_fInd.timeCount - 1) * m_fInd.timeStep > m_fStr.time.size()) {
                 m_fInd.timeCount--;
                 m_fInd.cutEnd++;
             }

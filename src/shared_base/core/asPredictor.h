@@ -380,12 +380,10 @@ class asPredictor : public wxObject {
         a1d lons;
         a1d lats;
         a1d levels;
+        a1d time;
         a1i members;
-        double timeStart;
-        double timeEnd;
         double timeStep;
         double firstHour;
-        size_t timeLength;
     };
     struct FileIndexesArea {
         int lonStart;
