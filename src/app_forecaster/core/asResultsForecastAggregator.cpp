@@ -838,8 +838,7 @@ bool asResultsForecastAggregator::ExportSyntheticCustomCsvFVG(const wxString &di
         // Filename
         wxString filePath = dirPath;
         filePath.Append(DS);
-        wxString dirStructure = "YYYY";
-        dirStructure.Append(DS).Append("MM").Append(DS).Append("DD");
+        wxString dirStructure = "YYYYMMDD";
         wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirStructure);
         filePath.Append(directory).Append(DS);
         wxString forecastName = m_forecasts[methodRow][0]->GetMethodId();

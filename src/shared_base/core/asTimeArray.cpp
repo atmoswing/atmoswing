@@ -642,13 +642,6 @@ int asTimeArray::GetIndexFirstAfter(double date, double dataTimeStep) const {
 int asTimeArray::GetIndexFirstBefore(double date, double dataTimeStep) const {
     wxASSERT(m_initialized);
 
-    if (dataTimeStep >= 24.0) {
-        // At a daily time step, might be defined at 00h or 12h
-        double intPart;
-        std::modf(date, &intPart);
-        date = intPart;
-    }
-
     if (date + 0.00001 < m_start) {  // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
         return asOUT_OF_RANGE;
@@ -657,7 +650,19 @@ int asTimeArray::GetIndexFirstBefore(double date, double dataTimeStep) const {
     int index = asFindFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE && date > m_timeArray[GetSize() - 1]) {
-        return GetSize() - 1;
+        if (dataTimeStep >= 24.0) {
+            // At a daily time step, might be defined at 00h or 12h
+            double intPart;
+            std::modf(date, &intPart);
+            date = intPart;
+
+            index = asFindFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
+            if (index == asOUT_OF_RANGE && date > m_timeArray[GetSize() - 1]) {
+                return GetSize() - 1;
+            }
+        } else {
+            return GetSize() - 1;
+        }
     }
 
     return index;
