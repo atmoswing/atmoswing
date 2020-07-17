@@ -94,8 +94,6 @@ void asPredictorNoaaOisst2::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-double asPredictorNoaaOisst2::ConvertToMjd(double timeValue, double refValue) const {
-    timeValue += asTime::GetMJD(1978, 1, 1);
-
-    return timeValue;
+void asPredictorNoaaOisst2::ConvertToMjd(a1d &time, double refValue) const {
+    time += asTime::GetMJD(1978, 1, 1);
 }

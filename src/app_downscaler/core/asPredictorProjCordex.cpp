@@ -217,8 +217,6 @@ void asPredictorProjCordex::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-double asPredictorProjCordex::ConvertToMjd(double timeValue, double refValue) const {
-    wxASSERT(refValue < 70000);
-
-    return refValue + timeValue;
+void asPredictorProjCordex::ConvertToMjd(a1d &time, double refValue) const {
+    time += refValue;
 }

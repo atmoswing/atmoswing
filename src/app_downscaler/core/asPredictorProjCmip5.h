@@ -44,7 +44,7 @@ class asPredictorProjCmip5 : public asPredictorProj {
   protected:
     virtual void ListFiles(asTimeArray &timeArray);
 
-    double ConvertToMjd(double timeValue, double refValue) const;
+    void ConvertToMjd(a1d &time, double refValue) const;
 
   private:
 };

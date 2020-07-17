@@ -134,13 +134,11 @@ void asPredictorCustomUnilNR1::ListFiles(asTimeArray &timeArray) {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
-double asPredictorCustomUnilNR1::ConvertToMjd(double timeValue, double refValue) const {
-    timeValue = (timeValue / 24.0);               // hours to days
-    if (timeValue < 500 * 365) {                  // New format
-        timeValue += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
-    } else {                                      // Old format
-        timeValue += asTime::GetMJD(1, 1, 1);     // to MJD: add a negative time span
+void asPredictorCustomUnilNR1::ConvertToMjd(a1d &time, double refValue) const {
+    time /= 24.0;
+    if (time[0] < 500 * 365) { // New format
+        time += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
+    } else { // Old format
+        time += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
     }
-
-    return timeValue;
 }

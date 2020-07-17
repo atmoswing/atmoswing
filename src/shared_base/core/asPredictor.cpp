@@ -580,8 +580,8 @@ bool asPredictor::CheckTimeArray(asTimeArray &timeArray) {
     return true;
 }
 
-double asPredictor::ConvertToMjd(double timeValue, double refValue) const {
-    return NaNd;
+void asPredictor::ConvertToMjd(a1d &time, double refValue) const {
+    wxFAIL;
 }
 
 bool asPredictor::EnquireFileStructure(asTimeArray &timeArray) {
@@ -899,9 +899,7 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile) {
         }
     }
 
-    for (int i = 0; i < m_fStr.time.size(); ++i) {
-        m_fStr.time[i] = ConvertToMjd(m_fStr.time[i], refValue);
-    }
+    ConvertToMjd(m_fStr.time, refValue);
 
     m_fStr.timeStep = 24.0 * (m_fStr.time[wxMin(1, m_fStr.time.size())] - m_fStr.time[0]);
     m_fStr.firstHour = 24 * fmod(m_fStr.time[0], 1);

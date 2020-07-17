@@ -251,9 +251,6 @@ void asPredictorJmaJra55Subset::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-double asPredictorJmaJra55Subset::ConvertToMjd(double timeValue, double refValue) const {
-    timeValue = (timeValue / 24.0);           // hours to days
-    timeValue += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
-
-    return timeValue;
+void asPredictorJmaJra55Subset::ConvertToMjd(a1d &time, double refValue) const {
+    time = (time / 24.0) + asTime::GetMJD(1800, 1, 1);
 }

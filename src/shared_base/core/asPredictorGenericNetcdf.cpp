@@ -118,6 +118,6 @@ void asPredictorGenericNetcdf::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-double asPredictorGenericNetcdf::ConvertToMjd(double timeValue, double refValue) const {
-    return timeValue;
+void asPredictorGenericNetcdf::ConvertToMjd(a1d &time, double refValue) const {
+    // Nothing to do
 }

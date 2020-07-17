@@ -43,7 +43,7 @@ class asPredictorOperIfsForecast : public asPredictorOper {
     bool Init() override;
 
   protected:
-    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
+    void ConvertToMjd(a1d &time, double refValue = NaNd) const override;
 
   private:
 };

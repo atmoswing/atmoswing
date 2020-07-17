@@ -452,7 +452,7 @@ class asPredictor : public wxObject {
 
     bool ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
+    virtual void ConvertToMjd(a1d &time, double refValue = NaNd) const;
 
     virtual bool CheckTimeArray(asTimeArray &timeArray);
 

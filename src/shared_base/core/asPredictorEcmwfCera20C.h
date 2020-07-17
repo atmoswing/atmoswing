@@ -44,7 +44,7 @@ class asPredictorEcmwfCera20C : public asPredictor {
   protected:
     void ListFiles(asTimeArray &timeArray) override;
 
-    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
+    void ConvertToMjd(a1d &time, double refValue = NaNd) const override;
 
   private:
 };
