@@ -1029,7 +1029,7 @@ bool asPredictor::ParseFileStructure(asFileGrib *gbFile0) {
 
     if (timeArray.size() > 1) {
         m_fStr.timeStep = gbFile0->GetTimeStepHours();
-        m_fStr.firstHour = fmod(24 * m_fStr.time[0], m_fStr.timeStep);
+        m_fStr.firstHour = 24 * fmod(m_fStr.time[0], 1);
     }
 
     return CheckFileStructure();
@@ -1049,7 +1049,7 @@ bool asPredictor::ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1) {
     }
 
     m_fStr.timeStep = asRound(24 * (gbFile1->GetTimeStart() - gbFile0->GetTimeStart()));
-    m_fStr.firstHour = fmod(24 * m_fStr.time[0], m_fStr.timeStep);
+    m_fStr.firstHour = 24 * fmod(m_fStr.time[0], 1);
 
     return CheckFileStructure();
 }
@@ -1172,18 +1172,18 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea) {
 bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) {
     m_fInd.areas.clear();
 
-    // Get the time length
+    int iStartTimeArray = timeArray.GetIndexFirstAfter(m_fStr.time[0], m_fStr.timeStep);
+    int iEndTimeArray = timeArray.GetIndexFirstBefore(m_fStr.time[m_fStr.time.size()-1], m_fStr.timeStep);
+
+    if (iStartTimeArray == asOUT_OF_RANGE || iEndTimeArray == asOUT_OF_RANGE) {
+        m_fInd.timeCountFile = 0;
+        return true;
+    }
+
+    m_fInd.timeCountStorage = iEndTimeArray - iStartTimeArray + 1;
+    m_fInd.timeStartStorage = iStartTimeArray;
+
     if (m_fStr.time.size() > 1) {
-        int iStartTimeArray = timeArray.GetIndexFirstAfter(m_fStr.time[0], m_fStr.timeStep);
-        int iEndTimeArray = timeArray.GetIndexFirstBefore(m_fStr.time[m_fStr.time.size()-1], m_fStr.timeStep);
-
-        if (iStartTimeArray == asOUT_OF_RANGE || iEndTimeArray == asOUT_OF_RANGE) {
-            m_fInd.timeCountFile = 0;
-            return true;
-        }
-
-        m_fInd.timeCountStorage = iEndTimeArray - iStartTimeArray + 1;
-        m_fInd.timeStartStorage = iStartTimeArray;
 
         int iStartTimeFile = asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size()-1], timeArray[iStartTimeArray]);
         int iEndTimeFile = asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size()-1], timeArray[iEndTimeArray]);
@@ -1195,21 +1195,20 @@ bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArr
         m_fInd.timeCountFile = (iEndTimeFile - iStartTimeFile) / m_fInd.timeStep + 1;
         m_fInd.timeStartFile = iStartTimeFile;
 
-        if (m_fInd.timeCountFile != m_fInd.timeCountStorage) {
-            m_fInd.timeConsistent = false;
-        } else {
-            wxASSERT(dt >= 0);
-            for (int i = 0; i < m_fInd.timeCountFile; ++i) {
-                if (m_fStr.time[m_fInd.timeStartFile + i * m_fInd.timeStep] != timeArray[m_fInd.timeStartStorage + i]) {
-                    m_fInd.timeConsistent = false;
-                    break;
-                }
-            }
-        }
-
     } else {
         m_fInd.timeCountFile = 1;
         m_fInd.timeStartFile = 0;
+    }
+
+    if (m_fInd.timeCountFile != m_fInd.timeCountStorage) {
+        m_fInd.timeConsistent = false;
+    } else {
+        for (int i = 0; i < m_fInd.timeCountFile; ++i) {
+            if (m_fStr.time[m_fInd.timeStartFile + i * m_fInd.timeStep] != timeArray[m_fInd.timeStartStorage + i]) {
+                m_fInd.timeConsistent = false;
+                break;
+            }
+        }
     }
 
     wxASSERT(m_fInd.timeCountFile > 0);
@@ -1484,10 +1483,10 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData) {
         int iTimeStorage = m_fInd.timeStartStorage;
         int iTimeFile = m_fInd.timeStartFile;
         int iTimeData = 0;
-        while (iTimeStorage < m_fInd.timeCountStorage) {
+        while (iTimeStorage < m_fInd.timeStartStorage + m_fInd.timeCountStorage) {
 
             if (!m_fInd.timeConsistent) {
-                if (iTimeFile > m_fInd.timeCountFile - 1) {
+                if (iTimeFile > m_fInd.timeStartFile + m_fInd.timeCountFile - 1) {
                     // Fill with NaN if data are missing after the data
                     va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount) * NaNf);
                     compositeData[iArea].push_back(memLatLonData);
@@ -1617,10 +1616,10 @@ bool asPredictor::GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData) {
         int iTimeStorage = m_fInd.timeStartStorage;
         int iTimeFile = m_fInd.timeStartFile;
         int iTimeData = 0;
-        while (iTimeStorage < m_fInd.timeCountStorage) {
+        while (iTimeStorage < m_fInd.timeStartStorage + m_fInd.timeCountStorage) {
 
             if (!m_fInd.timeConsistent) {
-                if (iTimeFile > m_fInd.timeCountFile - 1) {
+                if (iTimeFile > m_fInd.timeStartFile + m_fInd.timeCountFile - 1) {
                     // Fill with NaN if data are missing after the data
                     va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount) * NaNf);
                     compositeData[iArea].push_back(memLatLonData);

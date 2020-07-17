@@ -169,6 +169,9 @@ void asFileGrib::ExtractTime(codes_handle *h) {
         asThrowException(_("Error reading grib file: unlisted time unit."));
     }
 
+    if (refTime > 100) {
+        refTime /= 100;
+    }
     double time = refDate + refTime / 24 + forecastTime;
     m_times.push_back(time);
 }
@@ -483,43 +486,12 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
 
     int finalIndex = 0;
     vd fullTimeArray(IndexCount[0]);
-
-    // Handle holes
-    if (IndexCount[0] > 1) {
-        // Find smallest time step
-        double timeStep = 999;
-        for (int i = 0; i < timeArray.size() - 1; ++i) {
-            if (timeArray[i + 1] - timeArray[i] < timeStep) {
-                if (timeArray[i + 1] - timeArray[i] > 0) {
-                    timeStep = timeArray[i + 1] - timeArray[i];
-                }
-            }
-        }
-
-        // Build full time array
-        double lastTimeVal = timeArray[iTimeStart];
-        for (int i = 0; i < IndexCount[0]; ++i) {
-            fullTimeArray[i] = lastTimeVal;
-            lastTimeVal += timeStep;
-        }
-
-    } else {
-        std::copy(timeArray.begin() + iTimeStart, timeArray.begin() + iTimeEnd + 1, fullTimeArray.begin());
-    }
+    std::copy(timeArray.begin() + iTimeStart, timeArray.begin() + iTimeEnd + 1, fullTimeArray.begin());
 
     int iTime = iTimeStart;
 
     for (auto &date : fullTimeArray) {
         wxASSERT(iTime < timeArray.size());
-
-        if (date < timeArray[iTime]) {
-            // Fill with NaNs
-            for (int i = 0; i < IndexCount[1] * IndexCount[2]; ++i) {
-                pValue[finalIndex] = NaNf;
-                finalIndex++;
-            }
-            continue;
-        }
 
         wxString refDate = asTime::GetStringTime(referenceDateArray[iTime], YYYYMMDD);
         char refDateChar[9];
