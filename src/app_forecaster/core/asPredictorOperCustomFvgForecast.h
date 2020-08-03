@@ -49,6 +49,8 @@ class asPredictorOperCustomFvgForecast : public asPredictorOperIfsForecast {
   protected:
     void ConvertToMjd(a1d &time, double refValue = NaNd) const override;
 
+    double FixTimeValue(double time) const override;
+
   private:
 };
 

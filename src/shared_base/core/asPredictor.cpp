@@ -586,6 +586,10 @@ void asPredictor::ConvertToMjd(a1d &time, double refValue) const {
     wxFAIL;
 }
 
+double asPredictor::FixTimeValue(double time) const {
+    return time;
+}
+
 bool asPredictor::EnquireFileStructure(asTimeArray &timeArray) {
     wxASSERT(m_files.size() > 0);
 
@@ -1024,7 +1028,7 @@ bool asPredictor::ParseFileStructure(asFileGrib *gbFile0) {
     vd timeArray = gbFile0->GetRealTimeArray();
     m_fStr.time.resize(timeArray.size());
     for (int i = 0; i < timeArray.size(); ++i) {
-        m_fStr.time[i] = timeArray[i];
+        m_fStr.time[i] = FixTimeValue(timeArray[i]);
     }
 
     if (timeArray.size() > 1) {

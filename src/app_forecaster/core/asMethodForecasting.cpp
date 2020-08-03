@@ -795,7 +795,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             m_storagePredictorsArchive.push_back(predictorArchive);
 
             // Realtime data loading
-            wxLogVerbose(_("Loading GCM forecast data."));
+            wxLogVerbose(_("Loading forecast data."));
             if (!predictorRealtime->Load(area, timeArrayDataTarget, params.GetPredictorLevel(iStep, iPtor))) {
                 wxLogError(_("Real-time data (%s) could not be loaded."), predictorRealtime->GetDataId());
                 wxDELETE(area);
