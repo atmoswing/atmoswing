@@ -1716,6 +1716,8 @@ bool asPredictor::TransformData(vvva2f &compositeData) {
 
 bool asPredictor::StandardizeData(double mean, double sd) {
 
+    bool nansReplaced = wxFileConfig::Get()->ReadBool("/General/ReplaceNans", false);
+
     if (asIsNaN(mean) || asIsNaN(sd)) {
         // Get the mean
         double sum = 0;
@@ -1723,11 +1725,15 @@ bool asPredictor::StandardizeData(double mean, double sd) {
 
         for (auto &datTime : m_data) {
             for (auto &datMem : datTime) {
-                sum += datMem.isNaN().select(0, datMem).sum();
-                count += datMem.size() - datMem.isNaN().count();
+                if (!nansReplaced) {
+                    sum += datMem.isNaN().select(0, datMem).sum();
+                    count += datMem.size() - datMem.isNaN().count();
+                } else {
+                    sum += datMem.isNaN().select(0, (datMem == -9999).select(0, datMem)).sum();
+                    count += datMem.size() - datMem.isNaN().count() - (datMem == -9999).count();
+                }
             }
         }
-
         mean = sum / (double)count;
 
         // Get the standard deviation
@@ -1735,10 +1741,13 @@ bool asPredictor::StandardizeData(double mean, double sd) {
 
         for (auto &datTime : m_data) {
             for (auto &datMem : datTime) {
-                sd += (datMem - mean).isNaN().select(0, datMem - mean).cwiseAbs2().sum();
+                if (!nansReplaced) {
+                    sd += (datMem - mean).isNaN().select(0, datMem - mean).cwiseAbs2().sum();
+                } else {
+                    sd += datMem.isNaN().select(0, (datMem == -9999).select(0, datMem - mean)).cwiseAbs2().sum();
+                }
             }
         }
-
         sd = std::sqrt(sd / (double)(count - 1));
     }
 
