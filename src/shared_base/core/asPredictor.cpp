@@ -1718,6 +1718,11 @@ bool asPredictor::StandardizeData(double mean, double sd) {
 
     bool nansReplaced = wxFileConfig::Get()->ReadBool("/General/ReplaceNans", false);
 
+    if (m_data[0].size() > 1) {
+        wxLogError(_("The standardization of ensemble datasets is not yet supported."));
+        return false;
+    }
+
     if (asIsNaN(mean) || asIsNaN(sd)) {
         // Get the mean
         double sum = 0;
