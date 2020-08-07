@@ -48,6 +48,7 @@ make install
 cd $TMP
 wget https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_1_10_5/source/hdf5-1.10.5.tar.gz
 tar -xzf hdf5-1.10.5.tar.gz
+cd hdf5-1.10.5
 ./configure --with-zlib=$PREFIX --prefix=$PREFIX --enable-hl
 make -j6
 make check
