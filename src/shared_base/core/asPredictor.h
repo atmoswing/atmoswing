@@ -454,6 +454,8 @@ class asPredictor : public wxObject {
 
     virtual void ConvertToMjd(a1d &time, double refValue = NaNd) const;
 
+    virtual double FixTimeValue(double time) const;
+
     virtual bool CheckTimeArray(asTimeArray &timeArray);
 
     virtual bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);

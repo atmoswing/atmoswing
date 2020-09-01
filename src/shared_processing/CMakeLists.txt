@@ -45,7 +45,7 @@ include(define_common_libraries)
 # CUDA
 if (USE_CUDA)
     enable_language(CUDA)
-    find_package(CUDAToolkit 9.0 REQUIRED)
+    find_package(CUDAToolkit REQUIRED)
     include_directories(${CUDAToolkit_INCLUDE_DIRS})
     add_library(ascuda STATIC ${src_cuda})
     target_link_libraries(ascuda CUDA::cudart_static)

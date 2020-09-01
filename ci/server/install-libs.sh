@@ -3,6 +3,7 @@
 PREFIX=${HOME}/libs
 TMP=${HOME}/tmp-build
 
+mkdir $TMP
 
 # wxWidgets
 cd $TMP
@@ -48,6 +49,7 @@ make install
 cd $TMP
 wget https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_1_10_5/source/hdf5-1.10.5.tar.gz
 tar -xzf hdf5-1.10.5.tar.gz
+cd hdf5-1.10.5
 ./configure --with-zlib=$PREFIX --prefix=$PREFIX --enable-hl
 make -j6
 make check
@@ -62,6 +64,28 @@ cd netcdf-c-4.7.0
 CPPFLAGS=-I$PREFIX/include LDFLAGS=-L$PREFIX/lib ./configure --prefix=$PREFIX --disable-dap
 make -j6
 make check
+make install
+
+# JPG
+cd $TMP
+wget -O jpg.tar.gz https://github.com/LuaDist/libjpeg/archive/master.tar.gz
+tar -xzf jpg.tar.gz
+cd libjpeg-master
+mkdir bld
+cd bld
+cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=Release -DBUILD_STATIC=OFF -DBUILD_EXECUTABLES=OFF
+make -j6
+make install
+
+# OpenJPG
+cd $TMP
+wget -O openjp.tar.gz https://github.com/uclouvain/openjpeg/archive/v2.3.1.tar.gz
+tar -xzf openjp.tar.gz
+cd openjpeg-2.3.1
+mkdir bld
+cd bld
+cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=Release -DBUILD_STATIC=OFF -DBUILD_EXECUTABLES=OFF
+make -j6
 make install
 
 # Jasper

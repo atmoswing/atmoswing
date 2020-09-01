@@ -151,6 +151,17 @@ void asPredictorOperCustomFvgForecast::ConvertToMjd(a1d &time, double refValue) 
     time = (time / 24.0) + refValue;
 }
 
+double asPredictorOperCustomFvgForecast::FixTimeValue(double time) const {
+
+    if (m_dataId.Contains("cp_sfc")) {
+        time -= 3.0/24.0;
+    } else if (m_dataId.Contains("tp_sfc")) {
+        time -= 3.0/24.0;
+    }
+
+    return time;
+}
+
 wxString asPredictorOperCustomFvgForecast::GetDirStructure(const double date) {
     wxString dirStructure = "YYYYMMDD";
     dirStructure.Append(DS);
