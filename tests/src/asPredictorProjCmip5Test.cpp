@@ -103,8 +103,8 @@ TEST(PredictorProjCmip5, LoadEasy) {
     double yWidth = 2;
     asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth, 0);
 
-    double start = asTime::GetMJD(2006, 1, 1, 00, 00);
-    double end = asTime::GetMJD(2006, 1, 1, 00, 00);
+    double start = asTime::GetMJD(2006, 1, 1, 12, 00);
+    double end = asTime::GetMJD(2006, 1, 1, 12, 00);
     double timeStepHours = 24;
     asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
     timearray.Init();
@@ -145,8 +145,8 @@ TEST(PredictorProjCmip5, LoadComposite) {
     double yWidth = 2;
     asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth, 0);
 
-    double start = asTime::GetMJD(2006, 1, 1, 00, 00);
-    double end = asTime::GetMJD(2006, 1, 1, 00, 00);
+    double start = asTime::GetMJD(2006, 1, 1, 12, 00);
+    double end = asTime::GetMJD(2006, 1, 1, 12, 00);
     double timeStepHours = 24;
     asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
     timearray.Init();
@@ -188,8 +188,8 @@ TEST(PredictorProjCmip5, LoadBorderLeft) {
     double yWidth = 2;
     asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth, 0);
 
-    double start = asTime::GetMJD(2006, 1, 1, 00, 00);
-    double end = asTime::GetMJD(2006, 1, 1, 00, 00);
+    double start = asTime::GetMJD(2006, 1, 1, 12, 00);
+    double end = asTime::GetMJD(2006, 1, 1, 12, 00);
     double timeStepHours = 24;
     asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
     timearray.Init();
@@ -229,8 +229,8 @@ TEST(PredictorProjCmip5, LoadBorderLeftOn720) {
     double yWidth = 2;
     asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth, 0);
 
-    double start = asTime::GetMJD(2006, 1, 1, 00, 00);
-    double end = asTime::GetMJD(2006, 1, 1, 00, 00);
+    double start = asTime::GetMJD(2006, 1, 1, 12, 00);
+    double end = asTime::GetMJD(2006, 1, 1, 12, 00);
     double timeStepHours = 24;
     asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
     timearray.Init();
@@ -270,8 +270,8 @@ TEST(PredictorProjCmip5, LoadBorderRight) {
     double yWidth = 2;
     asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth, 0);
 
-    double start = asTime::GetMJD(2006, 1, 1, 00, 00);
-    double end = asTime::GetMJD(2006, 1, 1, 00, 00);
+    double start = asTime::GetMJD(2006, 1, 1, 12, 00);
+    double end = asTime::GetMJD(2006, 1, 1, 12, 00);
     double timeStepHours = 24;
     asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
     timearray.Init();
@@ -312,8 +312,8 @@ TEST(PredictorProjCmip5, LoadWithPressureLevels) {
     float level = 850;
     asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth);
 
-    double start = asTime::GetMJD(2097, 1, 1, 00, 00);
-    double end = asTime::GetMJD(2097, 1, 3, 00, 00);
+    double start = asTime::GetMJD(2097, 1, 1, 12, 00);
+    double end = asTime::GetMJD(2097, 1, 3, 12, 00);
     double timeStepHours = 24;
     asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
     timearray.Init();
@@ -363,8 +363,8 @@ TEST(PredictorProjCmip5, LoadOver2Years) {
     float level = 850;
     asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth);
 
-    double start = asTime::GetMJD(2097, 12, 25, 00, 00);
-    double end = asTime::GetMJD(2098, 1, 10, 00, 00);
+    double start = asTime::GetMJD(2097, 12, 25, 12, 00);
+    double end = asTime::GetMJD(2098, 1, 10, 12, 00);
     double timeStepHours = 24;
     asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
     timearray.Init();

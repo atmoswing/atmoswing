@@ -137,8 +137,8 @@ TEST(PredictorProjCordex, LoadEasy) {
     double yWidth = 100;
     asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth, 0, predictor->IsLatLon());
 
-    double start = asTime::GetMJD(2023, 10, 17, 00, 00);
-    double end = asTime::GetMJD(2023, 10, 17, 00, 00);
+    double start = asTime::GetMJD(2023, 10, 17, 12, 00);
+    double end = asTime::GetMJD(2023, 10, 17, 12, 00);
     double timeStepHours = 24;
     asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
     timearray.Init();
@@ -173,8 +173,8 @@ TEST(PredictorProjCordex, LoadOver2Files) {
     double yWidth = 100;
     asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth, asFLAT_ALLOWED, asPredictor::IsLatLon("CORDEX"));
 
-    double start = asTime::GetMJD(2025, 12, 25, 00, 00);
-    double end = asTime::GetMJD(2026, 1, 10, 00, 00);
+    double start = asTime::GetMJD(2025, 12, 25, 12, 00);
+    double end = asTime::GetMJD(2026, 1, 10, 12, 00);
     double timeStepHours = 24;
     asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
     timearray.Init();
@@ -254,8 +254,8 @@ TEST(PredictorProjCordex, LoadAnotherModel) {
     double yWidth = 0.1;
     asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth, asFLAT_ALLOWED, asPredictor::IsLatLon("CORDEX"));
 
-    double start = asTime::GetMJD(2046, 1, 1, 00, 00);
-    double end = asTime::GetMJD(2046, 1, 10, 00, 00);
+    double start = asTime::GetMJD(2046, 1, 1, 12, 00);
+    double end = asTime::GetMJD(2046, 1, 10, 12, 00);
     double timeStepHours = 24;
     asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
     timearray.Init();
