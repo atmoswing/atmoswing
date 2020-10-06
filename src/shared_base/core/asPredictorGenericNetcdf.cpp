@@ -29,94 +29,95 @@
 
 #include <wx/dir.h>
 #include <wx/regex.h>
+
 #include "asAreaCompGrid.h"
 #include "asTimeArray.h"
 
 asPredictorGenericNetcdf::asPredictorGenericNetcdf(const wxString &dataId) : asPredictor(dataId) {
-  // Set the basic properties.
-  m_datasetId = "GenericNetcdf";
-  m_provider = "";
-  m_datasetName = "Generic Netcdf";
-  m_fileType = asFile::Netcdf;
-  m_strideAllowed = true;
-  m_nanValues.push_back(-32767);
-  m_nanValues.push_back(3.4E38f);
-  m_nanValues.push_back(100000002004087730000.0);
-  m_fStr.dimLatName = "lat";
-  m_fStr.dimLonName = "lon";
-  m_fStr.dimTimeName = "time";
-  m_fStr.dimLevelName = "level";
+    // Set the basic properties.
+    m_datasetId = "GenericNetcdf";
+    m_provider = "";
+    m_datasetName = "Generic Netcdf";
+    m_fileType = asFile::Netcdf;
+    m_strideAllowed = true;
+    m_nanValues.push_back(-32767);
+    m_nanValues.push_back(3.4E38f);
+    m_nanValues.push_back(100000002004087730000.0);
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "level";
 }
 
 bool asPredictorGenericNetcdf::Init() {
-  m_parameter = ParameterUndefined;
-  m_parameterName = "Undefined";
-  m_fileVarName = m_dataId;
-  m_unit = UnitUndefined;
-  m_fStr.hasLevelDim = true;
+    m_parameter = ParameterUndefined;
+    m_parameterName = "Undefined";
+    m_fileVarName = m_dataId;
+    m_unit = UnitUndefined;
+    m_fStr.hasLevelDim = true;
 
-  // Check directory is set
-  if (GetDirectoryPath().IsEmpty()) {
-    wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
-               m_datasetName);
-    return false;
-  }
+    // Check directory is set
+    if (GetDirectoryPath().IsEmpty()) {
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+                   m_datasetName);
+        return false;
+    }
 
-  // Set to initialized
-  m_initialized = true;
+    // Set to initialized
+    m_initialized = true;
 
-  return true;
+    return true;
 }
 
 void asPredictorGenericNetcdf::ListFiles(asTimeArray &timeArray) {
-  // Case 1: single file with the variable name
-  wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".nc";
+    // Case 1: single file with the variable name
+    wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".nc";
 
-  if (wxFileExists(filePath)) {
-    m_files.push_back(filePath);
-    return;
-  }
-
-  // Case 2: yearly files
-  wxArrayString listFiles;
-  size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, "*.nc");
-
-  if (nbFiles == 0) {
-    asThrowException(_("No file found for the generic archive."));
-  }
-
-  listFiles.Sort();
-
-  double firstYear = timeArray.GetStartingYear();
-  double lastYear = timeArray.GetEndingYear();
-
-  for (size_t i = 0; i < listFiles.Count(); ++i) {
-    wxRegEx reDates("\\d{4,}", wxRE_ADVANCED);
-    if (!reDates.Matches(listFiles.Item(i))) {
-      continue;
+    if (wxFileExists(filePath)) {
+        m_files.push_back(filePath);
+        return;
     }
 
-    wxString datesSrt = reDates.GetMatch(listFiles.Item(i));
-    double fileYear = 0;
-    datesSrt.ToDouble(&fileYear);
+    // Case 2: yearly files
+    wxArrayString listFiles;
+    size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, "*.nc");
 
-    if (fileYear < firstYear || fileYear > lastYear) {
-      continue;
+    if (nbFiles == 0) {
+        asThrowException(_("No file found for the generic archive."));
     }
 
-    m_files.push_back(listFiles.Item(i));
-  }
+    listFiles.Sort();
 
-  if (!m_files.empty()) {
-    return;
-  }
+    double firstYear = timeArray.GetStartingYear();
+    double lastYear = timeArray.GetEndingYear();
 
-  // Case 3: list all files from the directory
-  for (size_t i = 0; i < listFiles.Count(); ++i) {
-    m_files.push_back(listFiles.Item(i));
-  }
+    for (size_t i = 0; i < listFiles.Count(); ++i) {
+        wxRegEx reDates("\\d{4,}", wxRE_ADVANCED);
+        if (!reDates.Matches(listFiles.Item(i))) {
+            continue;
+        }
+
+        wxString datesSrt = reDates.GetMatch(listFiles.Item(i));
+        double fileYear = 0;
+        datesSrt.ToDouble(&fileYear);
+
+        if (fileYear < firstYear || fileYear > lastYear) {
+            continue;
+        }
+
+        m_files.push_back(listFiles.Item(i));
+    }
+
+    if (!m_files.empty()) {
+        return;
+    }
+
+    // Case 3: list all files from the directory
+    for (size_t i = 0; i < listFiles.Count(); ++i) {
+        m_files.push_back(listFiles.Item(i));
+    }
 }
 
-double asPredictorGenericNetcdf::ConvertToMjd(double timeValue, double refValue) const {
-  return timeValue;
+void asPredictorGenericNetcdf::ConvertToMjd(a1d &time, double refValue) const {
+    // Nothing to do
 }

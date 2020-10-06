@@ -34,40 +34,40 @@ asPanelForecast::asPanelForecast(wxWindow *parent)
     : asPanelForecastVirtual(parent),
       m_parentFrame(nullptr),
       m_panelsManager(nullptr) {
-  // Led
-  m_led = new awxLed(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0);
-  m_led->SetState(awxLED_OFF);
-  m_sizerHeader->Insert(0, m_led, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+    // Led
+    m_led = new awxLed(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0);
+    m_led->SetState(awxLED_OFF);
+    m_sizerHeader->Insert(0, m_led, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-  // Set the buttons bitmaps
-  m_bpButtonClose->SetBitmapLabel(*_img_close);
+    // Set the buttons bitmaps
+    m_bpButtonClose->SetBitmapLabel(*_img_close);
 
-  // Fix the color of the file/dir pickers
-  wxColour col = parent->GetParent()->GetBackgroundColour();
-  if (col.IsOk()) {
-    SetBackgroundColour(col);
-  }
+    // Fix the color of the file/dir pickers
+    wxColour col = parent->GetParent()->GetBackgroundColour();
+    if (col.IsOk()) {
+        SetBackgroundColour(col);
+    }
 
 #if defined(__WXMSW__)
-  SetWindowStyleFlag(wxRAISED_BORDER);
+    SetWindowStyleFlag(wxRAISED_BORDER);
 #elif defined(__WXMAC__)
-  SetWindowStyleFlag(wxRAISED_BORDER);
+    SetWindowStyleFlag(wxRAISED_BORDER);
 #elif defined(__UNIX__)
-  SetWindowStyleFlag(wxSIMPLE_BORDER);
+    SetWindowStyleFlag(wxSIMPLE_BORDER);
 #else
-  SetWindowStyleFlag(wxRAISED_BORDER);
+    SetWindowStyleFlag(wxRAISED_BORDER);
 #endif
 }
 
 void asPanelForecast::ClosePanel(wxCommandEvent &event) {
-  m_panelsManager->RemovePanel(this);
+    m_panelsManager->RemovePanel(this);
 }
 
 bool asPanelForecast::Layout() {
-  asPanelForecastVirtual::Layout();
-  return true;
+    asPanelForecastVirtual::Layout();
+    return true;
 }
 
 void asPanelForecast::ChangeForecastName(wxCommandEvent &event) {
-  //
+    //
 }

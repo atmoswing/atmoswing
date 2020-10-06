@@ -30,21 +30,20 @@
 #define AS_SCORE_CONTINGENCY_TABLE_H
 
 #include "asIncludes.h"
-
 #include "asScore.h"
 
 class asScoreContingencyTable : public asScore {
- public:
-  asScoreContingencyTable();
+  public:
+    asScoreContingencyTable();
 
-  ~asScoreContingencyTable() override = default;
+    ~asScoreContingencyTable() override = default;
 
-  float Assess(float observedVal, const a1f &values, int nbElements) const override;
+    float Assess(float observedVal, const a1f &values, int nbElements) const override;
 
-  bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
+    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 
- protected:
- private:
+  protected:
+  private:
 };
 
 #endif

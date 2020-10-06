@@ -34,80 +34,80 @@
 #include "asIncludes.h"
 
 class asTime : public wxObject {
- public:
-  asTime() = default;
+  public:
+    asTime() = default;
 
-  ~asTime() override = default;
+    ~asTime() override = default;
 
-  static double NowMJD(int timezone = 0);
+    static double NowMJD(int timezone = 0);
 
-  static Time NowTimeStruct(int timezone);
+    static Time NowTimeStruct(int timezone);
 
-  static wxDateTime NowWxDateTime(int timezone);
+    static wxDateTime NowWxDateTime(int timezone);
 
-  static wxString GetStringTime(double mjd, const wxString &format);
+    static wxString GetStringTime(double mjd, const wxString &format);
 
-  static wxString GetStringTime(const Time &date, const wxString &format);
+    static wxString GetStringTime(const Time &date, const wxString &format);
 
-  static wxString GetStringTime(double mjd, TimeFormat format = DD_MM_YYYY_hh_mm);
+    static wxString GetStringTime(double mjd, TimeFormat format = DD_MM_YYYY_hh_mm);
 
-  static wxString GetStringTime(const Time &date, TimeFormat format = DD_MM_YYYY_hh_mm);
+    static wxString GetStringTime(const Time &date, TimeFormat format = DD_MM_YYYY_hh_mm);
 
-  static double GetTimeFromString(const wxString &datestr, TimeFormat format = guess);
+    static double GetTimeFromString(const wxString &datestr, TimeFormat format = guess);
 
-  static bool IsLeapYear(int year);
+    static bool IsLeapYear(int year);
 
-  /** Transform a date to a MJD date
-   * \author David Burki
-   * \link http://www.xmission.com/~tknarr/code/Date.html
-   */
-  static double GetMJD(int year, int month = 1, int day = 1, int hour = 0, int minute = 0, int second = 0,
-                       int method = asUSE_NORMAL_METHOD);
+    /** Transform a date to a MJD date
+     * \author David Burki
+     * \link http://www.xmission.com/~tknarr/code/Date.html
+     */
+    static double GetMJD(int year, int month = 1, int day = 1, int hour = 0, int minute = 0, int second = 0,
+                         int method = asUSE_NORMAL_METHOD);
 
-  /** Transform a date to a MJD date
-   * \author David Burki
-   * \link http://www.xmission.com/~tknarr/code/Date.html
-   */
-  static double GetMJD(const Time &date, int method = asUSE_NORMAL_METHOD);
+    /** Transform a date to a MJD date
+     * \author David Burki
+     * \link http://www.xmission.com/~tknarr/code/Date.html
+     */
+    static double GetMJD(const Time &date, int method = asUSE_NORMAL_METHOD);
 
-  /** Transform a wxDateTime to a MJD date
-   * \author David Burki
-   * \link http://www.xmission.com/~tknarr/code/Date.html
-   */
-  static double GetMJD(wxDateTime &date, int method = asUSE_NORMAL_METHOD);
+    /** Transform a wxDateTime to a MJD date
+     * \author David Burki
+     * \link http://www.xmission.com/~tknarr/code/Date.html
+     */
+    static double GetMJD(wxDateTime &date, int method = asUSE_NORMAL_METHOD);
 
-  static wxDateTime GetWxDateTime(double mjd, int method = asUSE_NORMAL_METHOD);
+    static wxDateTime GetWxDateTime(double mjd, int method = asUSE_NORMAL_METHOD);
 
-  /** Transform a MJD into a time struct
-   * \author David Burki
-   * \link http://www.xmission.com/~tknarr/code/Date.html
-   */
-  static Time GetTimeStruct(double mjd, int method = asUSE_NORMAL_METHOD);
+    /** Transform a MJD into a time struct
+     * \author David Burki
+     * \link http://www.xmission.com/~tknarr/code/Date.html
+     */
+    static Time GetTimeStruct(double mjd, int method = asUSE_NORMAL_METHOD);
 
-  static Time GetTimeStruct(int year, int month, int day, int hour = 0, int minute = 0, int second = 0);
+    static Time GetTimeStruct(int year, int month, int day, int hour = 0, int minute = 0, int second = 0);
 
-  static int GetYear(double mjd, int method = asUSE_NORMAL_METHOD);
+    static int GetYear(double mjd, int method = asUSE_NORMAL_METHOD);
 
-  static int GetMonth(double mjd, int method = asUSE_NORMAL_METHOD);
+    static int GetMonth(double mjd, int method = asUSE_NORMAL_METHOD);
 
-  static int GetDay(double mjd, int method = asUSE_NORMAL_METHOD);
+    static int GetDay(double mjd, int method = asUSE_NORMAL_METHOD);
 
-  static int GetHour(double mjd, int method = asUSE_NORMAL_METHOD);
+    static int GetHour(double mjd, int method = asUSE_NORMAL_METHOD);
 
-  static int GetMinute(double mjd, int method = asUSE_NORMAL_METHOD);
+    static int GetMinute(double mjd, int method = asUSE_NORMAL_METHOD);
 
-  static int GetSecond(double mjd, int method = asUSE_NORMAL_METHOD);
+    static int GetSecond(double mjd, int method = asUSE_NORMAL_METHOD);
 
-  static double AddYear(double mjd);
+    static double AddYear(double mjd);
 
-  static double SubtractYear(double mjd);
+    static double SubtractYear(double mjd);
 
- protected:
-  static void TimeStructInit(Time &date);
+  protected:
+    static void TimeStructInit(Time &date);
 
-  static Time TimeTmToTimeStruct(const struct tm &date);
+    static Time TimeTmToTimeStruct(const struct tm &date);
 
-  static double TimeTmToMJD(const struct tm &date);
+    static double TimeTmToMJD(const struct tm &date);
 };
 
 #endif

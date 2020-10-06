@@ -30,21 +30,22 @@
 #define AS_PREDICTOR_OPER_GFS_FORECAST_H
 
 #include "asIncludes.h"
-
 #include "asPredictorOper.h"
 
 class asArea;
 
 class asPredictorOperGfsForecast : public asPredictorOper {
- public:
-  asPredictorOperGfsForecast(const wxString &dataId);
+  public:
+    asPredictorOperGfsForecast(const wxString &dataId);
 
-  virtual ~asPredictorOperGfsForecast();
+    virtual ~asPredictorOperGfsForecast();
 
-  bool Init();
+    bool Init();
 
- protected:
- private:
+    wxString GetDirStructure();
+
+  protected:
+  private:
 };
 
 #endif

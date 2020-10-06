@@ -36,80 +36,80 @@ asScoreCRPSHersbachDecomp::asScoreCRPSHersbachDecomp()
 asScoreCRPSHersbachDecomp::~asScoreCRPSHersbachDecomp() {}
 
 float asScoreCRPSHersbachDecomp::Assess(float obs, const a1f &values, int nbElements) const {
-  wxLogError(_("The Hersbach decomposition of the CRPS cannot provide a single score value !"));
-  return NaNf;
+    wxLogError(_("The Hersbach decomposition of the CRPS cannot provide a single score value !"));
+    return NaNf;
 }
 
 a1f asScoreCRPSHersbachDecomp::AssessOnArray(float obs, const a1f &values, int nbElements) const {
-  wxASSERT(values.size() > 1);
-  wxASSERT(nbElements > 0);
+    wxASSERT(values.size() > 1);
+    wxASSERT(nbElements > 0);
 
-  // Create the container to sort the data
-  a1f x = values;
+    // Create the container to sort the data
+    a1f x = values;
 
-  // NaNs are not allowed as it messes up the ranks
-  if (asHasNaN(&x[0], &x[nbElements - 1]) || asIsNaN(obs)) {
-    wxLogError(_("NaNs were found in the CRPS Hersbach decomposition processing function. Cannot continue."));
-    return a2f();
-  }
-
-  // Sort the forcast array
-  asSortArray(&x[0], &x[nbElements - 1], Asc);
-
-  // Containers
-  int binsNbs = nbElements + 1;
-  a1f alpha = a1f::Zero(binsNbs);
-  a1f beta = a1f::Zero(binsNbs);
-  a1f g = a1f::Zero(binsNbs);
-
-  // Predictive sampling completed by 0 and N+1 elements
-  int binsNbsExtra = nbElements + 2;
-  a1f z = a1f::Zero(binsNbsExtra);
-  z[0] = x[0];
-  z.segment(1, nbElements) = x;
-  z[binsNbsExtra - 1] = x[nbElements - 1];
-
-  if (obs < z[0]) {
-    z[0] = obs;
-  }
-
-  if (obs > z[binsNbsExtra - 1]) {
-    z[binsNbsExtra - 1] = obs;
-  }
-
-  // Loop on bins (Hersbach, Eq 26)
-  for (int k = 0; k < binsNbs; k++) {
-    g[k] = z[k + 1] - z[k];
-    if (obs > z(k + 1)) {
-      alpha[k] = g[k];
-      beta[k] = 0;
-    } else if ((obs <= z[k + 1]) && (obs >= z[k])) {
-      alpha[k] = obs - z[k];
-      beta[k] = z[k + 1] - obs;
-    } else {
-      alpha[k] = 0;
-      beta[k] = g[k];
+    // NaNs are not allowed as it messes up the ranks
+    if (asHasNaN(&x[0], &x[nbElements - 1]) || asIsNaN(obs)) {
+        wxLogError(_("NaNs were found in the CRPS Hersbach decomposition processing function. Cannot continue."));
+        return a2f();
     }
-  }
 
-  // Outliers cases (Hersbach, Eq 27)
-  if (obs == z[0]) {
-    alpha = a1f::Zero(binsNbs);
-    beta[0] = z[1] - obs;
-  } else if (obs == z[binsNbsExtra - 1]) {
-    alpha[binsNbs - 1] = obs - z[binsNbs - 1];
-    beta = a1f::Zero(binsNbs);
-  }
+    // Sort the forcast array
+    asSortArray(&x[0], &x[nbElements - 1], Asc);
 
-  // Concatenate the results
-  a1f result(3 * binsNbs);
-  result.segment(0, binsNbs) = alpha;
-  result.segment(binsNbs, binsNbs) = beta;
-  result.segment(2 * binsNbs, binsNbs) = g;
+    // Containers
+    int binsNbs = nbElements + 1;
+    a1f alpha = a1f::Zero(binsNbs);
+    a1f beta = a1f::Zero(binsNbs);
+    a1f g = a1f::Zero(binsNbs);
 
-  return result;
+    // Predictive sampling completed by 0 and N+1 elements
+    int binsNbsExtra = nbElements + 2;
+    a1f z = a1f::Zero(binsNbsExtra);
+    z[0] = x[0];
+    z.segment(1, nbElements) = x;
+    z[binsNbsExtra - 1] = x[nbElements - 1];
+
+    if (obs < z[0]) {
+        z[0] = obs;
+    }
+
+    if (obs > z[binsNbsExtra - 1]) {
+        z[binsNbsExtra - 1] = obs;
+    }
+
+    // Loop on bins (Hersbach, Eq 26)
+    for (int k = 0; k < binsNbs; k++) {
+        g[k] = z[k + 1] - z[k];
+        if (obs > z(k + 1)) {
+            alpha[k] = g[k];
+            beta[k] = 0;
+        } else if ((obs <= z[k + 1]) && (obs >= z[k])) {
+            alpha[k] = obs - z[k];
+            beta[k] = z[k + 1] - obs;
+        } else {
+            alpha[k] = 0;
+            beta[k] = g[k];
+        }
+    }
+
+    // Outliers cases (Hersbach, Eq 27)
+    if (obs == z[0]) {
+        alpha = a1f::Zero(binsNbs);
+        beta[0] = z[1] - obs;
+    } else if (obs == z[binsNbsExtra - 1]) {
+        alpha[binsNbs - 1] = obs - z[binsNbs - 1];
+        beta = a1f::Zero(binsNbs);
+    }
+
+    // Concatenate the results
+    a1f result(3 * binsNbs);
+    result.segment(0, binsNbs) = alpha;
+    result.segment(binsNbs, binsNbs) = beta;
+    result.segment(2 * binsNbs, binsNbs) = g;
+
+    return result;
 }
 
 bool asScoreCRPSHersbachDecomp::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
-  return true;
+    return true;
 }

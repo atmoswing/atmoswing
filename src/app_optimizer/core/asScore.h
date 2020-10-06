@@ -32,130 +32,131 @@
 #include "asIncludes.h"
 
 class asScore : public wxObject {
- public:
-  enum Score  //!< Enumaration of scores
-  { Undefined,
-    CRPSS,                    // CRPS skill score using the approximation with the rectangle method
-    CRPSAR,                   // approximation with the rectangle method
-    CRPSEP,                   // exact by means of primitive
-    CRPSaccuracyAR,           // approximation with the rectangle method (Bontron, 2004)
-    CRPSaccuracyEP,           // exact by means of primitive (Bontron, 2004)
-    CRPSsharpnessAR,          // approximation with the rectangle method (Bontron, 2004)
-    CRPSsharpnessEP,          // exact by means of primitive (Bontron, 2004)
-    CRPSHersbachDecomp,       // Hersbach (2000) decomposition of the CRPS
-    CRPSreliability,          // reliability of the CRPS (Hersbach, 2000)
-    CRPSpotential,            // CRPS potential (Hersbach, 2000)
-    DF0,                      // absolute difference of the frequency of null precipitations
-    ContingencyTable,         // Contingency table
-    PC,                       // Proportion correct
-    TS,                       // Threat score
-    BIAS,                     // Bias
-    FARA,                     // False alarm ratio
-    H,                        // Hit rate
-    F,                        // False alarm rate
-    HSS,                      // Heidke skill score
-    PSS,                      // Pierce skill score
-    GSS,                      // Gilbert skill score
-    MAE,                      // Mean absolute error
-    MSE,                      // Mean squared error
-    RMSE,                     // Root mean squared error
-    BS,                       // Brier score
-    BSS,                      // Brier skill score
-    SEEPS,                    // Stable equitable error in probability space
-    RankHistogram,            // The Verification Rank Histogram (Talagrand Diagram)
-    RankHistogramReliability  // Reliability of the Verification Rank Histogram (Talagrand Diagram)
-  };
+  public:
+    enum Score  //!< Enumaration of scores
+    {
+        Undefined,
+        CRPSS,                    // CRPS skill score using the approximation with the rectangle method
+        CRPSAR,                   // approximation with the rectangle method
+        CRPSEP,                   // exact by means of primitive
+        CRPSaccuracyAR,           // approximation with the rectangle method (Bontron, 2004)
+        CRPSaccuracyEP,           // exact by means of primitive (Bontron, 2004)
+        CRPSsharpnessAR,          // approximation with the rectangle method (Bontron, 2004)
+        CRPSsharpnessEP,          // exact by means of primitive (Bontron, 2004)
+        CRPSHersbachDecomp,       // Hersbach (2000) decomposition of the CRPS
+        CRPSreliability,          // reliability of the CRPS (Hersbach, 2000)
+        CRPSpotential,            // CRPS potential (Hersbach, 2000)
+        DF0,                      // absolute difference of the frequency of null precipitations
+        ContingencyTable,         // Contingency table
+        PC,                       // Proportion correct
+        TS,                       // Threat score
+        BIAS,                     // Bias
+        FARA,                     // False alarm ratio
+        H,                        // Hit rate
+        F,                        // False alarm rate
+        HSS,                      // Heidke skill score
+        PSS,                      // Pierce skill score
+        GSS,                      // Gilbert skill score
+        MAE,                      // Mean absolute error
+        MSE,                      // Mean squared error
+        RMSE,                     // Root mean squared error
+        BS,                       // Brier score
+        BSS,                      // Brier skill score
+        SEEPS,                    // Stable equitable error in probability space
+        RankHistogram,            // The Verification Rank Histogram (Talagrand Diagram)
+        RankHistogramReliability  // Reliability of the Verification Rank Histogram (Talagrand Diagram)
+    };
 
-  asScore();
+    asScore();
 
-  asScore(Score score, const wxString &name, const wxString &fullname, Order order, float scaleBest = NaNf,
-          float scaleWorst = NaNf, bool usesClimatology = false, bool singleValue = true);
+    asScore(Score score, const wxString &name, const wxString &fullname, Order order, float scaleBest = NaNf,
+            float scaleWorst = NaNf, bool usesClimatology = false, bool singleValue = true);
 
-  ~asScore() override = default;
+    ~asScore() override = default;
 
-  static asScore *GetInstance(Score scoreEnums);
+    static asScore *GetInstance(Score scoreEnums);
 
-  static asScore *GetInstance(const wxString &scoreString);
+    static asScore *GetInstance(const wxString &scoreString);
 
-  virtual bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) = 0;
+    virtual bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) = 0;
 
-  virtual float Assess(float obs, const a1f &values, int nbElements) const = 0;
+    virtual float Assess(float obs, const a1f &values, int nbElements) const = 0;
 
-  virtual a1f AssessOnArray(float obs, const a1f &values, int nbElements) const;
+    virtual a1f AssessOnArray(float obs, const a1f &values, int nbElements) const;
 
-  bool CheckObservedValue(float obs) const;
+    bool CheckObservedValue(float obs) const;
 
-  bool CheckVectorLength(const a1f &values, int nbElements) const;
+    bool CheckVectorLength(const a1f &values, int nbElements) const;
 
-  int CleanNans(const a1f &valuesIn, a1f &valuesOut, int nbElements) const;
+    int CleanNans(const a1f &valuesIn, a1f &valuesOut, int nbElements) const;
 
-  wxString GetName() const {
-    return m_name;
-  }
+    wxString GetName() const {
+        return m_name;
+    }
 
-  wxString GetFullName() const {
-    return m_fullName;
-  }
+    wxString GetFullName() const {
+        return m_fullName;
+    }
 
-  Order GetOrder() const {
-    return m_order;
-  }
+    Order GetOrder() const {
+        return m_order;
+    }
 
-  float GetScoreClimatology() const {
-    return m_scoreClimatology;
-  }
+    float GetScoreClimatology() const {
+        return m_scoreClimatology;
+    }
 
-  void SetScoreClimatology(float val) {
-    m_scoreClimatology = val;
-  }
+    void SetScoreClimatology(float val) {
+        m_scoreClimatology = val;
+    }
 
-  bool GetOnMean() const {
-    return m_onMean;
-  }
+    bool GetOnMean() const {
+        return m_onMean;
+    }
 
-  void SetOnMean(bool val) {
-    m_onMean = val;
-  }
+    void SetOnMean(bool val) {
+        m_onMean = val;
+    }
 
-  float GetThreshold() const {
-    return m_threshold;
-  }
+    float GetThreshold() const {
+        return m_threshold;
+    }
 
-  void SetThreshold(float val) {
-    m_threshold = val;
-  }
+    void SetThreshold(float val) {
+        m_threshold = val;
+    }
 
-  float GetQuantile() const {
-    return m_quantile;
-  }
+    float GetQuantile() const {
+        return m_quantile;
+    }
 
-  void SetQuantile(float val) {
-    m_quantile = val;
-  }
+    void SetQuantile(float val) {
+        m_quantile = val;
+    }
 
-  bool UsesClimatology() const {
-    return m_usesClimatology;
-  }
+    bool UsesClimatology() const {
+        return m_usesClimatology;
+    }
 
-  bool SingleValue() const {
-    return m_singleValue;
-  }
+    bool SingleValue() const {
+        return m_singleValue;
+    }
 
- protected:
-  Score m_score;
-  wxString m_name;
-  wxString m_fullName;
-  Order m_order;
-  float m_scaleBest;
-  float m_scaleWorst;
-  bool m_usesClimatology;
-  bool m_singleValue;
-  bool m_onMean;
-  float m_scoreClimatology;
-  float m_threshold;
-  float m_quantile;
+  protected:
+    Score m_score;
+    wxString m_name;
+    wxString m_fullName;
+    Order m_order;
+    float m_scaleBest;
+    float m_scaleWorst;
+    bool m_usesClimatology;
+    bool m_singleValue;
+    bool m_onMean;
+    float m_scoreClimatology;
+    float m_threshold;
+    float m_quantile;
 
- private:
+  private:
 };
 
 #endif

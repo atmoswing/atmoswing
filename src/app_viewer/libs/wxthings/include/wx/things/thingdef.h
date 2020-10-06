@@ -27,9 +27,10 @@
 // For non-Unix systems (i.e. when building without a configure script),
 // users of this component can use the following macro to check if the
 // current version is at least major.minor.release
-#define wxCHECK_WXTHINGS_VERSION(major, minor, release)                                                           \
-  (WXTHINGS_MAJOR_VERSION > (major) || (WXTHINGS_MAJOR_VERSION == (major) && WXTHINGS_MINOR_VERSION > (minor)) || \
-   (WXTHINGS_MAJOR_VERSION == (major) && WXTHINGS_MINOR_VERSION == (minor) && WXTHINGS_RELEASE_VERSION >= (release)))
+#define wxCHECK_WXTHINGS_VERSION(major, minor, release)                                                             \
+    (WXTHINGS_MAJOR_VERSION > (major) || (WXTHINGS_MAJOR_VERSION == (major) && WXTHINGS_MINOR_VERSION > (minor)) || \
+     (WXTHINGS_MAJOR_VERSION == (major) && WXTHINGS_MINOR_VERSION == (minor) &&                                     \
+      WXTHINGS_RELEASE_VERSION >= (release)))
 
 // ----------------------------------------------------------------------------
 // DLLIMPEXP macros

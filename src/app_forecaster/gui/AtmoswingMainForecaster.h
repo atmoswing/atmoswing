@@ -34,17 +34,17 @@
 #include "asIncludes.h"
 
 class AtmoswingFrameForecaster : public asFrameMain {
- public:
-  explicit AtmoswingFrameForecaster(wxFrame *frame);
+  public:
+    explicit AtmoswingFrameForecaster(wxFrame *frame);
 
-  ~AtmoswingFrameForecaster() override;
+    ~AtmoswingFrameForecaster() override;
 
- private:
-  virtual void OnClose(wxCloseEvent &event);
+  private:
+    virtual void OnClose(wxCloseEvent &event);
 
-  virtual void OnQuit(wxCommandEvent &event);
+    virtual void OnQuit(wxCommandEvent &event);
 
-  void SetDefaultOptions();
+    void SetDefaultOptions();
 };
 
 #endif

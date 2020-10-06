@@ -35,78 +35,78 @@
 class asForecastManager;
 
 class asFramePlotDistributions : public asFramePlotDistributionsVirutal {
- public:
-  asFramePlotDistributions(wxWindow *parent, int methodRow, int forecastRow, asForecastManager *forecastManager,
-                           wxWindowID id = asWINDOW_PLOTS_DISTRIBUTIONS);
+  public:
+    asFramePlotDistributions(wxWindow *parent, int methodRow, int forecastRow, asForecastManager *forecastManager,
+                             wxWindowID id = asWINDOW_PLOTS_DISTRIBUTIONS);
 
-  ~asFramePlotDistributions() override;
+    ~asFramePlotDistributions() override;
 
-  void Init();
+    void Init();
 
-  bool Plot();
+    bool Plot();
 
-  bool PlotPredictands();
+    bool PlotPredictands();
 
-  bool PlotCriteria();
+    bool PlotCriteria();
 
- protected:
- private:
-  enum PlotPredictandsData {
-    ClassicQuantiles,
-    AllAnalogsPoints,
-    AllAnalogsCurve,
-    BestAnalogs10Points,
-    BestAnalogs10Curve,
-    BestAnalogs5Points,
-    BestAnalogs5Curve,
-    ClassicReturnPeriod,
-    AllReturnPeriods
-  };
+  protected:
+  private:
+    enum PlotPredictandsData {
+        ClassicQuantiles,
+        AllAnalogsPoints,
+        AllAnalogsCurve,
+        BestAnalogs10Points,
+        BestAnalogs10Curve,
+        BestAnalogs5Points,
+        BestAnalogs5Curve,
+        ClassicReturnPeriod,
+        AllReturnPeriods
+    };
 
-  asPanelPlot *m_panelPlotPredictands;
-  asPanelPlot *m_panelPlotCriteria;
-  asForecastManager *m_forecastManager;
-  int m_selectedMethod;
-  int m_selectedForecast;
-  int m_selectedStation;
-  int m_selectedDate;
-  int m_xmaxPredictands;
+    asPanelPlot *m_panelPlotPredictands;
+    asPanelPlot *m_panelPlotCriteria;
+    asForecastManager *m_forecastManager;
+    int m_selectedMethod;
+    int m_selectedForecast;
+    int m_selectedStation;
+    int m_selectedDate;
+    int m_xmaxPredictands;
 
-  void RebuildChoiceForecast();
+    void RebuildChoiceForecast();
 
-  void InitPredictandsCheckListBox();
+    void InitPredictandsCheckListBox();
 
-  void InitPredictandsPlotCtrl();
+    void InitPredictandsPlotCtrl();
 
-  void InitCriteriaPlotCtrl();
+    void InitCriteriaPlotCtrl();
 
-  void PlotAllReturnPeriods();
+    void PlotAllReturnPeriods();
 
-  void PlotReturnPeriod(int returnPeriod);
+    void PlotReturnPeriod(int returnPeriod);
 
-  void PlotAllAnalogsPoints();
+    void PlotAllAnalogsPoints();
 
-  void PlotAllAnalogsCurve();
+    void PlotAllAnalogsCurve();
 
-  void PlotBestAnalogsPoints(int analogsNb);
+    void PlotBestAnalogsPoints(int analogsNb);
 
-  void PlotBestAnalogsCurve(int analogsNb);
+    void PlotBestAnalogsCurve(int analogsNb);
 
-  void PlotClassicQuantiles();
+    void PlotClassicQuantiles();
 
-  void PlotCriteriaCurve();
+    void PlotCriteriaCurve();
 
-  void OnChoiceForecastChange(wxCommandEvent &event) override;
+    void OnChoiceForecastChange(wxCommandEvent &event) override;
 
-  void OnChoiceStationChange(wxCommandEvent &event) override;
+    void OnChoiceStationChange(wxCommandEvent &event) override;
 
-  void OnChoiceDateChange(wxCommandEvent &event) override;
+    void OnChoiceDateChange(wxCommandEvent &event) override;
 
-  void OnTocSelectionChange(wxCommandEvent &event) override;
+    void OnTocSelectionChange(wxCommandEvent &event) override;
 
-  void OnClose(wxCloseEvent &evt);
+    void OnClose(wxCloseEvent &evt);
 
-  DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

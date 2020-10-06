@@ -30,43 +30,42 @@
 #define AS_LOG_H
 
 #include "asIncludes.h"
-
 #include "wx/log.h"
 
 class wxFFile;
 
 class asLog : public wxObject {
- public:
-  enum LogTarget { File, Screen, Both };
+  public:
+    enum LogTarget { File, Screen, Both };
 
-  asLog();
+    asLog();
 
-  ~asLog() override;
+    ~asLog() override;
 
-  void ClearCurrentTarget();
+    void ClearCurrentTarget();
 
-  void CreateFile(const wxString &fileName);
+    void CreateFile(const wxString &fileName);
 
-  void CreateFileAtPath(const wxString &fullPath);
+    void CreateFileAtPath(const wxString &fullPath);
 
-  void CreateFileOnly(const wxString &fileName);
+    void CreateFileOnly(const wxString &fileName);
 
-  void CreateFileOnlyAtPath(const wxString &fullPath);
+    void CreateFileOnlyAtPath(const wxString &fullPath);
 
-  void SetLevel(int val);
+    void SetLevel(int val);
 
-  static void PrintToConsole(const wxString &msg);
+    static void PrintToConsole(const wxString &msg);
 
- protected:
- private:
-  wxFFile *m_logFile;
-  wxLogChain *m_logChain;
+  protected:
+  private:
+    wxFFile *m_logFile;
+    wxLogChain *m_logChain;
 };
 
 #if wxUSE_GUI
 class asLogGui : public wxLogGui {
- protected:
-  void DoLogRecord(wxLogLevel level, const wxString &msg, const wxLogRecordInfo &info) override;
+  protected:
+    void DoLogRecord(wxLogLevel level, const wxString &msg, const wxLogRecordInfo &info) override;
 };
 #endif
 

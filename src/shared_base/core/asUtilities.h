@@ -29,10 +29,10 @@
 #ifndef AS_UTILITIES_H
 #define AS_UTILITIES_H
 
-#include "asIncludes.h"
-
 #include <ctime>
 #include <random>
+
+#include "asIncludes.h"
 
 bool asRemoveDir(const wxString &path);
 

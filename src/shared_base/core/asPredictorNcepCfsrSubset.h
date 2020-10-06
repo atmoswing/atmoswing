@@ -34,19 +34,19 @@
 class asArea;
 
 class asPredictorNcepCfsrSubset : public asPredictor {
- public:
-  explicit asPredictorNcepCfsrSubset(const wxString &dataId);
+  public:
+    explicit asPredictorNcepCfsrSubset(const wxString &dataId);
 
-  ~asPredictorNcepCfsrSubset() override = default;
+    ~asPredictorNcepCfsrSubset() override = default;
 
-  bool Init() override;
+    bool Init() override;
 
- protected:
-  void ListFiles(asTimeArray &timeArray) override;
+  protected:
+    void ListFiles(asTimeArray &timeArray) override;
 
-  double ConvertToMjd(double timeValue, double refValue) const override;
+    void ConvertToMjd(a1d &time, double refValue) const override;
 
- private:
+  private:
 };
 
 #endif

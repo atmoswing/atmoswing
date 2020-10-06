@@ -40,12 +40,9 @@ include(define_common_libraries)
 if (MINGW OR MSYS)
     set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
 endif ()
-ExternalProject_Add(googlebenchmark
-        GIT_REPOSITORY https://github.com/google/benchmark
-        UPDATE_COMMAND ""
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBENCHMARK_DOWNLOAD_DEPENDENCIES=1 -Dgtest_force_shared_crt=ON
-        BUILD_COMMAND cmake --build . --config ${CMAKE_BUILD_TYPE}
-        )
+set(BENCHMARK_DOWNLOAD_DEPENDENCIES ON)
+FetchContent_MakeAvailable(googlebenchmark)
+
 
 ##### DECLARE EXECUTABLE
 
@@ -77,7 +74,6 @@ endif()
 
 ##### LINKING
 
-add_dependencies(atmoswing-benchmark googlebenchmark)
 add_dependencies(atmoswing-benchmark asbase)
 add_dependencies(atmoswing-benchmark asprocessing)
 target_link_libraries(atmoswing-benchmark asbase)

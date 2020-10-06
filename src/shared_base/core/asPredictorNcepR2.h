@@ -35,19 +35,19 @@
 class asArea;
 
 class asPredictorNcepR2 : public asPredictor {
- public:
-  explicit asPredictorNcepR2(const wxString &dataId);
+  public:
+    explicit asPredictorNcepR2(const wxString &dataId);
 
-  ~asPredictorNcepR2() override = default;
+    ~asPredictorNcepR2() override = default;
 
-  bool Init() override;
+    bool Init() override;
 
- protected:
-  void ListFiles(asTimeArray &timeArray) override;
+  protected:
+    void ListFiles(asTimeArray &timeArray) override;
 
-  double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
+    void ConvertToMjd(a1d &time, double refValue = NaNd) const override;
 
- private:
+  private:
 };
 
 #endif

@@ -25,46 +25,45 @@
  * Portions Copyright 2016-2019 Pascal Horton, University of Bern.
  */
 
+#include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include <gtest/gtest.h>
 #include "asAreaCompGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
 TEST(PredictorCustomUnilNR1, GetCorrectPredictors) {
-  asPredictor *predictor;
+    asPredictor *predictor;
 
-  predictor = asPredictor::GetInstance("Custom_Unil_NR1", "hgt", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
-  wxDELETE(predictor);
+    predictor = asPredictor::GetInstance("Custom_Unil_NR1", "hgt", ".");
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+    wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("Custom_Unil_NR1", "air", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
-  wxDELETE(predictor);
+    predictor = asPredictor::GetInstance("Custom_Unil_NR1", "air", ".");
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+    wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("Custom_Unil_NR1", "omega", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
-  wxDELETE(predictor);
+    predictor = asPredictor::GetInstance("Custom_Unil_NR1", "omega", ".");
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+    wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("Custom_Unil_NR1", "rhum", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
-  wxDELETE(predictor);
+    predictor = asPredictor::GetInstance("Custom_Unil_NR1", "rhum", ".");
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+    wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("Custom_Unil_NR1", "shum", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
-  wxDELETE(predictor);
+    predictor = asPredictor::GetInstance("Custom_Unil_NR1", "shum", ".");
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+    wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("Custom_Unil_NR1", "uwnd", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
-  wxDELETE(predictor);
+    predictor = asPredictor::GetInstance("Custom_Unil_NR1", "uwnd", ".");
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+    wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("Custom_Unil_NR1", "vwnd", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
-  wxDELETE(predictor);
+    predictor = asPredictor::GetInstance("Custom_Unil_NR1", "vwnd", ".");
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+    wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("Custom_Unil_NR1", "pr_wtr", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
-  wxDELETE(predictor);
-
+    predictor = asPredictor::GetInstance("Custom_Unil_NR1", "pr_wtr", ".");
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+    wxDELETE(predictor);
 }

@@ -33,23 +33,23 @@
 #include "asPredictand.h"
 
 class asPredictandTemperature : public asPredictand {
- public:
-  asPredictandTemperature(Parameter dataParameter, TemporalResolution dataTemporalResolution,
-                          SpatialAggregation dataSpatialAggregation);
+  public:
+    asPredictandTemperature(Parameter dataParameter, TemporalResolution dataTemporalResolution,
+                            SpatialAggregation dataSpatialAggregation);
 
-  ~asPredictandTemperature() override = default;
+    ~asPredictandTemperature() override = default;
 
-  bool Load(const wxString &filePath) override;
+    bool Load(const wxString &filePath) override;
 
-  bool Save(const wxString &destinationDir = wxEmptyString) const override;
+    bool Save(const wxString &destinationDir = wxEmptyString) const override;
 
-  bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir = wxEmptyString,
-                         const wxString &patternDir = wxEmptyString,
-                         const wxString &destinationDir = wxEmptyString) override;
+    bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir = wxEmptyString,
+                           const wxString &patternDir = wxEmptyString,
+                           const wxString &destinationDir = wxEmptyString) override;
 
- protected:
- private:
-  bool InitContainers();
+  protected:
+  private:
+    bool InitContainers();
 };
 
 #endif

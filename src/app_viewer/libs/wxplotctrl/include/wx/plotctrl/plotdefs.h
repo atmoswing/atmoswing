@@ -28,11 +28,11 @@
 // For non-Unix systems (i.e. when building without a configure script),
 // users of this component can use the following macro to check if the
 // current version is at least major.minor.release
-#define wxCHECK_PLOTCTRL_VERSION(major, minor, release)                           \
-  (wxPLOTCTRL_MAJOR_VERSION > (major) ||                                          \
-   (wxPLOTCTRL_MAJOR_VERSION == (major) && wxPLOTCTRL_MINOR_VERSION > (minor)) || \
-   (wxPLOTCTRL_MAJOR_VERSION == (major) && wxPLOTCTRL_MINOR_VERSION == (minor) && \
-    wxPLOTCTRL_RELEASE_VERSION >= (release)))
+#define wxCHECK_PLOTCTRL_VERSION(major, minor, release)                             \
+    (wxPLOTCTRL_MAJOR_VERSION > (major) ||                                          \
+     (wxPLOTCTRL_MAJOR_VERSION == (major) && wxPLOTCTRL_MINOR_VERSION > (minor)) || \
+     (wxPLOTCTRL_MAJOR_VERSION == (major) && wxPLOTCTRL_MINOR_VERSION == (minor) && \
+      wxPLOTCTRL_RELEASE_VERSION >= (release)))
 
 // ----------------------------------------------------------------------------
 // DLLIMPEXP macros
@@ -56,15 +56,15 @@
 
 // Check if value is >= min_val and <= max_val
 #define wxPCHECK_MINMAX_RET(val, min_val, max_val, msg) \
-  wxCHECK_RET((int(val) >= int(min_val)) && (int(val) <= int(max_val)), msg)
+    wxCHECK_RET((int(val) >= int(min_val)) && (int(val) <= int(max_val)), msg)
 
 #define wxPCHECK_MINMAX_MSG(val, min_val, max_val, ret, msg) \
-  wxCHECK_MSG((int(val) >= int(min_val)) && (int(val) <= int(max_val)), ret, msg)
+    wxCHECK_MSG((int(val) >= int(min_val)) && (int(val) <= int(max_val)), ret, msg)
 
 #define RINT(x) (int((x) >= 0 ? ((x) + 0.5) : ((x)-0.5)))
 
 #define LONG_TO_WXCOLOUR(c) \
-  wxColour((unsigned char)((c >> 16) & 0xFF), (unsigned char)((c >> 8) & 0xFF), (unsigned char)((c)&0xFF))
+    wxColour((unsigned char)((c >> 16) & 0xFF), (unsigned char)((c >> 8) & 0xFF), (unsigned char)((c)&0xFF))
 #define WXCOLOUR_TO_LONG(c) ((c.Red() << 16) | (c.Green() << 8) | (c.Blue()))
 
 #define WXPC_HASBIT(var, mask) (((var) & (mask)) != 0)
@@ -91,7 +91,7 @@
 
 #if !wxCHECK_VERSION(2, 5, 0)
 bool WXRECT2DDOUBLE_EQUAL(const wxRect2DDouble &r1, const wxRect2DDouble &r2) {
-  return (r1.m_x == r1.m_x) && (r1.m_y == r1.m_y) && (r1.m_width == r1.m_width) && (r1.m_height == r1.m_height);
+    return (r1.m_x == r1.m_x) && (r1.m_y == r1.m_y) && (r1.m_width == r1.m_width) && (r1.m_height == r1.m_height);
 }
 #else
 #define WXRECT2DDOUBLE_EQUAL(r1, r2) ((r1) == (r2))

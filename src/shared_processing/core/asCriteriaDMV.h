@@ -32,15 +32,15 @@
 #include "asIncludes.h"
 
 class asCriteriaDMV : public asCriteria {
- public:
-  asCriteriaDMV();
+  public:
+    asCriteriaDMV();
 
-  ~asCriteriaDMV() override;
+    ~asCriteriaDMV() override;
 
-  float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
+    float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
 
- protected:
- private:
+  protected:
+  private:
 };
 
 #endif

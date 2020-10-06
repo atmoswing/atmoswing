@@ -33,22 +33,23 @@
 #include <wx/cmdline.h>
 #include <wx/snglinst.h>
 #include <wx/socket.h>
+
 #include "asIncludes.h"
 
 class asThreadsManager;
 
 class AtmoswingAppViewer : public wxApp {
- public:
-  bool OnInit() override;
+  public:
+    bool OnInit() override;
 
-  int OnExit() override;
+    int OnExit() override;
 
-  void OnInitCmdLine(wxCmdLineParser &parser) override;
+    void OnInitCmdLine(wxCmdLineParser &parser) override;
 
-  bool OnCmdLineParsed(wxCmdLineParser &parser) override;
+    bool OnCmdLineParsed(wxCmdLineParser &parser) override;
 
- private:
-  wxSingleInstanceChecker *m_singleInstanceChecker;
+  private:
+    wxSingleInstanceChecker *m_singleInstanceChecker;
 };
 
 DECLARE_APP(AtmoswingAppViewer);

@@ -33,58 +33,58 @@
 class asPredictor;
 
 class asCriteria : public wxObject {
- public:
-  asCriteria(const wxString &name, const wxString &fullname, Order order);
+  public:
+    asCriteria(const wxString &name, const wxString &fullname, Order order);
 
-  static asCriteria *GetInstance(const wxString &criteriaString);
+    static asCriteria *GetInstance(const wxString &criteriaString);
 
-  ~asCriteria() override;
+    ~asCriteria() override;
 
-  virtual float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const = 0;
+    virtual float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const = 0;
 
-  void SetDataRange(const asPredictor *data);
+    void SetDataRange(const asPredictor *data);
 
-  void SetDataRange(float minValue, float maxValue);
+    void SetDataRange(float minValue, float maxValue);
 
-  void CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2);
+    void CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2);
 
-  static a2f GetGauss2D(int nY, int nX);
+    static a2f GetGauss2D(int nY, int nX);
 
-  wxString GetName() const {
-    return m_name;
-  }
+    wxString GetName() const {
+        return m_name;
+    }
 
-  wxString GetFullName() const {
-    return m_fullName;
-  }
+    wxString GetFullName() const {
+        return m_fullName;
+    }
 
-  Order GetOrder() const {
-    return m_order;
-  }
+    Order GetOrder() const {
+        return m_order;
+    }
 
-  int GetMinPointsNb() const {
-    return m_minPointsNb;
-  }
+    int GetMinPointsNb() const {
+        return m_minPointsNb;
+    }
 
-  bool CanUseInline() const {
-    return m_canUseInline;
-  }
+    bool CanUseInline() const {
+        return m_canUseInline;
+    }
 
-  bool CheckNans() const {
-    return m_checkNaNs;
-  }
+    bool CheckNans() const {
+        return m_checkNaNs;
+    }
 
- protected:
-  wxString m_name;
-  wxString m_fullName;
-  Order m_order;
-  int m_minPointsNb;
-  float m_scaleBest;
-  float m_scaleWorst;
-  bool m_canUseInline;
-  bool m_checkNaNs;
+  protected:
+    wxString m_name;
+    wxString m_fullName;
+    Order m_order;
+    int m_minPointsNb;
+    float m_scaleBest;
+    float m_scaleWorst;
+    bool m_canUseInline;
+    bool m_checkNaNs;
 
- private:
+  private:
 };
 
 #endif

@@ -33,6 +33,7 @@
 #include <wx/cmdline.h>
 #include <wx/snglinst.h>
 #include <wx/socket.h>
+
 #include "asIncludes.h"
 
 #if wxUSE_GUI
@@ -43,29 +44,29 @@ class AtmoswingAppForecaster : public wxApp
 class AtmoswingAppForecaster : public wxAppConsole
 #endif
 {
- public:
-  bool OnInit() override;
+  public:
+    bool OnInit() override;
 
-  int OnRun() override;
+    int OnRun() override;
 
-  int OnExit() override;
+    int OnExit() override;
 
-  void OnInitCmdLine(wxCmdLineParser &parser) override;
+    void OnInitCmdLine(wxCmdLineParser &parser) override;
 
-  bool InitLog();
+    bool InitLog();
 
-  bool SetUseAsCmdLine();
+    bool SetUseAsCmdLine();
 
-  bool OnCmdLineParsed(wxCmdLineParser &parser) override;
+    bool OnCmdLineParsed(wxCmdLineParser &parser) override;
 
- private:
-  bool m_doConfig;
-  bool m_doForecast;
-  bool m_doForecastPast;
-  double m_forecastDate;
-  int m_forecastPastDays;
+  private:
+    bool m_doConfig;
+    bool m_doForecast;
+    bool m_doForecastPast;
+    double m_forecastDate;
+    int m_forecastPastDays;
 #if wxUSE_GUI
-  wxSingleInstanceChecker *m_singleInstanceChecker;
+    wxSingleInstanceChecker *m_singleInstanceChecker;
 #endif
 };
 

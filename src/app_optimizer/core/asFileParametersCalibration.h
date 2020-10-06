@@ -33,17 +33,17 @@
 #include "asIncludes.h"
 
 class asFileParametersCalibration : public asFileParameters {
- public:
-  asFileParametersCalibration(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
+  public:
+    asFileParametersCalibration(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
-  virtual ~asFileParametersCalibration();
+    virtual ~asFileParametersCalibration();
 
-  bool EditRootElement();
+    bool EditRootElement();
 
-  bool CheckRootElement() const;
+    bool CheckRootElement() const;
 
- protected:
- private:
+  protected:
+  private:
 };
 
 #endif

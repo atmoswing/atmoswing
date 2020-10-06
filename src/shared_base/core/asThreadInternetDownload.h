@@ -34,27 +34,27 @@
 #include "asThread.h"
 
 class asThreadInternetDownload : public asThread {
- public:
-  asThreadInternetDownload(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir, bool usesProxy,
-                           const wxString &proxyAddress, long proxyPort, const wxString &proxyUser,
-                           const wxString &proxyPasswd, int start, int end);
+  public:
+    asThreadInternetDownload(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir, bool usesProxy,
+                             const wxString &proxyAddress, long proxyPort, const wxString &proxyUser,
+                             const wxString &proxyPasswd, int start, int end);
 
-  ~asThreadInternetDownload() override = default;
+    ~asThreadInternetDownload() override = default;
 
-  ExitCode Entry() override;
+    ExitCode Entry() override;
 
- protected:
- private:
-  vwxs m_urls;
-  vwxs m_fileNames;
-  wxString m_destinationDir;
-  bool m_usesProxy;
-  wxString m_proxyAddress;
-  long m_proxyPort;
-  wxString m_proxyUser;
-  wxString m_proxyPasswd;
-  int m_start;
-  int m_end;
+  protected:
+  private:
+    vwxs m_urls;
+    vwxs m_fileNames;
+    wxString m_destinationDir;
+    bool m_usesProxy;
+    wxString m_proxyAddress;
+    long m_proxyPort;
+    wxString m_proxyUser;
+    wxString m_proxyPasswd;
+    int m_start;
+    int m_end;
 };
 
 #endif

@@ -34,64 +34,64 @@ asDialogProgressBar::asDialogProgressBar(const wxString &dialogMessage, int valu
       m_delayUpdate(false),
       m_valueMax(valueMax),
       m_currentStepIndex(0) {
-  if (!g_silentMode) {
-    if (valueMax > 2 * m_steps) {
-      m_delayUpdate = true;
-      m_vectorSteps.resize(m_steps + 1);
-      for (int i = 0; i <= m_steps; i++) {
-        m_vectorSteps[i] = i * valueMax / m_steps;
-      }
-    }
+    if (!g_silentMode) {
+        if (valueMax > 2 * m_steps) {
+            m_delayUpdate = true;
+            m_vectorSteps.resize(m_steps + 1);
+            for (int i = 0; i <= m_steps; i++) {
+                m_vectorSteps[i] = i * valueMax / m_steps;
+            }
+        }
 
-    if (valueMax > 10) {
-      m_progressBar = new wxProgressDialog(
-          _("Please wait"), dialogMessage, valueMax, nullptr,
-          wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME | wxPD_ELAPSED_TIME | wxPD_SMOOTH);  // wxPD_APP_MODAL |
-      m_initiated = true;
+        if (valueMax > 10) {
+            m_progressBar = new wxProgressDialog(_("Please wait"), dialogMessage, valueMax, nullptr,
+                                                 wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME |
+                                                     wxPD_ELAPSED_TIME | wxPD_SMOOTH);  // wxPD_APP_MODAL |
+            m_initiated = true;
+        }
     }
-  }
 }
 
 asDialogProgressBar::~asDialogProgressBar() {
-  if (m_initiated) {
-    m_progressBar->Update(m_valueMax);
-    m_progressBar->Destroy();
-    m_initiated = false;
-    wxWakeUpIdle();
-  }
+    if (m_initiated) {
+        m_progressBar->Update(m_valueMax);
+        m_progressBar->Destroy();
+        m_initiated = false;
+        wxWakeUpIdle();
+    }
 }
 
 void asDialogProgressBar::Destroy() {
-  if (m_initiated) {
-    m_progressBar->Update(m_valueMax);
-    m_progressBar->Destroy();
-    m_initiated = false;
-    wxWakeUpIdle();
-  }
+    if (m_initiated) {
+        m_progressBar->Update(m_valueMax);
+        m_progressBar->Destroy();
+        m_initiated = false;
+        wxWakeUpIdle();
+    }
 }
 
 bool asDialogProgressBar::Update(int value, const wxString &message) {
-  wxString newMessage = message;
+    wxString newMessage = message;
 
-  if (m_initiated) {
-    if (m_delayUpdate) {
-      if (value >= m_vectorSteps[m_currentStepIndex]) {
-        m_currentStepIndex++;
-        if (g_verboseMode) {
-          if (!message.IsEmpty()) {
-            newMessage = message + wxString::Format("(%d/%d)", value, m_valueMax);
-          }
+    if (m_initiated) {
+        if (m_delayUpdate) {
+            if (value >= m_vectorSteps[m_currentStepIndex]) {
+                m_currentStepIndex++;
+                if (g_verboseMode) {
+                    if (!message.IsEmpty()) {
+                        newMessage = message + wxString::Format("(%d/%d)", value, m_valueMax);
+                    }
+                }
+                return m_progressBar->Update(value, newMessage);
+            }
+        } else {
+            if (g_verboseMode) {
+                if (!message.IsEmpty()) {
+                    newMessage = message + wxString::Format("(%d/%d)", value, m_valueMax);
+                }
+            }
+            return m_progressBar->Update(value, newMessage);
         }
-        return m_progressBar->Update(value, newMessage);
-      }
-    } else {
-      if (g_verboseMode) {
-        if (!message.IsEmpty()) {
-          newMessage = message + wxString::Format("(%d/%d)", value, m_valueMax);
-        }
-      }
-      return m_progressBar->Update(value, newMessage);
     }
-  }
-  return true;
+    return true;
 }

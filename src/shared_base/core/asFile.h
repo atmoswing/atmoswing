@@ -31,42 +31,42 @@
 #include "asIncludes.h"
 
 class asFile : public wxObject {
- public:
-  enum FileMode {
-    ReadOnly,  // file exists, open read-only
-    Write,     // file exists, open for writing
-    Replace,   // create new file, even if already exists
-    New,       // create new file, even if already exists
-    Append     // add content to an already existing file
-  };
+  public:
+    enum FileMode {
+        ReadOnly,  // file exists, open read-only
+        Write,     // file exists, open for writing
+        Replace,   // create new file, even if already exists
+        New,       // create new file, even if already exists
+        Append     // add content to an already existing file
+    };
 
-  enum FileType { Netcdf, Grib, Text };
+    enum FileType { Netcdf, Grib, Text };
 
-  explicit asFile(const wxString &fileName, const FileMode &fileMode = asFile::ReadOnly);
+    explicit asFile(const wxString &fileName, const FileMode &fileMode = asFile::ReadOnly);
 
-  ~asFile() override;
+    ~asFile() override;
 
-  static bool Exists(const wxString &filePath);
+    static bool Exists(const wxString &filePath);
 
-  bool Find();
+    bool Find();
 
-  bool DoClose();
+    bool DoClose();
 
-  virtual bool Open();
+    virtual bool Open();
 
-  virtual bool Close();
+    virtual bool Close();
 
-  bool Exists() const {
-    return m_exists;
-  }
+    bool Exists() const {
+        return m_exists;
+    }
 
- protected:
-  wxFileName m_fileName;
-  FileMode m_fileMode;
-  bool m_exists;
-  bool m_opened;
+  protected:
+    wxFileName m_fileName;
+    FileMode m_fileMode;
+    bool m_exists;
+    bool m_opened;
 
- private:
+  private:
 };
 
 #endif

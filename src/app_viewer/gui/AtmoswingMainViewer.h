@@ -34,19 +34,19 @@
 #include "asIncludes.h"
 
 class AtmoswingFrameViewer : public asFrameForecast {
- public:
-  explicit AtmoswingFrameViewer(wxFrame *frame);
+  public:
+    explicit AtmoswingFrameViewer(wxFrame *frame);
 
-  ~AtmoswingFrameViewer() override = default;
+    ~AtmoswingFrameViewer() override = default;
 
- private:
-  asLogWindow *m_logWindow;
+  private:
+    asLogWindow *m_logWindow;
 
-  virtual void OnClose(wxCloseEvent &event);
+    virtual void OnClose(wxCloseEvent &event);
 
-  void OnQuit(wxCommandEvent &event) override;
+    void OnQuit(wxCommandEvent &event) override;
 
-  void OnShowLog(wxCommandEvent &event) override;
+    void OnShowLog(wxCommandEvent &event) override;
 };
 
 #endif

@@ -26,72 +26,75 @@
  */
 
 #ifdef USE_CUDA
+#ifdef TEST_CUDA
 
 #include <gtest/gtest.h>
+
 #include "asCuda.cuh"
 #include "asThread.h"
 
 class asThreadTestCuda : public asThread {
- public:
-  explicit asThreadTestCuda(const wxString &test);
+  public:
+    explicit asThreadTestCuda(const wxString &test);
 
-  ~asThreadTestCuda() override = default;
+    ~asThreadTestCuda() override = default;
 
-  ExitCode Entry() override;
+    ExitCode Entry() override;
 
- protected:
- private:
-  wxString m_test;
+  protected:
+  private:
+    wxString m_test;
 };
 
 asThreadTestCuda::asThreadTestCuda(const wxString &test) : asThread(), m_test(test) {}
 
 wxThread::ExitCode asThreadTestCuda::Entry() {
-  if (m_test.IsSameAs("simple")) {
-    CudaProcessSum();
-  } else if (m_test.IsSameAs("streams")) {
-    CudaProcessSumWithStreams();
-  } else {
-    wxLogError(_("CUDA test name not correctly defined."));
-  }
+    if (m_test.IsSameAs("simple")) {
+        CudaProcessSum();
+    } else if (m_test.IsSameAs("streams")) {
+        CudaProcessSumWithStreams();
+    } else {
+        wxLogError(_("CUDA test name not correctly defined."));
+    }
 
-  return 0;
+    return 0;
 }
 
 TEST(Cuda, UseInSingleThread) {
-  wxCriticalSection threadCS;
+    wxCriticalSection threadCS;
 
-  auto *thread = new asThreadTestCuda("simple");
+    auto *thread = new asThreadTestCuda("simple");
 
-  ThreadsManager().AddThread(thread);
-  ThreadsManager().Wait(asThread::Undefined);
+    ThreadsManager().AddThread(thread);
+    ThreadsManager().Wait(asThread::Undefined);
 }
 
 TEST(Cuda, UseInTwoThreads) {
-  auto *thread1 = new asThreadTestCuda("simple");
-  auto *thread2 = new asThreadTestCuda("simple");
+    auto *thread1 = new asThreadTestCuda("simple");
+    auto *thread2 = new asThreadTestCuda("simple");
 
-  ThreadsManager().AddThread(thread1);
-  ThreadsManager().AddThread(thread2);
-  ThreadsManager().Wait(asThread::Undefined);
+    ThreadsManager().AddThread(thread1);
+    ThreadsManager().AddThread(thread2);
+    ThreadsManager().Wait(asThread::Undefined);
 }
 
 TEST(Cuda, UseInManyThreads) {
-  for (int i = 0; i < 100; ++i) {
-    auto thread = new asThreadTestCuda("simple");
-    ThreadsManager().AddThread(thread);
-  }
+    for (int i = 0; i < 100; ++i) {
+        auto thread = new asThreadTestCuda("simple");
+        ThreadsManager().AddThread(thread);
+    }
 
-  ThreadsManager().Wait(asThread::Undefined);
+    ThreadsManager().Wait(asThread::Undefined);
 }
 
 TEST(Cuda, UseInManyThreadsWithStreams) {
-  for (int i = 0; i < 100; ++i) {
-    auto thread = new asThreadTestCuda("streams");
-    ThreadsManager().AddThread(thread);
-  }
+    for (int i = 0; i < 100; ++i) {
+        auto thread = new asThreadTestCuda("streams");
+        ThreadsManager().AddThread(thread);
+    }
 
-  ThreadsManager().Wait(asThread::Undefined);
+    ThreadsManager().Wait(asThread::Undefined);
 }
 
+#endif
 #endif

@@ -42,12 +42,18 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/google/googletest.git
         GIT_TAG release-1.10.0)
 
+FetchContent_Declare(
+        googlebenchmark
+        GIT_REPOSITORY https://github.com/google/benchmark.git
+        GIT_TAG v1.5.0)
+
+
 ##### OPTIONS
 
 # Version number
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "1")
-set(VERSION_PATCH "2")
+set(VERSION_PATCH "3")
 add_definitions(-DATMOSWING_MAJOR_VERSION=${VERSION_MAJOR})
 add_definitions(-DATMOSWING_MINOR_VERSION=${VERSION_MINOR})
 add_definitions(-DATMOSWING_PATCH_VERSION=${VERSION_PATCH})
@@ -86,6 +92,12 @@ else (WIN32)
     set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE})
 endif (WIN32)
 
+# Docker option
+option(ON_DOCKER "Enable only if AtmoSwing is built for Docker." OFF)
+if (ON_DOCKER)
+    add_definitions(-DON_DOCKER)
+endif(ON_DOCKER)
+
 # Using the Intel MKL
 option(USE_MKL "Do you want to use Intel MKL ?" OFF)
 
@@ -120,7 +132,7 @@ endif ()
 if (BUILD_VIEWER)
     set(USE_GUI ON)
 else (BUILD_VIEWER)
-    option(USE_GUI "Sould we build AtmoSwing with a GUI ?" OFF)
+    option(USE_GUI "Sould AtmoSwing be built with a GUI ?" OFF)
 endif (BUILD_VIEWER)
 
 # Disable testing tree

@@ -23,7 +23,7 @@ The Viewer displays the forecasts in an interactive GIS environment. It contains
 
 ## What's in there ##
 
-This repository contains 3 separate tools:
+This repository contains 4 different tools:
 
 * The Forecaster: automatically processes the forecast
 * The Viewer: displays the resulting files in a GIS environment
@@ -37,6 +37,14 @@ Additionally, multiple unit tests are available and are built along with the sof
 AtmoSwing documentation can be found here: https://atmoswing.readthedocs.io/en/latest/
 
 The repository of the documentation is https://github.com/atmoswing/user-manual
+
+## Docker images ##
+
+AtmoSwing Forecaster image: https://hub.docker.com/r/atmoswing/forecaster
+
+AtmoSwing Optimizer image: https://hub.docker.com/r/atmoswing/optimizer
+
+AtmoSwing Downscaler image: https://hub.docker.com/r/atmoswing/downscaler
 
 ## Download AtmoSwing ##
 

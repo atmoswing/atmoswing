@@ -25,22 +25,21 @@
  * Portions Copyright 2016-2019 Pascal Horton, University of Bern.
  */
 
+#include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include <gtest/gtest.h>
 #include "asAreaCompGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
 TEST(PredictorCustomUnilOisst2, GetCorrectPredictors) {
-  asPredictor *predictor;
+    asPredictor *predictor;
 
-  predictor = asPredictor::GetInstance("Custom_Unil_OISST_v2", "sst", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SeaSurfaceTemperature);
-  wxDELETE(predictor);
+    predictor = asPredictor::GetInstance("Custom_Unil_OISST_v2", "sst", ".");
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::SeaSurfaceTemperature);
+    wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("Custom_Unil_OISST_v2", "sst_anom", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SeaSurfaceTemperatureAnomaly);
-  wxDELETE(predictor);
-
+    predictor = asPredictor::GetInstance("Custom_Unil_OISST_v2", "sst_anom", ".");
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::SeaSurfaceTemperatureAnomaly);
+    wxDELETE(predictor);
 }

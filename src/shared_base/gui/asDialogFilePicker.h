@@ -28,21 +28,20 @@
 #ifndef AS_DIALOG_FILE_PICKER_H
 #define AS_DIALOG_FILE_PICKER_H
 
+#include "AtmoswingSharedGui.h"
 #include "asIncludes.h"
 
-#include "AtmoswingSharedGui.h"
-
 class asDialogFilePicker : public asDialogFilePickerVirtual {
- public:
-  asDialogFilePicker(wxWindow *parent, const wxString &description);
+  public:
+    asDialogFilePicker(wxWindow *parent, const wxString &description);
 
-  wxString GetPath() const {
-    return m_filePicker->GetPath();
-  }
+    wxString GetPath() const {
+        return m_filePicker->GetPath();
+    }
 
-  void SetPath(const wxString &path) {
-    m_filePicker->SetPath(path);
-  }
+    void SetPath(const wxString &path) {
+        m_filePicker->SetPath(path);
+    }
 };
 
 #endif

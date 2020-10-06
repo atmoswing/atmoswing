@@ -24,8 +24,9 @@ if (BUILD_FORECASTER)
     list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/AtmoswingAppForecaster.cpp")
 else ()
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperNwsGfsTest.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperNwsGfsTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperEcmwfIfsTest.cpp")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperCustomMeteoFvgTest.cpp")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersForecastingTest.cpp")
 endif ()
 if (BUILD_OPTIMIZER)
     file(GLOB_RECURSE src_optim_core_h ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.h)
@@ -61,11 +62,15 @@ list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/Atmoswin
 
 # CUDA library
 if (USE_CUDA)
+    option(TEST_CUDA "Should CUDA implementation be tested ?" ON)
     file(GLOB_RECURSE src_tests_cu src/*.cu)
     file(GLOB_RECURSE src_tests_cuh src/*.cuh)
     list(APPEND src_tests_cuda ${src_tests_cu})
     list(APPEND src_tests_cuda ${src_tests_cuh})
     list(APPEND tests ${src_tests_cuh})
+    if (TEST_CUDA)
+        add_definitions(-DTEST_CUDA)
+    endif(TEST_CUDA)
 endif (USE_CUDA)
 
 # Remove eventual duplicates

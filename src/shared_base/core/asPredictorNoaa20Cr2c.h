@@ -34,19 +34,19 @@
 class asArea;
 
 class asPredictorNoaa20Cr2c : public asPredictor {
- public:
-  explicit asPredictorNoaa20Cr2c(const wxString &dataId);
+  public:
+    explicit asPredictorNoaa20Cr2c(const wxString &dataId);
 
-  ~asPredictorNoaa20Cr2c() override = default;
+    ~asPredictorNoaa20Cr2c() override = default;
 
-  bool Init() override;
+    bool Init() override;
 
- protected:
-  void ListFiles(asTimeArray &timeArray) override;
+  protected:
+    void ListFiles(asTimeArray &timeArray) override;
 
-  double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
+    void ConvertToMjd(a1d &time, double refValue = NaNd) const override;
 
- private:
+  private:
 };
 
 #endif

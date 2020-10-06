@@ -38,246 +38,248 @@ asForecastManager::asForecastManager(wxWindow *parent, asWorkspace *workspace)
       m_leadTimeOrigin(0) {}
 
 asForecastManager::~asForecastManager() {
-  wxDELETE(m_aggregator);
+    wxDELETE(m_aggregator);
 }
 
 bool asForecastManager::HasForecasts() const {
-  return (m_aggregator->GetMethodsNb() > 0);
+    return (m_aggregator->GetMethodsNb() > 0);
 }
 
 void asForecastManager::AddDirectoryPastForecasts(const wxString &dir) {
-  m_directoriesPastForecasts.Add(dir);
+    m_directoriesPastForecasts.Add(dir);
 }
 
 int asForecastManager::GetLinearIndex(int methodRow, int forecastRow) const {
-  int counter = 0;
-  for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
-    for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
-      if (i == methodRow && j == forecastRow) {
-        return counter;
-      }
-      counter++;
+    int counter = 0;
+    for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
+        for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
+            if (i == methodRow && j == forecastRow) {
+                return counter;
+            }
+            counter++;
+        }
     }
-  }
 
-  wxFAIL;
-  return 0;
+    wxFAIL;
+    return 0;
 }
 
 int asForecastManager::GetMethodRowFromLinearIndex(int linearIndex) const {
-  int counter = 0;
-  for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
-    for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
-      if (counter == linearIndex) {
-        return i;
-      }
-      counter++;
+    int counter = 0;
+    for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
+        for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
+            if (counter == linearIndex) {
+                return i;
+            }
+            counter++;
+        }
     }
-  }
 
-  wxFAIL;
-  return 0;
+    wxFAIL;
+    return 0;
 }
 
 int asForecastManager::GetForecastRowFromLinearIndex(int linearIndex) const {
-  int counter = 0;
-  for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
-    for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
-      if (counter == linearIndex) {
-        return j;
-      }
-      counter++;
+    int counter = 0;
+    for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
+        for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
+            if (counter == linearIndex) {
+                return j;
+            }
+            counter++;
+        }
     }
-  }
 
-  wxFAIL;
-  return 0;
+    wxFAIL;
+    return 0;
 }
 
 void asForecastManager::ClearArrays() {
-  m_aggregator->ClearArrays();
+    m_aggregator->ClearArrays();
 }
 
 void asForecastManager::ClearForecasts() {
-  ClearArrays();
-  m_directoriesPastForecasts.Clear();
+    ClearArrays();
+    m_directoriesPastForecasts.Clear();
 
 #if wxUSE_GUI
-  wxCommandEvent eventClear(asEVT_ACTION_FORECAST_CLEAR);
-  if (m_parent != nullptr) {
-    m_parent->ProcessWindowEvent(eventClear);
-  }
+    wxCommandEvent eventClear(asEVT_ACTION_FORECAST_CLEAR);
+    if (m_parent != nullptr) {
+        m_parent->ProcessWindowEvent(eventClear);
+    }
 #endif
 }
 
 bool asForecastManager::Open(const wxString &filePath, bool doRefresh) {
-  // Check existance
-  if (!wxFileName::FileExists(filePath)) {
-    wxLogError(_("The file %s could not be found."), filePath);
-    return false;
-  }
+    // Check existance
+    if (!wxFileName::FileExists(filePath)) {
+        wxLogError(_("The file %s could not be found."), filePath);
+        return false;
+    }
 
-  // Check extension
-  wxFileName fname(filePath);
-  wxString extension = fname.GetExt();
-  if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst")) {
-    wxLogError(_("The file extension (%s) is not correct (must be .asff)."), extension);
-    return false;
-  }
+    // Check extension
+    wxFileName fname(filePath);
+    wxString extension = fname.GetExt();
+    if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst") && !extension.IsSameAs("nc")) {
+        wxLogError(_("The file extension (%s) is not correct."), extension);
+        return false;
+    }
 
-  // Create and load the forecast
-  auto *forecast = new asResultsForecast;
+    // Create and load the forecast
+    auto *forecast = new asResultsForecast;
 
-  forecast->SetFilePath(filePath);
-  if (!forecast->Load()) {
-    wxDELETE(forecast);
-    return false;
-  }
+    forecast->SetFilePath(filePath);
+    if (!forecast->Load()) {
+        wxDELETE(forecast);
+        return false;
+    }
 
-  // Check the lead time origin
-  if ((m_leadTimeOrigin != 0) && (forecast->GetLeadTimeOrigin() != m_leadTimeOrigin)) {
-    wxLogVerbose("The forecast file has another lead time origin. Previous files were removed.");
-    ClearForecasts();
-  }
-  m_leadTimeOrigin = forecast->GetLeadTimeOrigin();
+    // Check the lead time origin
+    if ((m_leadTimeOrigin != 0) && (forecast->GetLeadTimeOrigin() != m_leadTimeOrigin)) {
+        wxLogVerbose("The forecast file has another lead time origin. Previous files were removed.");
+        ClearForecasts();
+    }
+    m_leadTimeOrigin = forecast->GetLeadTimeOrigin();
 
-  if (m_aggregator->Add(forecast)) {
+    if (m_aggregator->Add(forecast)) {
 #if wxUSE_GUI
-    // Send event
-    wxCommandEvent eventNew(asEVT_ACTION_FORECAST_NEW_ADDED);
-    if (m_parent != nullptr) {
-      if (doRefresh) {
-        eventNew.SetString("last");
-      }
-      m_parent->ProcessWindowEvent(eventNew);
-    }
+        // Send event
+        wxCommandEvent eventNew(asEVT_ACTION_FORECAST_NEW_ADDED);
+        if (m_parent != nullptr) {
+            if (doRefresh) {
+                eventNew.SetString("last");
+            }
+            m_parent->ProcessWindowEvent(eventNew);
+        }
 #else
-    if (doRefresh) {
-      wxLogVerbose("The GUI should be refreshed.");
-    }
+        if (doRefresh) {
+            wxLogVerbose("The GUI should be refreshed.");
+        }
 #endif
-  } else {
-    wxDELETE(forecast);
-  }
+    } else {
+        wxDELETE(forecast);
+    }
 
-  return true;
+    return true;
 }
 
 bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const wxString &filePath) {
-  // Check existance
-  if (!wxFileName::FileExists(filePath)) {
-    wxLogError(_("The file %s could not be found."), filePath);
-    return false;
-  }
+    // Check existance
+    if (!wxFileName::FileExists(filePath)) {
+        wxLogError(_("The file %s could not be found."), filePath);
+        return false;
+    }
 
-  // Check extension
-  wxFileName fname(filePath);
-  wxString extension = fname.GetExt();
-  if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst")) {
-    wxLogError(_("The file extension (%s) is not correct (must be .asff)."), extension);
-    return false;
-  }
+    // Check extension
+    wxFileName fname(filePath);
+    wxString extension = fname.GetExt();
+    if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst") && !extension.IsSameAs("nc")) {
+        wxLogError(_("The file extension (%s) is not correct."), extension);
+        return false;
+    }
 
-  // Create and load the forecast
-  auto *forecast = new asResultsForecast;
+    // Create and load the forecast
+    auto *forecast = new asResultsForecast;
 
-  forecast->SetFilePath(filePath);
-  if (!forecast->Load()) {
-    wxDELETE(forecast);
-    return false;
-  }
+    forecast->SetFilePath(filePath);
+    if (!forecast->Load()) {
+        wxDELETE(forecast);
+        return false;
+    }
 
-  // Check the lead time origin
-  if (forecast->GetLeadTimeOrigin() >= m_leadTimeOrigin) {
-    wxDELETE(forecast);
-    return false;
-  }
-  m_aggregator->AddPastForecast(methodRow, forecastRow, forecast);
+    // Check the lead time origin
+    if (forecast->GetLeadTimeOrigin() >= m_leadTimeOrigin) {
+        wxDELETE(forecast);
+        return false;
+    }
+    m_aggregator->AddPastForecast(methodRow, forecastRow, forecast);
 
-  wxLogVerbose("Past forecast of %s - %s of the %s loaded", forecast->GetMethodId(), forecast->GetSpecificTag(),
-               forecast->GetLeadTimeOriginString());
+    wxLogVerbose("Past forecast of %s - %s of the %s loaded", forecast->GetMethodId(), forecast->GetSpecificTag(),
+                 forecast->GetLeadTimeOriginString());
 
-  return true;
+    return true;
 }
 
 void asForecastManager::LoadPastForecast(int methodRow, int forecastRow) {
-  // Check if already loaded
-  wxASSERT(m_aggregator->GetMethodsNb() > methodRow);
-  wxASSERT(m_aggregator->GetPastMethodsNb() > methodRow);
-  if (m_aggregator->GetPastForecastsNb(methodRow, forecastRow) > 0) return;
+    // Check if already loaded
+    wxASSERT(m_aggregator->GetMethodsNb() > methodRow);
+    wxASSERT(m_aggregator->GetPastMethodsNb() > methodRow);
+    if (m_aggregator->GetPastForecastsNb(methodRow, forecastRow) > 0) return;
 
-  // Get the number of days to load
-  int nbPastDays = m_workspace->GetTimeSeriesPlotPastDaysNb();
+    // Get the number of days to load
+    int nbPastDays = m_workspace->GetTimeSeriesPlotPastDaysNb();
 
-  // Get path
-  wxString defPath = m_workspace->GetForecastsDirectory();
-  defPath.Append(DS);
+    // Get path
+    wxString defPath = m_workspace->GetForecastsDirectory();
+    defPath.Append(DS);
 
-  // Directory
-  wxString dirstructure = "YYYY";
-  dirstructure.Append(DS);
-  dirstructure.Append("MM");
-  dirstructure.Append(DS);
-  dirstructure.Append("DD");
+    // Directory
+    wxString dirstructure = "YYYY";
+    dirstructure.Append(DS);
+    dirstructure.Append("MM");
+    dirstructure.Append(DS);
+    dirstructure.Append("DD");
 
-  for (int bkwd = 0; bkwd <= nbPastDays; bkwd++) {
-    double currentTime = m_leadTimeOrigin - bkwd;
-    wxString directory = asTime::GetStringTime(currentTime, dirstructure);
+    for (int bkwd = 0; bkwd <= nbPastDays; bkwd++) {
+        double currentTime = m_leadTimeOrigin - bkwd;
+        wxString directory = asTime::GetStringTime(currentTime, dirstructure);
 
-    // Test for every hour
-    for (int hr = 23; hr >= 0; hr--) {
-      // Load from default directory
-      wxString currentDirPath = defPath;
-      currentDirPath.Append(directory);
-      currentDirPath.Append(DS);
+        // Test for every hour
+        for (int hr = 23; hr >= 0; hr--) {
+            // Load from default directory
+            wxString currentDirPath = defPath;
+            currentDirPath.Append(directory);
+            currentDirPath.Append(DS);
 
-      double currentTimeHour = floor(currentTime) + (double)hr / 24.0;
-      wxString nowstrV1 = asTime::GetStringTime(currentTimeHour, "YYYYMMDDhh");
-      wxString nowstrV3 = asTime::GetStringTime(currentTimeHour, "YYYY-MM-DD_hh");
-      wxString forecastname = m_aggregator->GetForecast(methodRow, forecastRow)->GetMethodId() + '.' +
-                              m_aggregator->GetForecast(methodRow, forecastRow)->GetSpecificTag();
-      wxString filenameV3 = wxString::Format("%s.%s.asff", nowstrV3, forecastname);
-      wxString fullPathV3 = currentDirPath + filenameV3;
-      wxString filenameV2 = wxString::Format("%s.%s.asff", nowstrV1, forecastname);
-      wxString fullPathV2 = currentDirPath + filenameV2;
-      wxString filenameV1 = wxString::Format("%s.%s.fcst", nowstrV1, forecastname);
-      wxString fullPathV1 = currentDirPath + filenameV1;
+            double currentTimeHour = floor(currentTime) + (double)hr / 24.0;
+            wxString nowstrV1 = asTime::GetStringTime(currentTimeHour, "YYYYMMDDhh");
+            wxString nowstrV3 = asTime::GetStringTime(currentTimeHour, "YYYY-MM-DD_hh");
+            wxString forecastname = m_aggregator->GetForecast(methodRow, forecastRow)->GetMethodId() + '.' +
+                                    m_aggregator->GetForecast(methodRow, forecastRow)->GetSpecificTag();
+            wxString filenameV4 = wxString::Format("%s.%s.nc", nowstrV3, forecastname);
+            wxString fullPathV4 = currentDirPath + filenameV4;
+            wxString filenameV3 = wxString::Format("%s.%s.asff", nowstrV3, forecastname);
+            wxString fullPathV3 = currentDirPath + filenameV3;
+            wxString filenameV2 = wxString::Format("%s.%s.asff", nowstrV1, forecastname);
+            wxString fullPathV2 = currentDirPath + filenameV2;
+            wxString filenameV1 = wxString::Format("%s.%s.fcst", nowstrV1, forecastname);
+            wxString fullPathV1 = currentDirPath + filenameV1;
 
-      if (wxFileName::FileExists(fullPathV3)) {
-        OpenPastForecast(methodRow, forecastRow, fullPathV3);
-      } else if (wxFileName::FileExists(fullPathV2)) {
-        OpenPastForecast(methodRow, forecastRow, fullPathV2);
-      } else if (wxFileName::FileExists(fullPathV1)) {
-        OpenPastForecast(methodRow, forecastRow, fullPathV1);
-      } else {
-        // Load from temporary stored directories
-        for (int iDir = 0; iDir < m_directoriesPastForecasts.Count(); iDir++) {
-          currentDirPath = m_directoriesPastForecasts.Item(iDir);
-          currentDirPath.Append(directory);
-          currentDirPath.Append(DS);
-          fullPathV3 = currentDirPath + filenameV3;
-          fullPathV2 = currentDirPath + filenameV2;
-          fullPathV1 = currentDirPath + filenameV1;
+            if (wxFileName::FileExists(fullPathV3)) {
+                OpenPastForecast(methodRow, forecastRow, fullPathV3);
+            } else if (wxFileName::FileExists(fullPathV2)) {
+                OpenPastForecast(methodRow, forecastRow, fullPathV2);
+            } else if (wxFileName::FileExists(fullPathV1)) {
+                OpenPastForecast(methodRow, forecastRow, fullPathV1);
+            } else {
+                // Load from temporary stored directories
+                for (int iDir = 0; iDir < m_directoriesPastForecasts.Count(); iDir++) {
+                    currentDirPath = m_directoriesPastForecasts.Item(iDir);
+                    currentDirPath.Append(directory);
+                    currentDirPath.Append(DS);
+                    fullPathV3 = currentDirPath + filenameV3;
+                    fullPathV2 = currentDirPath + filenameV2;
+                    fullPathV1 = currentDirPath + filenameV1;
 
-          if (wxFileName::FileExists(fullPathV3)) {
-            OpenPastForecast(methodRow, forecastRow, fullPathV3);
-            goto quitloop;
-          } else if (wxFileName::FileExists(fullPathV2)) {
-            OpenPastForecast(methodRow, forecastRow, fullPathV2);
-            goto quitloop;
-          } else if (wxFileName::FileExists(fullPathV1)) {
-            OpenPastForecast(methodRow, forecastRow, fullPathV1);
-            goto quitloop;
-          }
+                    if (wxFileName::FileExists(fullPathV3)) {
+                        OpenPastForecast(methodRow, forecastRow, fullPathV3);
+                        goto quitloop;
+                    } else if (wxFileName::FileExists(fullPathV2)) {
+                        OpenPastForecast(methodRow, forecastRow, fullPathV2);
+                        goto quitloop;
+                    } else if (wxFileName::FileExists(fullPathV1)) {
+                        OpenPastForecast(methodRow, forecastRow, fullPathV1);
+                        goto quitloop;
+                    }
+                }
+            }
+        quitloop:;
         }
-      }
-    quitloop:;
     }
-  }
 }
 
 void asForecastManager::LoadPastForecast(int methodRow) {
-  for (int i = 0; i < GetForecastsNb(methodRow); i++) {
-    LoadPastForecast(methodRow, i);
-  }
+    for (int i = 0; i < GetForecastsNb(methodRow); i++) {
+        LoadPastForecast(methodRow, i);
+    }
 }

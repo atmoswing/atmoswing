@@ -125,6 +125,22 @@ install(TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
 # Dlls
 if (WIN32)
 
+    # Png
+    find_file(PNG_DLL_NAME
+            NAMES libpng14.dll libpng15.dll libpng16.dll libpng17.dll libpng18.dll
+            HINTS ${CMAKE_PREFIX_PATH}
+            PATH_SUFFIXES bin
+            NO_DEFAULT_PATH)
+    if (NOT PNG_DLL_NAME)
+        message(SEND_ERROR "PNG DLL not found.")
+    endif ()
+    message(STATUS "PNG DLL: ${PNG_DLL_NAME}")
+    add_custom_command(TARGET atmoswing-viewer POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${PNG_DLL_NAME}"
+            "${CMAKE_BINARY_DIR}")
+    install(FILES ${PNG_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
+
     # GDAL DLL
     find_file(GDAL_DLL_NAME
             NAMES gdal200.dll gdal201.dll gdal202.dll gdal203.dll gdal204.dll gdal205.dll gdal300.dll gdal301.dll gdal302.dll

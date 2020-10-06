@@ -31,47 +31,47 @@
 asTotalScoreFAR::asTotalScoreFAR(const wxString &periodString) : asTotalScore(periodString) {}
 
 float asTotalScoreFAR::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
-  wxASSERT(targetDates.rows() > 1);
-  wxASSERT(scores.rows() > 1);
+    wxASSERT(targetDates.rows() > 1);
+    wxASSERT(scores.rows() > 1);
 
-  int countA = 0, countB = 0, countTot = 0;
+    int countA = 0, countB = 0, countTot = 0;
 
-  switch (m_period) {
-    case (asTotalScore::Total): {
-      for (int i = 0; i < scores.size(); i++) {
-        countTot++;
-        if (scores[i] == 1) {
-          countA++;
-        } else if (scores[i] == 2) {
-          countB++;
-        } else if (scores[i] == 3) {
-          //
-        } else if (scores[i] == 4) {
-          //
-        } else {
-          wxLogError(_("The FAR score (%f) is not an authorized value."), scores[i]);
-          return NaNf;
+    switch (m_period) {
+        case (asTotalScore::Total): {
+            for (int i = 0; i < scores.size(); i++) {
+                countTot++;
+                if (scores[i] == 1) {
+                    countA++;
+                } else if (scores[i] == 2) {
+                    countB++;
+                } else if (scores[i] == 3) {
+                    //
+                } else if (scores[i] == 4) {
+                    //
+                } else {
+                    wxLogError(_("The FAR score (%f) is not an authorized value."), scores[i]);
+                    return NaNf;
+                }
+            }
+            break;
         }
-      }
-      break;
+
+        default: {
+            asThrowException(_("Period not yet implemented in asTotalScoreFAR."));
+        }
     }
 
-    default: {
-      asThrowException(_("Period not yet implemented in asTotalScoreFAR."));
-    }
-  }
+    float score;
 
-  float score;
-
-  if (countTot > 0) {
-    if (countA + countB > 0) {
-      score = float(countB) / float(countA + countB);
+    if (countTot > 0) {
+        if (countA + countB > 0) {
+            score = float(countB) / float(countA + countB);
+        } else {
+            score = 0;
+        }
     } else {
-      score = 0;
+        score = NaNf;
     }
-  } else {
-    score = NaNf;
-  }
 
-  return score;
+    return score;
 }

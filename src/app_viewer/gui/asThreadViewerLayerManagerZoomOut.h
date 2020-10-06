@@ -30,23 +30,22 @@
 
 #include "asIncludes.h"
 #include "asThread.h"
-
 #include "vroomgis.h"
 
 class asThreadViewerLayerManagerZoomOut : public asThread {
- public:
-  asThreadViewerLayerManagerZoomOut(vrViewerLayerManager *viewerLayerManager,
-                                    wxCriticalSection *critSectionViewerLayerManager, const vrRealRect &fittedRect);
+  public:
+    asThreadViewerLayerManagerZoomOut(vrViewerLayerManager *viewerLayerManager,
+                                      wxCriticalSection *critSectionViewerLayerManager, const vrRealRect &fittedRect);
 
-  ~asThreadViewerLayerManagerZoomOut() override = default;
+    ~asThreadViewerLayerManagerZoomOut() override = default;
 
-  ExitCode Entry() override;
+    ExitCode Entry() override;
 
- protected:
- private:
-  vrViewerLayerManager *m_viewerLayerManager;
-  wxCriticalSection *m_critSectionViewerLayerManager;
-  vrRealRect m_rect;
+  protected:
+  private:
+    vrViewerLayerManager *m_viewerLayerManager;
+    wxCriticalSection *m_critSectionViewerLayerManager;
+    vrRealRect m_rect;
 };
 
 #endif

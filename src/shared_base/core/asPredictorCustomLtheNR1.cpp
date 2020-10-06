@@ -32,84 +32,82 @@
 #include "asTimeArray.h"
 
 asPredictorCustomLtheNR1::asPredictorCustomLtheNR1(const wxString &dataId) : asPredictorCustomUnilNR1(dataId) {
-  // Set the basic properties.
-  m_datasetId = "Custom_LTHE_NR1";
-  m_provider = "NCEP/NCAR";
-  m_transformedBy = "LTHE";
-  m_datasetName = "Reanalysis 1 subset from LTHE";
-  m_fileType = asFile::Netcdf;
-  m_strideAllowed = true;
-  m_nanValues.push_back(32767);
-  m_nanValues.push_back(936 * std::pow(10.f, 34.f));
-  m_fStr.dimLatName = "lat";
-  m_fStr.dimLonName = "lon";
-  m_fStr.dimTimeName = "time";
-  m_fStr.dimLevelName = "level";
-  m_fStr.hasLevelDim = true;
+    // Set the basic properties.
+    m_datasetId = "Custom_LTHE_NR1";
+    m_provider = "NCEP/NCAR";
+    m_transformedBy = "LTHE";
+    m_datasetName = "Reanalysis 1 subset from LTHE";
+    m_fileType = asFile::Netcdf;
+    m_strideAllowed = true;
+    m_nanValues.push_back(32767);
+    m_nanValues.push_back(936 * std::pow(10.f, 34.f));
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "level";
+    m_fStr.hasLevelDim = true;
 }
 
 bool asPredictorCustomLtheNR1::Init() {
-  // Identify data ID and set the corresponding properties.
-  if (m_dataId.IsSameAs("hgt_500hPa", false)) {
-    m_parameter = GeopotentialHeight;
-    m_parameterName = "Geopotential height";
-    m_fileNamePattern = "NCEP_R1_lthe_hgt_500hPa.nc";
-    m_fileVarName = "hgt";
-    m_unit = m;
-  } else if (m_dataId.IsSameAs("hgt_1000hPa", false)) {
-    m_parameter = GeopotentialHeight;
-    m_parameterName = "Geopotential height";
-    m_fileNamePattern = "NCEP_R1_lthe_hgt_1000hPa.nc";
-    m_fileVarName = "hgt";
-    m_unit = m;
-  } else if (IsPrecipitableWater()) {
-    m_parameter = PrecipitableWater;
-    m_parameterName = "Precipitable water";
-    m_fileNamePattern = "NCEP_R1_lthe_prwtr.nc";
-    m_fileVarName = "pwa";
-    m_unit = mm;
-  } else if (IsRelativeHumidity()) {
-    m_parameter = RelativeHumidity;
-    m_parameterName = "Relative Humidity";
-    m_fileNamePattern = "NCEP_R1_lthe_rhum.nc";
-    m_fileVarName = "rhum";
-    m_unit = percent;
-  } else {
-    wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
-    return false;
-  }
+    // Identify data ID and set the corresponding properties.
+    if (m_dataId.IsSameAs("hgt_500hPa", false)) {
+        m_parameter = GeopotentialHeight;
+        m_parameterName = "Geopotential height";
+        m_fileNamePattern = "NCEP_R1_lthe_hgt_500hPa.nc";
+        m_fileVarName = "hgt";
+        m_unit = m;
+    } else if (m_dataId.IsSameAs("hgt_1000hPa", false)) {
+        m_parameter = GeopotentialHeight;
+        m_parameterName = "Geopotential height";
+        m_fileNamePattern = "NCEP_R1_lthe_hgt_1000hPa.nc";
+        m_fileVarName = "hgt";
+        m_unit = m;
+    } else if (IsPrecipitableWater()) {
+        m_parameter = PrecipitableWater;
+        m_parameterName = "Precipitable water";
+        m_fileNamePattern = "NCEP_R1_lthe_prwtr.nc";
+        m_fileVarName = "pwa";
+        m_unit = mm;
+    } else if (IsRelativeHumidity()) {
+        m_parameter = RelativeHumidity;
+        m_parameterName = "Relative Humidity";
+        m_fileNamePattern = "NCEP_R1_lthe_rhum.nc";
+        m_fileVarName = "rhum";
+        m_unit = percent;
+    } else {
+        wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+        return false;
+    }
 
-  // Check data ID
-  if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
-    wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
-               m_datasetName);
-    return false;
-  }
+    // Check data ID
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
+                   m_datasetName);
+        return false;
+    }
 
-  // Check directory is set
-  if (GetDirectoryPath().IsEmpty()) {
-    wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
-               m_datasetName);
-    return false;
-  }
+    // Check directory is set
+    if (GetDirectoryPath().IsEmpty()) {
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+                   m_datasetName);
+        return false;
+    }
 
-  // Set to initialized
-  m_initialized = true;
+    // Set to initialized
+    m_initialized = true;
 
-  return true;
+    return true;
 }
 
 void asPredictorCustomLtheNR1::ListFiles(asTimeArray &timeArray) {
-  m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
+    m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
-double asPredictorCustomLtheNR1::ConvertToMjd(double timeValue, double refValue) const {
-  timeValue = (timeValue / 24.0);             // hours to days
-  if (timeValue < 500 * 365) {                // New format
-    timeValue += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
-  } else {                                    // Old format
-    timeValue += asTime::GetMJD(1, 1, 1);     // to MJD: add a negative time span
-  }
-
-  return timeValue;
+void asPredictorCustomLtheNR1::ConvertToMjd(a1d &time, double refValue) const {
+    time /= 24.0;
+    if (time[0] < 500 * 365) { // New format
+        time += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
+    } else { // Old format
+        time += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
+    }
 }

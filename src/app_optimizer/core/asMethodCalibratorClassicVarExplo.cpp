@@ -33,66 +33,66 @@ asMethodCalibratorClassicVarExplo::asMethodCalibratorClassicVarExplo() : asMetho
 asMethodCalibratorClassicVarExplo::~asMethodCalibratorClassicVarExplo() = default;
 
 bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &params) {
-  int iStep;
-  wxFileConfig::Get()->Read("/VariablesExplo/Step", &iStep, params.GetStepsNb() - 1);
+    int iStep;
+    wxFileConfig::Get()->Read("/VariablesExplo/Step", &iStep, params.GetStepsNb() - 1);
 
-  wxLogMessage(_("Processing variables exploration for step %d"), iStep);
-  wxLogMessage(
-      _("Processing %d variables, %d hours, %d levels, %d criteria."),
-      (int)params.GetPredictorDataIdVector(iStep, 0).size(), (int)params.GetPredictorHourVector(iStep, 0).size(),
-      (int)params.GetPredictorLevelVector(iStep, 0).size(), (int)params.GetPredictorCriteriaVector(iStep, 0).size());
+    wxLogMessage(_("Processing variables exploration for step %d"), iStep);
+    wxLogMessage(
+        _("Processing %d variables, %d hours, %d levels, %d criteria."),
+        (int)params.GetPredictorDataIdVector(iStep, 0).size(), (int)params.GetPredictorHourVector(iStep, 0).size(),
+        (int)params.GetPredictorLevelVector(iStep, 0).size(), (int)params.GetPredictorCriteriaVector(iStep, 0).size());
 
-  if (iStep >= params.GetStepsNb()) {
-    wxLogError(_("The given step number for variables exploration is above available steps."));
-    return false;
-  }
-
-  for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-    if (params.NeedsPreprocessing(iStep, iPtor)) {
-      wxLogError(_("Calibration method not implemented to work with preprocessed data."));
-      return false;
-    } else {
-      vwxs vPredictorDataId = params.GetPredictorDataIdVector(iStep, iPtor);
-
-      for (const auto &dataId : vPredictorDataId) {
-        if (!params.SetPredictorDataId(iStep, iPtor, dataId)) return false;
-
-        vd vPredictorHours = params.GetPredictorHourVector(iStep, iPtor);
-
-        for (double hour : vPredictorHours) {
-          if (!params.SetPredictorHour(iStep, iPtor, hour)) return false;
-
-          vf vPredictorLevels = params.GetPredictorLevelVector(iStep, iPtor);
-
-          for (float level : vPredictorLevels) {
-            if (!params.SetPredictorLevel(iStep, iPtor, level)) return false;
-
-            vwxs vPredictorCriteria = params.GetPredictorCriteriaVector(iStep, iPtor);
-
-            for (const auto &criteria : vPredictorCriteria) {
-              if (!params.SetPredictorCriteria(iStep, iPtor, criteria)) return false;
-
-              vf slctPredictorLevels;
-              slctPredictorLevels.push_back(level);
-              if (!params.SetPreloadLevels(iStep, iPtor, slctPredictorLevels)) return false;
-
-              vd slctPreloadHours;
-              slctPreloadHours.push_back(hour);
-              if (!params.SetPreloadHours(iStep, iPtor, slctPreloadHours)) return false;
-
-              m_originalParams = params;
-
-              if (!asMethodCalibratorClassic::Calibrate(params)) return false;
-
-              params = m_originalParams;
-
-              ClearAll();
-            }
-          }
-        }
-      }
+    if (iStep >= params.GetStepsNb()) {
+        wxLogError(_("The given step number for variables exploration is above available steps."));
+        return false;
     }
-  }
 
-  return true;
+    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+        if (params.NeedsPreprocessing(iStep, iPtor)) {
+            wxLogError(_("Calibration method not implemented to work with preprocessed data."));
+            return false;
+        } else {
+            vwxs vPredictorDataId = params.GetPredictorDataIdVector(iStep, iPtor);
+
+            for (const auto &dataId : vPredictorDataId) {
+                params.SetPredictorDataId(iStep, iPtor, dataId);
+
+                vd vPredictorHours = params.GetPredictorHourVector(iStep, iPtor);
+
+                for (double hour : vPredictorHours) {
+                    params.SetPredictorHour(iStep, iPtor, hour);
+
+                    vf vPredictorLevels = params.GetPredictorLevelVector(iStep, iPtor);
+
+                    for (float level : vPredictorLevels) {
+                        params.SetPredictorLevel(iStep, iPtor, level);
+
+                        vwxs vPredictorCriteria = params.GetPredictorCriteriaVector(iStep, iPtor);
+
+                        for (const auto &criteria : vPredictorCriteria) {
+                            params.SetPredictorCriteria(iStep, iPtor, criteria);
+
+                            vf slctPredictorLevels;
+                            slctPredictorLevels.push_back(level);
+                            params.SetPreloadLevels(iStep, iPtor, slctPredictorLevels);
+
+                            vd slctPreloadHours;
+                            slctPreloadHours.push_back(hour);
+                            params.SetPreloadHours(iStep, iPtor, slctPreloadHours);
+
+                            m_originalParams = params;
+
+                            if (!asMethodCalibratorClassic::Calibrate(params)) return false;
+
+                            params = m_originalParams;
+
+                            ClearAll();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
 }

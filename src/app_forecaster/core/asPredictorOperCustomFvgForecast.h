@@ -22,36 +22,36 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2019-2020 Pascal Horton, University of Bern.
  */
 
-#ifndef AS_PREDICTAND_LIGHTNINGS_H
-#define AS_PREDICTAND_LIGHTNINGS_H
+#ifndef AS_PREDICTOR_OPER_FVG_FORECAST_H
+#define AS_PREDICTOR_OPER_FVG_FORECAST_H
 
 #include "asIncludes.h"
-#include "asPredictand.h"
+#include "asPredictorEcmwfIfsGrib.h"
+#include "asPredictorOperIfsForecast.h"
 
-class asPredictandLightnings : public asPredictand {
- public:
-  asPredictandLightnings(Parameter dataParameter, TemporalResolution dataTemporalResolution,
-                         SpatialAggregation dataSpatialAggregation);
+class asArea;
 
-  ~asPredictandLightnings() override = default;
+class asPredictorOperCustomFvgForecast : public asPredictorOperIfsForecast {
+  public:
+    explicit asPredictorOperCustomFvgForecast(const wxString &dataId);
 
-  bool Load(const wxString &filePath) override;
+    ~asPredictorOperCustomFvgForecast() override = default;
 
-  bool Save(const wxString &destinationDir = wxEmptyString) const override;
+    bool Init() override;
 
-  bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir = wxEmptyString,
-                         const wxString &patternDir = wxEmptyString,
-                         const wxString &destinationDir = wxEmptyString) override;
+    wxString GetDirStructure(const double date) override;
 
- protected:
- private:
-  bool InitContainers();
+    wxString GetFileName(const double date, const int leadTime) override;
 
-  bool BuildDataNormalized();
+  protected:
+    void ConvertToMjd(a1d &time, double refValue = NaNd) const override;
+
+    double FixTimeValue(double time) const override;
+
+  private:
 };
 
 #endif

@@ -24,3 +24,4 @@ set CL=/MP
 
 Get-ChildItem "$LIB_DIR/include"
 Get-ChildItem "$LIB_DIR/lib"
+Get-ChildItem "$LIB_DIR/bin"
