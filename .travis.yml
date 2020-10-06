@@ -29,9 +29,9 @@ jobs:
     - env:
       - TARGET=linux-server
       - DEPLOY=true
-      - DISTRO=ubuntu64-xenial
+      - DISTRO=ubuntu64-focal
       os: linux
-      dist: xenial
+      dist: focal
       before_install:
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
@@ -43,11 +43,11 @@ jobs:
             - gnome-devel
             - git
             - libnetcdf-dev
-            - libcurl3
+            - libcurl4
             - libwxbase3.0-dev
             - sqlite3
             - libsqlite3-dev
-            - libopenjpeg-dev
+            - libopenjp2-7-dev
 #    - env:
 #        - TARGET=osx-server
 #        - DEPLOY=true
@@ -78,9 +78,9 @@ jobs:
     - env:
       - TARGET=linux-desktop
       - DEPLOY=true
-      - DISTRO=ubuntu64-xenial
+      - DISTRO=ubuntu64-focal
       os: linux
-      dist: xenial
+      dist: focal
       before_install:
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
@@ -92,11 +92,11 @@ jobs:
             - gnome-devel
             - git
             - libnetcdf-dev
-            - libcurl3
-            - libwxgtk3.0-dev
+            - libcurl4
+            - libwxgtk3.0-gtk3-dev
             - sqlite3
             - libsqlite3-dev
-            - libopenjpeg-dev
+            - libopenjp2-7-dev
     - env:
         - TARGET=coverage-scan
         - DEPLOY=false
