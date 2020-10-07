@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /Users/travis/build/atmoswing/atmoswing
+cd $TRAVIS_BUILD_DIR
 cpack
 ls -lha
 export PKG_FILE=$(ls *.dmg)
