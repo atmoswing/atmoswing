@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 REBUILD_ECCODES=false
-ECCODES_VERSION=2.17.0
+ECCODES_VERSION=2.18.0
 
 # Build ecCodes
 if [ ! "$(ls -A ${HOME}/.libs/include/eccodes.h)" ] || [ "$REBUILD_ECCODES" = true ]; then
