@@ -91,6 +91,7 @@ jobs:
             - build-essential
             - gnome-devel
             - git
+            - libtiff-dev
             - libnetcdf-dev
             - libcurl4
             - libwxgtk3.0-gtk3-dev
