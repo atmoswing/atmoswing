@@ -55,8 +55,6 @@ jobs:
         - DEPLOY=true
       os: osx
       osx_image: xcode10
-      before_install:
-        - sudo ln -s /usr/local/bin/gtimeout /usr/local/bin/timeout
     - env:
       - TARGET=ubuntu-bionic-desktop
       - DEPLOY=true
