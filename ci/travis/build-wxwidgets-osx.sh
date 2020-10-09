@@ -7,7 +7,7 @@ WX_VERSION=3.1.4
 if [ ! "$(ls -A ${HOME}/.libs/include/wx-3.1)" ] || [ "$REBUILD_WX" = true ]; then
   wget -q -O wxwidgets.tar.bz2 "https://github.com/wxWidgets/wxWidgets/releases/download/v${WX_VERSION}/wxWidgets-${WX_VERSION}.tar.bz2" > /dev/null
   tar -xjf wxwidgets.tar.bz2
-  cd wxWidgets-${WX_VERSION}
+  cd wxWidgets-${WX_VERSION} || exit
   export LDFLAGS="-stdlib=libc++"
   export OBJCXXFLAGS="-stdlib=libc++ -std=c++11"
   ./configure --prefix=${HOME}/.libs --enable-unicode --disable-shared --enable-mediactrl=no --silent --with-macosx-version-min=10.10

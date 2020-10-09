@@ -7,9 +7,9 @@ PROJ_VERSION=7.1.1
 if [ ! "$(ls -A ${HOME}/.libs/include/proj.h)" ] || [ "$REBUILD_PROJ" = true ]; then
   wget -q -O proj.tar.gz "https://download.osgeo.org/proj/proj-${PROJ_VERSION}.tar.gz" > /dev/null
   tar -xzf proj.tar.gz
-  cd proj-${PROJ_VERSION}
+  cd proj-${PROJ_VERSION} || exit
   ./configure --prefix=${HOME}/.libs --silent
-  make -j$(nproc) > /dev/null
+  make -j $(nproc) > /dev/null
   make install
   cd ..
   printf 'PROJ has been built.\n'
