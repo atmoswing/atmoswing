@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 export LD_LIBRARY_PATH=$HOME/.libs/lib:$LD_LIBRARY_PATH
-cd $TRAVIS_BUILD_DIR
+cd /home/travis/build/atmoswing/atmoswing || exit
 cpack -C release -G DEB
 cat /home/travis/build/atmoswing/atmoswing/_CPack_Packages/Linux/DEB/PreinstallOutput.log
 ls -lha

@@ -13,6 +13,8 @@ jobs:
       before_install:
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
+        - chmod +x ci/travis/dependencies-ubuntu-bionic-server.sh
+        - travis_wait 20 timeout 1990 ci/travis/dependencies-ubuntu-bionic-server.sh || true
       addons:
         apt:
           update: true
@@ -35,6 +37,8 @@ jobs:
       before_install:
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
+        - chmod +x ci/travis/dependencies-ubuntu-focal.sh
+        - travis_wait 20 timeout 1990 ci/travis/dependencies-ubuntu-focal.sh || true
       addons:
         apt:
           update: true
@@ -48,6 +52,8 @@ jobs:
             - sqlite3
             - libsqlite3-dev
             - libopenjp2-7-dev
+            - libproj-dev
+            - libeccodes-dev
 #    - env:
 #        - TARGET=osx-server
 #        - DEPLOY=true
@@ -62,6 +68,8 @@ jobs:
       before_install:
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
+        - chmod +x ci/travis/dependencies-ubuntu-bionic-desktop.sh
+        - travis_wait 20 timeout 1990 ci/travis/dependencies-ubuntu-bionic-desktop.sh || true
       addons:
         apt:
           update: true
@@ -84,6 +92,8 @@ jobs:
       before_install:
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
+        - chmod +x ci/travis/dependencies-ubuntu-focal.sh
+        - travis_wait 20 timeout 1990 ci/travis/dependencies-ubuntu-focal.sh || true
       addons:
         apt:
           update: true
@@ -98,6 +108,9 @@ jobs:
             - sqlite3
             - libsqlite3-dev
             - libopenjp2-7-dev
+            - libproj-dev
+            - libgdal-dev
+            - libeccodes-dev
     - env:
         - TARGET=coverage-scan
         - DEPLOY=false
@@ -106,6 +119,8 @@ jobs:
       before_install:
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
+        - chmod +x ci/travis/dependencies-coverage-scan.sh
+        - travis_wait 20 timeout 1990 ci/travis/dependencies-coverage-scan.sh || true
       addons:
         apt:
           update: true
@@ -135,6 +150,8 @@ jobs:
           CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
+        - chmod +x ci/travis/dependencies-coverity-scan.sh
+        - travis_wait 20 timeout 1990 ci/travis/dependencies-coverity-scan.sh || true
       addons:
         apt:
           update: true
@@ -161,10 +178,6 @@ cache:
   timeout: 1000
   directories:
     - "$HOME/.libs"
-install:
-  - if [ "$TRAVIS_OS_NAME" = "osx" ] ; then sudo ln -s /usr/local/bin/gtimeout /usr/local/bin/timeout ; fi
-  - chmod +x ci/travis/dependencies-${TARGET}.sh
-  - travis_wait 20 timeout 1990 ci/travis/dependencies-${TARGET}.sh || true
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 25 ci/travis/run-${TARGET}.sh

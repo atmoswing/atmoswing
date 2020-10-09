@@ -9,3 +9,5 @@ sudo mkdir /opt/cmake
 sudo sh cmake-${CMAKE_VERSION}-Linux-x86_64.sh --skip-license --prefix=/opt/cmake > /dev/null
 sudo ln -s /opt/cmake/bin/cmake /usr/bin/cmake
 sudo ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
+sudo ln -s /opt/cmake/bin/cpack /usr/bin/cpack
+sudo ln -s /opt/cmake/bin/cpack /usr/local/bin/cpack

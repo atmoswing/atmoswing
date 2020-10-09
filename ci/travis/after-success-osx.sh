@@ -1,6 +1,7 @@
 #!/bin/bash
 
-cd $TRAVIS_BUILD_DIR
+cd $TRAVIS_BUILD_DIR || exit
+pwd
 cpack
 ls -lha
 export PKG_FILE=$(ls *.dmg)
