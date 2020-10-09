@@ -113,17 +113,17 @@ endif ()
 
 # Enable Visual Leak Detector
 if (WIN32)
-    option(USE_VLD "Sould we use Visual Leak Detector (https://vld.codeplex.com) ?" OFF)
+    option(USE_VLD "Should we use Visual Leak Detector (https://vld.codeplex.com) ?" OFF)
 else (WIN32)
     set(USE_VLD OFF)
 endif (WIN32)
 
 # Enable Cppcheck
-option(USE_CPPCHECK "Sould we use Cppcheck (http://cppcheck.sourceforge.net/) ?" OFF)
+option(USE_CPPCHECK "Should we use Cppcheck (http://cppcheck.sourceforge.net/) ?" OFF)
 
 # Enable code coverage
 if (CMAKE_COMPILER_IS_GNUCXX)
-    option(USE_CODECOV "Sould we do code coverage with lcov ?" OFF)
+    option(USE_CODECOV "Should we do code coverage with lcov ?" OFF)
 else (CMAKE_COMPILER_IS_GNUCXX)
     set(USE_CODECOV OFF)
 endif ()
@@ -132,7 +132,7 @@ endif ()
 if (BUILD_VIEWER)
     set(USE_GUI ON)
 else (BUILD_VIEWER)
-    option(USE_GUI "Sould AtmoSwing be built with a GUI ?" OFF)
+    option(USE_GUI "Should AtmoSwing be built with a GUI ?" OFF)
 endif (BUILD_VIEWER)
 
 # Disable testing tree

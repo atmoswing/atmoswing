@@ -5,7 +5,7 @@ git:
 jobs:
   include:
     - env:
-      - TARGET=linux-server
+      - TARGET=ubuntu-bionic-server
       - DEPLOY=true
       - DISTRO=ubuntu64-bionic
       os: linux
@@ -17,6 +17,7 @@ jobs:
         apt:
           update: true
           packages:
+            - rename
             - build-essential
             - gnome-devel
             - git
@@ -27,7 +28,7 @@ jobs:
             - libsqlite3-dev
             - libopenjp2-7-dev
     - env:
-      - TARGET=linux-server
+      - TARGET=ubuntu-focal-server
       - DEPLOY=true
       - DISTRO=ubuntu64-focal
       os: linux
@@ -39,6 +40,7 @@ jobs:
         apt:
           update: true
           packages:
+            - rename
             - build-essential
             - gnome-devel
             - git
@@ -48,13 +50,15 @@ jobs:
             - sqlite3
             - libsqlite3-dev
             - libopenjp2-7-dev
+            - libproj-dev
+            - libeccodes-dev
 #    - env:
 #        - TARGET=osx-server
 #        - DEPLOY=true
 #      os: osx
 #      osx_image: xcode10
     - env:
-      - TARGET=linux-desktop
+      - TARGET=ubuntu-bionic-desktop
       - DEPLOY=true
       - DISTRO=ubuntu64-bionic
       os: linux
@@ -66,6 +70,7 @@ jobs:
         apt:
           update: true
           packages:
+            - rename
             - build-essential
             - gnome-devel
             - git
@@ -76,7 +81,7 @@ jobs:
             - libsqlite3-dev
             - libopenjp2-7-dev
     - env:
-      - TARGET=linux-desktop
+      - TARGET=ubuntu-focal-desktop
       - DEPLOY=true
       - DISTRO=ubuntu64-focal
       os: linux
@@ -88,15 +93,20 @@ jobs:
         apt:
           update: true
           packages:
+            - rename
             - build-essential
             - gnome-devel
             - git
+            - libtiff-dev
             - libnetcdf-dev
             - libcurl4
             - libwxgtk3.0-gtk3-dev
             - sqlite3
             - libsqlite3-dev
             - libopenjp2-7-dev
+            - libproj-dev
+            - libgdal-dev
+            - libeccodes-dev
     - env:
         - TARGET=coverage-scan
         - DEPLOY=false
@@ -161,7 +171,6 @@ cache:
   directories:
     - "$HOME/.libs"
 install:
-  - if [ "$TRAVIS_OS_NAME" = "osx" ] ; then sudo ln -s /usr/local/bin/gtimeout /usr/local/bin/timeout ; fi
   - chmod +x ci/travis/dependencies-${TARGET}.sh
   - travis_wait 20 timeout 1990 ci/travis/dependencies-${TARGET}.sh || true
 script:
@@ -177,7 +186,7 @@ deploy:
     secret_access_key:
       secure: QVTqXZ54wsQhUu+QcYQATIuwVe27ZIl+3XnccDL7Q2NUalWulj5p4EyQ5+JmKhUYzdRujCH08ASuQiKtb/vW5q0WnNsElFBixLk2rhUTR7AG7v1Tk20fZkAczha5xtC/jfyr1v5DdqzQJYAUnBsV+9Zr2oNLeSj7YbUuJk9GwLdfdc4DKJ4+AKIZR6n9OqtVYVbMZB89W8l2t/20fO/XOuKBLSiG23K9R9dlv6eawF/9nFPx+EcuSBnkOFBa+Cq0xFKRx/N3LHDhFPtpV5s+hH1Oenbcw2l4KwMwwSaVxCerMnyWW0Hu6Mrcn2P7KlCsOBtt1kKxXHDLmwRZdSUVO+DJKt+/jDAjRncqN++rFnb+B7SbHEBiCfUGuW2xfLPr6W5hKxmuHUC+5LnC0uVwPSpvEzMAAU4Xip7M66U1CxwLHH9/CfnNdTXAorYBbDVBEr5PdpVjgtZoih4oeZjrGsIWW98tfrcfOOiLHQnRb2Bc0oOq1lMguRINg1t67kJKuCFKnIQSzYpkVQ7BkXwl0f460cZ24X3lXVCPatNDvT+SI0QL6LJgiF9psPncQGm9olKyBy6jb1MTEl9NTjKoyWLIbi+JIg66ub0hmzDa4IBJtGWm5MCg4O4v5TpL64qcd5HK5U/odMpXgK5DvjBF3NoejKTRTRmy94dYB5/vGpA=
     bucket: atmoswing-deploy
-    cleanup: false
+    skip_cleanup: true
     acl: public-read
     local_dir: deploy
     on:
@@ -189,7 +198,7 @@ deploy:
     secret_access_key:
       secure: QVTqXZ54wsQhUu+QcYQATIuwVe27ZIl+3XnccDL7Q2NUalWulj5p4EyQ5+JmKhUYzdRujCH08ASuQiKtb/vW5q0WnNsElFBixLk2rhUTR7AG7v1Tk20fZkAczha5xtC/jfyr1v5DdqzQJYAUnBsV+9Zr2oNLeSj7YbUuJk9GwLdfdc4DKJ4+AKIZR6n9OqtVYVbMZB89W8l2t/20fO/XOuKBLSiG23K9R9dlv6eawF/9nFPx+EcuSBnkOFBa+Cq0xFKRx/N3LHDhFPtpV5s+hH1Oenbcw2l4KwMwwSaVxCerMnyWW0Hu6Mrcn2P7KlCsOBtt1kKxXHDLmwRZdSUVO+DJKt+/jDAjRncqN++rFnb+B7SbHEBiCfUGuW2xfLPr6W5hKxmuHUC+5LnC0uVwPSpvEzMAAU4Xip7M66U1CxwLHH9/CfnNdTXAorYBbDVBEr5PdpVjgtZoih4oeZjrGsIWW98tfrcfOOiLHQnRb2Bc0oOq1lMguRINg1t67kJKuCFKnIQSzYpkVQ7BkXwl0f460cZ24X3lXVCPatNDvT+SI0QL6LJgiF9psPncQGm9olKyBy6jb1MTEl9NTjKoyWLIbi+JIg66ub0hmzDa4IBJtGWm5MCg4O4v5TpL64qcd5HK5U/odMpXgK5DvjBF3NoejKTRTRmy94dYB5/vGpA=
     bucket: atmoswing-deploy
-    cleanup: false
+    skip_cleanup: true
     acl: public-read
     local_dir: deploy
     on:
