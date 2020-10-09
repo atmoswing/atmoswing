@@ -17,6 +17,7 @@ jobs:
         apt:
           update: true
           packages:
+            - rename
             - build-essential
             - gnome-devel
             - git
@@ -39,6 +40,7 @@ jobs:
         apt:
           update: true
           packages:
+            - rename
             - build-essential
             - gnome-devel
             - git
@@ -50,11 +52,11 @@ jobs:
             - libopenjp2-7-dev
             - libproj-dev
             - libeccodes-dev
-    - env:
-        - TARGET=osx-server
-        - DEPLOY=true
-      os: osx
-      osx_image: xcode10
+#    - env:
+#        - TARGET=osx-server
+#        - DEPLOY=true
+#      os: osx
+#      osx_image: xcode10
     - env:
       - TARGET=ubuntu-bionic-desktop
       - DEPLOY=true
@@ -68,6 +70,7 @@ jobs:
         apt:
           update: true
           packages:
+            - rename
             - build-essential
             - gnome-devel
             - git
@@ -90,6 +93,7 @@ jobs:
         apt:
           update: true
           packages:
+            - rename
             - build-essential
             - gnome-devel
             - git
