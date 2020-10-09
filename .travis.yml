@@ -5,7 +5,7 @@ git:
 jobs:
   include:
     - env:
-      - TARGET=linux-server
+      - TARGET=ubuntu-bionic-server
       - DEPLOY=true
       - DISTRO=ubuntu64-bionic
       os: linux
@@ -13,8 +13,6 @@ jobs:
       before_install:
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
-        - chmod +x ci/travis/dependencies-ubuntu-bionic-server.sh
-        - travis_wait 20 timeout 1990 ci/travis/dependencies-ubuntu-bionic-server.sh || true
       addons:
         apt:
           update: true
@@ -29,7 +27,7 @@ jobs:
             - libsqlite3-dev
             - libopenjp2-7-dev
     - env:
-      - TARGET=linux-server
+      - TARGET=ubuntu-focal-server
       - DEPLOY=true
       - DISTRO=ubuntu64-focal
       os: linux
@@ -37,8 +35,6 @@ jobs:
       before_install:
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
-        - chmod +x ci/travis/dependencies-ubuntu-focal.sh
-        - travis_wait 20 timeout 1990 ci/travis/dependencies-ubuntu-focal.sh || true
       addons:
         apt:
           update: true
@@ -54,13 +50,15 @@ jobs:
             - libopenjp2-7-dev
             - libproj-dev
             - libeccodes-dev
-#    - env:
-#        - TARGET=osx-server
-#        - DEPLOY=true
-#      os: osx
-#      osx_image: xcode10
     - env:
-      - TARGET=linux-desktop
+        - TARGET=osx-server
+        - DEPLOY=true
+      os: osx
+      osx_image: xcode10
+      before_install:
+        - sudo ln -s /usr/local/bin/gtimeout /usr/local/bin/timeout
+    - env:
+      - TARGET=ubuntu-bionic-desktop
       - DEPLOY=true
       - DISTRO=ubuntu64-bionic
       os: linux
@@ -68,8 +66,6 @@ jobs:
       before_install:
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
-        - chmod +x ci/travis/dependencies-ubuntu-bionic-desktop.sh
-        - travis_wait 20 timeout 1990 ci/travis/dependencies-ubuntu-bionic-desktop.sh || true
       addons:
         apt:
           update: true
@@ -84,7 +80,7 @@ jobs:
             - libsqlite3-dev
             - libopenjp2-7-dev
     - env:
-      - TARGET=linux-desktop
+      - TARGET=ubuntu-focal-desktop
       - DEPLOY=true
       - DISTRO=ubuntu64-focal
       os: linux
@@ -92,8 +88,6 @@ jobs:
       before_install:
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
-        - chmod +x ci/travis/dependencies-ubuntu-focal.sh
-        - travis_wait 20 timeout 1990 ci/travis/dependencies-ubuntu-focal.sh || true
       addons:
         apt:
           update: true
@@ -119,8 +113,6 @@ jobs:
       before_install:
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
-        - chmod +x ci/travis/dependencies-coverage-scan.sh
-        - travis_wait 20 timeout 1990 ci/travis/dependencies-coverage-scan.sh || true
       addons:
         apt:
           update: true
@@ -150,8 +142,6 @@ jobs:
           CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
         - chmod +x ci/travis/install-cmake.sh
         - travis_wait 30 ci/travis/install-cmake.sh
-        - chmod +x ci/travis/dependencies-coverity-scan.sh
-        - travis_wait 20 timeout 1990 ci/travis/dependencies-coverity-scan.sh || true
       addons:
         apt:
           update: true
@@ -178,6 +168,9 @@ cache:
   timeout: 1000
   directories:
     - "$HOME/.libs"
+install:
+  - chmod +x ci/travis/dependencies-${TARGET}.sh
+  - travis_wait 20 timeout 1990 ci/travis/dependencies-${TARGET}.sh || true
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 25 ci/travis/run-${TARGET}.sh

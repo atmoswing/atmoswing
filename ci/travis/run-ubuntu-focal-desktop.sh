@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+export LIBRARY_PATH=$HOME/.libs/lib:$LIBRARY_PATH
+export LD_LIBRARY_PATH=$HOME/.libs/lib:$LD_LIBRARY_PATH
+
+cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=1 -DCREATE_INSTALLER=1 -DUSE_GUI=1 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$HOME/.libs
+make -j$(nproc)
+
+cd tests
+./atmoswing-tests
