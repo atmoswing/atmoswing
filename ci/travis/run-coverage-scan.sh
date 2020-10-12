@@ -5,7 +5,7 @@ echo "Building target"
 make -j$(nproc) atmoswing-coverage > /dev/null
 echo "Preparing coverage data"
 lcov --directory . --capture --output-file coverage.info &> /dev/null
-lcov --remove coverage.info '/usr/*' '*/external/*' '*/tests/*' --output-file coverage.info --quiet
+lcov --remove coverage.info "/usr/*" "*/_deps/*" "*/tests/*" --output-file coverage.info
 lcov --list coverage.info
 echo "Sending to Codecov"
-bash <(curl -s https://codecov.io/bash) > /dev/null || echo "Codecov did not collect coverage reports"
+bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"

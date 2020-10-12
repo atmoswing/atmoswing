@@ -8,12 +8,3 @@ coverage:
         target: 40
         threshold: 1
         base: auto
-ignore:
-  - "/usr/.*"
-  - ".*/external/.*"
-  - "tests/.*"
-  - ".*/tests/.*"
-  - "tests/src/*"
-  - ".*/tests/src/*"
-  - "/home/travis/build/atmoswing/atmoswing/tests/src/*"
-  - ".*/libs/.*"
