@@ -51,8 +51,8 @@ __inline__ __device__ float warpReduceSum(float val) {
     return val;
 }
 
-__global__ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg,
-                               const int *idxArch, float w, float *out, int offset) {
+__global__ void processSgrads(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg,
+                              const int *idxArch, float w, float *out, int offset) {
     const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
     const int threadId = threadIdx.x;
 
@@ -596,8 +596,9 @@ bool asProcessorCuda::ProcessCriteria(const float *dData, std::vector<long> ptor
             case S0:
             case S1grads:
             case S2grads:
-                processS1grads<<<blocksNb3D, blockSize, 0, stream>>>(
-                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                // Valid for S0, S1, and S2 as the gradients were processed beforehand
+                processSgrads<<<blocksNb3D, blockSize, 0, stream>>>(dData, ptorStart[iPtor], nbCandidates, ptsNb,
+                                                                    indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             case MD:
                 processMD<<<blocksNb3D, blockSize, 0, stream>>>(dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg,

@@ -1678,5 +1678,5 @@ void asParameters::SetPredictorCriteria(int iStep, int iPtor, const wxString &va
 
 void asParameters::SetPredictorWeight(int iStep, int iPtor, float val) {
     wxASSERT(!asIsNaN(val));
-    m_steps[iStep].predictors[iPtor].weight = val;
+    m_steps[iStep].predictors[iPtor].weight = wxMax(val, 0);
 }

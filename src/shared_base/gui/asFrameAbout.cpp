@@ -50,7 +50,7 @@ asFrameAbout::asFrameAbout(wxWindow *parent) : asFrameAboutVirtual(parent) {
     // Set libraries versions
     m_textCtrlLibraries->SetValue(wxVersion::GetAllModuleInfo());
 
-    // Set libraries versions
+    // Set license
     m_textCtrlLicense->SetValue(asFrameAbout::GetLicense());
 }
 
