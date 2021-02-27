@@ -1142,7 +1142,8 @@ bool asParametersOptimization::FixWeights() {
         }
 
         // Last weight: difference to 0
-        float lastWeight = wxMax(1.0f - newSum - totWeightLocked, GetPredictorWeightLowerLimit(i, j));
+        float lastWeight = wxMax(1.0f - newSum - totWeightLocked,
+                                 GetPredictorWeightLowerLimit(i, GetPredictorsNb(i) - 1));
         SetPredictorWeight(i, GetPredictorsNb(i) - 1, lastWeight);
     }
 
