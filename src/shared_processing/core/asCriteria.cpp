@@ -33,7 +33,9 @@
 #include "asCriteriaRMSE.h"
 #include "asCriteriaRSE.h"
 #include "asCriteriaS0.h"
+#include "asCriteriaS0obs.h"
 #include "asCriteriaS1.h"
+#include "asCriteriaS1obs.h"
 #include "asCriteriaS1G.h"
 #include "asCriteriaS1grads.h"
 #include "asCriteriaS2.h"
@@ -58,6 +60,10 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString) {
         // Teweles-Wobus
         asCriteria *criteria = new asCriteriaS1();
         return criteria;
+    } else if (criteriaString.CmpNoCase("S1obs") == 0) {
+        // Teweles-Wobus with division by the observation
+        asCriteria *criteria = new asCriteriaS1obs();
+        return criteria;
     } else if (criteriaString.CmpNoCase("S1G") == 0 || criteriaString.CmpNoCase("S1sG") == 0) {
         // Teweles-Wobus with Gaussian weights
         asCriteria *criteria = new asCriteriaS1G();
@@ -77,6 +83,10 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString) {
     } else if (criteriaString.CmpNoCase("S0") == 0) {
         // Teweles-Wobus on raw data
         asCriteria *criteria = new asCriteriaS0();
+        return criteria;
+    } else if (criteriaString.CmpNoCase("S0obs") == 0) {
+        // Teweles-Wobus on raw data with division by the observation
+        asCriteria *criteria = new asCriteriaS0obs();
         return criteria;
     } else if (criteriaString.CmpNoCase("SAD") == 0) {
         // Sum of absolute differences
