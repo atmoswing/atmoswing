@@ -45,7 +45,7 @@ float asCriteriaS0obs::Assess(const a2f &refData, const a2f &evalData, int rowsN
 
     if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
         dividend = ((refData - evalData).abs()).sum();
-        divisor = (refData.abs().max(evalData.abs())).sum();
+        divisor = (refData.abs()).sum();
 
     } else {
         a2f refDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(refData, 0);
