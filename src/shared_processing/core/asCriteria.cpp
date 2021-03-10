@@ -23,6 +23,7 @@
 
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2016-2021 Pascal Horton, University of Bern.
  */
 
 #include "asCriteria.h"
@@ -58,64 +59,49 @@ asCriteria::~asCriteria() = default;
 asCriteria *asCriteria::GetInstance(const wxString &criteriaString) {
     if (criteriaString.CmpNoCase("S1") == 0 || criteriaString.CmpNoCase("S1s") == 0) {
         // Teweles-Wobus
-        asCriteria *criteria = new asCriteriaS1();
-        return criteria;
+        return new asCriteriaS1();
     } else if (criteriaString.CmpNoCase("S1obs") == 0) {
         // Teweles-Wobus with division by the observation
-        asCriteria *criteria = new asCriteriaS1obs();
-        return criteria;
+        return new asCriteriaS1obs();
     } else if (criteriaString.CmpNoCase("S1G") == 0 || criteriaString.CmpNoCase("S1sG") == 0) {
         // Teweles-Wobus with Gaussian weights
-        asCriteria *criteria = new asCriteriaS1G();
-        return criteria;
+        return new asCriteriaS1G();
     } else if (criteriaString.CmpNoCase("S1grads") == 0) {
         // Teweles-Wobus on gradients
-        asCriteria *criteria = new asCriteriaS1grads();
-        return criteria;
+        return new asCriteriaS1grads();
     } else if (criteriaString.CmpNoCase("S2") == 0 || criteriaString.CmpNoCase("S2s") == 0) {
         // Derivative of Teweles-Wobus
-        asCriteria *criteria = new asCriteriaS2();
-        return criteria;
+        return new asCriteriaS2();
     } else if (criteriaString.CmpNoCase("S2grads") == 0) {
         // Derivative of Teweles-Wobus on gradients
-        asCriteria *criteria = new asCriteriaS2grads();
-        return criteria;
+        return new asCriteriaS2grads();
     } else if (criteriaString.CmpNoCase("S0") == 0) {
         // Teweles-Wobus on raw data
-        asCriteria *criteria = new asCriteriaS0();
-        return criteria;
+        return new asCriteriaS0();
     } else if (criteriaString.CmpNoCase("S0obs") == 0) {
         // Teweles-Wobus on raw data with division by the observation
-        asCriteria *criteria = new asCriteriaS0obs();
-        return criteria;
+        return new asCriteriaS0obs();
     } else if (criteriaString.CmpNoCase("SAD") == 0) {
         // Sum of absolute differences
-        asCriteria *criteria = new asCriteriaSAD();
-        return criteria;
+        return new asCriteriaSAD();
     } else if (criteriaString.CmpNoCase("MD") == 0) {
         // Mean absolute difference
-        asCriteria *criteria = new asCriteriaMD();
-        return criteria;
+        return new asCriteriaMD();
     } else if (criteriaString.CmpNoCase("RMSE") == 0) {
         // Root mean square error
-        asCriteria *criteria = new asCriteriaRMSE();
-        return criteria;
+        return new asCriteriaRMSE();
     } else if (criteriaString.CmpNoCase("RSE") == 0) {
         // Root square error (According to Bontron. Should not be used !)
-        asCriteria *criteria = new asCriteriaRSE();
-        return criteria;
+        return new asCriteriaRSE();
     } else if (criteriaString.CmpNoCase("DMV") == 0) {
         // Difference in mean value (nonspatial)
-        asCriteria *criteria = new asCriteriaDMV();
-        return criteria;
+        return new asCriteriaDMV();
     } else if (criteriaString.CmpNoCase("DSD") == 0) {
         // Difference in standard deviation (nonspatial)
-        asCriteria *criteria = new asCriteriaDSD();
-        return criteria;
+        return new asCriteriaDSD();
     } else {
         wxLogError(_("The predictor criteria was not correctly defined (%s)."), criteriaString);
-        asCriteria *criteria = new asCriteriaSAD();
-        return criteria;
+        return nullptr;
     }
 }
 
