@@ -168,10 +168,10 @@ double asPredictorOper::DecrementRunDateInUse() {
     return m_runDateInUse;
 }
 
-void asPredictorOper::RestrictTimeArray(double restrictHours, double restrictTimeStepHours, int leadTimeNb) {
+void asPredictorOper::RestrictTimeArray(double restrictHours, double forecastTimeStepHours, int leadTimeNb) {
     m_restrictHours = (int)restrictHours;
-    m_restrictTimeStepHours = (int)restrictTimeStepHours;
-    m_leadTimeEnd = m_leadTimeStep * (leadTimeNb + floor(restrictHours / restrictTimeStepHours));
+    m_restrictTimeStepHours = (int)forecastTimeStepHours;
+    m_leadTimeEnd = (int)forecastTimeStepHours * (leadTimeNb + floor(restrictHours / forecastTimeStepHours));
     wxASSERT(m_restrictTimeStepHours > 0);
     wxASSERT(m_restrictHours > -100);
     wxASSERT(m_restrictHours < 100);

@@ -52,7 +52,7 @@ class asPredictorOper : public asPredictor {
 
     bool BuildFilenamesUrls();
 
-    void RestrictTimeArray(double restrictHours, double restrictTimeStepHours, int leadTimeNb);
+    void RestrictTimeArray(double restrictHours, double forecastTimeStepHours, int leadTimeNb);
 
     double GetForecastLeadTimeEnd() const {
         return m_leadTimeEnd;

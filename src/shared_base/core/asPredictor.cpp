@@ -1563,7 +1563,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData) {
 
 bool asPredictor::GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData) {
     // Check if loading data is relevant
-    if (m_fInd.timeCountStorage == 0) {
+    if (m_fInd.timeCountFile == 0 || m_fInd.timeCountStorage == 0) {
         return true;
     }
 

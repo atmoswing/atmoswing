@@ -65,6 +65,7 @@ Test Results *
 cmake-build-debug/
 cmake-build-release/
 cmake-build-relwithdebinfo/
+data-debug/
 external/
 **/x64-Debug/
 **/.vs/
