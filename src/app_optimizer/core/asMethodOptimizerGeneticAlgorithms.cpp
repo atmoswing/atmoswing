@@ -490,303 +490,304 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
 
 bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizationGAs &params,
                                                            const wxString &operatorsFilePath) {
-    if (g_resumePreviousRun) {
-        wxString resultsDir = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+    if (!g_resumePreviousRun) {
+        return true;
+    }
 
-        wxDir dir(resultsDir);
-        if (!dir.IsOpened()) {
-            wxLogVerbose(_("The directory %s could not be opened."), resultsDir.c_str());
-        } else {
-            // Check if the resulting file is already present
-            vi stationId = params.GetPredictandStationIds();
-            wxString finalFilePattern =
-                wxString::Format("*_station_%s_best_individual.txt", GetPredictandStationIdsList(stationId).c_str());
-            if (dir.HasFiles(finalFilePattern)) {
-                wxLogMessage(_("The directory %s already contains the resulting file."), resultsDir.c_str());
-                return false;
+    wxString resultsDir = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+
+    wxDir dir(resultsDir);
+    if (!dir.IsOpened()) {
+        wxLogVerbose(_("The directory %s could not be opened."), resultsDir.c_str());
+        return false;
+    }
+
+    // Check if the resulting file is already present
+    vi stationId = params.GetPredictandStationIds();
+    wxString finalFilePattern = wxString::Format("*_station_%s_best_individual.txt",
+                                                 GetPredictandStationIdsList(stationId).c_str());
+    if (dir.HasFiles(finalFilePattern)) {
+        wxLogMessage(_("The directory %s already contains the resulting file."), resultsDir.c_str());
+        return false;
+    }
+
+    // Look for intermediate results to load
+    wxString generationsFilePattern = wxString::Format("*_station_%s_generations.txt",
+                                                       GetPredictandStationIdsList(stationId).c_str());
+    if (!dir.HasFiles(generationsFilePattern)) {
+        return true;
+    }
+
+    wxArrayString filesGen;
+    wxDir::GetAllFiles(resultsDir, &filesGen, generationsFilePattern, wxDIR_FILES);
+    filesGen.Sort();
+    wxString filePath = filesGen.Last();
+    filesGen.Clear();
+
+    // Check that the length is consistent with the population size
+    int nLines = asFileText::CountLines(filePath) - 1;
+    if (nLines % m_popSize != 0) {
+        wxLogError(_("The number of former results is not consistent with the population size (%d)."), m_popSize);
+        return false;
+    }
+
+    wxString msg = wxString::Format(_("Previous intermediate results were found "
+                                      "and will be loaded (%d lines)."), nLines);
+    wxLogWarning(msg);
+    asLog::PrintToConsole(msg);
+    asFileText prevResults(filePath, asFile::ReadOnly);
+    if (!prevResults.Open()) {
+        wxLogError(_("Couldn't open the file %s."), filePath.c_str());
+        return false;
+    }
+    prevResults.SkipLines(1);
+
+    // Check that the content match the current parameters
+    wxString fileLine = prevResults.GetNextLine();
+    wxString firstLineCopy = fileLine;
+    wxString currentParamsPrint = params.Print();
+    int indexInFile, indexInParams;
+
+    // Compare number of steps
+    while (true) {
+        indexInFile = firstLineCopy.Find("Step");
+        indexInParams = currentParamsPrint.Find("Step");
+        if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND) {
+            break;
+        } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
+                   (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
+            wxLogError(_("The number of steps do not correspond between the "
+                         "current and the previous parameters."));
+            return false;
+        }
+
+        firstLineCopy.Replace("Step", wxEmptyString, false);
+        currentParamsPrint.Replace("Step", wxEmptyString, false);
+    }
+
+    // Compare number of predictors
+    while (true) {
+        indexInFile = firstLineCopy.Find("Ptor");
+        indexInParams = currentParamsPrint.Find("Ptor");
+        if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND) {
+            break;
+        } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
+                   (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
+            wxLogError(_("The number of predictors do not correspond between the "
+                         "current and the previous parameters."));
+            return false;
+        }
+
+        firstLineCopy.Replace("Ptor", wxEmptyString, false);
+        currentParamsPrint.Replace("Ptor", wxEmptyString, false);
+    }
+
+    // Compare number of levels
+    while (true) {
+        indexInFile = firstLineCopy.Find("Level");
+        indexInParams = currentParamsPrint.Find("Level");
+        if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND) {
+            break;
+        } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
+                   (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
+            wxLogError(
+                _("The number of atmospheric levels do not correspond between the current "
+                  "and the previous parameters."));
+            return false;
+        }
+
+        firstLineCopy.Replace("Level", wxEmptyString, false);
+        currentParamsPrint.Replace("Level", wxEmptyString, false);
+    }
+
+    int genNb = nLines / m_popSize;
+    int iLastGen = (genNb - 1) * m_popSize;
+
+    asParametersOptimizationGAs prevParams;
+
+    // Parse the parameters data
+    std::vector<float> vectScores;
+    if (m_enableHistory) {
+        vectScores.reserve(nLines);
+    }
+    int iLine = 0, iVar = 0;
+    do {
+        if (fileLine.IsEmpty()) break;
+
+        if (!m_enableHistory && iLine < iLastGen) {
+            // Get next line
+            fileLine = prevResults.GetNextLine();
+            iLine++;
+
+            continue;
+        }
+
+        prevParams = m_parameters[0];
+        if (!prevParams.GetValuesFromString(fileLine)) {
+            return false;
+        }
+
+        // Get the score
+        int indexScoreCalib = fileLine.Find("Calib");
+        int indexScoreValid = fileLine.Find("Valid");
+        wxString strScore = fileLine.SubString(indexScoreCalib + 6, indexScoreValid - 2);
+        double scoreVal;
+        strScore.ToDouble(&scoreVal);
+        auto prevScoresCalib = float(scoreVal);
+
+        // Add to the new array
+        m_resGenerations.AddWithoutProcessingMedian(prevParams, prevScoresCalib);
+        vectScores.push_back(prevScoresCalib);
+        if (iLine >= iLastGen) {
+            // Restore the last generation
+            m_parameters[iVar] = prevParams;
+            m_scoresCalib[iVar] = prevScoresCalib;
+            iVar++;
+        }
+
+        // Get next line
+        fileLine = prevResults.GetNextLine();
+        iLine++;
+    } while (!prevResults.EndOfFile());
+    prevResults.Close();
+
+    if (m_enableHistory) {
+        m_resGenerations.ProcessMedianScores();
+    }
+
+    wxLogMessage(_("%d former results have been reloaded."), m_resGenerations.GetCount());
+    asLog::PrintToConsole(wxString::Format(_("%d former results have been reloaded.\n"), m_resGenerations.GetCount()));
+
+    // Restore best and mean scores
+    m_bestScores.resize(genNb);
+    m_meanScores.resize(genNb);
+    for (int iGen = 0; iGen < genNb; iGen++) {
+        int iBest = iGen * m_popSize;
+        m_bestScores[iGen] = vectScores[iBest];
+
+        float mean = 0;
+        for (int iNext = 0; iNext < m_popSize; iNext++) {
+            mean += vectScores[iNext];
+        }
+
+        m_meanScores[iGen] = mean / float(m_popSize);
+    }
+
+    m_iterator = m_paramsNb;
+    m_generationNb = genNb;
+
+    // Copy file to the new target
+    wxCopyFile(filePath, m_resGenerations.GetFilePath());
+
+    // Restore operators
+    wxString operatorsFilePattern = wxString::Format("*_station_%s_operators.txt",
+                                                     GetPredictandStationIdsList(stationId).c_str());
+    if (dir.HasFiles(operatorsFilePattern)) {
+        return true;
+    }
+
+    wxArrayString filesOper;
+    wxDir::GetAllFiles(resultsDir, &filesOper, operatorsFilePattern, wxDIR_FILES);
+    filesOper.Sort();
+    wxString operFilePath = filesOper.Last();
+    filesOper.Clear();
+
+    wxLogWarning(_("Previous operators were found and will be loaded."));
+    asLog::PrintToConsole(_("Previous operators were found and will be loaded.\n"));
+
+    // Copy file to the new target
+    wxCopyFile(operFilePath, operatorsFilePath);
+
+    // Check length
+    int nLinesOper = asFileText::CountLines(operFilePath);
+    if (nLines != nLinesOper) {
+        wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."), nLines, nLinesOper);
+    }
+
+    // Open file
+    asFileText prevOperators(operFilePath, asFile::ReadOnly);
+    if (!prevOperators.Open()) {
+        wxLogError(_("Couldn't open the file %s."), operFilePath.c_str());
+        return false;
+    }
+
+    // Extract file content for the last generation
+    prevOperators.SkipLines((genNb - 1) * m_popSize);
+    wxString fileLineOper = prevOperators.GetNextLine();
+    iVar = 0;
+    do {
+        if (fileLineOper.IsEmpty()) break;
+
+        if (iVar >= m_parameters.size()) {
+            wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."),
+                       (int)m_parameters.size(), iVar + 1);
+            return false;
+        }
+
+        switch (m_mutationsModeType) {
+            case (RandomUniformConstant):
+            case (RandomUniformVariable):
+            case (RandomNormalConstant):
+            case (RandomNormalVariable):
+            case (MultiScale):
+            case (NoMutation):
+            case (NonUniform): {
+                // Nothing to do
+                break;
             }
 
-            // Look for intermediate results to load
-            wxString generationsFilePattern =
-                wxString::Format("*_station_%s_generations.txt", GetPredictandStationIdsList(stationId).c_str());
-            if (dir.HasFiles(generationsFilePattern)) {
-                wxArrayString filesGen;
-                wxDir::GetAllFiles(resultsDir, &filesGen, generationsFilePattern, wxDIR_FILES);
-                filesGen.Sort();
-                wxString filePath = filesGen.Last();
-                filesGen.Clear();
+            case (SelfAdaptationRate): {
+                int indexMutationRate = fileLineOper.Find("MutationRate");
+                wxString strMutationRate = fileLineOper.Mid(indexMutationRate + 13);
+                double mutationRate;
+                strMutationRate.ToDouble(&mutationRate);
+                m_parameters[iVar].SetAdaptMutationRate((float)mutationRate);
+                break;
+            }
 
-                // Check that the length is consistent with the population size
-                int nLines = asFileText::CountLines(filePath) - 1;
-                if (nLines % m_popSize != 0) {
-                    wxLogError(_("The number of former results is not consistent with the population size (%d)."),
-                               m_popSize);
-                    return false;
-                }
+            case (SelfAdaptationRadius): {
+                int indexMutationRate = fileLineOper.Find("MutationRate");
+                int indexMutationRadius = fileLineOper.Find("MutationRadius");
+                wxString strMutationRate = fileLineOper.SubString(indexMutationRate + 13, indexMutationRadius - 2);
+                double mutationRate;
+                strMutationRate.ToDouble(&mutationRate);
+                m_parameters[iVar].SetAdaptMutationRate((float)mutationRate);
+                wxString strMutationRadius = fileLineOper.Mid(indexMutationRadius + 15);
+                double mutationRadius;
+                strMutationRadius.ToDouble(&mutationRadius);
+                m_parameters[iVar].SetAdaptMutationRadius((float)mutationRadius);
+                break;
+            }
 
-                wxString msg = wxString::Format(
-                    _("Previous intermediate results were found and will be loaded (%d lines)."), nLines);
-                wxLogWarning(msg);
-                asLog::PrintToConsole(msg);
-                asFileText prevResults(filePath, asFile::ReadOnly);
-                if (!prevResults.Open()) {
-                    wxLogError(_("Couldn't open the file %s."), filePath.c_str());
-                    return false;
-                }
-                prevResults.SkipLines(1);
+            case (SelfAdaptationRateChromosome): {
+                int indexMutationRate = fileLineOper.Find("ChromosomeMutationRate");
+                wxString strMutationRate = fileLineOper.Mid(indexMutationRate + 23);
+                vf mutationRate = asExtractVectorFrom(strMutationRate);
+                m_parameters[iVar].SetChromosomeMutationRate(mutationRate);
+                break;
+            }
 
-                // Check that the content match the current parameters
-                wxString fileLine = prevResults.GetNextLine();
-                wxString firstLineCopy = fileLine;
-                wxString currentParamsPrint = params.Print();
-                int indexInFile, indexInParams;
+            case (SelfAdaptationRadiusChromosome): {
+                int indexMutationRate = fileLineOper.Find("ChromosomeMutationRate");
+                int indexMutationRadius = fileLineOper.Find("ChromosomeMutationRadius");
+                wxString strMutationRate = fileLineOper.SubString(indexMutationRate + 23, indexMutationRadius - 2);
+                vf mutationRate = asExtractVectorFrom(strMutationRate);
+                m_parameters[iVar].SetChromosomeMutationRate(mutationRate);
+                wxString strMutationRadius = fileLineOper.Mid(indexMutationRadius + 25);
+                vf mutationRadius = asExtractVectorFrom(strMutationRadius);
+                m_parameters[iVar].SetChromosomeMutationRadius(mutationRadius);
+                break;
+            }
 
-                // Compare number of steps
-                while (true) {
-                    indexInFile = firstLineCopy.Find("Step");
-                    indexInParams = currentParamsPrint.Find("Step");
-                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND) {
-                        break;
-                    } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
-                               (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-                        wxLogError(_(
-                            "The number of steps do not correspond between the current and the previous parameters."));
-                        return false;
-                    }
-
-                    firstLineCopy.Replace("Step", wxEmptyString, false);
-                    currentParamsPrint.Replace("Step", wxEmptyString, false);
-                }
-
-                // Compare number of predictors
-                while (true) {
-                    indexInFile = firstLineCopy.Find("Ptor");
-                    indexInParams = currentParamsPrint.Find("Ptor");
-                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND) {
-                        break;
-                    } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
-                               (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-                        wxLogError(
-                            _("The number of predictors do not correspond between the current "
-                              "and the previous parameters."));
-                        return false;
-                    }
-
-                    firstLineCopy.Replace("Ptor", wxEmptyString, false);
-                    currentParamsPrint.Replace("Ptor", wxEmptyString, false);
-                }
-
-                // Compare number of levels
-                while (true) {
-                    indexInFile = firstLineCopy.Find("Level");
-                    indexInParams = currentParamsPrint.Find("Level");
-                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND) {
-                        break;
-                    } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
-                               (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-                        wxLogError(
-                            _("The number of atmospheric levels do not correspond between the current "
-                              "and the previous parameters."));
-                        return false;
-                    }
-
-                    firstLineCopy.Replace("Level", wxEmptyString, false);
-                    currentParamsPrint.Replace("Level", wxEmptyString, false);
-                }
-
-                int genNb = nLines / m_popSize;
-                int iLastGen = (genNb - 1) * m_popSize;
-
-                asParametersOptimizationGAs prevParams;
-
-                // Parse the parameters data
-                std::vector<float> vectScores;
-                if (m_enableHistory) {
-                    vectScores.reserve(nLines);
-                }
-                int iLine = 0, iVar = 0;
-                do {
-                    if (fileLine.IsEmpty()) break;
-
-                    if (!m_enableHistory && iLine < iLastGen) {
-                        // Get next line
-                        fileLine = prevResults.GetNextLine();
-                        iLine++;
-
-                        continue;
-                    }
-
-                    prevParams = m_parameters[0];
-                    if (!prevParams.GetValuesFromString(fileLine)) {
-                        return false;
-                    }
-
-                    // Get the score
-                    int indexScoreCalib = fileLine.Find("Calib");
-                    int indexScoreValid = fileLine.Find("Valid");
-                    wxString strScore = fileLine.SubString(indexScoreCalib + 6, indexScoreValid - 2);
-                    double scoreVal;
-                    strScore.ToDouble(&scoreVal);
-                    auto prevScoresCalib = float(scoreVal);
-
-                    // Add to the new array
-                    m_resGenerations.AddWithoutProcessingMedian(prevParams, prevScoresCalib);
-                    vectScores.push_back(prevScoresCalib);
-                    if (iLine >= iLastGen) {
-                        // Restore the last generation
-                        m_parameters[iVar] = prevParams;
-                        m_scoresCalib[iVar] = prevScoresCalib;
-                        iVar++;
-                    }
-
-                    // Get next line
-                    fileLine = prevResults.GetNextLine();
-                    iLine++;
-                } while (!prevResults.EndOfFile());
-                prevResults.Close();
-
-                if (m_enableHistory) {
-                    m_resGenerations.ProcessMedianScores();
-                }
-
-                wxLogMessage(_("%d former results have been reloaded."), m_resGenerations.GetCount());
-                asLog::PrintToConsole(
-                    wxString::Format(_("%d former results have been reloaded.\n"), m_resGenerations.GetCount()));
-
-                // Restore best and mean scores
-                m_bestScores.resize(genNb);
-                m_meanScores.resize(genNb);
-                for (int iGen = 0; iGen < genNb; iGen++) {
-                    int iBest = iGen * m_popSize;
-                    m_bestScores[iGen] = vectScores[iBest];
-
-                    float mean = 0;
-                    for (int iNext = 0; iNext < m_popSize; iNext++) {
-                        mean += vectScores[iNext];
-                    }
-
-                    m_meanScores[iGen] = mean / float(m_popSize);
-                }
-
-                m_iterator = m_paramsNb;
-                m_generationNb = genNb;
-
-                // Copy file to the new target
-                wxCopyFile(filePath, m_resGenerations.GetFilePath());
-
-                // Restore operators
-                wxString operatorsFilePattern =
-                    wxString::Format("*_station_%s_operators.txt", GetPredictandStationIdsList(stationId).c_str());
-                if (dir.HasFiles(operatorsFilePattern)) {
-                    wxArrayString filesOper;
-                    wxDir::GetAllFiles(resultsDir, &filesOper, operatorsFilePattern, wxDIR_FILES);
-                    filesOper.Sort();
-                    wxString operFilePath = filesOper.Last();
-                    filesOper.Clear();
-
-                    wxLogWarning(_("Previous operators were found and will be loaded."));
-                    asLog::PrintToConsole(_("Previous operators were found and will be loaded.\n"));
-
-                    // Copy file to the new target
-                    wxCopyFile(operFilePath, operatorsFilePath);
-
-                    // Check length
-                    int nLinesOper = asFileText::CountLines(operFilePath);
-                    if (nLines != nLinesOper) {
-                        wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."), nLines,
-                                   nLinesOper);
-                    }
-
-                    // Open file
-                    asFileText prevOperators(operFilePath, asFile::ReadOnly);
-                    if (!prevOperators.Open()) {
-                        wxLogError(_("Couldn't open the file %s."), operFilePath.c_str());
-                        return false;
-                    }
-
-                    // Extract file content for the last generation
-                    prevOperators.SkipLines((genNb - 1) * m_popSize);
-                    wxString fileLineOper = prevOperators.GetNextLine();
-                    iVar = 0;
-                    do {
-                        if (fileLineOper.IsEmpty()) break;
-
-                        if (iVar >= m_parameters.size()) {
-                            wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."),
-                                       (int)m_parameters.size(), iVar + 1);
-                            return false;
-                        }
-
-                        switch (m_mutationsModeType) {
-                            case (RandomUniformConstant):
-                            case (RandomUniformVariable):
-                            case (RandomNormalConstant):
-                            case (RandomNormalVariable):
-                            case (MultiScale):
-                            case (NoMutation):
-                            case (NonUniform): {
-                                // Nothing to do
-                                break;
-                            }
-
-                            case (SelfAdaptationRate): {
-                                int indexMutationRate = fileLineOper.Find("MutationRate");
-                                wxString strMutationRate = fileLineOper.Mid(indexMutationRate + 13);
-                                double mutationRate;
-                                strMutationRate.ToDouble(&mutationRate);
-                                m_parameters[iVar].SetAdaptMutationRate((float)mutationRate);
-                                break;
-                            }
-
-                            case (SelfAdaptationRadius): {
-                                int indexMutationRate = fileLineOper.Find("MutationRate");
-                                int indexMutationRadius = fileLineOper.Find("MutationRadius");
-                                wxString strMutationRate =
-                                    fileLineOper.SubString(indexMutationRate + 13, indexMutationRadius - 2);
-                                double mutationRate;
-                                strMutationRate.ToDouble(&mutationRate);
-                                m_parameters[iVar].SetAdaptMutationRate((float)mutationRate);
-                                wxString strMutationRadius = fileLineOper.Mid(indexMutationRadius + 15);
-                                double mutationRadius;
-                                strMutationRadius.ToDouble(&mutationRadius);
-                                m_parameters[iVar].SetAdaptMutationRadius((float)mutationRadius);
-                                break;
-                            }
-
-                            case (SelfAdaptationRateChromosome): {
-                                int indexMutationRate = fileLineOper.Find("ChromosomeMutationRate");
-                                wxString strMutationRate = fileLineOper.Mid(indexMutationRate + 23);
-                                vf mutationRate = asExtractVectorFrom(strMutationRate);
-                                m_parameters[iVar].SetChromosomeMutationRate(mutationRate);
-                                break;
-                            }
-
-                            case (SelfAdaptationRadiusChromosome): {
-                                int indexMutationRate = fileLineOper.Find("ChromosomeMutationRate");
-                                int indexMutationRadius = fileLineOper.Find("ChromosomeMutationRadius");
-                                wxString strMutationRate =
-                                    fileLineOper.SubString(indexMutationRate + 23, indexMutationRadius - 2);
-                                vf mutationRate = asExtractVectorFrom(strMutationRate);
-                                m_parameters[iVar].SetChromosomeMutationRate(mutationRate);
-                                wxString strMutationRadius = fileLineOper.Mid(indexMutationRadius + 25);
-                                vf mutationRadius = asExtractVectorFrom(strMutationRadius);
-                                m_parameters[iVar].SetChromosomeMutationRadius(mutationRadius);
-                                break;
-                            }
-
-                            default: {
-                                wxLogError(_("The mutation method was not found when saving operators."));
-                            }
-                        }
-
-                        fileLineOper = prevOperators.GetNextLine();
-                        iVar++;
-                    } while (!prevOperators.EndOfFile());
-                    prevOperators.Close();
-                }
+            default: {
+                wxLogError(_("The mutation method was not found when saving operators."));
             }
         }
-    }
+
+        fileLineOper = prevOperators.GetNextLine();
+        iVar++;
+    } while (!prevOperators.EndOfFile());
+    prevOperators.Close();
 
     return true;
 }
