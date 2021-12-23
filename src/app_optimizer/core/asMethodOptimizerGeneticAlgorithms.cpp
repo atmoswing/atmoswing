@@ -219,19 +219,19 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
     vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
     asResultsParametersArray resFinalPopulation;
-    resFinalPopulation.Init(
-        wxString::Format(_("station_%s_final_population"), GetPredictandStationIdsList(stationId).c_str()));
+    resFinalPopulation.Init(wxString::Format(_("station_%s_final_population"),
+                                             GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray resBestIndividual;
-    resBestIndividual.Init(
-        wxString::Format(_("station_%s_best_individual"), GetPredictandStationIdsList(stationId).c_str()));
-    m_resGenerations.Init(
-        wxString::Format(_("station_%s_generations"), GetPredictandStationIdsList(stationId).c_str()));
+    resBestIndividual.Init(wxString::Format(_("station_%s_best_individual"),
+                                            GetPredictandStationIdsList(stationId).c_str()));
+    m_resGenerations.Init(wxString::Format(_("station_%s_generations"),
+                                           GetPredictandStationIdsList(stationId).c_str()));
     wxString resXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     resXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time.c_str(),
                                            GetPredictandStationIdsList(stationId).c_str()));
     wxString operatorsFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
-    operatorsFilePath.Append(
-        wxString::Format("/%s_station_%s_operators.txt", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
+    operatorsFilePath.Append(wxString::Format("/%s_station_%s_operators.txt", time.c_str(),
+                                              GetPredictandStationIdsList(stationId).c_str()));
 
     // Initialize parameters before loading data.
     InitParameters(params);
