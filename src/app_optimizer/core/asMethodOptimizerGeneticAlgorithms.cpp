@@ -1019,8 +1019,17 @@ bool asMethodOptimizerGeneticAlgorithms::HasConverged() {
     // Check the best convergenceStepsNb scores
     for (int i = m_bestScores.size() - 1; i > m_bestScores.size() - convergenceStepsNb; i--)  // Checked
     {
-        if (m_bestScores[i] != m_bestScores[i - 1]) {
-            return false;
+        float lastScore = m_bestScores[m_bestScores.size() - 1];
+
+        if (lastScore == 0) {
+            if (m_bestScores[i] != m_bestScores[i - 1]) {
+                return false;
+            }
+        } else {
+            float relDiff = std::abs((lastScore - m_bestScores[i - 1]) / lastScore);
+            if (relDiff > 0.001) {
+                return false;
+            }
         }
     }
 
