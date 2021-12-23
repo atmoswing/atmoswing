@@ -333,8 +333,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
 
             if (nextParams) {
                 // Add it to the threads
-                auto *thread =
-                    new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                auto *thread = new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator],
+                                                             &m_scoreClimatology);
 #ifdef USE_CUDA
                 if (method == asCUDA) {
                     thread->SetDevice(device);
@@ -590,9 +590,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             break;
         } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
                    (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-            wxLogError(
-                _("The number of atmospheric levels do not correspond between the current "
-                  "and the previous parameters."));
+            wxLogError(_("The number of atmospheric levels do not correspond between "
+                         "the current and the previous parameters."));
             return false;
         }
 
@@ -607,25 +606,11 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
     // Parse the parameters data
     std::vector<float> vectScores;
-    if (m_enableHistory) {
-        vectScores.reserve(nLines);
-    }
+    vectScores.reserve(nLines);
+
     int iLine = 0, iVar = 0;
     do {
         if (fileLine.IsEmpty()) break;
-
-        if (!m_enableHistory && iLine < iLastGen) {
-            // Get next line
-            fileLine = prevResults.GetNextLine();
-            iLine++;
-
-            continue;
-        }
-
-        prevParams = m_parameters[0];
-        if (!prevParams.GetValuesFromString(fileLine)) {
-            return false;
-        }
 
         // Get the score
         int indexScoreCalib = fileLine.Find("Calib");
@@ -634,10 +619,18 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         double scoreVal;
         strScore.ToDouble(&scoreVal);
         auto prevScoresCalib = float(scoreVal);
+        vectScores.push_back(prevScoresCalib);
+
+        // Get the parameters
+        if (m_enableHistory || iLine >= iLastGen) {
+            prevParams = m_parameters[0];
+            if (!prevParams.GetValuesFromString(fileLine)) {
+                return false;
+            }
+            m_resGenerations.AddWithoutProcessingMedian(prevParams, prevScoresCalib);
+        }
 
         // Add to the new array
-        m_resGenerations.AddWithoutProcessingMedian(prevParams, prevScoresCalib);
-        vectScores.push_back(prevScoresCalib);
         if (iLine >= iLastGen) {
             // Restore the last generation
             m_parameters[iVar] = prevParams;
