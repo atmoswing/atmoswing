@@ -127,6 +127,7 @@ jobs:
         run: cmake -E make_directory ${{github.workspace}}/bin
 
       - name: Download Coverity Build Tool
+        working-directory: ${{github.workspace}}/bin
         run: |
           wget -q https://scan.coverity.com/download/cxx/linux64 --post-data "token=$TOKEN&project=atmoswing%2Fatmoswing" -O cov-analysis-linux64.tar.gz
           mkdir cov-analysis-linux64
