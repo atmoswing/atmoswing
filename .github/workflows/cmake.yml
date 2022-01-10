@@ -3,11 +3,11 @@ name: CMake
 on:
   push:
     branches:
-    - master
+    - main
     - feature/
   pull_request:
     branches:
-    - master
+    - main
     - feature/
 
 env:
@@ -22,6 +22,9 @@ jobs:
     
     - name: Install libraries
       run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libtiff5-dev libexpat1-dev libproj-dev libgdal-dev
+
+    - name: Build Jasper
+      run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/bin
