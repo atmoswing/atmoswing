@@ -1,0 +1,61 @@
+name: Coverity scan
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+env:
+  BUILD_TYPE: RelWithDebInfo
+
+jobs:
+  coverity-scan:
+    runs-on: ubuntu-latest
+
+    env:
+      TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install libraries
+        run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libproj-dev libeccodes-dev libopenjp2-7-dev lcov
+
+      - name: Build Jasper lib
+        run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/bin
+
+      - name: Download Coverity Build Tool
+        working-directory: ${{github.workspace}}/bin
+        run: |
+          wget -q https://scan.coverity.com/download/cxx/linux64 --post-data "token=$TOKEN&project=atmoswing%2Fatmoswing" -O cov-analysis-linux64.tar.gz
+          mkdir cov-analysis-linux64
+          tar xzf cov-analysis-linux64.tar.gz --strip 1 -C cov-analysis-linux64
+
+      - name: Configure CMake
+        working-directory: ${{github.workspace}}/bin
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 -DCREATE_INSTALLER=0 -DUSE_GUI=0 -DUSE_CODECOV=1
+
+      - name: Build
+        working-directory: ${{github.workspace}}/bin
+        run: |
+          export PATH=`pwd`/cov-analysis-linux64/bin:$PATH
+          cov-build --dir cov-int make
+
+      - name: Submit results to Coverity Scan
+        working-directory: ${{github.workspace}}/bin
+        run: |
+          tar czvf atmoswing.tgz cov-int
+          curl \
+            --form project=atmoswing/atmoswing \
+            --form token=$TOKEN \
+            --form email=pascal.horton@giub.unibe.ch \
+            --form file=@atmoswing.tgz \
+            --form version=main \
+            --form description="AtmoSwing build submitted from GitHub Actions" \
+            https://scan.coverity.com/builds?project=atmoswing%2Fatmoswing
