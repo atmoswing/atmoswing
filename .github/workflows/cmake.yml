@@ -99,7 +99,7 @@ jobs:
         run: lcov --remove coverage.info "/usr/*" "*/_deps/*" "*/tests/*" --output-file coverage.info
 
       - name: Display code coverage report
-        run: lcov --list atmoswing-coverage.info
+        run: lcov --list coverage.info
 
       - name: Send to Codecov
         run: bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
