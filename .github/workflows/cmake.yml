@@ -75,10 +75,14 @@ jobs:
 
     env:
       BUILD_TYPE: RelWithDebInfo
-      CODECOV_TOKEN: "xxxxxxxxx"
 
     steps:
       - uses: actions/checkout@v2
+      - uses: codecov/codecov-action@v2
+        with:
+          files: ./coverage.info
+          fail_ci_if_error: true
+          verbose: true
 
       - name: Install libraries
         run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libproj-dev libeccodes-dev libopenjp2-7-dev lcov
@@ -100,9 +104,6 @@ jobs:
 
       - name: Display code coverage report
         run: lcov --list coverage.info
-
-      - name: Send to Codecov
-        run: bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
 
 
   coverity-scan:
