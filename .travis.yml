@@ -5,11 +5,6 @@ git:
 jobs:
   include:
     - env:
-        - TARGET=coverity-scan
-        - DEPLOY=false
-        - secure: bXqSgc197UXhkRbLXXj/naGt/giYeM4HnOT4wyXLnL30QqXkmHuzA9jalaghnZYZv6nUiySFr+6ZivWs0ofJHYHEbS4vzE2NG11m+bWwmKbWrmX/gw+PBahg27pZXlVXel1yD4QNG2Gf3SU2yLBFdsZa7tLmfOHnddSUeJ/K8X2DZn7KNGGNfh0lm7JsZf7BhGul4q2J7vVlgqJqXBn+UiuXLrdCn/u3NhtWXpf7zFMI+MjVlXGx7hWj1HqVC43MAVOE3DVzupq93BtxDyTHRrdUZrMHf9rZtKRsr+F3F7xKS9ztJnTM16lDGjoZqeIf7kVj3okCPRIRsUSxx9roKu2ynBvBs8ZMtf37iQWcGJTkMZzV+4sK4aNEcmxPZC4LpigQl9WspZ42wNOvCW2pNsLAB7SAG7ktu3FETlZSMyQyHZHvs2zavc8MvRKHRKUOonhv8QKRTnB1aBDCp1bHpPSzhZ2CURjx8VGY5ZaGF8nJUs+YGEbzt2sDSUpW5vwPxX6lSlASVJI7eI5XMpyMlL8nS7zWP+g6CraeCnE/Hz1liWwm7RE/ONAG3a7KG6Ns6xWida/PtwmhE6qvMStRdY/okVIxD1I6f5w5L/Ek7viXuPxURCIktqc0iGEAqalJoCNi/Xhi0BurkEhvcTP2lWErEMGHsAC470tiGr6ZhGc=
-      os: linux
-      dist: bionic
       branches:
         only:
           - nightly
@@ -17,21 +12,7 @@ jobs:
         - if [[ "$TRAVIS_BRANCH" != "nightly" ]]; then exit 0; fi
         - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN
           CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
-        - chmod +x ci/travis/install-cmake.sh
-        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
-        apt:
-          update: true
-          packages:
-            - build-essential
-            - gnome-devel
-            - git
-            - libnetcdf-dev
-            - libcurl4
-            - libwxgtk3.0-dev
-            - sqlite3
-            - libsqlite3-dev
-            - libopenjp2-7-dev
         coverity_scan:
           project:
             name: atmoswing/atmoswing
