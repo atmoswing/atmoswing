@@ -1,4 +1,4 @@
-name: Linux builds
+name: Coverity scan
 
 on:
   push:
