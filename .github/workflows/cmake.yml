@@ -99,7 +99,7 @@ jobs:
 
       - name: Display code coverage report
         working-directory: ${{github.workspace}}/bin
-        run: lcov --list flhy-coverage.info
+        run: lcov --list atmoswing-coverage.info
 
       - name: Send to Codecov
         working-directory: ${{github.workspace}}/bin
@@ -117,7 +117,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install libraries
-        run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libproj-dev libeccodes-dev lcov
+        run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libproj-dev libeccodes-dev libopenjp2-7-dev lcov
 
       - name: Build Jasper lib
         run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
