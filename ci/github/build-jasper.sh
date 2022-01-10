@@ -10,6 +10,6 @@ mkdir bld
 cd bld
 cmake .. -DCMAKE_BUILD_TYPE=Release
 make -j $(nproc)
-make install
+sudo make install
 cd ..
 printf 'Jasper has been built.\n'
