@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Install libraries
-      run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libtiff5-dev libexpat1-dev libproj-dev libgdal-dev libeccodes-dev
+      run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libeccodes-dev
 
     - name: Build Jasper lib
       run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
@@ -48,7 +48,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install libraries
-        run: sudo apt-get install libwxgtk3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libtiff5-dev libexpat1-dev libproj-dev libgdal-dev libeccodes-dev
+        run: sudo apt-get install libwxgtk3.0-gtk3-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libtiff5-dev libexpat1-dev libproj-dev libgdal-dev libeccodes-dev
 
       - name: Build Jasper lib
         run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
