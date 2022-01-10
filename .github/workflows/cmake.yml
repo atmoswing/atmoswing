@@ -3,45 +3,129 @@ name: CMake
 on:
   push:
     branches:
-    - master
-    - feature/
+    - main
+    - feature/*
   pull_request:
     branches:
-    - master
-    - feature/
+    - main
+    - feature/*
 
 env:
   BUILD_TYPE: Release
 
 jobs:
-  build-and-test:
+  build-and-test-server-version:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
     
     - name: Install libraries
-      run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libtiff5-dev libexpat1-dev libproj-dev libgdal-dev
+      run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libproj-dev libeccodes-dev libopenjp2-7-dev
+
+    - name: Build Jasper lib
+      run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/bin
 
     - name: Configure CMake
       working-directory: ${{github.workspace}}/bin
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 -DCREATE_INSTALLER=1 -DUSE_GUI=0
 
     - name: Build
       working-directory: ${{github.workspace}}/bin
-      run: cmake --build . --config ${{env.BUILD_TYPE}}
-      
-    - name: Copy test files
-      working-directory: ${{github.workspace}}
-      run: cp -R tests/files/ bin/tests
-
-    - name: List directory content
-      working-directory: ${{github.workspace}}/bin
-      run: tree .
+      run: cmake --build . --config ${{env.BUILD_TYPE}} -j$(nproc)
 
     - name: Test
-      working-directory: ${{github.workspace}}/bin
-      run: tests/atmoswing-tests
+      working-directory: ${{github.workspace}}/bin/tests
+      run: ./atmoswing-tests
+
+
+  build-and-test-desktop-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install libraries
+        run: sudo apt-get install libwxgtk3.0-gtk3-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libtiff5-dev libexpat1-dev libproj-dev libgdal-dev libeccodes-dev
+
+      - name: Build Jasper lib
+        run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/bin
+
+      - name: Configure CMake
+        working-directory: ${{github.workspace}}/bin
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=1 -DCREATE_INSTALLER=1 -DUSE_GUI=1
+
+      - name: Build
+        working-directory: ${{github.workspace}}/bin
+        run: cmake --build . --config ${{env.BUILD_TYPE}} -j$(nproc)
+
+      - name: Test
+        working-directory: ${{github.workspace}}/bin/tests
+        run: ./atmoswing-tests
+
+
+  coverage-scan:
+    runs-on: ubuntu-latest
+
+    env:
+      BUILD_TYPE: RelWithDebInfo
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install libraries
+        run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libproj-dev libeccodes-dev libopenjp2-7-dev lcov
+
+      - name: Build Jasper lib
+        run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
+
+      - name: Configure CMake
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 -DCREATE_INSTALLER=0 -DUSE_GUI=0 -DUSE_CODECOV=1
+
+      - name: Build and run code coverage
+        run: cmake --build . --config $BUILD_TYPE -j$(nproc) --target atmoswing-coverage
+
+      - name: Preparing coverage data
+        run: lcov --directory . --capture --output-file coverage.info
+
+      - name: Cleaning up coverage data
+        run: lcov --remove coverage.info "/usr/*" "*/_deps/*" "*/tests/*" --output-file coverage.info
+
+      - name: Display code coverage report
+        run: lcov --list coverage.info
+
+      - uses: codecov/codecov-action@v2
+        with:
+          files: ./coverage.info
+          fail_ci_if_error: true
+          verbose: true
+
+
+  coverity-scan:
+    runs-on: ubuntu-latest
+
+    env:
+      BUILD_TYPE: RelWithDebInfo
+      COVERITY_TOKEN: "xxxxxxxxx"
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install libraries
+        run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libproj-dev libeccodes-dev libopenjp2-7-dev lcov
+
+      - name: Build Jasper lib
+        run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/bin
+
+      - name: Configure CMake
+        working-directory: ${{github.workspace}}/bin
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 -DCREATE_INSTALLER=0 -DUSE_GUI=0 -DUSE_CODECOV=1
