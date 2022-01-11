@@ -338,7 +338,7 @@ TEST(PredictorOperCustomMeteoFvg, StandardizeWithProvidedMeanAndSd) {
     // Load
     ASSERT_TRUE(predictor->Load(area, dates, level));
 
-    predictor->StandardizeData(4.858158690266188, 7.742704912270005);
+    ASSERT_TRUE(predictor->StandardizeData(4.858158690266188, 7.742704912270005));
 
     vva2f data = predictor->GetData();
     // hgt[time][mem](lat,lon)
