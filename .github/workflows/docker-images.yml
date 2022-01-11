@@ -26,12 +26,12 @@ jobs:
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 
     - name: Set default docker tag
-      if: ${{GITHUB_REF_TYPE}} == 'branch'
+      if: ${{ GITHUB_REF_TYPE == 'branch' }}
       run: echo "DOCKER_TAG=latest" >> $GITHUB_ENV
 
     - name: Set docker tag based on tag
-      if: ${{GITHUB_REF_TYPE}} == 'tag'
-      run: echo "DOCKER_TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+      if: ${{ GITHUB_REF_TYPE == 'tag' }}
+      run: echo "DOCKER_TAG=${{GITHUB_REF_NAME}}" >> $GITHUB_ENV
 
     - name: Display Docker tag name
       run: echo "${{DOCKER_TAG}}"
