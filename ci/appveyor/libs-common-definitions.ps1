@@ -1,8 +1,8 @@
 # Options
 if ($env:APPVEYOR) {
-  $MSC_VER=1923
-  $VS_VER_NB="16"
-  $VS_VER_YR="2019"
+  $MSC_VER=1925
+  $VS_VER_NB="17"
+  $VS_VER_YR="2022"
   $CMAKE_GENERATOR="-Ax64"
   $TMP_DIR="C:\projects\tmp"
   $LIB_DIR="C:\projects\libs"
@@ -12,9 +12,9 @@ if ($env:APPVEYOR) {
   $BASH_DIR="C:\Program Files\Git\bin"
   $BASH_PATH="C:\Program Files\Git\bin\bash.exe"
 } else {
-  $MSC_VER=1923
-  $VS_VER_NB="16"
-  $VS_VER_YR="2019"
+  $MSC_VER=1925
+  $VS_VER_NB="17"
+  $VS_VER_YR="2022"
   $CMAKE_GENERATOR="-Ax64"
   $TMP_DIR="$env:UserProfile\Downloads\tmp"
   $LIB_DIR="$env:UserProfile\AtmoSwing-libs\vs-$VS_VER_YR"
@@ -26,8 +26,12 @@ if ($env:APPVEYOR) {
 }
 
 $VS_VER="Visual Studio $VS_VER_NB $VS_VER_YR Win64"
+$PROGRAM_FILES="Program Files (x86)"
 if ($VS_VER_YR -ge "2019") {
   $VS_VER="Visual Studio $VS_VER_NB $VS_VER_YR"
+}
+if ($VS_VER_YR -ge "2022") {
+  $PROGRAM_FILES="Program Files"
 }
 
 # Force rebuilding some libraries
@@ -46,22 +50,22 @@ $REBUILD_ECCODES=$false
 $REBUILD_SQLITE=$false
 
 # Libraries URL
-$WX_URL="https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.4/wxWidgets-3.1.4.zip"
+$WX_URL="https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.5/wxWidgets-3.1.5.zip"
 $ZLIB_URL="http://www.zlib.net/zlib1211.zip"
 $JPEG_URL="https://github.com/LuaDist/libjpeg/archive/master.zip"
 $OPENJPEG_URL="https://github.com/uclouvain/openjpeg/archive/v2.3.1.zip"
 $PNG_URL="https://github.com/atmoswing/large-files/raw/master/libraries/libpng-1634.zip"
-$TIFF_URL="https://gitlab.com/libtiff/libtiff/-/archive/v4.1.0/libtiff-v4.1.0.zip"
-$JASPER_URL="https://github.com/mdadams/jasper/archive/version-2.0.16.zip"
-$CURL_URL="https://github.com/curl/curl/archive/curl-7_64_1.zip"
-$PROJ_URL="https://github.com/OSGeo/PROJ/releases/download/7.1.1/proj-7.1.1.zip"
-$HDF5_URL="https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.0/src/CMake-hdf5-1.12.0.zip"
-$NETCDF_URL="https://github.com/Unidata/netcdf-c/archive/v4.7.4.zip"
-$GDAL_URL="https://github.com/OSGeo/gdal/releases/download/v3.1.3/gdal313.zip"
-$ECCODES_URL="https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.17.0-Source.tar.gz"
-$SQLITE_SRC_URL="https://www.sqlite.org/2019/sqlite-amalgamation-3270200.zip"
-$SQLITE_DLL_URL="https://www.sqlite.org/2019/sqlite-dll-win64-x64-3270200.zip"
-$SQLITE_TOOLS_URL="https://www.sqlite.org/2019/sqlite-tools-win32-x86-3270200.zip"
+$TIFF_URL="https://gitlab.com/libtiff/libtiff/-/archive/v4.3.0/libtiff-v4.3.0.zip"
+$JASPER_URL="https://github.com/jasper-software/jasper/archive/refs/tags/version-2.0.33.zip"
+$CURL_URL="https://github.com/curl/curl/releases/download/curl-7_80_0/curl-7.80.0.zip"
+$PROJ_URL="https://github.com/OSGeo/PROJ/releases/download/8.2.0/proj-8.2.0.zip"
+$HDF5_URL="https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.13/hdf5-1.13.0/src/CMake-hdf5-1.13.0.zip"
+$NETCDF_URL="https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.8.1.zip"
+$GDAL_URL="https://github.com/OSGeo/gdal/releases/download/v3.4.0/gdal340.zip"
+$ECCODES_URL="https://github.com/ecmwf/eccodes/archive/refs/tags/2.24.1.tar.gz"
+$SQLITE_SRC_URL="https://www.sqlite.org/2021/sqlite-amalgamation-3370000.zip"
+$SQLITE_DLL_URL="https://www.sqlite.org/2021/sqlite-dll-win64-x64-3370000.zip"
+$SQLITE_TOOLS_URL="https://www.sqlite.org/2021/sqlite-tools-win32-x86-3370000.zip"
 
 # Define some functions
 function Init-Build($name)
