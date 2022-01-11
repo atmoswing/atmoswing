@@ -2,11 +2,9 @@ name: Coverity scan
 
 on:
   push:
-    branches:
-    - main
+    branches: [ main ]
   pull_request:
-    branches:
-    - main
+    branches: [ main ]
 
 env:
   BUILD_TYPE: RelWithDebInfo
