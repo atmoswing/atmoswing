@@ -22,25 +22,25 @@ jobs:
     - name: Login to Docker Hub
       run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       env:
-        DOCKER_USER: ${{ secrets.DOCKER_USER }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 
     - name: Set default docker tag
-      if: $GITHUB_REF_TYPE == 'branch'
+      if: ${{GITHUB_REF_TYPE}} == 'branch'
       run: echo "DOCKER_TAG=latest" >> $GITHUB_ENV
 
     - name: Set docker tag based on tag
-      if: $GITHUB_REF_TYPE == 'tag'
+      if: ${{GITHUB_REF_TYPE}} == 'tag'
       run: echo "DOCKER_TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
 
     - name: Display Docker tag name
-      run: echo "${DOCKER_TAG}"
+      run: echo "${{DOCKER_TAG}}"
 
     - name: Build the Docker image
-      run: docker build . --file docker/forecaster-server/Dockerfile --tag atmoswing/forecaster:${DOCKER_TAG}
+      run: docker build . --file docker/forecaster-server/Dockerfile --tag atmoswing/forecaster:${{DOCKER_TAG}}
 
     - name: Push the Docker image
-      run: docker push atmoswing/forecaster:${DOCKER_TAG}
+      run: docker push atmoswing/forecaster:${{DOCKER_TAG}}
 
   build-downscaler-image:
     runs-on: ubuntu-latest
@@ -51,8 +51,8 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 
       - name: Build the Docker image
         run: docker build . --file docker/downscaler-server/Dockerfile --tag atmoswing/downscaler:latest
@@ -69,8 +69,8 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 
       - name: Build the Docker image
         run: docker build . --file docker/optimizer-server/Dockerfile --tag atmoswing/optimizer:latest

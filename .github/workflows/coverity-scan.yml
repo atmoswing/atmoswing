@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+      TOKEN: ${{secrets.COVERITY_SCAN_TOKEN}}
 
     steps:
       - uses: actions/checkout@v2
