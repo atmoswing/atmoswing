@@ -766,6 +766,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             // Standardize
             if (params.GetStandardize(iStep, iPtor)) {
                 wxLogError(_("Data standardization is not yet implemented in operational forecasting."));
+                wxDELETE(area);
+                wxDELETE(predictorArchive);
+                wxDELETE(predictorRealtime);
                 return false;
             }
 
@@ -989,6 +992,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                                                     params.GetRealtimeStandardizeSd(iStep, iPtor))) {
                 wxLogError(_("Data standardisation has failed."));
                 wxFAIL;
+                wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
                 return false;
             }
@@ -1483,6 +1487,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                                                     params.GetRealtimeStandardizeSd(iStep, iPtor))) {
                 wxLogError(_("Data standardisation has failed."));
                 wxFAIL;
+                wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
                 return false;
             }

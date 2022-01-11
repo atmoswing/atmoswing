@@ -78,6 +78,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
             if (!currentFilePath.DirExists()) {
                 if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL)) {
                     wxLogError(_("The directory to save real-time predictors data cannot be created."));
+                    curl_easy_cleanup(curl);
                     wxDELETEA(errorbuffer);
                     return (wxThread::ExitCode)-1;
                 }
@@ -121,6 +122,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
                     wxLogError(_("Failed downloading file. Curl error code: %d"), int(res));
                     wxLogError(_("Curl error message: %s"), errorbuffer);
                     wxLogError(_("URL: %s"), url);
+                    curl_easy_cleanup(curl);
                     wxDELETEA(errorbuffer);
                     return (wxThread::ExitCode)-1;
                 } else {

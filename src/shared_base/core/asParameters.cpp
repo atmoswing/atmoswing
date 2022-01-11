@@ -72,60 +72,11 @@ void asParameters::AddPredictor() {
 
 void asParameters::AddPredictor(ParamsStep &step) {
     ParamsPredictor predictor;
-
-    predictor.preload = false;
-    predictor.preloadXmin = 0;
-    predictor.preloadXptsnb = 0;
-    predictor.preloadYmin = 0;
-    predictor.preloadYptsnb = 0;
-    predictor.preprocess = false;
-    predictor.standardize = false;
-    predictor.standardizeMean = NaNd;
-    predictor.standardizeSd = NaNd;
-    predictor.level = 0;
-    predictor.xMin = 0;
-    predictor.xPtsNb = 1;
-    predictor.xStep = 0;
-    predictor.xShift = 0;
-    predictor.yMin = 0;
-    predictor.yPtsNb = 1;
-    predictor.yStep = 0;
-    predictor.yShift = 0;
-    predictor.flatAllowed = asFLAT_FORBIDDEN;
-    predictor.hour = 0;
-    predictor.weight = 1;
-    predictor.membersNb = 0;
-
     step.predictors.push_back(predictor);
 }
 
 void asParameters::AddPredictor(int iStep) {
     ParamsPredictor predictor;
-
-    predictor.preload = false;
-    predictor.preloadXmin = 0;
-    predictor.preloadXptsnb = 0;
-    predictor.preloadYmin = 0;
-    predictor.preloadYptsnb = 0;
-    predictor.preprocess = false;
-    predictor.standardize = false;
-    predictor.standardizeMean = NaNd;
-    predictor.standardizeSd = NaNd;
-    predictor.level = 0;
-    predictor.gridType = "regular";
-    predictor.xMin = 0;
-    predictor.xPtsNb = 1;
-    predictor.xStep = 0;
-    predictor.xShift = 0;
-    predictor.yMin = 0;
-    predictor.yPtsNb = 1;
-    predictor.yStep = 0;
-    predictor.yShift = 0;
-    predictor.flatAllowed = asFLAT_FORBIDDEN;
-    predictor.hour = 0;
-    predictor.weight = 1;
-    predictor.membersNb = 0;
-
     m_steps[iStep].predictors.push_back(predictor);
 }
 

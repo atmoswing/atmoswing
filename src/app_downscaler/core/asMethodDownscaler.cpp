@@ -463,6 +463,8 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
     if (params->GetStandardize(iStep, iPtor) &&
         !predictor->StandardizeData(params->GetStandardizeMean(iStep, iPtor), params->GetStandardizeSd(iStep, iPtor))) {
         wxLogError(_("Data standardisation has failed."));
+        Cleanup(predictorsPreprocess);
+        wxDELETE(predictor);
         wxFAIL;
         return false;
     }

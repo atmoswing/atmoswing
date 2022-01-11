@@ -1,24 +1,5 @@
 $stopwatchlibs = [system.diagnostics.stopwatch]::StartNew()
 
-# Install a recent CMake
-if ($APPVEYOR) {
-  Write-Host "`nInstalling CMake" -ForegroundColor Yellow
-  cd $TMP_DIR
-  if ($APPVEYOR) {
-    appveyor DownloadFile $CMAKE_URL -FileName cmake.zip > $null
-  } else {
-    Invoke-WebRequest -Uri $CMAKE_URL -OutFile cmake.zip
-  }
-  7z x cmake.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\cmake-*" "$CMAKE_DIR"
-  $path = $env:Path
-  $path = ($path.Split(';') | Where-Object { $_ -ne 'C:\Program Files (x86)\CMake\bin' }) -join ';'
-  $path = ($path.Split(';') | Where-Object { $_ -ne 'C:\Tools\NuGet' }) -join ';'
-  $env:Path = $path
-  $env:Path += ";$CMAKE_DIR\bin"
-}
-Write-Host "`n$(cmake --version)" -ForegroundColor Yellow
-
 # Install WIX
 if ($APPVEYOR) {
   Write-Host "`nInstalling WIX" -ForegroundColor Yellow

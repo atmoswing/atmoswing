@@ -61,12 +61,14 @@
 #include "asTimeArray.h"
 
 asPredictor::asPredictor(const wxString &dataId)
-    : m_initialized(false),
+    : m_fileType(asFile::Netcdf),
+      m_initialized(false),
       m_standardized(false),
       m_axesChecked(false),
       m_wasDumped(false),
       m_dataId(dataId),
       m_parameter(ParameterUndefined),
+      m_gribCode({asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND}),
       m_unit(UnitUndefined),
       m_strideAllowed(false),
       m_level(0),
@@ -96,8 +98,6 @@ asPredictor::asPredictor(const wxString &dataId)
     m_fInd.timeCountStorage = 0;
     m_fInd.timeConsistent = true;
     m_fInd.timeStep = 0;
-
-    m_gribCode = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
 
     if (dataId.Contains('/')) {
         wxString levelType = dataId.BeforeLast('/');
@@ -1739,7 +1739,12 @@ bool asPredictor::StandardizeData(double mean, double sd) {
                 }
             }
         }
-        mean = sum / (double)count;
+
+        if (count == 0) {
+            mean = 0;
+        } else {
+            mean = sum / (double)count;
+        }
 
         // Get the standard deviation
         sd = 0;
@@ -1753,7 +1758,12 @@ bool asPredictor::StandardizeData(double mean, double sd) {
                 }
             }
         }
-        sd = std::sqrt(sd / (double)(count - 1));
+
+        if (count <= 1) {
+            sd = 1;
+        } else {
+            sd = std::sqrt(sd / (double)(count - 1));
+        }
     }
 
     // Standardize

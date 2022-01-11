@@ -65,9 +65,9 @@ void asParametersOptimization::AddStep() {
 void asParametersOptimization::AddPredictorIteration(ParamsStep &step) {
     ParamsPredictor predictor;
 
-    predictor.xMin = 2.5;
+    predictor.xMin = 1;
     predictor.xPtsNb = 1;
-    predictor.yMin = 2.5;
+    predictor.yMin = 1;
     predictor.yPtsNb = 1;
     predictor.hour = 6;
     predictor.weight = 0.01f;
@@ -79,9 +79,7 @@ void asParametersOptimization::AddPredictorUpperLimit(ParamsStep &step) {
     ParamsPredictor predictor;
 
     predictor.xMin = 717.5;
-    predictor.xPtsNb = 20;
     predictor.yMin = 87.5;
-    predictor.yPtsNb = 16;
     predictor.hour = 36;
     predictor.weight = 1;
 
@@ -95,7 +93,7 @@ void asParametersOptimization::AddPredictorLowerLimit(ParamsStep &step) {
     predictor.xPtsNb = 1;
     predictor.yMin = 0;
     predictor.yPtsNb = 1;
-    predictor.hour = 6;
+    predictor.hour = 0;
     predictor.weight = 0;
 
     step.predictors.push_back(predictor);

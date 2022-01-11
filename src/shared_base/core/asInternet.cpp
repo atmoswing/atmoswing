@@ -146,6 +146,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                 if (!currentFilePath.DirExists()) {
                     if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL)) {
                         wxLogError(_("The directory to save real-time predictors data cannot be created."));
+                        curl_easy_cleanup(curl);
                         wxDELETEA(errorBfr);
                         return asFAILED;
                     }
@@ -200,6 +201,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                         wxLogWarning(_("Failed downloading file. Curl error code: %d"), int(res));
                         wxLogWarning(_("Curl error message: %s"), errorBfr);
                         wxLogWarning(_("URL: %s"), url);
+                        curl_easy_cleanup(curl);
                         wxDELETEA(errorBfr);
                         return asFAILED;
                     } else {

@@ -1,24 +1,5 @@
 $stopwatchlibs = [system.diagnostics.stopwatch]::StartNew()
 
-# Install a recent CMake
-if ($APPVEYOR) {
-  Write-Host "`nInstalling CMake" -ForegroundColor Yellow
-  cd $TMP_DIR
-  if ($APPVEYOR) {
-    appveyor DownloadFile $CMAKE_URL -FileName cmake.zip > $null
-  } else {
-    Invoke-WebRequest -Uri $CMAKE_URL -OutFile cmake.zip
-  }
-  7z x cmake.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\cmake-*" "$CMAKE_DIR"
-  $path = $env:Path
-  $path = ($path.Split(';') | Where-Object { $_ -ne 'C:\Program Files (x86)\CMake\bin' }) -join ';'
-  $path = ($path.Split(';') | Where-Object { $_ -ne 'C:\Tools\NuGet' }) -join ';'
-  $env:Path = $path
-  $env:Path += ";$CMAKE_DIR\bin"
-}
-Write-Host "`n$(cmake --version)" -ForegroundColor Yellow
-
 # Install WIX
 if ($APPVEYOR) {
   Write-Host "`nInstalling WIX" -ForegroundColor Yellow
@@ -63,8 +44,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\png.h") -Or $REBUILD_PNG) {
   Init-Build "png"
   Download-Lib "png" $PNG_URL
   7z x png.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\libpng*" "$TMP_DIR\png"
-  cd "$TMP_DIR\png"
+  cd "$TMP_DIR\libpng*"
   mkdir bld > $null
   cd bld
   cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DBUILD_STATIC=ON -DBUILD_EXECUTABLES=OFF -DCMAKE_PREFIX_PATH="$LIB_DIR" > $null
@@ -81,8 +61,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\gdal.h") -Or $REBUILD_GDAL) {
   Init-Build "gdal"
   Download-Lib "gdal" $GDAL_URL
   7z x gdal.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\gdal-*" "$TMP_DIR\gdal"
-  cd "$TMP_DIR\gdal"
+  cd "$TMP_DIR\gdal-*"
   $LIB_DIR_REV=$LIB_DIR -replace '\\','/'
   nmake -f makefile.vc MSVC_VER=$MSC_VER WIN64=$GDAL_WIN64 GDAL_HOME="$LIB_DIR" PROJ_INCLUDE="-I$LIB_DIR_REV/include" PROJ_LIBRARY="$LIB_DIR_REV/lib/proj.lib" CURL_DIR="$LIB_DIR" CURL_INC="-I$LIB_DIR_REV/include" CURL_LIB="$LIB_DIR_REV/lib/libcurl.lib wsock32.lib wldap32.lib winmm.lib" CURL_CFLAGS=-DCURL_STATICLIB > $null
   nmake -f makefile.vc MSVC_VER=$MSC_VER WIN64=$GDAL_WIN64 GDAL_HOME="$LIB_DIR" PROJ_INCLUDE="-I$LIB_DIR_REV/include" PROJ_LIBRARY="$LIB_DIR_REV/lib/proj.lib" CURL_DIR="$LIB_DIR" CURL_INC="-I$LIB_DIR_REV/include" CURL_LIB="$LIB_DIR_REV/lib/libcurl.lib wsock32.lib wldap32.lib winmm.lib" CURL_CFLAGS=-DCURL_STATICLIB install  > $null

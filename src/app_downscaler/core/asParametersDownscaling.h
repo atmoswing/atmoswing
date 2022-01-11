@@ -38,10 +38,10 @@ class asParametersDownscaling : public asParameters {
     typedef struct {
         wxString datasetId;
         wxString dataId;
-        int membersNb;
+        int membersNb = 0;
         vwxs preprocessDatasetIds;
         vwxs preprocessDataIds;
-        int preprocessMembersNb;
+        int preprocessMembersNb = 0;
     } ParamsPredictorProj;
 
     typedef std::vector<ParamsPredictorProj> VectorParamsPredictorsProj;

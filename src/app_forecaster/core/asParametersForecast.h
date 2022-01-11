@@ -39,22 +39,22 @@ class asParametersForecast : public asParameters {
     typedef struct {
         wxString archiveDatasetId;
         wxString archiveDataId;
-        bool archiveStandardize;
-        double archiveStandardizeMean;
-        double archiveStandardizeSd;
-        int archiveMembersNb;
+        bool archiveStandardize = false;
+        double archiveStandardizeMean = NaNd;
+        double archiveStandardizeSd = NaNd;
+        int archiveMembersNb = 0;
         wxString realtimeDatasetId;
         wxString realtimeDataId;
-        bool realtimeStandardize;
-        double realtimeStandardizeMean;
-        double realtimeStandardizeSd;
-        int realtimeMembersNb;
+        bool realtimeStandardize = false;
+        double realtimeStandardizeMean = NaNd;
+        double realtimeStandardizeSd = NaNd;
+        int realtimeMembersNb = 0;
         vwxs preprocessArchiveDatasetIds;
         vwxs preprocessArchiveDataIds;
-        int preprocessArchiveMembersNb;
+        int preprocessArchiveMembersNb = 0;
         vwxs preprocessRealtimeDatasetIds;
         vwxs preprocessRealtimeDataIds;
-        int preprocessRealtimeMembersNb;
+        int preprocessRealtimeMembersNb = 0;
     } ParamsPredictorForecast;
 
     typedef std::vector<ParamsPredictorForecast> VectorParamsPredictorsForecast;
