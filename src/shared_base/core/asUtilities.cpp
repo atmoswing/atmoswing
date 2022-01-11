@@ -1661,14 +1661,15 @@ wxString asExtractParamValueAndCut(wxString &str, const wxString &tag) {
     wxString subStr;
 
     iLeft = str.find(tag);
-    iRight = str.find("\t", iLeft + tag.Len() + 1);
-    if (iLeft < 0 || iRight < 0) {
+    if (iLeft == str.Len()) {
         wxLogError(_("Error when parsing the parameters file"));
         return wxEmptyString;
     }
-    subStr = str.SubString(iLeft + tag.Len() + 1, (size_t)iRight - 1);
+    iRight = str.find("\t", iLeft + tag.Len() + 1);
 
-    str = str.SubString((size_t)iRight, str.Len());
+    subStr = str.SubString(iLeft + tag.Len() + 1, iRight - 1);
+
+    str = str.SubString(iRight, str.Len());
 
     return subStr;
 }

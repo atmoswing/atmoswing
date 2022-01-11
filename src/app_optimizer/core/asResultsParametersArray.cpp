@@ -31,7 +31,10 @@
 
 #include "asFileText.h"
 
-asResultsParametersArray::asResultsParametersArray() : asResults(), m_medianScore(NaNf) {
+asResultsParametersArray::asResultsParametersArray()
+    : asResults(),
+      m_analogsExcludeDays(0),
+      m_medianScore(NaNf) {
     m_scores.quantile = NaNf;
     m_scores.threshold = NaNf;
 }

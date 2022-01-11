@@ -478,8 +478,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             double yStep = params->GetPredictorYstep(iStep, iPtor);
             int flatAllowed = params->GetPredictorFlatAllowed(iStep, iPtor);
             bool isLatLon = asPredictor::IsLatLon(params->GetPredictorDatasetId(iStep, iPtor));
-            asAreaCompGrid *area =
-                asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, flatAllowed, isLatLon);
+            asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
+                                                               yStep, flatAllowed, isLatLon);
             wxASSERT(area);
             area->AllowResizeFromData();
 
@@ -494,6 +494,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                 if (predictor->DumpFileExists()) {
                     predictor->SetWasDumped(true);
                     m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
+                    wxDELETE(area);
                     continue;
                 }
             }
@@ -504,9 +505,12 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                 if (predictor->DumpFileExists()) {
                     if (!predictor->LoadDumpedData()) {
                         wxLogError(_("Failed loading dumped data."));
+                        wxDELETE(area);
+                        wxDELETE(predictor);
                         return false;
                     }
                     m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
+                    wxDELETE(area);
                     continue;
                 }
             }
@@ -744,6 +748,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 if (params->GetStandardize(iStep, iPtor) &&
                     !predictor->StandardizeData(params->GetStandardizeMean(iStep, iPtor), params->GetStandardizeSd(iStep, iPtor))) {
                     wxLogError(_("Data standardisation has failed."));
+                    wxDELETE(predictor);
+                    Cleanup(predictorsPreprocess);
                     wxFAIL;
                     return false;
                 }
@@ -930,6 +936,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         if (desiredPredictor->WasDumped()) {
             if (!desiredPredictor->LoadDumpedData()) {
                 wxLogError(_("Failed loading dumped data."));
+                wxDELETE(desiredPredictor);
                 return false;
             }
         }
@@ -956,6 +963,8 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         xMinShift = -360;
         if (desiredArea->GetXmin() + xMinShift > desiredPredictor->GetXmax()) {
             wxLogError(_("An unexpected error occurred."));
+            wxDELETE(desiredArea);
+            wxDELETE(desiredPredictor);
             return false;
         }
     }
@@ -963,6 +972,8 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         xMinShift = 360;
         if (desiredArea->GetXmin() + xMinShift < desiredPredictor->GetXmin()) {
             wxLogError(_("An unexpected error occurred."));
+            wxDELETE(desiredArea);
+            wxDELETE(desiredPredictor);
             return false;
         }
     }
@@ -1155,6 +1166,8 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
     if (params->GetStandardize(iStep, iPtor) &&
         !predictor->StandardizeData(params->GetStandardizeMean(iStep, iPtor), params->GetStandardizeSd(iStep, iPtor))) {
         wxLogError(_("Data standardisation has failed."));
+        Cleanup(predictorsPreprocess);
+        wxDELETE(predictor);
         wxFAIL;
         return false;
     }

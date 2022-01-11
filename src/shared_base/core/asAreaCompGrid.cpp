@@ -410,7 +410,12 @@ bool asAreaCompGrid::HandleAreaDefinedByPointsNb(const a1d &lons, const a1d &lat
     if (indexXmin == asOUT_OF_RANGE) {
         indexXmin = asFindClosest(&lons[0], &lons[lons.size() - 1], m_composites[0].GetXmin() - 360.0, asHIDE_WARNINGS);
     }
+
     wxASSERT(indexXmin >= 0);
+    if (indexXmin < 0) {
+        wxLogError(_("A negative index was found during the area generation."));
+        return false;
+    }
 
     if (indexXmin + m_xPtsNb > lons.size()) {
         // Handle the case where the longitude axis covers the whole globe

@@ -42,11 +42,6 @@ void asParametersDownscaling::AddStep() {
 
 void asParametersDownscaling::AddPredictorProj(ParamsStepProj &step) {
     ParamsPredictorProj predictor;
-
-    predictor.datasetId = wxEmptyString;
-    predictor.dataId = wxEmptyString;
-    predictor.membersNb = 1;
-
     step.predictors.push_back(predictor);
 }
 

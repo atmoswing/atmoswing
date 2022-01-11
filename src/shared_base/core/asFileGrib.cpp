@@ -494,7 +494,7 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
         wxASSERT(iTime < timeArray.size());
 
         wxString refDate = asTime::GetStringTime(referenceDateArray[iTime], YYYYMMDD);
-        char refDateChar[9];
+        char refDateChar[10];
         strncpy(refDateChar, (const char *)refDate.mb_str(wxConvUTF8), 9);
         double refTime = referenceTimeArray[iTime];
         double forecastTime = forecastTimeArray[iTime];
