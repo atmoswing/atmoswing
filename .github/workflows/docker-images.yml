@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - feature/*
+    tags:
+      - v*
   pull_request:
     branches:
       - main
@@ -23,11 +25,22 @@ jobs:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: Set default docker tag
+      if: $GITHUB_REF_TYPE == 'branch'
+      run: echo "DOCKER_TAG=latest" >> $GITHUB_ENV
+
+    - name: Set docker tag based on tag
+      if: $GITHUB_REF_TYPE == 'tag'
+      run: echo "DOCKER_TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+
+    - name: Display Docker tag name
+      run: echo "${DOCKER_TAG}"
+
     - name: Build the Docker image
-      run: docker build . --file docker/forecaster-server/Dockerfile --tag atmoswing/forecaster:latest
+      run: docker build . --file docker/forecaster-server/Dockerfile --tag atmoswing/forecaster:${DOCKER_TAG}
 
     - name: Push the Docker image
-      run: docker push atmoswing/forecaster:latest
+      run: docker push atmoswing/forecaster:${DOCKER_TAG}
 
   build-downscaler-image:
     runs-on: ubuntu-latest
