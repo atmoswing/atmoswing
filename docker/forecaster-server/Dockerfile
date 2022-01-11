@@ -71,33 +71,6 @@ RUN cp -a /app/libs/lib/*.so* /app/deploy/lib/ \
     && cp -a /app/src/Release/* /app/deploy/bin/
 
 
-# Build test image
-FROM debian:bullseye-slim AS test
-
-WORKDIR /app
-
-# Install dependencies
-RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    libcurl4 \
-    libnetcdf18 \
-    libopenjp2-7 \
-    libtiff5 \
-    libwxbase3.0-0v5 \
-    openssl \
-    sqlite3 \
-    libproj19 \
-    libeccodes0 \
-    unzip
-
-# Copy from builder
-COPY --from=builder  /app/deploy /usr/local
-COPY --from=builder  /app/src/tests/atmoswing-tests /app/
-COPY --from=builder  /app/src/tests/files /app/tests/files
-
-RUN ./atmoswing-tests
-
-
 # Build final image
 FROM debian:bullseye-slim AS runner
 
