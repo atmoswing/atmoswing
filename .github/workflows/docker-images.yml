@@ -10,7 +10,6 @@ on:
   pull_request:
     branches:
       - main
-      - feature/*
 
 jobs:
   build-forecaster-image:
@@ -19,28 +18,30 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Login to Docker Hub
-      run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      env:
-        DOCKER_USER: ${{secrets.DOCKER_USER}}
-        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v3
+      with:
+        images: atmoswing/forecaster
 
-    - name: Set default docker tag
-      if: ${{ $GITHUB_REF_TYPE == 'branch' }}
-      run: echo "DOCKER_TAG=latest" >> $GITHUB_ENV
+    - name: Login to DockerHub
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Set docker tag based on tag
-      if: ${{ $GITHUB_REF_TYPE == 'tag' }}
-      run: echo "DOCKER_TAG=${{GITHUB_REF_NAME}}" >> $GITHUB_ENV
+    - name: Copy Dockerfile
+      run: cp docker/forecaster/Dockerfile Dockerfile
 
-    - name: Display Docker tag name
-      run: echo "${{DOCKER_TAG}}"
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
 
-    - name: Build the Docker image
-      run: docker build . --file docker/forecaster-server/Dockerfile --tag atmoswing/forecaster:${{DOCKER_TAG}}
-
-    - name: Push the Docker image
-      run: docker push atmoswing/forecaster:${{DOCKER_TAG}}
 
   build-downscaler-image:
     runs-on: ubuntu-latest
@@ -55,7 +56,7 @@ jobs:
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 
       - name: Build the Docker image
-        run: docker build . --file docker/downscaler-server/Dockerfile --tag atmoswing/downscaler:latest
+        run: docker build . --file docker/downscaler/Dockerfile --tag atmoswing/downscaler:latest
 
       - name: Push the Docker image
         run: docker push atmoswing/downscaler:latest
@@ -73,7 +74,7 @@ jobs:
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 
       - name: Build the Docker image
-        run: docker build . --file docker/optimizer-server/Dockerfile --tag atmoswing/optimizer:latest
+        run: docker build . --file docker/optimizer/Dockerfile --tag atmoswing/optimizer:latest
 
       - name: Push the Docker image
         run: docker push atmoswing/optimizer:latest
