@@ -1,7 +1,8 @@
 [![AtmoSwing](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/logo/logo.png)](http://www.atmoswing.org)
 
 [![DOI](https://zenodo.org/badge/95885904.svg)](https://zenodo.org/badge/latestdoi/95885904) 
-[![Build Status](https://github.com/atmoswing/atmoswing/actions/workflows/cmake.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/cmake.yml)
+[![Build Status](https://github.com/atmoswing/atmoswing/actions/workflows/linux-builds.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/linux-builds.yml)
+[![Build Status](https://github.com/atmoswing/atmoswing/actions/workflows/docker-images.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/docker-images.yml)
 [![Build status](https://ci.appveyor.com/api/projects/status/1otp6de8c8go0nxm?svg=true)](https://ci.appveyor.com/project/pascalhorton/atmoswing)
 [![codecov](https://codecov.io/gh/atmoswing/atmoswing/branch/master/graph/badge.svg)](https://codecov.io/gh/atmoswing/atmoswing)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/13133/badge.svg)](https://scan.coverity.com/projects/atmoswing-atmoswing)
