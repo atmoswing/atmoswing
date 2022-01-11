@@ -55,7 +55,7 @@ TEST(Predictor, Standardize) {
 
     ASSERT_TRUE(predictor->Load(area, timearray, level));
 
-    predictor->StandardizeData();
+    ASSERT_TRUE(predictor->StandardizeData());
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
