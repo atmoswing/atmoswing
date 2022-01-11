@@ -112,8 +112,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\netcdf.h") -Or $REBUILD_NETCDF) {
   cd "$TMP_DIR\netcdf-*"
   mkdir bld > $null
   cd bld
-  $LIB_DIR_REV=$LIB_DIR -replace '\\','/'
-  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR_REV" -DCMAKE_BUILD_TYPE=Release -DENABLE_NETCDF_4=ON -DENABLE_DAP=OFF -DUSE_DAP=OFF -DBUILD_UTILITIES=OFF -DENABLE_TESTS=OFF -DHDF5_DIR="$LIB_DIR_REV/cmake" -DHDF5_C_LIBRARY="$LIB_DIR_REV/lib/libhdf5.lib" -DHDF5_HL_LIBRARY="$LIB_DIR_REV/lib/libhdf5_hl.lib" -DHDF5_INCLUDE_DIR="$LIB_DIR_REV/include" -DZLIB_INCLUDE_DIR="$LIB_DIR_REV/include" -DZLIB_LIBRARY="$LIB_DIR_REV/lib/zlib.lib" -DCMAKE_INCLUDE_PATH="$LIB_DIR_REV/include" > $null
+  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_BUILD_TYPE=Release -DENABLE_NETCDF_4=ON -DENABLE_DAP=OFF -DUSE_DAP=OFF -DBUILD_UTILITIES=OFF -DENABLE_TESTS=OFF -DHDF5_DIR="$LIB_DIR/share/cmake" -DNC_FIND_SHARED_LIBS=OFF -DZLIB_INCLUDE_DIR="$LIB_DIR/include" -DZLIB_LIBRARY="$LIB_DIR/lib/zlib.lib" -DCMAKE_INCLUDE_PATH="$LIB_DIR/include" > $null
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
 } else {
@@ -187,12 +186,13 @@ if(!(Test-Path -Path "$LIB_DIR\lib\eccodes.lib") -Or $REBUILD_ECCODES) {
   cd "$TMP_DIR\eccodes-*"
   mkdir bld > $null
   cd bld
-  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DENABLE_TESTS=OFF -DENABLE_JPG=ON -DENABLE_PYTHON=OFF -DENABLE_FORTRAN=OFF -DENABLE_ECCODES_THREADS=OFF -DCMAKE_PREFIX_PATH="$LIB_DIR;$BASH_DIR" -DOPENJPEG_INCLUDE_DIR="$LIB_DIR/include/openjpeg-2.3" -DDISABLE_OS_CHECK=ON -DBASH_EXE="$BASH_PATH" > $null
+  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DENABLE_TESTS=OFF -DENABLE_JPG=ON -DENABLE_FORTRAN=OFF -DENABLE_ECCODES_THREADS=OFF -DCMAKE_PREFIX_PATH="$LIB_DIR;$BASH_DIR" -DOPENJPEG_INCLUDE_DIR="$LIB_DIR/include/openjpeg-2.3" -DBASH_EXE="$BASH_PATH" > $null
   cmake --build . --config release --target eccodes > $null
-  copy "$TMP_DIR\eccodes\bld\lib\Release\eccodes.lib" "$LIB_DIR\lib\eccodes.lib"
-  copy "$TMP_DIR\eccodes\src\*.h" "$LIB_DIR\include\"
-  copy "$TMP_DIR\eccodes\bld\src\eccodes_version.h" "$LIB_DIR\include\"
-  Copy-Item "$TMP_DIR\eccodes\definitions" -Destination "$LIB_DIR\share\eccodes\definitions" -Recurse
+  cd ..
+  copy "bld\lib\Release\eccodes.lib" "$LIB_DIR\lib\eccodes.lib"
+  copy "src\*.h" "$LIB_DIR\include\"
+  copy "bld\src\eccodes_version.h" "$LIB_DIR\include\"
+  Copy-Item "definitions" -Destination "$LIB_DIR\share\eccodes\definitions" -Recurse
 } else {
   Write-Host "`necCodes has been found in cache and will not be built" -ForegroundColor Yellow
 }
