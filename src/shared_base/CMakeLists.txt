@@ -194,7 +194,7 @@ if (WIN32)
 
     # Proj
     find_file(PROJ_DLL_NAME
-            proj.dll NAMES proj_7.dll proj_7_0.dll proj_7_1.dll proj_7_2.dll proj_7_3.dll
+            proj.dll proj_7_0.dll proj_7_1.dll proj_7_2.dll proj_7_3.dll proj_8_0.dll proj_8_1.dll proj_8_2.dll
             HINTS ${CMAKE_PREFIX_PATH}
             PATH_SUFFIXES bin
             NO_DEFAULT_PATH)
