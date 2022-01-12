@@ -120,9 +120,6 @@ bool asPredictandLightning::Save(const wxString &destinationDir) const {
 
 bool asPredictandLightning::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
                                                const wxString &patternDir, const wxString &destinationDir) {
-    if (!g_unitTesting) {
-        wxLogVerbose(_("Building the predictand DB."));
-    }
 
     // Initialize the members
     if (!InitMembers(catalogFilePath)) return false;
@@ -141,9 +138,7 @@ bool asPredictandLightning::BuildPredictandDB(const wxString &catalogFilePath, c
         if (!Save(destinationDir)) return false;
     }
 
-    if (!g_unitTesting) {
-        wxLogVerbose(_("Predictand DB saved."));
-    }
+    wxLogVerbose(_("Predictand DB saved."));
 
 #if wxUSE_GUI
     if (!g_silentMode) {

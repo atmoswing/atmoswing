@@ -75,7 +75,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\curl\curl.h") -Or $REBUILD_CURL) {
   cd "$TMP_DIR\curl-*"
   .\buildconf.bat
   cd winbuild
-  nmake -f Makefile.vc mode=dll DEBUG=NO MACHINE=${TARGET_CPU}
+  nmake -f Makefile.vc mode=dll DEBUG=NO MACHINE=${TARGET_CPU} > $null
   cd ..
   Copy-Item "builds\libcurl-vc-${TARGET_CPU}-release-dll-ipv6-sspi-schannel\bin\*" "$LIB_DIR\bin" -force
   Copy-Item "builds\libcurl-vc-${TARGET_CPU}-release-dll-ipv6-sspi-schannel\include\*" "$LIB_DIR\include" -recurse -force
@@ -112,7 +112,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\netcdf.h") -Or $REBUILD_NETCDF) {
   cd "$TMP_DIR\netcdf-*"
   mkdir bld > $null
   cd bld
-  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_BUILD_TYPE=Release -DENABLE_NETCDF_4=ON -DENABLE_DAP=OFF -DUSE_DAP=OFF -DBUILD_UTILITIES=OFF -DENABLE_TESTS=OFF -DHDF5_DIR="$LIB_DIR/share/cmake" -DNC_FIND_SHARED_LIBS=OFF -DZLIB_INCLUDE_DIR="$LIB_DIR/include" -DZLIB_LIBRARY="$LIB_DIR/lib/zlib.lib" -DCMAKE_INCLUDE_PATH="$LIB_DIR/include" > $null
+  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_BUILD_TYPE=Release -DENABLE_NETCDF_4=ON -DENABLE_DAP=OFF -DUSE_DAP=OFF -DBUILD_UTILITIES=OFF -DENABLE_TESTS=OFF -DHDF5_DIR="$LIB_DIR/share/cmake" -DNC_FIND_SHARED_LIBS=OFF -DZLIB_LIBRARY="$LIB_DIR/lib/zlib.lib" -DCMAKE_INCLUDE_PATH="$LIB_DIR/include" > $null
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
 } else {
