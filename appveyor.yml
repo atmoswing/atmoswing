@@ -32,7 +32,7 @@ test_script:
 
 after_test:
   - cd C:\projects\atmoswing
-  - ps: if ($stopwatch.Elapsed.TotalMinutes -lt 57) { Invoke-Expression -Command "ci/appveyor/make-installers.ps1" }
+  - ps: if ($stopwatch.Elapsed.TotalMinutes -lt 55) { Invoke-Expression -Command "ci/appveyor/make-installers.ps1" }
 
 on_failure:
   - cd C:\projects\atmoswing\bin
