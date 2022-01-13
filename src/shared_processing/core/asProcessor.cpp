@@ -631,7 +631,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 bool asProcessor::CheckTargetTimeArray(const std::vector<asPredictor *> &predictorsTarget, const a1d &timeTargetData) {
     wxASSERT(predictorsTarget[0]);
     wxASSERT(timeTargetData.size() == predictorsTarget[0]->GetData().size());
-    if (timeTargetData.size() != predictorsTarget[0]->GetData().size()) {
+    if ((size_t)timeTargetData.size() != predictorsTarget[0]->GetData().size()) {
         wxLogError(_("The size of the time array and the target data are not equal (%d != %d)."),
                    (int)timeTargetData.size(), (int)predictorsTarget[0]->GetData().size());
         wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(timeTargetData[0], ISOdateTime),
@@ -648,7 +648,7 @@ bool asProcessor::CheckArchiveTimeArray(const std::vector<asPredictor *> &predic
     wxASSERT(!predictorsArchive.empty());
     wxASSERT(!predictorsArchive[0]->GetData().empty());
     wxASSERT(timeArchiveData.size() == predictorsArchive[0]->GetData().size());
-    if (timeArchiveData.size() != predictorsArchive[0]->GetData().size()) {
+    if ((size_t)timeArchiveData.size() != predictorsArchive[0]->GetData().size()) {
         wxLogError(_("The size of the time array and the archive data are not equal (%d != %d)."),
                    (int)timeArchiveData.size(), (int)predictorsArchive[0]->GetData().size());
         wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(timeArchiveData[0], ISOdateTime),
