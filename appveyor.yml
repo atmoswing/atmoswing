@@ -28,7 +28,7 @@ build_script:
   - ps: if ($stopwatch.Elapsed.TotalMinutes -lt 40) { Invoke-Expression -Command "ci/appveyor/build-$env:apptype.ps1" }
 
 test_script:
-  - ps: if (($env:apptype -eq "server") -or ($env:apptype -eq "desktop-test")) { cd C:\projects\atmoswing\bin\tests && ctest -V }
+  - ps: if (($env:apptype -eq "server") -or ($env:apptype -eq "desktop-test")) { cd C:\projects\atmoswing\bin\tests; ctest -V }
 
 after_test:
   - cd C:\projects\atmoswing
