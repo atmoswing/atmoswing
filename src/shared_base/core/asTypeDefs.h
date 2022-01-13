@@ -44,13 +44,13 @@
 //---------------------------------
 
 // Coordinates
-typedef struct {
+typedef struct Coo {
     double x;  // East
     double y;  // North
 } Coo;
 
 // A time structure
-typedef struct {
+typedef struct Time {
     int year;
     int month;
     int day;

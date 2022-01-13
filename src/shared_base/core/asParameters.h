@@ -40,7 +40,7 @@ class asFileParameters;
 
 class asParameters : public wxObject {
   public:
-    typedef struct {
+    typedef struct ParamsPredictor {
         bool preload = false;
         bool standardize = false;
         double standardizeMean = NaNd;
@@ -80,8 +80,8 @@ class asParameters : public wxObject {
 
     typedef std::vector<ParamsPredictor> VectorParamsPredictors;
 
-    typedef struct {
-        int analogsNumber;
+    typedef struct ParamsStep {
+        int analogsNumber = 0;
         VectorParamsPredictors predictors;
     } ParamsStep;
 

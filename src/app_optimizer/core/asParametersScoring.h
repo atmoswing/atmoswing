@@ -36,21 +36,21 @@ class asFileParameters;
 
 class asParametersScoring : public asParameters {
   public:
-    typedef struct {
+    typedef struct ParamsScore {
         wxString name;
         wxString timeArrayMode;
-        double timeArrayDate;
-        int timeArrayIntervalDays;
-        bool postprocess;
-        float postprocessDupliExp;
+        double timeArrayDate = 0;
+        int timeArrayIntervalDays = 0;
+        bool postprocess = false;
+        float postprocessDupliExp = 0;
         wxString postprocessMethod;
-        bool onMean;
-        float threshold;
-        float quantile;
+        bool onMean = false;
+        float threshold = NaNf;
+        float quantile = NaNf;
     } ParamsScore;
 
     /** Vectors */
-    typedef struct {
+    typedef struct ParamsPredictorVect {
         vvwxs preprocessDataId;
         vvf preprocessLevels;
         vvd preprocessHours;
@@ -67,14 +67,14 @@ class asParametersScoring : public asParameters {
 
     typedef std::vector<ParamsPredictorVect> VectorParamsPredictorsVect;
 
-    typedef struct {
+    typedef struct ParamsStepVect {
         vi analogsNumber;
         VectorParamsPredictorsVect predictors;
     } ParamsStepVect;
 
     typedef std::vector<ParamsStepVect> VectorParamsStepVect;
 
-    typedef struct {
+    typedef struct ParamsScoreVect {
         vwxs name;
         vwxs timeArrayMode;
         vd timeArrayDate;
@@ -83,25 +83,25 @@ class asParametersScoring : public asParameters {
     } ParamsScoreVect;
 
     /** Booleans */
-    typedef struct {
+    typedef struct ParamsPredictorBool {
         vb preprocessDataId;
         vb preprocessLevels;
         vb preprocessHours;
-        bool dataId;
-        bool level;
-        bool xMin;
-        bool xPtsNb;
-        bool yMin;
-        bool yPtsNb;
-        bool hours;
-        bool weight;
-        bool criteria;
+        bool dataId = true;
+        bool level = true;
+        bool xMin = true;
+        bool xPtsNb = true;
+        bool yMin = true;
+        bool yPtsNb = true;
+        bool hours = true;
+        bool weight = true;
+        bool criteria = true;
     } ParamsPredictorBool;
 
     typedef std::vector<ParamsPredictorBool> VectorParamsPredictorsBool;
 
-    typedef struct {
-        bool analogsNumber;
+    typedef struct ParamsStepBool {
+        bool analogsNumber = false;
         VectorParamsPredictorsBool predictors;
     } ParamsStepBool;
 
