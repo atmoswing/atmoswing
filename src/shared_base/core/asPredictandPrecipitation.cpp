@@ -327,7 +327,7 @@ bool asPredictandPrecipitation::BuildDailyPrecipitationsForAllReturnPeriods() {
     for (int iStat = 0; iStat < m_stationsNb; iStat++) {
         for (int iRetPeriod = 0; iRetPeriod < m_returnPeriods.size(); iRetPeriod++) {
             float F = 1 - (1 / m_returnPeriods[iRetPeriod]);  // Probability of not overtaking
-            float u = -log(-log(F));                          // Gumbel variable
+            float u = -log(-log(F));  // Gumbel variable
             int iDuration = asFind(&m_gumbelDuration(iStat, 0), &m_gumbelDuration(iStat, m_gumbelDuration.cols() - 1),
                                    duration, 0.00001f);
             float val = m_gumbelParamB(iStat, iDuration) * u + m_gumbelParamA(iStat, iDuration);
