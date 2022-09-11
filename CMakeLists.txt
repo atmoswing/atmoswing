@@ -28,25 +28,12 @@ FetchContent_Declare(
         GIT_TAG a1c38f8da17936e70d7bcb7f1cd21a5b30847c1e)
 
 FetchContent_Declare(
-        eigen
-        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-        GIT_TAG 3.3.7)
-
-FetchContent_Declare(
         vroomgis
         GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
         GIT_TAG e646495f7e83911d91a5ce28c579bd8e97bc52f4)
 
-FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG release-1.10.0)
-
-FetchContent_Declare(
-        googlebenchmark
-        GIT_REPOSITORY https://github.com/google/benchmark.git
-        GIT_TAG v1.5.0)
-
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
 
 ##### OPTIONS
 
@@ -180,7 +167,7 @@ if (USE_CODECOV)
 endif (USE_CODECOV)
 
 
-##### DISPLAY SOME INFORMATIONS
+##### DISPLAY SOME INFORMATION
 
 include(define_shared_compilation_flags)
 
@@ -209,7 +196,7 @@ if (BUILD_BENCHMARK)
 endif()
 
 
-##### DISPLAY SOME INFORMATIONS
+##### DISPLAY SOME INFORMATION
 
 message(STATUS "CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}")
 message(STATUS "CMAKE_CXX_FLAGS_RELEASE = ${CMAKE_CXX_FLAGS_RELEASE}")
