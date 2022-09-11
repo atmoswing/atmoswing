@@ -35,7 +35,7 @@ class asFileParametersDownscaling;
 
 class asParametersDownscaling : public asParameters {
   public:
-    typedef struct {
+    typedef struct ParamsPredictorProj {
         wxString datasetId;
         wxString dataId;
         int membersNb = 0;
@@ -46,7 +46,7 @@ class asParametersDownscaling : public asParameters {
 
     typedef std::vector<ParamsPredictorProj> VectorParamsPredictorsProj;
 
-    typedef struct {
+    typedef struct ParamsStepProj {
         VectorParamsPredictorsProj predictors;
     } ParamsStepProj;
 

@@ -54,7 +54,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\png.h") -Or $REBUILD_PNG) {
   Write-Host "`nPng has been found in cache and will not be built" -ForegroundColor Yellow
 }
 
-if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 30) { return }
 
 # Install Gdal
 if(!(Test-Path -Path "$LIB_DIR\include\gdal.h") -Or $REBUILD_GDAL) {

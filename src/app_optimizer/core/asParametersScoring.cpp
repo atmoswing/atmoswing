@@ -30,18 +30,10 @@
 
 #include "asFileParametersCalibration.h"
 
-asParametersScoring::asParametersScoring() : asParameters(), m_calibrationStart(NaNd), m_calibrationEnd(NaNd) {
-    m_score.name = wxEmptyString;
-    m_score.timeArrayMode = wxEmptyString;
-    m_score.timeArrayDate = 0;
-    m_score.timeArrayIntervalDays = 0;
-    m_score.postprocess = false;
-    m_score.postprocessDupliExp = 0;
-    m_score.postprocessMethod = wxEmptyString;
-    m_score.onMean = false;
-    m_score.threshold = NaNf;
-    m_score.quantile = NaNf;
-}
+asParametersScoring::asParametersScoring()
+    : asParameters(),
+      m_calibrationStart(NaNd),
+      m_calibrationEnd(NaNd) {}
 
 asParametersScoring::~asParametersScoring() {}
 

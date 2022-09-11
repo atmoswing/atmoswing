@@ -88,6 +88,7 @@ if (WIN32)
 
     # WIX related parameters
     set(CPACK_GENERATOR "WIX")
+    set(CPACK_WIX_UPGRADE_GUID "E65EB70B-065D-4330-B901-83548C718A74")
     set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_LIST_DIR}/../../art/logo/atmoswing.png")
     set(CPACK_WIX_UI_DIALOG "${CMAKE_CURRENT_LIST_DIR}/../cpack/windows/installer_bg.jpg")
     set(CPACK_WIX_UI_BANNER "${CMAKE_CURRENT_LIST_DIR}/../cpack/windows/installer_top.jpg")

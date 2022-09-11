@@ -197,8 +197,7 @@ void asFileNetcdf::PutAtt(const wxString &attName, const wxString &textStr, cons
 
     // Check if global or not
     if ((varName.IsEmpty())) {
-        m_status =
-            nc_put_att_text(m_fileId, NC_GLOBAL, attName.mb_str(wxConvUTF8), strlen(buffer.data()), buffer.data());
+        m_status = nc_put_att_text(m_fileId, NC_GLOBAL, attName.mb_str(wxConvUTF8), strlen(buffer.data()), buffer.data());
         if (m_status) HandleErrorNetcdf();
         // Get the ID
         m_status = nc_inq_attid(m_fileId, NC_GLOBAL, attName.mb_str(wxConvUTF8), &attId);
@@ -778,8 +777,7 @@ char asFileNetcdf::GetAttChar(const wxString &attName, const wxString &varName) 
 
         // Check the given type
         if (nctype != NC_CHAR)
-            asThrowException(
-                wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+            asThrowException(wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
                                  attName, (int)nctype, (int)NC_CHAR));
 
         // Get value

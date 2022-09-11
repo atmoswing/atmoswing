@@ -102,16 +102,6 @@ void asParametersOptimization::AddPredictorLowerLimit(ParamsStep &step) {
 void asParametersOptimization::AddPredictorLocks(ParamsStepBool &step) {
     ParamsPredictorBool predictor;
 
-    predictor.dataId = true;
-    predictor.level = true;
-    predictor.xMin = true;
-    predictor.xPtsNb = true;
-    predictor.yMin = true;
-    predictor.yPtsNb = true;
-    predictor.hours = true;
-    predictor.weight = true;
-    predictor.criteria = true;
-
     step.predictors.push_back(predictor);
 }
 

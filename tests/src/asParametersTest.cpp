@@ -288,7 +288,7 @@ TEST(Parameters, IsSameAs) {
     EXPECT_FALSE(params1.IsSameAs(params2));
 
     params2 = params1;
-    params2.SetPredictorWeight(0, 0, 0.35);
+    params2.SetPredictorWeight(0, 0, 0.35f);
     EXPECT_FALSE(params1.IsSameAs(params2));
 
     params2 = params1;
@@ -392,9 +392,9 @@ TEST(Parameters, IsCloseTo) {
     EXPECT_FALSE(params1.IsCloseTo(params2));
 
     params2 = params1;
-    params2.SetPredictorWeight(0, 0, 0.35);
+    params2.SetPredictorWeight(0, 0, 0.35f);
     EXPECT_FALSE(params1.IsCloseTo(params2));
-    params2.SetPredictorWeight(0, 0, 0.68);
+    params2.SetPredictorWeight(0, 0, 0.68f);
     EXPECT_TRUE(params1.IsCloseTo(params2));
 
     params2 = params1;

@@ -143,7 +143,7 @@ if (WIN32)
 
     # GDAL DLL
     find_file(GDAL_DLL_NAME
-            NAMES gdal200.dll gdal201.dll gdal202.dll gdal203.dll gdal204.dll gdal205.dll gdal300.dll gdal301.dll gdal302.dll
+            NAMES gdal300.dll gdal301.dll gdal302.dll gdal303.dll gdal304.dll gdal305.dll
             HINTS ${CMAKE_PREFIX_PATH}
             PATH_SUFFIXES bin
             NO_DEFAULT_PATH)

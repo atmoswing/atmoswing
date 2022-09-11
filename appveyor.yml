@@ -10,7 +10,8 @@ environment:
 
   matrix:
     - apptype: server
-    - apptype: desktop
+    - apptype: desktop-test
+    - apptype: desktop-installer
 
 platform:
   - x64
@@ -27,12 +28,11 @@ build_script:
   - ps: if ($stopwatch.Elapsed.TotalMinutes -lt 40) { Invoke-Expression -Command "ci/appveyor/build-$env:apptype.ps1" }
 
 test_script:
-  - cd C:\projects\atmoswing\bin\tests
-  - ctest -V
+  - ps: if (($env:apptype -eq "server") -or ($env:apptype -eq "desktop-test")) { cd C:\projects\atmoswing\bin\tests; ctest -V }
 
 after_test:
   - cd C:\projects\atmoswing
-  - ps: if ($stopwatch.Elapsed.TotalMinutes -lt 50) { Invoke-Expression -Command "ci/appveyor/make-installers.ps1" }
+  - ps: if (($stopwatch.Elapsed.TotalMinutes -lt 50) -and (($env:apptype -eq "server") -Or ($env:apptype -eq "desktop-installer"))) { Invoke-Expression -Command "ci/appveyor/make-installers.ps1" }
 
 on_failure:
   - cd C:\projects\atmoswing\bin

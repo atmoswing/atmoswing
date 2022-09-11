@@ -36,7 +36,7 @@ class asFileParametersForecast;
 
 class asParametersForecast : public asParameters {
   public:
-    typedef struct {
+    typedef struct ParamsPredictorForecast {
         wxString archiveDatasetId;
         wxString archiveDataId;
         bool archiveStandardize = false;
@@ -59,7 +59,7 @@ class asParametersForecast : public asParameters {
 
     typedef std::vector<ParamsPredictorForecast> VectorParamsPredictorsForecast;
 
-    typedef struct {
+    typedef struct ParamsStepForecast {
         vi analogsNumberLeadTime;
         VectorParamsPredictorsForecast predictors;
     } ParamsStepForecast;
