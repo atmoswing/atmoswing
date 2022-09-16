@@ -15,27 +15,16 @@ env:
 
 jobs:
   build-server-version:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v2
     
     - name: Install libraries
-      run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libproj-dev libeccodes-dev libopenjp2-7-dev
-
-    - name: Build Jasper lib
-      run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
-
-    - name: Create Build Environment
-      run: cmake -E make_directory ${{github.workspace}}/bin
-
-    - name: Configure CMake
-      working-directory: ${{github.workspace}}/bin
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 -DCREATE_INSTALLER=1 -DUSE_GUI=0
+      run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing
 
     - name: Build
-      working-directory: ${{github.workspace}}/bin
-      run: cmake --build . --config ${{env.BUILD_TYPE}} -j$(nproc)
+      run: conan build ..
 
     - name: Test
       working-directory: ${{github.workspace}}/bin/tests
@@ -43,27 +32,19 @@ jobs:
 
 
   build-desktop-version:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Install libraries
-        run: sudo apt-get install libwxgtk3.0-gtk3-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libtiff5-dev libexpat1-dev libproj-dev libgdal-dev libeccodes-dev
-
-      - name: Build Jasper lib
-        run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=True -o with_gui=True -o enable_tests=True --build=missing
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/bin
 
-      - name: Configure CMake
-        working-directory: ${{github.workspace}}/bin
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=1 -DCREATE_INSTALLER=1 -DUSE_GUI=1
-
       - name: Build
-        working-directory: ${{github.workspace}}/bin
-        run: cmake --build . --config ${{env.BUILD_TYPE}} -j$(nproc)
+        run: conan build ..
 
       - name: Test
         working-directory: ${{github.workspace}}/bin/tests
@@ -71,7 +52,7 @@ jobs:
 
 
   coverage-scan:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     env:
       BUILD_TYPE: RelWithDebInfo
@@ -80,16 +61,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install libraries
-        run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libproj-dev libeccodes-dev libopenjp2-7-dev lcov
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=False -o with_gui=False -o enable_tests=True -o code_coverage=True --build=missing
 
-      - name: Build Jasper lib
-        run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
-
-      - name: Configure CMake
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 -DCREATE_INSTALLER=0 -DUSE_GUI=0 -DUSE_CODECOV=1
-
-      - name: Build and run code coverage
-        run: cmake --build . --config $BUILD_TYPE -j$(nproc) --target atmoswing-coverage
+      - name: Build
+        run: conan build ..
 
       - name: Preparing coverage data
         run: lcov --directory . --capture --output-file coverage.info

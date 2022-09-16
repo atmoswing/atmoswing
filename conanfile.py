@@ -36,7 +36,7 @@ class AmtoSwing(ConanFile):
         "build_forecaster": True,
         "build_viewer": True,
         "build_optimizer": True,
-        "build_downscaler": False,
+        "build_downscaler": True,
     }
 
     generators = "cmake", "gcc"
