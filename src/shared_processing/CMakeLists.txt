@@ -40,8 +40,6 @@ include_directories(${inc_dirs})
 
 ##### LIBRARIES
 
-include(define_common_libraries)
-
 # CUDA
 if (USE_CUDA)
     enable_language(CUDA)

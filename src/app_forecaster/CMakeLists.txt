@@ -37,20 +37,6 @@ endif (USE_GUI)
 include_directories(${inc_dirs})
 
 
-##### LIBRARIES
-
-include(define_common_libraries)
-
-# libcURL
-mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
-mark_as_advanced(CLEAR CURL_LIBRARY)
-if (UNIX)
-    find_package(OpenSSL REQUIRED)
-endif (UNIX)
-find_package(CURL REQUIRED)
-include_directories(${CURL_INCLUDE_DIRS})
-
-
 ##### DECLARE EXECUTABLE
 
 if (WIN32)
@@ -93,6 +79,7 @@ endif (USE_GUI)
 
 target_link_libraries(atmoswing-forecaster asbase)
 target_link_libraries(atmoswing-forecaster asprocessing)
+target_link_libraries(atmoswing-forecaster CONAN_PKG::openssl)
 if (USE_VLD)
     target_link_libraries(atmoswing-forecaster ${VLD_LIBRARIES})
 endif (USE_VLD)

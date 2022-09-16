@@ -54,11 +54,6 @@ include_directories(${inc_dirs})
 
 ##### LIBRARIES
 
-include(define_common_libraries)
-
-message(STATUS "GDAL libraries: ${GDAL_LIBRARIES}")
-message(STATUS "GDAL include dirs: ${GDAL_INCLUDE_DIRS}")
-
 # vroomgis
 FetchContent_MakeAvailable(vroomgis)
 include_directories(${vroomgis_SOURCE_DIR}/vroomgis/src)
@@ -105,7 +100,8 @@ set_target_properties(atmoswing-viewer PROPERTIES COMPILE_DEFINITIONS "APP_VIEWE
 ##### LINKING
 
 add_dependencies(atmoswing-viewer vroomgis)
-target_link_libraries(atmoswing-viewer ${GDAL_LIBRARIES})
+target_link_libraries(atmoswing-viewer CONAN_PKG::libpng)
+target_link_libraries(atmoswing-viewer CONAN_PKG::gdal)
 target_link_libraries(atmoswing-viewer asbase)
 target_link_libraries(atmoswing-viewer vroomgis)
 target_link_libraries(atmoswing-viewer ${VROOMGIS_LIBRARY})

@@ -91,18 +91,6 @@ include_directories(${inc_dirs})
 
 ##### LIBRARIES
 
-include(define_common_libraries)
-
-# Google Test
-if (MINGW OR MSYS)
-    set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
-endif ()
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
-set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-include_directories(${googletest_SOURCE_DIR}/googletest/include)
-
 # CUDA
 if (USE_CUDA)
     set(CUDA_SEPARABLE_COMPILATION ON)
@@ -153,10 +141,9 @@ endif()
 
 add_dependencies(atmoswing-tests asbase)
 add_dependencies(atmoswing-tests asprocessing)
-add_dependencies(atmoswing-tests gtest)
 target_link_libraries(atmoswing-tests asbase)
 target_link_libraries(atmoswing-tests asprocessing)
-target_link_libraries(atmoswing-tests gtest gtest_main)
+target_link_libraries(atmoswing-tests CONAN_PKG::gtest)
 if (UNIX)
     target_link_libraries(atmoswing-tests pthread)
 endif ()

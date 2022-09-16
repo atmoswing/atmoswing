@@ -34,14 +34,10 @@ include_directories(${inc_dirs})
 
 ##### LIBRARIES
 
-include(define_common_libraries)
-
 # Google benchmark
 if (MINGW OR MSYS)
     set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
 endif ()
-set(BENCHMARK_DOWNLOAD_DEPENDENCIES ON)
-FetchContent_MakeAvailable(googlebenchmark)
 
 
 ##### DECLARE EXECUTABLE
@@ -79,10 +75,10 @@ add_dependencies(atmoswing-benchmark asprocessing)
 target_link_libraries(atmoswing-benchmark asbase)
 target_link_libraries(atmoswing-benchmark asprocessing)
 if(WIN32)
-    target_link_libraries(atmoswing-benchmark debug benchmarkd debug gtestd Shlwapi)
-    target_link_libraries(atmoswing-benchmark optimized benchmark optimized gtest Shlwapi)
+    target_link_libraries(atmoswing-benchmark debug benchmarkd debug CONAN_PKG::gtest Shlwapi)
+    target_link_libraries(atmoswing-benchmark optimized benchmark optimized CONAN_PKG::gtest Shlwapi)
 else()
-    target_link_libraries(atmoswing-benchmark benchmark benchmark_main gtest)
+    target_link_libraries(atmoswing-benchmark benchmark benchmark_main CONAN_PKG::gtest)
 endif()
 if (UNIX)
     target_link_libraries(atmoswing-benchmark pthread)

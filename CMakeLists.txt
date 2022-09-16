@@ -33,7 +33,10 @@ FetchContent_Declare(
         GIT_TAG e646495f7e83911d91a5ce28c579bd8e97bc52f4)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+conan_basic_setup(TARGETS)
+
+include_directories(${CONAN_INCLUDE_DIRS})
+
 
 ##### OPTIONS
 
@@ -169,7 +172,7 @@ endif (USE_CODECOV)
 
 ##### DISPLAY SOME INFORMATION
 
-include(define_shared_compilation_flags)
+include(atmoswing_shared_compilation_flags)
 
 # Add components
 add_subdirectory(src/shared_base)
@@ -207,5 +210,5 @@ message(STATUS "CMAKE_CXX_FLAGS_RELWITHDEBINFO = ${CMAKE_CXX_FLAGS_RELWITHDEBINF
 #### INSTALLER
 
 if (CREATE_INSTALLER)
-    include(define_installer_options)
+    include(atmoswing_installer_options)
 endif ()

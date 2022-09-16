@@ -50,11 +50,6 @@ endif (USE_GUI)
 include_directories(${inc_dirs})
 
 
-##### LIBRARIES
-
-include(define_common_libraries)
-
-
 ##### DECLARE EXECUTABLE
 
 if (WIN32)

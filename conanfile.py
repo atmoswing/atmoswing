@@ -13,39 +13,53 @@ class AmtoSwing(ConanFile):
         "zlib/1.2.12",
         "eigen/3.4.0",
         "sqlite3/3.39.2",
-        "jasper/2.0.33",
         "netcdf/4.8.1",
-        "benchmark/1.6.2"
+        "benchmark/1.6.2",
+        "eccodes/2.27.0@terranum-conan+eccodes/stable",
     ]
 
     options = {
-        "tests": [True, False],
+        "enable_tests": [True, False],
+        "enable_benchmark": [True, False],
         "code_coverage": [True, False],
-        "with_gui": [True, False]
+        "with_gui": [True, False],
+        "build_forecaster": [True, False],
+        "build_viewer": [True, False],
+        "build_optimizer": [True, False],
+        "build_downscaler": [True, False],
     }
     default_options = {
-        "tests": True,
+        "enable_tests": True,
+        "enable_benchmark": False,
         "code_coverage": False,
-        "with_gui": True
+        "with_gui": True,
+        "build_forecaster": True,
+        "build_viewer": True,
+        "build_optimizer": True,
+        "build_downscaler": False,
     }
 
     generators = "cmake", "gcc"
 
     def requirements(self):
-        if self.options.tests or self.options.code_coverage:
+        if self.options.enable_tests or self.options.code_coverage:
+            self.requires("gtest/1.11.0")
+        if self.options.enable_benchmark:
+            self.requires("benchmark/1.6.2")
             self.requires("gtest/1.11.0")
         if self.options.with_gui:
             self.requires("wxwidgets/3.2.0@terranum-conan+wxwidgets/stable")
         else:
             self.requires("wxbase/3.1.6@pascalhorton+wxbase/stable")
-        if self.settings.os == "Windows":
-            self.requires("gdal/3.5.1@terranum-conan+gdal/stable")
-        else:
-            self.requires("gdal/3.4.1@terranum-conan+gdal/stable")
+        if self.options.build_viewer:
+            if self.settings.os == "Windows":
+                self.requires("gdal/3.5.1@terranum-conan+gdal/stable")
+            else:
+                self.requires("gdal/3.4.1@terranum-conan+gdal/stable")
 
     def configure(self):
         if self.options.code_coverage:
-            self.options.tests = True
+            self.options.enable_tests = True
         self.options["gdal"].with_curl = True # for xml support
         self.options["gdal"].shared = True
         if self.settings.os == "Linux":
@@ -65,7 +79,7 @@ class AmtoSwing(ConanFile):
             self.copy("*", dst="share/proj", src="res", root_package="proj")
         if self.settings.os == "Macos":
             self.copy("*", dst="bin/AtmoSwing.app/Contents/share/proj", src="res", root_package="proj")
-            if self.options.tests:
+            if self.options.enable_tests:
                 self.copy("*", dst="bin", src="res", root_package="proj")
 
         # Copy gdal library data
@@ -73,20 +87,25 @@ class AmtoSwing(ConanFile):
             self.copy("*", dst="share", src="res", root_package="gdal")
         if self.settings.os == "Macos":
             self.copy("*", dst="bin/AtmoSwing.app/Contents/share/proj", src="res", root_package="gdal")
-            if self.options.tests:
+            if self.options.enable_tests:
                 self.copy("*", dst="bin", src="res", root_package="gdal")
 
     def build(self):
         cmake = CMake(self)
-        if self.options.tests:
-            cmake.definitions["BUILD_TESTS"] = "ON"
+        cmake.definitions["BUILD_TESTS"] = self.options.enable_tests
+        cmake.definitions["BUILD_BENCHMARK"] = self.options.enable_benchmark
+        cmake.definitions["USE_CODECOV"] = self.options.code_coverage
+        cmake.definitions["USE_GUI"] = self.options.with_gui
+        cmake.definitions["BUILD_FORECASTER"] = self.options.build_forecaster
+        cmake.definitions["BUILD_VIEWER"] = self.options.build_viewer
+        cmake.definitions["BUILD_OPTIMIZER"] = self.options.build_optimizer
+        cmake.definitions["BUILD_DOWNSCALER"] = self.options.build_downscaler
+
         if self.options.code_coverage:
             cmake.definitions["BUILD_TESTS"] = "ON"
-            cmake.definitions["USE_CODECOV"] = "ON"
-        if self.options.with_gui:
+        if self.options.build_viewer:
             cmake.definitions["USE_GUI"] = "ON"
-        else:
-            cmake.definitions["USE_GUI"] = "OFF"
+
         cmake.configure()
         cmake.build()
         if self.settings.os == "Macos":
