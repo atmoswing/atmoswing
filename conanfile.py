@@ -66,7 +66,6 @@ class AmtoSwing(ConanFile):
             self.options["wxwidgets"].webview = False  # webview control isn't available on linux.
         if not self.options.with_gui:
             self.options["wxbase"].xml = True
-            self.options["wxbase"].xrc = True
             self.options["wxbase"].sockets = True
 
     def imports(self):
