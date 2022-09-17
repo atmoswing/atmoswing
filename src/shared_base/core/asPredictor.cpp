@@ -2165,7 +2165,7 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
             if (dataArea->IsLatLon() && xMax < xMin) {
                 xMax += 360;
             }
-            axisDataLon = a1f::LinSpaced(Eigen::Sequential, dataArea->GetXptsNb(), xMin, xMax);
+            axisDataLon = a1f::LinSpaced(dataArea->GetXptsNb(), xMin, xMax);
         } else {
             axisDataLon.resize(1);
             axisDataLon << dataArea->GetXmin();
@@ -2173,7 +2173,7 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
 
         a1f axisDataLat;
         if (dataArea->GetYptsNb() > 1) {
-            axisDataLat = a1f::LinSpaced(Eigen::Sequential, dataArea->GetYptsNb(), dataArea->GetYmax(),
+            axisDataLat = a1f::LinSpaced(dataArea->GetYptsNb(), dataArea->GetYmax(),
                                          dataArea->GetYmin());  // From top to bottom
         } else {
             axisDataLat.resize(1);
@@ -2187,7 +2187,7 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
             if (desiredArea->IsLatLon() && xMax < xMin) {
                 xMax += 360;
             }
-            axisFinalLon = a1f::LinSpaced(Eigen::Sequential, desiredArea->GetXptsNb(), xMin, xMax);
+            axisFinalLon = a1f::LinSpaced(desiredArea->GetXptsNb(), xMin, xMax);
         } else {
             axisFinalLon.resize(1);
             axisFinalLon << desiredArea->GetXmin();
@@ -2195,7 +2195,7 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
 
         a1f axisFinalLat;
         if (desiredArea->GetYptsNb() > 1) {
-            axisFinalLat = a1f::LinSpaced(Eigen::Sequential, desiredArea->GetYptsNb(), desiredArea->GetYmax(),
+            axisFinalLat = a1f::LinSpaced(desiredArea->GetYptsNb(), desiredArea->GetYmax(),
                                           desiredArea->GetYmin());  // From top to bottom
         } else {
             axisFinalLat.resize(1);
