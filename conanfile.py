@@ -50,7 +50,7 @@ class AmtoSwing(ConanFile):
         if self.options.with_gui:
             self.requires("wxwidgets/3.2.0@terranum-conan+wxwidgets/stable")
         else:
-            self.requires("wxbase/3.1.6@pascalhorton+wxbase/stable")
+            self.requires("wxbase/3.2.1@pascalhorton+wxbase/stable")
         if self.options.build_viewer:
             if self.settings.os == "Windows":
                 self.requires("gdal/3.5.1@terranum-conan+gdal/stable")
