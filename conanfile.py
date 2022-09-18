@@ -15,7 +15,6 @@ class AmtoSwing(ConanFile):
         "sqlite3/3.39.2",
         "netcdf/4.8.1",
         "benchmark/1.6.2",
-        "pcre2/10.40",
         "eccodes/2.27.0@terranum-conan+eccodes/stable",
     ]
 
