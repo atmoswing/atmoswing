@@ -85,6 +85,7 @@ endif (USE_GUI)
 target_link_libraries(asbase CONAN_PKG::netcdf)
 target_link_libraries(asbase CONAN_PKG::proj)
 target_link_libraries(asbase CONAN_PKG::eccodes)
+target_link_libraries(asbase CONAN_PKG::pcre2)
 
 if (BUILD_FORECASTER OR BUILD_VIEWER)
     target_link_libraries(asbase CONAN_PKG::libcurl)
