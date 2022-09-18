@@ -90,6 +90,12 @@ if (BUILD_FORECASTER OR BUILD_VIEWER)
     target_link_libraries(asbase CONAN_PKG::libcurl)
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
+if (USE_GUI)
+    target_link_libraries(asbase CONAN_PKG::wxwidgets)
+else (USE_GUI)
+    target_link_libraries(asbase CONAN_PKG::wxbase)
+endif (USE_GUI)
+
 if (USE_WXVERSION)
     target_link_libraries(asbase wxVersion)
 endif ()
