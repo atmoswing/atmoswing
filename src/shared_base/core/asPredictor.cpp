@@ -332,6 +332,8 @@ size_t asPredictor::CreateHash() const {
     hash << m_time.size();
     hash << m_membersNb;
     hash << m_isLatLon;
+    hash << m_axisLat[0] - m_axisLat[wxMin(1, m_axisLat.size())];
+    hash << m_axisLon[0] - m_axisLon[wxMin(1, m_axisLon.size())];
     hash << m_isPreprocessed;
     hash << m_isEnsemble;
     hash << m_canBeClipped;
