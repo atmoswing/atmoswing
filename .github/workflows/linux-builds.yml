@@ -3,12 +3,12 @@ name: Linux builds
 on:
   push:
     branches:
-    - main
-    - feature/*
+      - main
+      - feature/*
   pull_request:
     branches:
-    - main
-    - feature/*
+      - main
+      - feature/*
 
 env:
   BUILD_TYPE: Release
@@ -18,39 +18,39 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
 
-    - name: Cache Conan libs
-      id: cache-conan
-      uses: actions/cache@v3
-      with:
-        path: /home/runner/.conan
-        key: ${{ runner.os }}-conan
+      - name: Cache Conan libs
+        id: cache-conan
+        uses: actions/cache@v3
+        with:
+          path: /home/runner/.conan
+          key: ${{ runner.os }}-conan
 
-    - name: Setup Conan
-      run: |
-        pip install conan
-        conan profile new default --detect --force
-        conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
-        conan profile update settings.compiler.libcxx=libstdc++11 default
-        conan config set general.revisions_enabled=1
+      - name: Setup Conan
+        run: |
+          pip install conan
+          conan profile new default --detect --force
+          conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+          conan config set general.revisions_enabled=1
 
-    - name: Create Build Environment
-      run: cmake -E make_directory ${{github.workspace}}/bin
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/bin
 
-    - name: Get dependencies
-      working-directory: ${{github.workspace}}/bin
-      run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing
+      - name: Get dependencies
+        working-directory: ${{github.workspace}}/bin
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing
 
-    - name: Build
-      working-directory: ${{github.workspace}}/bin
-      run: conan build ..
+      - name: Build
+        working-directory: ${{github.workspace}}/bin
+        run: conan build ..
 
-    - name: Test
-      working-directory: ${{github.workspace}}/bin/tests
-      run: ./bin/atmoswing-tests
+      - name: Test
+        working-directory: ${{github.workspace}}/bin/bin
+        run: ./atmoswing-tests
 
 
   build-desktop-version:
@@ -84,15 +84,15 @@ jobs:
 
       - name: Get dependencies
         working-directory: ${{github.workspace}}/bin
-        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=True -o with_gui=True -o enable_tests=True --build=missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o enable_tests=True --build=missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True
 
       - name: Build
         working-directory: ${{github.workspace}}/bin
         run: conan build ..
 
       - name: Test
-        working-directory: ${{github.workspace}}/bin/tests
-        run: ./bin/atmoswing-tests
+        working-directory: ${{github.workspace}}/bin/bin
+        run: ./atmoswing-tests
 
 
   coverage-scan:
