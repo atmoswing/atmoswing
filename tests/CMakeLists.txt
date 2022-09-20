@@ -160,25 +160,6 @@ if (USE_CUDA)
 endif ()
 
 
-##### DLLS
-
-if (WIN32)
-    file (TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/*.dll" ALL_DLL_PATH_ORIGIN)
-    file (TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/tests" ALL_DLL_PATH_DESTINATION)
-    add_custom_command(TARGET atmoswing-tests POST_BUILD
-            COMMAND copy
-            ${ALL_DLL_PATH_ORIGIN}
-            ${ALL_DLL_PATH_DESTINATION})
-
-    if (BUILD_VIEWER)
-        add_custom_command(TARGET atmoswing-tests POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                "${GDAL_DLL_NAME}"
-                "${ALL_DLL_PATH_DESTINATION}")
-    endif ()
-endif ()
-
-
 ##### CTEST
 
 set(CTEST_TEST_TIMEOUT 3600)
