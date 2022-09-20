@@ -77,6 +77,7 @@ jobs:
           conan profile new default --detect --force
           conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
           conan profile update settings.compiler.libcxx=libstdc++11 default
+          conan profile update tools.system.package_manager:mode=install default
           conan config set general.revisions_enabled=1
 
       - name: Create Build Environment
