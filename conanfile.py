@@ -8,6 +8,8 @@ class AmtoSwing(ConanFile):
     requires = [
         "proj/9.0.1",
         "libcurl/7.84.0",
+        "libtiff/4.3.0",
+        "sqlite3/3.39.2",
         "eigen/3.4.0",
         "netcdf/4.8.1",
         "eccodes/2.27.0@terranum-conan+eccodes/stable",
