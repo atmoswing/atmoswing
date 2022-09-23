@@ -54,16 +54,10 @@ include_directories(${inc_dirs})
 
 ##### LIBRARIES
 
-include(define_common_libraries)
-
-message(STATUS "GDAL libraries: ${GDAL_LIBRARIES}")
-message(STATUS "GDAL include dirs: ${GDAL_INCLUDE_DIRS}")
-
 # vroomgis
 FetchContent_MakeAvailable(vroomgis)
 include_directories(${vroomgis_SOURCE_DIR}/vroomgis/src)
 include_directories(${vroomgis_SOURCE_DIR}/vroomgis/art)
-set(VROOMGIS_PATH ${vroomgis_SOURCE_DIR})
 
 # wxplotctrl
 add_library(wxplotctrl STATIC ${src_lib_wxplotctrl})
@@ -105,10 +99,10 @@ set_target_properties(atmoswing-viewer PROPERTIES COMPILE_DEFINITIONS "APP_VIEWE
 ##### LINKING
 
 add_dependencies(atmoswing-viewer vroomgis)
-target_link_libraries(atmoswing-viewer ${GDAL_LIBRARIES})
+target_link_libraries(atmoswing-viewer CONAN_PKG::libpng)
+target_link_libraries(atmoswing-viewer CONAN_PKG::gdal)
 target_link_libraries(atmoswing-viewer asbase)
 target_link_libraries(atmoswing-viewer vroomgis)
-target_link_libraries(atmoswing-viewer ${VROOMGIS_LIBRARY})
 target_link_libraries(atmoswing-viewer wxplotctrl)
 if (USE_VLD)
     target_link_libraries(atmoswing-viewer ${VLD_LIBRARIES})
@@ -122,55 +116,3 @@ endif (WIN32)
 
 install(TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
 
-# Dlls
-if (WIN32)
-
-    # Png
-    find_file(PNG_DLL_NAME
-            NAMES libpng14.dll libpng15.dll libpng16.dll libpng17.dll libpng18.dll
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES bin
-            NO_DEFAULT_PATH)
-    if (NOT PNG_DLL_NAME)
-        message(SEND_ERROR "PNG DLL not found.")
-    endif ()
-    message(STATUS "PNG DLL: ${PNG_DLL_NAME}")
-    add_custom_command(TARGET atmoswing-viewer POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${PNG_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
-    install(FILES ${PNG_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
-
-    # GDAL DLL
-    find_file(GDAL_DLL_NAME
-            NAMES gdal300.dll gdal301.dll gdal302.dll gdal303.dll gdal304.dll gdal305.dll
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES bin
-            NO_DEFAULT_PATH)
-    if (NOT GDAL_DLL_NAME)
-        message(SEND_ERROR "GDAL DLL not found.")
-    endif ()
-    message(STATUS "GDAL DLL: ${GDAL_DLL_NAME}")
-    add_custom_command(TARGET atmoswing-viewer POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${GDAL_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
-    install(FILES ${GDAL_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
-
-    # GDAL data
-    find_path(GDAL_DATA_PATH
-            NAMES ellipsoid.csv compdcs.csv gdal_datum.csv gt_datum.csv
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES data
-            NO_DEFAULT_PATH)
-    if (NOT GDAL_DATA_PATH)
-        message(SEND_ERROR "GDAL data not found.")
-    endif ()
-    message(STATUS "GDAL data: ${GDAL_DATA_PATH}")
-    add_custom_command(TARGET atmoswing-viewer POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${GDAL_DATA_PATH}"
-            "${CMAKE_BINARY_DIR}/data")
-    install(DIRECTORY ${GDAL_DATA_PATH}/ DESTINATION share/gdal)
-
-endif (WIN32)

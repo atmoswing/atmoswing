@@ -62,9 +62,7 @@ bin-*/
 Test Results *
 **/CMakeFiles/*
 **-prefix/*
-cmake-build-debug/
-cmake-build-release/
-cmake-build-relwithdebinfo/
+cmake-build-*/
 data-debug/
 external/
 **/x64-Debug/

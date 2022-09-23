@@ -165,7 +165,7 @@ bool asFrameGridAnalogsValues::UpdateGrid() {
     if (m_sortAfterCol > 0 || m_sortOrder == Desc) {
         if (m_sortAfterCol == 0)  // Analog nb
         {
-            a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
+            a1f vIndices = a1f::LinSpaced(dates.size(), 0, dates.size() - 1);
 
             asSortArrays(&analogNb[0], &analogNb[analogNb.size() - 1], &vIndices[0], &vIndices[analogNb.size() - 1],
                          m_sortOrder);
@@ -182,7 +182,7 @@ bool asFrameGridAnalogsValues::UpdateGrid() {
             }
         } else if (m_sortAfterCol == 1)  // date
         {
-            a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
+            a1f vIndices = a1f::LinSpaced(dates.size(), 0, dates.size() - 1);
 
             asSortArrays(&dates[0], &dates[dates.size() - 1], &vIndices[0], &vIndices[dates.size() - 1], m_sortOrder);
 
@@ -198,7 +198,7 @@ bool asFrameGridAnalogsValues::UpdateGrid() {
             }
         } else if (m_sortAfterCol == 2)  // value
         {
-            a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
+            a1f vIndices = a1f::LinSpaced(dates.size(), 0, dates.size() - 1);
 
             asSortArrays(&values[0], &values[values.size() - 1], &vIndices[0], &vIndices[values.size() - 1],
                          m_sortOrder);
@@ -216,7 +216,7 @@ bool asFrameGridAnalogsValues::UpdateGrid() {
 
         } else if (m_sortAfterCol == 3)  // criteria
         {
-            a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
+            a1f vIndices = a1f::LinSpaced(dates.size(), 0, dates.size() - 1);
 
             asSortArrays(&criteria[0], &criteria[criteria.size() - 1], &vIndices[0], &vIndices[criteria.size() - 1],
                          m_sortOrder);

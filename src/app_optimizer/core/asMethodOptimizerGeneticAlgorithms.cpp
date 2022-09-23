@@ -82,7 +82,7 @@ void asMethodOptimizerGeneticAlgorithms::SortScoresAndParameters() {
     if (m_parameters.size() == 1) return;
 
     // Sort according to the score
-    a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_paramsNb, 0, m_paramsNb - 1);
+    a1f vIndices = a1f::LinSpaced(m_paramsNb, 0, m_paramsNb - 1);
     asSortArrays(&m_scoresCalib[0], &m_scoresCalib[m_paramsNb - 1], &vIndices[0], &vIndices[m_paramsNb - 1],
                  m_scoreOrder);
 
@@ -105,7 +105,7 @@ bool asMethodOptimizerGeneticAlgorithms::SortScoresAndParametersTemp() {
     if (m_parametersTemp.size() == 1) return true;
 
     // Sort according to the score
-    a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0, m_scoresCalibTemp.size() - 1);
+    a1f vIndices = a1f::LinSpaced(m_scoresCalibTemp.size(), 0, m_scoresCalibTemp.size() - 1);
     asSortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
                  &vIndices[m_scoresCalibTemp.size() - 1], m_scoreOrder);
 

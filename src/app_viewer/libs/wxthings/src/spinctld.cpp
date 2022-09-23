@@ -17,6 +17,7 @@
 
 #include "wx/textctrl.h"
 #include "wx/valtext.h"  // for wxTextValidator
+#include "wx/crt.h"
 
 #endif  // WX_PRECOMP
 

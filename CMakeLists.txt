@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14) # To support FetchContent / FetchContent_MakeAvailable
+cmake_minimum_required(VERSION 3.18) # To support FetchContent / FetchContent_MakeAvailable / SOURCE_SUBDIR
 
 if (POLICY CMP0043)
     cmake_policy(SET CMP0043 NEW)
@@ -23,29 +23,15 @@ endif (UNIX)
 include(FetchContent)
 
 FetchContent_Declare(
-        wxVersion
-        GIT_REPOSITORY https://github.com/terranum-ch/wxVersion.git
-        GIT_TAG a1c38f8da17936e70d7bcb7f1cd21a5b30847c1e)
-
-FetchContent_Declare(
-        eigen
-        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-        GIT_TAG 3.3.7)
-
-FetchContent_Declare(
         vroomgis
         GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
-        GIT_TAG e646495f7e83911d91a5ce28c579bd8e97bc52f4)
+        GIT_TAG 78fa6885422dcdb9d8becedb57d6edfc99e9d7c3
+        SOURCE_SUBDIR vroomgis)
 
-FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG release-1.10.0)
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
 
-FetchContent_Declare(
-        googlebenchmark
-        GIT_REPOSITORY https://github.com/google/benchmark.git
-        GIT_TAG v1.5.0)
+include_directories(${CONAN_INCLUDE_DIRS})
 
 
 ##### OPTIONS
@@ -180,9 +166,9 @@ if (USE_CODECOV)
 endif (USE_CODECOV)
 
 
-##### DISPLAY SOME INFORMATIONS
+##### DISPLAY SOME INFORMATION
 
-include(define_shared_compilation_flags)
+include(atmoswing_shared_compilation_flags)
 
 # Add components
 add_subdirectory(src/shared_base)
@@ -209,7 +195,7 @@ if (BUILD_BENCHMARK)
 endif()
 
 
-##### DISPLAY SOME INFORMATIONS
+##### DISPLAY SOME INFORMATION
 
 message(STATUS "CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}")
 message(STATUS "CMAKE_CXX_FLAGS_RELEASE = ${CMAKE_CXX_FLAGS_RELEASE}")
@@ -220,5 +206,5 @@ message(STATUS "CMAKE_CXX_FLAGS_RELWITHDEBINFO = ${CMAKE_CXX_FLAGS_RELWITHDEBINF
 #### INSTALLER
 
 if (CREATE_INSTALLER)
-    include(define_installer_options)
+    include(atmoswing_installer_options)
 endif ()

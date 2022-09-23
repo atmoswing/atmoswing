@@ -41,18 +41,13 @@ include_directories(${inc_dirs})
 
 ##### LIBRARIES
 
-include(define_common_libraries)
-
-# libcURL
-if (BUILD_FORECASTER OR BUILD_VIEWER)
-    mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
-    mark_as_advanced(CLEAR CURL_LIBRARY)
-    if (UNIX)
-        find_package(OpenSSL REQUIRED)
-    endif (UNIX)
-    find_package(CURL REQUIRED)
-    include_directories(${CURL_INCLUDE_DIRS})
-endif (BUILD_FORECASTER OR BUILD_VIEWER)
+# Intel MKL
+if (USE_MKL)
+    find_package(MKL REQUIRED)
+    include_directories(${MKL_INCLUDE_DIRS})
+    link_libraries(${MKL_LIBRARIES})
+    add_definitions(-DEIGEN_USE_MKL_ALL)
+endif (USE_MKL)
 
 # Own libraries
 add_library(asbase STATIC ${src_shared_base})
@@ -78,166 +73,28 @@ endif (USE_GUI)
 
 ##### LINKING
 
+target_link_libraries(asbase CONAN_PKG::netcdf)
+target_link_libraries(asbase CONAN_PKG::proj)
+target_link_libraries(asbase CONAN_PKG::eccodes)
+
 if (BUILD_FORECASTER OR BUILD_VIEWER)
-    target_link_libraries(asbase ${CURL_LIBRARIES})
+    target_link_libraries(asbase CONAN_PKG::libcurl)
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
-if (USE_WXVERSION)
-    target_link_libraries(asbase wxVersion)
-endif ()
+if (USE_GUI)
+    target_link_libraries(asbase CONAN_PKG::wxwidgets)
+else (USE_GUI)
+    target_link_libraries(asbase CONAN_PKG::wxbase)
+endif (USE_GUI)
+
 
 #### INSTALLER
 
-# Dlls
 if (WIN32)
 
     # Pack the Visual C++ Redistributable for Visual Studio
     set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ${INSTALL_DIR_BIN})
     include(InstallRequiredSystemLibraries)
     install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${INSTALL_DIR_BIN})
-
-    # NetCDF
-    find_file(NETCDF_DLL_NAME
-            netcdf.dll
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES bin
-            NO_DEFAULT_PATH)
-    if (NOT NETCDF_DLL_NAME)
-        message(SEND_ERROR "NETCDF DLL not found.")
-    endif ()
-    message(STATUS "NETCDF DLL: ${NETCDF_DLL_NAME}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${NETCDF_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
-    install(FILES ${NETCDF_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
-
-    # OpenJPEG
-    find_file(OpenJPEG_DLL_NAME
-            openjp2.dll
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES bin
-            NO_DEFAULT_PATH)
-    if (NOT OpenJPEG_DLL_NAME)
-        message(SEND_ERROR "OpenJPEG DLL not found.")
-    endif ()
-    message(STATUS "OpenJPEG DLL: ${OpenJPEG_DLL_NAME}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${OpenJPEG_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
-    install(FILES ${OpenJPEG_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
-
-    # Zlib
-    find_file(ZLIB_DLL_NAME
-            zlib.dll
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES bin
-            NO_DEFAULT_PATH)
-    if (NOT ZLIB_DLL_NAME)
-        message(SEND_ERROR "ZLIB DLL not found.")
-    endif ()
-    message(STATUS "ZLIB DLL: ${ZLIB_DLL_NAME}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${ZLIB_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
-    install(FILES ${ZLIB_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
-
-    # cURL
-    find_file(CURL_DLL_NAME
-            libcurl.dll
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES bin
-            NO_DEFAULT_PATH)
-    if (NOT CURL_DLL_NAME)
-        message(SEND_ERROR "CURL DLL not found.")
-    endif ()
-    message(STATUS "CURL DLL: ${CURL_DLL_NAME}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${CURL_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
-    install(FILES ${CURL_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
-
-    # ecCodes share
-    find_path(ECCODES_SHARE_PATH
-            NAMES definitions
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES share share/eccodes
-            NO_DEFAULT_PATH)
-    if (NOT ECCODES_SHARE_PATH)
-        message(SEND_ERROR "ecCodes share not found.")
-    endif ()
-    message(STATUS "ecCodes share: ${ECCODES_SHARE_PATH}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${ECCODES_SHARE_PATH}"
-            "${CMAKE_BINARY_DIR}/share/eccodes")
-    install(DIRECTORY ${ECCODES_SHARE_PATH} DESTINATION share)
-
-    # Tiff
-    find_file(TIFF_DLL_NAME
-            tiff.dll
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES bin
-            NO_DEFAULT_PATH)
-    if (NOT TIFF_DLL_NAME)
-        message(SEND_ERROR "TIFF DLL not found.")
-    endif ()
-    message(STATUS "TIFF DLL: ${TIFF_DLL_NAME}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${TIFF_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
-    install(FILES ${TIFF_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
-
-    # Proj
-    find_file(PROJ_DLL_NAME
-            proj.dll proj_7_0.dll proj_7_1.dll proj_7_2.dll proj_7_3.dll proj_8_0.dll proj_8_1.dll proj_8_2.dll
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES bin
-            NO_DEFAULT_PATH)
-    if (NOT PROJ_DLL_NAME)
-        message(SEND_ERROR "PROJ DLL not found.")
-    endif ()
-    message(STATUS "PROJ DLL: ${PROJ_DLL_NAME}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy
-            "${PROJ_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
-    install(FILES ${PROJ_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
-
-    # Proj share
-    find_path(PROJ_SHARE_PATH
-            NAMES epsg ntv1_can.dat esri.extra proj.db
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES share share/proj
-            NO_DEFAULT_PATH)
-    if (NOT PROJ_SHARE_PATH)
-        message(SEND_ERROR "PROJ share not found.")
-    endif ()
-    message(STATUS "PROJ share: ${PROJ_SHARE_PATH}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${PROJ_SHARE_PATH}"
-            "${CMAKE_BINARY_DIR}/share/proj")
-    install(DIRECTORY ${PROJ_SHARE_PATH} DESTINATION share)
-
-    # SQLite
-    find_file(SQLITE_DLL_NAME
-            sqlite.dll NAMES sqlite3.dll
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES bin
-            NO_DEFAULT_PATH)
-    if (NOT SQLITE_DLL_NAME)
-        message(SEND_ERROR "SQLITE DLL not found.")
-    endif ()
-    message(STATUS "SQLITE DLL: ${SQLITE_DLL_NAME}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy
-            "${SQLITE_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
-    install(FILES ${SQLITE_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
 endif (WIN32)

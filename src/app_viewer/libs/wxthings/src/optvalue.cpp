@@ -18,6 +18,7 @@
 #include "wx/gdicmn.h"
 #include "wx/object.h"
 #include "wx/string.h"
+#include "wx/crt.h"
 
 #endif  // WX_PRECOMP
 
@@ -26,34 +27,6 @@
 #include "wx/arrimpl.cpp"
 WX_DEFINE_OBJARRAY(wxArrayOptionValue);
 
-//----------------------------------------------------------------------------
-// Global wxString utilities
-//----------------------------------------------------------------------------
-/*
-wxArrayString wxStringToWords( const wxString &string )
-{
-
-//  wxArrayString arr;
-//  wxString word, s = string.Strip(wxString::both);
-//  wxMemoryInputStream memstream( s.c_str(), string.Length() );
-//  wxTextInputStream textstream(memstream);
-//  while (!memstream.Eof())
-//  {
-//      word = textstream.ReadWord();
-//      if (!word.IsEmpty()) arr.Add(word.Strip(wxString::both));
-//  }
-//  return arr;
-
-    wxArrayString arr;
-    wxString s = string.Strip(wxString::both);
-    while (!s.IsEmpty())
-    {
-        arr.Add(s.BeforeFirst(wxT(' ')));
-        s = s.AfterFirst(wxT(' ')).Strip(wxString::both);
-    }
-    return arr;
-}
-*/
 
 //----------------------------------------------------------------------------
 // wxOptionValueRefData

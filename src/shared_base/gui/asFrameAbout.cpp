@@ -29,7 +29,6 @@
 
 #include "asIncludes.h"
 #include "images.h"
-#include "wxversion_core.h"
 
 asFrameAbout::asFrameAbout(wxWindow *parent) : asFrameAboutVirtual(parent) {
     // Icon
@@ -42,13 +41,6 @@ asFrameAbout::asFrameAbout(wxWindow *parent) : asFrameAboutVirtual(parent) {
 
     // Set AtmoSwing version
     m_staticTextVersion->SetLabel(asVersion::GetFullString());
-
-    // Set changeset number
-    wxString changesetLabel = wxString::Format("Commit %s", wxVersion::GetSoftVersion());
-    m_staticTextChangeset->SetLabel(changesetLabel);
-
-    // Set libraries versions
-    m_textCtrlLibraries->SetValue(wxVersion::GetAllModuleInfo());
 
     // Set license
     m_textCtrlLicense->SetValue(asFrameAbout::GetLicense());

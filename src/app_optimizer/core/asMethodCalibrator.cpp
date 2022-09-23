@@ -180,7 +180,7 @@ bool asMethodCalibrator::SortScoresAndParametersTemp() {
     if (m_parametersTemp.size() == 1) return true;
 
     // Sort according to the score
-    a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0, m_scoresCalibTemp.size() - 1);
+    a1f vIndices = a1f::LinSpaced(m_scoresCalibTemp.size(), 0, m_scoresCalibTemp.size() - 1);
     if (!asSortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
                       &vIndices[m_scoresCalibTemp.size() - 1], m_scoreOrder)) {
         return false;

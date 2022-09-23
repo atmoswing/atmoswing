@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -79,7 +79,7 @@ class asFrameMainVirtual : public wxFrame
 		wxStatusBar* m_statusBar1;
 		wxToolBar* m_toolBar;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnSetPresentDate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnConfigureDirectories( wxCommandEvent& event ) { event.Skip(); }
 		virtual void AddForecast( wxCommandEvent& event ) { event.Skip(); }
@@ -118,13 +118,14 @@ class asPanelForecastVirtual : public wxPanel
 		wxTextCtrl* m_textCtrlParametersFileName;
 		wxBitmapButton* m_bpButtonClose;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void ClosePanel( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
 
 		asPanelForecastVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
 		~asPanelForecastVirtual();
 
 };
@@ -200,7 +201,7 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 		wxButton* m_buttonsConfirmationApply;
 		wxButton* m_buttonsConfirmationCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnChangeMultithreadingCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ApplyChanges( wxCommandEvent& event ) { event.Skip(); }
 		virtual void CloseFrame( wxCommandEvent& event ) { event.Skip(); }
@@ -232,7 +233,7 @@ class asWizardBatchForecastsVirtual : public wxWizard
 		wxFilePickerCtrl* m_filePickerBatchFile;
 		wxStaticText* m_staticText45;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnWizardFinished( wxWizardEvent& event ) { event.Skip(); }
 		virtual void OnLoadExistingBatchForecasts( wxCommandEvent& event ) { event.Skip(); }
 
@@ -241,6 +242,7 @@ class asWizardBatchForecastsVirtual : public wxWizard
 
 		asWizardBatchForecastsVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Batch file creation wizard"), const wxBitmap& bitmap = wxNullBitmap, const wxPoint& pos = wxDefaultPosition, long style = wxDEFAULT_DIALOG_STYLE );
 		WizardPages m_pages;
+
 		~asWizardBatchForecastsVirtual();
 
 };

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <wxFormBuilder_Project>
-    <FileVersion major="1" minor="15" />
+    <FileVersion major="1" minor="16" />
     <object class="Project" expanded="1">
         <property name="class_decoration"></property>
         <property name="code_generation">C++</property>
@@ -14,6 +14,7 @@
         <property name="file">AtmoswingViewerGui</property>
         <property name="first_id">1000</property>
         <property name="help_provider">none</property>
+        <property name="image_path_wrapper_function_name"></property>
         <property name="indent_with_spaces"></property>
         <property name="internationalize">1</property>
         <property name="name">AtmoswingViewerGui</property>
@@ -25,6 +26,7 @@
         <property name="skip_php_events">1</property>
         <property name="skip_python_events">1</property>
         <property name="ui_table">UI</property>
+        <property name="use_array_enum">0</property>
         <property name="use_enum">0</property>
         <property name="use_microsoft_bom">0</property>
         <object class="Frame" expanded="0">
@@ -50,6 +52,7 @@
             <property name="subclass"></property>
             <property name="title">AtmoSwing Viewer</property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
@@ -451,6 +454,7 @@
                                                                                     <property name="aui_name"></property>
                                                                                     <property name="aui_position"></property>
                                                                                     <property name="aui_row"></property>
+                                                                                    <property name="auth_needed">0</property>
                                                                                     <property name="best_size"></property>
                                                                                     <property name="bg">77,77,77</property>
                                                                                     <property name="bitmap"></property>
@@ -524,6 +528,7 @@
                                                                                     <property name="aui_name"></property>
                                                                                     <property name="aui_position"></property>
                                                                                     <property name="aui_row"></property>
+                                                                                    <property name="auth_needed">0</property>
                                                                                     <property name="best_size"></property>
                                                                                     <property name="bg">77,77,77</property>
                                                                                     <property name="bitmap"></property>
@@ -597,6 +602,7 @@
                                                                                     <property name="aui_name"></property>
                                                                                     <property name="aui_position"></property>
                                                                                     <property name="aui_row"></property>
+                                                                                    <property name="auth_needed">0</property>
                                                                                     <property name="best_size"></property>
                                                                                     <property name="bg">77,77,77</property>
                                                                                     <property name="bitmap"></property>
@@ -670,6 +676,7 @@
                                                                                     <property name="aui_name"></property>
                                                                                     <property name="aui_position"></property>
                                                                                     <property name="aui_row"></property>
+                                                                                    <property name="auth_needed">0</property>
                                                                                     <property name="best_size"></property>
                                                                                     <property name="bg">77,77,77</property>
                                                                                     <property name="bitmap"></property>
@@ -912,7 +919,6 @@
                 <property name="font"></property>
                 <property name="hidden">0</property>
                 <property name="id">wxID_ANY</property>
-                <property name="label">MyMenuBar</property>
                 <property name="maximum_size"></property>
                 <property name="minimum_size"></property>
                 <property name="name">m_menuBar</property>
@@ -1296,6 +1302,7 @@
             <property name="subclass"></property>
             <property name="title">Workspace creation wizard</property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style"></property>
@@ -1461,6 +1468,7 @@
                             <property name="aui_name"></property>
                             <property name="aui_position"></property>
                             <property name="aui_row"></property>
+                            <property name="auth_needed">0</property>
                             <property name="best_size"></property>
                             <property name="bg"></property>
                             <property name="bitmap"></property>
@@ -2369,6 +2377,7 @@
             <property name="size">-1,-1</property>
             <property name="subclass"></property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
@@ -2655,6 +2664,7 @@
             <property name="subclass"></property>
             <property name="title">Forecast plots</property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
@@ -2807,6 +2817,7 @@
                                             <property name="aui_name"></property>
                                             <property name="aui_position"></property>
                                             <property name="aui_row"></property>
+                                            <property name="auth_needed">0</property>
                                             <property name="best_size"></property>
                                             <property name="bg"></property>
                                             <property name="bitmap"></property>
@@ -2880,6 +2891,7 @@
                                             <property name="aui_name"></property>
                                             <property name="aui_position"></property>
                                             <property name="aui_row"></property>
+                                            <property name="auth_needed">0</property>
                                             <property name="best_size"></property>
                                             <property name="bg"></property>
                                             <property name="bitmap"></property>
@@ -2953,6 +2965,7 @@
                                             <property name="aui_name"></property>
                                             <property name="aui_position"></property>
                                             <property name="aui_row"></property>
+                                            <property name="auth_needed">0</property>
                                             <property name="best_size"></property>
                                             <property name="bg"></property>
                                             <property name="bitmap"></property>
@@ -3354,6 +3367,7 @@
             <property name="subclass"></property>
             <property name="title">Distribution plots</property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
@@ -4290,6 +4304,7 @@
             <property name="subclass"></property>
             <property name="title">Analogs details</property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
@@ -4875,6 +4890,7 @@
             <property name="subclass"></property>
             <property name="title">Predictors overview</property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
@@ -5842,6 +5858,7 @@
                                                                             <property name="aui_name"></property>
                                                                             <property name="aui_position"></property>
                                                                             <property name="aui_row"></property>
+                                                                            <property name="auth_needed">0</property>
                                                                             <property name="best_size"></property>
                                                                             <property name="bg"></property>
                                                                             <property name="bitmap"></property>
@@ -5915,6 +5932,7 @@
                                                                             <property name="aui_name"></property>
                                                                             <property name="aui_position"></property>
                                                                             <property name="aui_row"></property>
+                                                                            <property name="auth_needed">0</property>
                                                                             <property name="best_size"></property>
                                                                             <property name="bg"></property>
                                                                             <property name="bitmap"></property>
@@ -6261,7 +6279,6 @@
                 <property name="font"></property>
                 <property name="hidden">0</property>
                 <property name="id">wxID_ANY</property>
-                <property name="label">MyMenuBar</property>
                 <property name="maximum_size"></property>
                 <property name="minimum_size"></property>
                 <property name="name">m_menubar</property>
@@ -6380,6 +6397,7 @@
             <property name="subclass"></property>
             <property name="title">Preferences</property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
