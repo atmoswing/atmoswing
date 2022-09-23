@@ -49,15 +49,6 @@ if (USE_MKL)
     add_definitions(-DEIGEN_USE_MKL_ALL)
 endif (USE_MKL)
 
-# wxVersion
-if (USE_GUI)
-    FetchContent_MakeAvailable(wxVersion)
-    include_directories(${wxVersion_SOURCE_DIR}/src)
-    include_directories(${wxVersion_BINARY_DIR})
-else()
-    set(USE_WXVERSION 0)
-endif()
-
 # Own libraries
 add_library(asbase STATIC ${src_shared_base})
 
@@ -96,9 +87,6 @@ else (USE_GUI)
     target_link_libraries(asbase CONAN_PKG::wxbase)
 endif (USE_GUI)
 
-if (USE_WXVERSION)
-    target_link_libraries(asbase wxVersion)
-endif ()
 
 #### INSTALLER
 

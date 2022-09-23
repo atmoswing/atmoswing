@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14) # To support FetchContent / FetchContent_MakeAvailable
+cmake_minimum_required(VERSION 3.18) # To support FetchContent / FetchContent_MakeAvailable / SOURCE_SUBDIR
 
 if (POLICY CMP0043)
     cmake_policy(SET CMP0043 NEW)
@@ -23,14 +23,10 @@ endif (UNIX)
 include(FetchContent)
 
 FetchContent_Declare(
-        wxVersion
-        GIT_REPOSITORY https://github.com/terranum-ch/wxVersion.git
-        GIT_TAG a1c38f8da17936e70d7bcb7f1cd21a5b30847c1e)
-
-FetchContent_Declare(
         vroomgis
         GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
-        GIT_TAG e646495f7e83911d91a5ce28c579bd8e97bc52f4)
+        GIT_TAG 78fa6885422dcdb9d8becedb57d6edfc99e9d7c3
+        SOURCE_SUBDIR vroomgis)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
