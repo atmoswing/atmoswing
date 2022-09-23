@@ -88,6 +88,10 @@ list(APPEND inc_dirs
         )
 include_directories(${inc_dirs})
 
+if (USE_GUI)
+    include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/gui/")
+endif ()
+
 
 ##### LIBRARIES
 

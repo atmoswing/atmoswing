@@ -180,51 +180,6 @@ void wxArrayBlockDoubleSort(wxArrayBlockDouble &blocks, wxBlockSort_Type type) {
 // wxBlockInt
 //=============================================================================
 
-#define TEST_BLOCKS
-
-#ifdef TEST_BLOCKS
-
-void TestBlocks() {
-    printf("Start Testing blocks -----------------------------------------\n");
-    wxBlockInt b1(1, 1, 4, 4);
-    wxBlockInt b2(5, 4, 10, 11);
-    PRINT_BLOCK("b1", b1)
-    PRINT_BLOCK("b2", b2)
-
-    wxBlockInt iB;
-    iB.Intersect(b1, b2, &iB);
-    PRINT_BLOCK("Intersect b1 b2", iB)
-
-    wxBlockInt uB;
-    uB.Union(b1, b2, &uB);
-    PRINT_BLOCK("Union b1 b2", uB)
-
-    printf("Touches b1 b2 %d %d\n", b1.Touches(b2), b2.Touches(b1));
-
-    b1 = wxBlockInt(2, 3, 7, 9);
-    b2 = wxBlockInt(8, 3, 8, 3);
-    printf("Touches b1 b2 %d %d\n", b1.Touches(b2), b2.Touches(b1));
-
-    b1 = wxBlockInt(2, 3, 7, 9);
-    b2 = wxBlockInt(1, 3, 1, 3);
-    printf("Touches b1 b2 %d %d\n", b1.Touches(b2), b2.Touches(b1));
-    iB.Intersect(b1, b2, &iB);
-    PRINT_BLOCK("Intersect b1 b2", iB)
-
-    b1 = wxBlockInt(2, 3, 7, 9);
-    b2 = wxBlockInt(2, 2, 2, 2);
-    printf("Touches b1 b2 %d %d\n", b1.Touches(b2), b2.Touches(b1));
-
-    b1 = wxBlockInt(2, 3, 7, 9);
-    b2 = wxBlockInt(7, 10, 7, 10);
-    printf("Touches b1 b2 %d %d\n", b1.Touches(b2), b2.Touches(b1));
-
-    printf("End Testing blocks -----------------------------------------\n");
-    fflush(stdout);
-}
-
-#endif  // TEST_BLOCKS
-
 int wxBlockInt::IsLarger(const wxBlockInt &b) const {
     wxInt32 width = m_x2 - m_x1 + 1, height = m_y2 - m_y1 + 1, b_width = b.m_x2 - b.m_x1 + 1,
             b_height = b.m_y2 - b.m_y1 + 1;
@@ -239,25 +194,7 @@ int wxBlockInt::IsLarger(const wxBlockInt &b) const {
 
 bool wxBlockInt::Touches(const wxBlockInt &b) const  // see Intersects
 {
-    // if (((wxMax(m_x1, b.m_x1)) <= (wxMin(m_x2, b.m_x2))) &&
-    //    ((wxMax(m_y1, b.m_y1)) <= (wxMin(m_y2, b.m_y2))))
-    //    return true;
-
     return Intersects(wxBlockInt(b.m_x1 - 1, b.m_y1 - 1, b.m_x2 + 1, b.m_y2 + 1));
-
-    /*
-        wxInt32 left  = wxMax( m_x1, b.m_x1 );
-        wxInt32 right = wxMin( m_x2, b.m_x2 );
-
-        if (labs(left - right) <= 1)
-        {
-            wxInt32 top    = wxMax( m_y1, b.m_y1 );
-            wxInt32 bottom = wxMin( m_y2, b.m_y2 );
-            if (labs(top - bottom) <= 1)
-                return true;
-        }
-        return false;
-    */
 }
 
 bool wxBlockInt::Combine(const wxBlockInt &b) {
