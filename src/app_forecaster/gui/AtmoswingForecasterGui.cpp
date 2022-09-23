@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -716,6 +716,7 @@ asFramePreferencesForecasterVirtual::~asFramePreferencesForecasterVirtual()
 asWizardBatchForecastsVirtual::asWizardBatchForecastsVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxBitmap& bitmap, const wxPoint& pos, long style )
 {
 	this->Create( parent, id, title, bitmap, pos, style );
+
 	this->SetSizeHints( wxSize( -1,-1 ), wxSize( -1,-1 ) );
 
 	wxWizardPageSimple* m_wizPage1 = new wxWizardPageSimple( this );
