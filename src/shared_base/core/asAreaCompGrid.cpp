@@ -251,8 +251,7 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
             if (indexXmax == asOUT_OF_RANGE) {
                 wxASSERT(lons.size() > 1);
                 double dataStep = lons[1] - lons[0];
-                indexXmax =
-                    asFindClosest(&lons[0], &lons[nlons], m_composites[i].GetXmax() - dataStep, asHIDE_WARNINGS);
+                indexXmax = asFindClosest(&lons[0], &lons[nlons], m_composites[i].GetXmax() - dataStep, asHIDE_WARNINGS);
             }
             if (indexXmax == asOUT_OF_RANGE) {
                 indexXmax = asFindClosest(&lons[0], &lons[nlons], m_composites[i].GetXmax() - 360.0, asHIDE_WARNINGS);
@@ -266,7 +265,6 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
         }
 
         if (indexXmax == asOUT_OF_RANGE) {
-            std::cout << lons;
             wxLogError(_("Cannot find the corresponding value (%g) on the longitude axis."), m_composites[i].GetXmax());
             return false;
         }

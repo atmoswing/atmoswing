@@ -85,12 +85,6 @@ bool asArea::CheckPoint(Coo &point, int changesAllowed) {
     if (point.y > 90) {
         return false;
     }
-    if (point.x < 0) {
-        if (changesAllowed == asEDIT_ALLOWED) {
-            point.x += 360;
-        }
-        return false;
-    }
     if (point.x > 360) {
         if (changesAllowed == asEDIT_ALLOWED) {
             point.x -= 360;
