@@ -12,6 +12,7 @@ class AmtoSwing(ConanFile):
         "sqlite3/3.39.2",
         "eigen/3.4.0",
         "netcdf/4.8.1",
+        "libdeflate/1.12",
         "eccodes/2.27.0@terranum-conan+eccodes/stable",
     ]
 
