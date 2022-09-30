@@ -240,7 +240,7 @@ TEST(PredictorOperNwsGfs, LoadEasyRegular) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfs, LoadWithNegativeVals) {
+TEST(PredictorOperNwsGfs, LoadWithNegativeValues) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -446,7 +446,7 @@ TEST(PredictorOperNwsGfs, LoadBorderRightRegular) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfs, LoadWithNegativeValsStepLon) {
+TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStepLon) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -500,7 +500,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValsStepLon) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfs, LoadWithNegativeValsStepLonLat) {
+TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStepLonLat) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -552,7 +552,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValsStepLonLat) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfs, LoadWithNegativeValsStepLonLatRegular) {
+TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStepLonLatRegular) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -602,7 +602,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValsStepLonLatRegular) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfs, LoadWithNegativeValsStep25LonLatRoundStart) {
+TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatRoundStart) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -657,7 +657,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValsStep25LonLatRoundStart) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfs, LoadWithNegativeValsStep25LonLatRoundStartRegular) {
+TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatRoundStartRegular) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -710,7 +710,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValsStep25LonLatRoundStartRegular) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfs, LoadWithNegativeValsStep25LonLatIrregularStart) {
+TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatIrregularStart) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -760,7 +760,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValsStep25LonLatIrregularStart) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfs, LoadWithNegativeValsStep25LonLatIrregularStartAndEnd) {
+TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatIrregularStartAndEnd) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -808,7 +808,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValsStep25LonLatIrregularStartAndEnd) 
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfs, LoadWithNegativeValsStep25LonLatIrregularStartAndEndRegular) {
+TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatIrregularStartAndEndRegular) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");

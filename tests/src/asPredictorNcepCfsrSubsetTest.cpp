@@ -280,7 +280,7 @@ TEST(PredictorNcepCfsrSubset, LoadEasy) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrSubset, LoadWithNegativeVals) {
+TEST(PredictorNcepCfsrSubset, LoadWithNegativeValues) {
     double xMin = -3;
     double xWidth = 5;
     double yMin = 35;

@@ -308,7 +308,7 @@ TEST(PredictorEcmwfCera20C, Load3Members) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfCera20C, LoadWithNegativeVals) {
+TEST(PredictorEcmwfCera20C, LoadWithNegativeValues) {
     double xMin = -4;
     double xWidth = 8;
     double yMin = 75;
