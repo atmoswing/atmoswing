@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaCompRegGrid.h"
+#include "asAreaRegGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
@@ -79,7 +79,7 @@ TEST(PredictorEcmwfCera20C, Load1stMember) {
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -144,7 +144,7 @@ TEST(PredictorEcmwfCera20C, Load3rdMember) {
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -209,7 +209,7 @@ TEST(PredictorEcmwfCera20C, Load3Members) {
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -308,14 +308,14 @@ TEST(PredictorEcmwfCera20C, Load3Members) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfCera20C, LoadComposite) {
+TEST(PredictorEcmwfCera20C, LoadWithNegativeVals) {
     double xMin = -4;
     double xWidth = 8;
     double yMin = 75;
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -382,7 +382,7 @@ TEST(PredictorEcmwfCera20C, LoadBorderLeft) {
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -446,7 +446,7 @@ TEST(PredictorEcmwfCera20C, LoadBorderRight) {
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);

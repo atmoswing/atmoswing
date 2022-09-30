@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
@@ -40,7 +40,7 @@ TEST(Predictor, Standardize) {
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 12, 00);
     double end = asTime::GetMJD(1960, 1, 10, 12, 00);

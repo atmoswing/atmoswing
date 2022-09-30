@@ -150,19 +150,6 @@ TEST(Area, ConstructorAlternativeLimitsException) {
     ASSERT_THROW(asArea area(xMin, xWidth, yMin, yWidth), std::exception);
 }
 
-TEST(Area, CheckConsistency) {
-    double xMin = 10;
-    double xWidth = 10;
-    double yMin = 30;
-    double yWidth = 10;
-    asArea area(xMin, xWidth, yMin, yWidth);
-
-    EXPECT_DOUBLE_EQ(30, area.GetCornerLL().y);
-    EXPECT_DOUBLE_EQ(30, area.GetCornerLR().y);
-    EXPECT_DOUBLE_EQ(40, area.GetCornerUL().y);
-    EXPECT_DOUBLE_EQ(40, area.GetCornerUR().y);
-}
-
 TEST(Area, IsRectangleTrue) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -210,6 +197,8 @@ TEST(Area, GetBounds) {
     EXPECT_DOUBLE_EQ(30, area.GetYmin());
     EXPECT_DOUBLE_EQ(10, area.GetXwidth());
     EXPECT_DOUBLE_EQ(10, area.GetYwidth());
+    EXPECT_DOUBLE_EQ(20, area.GetXmax());
+    EXPECT_DOUBLE_EQ(40, area.GetYmax());
 }
 
 TEST(Area, NegativeSize) {
@@ -224,4 +213,61 @@ TEST(Area, NegativeSize) {
     EXPECT_DOUBLE_EQ(46, area.GetYmin());
     EXPECT_DOUBLE_EQ(0, area.GetXwidth());
     EXPECT_DOUBLE_EQ(0, area.GetYwidth());
+}
+
+TEST(Area, CheckConsistencyWithPositive) {
+    double xMin = 10;
+    double xWidth = 10;
+    double yMin = 30;
+    double yWidth = 10;
+    asArea area(xMin, xWidth, yMin, yWidth);
+
+    EXPECT_DOUBLE_EQ(30, area.GetCornerLL().y);
+    EXPECT_DOUBLE_EQ(30, area.GetCornerLR().y);
+    EXPECT_DOUBLE_EQ(40, area.GetCornerUL().y);
+    EXPECT_DOUBLE_EQ(40, area.GetCornerUR().y);
+}
+
+TEST(Area, CheckConsistencyWithNegative) {
+    double xMin = -5;
+    double xWidth = 20;
+    double yMin = 30;
+    double yWidth = 40;
+    asArea area(xMin, xWidth, yMin, yWidth);
+
+    EXPECT_DOUBLE_EQ(-5, area.GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(-5, area.GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(15, area.GetCornerUR().x);
+    EXPECT_DOUBLE_EQ(15, area.GetCornerLR().x);
+}
+
+TEST(Area, IsSquareTrue) {
+    Coo cornerUL, cornerUR, cornerLL, cornerLR;
+    cornerUL.x = 10;
+    cornerUL.y = 40;
+    cornerUR.x = 20;
+    cornerUR.y = 40;
+    cornerLL.x = 10;
+    cornerLL.y = 30;
+    cornerLR.x = 20;
+    cornerLR.y = 30;
+    asArea area(cornerUL, cornerUR, cornerLL, cornerLR);
+
+    EXPECT_TRUE(area.IsRectangle());
+}
+
+TEST(Area, IsSquareFalse) {
+    wxLogNull noLog;
+
+    Coo cornerUL, cornerUR, cornerLL, cornerLR;
+    cornerUL.x = 10;
+    cornerUL.y = 40;
+    cornerUR.x = 20;
+    cornerUR.y = 40;
+    cornerLL.x = 15;
+    cornerLL.y = 30;
+    cornerLR.x = 20;
+    cornerLR.y = 30;
+
+    EXPECT_THROW(asArea area(cornerUL, cornerUR, cornerLL, cornerLR), std::exception);
 }

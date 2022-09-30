@@ -27,7 +27,7 @@
 
 #include "asPredictorOperIfsForecast.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorOperIfsForecast::asPredictorOperIfsForecast(const wxString &dataId) : asPredictorOper(dataId) {

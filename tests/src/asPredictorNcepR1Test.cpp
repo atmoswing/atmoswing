@@ -29,8 +29,8 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaCompGrid.h"
-#include "asAreaCompRegGrid.h"
+#include "asAreaGrid.h"
+#include "asAreaRegGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
@@ -270,7 +270,7 @@ TEST(PredictorNcepR1, LoadEasy) {
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -355,7 +355,7 @@ TEST(PredictorNcepR1, RegularLoadEasy) {
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -439,7 +439,7 @@ TEST(PredictorNcepR1, RegularGetMinMaxValues) {
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -460,7 +460,7 @@ TEST(PredictorNcepR1, RegularGetMinMaxValues) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1, LoadComposite) {
+TEST(PredictorNcepR1, LoadWithNegativeVals) {
     double xMin = -10;
     int xPtsNb = 7;
     double yMin = 35;
@@ -468,7 +468,7 @@ TEST(PredictorNcepR1, LoadComposite) {
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -562,7 +562,7 @@ TEST(PredictorNcepR1, LoadBorderLeft) {
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -628,7 +628,7 @@ TEST(PredictorNcepR1, LoadBorderLeftOn720) {
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -693,7 +693,7 @@ TEST(PredictorNcepR1, RegularLoadBorderLeftOn720) {
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -758,7 +758,7 @@ TEST(PredictorNcepR1, LoadBorderRight) {
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -822,7 +822,7 @@ TEST(PredictorNcepR1, LoadBorderRight) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1, LoadCompositeStepLon) {
+TEST(PredictorNcepR1, LoadWithNegativeValsStepLon) {
     double xMin = -10;
     int xPtsNb = 7;
     double yMin = 35;
@@ -831,7 +831,7 @@ TEST(PredictorNcepR1, LoadCompositeStepLon) {
     double steplat = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -892,7 +892,7 @@ TEST(PredictorNcepR1, LoadCompositeStepLon) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1v2014, RegularLoadCompositeStepLon) {
+TEST(PredictorNcepR1v2014, RegularLoadWithNegativeValsStepLon) {
     double xMin = -10;
     double xWidth = 15;
     double yMin = 35;
@@ -900,7 +900,7 @@ TEST(PredictorNcepR1v2014, RegularLoadCompositeStepLon) {
     double steplon = 5;
     double steplat = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat);
+    asAreaRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -964,7 +964,7 @@ TEST(PredictorNcepR1v2014, RegularLoadCompositeStepLon) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1, LoadCompositeStepLonMoved) {
+TEST(PredictorNcepR1, LoadWithNegativeValsStepLonMoved) {
     double xMin = -7.5;
     int xPtsNb = 5;
     double yMin = 35;
@@ -973,7 +973,7 @@ TEST(PredictorNcepR1, LoadCompositeStepLonMoved) {
     double steplat = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -1019,7 +1019,7 @@ TEST(PredictorNcepR1, LoadCompositeStepLonMoved) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1, LoadCompositeStepLonLat) {
+TEST(PredictorNcepR1, LoadWithNegativeValsStepLonLat) {
     double xMin = -10;
     int xPtsNb = 4;
     double yMin = 35;
@@ -1028,7 +1028,7 @@ TEST(PredictorNcepR1, LoadCompositeStepLonLat) {
     double steplat = 5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -1083,7 +1083,7 @@ TEST(PredictorNcepR1, LoadCompositeStepLonLat) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1, LoadCompositeStepLonLatTime) {
+TEST(PredictorNcepR1, LoadWithNegativeValsStepLonLatTime) {
     double xMin = -10;
     int xPtsNb = 4;
     double yMin = 35;
@@ -1092,7 +1092,7 @@ TEST(PredictorNcepR1, LoadCompositeStepLonLatTime) {
     double steplat = 5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -1136,7 +1136,7 @@ TEST(PredictorNcepR1, LoadCompositeStepLonLatTime) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1, RegularLoadCompositeStepLonLatTime) {
+TEST(PredictorNcepR1, RegularLoadWithNegativeValsStepLonLatTime) {
     double xMin = -10;
     double xWidth = 15;
     double yMin = 35;
@@ -1144,7 +1144,7 @@ TEST(PredictorNcepR1, RegularLoadCompositeStepLonLatTime) {
     double steplon = 5;
     double steplat = 5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat);
+    asAreaRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -1196,7 +1196,7 @@ TEST(PredictorNcepR1, SetData) {
     double steplat = 5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 5, 00, 00);
@@ -1240,7 +1240,7 @@ TEST(PredictorNcepR1, GaussianLoadEasy) {
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -1318,13 +1318,13 @@ TEST(PredictorNcepR1, GaussianLoadEasy) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1, GaussianLoadComposite) {
+TEST(PredictorNcepR1, GaussianLoadWithNegativeVals) {
     double xMin = -7.5;
     int xPtsNb = 7;
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -1400,7 +1400,7 @@ TEST(PredictorNcepR1, GaussianLoadBorderLeft) {
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -1464,7 +1464,7 @@ TEST(PredictorNcepR1, GaussianLoadBorderLeftOn720) {
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -1528,7 +1528,7 @@ TEST(PredictorNcepR1, GaussianLoadBorderRight) {
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -1599,7 +1599,7 @@ TEST(PredictorNcepR1, GaussianSetData) {
     int yPtsNb = 2;
     double steplon = 0;
     double steplat = 0;
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
+    asAreaGrid *area = asAreaGrid::GetInstance(xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 5, 00, 00);

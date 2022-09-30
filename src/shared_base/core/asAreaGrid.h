@@ -29,12 +29,12 @@
 #ifndef AS_AREA_GRID_H
 #define AS_AREA_GRID_H
 
-#include "asAreaComp.h"
+#include "asArea.h"
 #include "asIncludes.h"
 
 class asParameters;
 
-class asAreaGrid : public asAreaComp {
+class asAreaGrid : public asArea {
   public:
     static asAreaGrid *GetInstance(const asParameters *params, int iStep, int iPtor);
 
@@ -63,33 +63,21 @@ class asAreaGrid : public asAreaComp {
 
     a1d GetYaxis();
 
-    a1d GetXaxisComposite(int compositeNb);
+    int GetXaxisPtsnb();
 
-    a1d GetYaxisComposite(int compositeNb);
+    int GetYaxisPtsnb();
 
-    int GetXaxisCompositePtsnb(int compositeNb);
+    double GetXaxisStart() const;
 
-    int GetYaxisCompositePtsnb(int compositeNb);
+    double GetYaxisStart() const;
 
-    double GetXaxisCompositeStart(int compositeNb) const;
+    double GetXaxisEnd() const;
 
-    double GetYaxisCompositeStart(int compositeNb) const;
-
-    double GetXaxisCompositeEnd(int compositeNb) const;
-
-    double GetYaxisCompositeEnd(int compositeNb) const;
+    double GetYaxisEnd() const;
 
     int GetXptsNb();
 
     int GetYptsNb();
-
-    double GetXmin() const;
-
-    double GetXmax() const;
-
-    double GetYmin() const;
-
-    double GetYmax() const;
 
     virtual double GetXstep() const = 0;
 
@@ -107,27 +95,17 @@ class asAreaGrid : public asAreaComp {
     bool m_isRegular;
     bool m_isInitialized;
     bool m_allowResizeFromData;
-    va1d m_compositeXaxes;
-    va1d m_compositeYaxes;
+    a1d m_xAxis;
+    a1d m_yAxis;
     int m_xPtsNb;
     int m_yPtsNb;
 
   private:
-    bool CreateCompositeAxes(const a1d &lons, const a1d &lats, bool getLarger = false);
+    bool CreateAxes(const a1d &lons, const a1d &lats, bool getLarger = false);
 
     bool AreaDefinedByPointsNb(const a1d &lons, const a1d &lats);
 
     bool HandleAreaDefinedByPointsNb(const a1d &lons, const a1d &lats);
-
-    void HandleNegativeLongitudes(const a1d &lons);
-
-    void HandleLongitudesAbove360(const a1d &lons);
-
-    void HandleLongitudesSplitAt180(const a1d &lons);
-
-    void HandleMissing360(const a1d &lons);
-
-    void HandleMissing180(const a1d &lons);
 };
 
 #endif

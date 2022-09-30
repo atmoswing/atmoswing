@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaCompRegGrid.h"
+#include "asAreaRegGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
@@ -94,7 +94,7 @@ TEST(PredictorNoaa20Cr2cEnsemble, Load1stMember) {
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -151,7 +151,7 @@ TEST(PredictorNoaa20Cr2cEnsemble, Load3rdMember) {
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -202,13 +202,13 @@ TEST(PredictorNoaa20Cr2cEnsemble, Load3rdMember) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2cEnsemble, LoadComposite) {
+TEST(PredictorNoaa20Cr2cEnsemble, LoadWithNegativeVals) {
     double xMin = -8;
     double xWidth = 12;
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -269,7 +269,7 @@ TEST(PredictorNoaa20Cr2cEnsemble, LoadBorderLeft) {
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -322,7 +322,7 @@ TEST(PredictorNoaa20Cr2cEnsemble, LoadBorderRight) {
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);

@@ -28,7 +28,7 @@
 
 #include "asMethodForecasting.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asPreprocessor.h"
 #include "asProcessor.h"
 #include "asResultsDates.h"

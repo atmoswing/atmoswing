@@ -67,7 +67,7 @@ asArea::asArea()
       m_isLatLon(true) {}
 
 void asArea::Init() {
-    if (m_isLatLon && !DoCheckPoints()) asThrowException(_("Use asAreaComp in this case."));
+    if (m_isLatLon && !DoCheckPoints()) asThrowException(_("Unable to build a consistent area with the coordinates."));
     if (!CheckConsistency()) asThrowException(_("Unable to build a consistent area with the given coordinates."));
     if (!IsRectangle()) asThrowException(_("The provided area is not rectangle."));
 }
@@ -83,12 +83,6 @@ bool asArea::CheckPoint(Coo &point, int changesAllowed) {
         return false;
     }
     if (point.y > 90) {
-        return false;
-    }
-    if (point.x < 0) {
-        if (changesAllowed == asEDIT_ALLOWED) {
-            point.x += 360;
-        }
         return false;
     }
     if (point.x > 360) {

@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaCompRegGrid.h"
+#include "asAreaRegGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
@@ -87,7 +87,7 @@ TEST(PredictorNoaa20Cr2c, LoadEasy) {
     double yWidth = 4;
     double step = 2;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 2, 00, 00);
@@ -136,14 +136,14 @@ TEST(PredictorNoaa20Cr2c, LoadEasy) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2c, LoadComposite) {
+TEST(PredictorNoaa20Cr2c, LoadWithNegativeVals) {
     double xMin = -8;
     double xWidth = 12;
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 2, 00, 00);
@@ -203,7 +203,7 @@ TEST(PredictorNoaa20Cr2c, LoadBorderLeft) {
     double yWidth = 4;
     double step = 2;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 2, 00, 00);
@@ -255,7 +255,7 @@ TEST(PredictorNoaa20Cr2c, LoadBorderRight) {
     double yWidth = 4;
     double step = 2;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 2, 00, 00);

@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaCompRegGrid.h"
+#include "asAreaRegGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
@@ -172,7 +172,7 @@ TEST(PredictorNasaMerra2, LoadEasy) {
     double yWidth = 2;
     double yStep = 0.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -234,7 +234,7 @@ TEST(PredictorNasaMerra2, LoadEasy) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNasaMerra2, LoadComposite) {
+TEST(PredictorNasaMerra2, LoadWithNegativeVals) {
     double xMin = 177.5;
     double xWidth = 5;
     double xStep = 0.625;
@@ -242,7 +242,7 @@ TEST(PredictorNasaMerra2, LoadComposite) {
     double yWidth = 2;
     double yStep = 0.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -299,7 +299,7 @@ TEST(PredictorNasaMerra2, LoadComposite) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNasaMerra2, LoadCompositeStep) {
+TEST(PredictorNasaMerra2, LoadWithNegativeValsStep) {
     double xMin = 177.5;
     double xWidth = 5;
     double xStep = 1.25;
@@ -307,7 +307,7 @@ TEST(PredictorNasaMerra2, LoadCompositeStep) {
     double yWidth = 2;
     double yStep = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -362,7 +362,7 @@ TEST(PredictorNasaMerra2, LoadBorderLeft) {
     double yWidth = 2;
     double yStep = 0.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -425,7 +425,7 @@ TEST(PredictorNasaMerra2, LoadBorderRight) {
     double yWidth = 2;
     double yStep = 0.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);

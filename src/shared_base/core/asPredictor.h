@@ -392,7 +392,7 @@ class asPredictor : public wxObject {
         int latCount;
     };
     struct FileIndexes {
-        std::vector<FileIndexesArea> areas;
+        FileIndexesArea area;
         int lonStep;
         int latStep;
         int timeStartFile;
@@ -450,7 +450,7 @@ class asPredictor : public wxObject {
 
     bool EnquireFileStructure(asTimeArray &timeArray);
 
-    bool ExtractFromFiles(asAreaGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
+    bool ExtractFromFiles(asAreaGrid *&dataArea, asTimeArray &timeArray);
 
     virtual void ConvertToMjd(a1d &time, double refValue = NaNd) const;
 
@@ -458,31 +458,29 @@ class asPredictor : public wxObject {
 
     virtual bool CheckTimeArray(asTimeArray &timeArray);
 
-    virtual bool GetAxesIndexes(asAreaGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
+    virtual bool GetAxesIndexes(asAreaGrid *&dataArea, asTimeArray &timeArray);
 
-    size_t *GetIndexesStartNcdf(int iArea) const;
+    size_t *GetIndexesStartNcdf() const;
 
-    size_t *GetIndexesCountNcdf(int iArea) const;
+    size_t *GetIndexesCountNcdf() const;
 
     ptrdiff_t *GetIndexesStrideNcdf() const;
 
-    int *GetIndexesStartGrib(int iArea) const;
+    int *GetIndexesStartGrib() const;
 
-    int *GetIndexesCountGrib(int iArea) const;
+    int *GetIndexesCountGrib() const;
 
-    bool GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData);
+    bool GetDataFromFile(asFileNetcdf &ncFile);
 
-    bool GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData);
+    bool GetDataFromFile(asFileGrib &gbFile);
 
     bool EnquireNetcdfFileStructure();
 
-    bool ExtractFromNetcdfFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray,
-                               vvva2f &compositeData);
+    bool ExtractFromNetcdfFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray);
 
     bool EnquireGribFileStructure(asTimeArray &timeArray);
 
-    bool ExtractFromGribFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray,
-                             vvva2f &compositeData);
+    bool ExtractFromGribFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray);
 
     bool ParseFileStructure(asFileNetcdf &ncFile);
 
@@ -494,11 +492,9 @@ class asPredictor : public wxObject {
 
     bool HasDesiredLevel(bool useWarnings = true);
 
-    bool MergeComposites(vvva2f &compositeData, asAreaGrid *area);
-
     bool InterpolateOnGrid(asAreaGrid *dataArea, asAreaGrid *desiredArea);
 
-    bool TransformData(vvva2f &compositeData);
+    bool TransformData();
 
     asAreaGrid *CreateMatchingArea(asAreaGrid *desiredArea);
 
@@ -551,7 +547,7 @@ class asPredictor : public wxObject {
 
     bool ExtractTimeAxis(asFileNetcdf &ncFile);
 
-    bool FillWithNaNs(vvva2f &compositeData) const;
+    bool FillWithNaNs();
 
     size_t CreateHash() const;
 

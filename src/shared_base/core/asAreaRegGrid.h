@@ -26,24 +26,24 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AS_AREA_COMPOSITE_REGULAR_GRID_H
-#define AS_AREA_COMPOSITE_REGULAR_GRID_H
+#ifndef AS_AREA_REGULAR_GRID_H
+#define AS_AREA_REGULAR_GRID_H
 
 #include "asAreaGrid.h"
 #include "asIncludes.h"
 
-class asAreaCompRegGrid : public asAreaGrid {
+class asAreaRegGrid : public asAreaGrid {
   public:
-    asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, double xStep,
-                      double yStep, int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
+    asAreaRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, double xStep,
+                  double yStep, int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaCompRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
-                      int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
+    asAreaRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
+                  int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaCompRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
-                      bool isLatLon = true);
+    asAreaRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
+                  bool isLatLon = true);
 
-    ~asAreaCompRegGrid() override = default;
+    ~asAreaRegGrid() override = default;
 
     bool GridsOverlay(asAreaGrid *otherArea) const override;
 
