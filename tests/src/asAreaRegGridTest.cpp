@@ -155,7 +155,7 @@ TEST(AreaRegGrid, GetAxes) {
     double step = 2.5;
     asAreaRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
-    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
     area.InitializeAxes(lons, lats);
 
@@ -166,9 +166,9 @@ TEST(AreaRegGrid, GetAxes) {
     uAxis = area.GetXaxis();
     vAxis = area.GetYaxis();
 
-    EXPECT_DOUBLE_EQ(-10, uAxis(0));
-    EXPECT_DOUBLE_EQ(-7.5, uAxis(1));
-    EXPECT_DOUBLE_EQ(-5, uAxis(2));
+    EXPECT_DOUBLE_EQ(-40, uAxis(0));
+    EXPECT_DOUBLE_EQ(-37.5, uAxis(1));
+    EXPECT_DOUBLE_EQ(-35, uAxis(2));
     EXPECT_DOUBLE_EQ(10, uAxis(area.GetXaxisPtsnb() - 1));
     EXPECT_DOUBLE_EQ(30, vAxis(0));
     EXPECT_DOUBLE_EQ(32.5, vAxis(1));
@@ -183,7 +183,7 @@ TEST(AreaRegGrid, GetUYaxisSize) {
     double step = 2.5;
     asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
-    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
     area.InitializeAxes(lons, lats);
 
@@ -200,7 +200,7 @@ TEST(AreaRegGrid, GetUYaxisSizeStepLon) {
     double yStep = 2.5;
     asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
-    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
     area.InitializeAxes(lons, lats);
 
@@ -217,7 +217,7 @@ TEST(AreaRegGrid, GetUYaxisSizeStepLonMoved) {
     double yStep = 2.5;
     asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
-    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
     area.InitializeAxes(lons, lats);
 
@@ -234,7 +234,7 @@ TEST(AreaRegGrid, GetUYaxisLimits) {
     double yStep = 2.5;
     asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
-    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
     area.InitializeAxes(lons, lats);
 
@@ -254,7 +254,7 @@ TEST(AreaRegGrid, GetUYaxisLimitsMoved) {
     double yStep = 2.5;
     asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
-    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
     area.InitializeAxes(lons, lats);
 

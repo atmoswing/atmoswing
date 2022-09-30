@@ -39,8 +39,8 @@ TEST(AreaGrid, CheckConsistency) {
     wxString gridType = "Regular";
     asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    EXPECT_DOUBLE_EQ(355, area->GetCornerUL().x);
-    EXPECT_DOUBLE_EQ(355, area->GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(-5, area->GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(-5, area->GetCornerLL().x);
     EXPECT_DOUBLE_EQ(20, area->GetCornerUR().x);
     EXPECT_DOUBLE_EQ(20, area->GetCornerLR().x);
     wxDELETE(area);
@@ -69,7 +69,7 @@ TEST(AreaGrid, GetBoundsSplitted) {
     wxString gridType = "Regular";
     asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
     area->InitializeAxes(lons, lats);
 
@@ -89,7 +89,7 @@ TEST(AreaGrid, GetUYaxisSize) {
     wxString gridType = "Regular";
     asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
     area->InitializeAxes(lons, lats);
 
@@ -108,7 +108,7 @@ TEST(AreaGrid, GetUYaxisSizeStepLon) {
     wxString gridType = "Regular";
     asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
-    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
     area->InitializeAxes(lons, lats);
 
@@ -127,7 +127,7 @@ TEST(AreaGrid, GetUYaxisSizeStepLonMoved) {
     wxString gridType = "Regular";
     asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
-    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
     area->InitializeAxes(lons, lats);
 
@@ -146,7 +146,7 @@ TEST(AreaGrid, GetUYaxisLimits) {
     wxString gridType = "Regular";
     asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
-    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
     area->InitializeAxes(lons, lats);
 

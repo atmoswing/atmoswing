@@ -1225,7 +1225,7 @@ bool asPredictor::GetAxesIndexes(asAreaGrid *&dataArea, asTimeArray &timeArray) 
                        m_fStr.lons[0], (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1]);
             return false;
         }
-        wxASSERT_MSG(m_fInd.area[iArea].lonStart >= 0,
+        wxASSERT_MSG(m_fInd.area.lonStart >= 0,
                      wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", m_fStr.lons[0],
                                       (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
 

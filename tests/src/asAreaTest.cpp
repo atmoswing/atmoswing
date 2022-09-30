@@ -68,7 +68,7 @@ TEST(Area, CheckPointWGS84UTooLow) {
     Coo point;
     point.x = -0.1;
     point.y = 10;
-    EXPECT_FALSE(area.CheckPoint(point, asEDIT_FORBIDDEN));
+    EXPECT_TRUE(area.CheckPoint(point, asEDIT_FORBIDDEN));
     EXPECT_DOUBLE_EQ(-0.1, point.x);
 }
 
@@ -104,8 +104,8 @@ TEST(Area, CheckPointWGS84UTooLowCorr) {
     Coo point;
     point.x = -0.1;
     point.y = 10;
-    EXPECT_FALSE(area.CheckPoint(point, asEDIT_ALLOWED));
-    EXPECT_DOUBLE_EQ(359.9, point.x);
+    EXPECT_TRUE(area.CheckPoint(point, asEDIT_ALLOWED));
+    EXPECT_DOUBLE_EQ(-0.1, point.x);
 }
 
 TEST(Area, CheckPointWGS84VTooHighCorr) {
@@ -122,32 +122,6 @@ TEST(Area, CheckPointWGS84VTooLowCorr) {
     point.x = 10;
     point.y = -90.1;
     EXPECT_FALSE(area.CheckPoint(point, asEDIT_ALLOWED));
-}
-
-TEST(Area, ConstructorLimitsException) {
-    wxLogNull logNo;
-
-    Coo cornerUL, cornerUR, cornerLL, cornerLR;
-    cornerUL.x = -10;
-    cornerUL.y = 40;
-    cornerUR.x = 20;
-    cornerUR.y = 40;
-    cornerLL.x = -10;
-    cornerLL.y = 30;
-    cornerLR.x = 20;
-    cornerLR.y = 30;
-
-    ASSERT_THROW(asArea area(cornerUL, cornerUR, cornerLL, cornerLR), std::exception);
-}
-
-TEST(Area, ConstructorAlternativeLimitsException) {
-    wxLogNull logNo;
-
-    double xMin = -10;
-    double xWidth = 30;
-    double yMin = 30;
-    double yWidth = 10;
-    ASSERT_THROW(asArea area(xMin, xWidth, yMin, yWidth), std::exception);
 }
 
 TEST(Area, IsRectangleTrue) {

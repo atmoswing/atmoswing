@@ -380,49 +380,41 @@ bool asAreaGrid::HandleAreaDefinedByPointsNb(const a1d &lons, const a1d &lats) {
 
 a1d asAreaGrid::GetXaxis() {
     wxASSERT(m_isInitialized);
-    wxASSERT(!m_xAxis.empty());
     return m_xAxis;
 }
 
 a1d asAreaGrid::GetYaxis() {
     wxASSERT(m_isInitialized);
-    wxASSERT(!m_yAxis.empty());
     return m_yAxis;
 }
 
 int asAreaGrid::GetXaxisPtsnb() {
     wxASSERT(m_isInitialized);
-    wxASSERT(!m_xAxis.empty());
     return (int)m_xAxis.size();
 }
 
 int asAreaGrid::GetYaxisPtsnb() {
     wxASSERT(m_isInitialized);
-    wxASSERT(!m_yAxis.empty());
     return (int)m_yAxis.size();
 }
 
 double asAreaGrid::GetXaxisStart() const {
     wxASSERT(m_isInitialized);
-    wxASSERT(!m_xAxis.empty());
     return m_xAxis[0];
 }
 
 double asAreaGrid::GetYaxisStart() const {
     wxASSERT(m_isInitialized);
-    wxASSERT(!m_yAxis.empty());
     return m_yAxis[0];
 }
 
 double asAreaGrid::GetXaxisEnd() const {
     wxASSERT(m_isInitialized);
-    wxASSERT(!m_xAxis.empty());
     return m_xAxis[m_xAxis.size() - 1];
 }
 
 double asAreaGrid::GetYaxisEnd() const {
     wxASSERT(m_isInitialized);
-    wxASSERT(!m_yAxis.empty());
     return m_yAxis[m_yAxis.size() - 1];
 }
 
