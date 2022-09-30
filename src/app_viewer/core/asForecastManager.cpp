@@ -102,7 +102,7 @@ void asForecastManager::ClearForecasts() {
     ClearArrays();
     m_directoriesPastForecasts.Clear();
 
-#if wxUSE_GUI
+#if USE_GUI
     wxCommandEvent eventClear(asEVT_ACTION_FORECAST_CLEAR);
     if (m_parent != nullptr) {
         m_parent->ProcessWindowEvent(eventClear);
@@ -142,7 +142,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh) {
     m_leadTimeOrigin = forecast->GetLeadTimeOrigin();
 
     if (m_aggregator->Add(forecast)) {
-#if wxUSE_GUI
+#if USE_GUI
         // Send event
         wxCommandEvent eventNew(asEVT_ACTION_FORECAST_NEW_ADDED);
         if (m_parent != nullptr) {

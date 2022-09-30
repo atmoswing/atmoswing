@@ -54,8 +54,6 @@ enum {
     asSUCCESS = 1
 };
 
-enum { asEDIT_FORBIDDEN, asEDIT_ALLOWED };
-
 enum { asFLAT_FORBIDDEN, asFLAT_ALLOWED };
 
 enum { asUSE_NORMAL_METHOD, asUSE_ALTERNATE_METHOD };
@@ -72,7 +70,7 @@ enum {
 };
 
 // Windows ID
-#if wxUSE_GUI
+#if USE_GUI
 enum {
     asWINDOW_MAIN = 101,
     asWINDOW_PREFERENCES,

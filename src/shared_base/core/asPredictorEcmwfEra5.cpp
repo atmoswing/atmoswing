@@ -30,7 +30,7 @@
 #include <wx/dir.h>
 #include <wx/regex.h>
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorEcmwfEra5::asPredictorEcmwfEra5(const wxString &dataId) : asPredictor(dataId) {

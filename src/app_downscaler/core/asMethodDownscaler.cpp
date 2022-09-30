@@ -27,7 +27,7 @@
 
 #include "asMethodDownscaler.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asCriteria.h"
 #include "asIncludes.h"
 #include "asParametersDownscaling.h"
@@ -82,7 +82,7 @@ bool asMethodDownscaler::Manager() {
     if (Downscale(params)) {
         // Display processing time
         wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
-#if wxUSE_GUI
+#if USE_GUI
         wxLogStatus(_("Downscaling over."));
 #endif
     } else {
@@ -377,7 +377,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
     }
 
     // Area object instantiation
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(params, iStep, iPtor);
+    asAreaGrid *area = asAreaGrid::GetInstance(params, iStep, iPtor);
     wxASSERT(area);
 
     // Data loading
@@ -433,7 +433,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
         }
 
         // Area object instantiation
-        asAreaCompGrid *area = asAreaCompGrid::GetInstance(params, iStep, iPtor);
+        asAreaGrid *area = asAreaGrid::GetInstance(params, iStep, iPtor);
         wxASSERT(area);
 
         // Data loading

@@ -141,7 +141,7 @@
 #include "asUtilities.h"
 #include "asVersion.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 #include "asDialogFilePicker.h"
 #include "asDialogFileSaver.h"
 #include "asDialogProgressBar.h"

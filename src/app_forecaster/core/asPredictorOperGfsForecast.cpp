@@ -28,7 +28,7 @@
 
 #include "asPredictorOperGfsForecast.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId) : asPredictorOper(dataId) {

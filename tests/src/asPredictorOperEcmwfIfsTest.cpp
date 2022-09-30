@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asPredictorOper.h"
 #include "asTimeArray.h"
 
@@ -82,7 +82,7 @@ TEST(PredictorOperEcmwfIfs, LoadSingleDay) {
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
@@ -132,7 +132,7 @@ TEST(PredictorOperEcmwfIfs, LoadSecondTimeStep) {
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
@@ -182,7 +182,7 @@ TEST(PredictorOperEcmwfIfs, LoadLastTimeStep) {
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
@@ -232,7 +232,7 @@ TEST(PredictorOperEcmwfIfs, LoadFullTimeArray) {
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
@@ -318,7 +318,7 @@ TEST(PredictorOperEcmwfIfs, LoadTimeArrayWithoutFirst) {
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);

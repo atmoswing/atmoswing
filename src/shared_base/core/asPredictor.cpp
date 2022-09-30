@@ -32,8 +32,8 @@
 #include <wx/dir.h>
 #include <wx/ffile.h>
 
-#include "asAreaCompGenGrid.h"
-#include "asAreaCompRegGrid.h"
+#include "asAreaGenGrid.h"
+#include "asAreaRegGrid.h"
 #include "asPredictorCustomLtheNR1.h"
 #include "asPredictorCustomMFvgMeso.h"
 #include "asPredictorCustomMFvgMesoPacked.h"
@@ -418,7 +418,7 @@ bool asPredictor::CheckFilesPresence() {
     return true;
 }
 
-bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, float level) {
+bool asPredictor::Load(asAreaGrid *desiredArea, asTimeArray &timeArray, float level) {
     m_level = level;
 
     if (!m_initialized) {
@@ -459,7 +459,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         }
 
         // Create a new area matching the dataset
-        asAreaCompGrid *dataArea = CreateMatchingArea(desiredArea);
+        asAreaGrid *dataArea = CreateMatchingArea(desiredArea);
 
         // Store time array
         m_time = timeArray.GetTimeArray();
@@ -469,16 +469,8 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
             m_fInd.timeStep = wxMax(timeArray.GetTimeStepHours() / m_fStr.timeStep, 1);
         }
 
-        // Number of composites
-        int compositesNb = 1;
-        if (dataArea) {
-            compositesNb = dataArea->GetNbComposites();
-            wxASSERT(compositesNb > 0);
-        }
-
         // Extract composite data from files
-        vvva2f compositeData((long)compositesNb);
-        if (!ExtractFromFiles(dataArea, timeArray, compositeData)) {
+        if (!ExtractFromFiles(dataArea, timeArray)) {
             if (m_warnMissingFiles && m_warnMissingLevels) {
                 wxLogWarning(_("Extracting data from files failed."));
             } else {
@@ -489,16 +481,9 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         }
 
         // Transform data
-        if (!TransformData(compositeData)) {
+        if (!TransformData()) {
             wxLogError(_("Data transformation has failed."));
             wxFAIL;
-            return false;
-        }
-
-        // Merge the composites into m_data
-        if (!MergeComposites(compositeData, dataArea)) {
-            wxLogError(_("Merging the composites failed."));
-            wxDELETE(dataArea);
             return false;
         }
 
@@ -536,18 +521,18 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
     return true;
 }
 
-bool asPredictor::Load(asAreaCompGrid &desiredArea, asTimeArray &timeArray, float level) {
+bool asPredictor::Load(asAreaGrid &desiredArea, asTimeArray &timeArray, float level) {
     return Load(&desiredArea, timeArray, level);
 }
 
-bool asPredictor::Load(asAreaCompGrid &desiredArea, double date, float level) {
+bool asPredictor::Load(asAreaGrid &desiredArea, double date, float level) {
     asTimeArray timeArray(date);
     timeArray.Init();
 
     return Load(&desiredArea, timeArray, level);
 }
 
-bool asPredictor::Load(asAreaCompGrid *desiredArea, double date, float level) {
+bool asPredictor::Load(asAreaGrid *desiredArea, double date, float level) {
     asTimeArray timeArray(date);
     timeArray.Init();
 
@@ -608,11 +593,11 @@ bool asPredictor::EnquireFileStructure(asTimeArray &timeArray) {
     return false;
 }
 
-bool asPredictor::ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) {
+bool asPredictor::ExtractFromFiles(asAreaGrid *&dataArea, asTimeArray &timeArray) {
     switch (m_fileType) {
         case (asFile::Netcdf): {
             for (const auto &fileName : m_files) {
-                if (!ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData)) {
+                if (!ExtractFromNetcdfFile(fileName, dataArea, timeArray)) {
                     return false;
                 }
             }
@@ -620,7 +605,7 @@ bool asPredictor::ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeA
         }
         case (asFile::Grib): {
             for (const auto &fileName : m_files) {
-                if (!ExtractFromGribFile(fileName, dataArea, timeArray, compositeData)) {
+                if (!ExtractFromGribFile(fileName, dataArea, timeArray)) {
                     return false;
                 }
             }
@@ -660,8 +645,7 @@ bool asPredictor::EnquireNetcdfFileStructure() {
     return true;
 }
 
-bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
-                                        vvva2f &compositeData) {
+bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray) {
     // Open the NetCDF file
     ThreadsManager().CritSectionNetCDF().Enter();
     asFileNetcdf ncFile(fileName, asFileNetcdf::ReadOnly);
@@ -680,14 +664,14 @@ bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid
     }
 
     // Get indexes
-    if (!GetAxesIndexes(dataArea, timeArray, compositeData)) {
+    if (!GetAxesIndexes(dataArea, timeArray)) {
         ncFile.Close();
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
 
     // Load data
-    if (!GetDataFromFile(ncFile, compositeData)) {
+    if (!GetDataFromFile(ncFile)) {
         ncFile.Close();
         ThreadsManager().CritSectionNetCDF().Leave();
         wxFAIL;
@@ -770,11 +754,10 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray) {
     return true;
 }
 
-bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
-                                      vvva2f &compositeData) {
+bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray) {
     // Handle missing file
     if (fileName.IsEmpty()) {
-        if (FillWithNaNs(compositeData)) {
+        if (FillWithNaNs()) {
             return true;
         }
         wxFAIL;
@@ -806,7 +789,7 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *
     }
 
     // Get indexes
-    if (!GetAxesIndexes(dataArea, timeArray, compositeData)) {
+    if (!GetAxesIndexes(dataArea, timeArray)) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
@@ -814,7 +797,7 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *
     }
 
     // Load data
-    if (!GetDataFromFile(gbFile, compositeData)) {
+    if (!GetDataFromFile(gbFile)) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
@@ -828,28 +811,26 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *
     return true;
 }
 
-bool asPredictor::FillWithNaNs(vvva2f &compositeData) const {
-    for (auto &area : compositeData) {
-        // Check that it's not the first file
-        if (area.empty()) {
-            wxLogError(_("The first file cannot be missing."));
-            return false;
-        }
-
-        // Check that it's 1 file per time step
-        if (m_fInd.timeCountFile > 1) {
-            wxLogError(_("Missing files are handled only when there is 1 file per time step."));
-            return false;
-        }
-
-        // Fill with NaNs
-        va2f memLatLonData;
-        for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
-            a2f latLonData = NaNf * a2f::Ones(area[0][iMem].rows(), area[0][iMem].cols());
-            memLatLonData.push_back(latLonData);
-        }
-        area.push_back(memLatLonData);
+bool asPredictor::FillWithNaNs() {
+    // Check that it's not the first file
+    if (m_data.empty()) {
+        wxLogError(_("The first file cannot be missing."));
+        return false;
     }
+
+    // Check that it's 1 file per time step
+    if (m_fInd.timeCountFile > 1) {
+        wxLogError(_("Missing files are handled only when there is 1 file per time step."));
+        return false;
+    }
+
+    // Fill with NaNs
+    va2f memLatLonData;
+    for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
+        a2f latLonData = NaNf * a2f::Ones(m_data[0][iMem].rows(), m_data[0][iMem].cols());
+        memLatLonData.push_back(latLonData);
+    }
+    m_data.push_back(memLatLonData);
 
     return true;
 }
@@ -1106,7 +1087,7 @@ bool asPredictor::HasDesiredLevel(bool useWarnings) {
     return false;
 }
 
-asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea) {
+asAreaGrid *asPredictor::CreateMatchingArea(asAreaGrid *desiredArea) {
     wxASSERT(m_fStr.lons.size() > 0);
     wxASSERT(m_fStr.lats.size() > 0);
 
@@ -1118,7 +1099,7 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea) {
         }
 
         if (desiredArea->IsRegular()) {
-            auto desiredAreaReg = dynamic_cast<asAreaCompRegGrid *>(desiredArea);
+            auto desiredAreaReg = dynamic_cast<asAreaRegGrid *>(desiredArea);
 
             if (!strideAllowed) {
                 m_fInd.lonStep = 1;
@@ -1128,7 +1109,7 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea) {
                 m_fInd.latStep = desiredAreaReg->GetYstepStride();
             }
 
-            auto dataArea = new asAreaCompRegGrid(*desiredAreaReg);
+            auto dataArea = new asAreaRegGrid(*desiredAreaReg);
             if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
                 asThrowException(_("Failed at initializing the axes."));
             }
@@ -1150,10 +1131,10 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea) {
             return dataArea;
 
         } else {
-            auto desiredAreaGen = dynamic_cast<asAreaCompGenGrid *>(desiredArea);
+            auto desiredAreaGen = dynamic_cast<asAreaGenGrid *>(desiredArea);
             m_fInd.lonStep = 1;
             m_fInd.latStep = 1;
-            auto dataArea = new asAreaCompGenGrid(*desiredAreaGen);
+            auto dataArea = new asAreaGenGrid(*desiredAreaGen);
             if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
                 asThrowException(_("Failed at initializing the axes."));
             }
@@ -1173,8 +1154,7 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea) {
     return nullptr;
 }
 
-bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) {
-    m_fInd.areas.clear();
+bool asPredictor::GetAxesIndexes(asAreaGrid *&dataArea, asTimeArray &timeArray) {
 
     int iStartTimeArray = timeArray.GetIndexFirstAfter(m_fStr.time[0], m_fStr.timeStep);
     int iEndTimeArray = timeArray.GetIndexFirstBefore(m_fStr.time[m_fStr.time.size()-1], m_fStr.timeStep);
@@ -1217,90 +1197,86 @@ bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArr
 
     wxASSERT(m_fInd.timeCountFile > 0);
 
-    // Go through every area
-    m_fInd.areas.resize(compositeData.size());
-    for (int iArea = 0; iArea < compositeData.size(); iArea++) {
-        if (dataArea) {
-            // Get the spatial extent
-            auto lonMin = (float)dataArea->GetXaxisCompositeStart(iArea);
-            auto latMinStart = (float)dataArea->GetYaxisCompositeStart(iArea);
-            auto latMinEnd = (float)dataArea->GetYaxisCompositeEnd(iArea);
+    if (dataArea) {
+        // Get the spatial extent
+        auto lonMin = (float) dataArea->GetXaxisStart();
+        auto latMinStart = (float) dataArea->GetYaxisStart();
+        auto latMinEnd = (float) dataArea->GetYaxisEnd();
 
-            // The dimensions lengths
-            m_fInd.areas[iArea].lonCount = dataArea->GetXaxisCompositePtsnb(iArea);
-            m_fInd.areas[iArea].latCount = dataArea->GetYaxisCompositePtsnb(iArea);
+        // The dimensions lengths
+        m_fInd.area.lonCount = dataArea->GetXaxisPtsnb();
+        m_fInd.area.latCount = dataArea->GetYaxisPtsnb();
 
-            // Get the spatial indices of the desired data
-            m_fInd.areas[iArea].lonStart =
-                asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin, 0.01f, asHIDE_WARNINGS);
-            if (m_fInd.areas[iArea].lonStart == asOUT_OF_RANGE) {
-                // If not found, try with negative angles
-                m_fInd.areas[iArea].lonStart =
-                    asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin - 360, 0.01f, asHIDE_WARNINGS);
-            }
-            if (m_fInd.areas[iArea].lonStart == asOUT_OF_RANGE) {
-                // If not found, try with angles above 360 degrees
-                m_fInd.areas[iArea].lonStart =
-                    asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin + 360, 0.01f, asHIDE_WARNINGS);
-            }
-            if (m_fInd.areas[iArea].lonStart < 0) {
-                wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin,
-                           m_fStr.lons[0], (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1]);
-                return false;
-            }
-            wxASSERT_MSG(m_fInd.areas[iArea].lonStart >= 0,
-                         wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", m_fStr.lons[0],
-                                          (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
-
-            int indexStartLat1 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinStart, 0.01f);
-            int indexStartLat2 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinEnd, 0.01f);
-            wxASSERT_MSG(indexStartLat1 >= 0, wxString::Format("Looking for %g in %g to %g", latMinStart,
-                                                               m_fStr.lats[0], m_fStr.lats[m_fStr.lats.size() - 1]));
-            wxASSERT_MSG(indexStartLat2 >= 0, wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fStr.lats[0],
-                                                               m_fStr.lats[m_fStr.lats.size() - 1]));
-            m_fInd.areas[iArea].latStart = wxMin(indexStartLat1, indexStartLat2);
-        } else {
-            m_fInd.areas[iArea].lonStart = 0;
-            m_fInd.areas[iArea].latStart = 0;
-            m_fInd.areas[iArea].lonCount = m_lonPtsnb;
-            m_fInd.areas[iArea].latCount = m_latPtsnb;
+        // Get the spatial indices of the desired data
+        m_fInd.area.lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
+                                             lonMin, 0.01f, asHIDE_WARNINGS);
+        if (m_fInd.area.lonStart == asOUT_OF_RANGE) {
+            // If not found, try with negative angles
+            m_fInd.area.lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
+                                                 lonMin - 360, 0.01f, asHIDE_WARNINGS);
         }
+        if (m_fInd.area.lonStart == asOUT_OF_RANGE) {
+            // If not found, try with angles above 360 degrees
+            m_fInd.area.lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
+                                                 lonMin + 360, 0.01f, asHIDE_WARNINGS);
+        }
+        if (m_fInd.area.lonStart < 0) {
+            wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin,
+                       m_fStr.lons[0], (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1]);
+            return false;
+        }
+        wxASSERT_MSG(m_fInd.area.lonStart >= 0,
+                     wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", m_fStr.lons[0],
+                                      (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
 
-        if (m_fStr.hasLevelDim && !m_fStr.singleLevel) {
-            wxASSERT(m_fStr.levels.size() > 0);
-            m_fInd.level = asFind(&m_fStr.levels[0], &m_fStr.levels[m_fStr.levels.size() - 1], m_level, 0.01f);
-            if (m_fInd.level < 0) {
-                wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVarName);
-                return false;
-            }
-        } else if (m_fStr.hasLevelDim && m_fStr.singleLevel) {
-            m_fInd.level = 0;
-        } else {
-            if (m_level > 0) {
-                wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVarName);
-                return false;
-            }
+        int indexStartLat1 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinStart, 0.01f);
+        int indexStartLat2 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinEnd, 0.01f);
+        wxASSERT_MSG(indexStartLat1 >= 0, wxString::Format("Looking for %g in %g to %g", latMinStart,
+                                                           m_fStr.lats[0], m_fStr.lats[m_fStr.lats.size() - 1]));
+        wxASSERT_MSG(indexStartLat2 >= 0, wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fStr.lats[0],
+                                                           m_fStr.lats[m_fStr.lats.size() - 1]));
+        m_fInd.area.latStart = wxMin(indexStartLat1, indexStartLat2);
+    } else {
+        m_fInd.area.lonStart = 0;
+        m_fInd.area.latStart = 0;
+        m_fInd.area.lonCount = m_lonPtsnb;
+        m_fInd.area.latCount = m_latPtsnb;
+    }
+
+    if (m_fStr.hasLevelDim && !m_fStr.singleLevel) {
+        wxASSERT(m_fStr.levels.size() > 0);
+        m_fInd.level = asFind(&m_fStr.levels[0], &m_fStr.levels[m_fStr.levels.size() - 1], m_level, 0.01f);
+        if (m_fInd.level < 0) {
+            wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVarName);
+            return false;
+        }
+    } else if (m_fStr.hasLevelDim && m_fStr.singleLevel) {
+        m_fInd.level = 0;
+    } else {
+        if (m_level > 0) {
+            wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVarName);
+            return false;
         }
     }
 
     return true;
 }
 
-size_t *asPredictor::GetIndexesStartNcdf(int iArea) const {
+size_t *asPredictor::GetIndexesStartNcdf() const {
     if (!m_isEnsemble) {
         if (m_fStr.hasLevelDim) {
             static size_t array[4] = {0, 0, 0, 0};
             array[0] = (size_t)m_fInd.timeStartFile;
             array[1] = (size_t)m_fInd.level;
-            array[2] = (size_t)m_fInd.areas[iArea].latStart;
-            array[3] = (size_t)m_fInd.areas[iArea].lonStart;
+            array[2] = (size_t)m_fInd.area.latStart;
+            array[3] = (size_t)m_fInd.area.lonStart;
 
             return array;
         } else {
             static size_t array[3] = {0, 0, 0};
             array[0] = (size_t)m_fInd.timeStartFile;
-            array[1] = (size_t)m_fInd.areas[iArea].latStart;
-            array[2] = (size_t)m_fInd.areas[iArea].lonStart;
+            array[1] = (size_t)m_fInd.area.latStart;
+            array[2] = (size_t)m_fInd.area.lonStart;
 
             return array;
         }
@@ -1310,37 +1286,37 @@ size_t *asPredictor::GetIndexesStartNcdf(int iArea) const {
             array[0] = (size_t)m_fInd.timeStartFile;
             array[1] = (size_t)m_fInd.memberStart;
             array[2] = (size_t)m_fInd.level;
-            array[3] = (size_t)m_fInd.areas[iArea].latStart;
-            array[4] = (size_t)m_fInd.areas[iArea].lonStart;
+            array[3] = (size_t)m_fInd.area.latStart;
+            array[4] = (size_t)m_fInd.area.lonStart;
 
             return array;
         } else {
             static size_t array[4] = {0, 0, 0, 0};
             array[0] = (size_t)m_fInd.timeStartFile;
             array[1] = (size_t)m_fInd.memberStart;
-            array[2] = (size_t)m_fInd.areas[iArea].latStart;
-            array[3] = (size_t)m_fInd.areas[iArea].lonStart;
+            array[2] = (size_t)m_fInd.area.latStart;
+            array[3] = (size_t)m_fInd.area.lonStart;
 
             return array;
         }
     }
 }
 
-size_t *asPredictor::GetIndexesCountNcdf(int iArea) const {
+size_t *asPredictor::GetIndexesCountNcdf() const {
     if (!m_isEnsemble) {
         if (m_fStr.hasLevelDim) {
             static size_t array[4] = {0, 0, 0, 0};
             array[0] = (size_t)m_fInd.timeCountFile;
             array[1] = 1;
-            array[2] = (size_t)m_fInd.areas[iArea].latCount;
-            array[3] = (size_t)m_fInd.areas[iArea].lonCount;
+            array[2] = (size_t)m_fInd.area.latCount;
+            array[3] = (size_t)m_fInd.area.lonCount;
 
             return array;
         } else {
             static size_t array[3] = {0, 0, 0};
             array[0] = (size_t)m_fInd.timeCountFile;
-            array[1] = (size_t)m_fInd.areas[iArea].latCount;
-            array[2] = (size_t)m_fInd.areas[iArea].lonCount;
+            array[1] = (size_t)m_fInd.area.latCount;
+            array[2] = (size_t)m_fInd.area.lonCount;
 
             return array;
         }
@@ -1350,16 +1326,16 @@ size_t *asPredictor::GetIndexesCountNcdf(int iArea) const {
             array[0] = (size_t)m_fInd.timeCountFile;
             array[1] = (size_t)m_fInd.memberCount;
             array[2] = 1;
-            array[3] = (size_t)m_fInd.areas[iArea].latCount;
-            array[4] = (size_t)m_fInd.areas[iArea].lonCount;
+            array[3] = (size_t)m_fInd.area.latCount;
+            array[4] = (size_t)m_fInd.area.lonCount;
 
             return array;
         } else {
             static size_t array[4] = {0, 0, 0, 0};
             array[0] = (size_t)m_fInd.timeCountFile;
             array[1] = (size_t)m_fInd.memberCount;
-            array[2] = (size_t)m_fInd.areas[iArea].latCount;
-            array[3] = (size_t)m_fInd.areas[iArea].lonCount;
+            array[2] = (size_t)m_fInd.area.latCount;
+            array[3] = (size_t)m_fInd.area.lonCount;
 
             return array;
         }
@@ -1406,25 +1382,25 @@ ptrdiff_t *asPredictor::GetIndexesStrideNcdf() const {
     }
 }
 
-int *asPredictor::GetIndexesStartGrib(int iArea) const {
+int *asPredictor::GetIndexesStartGrib() const {
     static int array[3] = {0, 0, 0};
     array[0] = m_fInd.timeStartFile;
-    array[1] = m_fInd.areas[iArea].lonStart;
-    array[2] = m_fInd.areas[iArea].latStart;
+    array[1] = m_fInd.area.lonStart;
+    array[2] = m_fInd.area.latStart;
 
     return array;
 }
 
-int *asPredictor::GetIndexesCountGrib(int iArea) const {
+int *asPredictor::GetIndexesCountGrib() const {
     static int array[3] = {0, 0, 0};
     array[0] = m_fInd.timeCountFile;
-    array[1] = m_fInd.areas[iArea].lonCount;
-    array[2] = m_fInd.areas[iArea].latCount;
+    array[1] = m_fInd.area.lonCount;
+    array[2] = m_fInd.area.latCount;
 
     return array;
 }
 
-bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData) {
+bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile) {
     // Check if loading data is relevant
     if (m_fInd.timeCountFile == 0) {
         return true;
@@ -1441,127 +1417,107 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData) {
     }
     if (dataAddOffset == 0 && dataScaleFactor == 1) scalingNeeded = false;
 
-    vvf vectData;
+    // Create the arrays to receive the data
+    vf dataF;
 
-    for (int iArea = 0; iArea < compositeData.size(); iArea++) {
-        // Create the arrays to receive the data
-        vf dataF;
+    // Resize the arrays to store the new data
+    int totLength = m_fInd.memberCount * m_fInd.timeCountFile * m_fInd.area.latCount * m_fInd.area.lonCount;
+    wxASSERT(totLength > 0);
+    dataF.resize(totLength);
 
-        // Resize the arrays to store the new data
-        int totLength = m_fInd.memberCount * m_fInd.timeCountFile * m_fInd.areas[iArea].latCount *
-                        m_fInd.areas[iArea].lonCount;
-        wxASSERT(totLength > 0);
-        dataF.resize(totLength);
-
-        // Get data from netCDF file.
-        ncFile.GetVarSample(m_fileVarName, GetIndexesStartNcdf(iArea), GetIndexesCountNcdf(iArea),
-                            GetIndexesStrideNcdf(), &dataF[0]);
-
-        // Keep data for later treatment
-        vectData.push_back(dataF);
-    }
+    // Get data from netCDF file.
+    ncFile.GetVarSample(m_fileVarName, GetIndexesStartNcdf(), GetIndexesCountNcdf(),
+                        GetIndexesStrideNcdf(), &dataF[0]);
 
     // Allocate space into compositeData if not already done
-    if (compositeData[0].capacity() == 0) {
-        int totSize = 0;
-        for (int iArea = 0; iArea < compositeData.size(); iArea++) {
-            totSize += m_fInd.memberCount * m_time.size() * m_fInd.areas[iArea].latCount *
-                       (m_fInd.areas[iArea].lonCount + 1);  // +1 in case of a border
-        }
-        compositeData.reserve(totSize);
+    if (m_data.capacity() == 0) {
+        int totSize = m_fInd.memberCount * m_time.size() * m_fInd.area.latCount * (m_fInd.area.lonCount + 1);  // +1 in case of a border
+        m_data.reserve(totSize);
     }
 
-    // Transfer data
-    for (int iArea = 0; iArea < compositeData.size(); iArea++) {
-        // Extract data
-        vf data = vectData[iArea];
+    // Fill with NaN if data are missing before the file starts
+    while (m_fInd.timeStartStorage > m_data.size()) {
+        va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+        m_data.push_back(memLatLonData);
+    }
 
-        // Fill with NaN if data are missing before the file starts
-        while (m_fInd.timeStartStorage > compositeData[iArea].size()) {
-            va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount) * NaNf);
-            compositeData[iArea].push_back(memLatLonData);
+    // Loop to extract the data from the array
+    int ind = 0;
+    int iTimeStorage = m_fInd.timeStartStorage;
+    int iTimeFile = m_fInd.timeStartFile;
+    int iTimeData = 0;
+    while (iTimeStorage < m_fInd.timeStartStorage + m_fInd.timeCountStorage) {
+
+        if (!m_fInd.timeConsistent) {
+            if (iTimeFile > m_fInd.timeStartFile + m_fInd.timeCountFile - 1) {
+                // Fill with NaN if data are missing after the data
+                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+                m_data.push_back(memLatLonData);
+                iTimeStorage++;
+                continue;
+            } else if (m_time[iTimeStorage] < m_fStr.time[iTimeFile]) {
+                // Fill in missing data
+                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+                m_data.push_back(memLatLonData);
+                iTimeStorage++;
+                continue;
+            } else if (m_time[iTimeStorage] > m_fStr.time[iTimeFile]) {
+                // If data contains dates we don't want to keep
+                iTimeFile++;
+                iTimeData++;
+                continue;
+            }
         }
 
-        // Loop to extract the data from the array
-        int ind = 0;
-        int iTimeStorage = m_fInd.timeStartStorage;
-        int iTimeFile = m_fInd.timeStartFile;
-        int iTimeData = 0;
-        while (iTimeStorage < m_fInd.timeStartStorage + m_fInd.timeCountStorage) {
+        // Extract data
+        va2f memLatLonData;
+        for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
+            a2f latLonData(m_fInd.area.latCount, m_fInd.area.lonCount);
 
-            if (!m_fInd.timeConsistent) {
-                if (iTimeFile > m_fInd.timeStartFile + m_fInd.timeCountFile - 1) {
-                    // Fill with NaN if data are missing after the data
-                    va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount) * NaNf);
-                    compositeData[iArea].push_back(memLatLonData);
-                    iTimeStorage++;
-                    continue;
-                } else if (m_time[iTimeStorage] < m_fStr.time[iTimeFile]) {
-                    // Fill in missing data
-                    va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount) * NaNf);
-                    compositeData[iArea].push_back(memLatLonData);
-                    iTimeStorage++;
-                    continue;
-                } else if (m_time[iTimeStorage] > m_fStr.time[iTimeFile]) {
-                    // If data contains dates we don't want to keep
-                    iTimeFile++;
-                    iTimeData++;
-                    continue;
-                }
-            }
+            for (int iLat = 0; iLat < m_fInd.area.latCount; iLat++) {
+                for (int iLon = 0; iLon < m_fInd.area.lonCount; iLon++) {
+                    ind = iLon + iLat * m_fInd.area.lonCount +
+                          iMem * m_fInd.area.lonCount * m_fInd.area.latCount +
+                          iTimeData * m_fInd.memberCount * m_fInd.area.lonCount * m_fInd.area.latCount;
+                    if (m_fStr.lats.size() > 0 && m_fStr.lats[1] > m_fStr.lats[0]) {
+                        int latRevIndex = m_fInd.area.latCount - 1 - iLat;
+                        ind = iLon + latRevIndex * m_fInd.area.lonCount +
+                              iMem * m_fInd.area.lonCount * m_fInd.area.latCount +
+                              iTimeData * m_fInd.memberCount * m_fInd.area.lonCount *
+                              m_fInd.area.latCount;
+                    }
 
-            // Extract data
-            va2f memLatLonData;
-            for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
-                a2f latLonData(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount);
+                    latLonData(iLat, iLon) = dataF[ind];
 
-                for (int iLat = 0; iLat < m_fInd.areas[iArea].latCount; iLat++) {
-                    for (int iLon = 0; iLon < m_fInd.areas[iArea].lonCount; iLon++) {
-                        ind = iLon + iLat * m_fInd.areas[iArea].lonCount +
-                              iMem * m_fInd.areas[iArea].lonCount * m_fInd.areas[iArea].latCount +
-                              iTimeData * m_fInd.memberCount * m_fInd.areas[iArea].lonCount * m_fInd.areas[iArea].latCount;
-                        if (m_fStr.lats.size() > 0 && m_fStr.lats[1] > m_fStr.lats[0]) {
-                            int latRevIndex = m_fInd.areas[iArea].latCount - 1 - iLat;
-                            ind = iLon + latRevIndex * m_fInd.areas[iArea].lonCount +
-                                  iMem * m_fInd.areas[iArea].lonCount * m_fInd.areas[iArea].latCount +
-                                  iTimeData * m_fInd.memberCount * m_fInd.areas[iArea].lonCount *
-                                  m_fInd.areas[iArea].latCount;
-                        }
-
-                        latLonData(iLat, iLon) = data[ind];
-
-                        // Check if not NaN
-                        bool notNan = true;
-                        for (double nanValue : m_nanValues) {
-                            if (data[ind] == nanValue || latLonData(iLat, iLon) == nanValue) {
-                                notNan = false;
-                            }
-                        }
-                        if (!notNan) {
-                            latLonData(iLat, iLon) = NaNf;
+                    // Check if not NaN
+                    bool notNan = true;
+                    for (double nanValue : m_nanValues) {
+                        if (dataF[ind] == nanValue || latLonData(iLat, iLon) == nanValue) {
+                            notNan = false;
                         }
                     }
+                    if (!notNan) {
+                        latLonData(iLat, iLon) = NaNf;
+                    }
                 }
-
-                if (scalingNeeded) {
-                    latLonData = latLonData * dataScaleFactor + dataAddOffset;
-                }
-                memLatLonData.push_back(latLonData);
             }
-            compositeData[iArea].push_back(memLatLonData);
 
-            iTimeStorage++;
-            iTimeFile += m_fInd.timeStep;
-            iTimeData++;
+            if (scalingNeeded) {
+                latLonData = latLonData * dataScaleFactor + dataAddOffset;
+            }
+            memLatLonData.push_back(latLonData);
         }
+        m_data.push_back(memLatLonData);
 
-        data.clear();
+        iTimeStorage++;
+        iTimeFile += m_fInd.timeStep;
+        iTimeData++;
     }
 
     return true;
 }
 
-bool asPredictor::GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData) {
+bool asPredictor::GetDataFromFile(asFileGrib &gbFile) {
     // Check if loading data is relevant
     if (m_fInd.timeCountFile == 0 || m_fInd.timeCountStorage == 0) {
         return true;
@@ -1573,124 +1529,103 @@ bool asPredictor::GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData) {
         return false;
     }
 
-    vvf vectData;
+    // Create the arrays to receive the data
+    vf dataF;
 
-    for (int iArea = 0; iArea < compositeData.size(); iArea++) {
-        // Create the arrays to receive the data
-        vf dataF;
+    // Resize the arrays to store the new data
+    int totLength = m_fInd.memberCount * m_fInd.timeCountFile * m_fInd.area.latCount * m_fInd.area.lonCount;
+    wxASSERT(totLength > 0);
+    dataF.resize(totLength);
 
-        // Resize the arrays to store the new data
-        int totLength = m_fInd.memberCount * m_fInd.timeCountFile * m_fInd.areas[iArea].latCount *
-                        m_fInd.areas[iArea].lonCount;
-        wxASSERT(totLength > 0);
-        dataF.resize(totLength);
-
-        // Extract data
-        if (!gbFile.GetVarArray(GetIndexesStartGrib(iArea), GetIndexesCountGrib(iArea), &dataF[0])) {
-            return false;
-        }
-
-        // Keep data for later treatment
-        vectData.push_back(dataF);
+    // Extract data
+    if (!gbFile.GetVarArray(GetIndexesStartGrib(), GetIndexesCountGrib(), &dataF[0])) {
+        return false;
     }
 
     // Allocate space into compositeData if not already done
-    if (compositeData[0].capacity() == 0) {
-        int totSize = 0;
-        for (int iArea = 0; iArea < compositeData.size(); iArea++) {
-            totSize += m_fInd.memberCount * m_time.size() * m_fInd.areas[iArea].latCount *
-                       (m_fInd.areas[iArea].lonCount + 1);  // +1 in case of a border
-        }
-        compositeData.reserve(totSize);
+    if (m_data.capacity() == 0) {
+        int totSize = m_fInd.memberCount * m_time.size() * m_fInd.area.latCount * (m_fInd.area.lonCount + 1);  // +1 in case of a border
+        m_data.reserve(totSize);
     }
 
-    // Transfer data
-    for (int iArea = 0; iArea < compositeData.size(); iArea++) {
-        // Extract data
-        vf data = vectData[iArea];
+    // Fill with NaN if data are missing before the file starts
+    while (m_fInd.timeStartStorage > m_data.size()) {
+        va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+        m_data.push_back(memLatLonData);
+    }
 
-        // Fill with NaN if data are missing before the file starts
-        while (m_fInd.timeStartStorage > compositeData[iArea].size()) {
-            va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount) * NaNf);
-            compositeData[iArea].push_back(memLatLonData);
+    // Loop to extract the data from the array
+    int ind = 0;
+    int iTimeStorage = m_fInd.timeStartStorage;
+    int iTimeFile = m_fInd.timeStartFile;
+    int iTimeData = 0;
+    while (iTimeStorage < m_fInd.timeStartStorage + m_fInd.timeCountStorage) {
+
+        if (!m_fInd.timeConsistent) {
+            if (iTimeFile > m_fInd.timeStartFile + m_fInd.timeCountFile - 1) {
+                // Fill with NaN if data are missing after the data
+                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+                m_data.push_back(memLatLonData);
+                iTimeStorage++;
+                continue;
+            } else if (m_time[iTimeStorage] < m_fStr.time[iTimeFile]) {
+                // Fill in missing data
+                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+                m_data.push_back(memLatLonData);
+                iTimeStorage++;
+                continue;
+            } else if (m_time[iTimeStorage] > m_fStr.time[iTimeFile]) {
+                // If data contains dates we don't want to keep
+                iTimeFile++;
+                iTimeData++;
+                continue;
+            }
         }
 
-        // Loop to extract the data from the array
-        int ind = 0;
-        int iTimeStorage = m_fInd.timeStartStorage;
-        int iTimeFile = m_fInd.timeStartFile;
-        int iTimeData = 0;
-        while (iTimeStorage < m_fInd.timeStartStorage + m_fInd.timeCountStorage) {
+        // Extract data
+        va2f memLatLonData;
+        for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
+            a2f latLonData(m_fInd.area.latCount, m_fInd.area.lonCount);
 
-            if (!m_fInd.timeConsistent) {
-                if (iTimeFile > m_fInd.timeStartFile + m_fInd.timeCountFile - 1) {
-                    // Fill with NaN if data are missing after the data
-                    va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount) * NaNf);
-                    compositeData[iArea].push_back(memLatLonData);
-                    iTimeStorage++;
-                    continue;
-                } else if (m_time[iTimeStorage] < m_fStr.time[iTimeFile]) {
-                    // Fill in missing data
-                    va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount) * NaNf);
-                    compositeData[iArea].push_back(memLatLonData);
-                    iTimeStorage++;
-                    continue;
-                } else if (m_time[iTimeStorage] > m_fStr.time[iTimeFile]) {
-                    // If data contains dates we don't want to keep
-                    iTimeFile++;
-                    iTimeData++;
-                    continue;
-                }
-            }
+            for (int iLat = 0; iLat < m_fInd.area.latCount; iLat++) {
+                for (int iLon = 0; iLon < m_fInd.area.lonCount; iLon++) {
+                    int latRevIndex = m_fInd.area.latCount - 1 - iLat;
+                    ind = iLon + latRevIndex * m_fInd.area.lonCount +
+                          iMem * m_fInd.area.lonCount * m_fInd.area.latCount +
+                          iTimeData * m_fInd.memberCount * m_fInd.area.lonCount * m_fInd.area.latCount;
 
-            // Extract data
-            va2f memLatLonData;
-            for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
-                a2f latLonData(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount);
+                    latLonData(iLat, iLon) = dataF[ind];
 
-                for (int iLat = 0; iLat < m_fInd.areas[iArea].latCount; iLat++) {
-                    for (int iLon = 0; iLon < m_fInd.areas[iArea].lonCount; iLon++) {
-                        int latRevIndex = m_fInd.areas[iArea].latCount - 1 - iLat;
-                        ind = iLon + latRevIndex * m_fInd.areas[iArea].lonCount +
-                              iMem * m_fInd.areas[iArea].lonCount * m_fInd.areas[iArea].latCount +
-                              iTimeData * m_fInd.memberCount * m_fInd.areas[iArea].lonCount * m_fInd.areas[iArea].latCount;
-
-                        latLonData(iLat, iLon) = data[ind];
-
-                        // Check if not NaN
-                        bool notNan = true;
-                        for (double nanValue : m_nanValues) {
-                            if (data[ind] == nanValue || latLonData(iLat, iLon) == nanValue) {
-                                notNan = false;
-                            }
-                        }
-                        if (!notNan) {
-                            latLonData(iLat, iLon) = NaNf;
+                    // Check if not NaN
+                    bool notNan = true;
+                    for (double nanValue : m_nanValues) {
+                        if (dataF[ind] == nanValue || latLonData(iLat, iLon) == nanValue) {
+                            notNan = false;
                         }
                     }
+                    if (!notNan) {
+                        latLonData(iLat, iLon) = NaNf;
+                    }
                 }
-                memLatLonData.push_back(latLonData);
             }
-            compositeData[iArea].push_back(memLatLonData);
-
-            iTimeStorage++;
-            iTimeFile += m_fInd.timeStep;
-            iTimeData++;
+            memLatLonData.push_back(latLonData);
         }
-        data.clear();
+        m_data.push_back(memLatLonData);
+
+        iTimeStorage++;
+        iTimeFile += m_fInd.timeStep;
+        iTimeData++;
     }
 
     return true;
 }
 
-bool asPredictor::TransformData(vvva2f &compositeData) {
+bool asPredictor::TransformData() {
     if (wxFileConfig::Get()->ReadBool("/General/ReplaceNans", false)) {
-        for (auto &area : compositeData) {
-            for (int iTime = 0; iTime < area.size(); iTime++) {
-                for (int iMem = 0; iMem < area[0].size(); iMem++) {
-                    if (area[iTime][iMem].hasNaN()) {
-                        area[iTime][iMem] = (!area[iTime][iMem].isNaN()).select(area[iTime][iMem], -9999);
-                    }
+        for (int iTime = 0; iTime < m_data.size(); iTime++) {
+            for (int iMem = 0; iMem < m_data[0].size(); iMem++) {
+                if (m_data[iTime][iMem].hasNaN()) {
+                    m_data[iTime][iMem] = (!m_data[iTime][iMem].isNaN()).select(m_data[iTime][iMem], -9999);
                 }
             }
         }
@@ -1699,11 +1634,9 @@ bool asPredictor::TransformData(vvva2f &compositeData) {
     // See
     // http://www.ecmwf.int/en/faq/geopotential-defined-units-m2/s2-both-pressure-levels-and-surface-orography-how-can-height
     if (m_parameter == Geopotential) {
-        for (auto &area : compositeData) {
-            for (int iTime = 0; iTime < area.size(); iTime++) {
-                for (int iMem = 0; iMem < area[0].size(); iMem++) {
-                    area[iTime][iMem] = area[iTime][iMem] / 9.80665;
-                }
+        for (int iTime = 0; iTime < m_data.size(); iTime++) {
+            for (int iMem = 0; iMem < m_data[0].size(); iMem++) {
+                m_data[iTime][iMem] = m_data[iTime][iMem] / 9.80665;
             }
         }
         m_parameter = GeopotentialHeight;
@@ -1778,7 +1711,7 @@ bool asPredictor::StandardizeData(double mean, double sd) {
     return true;
 }
 
-bool asPredictor::ClipToArea(asAreaCompGrid *desiredArea) {
+bool asPredictor::ClipToArea(asAreaGrid *desiredArea) {
     double xMin = desiredArea->GetXmin();
     double xMax = desiredArea->GetXmax();
     if (xMin > xMax) {
@@ -2082,59 +2015,21 @@ bool asPredictor::Inline() {
     return true;
 }
 
-bool asPredictor::MergeComposites(vvva2f &compositeData, asAreaCompGrid *area) {
-    if (area && area->GetNbComposites() > 1) {
-        // Get a container with the final size
-        long sizeTime = compositeData[0].size();
-        long membersNb = compositeData[0][0].size();
-        m_data = vva2f(sizeTime, va2f(membersNb, a2f(m_latPtsnb, m_lonPtsnb)));
-
-        int comp0cols = compositeData[0][0][0].cols();
-        int comp1cols = compositeData[1][0][0].cols();
-
-        // Merge the composite data together
-        for (int iTime = 0; iTime < sizeTime; iTime++) {
-            for (int iMem = 0; iMem < membersNb; iMem++) {
-                // Append the composite areas
-                m_data[iTime][iMem].leftCols(comp0cols) = compositeData[0][iTime][iMem];
-                m_data[iTime][iMem].rightCols(comp1cols) = compositeData[1][iTime][iMem];
-            }
-        }
-    } else {
-        m_data = compositeData[0];
-    }
-
-    return true;
-}
-
-bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *desiredArea) {
+bool asPredictor::InterpolateOnGrid(asAreaGrid *dataArea, asAreaGrid *desiredArea) {
     wxASSERT(dataArea);
-    wxASSERT(dataArea->GetNbComposites() > 0);
     wxASSERT(desiredArea);
-    wxASSERT(desiredArea->GetNbComposites() > 0);
     bool changeXstart = false, changeXsteps = false, changeYstart = false, changeYsteps = false;
 
     // Check beginning on longitudes
-    if (dataArea->GetComposite(0).GetXmin() != desiredArea->GetComposite(0).GetXmin()) {
-        if (dataArea->GetComposite(0).GetXmin() + 360 != desiredArea->GetComposite(0).GetXmin() &&
-            dataArea->GetComposite(0).GetXmin() - 360 != desiredArea->GetComposite(0).GetXmin()) {
-            changeXstart = true;
-        }
-    }
-    if (dataArea->GetNbComposites() > 1 &&
-        dataArea->GetComposite(1).GetXmin() != desiredArea->GetComposite(1).GetXmin()) {
-        if (dataArea->GetComposite(1).GetXmin() + 360 != desiredArea->GetComposite(1).GetXmin() &&
-            dataArea->GetComposite(1).GetXmin() - 360 != desiredArea->GetComposite(1).GetXmin()) {
+    if (dataArea->GetXmin() != desiredArea->GetXmin()) {
+        if (dataArea->GetXmin() + 360 != desiredArea->GetXmin() &&
+            dataArea->GetXmin() - 360 != desiredArea->GetXmin()) {
             changeXstart = true;
         }
     }
 
     // Check beginning on latitudes
-    if (dataArea->GetComposite(0).GetYmin() != desiredArea->GetComposite(0).GetYmin()) {
-        changeYstart = true;
-    }
-    if (dataArea->GetNbComposites() > 1 &&
-        dataArea->GetComposite(1).GetYmin() != desiredArea->GetComposite(1).GetYmin()) {
+    if (dataArea->GetYmin() != desiredArea->GetYmin()) {
         changeYstart = true;
     }
 

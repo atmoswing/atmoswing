@@ -38,7 +38,7 @@
 
 #include "asBatchForecasts.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 
 #include "AtmoswingMainForecaster.h"
 
@@ -51,7 +51,7 @@ IMPLEMENT_APP(AtmoswingAppForecaster)
 #include "asInternet.h"
 #include "asMethodForecasting.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 
 #include "images.h"
 
@@ -109,7 +109,7 @@ bool AtmoswingAppForecaster::OnInit() {
                          asConfig::GetUserDataDir() + "AtmoSwingForecaster.ini", wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
-#if wxUSE_GUI
+#if USE_GUI
     g_guiMode = true;
 
     // Set PPI
@@ -150,7 +150,7 @@ bool AtmoswingAppForecaster::OnInit() {
         return true;
     }
 
-#if wxUSE_GUI
+#if USE_GUI
     // Following for GUI only
     wxInitAllImageHandlers();
 
@@ -172,7 +172,7 @@ bool AtmoswingAppForecaster::OnInit() {
 }
 
 bool AtmoswingAppForecaster::InitLog() {
-#if wxUSE_GUI
+#if USE_GUI
     if (!g_guiMode) {
         Log()->CreateFileOnly("AtmoSwingForecaster.log");
     }
@@ -226,7 +226,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser) {
 
     // Check if the user asked to configure
     if (parser.Found("config")) {
-#ifndef wxUSE_GUI
+#ifndef USE_GUI
         m_doConfig = true;
 #endif
         return true;
@@ -606,7 +606,7 @@ int AtmoswingAppForecaster::OnRun() {
 }
 
 int AtmoswingAppForecaster::OnExit() {
-#if wxUSE_GUI
+#if USE_GUI
     // Instance checker
     delete m_singleInstanceChecker;
 

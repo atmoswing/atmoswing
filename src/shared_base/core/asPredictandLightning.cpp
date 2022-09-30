@@ -140,7 +140,7 @@ bool asPredictandLightning::BuildPredictandDB(const wxString &catalogFilePath, c
 
     wxLogVerbose(_("Predictand DB saved."));
 
-#if wxUSE_GUI
+#if USE_GUI
     if (!g_silentMode) {
         wxMessageBox(_("Predictand DB saved."));
     }

@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaCompRegGrid.h"
+#include "asAreaRegGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 

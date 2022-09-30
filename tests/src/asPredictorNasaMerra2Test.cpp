@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaCompRegGrid.h"
+#include "asAreaRegGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
@@ -172,7 +172,7 @@ TEST(PredictorNasaMerra2, LoadEasy) {
     double yWidth = 2;
     double yStep = 0.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -234,135 +234,15 @@ TEST(PredictorNasaMerra2, LoadEasy) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorNasaMerra2, LoadComposite) {
-    double xMin = 177.5;
-    double xWidth = 5;
-    double xStep = 0.625;
-    double yMin = 75;
-    double yWidth = 2;
-    double yStep = 0.5;
-    float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
-
-    double start = asTime::GetMJD(1987, 9, 9, 00, 00);
-    double end = asTime::GetMJD(1987, 9, 10, 18, 00);
-    double timeStep = 6;
-    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
-    timearray.Init();
-
-    wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-nasa-merra2/");
-
-    asPredictor *predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
-
-    ASSERT_TRUE(predictor->Load(&area, timearray, level));
-
-    vva2f hgt = predictor->GetData();
-    // hgt[time][mem](lat,lon)
-
-    /* Values time step 0 (horizontal=Lon, vertical=Lat)
-    18.7	16.8	14.8	12.8   |    10.8	8.8	    6.8	    4.8	    2.7
-    24.1	22.2	20.4	18.7   |    16.9	15.0	13.0	11.0	9.0
-    30.5	28.6	26.8	25.1   |    23.3	21.5	19.6	17.7	15.8
-    38.0	36.2	34.3	32.5   |    30.6	28.7	26.7	24.8	22.9
-    45.7	43.8	41.9	40.0   |    38.1	36.2	34.2	32.2	30.3
-    */
-    EXPECT_NEAR(18.7, hgt[0][0](0, 0), 0.1);
-    EXPECT_NEAR(16.8, hgt[0][0](0, 1), 0.1);
-    EXPECT_NEAR(14.8, hgt[0][0](0, 2), 0.1);
-    EXPECT_NEAR(12.8, hgt[0][0](0, 3), 0.1);
-    EXPECT_NEAR(10.8, hgt[0][0](0, 4), 0.1);
-    EXPECT_NEAR(2.7, hgt[0][0](0, 8), 0.1);
-    EXPECT_NEAR(24.1, hgt[0][0](1, 0), 0.1);
-    EXPECT_NEAR(30.5, hgt[0][0](2, 0), 0.1);
-    EXPECT_NEAR(45.7, hgt[0][0](4, 0), 0.1);
-    EXPECT_NEAR(30.3, hgt[0][0](4, 8), 0.1);
-
-    /* Values time step 7 (horizontal=Lon, vertical=Lat)
-    -68.0	-66.8	-65.7	-64.5   |   -63.3	-62.1	-61.0	-59.9	-58.8
-    -63.7	-62.6	-61.6	-60.6   |   -59.5	-58.4	-57.5	-56.5	-55.4
-    -57.5	-56.6	-55.9	-55.1   |   -54.2	-53.6	-52.9	-52.1	-51.5
-    -51.1	-50.5	-49.9	-49.2   |   -48.7	-48.2	-47.7	-47.2	-47.3
-    -43.8	-43.4	-43.0	-42.6   |   -42.4	-42.2	-41.9	-42.1	-42.4
-    */
-    EXPECT_NEAR(-68.0, hgt[7][0](0, 0), 0.1);
-    EXPECT_NEAR(-66.8, hgt[7][0](0, 1), 0.1);
-    EXPECT_NEAR(-65.7, hgt[7][0](0, 2), 0.1);
-    EXPECT_NEAR(-64.5, hgt[7][0](0, 3), 0.1);
-    EXPECT_NEAR(-63.3, hgt[7][0](0, 4), 0.1);
-    EXPECT_NEAR(-58.8, hgt[7][0](0, 8), 0.1);
-    EXPECT_NEAR(-63.7, hgt[7][0](1, 0), 0.1);
-    EXPECT_NEAR(-57.5, hgt[7][0](2, 0), 0.1);
-    EXPECT_NEAR(-43.8, hgt[7][0](4, 0), 0.1);
-    EXPECT_NEAR(-42.4, hgt[7][0](4, 8), 0.1);
-
-    wxDELETE(predictor);
-}
-
-TEST(PredictorNasaMerra2, LoadCompositeStep) {
-    double xMin = 177.5;
-    double xWidth = 5;
-    double xStep = 1.25;
-    double yMin = 75;
-    double yWidth = 2;
-    double yStep = 1;
-    float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
-
-    double start = asTime::GetMJD(1987, 9, 9, 00, 00);
-    double end = asTime::GetMJD(1987, 9, 10, 18, 00);
-    double timeStep = 6;
-    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
-    timearray.Init();
-
-    wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-nasa-merra2/");
-
-    asPredictor *predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
-
-    ASSERT_TRUE(predictor->Load(&area, timearray, level));
-
-    vva2f hgt = predictor->GetData();
-    // hgt[time][mem](lat,lon)
-
-    /* Values time step 0 (horizontal=Lon, vertical=Lat)
-    18.7	14.8	|  10.8	    6.8	    2.7
-    30.5	26.8	|  23.3		19.6	15.8
-    45.7	41.9	|  38.1		34.2	30.3
-    */
-    EXPECT_NEAR(18.7, hgt[0][0](0, 0), 0.1);
-    EXPECT_NEAR(14.8, hgt[0][0](0, 1), 0.1);
-    EXPECT_NEAR(10.8, hgt[0][0](0, 2), 0.1);
-    EXPECT_NEAR(2.7, hgt[0][0](0, 4), 0.1);
-    EXPECT_NEAR(30.5, hgt[0][0](1, 0), 0.1);
-    EXPECT_NEAR(45.7, hgt[0][0](2, 0), 0.1);
-    EXPECT_NEAR(30.3, hgt[0][0](2, 4), 0.1);
-
-    /* Values time step 7 (horizontal=Lon, vertical=Lat)
-    -68.0	-65.7	|   -63.3	-61.0	-58.8
-    -57.5	-55.9	|   -54.2	-52.9	-51.5
-    -43.8	-43.0	|   -42.4	-41.9	-42.4
-    */
-    EXPECT_NEAR(-68.0, hgt[7][0](0, 0), 0.1);
-    EXPECT_NEAR(-65.7, hgt[7][0](0, 1), 0.1);
-    EXPECT_NEAR(-63.3, hgt[7][0](0, 2), 0.1);
-    EXPECT_NEAR(-58.8, hgt[7][0](0, 4), 0.1);
-    EXPECT_NEAR(-57.5, hgt[7][0](1, 0), 0.1);
-    EXPECT_NEAR(-43.8, hgt[7][0](2, 0), 0.1);
-    EXPECT_NEAR(-42.4, hgt[7][0](2, 4), 0.1);
-
-    wxDELETE(predictor);
-}
-
 TEST(PredictorNasaMerra2, LoadBorderLeft) {
-    double xMin = 180;
+    double xMin = -180;
     double xWidth = 2.5;
     double xStep = 0.625;
     double yMin = 75;
     double yWidth = 2;
     double yStep = 0.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -412,69 +292,6 @@ TEST(PredictorNasaMerra2, LoadBorderLeft) {
     EXPECT_NEAR(-59.5, hgt[7][0](1, 0), 0.1);
     EXPECT_NEAR(-54.2, hgt[7][0](2, 0), 0.1);
     EXPECT_NEAR(-42.4, hgt[7][0](4, 0), 0.1);
-    EXPECT_NEAR(-42.4, hgt[7][0](4, 4), 0.1);
-
-    wxDELETE(predictor);
-}
-
-TEST(PredictorNasaMerra2, LoadBorderRight) {
-    double xMin = 177.5;
-    double xWidth = 2.5;
-    double xStep = 0.625;
-    double yMin = 75;
-    double yWidth = 2;
-    double yStep = 0.5;
-    float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
-
-    double start = asTime::GetMJD(1987, 9, 9, 00, 00);
-    double end = asTime::GetMJD(1987, 9, 10, 18, 00);
-    double timeStep = 6;
-    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
-    timearray.Init();
-
-    wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-nasa-merra2/");
-
-    asPredictor *predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
-
-    ASSERT_TRUE(predictor->Load(&area, timearray, level));
-
-    vva2f hgt = predictor->GetData();
-    // hgt[time][mem](lat,lon)
-
-    /* Values time step 0 (horizontal=Lon, vertical=Lat)
-    18.7	16.8	14.8	12.8   |    10.8
-    24.1	22.2	20.4	18.7   |    16.9
-    30.5	28.6	26.8	25.1   |    23.3
-    38.0	36.2	34.3	32.5   |    30.6
-    45.7	43.8	41.9	40.0   |    38.1
-    */
-    EXPECT_NEAR(18.7, hgt[0][0](0, 0), 0.1);
-    EXPECT_NEAR(16.8, hgt[0][0](0, 1), 0.1);
-    EXPECT_NEAR(14.8, hgt[0][0](0, 2), 0.1);
-    EXPECT_NEAR(12.8, hgt[0][0](0, 3), 0.1);
-    EXPECT_NEAR(10.8, hgt[0][0](0, 4), 0.1);
-    EXPECT_NEAR(24.1, hgt[0][0](1, 0), 0.1);
-    EXPECT_NEAR(30.5, hgt[0][0](2, 0), 0.1);
-    EXPECT_NEAR(45.7, hgt[0][0](4, 0), 0.1);
-    EXPECT_NEAR(38.1, hgt[0][0](4, 4), 0.1);
-
-    /* Values time step 7 (horizontal=Lon, vertical=Lat)
-    -68.0	-66.8	-65.7	-64.5   |   -63.3
-    -63.7	-62.6	-61.6	-60.6   |   -59.5
-    -57.5	-56.6	-55.9	-55.1   |   -54.2
-    -51.1	-50.5	-49.9	-49.2   |   -48.7
-    -43.8	-43.4	-43.0	-42.6   |   -42.4
-    */
-    EXPECT_NEAR(-68.0, hgt[7][0](0, 0), 0.1);
-    EXPECT_NEAR(-66.8, hgt[7][0](0, 1), 0.1);
-    EXPECT_NEAR(-65.7, hgt[7][0](0, 2), 0.1);
-    EXPECT_NEAR(-64.5, hgt[7][0](0, 3), 0.1);
-    EXPECT_NEAR(-63.3, hgt[7][0](0, 4), 0.1);
-    EXPECT_NEAR(-63.7, hgt[7][0](1, 0), 0.1);
-    EXPECT_NEAR(-57.5, hgt[7][0](2, 0), 0.1);
-    EXPECT_NEAR(-43.8, hgt[7][0](4, 0), 0.1);
     EXPECT_NEAR(-42.4, hgt[7][0](4, 4), 0.1);
 
     wxDELETE(predictor);

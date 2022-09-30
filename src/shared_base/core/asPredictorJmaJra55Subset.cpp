@@ -29,7 +29,7 @@
 
 #include <wx/dir.h>
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorJmaJra55Subset::asPredictorJmaJra55Subset(const wxString &dataId) : asPredictor(dataId) {

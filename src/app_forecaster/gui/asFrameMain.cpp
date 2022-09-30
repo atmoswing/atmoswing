@@ -555,7 +555,7 @@ void asFrameMain::IncrementOverallProgress() {
 
     m_staticTextProgressActual->GetParent()->Layout();
 
-#if wxUSE_GUI
+#if USE_GUI
     wxYield();
 #endif
 }
