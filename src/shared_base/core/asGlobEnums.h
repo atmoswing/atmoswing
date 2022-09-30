@@ -54,8 +54,6 @@ enum {
     asSUCCESS = 1
 };
 
-enum { asEDIT_FORBIDDEN, asEDIT_ALLOWED };
-
 enum { asFLAT_FORBIDDEN, asFLAT_ALLOWED };
 
 enum { asUSE_NORMAL_METHOD, asUSE_ALTERNATE_METHOD };

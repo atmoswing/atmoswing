@@ -138,49 +138,6 @@ TEST(PredictorProjCmip5, LoadEasy) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCmip5, LoadWithNegativeVals) {
-    double xMin = -2;
-    double xWidth = 4;
-    double yMin = 75.5;
-    double yWidth = 2;
-    asAreaGenGrid area(xMin, xWidth, yMin, yWidth, 0);
-
-    double start = asTime::GetMJD(2006, 1, 1, 12, 00);
-    double end = asTime::GetMJD(2006, 1, 1, 12, 00);
-    double timeStepHours = 24;
-    asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
-    timearray.Init();
-
-    wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-cmip5/");
-
-    asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", predictorDataDir);
-
-    ASSERT_TRUE(predictor != nullptr);
-    ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
-    ASSERT_TRUE(predictor->Load(area, timearray, 0));
-
-    vva2f pr = predictor->GetData();
-    // hgt[time][mem](lat,lon)
-
-    /* Values time step 0 (horizontal=Lon, vertical=Lat)
-    9.3271E-07	5.4880E-07  |   1.6006E-07	2.0217E-07	3.0069E-07
-    1.7317E-07	3.1338E-07  |   4.4013E-07	5.9736E-07	5.9959E-07
-    6.2179E-06	7.7716E-06  |   8.9397E-06	9.3129E-06	1.1299E-05
-    */
-
-    EXPECT_NEAR(9.3271E-07, pr[0][0](0, 0), 1E-11);
-    EXPECT_NEAR(5.4880E-07, pr[0][0](0, 1), 1E-11);
-    EXPECT_NEAR(1.6006E-07, pr[0][0](0, 2), 1E-11);
-    EXPECT_NEAR(2.0217E-07, pr[0][0](0, 3), 1E-11);
-    EXPECT_NEAR(3.0069E-07, pr[0][0](0, 4), 1E-11);
-    EXPECT_NEAR(1.7317E-07, pr[0][0](1, 0), 1E-11);
-    EXPECT_NEAR(6.2179E-06, pr[0][0](2, 0), 1E-10);
-    EXPECT_NEAR(1.1299E-05, pr[0][0](2, 4), 1E-9);
-
-    wxDELETE(predictor);
-}
-
 TEST(PredictorProjCmip5, LoadBorderLeft) {
     double xMin = 0;
     double xWidth = 2;
@@ -218,88 +175,6 @@ TEST(PredictorProjCmip5, LoadBorderLeft) {
     EXPECT_NEAR(4.4013E-07, pr[0][0](1, 0), 1E-11);
     EXPECT_NEAR(8.9397E-06, pr[0][0](2, 0), 1E-10);
     EXPECT_NEAR(1.1299E-05, pr[0][0](2, 2), 1E-9);
-
-    wxDELETE(predictor);
-}
-
-TEST(PredictorProjCmip5, LoadBorderLeftOn720) {
-    double xMin = 360;
-    double xWidth = 2;
-    double yMin = 75.5;
-    double yWidth = 2;
-    asAreaGenGrid area(xMin, xWidth, yMin, yWidth, 0);
-
-    double start = asTime::GetMJD(2006, 1, 1, 12, 00);
-    double end = asTime::GetMJD(2006, 1, 1, 12, 00);
-    double timeStepHours = 24;
-    asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
-    timearray.Init();
-
-    wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-cmip5/");
-
-    asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", predictorDataDir);
-
-    ASSERT_TRUE(predictor != nullptr);
-    ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
-    ASSERT_TRUE(predictor->Load(area, timearray, 0));
-
-    vva2f pr = predictor->GetData();
-    // hgt[time][mem](lat,lon)
-
-    /* Values time step 0 (horizontal=Lon, vertical=Lat)
-    |   1.6006E-07	2.0217E-07	3.0069E-07
-    |   4.4013E-07	5.9736E-07	5.9959E-07
-    |   8.9397E-06	9.3129E-06	1.1299E-05
-    */
-
-    EXPECT_NEAR(1.6006E-07, pr[0][0](0, 0), 1E-11);
-    EXPECT_NEAR(2.0217E-07, pr[0][0](0, 1), 1E-11);
-    EXPECT_NEAR(3.0069E-07, pr[0][0](0, 2), 1E-11);
-    EXPECT_NEAR(4.4013E-07, pr[0][0](1, 0), 1E-11);
-    EXPECT_NEAR(8.9397E-06, pr[0][0](2, 0), 1E-10);
-    EXPECT_NEAR(1.1299E-05, pr[0][0](2, 2), 1E-9);
-
-    wxDELETE(predictor);
-}
-
-TEST(PredictorProjCmip5, LoadBorderRight) {
-    double xMin = -2;
-    double xWidth = 3;
-    double yMin = 75.5;
-    double yWidth = 2;
-    asAreaGenGrid area(xMin, xWidth, yMin, yWidth, 0);
-
-    double start = asTime::GetMJD(2006, 1, 1, 12, 00);
-    double end = asTime::GetMJD(2006, 1, 1, 12, 00);
-    double timeStepHours = 24;
-    asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
-    timearray.Init();
-
-    wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-cmip5/");
-
-    asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", predictorDataDir);
-
-    ASSERT_TRUE(predictor != nullptr);
-    ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
-    ASSERT_TRUE(predictor->Load(area, timearray, 0));
-
-    vva2f pr = predictor->GetData();
-    // hgt[time][mem](lat,lon)
-
-    /* Values time step 0 (horizontal=Lon, vertical=Lat)
-    9.3271E-07	5.4880E-07  |   1.6006E-07
-    1.7317E-07	3.1338E-07  |   4.4013E-07
-    6.2179E-06	7.7716E-06  |   8.9397E-06
-    */
-
-    EXPECT_NEAR(9.3271E-07, pr[0][0](0, 0), 1E-11);
-    EXPECT_NEAR(5.4880E-07, pr[0][0](0, 1), 1E-11);
-    EXPECT_NEAR(1.6006E-07, pr[0][0](0, 2), 1E-11);
-    EXPECT_NEAR(1.7317E-07, pr[0][0](1, 0), 1E-11);
-    EXPECT_NEAR(6.2179E-06, pr[0][0](2, 0), 1E-10);
-    EXPECT_NEAR(8.9397E-06, pr[0][0](2, 2), 1E-10);
 
     wxDELETE(predictor);
 }

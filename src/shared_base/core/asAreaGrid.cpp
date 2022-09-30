@@ -223,6 +223,11 @@ bool asAreaGrid::CreateAxes(const a1d &lons, const a1d &lats, bool getLarger) {
     wxASSERT(indexXmax >= 0);
     wxASSERT(indexXmin <= indexXmax);
 
+    if (indexXmin > indexXmax) {
+        wxLogError(_("The index (%d) of the longitude min is larger than the one for the longitude max (%d)."), indexXmin, indexXmax);
+        return false;
+    }
+
     int indexYmin, indexYmax;
     int nlats = int(lats.size() - 1);
 

@@ -35,7 +35,7 @@ TEST(Area, CheckPointWGS84True) {
     Coo point;
     point.x = 10;
     point.y = 10;
-    EXPECT_TRUE(area.CheckPoint(point, asEDIT_FORBIDDEN));
+    EXPECT_TRUE(area.CheckPoint(point));
 }
 
 TEST(Area, CheckPointWGS84UVMaxTrue) {
@@ -43,7 +43,7 @@ TEST(Area, CheckPointWGS84UVMaxTrue) {
     Coo point;
     point.x = 360;
     point.y = 90;
-    EXPECT_TRUE(area.CheckPoint(point, asEDIT_FORBIDDEN));
+    EXPECT_TRUE(area.CheckPoint(point));
 }
 
 TEST(Area, CheckPointWGS84UVMinTrue) {
@@ -51,7 +51,7 @@ TEST(Area, CheckPointWGS84UVMinTrue) {
     Coo point;
     point.x = 0;
     point.y = -90;
-    EXPECT_TRUE(area.CheckPoint(point, asEDIT_FORBIDDEN));
+    EXPECT_TRUE(area.CheckPoint(point));
 }
 
 TEST(Area, CheckPointWGS84UTooHigh) {
@@ -59,7 +59,7 @@ TEST(Area, CheckPointWGS84UTooHigh) {
     Coo point;
     point.x = 360.1;
     point.y = 10;
-    EXPECT_FALSE(area.CheckPoint(point, asEDIT_FORBIDDEN));
+    EXPECT_FALSE(area.CheckPoint(point));
     EXPECT_DOUBLE_EQ(360.1, point.x);
 }
 
@@ -68,7 +68,7 @@ TEST(Area, CheckPointWGS84UTooLow) {
     Coo point;
     point.x = -0.1;
     point.y = 10;
-    EXPECT_TRUE(area.CheckPoint(point, asEDIT_FORBIDDEN));
+    EXPECT_TRUE(area.CheckPoint(point));
     EXPECT_DOUBLE_EQ(-0.1, point.x);
 }
 
@@ -77,7 +77,7 @@ TEST(Area, CheckPointWGS84VTooHigh) {
     Coo point;
     point.x = 10;
     point.y = 90.1;
-    EXPECT_FALSE(area.CheckPoint(point, asEDIT_FORBIDDEN));
+    EXPECT_FALSE(area.CheckPoint(point));
     EXPECT_DOUBLE_EQ(90.1, point.y);
 }
 
@@ -86,26 +86,26 @@ TEST(Area, CheckPointWGS84VTooLow) {
     Coo point;
     point.x = 10;
     point.y = -90.1;
-    EXPECT_FALSE(area.CheckPoint(point, asEDIT_FORBIDDEN));
+    EXPECT_FALSE(area.CheckPoint(point));
     EXPECT_DOUBLE_EQ(-90.1, point.y);
 }
 
 TEST(Area, CheckPointWGS84UTooHighCorr) {
     asArea area;
     Coo point;
-    point.x = 360.1;
+    point.x = 365;
     point.y = 10;
-    EXPECT_FALSE(area.CheckPoint(point, asEDIT_ALLOWED));
-    EXPECT_FLOAT_EQ(0.1f, point.x);
+    EXPECT_TRUE(area.CheckPoint(point));
+    EXPECT_FLOAT_EQ(365, point.x);
 }
 
 TEST(Area, CheckPointWGS84UTooLowCorr) {
     asArea area;
     Coo point;
-    point.x = -0.1;
+    point.x = -10;
     point.y = 10;
-    EXPECT_TRUE(area.CheckPoint(point, asEDIT_ALLOWED));
-    EXPECT_DOUBLE_EQ(-0.1, point.x);
+    EXPECT_TRUE(area.CheckPoint(point));
+    EXPECT_DOUBLE_EQ(-10, point.x);
 }
 
 TEST(Area, CheckPointWGS84VTooHighCorr) {
@@ -113,7 +113,7 @@ TEST(Area, CheckPointWGS84VTooHighCorr) {
     Coo point;
     point.x = 10;
     point.y = 90.1;
-    EXPECT_FALSE(area.CheckPoint(point, asEDIT_ALLOWED));
+    EXPECT_FALSE(area.CheckPoint(point));
 }
 
 TEST(Area, CheckPointWGS84VTooLowCorr) {
@@ -121,7 +121,7 @@ TEST(Area, CheckPointWGS84VTooLowCorr) {
     Coo point;
     point.x = 10;
     point.y = -90.1;
-    EXPECT_FALSE(area.CheckPoint(point, asEDIT_ALLOWED));
+    EXPECT_FALSE(area.CheckPoint(point));
 }
 
 TEST(Area, IsRectangleTrue) {
