@@ -38,7 +38,7 @@
 
 #include "asBatchForecasts.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 
 #include "AtmoswingMainForecaster.h"
 
@@ -51,7 +51,7 @@ IMPLEMENT_APP(AtmoswingAppForecaster)
 #include "asInternet.h"
 #include "asMethodForecasting.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 
 #include "images.h"
 

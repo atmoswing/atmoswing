@@ -36,7 +36,7 @@
 
 #include "AtmoswingAppOptimizer.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 
 #include "AtmoswingMainOptimizer.h"
 
@@ -55,7 +55,7 @@ IMPLEMENT_APP(AtmoswingAppOptimizer)
 #include "asFileText.h"
 #include "asMethodCalibratorSingle.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 
 #include "images.h"
 
@@ -171,7 +171,7 @@ bool AtmoswingAppOptimizer::OnInit() {
     m_predictorsDir = wxEmptyString;
     m_calibMethod = wxEmptyString;
     m_doProcessing = false;
-#if wxUSE_GUI
+#if USE_GUI
     g_guiMode = true;
     m_singleInstanceChecker = nullptr;
 #else
@@ -188,7 +188,7 @@ bool AtmoswingAppOptimizer::OnInit() {
         return true;
     }
 
-#if wxUSE_GUI
+#if USE_GUI
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
@@ -252,7 +252,7 @@ bool AtmoswingAppOptimizer::InitLog() {
             }
         }
 
-#if wxUSE_GUI
+#if USE_GUI
         if (!g_guiMode) {
             Log()->CreateFileOnlyAtPath(fullPath);
         } else {
@@ -263,7 +263,7 @@ bool AtmoswingAppOptimizer::InitLog() {
         Log()->CreateFileOnlyAtPath(fullPath);
 #endif
     } else {
-#if wxUSE_GUI
+#if USE_GUI
         if (!g_guiMode) {
             Log()->CreateFileOnly("AtmoSwingOptimizer.log");
         }

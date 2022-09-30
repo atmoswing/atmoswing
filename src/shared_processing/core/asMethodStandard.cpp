@@ -1062,6 +1062,8 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
     asAreaGrid *area = asAreaGrid::GetInstance(params, iStep, iPtor);
     wxASSERT(area);
 
+    area->AllowResizeFromData();
+
     // Data loading
     if (!predictor->Load(area, timeArray, params->GetPredictorLevel(iStep, iPtor))) {
         wxLogError(_("The data could not be loaded."));
@@ -1138,6 +1140,8 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
         // Area object instantiation
         asAreaGrid *area = asAreaGrid::GetInstance(params, iStep, iPtor);
         wxASSERT(area);
+
+        area->AllowResizeFromData();
 
         // Data loading
         if (!predictorPreprocess->Load(area, timeArray, params->GetPreprocessLevel(iStep, iPtor, iPre))) {

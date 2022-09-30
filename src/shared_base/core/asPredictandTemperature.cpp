@@ -104,7 +104,7 @@ bool asPredictandTemperature::BuildPredictandDB(const wxString &catalogFilePath,
 
     wxLogVerbose(_("Predictand DB saved."));
 
-#if wxUSE_GUI
+#if USE_GUI
     if (!g_silentMode) {
         wxMessageBox(_("Predictand DB saved."));
     }

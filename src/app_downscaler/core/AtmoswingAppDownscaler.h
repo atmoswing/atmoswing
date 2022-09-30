@@ -35,7 +35,7 @@
 
 #include "asIncludes.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 
 class AtmoswingAppDownscaler : public wxApp
 #else
@@ -80,7 +80,7 @@ class AtmoswingAppDownscaler : public wxAppConsole
     wxString m_predictorsScenarioDir;
     vi m_predictandStationIds;
     bool m_doProcessing;
-#if wxUSE_GUI
+#if USE_GUI
     wxSingleInstanceChecker *m_singleInstanceChecker;
 #endif
 };

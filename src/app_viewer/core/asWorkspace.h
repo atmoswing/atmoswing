@@ -31,7 +31,7 @@
 #include "asFileWorkspace.h"
 #include "asIncludes.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 
 #include <wx/brush.h>
 #include <wx/colour.h>
@@ -120,7 +120,7 @@ class asWorkspace : public wxObject {
         m_layerLineWidths[i] = val;
     }
 
-#if wxUSE_GUI
+#if USE_GUI
 
     wxColour GetLayerLineColor(int i) const {
         wxASSERT((int)m_layerLineColors.size() > i);
@@ -205,7 +205,7 @@ class asWorkspace : public wxObject {
     vi m_layerTransparencies;
     vb m_layerVisibilities;
     vi m_layerLineWidths;
-#if wxUSE_GUI
+#if USE_GUI
     std::vector<wxColour> m_layerLineColors;
     std::vector<wxColour> m_layerFillColors;
     std::vector<wxBrushStyle> m_layerBrushStyles;

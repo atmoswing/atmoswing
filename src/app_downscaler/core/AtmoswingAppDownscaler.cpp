@@ -35,7 +35,7 @@
 
 #include "AtmoswingAppDownscaler.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 
 #include "AtmoswingMainDownscaler.h"
 
@@ -49,7 +49,7 @@ IMPLEMENT_APP(AtmoswingAppDownscaler)
 #include "asFileText.h"
 #include "asMethodDownscalerClassic.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 
 #include "asParameters.h"
 #include "images.h"
@@ -106,7 +106,7 @@ bool AtmoswingAppDownscaler::OnInit() {
     m_predictorsScenarioDir = wxEmptyString;
     m_downscalingMethod = wxEmptyString;
     m_doProcessing = false;
-#if wxUSE_GUI
+#if USE_GUI
     g_guiMode = true;
     m_singleInstanceChecker = nullptr;
 #else
@@ -123,7 +123,7 @@ bool AtmoswingAppDownscaler::OnInit() {
         return true;
     }
 
-#if wxUSE_GUI
+#if USE_GUI
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
@@ -179,7 +179,7 @@ bool AtmoswingAppDownscaler::InitLog() {
         wxString fullPath = GetLocalPath();
         fullPath.Append("AtmoSwingDownscaler.log");
 
-#if wxUSE_GUI
+#if USE_GUI
         if (!g_guiMode) {
             Log()->CreateFileOnly("AtmoSwingDownscaler.log");
         } else {
@@ -190,7 +190,7 @@ bool AtmoswingAppDownscaler::InitLog() {
         Log()->CreateFileOnlyAtPath(fullPath);
 #endif
     } else {
-#if wxUSE_GUI
+#if USE_GUI
         if (!g_guiMode) {
             Log()->CreateFileOnly("AtmoSwingDownscaler.log");
         }

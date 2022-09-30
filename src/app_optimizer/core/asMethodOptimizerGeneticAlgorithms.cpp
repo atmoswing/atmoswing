@@ -453,7 +453,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
 
     // Display processing time
     wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
-#if wxUSE_GUI
+#if USE_GUI
     wxLogStatus(_("Optimization over."));
 #endif
 

@@ -65,9 +65,9 @@ endif (USE_CPPCHECK)
 
 # Specific definitions
 if (USE_GUI)
-    set_target_properties(asbase PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=1")
+    set_target_properties(asbase PROPERTIES COMPILE_DEFINITIONS "USE_GUI=1")
 else (USE_GUI)
-    set_target_properties(asbase PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=0")
+    set_target_properties(asbase PROPERTIES COMPILE_DEFINITIONS "USE_GUI=0")
 endif (USE_GUI)
 
 

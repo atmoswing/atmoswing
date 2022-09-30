@@ -72,7 +72,7 @@ enum {
 };
 
 // Windows ID
-#if wxUSE_GUI
+#if USE_GUI
 enum {
     asWINDOW_MAIN = 101,
     asWINDOW_PREFERENCES,

@@ -87,7 +87,7 @@ bool asWorkspace::Load(const wxString &filePath) {
                             m_layerVisibilities.push_back(asFileWorkspace::GetBool(nodeLayerData));
                         } else if (nodeLayerData->GetName() == "line_width") {
                             m_layerLineWidths.push_back(asFileWorkspace::GetInt(nodeLayerData));
-#if wxUSE_GUI
+#if USE_GUI
                         } else if (nodeLayerData->GetName() == "line_color") {
                             wxString lineColorStr = asFileWorkspace::GetString(nodeLayerData);
                             wxColour lineColor;
@@ -117,7 +117,7 @@ bool asWorkspace::Load(const wxString &filePath) {
 
             if (m_layerPaths.size() != m_layerTypes.size() || m_layerPaths.size() != m_layerTransparencies.size() ||
                 m_layerPaths.size() != m_layerVisibilities.size() || m_layerPaths.size() != m_layerLineWidths.size()
-#if wxUSE_GUI
+#if USE_GUI
                 || m_layerPaths.size() != m_layerLineColors.size() || m_layerPaths.size() != m_layerFillColors.size() ||
                 m_layerPaths.size() != m_layerBrushStyles.size()
 #endif
@@ -162,7 +162,7 @@ bool asWorkspace::Save() const {
         nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("transparency", m_layerTransparencies[iLayer]));
         nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("visibility", m_layerVisibilities[iLayer]));
         nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("line_width", m_layerLineWidths[iLayer]));
-#if wxUSE_GUI
+#if USE_GUI
         nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("line_color", wxToString(m_layerLineColors[iLayer])));
         nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("fill_color", wxToString(m_layerFillColors[iLayer])));
         wxString strBrush;
@@ -190,7 +190,7 @@ void asWorkspace::ClearLayers() {
     m_layerTransparencies.clear();
     m_layerVisibilities.clear();
     m_layerLineWidths.clear();
-#if wxUSE_GUI
+#if USE_GUI
     m_layerLineColors.clear();
     m_layerFillColors.clear();
     m_layerBrushStyles.clear();
@@ -204,7 +204,7 @@ void asWorkspace::AddLayer() {
     m_layerTransparencies.resize(nb);
     m_layerVisibilities.resize(nb);
     m_layerLineWidths.resize(nb);
-#if wxUSE_GUI
+#if USE_GUI
     m_layerLineColors.resize(nb);
     m_layerFillColors.resize(nb);
     m_layerBrushStyles.resize(nb);
