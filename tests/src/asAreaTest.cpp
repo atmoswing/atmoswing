@@ -30,36 +30,12 @@
 
 #include "asArea.h"
 
-TEST(Area, CheckPointWGS84True) {
-    asArea area;
-    Coo point;
-    point.x = 10;
-    point.y = 10;
-    EXPECT_TRUE(area.CheckPoint(point));
-}
-
-TEST(Area, CheckPointWGS84UVMaxTrue) {
-    asArea area;
-    Coo point;
-    point.x = 360;
-    point.y = 90;
-    EXPECT_TRUE(area.CheckPoint(point));
-}
-
-TEST(Area, CheckPointWGS84UVMinTrue) {
-    asArea area;
-    Coo point;
-    point.x = 0;
-    point.y = -90;
-    EXPECT_TRUE(area.CheckPoint(point));
-}
-
 TEST(Area, CheckPointWGS84USup360) {
     asArea area;
     Coo point;
     point.x = 360.1;
     point.y = 10;
-    EXPECT_TRUE(area.CheckPoint(point));
+    area.CheckPoint(point);
     EXPECT_DOUBLE_EQ(360.1, point.x);
 }
 
@@ -68,7 +44,7 @@ TEST(Area, CheckPointWGS84UInf0) {
     Coo point;
     point.x = -0.1;
     point.y = 10;
-    EXPECT_TRUE(area.CheckPoint(point));
+    area.CheckPoint(point);
     EXPECT_DOUBLE_EQ(-0.1, point.x);
 }
 
@@ -77,7 +53,7 @@ TEST(Area, CheckPointWGS84VTooHigh) {
     Coo point;
     point.x = 10;
     point.y = 90.1;
-    EXPECT_FALSE(area.CheckPoint(point));
+    area.CheckPoint(point);
     EXPECT_DOUBLE_EQ(90.1, point.y);
 }
 
@@ -86,7 +62,7 @@ TEST(Area, CheckPointWGS84VTooLow) {
     Coo point;
     point.x = 10;
     point.y = -90.1;
-    EXPECT_FALSE(area.CheckPoint(point));
+    area.CheckPoint(point);
     EXPECT_DOUBLE_EQ(-90.1, point.y);
 }
 

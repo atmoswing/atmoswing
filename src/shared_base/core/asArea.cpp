@@ -67,26 +67,25 @@ asArea::asArea()
       m_isLatLon(true) {}
 
 void asArea::Init() {
-    if (m_isLatLon && !DoCheckPoints()) asThrowException(_("Unable to build a consistent area with the coordinates."));
+    if (m_isLatLon) DoCheckPoints();
     if (!CheckConsistency()) asThrowException(_("Unable to build a consistent area with the given coordinates."));
     if (!IsRectangle()) asThrowException(_("The provided area is not rectangle."));
 }
 
-bool asArea::DoCheckPoints() {
-    return !(!CheckPoint(m_cornerUL) || !CheckPoint(m_cornerUR) ||
-             !CheckPoint(m_cornerLL) || !CheckPoint(m_cornerLR));
+void asArea::DoCheckPoints() {
+    CheckPoint(m_cornerUL);
+    CheckPoint(m_cornerUR);
+    CheckPoint(m_cornerLL);
+    CheckPoint(m_cornerLR);
 }
 
-bool asArea::CheckPoint(Coo &point) {
-    // We always consider WGS84 for the predictors
+void asArea::CheckPoint(Coo &point) {
     if (point.y < -90) {
-        return false;
+        point.y = -90;
     }
     if (point.y > 90) {
-        return false;
+        point.y = 90;
     }
-
-    return true;
 }
 
 bool asArea::CheckConsistency() {
