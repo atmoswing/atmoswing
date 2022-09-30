@@ -28,7 +28,7 @@
 
 #include "asPredictorCustomLtheNR1.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorCustomLtheNR1::asPredictorCustomLtheNR1(const wxString &dataId) : asPredictorCustomUnilNR1(dataId) {

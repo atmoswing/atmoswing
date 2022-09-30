@@ -25,24 +25,37 @@
  * Portions Copyright 2018 Pascal Horton, University of Bern.
  */
 
-#include "asAreaCompGenGrid.h"
+#ifndef AS_AREA_GEN_GRID_H
+#define AS_AREA_GEN_GRID_H
 
-#include "asTypeDefs.h"
+#include "asAreaGrid.h"
+#include "asIncludes.h"
 
-asAreaCompGenGrid::asAreaCompGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                                     int flatAllowed, bool isLatLon)
-    : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon) {}
+class asAreaGenGrid : public asAreaGrid {
+  public:
+    asAreaGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+                  int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-asAreaCompGenGrid::asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed,
-                                     bool isLatLon)
-    : asAreaCompGrid(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon) {}
+    asAreaGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
+                  bool isLatLon = true);
 
-asAreaCompGenGrid::asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
-    : asAreaCompGrid(xMin, 0, yMin, 0, flatAllowed, isLatLon) {
-    m_xPtsNb = xPtsNb;
-    m_yPtsNb = yPtsNb;
-}
+    asAreaGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
+                  bool isLatLon = true);
 
-bool asAreaCompGenGrid::GridsOverlay(asAreaCompGrid *otherArea) const {
-    return false;
-}
+    ~asAreaGenGrid() override = default;
+
+    bool GridsOverlay(asAreaGrid *otherArea) const override;
+
+    double GetXstep() const override {
+        return 0.0;
+    }
+
+    double GetYstep() const override {
+        return 0.0;
+    }
+
+  protected:
+  private:
+};
+
+#endif

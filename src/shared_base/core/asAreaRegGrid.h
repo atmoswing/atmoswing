@@ -29,10 +29,10 @@
 #ifndef AS_AREA_COMPOSITE_REGULAR_GRID_H
 #define AS_AREA_COMPOSITE_REGULAR_GRID_H
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asIncludes.h"
 
-class asAreaCompRegGrid : public asAreaCompGrid {
+class asAreaCompRegGrid : public asAreaGrid {
   public:
     asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, double xStep,
                       double yStep, int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
@@ -45,7 +45,7 @@ class asAreaCompRegGrid : public asAreaCompGrid {
 
     ~asAreaCompRegGrid() override = default;
 
-    bool GridsOverlay(asAreaCompGrid *otherArea) const override;
+    bool GridsOverlay(asAreaGrid *otherArea) const override;
 
     bool InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed = true, bool getLarger = false) override;
 

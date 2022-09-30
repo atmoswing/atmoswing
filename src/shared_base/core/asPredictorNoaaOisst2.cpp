@@ -28,7 +28,7 @@
 
 #include "asPredictorNoaaOisst2.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorNoaaOisst2::asPredictorNoaaOisst2(const wxString &dataId) : asPredictor(dataId) {

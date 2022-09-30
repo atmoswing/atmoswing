@@ -28,7 +28,7 @@
 
 #include "asMethodStandard.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asCriteria.h"
 #include "asParameters.h"
 #include "asPredictor.h"
@@ -478,8 +478,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             double yStep = params->GetPredictorYstep(iStep, iPtor);
             int flatAllowed = params->GetPredictorFlatAllowed(iStep, iPtor);
             bool isLatLon = asPredictor::IsLatLon(params->GetPredictorDatasetId(iStep, iPtor));
-            asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
-                                                               yStep, flatAllowed, isLatLon);
+            asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
+                                                       yStep, flatAllowed, isLatLon);
             wxASSERT(area);
             area->AllowResizeFromData();
 
@@ -715,8 +715,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 double yStep = params->GetPredictorYstep(iStep, iPtor);
                 int flatAllowed = params->GetPredictorFlatAllowed(iStep, iPtor);
                 bool isLatLon = asPredictor::IsLatLon(params->GetPredictorDatasetId(iStep, iPtor));
-                asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep,
-                                                                   flatAllowed, isLatLon);
+                asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep,
+                                                           flatAllowed, isLatLon);
                 wxASSERT(area);
                 area->AllowResizeFromData();
 
@@ -953,7 +953,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     wxDELETE(criterion);
 
     // Area object instantiation
-    asAreaCompGrid *desiredArea = asAreaCompGrid::GetInstance(params, iStep, iPtor);
+    asAreaGrid *desiredArea = asAreaGrid::GetInstance(params, iStep, iPtor);
 
     wxASSERT(desiredArea);
 
@@ -988,7 +988,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         wxASSERT(indexXmin >= 0);
         params->SetPredictorXptsnb(iStep, iPtor, indexXmax - indexXmin + 1);
         wxDELETE(desiredArea);
-        desiredArea = asAreaCompGrid::GetInstance(params, iStep, iPtor);
+        desiredArea = asAreaGrid::GetInstance(params, iStep, iPtor);
     }
     if (desiredArea->GetYmax() > desiredPredictor->GetYmax()) {
         a1d latAxis = desiredPredictor->GetLatAxis();
@@ -996,7 +996,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         int indexYmax = asFindClosest(&latAxis[0], &latAxis[latAxis.size() - 1], desiredPredictor->GetYmax());
         params->SetPredictorYptsnb(iStep, iPtor, std::abs(indexYmax - indexYmin) + 1);
         wxDELETE(desiredArea);
-        desiredArea = asAreaCompGrid::GetInstance(params, iStep, iPtor);
+        desiredArea = asAreaGrid::GetInstance(params, iStep, iPtor);
     }
 
     if (!desiredPredictor->ClipToArea(desiredArea)) {
@@ -1059,7 +1059,7 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
     }
 
     // Area object instantiation
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(params, iStep, iPtor);
+    asAreaGrid *area = asAreaGrid::GetInstance(params, iStep, iPtor);
     wxASSERT(area);
 
     // Data loading
@@ -1136,7 +1136,7 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
         }
 
         // Area object instantiation
-        asAreaCompGrid *area = asAreaCompGrid::GetInstance(params, iStep, iPtor);
+        asAreaGrid *area = asAreaGrid::GetInstance(params, iStep, iPtor);
         wxASSERT(area);
 
         // Data loading

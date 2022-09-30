@@ -27,7 +27,7 @@
 
 #include "asPredictorEcmwfIfsGrib.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString &dataId) : asPredictor(dataId) {

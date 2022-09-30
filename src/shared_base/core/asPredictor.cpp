@@ -32,7 +32,7 @@
 #include <wx/dir.h>
 #include <wx/ffile.h>
 
-#include "asAreaCompGenGrid.h"
+#include "asAreaGenGrid.h"
 #include "asAreaCompRegGrid.h"
 #include "asPredictorCustomLtheNR1.h"
 #include "asPredictorCustomMFvgMeso.h"
@@ -418,7 +418,7 @@ bool asPredictor::CheckFilesPresence() {
     return true;
 }
 
-bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, float level) {
+bool asPredictor::Load(asAreaGrid *desiredArea, asTimeArray &timeArray, float level) {
     m_level = level;
 
     if (!m_initialized) {
@@ -459,7 +459,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         }
 
         // Create a new area matching the dataset
-        asAreaCompGrid *dataArea = CreateMatchingArea(desiredArea);
+        asAreaGrid *dataArea = CreateMatchingArea(desiredArea);
 
         // Store time array
         m_time = timeArray.GetTimeArray();
@@ -536,18 +536,18 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
     return true;
 }
 
-bool asPredictor::Load(asAreaCompGrid &desiredArea, asTimeArray &timeArray, float level) {
+bool asPredictor::Load(asAreaGrid &desiredArea, asTimeArray &timeArray, float level) {
     return Load(&desiredArea, timeArray, level);
 }
 
-bool asPredictor::Load(asAreaCompGrid &desiredArea, double date, float level) {
+bool asPredictor::Load(asAreaGrid &desiredArea, double date, float level) {
     asTimeArray timeArray(date);
     timeArray.Init();
 
     return Load(&desiredArea, timeArray, level);
 }
 
-bool asPredictor::Load(asAreaCompGrid *desiredArea, double date, float level) {
+bool asPredictor::Load(asAreaGrid *desiredArea, double date, float level) {
     asTimeArray timeArray(date);
     timeArray.Init();
 
@@ -608,7 +608,7 @@ bool asPredictor::EnquireFileStructure(asTimeArray &timeArray) {
     return false;
 }
 
-bool asPredictor::ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) {
+bool asPredictor::ExtractFromFiles(asAreaGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) {
     switch (m_fileType) {
         case (asFile::Netcdf): {
             for (const auto &fileName : m_files) {
@@ -660,7 +660,7 @@ bool asPredictor::EnquireNetcdfFileStructure() {
     return true;
 }
 
-bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
+bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray,
                                         vvva2f &compositeData) {
     // Open the NetCDF file
     ThreadsManager().CritSectionNetCDF().Enter();
@@ -770,7 +770,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray) {
     return true;
 }
 
-bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
+bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray,
                                       vvva2f &compositeData) {
     // Handle missing file
     if (fileName.IsEmpty()) {
@@ -1106,7 +1106,7 @@ bool asPredictor::HasDesiredLevel(bool useWarnings) {
     return false;
 }
 
-asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea) {
+asAreaGrid *asPredictor::CreateMatchingArea(asAreaGrid *desiredArea) {
     wxASSERT(m_fStr.lons.size() > 0);
     wxASSERT(m_fStr.lats.size() > 0);
 
@@ -1150,10 +1150,10 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea) {
             return dataArea;
 
         } else {
-            auto desiredAreaGen = dynamic_cast<asAreaCompGenGrid *>(desiredArea);
+            auto desiredAreaGen = dynamic_cast<asAreaGenGrid *>(desiredArea);
             m_fInd.lonStep = 1;
             m_fInd.latStep = 1;
-            auto dataArea = new asAreaCompGenGrid(*desiredAreaGen);
+            auto dataArea = new asAreaGenGrid(*desiredAreaGen);
             if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
                 asThrowException(_("Failed at initializing the axes."));
             }
@@ -1173,7 +1173,7 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea) {
     return nullptr;
 }
 
-bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) {
+bool asPredictor::GetAxesIndexes(asAreaGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) {
     m_fInd.areas.clear();
 
     int iStartTimeArray = timeArray.GetIndexFirstAfter(m_fStr.time[0], m_fStr.timeStep);
@@ -1778,7 +1778,7 @@ bool asPredictor::StandardizeData(double mean, double sd) {
     return true;
 }
 
-bool asPredictor::ClipToArea(asAreaCompGrid *desiredArea) {
+bool asPredictor::ClipToArea(asAreaGrid *desiredArea) {
     double xMin = desiredArea->GetXmin();
     double xMax = desiredArea->GetXmax();
     if (xMin > xMax) {
@@ -2082,7 +2082,7 @@ bool asPredictor::Inline() {
     return true;
 }
 
-bool asPredictor::MergeComposites(vvva2f &compositeData, asAreaCompGrid *area) {
+bool asPredictor::MergeComposites(vvva2f &compositeData, asAreaGrid *area) {
     if (area && area->GetNbComposites() > 1) {
         // Get a container with the final size
         long sizeTime = compositeData[0].size();
@@ -2107,7 +2107,7 @@ bool asPredictor::MergeComposites(vvva2f &compositeData, asAreaCompGrid *area) {
     return true;
 }
 
-bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *desiredArea) {
+bool asPredictor::InterpolateOnGrid(asAreaGrid *dataArea, asAreaGrid *desiredArea) {
     wxASSERT(dataArea);
     wxASSERT(dataArea->GetNbComposites() > 0);
     wxASSERT(desiredArea);

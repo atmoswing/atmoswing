@@ -26,36 +26,36 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AS_AREA_COMPOSITE_GRID_H
-#define AS_AREA_COMPOSITE_GRID_H
+#ifndef AS_AREA_GRID_H
+#define AS_AREA_GRID_H
 
 #include "asAreaComp.h"
 #include "asIncludes.h"
 
 class asParameters;
 
-class asAreaCompGrid : public asAreaComp {
+class asAreaGrid : public asAreaComp {
   public:
-    static asAreaCompGrid *GetInstance(const asParameters *params, int iStep, int iPtor);
+    static asAreaGrid *GetInstance(const asParameters *params, int iStep, int iPtor);
 
-    static asAreaCompGrid *GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
-                                       int yPtsNb, double yStep, int flatAllowed = asFLAT_FORBIDDEN,
-                                       bool isLatLon = true);
+    static asAreaGrid *GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
+                                   int yPtsNb, double yStep, int flatAllowed = asFLAT_FORBIDDEN,
+                                   bool isLatLon = true);
 
-    static asAreaCompGrid *GetInstance(double xMin, int xPtsNb, double xStep, double yMin, int yPtsNb, double yStep,
-                                       int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
+    static asAreaGrid *GetInstance(double xMin, int xPtsNb, double xStep, double yMin, int yPtsNb, double yStep,
+                                   int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                   int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
+    asAreaGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+               int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
-                   bool isLatLon = true);
+    asAreaGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
+               bool isLatLon = true);
 
-    asAreaCompGrid();
+    asAreaGrid();
 
     virtual bool InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed = true, bool getLarger = false);
 
-    virtual bool GridsOverlay(asAreaCompGrid *otherArea) const = 0;
+    virtual bool GridsOverlay(asAreaGrid *otherArea) const = 0;
 
     void CorrectCornersWithAxes();
 

@@ -27,7 +27,7 @@
 
 #include "asPredictorNcepCfsr.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorNcepCfsr::asPredictorNcepCfsr(const wxString &dataId) : asPredictor(dataId) {

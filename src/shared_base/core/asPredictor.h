@@ -37,7 +37,7 @@ class asTimeArray;
 
 class asGeo;
 
-class asAreaCompGrid;
+class asAreaGrid;
 
 class asPredictor : public wxObject {
   public:
@@ -132,15 +132,15 @@ class asPredictor : public wxObject {
 
     bool CheckFilesPresence();
 
-    bool Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, float level);
+    bool Load(asAreaGrid *desiredArea, asTimeArray &timeArray, float level);
 
-    bool Load(asAreaCompGrid &desiredArea, asTimeArray &timeArray, float level);
+    bool Load(asAreaGrid &desiredArea, asTimeArray &timeArray, float level);
 
-    bool Load(asAreaCompGrid &desiredArea, double date, float level);
+    bool Load(asAreaGrid &desiredArea, double date, float level);
 
-    bool Load(asAreaCompGrid *desiredArea, double date, float level);
+    bool Load(asAreaGrid *desiredArea, double date, float level);
 
-    bool ClipToArea(asAreaCompGrid *desiredArea);
+    bool ClipToArea(asAreaGrid *desiredArea);
 
     bool StandardizeData(double mean = NaNd, double sd = NaNd);
 
@@ -450,7 +450,7 @@ class asPredictor : public wxObject {
 
     bool EnquireFileStructure(asTimeArray &timeArray);
 
-    bool ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
+    bool ExtractFromFiles(asAreaGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
     virtual void ConvertToMjd(a1d &time, double refValue = NaNd) const;
 
@@ -458,7 +458,7 @@ class asPredictor : public wxObject {
 
     virtual bool CheckTimeArray(asTimeArray &timeArray);
 
-    virtual bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
+    virtual bool GetAxesIndexes(asAreaGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
     size_t *GetIndexesStartNcdf(int iArea) const;
 
@@ -476,12 +476,12 @@ class asPredictor : public wxObject {
 
     bool EnquireNetcdfFileStructure();
 
-    bool ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
+    bool ExtractFromNetcdfFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray,
                                vvva2f &compositeData);
 
     bool EnquireGribFileStructure(asTimeArray &timeArray);
 
-    bool ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
+    bool ExtractFromGribFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray,
                              vvva2f &compositeData);
 
     bool ParseFileStructure(asFileNetcdf &ncFile);
@@ -494,13 +494,13 @@ class asPredictor : public wxObject {
 
     bool HasDesiredLevel(bool useWarnings = true);
 
-    bool MergeComposites(vvva2f &compositeData, asAreaCompGrid *area);
+    bool MergeComposites(vvva2f &compositeData, asAreaGrid *area);
 
-    bool InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *desiredArea);
+    bool InterpolateOnGrid(asAreaGrid *dataArea, asAreaGrid *desiredArea);
 
     bool TransformData(vvva2f &compositeData);
 
-    asAreaCompGrid *CreateMatchingArea(asAreaCompGrid *desiredArea);
+    asAreaGrid *CreateMatchingArea(asAreaGrid *desiredArea);
 
     bool IsPressureLevel() const;
 
