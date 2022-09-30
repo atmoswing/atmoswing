@@ -54,7 +54,7 @@ TEST(Area, CheckPointWGS84VTooHigh) {
     point.x = 10;
     point.y = 90.1;
     area.CheckPoint(point);
-    EXPECT_DOUBLE_EQ(90.1, point.y);
+    EXPECT_DOUBLE_EQ(90, point.y);
 }
 
 TEST(Area, CheckPointWGS84VTooLow) {
@@ -63,7 +63,7 @@ TEST(Area, CheckPointWGS84VTooLow) {
     point.x = 10;
     point.y = -90.1;
     area.CheckPoint(point);
-    EXPECT_DOUBLE_EQ(-90.1, point.y);
+    EXPECT_DOUBLE_EQ(-90, point.y);
 }
 
 TEST(Area, IsRectangleTrue) {
