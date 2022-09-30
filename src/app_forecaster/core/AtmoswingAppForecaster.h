@@ -36,7 +36,7 @@
 
 #include "asIncludes.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 
 class AtmoswingAppForecaster : public wxApp
 #else
@@ -65,7 +65,7 @@ class AtmoswingAppForecaster : public wxAppConsole
     bool m_doForecastPast;
     double m_forecastDate;
     int m_forecastPastDays;
-#if wxUSE_GUI
+#if USE_GUI
     wxSingleInstanceChecker *m_singleInstanceChecker;
 #endif
 };

@@ -492,7 +492,7 @@ int AtmoswingAppDownscaler::OnExit() {
 }
 
 void AtmoswingAppDownscaler::CleanUp() {
-#if wxUSE_GUI
+#if USE_GUI
     // Instance checker
     wxDELETE(m_singleInstanceChecker);
 #endif
@@ -504,7 +504,7 @@ void AtmoswingAppDownscaler::CleanUp() {
     DeleteThreadsManager();
     DeleteLog();
 
-#if wxUSE_GUI
+#if USE_GUI
     // Delete images
     cleanup_images();
 #endif
