@@ -28,7 +28,13 @@ FetchContent_Declare(
         GIT_TAG 78fa6885422dcdb9d8becedb57d6edfc99e9d7c3
         SOURCE_SUBDIR vroomgis)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+find_file(CONANBUILDINFO
+        NAMES conanbuildinfo.cmake
+        PATHS "${CMAKE_BINARY_DIR}"
+        "${CMAKE_SOURCE_DIR}"
+        )
+
+include(${CONANBUILDINFO})
 conan_basic_setup(TARGETS)
 
 include_directories(${CONAN_INCLUDE_DIRS})
