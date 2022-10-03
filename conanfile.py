@@ -22,6 +22,7 @@ class AmtoSwing(ConanFile):
         "enable_benchmark": [True, False],
         "code_coverage": [True, False],
         "with_gui": [True, False],
+        "use_cuda": [True, False],
         "build_forecaster": [True, False],
         "build_viewer": [True, False],
         "build_optimizer": [True, False],
@@ -32,6 +33,7 @@ class AmtoSwing(ConanFile):
         "enable_benchmark": False,
         "code_coverage": False,
         "with_gui": True,
+        "use_cuda": False,
         "build_forecaster": True,
         "build_viewer": True,
         "build_optimizer": True,
@@ -95,6 +97,7 @@ class AmtoSwing(ConanFile):
         cmake.definitions["BUILD_BENCHMARK"] = self.options.enable_benchmark
         cmake.definitions["USE_CODECOV"] = self.options.code_coverage
         cmake.definitions["USE_GUI"] = self.options.with_gui
+        cmake.definitions["USE_CUDA"] = self.options.use_cuda
         cmake.definitions["BUILD_FORECASTER"] = self.options.build_forecaster
         cmake.definitions["BUILD_VIEWER"] = self.options.build_viewer
         cmake.definitions["BUILD_OPTIMIZER"] = self.options.build_optimizer
