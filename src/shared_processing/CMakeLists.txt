@@ -48,10 +48,6 @@ if (USE_CUDA)
     add_library(ascuda STATIC ${src_cuda})
     target_link_libraries(ascuda CUDA::cudart_static)
     add_definitions(-DUSE_CUDA)
-else (USE_CUDA)
-    # unset for wxhgversion
-    unset(CUDA_INCLUDE_DIRS CACHE)
-    unset(CUDA_CUDA_LIBRARY CACHE)
 endif (USE_CUDA)
 
 # Own libraries
