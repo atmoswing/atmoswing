@@ -27,7 +27,8 @@
 
 #include "asCriteriaS1G.h"
 
-asCriteriaS1G::asCriteriaS1G() : asCriteria("S1", _("Teweles-Wobus score with a Gaussian weighting"), Asc) {
+asCriteriaS1G::asCriteriaS1G()
+    : asCriteria("S1", _("Teweles-Wobus score with a Gaussian weighting"), Asc) {
     m_minPointsNb = 2;
     m_scaleWorst = 200;
     m_canUseInline = false;
@@ -35,7 +36,7 @@ asCriteriaS1G::asCriteriaS1G() : asCriteria("S1", _("Teweles-Wobus score with a 
 
 asCriteriaS1G::~asCriteriaS1G() = default;
 
-float asCriteriaS1G::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
+float asCriteriaS1G::Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() == rowsNb);
@@ -55,10 +56,12 @@ float asCriteriaS1G::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
 
     dividend = (g1 * ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)) -
                       (evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)))
-                         .abs()).sum() +
+                         .abs())
+                   .sum() +
                (g1 * ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)) -
                       (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)))
-                         .abs()).sum();
+                         .abs())
+                   .sum();
 
     divisor =
         (g2 *

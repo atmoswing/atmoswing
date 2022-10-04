@@ -27,7 +27,7 @@
 
 #include "asFramePreferencesDownscaler.h"
 
-asFramePreferencesDownscaler::asFramePreferencesDownscaler(wxWindow *parent, wxWindowID id)
+asFramePreferencesDownscaler::asFramePreferencesDownscaler(wxWindow* parent, wxWindowID id)
     : asFramePreferencesDownscalerVirtual(parent, id) {
     LoadPreferences();
     Fit();
@@ -38,7 +38,7 @@ asFramePreferencesDownscaler::asFramePreferencesDownscaler(wxWindow *parent, wxW
 #endif
 }
 
-void asFramePreferencesDownscaler::CloseFrame(wxCommandEvent &event) {
+void asFramePreferencesDownscaler::CloseFrame(wxCommandEvent& event) {
     Close();
 }
 
@@ -49,7 +49,7 @@ void asFramePreferencesDownscaler::Update() {
 void asFramePreferencesDownscaler::LoadPreferences() {
     wxBusyCursor wait;
 
-    wxConfigBase *pConfig;
+    wxConfigBase* pConfig;
     pConfig = wxFileConfig::Get();
 
     // Fix the color of the file/dir pickers
@@ -139,7 +139,7 @@ void asFramePreferencesDownscaler::LoadPreferences() {
 void asFramePreferencesDownscaler::SavePreferences() const {
     wxBusyCursor wait;
 
-    wxConfigBase *pConfig;
+    wxConfigBase* pConfig;
     pConfig = wxFileConfig::Get();
 
     /*
@@ -209,7 +209,7 @@ void asFramePreferencesDownscaler::SavePreferences() const {
     pConfig->Flush();
 }
 
-void asFramePreferencesDownscaler::OnChangeMultithreadingCheckBox(wxCommandEvent &event) {
+void asFramePreferencesDownscaler::OnChangeMultithreadingCheckBox(wxCommandEvent& event) {
     if (event.GetInt() == 0) {
         m_radioBoxProcessingMethods->Enable(asMULTITHREADS, false);
         if (m_radioBoxProcessingMethods->GetSelection() == asMULTITHREADS) {
@@ -220,11 +220,11 @@ void asFramePreferencesDownscaler::OnChangeMultithreadingCheckBox(wxCommandEvent
     }
 }
 
-void asFramePreferencesDownscaler::SaveAndClose(wxCommandEvent &event) {
+void asFramePreferencesDownscaler::SaveAndClose(wxCommandEvent& event) {
     SavePreferences();
     Close();
 }
 
-void asFramePreferencesDownscaler::ApplyChanges(wxCommandEvent &event) {
+void asFramePreferencesDownscaler::ApplyChanges(wxCommandEvent& event) {
     SavePreferences();
 }

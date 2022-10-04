@@ -38,7 +38,7 @@ asMethodCalibratorClassic::asMethodCalibratorClassic()
 
 asMethodCalibratorClassic::~asMethodCalibratorClassic() = default;
 
-bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params) {
+bool asMethodCalibratorClassic::Calibrate(asParametersCalibration& params) {
     // Get preferences
     GetPlusOptions();
 
@@ -196,7 +196,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params) {
 void asMethodCalibratorClassic::GetPlusOptions() {
     if (m_plus) {
         ThreadsManager().CritSectionConfig().Enter();
-        wxConfigBase *pConfig = wxConfigBase::Get();
+        wxConfigBase* pConfig = wxConfigBase::Get();
         pConfig->Read("/ClassicPlus/StepsLatPertinenceMap", &m_stepsLatPertinenceMap, 2);
         if (m_stepsLatPertinenceMap < 1) m_stepsLatPertinenceMap = 1;
         pConfig->Read("/ClassicPlus/StepsLonPertinenceMap", &m_stepsLonPertinenceMap, 2);
@@ -208,19 +208,19 @@ void asMethodCalibratorClassic::GetPlusOptions() {
     }
 }
 
-bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration &params) {
+bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration& params) {
     try {
         wxLogMessage("Preloading data (if required).");
         if (!PreloadArchiveData(&params)) {
             wxLogError(_("Could not preload the data."));
             return false;
         }
-    } catch (std::bad_alloc &ba) {
+    } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught during data preloading: %s"), msg);
         DeletePreloadedArchiveData();
         return false;
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught during data preloading: %s"), msg);
         DeletePreloadedArchiveData();
@@ -231,7 +231,7 @@ bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration &params) {
 }
 
 asMethodCalibrator::ParamExploration asMethodCalibratorClassic::GetSpatialBoundaries(
-    const asParametersCalibration &params, int iStep) const {
+    const asParametersCalibration& params, int iStep) const {
     ParamExploration explo;
 
     explo.xMinStart = params.GetPredictorXminLowerLimit(iStep, 0);
@@ -264,7 +264,7 @@ asMethodCalibrator::ParamExploration asMethodCalibratorClassic::GetSpatialBounda
     return explo;
 }
 
-void asMethodCalibratorClassic::GetInitialAnalogNumber(asParametersCalibration &params, int iStep) const {
+void asMethodCalibratorClassic::GetInitialAnalogNumber(asParametersCalibration& params, int iStep) const {
     int initalAnalogsNb = 0;
     vi initalAnalogsNbVect = params.GetAnalogsNumberVector(iStep);
     if (initalAnalogsNbVect.size() > 1) {
@@ -285,8 +285,8 @@ void asMethodCalibratorClassic::GetInitialAnalogNumber(asParametersCalibration &
     params.FixAnalogsNb();
 }
 
-void asMethodCalibratorClassic::SetMinimalArea(asParametersCalibration &params, int iStep,
-                                               const asMethodCalibrator::ParamExploration &explo) const {
+void asMethodCalibratorClassic::SetMinimalArea(asParametersCalibration& params, int iStep,
+                                               const asMethodCalibrator::ParamExploration& explo) const {
     for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
         if (params.GetPredictorFlatAllowed(iStep, iPtor)) {
             params.SetPredictorXptsnb(iStep, iPtor, 1);
@@ -298,9 +298,9 @@ void asMethodCalibratorClassic::SetMinimalArea(asParametersCalibration &params, 
     }
 }
 
-void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration &params, int iStep,
-                                               const asMethodCalibrator::ParamExploration &explo, a1d &xAxis,
-                                               a1d &yAxis) const {
+void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration& params, int iStep,
+                                               const asMethodCalibrator::ParamExploration& explo, a1d& xAxis,
+                                               a1d& yAxis) const {
     wxASSERT(m_preloadedArchive[iStep][0][0][0][0]);
 
     xAxis = m_preloadedArchive[iStep][0][0][0][0]->GetLonAxis();
@@ -318,8 +318,8 @@ void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration &pa
     asSortArray(&yAxis[0], &yAxis[yAxis.size() - 1], Asc);
 }
 
-void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalibration &params, int iStep,
-                                                               const asMethodCalibrator::ParamExploration &explo) {
+void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalibration& params, int iStep,
+                                                               const asMethodCalibrator::ParamExploration& explo) {
     ClearTemp();
 
     a1d xAxis;
@@ -347,7 +347,7 @@ void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalib
     }
 }
 
-void asMethodCalibratorClassic::BalanceWeights(asParametersCalibration &params, int iStep) const {
+void asMethodCalibratorClassic::BalanceWeights(asParametersCalibration& params, int iStep) const {
     int ptorsNb = params.GetPredictorsNb(iStep);
     float weight = (float)1 / (float)(ptorsNb);
     for (int iPtor = 0; iPtor < ptorsNb; iPtor++) {
@@ -355,9 +355,9 @@ void asMethodCalibratorClassic::BalanceWeights(asParametersCalibration &params, 
     }
 }
 
-bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibration &params,
-                                                     asResultsDates &anaDatesPrevious,
-                                                     asResultsParametersArray &resultsTested, int iStep) {
+bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibration& params,
+                                                     asResultsDates& anaDatesPrevious,
+                                                     asResultsParametersArray& resultsTested, int iStep) {
     asResultsDates anaDates;
     asResultsDates anaDatesPreviousSubRuns;
     asResultsValues anaValues;
@@ -366,7 +366,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
 
     wxStopWatch swMap;
 
-    for (auto &param : m_parametersTemp) {
+    for (auto& param : m_parametersTemp) {
         if (m_proceedSequentially) {
             bool containsNaNs = false;
             if (iStep == 0) {
@@ -417,9 +417,9 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
     return true;
 }
 
-bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &params, asResultsDates &anaDatesPrevious,
-                                                     asResultsParametersArray &resultsTested, int iStep,
-                                                     const asMethodCalibrator::ParamExploration &explo) {
+bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration& params, asResultsDates& anaDatesPrevious,
+                                                     asResultsParametersArray& resultsTested, int iStep,
+                                                     const asMethodCalibrator::ParamExploration& explo) {
     wxLogVerbose(_("Resize the spatial domain for every predictor."));
 
     wxStopWatch swEnlarge;
@@ -537,10 +537,10 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
     return true;
 }
 
-bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration &params,
-                                                         asResultsDates &anaDatesPrevious,
-                                                         asResultsParametersArray &resultsTested, int iStep,
-                                                         const asMethodCalibrator::ParamExploration &explo) {
+bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration& params,
+                                                         asResultsDates& anaDatesPrevious,
+                                                         asResultsParametersArray& resultsTested, int iStep,
+                                                         const asMethodCalibrator::ParamExploration& explo) {
     wxLogVerbose(_("Reshape again (calibration plus) the spatial domain for every predictor."));
 
     ClearTemp();
@@ -761,8 +761,8 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
     return true;
 }
 
-void asMethodCalibratorClassic::MoveEast(asParametersCalibration &params,
-                                         const asMethodCalibrator::ParamExploration &explo, const a1d &xAxis, int iStep,
+void asMethodCalibratorClassic::MoveEast(asParametersCalibration& params,
+                                         const asMethodCalibrator::ParamExploration& explo, const a1d& xAxis, int iStep,
                                          int iPtor, int multipleFactor) const {
     double xtmp = params.GetPredictorXmin(iStep, iPtor);
     int ix = asFind(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
@@ -771,8 +771,8 @@ void asMethodCalibratorClassic::MoveEast(asParametersCalibration &params,
     params.SetPredictorXmin(iStep, iPtor, xtmp);
 }
 
-void asMethodCalibratorClassic::MoveSouth(asParametersCalibration &params,
-                                          const asMethodCalibrator::ParamExploration &explo, const a1d &yAxis,
+void asMethodCalibratorClassic::MoveSouth(asParametersCalibration& params,
+                                          const asMethodCalibrator::ParamExploration& explo, const a1d& yAxis,
                                           int iStep, int iPtor, int multipleFactor) const {
     double ytmp = params.GetPredictorYmin(iStep, iPtor);
     int iy = asFind(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
@@ -781,8 +781,8 @@ void asMethodCalibratorClassic::MoveSouth(asParametersCalibration &params,
     params.SetPredictorYmin(iStep, iPtor, ytmp);
 }
 
-void asMethodCalibratorClassic::MoveWest(asParametersCalibration &params,
-                                         const asMethodCalibrator::ParamExploration &explo, const a1d &xAxis, int iStep,
+void asMethodCalibratorClassic::MoveWest(asParametersCalibration& params,
+                                         const asMethodCalibrator::ParamExploration& explo, const a1d& xAxis, int iStep,
                                          int iPtor, int multipleFactor) const {
     double xtmp = params.GetPredictorXmin(iStep, iPtor);
     int ix = asFind(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
@@ -791,8 +791,8 @@ void asMethodCalibratorClassic::MoveWest(asParametersCalibration &params,
     params.SetPredictorXmin(iStep, iPtor, xtmp);
 }
 
-void asMethodCalibratorClassic::MoveNorth(asParametersCalibration &params,
-                                          const asMethodCalibrator::ParamExploration &explo, const a1d &yAxis,
+void asMethodCalibratorClassic::MoveNorth(asParametersCalibration& params,
+                                          const asMethodCalibrator::ParamExploration& explo, const a1d& yAxis,
                                           int iStep, int iPtor, int multipleFactor) const {
     double ytmp = params.GetPredictorYmin(iStep, iPtor);
     int iy = asFind(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
@@ -801,40 +801,40 @@ void asMethodCalibratorClassic::MoveNorth(asParametersCalibration &params,
     params.SetPredictorYmin(iStep, iPtor, ytmp);
 }
 
-void asMethodCalibratorClassic::WidenEast(asParametersCalibration &params,
-                                          const asMethodCalibrator::ParamExploration &explo, int iStep, int iPtor,
+void asMethodCalibratorClassic::WidenEast(asParametersCalibration& params,
+                                          const asMethodCalibrator::ParamExploration& explo, int iStep, int iPtor,
                                           int multipleFactor) const {
     int xptsnbtmp = params.GetPredictorXptsnb(iStep, iPtor) + multipleFactor * explo.xPtsNbIter;
     xptsnbtmp = wxMax(wxMin(xptsnbtmp, explo.xPtsNbEnd), explo.xPtsNbStart);
     params.SetPredictorXptsnb(iStep, iPtor, xptsnbtmp);
 }
 
-void asMethodCalibratorClassic::WidenNorth(asParametersCalibration &params,
-                                           const asMethodCalibrator::ParamExploration &explo, int iStep, int iPtor,
+void asMethodCalibratorClassic::WidenNorth(asParametersCalibration& params,
+                                           const asMethodCalibrator::ParamExploration& explo, int iStep, int iPtor,
                                            int multipleFactor) const {
     int yptsnbtmp = params.GetPredictorYptsnb(iStep, iPtor) + multipleFactor * explo.yPtsNbIter;
     yptsnbtmp = wxMax(wxMin(yptsnbtmp, explo.yPtsNbEnd), explo.yPtsNbStart);
     params.SetPredictorYptsnb(iStep, iPtor, yptsnbtmp);
 }
 
-void asMethodCalibratorClassic::ReduceEast(asParametersCalibration &params,
-                                           const asMethodCalibrator::ParamExploration &explo, int iStep, int iPtor,
+void asMethodCalibratorClassic::ReduceEast(asParametersCalibration& params,
+                                           const asMethodCalibrator::ParamExploration& explo, int iStep, int iPtor,
                                            int multipleFactor) const {
     int xptsnbtmp = params.GetPredictorXptsnb(iStep, iPtor) - multipleFactor * explo.xPtsNbIter;
     xptsnbtmp = wxMax(wxMin(xptsnbtmp, explo.xPtsNbEnd), explo.xPtsNbStart);
     params.SetPredictorXptsnb(iStep, iPtor, xptsnbtmp);
 }
 
-void asMethodCalibratorClassic::ReduceNorth(asParametersCalibration &params,
-                                            const asMethodCalibrator::ParamExploration &explo, int iStep, int iPtor,
+void asMethodCalibratorClassic::ReduceNorth(asParametersCalibration& params,
+                                            const asMethodCalibrator::ParamExploration& explo, int iStep, int iPtor,
                                             int multipleFactor) const {
     int yptsnbtmp = params.GetPredictorYptsnb(iStep, iPtor) - multipleFactor * explo.yPtsNbIter;
     yptsnbtmp = wxMax(wxMin(yptsnbtmp, explo.yPtsNbEnd), explo.yPtsNbStart);
     params.SetPredictorYptsnb(iStep, iPtor, yptsnbtmp);
 }
 
-bool asMethodCalibratorClassic::GetDatesOfBestParameters(asParametersCalibration &params,
-                                                         asResultsDates &anaDatesPrevious, int iStep) {
+bool asMethodCalibratorClassic::GetDatesOfBestParameters(asParametersCalibration& params,
+                                                         asResultsDates& anaDatesPrevious, int iStep) {
     bool containsNaNs = false;
     if (iStep == 0) {
         if (!GetAnalogsDates(anaDatesPrevious, &params, iStep, containsNaNs)) return false;

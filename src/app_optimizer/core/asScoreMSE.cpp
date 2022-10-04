@@ -29,9 +29,10 @@
 
 #include "asScoreMSE.h"
 
-asScoreMSE::asScoreMSE() : asScore(asScore::MSE, _("Mean square error"), _("Mean square error"), Asc, 0, NaNf) {}
+asScoreMSE::asScoreMSE()
+    : asScore(asScore::MSE, _("Mean square error"), _("Mean square error"), Asc, 0, NaNf) {}
 
-float asScoreMSE::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreMSE::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -75,6 +76,6 @@ float asScoreMSE::Assess(float obs, const a1f &values, int nbElements) const {
     return score;
 }
 
-bool asScoreMSE::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreMSE::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     return true;
 }

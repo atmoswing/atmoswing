@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorProjCmip5, GetCorrectPredictors) {
-    asPredictorProj *predictor;
+    asPredictorProj* predictor;
 
     predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "z", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -112,7 +112,7 @@ TEST(PredictorProjCmip5, LoadEasy) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-cmip5/");
 
-    asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", predictorDataDir);
+    asPredictorProj* predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
@@ -154,7 +154,7 @@ TEST(PredictorProjCmip5, LoadBorderLeft) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-cmip5/");
 
-    asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", predictorDataDir);
+    asPredictorProj* predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
@@ -196,7 +196,7 @@ TEST(PredictorProjCmip5, LoadWithPressureLevels) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-cmip5/");
 
-    asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "zg", predictorDataDir);
+    asPredictorProj* predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "zg", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -247,7 +247,7 @@ TEST(PredictorProjCmip5, LoadOver2Years) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-cmip5/");
 
-    asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "zg", predictorDataDir);
+    asPredictorProj* predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "zg", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -320,7 +320,7 @@ TEST(PredictorProjCmip5, LoadAnotherModel) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-cmip5/");
 
-    asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "CNRM-CM5", "rcp85", "ua", predictorDataDir);
+    asPredictorProj* predictor = asPredictorProj::GetInstance("CMIP5", "CNRM-CM5", "rcp85", "ua", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);

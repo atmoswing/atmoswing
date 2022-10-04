@@ -38,7 +38,7 @@ class asMethodCalibratorSingle : public asMethodCalibrator {
     ~asMethodCalibratorSingle() override;
 
   protected:
-    bool Calibrate(asParametersCalibration &params) override;
+    bool Calibrate(asParametersCalibration& params) override;
 
   private:
 };

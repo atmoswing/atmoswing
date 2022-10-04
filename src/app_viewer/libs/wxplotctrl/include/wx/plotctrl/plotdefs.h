@@ -90,7 +90,7 @@
 #endif
 
 #if !wxCHECK_VERSION(2, 5, 0)
-bool WXRECT2DDOUBLE_EQUAL(const wxRect2DDouble &r1, const wxRect2DDouble &r2) {
+bool WXRECT2DDOUBLE_EQUAL(const wxRect2DDouble& r1, const wxRect2DDouble& r2) {
     return (r1.m_x == r1.m_x) && (r1.m_y == r1.m_y) && (r1.m_width == r1.m_width) && (r1.m_height == r1.m_height);
 }
 #else

@@ -38,8 +38,8 @@ class asFrameForecast;
 
 class asForecastViewer {
   public:
-    asForecastViewer(asFrameForecast *parent, asForecastManager *forecastManager, vrLayerManager *layerManager,
-                     vrViewerLayerManager *viewerLayerManager);
+    asForecastViewer(asFrameForecast* parent, asForecastManager* forecastManager, vrLayerManager* layerManager,
+                     vrViewerLayerManager* viewerLayerManager);
 
     virtual ~asForecastViewer();
 
@@ -105,10 +105,10 @@ class asForecastViewer {
     float m_leadTimeDate;
     float m_layerMaxValue;
     bool m_opened;
-    asFrameForecast *m_parent;
-    asForecastManager *m_forecastManager;
-    vrLayerManager *m_layerManager;
-    vrViewerLayerManager *m_viewerLayerManager;
+    asFrameForecast* m_parent;
+    asForecastManager* m_forecastManager;
+    vrLayerManager* m_layerManager;
+    vrViewerLayerManager* m_viewerLayerManager;
     wxArrayString m_displayForecast;
     wxArrayString m_displayQuantiles;
     vf m_returnPeriods;

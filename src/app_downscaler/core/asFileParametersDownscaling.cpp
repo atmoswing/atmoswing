@@ -27,7 +27,7 @@
 
 #include "asFileParametersDownscaling.h"
 
-asFileParametersDownscaling::asFileParametersDownscaling(const wxString &fileName, const FileMode &fileMode)
+asFileParametersDownscaling::asFileParametersDownscaling(const wxString& fileName, const FileMode& fileMode)
     : asFileParameters(fileName, fileMode) {}  // FindAndOpen() processed by asFileXml
 
 asFileParametersDownscaling::~asFileParametersDownscaling() {}

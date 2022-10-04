@@ -31,27 +31,27 @@
 
 wxDEFINE_EVENT(asEVT_ACTION_OPEN_BATCHFORECASTS, wxCommandEvent);
 
-asWizardBatchForecasts::asWizardBatchForecasts(wxWindow *parent, asBatchForecasts *batchForecasts, wxWindowID id)
+asWizardBatchForecasts::asWizardBatchForecasts(wxWindow* parent, asBatchForecasts* batchForecasts, wxWindowID id)
     : asWizardBatchForecastsVirtual(parent, id),
       m_batchForecasts(batchForecasts) {}
 
-void asWizardBatchForecasts::OnWizardFinished(wxWizardEvent &event) {
+void asWizardBatchForecasts::OnWizardFinished(wxWizardEvent& event) {
     wxString filePath = m_filePickerBatchFile->GetPath();
     m_batchForecasts->SetFilePath(filePath);
     m_batchForecasts->Save();
 
     if (!filePath.IsEmpty()) {
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
         pConfig->Write("/BatchForecasts/LastOpened", filePath);
     }
 
     // Open the preferences frame
-    auto *frame = new asFramePreferencesForecaster(nullptr, m_batchForecasts);
+    auto* frame = new asFramePreferencesForecaster(nullptr, m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
 
-void asWizardBatchForecasts::OnLoadExistingBatchForecasts(wxCommandEvent &event) {
+void asWizardBatchForecasts::OnLoadExistingBatchForecasts(wxCommandEvent& event) {
     wxCommandEvent eventOpen(asEVT_ACTION_OPEN_BATCHFORECASTS);
     GetParent()->ProcessWindowEvent(eventOpen);
     Close();

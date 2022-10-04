@@ -45,14 +45,14 @@ EVT_MOUSE_EVENTS(wxBmpComboPopupChild::OnMouse)
 EVT_KEY_DOWN(wxBmpComboPopupChild::OnKeyDown)
 END_EVENT_TABLE()
 
-wxBmpComboPopupChild::wxBmpComboPopupChild(wxWindow *parent, wxBmpComboBox *owner)
+wxBmpComboPopupChild::wxBmpComboPopupChild(wxWindow* parent, wxBmpComboBox* owner)
     : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL) {
     m_bmpCombo = owner;
     m_last_selection = -1;
     SetBackgroundColour(m_bmpCombo->GetBackgroundColour());
 }
 
-void wxBmpComboPopupChild::OnPaint(wxPaintEvent &WXUNUSED(event)) {
+void wxBmpComboPopupChild::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     wxPaintDC dc(this);
     PrepareDC(dc);
     // dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID));
@@ -84,7 +84,7 @@ void wxBmpComboPopupChild::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     }
 }
 
-void wxBmpComboPopupChild::OnMouse(wxMouseEvent &event) {
+void wxBmpComboPopupChild::OnMouse(wxMouseEvent& event) {
     wxPoint mouse = event.GetPosition();
     CalcUnscrolledPosition(mouse.x, mouse.y, &mouse.x, &mouse.y);
 
@@ -114,7 +114,7 @@ void wxBmpComboPopupChild::OnMouse(wxMouseEvent &event) {
     }
 }
 
-void wxBmpComboPopupChild::OnKeyDown(wxKeyEvent &event) {
+void wxBmpComboPopupChild::OnKeyDown(wxKeyEvent& event) {
     int sel = m_last_selection;
 
     switch (event.GetKeyCode()) {
@@ -152,7 +152,7 @@ void wxBmpComboPopupChild::OnKeyDown(wxKeyEvent &event) {
     }
 }
 
-void wxBmpComboPopupChild::DrawSelection(int n, wxDC &dc) {
+void wxBmpComboPopupChild::DrawSelection(int n, wxDC& dc) {
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
     dc.SetPen(*wxBLACK_PEN);
     dc.SetLogicalFunction(wxINVERT);
@@ -171,7 +171,7 @@ EVT_PAINT(wxBmpComboLabel::OnPaint)
 EVT_CHAR(wxBmpComboLabel::OnChar)
 END_EVENT_TABLE()
 
-void wxBmpComboLabel::OnChar(wxKeyEvent &event) {
+void wxBmpComboLabel::OnChar(wxKeyEvent& event) {
     switch (event.GetKeyCode()) {
         case WXK_UP:
             m_bmpCombo->SetNextSelection(false, true);
@@ -184,7 +184,7 @@ void wxBmpComboLabel::OnChar(wxKeyEvent &event) {
     }
 }
 
-void wxBmpComboLabel::OnPaint(wxPaintEvent &WXUNUSED(event)) {
+void wxBmpComboLabel::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     wxPaintDC dc(this);
     dc.SetFont(m_bmpCombo->GetFont());
     // dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID));
@@ -208,7 +208,7 @@ END_EVENT_TABLE()
 
 wxBmpComboBox::~wxBmpComboBox() {
     while (m_bitmaps.GetCount() > 0u) {
-        wxBitmap *bmp = (wxBitmap *)m_bitmaps.Item(0);
+        wxBitmap* bmp = (wxBitmap*)m_bitmaps.Item(0);
         m_bitmaps.RemoveAt(0);
         delete bmp;
     }
@@ -222,8 +222,8 @@ void wxBmpComboBox::Init() {
     m_label_style = wxBMPCOMBO_LEFT;
 }
 
-bool wxBmpComboBox::Create(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style,
-                           const wxValidator &val, const wxString &name) {
+bool wxBmpComboBox::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style,
+                           const wxValidator& val, const wxString& name) {
     if (!DropDownBase::Create(parent, id, pos, size, wxNO_BORDER | wxCLIP_CHILDREN, val, name)) return false;
 
     m_labelWin = new wxBmpComboLabel(this);
@@ -258,14 +258,14 @@ bool wxBmpComboBox::SetButtonStyle(long style) {
     return true;
 }
 
-void wxBmpComboBox::OnSize(wxSizeEvent &event) {
+void wxBmpComboBox::OnSize(wxSizeEvent& event) {
     event.Skip();
 
     if (!m_labelWin || !m_dropdownButton) return;
 
     wxSize size = GetClientSize();
     // wxPrintf(wxT("ComboOnSize %d %d\n"), size.x, size.y);
-    int width = size.x - ((wxWindow *)m_dropdownButton)->GetSize().x;
+    int width = size.x - ((wxWindow*)m_dropdownButton)->GetSize().x;
     m_labelWin->SetSize(0, 0, width, size.y);
 }
 
@@ -308,7 +308,7 @@ int wxBmpComboBox::DoGetBestDropHeight(int max_height) {
 
 bool wxBmpComboBox::DoShowPopup() {
     if (m_popupWin) {
-        wxBmpComboPopupChild *popChild = new wxBmpComboPopupChild(m_popupWin, this);
+        wxBmpComboPopupChild* popChild = new wxBmpComboPopupChild(m_popupWin, this);
         m_popupWin->SetChild(popChild);
 
         if (popChild) {
@@ -365,7 +365,7 @@ void wxBmpComboBox::CalcLayout() {
     m_itemSize.y = wxMax(m_labelSize.y, m_bitmapSize.y) + m_win_border;
 }
 
-void wxBmpComboBox::CalcLabelBitmapPos(int n, const wxSize &area, wxPoint &labelPos, wxPoint &bitmapPos) const {
+void wxBmpComboBox::CalcLabelBitmapPos(int n, const wxSize& area, wxPoint& labelPos, wxPoint& bitmapPos) const {
     labelPos = bitmapPos = wxPoint(0, 0);
 
     int bw = 0, bh = 0;
@@ -396,7 +396,7 @@ void wxBmpComboBox::CalcLabelBitmapPos(int n, const wxSize &area, wxPoint &label
     }
 }
 
-void wxBmpComboBox::DrawItem(wxDC &dc, int n) const {
+void wxBmpComboBox::DrawItem(wxDC& dc, int n) const {
     wxSize itemSize(GetItemSize());  //((wxWindow*)GetLabelWindow())->GetClientSize().x, dy);
 
     wxPoint labelPos, bitmapPos;
@@ -406,14 +406,14 @@ void wxBmpComboBox::DrawItem(wxDC &dc, int n) const {
     if (!GetLabel(n).IsEmpty()) dc.DrawText(GetLabel(n), labelPos.x, labelPos.y);
 }
 
-int wxBmpComboBox::Append(const wxString &label, const wxBitmap &bitmap) {
+int wxBmpComboBox::Append(const wxString& label, const wxBitmap& bitmap) {
     m_labels.Add(label);
     m_bitmaps.Add(new wxBitmap(bitmap));
     CalcLayout();
     return GetCount() - 1;
 }
 
-int wxBmpComboBox::Insert(const wxString &label, const wxBitmap &bitmap, unsigned int n) {
+int wxBmpComboBox::Insert(const wxString& label, const wxBitmap& bitmap, unsigned int n) {
     wxCHECK_MSG(int(n) < GetCount(), wxNOT_FOUND, wxT("invalid index"));
 
     m_labels.Insert(label, n);
@@ -425,7 +425,7 @@ int wxBmpComboBox::Insert(const wxString &label, const wxBitmap &bitmap, unsigne
 void wxBmpComboBox::Clear() {
     m_labels.Clear();
     while (m_bitmaps.GetCount() > 0u) {
-        wxBitmap *bmp = (wxBitmap *)m_bitmaps.Item(0);
+        wxBitmap* bmp = (wxBitmap*)m_bitmaps.Item(0);
         m_bitmaps.RemoveAt(0);
         delete bmp;
     }
@@ -437,7 +437,7 @@ void wxBmpComboBox::Delete(unsigned int n, unsigned int count) {
 
     for (unsigned int i = 0; i < count; i++) {
         m_labels.RemoveAt(n);
-        wxBitmap *bmp = (wxBitmap *)m_bitmaps.Item(n);
+        wxBitmap* bmp = (wxBitmap*)m_bitmaps.Item(n);
         m_bitmaps.RemoveAt(n);
         delete bmp;
     }
@@ -451,7 +451,7 @@ wxString wxBmpComboBox::GetLabel(int n) const {
 
 wxBitmap wxBmpComboBox::GetItemBitmap(int n) const {
     wxCHECK_MSG((n >= 0) && (n < GetCount()), wxNullBitmap, wxT("invalid index"));
-    return *(wxBitmap *)m_bitmaps.Item(n);
+    return *(wxBitmap*)m_bitmaps.Item(n);
 }
 
 void wxBmpComboBox::SetSelection(int n, bool send_event) {
@@ -488,7 +488,7 @@ void wxBmpComboBox::SetNextSelection(bool foward, bool send_event) {
     SetSelection(sel, send_event);
 }
 
-void wxBmpComboBox::SetLabel(int n, const wxString &label) {
+void wxBmpComboBox::SetLabel(int n, const wxString& label) {
     wxCHECK_RET((n >= 0) && (n < GetCount()), wxT("invalid index"));
     m_labels[n] = label;
     CalcLayout();
@@ -496,15 +496,15 @@ void wxBmpComboBox::SetLabel(int n, const wxString &label) {
     if (n == m_selection) m_labelWin->Refresh(false);
 }
 
-void wxBmpComboBox::SetItemBitmap(int n, const wxBitmap &bitmap) {
+void wxBmpComboBox::SetItemBitmap(int n, const wxBitmap& bitmap) {
     wxCHECK_RET((n >= 0) && (n < GetCount()), wxT("invalid index"));
-    *((wxBitmap *)m_bitmaps.Item(n)) = bitmap;
+    *((wxBitmap*)m_bitmaps.Item(n)) = bitmap;
     CalcLayout();
 
     if (n == m_selection) m_labelWin->Refresh(false);
 }
 
-bool wxBmpComboBox::SetBackgroundColour(const wxColour &colour) {
+bool wxBmpComboBox::SetBackgroundColour(const wxColour& colour) {
     // not a failure for wx 2.5.x since InheritAttributes calls this
     // from wxWindow::Create
     if (m_labelWin) {

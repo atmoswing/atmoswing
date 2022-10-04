@@ -32,9 +32,9 @@
 
 class asThreadsManager;
 
-extern asThreadsManager *g_pThreadsManager;
+extern asThreadsManager* g_pThreadsManager;
 
-asThreadsManager &ThreadsManager();
+asThreadsManager& ThreadsManager();
 
 void DeleteThreadsManager();
 

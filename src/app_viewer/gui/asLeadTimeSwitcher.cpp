@@ -31,8 +31,8 @@
 
 wxDEFINE_EVENT(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, wxCommandEvent);
 
-asLeadTimeSwitcher::asLeadTimeSwitcher(wxWindow *parent, asWorkspace *workspace, asForecastManager *forecastManager,
-                                       wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
+asLeadTimeSwitcher::asLeadTimeSwitcher(wxWindow* parent, asWorkspace* workspace, asForecastManager* forecastManager,
+                                       wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
     : wxPanel(parent, id, pos, size, style),
       m_parent(nullptr),
       m_workspace(workspace),
@@ -58,11 +58,11 @@ asLeadTimeSwitcher::~asLeadTimeSwitcher() {
     wxDELETE(m_bmp);
 }
 
-void asLeadTimeSwitcher::SetParent(wxWindow *parent) {
+void asLeadTimeSwitcher::SetParent(wxWindow* parent) {
     m_parent = parent;
 }
 
-void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent &event) {
+void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent& event) {
     wxBusyCursor wait;
 
     wxPoint position = event.GetPosition();
@@ -72,7 +72,7 @@ void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent &event) {
     GetParent()->ProcessWindowEvent(eventSlct);
 }
 
-void asLeadTimeSwitcher::Draw(a1f &dates) {
+void asLeadTimeSwitcher::Draw(a1f& dates) {
     // Required size
     int margin = 5 * g_ppiScaleDc;
     int width = (dates.size() + 1) * m_cellWidth;
@@ -85,7 +85,7 @@ void asLeadTimeSwitcher::Draw(a1f &dates) {
     wxASSERT(values.size() == dates.size());
 
     // Create bitmap
-    auto *bmp = new wxBitmap(width, height);
+    auto* bmp = new wxBitmap(width, height);
     wxASSERT(bmp);
 
     // Create device context
@@ -94,7 +94,7 @@ void asLeadTimeSwitcher::Draw(a1f &dates) {
     dc.Clear();
 
     // Create graphics context
-    wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
+    wxGraphicsContext* gc = wxGraphicsContext::Create(dc);
 
     if (gc && values.size() > 0) {
         gc->SetPen(*wxBLACK);
@@ -165,7 +165,7 @@ void asLeadTimeSwitcher::SetLeadTimeMarker(int leadTime) {
     overlaydc.Clear();
 
     // Create graphics context
-    wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
+    wxGraphicsContext* gc = wxGraphicsContext::Create(dc);
 
     if (gc && leadTime >= 0) {
         // Set Lead time marker
@@ -179,7 +179,7 @@ void asLeadTimeSwitcher::SetLeadTimeMarker(int leadTime) {
     }
 }
 
-void asLeadTimeSwitcher::SetBitmap(wxBitmap *bmp) {
+void asLeadTimeSwitcher::SetBitmap(wxBitmap* bmp) {
     wxDELETE(m_bmp);
     wxASSERT(!m_bmp);
 
@@ -190,7 +190,7 @@ void asLeadTimeSwitcher::SetBitmap(wxBitmap *bmp) {
     }
 }
 
-void asLeadTimeSwitcher::OnPaint(wxPaintEvent &event) {
+void asLeadTimeSwitcher::OnPaint(wxPaintEvent& event) {
     if (m_bmp != nullptr) {
         wxPaintDC dc(this);
         dc.DrawBitmap(*m_bmp, 0, 0, true);
@@ -203,7 +203,7 @@ void asLeadTimeSwitcher::OnPaint(wxPaintEvent &event) {
     event.Skip();
 }
 
-void asLeadTimeSwitcher::CreatePath(wxGraphicsPath &path, int iCol) {
+void asLeadTimeSwitcher::CreatePath(wxGraphicsPath& path, int iCol) {
     wxPoint start(0, 0);
 
     double startPointX = (double)start.x + iCol * m_cellWidth;
@@ -220,7 +220,7 @@ void asLeadTimeSwitcher::CreatePath(wxGraphicsPath &path, int iCol) {
     path.CloseSubpath();
 }
 
-void asLeadTimeSwitcher::CreatePathRing(wxGraphicsPath &path, const wxPoint &center, double scale, int segmentsTotNb,
+void asLeadTimeSwitcher::CreatePathRing(wxGraphicsPath& path, const wxPoint& center, double scale, int segmentsTotNb,
                                         int segmentNb) {
     const wxDouble radiusOut = 100 * g_ppiScaleDc * scale;
     const wxDouble radiusIn = 40 * g_ppiScaleDc * scale;
@@ -252,7 +252,7 @@ void asLeadTimeSwitcher::CreatePathRing(wxGraphicsPath &path, const wxPoint &cen
     path.CloseSubpath();
 }
 
-void asLeadTimeSwitcher::FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, float value) {
+void asLeadTimeSwitcher::FillPath(wxGraphicsContext* gc, wxGraphicsPath& path, float value) {
     wxColour colour;
 
     if (asIsNaN(value))  // NaN -> gray
@@ -281,7 +281,7 @@ void asLeadTimeSwitcher::FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, f
     gc->DrawPath(path);
 }
 
-void asLeadTimeSwitcher::CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int iCol, const wxString &label) {
+void asLeadTimeSwitcher::CreateDatesText(wxGraphicsContext* gc, const wxPoint& start, int iCol, const wxString& label) {
     double pointX = (double)start.x + iCol * m_cellWidth;
     auto pointY = (double)start.y;
 
@@ -289,7 +289,7 @@ void asLeadTimeSwitcher::CreateDatesText(wxGraphicsContext *gc, const wxPoint &s
     gc->DrawText(label, pointX, pointY);
 }
 
-void asLeadTimeSwitcher::CreatePathMarker(wxGraphicsPath &path, int iCol) {
+void asLeadTimeSwitcher::CreatePathMarker(wxGraphicsPath& path, int iCol) {
     int outlier = g_ppiScaleDc * 5;
     int markerHeight = g_ppiScaleDc * 13;
     wxPoint start(m_cellWidth / 2, m_cellWidth - markerHeight);

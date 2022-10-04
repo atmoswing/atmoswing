@@ -42,7 +42,7 @@
 #include "images.h"
 #include "wx/fileconf.h"
 
-asFrameOptimizer::asFrameOptimizer(wxWindow *parent)
+asFrameOptimizer::asFrameOptimizer(wxWindow* parent)
     : asFrameOptimizerVirtual(parent),
       m_logWindow(nullptr),
       m_methodCalibrator(nullptr) {
@@ -91,38 +91,38 @@ void asFrameOptimizer::Update() {
     DisplayLogLevelMenu();
 }
 
-void asFrameOptimizer::OpenFramePredictandDB(wxCommandEvent &event) {
+void asFrameOptimizer::OpenFramePredictandDB(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto *frame = new asFramePredictandDB(this);
+    auto* frame = new asFramePredictandDB(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event) {
+void asFrameOptimizer::OpenFramePreferences(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto *frame = new asFramePreferencesOptimizer(this);
+    auto* frame = new asFramePreferencesOptimizer(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event) {
+void asFrameOptimizer::OpenFrameAbout(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto *frame = new asFrameAbout(this);
+    auto* frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameOptimizer::OnShowLog(wxCommandEvent &event) {
+void asFrameOptimizer::OnShowLog(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     wxASSERT(m_logWindow);
     m_logWindow->DoShow(true);
 }
 
-void asFrameOptimizer::OnLogLevel1(wxCommandEvent &event) {
+void asFrameOptimizer::OnLogLevel1(wxCommandEvent& event) {
     Log()->SetLevel(1);
     m_menuLogLevel->FindItemByPosition(0)->Check(true);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -130,11 +130,11 @@ void asFrameOptimizer::OnLogLevel1(wxCommandEvent &event) {
     ThreadsManager().CritSectionConfig().Enter();
     wxFileConfig::Get()->Write("/General/LogLevel", 1l);
     ThreadsManager().CritSectionConfig().Leave();
-    wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
+    wxWindow* prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
 
-void asFrameOptimizer::OnLogLevel2(wxCommandEvent &event) {
+void asFrameOptimizer::OnLogLevel2(wxCommandEvent& event) {
     Log()->SetLevel(2);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(true);
@@ -142,11 +142,11 @@ void asFrameOptimizer::OnLogLevel2(wxCommandEvent &event) {
     ThreadsManager().CritSectionConfig().Enter();
     wxFileConfig::Get()->Write("/General/LogLevel", 2l);
     ThreadsManager().CritSectionConfig().Leave();
-    wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
+    wxWindow* prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
 
-void asFrameOptimizer::OnLogLevel3(wxCommandEvent &event) {
+void asFrameOptimizer::OnLogLevel3(wxCommandEvent& event) {
     Log()->SetLevel(3);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -154,7 +154,7 @@ void asFrameOptimizer::OnLogLevel3(wxCommandEvent &event) {
     ThreadsManager().CritSectionConfig().Enter();
     wxFileConfig::Get()->Write("/General/LogLevel", 3l);
     ThreadsManager().CritSectionConfig().Leave();
-    wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
+    wxWindow* prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
 
@@ -185,7 +185,7 @@ void asFrameOptimizer::DisplayLogLevelMenu() {
     }
 }
 
-void asFrameOptimizer::Cancel(wxCommandEvent &event) {
+void asFrameOptimizer::Cancel(wxCommandEvent& event) {
     if (m_methodCalibrator) {
         m_methodCalibrator->Cancel();
     }
@@ -195,7 +195,7 @@ void asFrameOptimizer::LoadOptions() {
     wxBusyCursor wait;
 
     // General stuff
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     m_choiceMethod->SetSelection(pConfig->ReadLong("/MethodSelection", 0l));
     m_filePickerParameters->SetPath(pConfig->Read("/ParametersFilePath", wxEmptyString));
     m_filePickerPredictand->SetPath(pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString));
@@ -263,7 +263,7 @@ void asFrameOptimizer::LoadOptions() {
     m_textCtrlGAsMutationsMultiScaleProb->SetValue(pConfig->Read("/GAs/MutationsMultiScaleProbability", "0.20"));
 }
 
-void asFrameOptimizer::OnSaveDefault(wxCommandEvent &event) {
+void asFrameOptimizer::OnSaveDefault(wxCommandEvent& event) {
     SaveOptions();
 }
 
@@ -271,7 +271,7 @@ void asFrameOptimizer::SaveOptions() const {
     wxBusyCursor wait;
 
     // General stuff
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     auto methodSelection = (long)m_choiceMethod->GetSelection();
     pConfig->Write("/MethodSelection", methodSelection);
     wxString parametersFilePath = m_filePickerParameters->GetPath();
@@ -383,7 +383,7 @@ void asFrameOptimizer::OnIdle( wxCommandEvent& event )
     m_staticTextState->SetLabel(state);
 }
 */
-void asFrameOptimizer::Launch(wxCommandEvent &event) {
+void asFrameOptimizer::Launch(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     SaveOptions();
@@ -449,11 +449,11 @@ void asFrameOptimizer::Launch(wxCommandEvent &event) {
             m_methodCalibrator->SetPredictorDataDir(m_dirPickerPredictor->GetPath());
             m_methodCalibrator->Manager();
         }
-    } catch (std::bad_alloc &ba) {
+    } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught: %s"), msg);
         wxLogError(_("Failed to process the calibration."));
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         wxLogError(_("Failed to process the optimization."));

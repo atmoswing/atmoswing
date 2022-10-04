@@ -34,11 +34,11 @@
 
 class asTotalScoreRMSE : public asTotalScoreMSE {
   public:
-    explicit asTotalScoreRMSE(const wxString &periodString);
+    explicit asTotalScoreRMSE(const wxString& periodString);
 
     ~asTotalScoreRMSE() override = default;
 
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
+    float Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const override;
 
   protected:
   private:

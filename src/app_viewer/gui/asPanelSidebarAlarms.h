@@ -40,42 +40,42 @@ class asPanelSidebarAlarms;
 
 class asPanelSidebarAlarmsDrawing : public wxPanel {
   public:
-    asPanelSidebarAlarmsDrawing(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-                                const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarAlarmsDrawing(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
+                                const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
     ~asPanelSidebarAlarmsDrawing() override;
 
-    void DrawAlarms(a1f &dates, const vwxs &forecasts, a2f &values);
+    void DrawAlarms(a1f& dates, const vwxs& forecasts, a2f& values);
 
-    void SetParent(asPanelSidebarAlarms *parent);
+    void SetParent(asPanelSidebarAlarms* parent);
 
   private:
-    wxBitmap *m_bmpAlarms;
-    wxGraphicsContext *m_gdc;
-    asPanelSidebarAlarms *m_parent;
+    wxBitmap* m_bmpAlarms;
+    wxGraphicsContext* m_gdc;
+    asPanelSidebarAlarms* m_parent;
 
-    void SetBitmapAlarms(wxBitmap *bmp);
+    void SetBitmapAlarms(wxBitmap* bmp);
 
-    void CreatePath(wxGraphicsPath &path, const wxPoint &start, int witdh, int height, int iCol, int iRow);
+    void CreatePath(wxGraphicsPath& path, const wxPoint& start, int witdh, int height, int iCol, int iRow);
 
-    void FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, float value);
+    void FillPath(wxGraphicsContext* gc, wxGraphicsPath& path, float value);
 
-    void CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int cellWitdh, int iCol, const wxString &label);
+    void CreateDatesText(wxGraphicsContext* gc, const wxPoint& start, int cellWitdh, int iCol, const wxString& label);
 
-    void CreateNbText(wxGraphicsContext *gc, const wxPoint &start, int cellHeight, int iRow, const wxString &label);
+    void CreateNbText(wxGraphicsContext* gc, const wxPoint& start, int cellHeight, int iRow, const wxString& label);
 
-    void OnPaint(wxPaintEvent &event);
+    void OnPaint(wxPaintEvent& event);
 };
 
 class asPanelSidebarAlarms : public asPanelSidebar {
   public:
-    asPanelSidebarAlarms(wxWindow *parent, asWorkspace *workspace, asForecastManager *forecastManager,
-                         wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-                         const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarAlarms(wxWindow* parent, asWorkspace* workspace, asForecastManager* forecastManager,
+                         wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
+                         const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
     ~asPanelSidebarAlarms() override;
 
-    void SetData(a1f &dates, a2f &values);
+    void SetData(a1f& dates, a2f& values);
 
     void Update() override;
 
@@ -84,12 +84,12 @@ class asPanelSidebarAlarms : public asPanelSidebar {
     }
 
   private:
-    asWorkspace *m_workspace;
-    asForecastManager *m_forecastManager;
-    asPanelSidebarAlarmsDrawing *m_panelDrawing;
+    asWorkspace* m_workspace;
+    asForecastManager* m_forecastManager;
+    asPanelSidebarAlarmsDrawing* m_panelDrawing;
     int m_mode;
 
-    void OnPaint(wxPaintEvent &event);
+    void OnPaint(wxPaintEvent& event);
 };
 
 #endif

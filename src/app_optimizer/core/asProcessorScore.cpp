@@ -36,14 +36,14 @@
 #include "asResultsValues.h"
 #include "asScore.h"
 #include "asTotalScore.h"
-//#include "asDialogProgressBar.h"
+// #include "asDialogProgressBar.h"
 
 #ifndef UNIT_TESTING
 
 #endif
 
-bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *score, asParametersScoring *params,
-                                        asResultsScores &results, vf &scoresClimatology) {
+bool asProcessorScore::GetAnalogsScores(asResultsValues& anaValues, asScore* score, asParametersScoring* params,
+                                        asResultsScores& results, vf& scoresClimatology) {
     // Extract Data
     a1f timeTargetSelection = anaValues.GetTargetDates();
     va1f targetValues = anaValues.GetTargetValues();
@@ -82,9 +82,9 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
                         // score->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime),
                         // params->GetScoreAnalogsNumber());
                     } else {
-                        vectScores[iStat](iTargetTime) =
-                            score->Assess(targetValues[iStat](iTargetTime), analogsValues[iStat].row(iTargetTime),
-                                          params->GetScoreAnalogsNumber());
+                        vectScores[iStat](iTargetTime) = score->Assess(targetValues[iStat](iTargetTime),
+                                                                       analogsValues[iStat].row(iTargetTime),
+                                                                       params->GetScoreAnalogsNumber());
                     }
                 } else {
                     vectScores[iStat](iTargetTime) = NaNf;
@@ -126,9 +126,9 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
                     // score->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime),
                     // params->GetScoreAnalogsNumber());
                 } else {
-                    scores.row(iTargetTime) =
-                        score->AssessOnArray(targetValues[0](iTargetTime), analogsValues[0].row(iTargetTime),
-                                             params->GetScoreAnalogsNumber());
+                    scores.row(iTargetTime) = score->AssessOnArray(targetValues[0](iTargetTime),
+                                                                   analogsValues[0].row(iTargetTime),
+                                                                   params->GetScoreAnalogsNumber());
                 }
             } else {
                 scores.row(iTargetTime) = a1f::Ones(3 * (params->GetScoreAnalogsNumber() + 1)) * NaNf;
@@ -142,10 +142,10 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
     return true;
 }
 
-bool asProcessorScore::GetAnalogsTotalScore(asResultsScores &anaScores, asTimeArray &timeArray,
-                                            asParametersScoring *params, asResultsTotalScore &results) {
+bool asProcessorScore::GetAnalogsTotalScore(asResultsScores& anaScores, asTimeArray& timeArray,
+                                            asParametersScoring* params, asResultsTotalScore& results) {
     // TODO: Specify the period in the parameter
-    asTotalScore *finalScore = asTotalScore::GetInstance(params->GetScoreName(), "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance(params->GetScoreName(), "Total");
 
     // Ranks number set for all, but only used for the rank histogram
     finalScore->SetRanksNb(params->GetScoreAnalogsNumber() + 1);

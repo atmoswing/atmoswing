@@ -31,7 +31,7 @@
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_CLEAR, wxCommandEvent);
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_NEW_ADDED, wxCommandEvent);
 
-asForecastManager::asForecastManager(wxWindow *parent, asWorkspace *workspace)
+asForecastManager::asForecastManager(wxWindow* parent, asWorkspace* workspace)
     : m_parent(parent),
       m_workspace(workspace),
       m_aggregator(new asResultsForecastAggregator()),
@@ -45,7 +45,7 @@ bool asForecastManager::HasForecasts() const {
     return (m_aggregator->GetMethodsNb() > 0);
 }
 
-void asForecastManager::AddDirectoryPastForecasts(const wxString &dir) {
+void asForecastManager::AddDirectoryPastForecasts(const wxString& dir) {
     m_directoriesPastForecasts.Add(dir);
 }
 
@@ -110,7 +110,7 @@ void asForecastManager::ClearForecasts() {
 #endif
 }
 
-bool asForecastManager::Open(const wxString &filePath, bool doRefresh) {
+bool asForecastManager::Open(const wxString& filePath, bool doRefresh) {
     // Check existance
     if (!wxFileName::FileExists(filePath)) {
         wxLogError(_("The file %s could not be found."), filePath);
@@ -126,7 +126,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh) {
     }
 
     // Create and load the forecast
-    auto *forecast = new asResultsForecast;
+    auto* forecast = new asResultsForecast;
 
     forecast->SetFilePath(filePath);
     if (!forecast->Load()) {
@@ -163,7 +163,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh) {
     return true;
 }
 
-bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const wxString &filePath) {
+bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const wxString& filePath) {
     // Check existance
     if (!wxFileName::FileExists(filePath)) {
         wxLogError(_("The file %s could not be found."), filePath);
@@ -179,7 +179,7 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     }
 
     // Create and load the forecast
-    auto *forecast = new asResultsForecast;
+    auto* forecast = new asResultsForecast;
 
     forecast->SetFilePath(filePath);
     if (!forecast->Load()) {

@@ -29,8 +29,8 @@
 
 wxDEFINE_EVENT(asEVT_ACTION_STATION_SELECTION_CHANGED, wxCommandEvent);
 
-asPanelSidebarStationsList::asPanelSidebarStationsList(wxWindow *parent, wxWindowID id, const wxPoint &pos,
-                                                       const wxSize &size, long style)
+asPanelSidebarStationsList::asPanelSidebarStationsList(wxWindow* parent, wxWindowID id, const wxPoint& pos,
+                                                       const wxSize& size, long style)
     : asPanelSidebar(parent, id, pos, size, style) {
     m_header->SetLabelText(_("Station selection"));
 
@@ -54,7 +54,7 @@ asPanelSidebarStationsList::~asPanelSidebarStationsList() {
                                          this);
 }
 
-void asPanelSidebarStationsList::OnStationSelection(wxCommandEvent &event) {
+void asPanelSidebarStationsList::OnStationSelection(wxCommandEvent& event) {
     // Send event
     wxCommandEvent eventParent(asEVT_ACTION_STATION_SELECTION_CHANGED);
     eventParent.SetInt(event.GetInt());
@@ -62,6 +62,6 @@ void asPanelSidebarStationsList::OnStationSelection(wxCommandEvent &event) {
     GetParent()->ProcessWindowEvent(eventParent);
 }
 
-void asPanelSidebarStationsList::SetChoices(wxArrayString &arrayStation) {
+void asPanelSidebarStationsList::SetChoices(wxArrayString& arrayStation) {
     m_choiceStationSelection->Set(arrayStation);
 }

@@ -38,7 +38,7 @@ asWorkspace::asWorkspace()
       m_alarmsPanelReturnPeriod(10),
       m_alarmsPanelQuantile(0.9f) {}
 
-bool asWorkspace::Load(const wxString &filePath) {
+bool asWorkspace::Load(const wxString& filePath) {
     ClearLayers();
 
     // Open the file
@@ -54,7 +54,7 @@ bool asWorkspace::Load(const wxString &filePath) {
     }
 
     // Get data
-    wxXmlNode *node = fileWorkspace.GetRoot()->GetChildren();
+    wxXmlNode* node = fileWorkspace.GetRoot()->GetChildren();
     while (node) {
         if (node->GetName() == "coordinate_system") {
             m_coordinateSys = asFileWorkspace::GetString(node);
@@ -69,10 +69,10 @@ bool asWorkspace::Load(const wxString &filePath) {
         } else if (node->GetName() == "panel_alarms_quantile") {
             m_alarmsPanelQuantile = asFileWorkspace::GetFloat(node);
         } else if (node->GetName() == "layers") {
-            wxXmlNode *nodeLayer = node->GetChildren();
+            wxXmlNode* nodeLayer = node->GetChildren();
             while (nodeLayer) {
                 if (nodeLayer->GetName() == "layer") {
-                    wxXmlNode *nodeLayerData = nodeLayer->GetChildren();
+                    wxXmlNode* nodeLayerData = nodeLayer->GetChildren();
                     while (nodeLayerData) {
                         if (nodeLayerData->GetName() == "path") {
                             wxString path = asFileWorkspace::GetString(nodeLayerData);
@@ -153,9 +153,9 @@ bool asWorkspace::Save() const {
     fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("panel_alarms_quantile", m_alarmsPanelQuantile));
 
     // GIS layers
-    wxXmlNode *nodeLayers = new wxXmlNode(wxXML_ELEMENT_NODE, "layers");
+    wxXmlNode* nodeLayers = new wxXmlNode(wxXML_ELEMENT_NODE, "layers");
     for (int iLayer = 0; iLayer < GetLayersNb(); iLayer++) {
-        wxXmlNode *nodeLayer = new wxXmlNode(wxXML_ELEMENT_NODE, "layer");
+        wxXmlNode* nodeLayer = new wxXmlNode(wxXML_ELEMENT_NODE, "layer");
 
         nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("path", m_layerPaths[iLayer]));
         nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("type", m_layerTypes[iLayer]));

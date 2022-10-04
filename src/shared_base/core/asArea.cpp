@@ -28,7 +28,7 @@
 
 #include "asArea.h"
 
-asArea::asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, int flatAllowed,
+asArea::asArea(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR, int flatAllowed,
                bool isLatLon)
     : m_cornerUL(cornerUL),
       m_cornerUR(cornerUR),
@@ -79,7 +79,7 @@ void asArea::DoCheckPoints() {
     CheckPoint(m_cornerLR);
 }
 
-void asArea::CheckPoint(Coo &point) {
+void asArea::CheckPoint(Coo& point) {
     if (point.y < -90) {
         point.y = -90;
     }

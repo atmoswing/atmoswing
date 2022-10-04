@@ -28,7 +28,7 @@
 
 #include "asTime.h"
 
-void asTime::TimeStructInit(Time &date) {
+void asTime::TimeStructInit(Time& date) {
     date.year = 0;
     date.month = 0;
     date.day = 0;
@@ -37,7 +37,7 @@ void asTime::TimeStructInit(Time &date) {
     date.sec = 0;
 }
 
-Time asTime::TimeTmToTimeStruct(const struct tm &date) {
+Time asTime::TimeTmToTimeStruct(const struct tm& date) {
     Time timeSt;
     TimeStructInit(timeSt);
 
@@ -51,7 +51,7 @@ Time asTime::TimeTmToTimeStruct(const struct tm &date) {
     return timeSt;
 }
 
-double asTime::TimeTmToMJD(const struct tm &date) {
+double asTime::TimeTmToMJD(const struct tm& date) {
     return GetMJD(date.tm_year + 1900, date.tm_mon + 1, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec);
 }
 
@@ -147,14 +147,14 @@ wxDateTime asTime::NowWxDateTime(int timezone) {
     return nowWx;
 }
 
-wxString asTime::GetStringTime(double mjd, const wxString &format) {
+wxString asTime::GetStringTime(double mjd, const wxString& format) {
     Time date = GetTimeStruct(mjd);
     wxString datestr = GetStringTime(date, format);
 
     return datestr;
 }
 
-wxString asTime::GetStringTime(const Time &date, const wxString &format) {
+wxString asTime::GetStringTime(const Time& date, const wxString& format) {
     wxString datestr = format;
 
     wxString year = wxString::Format("%d", date.year);
@@ -186,7 +186,7 @@ wxString asTime::GetStringTime(double mjd, TimeFormat format) {
     return datestr;
 }
 
-wxString asTime::GetStringTime(const Time &date, TimeFormat format) {
+wxString asTime::GetStringTime(const Time& date, TimeFormat format) {
     switch (format) {
         case (ISOdate):
             return wxString::Format("%4.4d-%2.2d-%2.2d", date.year, date.month, date.day);
@@ -222,7 +222,7 @@ wxString asTime::GetStringTime(const Time &date, TimeFormat format) {
     return wxEmptyString;
 }
 
-double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format) {
+double asTime::GetTimeFromString(const wxString& datestr, TimeFormat format) {
     double date;
     wxString errormsglength = _("The length of the input date (%2.2d) is not as expected (%2.2d or %2.2d)");
     wxString errormsgconversion = _("The date (%s) conversion failed. Please check the format");
@@ -515,7 +515,6 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format) {
         default:
             asThrowException(_("The date format is not correctly set"));
     }
-
 }
 
 bool asTime::IsLeapYear(int year) {
@@ -575,11 +574,11 @@ double asTime::GetMJD(int year, int month, int day, int hour, int minute, int se
     return mjd;
 }
 
-double asTime::GetMJD(const Time &date, int method) {
+double asTime::GetMJD(const Time& date, int method) {
     return GetMJD(date.year, date.month, date.day, date.hour, date.min, date.sec, method);
 }
 
-double asTime::GetMJD(wxDateTime &date, int method) {
+double asTime::GetMJD(wxDateTime& date, int method) {
     int year = date.GetYear();
     int month = date.GetMonth() + 1;
     int day = date.GetDay();

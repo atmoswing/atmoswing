@@ -31,11 +31,12 @@
 #include "asTotalScore.h"
 #include "asTotalScoreRankHistogramReliability.h"
 
-asMethodCalibratorEvaluateAllScores::asMethodCalibratorEvaluateAllScores() : asMethodCalibrator() {}
+asMethodCalibratorEvaluateAllScores::asMethodCalibratorEvaluateAllScores()
+    : asMethodCalibrator() {}
 
 asMethodCalibratorEvaluateAllScores::~asMethodCalibratorEvaluateAllScores() {}
 
-bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &params) {
+bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& params) {
     // Check that we really handle a EvaluateAllScores case
     bool checkSizes = true;
     wxString errorField = wxEmptyString;

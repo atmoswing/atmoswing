@@ -62,7 +62,7 @@ void asParametersOptimization::AddStep() {
     m_stepsVect.push_back(stepVect);
 }
 
-void asParametersOptimization::AddPredictorIteration(ParamsStep &step) {
+void asParametersOptimization::AddPredictorIteration(ParamsStep& step) {
     ParamsPredictor predictor;
 
     predictor.xMin = 1;
@@ -75,7 +75,7 @@ void asParametersOptimization::AddPredictorIteration(ParamsStep &step) {
     step.predictors.push_back(predictor);
 }
 
-void asParametersOptimization::AddPredictorUpperLimit(ParamsStep &step) {
+void asParametersOptimization::AddPredictorUpperLimit(ParamsStep& step) {
     ParamsPredictor predictor;
 
     predictor.xMin = 717.5;
@@ -86,7 +86,7 @@ void asParametersOptimization::AddPredictorUpperLimit(ParamsStep &step) {
     step.predictors.push_back(predictor);
 }
 
-void asParametersOptimization::AddPredictorLowerLimit(ParamsStep &step) {
+void asParametersOptimization::AddPredictorLowerLimit(ParamsStep& step) {
     ParamsPredictor predictor;
 
     predictor.xMin = 0;
@@ -99,13 +99,13 @@ void asParametersOptimization::AddPredictorLowerLimit(ParamsStep &step) {
     step.predictors.push_back(predictor);
 }
 
-void asParametersOptimization::AddPredictorLocks(ParamsStepBool &step) {
+void asParametersOptimization::AddPredictorLocks(ParamsStepBool& step) {
     ParamsPredictorBool predictor;
 
     step.predictors.push_back(predictor);
 }
 
-bool asParametersOptimization::LoadFromFile(const wxString &filePath) {
+bool asParametersOptimization::LoadFromFile(const wxString& filePath) {
     wxLogVerbose(_("Loading parameters file."));
 
     if (filePath.IsEmpty()) {
@@ -119,7 +119,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath) {
     if (!fileParams.CheckRootElement()) return false;
 
     int iStep = 0;
-    wxXmlNode *nodeProcess = fileParams.GetRoot()->GetChildren();
+    wxXmlNode* nodeProcess = fileParams.GetRoot()->GetChildren();
     while (nodeProcess) {
         if (nodeProcess->GetName() == "description") {
             if (!ParseDescription(fileParams, nodeProcess)) return false;
@@ -165,9 +165,9 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath) {
     return true;
 }
 
-bool asParametersOptimization::ParseDescription(asFileParametersOptimization &fileParams,
-                                                const wxXmlNode *nodeProcess) {
-    wxXmlNode *nodeParam = nodeProcess->GetChildren();
+bool asParametersOptimization::ParseDescription(asFileParametersOptimization& fileParams,
+                                                const wxXmlNode* nodeProcess) {
+    wxXmlNode* nodeParam = nodeProcess->GetChildren();
     while (nodeParam) {
         if (nodeParam->GetName() == "method_id") {
             SetMethodId(fileParams.GetString(nodeParam));
@@ -187,12 +187,12 @@ bool asParametersOptimization::ParseDescription(asFileParametersOptimization &fi
     return true;
 }
 
-bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization &fileParams,
-                                                   const wxXmlNode *nodeProcess) {
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization& fileParams,
+                                                   const wxXmlNode* nodeProcess) {
+    wxXmlNode* nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "archive_period") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "start_year") {
                     SetArchiveYearStart(fileParams.GetInt(nodeParam));
@@ -210,7 +210,7 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization 
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "calibration_period") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "start_year") {
                     SetCalibrationYearStart(fileParams.GetInt(nodeParam));
@@ -228,7 +228,7 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization 
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "validation_period") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             int yStart = 0, yEnd = 0;
             while (nodeParam) {
                 if (nodeParam->GetName() == "years") {
@@ -250,7 +250,7 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization 
             SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock));
             SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "time_array_target") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "time_array") {
                     SetTimeArrayTargetMode(fileParams.GetString(nodeParam));
@@ -266,7 +266,7 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization 
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "time_array_analogs") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "time_array") {
                     SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam));
@@ -297,10 +297,10 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization 
     return true;
 }
 
-bool asParametersOptimization::ParseAnalogDatesParams(asFileParametersOptimization &fileParams, int iStep,
-                                                      const wxXmlNode *nodeProcess) {
+bool asParametersOptimization::ParseAnalogDatesParams(asFileParametersOptimization& fileParams, int iStep,
+                                                      const wxXmlNode* nodeProcess) {
     int iPtor = 0;
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+    wxXmlNode* nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "analogs_number") {
             SetAnalogsNumberLock(iStep, fileParams.GetAttributeBool(nodeParamBlock, "lock"));
@@ -333,9 +333,9 @@ bool asParametersOptimization::ParseAnalogDatesParams(asFileParametersOptimizati
     return true;
 }
 
-bool asParametersOptimization::ParsePredictors(asFileParametersOptimization &fileParams, int iStep, int iPtor,
-                                               const wxXmlNode *nodeParamBlock) {
-    wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+bool asParametersOptimization::ParsePredictors(asFileParametersOptimization& fileParams, int iStep, int iPtor,
+                                               const wxXmlNode* nodeParamBlock) {
+    wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
     while (nodeParam) {
         if (nodeParam->GetName() == "preload") {
             SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
@@ -409,9 +409,9 @@ bool asParametersOptimization::ParsePredictors(asFileParametersOptimization &fil
     return true;
 }
 
-bool asParametersOptimization::ParseSpatialWindow(asFileParametersOptimization &fileParams, int iStep, int iPtor,
-                                                  const wxXmlNode *nodeParam) {
-    wxXmlNode *nodeWindow = nodeParam->GetChildren();
+bool asParametersOptimization::ParseSpatialWindow(asFileParametersOptimization& fileParams, int iStep, int iPtor,
+                                                  const wxXmlNode* nodeParam) {
+    wxXmlNode* nodeWindow = nodeParam->GetChildren();
     while (nodeWindow) {
         if (nodeWindow->GetName() == "grid_type") {
             SetPredictorGridType(iStep, iPtor, fileParams.GetString(nodeWindow, "regular"));
@@ -475,10 +475,10 @@ bool asParametersOptimization::ParseSpatialWindow(asFileParametersOptimization &
     return true;
 }
 
-bool asParametersOptimization::ParsePreprocessedPredictors(asFileParametersOptimization &fileParams, int iStep,
-                                                           int iPtor, const wxXmlNode *nodeParam) {
+bool asParametersOptimization::ParsePreprocessedPredictors(asFileParametersOptimization& fileParams, int iStep,
+                                                           int iPtor, const wxXmlNode* nodeParam) {
     int iPre = 0;
-    wxXmlNode *nodePreprocess = nodeParam->GetChildren();
+    wxXmlNode* nodePreprocess = nodeParam->GetChildren();
     while (nodePreprocess) {
         if (nodePreprocess->GetName() == "preprocessing_method") {
             SetPreprocessMethod(iStep, iPtor, fileParams.GetString(nodePreprocess));
@@ -493,15 +493,16 @@ bool asParametersOptimization::ParsePreprocessedPredictors(asFileParametersOptim
     return true;
 }
 
-bool asParametersOptimization::ParsePreprocessedPredictorDataset(asFileParametersOptimization &fileParams, int iStep,
-                                                                 int iPtor, int iPre, const wxXmlNode *nodePreprocess) {
-    wxXmlNode *nodeParamPreprocess = nodePreprocess->GetChildren();
+bool asParametersOptimization::ParsePreprocessedPredictorDataset(asFileParametersOptimization& fileParams, int iStep,
+                                                                 int iPtor, int iPre, const wxXmlNode* nodePreprocess) {
+    wxXmlNode* nodeParamPreprocess = nodePreprocess->GetChildren();
     while (nodeParamPreprocess) {
         if (nodeParamPreprocess->GetName() == "dataset_id") {
             SetPreprocessDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess));
         } else if (nodeParamPreprocess->GetName() == "data_id") {
             SetPreprocessDataIdVector(iStep, iPtor, iPre, fileParams.GetVectorString(nodeParamPreprocess));
-            SetPreprocessDataIdLock(iStep, iPtor, iPre, fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
+            SetPreprocessDataIdLock(iStep, iPtor, iPre,
+                                    fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
             if (IsPreprocessDataIdLocked(iStep, iPtor, iPre)) {
                 SetPreprocessDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess));
             } else {
@@ -510,7 +511,8 @@ bool asParametersOptimization::ParsePreprocessedPredictorDataset(asFileParameter
             }
         } else if (nodeParamPreprocess->GetName() == "level") {
             SetPreprocessLevelVector(iStep, iPtor, iPre, fileParams.GetVectorFloat(nodeParamPreprocess));
-            SetPreprocessLevelLock(iStep, iPtor, iPre, fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
+            SetPreprocessLevelLock(iStep, iPtor, iPre,
+                                   fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
             if (IsPreprocessLevelLocked(iStep, iPtor, iPre)) {
                 SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetFloat(nodeParamPreprocess));
             } else {
@@ -518,16 +520,20 @@ bool asParametersOptimization::ParsePreprocessedPredictorDataset(asFileParameter
                 SetPreprocessLevel(iStep, iPtor, iPre, GetPreprocessLevelVector(iStep, iPtor, iPre)[0]);
             }
         } else if (nodeParamPreprocess->GetName() == "time") {
-            SetPreprocessHourLock(iStep, iPtor, iPre, fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
+            SetPreprocessHourLock(iStep, iPtor, iPre,
+                                  fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
             if (IsPreprocessHourLocked(iStep, iPtor, iPre)) {
                 SetPreprocessHour(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess));
                 SetPreprocessHoursLowerLimit(iStep, iPtor, iPre, GetPreprocessHour(iStep, iPtor, iPre));
                 SetPreprocessHoursUpperLimit(iStep, iPtor, iPre, GetPreprocessHour(iStep, iPtor, iPre));
                 SetPreprocessHoursIteration(iStep, iPtor, iPre, 6);
             } else {
-                SetPreprocessHoursLowerLimit(iStep, iPtor, iPre, fileParams.GetAttributeDouble(nodeParamPreprocess, "lowerlimit"));
-                SetPreprocessHoursUpperLimit(iStep, iPtor, iPre, fileParams.GetAttributeDouble(nodeParamPreprocess, "upperlimit"));
-                SetPreprocessHoursIteration(iStep, iPtor, iPre, fileParams.GetAttributeDouble(nodeParamPreprocess, "iteration"));
+                SetPreprocessHoursLowerLimit(iStep, iPtor, iPre,
+                                             fileParams.GetAttributeDouble(nodeParamPreprocess, "lowerlimit"));
+                SetPreprocessHoursUpperLimit(iStep, iPtor, iPre,
+                                             fileParams.GetAttributeDouble(nodeParamPreprocess, "upperlimit"));
+                SetPreprocessHoursIteration(iStep, iPtor, iPre,
+                                            fileParams.GetAttributeDouble(nodeParamPreprocess, "iteration"));
                 // Initialize to ensure correct array sizes
                 SetPreprocessHour(iStep, iPtor, iPre, GetPreprocessHoursLowerLimit(iStep, iPtor, iPre));
             }
@@ -541,12 +547,12 @@ bool asParametersOptimization::ParsePreprocessedPredictorDataset(asFileParameter
     return true;
 }
 
-bool asParametersOptimization::ParseAnalogValuesParams(asFileParametersOptimization &fileParams,
-                                                       const wxXmlNode *nodeProcess) {
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+bool asParametersOptimization::ParseAnalogValuesParams(asFileParametersOptimization& fileParams,
+                                                       const wxXmlNode* nodeProcess) {
+    wxXmlNode* nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "predictand") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "station_id") {
                     SetPredictandStationIds(fileParams.GetStationIds(fileParams.GetString(nodeParam)));
@@ -565,8 +571,8 @@ bool asParametersOptimization::ParseAnalogValuesParams(asFileParametersOptimizat
     return true;
 }
 
-bool asParametersOptimization::ParseScore(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess) {
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+bool asParametersOptimization::ParseScore(asFileParametersOptimization& fileParams, const wxXmlNode* nodeProcess) {
+    wxXmlNode* nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "score") {
             SetScoreName(fileParams.GetString(nodeParamBlock));
@@ -725,9 +731,9 @@ bool asParametersOptimization::SetPreloadingProperties() {
 
 void asParametersOptimization::InitRandomValues() {
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
-        m_analogsIntervalDays =
-            asRandom(m_timeArrayAnalogsIntervalDaysLowerLimit, m_timeArrayAnalogsIntervalDaysUpperLimit,
-                     m_timeArrayAnalogsIntervalDaysIteration);
+        m_analogsIntervalDays = asRandom(m_timeArrayAnalogsIntervalDaysLowerLimit,
+                                         m_timeArrayAnalogsIntervalDaysUpperLimit,
+                                         m_timeArrayAnalogsIntervalDaysIteration);
     }
 
     for (int i = 0; i < GetStepsNb(); i++) {
@@ -1090,7 +1096,8 @@ bool asParametersOptimization::FixWeights() {
         // Check total of the locked weights
         if (totWeightLocked > 1) {
             wxLogWarning(_("The sum of the locked weights of the analogy level number %d is higher than 1 (%f). They "
-                           "were forced as unlocked."), i + 1, totWeightLocked);
+                           "were forced as unlocked."),
+                         i + 1, totWeightLocked);
             totWeightManageable = totWeight;
             totWeightLocked = 0;
         }
@@ -1111,8 +1118,8 @@ bool asParametersOptimization::FixWeights() {
             if (totWeightLocked > 1) {
                 float precision = GetPredictorWeightIteration(i, j);
                 float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                newWeight = wxMax(precision * asRound(newWeight * (1.0 / precision)),
-                                  GetPredictorWeightLowerLimit(i, j));
+                newWeight =
+                    wxMax(precision * asRound(newWeight * (1.0 / precision)), GetPredictorWeightLowerLimit(i, j));
                 newSum += newWeight;
 
                 SetPredictorWeight(i, j, newWeight);
@@ -1120,8 +1127,8 @@ bool asParametersOptimization::FixWeights() {
                 if (!IsPredictorWeightLocked(i, j)) {
                     float precision = GetPredictorWeightIteration(i, j);
                     float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                    newWeight = wxMax(precision * asRound(newWeight * (1.0 / precision)),
-                                      GetPredictorWeightLowerLimit(i, j));
+                    newWeight =
+                        wxMax(precision * asRound(newWeight * (1.0 / precision)), GetPredictorWeightLowerLimit(i, j));
                     newSum += newWeight;
 
                     SetPredictorWeight(i, j, newWeight);
@@ -1130,8 +1137,8 @@ bool asParametersOptimization::FixWeights() {
         }
 
         // Last weight: difference to 0
-        float lastWeight = wxMax(1.0f - newSum - totWeightLocked,
-                                 GetPredictorWeightLowerLimit(i, GetPredictorsNb(i) - 1));
+        float lastWeight =
+            wxMax(1.0f - newSum - totWeightLocked, GetPredictorWeightLowerLimit(i, GetPredictorsNb(i) - 1));
         SetPredictorWeight(i, GetPredictorsNb(i) - 1, lastWeight);
     }
 
@@ -1169,7 +1176,7 @@ void asParametersOptimization::LockAll() {
     return;
 }
 
-void asParametersOptimization::Unlock(vi &indices) {
+void asParametersOptimization::Unlock(vi& indices) {
     int counter = 0;
     int length = indices.size();
 

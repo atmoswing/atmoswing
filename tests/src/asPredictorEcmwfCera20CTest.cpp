@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorEcmwfCera20C, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pl/z", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
@@ -90,7 +90,7 @@ TEST(PredictorEcmwfCera20C, Load1stMember) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asPredictor *predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pressure_level/r", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pressure_level/r", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
@@ -155,7 +155,7 @@ TEST(PredictorEcmwfCera20C, Load3rdMember) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asPredictor *predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pressure_level/r", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pressure_level/r", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectMember(3);
 
@@ -220,7 +220,7 @@ TEST(PredictorEcmwfCera20C, Load3Members) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asPredictor *predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pressure_level/r", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pressure_level/r", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectMembers(3);
 
@@ -326,7 +326,7 @@ TEST(PredictorEcmwfCera20C, LoadWithNegativeValues) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asPredictor *predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pressure_level/r", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pressure_level/r", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
@@ -393,7 +393,7 @@ TEST(PredictorEcmwfCera20C, LoadBorderLeft) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asPredictor *predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pressure_level/r", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pressure_level/r", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
@@ -457,7 +457,7 @@ TEST(PredictorEcmwfCera20C, LoadBorderRight) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asPredictor *predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pressure_level/r", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pressure_level/r", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 

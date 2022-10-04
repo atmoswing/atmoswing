@@ -35,10 +35,10 @@
 
 class asFramePreferencesViewer : public asFramePreferencesViewerVirtual {
   public:
-    asFramePreferencesViewer(wxWindow *parent, asWorkspace *workspace, wxWindowID id = asWINDOW_PREFERENCES);
+    asFramePreferencesViewer(wxWindow* parent, asWorkspace* workspace, wxWindowID id = asWINDOW_PREFERENCES);
 
   protected:
-    void CloseFrame(wxCommandEvent &event) override;
+    void CloseFrame(wxCommandEvent& event) override;
 
     void Update() override;
 
@@ -46,12 +46,12 @@ class asFramePreferencesViewer : public asFramePreferencesViewerVirtual {
 
     void SavePreferences();
 
-    void SaveAndClose(wxCommandEvent &event) override;
+    void SaveAndClose(wxCommandEvent& event) override;
 
-    void ApplyChanges(wxCommandEvent &event) override;
+    void ApplyChanges(wxCommandEvent& event) override;
 
   private:
-    asWorkspace *m_workspace;
+    asWorkspace* m_workspace;
 };
 
 #endif

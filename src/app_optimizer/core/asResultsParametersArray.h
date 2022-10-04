@@ -39,25 +39,25 @@ class asResultsParametersArray : public asResults {
 
     ~asResultsParametersArray() override;
 
-    void Init(const wxString &fileTag);
+    void Init(const wxString& fileTag);
 
     void Clear();
 
-    void StoreValues(asParametersScoring &params);
+    void StoreValues(asParametersScoring& params);
 
-    void Add(asParametersScoring &params, float scoreCalib);
+    void Add(asParametersScoring& params, float scoreCalib);
 
-    void AddWithoutProcessingMedian(asParametersScoring &params, float scoreCalib);
+    void AddWithoutProcessingMedian(asParametersScoring& params, float scoreCalib);
 
-    void Add(asParametersScoring &params, float scoreCalib, float scoreValid);
+    void Add(asParametersScoring& params, float scoreCalib, float scoreValid);
 
-    void Add(asParametersScoring &params, const a1f &scoreCalib, const a1f &scoreValid);
+    void Add(asParametersScoring& params, const a1f& scoreCalib, const a1f& scoreValid);
 
     void ProcessMedianScores();
 
-    bool HasBeenAssessed(asParametersScoring &params, float &score);
+    bool HasBeenAssessed(asParametersScoring& params, float& score);
 
-    bool HasCloseOneBeenAssessed(asParametersScoring &params, float &score);
+    bool HasCloseOneBeenAssessed(asParametersScoring& params, float& score);
 
     bool Print(int fromIndex = 0) const;
 
@@ -72,7 +72,7 @@ class asResultsParametersArray : public asResults {
     }
 
   protected:
-    void BuildFileName(const wxString &fileTag);
+    void BuildFileName(const wxString& fileTag);
 
   private:
     std::vector<asParametersScoring::VectorParamsStep> m_parameters;

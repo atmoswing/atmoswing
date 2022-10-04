@@ -11,11 +11,11 @@
 
 #include "img_treectrl.h"
 
-wxBitmap *_img_icon_lightning;
-wxBitmap *_img_icon_other;
-wxBitmap *_img_icon_precip;
-wxBitmap *_img_icon_temp;
-wxBitmap *_img_icon_wind;
+wxBitmap* _img_icon_lightning;
+wxBitmap* _img_icon_other;
+wxBitmap* _img_icon_precip;
+wxBitmap* _img_icon_temp;
+wxBitmap* _img_icon_wind;
 
 void initialize_img_treectrl_s() {
     {

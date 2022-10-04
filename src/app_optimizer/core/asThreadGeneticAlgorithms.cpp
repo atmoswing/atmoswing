@@ -32,9 +32,9 @@
 #include "asProcessorCuda.cuh"
 #endif
 
-asThreadGeneticAlgorithms::asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer,
-                                                     asParametersOptimization *params, float *finalScoreCalib,
-                                                     vf *scoreClimatology)
+asThreadGeneticAlgorithms::asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms* optimizer,
+                                                     asParametersOptimization* params, float* finalScoreCalib,
+                                                     vf* scoreClimatology)
     : asThread(asThread::MethodOptimizerGeneticAlgorithms),
       m_optimizer(optimizer),
       m_params(params),

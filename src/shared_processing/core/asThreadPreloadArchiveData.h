@@ -35,7 +35,7 @@
 
 class asThreadPreloadArchiveData : public asThread {
   public:
-    asThreadPreloadArchiveData(asMethodStandard *method, asParameters *params, int iStep, int iPtor, int i);
+    asThreadPreloadArchiveData(asMethodStandard* method, asParameters* params, int iStep, int iPtor, int i);
 
     virtual ~asThreadPreloadArchiveData();
 
@@ -43,8 +43,8 @@ class asThreadPreloadArchiveData : public asThread {
 
   protected:
   private:
-    asMethodStandard *m_method;
-    asParameters *m_params;
+    asMethodStandard* m_method;
+    asParameters* m_params;
     int m_iStep;
     int m_iProt;
     int m_iDat;

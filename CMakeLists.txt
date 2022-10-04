@@ -121,6 +121,10 @@ else (BUILD_VIEWER)
     option(USE_GUI "Should AtmoSwing be built with a GUI ?" OFF)
 endif (BUILD_VIEWER)
 
+if (USE_GUI)
+    add_definitions(-DUSE_GUI)
+endif(USE_GUI)
+
 # Disable testing tree
 set(BUILD_TESTING OFF)
 mark_as_advanced(BUILD_TESTING)

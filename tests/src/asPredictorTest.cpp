@@ -40,7 +40,7 @@ TEST(Predictor, Standardize) {
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 12, 00);
     double end = asTime::GetMJD(1960, 1, 10, 12, 00);
@@ -51,7 +51,7 @@ TEST(Predictor, Standardize) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, level));
 

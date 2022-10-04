@@ -28,7 +28,8 @@
 
 #include "asFileParameters.h"
 
-asFileParameters::asFileParameters(const wxString &fileName, const FileMode &fileMode) : asFileXml(fileName, fileMode) {
+asFileParameters::asFileParameters(const wxString& fileName, const FileMode& fileMode)
+    : asFileXml(fileName, fileMode) {
     // FindAndOpen() processed by asFileXml
 }
 
@@ -176,9 +177,9 @@ vwxs asFileParameters::BuildVectorString(wxString str) {
     return vect;
 }
 
-vi asFileParameters::GetVectorInt(wxXmlNode *node) {
+vi asFileParameters::GetVectorInt(wxXmlNode* node) {
     vi vect;
-    const wxString &nodeName = node->GetName();
+    const wxString& nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty()) {
         wxString valueStr = node->GetChildren()->GetContent();
@@ -224,9 +225,9 @@ vi asFileParameters::GetVectorInt(wxXmlNode *node) {
     return vect;
 }
 
-vf asFileParameters::GetVectorFloat(wxXmlNode *node) {
+vf asFileParameters::GetVectorFloat(wxXmlNode* node) {
     vf vect;
-    const auto &nodeName = node->GetName();
+    const auto& nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty()) {
         wxString valueStr = node->GetChildren()->GetContent();
@@ -272,7 +273,7 @@ vf asFileParameters::GetVectorFloat(wxXmlNode *node) {
     return vect;
 }
 
-vd asFileParameters::GetVectorDouble(wxXmlNode *node) {
+vd asFileParameters::GetVectorDouble(wxXmlNode* node) {
     vd vect;
     wxString nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
@@ -317,7 +318,7 @@ vd asFileParameters::GetVectorDouble(wxXmlNode *node) {
     return vect;
 }
 
-vwxs asFileParameters::GetVectorString(wxXmlNode *node) {
+vwxs asFileParameters::GetVectorString(wxXmlNode* node) {
     vwxs vect;
     wxString nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
@@ -341,7 +342,7 @@ vwxs asFileParameters::GetVectorString(wxXmlNode *node) {
     return vect;
 }
 
-vvi asFileParameters::GetStationIdsVector(wxXmlNode *node) {
+vvi asFileParameters::GetStationIdsVector(wxXmlNode* node) {
     vvi vect;
     wxString nodeName = node->GetName();
     wxString method = node->GetAttribute("method");

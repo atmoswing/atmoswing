@@ -41,7 +41,10 @@
 // Symbolic constants
 //---------------------------------
 
-enum { asSHOW_WARNINGS, asHIDE_WARNINGS };
+enum {
+    asSHOW_WARNINGS,
+    asHIDE_WARNINGS
+};
 
 enum {
     asOUT_OF_RANGE = -2,
@@ -54,13 +57,25 @@ enum {
     asSUCCESS = 1
 };
 
-enum { asFLAT_FORBIDDEN, asFLAT_ALLOWED };
+enum {
+    asFLAT_FORBIDDEN,
+    asFLAT_ALLOWED
+};
 
-enum { asUSE_NORMAL_METHOD, asUSE_ALTERNATE_METHOD };
+enum {
+    asUSE_NORMAL_METHOD,
+    asUSE_ALTERNATE_METHOD
+};
 
-enum { asUTM, asLOCAL };
+enum {
+    asUTM,
+    asLOCAL
+};
 
-enum { asSAMPLE, asENTIRE_POPULATION };
+enum {
+    asSAMPLE,
+    asENTIRE_POPULATION
+};
 
 // Processor methods
 enum {

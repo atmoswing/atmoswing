@@ -31,11 +31,12 @@
 
 wxDEFINE_EVENT(asEVT_ACTION_OPEN_WORKSPACE, wxCommandEvent);
 
-asWizardWorkspace::asWizardWorkspace(wxWindow *parent, wxWindowID id) : asWizardWorkspaceVirtual(parent, id) {}
+asWizardWorkspace::asWizardWorkspace(wxWindow* parent, wxWindowID id)
+    : asWizardWorkspaceVirtual(parent, id) {}
 
 asWizardWorkspace::~asWizardWorkspace() {}
 
-void asWizardWorkspace::OnWizardFinished(wxWizardEvent &event) {
+void asWizardWorkspace::OnWizardFinished(wxWizardEvent& event) {
     wxString filePath = m_filePickerWorkspaceFile->GetPath();
     m_workspace.SetFilePath(filePath);
     wxString dirPath = m_dirPickerForecastResults->GetPath();
@@ -91,12 +92,12 @@ void asWizardWorkspace::OnWizardFinished(wxWizardEvent &event) {
     m_workspace.Save();
 
     if (!filePath.IsEmpty()) {
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
         pConfig->Write("/Workspace/LastOpened", filePath);
     }
 }
 
-void asWizardWorkspace::OnLoadExistingWorkspace(wxCommandEvent &event) {
+void asWizardWorkspace::OnLoadExistingWorkspace(wxCommandEvent& event) {
     wxCommandEvent eventOpen(asEVT_ACTION_OPEN_WORKSPACE);
     GetParent()->ProcessWindowEvent(eventOpen);
     Close();

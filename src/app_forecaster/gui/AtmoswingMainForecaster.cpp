@@ -36,13 +36,14 @@
 
 #include "AtmoswingMainForecaster.h"
 
-AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame) : asFrameMain(frame) {
+AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame* frame)
+    : asFrameMain(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
 
     // Config file
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
 
     // Set default options
     SetDefaultOptions();
@@ -87,7 +88,7 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame) : asFrameMain
 }
 
 void AtmoswingFrameForecaster::SetDefaultOptions() {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
 
     // General
     pConfig->Write("/General/GuiOptions", pConfig->ReadLong("/General/GuiOptions", 1l));
@@ -118,7 +119,7 @@ void AtmoswingFrameForecaster::SetDefaultOptions() {
 
 AtmoswingFrameForecaster::~AtmoswingFrameForecaster() {
     // Config file
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     if (!pConfig) return;
 
     // Save the frame position
@@ -133,10 +134,10 @@ AtmoswingFrameForecaster::~AtmoswingFrameForecaster() {
     // wxDELETE(m_logWindow);
 }
 
-void AtmoswingFrameForecaster::OnClose(wxCloseEvent &event) {
+void AtmoswingFrameForecaster::OnClose(wxCloseEvent& event) {
     Close(true);
 }
 
-void AtmoswingFrameForecaster::OnQuit(wxCommandEvent &event) {
+void AtmoswingFrameForecaster::OnQuit(wxCommandEvent& event) {
     Close(true);
 }

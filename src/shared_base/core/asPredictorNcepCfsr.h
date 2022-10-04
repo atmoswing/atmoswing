@@ -35,14 +35,14 @@ class asArea;
 
 class asPredictorNcepCfsr : public asPredictor {
   public:
-    explicit asPredictorNcepCfsr(const wxString &dataId);
+    explicit asPredictorNcepCfsr(const wxString& dataId);
 
     ~asPredictorNcepCfsr() override = default;
 
     bool Init() override;
 
   protected:
-    void ListFiles(asTimeArray &timeArray) override;
+    void ListFiles(asTimeArray& timeArray) override;
 
   private:
 };

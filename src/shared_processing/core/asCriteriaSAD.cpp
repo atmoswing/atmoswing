@@ -28,13 +28,14 @@
 
 #include "asCriteriaSAD.h"
 
-asCriteriaSAD::asCriteriaSAD() : asCriteria("SAD", _("Sum of Absolute Differences"), Asc) {
+asCriteriaSAD::asCriteriaSAD()
+    : asCriteria("SAD", _("Sum of Absolute Differences"), Asc) {
     m_canUseInline = true;
 }
 
 asCriteriaSAD::~asCriteriaSAD() = default;
 
-float asCriteriaSAD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
+float asCriteriaSAD::Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
 

@@ -31,7 +31,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorNcepR1::asPredictorNcepR1(const wxString &dataId) : asPredictor(dataId) {
+asPredictorNcepR1::asPredictorNcepR1(const wxString& dataId)
+    : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "NCEP_R1";
     m_provider = "NCEP/NCAR";
@@ -428,17 +429,17 @@ bool asPredictorNcepR1::Init() {
     return true;
 }
 
-void asPredictorNcepR1::ListFiles(asTimeArray &timeArray) {
+void asPredictorNcepR1::ListFiles(asTimeArray& timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
 }
 
-void asPredictorNcepR1::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorNcepR1::ConvertToMjd(a1d& time, double refValue) const {
     time /= 24.0;
-    if (time[0] < 500 * 365) { // New format
-        time += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
-    } else { // Old format
-        time += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
+    if (time[0] < 500 * 365) {               // New format
+        time += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
+    } else {                                 // Old format
+        time += asTime::GetMJD(1, 1, 1);     // to MJD: add a negative time span
     }
 }

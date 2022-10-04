@@ -31,7 +31,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorCustomUnilNR1::asPredictorCustomUnilNR1(const wxString &dataId) : asPredictor(dataId) {
+asPredictorCustomUnilNR1::asPredictorCustomUnilNR1(const wxString& dataId)
+    : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "Custom_Unil_NR1";
     m_provider = "NCEP/NCAR";
@@ -130,15 +131,15 @@ bool asPredictorCustomUnilNR1::Init() {
     return true;
 }
 
-void asPredictorCustomUnilNR1::ListFiles(asTimeArray &timeArray) {
+void asPredictorCustomUnilNR1::ListFiles(asTimeArray& timeArray) {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
-void asPredictorCustomUnilNR1::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorCustomUnilNR1::ConvertToMjd(a1d& time, double refValue) const {
     time /= 24.0;
-    if (time[0] < 500 * 365) { // New format
-        time += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
-    } else { // Old format
-        time += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
+    if (time[0] < 500 * 365) {               // New format
+        time += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
+    } else {                                 // Old format
+        time += asTime::GetMJD(1, 1, 1);     // to MJD: add a negative time span
     }
 }

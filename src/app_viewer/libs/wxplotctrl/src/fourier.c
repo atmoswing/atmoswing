@@ -107,7 +107,7 @@ double Index_to_frequency(unsigned NumSamples, unsigned Index) {
 #define CHECKPOINTERDOUBLE(p) \
     if (CheckPointerDouble(p, #p) == 0) return 0;
 
-static int CheckPointerDouble(void *p, char *name) {
+static int CheckPointerDouble(void* p, char* name) {
     if (p == NULL) {
         fprintf(stderr, "Error in fft_double():  %s == NULL\n", name);
         return 0;
@@ -115,8 +115,8 @@ static int CheckPointerDouble(void *p, char *name) {
     return 1;
 }
 
-int fft_double(unsigned NumSamples, int InverseTransform, double *RealIn, double *ImagIn, double *RealOut,
-               double *ImagOut) {
+int fft_double(unsigned NumSamples, int InverseTransform, double* RealIn, double* ImagIn, double* RealOut,
+               double* ImagOut) {
     unsigned NumBits; /* Number of bits needed to store indices */
     unsigned i, j, k, n;
     unsigned BlockSize, BlockEnd;
@@ -234,7 +234,7 @@ int fft_double(unsigned NumSamples, int InverseTransform, double *RealIn, double
 #define CHECKPOINTERFLOAT(p) \
     if (CheckPointerFloat(p, #p) == 0) return 0;
 
-static int CheckPointerFloat(void *p, char *name) {
+static int CheckPointerFloat(void* p, char* name) {
     if (p == NULL) {
         fprintf(stderr, "Error in fft_float():  %s == NULL\n", name);
         return 0;
@@ -242,7 +242,7 @@ static int CheckPointerFloat(void *p, char *name) {
     return 1;
 }
 
-int fft_float(unsigned NumSamples, int InverseTransform, float *RealIn, float *ImagIn, float *RealOut, float *ImagOut) {
+int fft_float(unsigned NumSamples, int InverseTransform, float* RealIn, float* ImagIn, float* RealOut, float* ImagOut) {
     unsigned NumBits; /* Number of bits needed to store indices */
     unsigned i, j, k, n;
     unsigned BlockSize, BlockEnd;

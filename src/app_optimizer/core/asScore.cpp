@@ -57,7 +57,7 @@ asScore::asScore()
       m_threshold(NaNf),
       m_quantile(NaNf) {}
 
-asScore::asScore(Score score, const wxString &name, const wxString &fullname, Order order, float scaleBest,
+asScore::asScore(Score score, const wxString& name, const wxString& fullname, Order order, float scaleBest,
                  float scaleWorst, bool usesClimatology, bool singleValue)
     : m_score(score),
       m_name(name),
@@ -72,122 +72,122 @@ asScore::asScore(Score score, const wxString &name, const wxString &fullname, Or
       m_threshold(NaNf),
       m_quantile(NaNf) {}
 
-asScore *asScore::GetInstance(Score scoreEnum) {
+asScore* asScore::GetInstance(Score scoreEnum) {
     switch (scoreEnum) {
         case (CRPSS): {
-            asScore *score = new asScoreCRPSS();
+            asScore* score = new asScoreCRPSS();
             return score;
         }
         case (CRPSAR): {
-            asScore *score = new asScoreCRPSAR();
+            asScore* score = new asScoreCRPSAR();
             return score;
         }
         case (CRPSEP): {
-            asScore *score = new asScoreCRPSEP();
+            asScore* score = new asScoreCRPSEP();
             return score;
         }
         case (CRPSaccuracyAR): {
-            asScore *score = new asScoreCRPSaccurAR();
+            asScore* score = new asScoreCRPSaccurAR();
             return score;
         }
         case (CRPSaccuracyEP): {
-            asScore *score = new asScoreCRPSaccurEP();
+            asScore* score = new asScoreCRPSaccurEP();
             return score;
         }
         case (CRPSsharpnessAR): {
-            asScore *score = new asScoreCRPSsharpAR();
+            asScore* score = new asScoreCRPSsharpAR();
             return score;
         }
         case (CRPSsharpnessEP): {
-            asScore *score = new asScoreCRPSsharpEP();
+            asScore* score = new asScoreCRPSsharpEP();
             return score;
         }
         case (CRPSreliability): {
-            asScore *score = new asScoreCRPSHersbachDecomp();
+            asScore* score = new asScoreCRPSHersbachDecomp();
             return score;
         }
         case (CRPSpotential): {
-            asScore *score = new asScoreCRPSHersbachDecomp();
+            asScore* score = new asScoreCRPSHersbachDecomp();
             return score;
         }
         case (CRPSHersbachDecomp): {
-            asScore *score = new asScoreCRPSHersbachDecomp();
+            asScore* score = new asScoreCRPSHersbachDecomp();
             return score;
         }
         case (DF0): {
-            asScore *score = new asScoreDF0();
+            asScore* score = new asScoreDF0();
             return score;
         }
         case (PC): {
-            asScore *score = new asScoreContingencyTable();
+            asScore* score = new asScoreContingencyTable();
             return score;
         }
         case (TS): {
-            asScore *score = new asScoreContingencyTable();
+            asScore* score = new asScoreContingencyTable();
             return score;
         }
         case (BIAS): {
-            asScore *score = new asScoreContingencyTable();
+            asScore* score = new asScoreContingencyTable();
             return score;
         }
         case (FARA): {
-            asScore *score = new asScoreContingencyTable();
+            asScore* score = new asScoreContingencyTable();
             return score;
         }
         case (H): {
-            asScore *score = new asScoreContingencyTable();
+            asScore* score = new asScoreContingencyTable();
             return score;
         }
         case (F): {
-            asScore *score = new asScoreContingencyTable();
+            asScore* score = new asScoreContingencyTable();
             return score;
         }
         case (HSS): {
-            asScore *score = new asScoreContingencyTable();
+            asScore* score = new asScoreContingencyTable();
             return score;
         }
         case (PSS): {
-            asScore *score = new asScoreContingencyTable();
+            asScore* score = new asScoreContingencyTable();
             return score;
         }
         case (GSS): {
-            asScore *score = new asScoreContingencyTable();
+            asScore* score = new asScoreContingencyTable();
             return score;
         }
         case (ContingencyTable): {
-            asScore *score = new asScoreContingencyTable();
+            asScore* score = new asScoreContingencyTable();
             return score;
         }
         case (MAE): {
-            asScore *score = new asScoreMAE();
+            asScore* score = new asScoreMAE();
             return score;
         }
         case (MSE): {
-            asScore *score = new asScoreMSE();
+            asScore* score = new asScoreMSE();
             return score;
         }
         case (RMSE): {
-            asScore *score = new asScoreMSE();
+            asScore* score = new asScoreMSE();
             return score;
         }
         case (BS): {
-            asScore *score = new asScoreBS();
+            asScore* score = new asScoreBS();
             return score;
         }
         case (BSS): {
-            asScore *score = new asScoreBSS();
+            asScore* score = new asScoreBSS();
             return score;
         }
         case (SEEPS): {
-            asScore *score = new asScoreSEEPS();
+            asScore* score = new asScoreSEEPS();
             return score;
         }
         case (RankHistogram): {
-            asScore *score = new asScoreRankHistogram();
+            asScore* score = new asScoreRankHistogram();
             return score;
         }
         case (RankHistogramReliability): {
-            asScore *score = new asScoreRankHistogram();
+            asScore* score = new asScoreRankHistogram();
             return score;
         }
         default: {
@@ -197,108 +197,108 @@ asScore *asScore::GetInstance(Score scoreEnum) {
     }
 }
 
-asScore *asScore::GetInstance(const wxString &scoreString) {
+asScore* asScore::GetInstance(const wxString& scoreString) {
     if (scoreString.CmpNoCase("CRPSSkillScore") == 0) {
-        asScore *score = new asScoreCRPSS();
+        asScore* score = new asScoreCRPSS();
         return score;
     } else if (scoreString.CmpNoCase("CRPSS") == 0) {
-        asScore *score = new asScoreCRPSS();
+        asScore* score = new asScoreCRPSS();
         return score;
     } else if (scoreString.CmpNoCase("CRPS") == 0) {
-        asScore *score = new asScoreCRPSAR();
+        asScore* score = new asScoreCRPSAR();
         return score;
     } else if (scoreString.CmpNoCase("CRPSAR") == 0) {
-        asScore *score = new asScoreCRPSAR();
+        asScore* score = new asScoreCRPSAR();
         return score;
     } else if (scoreString.CmpNoCase("CRPSEP") == 0) {
-        asScore *score = new asScoreCRPSEP();
+        asScore* score = new asScoreCRPSEP();
         return score;
     } else if (scoreString.CmpNoCase("CRPSaccuracy") == 0) {
-        asScore *score = new asScoreCRPSaccurAR();
+        asScore* score = new asScoreCRPSaccurAR();
         return score;
     } else if (scoreString.CmpNoCase("CRPSaccuracyAR") == 0) {
-        asScore *score = new asScoreCRPSaccurAR();
+        asScore* score = new asScoreCRPSaccurAR();
         return score;
     } else if (scoreString.CmpNoCase("CRPSaccuracyEP") == 0) {
-        asScore *score = new asScoreCRPSaccurEP();
+        asScore* score = new asScoreCRPSaccurEP();
         return score;
     } else if (scoreString.CmpNoCase("CRPSsharpness") == 0) {
-        asScore *score = new asScoreCRPSsharpAR();
+        asScore* score = new asScoreCRPSsharpAR();
         return score;
     } else if (scoreString.CmpNoCase("CRPSsharpnessAR") == 0) {
-        asScore *score = new asScoreCRPSsharpAR();
+        asScore* score = new asScoreCRPSsharpAR();
         return score;
     } else if (scoreString.CmpNoCase("CRPSsharpnessEP") == 0) {
-        asScore *score = new asScoreCRPSsharpEP();
+        asScore* score = new asScoreCRPSsharpEP();
         return score;
     } else if (scoreString.CmpNoCase("CRPSreliability") == 0) {
-        asScore *score = new asScoreCRPSHersbachDecomp();
+        asScore* score = new asScoreCRPSHersbachDecomp();
         return score;
     } else if (scoreString.CmpNoCase("CRPSpotential") == 0) {
-        asScore *score = new asScoreCRPSHersbachDecomp();
+        asScore* score = new asScoreCRPSHersbachDecomp();
         return score;
     } else if (scoreString.CmpNoCase("DF0") == 0) {
-        asScore *score = new asScoreDF0();
+        asScore* score = new asScoreDF0();
         return score;
     } else if (scoreString.CmpNoCase("PC") == 0) {
-        asScore *score = new asScoreContingencyTable();
+        asScore* score = new asScoreContingencyTable();
         return score;
     } else if (scoreString.CmpNoCase("TS") == 0) {
-        asScore *score = new asScoreContingencyTable();
+        asScore* score = new asScoreContingencyTable();
         return score;
     } else if (scoreString.CmpNoCase("BIAS") == 0) {
-        asScore *score = new asScoreContingencyTable();
+        asScore* score = new asScoreContingencyTable();
         return score;
     } else if (scoreString.CmpNoCase("FARA") == 0) {
-        asScore *score = new asScoreContingencyTable();
+        asScore* score = new asScoreContingencyTable();
         return score;
     } else if (scoreString.CmpNoCase("H") == 0) {
-        asScore *score = new asScoreContingencyTable();
+        asScore* score = new asScoreContingencyTable();
         return score;
     } else if (scoreString.CmpNoCase("F") == 0) {
-        asScore *score = new asScoreContingencyTable();
+        asScore* score = new asScoreContingencyTable();
         return score;
     } else if (scoreString.CmpNoCase("HSS") == 0) {
-        asScore *score = new asScoreContingencyTable();
+        asScore* score = new asScoreContingencyTable();
         return score;
     } else if (scoreString.CmpNoCase("PSS") == 0) {
-        asScore *score = new asScoreContingencyTable();
+        asScore* score = new asScoreContingencyTable();
         return score;
     } else if (scoreString.CmpNoCase("GSS") == 0) {
-        asScore *score = new asScoreContingencyTable();
+        asScore* score = new asScoreContingencyTable();
         return score;
     } else if (scoreString.CmpNoCase("MAE") == 0) {
-        asScore *score = new asScoreMAE();
+        asScore* score = new asScoreMAE();
         return score;
     } else if (scoreString.CmpNoCase("MSE") == 0) {
-        asScore *score = new asScoreMSE();
+        asScore* score = new asScoreMSE();
         return score;
     } else if (scoreString.CmpNoCase("RMSE") == 0) {
-        asScore *score = new asScoreMSE();
+        asScore* score = new asScoreMSE();
         return score;
     } else if (scoreString.CmpNoCase("BS") == 0) {
-        asScore *score = new asScoreBS();
+        asScore* score = new asScoreBS();
         return score;
     } else if (scoreString.CmpNoCase("BSS") == 0) {
-        asScore *score = new asScoreBSS();
+        asScore* score = new asScoreBSS();
         return score;
     } else if (scoreString.CmpNoCase("SEEPS") == 0) {
-        asScore *score = new asScoreSEEPS();
+        asScore* score = new asScoreSEEPS();
         return score;
     } else if (scoreString.CmpNoCase("RankHistogram") == 0) {
-        asScore *score = new asScoreRankHistogram();
+        asScore* score = new asScoreRankHistogram();
         return score;
     } else if (scoreString.CmpNoCase("RankHistogramReliability") == 0) {
-        asScore *score = new asScoreRankHistogram();
+        asScore* score = new asScoreRankHistogram();
         return score;
     } else {
         wxLogError(_("The score was not correctly set (cannot use %s)."), scoreString);
-        asScore *score = new asScoreCRPSAR();
+        asScore* score = new asScoreCRPSAR();
         return score;
     }
 }
 
-a1f asScore::AssessOnArray(float obs, const a1f &values, int nbElements) const {
+a1f asScore::AssessOnArray(float obs, const a1f& values, int nbElements) const {
     wxLogError(_("This asScore class has no AssessOnArrays method implemented !"));
 
     return a1f();
@@ -314,7 +314,7 @@ bool asScore::CheckObservedValue(float obs) const {
     return true;
 }
 
-bool asScore::CheckVectorLength(const a1f &values, int nbElements) const {
+bool asScore::CheckVectorLength(const a1f& values, int nbElements) const {
     // Check the element numbers vs vector length
     wxASSERT_MSG(values.rows() >= nbElements,
                  _("The required elements number is above the vector length in the score calculation."));
@@ -327,7 +327,7 @@ bool asScore::CheckVectorLength(const a1f &values, int nbElements) const {
     return true;
 }
 
-int asScore::CleanNans(const a1f &valuesIn, a1f &valuesOut, int nbElements) const {
+int asScore::CleanNans(const a1f& valuesIn, a1f& valuesOut, int nbElements) const {
     // Remove the NaNs and copy content
     int nbPredict = 0, nbNans = 0, iVal = 0;
     while (iVal < nbElements) {

@@ -33,7 +33,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorGenericNetcdf::asPredictorGenericNetcdf(const wxString &dataId) : asPredictor(dataId) {
+asPredictorGenericNetcdf::asPredictorGenericNetcdf(const wxString& dataId)
+    : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "GenericNetcdf";
     m_provider = "";
@@ -69,7 +70,7 @@ bool asPredictorGenericNetcdf::Init() {
     return true;
 }
 
-void asPredictorGenericNetcdf::ListFiles(asTimeArray &timeArray) {
+void asPredictorGenericNetcdf::ListFiles(asTimeArray& timeArray) {
     // Case 1: single file with the variable name
     wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".nc";
 
@@ -118,6 +119,6 @@ void asPredictorGenericNetcdf::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-void asPredictorGenericNetcdf::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorGenericNetcdf::ConvertToMjd(a1d& time, double refValue) const {
     // Nothing to do
 }

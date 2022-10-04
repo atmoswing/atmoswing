@@ -74,7 +74,7 @@ bool AtmoswingAppViewer::OnInit() {
     userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
     // Set the local config object
-    wxFileConfig *pConfig =
+    wxFileConfig* pConfig =
         new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingViewer.ini",
                          asConfig::GetUserDataDir() + "AtmoSwingViewer.ini", wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
@@ -106,7 +106,7 @@ bool AtmoswingAppViewer::OnInit() {
         return false;
 
     // Create frame
-    auto *frame = new AtmoswingFrameViewer(0L);
+    auto* frame = new AtmoswingFrameViewer(0L);
     frame->Init();
 
 #ifdef __WXMSW__
@@ -118,14 +118,14 @@ bool AtmoswingAppViewer::OnInit() {
     return true;
 }
 
-void AtmoswingAppViewer::OnInitCmdLine(wxCmdLineParser &parser) {
+void AtmoswingAppViewer::OnInitCmdLine(wxCmdLineParser& parser) {
     // From http://wiki.wxwidgets.org/Command-Line_Arguments
     parser.SetDesc(g_cmdLineDesc);
     // Must refuse '/' as parameter starter or cannot use "/path" style paths
     parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser &parser) {
+bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser) {
     // From http://wiki.wxwidgets.org/Command-Line_Arguments
 
     // Check if the user asked for command-line help
@@ -137,7 +137,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser &parser) {
     // Check if the user asked for the version
     if (parser.Found("v")) {
         wxString date(wxString::FromAscii(__DATE__));
-        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, (const wxChar *)date));
+        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, (const wxChar*)date));
 
         return false;
     }
@@ -179,7 +179,7 @@ int AtmoswingAppViewer::OnExit() {
     wxDELETE(m_singleInstanceChecker);
 
     // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *)nullptr);
+    delete wxFileConfig::Set((wxFileConfig*)nullptr);
 
     // Delete threads manager and log
     DeleteThreadsManager();

@@ -34,7 +34,7 @@
 
 class asFileBatchForecasts : public asFileXml {
   public:
-    asFileBatchForecasts(const wxString &fileName, const FileMode &fileMode);
+    asFileBatchForecasts(const wxString& fileName, const FileMode& fileMode);
 
     ~asFileBatchForecasts() override = default;
 

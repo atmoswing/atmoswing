@@ -28,7 +28,7 @@
 
 #include "asFramePreferencesForecaster.h"
 
-asFramePreferencesForecaster::asFramePreferencesForecaster(wxWindow *parent, asBatchForecasts *batchForecasts,
+asFramePreferencesForecaster::asFramePreferencesForecaster(wxWindow* parent, asBatchForecasts* batchForecasts,
                                                            wxWindowID id)
     : asFramePreferencesForecasterVirtual(parent, id),
       m_batchForecasts(batchForecasts) {
@@ -41,7 +41,7 @@ asFramePreferencesForecaster::asFramePreferencesForecaster(wxWindow *parent, asB
 #endif
 }
 
-void asFramePreferencesForecaster::CloseFrame(wxCommandEvent &event) {
+void asFramePreferencesForecaster::CloseFrame(wxCommandEvent& event) {
     Close();
 }
 
@@ -50,7 +50,7 @@ void asFramePreferencesForecaster::Update() {
 }
 
 void asFramePreferencesForecaster::LoadPreferences() {
-    wxConfigBase *pConfig;
+    wxConfigBase* pConfig;
     pConfig = wxFileConfig::Get();
 
     // Fix the color of the file/dir pickers
@@ -178,7 +178,7 @@ void asFramePreferencesForecaster::LoadPreferences() {
 void asFramePreferencesForecaster::SavePreferences() {
     wxBusyCursor wait;
 
-    wxConfigBase *pConfig;
+    wxConfigBase* pConfig;
     pConfig = wxFileConfig::Get();
 
     /*
@@ -299,7 +299,7 @@ void asFramePreferencesForecaster::SavePreferences() {
     m_batchForecasts->Save();
 }
 
-void asFramePreferencesForecaster::OnChangeMultithreadingCheckBox(wxCommandEvent &event) {
+void asFramePreferencesForecaster::OnChangeMultithreadingCheckBox(wxCommandEvent& event) {
     if (event.GetInt() == 0) {
         m_radioBoxProcessingMethods->Enable(asMULTITHREADS, false);
         if (m_radioBoxProcessingMethods->GetSelection() == asMULTITHREADS) {
@@ -310,11 +310,11 @@ void asFramePreferencesForecaster::OnChangeMultithreadingCheckBox(wxCommandEvent
     }
 }
 
-void asFramePreferencesForecaster::SaveAndClose(wxCommandEvent &event) {
+void asFramePreferencesForecaster::SaveAndClose(wxCommandEvent& event) {
     SavePreferences();
     Close();
 }
 
-void asFramePreferencesForecaster::ApplyChanges(wxCommandEvent &event) {
+void asFramePreferencesForecaster::ApplyChanges(wxCommandEvent& event) {
     SavePreferences();
 }

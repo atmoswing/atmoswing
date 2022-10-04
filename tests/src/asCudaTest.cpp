@@ -35,7 +35,7 @@
 
 class asThreadTestCuda : public asThread {
   public:
-    explicit asThreadTestCuda(const wxString &test);
+    explicit asThreadTestCuda(const wxString& test);
 
     ~asThreadTestCuda() override = default;
 
@@ -46,7 +46,9 @@ class asThreadTestCuda : public asThread {
     wxString m_test;
 };
 
-asThreadTestCuda::asThreadTestCuda(const wxString &test) : asThread(), m_test(test) {}
+asThreadTestCuda::asThreadTestCuda(const wxString& test)
+    : asThread(),
+      m_test(test) {}
 
 wxThread::ExitCode asThreadTestCuda::Entry() {
     if (m_test.IsSameAs("simple")) {
@@ -63,15 +65,15 @@ wxThread::ExitCode asThreadTestCuda::Entry() {
 TEST(Cuda, UseInSingleThread) {
     wxCriticalSection threadCS;
 
-    auto *thread = new asThreadTestCuda("simple");
+    auto* thread = new asThreadTestCuda("simple");
 
     ThreadsManager().AddThread(thread);
     ThreadsManager().Wait(asThread::Undefined);
 }
 
 TEST(Cuda, UseInTwoThreads) {
-    auto *thread1 = new asThreadTestCuda("simple");
-    auto *thread2 = new asThreadTestCuda("simple");
+    auto* thread1 = new asThreadTestCuda("simple");
+    auto* thread2 = new asThreadTestCuda("simple");
 
     ThreadsManager().AddThread(thread1);
     ThreadsManager().AddThread(thread2);

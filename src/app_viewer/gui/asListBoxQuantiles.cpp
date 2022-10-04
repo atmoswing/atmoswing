@@ -37,11 +37,11 @@ END_EVENT_TABLE()
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED, wxCommandEvent);
 
-asListBoxQuantiles::asListBoxQuantiles(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, int n,
+asListBoxQuantiles::asListBoxQuantiles(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, int n,
                                        const wxString choices[], long style)
     : wxListBox(parent, id, pos, size, n, choices, style) {}
 
-void asListBoxQuantiles::OnQuantileSlctChange(wxCommandEvent &event) {
+void asListBoxQuantiles::OnQuantileSlctChange(wxCommandEvent& event) {
     wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED);
     eventSlct.SetInt(event.GetInt());
     GetParent()->ProcessWindowEvent(eventSlct);

@@ -36,7 +36,7 @@
 
 class asFileGrib : public asFile {
   public:
-    asFileGrib(const wxString &fileName, const FileMode &fileMode);
+    asFileGrib(const wxString& fileName, const FileMode& fileMode);
 
     ~asFileGrib() override;
 
@@ -44,17 +44,17 @@ class asFileGrib : public asFile {
 
     bool Close() override;
 
-    bool SetIndexPosition(const vi &gribCode, const float level, const bool useWarnings = true);
+    bool SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings = true);
 
     bool SetIndexPositionAnyLevel(vi gribCode);
 
-    bool GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue);
+    bool GetVarArray(const int IndexStart[], const int IndexCount[], float* pValue);
 
-    bool GetXaxis(a1d &uaxis) const;
+    bool GetXaxis(a1d& uaxis) const;
 
-    bool GetYaxis(a1d &vaxis) const;
+    bool GetYaxis(a1d& vaxis) const;
 
-    bool GetLevels(a1d &levels) const;
+    bool GetLevels(a1d& levels) const;
 
     vd GetRealTimeArray() const;
 
@@ -74,7 +74,7 @@ class asFileGrib : public asFile {
 
   protected:
   private:
-    FILE *m_filtPtr;
+    FILE* m_filtPtr;
     int m_version;
     int m_index;
     vi m_parameterCode1;
@@ -94,13 +94,13 @@ class asFileGrib : public asFile {
 
     bool ParseStructure();
 
-    void ExtractTime(codes_handle *h);
+    void ExtractTime(codes_handle* h);
 
-    void ExtractLevel(codes_handle *h);
+    void ExtractLevel(codes_handle* h);
 
-    void ExtractAxes(codes_handle *h);
+    void ExtractAxes(codes_handle* h);
 
-    void ExtractGribCode(codes_handle *h);
+    void ExtractGribCode(codes_handle* h);
 
     bool CheckGribErrorCode(int ierr) const;
 };

@@ -35,14 +35,14 @@ class asArea;
 
 class asPredictorCustomMFvgMeso : public asPredictorCustomMFvgSynop {
   public:
-    explicit asPredictorCustomMFvgMeso(const wxString &dataId);
+    explicit asPredictorCustomMFvgMeso(const wxString& dataId);
 
     ~asPredictorCustomMFvgMeso() override = default;
 
     bool Init() override;
 
   protected:
-    void ListFiles(asTimeArray &timeArray) override;
+    void ListFiles(asTimeArray& timeArray) override;
 
   private:
 };

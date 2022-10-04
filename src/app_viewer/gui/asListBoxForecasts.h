@@ -80,8 +80,8 @@ class asListBoxForecasts : public wxTreeCtrl {
         TreeCtrlIcon_Other
     };
 
-    asListBoxForecasts(wxWindow *parent, asForecastManager *forecastManager, wxWindowID id = wxID_ANY,
-                       const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize);
+    asListBoxForecasts(wxWindow* parent, asForecastManager* forecastManager, wxWindowID id = wxID_ANY,
+                       const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize);
 
     ~asListBoxForecasts() override = default;
 
@@ -97,10 +97,10 @@ class asListBoxForecasts : public wxTreeCtrl {
 
   protected:
   private:
-    asForecastManager *m_forecastManager;
+    asForecastManager* m_forecastManager;
     bool m_skipSlctChangeEvent;
 
-    void OnForecastSlctChange(wxTreeEvent &event);
+    void OnForecastSlctChange(wxTreeEvent& event);
 
     DECLARE_EVENT_TABLE()
 };

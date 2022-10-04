@@ -30,7 +30,8 @@
 #include "asIncludes.h"
 #include "images.h"
 
-asFrameAbout::asFrameAbout(wxWindow *parent) : asFrameAboutVirtual(parent) {
+asFrameAbout::asFrameAbout(wxWindow* parent)
+    : asFrameAboutVirtual(parent) {
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));

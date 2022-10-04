@@ -30,7 +30,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorNcepCfsr::asPredictorNcepCfsr(const wxString &dataId) : asPredictor(dataId) {
+asPredictorNcepCfsr::asPredictorNcepCfsr(const wxString& dataId)
+    : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "NCEP_CFSR";
     m_provider = "NCEP";
@@ -114,7 +115,7 @@ bool asPredictorNcepCfsr::Init() {
     return true;
 }
 
-void asPredictorNcepCfsr::ListFiles(asTimeArray &timeArray) {
+void asPredictorNcepCfsr::ListFiles(asTimeArray& timeArray) {
     a1d tArray = timeArray.GetTimeArray();
 
     for (int i = 0; i < tArray.size(); i++) {

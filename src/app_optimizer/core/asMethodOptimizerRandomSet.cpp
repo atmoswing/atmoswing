@@ -36,7 +36,8 @@
 
 #endif
 
-asMethodOptimizerRandomSet::asMethodOptimizerRandomSet() : asMethodOptimizer() {}
+asMethodOptimizerRandomSet::asMethodOptimizerRandomSet()
+    : asMethodOptimizer() {}
 
 asMethodOptimizerRandomSet::~asMethodOptimizerRandomSet() {}
 
@@ -77,7 +78,7 @@ bool asMethodOptimizerRandomSet::Manager() {
     InitParameters(params);
 
     // Get a score object to extract the score order
-    asScore *score = asScore::GetInstance(params.GetScoreName());
+    asScore* score = asScore::GetInstance(params.GetScoreName());
     Order scoreOrder = score->GetOrder();
     wxDELETE(score);
     SetScoreOrder(scoreOrder);
@@ -107,11 +108,11 @@ bool asMethodOptimizerRandomSet::Manager() {
         ThreadsManager().WaitForFreeThread(threadType);
 
         // Get a parameters set
-        asParametersOptimization *nextParams = GetNextParameters();
+        asParametersOptimization* nextParams = GetNextParameters();
 
         if (nextParams) {
             // Add it to the threads
-            auto *thread = new asThreadRandomSet(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+            auto* thread = new asThreadRandomSet(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
             ThreadsManager().AddThread(thread);
 
             // Wait until done to get the score of the climatology
@@ -176,9 +177,9 @@ bool asMethodOptimizerRandomSet::Manager() {
     return true;
 }
 
-void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params) {
+void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization& params) {
     ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Read("/MonteCarlo/RandomNb", &m_paramsNb, 1000);
     ThreadsManager().CritSectionConfig().Leave();
 
@@ -195,11 +196,11 @@ void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params
     }
 }
 
-asParametersOptimization *asMethodOptimizerRandomSet::GetNextParameters() {
+asParametersOptimization* asMethodOptimizerRandomSet::GetNextParameters() {
     return &m_parameters[m_iterator];
 }
 
-bool asMethodOptimizerRandomSet::SetBestParameters(asResultsParametersArray &results) {
+bool asMethodOptimizerRandomSet::SetBestParameters(asResultsParametersArray& results) {
     wxASSERT(!m_parameters.empty());
     wxASSERT(!m_scoresCalib.empty());
 

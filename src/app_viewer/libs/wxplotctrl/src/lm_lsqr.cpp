@@ -145,7 +145,7 @@ void LM_LeastSquare::Destroy() {
     ReInit();
 }
 
-bool LM_LeastSquare::Create(const wxPlotData &plotData, const wxPlotFunction &plotFunc) {
+bool LM_LeastSquare::Create(const wxPlotData& plotData, const wxPlotFunction& plotFunc) {
     wxCHECK_MSG(!IsFitting(), false, wxT("Cannot recreate Least Square when currently fitting"));
     Destroy();
 
@@ -156,8 +156,8 @@ bool LM_LeastSquare::Create(const wxPlotData &plotData, const wxPlotFunction &pl
     m_plotData = new wxPlotData(plotData);
     m_plotFunc = new wxPlotFunction(plotFunc);
 
-    double *x_data = m_plotData->GetXData();
-    double *y_data = m_plotData->GetYData();
+    double* x_data = m_plotData->GetXData();
+    double* y_data = m_plotData->GetYData();
     int data_count = m_plotData->GetCount();
     for (int i = 0; i < data_count; i++, x_data++, y_data++) {
         if (!wxFinite(*x_data) && !wxFinite(*y_data)) {
@@ -172,13 +172,13 @@ bool LM_LeastSquare::Create(const wxPlotData &plotData, const wxPlotFunction &pl
 
     m_ldfjac = m_m;
 
-    m_vars = (double *)malloc((m_n + 1) * sizeof(double));
-    m_x = (double *)malloc(m_n * sizeof(double));
-    m_fvec = (double *)malloc(m_m * sizeof(double));
-    m_diag = (double *)malloc(m_n * sizeof(double));
-    m_fjac = (double *)malloc(m_m * m_n * sizeof(double));
-    m_qtf = (double *)malloc(m_n * sizeof(double));
-    m_ipvt = (int *)malloc(m_n * sizeof(int));
+    m_vars = (double*)malloc((m_n + 1) * sizeof(double));
+    m_x = (double*)malloc(m_n * sizeof(double));
+    m_fvec = (double*)malloc(m_m * sizeof(double));
+    m_diag = (double*)malloc(m_n * sizeof(double));
+    m_fjac = (double*)malloc(m_m * m_n * sizeof(double));
+    m_qtf = (double*)malloc(m_n * sizeof(double));
+    m_ipvt = (int*)malloc(m_n * sizeof(int));
     m_maxfev = 200 * (m_n + 1);
 
     if (!(m_plotData && m_plotFunc && m_vars && m_x && m_fvec && m_diag && m_fjac && m_qtf && m_ipvt)) {
@@ -193,7 +193,7 @@ bool LM_LeastSquare::Create(const wxPlotData &plotData, const wxPlotFunction &pl
     return true;
 }
 
-int LM_LeastSquare::Fit(const double *x0, int init_count) {
+int LM_LeastSquare::Fit(const double* x0, int init_count) {
     wxCHECK_MSG(Ok() && !IsFitting(), 0, wxT("invalid functions"));
 
     m_nan = 0;
@@ -221,10 +221,10 @@ int LM_LeastSquare::Fit(const double *x0, int init_count) {
         for (i = 0; i < m_n; i++) m_x[i] = m_init_value;
     }
 
-    double *wa1 = (double *)malloc(m_n * sizeof(double));
-    double *wa2 = (double *)malloc(m_n * sizeof(double));
-    double *wa3 = (double *)malloc(m_n * sizeof(double));
-    double *wa4 = (double *)malloc(m_m * sizeof(double));
+    double* wa1 = (double*)malloc(m_n * sizeof(double));
+    double* wa2 = (double*)malloc(m_n * sizeof(double));
+    double* wa3 = (double*)malloc(m_n * sizeof(double));
+    double* wa4 = (double*)malloc(m_m * sizeof(double));
 
     if (!(wa1 && wa2 && wa3 && wa4)) {
         if (wa1) free(wa1);
@@ -371,7 +371,7 @@ double LM_LeastSquare::GetVariable(int n) {
  *     **********
  */
 
-void LM_LeastSquare::fcn(int m, int n, double x[], double fvec[], int *iflag) {
+void LM_LeastSquare::fcn(int m, int n, double x[], double fvec[], int* iflag) {
     wxCHECK_RET(m_plotData && m_plotFunc, wxT("invalid functions"));
 
     if (*iflag == 0) {
@@ -385,8 +385,8 @@ void LM_LeastSquare::fcn(int m, int n, double x[], double fvec[], int *iflag) {
         return;
     }
 
-    double *x_data = m_plotData->GetXData();
-    double *y_data = m_plotData->GetYData();
+    double* x_data = m_plotData->GetXData();
+    double* y_data = m_plotData->GetYData();
     double f = 0;
     memcpy(m_vars, x, n * sizeof(double));
 
@@ -599,7 +599,7 @@ void LM_LeastSquare::fcn(int m, int n, double x[], double fvec[], int *iflag) {
  */
 
 void LM_LeastSquare::lmdif(int m, int n, double x[], double fvec[], double ftol, double xtol, double gtol, int maxfev,
-                           double epsfcn, double diag[], int mode, double factor, int nprint, int *info, int *nfev,
+                           double epsfcn, double diag[], int mode, double factor, int nprint, int* info, int* nfev,
                            double fjac[], int ldfjac, int ipvt[], double qtf[], double wa1[], double wa2[],
                            double wa3[], double wa4[]) {
     int i, iflag, ij, jj, iter, j, l;
@@ -988,7 +988,7 @@ L300:
  */
 
 void LM_LeastSquare::lmpar(int n, double r[], int ldr, int ipvt[], double diag[], double qtb[], double delta,
-                           double *par, double x[], double sdiag[], double wa1[], double wa2[]) {
+                           double* par, double x[], double sdiag[], double wa1[], double wa2[]) {
     int i, iter, ij, jj, j, jm1, jp1, k, l, nsing;
     double dxnorm, fp, gnorm, parc, parl, paru;
     double sum, temp;
@@ -1756,7 +1756,7 @@ double LM_LeastSquare::enorm(int n, double x[]) {
  **********
  */
 
-void LM_LeastSquare::fdjac2(int m, int n, double x[], double fvec[], double fjac[], int WXUNUSED(ldfjac), int *iflag,
+void LM_LeastSquare::fdjac2(int m, int n, double x[], double fvec[], double fjac[], int WXUNUSED(ldfjac), int* iflag,
                             double epsfcn, double wa[]) {
     int i, j, ij;
     double eps, h, temp;

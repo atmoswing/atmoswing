@@ -41,9 +41,9 @@ class asThreadsManager : public wxObject {
 
     void Init();
 
-    void OnClose(wxCloseEvent &);
+    void OnClose(wxCloseEvent&);
 
-    bool AddThread(asThread *thread);
+    bool AddThread(asThread* thread);
 
     void Wait(int type);
 
@@ -77,23 +77,23 @@ class asThreadsManager : public wxObject {
         m_cancelled = true;
     }
 
-    wxCriticalSection &CritSectionNetCDF() {
+    wxCriticalSection& CritSectionNetCDF() {
         return m_critSectionNetCDF;
     }
 
-    wxCriticalSection &CritSectionGrib() {
+    wxCriticalSection& CritSectionGrib() {
         return m_critSectionGrib;
     }
 
-    wxCriticalSection &CritSectionConfig() {
+    wxCriticalSection& CritSectionConfig() {
         return m_critSectionConfig;
     }
 
-    wxCriticalSection &CritSectionPreloadedData() {
+    wxCriticalSection& CritSectionPreloadedData() {
         return m_critSectionPreloadedData;
     }
 
-    wxSemaphore &SemAllDone() {
+    wxSemaphore& SemAllDone() {
         return m_semAllDone;
     }
 
@@ -108,7 +108,7 @@ class asThreadsManager : public wxObject {
   protected:
   private:
     int m_idCounter;
-    std::vector<asThread *> m_threads;
+    std::vector<asThread*> m_threads;
     wxCriticalSection m_critSectionManager;
     wxCriticalSection m_critSectionPreloadedData;
     wxCriticalSection m_critSectionNetCDF;

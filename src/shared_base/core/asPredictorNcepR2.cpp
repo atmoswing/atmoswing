@@ -31,7 +31,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorNcepR2::asPredictorNcepR2(const wxString &dataId) : asPredictor(dataId) {
+asPredictorNcepR2::asPredictorNcepR2(const wxString& dataId)
+    : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "NCEP_R2";
     m_provider = "NCEP/DOE";
@@ -330,12 +331,12 @@ bool asPredictorNcepR2::Init() {
     return true;
 }
 
-void asPredictorNcepR2::ListFiles(asTimeArray &timeArray) {
+void asPredictorNcepR2::ListFiles(asTimeArray& timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
 }
 
-void asPredictorNcepR2::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorNcepR2::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + asTime::GetMJD(1800, 1, 1);
 }

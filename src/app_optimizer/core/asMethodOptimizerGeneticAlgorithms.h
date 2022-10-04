@@ -34,8 +34,17 @@
 
 class asMethodOptimizerGeneticAlgorithms : public asMethodOptimizer {
   public:
-    enum NaturalSelectionType { RatioElitism, Tournament };
-    enum CouplesSelectionType { RankPairing, Random, RouletteWheelRank, RouletteWheelScore, TournamentCompetition };
+    enum NaturalSelectionType {
+        RatioElitism,
+        Tournament
+    };
+    enum CouplesSelectionType {
+        RankPairing,
+        Random,
+        RouletteWheelRank,
+        RouletteWheelScore,
+        TournamentCompetition
+    };
     enum CrossoverType {
         SinglePointCrossover,
         DoublePointsCrossover,
@@ -98,17 +107,17 @@ class asMethodOptimizerGeneticAlgorithms : public asMethodOptimizer {
 
     bool SortScoresAndParametersTemp() override;
 
-    bool SetBestParameters(asResultsParametersArray &results) override;
+    bool SetBestParameters(asResultsParametersArray& results) override;
 
-    bool ResumePreviousRun(asParametersOptimizationGAs &params, const wxString &operatorsFilePath);
+    bool ResumePreviousRun(asParametersOptimizationGAs& params, const wxString& operatorsFilePath);
 
-    bool HasPreviousRunConverged(asParametersOptimizationGAs &params);
+    bool HasPreviousRunConverged(asParametersOptimizationGAs& params);
 
-    bool SaveOperators(const wxString &filePath);
+    bool SaveOperators(const wxString& filePath);
 
-    void InitParameters(asParametersOptimizationGAs &params);
+    void InitParameters(asParametersOptimizationGAs& params);
 
-    asParametersOptimizationGAs *GetNextParameters();
+    asParametersOptimizationGAs* GetNextParameters();
 
     bool Optimize();
 

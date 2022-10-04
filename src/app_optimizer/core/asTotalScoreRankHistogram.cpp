@@ -27,17 +27,18 @@
 
 #include "asTotalScoreRankHistogram.h"
 
-asTotalScoreRankHistogram::asTotalScoreRankHistogram(const wxString &periodString) : asTotalScore(periodString) {
+asTotalScoreRankHistogram::asTotalScoreRankHistogram(const wxString& periodString)
+    : asTotalScore(periodString) {
     m_singleValue = false;
 }
 
-float asTotalScoreRankHistogram::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
+float asTotalScoreRankHistogram::Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const {
     wxLogError(_("The rank histogram cannot provide a single score value !"));
     return NaNf;
 }
 
-a1f asTotalScoreRankHistogram::AssessOnArray(const a1f &targetDates, const a1f &scores,
-                                             const asTimeArray &timeArray) const {
+a1f asTotalScoreRankHistogram::AssessOnArray(const a1f& targetDates, const a1f& scores,
+                                             const asTimeArray& timeArray) const {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(scores.rows() > 1);
     wxASSERT(m_ranksNb > 1);

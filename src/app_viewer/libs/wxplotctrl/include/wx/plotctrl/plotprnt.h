@@ -27,7 +27,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl;
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout : public wxPrintout {
   public:
-    wxPlotPrintout(wxPlotCtrl *plotCtrl, const wxString &title = wxEmptyString);
+    wxPlotPrintout(wxPlotCtrl* plotCtrl, const wxString& title = wxEmptyString);
 
     bool OnPrintPage(int page);
 
@@ -37,7 +37,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout : public wxPrintout {
 
     bool OnBeginDocument(int startPage, int endPage);
 
-    void GetPageInfo(int *minPage, int *maxPage, int *selPageFrom, int *selPageTo) {
+    void GetPageInfo(int* minPage, int* maxPage, int* selPageFrom, int* selPageTo) {
         if (minPage) *minPage = 1;
         if (maxPage) *maxPage = 1;
         if (selPageFrom) *selPageFrom = 1;
@@ -47,13 +47,13 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout : public wxPrintout {
     // Simplified methods to show the standard print dialogs
     bool ShowPrintDialog();
 
-    bool ShowPrintPreviewDialog(const wxString &frameTitle = wxT("Plot print preview"));
+    bool ShowPrintPreviewDialog(const wxString& frameTitle = wxT("Plot print preview"));
 
     bool ShowPrintSetupDialog();
 
     bool ShowPrintPageSetupDialog();
 
-    wxPlotCtrl *GetPlotCtrl() const {
+    wxPlotCtrl* GetPlotCtrl() const {
         return m_plotCtrl;
     }
 
@@ -62,9 +62,9 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout : public wxPrintout {
     //   program exits. It may make sense to create a single instance of your
     //   printdata in the wxApp for all your program's printing needs and use
     //   SetPrintData/PageSetupData to share it with this.
-    static wxPrintData *GetPrintData(bool create_on_demand = false);
+    static wxPrintData* GetPrintData(bool create_on_demand = false);
 
-    static wxPageSetupData *GetPageSetupData(bool create_on_demand = false);
+    static wxPageSetupData* GetPageSetupData(bool create_on_demand = false);
 
     static bool GetPrintDataStatic();
 
@@ -72,15 +72,15 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout : public wxPrintout {
 
     // Set the wxPrintData/PageSetupData, if !is_static then it will be deleted
     //   when the program exits
-    static void SetPrintData(wxPrintData *printData, bool is_static);
+    static void SetPrintData(wxPrintData* printData, bool is_static);
 
-    static void SetPageSetupData(wxPageSetupData *pageSetupData, bool is_static);
+    static void SetPageSetupData(wxPageSetupData* pageSetupData, bool is_static);
 
   protected:
-    wxPlotCtrl *m_plotCtrl;
+    wxPlotCtrl* m_plotCtrl;
 
-    static wxPrintData *s_wxPlotPrintData;
-    static wxPageSetupData *s_wxPlotPageSetupData;
+    static wxPrintData* s_wxPlotPrintData;
+    static wxPageSetupData* s_wxPlotPageSetupData;
     static bool s_wxPlotPrintdata_static;
     static bool s_wxPlotPagesetupdata_static;
 

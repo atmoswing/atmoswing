@@ -35,7 +35,7 @@
 #include "wx/filename.h"
 
 TEST(Preprocessor, Gradients) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
     double xMin = 10;
@@ -55,7 +55,7 @@ TEST(Preprocessor, Gradients) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -68,11 +68,11 @@ TEST(Preprocessor, Gradients) {
     vva2f arrayData = predictor->GetData();
     EXPECT_FLOAT_EQ(176.0, arrayData[0][0](0, 0));
 
-    std::vector<asPredictor *> vdata;
+    std::vector<asPredictor*> vdata;
     vdata.push_back(predictor);
 
     wxString method = "SimpleGradients";
-    asPredictor *gradients = new asPredictor(*predictor);
+    asPredictor* gradients = new asPredictor(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 
     vva2f grads = gradients->GetData();
@@ -195,7 +195,7 @@ TEST(Preprocessor, Gradients) {
 }
 
 TEST(Preprocessor, GradientsMultithreading) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
 
     double xMin = 10;
@@ -215,7 +215,7 @@ TEST(Preprocessor, GradientsMultithreading) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -228,11 +228,11 @@ TEST(Preprocessor, GradientsMultithreading) {
     vva2f arrayData = predictor->GetData();
     EXPECT_FLOAT_EQ(176.0, arrayData[0][0](0, 0));
 
-    std::vector<asPredictor *> vdata;
+    std::vector<asPredictor*> vdata;
     vdata.push_back(predictor);
 
     wxString method = "SimpleGradients";
-    asPredictor *gradients = new asPredictor(*predictor);
+    asPredictor* gradients = new asPredictor(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 
     vva2f hgt = gradients->GetData();
@@ -334,10 +334,10 @@ TEST(Preprocessor, GradientsMultithreading) {
 }
 
 TEST(Preprocessor, Addition) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asAreaGrid *area = asAreaGrid::GetInstance(0, 5, 0, 60, 3, 0);
+    asAreaGrid* area = asAreaGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
     timearray1.Init();
@@ -349,9 +349,9 @@ TEST(Preprocessor, Addition) {
     wxString dir = wxFileName::GetCwd();
     dir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor1 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
-    asPredictor *predictor2 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
-    asPredictor *predictor3 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+    asPredictor* predictor1 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+    asPredictor* predictor2 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+    asPredictor* predictor3 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     EXPECT_EQ(5, area->GetXaxisPtsnb());
@@ -366,13 +366,13 @@ TEST(Preprocessor, Addition) {
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
-    std::vector<asPredictor *> vdata;
+    std::vector<asPredictor*> vdata;
     vdata.push_back(predictor1);
     vdata.push_back(predictor2);
     vdata.push_back(predictor3);
 
     wxString method = "Addition";
-    asPredictor *addition = new asPredictor(*predictor1);
+    asPredictor* addition = new asPredictor(*predictor1);
     asPreprocessor::Preprocess(vdata, method, addition);
 
     vva2f adds = addition->GetData();
@@ -445,10 +445,10 @@ TEST(Preprocessor, Addition) {
 }
 
 TEST(Preprocessor, Average) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asAreaGrid *area = asAreaGrid::GetInstance(0, 5, 0, 60, 3, 0);
+    asAreaGrid* area = asAreaGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
     timearray1.Init();
@@ -460,9 +460,9 @@ TEST(Preprocessor, Average) {
     wxString dir = wxFileName::GetCwd();
     dir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor1 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
-    asPredictor *predictor2 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
-    asPredictor *predictor3 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+    asPredictor* predictor1 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+    asPredictor* predictor2 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+    asPredictor* predictor3 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
@@ -473,13 +473,13 @@ TEST(Preprocessor, Average) {
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
-    std::vector<asPredictor *> vdata;
+    std::vector<asPredictor*> vdata;
     vdata.push_back(predictor1);
     vdata.push_back(predictor2);
     vdata.push_back(predictor3);
 
     wxString method = "Average";
-    asPredictor *average = new asPredictor(*predictor1);
+    asPredictor* average = new asPredictor(*predictor1);
     asPreprocessor::Preprocess(vdata, method, average);
 
     vva2f avg = average->GetData();
@@ -552,10 +552,10 @@ TEST(Preprocessor, Average) {
 }
 
 TEST(Preprocessor, Difference) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asAreaGrid *area = asAreaGrid::GetInstance(0, 5, 0, 60, 3, 0);
+    asAreaGrid* area = asAreaGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
     timearray1.Init();
@@ -565,8 +565,8 @@ TEST(Preprocessor, Difference) {
     wxString dir = wxFileName::GetCwd();
     dir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor1 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
-    asPredictor *predictor2 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+    asPredictor* predictor1 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+    asPredictor* predictor2 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
@@ -576,12 +576,12 @@ TEST(Preprocessor, Difference) {
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
-    std::vector<asPredictor *> vdata;
+    std::vector<asPredictor*> vdata;
     vdata.push_back(predictor1);
     vdata.push_back(predictor2);
 
     wxString method = "Difference";
-    asPredictor *difference = new asPredictor(*predictor1);
+    asPredictor* difference = new asPredictor(*predictor1);
     asPreprocessor::Preprocess(vdata, method, difference);
 
     vva2f diffs = difference->GetData();
@@ -643,10 +643,10 @@ TEST(Preprocessor, Difference) {
 }
 
 TEST(Preprocessor, Multiplication) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asAreaGrid *area = asAreaGrid::GetInstance(0, 5, 0, 60, 3, 0);
+    asAreaGrid* area = asAreaGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
     timearray1.Init();
@@ -656,8 +656,8 @@ TEST(Preprocessor, Multiplication) {
     wxString dir = wxFileName::GetCwd();
     dir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor1 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
-    asPredictor *predictor2 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+    asPredictor* predictor1 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+    asPredictor* predictor2 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
@@ -667,12 +667,12 @@ TEST(Preprocessor, Multiplication) {
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
-    std::vector<asPredictor *> vdata;
+    std::vector<asPredictor*> vdata;
     vdata.push_back(predictor1);
     vdata.push_back(predictor2);
 
     wxString method = "Multiplication";
-    asPredictor *multiplication = new asPredictor(*predictor1);
+    asPredictor* multiplication = new asPredictor(*predictor1);
     asPreprocessor::Preprocess(vdata, method, multiplication);
 
     vva2f multi = multiplication->GetData();

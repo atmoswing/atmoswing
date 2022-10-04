@@ -52,13 +52,13 @@ class asTimeArray : public asTime {
 
     asTimeArray(double start, double end, double timeStepHours, Mode mode);
 
-    asTimeArray(double start, double end, double timeStepHours, const wxString &mode);
+    asTimeArray(double start, double end, double timeStepHours, const wxString& mode);
 
     explicit asTimeArray(double date);
 
-    explicit asTimeArray(vd &timeArray);
+    explicit asTimeArray(vd& timeArray);
 
-    explicit asTimeArray(a1d &timeArray);
+    explicit asTimeArray(a1d& timeArray);
 
     ~asTimeArray() override = default;
 
@@ -66,7 +66,7 @@ class asTimeArray : public asTime {
 
     bool Init(double targetDate, double intervalDays, double exclusionDays);
 
-    bool Init(asPredictand &predictand, const wxString &seriesName, int stationId, float minThreshold,
+    bool Init(asPredictand& predictand, const wxString& seriesName, int stationId, float minThreshold,
               float maxThreshold);
 
     double operator[](unsigned int i) {
@@ -83,7 +83,7 @@ class asTimeArray : public asTime {
 
     bool BuildArraySeason();
 
-    bool BuildArrayPredictandThresholds(asPredictand &predictand, const wxString &seriesName, int stationId,
+    bool BuildArrayPredictandThresholds(asPredictand& predictand, const wxString& seriesName, int stationId,
                                         float minThreshold, float maxThreshold);
 
     bool HasForbiddenYears() const;
@@ -94,7 +94,7 @@ class asTimeArray : public asTime {
         return m_forbiddenYears;
     }
 
-    void SetForbiddenYears(const vi &years) {
+    void SetForbiddenYears(const vi& years) {
         m_forbiddenYears = years;
     }
 
@@ -185,9 +185,9 @@ class asTimeArray : public asTime {
     vi m_forbiddenYears;
     wxString m_modeStr;
 
-    void fixStartIfForbidden(double &currentStart) const;
+    void fixStartIfForbidden(double& currentStart) const;
 
-    void fixEndIfForbidden(double &currentEnd) const;
+    void fixEndIfForbidden(double& currentEnd) const;
 
     void RemoveExcludedDates(double targetDate, double exclusionDays);
 };

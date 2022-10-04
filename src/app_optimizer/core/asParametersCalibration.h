@@ -42,7 +42,7 @@ class asParametersCalibration : public asParametersScoring {
 
     void AddStep();
 
-    bool LoadFromFile(const wxString &filePath);
+    bool LoadFromFile(const wxString& filePath);
 
     virtual bool SetSpatialWindowProperties();
 
@@ -128,20 +128,20 @@ class asParametersCalibration : public asParametersScoring {
     vi m_timeArrayAnalogsIntervalDaysVect;
     ParamsScoreVect m_scoreVect;
 
-    void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf &preprocLevels, vd &preprocHours) const;
+    void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf& preprocLevels, vd& preprocHours) const;
 
-    bool ParseDescription(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseDescription(asFileParametersCalibration& fileParams, const wxXmlNode* nodeProcess);
 
-    bool ParseTimeProperties(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseTimeProperties(asFileParametersCalibration& fileParams, const wxXmlNode* nodeProcess);
 
-    bool ParseAnalogDatesParams(asFileParametersCalibration &fileParams, int iStep, const wxXmlNode *nodeProcess);
+    bool ParseAnalogDatesParams(asFileParametersCalibration& fileParams, int iStep, const wxXmlNode* nodeProcess);
 
-    bool ParsePreprocessedPredictors(asFileParametersCalibration &fileParams, int iStep, int iPtor,
-                                     const wxXmlNode *nodeParam);
+    bool ParsePreprocessedPredictors(asFileParametersCalibration& fileParams, int iStep, int iPtor,
+                                     const wxXmlNode* nodeParam);
 
-    bool ParseAnalogValuesParams(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseAnalogValuesParams(asFileParametersCalibration& fileParams, const wxXmlNode* nodeProcess);
 
-    bool ParseScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseScore(asFileParametersCalibration& fileParams, const wxXmlNode* nodeProcess);
 };
 
 #endif

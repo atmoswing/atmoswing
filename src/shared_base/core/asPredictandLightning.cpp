@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 asPredictandLightning::asPredictandLightning(Parameter dataParameter, TemporalResolution dataTemporalResolution,
-                                               SpatialAggregation dataSpatialAggregation)
+                                             SpatialAggregation dataSpatialAggregation)
     : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation) {
     m_hasNormalizedData = false;
     m_hasReferenceValues = false;
@@ -43,7 +43,7 @@ bool asPredictandLightning::InitContainers() {
     return InitBaseContainers();
 }
 
-bool asPredictandLightning::Load(const wxString &filePath) {
+bool asPredictandLightning::Load(const wxString& filePath) {
     // Open the NetCDF file
     wxLogVerbose(_("Opening the file %s"), filePath);
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
@@ -71,7 +71,7 @@ bool asPredictandLightning::Load(const wxString &filePath) {
     return true;
 }
 
-bool asPredictandLightning::Save(const wxString &destinationDir) const {
+bool asPredictandLightning::Save(const wxString& destinationDir) const {
     // Get the file path
     wxString predictandDBFilePath = GetDBFilePathSaving(destinationDir);
 
@@ -118,9 +118,8 @@ bool asPredictandLightning::Save(const wxString &destinationDir) const {
     return true;
 }
 
-bool asPredictandLightning::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
-                                               const wxString &patternDir, const wxString &destinationDir) {
-
+bool asPredictandLightning::BuildPredictandDB(const wxString& catalogFilePath, const wxString& dataDir,
+                                              const wxString& patternDir, const wxString& destinationDir) {
     // Initialize the members
     if (!InitMembers(catalogFilePath)) return false;
 

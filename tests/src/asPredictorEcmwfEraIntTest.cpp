@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorEcmwfEraInt, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pl/d", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Divergence);
@@ -222,7 +222,7 @@ TEST(PredictorEcmwfEraInt, LoadEasy) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-interim/");
 
-    asPredictor *predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pressure_level/z", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pressure_level/z", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
@@ -301,7 +301,7 @@ TEST(PredictorEcmwfEraInt, LoadBorderLeft) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-interim/");
 
-    asPredictor *predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pressure_level/z", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pressure_level/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));

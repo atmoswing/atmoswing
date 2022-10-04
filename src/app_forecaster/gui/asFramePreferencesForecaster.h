@@ -35,11 +35,11 @@
 
 class asFramePreferencesForecaster : public asFramePreferencesForecasterVirtual {
   public:
-    asFramePreferencesForecaster(wxWindow *parent, asBatchForecasts *batchForecasts,
+    asFramePreferencesForecaster(wxWindow* parent, asBatchForecasts* batchForecasts,
                                  wxWindowID id = asWINDOW_PREFERENCES);
 
   protected:
-    void CloseFrame(wxCommandEvent &event) override;
+    void CloseFrame(wxCommandEvent& event) override;
 
     void Update() override;
 
@@ -47,14 +47,14 @@ class asFramePreferencesForecaster : public asFramePreferencesForecasterVirtual 
 
     void SavePreferences();
 
-    void SaveAndClose(wxCommandEvent &event) override;
+    void SaveAndClose(wxCommandEvent& event) override;
 
-    void ApplyChanges(wxCommandEvent &event) override;
+    void ApplyChanges(wxCommandEvent& event) override;
 
-    void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
+    void OnChangeMultithreadingCheckBox(wxCommandEvent& event) override;
 
   private:
-    asBatchForecasts *m_batchForecasts;
+    asBatchForecasts* m_batchForecasts;
 };
 
 #endif

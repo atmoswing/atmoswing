@@ -36,13 +36,14 @@
 
 #include "AtmoswingMainOptimizer.h"
 
-AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame *frame) : asFrameOptimizer(frame) {
+AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame* frame)
+    : asFrameOptimizer(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
 
     // Config file
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
 
     // Set default options
     SetDefaultOptions();
@@ -88,7 +89,7 @@ AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame *frame) : asFrameOptimi
 }
 
 void AtmoswingFrameOptimizer::SetDefaultOptions() {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
 
     // General
     pConfig->Write("/General/GuiOptions", pConfig->ReadLong("/General/GuiOptions", 1l));
@@ -120,7 +121,7 @@ void AtmoswingFrameOptimizer::SetDefaultOptions() {
 
 AtmoswingFrameOptimizer::~AtmoswingFrameOptimizer() {
     // Config file
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     if (!pConfig) return;
 
     // Save the frame position
@@ -135,10 +136,10 @@ AtmoswingFrameOptimizer::~AtmoswingFrameOptimizer() {
     Destroy();
 }
 
-void AtmoswingFrameOptimizer::OnClose(wxCloseEvent &event) {
+void AtmoswingFrameOptimizer::OnClose(wxCloseEvent& event) {
     Close(true);
 }
 
-void AtmoswingFrameOptimizer::OnQuit(wxCommandEvent &event) {
+void AtmoswingFrameOptimizer::OnQuit(wxCommandEvent& event) {
     Close(true);
 }

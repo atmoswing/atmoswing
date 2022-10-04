@@ -42,9 +42,9 @@ class asConfig : public wxObject {
 
     static wxString GetTempDir();
 
-    static wxString CreateTempFileName(const wxString &prefix);
+    static wxString CreateTempFileName(const wxString& prefix);
 
-    static wxString CreateTempDir(const wxString &prefix);
+    static wxString CreateTempDir(const wxString& prefix);
 
     static wxString GetDataDir();
 

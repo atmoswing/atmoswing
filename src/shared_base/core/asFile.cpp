@@ -27,7 +27,7 @@
 
 #include "asFile.h"
 
-asFile::asFile(const wxString &fileName, const FileMode &fileMode)
+asFile::asFile(const wxString& fileName, const FileMode& fileMode)
     : m_fileName(wxFileName(fileName)),
       m_fileMode(fileMode),
       m_exists(false),
@@ -37,7 +37,7 @@ asFile::~asFile() {
     DoClose();
 }
 
-bool asFile::Exists(const wxString &filePath) {
+bool asFile::Exists(const wxString& filePath) {
     return wxFileName::FileExists(filePath);
 }
 

@@ -32,17 +32,18 @@ WXDLLIMPEXP_DATA_PLOTCTRL(extern const wxPlotFunction) wxNullPlotFunction;
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotFunction : public wxPlotCurve {
   public:
-    wxPlotFunction() : wxPlotCurve() {}
+    wxPlotFunction()
+        : wxPlotCurve() {}
 
-    wxPlotFunction(const wxPlotFunction &curve) {
+    wxPlotFunction(const wxPlotFunction& curve) {
         Create(curve);
     }
 
-    wxPlotFunction(const wxString &function, const wxString &vars = wxT("x"), bool useDegrees = false) {
+    wxPlotFunction(const wxString& function, const wxString& vars = wxT("x"), bool useDegrees = false) {
         Create(function, vars, useDegrees);
     }
 
-    virtual wxPlotCurve *Clone() const {
+    virtual wxPlotCurve* Clone() const {
         return new wxPlotFunction(*this);
     }
 
@@ -54,17 +55,17 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotFunction : public wxPlotCurve {
     //   Check if errormsg != wxEmptyString, or curve.Ok() not the returned int
     //   vars is a comma delimited list of variables used in the function "x,y,z"
     //   vars can be wxEmptyString, see GetValue(NULL), the function is a constant
-    int Create(const wxString &function, const wxString &vars = wxT("x"), bool useDegrees = false);
+    int Create(const wxString& function, const wxString& vars = wxT("x"), bool useDegrees = false);
 
     // Make a copy of the other plotFunction
-    bool Create(const wxPlotFunction &curve);
+    bool Create(const wxPlotFunction& curve);
 
     bool Ok() const;
 
     void Destroy();
 
     // Parse and use the function, see Create, does not destroy refdata
-    int Parse(const wxString &function, const wxString &vars = wxT("x"), bool useDegrees = false);
+    int Parse(const wxString& function, const wxString& vars = wxT("x"), bool useDegrees = false);
 
     // Get the strings sent to Create
     wxString GetFunctionString() const;        // the function string "a*(b+3)/2 + c"
@@ -83,29 +84,29 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotFunction : public wxPlotCurve {
     // Get the f(x,y...) using an arbitrary number of vars
     //   you absolutely MUST pass double x[GetNumberVariables()]
     //   if you sent in a wxEmptyString for the vars then use NULL
-    double GetValue(double *x) const;
+    double GetValue(double* x) const;
 
     // add a constant to use
-    bool AddConstant(const wxString &name, double value);
+    bool AddConstant(const wxString& name, double value);
 
-    bool operator==(const wxPlotFunction &plotFunc) const {
+    bool operator==(const wxPlotFunction& plotFunc) const {
         return m_refData == plotFunc.m_refData;
     }
 
-    bool operator!=(const wxPlotFunction &plotFunc) const {
+    bool operator!=(const wxPlotFunction& plotFunc) const {
         return m_refData != plotFunc.m_refData;
     }
 
-    wxPlotFunction &operator=(const wxPlotFunction &plotFunc) {
+    wxPlotFunction& operator=(const wxPlotFunction& plotFunc) {
         if ((*this) != plotFunc) Ref(plotFunc);
         return *this;
     }
 
   private:
     // ref counting code
-    virtual wxObjectRefData *CreateRefData() const;
+    virtual wxObjectRefData* CreateRefData() const;
 
-    virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
+    virtual wxObjectRefData* CloneRefData(const wxObjectRefData* data) const;
 
     DECLARE_DYNAMIC_CLASS(wxPlotFunction);
 };
@@ -122,7 +123,7 @@ wxPlotFunction wxClipboardGetPlotFunction();
 // Set the plot function curve into the clipboard. Copies function and vars string
 // separated by a ';' as a text object, use wxString::Before/AfterLast(wxT(';')).
 // returns sucess
-bool wxClipboardSetPlotFunction(const wxPlotFunction &plotFunction);
+bool wxClipboardSetPlotFunction(const wxPlotFunction& plotFunction);
 
 #endif  // wxUSE_DATAOBJ && wxUSE_CLIPBOARD
 

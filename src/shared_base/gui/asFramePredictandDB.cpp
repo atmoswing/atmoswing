@@ -31,9 +31,10 @@
 #include "asPredictandPrecipitation.h"
 #include "asPredictandTemperature.h"
 
-asFramePredictandDB::asFramePredictandDB(wxWindow *parent, wxWindowID id) : asFramePredictandDBVirtual(parent, id) {
+asFramePredictandDB::asFramePredictandDB(wxWindow* parent, wxWindowID id)
+    : asFramePredictandDBVirtual(parent, id) {
     // Set the defaults
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     m_choiceDataParam->SetSelection((int)0);
 
     m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
@@ -50,11 +51,11 @@ asFramePredictandDB::asFramePredictandDB(wxWindow *parent, wxWindowID id) : asFr
 #endif
 }
 
-void asFramePredictandDB::OnClose(wxCloseEvent &) {
+void asFramePredictandDB::OnClose(wxCloseEvent&) {
     wxBusyCursor wait;
 
     // Save as defaults
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
 
     wxString catalogPath = m_filePickerCatalogPath->GetPath();
     pConfig->Write("/PredictandDBToolbox/CatalogPath", catalogPath);
@@ -68,7 +69,7 @@ void asFramePredictandDB::OnClose(wxCloseEvent &) {
     pConfig->Flush();
 }
 
-void asFramePredictandDB::CloseFrame(wxCommandEvent &event) {
+void asFramePredictandDB::CloseFrame(wxCommandEvent& event) {
     Close();
 }
 
@@ -89,7 +90,7 @@ void asFramePredictandDB::FixFrameSize() {
     SetMaxSize(wxSize(w, h));
 }
 
-void asFramePredictandDB::OnDataSelection(wxCommandEvent &event) {
+void asFramePredictandDB::OnDataSelection(wxCommandEvent& event) {
     Freeze();
 
     m_sizerProcessing->Clear();
@@ -105,8 +106,7 @@ void asFramePredictandDB::OnDataSelection(wxCommandEvent &event) {
         }
         case 2:  // lightning
         {
-            m_panelProcessing =
-                new asPanelProcessingLightning(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+            m_panelProcessing = new asPanelProcessingLightning(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
             m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
             break;
         }
@@ -121,7 +121,7 @@ void asFramePredictandDB::OnDataSelection(wxCommandEvent &event) {
     Thaw();
 }
 
-void asFramePredictandDB::BuildDatabase(wxCommandEvent &event) {
+void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     try {
@@ -228,7 +228,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event) {
             case 0:  // Precipitation
             {
                 wxASSERT(m_panelProcessing);
-                auto *panel = dynamic_cast<asPanelProcessingPrecipitation *>(m_panelProcessing);
+                auto* panel = dynamic_cast<asPanelProcessingPrecipitation*>(m_panelProcessing);
                 wxASSERT(panel->m_checkBoxReturnPeriod);
                 wxASSERT(panel->m_textCtrlReturnPeriod);
                 wxASSERT(panel->m_checkBoxSqrt);
@@ -261,7 +261,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event) {
             case 2:  // Lightning
             {
                 wxASSERT(m_panelProcessing);
-                auto *panel = dynamic_cast<asPanelProcessingLightning *>(m_panelProcessing);
+                auto* panel = dynamic_cast<asPanelProcessingLightning*>(m_panelProcessing);
                 wxASSERT(panel->m_checkBoxLog);
 
                 // Instantiate a predictand object
@@ -278,7 +278,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event) {
             default:
                 wxLogError(_("Wrong selection of the data parameter option."));
         }
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
     }

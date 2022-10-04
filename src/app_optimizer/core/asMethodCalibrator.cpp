@@ -98,8 +98,8 @@ bool asMethodCalibrator::Manager() {
     return true;
 }
 
-void asMethodCalibrator::LoadScoreOrder(asParametersCalibration &params) {
-    asScore *score = asScore::GetInstance(params.GetScoreName());
+void asMethodCalibrator::LoadScoreOrder(asParametersCalibration& params) {
+    asScore* score = asScore::GetInstance(params.GetScoreName());
     Order scoreOrder = score->GetOrder();
     SetScoreOrder(scoreOrder);
     wxDELETE(score);
@@ -199,7 +199,7 @@ bool asMethodCalibrator::SortScoresAndParametersTemp() {
     return true;
 }
 
-bool asMethodCalibrator::PushBackInTempIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal) {
+bool asMethodCalibrator::PushBackInTempIfBetter(asParametersCalibration& params, asResultsTotalScore& scoreFinal) {
     float thisScore = scoreFinal.GetScore();
 
     switch (m_scoreOrder) {
@@ -226,7 +226,7 @@ bool asMethodCalibrator::PushBackInTempIfBetter(asParametersCalibration &params,
     return false;
 }
 
-bool asMethodCalibrator::KeepIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal) {
+bool asMethodCalibrator::KeepIfBetter(asParametersCalibration& params, asResultsTotalScore& scoreFinal) {
     float thisScore = scoreFinal.GetScore();
 
     switch (m_scoreOrder) {
@@ -257,7 +257,7 @@ bool asMethodCalibrator::KeepIfBetter(asParametersCalibration &params, asResults
     return false;
 }
 
-bool asMethodCalibrator::SetSelectedParameters(asResultsParametersArray &results) {
+bool asMethodCalibrator::SetSelectedParameters(asResultsParametersArray& results) {
     // Extract selected parameters & best parameters
     for (int i = 0; i < m_parameters.size(); i++) {
         results.Add(m_parameters[i], m_scoresCalib[i], m_scoreValid);
@@ -266,7 +266,7 @@ bool asMethodCalibrator::SetSelectedParameters(asResultsParametersArray &results
     return true;
 }
 
-bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results) {
+bool asMethodCalibrator::SetBestParameters(asResultsParametersArray& results) {
     wxASSERT(!m_parameters.empty());
     wxASSERT(!m_scoresCalib.empty());
 
@@ -299,7 +299,7 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results) {
     return true;
 }
 
-wxString asMethodCalibrator::GetPredictandStationIdsList(vi &stationIds) const {
+wxString asMethodCalibrator::GetPredictandStationIdsList(vi& stationIds) const {
     wxString id;
 
     if (stationIds.size() == 1) {
@@ -320,27 +320,27 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(vi &stationIds) const {
     return id;
 }
 
-double asMethodCalibrator::GetTimeStartCalibration(asParametersScoring *params) const {
+double asMethodCalibrator::GetTimeStartCalibration(asParametersScoring* params) const {
     return params->GetCalibrationStart() + params->GetTimeShiftDays();
 }
 
-double asMethodCalibrator::GetTimeEndCalibration(asParametersScoring *params) const {
+double asMethodCalibrator::GetTimeEndCalibration(asParametersScoring* params) const {
     return params->GetCalibrationEnd() - params->GetTimeSpanDays();
 }
 
-double asMethodCalibrator::GetEffectiveArchiveDataStart(asParameters *params) const {
-    auto *paramsScoring = (asParametersScoring *)params;
+double asMethodCalibrator::GetEffectiveArchiveDataStart(asParameters* params) const {
+    auto* paramsScoring = (asParametersScoring*)params;
 
     return wxMin(GetTimeStartCalibration(paramsScoring), GetTimeStartArchive(paramsScoring));
 }
 
-double asMethodCalibrator::GetEffectiveArchiveDataEnd(asParameters *params) const {
-    auto *paramsScoring = (asParametersScoring *)params;
+double asMethodCalibrator::GetEffectiveArchiveDataEnd(asParameters* params) const {
+    auto* paramsScoring = (asParametersScoring*)params;
 
     return wxMax(GetTimeEndCalibration(paramsScoring), GetTimeEndArchive(paramsScoring));
 }
 
-va1f asMethodCalibrator::GetClimatologyData(asParametersScoring *params) {
+va1f asMethodCalibrator::GetClimatologyData(asParametersScoring* params) {
     vi stationIds = params->GetPredictandStationIds();
 
     // Get start and end dates
@@ -424,7 +424,7 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring *params) {
     return climatologyData;
 }
 
-bool asMethodCalibrator::PreloadDataOnly(asParametersScoring *params) {
+bool asMethodCalibrator::PreloadDataOnly(asParametersScoring* params) {
     // Archive date array
     asTimeArray timeArrayArchive(GetTimeStartArchive(params), GetTimeEndArchive(params),
                                  params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
@@ -480,7 +480,7 @@ bool asMethodCalibrator::PreloadDataOnly(asParametersScoring *params) {
     timeArrayData.Init();
 
     // Load the predictor data
-    std::vector<asPredictor *> predictors;
+    std::vector<asPredictor*> predictors;
     if (!LoadArchiveData(predictors, params, 0, timeStartData, timeEndData)) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
@@ -492,8 +492,8 @@ bool asMethodCalibrator::PreloadDataOnly(asParametersScoring *params) {
     return true;
 }
 
-bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersScoring *params, int iStep,
-                                         bool &containsNaNs) {
+bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersScoring* params, int iStep,
+                                         bool& containsNaNs) {
     // Initialize the result object
     results.SetCurrentStep(iStep);
     results.Init(params);
@@ -561,7 +561,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
     wxLogVerbose(_("Date arrays created."));
 
     // Load the predictor data
-    std::vector<asPredictor *> predictors;
+    std::vector<asPredictor*> predictors;
     if (!LoadArchiveData(predictors, params, iStep, timeStartData, timeEndData)) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
@@ -569,10 +569,10 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
     }
 
     // Create the criterion
-    std::vector<asCriteria *> criteria;
+    std::vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         // Instantiate a score object
-        asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
+        asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
         criteria.push_back(criterion);
     }
 
@@ -613,8 +613,8 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
     return true;
 }
 
-bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates &results, asParametersScoring *params,
-                                            asResultsDates &anaDates, int iStep, bool &containsNaNs) {
+bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates& results, asParametersScoring* params,
+                                            asResultsDates& anaDates, int iStep, bool& containsNaNs) {
     // Initialize the result object
     results.SetCurrentStep(iStep);
     results.Init(params);
@@ -629,7 +629,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates &results, asParameter
     wxLogVerbose(_("Date arrays created."));
 
     // Load the predictor data
-    std::vector<asPredictor *> predictors;
+    std::vector<asPredictor*> predictors;
     if (!LoadArchiveData(predictors, params, iStep, timeStart, timeEnd)) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
@@ -637,10 +637,10 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates &results, asParameter
     }
 
     // Create the score objects
-    std::vector<asCriteria *> criteria;
+    std::vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         wxLogVerbose(_("Creating a criterion object."));
-        asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
+        asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
         criteria.push_back(criterion);
         wxLogVerbose(_("Criterion object created."));
     }
@@ -669,8 +669,8 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates &results, asParameter
     return true;
 }
 
-bool asMethodCalibrator::GetAnalogsValues(asResultsValues &results, asParametersScoring *params,
-                                          asResultsDates &anaDates, int iStep) {
+bool asMethodCalibrator::GetAnalogsValues(asResultsValues& results, asParametersScoring* params,
+                                          asResultsDates& anaDates, int iStep) {
     // Initialize the result object
     results.SetCurrentStep(iStep);
     results.Init(params);
@@ -687,15 +687,15 @@ bool asMethodCalibrator::GetAnalogsValues(asResultsValues &results, asParameters
     return true;
 }
 
-bool asMethodCalibrator::GetAnalogsScores(asResultsScores &results, asParametersScoring *params,
-                                          asResultsValues &anaValues, int iStep) {
+bool asMethodCalibrator::GetAnalogsScores(asResultsScores& results, asParametersScoring* params,
+                                          asResultsValues& anaValues, int iStep) {
     // Initialize the result object
     results.SetCurrentStep(iStep);
     results.Init(params);
 
     // Instantiate a score object
     wxLogVerbose(_("Instantiating a score object"));
-    asScore *score = asScore::GetInstance(params->GetScoreName());
+    asScore* score = asScore::GetInstance(params->GetScoreName());
     score->SetQuantile(params->GetScoreQuantile());
     score->SetThreshold(params->GetScoreThreshold());
     score->SetOnMean(params->GetOnMean());
@@ -727,8 +727,8 @@ bool asMethodCalibrator::GetAnalogsScores(asResultsScores &results, asParameters
     return true;
 }
 
-bool asMethodCalibrator::GetAnalogsTotalScore(asResultsTotalScore &results, asParametersScoring *params,
-                                              asResultsScores &anaScores, int iStep) {
+bool asMethodCalibrator::GetAnalogsTotalScore(asResultsTotalScore& results, asParametersScoring* params,
+                                              asResultsScores& anaScores, int iStep) {
     // Initialize the result object
     results.SetCurrentStep(iStep);
     results.Init();
@@ -758,7 +758,7 @@ bool asMethodCalibrator::GetAnalogsTotalScore(asResultsTotalScore &results, asPa
     return true;
 }
 
-bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params, asResultsDates &anaDatesPrevious,
+bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration& params, asResultsDates& anaDatesPrevious,
                                                  int iStep) {
     vi analogsNbVect = params.GetAnalogsNumberVector(iStep);
 
@@ -840,7 +840,7 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
     return true;
 }
 
-bool asMethodCalibrator::SaveDetails(asParametersCalibration *params) {
+bool asMethodCalibrator::SaveDetails(asParametersCalibration* params) {
     asResultsDates anaDatesPrevious;
     asResultsDates anaDates;
     asResultsValues anaValues;
@@ -876,7 +876,7 @@ bool asMethodCalibrator::SaveDetails(asParametersCalibration *params) {
     return true;
 }
 
-bool asMethodCalibrator::Validate(asParametersCalibration *params) {
+bool asMethodCalibrator::Validate(asParametersCalibration* params) {
     if (wxFileConfig::Get()->ReadBool("/SkipValidation", false)) {
         return true;
     }

@@ -34,7 +34,7 @@ asScoreCRPSEP::asScoreCRPSEP()
 
 asScoreCRPSEP::~asScoreCRPSEP() {}
 
-float asScoreCRPSEP::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreCRPSEP::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -155,6 +155,6 @@ float asScoreCRPSEP::Assess(float obs, const a1f &values, int nbElements) const 
     return crps;
 }
 
-bool asScoreCRPSEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreCRPSEP::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     return true;
 }

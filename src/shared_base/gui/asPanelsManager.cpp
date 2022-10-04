@@ -27,10 +27,10 @@
 
 #include "asPanelsManager.h"
 
-void asPanelsManager::LayoutFrame(wxWindow *element) {
+void asPanelsManager::LayoutFrame(wxWindow* element) {
     // Get parent frame for layout
-    wxWindow *parent = element;
-    wxWindow *searchParent = parent;
+    wxWindow* parent = element;
+    wxWindow* searchParent = parent;
     while (searchParent) {
         parent = searchParent;
         searchParent = parent->GetParent();
@@ -38,10 +38,10 @@ void asPanelsManager::LayoutFrame(wxWindow *element) {
     parent->Layout();
 }
 
-wxWindow *asPanelsManager::GetTopFrame(wxWindow *element) const {
+wxWindow* asPanelsManager::GetTopFrame(wxWindow* element) const {
     // Get parent frame for layout
-    wxWindow *parent = element;
-    wxWindow *searchParent = parent;
+    wxWindow* parent = element;
+    wxWindow* searchParent = parent;
     while (searchParent) {
         parent = searchParent;
         searchParent = parent->GetParent();

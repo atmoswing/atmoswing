@@ -28,13 +28,14 @@
 
 #include "asCriteriaRMSE.h"
 
-asCriteriaRMSE::asCriteriaRMSE() : asCriteria("RMSE", _("Root Mean Square Error"), Asc) {
+asCriteriaRMSE::asCriteriaRMSE()
+    : asCriteria("RMSE", _("Root Mean Square Error"), Asc) {
     m_canUseInline = true;
 }
 
 asCriteriaRMSE::~asCriteriaRMSE() = default;
 
-float asCriteriaRMSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
+float asCriteriaRMSE::Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() == rowsNb);

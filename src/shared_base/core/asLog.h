@@ -36,7 +36,11 @@ class wxFFile;
 
 class asLog : public wxObject {
   public:
-    enum LogTarget { File, Screen, Both };
+    enum LogTarget {
+        File,
+        Screen,
+        Both
+    };
 
     asLog();
 
@@ -44,34 +48,34 @@ class asLog : public wxObject {
 
     void ClearCurrentTarget();
 
-    void CreateFile(const wxString &fileName);
+    void CreateFile(const wxString& fileName);
 
-    void CreateFileAtPath(const wxString &fullPath);
+    void CreateFileAtPath(const wxString& fullPath);
 
-    void CreateFileOnly(const wxString &fileName);
+    void CreateFileOnly(const wxString& fileName);
 
-    void CreateFileOnlyAtPath(const wxString &fullPath);
+    void CreateFileOnlyAtPath(const wxString& fullPath);
 
     void SetLevel(int val);
 
-    static void PrintToConsole(const wxString &msg);
+    static void PrintToConsole(const wxString& msg);
 
   protected:
   private:
-    wxFFile *m_logFile;
-    wxLogChain *m_logChain;
+    wxFFile* m_logFile;
+    wxLogChain* m_logChain;
 };
 
 #if USE_GUI
 class asLogGui : public wxLogGui {
   protected:
-    void DoLogRecord(wxLogLevel level, const wxString &msg, const wxLogRecordInfo &info) override;
+    void DoLogRecord(wxLogLevel level, const wxString& msg, const wxLogRecordInfo& info) override;
 };
 #endif
 
-extern asLog *g_pLog;
+extern asLog* g_pLog;
 
-asLog *Log();
+asLog* Log();
 
 void DeleteLog();
 

@@ -34,7 +34,7 @@ WX_DEFINE_OBJARRAY(wxArrayRangeIntSelection);
 WX_DEFINE_OBJARRAY(wxArrayRangeDoubleSelection);
 
 // set this if you want to double check that that ranges are really working
-//#define CHECK_RANGES
+// #define CHECK_RANGES
 
 //=============================================================================
 // wxRangeInt
@@ -61,7 +61,7 @@ bool wxRangeInt::Combine(int i, bool only_if_touching) {
     return false;
 }
 
-bool wxRangeInt::Combine(const wxRangeInt &r, bool only_if_touching) {
+bool wxRangeInt::Combine(const wxRangeInt& r, bool only_if_touching) {
     if (only_if_touching) {
         if (Touches(r)) {
             *this += r;
@@ -82,7 +82,7 @@ bool wxRangeInt::Combine(const wxRangeInt &r, bool only_if_touching) {
     return false;
 }
 
-bool wxRangeInt::Delete(const wxRangeInt &r, wxRangeInt *right) {
+bool wxRangeInt::Delete(const wxRangeInt& r, wxRangeInt* right) {
     if (!Contains(r)) return false;
 
     if (right) *right = wxEmptyRangeInt;
@@ -111,7 +111,7 @@ bool wxRangeInt::Delete(const wxRangeInt &r, wxRangeInt *right) {
 //=============================================================================
 // wxRangeIntSelection
 //=============================================================================
-const wxRangeInt &wxRangeIntSelection::GetRange(int index) const {
+const wxRangeInt& wxRangeIntSelection::GetRange(int index) const {
     wxCHECK_MSG((index >= 0) && (index < int(m_ranges.GetCount())), wxEmptyRangeInt, wxT("Invalid index"));
     return m_ranges[index];
 }
@@ -146,7 +146,7 @@ int wxRangeIntSelection::Index(int i) const {
     return wxNOT_FOUND;
 }
 
-int wxRangeIntSelection::Index(const wxRangeInt &r) const {
+int wxRangeIntSelection::Index(const wxRangeInt& r) const {
     register int i, count = m_ranges.GetCount();
     for (i = 0; i < count; i++)
         if (m_ranges[i].Contains(r)) return i;
@@ -187,7 +187,7 @@ int wxRangeIntSelection::GetItemCount() const {
     return items;
 }
 
-bool wxRangeIntSelection::DeselectRange(const wxRangeInt &range) {
+bool wxRangeIntSelection::DeselectRange(const wxRangeInt& range) {
     wxCHECK_MSG(!range.IsEmpty(), false, wxT("Invalid Selection Range"));
 
     bool done = false;
@@ -214,7 +214,7 @@ bool wxRangeIntSelection::DeselectRange(const wxRangeInt &range) {
     return done;
 }
 
-bool wxRangeIntSelection::SelectRange(const wxRangeInt &range) {
+bool wxRangeIntSelection::SelectRange(const wxRangeInt& range) {
     wxCHECK_MSG(!range.IsEmpty(), false, wxT("Invalid Selection Range"));
 
     // Try to find a range that includes this one and combine it, else insert it, else append it
@@ -270,7 +270,7 @@ bool wxRangeIntSelection::SelectRange(const wxRangeInt &range) {
     return done;
 }
 
-bool wxRangeIntSelection::BoundRanges(const wxRangeInt &range) {
+bool wxRangeIntSelection::BoundRanges(const wxRangeInt& range) {
     wxCHECK_MSG(!range.IsEmpty(), false, wxT("Invalid Bounding Range"));
     int i, count = m_ranges.GetCount();
     bool done = false;
@@ -323,7 +323,7 @@ bool wxRangeDouble::Combine(double i) {
     return false;
 }
 
-bool wxRangeDouble::Combine(const wxRangeDouble &r, bool only_if_touching) {
+bool wxRangeDouble::Combine(const wxRangeDouble& r, bool only_if_touching) {
     if (only_if_touching) {
         if ((r.m_min <= m_max) && (r.m_max >= m_min))  // Contains(r))
         {
@@ -345,7 +345,7 @@ bool wxRangeDouble::Combine(const wxRangeDouble &r, bool only_if_touching) {
     return false;
 }
 
-bool wxRangeDouble::Delete(const wxRangeDouble &r, wxRangeDouble *right) {
+bool wxRangeDouble::Delete(const wxRangeDouble& r, wxRangeDouble* right) {
     if (!Contains(r)) return false;
 
     if (right) *right = wxEmptyRangeDouble;
@@ -374,7 +374,7 @@ bool wxRangeDouble::Delete(const wxRangeDouble &r, wxRangeDouble *right) {
 //=============================================================================
 // wxRangeDoubleSelection
 //=============================================================================
-const wxRangeDouble &wxRangeDoubleSelection::GetRange(int index) const {
+const wxRangeDouble& wxRangeDoubleSelection::GetRange(int index) const {
     wxCHECK_MSG((index >= 0) && (index < int(m_ranges.GetCount())), wxEmptyRangeDouble, wxT("Invalid index"));
     return m_ranges[index];
 }
@@ -416,7 +416,7 @@ int wxRangeDoubleSelection::Index(wxDouble i) const {
     */
 }
 
-int wxRangeDoubleSelection::Index(const wxRangeDouble &r) const {
+int wxRangeDoubleSelection::Index(const wxRangeDouble& r) const {
     register int i, count = m_ranges.GetCount();
     for (i = 0; i < count; i++)
         if (m_ranges[i].Contains(r)) return i;
@@ -451,7 +451,7 @@ int wxRangeDoubleSelection::NearestIndex(wxDouble i) const {
     wxCHECK_MSG(0, -1, wxT("Error calculating NearestIndex in wxRangeDoubleSelection"));
 }
 
-bool wxRangeDoubleSelection::SelectRange(const wxRangeDouble &range) {
+bool wxRangeDoubleSelection::SelectRange(const wxRangeDouble& range) {
     wxCHECK_MSG(!range.IsEmpty(), false, wxT("Invalid Selection Range"));
 
     // Try to find a range that includes this one and combine it, else insert it, else append it
@@ -504,7 +504,7 @@ bool wxRangeDoubleSelection::SelectRange(const wxRangeDouble &range) {
     return done;
 }
 
-bool wxRangeDoubleSelection::DeselectRange(const wxRangeDouble &range) {
+bool wxRangeDoubleSelection::DeselectRange(const wxRangeDouble& range) {
     wxCHECK_MSG(!range.IsEmpty(), false, wxT("Invalid Selection Range"));
 
     bool done = false;
@@ -531,7 +531,7 @@ bool wxRangeDoubleSelection::DeselectRange(const wxRangeDouble &range) {
     return done;
 }
 
-bool wxRangeDoubleSelection::BoundRanges(const wxRangeDouble &range) {
+bool wxRangeDoubleSelection::BoundRanges(const wxRangeDouble& range) {
     wxCHECK_MSG(!range.IsEmpty(), false, wxT("Invalid Bounding Range"));
     int i, count = m_ranges.GetCount();
     bool done = false;

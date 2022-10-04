@@ -33,13 +33,13 @@
 
 class asDialogFilePicker : public asDialogFilePickerVirtual {
   public:
-    asDialogFilePicker(wxWindow *parent, const wxString &description);
+    asDialogFilePicker(wxWindow* parent, const wxString& description);
 
     wxString GetPath() const {
         return m_filePicker->GetPath();
     }
 
-    void SetPath(const wxString &path) {
+    void SetPath(const wxString& path) {
         m_filePicker->SetPath(path);
     }
 };

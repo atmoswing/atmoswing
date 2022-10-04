@@ -28,13 +28,14 @@
 
 #include "asCriteriaMD.h"
 
-asCriteriaMD::asCriteriaMD() : asCriteria("MD", _("Mean Absolute Difference"), Asc) {
+asCriteriaMD::asCriteriaMD()
+    : asCriteria("MD", _("Mean Absolute Difference"), Asc) {
     m_canUseInline = true;
 }
 
 asCriteriaMD::~asCriteriaMD() = default;
 
-float asCriteriaMD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
+float asCriteriaMD::Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
 

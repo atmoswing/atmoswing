@@ -39,13 +39,13 @@ class asPredictandPrecipitation : public asPredictand {
 
     ~asPredictandPrecipitation() override = default;
 
-    bool Load(const wxString &filePath) override;
+    bool Load(const wxString& filePath) override;
 
-    bool Save(const wxString &destinationDir = wxEmptyString) const override;
+    bool Save(const wxString& destinationDir = wxEmptyString) const override;
 
-    bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir = wxEmptyString,
-                           const wxString &patternDir = wxEmptyString,
-                           const wxString &destinationDir = wxEmptyString) override;
+    bool BuildPredictandDB(const wxString& catalogFilePath, const wxString& dataDir = wxEmptyString,
+                           const wxString& patternDir = wxEmptyString,
+                           const wxString& destinationDir = wxEmptyString) override;
 
     bool HasReferenceAxis() const override {
         return true;

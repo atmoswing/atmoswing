@@ -28,14 +28,17 @@
 
 #include "asMethodOptimizer.h"
 
-asMethodOptimizer::asMethodOptimizer() : asMethodCalibrator(), m_paramsNb(0), m_iterator(0) {
+asMethodOptimizer::asMethodOptimizer()
+    : asMethodCalibrator(),
+      m_paramsNb(0),
+      m_iterator(0) {
     // Seeds the random generator
     asInitRandom();
 }
 
 asMethodOptimizer::~asMethodOptimizer() {}
 
-bool asMethodOptimizer::SaveDetails(asParametersOptimization &params) {
+bool asMethodOptimizer::SaveDetails(asParametersOptimization& params) {
     asResultsDates anaDatesPrevious;
     asResultsDates anaDates;
     asResultsValues anaValues;
@@ -71,7 +74,7 @@ bool asMethodOptimizer::SaveDetails(asParametersOptimization &params) {
     return true;
 }
 
-bool asMethodOptimizer::Validate(asParametersOptimization &params) {
+bool asMethodOptimizer::Validate(asParametersOptimization& params) {
     if (!params.HasValidationPeriod()) {
         wxLogWarning("The parameters have no validation period !");
         return true;

@@ -40,8 +40,8 @@ void asInternet::Cleanup() {
     curl_global_cleanup();
 }
 
-size_t asInternet::WriteFile(void *buffer, size_t size, size_t nmemb, void *stream) {
-    auto *out = (struct HttpFile *)stream;
+size_t asInternet::WriteFile(void* buffer, size_t size, size_t nmemb, void* stream) {
+    auto* out = (struct HttpFile*)stream;
     if (!out->stream) {
         // Open file for writing
         out->stream = fopen(out->fileName, "wb");
@@ -50,9 +50,9 @@ size_t asInternet::WriteFile(void *buffer, size_t size, size_t nmemb, void *stre
     return fwrite(buffer, size, nmemb, out->stream);
 }
 
-int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir) {
+int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString& destinationDir) {
     // Proxy
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     bool usesProxy = pConfig->ReadBool("/Internet/UsesProxy", false);
     wxString proxyAddress = pConfig->Read("/Internet/ProxyAddress", wxEmptyString);
     long proxyPort = pConfig->ReadLong("/Internet/ProxyPort", 8080);
@@ -83,7 +83,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
             wxASSERT_MSG(end < fileNames.size(),
                          wxString::Format("Size of fileNames = %d, desired end = %d", (int)fileNames.size(), end));
 
-            auto *thread = new asThreadInternetDownload(urls, fileNames, destinationDir, usesProxy, proxyAddress,
+            auto* thread = new asThreadInternetDownload(urls, fileNames, destinationDir, usesProxy, proxyAddress,
                                                         proxyPort, proxyUser, proxyPasswd, start, end);
             threadType = thread->GetType();
             ThreadsManager().AddThread(thread);
@@ -101,7 +101,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 #endif
 
         // Check the files
-        for (const auto &fileName : fileNames) {
+        for (const auto& fileName : fileNames) {
             wxString filePath = destinationDir + DS + fileName;
             if (!wxFileName::FileExists(filePath)) {
                 return asFAILED;
@@ -109,7 +109,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
         }
     } else {
         // Initialize
-        CURL *curl;
+        CURL* curl;
         CURLcode res;
         curl = curl_easy_init();
 
@@ -122,7 +122,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 #endif
 
             // Set a buffer for the error messages
-            auto *errorBfr = new char[CURL_ERROR_SIZE];
+            auto* errorBfr = new char[CURL_ERROR_SIZE];
             curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBfr);
             // Some servers don't like requests that are made without a user-agent field, so we provide one
             curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
@@ -170,7 +170,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                                             nullptr};
 
                     // Define the URL
-                    curl_easy_setopt(curl, CURLOPT_URL, (const char *)url.mb_str(wxConvUTF8));
+                    curl_easy_setopt(curl, CURLOPT_URL, (const char*)url.mb_str(wxConvUTF8));
                     // Define our callback to get called when there's data to be written
                     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteFile);
                     // Set a pointer to our struct to pass to the callback
@@ -179,14 +179,14 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                     // If a proxy is used
                     if (usesProxy) {
                         if (!proxyAddress.IsEmpty()) {
-                            curl_easy_setopt(curl, CURLOPT_PROXY, (const char *)proxyAddress.mb_str(wxConvUTF8));
+                            curl_easy_setopt(curl, CURLOPT_PROXY, (const char*)proxyAddress.mb_str(wxConvUTF8));
                         }
                         if (proxyPort > 0) {
                             curl_easy_setopt(curl, CURLOPT_PROXYPORT, proxyPort);
                         }
                         if (!proxyUser.IsEmpty()) {
                             wxString proxyLogin = proxyUser + ":" + proxyPasswd;
-                            curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, (const char *)proxyLogin.mb_str(wxConvUTF8));
+                            curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, (const char*)proxyLogin.mb_str(wxConvUTF8));
                         }
                     }
 

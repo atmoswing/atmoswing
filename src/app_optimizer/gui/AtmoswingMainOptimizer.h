@@ -29,21 +29,21 @@
 #ifndef AS_MAIN_OPTIMIZER_H
 #define AS_MAIN_OPTIMIZER_H
 
-//#include "version.h"
+// #include "version.h"
 #include "AtmoswingAppOptimizer.h"
 #include "asFrameOptimizer.h"
 #include "asIncludes.h"
 
 class AtmoswingFrameOptimizer : public asFrameOptimizer {
   public:
-    AtmoswingFrameOptimizer(wxFrame *frame);
+    AtmoswingFrameOptimizer(wxFrame* frame);
 
     ~AtmoswingFrameOptimizer() override;
 
   private:
-    virtual void OnClose(wxCloseEvent &event);
+    virtual void OnClose(wxCloseEvent& event);
 
-    virtual void OnQuit(wxCommandEvent &event);
+    virtual void OnQuit(wxCommandEvent& event);
 
     void SetDefaultOptions();
 };

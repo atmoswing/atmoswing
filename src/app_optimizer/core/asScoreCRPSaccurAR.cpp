@@ -37,7 +37,7 @@ asScoreCRPSaccurAR::asScoreCRPSaccurAR()
 
 }
 
-float asScoreCRPSaccurAR::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreCRPSaccurAR::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -58,6 +58,6 @@ float asScoreCRPSaccurAR::Assess(float obs, const a1f &values, int nbElements) c
     return CRPS - CRPSsharpness;
 }
 
-bool asScoreCRPSaccurAR::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreCRPSaccurAR::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     return true;
 }

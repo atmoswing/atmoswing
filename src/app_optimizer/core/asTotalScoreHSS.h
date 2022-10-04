@@ -34,11 +34,11 @@
 
 class asTotalScoreHSS : public asTotalScore {
   public:
-    explicit asTotalScoreHSS(const wxString &periodString);
+    explicit asTotalScoreHSS(const wxString& periodString);
 
     ~asTotalScoreHSS() override = default;
 
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
+    float Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const override;
 
   protected:
   private:

@@ -35,7 +35,6 @@
 #endif  //__BORLANDC__
 
 #include "AtmoswingAppForecaster.h"
-
 #include "asBatchForecasts.h"
 
 #if USE_GUI
@@ -104,7 +103,7 @@ bool AtmoswingAppForecaster::OnInit() {
     m_forecastPastDays = 0;
 
     // Set the local config object
-    wxFileConfig *pConfig =
+    wxFileConfig* pConfig =
         new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingForecaster.ini",
                          asConfig::GetUserDataDir() + "AtmoSwingForecaster.ini", wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
@@ -125,7 +124,7 @@ bool AtmoswingAppForecaster::OnInit() {
             wxMessageBox(_("Program already running, aborting."));
 
             // Cleanup
-            delete wxFileConfig::Set((wxFileConfig *)nullptr);
+            delete wxFileConfig::Set((wxFileConfig*)nullptr);
             DeleteThreadsManager();
             DeleteLog();
             delete m_singleInstanceChecker;
@@ -158,7 +157,7 @@ bool AtmoswingAppForecaster::OnInit() {
     initialize_images(g_ppiScaleDc);
 
     // Create frame
-    AtmoswingFrameForecaster *frame = new AtmoswingFrameForecaster(0L);
+    AtmoswingFrameForecaster* frame = new AtmoswingFrameForecaster(0L);
     frame->OnInit();
 
 #ifdef __WXMSW__
@@ -192,7 +191,7 @@ bool AtmoswingAppForecaster::SetUseAsCmdLine() {
     return true;
 }
 
-void AtmoswingAppForecaster::OnInitCmdLine(wxCmdLineParser &parser) {
+void AtmoswingAppForecaster::OnInitCmdLine(wxCmdLineParser& parser) {
     parser.SetDesc(g_cmdLineDesc);
     parser.SetLogo(cmdLineLogo);
 
@@ -200,7 +199,7 @@ void AtmoswingAppForecaster::OnInitCmdLine(wxCmdLineParser &parser) {
     parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser) {
+bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if runs with GUI or CL
     if (parser.Found("forecast-date") || parser.Found("forecast-past") || parser.Found("forecast-now")) {
         SetUseAsCmdLine();
@@ -251,7 +250,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser) {
     // Proxy activated
     wxString proxy;
     if (parser.Found("proxy", &proxy)) {
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
         pConfig->Write("/Internet/UsesProxy", true);
 
         wxString proxyAddress = proxy.BeforeFirst(':');
@@ -260,7 +259,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser) {
         pConfig->Write("/Internet/ProxyAddress", proxyAddress);
         pConfig->Write("/Internet/ProxyPort", proxyPort);
     } else {
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
         pConfig->Write("/Internet/UsesProxy", false);
     }
 
@@ -270,7 +269,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser) {
         wxString proxyUser = proxyUserPwd.BeforeFirst(':');
         wxString proxyPwd = proxyUserPwd.AfterFirst(':');
 
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
         pConfig->Write("/Internet/ProxyUser", proxyUser);
         pConfig->Write("/Internet/ProxyPasswd", proxyPwd);
     }
@@ -278,7 +277,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser) {
     // Batch file to use for the forecast
     wxString batchFile;
     if (parser.Found("batch-file", &batchFile)) {
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
         pConfig->Write("/BatchForecasts/LastOpened", batchFile);
     }
 
@@ -292,7 +291,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser) {
         fName.Normalize(wxPATH_NORM_LONG | wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE);
         g_cmdFileName = fName.GetFullPath();
 
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
         pConfig->Write("/BatchForecasts/LastOpened", g_cmdFileName);
     }
 
@@ -351,7 +350,7 @@ int AtmoswingAppForecaster::OnRun() {
         asBatchForecasts batchForecasts;
 
         // Load batch file if exists
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
         wxString batchFilePath = pConfig->Read("/BatchForecasts/LastOpened", wxEmptyString);
 
         if (!batchFilePath.IsEmpty()) {
@@ -502,7 +501,7 @@ int AtmoswingAppForecaster::OnRun() {
         asLog::PrintToConsole(wxString::Format("Forecast started for the %s UTC\n", forecastDateStr));
 
         // Open last batch file
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
         wxString batchFilePath = pConfig->Read("/BatchForecasts/LastOpened", wxEmptyString);
 
         asBatchForecasts batchForecasts;
@@ -541,7 +540,7 @@ int AtmoswingAppForecaster::OnRun() {
 
         filePaths.Open();
 
-        for (const auto &file : filePathsVect) {
+        for (const auto& file : filePathsVect) {
             filePaths.AddContent(file);
         }
         filePaths.Close();
@@ -551,7 +550,7 @@ int AtmoswingAppForecaster::OnRun() {
         asLog::PrintToConsole(wxString::Format("Forecast started for the last %d days\n", m_forecastPastDays));
 
         // Open last batch file
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
         wxString batchFilePath = pConfig->Read("/BatchForecasts/LastOpened", wxEmptyString);
 
         asBatchForecasts batchForecasts;
@@ -615,7 +614,7 @@ int AtmoswingAppForecaster::OnExit() {
 #endif
 
     // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *)nullptr);
+    delete wxFileConfig::Set((wxFileConfig*)nullptr);
 
     // Delete threads manager and log
     DeleteThreadsManager();

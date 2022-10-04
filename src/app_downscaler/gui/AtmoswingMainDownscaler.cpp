@@ -35,13 +35,14 @@
 
 #include "AtmoswingMainDownscaler.h"
 
-AtmoswingFrameDownscaler::AtmoswingFrameDownscaler(wxFrame *frame) : asFrameDownscaler(frame) {
+AtmoswingFrameDownscaler::AtmoswingFrameDownscaler(wxFrame* frame)
+    : asFrameDownscaler(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
 
     // Config file
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
 
     // Set default options
     SetDefaultOptions();
@@ -85,7 +86,7 @@ AtmoswingFrameDownscaler::AtmoswingFrameDownscaler(wxFrame *frame) : asFrameDown
 }
 
 void AtmoswingFrameDownscaler::SetDefaultOptions() {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
 
     // General
     pConfig->Write("/General/GuiOptions", pConfig->ReadLong("/General/GuiOptions", 1l));
@@ -120,7 +121,7 @@ void AtmoswingFrameDownscaler::SetDefaultOptions() {
 
 AtmoswingFrameDownscaler::~AtmoswingFrameDownscaler() {
     // Config file
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     if (!pConfig) return;
 
     // Save the frame position
@@ -135,10 +136,10 @@ AtmoswingFrameDownscaler::~AtmoswingFrameDownscaler() {
     Destroy();
 }
 
-void AtmoswingFrameDownscaler::OnClose(wxCloseEvent &event) {
+void AtmoswingFrameDownscaler::OnClose(wxCloseEvent& event) {
     Close(true);
 }
 
-void AtmoswingFrameDownscaler::OnQuit(wxCommandEvent &event) {
+void AtmoswingFrameDownscaler::OnQuit(wxCommandEvent& event) {
     Close(true);
 }

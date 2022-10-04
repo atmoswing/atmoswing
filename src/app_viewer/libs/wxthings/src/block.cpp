@@ -15,13 +15,13 @@
 #endif
 
 #ifndef WX_PRECOMP
-//#include "wx/object.h"
+// #include "wx/object.h"
 #endif  // WX_PRECOMP
 
 #include "wx/things/block.h"
 
 // use this to check to see if there is any overlap after minimizing
-//#define CHECK_BLOCK_OVERLAP 1
+// #define CHECK_BLOCK_OVERLAP 1
 
 #define PRINT_BLOCK(msg, b)                                                                                      \
     {                                                                                                            \
@@ -42,7 +42,7 @@ WX_DEFINE_OBJARRAY(wxArrayBlockDoubleSelection);
 // Sorting functions for wxBlockInt
 // ----------------------------------------------------------------------------
 
-static int wxCMPFUNC_CONV wxblockint_sort_topleft_bottomright(wxBlockInt **a, wxBlockInt **b) {
+static int wxCMPFUNC_CONV wxblockint_sort_topleft_bottomright(wxBlockInt** a, wxBlockInt** b) {
     register int y = ((*a)->m_y1 - (*b)->m_y1);
 
     if (y < 0) return -1;
@@ -50,7 +50,7 @@ static int wxCMPFUNC_CONV wxblockint_sort_topleft_bottomright(wxBlockInt **a, wx
     return 1;
 }
 
-static int wxCMPFUNC_CONV wxblockint_sort_topright_bottomleft(wxBlockInt **a, wxBlockInt **b) {
+static int wxCMPFUNC_CONV wxblockint_sort_topright_bottomleft(wxBlockInt** a, wxBlockInt** b) {
     register int y = ((*a)->m_y1 - (*b)->m_y1);
 
     if (y < 0) return -1;
@@ -58,7 +58,7 @@ static int wxCMPFUNC_CONV wxblockint_sort_topright_bottomleft(wxBlockInt **a, wx
     return 1;
 }
 
-static int wxCMPFUNC_CONV wxblockint_sort_bottomleft_topright(wxBlockInt **a, wxBlockInt **b) {
+static int wxCMPFUNC_CONV wxblockint_sort_bottomleft_topright(wxBlockInt** a, wxBlockInt** b) {
     register int y = ((*a)->m_y2 - (*b)->m_y2);
 
     if (y > 0) return -1;
@@ -66,7 +66,7 @@ static int wxCMPFUNC_CONV wxblockint_sort_bottomleft_topright(wxBlockInt **a, wx
     return 1;
 }
 
-static int wxCMPFUNC_CONV wxblockint_sort_bottomright_topleft(wxBlockInt **a, wxBlockInt **b) {
+static int wxCMPFUNC_CONV wxblockint_sort_bottomright_topleft(wxBlockInt** a, wxBlockInt** b) {
     register int y = ((*a)->m_y2 - (*b)->m_y2);
 
     if (y > 0) return -1;
@@ -74,15 +74,15 @@ static int wxCMPFUNC_CONV wxblockint_sort_bottomright_topleft(wxBlockInt **a, wx
     return 1;
 }
 
-static int wxCMPFUNC_CONV wxblockint_sort_largest_to_smallest(wxBlockInt **a, wxBlockInt **b) {
+static int wxCMPFUNC_CONV wxblockint_sort_largest_to_smallest(wxBlockInt** a, wxBlockInt** b) {
     return (*a)->IsLarger(**b);
 }
 
-static int wxCMPFUNC_CONV wxblockint_sort_smallest_to_largest(wxBlockInt **a, wxBlockInt **b) {
+static int wxCMPFUNC_CONV wxblockint_sort_smallest_to_largest(wxBlockInt** a, wxBlockInt** b) {
     return -(*a)->IsLarger(**b);
 }
 
-void wxArrayBlockIntSort(wxArrayBlockInt &blocks, wxBlockSort_Type type) {
+void wxArrayBlockIntSort(wxArrayBlockInt& blocks, wxBlockSort_Type type) {
     switch (type) {
         case wxBLOCKSORT_TOPLEFT_BOTTOMRIGHT:
             blocks.Sort(wxblockint_sort_topleft_bottomright);
@@ -111,7 +111,7 @@ void wxArrayBlockIntSort(wxArrayBlockInt &blocks, wxBlockSort_Type type) {
 // Sorting functions for wxBlockDouble
 // ----------------------------------------------------------------------------
 
-static int wxCMPFUNC_CONV wxblockdouble_sort_topleft_bottomright(wxBlockDouble **a, wxBlockDouble **b) {
+static int wxCMPFUNC_CONV wxblockdouble_sort_topleft_bottomright(wxBlockDouble** a, wxBlockDouble** b) {
     register wxDouble y = ((*a)->m_y1 - (*b)->m_y1);
 
     if (y < 0) return -1;
@@ -119,7 +119,7 @@ static int wxCMPFUNC_CONV wxblockdouble_sort_topleft_bottomright(wxBlockDouble *
     return 1;
 }
 
-static int wxCMPFUNC_CONV wxblockdouble_sort_topright_bottomleft(wxBlockDouble **a, wxBlockDouble **b) {
+static int wxCMPFUNC_CONV wxblockdouble_sort_topright_bottomleft(wxBlockDouble** a, wxBlockDouble** b) {
     register wxDouble y = ((*a)->m_y1 - (*b)->m_y1);
 
     if (y < 0) return -1;
@@ -127,7 +127,7 @@ static int wxCMPFUNC_CONV wxblockdouble_sort_topright_bottomleft(wxBlockDouble *
     return 1;
 }
 
-static int wxCMPFUNC_CONV wxblockdouble_sort_bottomleft_topright(wxBlockDouble **a, wxBlockDouble **b) {
+static int wxCMPFUNC_CONV wxblockdouble_sort_bottomleft_topright(wxBlockDouble** a, wxBlockDouble** b) {
     register wxDouble y = ((*a)->m_y2 - (*b)->m_y2);
 
     if (y > 0) return -1;
@@ -135,7 +135,7 @@ static int wxCMPFUNC_CONV wxblockdouble_sort_bottomleft_topright(wxBlockDouble *
     return 1;
 }
 
-static int wxCMPFUNC_CONV wxblockdouble_sort_bottomright_topleft(wxBlockDouble **a, wxBlockDouble **b) {
+static int wxCMPFUNC_CONV wxblockdouble_sort_bottomright_topleft(wxBlockDouble** a, wxBlockDouble** b) {
     register wxDouble y = ((*a)->m_y2 - (*b)->m_y2);
 
     if (y > 0) return -1;
@@ -143,15 +143,15 @@ static int wxCMPFUNC_CONV wxblockdouble_sort_bottomright_topleft(wxBlockDouble *
     return 1;
 }
 
-static int wxCMPFUNC_CONV wxblockdouble_sort_largest_to_smallest(wxBlockDouble **a, wxBlockDouble **b) {
+static int wxCMPFUNC_CONV wxblockdouble_sort_largest_to_smallest(wxBlockDouble** a, wxBlockDouble** b) {
     return (*a)->IsLarger(**b);
 }
 
-static int wxCMPFUNC_CONV wxblockdouble_sort_smallest_to_largest(wxBlockDouble **a, wxBlockDouble **b) {
+static int wxCMPFUNC_CONV wxblockdouble_sort_smallest_to_largest(wxBlockDouble** a, wxBlockDouble** b) {
     return -(*a)->IsLarger(**b);
 }
 
-void wxArrayBlockDoubleSort(wxArrayBlockDouble &blocks, wxBlockSort_Type type) {
+void wxArrayBlockDoubleSort(wxArrayBlockDouble& blocks, wxBlockSort_Type type) {
     switch (type) {
         case wxBLOCKSORT_TOPLEFT_BOTTOMRIGHT:
             blocks.Sort(wxblockdouble_sort_topleft_bottomright);
@@ -180,7 +180,7 @@ void wxArrayBlockDoubleSort(wxArrayBlockDouble &blocks, wxBlockSort_Type type) {
 // wxBlockInt
 //=============================================================================
 
-int wxBlockInt::IsLarger(const wxBlockInt &b) const {
+int wxBlockInt::IsLarger(const wxBlockInt& b) const {
     wxInt32 width = m_x2 - m_x1 + 1, height = m_y2 - m_y1 + 1, b_width = b.m_x2 - b.m_x1 + 1,
             b_height = b.m_y2 - b.m_y1 + 1;
 
@@ -192,12 +192,12 @@ int wxBlockInt::IsLarger(const wxBlockInt &b) const {
     return (w_bw == bh_h) ? 0 : ((w_bw > bh_h) ? 1 : -1);
 }
 
-bool wxBlockInt::Touches(const wxBlockInt &b) const  // see Intersects
+bool wxBlockInt::Touches(const wxBlockInt& b) const  // see Intersects
 {
     return Intersects(wxBlockInt(b.m_x1 - 1, b.m_y1 - 1, b.m_x2 + 1, b.m_y2 + 1));
 }
 
-bool wxBlockInt::Combine(const wxBlockInt &b) {
+bool wxBlockInt::Combine(const wxBlockInt& b) {
     if (!Touches(b)) return false;
     if (Contains(b)) return true;
     if (b.Contains(*this)) {
@@ -222,8 +222,8 @@ bool wxBlockInt::Combine(const wxBlockInt &b) {
     return false;
 }
 
-bool wxBlockInt::Combine(const wxBlockInt &block, wxBlockInt &top, wxBlockInt &bottom, wxBlockInt &left,
-                         wxBlockInt &right) const {
+bool wxBlockInt::Combine(const wxBlockInt& block, wxBlockInt& top, wxBlockInt& bottom, wxBlockInt& left,
+                         wxBlockInt& right) const {
     top = bottom = left = right = wxEmptyBlockInt;
 
     wxBlockInt iBlock;
@@ -254,8 +254,8 @@ bool wxBlockInt::Combine(const wxBlockInt &block, wxBlockInt &top, wxBlockInt &b
     return combined;
 }
 
-bool wxBlockInt::Delete(const wxBlockInt &block, wxBlockInt &top, wxBlockInt &bottom, wxBlockInt &left,
-                        wxBlockInt &right) const {
+bool wxBlockInt::Delete(const wxBlockInt& block, wxBlockInt& top, wxBlockInt& bottom, wxBlockInt& left,
+                        wxBlockInt& right) const {
     top = bottom = left = right = wxEmptyBlockInt;
 
     wxBlockInt iBlock;
@@ -290,7 +290,7 @@ bool wxBlockInt::Delete(const wxBlockInt &block, wxBlockInt &top, wxBlockInt &bo
 // wxBlockDouble
 //=============================================================================
 
-int wxBlockDouble::IsLarger(const wxBlockDouble &b) const {
+int wxBlockDouble::IsLarger(const wxBlockDouble& b) const {
     wxDouble width = m_x2 - m_x1, height = m_y2 - m_y1, b_width = b.m_x2 - b.m_x1, b_height = b.m_y2 - b.m_y1;
 
     if ((width <= 0) || (height <= 0)) return (b_width > 0) && (b_height > 0) ? -1 : 0;
@@ -300,7 +300,7 @@ int wxBlockDouble::IsLarger(const wxBlockDouble &b) const {
     return (w_bw == bh_h) ? 0 : ((w_bw > bh_h) ? 1 : -1);
 }
 
-bool wxBlockDouble::Touches(const wxBlockDouble &b) const  // see Intersects
+bool wxBlockDouble::Touches(const wxBlockDouble& b) const  // see Intersects
 {
     if (((wxMax(m_x1, b.m_x1)) <= (wxMin(m_x2, b.m_x2))) && ((wxMax(m_y1, b.m_y1)) <= (wxMin(m_y2, b.m_y2))))
         return true;
@@ -308,7 +308,7 @@ bool wxBlockDouble::Touches(const wxBlockDouble &b) const  // see Intersects
     return false;
 }
 
-bool wxBlockDouble::Combine(const wxBlockDouble &b) {
+bool wxBlockDouble::Combine(const wxBlockDouble& b) {
     if (!Touches(b)) return false;
     if (Contains(b)) return true;
     if (b.Contains(*this)) {
@@ -333,8 +333,8 @@ bool wxBlockDouble::Combine(const wxBlockDouble &b) {
     return false;
 }
 
-bool wxBlockDouble::Combine(const wxBlockDouble &block, wxBlockDouble &top, wxBlockDouble &bottom, wxBlockDouble &left,
-                            wxBlockDouble &right) const {
+bool wxBlockDouble::Combine(const wxBlockDouble& block, wxBlockDouble& top, wxBlockDouble& bottom, wxBlockDouble& left,
+                            wxBlockDouble& right) const {
     top = bottom = left = right = wxEmptyBlockDouble;
 
     wxBlockDouble iBlock;
@@ -365,8 +365,8 @@ bool wxBlockDouble::Combine(const wxBlockDouble &block, wxBlockDouble &top, wxBl
     return combined;
 }
 
-bool wxBlockDouble::Delete(const wxBlockDouble &block, wxBlockDouble &top, wxBlockDouble &bottom, wxBlockDouble &left,
-                           wxBlockDouble &right) const {
+bool wxBlockDouble::Delete(const wxBlockDouble& block, wxBlockDouble& top, wxBlockDouble& bottom, wxBlockDouble& left,
+                           wxBlockDouble& right) const {
     top = bottom = left = right = wxEmptyBlockDouble;
 
     wxBlockDouble iBlock;
@@ -445,7 +445,7 @@ int wxBlockIntSelection::Index(int x, int y) const {
     return wxNOT_FOUND;
 }
 
-int wxBlockIntSelection::Index(const wxBlockInt &b) const {
+int wxBlockIntSelection::Index(const wxBlockInt& b) const {
     register int n, count = m_blocks.GetCount();
     for (n = 0; n < count; n++) {
         if (m_blocks[n].Intersects(b)) return n;
@@ -458,7 +458,7 @@ void wxBlockIntSelection::Sort(wxBlockSort_Type type) {
     wxArrayBlockIntSort(m_blocks, type);
 }
 
-bool wxBlockIntSelection::DeselectBlock(const wxBlockInt &block, bool combineNow) {
+bool wxBlockIntSelection::DeselectBlock(const wxBlockInt& block, bool combineNow) {
     wxCHECK_MSG(!block.IsEmpty(), false, wxT("Invalid block"));
 
     bool done = false;
@@ -482,13 +482,13 @@ bool wxBlockIntSelection::DeselectBlock(const wxBlockInt &block, bool combineNow
     return done;
 }
 
-bool wxBlockIntSelection::SelectBlock(const wxBlockInt &block, bool combineNow, wxArrayBlockInt *addedBlocks) {
+bool wxBlockIntSelection::SelectBlock(const wxBlockInt& block, bool combineNow, wxArrayBlockInt* addedBlocks) {
     wxCHECK_MSG(!block.IsEmpty(), false, wxT("Invalid block"));
 
     // TestBlocks();
 
     wxArrayBlockInt extraBlocks;
-    wxArrayBlockInt *extra = &extraBlocks;
+    wxArrayBlockInt* extra = &extraBlocks;
 
     if (addedBlocks != NULL) {
         addedBlocks->Clear();
@@ -531,7 +531,7 @@ bool wxBlockIntSelection::Minimize() {
     return ret;
 }
 
-bool wxBlockIntSelection::DoMinimize(wxArrayBlockInt &blocks) {
+bool wxBlockIntSelection::DoMinimize(wxArrayBlockInt& blocks) {
     int n;
     for (n = 0; n < 1000; n++)  // should probably just take a few
     {
@@ -553,7 +553,7 @@ bool wxBlockIntSelection::DoMinimize(wxArrayBlockInt &blocks) {
     return n != 0;
 }
 
-bool wxBlockIntSelection::DoDoMinimize(wxArrayBlockInt &blocks) {
+bool wxBlockIntSelection::DoDoMinimize(wxArrayBlockInt& blocks) {
     //    wxBlockInt top, bottom, left, right;
     bool done = false;
     for (int i = 0; i < int(blocks.GetCount()) - 1; i++) {
@@ -630,7 +630,7 @@ int wxBlockDoubleSelection::Index(wxDouble x, wxDouble y) const {
     return wxNOT_FOUND;
 }
 
-int wxBlockDoubleSelection::Index(const wxBlockDouble &b) const {
+int wxBlockDoubleSelection::Index(const wxBlockDouble& b) const {
     register int n, count = m_blocks.GetCount();
     for (n = 0; n < count; n++) {
         if (m_blocks[n].Intersects(b)) return n;
@@ -643,7 +643,7 @@ void wxBlockDoubleSelection::Sort(wxBlockSort_Type type) {
     wxArrayBlockDoubleSort(m_blocks, type);
 }
 
-bool wxBlockDoubleSelection::DeselectBlock(const wxBlockDouble &block, bool combineNow) {
+bool wxBlockDoubleSelection::DeselectBlock(const wxBlockDouble& block, bool combineNow) {
     // wxCHECK_MSG(!block.IsEmpty(), false, wxT("Invalid block") );
 
     bool done = false;
@@ -667,7 +667,7 @@ bool wxBlockDoubleSelection::DeselectBlock(const wxBlockDouble &block, bool comb
     return done;
 }
 
-bool wxBlockDoubleSelection::SelectBlock(const wxBlockDouble &block, bool combineNow) {
+bool wxBlockDoubleSelection::SelectBlock(const wxBlockDouble& block, bool combineNow) {
     // It's valid to select a block with a width and height 0 since that means that point
     // wxCHECK_MSG(!block.IsEmpty(), false, wxT("Invalid block") );
 
@@ -733,7 +733,7 @@ bool wxBlockDoubleSelection::Minimize() {
     return ret;
 }
 
-bool wxBlockDoubleSelection::DoMinimize(wxArrayBlockDouble &blocks) {
+bool wxBlockDoubleSelection::DoMinimize(wxArrayBlockDouble& blocks) {
     int n;
     for (n = 0; n < 1000; n++)  // should probably just take < 10 at most
     {
@@ -759,7 +759,7 @@ bool wxBlockDoubleSelection::DoMinimize(wxArrayBlockDouble &blocks) {
     return n != 0;
 }
 
-bool wxBlockDoubleSelection::DoDoMinimize(wxArrayBlockDouble &blocks) {
+bool wxBlockDoubleSelection::DoDoMinimize(wxArrayBlockDouble& blocks) {
     // wxBlockDouble top, bottom, left, right;
     bool done = false;
 
@@ -790,14 +790,14 @@ bool wxBlockDoubleSelection::DoDoMinimize(wxArrayBlockDouble &blocks) {
 // wxBlockIntSelectionIterator - iterates through a wxBlockIntSelection
 //=============================================================================
 
-wxBlockIntSelectionIterator::wxBlockIntSelectionIterator(const wxBlockIntSelection &sel, wxBLOCKINT_SELITER_Type type) {
+wxBlockIntSelectionIterator::wxBlockIntSelectionIterator(const wxBlockIntSelection& sel, wxBLOCKINT_SELITER_Type type) {
     m_type = type;
     WX_APPEND_ARRAY(m_blocks, sel.GetBlockArray());
     m_blocks.Sort(wxblockint_sort_topleft_bottomright);
     Reset();
 }
 
-wxBlockIntSelectionIterator::wxBlockIntSelectionIterator(const wxArrayBlockInt &blocks, wxBLOCKINT_SELITER_Type type) {
+wxBlockIntSelectionIterator::wxBlockIntSelectionIterator(const wxArrayBlockInt& blocks, wxBLOCKINT_SELITER_Type type) {
     m_type = type;
     WX_APPEND_ARRAY(m_blocks, blocks);
     m_blocks.Sort(wxblockint_sort_topleft_bottomright);
@@ -809,7 +809,7 @@ void wxBlockIntSelectionIterator::Reset() {
     m_pt = wxPoint2DInt(0, 0);
 }
 
-bool wxBlockIntSelectionIterator::GetNext(wxBlockInt &block) {
+bool wxBlockIntSelectionIterator::GetNext(wxBlockInt& block) {
     wxCHECK_MSG(m_type == wxBLOCKINT_SELITER_BLOCK, false, wxT("wrong selection type"));
     if (m_block_index + 1 < int(m_blocks.GetCount())) {
         ++m_block_index;
@@ -820,7 +820,7 @@ bool wxBlockIntSelectionIterator::GetNext(wxBlockInt &block) {
     return false;
 }
 
-bool wxBlockIntSelectionIterator::GetNext(wxPoint2DInt &pt) {
+bool wxBlockIntSelectionIterator::GetNext(wxPoint2DInt& pt) {
     wxCHECK_MSG(m_type == wxBLOCKINT_SELITER_POINT, false, wxT("wrong selection type"));
     if ((m_blocks.GetCount() < 1u) || (m_block_index >= int(m_blocks.GetCount()))) return false;
 
@@ -856,7 +856,7 @@ bool wxBlockIntSelectionIterator::GetNext(wxPoint2DInt &pt) {
     return true;
 }
 
-bool wxBlockIntSelectionIterator::IsInSelection(const wxPoint2DInt &pt) const {
+bool wxBlockIntSelectionIterator::IsInSelection(const wxPoint2DInt& pt) const {
     register int n, count = m_blocks.GetCount();
     for (n = 0; n < count; n++) {
         if (m_blocks[n].Contains(pt)) return true;
@@ -868,13 +868,13 @@ bool wxBlockIntSelectionIterator::IsInSelection(const wxPoint2DInt &pt) const {
 // wxBlockDoubleSelectionIterator - iterates through a wxBlockDoubleSelection
 //=============================================================================
 
-wxBlockDoubleSelectionIterator::wxBlockDoubleSelectionIterator(const wxBlockDoubleSelection &sel) {
+wxBlockDoubleSelectionIterator::wxBlockDoubleSelectionIterator(const wxBlockDoubleSelection& sel) {
     WX_APPEND_ARRAY(m_blocks, sel.GetBlockArray());
     m_blocks.Sort(wxblockdouble_sort_topleft_bottomright);
     Reset();
 }
 
-wxBlockDoubleSelectionIterator::wxBlockDoubleSelectionIterator(const wxArrayBlockDouble &blocks) {
+wxBlockDoubleSelectionIterator::wxBlockDoubleSelectionIterator(const wxArrayBlockDouble& blocks) {
     WX_APPEND_ARRAY(m_blocks, blocks);
     m_blocks.Sort(wxblockdouble_sort_topleft_bottomright);
     Reset();
@@ -884,7 +884,7 @@ void wxBlockDoubleSelectionIterator::Reset() {
     m_block_index = 0;
 }
 
-bool wxBlockDoubleSelectionIterator::GetNext(wxBlockDouble &block) {
+bool wxBlockDoubleSelectionIterator::GetNext(wxBlockDouble& block) {
     if (m_block_index < m_blocks.GetCount()) {
         block = m_blocks[m_block_index];
         m_block_index++;
@@ -894,7 +894,7 @@ bool wxBlockDoubleSelectionIterator::GetNext(wxBlockDouble &block) {
     return false;
 }
 
-bool wxBlockDoubleSelectionIterator::IsInSelection(const wxPoint2DDouble &pt) const {
+bool wxBlockDoubleSelectionIterator::IsInSelection(const wxPoint2DDouble& pt) const {
     register int n, count = m_blocks.GetCount();
     for (n = 0; n < count; n++) {
         if (m_blocks[n].Contains(pt)) return true;

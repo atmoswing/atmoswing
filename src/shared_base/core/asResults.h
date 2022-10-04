@@ -50,11 +50,11 @@ class asResults : public wxObject {
         return m_filePath;
     }
 
-    void SetFilePath(const wxString &val) {
+    void SetFilePath(const wxString& val) {
         m_filePath = val;
     }
 
-    void SetSubFolder(const wxString &val) {
+    void SetSubFolder(const wxString& val) {
         m_subFolder = val;
     }
 
@@ -73,35 +73,35 @@ class asResults : public wxObject {
     wxString m_subFolder;
     wxString m_filePath;
 
-    bool DefTargetDatesAttributes(asFileNetcdf &ncFile) const;
+    bool DefTargetDatesAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefStationIdsAttributes(asFileNetcdf &ncFile) const;
+    bool DefStationIdsAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefStationOfficialIdsAttributes(asFileNetcdf &ncFile) const;
+    bool DefStationOfficialIdsAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefAnalogsNbAttributes(asFileNetcdf &ncFile) const;
+    bool DefAnalogsNbAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefTargetValuesNormAttributes(asFileNetcdf &ncFile) const;
+    bool DefTargetValuesNormAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefTargetValuesRawAttributes(asFileNetcdf &ncFile) const;
+    bool DefTargetValuesRawAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefAnalogsCriteriaAttributes(asFileNetcdf &ncFile) const;
+    bool DefAnalogsCriteriaAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefAnalogsDatesAttributes(asFileNetcdf &ncFile) const;
+    bool DefAnalogsDatesAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefAnalogsValuesNormAttributes(asFileNetcdf &ncFile) const;
+    bool DefAnalogsValuesNormAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefAnalogsValuesRawAttributes(asFileNetcdf &ncFile) const;
+    bool DefAnalogsValuesRawAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefAnalogsValuesAttributes(asFileNetcdf &ncFile) const;
+    bool DefAnalogsValuesAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefScoresAttributes(asFileNetcdf &ncFile) const;
+    bool DefScoresAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefTotalScoreAttributes(asFileNetcdf &ncFile) const;
+    bool DefTotalScoreAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefLevelAttributes(asFileNetcdf &ncFile) const;
+    bool DefLevelAttributes(asFileNetcdf& ncFile) const;
 
-    bool DefScoresMapAttributes(asFileNetcdf &ncFile) const;
+    bool DefScoresMapAttributes(asFileNetcdf& ncFile) const;
 
   private:
 };

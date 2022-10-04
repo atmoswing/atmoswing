@@ -30,7 +30,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorNasaMerra2::asPredictorNasaMerra2(const wxString &dataId) : asPredictor(dataId) {
+asPredictorNasaMerra2::asPredictorNasaMerra2(const wxString& dataId)
+    : asPredictor(dataId) {
     // Downloaded from http://disc.sci.gsfc.nasa.gov/daac-bin/FTPSubset2.pl
     // Set the basic properties.
     m_datasetId = "NASA_MERRA_2";
@@ -102,7 +103,7 @@ bool asPredictorNasaMerra2::Init() {
     return true;
 }
 
-void asPredictorNasaMerra2::ListFiles(asTimeArray &timeArray) {
+void asPredictorNasaMerra2::ListFiles(asTimeArray& timeArray) {
     a1d tArray = timeArray.GetTimeArray();
 
     Time tLast = asTime::GetTimeStruct(20000);
@@ -110,8 +111,8 @@ void asPredictorNasaMerra2::ListFiles(asTimeArray &timeArray) {
     for (int i = 0; i < tArray.size(); i++) {
         Time t = asTime::GetTimeStruct(tArray[i]);
         if (tLast.year != t.year || tLast.month != t.month || tLast.day != t.day) {
-            wxString path =
-                GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.month, t.year, t.month, t.day);
+            wxString path = GetFullDirectoryPath() +
+                            wxString::Format(m_fileNamePattern, t.year, t.month, t.year, t.month, t.day);
             if (t.year < 1992) {
                 path.Replace("MERRA2_*00", "MERRA2_100");
             } else if (t.year < 2001) {
@@ -128,6 +129,6 @@ void asPredictorNasaMerra2::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-void asPredictorNasaMerra2::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorNasaMerra2::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 1440.0) + refValue;
 }

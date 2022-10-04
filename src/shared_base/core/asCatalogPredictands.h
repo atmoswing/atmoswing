@@ -47,7 +47,7 @@ class asCatalogPredictands : public wxObject {
         float height;
     };
 
-    explicit asCatalogPredictands(const wxString &filePath);
+    explicit asCatalogPredictands(const wxString& filePath);
 
     ~asCatalogPredictands() override = default;
 

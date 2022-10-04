@@ -27,7 +27,8 @@
 
 #include "asCriteriaS0obs.h"
 
-asCriteriaS0obs::asCriteriaS0obs() : asCriteria("S0obs", _("S0 with division by actual value"), Asc) {
+asCriteriaS0obs::asCriteriaS0obs()
+    : asCriteria("S0obs", _("S0 with division by actual value"), Asc) {
     m_minPointsNb = 1;
     m_scaleWorst = 200;
     m_canUseInline = true;
@@ -35,7 +36,7 @@ asCriteriaS0obs::asCriteriaS0obs() : asCriteria("S0obs", _("S0 with division by 
 
 asCriteriaS0obs::~asCriteriaS0obs() = default;
 
-float asCriteriaS0obs::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
+float asCriteriaS0obs::Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() > 0);

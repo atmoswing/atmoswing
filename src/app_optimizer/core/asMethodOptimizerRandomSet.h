@@ -40,11 +40,11 @@ class asMethodOptimizerRandomSet : public asMethodOptimizer {
     bool Manager() override;
 
   protected:
-    virtual void InitParameters(asParametersOptimization &params);
+    virtual void InitParameters(asParametersOptimization& params);
 
-    virtual asParametersOptimization *GetNextParameters();
+    virtual asParametersOptimization* GetNextParameters();
 
-    bool SetBestParameters(asResultsParametersArray &results) override;
+    bool SetBestParameters(asResultsParametersArray& results) override;
 
   private:
     std::vector<asParametersOptimization> m_parameters;

@@ -47,7 +47,7 @@ asThreadsManager::~asThreadsManager() {
 void asThreadsManager::Init() {
     m_critSectionManager.Enter();
 
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     m_maxThreadsNb = wxThread::GetCPUCount();
     if (m_maxThreadsNb == -1) m_maxThreadsNb = 2;
     pConfig->Read("/Processing/ThreadsNb", &m_maxThreadsNb, m_maxThreadsNb);
@@ -56,7 +56,7 @@ void asThreadsManager::Init() {
     m_critSectionManager.Leave();
 }
 
-void asThreadsManager::OnClose(wxCloseEvent &) {
+void asThreadsManager::OnClose(wxCloseEvent&) {
     if (GetRunningThreadsNb() > 0) {
         CleanArray();
     }
@@ -73,7 +73,7 @@ int asThreadsManager::GetRunningThreadsNb(int type) {
 
     int counter = 0;
 
-    for (auto &thread : m_threads) {
+    for (auto& thread : m_threads) {
         if (thread != nullptr) {
             if (thread->IsRunning()) {
                 if (type == -1) {
@@ -105,7 +105,7 @@ int asThreadsManager::GetFreeDevice(int devicesNb) {
 
     for (int device = 0; device < devicesNb; ++device) {
         int counter = 0;
-        for (auto &thread : m_threads) {
+        for (auto& thread : m_threads) {
             if (thread != nullptr) {
                 if (thread->IsRunning()) {
                     if (thread->GetDevice() == device) {
@@ -149,7 +149,7 @@ int asThreadsManager::GetAvailableThreadsNb() {
 }
 
 // Safe: Critical section defined within
-bool asThreadsManager::AddThread(asThread *thread) {
+bool asThreadsManager::AddThread(asThread* thread) {
     // Check if needs to cleanup the threads array. Critical section locked within
     int runningThreads = GetRunningThreadsNb();
     wxLogVerbose(_("%d running threads before addition of a new thread."), runningThreads);
@@ -199,7 +199,7 @@ bool asThreadsManager::AddThread(asThread *thread) {
 void asThreadsManager::SetNull(wxThreadIdType id) {
     m_critSectionManager.Enter();
 
-    for (auto &thread : m_threads) {
+    for (auto& thread : m_threads) {
         if (thread != nullptr) {
             wxThreadIdType thisid = thread->GetId();
 
@@ -221,7 +221,7 @@ bool asThreadsManager::CleanArray() {
     m_critSectionManager.Enter();
 
     if (GetTotalThreadsNb() > 0) {
-        for (auto &thread : m_threads) {
+        for (auto& thread : m_threads) {
             if (thread != nullptr) {
                 m_critSectionManager.Leave();
                 return true;

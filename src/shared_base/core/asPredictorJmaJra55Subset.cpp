@@ -32,7 +32,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorJmaJra55Subset::asPredictorJmaJra55Subset(const wxString &dataId) : asPredictor(dataId) {
+asPredictorJmaJra55Subset::asPredictorJmaJra55Subset(const wxString& dataId)
+    : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "JMA_JRA_55_subset";
     m_provider = "JMA";
@@ -208,7 +209,7 @@ bool asPredictorJmaJra55Subset::Init() {
     return true;
 }
 
-void asPredictorJmaJra55Subset::ListFiles(asTimeArray &timeArray) {
+void asPredictorJmaJra55Subset::ListFiles(asTimeArray& timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         int firstMonth = 1;
         int lastMonth = 12;
@@ -251,6 +252,6 @@ void asPredictorJmaJra55Subset::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-void asPredictorJmaJra55Subset::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorJmaJra55Subset::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + asTime::GetMJD(1800, 1, 1);
 }

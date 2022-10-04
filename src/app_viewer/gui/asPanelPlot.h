@@ -35,8 +35,8 @@
 
 class asPanelPlot : public wxPanel {
   public:
-    explicit asPanelPlot(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-                         const wxSize &size = wxSize(-1, -1), long style = wxTAB_TRAVERSAL);
+    explicit asPanelPlot(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
+                         const wxSize& size = wxSize(-1, -1), long style = wxTAB_TRAVERSAL);
 
     void Print();
 
@@ -44,16 +44,16 @@ class asPanelPlot : public wxPanel {
 
     void ExportSVG();
 
-    wxPlotCtrl *GetPlotCtrl() const {
+    wxPlotCtrl* GetPlotCtrl() const {
         wxASSERT(m_plotCtrl);
         return m_plotCtrl;
     }
 
   protected:
-    wxPlotCtrl *m_plotCtrl;
+    wxPlotCtrl* m_plotCtrl;
 
   private:
-    void OnPlotCtrl(wxPlotCtrlEvent &event);
+    void OnPlotCtrl(wxPlotCtrlEvent& event);
 
     DECLARE_EVENT_TABLE()
 };

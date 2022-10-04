@@ -30,7 +30,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorNoaa20Cr2cEnsemble::asPredictorNoaa20Cr2cEnsemble(const wxString &dataId) : asPredictor(dataId) {
+asPredictorNoaa20Cr2cEnsemble::asPredictorNoaa20Cr2cEnsemble(const wxString& dataId)
+    : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "NOAA_20CR_v2c_ens";
     m_provider = "NOAA";
@@ -148,12 +149,12 @@ bool asPredictorNoaa20Cr2cEnsemble::Init() {
     return true;
 }
 
-void asPredictorNoaa20Cr2cEnsemble::ListFiles(asTimeArray &timeArray) {
+void asPredictorNoaa20Cr2cEnsemble::ListFiles(asTimeArray& timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
 }
 
-void asPredictorNoaa20Cr2cEnsemble::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorNoaa20Cr2cEnsemble::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + asTime::GetMJD(1, 1, 1);
 }

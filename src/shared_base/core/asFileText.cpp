@@ -27,7 +27,8 @@
 
 #include "asFileText.h"
 
-asFileText::asFileText(const wxString &fileName, const FileMode &fileMode) : asFile(fileName, fileMode) {}
+asFileText::asFileText(const wxString& fileName, const FileMode& fileMode)
+    : asFile(fileName, fileMode) {}
 
 bool asFileText::Open() {
     if (!Find()) return false;
@@ -68,7 +69,7 @@ bool asFileText::Close() {
     return true;
 }
 
-void asFileText::AddContent(const wxString &lineContent) {
+void asFileText::AddContent(const wxString& lineContent) {
     wxASSERT(m_opened);
 
     m_file << lineContent.mb_str();
@@ -163,7 +164,7 @@ bool asFileText::EndOfFile() const {
     return m_file.eof();
 }
 
-int asFileText::CountLines(const wxString &filePath) {
+int asFileText::CountLines(const wxString& filePath) {
     asFileText file(filePath, asFile::ReadOnly);
     if (!file.Open()) {
         wxLogError(_("Couldn't open the file %s."), filePath.c_str());

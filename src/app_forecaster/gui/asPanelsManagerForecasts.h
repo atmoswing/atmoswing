@@ -40,13 +40,13 @@ class asPanelsManagerForecasts : public asPanelsManager {
 
     ~asPanelsManagerForecasts() override;
 
-    void AddPanel(asPanelForecast *panel);
+    void AddPanel(asPanelForecast* panel);
 
-    void RemovePanel(asPanelForecast *panel);
+    void RemovePanel(asPanelForecast* panel);
 
     void Clear();
 
-    asPanelForecast *GetPanel(int i) const;
+    asPanelForecast* GetPanel(int i) const;
 
     int GetPanelsNb() const;
 
@@ -61,7 +61,7 @@ class asPanelsManagerForecasts : public asPanelsManager {
     void SetForecastsAllLedsOff();
 
   protected:
-    std::vector<asPanelForecast *> m_arrayPanels;
+    std::vector<asPanelForecast*> m_arrayPanels;
 
   private:
 };

@@ -34,7 +34,7 @@
 
 class asFileParameters : public asFileXml {
   public:
-    asFileParameters(const wxString &fileName, const FileMode &fileMode);
+    asFileParameters(const wxString& fileName, const FileMode& fileMode);
 
     ~asFileParameters() override = default;
 
@@ -56,15 +56,15 @@ class asFileParameters : public asFileXml {
 
     static vwxs BuildVectorString(wxString str);
 
-    static vi GetVectorInt(wxXmlNode *node);
+    static vi GetVectorInt(wxXmlNode* node);
 
-    static vf GetVectorFloat(wxXmlNode *node);
+    static vf GetVectorFloat(wxXmlNode* node);
 
-    static vd GetVectorDouble(wxXmlNode *node);
+    static vd GetVectorDouble(wxXmlNode* node);
 
-    static vwxs GetVectorString(wxXmlNode *node);
+    static vwxs GetVectorString(wxXmlNode* node);
 
-    static vvi GetStationIdsVector(wxXmlNode *node);
+    static vvi GetStationIdsVector(wxXmlNode* node);
 
     static vi GetStationIds(wxString stationIdsString);
 

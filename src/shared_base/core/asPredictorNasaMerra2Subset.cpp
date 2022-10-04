@@ -30,7 +30,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorNasaMerra2Subset::asPredictorNasaMerra2Subset(const wxString &dataId) : asPredictorNasaMerra2(dataId) {
+asPredictorNasaMerra2Subset::asPredictorNasaMerra2Subset(const wxString& dataId)
+    : asPredictorNasaMerra2(dataId) {
     // Set the basic properties.
     m_initialized = false;
     m_datasetId = "NASA_MERRA_2_subset";
@@ -247,7 +248,7 @@ bool asPredictorNasaMerra2Subset::Init() {
     return true;
 }
 
-void asPredictorNasaMerra2Subset::ListFiles(asTimeArray &timeArray) {
+void asPredictorNasaMerra2Subset::ListFiles(asTimeArray& timeArray) {
     a1d tArray = timeArray.GetTimeArray();
 
     Time tLast = asTime::GetTimeStruct(20000);

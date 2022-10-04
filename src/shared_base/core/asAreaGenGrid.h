@@ -33,7 +33,7 @@
 
 class asAreaGenGrid : public asAreaGrid {
   public:
-    asAreaGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+    asAreaGenGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
                   int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
     asAreaGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
@@ -44,7 +44,7 @@ class asAreaGenGrid : public asAreaGrid {
 
     ~asAreaGenGrid() override = default;
 
-    bool GridsOverlay(asAreaGrid *otherArea) const override;
+    bool GridsOverlay(asAreaGrid* otherArea) const override;
 
     double GetXstep() const override {
         return 0.0;

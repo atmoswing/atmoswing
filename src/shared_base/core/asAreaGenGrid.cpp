@@ -29,12 +29,11 @@
 
 #include "asTypeDefs.h"
 
-asAreaGenGrid::asAreaGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+asAreaGenGrid::asAreaGenGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
                              int flatAllowed, bool isLatLon)
     : asAreaGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon) {}
 
-asAreaGenGrid::asAreaGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed,
-                             bool isLatLon)
+asAreaGenGrid::asAreaGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed, bool isLatLon)
     : asAreaGrid(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon) {}
 
 asAreaGenGrid::asAreaGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
@@ -43,6 +42,6 @@ asAreaGenGrid::asAreaGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, i
     m_yPtsNb = yPtsNb;
 }
 
-bool asAreaGenGrid::GridsOverlay(asAreaGrid *otherArea) const {
+bool asAreaGenGrid::GridsOverlay(asAreaGrid* otherArea) const {
     return false;
 }

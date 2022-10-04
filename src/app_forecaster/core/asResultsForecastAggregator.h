@@ -37,9 +37,9 @@ class asResultsForecastAggregator : public wxObject {
 
     virtual ~asResultsForecastAggregator();
 
-    bool Add(asResultsForecast *forecast);
+    bool Add(asResultsForecast* forecast);
 
-    bool AddPastForecast(int methodRow, int forecastRow, asResultsForecast *forecast);
+    bool AddPastForecast(int methodRow, int forecastRow, asResultsForecast* forecast);
 
     void ClearArrays();
 
@@ -53,9 +53,9 @@ class asResultsForecastAggregator : public wxObject {
 
     int GetPastForecastsNb(int methodRow, int forecastRow) const;
 
-    asResultsForecast *GetForecast(int methodRow, int forecastRow) const;
+    asResultsForecast* GetForecast(int methodRow, int forecastRow) const;
 
-    asResultsForecast *GetPastForecast(int methodRow, int forecastRow, int leadTimeRow) const;
+    asResultsForecast* GetPastForecast(int methodRow, int forecastRow, int leadTimeRow) const;
 
     wxString GetForecastName(int methodRow, int forecastRow) const;
 
@@ -93,20 +93,20 @@ class asResultsForecastAggregator : public wxObject {
 
     wxArrayString GetLeadTimes(int methodRow, int forecastRow) const;
 
-    a1f GetMethodMaxValues(a1f &dates, int methodRow, int returnPeriodRef, float quantileThreshold) const;
+    a1f GetMethodMaxValues(a1f& dates, int methodRow, int returnPeriodRef, float quantileThreshold) const;
 
-    a1f GetOverallMaxValues(a1f &dates, int returnPeriodRef, float quantileThreshold) const;
+    a1f GetOverallMaxValues(a1f& dates, int returnPeriodRef, float quantileThreshold) const;
 
-    bool ExportSyntheticFullXml(const wxString &dirPath) const;
+    bool ExportSyntheticFullXml(const wxString& dirPath) const;
 
-    bool ExportSyntheticSmallCsv(const wxString &dirPath) const;
+    bool ExportSyntheticSmallCsv(const wxString& dirPath) const;
 
-    bool ExportSyntheticCustomCsvFVG(const wxString &dirPath) const;
+    bool ExportSyntheticCustomCsvFVG(const wxString& dirPath) const;
 
   protected:
   private:
-    std::vector<std::vector<asResultsForecast *> > m_forecasts;
-    std::vector<std::vector<std::vector<asResultsForecast *> > > m_pastForecasts;
+    std::vector<std::vector<asResultsForecast*> > m_forecasts;
+    std::vector<std::vector<std::vector<asResultsForecast*> > > m_pastForecasts;
 };
 
 #endif

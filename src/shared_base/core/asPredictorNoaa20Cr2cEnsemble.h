@@ -35,16 +35,16 @@ class asArea;
 
 class asPredictorNoaa20Cr2cEnsemble : public asPredictor {
   public:
-    explicit asPredictorNoaa20Cr2cEnsemble(const wxString &dataId);
+    explicit asPredictorNoaa20Cr2cEnsemble(const wxString& dataId);
 
     ~asPredictorNoaa20Cr2cEnsemble() override = default;
 
     bool Init() override;
 
   protected:
-    void ListFiles(asTimeArray &timeArray) override;
+    void ListFiles(asTimeArray& timeArray) override;
 
-    void ConvertToMjd(a1d &time, double refValue = NaNd) const override;
+    void ConvertToMjd(a1d& time, double refValue = NaNd) const override;
 
   private:
 };

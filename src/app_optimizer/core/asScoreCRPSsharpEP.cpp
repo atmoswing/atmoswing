@@ -36,7 +36,7 @@ asScoreCRPSsharpEP::asScoreCRPSsharpEP()
 
 asScoreCRPSsharpEP::~asScoreCRPSsharpEP() {}
 
-float asScoreCRPSsharpEP::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreCRPSsharpEP::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -79,6 +79,6 @@ float asScoreCRPSsharpEP::Assess(float obs, const a1f &values, int nbElements) c
     return CRPSsharpness;
 }
 
-bool asScoreCRPSsharpEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreCRPSsharpEP::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     return true;
 }

@@ -27,14 +27,15 @@
 
 #include "asCriteriaDSD.h"
 
-asCriteriaDSD::asCriteriaDSD() : asCriteria("DSD", _("Difference in standard deviation (nonspatial)"), Asc) {
+asCriteriaDSD::asCriteriaDSD()
+    : asCriteria("DSD", _("Difference in standard deviation (nonspatial)"), Asc) {
     m_minPointsNb = 2;
     m_canUseInline = true;
 }
 
 asCriteriaDSD::~asCriteriaDSD() = default;
 
-float asCriteriaDSD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
+float asCriteriaDSD::Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() == rowsNb);

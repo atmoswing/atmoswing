@@ -35,12 +35,12 @@ asScoreCRPSHersbachDecomp::asScoreCRPSHersbachDecomp()
 
 asScoreCRPSHersbachDecomp::~asScoreCRPSHersbachDecomp() {}
 
-float asScoreCRPSHersbachDecomp::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreCRPSHersbachDecomp::Assess(float obs, const a1f& values, int nbElements) const {
     wxLogError(_("The Hersbach decomposition of the CRPS cannot provide a single score value !"));
     return NaNf;
 }
 
-a1f asScoreCRPSHersbachDecomp::AssessOnArray(float obs, const a1f &values, int nbElements) const {
+a1f asScoreCRPSHersbachDecomp::AssessOnArray(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -110,6 +110,6 @@ a1f asScoreCRPSHersbachDecomp::AssessOnArray(float obs, const a1f &values, int n
     return result;
 }
 
-bool asScoreCRPSHersbachDecomp::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreCRPSHersbachDecomp::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     return true;
 }

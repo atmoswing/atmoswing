@@ -100,33 +100,34 @@ enum wxCustomButton_Style {
 
 class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
   public:
-    wxCustomButton() : wxControl() {
+    wxCustomButton()
+        : wxControl() {
         Init();
     }
 
     // wxToggleButton or wxButton compatible constructor (also wxTextCtrl)
-    wxCustomButton(wxWindow *parent, wxWindowID id, const wxString &label, const wxPoint &pos = wxDefaultPosition,
-                   const wxSize &size = wxDefaultSize, long style = wxCUSTBUT_TOGGLE,
-                   const wxValidator &val = wxDefaultValidator, const wxString &name = wxT("wxCustomButton"))
+    wxCustomButton(wxWindow* parent, wxWindowID id, const wxString& label, const wxPoint& pos = wxDefaultPosition,
+                   const wxSize& size = wxDefaultSize, long style = wxCUSTBUT_TOGGLE,
+                   const wxValidator& val = wxDefaultValidator, const wxString& name = wxT("wxCustomButton"))
         : wxControl() {
         Init();
         Create(parent, id, label, wxNullBitmap, pos, size, style, val, name);
     }
 
     // wxBitmapButton compatible constructor
-    wxCustomButton(wxWindow *parent, wxWindowID id, const wxBitmap &bitmap, const wxPoint &pos = wxDefaultPosition,
-                   const wxSize &size = wxDefaultSize, long style = wxCUSTBUT_TOGGLE,
-                   const wxValidator &val = wxDefaultValidator, const wxString &name = wxT("wxCustomButton"))
+    wxCustomButton(wxWindow* parent, wxWindowID id, const wxBitmap& bitmap, const wxPoint& pos = wxDefaultPosition,
+                   const wxSize& size = wxDefaultSize, long style = wxCUSTBUT_TOGGLE,
+                   const wxValidator& val = wxDefaultValidator, const wxString& name = wxT("wxCustomButton"))
         : wxControl() {
         Init();
         Create(parent, id, wxEmptyString, bitmap, pos, size, style, val, name);
     }
 
     // Native constructor
-    wxCustomButton(wxWindow *parent, wxWindowID id, const wxString &label, const wxBitmap &bitmap,
-                   const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
-                   long style = wxCUSTBUT_TOGGLE | wxCUSTBUT_BOTTOM, const wxValidator &val = wxDefaultValidator,
-                   const wxString &name = wxT("wxCustomButton"))
+    wxCustomButton(wxWindow* parent, wxWindowID id, const wxString& label, const wxBitmap& bitmap,
+                   const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
+                   long style = wxCUSTBUT_TOGGLE | wxCUSTBUT_BOTTOM, const wxValidator& val = wxDefaultValidator,
+                   const wxString& name = wxT("wxCustomButton"))
         : wxControl() {
         Init();
         Create(parent, id, label, bitmap, pos, size, style, val, name);
@@ -134,9 +135,9 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
 
     virtual ~wxCustomButton();
 
-    bool Create(wxWindow *parent, wxWindowID id, const wxString &label, const wxBitmap &bitmap,
-                const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, long style = 0,
-                const wxValidator &val = wxDefaultValidator, const wxString &name = wxT("wxCustomButton"));
+    bool Create(wxWindow* parent, wxWindowID id, const wxString& label, const wxBitmap& bitmap,
+                const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0,
+                const wxValidator& val = wxDefaultValidator, const wxString& name = wxT("wxCustomButton"));
 
     bool GetValue() const {
         return m_down % 2 != 0;
@@ -156,60 +157,60 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
         return m_labelString;
     }
 
-    void SetLabel(const wxString &label);
+    void SetLabel(const wxString& label);
 
     // set the bitmaps, ONLY this Label bitmap is used for calculating control size
     //   all bitmaps will be centered accordingly in any case
     //   call SetSet(GetBestSize()) if you change their size and want the control to resize appropriately
-    void SetBitmapLabel(const wxBitmap &bitmap);
+    void SetBitmapLabel(const wxBitmap& bitmap);
 
-    void SetBitmapSelected(const wxBitmap &sel) {
+    void SetBitmapSelected(const wxBitmap& sel) {
         m_bmpSelected = sel;
         CalcLayout(true);
     };
 
-    void SetBitmapFocus(const wxBitmap &focus) {
+    void SetBitmapFocus(const wxBitmap& focus) {
         m_bmpFocus = focus;
         CalcLayout(true);
     };
 
-    void SetBitmapDisabled(const wxBitmap &disabled) {
+    void SetBitmapDisabled(const wxBitmap& disabled) {
         m_bmpDisabled = disabled;
         CalcLayout(true);
     };
 
     // wxBitmapButton compatibility
-    void SetLabel(const wxBitmap &bitmap) {
+    void SetLabel(const wxBitmap& bitmap) {
         SetBitmapLabel(bitmap);
     }
 
     // retrieve the bitmaps
-    const wxBitmap &GetBitmapLabel() const {
+    const wxBitmap& GetBitmapLabel() const {
         return m_bmpLabel;
     }
 
-    const wxBitmap &GetBitmapSelected() const {
+    const wxBitmap& GetBitmapSelected() const {
         return m_bmpSelected;
     }
 
-    const wxBitmap &GetBitmapFocus() const {
+    const wxBitmap& GetBitmapFocus() const {
         return m_bmpFocus;
     }
 
-    const wxBitmap &GetBitmapDisabled() const {
+    const wxBitmap& GetBitmapDisabled() const {
         return m_bmpDisabled;
     }
 
     // Creates a "disabled" bitmap by dithering it with the background colour
-    wxBitmap CreateBitmapDisabled(const wxBitmap &bitmap) const;
+    wxBitmap CreateBitmapDisabled(const wxBitmap& bitmap) const;
 
     // set/get the margins (in pixels) around the label and bitmap
     //    if fit = true then resize the button to fit
-    void SetMargins(const wxSize &margin, bool fit = false);
+    void SetMargins(const wxSize& margin, bool fit = false);
 
     // set/get the margins around the text label
     //    the inter bitmap/label margin is the max of either margin, not the sum
-    void SetLabelMargin(const wxSize &margin, bool fit = false);
+    void SetLabelMargin(const wxSize& margin, bool fit = false);
 
     wxSize GetLabelMargin() const {
         return m_labelMargin;
@@ -217,7 +218,7 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
 
     // set/get the margins around the bitmap
     //    the inter bitmap/label margin is the max of either margin, not the sum
-    void SetBitmapMargin(const wxSize &margin, bool fit = false);
+    void SetBitmapMargin(const wxSize& margin, bool fit = false);
 
     wxSize GetBitmapMargin() const {
         return m_bitmapMargin;
@@ -234,25 +235,25 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
     }
 
   protected:
-    void OnPaint(wxPaintEvent &event);
+    void OnPaint(wxPaintEvent& event);
 
     void Redraw();
 
-    virtual void Paint(wxDC &dc);
+    virtual void Paint(wxDC& dc);
 
     // hack for finding the size this should be before creation
     // we cannot call SetSize() if this is a child of toolbar in GTK w/o crashing
     virtual wxSize DoGetBestSize() const;
 
-    wxSize DoGetBestSize_(wxWindow *win) const;
+    wxSize DoGetBestSize_(wxWindow* win) const;
 
     virtual void SendEvent();
 
-    void OnMouseEvents(wxMouseEvent &event);
+    void OnMouseEvents(wxMouseEvent& event);
 
-    void OnTimer(wxTimerEvent &event);
+    void OnTimer(wxTimerEvent& event);
 
-    void OnSize(wxSizeEvent &event);
+    void OnSize(wxSizeEvent& event);
 
     virtual void CalcLayout(bool refresh);
 
@@ -270,7 +271,7 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
 
     wxPoint m_bitmapPos, m_labelPos;
 
-    wxTimer *m_timer;
+    wxTimer* m_timer;
 
     wxEventType m_eventType;  // store the mouse event type
 

@@ -33,7 +33,7 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorProjCmip5::asPredictorProjCmip5(const wxString &dataId, const wxString &model, const wxString &scenario)
+asPredictorProjCmip5::asPredictorProjCmip5(const wxString& dataId, const wxString& model, const wxString& scenario)
     : asPredictorProj(dataId, model, scenario) {
     // Downloaded from https://esgf-node.llnl.gov/search/cmip5/
     // Set the basic properties.
@@ -165,7 +165,7 @@ bool asPredictorProjCmip5::Init() {
     return true;
 }
 
-void asPredictorProjCmip5::ListFiles(asTimeArray &timeArray) {
+void asPredictorProjCmip5::ListFiles(asTimeArray& timeArray) {
     wxArrayString listFiles;
     size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, m_fileNamePattern);
 
@@ -203,6 +203,6 @@ void asPredictorProjCmip5::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-void asPredictorProjCmip5::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorProjCmip5::ConvertToMjd(a1d& time, double refValue) const {
     time += refValue;
 }

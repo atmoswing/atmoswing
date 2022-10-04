@@ -35,16 +35,16 @@ class asArea;
 
 class asPredictorProjCordex : public asPredictorProj {
   public:
-    asPredictorProjCordex(const wxString &dataId, const wxString &model, const wxString &scenario);
+    asPredictorProjCordex(const wxString& dataId, const wxString& model, const wxString& scenario);
 
     virtual ~asPredictorProjCordex();
 
     bool Init();
 
   protected:
-    virtual void ListFiles(asTimeArray &timeArray);
+    virtual void ListFiles(asTimeArray& timeArray);
 
-    void ConvertToMjd(a1d &time, double refValue) const;
+    void ConvertToMjd(a1d& time, double refValue) const;
 
   private:
 };

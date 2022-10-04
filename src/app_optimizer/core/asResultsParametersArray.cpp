@@ -41,7 +41,7 @@ asResultsParametersArray::asResultsParametersArray()
 
 asResultsParametersArray::~asResultsParametersArray() = default;
 
-void asResultsParametersArray::Init(const wxString &fileTag) {
+void asResultsParametersArray::Init(const wxString& fileTag) {
     BuildFileName(fileTag);
     wxASSERT(m_scoresCalib.empty());
 }
@@ -56,11 +56,11 @@ void asResultsParametersArray::Clear() {
     m_scoresValidForScoreOnArray.clear();
 }
 
-void asResultsParametersArray::StoreValues(asParametersScoring &params) {
+void asResultsParametersArray::StoreValues(asParametersScoring& params) {
     asParameters::VectorParamsStep p = params.GetParameters();
 
-    for (auto &steps : p) {
-        for (auto &predictor : steps.predictors) {
+    for (auto& steps : p) {
+        for (auto& predictor : steps.predictors) {
             predictor.preloadDataIds.clear();
             predictor.preloadHours.clear();
             predictor.preloadLevels.clear();
@@ -77,7 +77,7 @@ void asResultsParametersArray::StoreValues(asParametersScoring &params) {
     }
 }
 
-void asResultsParametersArray::BuildFileName(const wxString &fileTag) {
+void asResultsParametersArray::BuildFileName(const wxString& fileTag) {
     ThreadsManager().CritSectionConfig().Enter();
     m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
@@ -85,7 +85,7 @@ void asResultsParametersArray::BuildFileName(const wxString &fileTag) {
     m_filePath.Append(wxString::Format("/%s_%s.txt", time, fileTag));
 }
 
-void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib) {
+void asResultsParametersArray::Add(asParametersScoring& params, float scoreCalib) {
     StoreValues(params);
     m_scoresCalib.push_back(scoreCalib);
     m_scoresValid.push_back(NaNf);
@@ -93,13 +93,13 @@ void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib
     ProcessMedianScores();
 }
 
-void asResultsParametersArray::AddWithoutProcessingMedian(asParametersScoring &params, float scoreCalib) {
+void asResultsParametersArray::AddWithoutProcessingMedian(asParametersScoring& params, float scoreCalib) {
     StoreValues(params);
     m_scoresCalib.push_back(scoreCalib);
     m_scoresValid.push_back(NaNf);
 }
 
-void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib, float scoreValid) {
+void asResultsParametersArray::Add(asParametersScoring& params, float scoreCalib, float scoreValid) {
     StoreValues(params);
     m_scoresCalib.push_back(scoreCalib);
     m_scoresValid.push_back(scoreValid);
@@ -107,7 +107,7 @@ void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib
     ProcessMedianScores();
 }
 
-void asResultsParametersArray::Add(asParametersScoring &params, const a1f &scoreCalib, const a1f &scoreValid) {
+void asResultsParametersArray::Add(asParametersScoring& params, const a1f& scoreCalib, const a1f& scoreValid) {
     StoreValues(params);
     m_scoresCalibForScoreOnArray.push_back(scoreCalib);
     m_scoresValidForScoreOnArray.push_back(scoreValid);
@@ -124,7 +124,7 @@ void asResultsParametersArray::ProcessMedianScores() {
     m_medianScore = scores[mid];
 }
 
-bool asResultsParametersArray::HasBeenAssessed(asParametersScoring &params, float &score) {
+bool asResultsParametersArray::HasBeenAssessed(asParametersScoring& params, float& score) {
     for (int i = 0; i < m_parameters.size(); ++i) {
         if (params.IsSameAs(m_parameters[i], m_predictandStationIds[i], m_analogsIntervalDays[i])) {
             score = m_scoresCalib[i];
@@ -135,7 +135,7 @@ bool asResultsParametersArray::HasBeenAssessed(asParametersScoring &params, floa
     return false;
 }
 
-bool asResultsParametersArray::HasCloseOneBeenAssessed(asParametersScoring &params, float &score) {
+bool asResultsParametersArray::HasCloseOneBeenAssessed(asParametersScoring& params, float& score) {
     for (int i = 0; i < m_parameters.size(); ++i) {
         if (params.IsCloseTo(m_parameters[i], m_predictandStationIds[i], m_analogsIntervalDays[i])) {
             score = m_scoresCalib[i];

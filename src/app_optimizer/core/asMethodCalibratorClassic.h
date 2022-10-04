@@ -42,7 +42,7 @@ class asMethodCalibratorClassic : public asMethodCalibrator {
     }
 
   protected:
-    bool Calibrate(asParametersCalibration &params) override;
+    bool Calibrate(asParametersCalibration& params) override;
 
   private:
     bool m_plus;
@@ -53,54 +53,54 @@ class asMethodCalibratorClassic : public asMethodCalibrator {
 
     void GetPlusOptions();
 
-    bool DoPreloadData(asParametersCalibration &params);
+    bool DoPreloadData(asParametersCalibration& params);
 
-    ParamExploration GetSpatialBoundaries(const asParametersCalibration &params, int iStep) const;
+    ParamExploration GetSpatialBoundaries(const asParametersCalibration& params, int iStep) const;
 
-    void GetInitialAnalogNumber(asParametersCalibration &params, int iStep) const;
+    void GetInitialAnalogNumber(asParametersCalibration& params, int iStep) const;
 
-    void SetMinimalArea(asParametersCalibration &params, int iStep, const ParamExploration &explo) const;
+    void SetMinimalArea(asParametersCalibration& params, int iStep, const ParamExploration& explo) const;
 
-    void GenerateRelevanceMapParameters(asParametersCalibration &params, int iStep, const ParamExploration &explo);
+    void GenerateRelevanceMapParameters(asParametersCalibration& params, int iStep, const ParamExploration& explo);
 
-    void BalanceWeights(asParametersCalibration &params, int iStep) const;
+    void BalanceWeights(asParametersCalibration& params, int iStep) const;
 
-    bool EvaluateRelevanceMap(const asParametersCalibration &params, asResultsDates &anaDatesPrevious,
-                              asResultsParametersArray &resultsTested, int iStep);
+    bool EvaluateRelevanceMap(const asParametersCalibration& params, asResultsDates& anaDatesPrevious,
+                              asResultsParametersArray& resultsTested, int iStep);
 
-    bool AssessDomainResizing(asParametersCalibration &params, asResultsDates &anaDatesPrevious,
-                              asResultsParametersArray &resultsTested, int iStep, const ParamExploration &explo);
+    bool AssessDomainResizing(asParametersCalibration& params, asResultsDates& anaDatesPrevious,
+                              asResultsParametersArray& resultsTested, int iStep, const ParamExploration& explo);
 
-    bool AssessDomainResizingPlus(asParametersCalibration &params, asResultsDates &anaDatesPrevious,
-                                  asResultsParametersArray &resultsTested, int iStep, const ParamExploration &explo);
+    bool AssessDomainResizingPlus(asParametersCalibration& params, asResultsDates& anaDatesPrevious,
+                                  asResultsParametersArray& resultsTested, int iStep, const ParamExploration& explo);
 
-    bool GetDatesOfBestParameters(asParametersCalibration &params, asResultsDates &anaDatesPrevious, int iStep);
+    bool GetDatesOfBestParameters(asParametersCalibration& params, asResultsDates& anaDatesPrevious, int iStep);
 
-    void GetSpatialAxes(const asParametersCalibration &params, int iStep, const ParamExploration &explo, a1d &xAxis,
-                        a1d &yAxis) const;
+    void GetSpatialAxes(const asParametersCalibration& params, int iStep, const ParamExploration& explo, a1d& xAxis,
+                        a1d& yAxis) const;
 
-    void MoveWest(asParametersCalibration &params, const ParamExploration &explo, const a1d &xAxis, int iStep,
+    void MoveWest(asParametersCalibration& params, const ParamExploration& explo, const a1d& xAxis, int iStep,
                   int iPtor, int multipleFactor = 1) const;
 
-    void MoveSouth(asParametersCalibration &params, const ParamExploration &explo, const a1d &yAxis, int iStep,
+    void MoveSouth(asParametersCalibration& params, const ParamExploration& explo, const a1d& yAxis, int iStep,
                    int iPtor, int multipleFactor = 1) const;
 
-    void MoveEast(asParametersCalibration &params, const ParamExploration &explo, const a1d &xAxis, int iStep,
+    void MoveEast(asParametersCalibration& params, const ParamExploration& explo, const a1d& xAxis, int iStep,
                   int iPtor, int multipleFactor = 1) const;
 
-    void MoveNorth(asParametersCalibration &params, const ParamExploration &explo, const a1d &yAxis, int iStep,
+    void MoveNorth(asParametersCalibration& params, const ParamExploration& explo, const a1d& yAxis, int iStep,
                    int iPtor, int multipleFactor = 1) const;
 
-    void WidenEast(asParametersCalibration &params, const ParamExploration &explo, int iStep, int iPtor,
+    void WidenEast(asParametersCalibration& params, const ParamExploration& explo, int iStep, int iPtor,
                    int multipleFactor = 1) const;
 
-    void WidenNorth(asParametersCalibration &params, const ParamExploration &explo, int iStep, int iPtor,
+    void WidenNorth(asParametersCalibration& params, const ParamExploration& explo, int iStep, int iPtor,
                     int multipleFactor = 1) const;
 
-    void ReduceEast(asParametersCalibration &params, const ParamExploration &explo, int iStep, int iPtor,
+    void ReduceEast(asParametersCalibration& params, const ParamExploration& explo, int iStep, int iPtor,
                     int multipleFactor = 1) const;
 
-    void ReduceNorth(asParametersCalibration &params, const ParamExploration &explo, int iStep, int iPtor,
+    void ReduceNorth(asParametersCalibration& params, const ParamExploration& explo, int iStep, int iPtor,
                      int multipleFactor = 1) const;
 };
 

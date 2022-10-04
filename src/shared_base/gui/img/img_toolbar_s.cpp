@@ -11,17 +11,17 @@
 
 #include "img_toolbar.h"
 
-wxBitmap *_img_frame_analogs;
-wxBitmap *_img_frame_distributions;
-wxBitmap *_img_map_fit;
-wxBitmap *_img_map_move;
-wxBitmap *_img_map_select;
-wxBitmap *_img_map_zoom_in;
-wxBitmap *_img_map_zoom_out;
-wxBitmap *_img_open;
-wxBitmap *_img_preferences;
-wxBitmap *_img_run;
-wxBitmap *_img_stop;
+wxBitmap* _img_frame_analogs;
+wxBitmap* _img_frame_distributions;
+wxBitmap* _img_map_fit;
+wxBitmap* _img_map_move;
+wxBitmap* _img_map_select;
+wxBitmap* _img_map_zoom_in;
+wxBitmap* _img_map_zoom_out;
+wxBitmap* _img_open;
+wxBitmap* _img_preferences;
+wxBitmap* _img_run;
+wxBitmap* _img_stop;
 
 void initialize_img_toolbar_s() {
     {

@@ -33,7 +33,7 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorProjCordex::asPredictorProjCordex(const wxString &dataId, const wxString &model, const wxString &scenario)
+asPredictorProjCordex::asPredictorProjCordex(const wxString& dataId, const wxString& model, const wxString& scenario)
     : asPredictorProj(dataId, model, scenario) {
     // Downloaded from https://esgf-index1.ceda.ac.uk/search/cordex-ceda/
     // Set the basic properties.
@@ -181,7 +181,7 @@ bool asPredictorProjCordex::Init() {
     return true;
 }
 
-void asPredictorProjCordex::ListFiles(asTimeArray &timeArray) {
+void asPredictorProjCordex::ListFiles(asTimeArray& timeArray) {
     wxArrayString listFiles;
     size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, m_fileNamePattern);
 
@@ -217,6 +217,6 @@ void asPredictorProjCordex::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-void asPredictorProjCordex::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorProjCordex::ConvertToMjd(a1d& time, double refValue) const {
     time += refValue;
 }

@@ -42,7 +42,7 @@ TEST(PredictorNcepR1v2003, LoadEasy) {
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -53,7 +53,7 @@ TEST(PredictorNcepR1v2003, LoadEasy) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, level));
 
@@ -138,7 +138,7 @@ TEST(PredictorNcepR1v2003, RegularLoadEasy) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -212,7 +212,7 @@ TEST(PredictorNcepR1v2003, LoadBorderLeft) {
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -223,7 +223,7 @@ TEST(PredictorNcepR1v2003, LoadBorderLeft) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, level));
 
@@ -288,7 +288,7 @@ TEST(PredictorNcepR1v2003, LoadAutoStep) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -360,7 +360,7 @@ TEST(PredictorNcepR1v2003, GaussianLoadEasy) {
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    asAreaGrid *area = asAreaGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -371,7 +371,7 @@ TEST(PredictorNcepR1v2003, GaussianLoadEasy) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -444,7 +444,7 @@ TEST(PredictorNcepR1v2003, GaussianLoadBorderLeft) {
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    asAreaGrid *area = asAreaGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -455,7 +455,7 @@ TEST(PredictorNcepR1v2003, GaussianLoadBorderLeft) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -508,7 +508,7 @@ TEST(PredictorNcepR1v2003, GaussianLoadBorderLeftOn720) {
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    asAreaGrid *area = asAreaGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -519,7 +519,7 @@ TEST(PredictorNcepR1v2003, GaussianLoadBorderLeftOn720) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -573,7 +573,7 @@ TEST(PredictorNcepR1v2003, GaussianSetData) {
     int yPtsNb = 2;
     double steplon = 0;
     double steplat = 0;
-    asAreaGrid *area = asAreaGrid::GetInstance(xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
+    asAreaGrid* area = asAreaGrid::GetInstance(xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 5, 00, 00);
@@ -584,7 +584,7 @@ TEST(PredictorNcepR1v2003, GaussianSetData) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 

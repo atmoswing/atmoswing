@@ -36,9 +36,9 @@ class asPanelsManager : public wxObject {
 
     ~asPanelsManager() override = default;
 
-    void LayoutFrame(wxWindow *element);
+    void LayoutFrame(wxWindow* element);
 
-    wxWindow *GetTopFrame(wxWindow *element) const;
+    wxWindow* GetTopFrame(wxWindow* element) const;
 
   protected:
   private:

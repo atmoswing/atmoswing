@@ -83,14 +83,14 @@ enum OPCODE {
 };
 
 struct FuncDefinition {
-    const char *name;
+    const char* name;
     unsigned nameLength;
     unsigned opcode;
     unsigned params;
 
     // This is basically strcmp(), but taking 'nameLength' as string
     // length (not ending '\0'):
-    bool operator<(const FuncDefinition &rhs) const {
+    bool operator<(const FuncDefinition& rhs) const {
         for (unsigned i = 0; i < nameLength; ++i) {
             if (i == rhs.nameLength) return false;
             const char c1 = name[i], c2 = rhs.name[i];

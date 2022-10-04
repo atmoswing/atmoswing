@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorEcmwfEra5, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("ECMWF_ERA5", "pl/d", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Divergence);

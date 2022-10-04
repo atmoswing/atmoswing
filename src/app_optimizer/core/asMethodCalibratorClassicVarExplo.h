@@ -38,7 +38,7 @@ class asMethodCalibratorClassicVarExplo : public asMethodCalibratorClassic {
     ~asMethodCalibratorClassicVarExplo() override;
 
   protected:
-    bool Calibrate(asParametersCalibration &params) override;
+    bool Calibrate(asParametersCalibration& params) override;
 
   private:
 };

@@ -36,9 +36,12 @@
 
 class asFileText : public asFile {
   public:
-    enum FileStructType { ConstantWidth, TabsDelimited };
+    enum FileStructType {
+        ConstantWidth,
+        TabsDelimited
+    };
 
-    asFileText(const wxString &fileName, const asFile::FileMode &fileMode);
+    asFileText(const wxString& fileName, const asFile::FileMode& fileMode);
 
     ~asFileText() override = default;
 
@@ -46,7 +49,7 @@ class asFileText : public asFile {
 
     bool Close() override;
 
-    void AddContent(const wxString &lineContent = wxEmptyString);
+    void AddContent(const wxString& lineContent = wxEmptyString);
 
     wxString GetNextLine();
 
@@ -62,7 +65,7 @@ class asFileText : public asFile {
 
     bool EndOfFile() const;
 
-    static int CountLines(const wxString &filePath);
+    static int CountLines(const wxString& filePath);
 
   protected:
   private:

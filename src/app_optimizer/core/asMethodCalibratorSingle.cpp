@@ -28,11 +28,12 @@
 
 #include "asMethodCalibratorSingle.h"
 
-asMethodCalibratorSingle::asMethodCalibratorSingle() : asMethodCalibrator() {}
+asMethodCalibratorSingle::asMethodCalibratorSingle()
+    : asMethodCalibrator() {}
 
 asMethodCalibratorSingle::~asMethodCalibratorSingle() {}
 
-bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params) {
+bool asMethodCalibratorSingle::Calibrate(asParametersCalibration& params) {
     // Check that we really handle a single case
     bool checkSizes = true;
     wxString errorField = wxEmptyString;
@@ -142,8 +143,8 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params) {
 
     if (!checkSizes) {
         errorField = errorField.Remove(errorField.Length() - 3, 2);  // Removes the last coma
-        wxString errorMessage =
-            _("The following parameters are not compatible with the single assessment: ") + errorField;
+        wxString errorMessage = _("The following parameters are not compatible with the single assessment: ") +
+                                errorField;
         wxLogError(errorMessage);
         return false;
     }

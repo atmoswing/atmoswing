@@ -34,7 +34,7 @@
 
 class asFileParametersCalibration : public asFileParameters {
   public:
-    asFileParametersCalibration(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
+    asFileParametersCalibration(const wxString& fileName, const FileMode& fileMode = asFile::Replace);
 
     virtual ~asFileParametersCalibration();
 

@@ -44,7 +44,7 @@ EVT_TIMER(wxID_ANY, wxCustomButton::OnTimer)
 EVT_SIZE(wxCustomButton::OnSize)
 END_EVENT_TABLE()
 
-    wxCustomButton::~wxCustomButton() {
+wxCustomButton::~wxCustomButton() {
     if (HasCapture()) ReleaseMouse();
     if (m_timer) delete m_timer;
 }
@@ -59,9 +59,9 @@ void wxCustomButton::Init() {
     m_button_style = wxCUSTBUT_TOGGLE | wxCUSTBUT_BOTTOM;
 }
 
-bool wxCustomButton::Create(wxWindow *parent, wxWindowID id, const wxString &label, const wxBitmap &bitmap,
-                            const wxPoint &pos, const wxSize &size_, long style, const wxValidator &val,
-                            const wxString &name) {
+bool wxCustomButton::Create(wxWindow* parent, wxWindowID id, const wxString& label, const wxBitmap& bitmap,
+                            const wxPoint& pos, const wxSize& size_, long style, const wxValidator& val,
+                            const wxString& name) {
     m_labelString = label;
     if (bitmap.Ok()) m_bmpLabel = bitmap;
     wxSize bestSize = DoGetBestSize_(parent);
@@ -113,7 +113,7 @@ bool wxCustomButton::SetButtonStyle(long style) {
     return true;
 }
 
-void wxCustomButton::SetLabel(const wxString &label) {
+void wxCustomButton::SetLabel(const wxString& label) {
     m_labelString = label;
     InvalidateBestSize();
     CalcLayout(true);
@@ -121,7 +121,7 @@ void wxCustomButton::SetLabel(const wxString &label) {
 
 // sequence of events in GTK is up, dclick, up.
 
-void wxCustomButton::OnMouseEvents(wxMouseEvent &event) {
+void wxCustomButton::OnMouseEvents(wxMouseEvent& event) {
     if (m_button_style & wxCUSTBUT_NOTOGGLE) return;
 
     if (event.LeftDown() || event.RightDown()) {
@@ -193,7 +193,7 @@ void wxCustomButton::OnMouseEvents(wxMouseEvent &event) {
     }
 }
 
-void wxCustomButton::OnTimer(wxTimerEvent &event) {
+void wxCustomButton::OnTimer(wxTimerEvent& event) {
     m_timer->Stop();
     delete m_timer;
     m_timer = NULL;
@@ -241,7 +241,7 @@ void wxCustomButton::SendEvent() {
     }
 }
 
-wxBitmap wxCustomButton::CreateBitmapDisabled(const wxBitmap &bitmap) const {
+wxBitmap wxCustomButton::CreateBitmapDisabled(const wxBitmap& bitmap) const {
     wxCHECK_MSG(bitmap.Ok(), wxNullBitmap, wxT("invalid bitmap"));
 
     unsigned char br = GetBackgroundColour().Red();
@@ -250,7 +250,7 @@ wxBitmap wxCustomButton::CreateBitmapDisabled(const wxBitmap &bitmap) const {
 
     wxImage image = bitmap.ConvertToImage();
     int pos, width = image.GetWidth(), height = image.GetHeight();
-    unsigned char *img_data = image.GetData();
+    unsigned char* img_data = image.GetData();
 
     for (int j = 0; j < height; j++) {
         for (int i = j % 2; i < width; i += 2) {
@@ -296,13 +296,13 @@ wxBitmap wxCustomButton::CreateBitmapDisabled(const wxBitmap &bitmap) const {
     */
 }
 
-void wxCustomButton::SetBitmapLabel(const wxBitmap &bitmap) {
+void wxCustomButton::SetBitmapLabel(const wxBitmap& bitmap) {
     m_bmpLabel = bitmap;
     InvalidateBestSize();
     CalcLayout(true);
 }
 
-void wxCustomButton::OnPaint(wxPaintEvent &WXUNUSED(event)) {
+void wxCustomButton::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     wxPaintDC dc(this);
     Paint(dc);
 }
@@ -312,7 +312,7 @@ void wxCustomButton::Redraw() {
     Paint(dc);
 }
 
-void wxCustomButton::Paint(wxDC &dc) {
+void wxCustomButton::Paint(wxDC& dc) {
     int w, h;
     GetSize(&w, &h);
 
@@ -408,35 +408,35 @@ void wxCustomButton::Paint(wxDC &dc) {
     dc.SetPen(wxNullPen);
 }
 
-void wxCustomButton::OnSize(wxSizeEvent &event) {
+void wxCustomButton::OnSize(wxSizeEvent& event) {
     CalcLayout(true);
     event.Skip();
 }
 
-void wxCustomButton::SetMargins(const wxSize &margin, bool fit) {
+void wxCustomButton::SetMargins(const wxSize& margin, bool fit) {
     m_labelMargin = margin;
     m_bitmapMargin = margin;
     if (fit) SetSize(DoGetBestSize());
     CalcLayout(true);
 }
 
-void wxCustomButton::SetLabelMargin(const wxSize &margin, bool fit) {
+void wxCustomButton::SetLabelMargin(const wxSize& margin, bool fit) {
     m_labelMargin = margin;
     CalcLayout(true);
     if (fit) SetSize(DoGetBestSize());
 }
 
-void wxCustomButton::SetBitmapMargin(const wxSize &margin, bool fit) {
+void wxCustomButton::SetBitmapMargin(const wxSize& margin, bool fit) {
     m_bitmapMargin = margin;
     CalcLayout(true);
     if (fit) SetSize(DoGetBestSize());
 }
 
 wxSize wxCustomButton::DoGetBestSize() const {
-    return DoGetBestSize_((wxWindow *)this);
+    return DoGetBestSize_((wxWindow*)this);
 }
 
-wxSize wxCustomButton::DoGetBestSize_(wxWindow *win) const {
+wxSize wxCustomButton::DoGetBestSize_(wxWindow* win) const {
     //((wxWindow*)this)->InvalidateBestSize();
 
     int lw = 0, lh = 0;

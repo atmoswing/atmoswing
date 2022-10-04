@@ -68,7 +68,7 @@ bool asMethodStandard::Manager() {
     return false;
 }
 
-bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath) {
+bool asMethodStandard::LoadPredictandDB(const wxString& predictandDBFilePath) {
     wxDELETE(m_predictandDB);
 
     if (predictandDBFilePath.IsEmpty()) {
@@ -104,21 +104,21 @@ void asMethodStandard::Cancel() {
     m_cancel = true;
 }
 
-bool asMethodStandard::Preprocess(std::vector<asPredictor *> predictors, const wxString &method, asPredictor *result) {
-    std::vector<asPredictor *> ptorsPredictors(predictors.begin(), predictors.end());
+bool asMethodStandard::Preprocess(std::vector<asPredictor*> predictors, const wxString& method, asPredictor* result) {
+    std::vector<asPredictor*> ptorsPredictors(predictors.begin(), predictors.end());
 
     return asPreprocessor::Preprocess(ptorsPredictors, method, result);
 }
 
-double asMethodStandard::GetTimeStartArchive(asParameters *params) const {
+double asMethodStandard::GetTimeStartArchive(asParameters* params) const {
     return params->GetArchiveStart() + params->GetTimeShiftDays();
 }
 
-double asMethodStandard::GetTimeEndArchive(asParameters *params) const {
+double asMethodStandard::GetTimeEndArchive(asParameters* params) const {
     return params->GetArchiveEnd() - params->GetTimeSpanDays();
 }
 
-void asMethodStandard::InitializePreloadedArchiveDataContainers(asParameters *params) {
+void asMethodStandard::InitializePreloadedArchiveDataContainers(asParameters* params) {
     if (m_preloadedArchive.empty()) {
         m_preloadedArchive.resize((long)params->GetStepsNb());
         m_preloadedArchivePointerCopy.resize((long)params->GetStepsNb());
@@ -155,7 +155,7 @@ void asMethodStandard::InitializePreloadedArchiveDataContainers(asParameters *pa
     }
 }
 
-bool asMethodStandard::PreloadArchiveData(asParameters *params) {
+bool asMethodStandard::PreloadArchiveData(asParameters* params) {
     if (!m_preloaded) {
         // Set preload to true here, so cleanup is made in case of exceptions.
         m_preloaded = true;
@@ -170,7 +170,7 @@ bool asMethodStandard::PreloadArchiveData(asParameters *params) {
     return true;
 }
 
-bool asMethodStandard::ProceedToArchiveDataPreloading(asParameters *params) {
+bool asMethodStandard::ProceedToArchiveDataPreloading(asParameters* params) {
     ThreadsManager().CritSectionConfig().Enter();
     bool parallelDataLoad = wxFileConfig::Get()->ReadBool("/General/ParallelDataLoad", false);
     ThreadsManager().CritSectionConfig().Leave();
@@ -195,7 +195,7 @@ bool asMethodStandard::ProceedToArchiveDataPreloading(asParameters *params) {
                             continue;
                         }
                         if (parallelDataLoad) {
-                            auto *thread = new asThreadPreloadArchiveData(this, params, iStep, iPtor, i);
+                            auto* thread = new asThreadPreloadArchiveData(this, params, iStep, iPtor, i);
                             if (!ThreadsManager().HasFreeThread(thread->GetType())) {
                                 ThreadsManager().WaitForFreeThread(thread->GetType());
                             }
@@ -230,7 +230,7 @@ bool asMethodStandard::ProceedToArchiveDataPreloading(asParameters *params) {
     return true;
 }
 
-bool asMethodStandard::CheckArchiveDataIsPreloaded(const asParameters *params) const {
+bool asMethodStandard::CheckArchiveDataIsPreloaded(const asParameters* params) const {
     for (int iStep = 0; iStep < params->GetStepsNb(); iStep++) {
         for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
             if (params->NeedsPreloading(iStep, iPtor)) {
@@ -255,8 +255,8 @@ bool asMethodStandard::CheckArchiveDataIsPreloaded(const asParameters *params) c
 }
 
 bool asMethodStandard::HasPreloadedArchiveData(int iStep, int iPtor) const {
-    for (const auto &datPre : m_preloadedArchive[iStep][iPtor]) {
-        for (const auto &datLevel : datPre) {
+    for (const auto& datPre : m_preloadedArchive[iStep][iPtor]) {
+        for (const auto& datLevel : datPre) {
             for (auto datHour : datLevel) {
                 if (datHour != nullptr) {
                     return true;
@@ -269,7 +269,7 @@ bool asMethodStandard::HasPreloadedArchiveData(int iStep, int iPtor) const {
 }
 
 bool asMethodStandard::HasPreloadedArchiveData(int iStep, int iPtor, int iPre) const {
-    for (const auto &datLevel : m_preloadedArchive[iStep][iPtor][iPre]) {
+    for (const auto& datLevel : m_preloadedArchive[iStep][iPtor][iPre]) {
         for (auto datHour : datLevel) {
             if (datHour != nullptr) {
                 return true;
@@ -280,7 +280,7 @@ bool asMethodStandard::HasPreloadedArchiveData(int iStep, int iPtor, int iPre) c
     return false;
 }
 
-bool asMethodStandard::PointersArchiveDataShared(asParameters *params, int iStep, int iPtor, int iPre) {
+bool asMethodStandard::PointersArchiveDataShared(asParameters* params, int iStep, int iPtor, int iPre) {
     if (iStep == 0 && iPtor == 0) {
         return false;
     }
@@ -411,7 +411,7 @@ bool asMethodStandard::PointersArchiveDataShared(asParameters *params, int iStep
     return false;
 }
 
-bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *params, int iStep, int iPtor, int iDat) {
+bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters* params, int iStep, int iPtor, int iDat) {
     wxLogVerbose(_("Preloading data for predictor %d of step %d."), iPtor, iStep);
 
     double timeStartData = GetEffectiveArchiveDataStart(params);
@@ -430,7 +430,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
     for (int iLevel = 0; iLevel < preloadLevels.size(); iLevel++) {
         for (int iHour = 0; iHour < preloadHours.size(); iHour++) {
             // Loading the dataset information
-            asPredictor *predictor = asPredictor::GetInstance(params->GetPredictorDatasetId(iStep, iPtor),
+            asPredictor* predictor = asPredictor::GetInstance(params->GetPredictorDatasetId(iStep, iPtor),
                                                               preloadDataIds[iDat], m_predictorDataDir);
             if (!predictor) {
                 return false;
@@ -452,9 +452,9 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                                   params->GetTimeArrayAnalogsMode());
             timeArray.Init();
 
-            double yMax =
-                params->GetPreloadYmin(iStep, iPtor) +
-                params->GetPredictorYstep(iStep, iPtor) * (double)(params->GetPreloadYptsnb(iStep, iPtor) - 1);
+            double yMax = params->GetPreloadYmin(iStep, iPtor) +
+                          params->GetPredictorYstep(iStep, iPtor) *
+                              (double)(params->GetPreloadYptsnb(iStep, iPtor) - 1);
             if (yMax > 90) {
                 double diff = yMax - 90;
                 auto removePts = (int)asRound(diff / params->GetPredictorYstep(iStep, iPtor));
@@ -478,8 +478,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             double yStep = params->GetPredictorYstep(iStep, iPtor);
             int flatAllowed = params->GetPredictorFlatAllowed(iStep, iPtor);
             bool isLatLon = asPredictor::IsLatLon(params->GetPredictorDatasetId(iStep, iPtor));
-            asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
-                                                       yStep, flatAllowed, isLatLon);
+            asAreaGrid* area =
+                asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, flatAllowed, isLatLon);
             wxASSERT(area);
             area->AllowResizeFromData();
 
@@ -531,14 +531,14 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                     wxDELETE(predictor);
                     continue;  // The requested data can be missing (e.g. level not available).
                 }
-            } catch (std::bad_alloc &ba) {
+            } catch (std::bad_alloc& ba) {
                 wxString msg(ba.what(), wxConvUTF8);
                 wxLogError(_("Bad allocation caught during data preloading: %s"), msg);
                 wxDELETE(area);
                 wxDELETE(predictor);
                 return false;
 
-            } catch (std::exception &e) {
+            } catch (std::exception& e) {
                 wxString msg(e.what(), wxConvUTF8);
                 wxLogError(_("Exception caught during data preloading: %s"), msg);
                 wxDELETE(area);
@@ -585,7 +585,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
     return true;
 }
 
-bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params, int iStep, int iPtor) {
+bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters* params, int iStep, int iPtor) {
     wxLogVerbose(_("Preloading data for predictor preprocessed %d of step %d."), iPtor, iStep);
 
     double timeStartData = GetEffectiveArchiveDataStart(params);
@@ -633,7 +633,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
     // Load data for every level and every hour
     for (int iLevel = 0; iLevel < preloadLevelsSize; iLevel++) {
         for (int iHour = 0; iHour < preloadHoursSize; iHour++) {
-            std::vector<asPredictor *> predictorsPreprocess;
+            std::vector<asPredictor*> predictorsPreprocess;
 
             for (int iPre = 0; iPre < preprocessSize; iPre++) {
                 wxLogVerbose(_("Preloading data for predictor %d (preprocess %d) of step %d."), iPtor, iPre, iStep);
@@ -678,7 +678,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 timeArray.Init();
 
                 // Loading the datasets information
-                asPredictor *predictorPreprocess =
+                asPredictor* predictorPreprocess =
                     asPredictor::GetInstance(params->GetPreprocessDatasetId(iStep, iPtor, iPre),
                                              params->GetPreprocessDataId(iStep, iPtor, iPre), m_predictorDataDir);
                 if (!predictorPreprocess) {
@@ -695,7 +695,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 }
 
                 double yMax = params->GetPreloadYmin(iStep, iPtor) +
-                    params->GetPredictorYstep(iStep, iPtor) * double(params->GetPreloadYptsnb(iStep, iPtor) - 1);
+                              params->GetPredictorYstep(iStep, iPtor) *
+                                  double(params->GetPreloadYptsnb(iStep, iPtor) - 1);
 
                 if (predictorPreprocess->IsLatLon() && yMax > 90) {
                     double diff = yMax - 90;
@@ -715,8 +716,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 double yStep = params->GetPredictorYstep(iStep, iPtor);
                 int flatAllowed = params->GetPredictorFlatAllowed(iStep, iPtor);
                 bool isLatLon = asPredictor::IsLatLon(params->GetPredictorDatasetId(iStep, iPtor));
-                asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep,
-                                                           flatAllowed, isLatLon);
+                asAreaGrid* area =
+                    asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, flatAllowed, isLatLon);
                 wxASSERT(area);
                 area->AllowResizeFromData();
 
@@ -734,7 +735,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
             }
 
             wxLogVerbose(_("Preprocessing data."));
-            auto *predictor = new asPredictor(*predictorsPreprocess[0]);
+            auto* predictor = new asPredictor(*predictorsPreprocess[0]);
 
             try {
                 if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), predictor)) {
@@ -746,7 +747,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
 
                 // Standardize data
                 if (params->GetStandardize(iStep, iPtor) &&
-                    !predictor->StandardizeData(params->GetStandardizeMean(iStep, iPtor), params->GetStandardizeSd(iStep, iPtor))) {
+                    !predictor->StandardizeData(params->GetStandardizeMean(iStep, iPtor),
+                                                params->GetStandardizeSd(iStep, iPtor))) {
                     wxLogError(_("Data standardisation has failed."));
                     wxDELETE(predictor);
                     Cleanup(predictorsPreprocess);
@@ -756,14 +758,14 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
 
                 m_preloadedArchive[iStep][iPtor][0][iLevel][iHour] = predictor;
 
-            } catch (std::bad_alloc &ba) {
+            } catch (std::bad_alloc& ba) {
                 wxString msg(ba.what(), wxConvUTF8);
                 wxLogError(_("Bad allocation caught in the data preprocessing: %s"), msg);
                 wxDELETE(predictor);
                 Cleanup(predictorsPreprocess);
                 return false;
 
-            } catch (std::exception &e) {
+            } catch (std::exception& e) {
                 wxString msg(e.what(), wxConvUTF8);
                 wxLogError(_("Exception caught during data preprocessing: %s"), msg);
                 wxDELETE(predictor);
@@ -781,7 +783,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
     return true;
 }
 
-bool asMethodStandard::LoadArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
+bool asMethodStandard::LoadArchiveData(std::vector<asPredictor*>& predictors, asParameters* params, int iStep,
                                        double timeStartData, double timeEndData) {
     try {
         // Loop through every predictor
@@ -811,11 +813,11 @@ bool asMethodStandard::LoadArchiveData(std::vector<asPredictor *> &predictors, a
                 wxLogVerbose(_("Data loaded"));
             }
         }
-    } catch (std::bad_alloc &ba) {
+    } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught during data loading: %s"), msg);
         return false;
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught during data loading: %s"), msg);
         return false;
@@ -824,7 +826,7 @@ bool asMethodStandard::LoadArchiveData(std::vector<asPredictor *> &predictors, a
     return true;
 }
 
-bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &predictors, asParameters *params,
+bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor*>& predictors, asParameters* params,
                                                    int iStep, int iPtor) {
     wxLogVerbose(_("Using preloaded data."));
 
@@ -929,7 +931,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
 
     // Copy the data
     wxASSERT(m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
-    auto *desiredPredictor = new asPredictor(*m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
+    auto* desiredPredictor = new asPredictor(*m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
 
     // Load dumped data
     if (m_dumpPredictorData) {
@@ -943,7 +945,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     }
 
     // Check minimum number of points
-    asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
+    asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
     if (params->GetPredictorXptsnb(iStep, iPtor) < criterion->GetMinPointsNb()) {
         params->SetPredictorXptsnb(iStep, iPtor, criterion->GetMinPointsNb());
     }
@@ -953,7 +955,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     wxDELETE(criterion);
 
     // Area object instantiation
-    asAreaGrid *desiredArea = asAreaGrid::GetInstance(params, iStep, iPtor);
+    asAreaGrid* desiredArea = asAreaGrid::GetInstance(params, iStep, iPtor);
 
     wxASSERT(desiredArea);
 
@@ -1009,10 +1011,10 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     wxDELETE(desiredArea);
 
     if (doPreprocessGradients) {
-        std::vector<asPredictor *> predictorsPreprocess;
+        std::vector<asPredictor*> predictorsPreprocess;
         predictorsPreprocess.push_back(desiredPredictor);
 
-        auto *newPredictor = new asPredictor(*predictorsPreprocess[0]);
+        auto* newPredictor = new asPredictor(*predictorsPreprocess[0]);
         if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), newPredictor)) {
             wxLogError(_("Data preprocessing failed."));
             Cleanup(predictorsPreprocess);
@@ -1032,7 +1034,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     return true;
 }
 
-bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
+bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor*>& predictors, asParameters* params, int iStep,
                                           int iPtor, double timeStartData, double timeEndData) {
     // Date array object instantiation for the data loading.
     double ptorStart = timeStartData + params->GetPredictorTimeAsDays(iStep, iPtor);
@@ -1044,7 +1046,7 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
     params->ForceUsingGradientsPreprocessing(iStep, iPtor);
 
     // Loading the datasets information
-    asPredictor *predictor = asPredictor::GetInstance(params->GetPredictorDatasetId(iStep, iPtor),
+    asPredictor* predictor = asPredictor::GetInstance(params->GetPredictorDatasetId(iStep, iPtor),
                                                       params->GetPredictorDataId(iStep, iPtor), m_predictorDataDir);
     if (!predictor) {
         return false;
@@ -1059,7 +1061,7 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
     }
 
     // Area object instantiation
-    asAreaGrid *area = asAreaGrid::GetInstance(params, iStep, iPtor);
+    asAreaGrid* area = asAreaGrid::GetInstance(params, iStep, iPtor);
     wxASSERT(area);
 
     area->AllowResizeFromData();
@@ -1082,10 +1084,10 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
     }
 
     if (params->IsCriteriaUsingGradients(iStep, iPtor)) {
-        std::vector<asPredictor *> predictorsPreprocess;
+        std::vector<asPredictor*> predictorsPreprocess;
         predictorsPreprocess.push_back(predictor);
 
-        auto *newPredictor = new asPredictor(*predictorsPreprocess[0]);
+        auto* newPredictor = new asPredictor(*predictorsPreprocess[0]);
         if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), newPredictor)) {
             wxLogError(_("Data preprocessing failed."));
             Cleanup(predictorsPreprocess);
@@ -1105,9 +1107,9 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
     return true;
 }
 
-bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
+bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor*>& predictors, asParameters* params, int iStep,
                                              int iPtor, double timeStartData, double timeEndData) {
-    std::vector<asPredictor *> predictorsPreprocess;
+    std::vector<asPredictor*> predictorsPreprocess;
 
     int preprocessSize = params->GetPreprocessSize(iStep, iPtor);
 
@@ -1121,9 +1123,9 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
         timeArray.Init();
 
         // Loading the dataset information
-        asPredictor *predictorPreprocess =
-            asPredictor::GetInstance(params->GetPreprocessDatasetId(iStep, iPtor, iPre),
-                                     params->GetPreprocessDataId(iStep, iPtor, iPre), m_predictorDataDir);
+        asPredictor* predictorPreprocess = asPredictor::GetInstance(params->GetPreprocessDatasetId(iStep, iPtor, iPre),
+                                                                    params->GetPreprocessDataId(iStep, iPtor, iPre),
+                                                                    m_predictorDataDir);
         if (!predictorPreprocess) {
             Cleanup(predictorsPreprocess);
             return false;
@@ -1138,7 +1140,7 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
         }
 
         // Area object instantiation
-        asAreaGrid *area = asAreaGrid::GetInstance(params, iStep, iPtor);
+        asAreaGrid* area = asAreaGrid::GetInstance(params, iStep, iPtor);
         wxASSERT(area);
 
         area->AllowResizeFromData();
@@ -1158,7 +1160,7 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
     // Fix the criteria if S1/S2
     params->FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
-    asPredictor *predictor = new asPredictor(*predictorsPreprocess[0]);
+    asPredictor* predictor = new asPredictor(*predictorsPreprocess[0]);
     if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), predictor)) {
         wxLogError(_("Data preprocessing failed."));
         Cleanup(predictorsPreprocess);
@@ -1182,18 +1184,18 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
     return true;
 }
 
-void asMethodStandard::Cleanup(std::vector<asPredictor *> predictors) {
+void asMethodStandard::Cleanup(std::vector<asPredictor*> predictors) {
     if (!predictors.empty()) {
-        for (auto &predictor : predictors) {
+        for (auto& predictor : predictors) {
             wxDELETE(predictor);
         }
         predictors.resize(0);
     }
 }
 
-void asMethodStandard::Cleanup(std::vector<asCriteria *> criteria) {
+void asMethodStandard::Cleanup(std::vector<asCriteria*> criteria) {
     if (!criteria.empty()) {
-        for (auto &criterion : criteria) {
+        for (auto& criterion : criteria) {
             wxDELETE(criterion);
         }
         criteria.resize(0);
@@ -1207,8 +1209,8 @@ void asMethodStandard::DeletePreloadedArchiveData() {
         for (int j = 0; j < m_preloadedArchive[i].size(); j++) {
             for (int k = 0; k < m_preloadedArchive[i][j].size(); k++) {
                 if (!m_preloadedArchivePointerCopy[i][j][k]) {
-                    for (auto &l : m_preloadedArchive[i][j][k]) {
-                        for (auto &m : l) {
+                    for (auto& l : m_preloadedArchive[i][j][k]) {
+                        for (auto& m : l) {
                             wxDELETE(m);
                         }
                     }
@@ -1220,7 +1222,7 @@ void asMethodStandard::DeletePreloadedArchiveData() {
     m_preloaded = false;
 }
 
-bool asMethodStandard::GetRandomLevelValidData(asParameters *params, int iStep, int iPtor, int iPre, int iHour) {
+bool asMethodStandard::GetRandomLevelValidData(asParameters* params, int iStep, int iPtor, int iPre, int iHour) {
     vi levels;
 
     for (int iLevel = 0; iLevel < m_preloadedArchive[iStep][iPtor][iPre].size(); iLevel++) {
@@ -1242,7 +1244,7 @@ bool asMethodStandard::GetRandomLevelValidData(asParameters *params, int iStep, 
     return true;
 }
 
-bool asMethodStandard::GetRandomValidData(asParameters *params, int iStep, int iPtor, int iPre) {
+bool asMethodStandard::GetRandomValidData(asParameters* params, int iStep, int iPtor, int iPre) {
     vi levels, hours;
 
     for (int iLevel = 0; iLevel < m_preloadedArchive[iStep][iPtor][iPre].size(); iLevel++) {

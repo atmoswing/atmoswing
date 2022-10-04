@@ -39,14 +39,14 @@ using namespace std;
 #define M_PI 3.1415926535897932384626433832795
 #endif
 
-#define CONSTANT_E 2.71828182845904509080  // exp(1)
-#define CONSTANT_PI M_PI  // atan2(0,-1)
-#define CONSTANT_L10 2.30258509299404590109  // log(10)
+#define CONSTANT_E 2.71828182845904509080     // exp(1)
+#define CONSTANT_PI M_PI                      // atan2(0,-1)
+#define CONSTANT_L10 2.30258509299404590109   // log(10)
 #define CONSTANT_L10I 0.43429448190325176116  // 1/log(10)
-#define CONSTANT_L10E CONSTANT_L10I  // log10(e)
-#define CONSTANT_L10EI CONSTANT_L10  // 1/log10(e)
-#define CONSTANT_DR (180.0 / M_PI)  // 180/pi
-#define CONSTANT_RD (M_PI / 180.0)  // pi/180
+#define CONSTANT_L10E CONSTANT_L10I           // log10(e)
+#define CONSTANT_L10EI CONSTANT_L10           // 1/log10(e)
+#define CONSTANT_DR (180.0 / M_PI)            // 180/pi
+#define CONSTANT_RD (M_PI / 180.0)            // pi/180
 
 namespace {
 inline double Min(double d1, double d2) {
@@ -60,9 +60,11 @@ inline double Max(double d1, double d2) {
 class compres {
     // states: 0=false, 1=true, 2=unknown
   public:
-    compres(bool b) : state(b) {}
+    compres(bool b)
+        : state(b) {}
 
-    compres(char v) : state(v) {}
+    compres(char v)
+        : state(v) {}
 
     // is it?
     operator bool() const {
@@ -91,7 +93,7 @@ const compres maybe = (char)2;
 struct CodeTree;
 
 class SubTree {
-    CodeTree *tree;
+    CodeTree* tree;
     bool sign;  // Only possible when parent is cAdd or cMul
 
     inline void flipsign() {
@@ -103,39 +105,39 @@ class SubTree {
 
     SubTree(double value);
 
-    SubTree(const SubTree &b);
+    SubTree(const SubTree& b);
 
-    SubTree(const CodeTree &b);
+    SubTree(const CodeTree& b);
 
     ~SubTree();
 
-    const SubTree &operator=(const SubTree &b);
+    const SubTree& operator=(const SubTree& b);
 
-    const SubTree &operator=(const CodeTree &b);
+    const SubTree& operator=(const CodeTree& b);
 
     bool getsign() const {
         return sign;
     }
 
-    const CodeTree *operator->() const {
+    const CodeTree* operator->() const {
         return tree;
     }
 
-    const CodeTree &operator*() const {
+    const CodeTree& operator*() const {
         return *tree;
     }
 
-    struct CodeTree *operator->() {
+    struct CodeTree* operator->() {
         return tree;
     }
 
-    struct CodeTree &operator*() {
+    struct CodeTree& operator*() {
         return *tree;
     }
 
-    bool operator<(const SubTree &b) const;
+    bool operator<(const SubTree& b) const;
 
-    bool operator==(const SubTree &b) const;
+    bool operator==(const SubTree& b) const;
 
     void Negate();  // Note: Parent must be cAdd
     void Invert();  // Note: Parent must be cMul
@@ -145,9 +147,9 @@ class SubTree {
     void CheckConstInv();
 };
 
-bool IsNegate(const SubTree &p1, const SubTree &p2);
+bool IsNegate(const SubTree& p1, const SubTree& p2);
 
-bool IsInverse(const SubTree &p1, const SubTree &p2);
+bool IsInverse(const SubTree& p1, const SubTree& p2);
 
 typedef list<SubTree> paramlist;
 
@@ -161,7 +163,8 @@ struct CodeTreeData {
     unsigned funcno;  // In case of cFCall, cPCall
 
   public:
-    CodeTreeData() : op(cAdd) {}
+    CodeTreeData()
+        : op(cAdd) {}
 
     ~CodeTreeData() {}
 
@@ -201,7 +204,7 @@ struct CodeTreeData {
         return var;
     }
 
-    void AddParam(const SubTree &p) {
+    void AddParam(const SubTree& p) {
         args.push_back(p);
     }
 
@@ -264,12 +267,12 @@ struct CodeTreeData {
 
   protected:
     // Ensure we don't accidentally copy this
-    void operator=(const CodeTreeData &b);
+    void operator=(const CodeTreeData& b);
 };
 
 class CodeTreeDataPtr {
     typedef pair<CodeTreeData, unsigned> p_t;
-    typedef p_t *pp;
+    typedef p_t* pp;
     mutable pp p;
 
     void Alloc() const {
@@ -286,7 +289,7 @@ class CodeTreeDataPtr {
         if (p->second == 1) return;
 
         // Then make a clone.
-        p_t *newtree = new p_t(p->first, 1);
+        p_t* newtree = new p_t(p->first, 1);
         // Forget the old
         Dealloc();
         // Keep the new
@@ -294,11 +297,13 @@ class CodeTreeDataPtr {
     }
 
   public:
-    CodeTreeDataPtr() : p(new p_t) {
+    CodeTreeDataPtr()
+        : p(new p_t) {
         p->second = 1;
     }
 
-    CodeTreeDataPtr(const CodeTreeDataPtr &b) : p(b.p) {
+    CodeTreeDataPtr(const CodeTreeDataPtr& b)
+        : p(b.p) {
         Alloc();
     }
 
@@ -306,27 +311,27 @@ class CodeTreeDataPtr {
         Dealloc();
     }
 
-    const CodeTreeDataPtr &operator=(const CodeTreeDataPtr &b) {
+    const CodeTreeDataPtr& operator=(const CodeTreeDataPtr& b) {
         b.Alloc();
         Dealloc();
         p = b.p;
         return *this;
     }
 
-    const CodeTreeData *operator->() const {
+    const CodeTreeData* operator->() const {
         return &p->first;
     }
 
-    const CodeTreeData &operator*() const {
+    const CodeTreeData& operator*() const {
         return p->first;
     }
 
-    CodeTreeData *operator->() {
+    CodeTreeData* operator->() {
         PrepareForWrite();
         return &p->first;
     }
 
-    CodeTreeData &operator*() {
+    CodeTreeData& operator*() {
         PrepareForWrite();
         return p->first;
     }
@@ -366,18 +371,18 @@ struct CodeTree {
         return data->args.end();
     }
 
-    const SubTree &getp0() const { /*chk<1>();*/
+    const SubTree& getp0() const { /*chk<1>();*/
         pcit tmp = GetBegin();
         return *tmp;
     }
 
-    const SubTree &getp1() const { /*chk<2>();*/
+    const SubTree& getp1() const { /*chk<2>();*/
         pcit tmp = GetBegin();
         ++tmp;
         return *tmp;
     }
 
-    const SubTree &getp2() const { /*chk<3>();*/
+    const SubTree& getp2() const { /*chk<3>();*/
         pcit tmp = GetBegin();
         ++tmp;
         ++tmp;
@@ -392,18 +397,18 @@ struct CodeTree {
         data->args.erase(p);
     }
 
-    SubTree &getp0() { /*chk<1>();*/
+    SubTree& getp0() { /*chk<1>();*/
         pit tmp = GetBegin();
         return *tmp;
     }
 
-    SubTree &getp1() { /*chk<2>();*/
+    SubTree& getp1() { /*chk<2>();*/
         pit tmp = GetBegin();
         ++tmp;
         return *tmp;
     }
 
-    SubTree &getp2() { /*chk<3>();*/
+    SubTree& getp2() { /*chk<3>();*/
         pit tmp = GetBegin();
         ++tmp;
         ++tmp;
@@ -446,7 +451,7 @@ struct CodeTree {
     }
 
     // act
-    void AddParam(const SubTree &p) {
+    void AddParam(const SubTree& p) {
         data->AddParam(p);
     }
 
@@ -480,11 +485,11 @@ struct CodeTree {
 
     struct ConstList BuildConstList();
 
-    void KillConst(const ConstList &cl) {
+    void KillConst(const ConstList& cl) {
         for (list<pit>::const_iterator i = cl.cp.begin(); i != cl.cp.end(); ++i) Erase(*i);
     }
 
-    void FinishConst(const ConstList &cl) {
+    void FinishConst(const ConstList& cl) {
         if (cl.value != cl.voidvalue && cl.size() > 1) AddParam(cl.value);
         if (cl.value == cl.voidvalue || cl.size() > 1) KillConst(cl);
     }
@@ -496,20 +501,20 @@ struct CodeTree {
         SetImmed(v);
     }
 
-    CodeTree(unsigned op, const SubTree &p) {
+    CodeTree(unsigned op, const SubTree& p) {
         SetOp(op);
         AddParam(p);
     }
 
-    CodeTree(unsigned op, const SubTree &p1, const SubTree &p2) {
+    CodeTree(unsigned op, const SubTree& p1, const SubTree& p2) {
         SetOp(op);
         AddParam(p1);
         AddParam(p2);
     }
 
-    bool operator==(const CodeTree &b) const;
+    bool operator==(const CodeTree& b) const;
 
-    bool operator<(const CodeTree &b) const;
+    bool operator<(const CodeTree& b) const;
 
   private:
     bool IsSortable() const {
@@ -541,7 +546,7 @@ struct CodeTree {
          */
     }
 
-    void ReplaceWith(const CodeTree &b) {
+    void ReplaceWith(const CodeTree& b) {
         // If b is child of *this, mayhem
         // happens. So we first make a clone
         // and then proceed with copy.
@@ -550,11 +555,11 @@ struct CodeTree {
         data = tmp;
     }
 
-    void ReplaceWith(unsigned op, const SubTree &p) {
+    void ReplaceWith(unsigned op, const SubTree& p) {
         ReplaceWith(CodeTree(op, p));
     }
 
-    void ReplaceWith(unsigned op, const SubTree &p1, const SubTree &p2) {
+    void ReplaceWith(unsigned op, const SubTree& p1, const SubTree& p2) {
         ReplaceWith(CodeTree(op, p1, p2));
     }
 
@@ -566,8 +571,8 @@ struct CodeTree {
             pit a, b;
             for (a = GetBegin(); a != GetEnd(); ++a) {
                 for (b = GetBegin(); ++b != GetEnd();) {
-                    const SubTree &p1 = *a;
-                    const SubTree &p2 = *b;
+                    const SubTree& p1 = *a;
+                    const SubTree& p2 = *b;
 
                     if (GetOp() == cMul ? IsInverse(p1, p2) : IsNegate(p1, p2)) {
                         // These parameters complement each others out
@@ -611,11 +616,11 @@ struct CodeTree {
             // the constant and negate sign.
 
             for (pit a = GetBegin(); a != GetEnd(); ++a) {
-                SubTree &pa = *a;
+                SubTree& pa = *a;
                 if (pa.getsign() && pa->GetOp() == cMul) {
-                    CodeTree &p = *pa;
+                    CodeTree& p = *pa;
                     for (pit b = p.GetBegin(); b != p.GetEnd(); ++b) {
-                        SubTree &pb = *b;
+                        SubTree& pb = *b;
                         if (pb->IsImmed()) {
                             pb.Negate();
                             pa.Negate();
@@ -632,9 +637,9 @@ struct CodeTree {
             // the exponent and negate sign.
 
             for (pit a = GetBegin(); a != GetEnd(); ++a) {
-                SubTree &pa = *a;
+                SubTree& pa = *a;
                 if (pa.getsign() && pa->GetOp() == cPow) {
-                    CodeTree &p = *pa;
+                    CodeTree& p = *pa;
                     if (p.getp1()->IsImmed()) {
                         // negate ok for pow when op=cImmed
                         p.getp1().Negate();
@@ -676,14 +681,14 @@ struct CodeTree {
             }
 #define ConstantUnaryFun(token, fun)                              \
     case token: {                                                 \
-        const SubTree &p0 = getp0();                              \
+        const SubTree& p0 = getp0();                              \
         if (p0->IsImmed()) ReplaceWithConst(fun(p0->GetImmed())); \
         break;                                                    \
     }
 #define ConstantBinaryFun(token, fun)                                                              \
     case token: {                                                                                  \
-        const SubTree &p0 = getp0();                                                               \
-        const SubTree &p1 = getp1();                                                               \
+        const SubTree& p0 = getp0();                                                               \
+        const SubTree& p1 = getp1();                                                               \
         if (p0->IsImmed() && p1->IsImmed()) ReplaceWithConst(fun(p0->GetImmed(), p1->GetImmed())); \
         break;                                                                                     \
     }
@@ -745,14 +750,14 @@ struct CodeTree {
         if (GetOp() == cAdd || GetOp() == cMul) {
             // If children are same type as parent add them here
             for (pit b, a = GetBegin(); a != GetEnd(); a = b) {
-                const SubTree &pa = *a;
+                const SubTree& pa = *a;
                 b = a;
                 ++b;
                 if (pa->GetOp() != GetOp()) continue;
 
                 // Child is same type
                 for (pcit c = pa->GetBegin(); c != pa->GetEnd(); ++c) {
-                    const SubTree &pb = *c;
+                    const SubTree& pb = *c;
                     if (pa.getsign()) {
                         // +a -(+b +c)
                         // means b and c will be negated
@@ -789,12 +794,12 @@ struct CodeTree {
         if (GetOp() == cAdd || GetOp() == cMul) {
         Redo:
             for (pit a = GetBegin(); a != GetEnd(); ++a) {
-                const SubTree &pa = *a;
+                const SubTree& pa = *a;
 
                 list<pit> poslist;
 
                 for (pit b = a; ++b != GetEnd();) {
-                    const SubTree &pb = *b;
+                    const SubTree& pb = *b;
                     if (*pa == *pb) poslist.push_back(b);
                 }
 
@@ -867,7 +872,7 @@ struct CodeTree {
             // We should have one parameter for log() function.
             // If we don't, we're screwed.
 
-            const SubTree &p = getp0();
+            const SubTree& p = getp0();
 
             if (p->GetOp() == cPow) {
                 // Found log(x^y)
@@ -881,7 +886,7 @@ struct CodeTree {
                 ReplaceWith(cMul, tmp, p1);
             } else if (p->GetOp() == cMul) {
                 // Redefine &p nonconst
-                SubTree &p = getp0();
+                SubTree& p = getp0();
 
                 p->OptimizeAddMulFlat();
                 p->OptimizeExponents();
@@ -890,7 +895,7 @@ struct CodeTree {
                 list<SubTree> adds;
 
                 for (pit b, a = p->GetBegin(); a != p->GetEnd(); a = b) {
-                    SubTree &pa = *a;
+                    SubTree& pa = *a;
                     b = a;
                     ++b;
                     if (pa->GetOp() == cPow && pa->getp0()->IsImmed() && pa->getp0()->GetImmed() == CONSTANT_E) {
@@ -914,7 +919,7 @@ struct CodeTree {
             list<pit> poslist;
 
             for (pit a = GetBegin(); a != GetEnd(); ++a) {
-                const SubTree &pa = *a;
+                const SubTree& pa = *a;
                 if (pa->GetOp() == cLog) poslist.push_back(a);
             }
 
@@ -923,7 +928,7 @@ struct CodeTree {
 
                 list<pit>::const_iterator j;
                 for (j = poslist.begin(); j != poslist.end(); ++j) {
-                    const SubTree &pb = **j;
+                    const SubTree& pb = **j;
                     // Take all of its children
                     for (pcit b = pb->GetBegin(); b != pb->GetEnd(); ++b) {
                         SubTree tmp2 = *b;
@@ -939,8 +944,8 @@ struct CodeTree {
             // Done, hopefully
         }
         if (GetOp() == cPow) {
-            const SubTree &p0 = getp0();
-            SubTree &p1 = getp1();
+            const SubTree& p0 = getp0();
+            SubTree& p1 = getp1();
 
             if (p0->IsImmed() && p0->GetImmed() == CONSTANT_E && p1->GetOp() == cLog) {
                 // pow(const_E, log(x)) = x
@@ -956,7 +961,7 @@ struct CodeTree {
                 ConstList cl = p1->BuildConstList();
 
                 for (pit a = p1->GetBegin(); a != p1->GetEnd(); ++a) {
-                    const SubTree &pa = *a;
+                    const SubTree& pa = *a;
                     if (pa->GetOp() == cLog) {
                         if (!pa.getsign()) {
                             foundposlog = true;
@@ -1035,8 +1040,8 @@ struct CodeTree {
 
         // x^1 -> x
         if (GetOp() == cPow) {
-            const SubTree &base = getp0();
-            const SubTree &exponent = getp1();
+            const SubTree& base = getp0();
+            const SubTree& exponent = getp1();
 
             if (exponent->IsImmed()) {
                 if (exponent->GetImmed() == 1.0)
@@ -1061,8 +1066,8 @@ struct CodeTree {
         if (GetOp() == cPow) {
             // (x^y)^z   -> x^(y*z)
 
-            const SubTree &p0 = getp0();
-            const SubTree &p1 = getp1();
+            const SubTree& p0 = getp0();
+            const SubTree& p1 = getp1();
             if (p0->GetOp() == cPow) {
                 CodeTree tmp(cMul, p0->getp1(), p1);
                 tmp.Optimize();
@@ -1077,14 +1082,14 @@ struct CodeTree {
             // x^y * x^z -> x^(y+z)
 
             for (pit a = GetBegin(); a != GetEnd(); ++a) {
-                const SubTree &pa = *a;
+                const SubTree& pa = *a;
 
                 if (pa->GetOp() != cPow) continue;
 
                 list<pit> poslist;
 
                 for (pit b = a; ++b != GetEnd();) {
-                    const SubTree &pb = *b;
+                    const SubTree& pb = *b;
                     if (pb->GetOp() == cPow && *(pa->getp0()) == *(pb->getp0())) {
                         poslist.push_back(b);
                     }
@@ -1100,7 +1105,7 @@ struct CodeTree {
                     // Collect all exponents to cAdd
                     list<pit>::const_iterator i;
                     for (i = poslist.begin(); i != poslist.end(); ++i) {
-                        const SubTree &pb = **i;
+                        const SubTree& pb = **i;
 
                         SubTree tmp2 = pb->getp1();
                         if (pb.getsign()) tmp2.Invert();
@@ -1167,7 +1172,7 @@ struct CodeTree {
   public:
     void Optimize();
 
-    void Assemble(vector<unsigned> &byteCode, vector<double> &immed) const;
+    void Assemble(vector<unsigned>& byteCode, vector<double>& immed) const;
 
     void FinalOptimize() {
         // First optimize each parameter.
@@ -1186,8 +1191,8 @@ struct CodeTree {
          */
 
         if (GetOp() == cPow) {
-            const SubTree &p0 = getp0();
-            const SubTree &p1 = getp1();
+            const SubTree& p0 = getp0();
+            const SubTree& p1 = getp1();
             if (p0->GetOp() == cImmed && p0->GetImmed() == CONSTANT_E) {
                 ReplaceWith(cExp, p1);
             } else if (p1->GetOp() == cImmed && p1->GetImmed() == 0.5) {
@@ -1206,12 +1211,12 @@ struct CodeTree {
         }
         // Separate "if", because op may have just changed
         if (GetOp() == cMul) {
-            CodeTree *found_log = 0;
+            CodeTree* found_log = 0;
 
             ConstList cl = BuildConstList();
 
             for (pit a = GetBegin(); a != GetEnd(); ++a) {
-                SubTree &pa = *a;
+                SubTree& pa = *a;
                 if (pa->GetOp() == cLog && !pa.getsign()) found_log = &*pa;
             }
             if (cl.value == CONSTANT_L10I && found_log) {
@@ -1248,9 +1253,9 @@ CodeTree::ConstList CodeTree::BuildConstList() {
     ConstList result;
     result.value = result.voidvalue = GetOp() == cMul ? 1.0 : 0.0;
 
-    list<pit> &cp = result.cp;
+    list<pit>& cp = result.cp;
     for (pit b, a = GetBegin(); a != GetEnd(); a = b) {
-        SubTree &pa = *a;
+        SubTree& pa = *a;
         b = a;
         ++b;
         if (!pa->IsImmed()) continue;
@@ -1292,7 +1297,7 @@ CodeTree::ConstList CodeTree::BuildConstList() {
     return result;
 }
 
-void CodeTree::Assemble(vector<unsigned> &byteCode, vector<double> &immed) const {
+void CodeTree::Assemble(vector<unsigned>& byteCode, vector<double>& immed) const {
 #define AddCmd(op) byteCode.push_back((op))
 #define AddConst(v)                 \
     do {                            \
@@ -1314,7 +1319,7 @@ void CodeTree::Assemble(vector<unsigned> &byteCode, vector<double> &immed) const
         case cMul: {
             unsigned opcount = 0;
             for (pcit a = GetBegin(); a != GetEnd(); ++a) {
-                const SubTree &pa = *a;
+                const SubTree& pa = *a;
 
                 if (opcount < 2) ++opcount;
 
@@ -1387,7 +1392,7 @@ void CodeTree::Assemble(vector<unsigned> &byteCode, vector<double> &immed) const
         case cFCall: {
             // If the parameter count is invalid, we're screwed.
             for (pcit a = GetBegin(); a != GetEnd(); ++a) {
-                const SubTree &pa = *a;
+                const SubTree& pa = *a;
                 pa->Assemble(byteCode, immed);
             }
             AddCmd(GetOp());
@@ -1397,7 +1402,7 @@ void CodeTree::Assemble(vector<unsigned> &byteCode, vector<double> &immed) const
         case cPCall: {
             // If the parameter count is invalid, we're screwed.
             for (pcit a = GetBegin(); a != GetEnd(); ++a) {
-                const SubTree &pa = *a;
+                const SubTree& pa = *a;
                 pa->Assemble(byteCode, immed);
             }
             AddCmd(GetOp());
@@ -1407,7 +1412,7 @@ void CodeTree::Assemble(vector<unsigned> &byteCode, vector<double> &immed) const
         default: {
             // If the parameter count is invalid, we're screwed.
             for (pcit a = GetBegin(); a != GetEnd(); ++a) {
-                const SubTree &pa = *a;
+                const SubTree& pa = *a;
                 pa->Assemble(byteCode, immed);
             }
             AddCmd(GetOp());
@@ -1463,7 +1468,7 @@ void CodeTree::Optimize() {
     }
 }
 
-bool CodeTree::operator==(const CodeTree &b) const {
+bool CodeTree::operator==(const CodeTree& b) const {
     if (GetOp() != b.GetOp()) return false;
     if (IsImmed())
         if (GetImmed() != b.GetImmed()) return false;
@@ -1474,7 +1479,7 @@ bool CodeTree::operator==(const CodeTree &b) const {
     return data->args == b.data->args;
 }
 
-bool CodeTree::operator<(const CodeTree &b) const {
+bool CodeTree::operator<(const CodeTree& b) const {
     if (GetArgCount() != b.GetArgCount()) return GetArgCount() > b.GetArgCount();
 
     if (GetOp() != b.GetOp()) {
@@ -1503,7 +1508,7 @@ bool CodeTree::operator<(const CodeTree &b) const {
     return false;
 }
 
-bool IsNegate(const SubTree &p1, const SubTree &p2) /*const */
+bool IsNegate(const SubTree& p1, const SubTree& p2) /*const */
 {
     if (p1->IsImmed() && p2->IsImmed()) {
         return p1->GetImmed() == -p2->GetImmed();
@@ -1512,7 +1517,7 @@ bool IsNegate(const SubTree &p1, const SubTree &p2) /*const */
     return *p1 == *p2;
 }
 
-bool IsInverse(const SubTree &p1, const SubTree &p2) /*const*/
+bool IsInverse(const SubTree& p1, const SubTree& p2) /*const*/
 {
     if (p1->IsImmed() && p2->IsImmed()) {
         // FIXME: potential divide by zero.
@@ -1522,14 +1527,18 @@ bool IsInverse(const SubTree &p1, const SubTree &p2) /*const*/
     return *p1 == *p2;
 }
 
-SubTree::SubTree() : tree(new CodeTree), sign(false) {}
+SubTree::SubTree()
+    : tree(new CodeTree),
+      sign(false) {}
 
-SubTree::SubTree(const SubTree &b) : tree(new CodeTree(*b.tree)), sign(b.sign) {}
+SubTree::SubTree(const SubTree& b)
+    : tree(new CodeTree(*b.tree)),
+      sign(b.sign) {}
 
 #define SubTreeDecl(p1, p2) \
     SubTree::SubTree p1 : tree(new CodeTree p2), sign(false) {}
 
-SubTreeDecl((const CodeTree &b), (b))
+SubTreeDecl((const CodeTree& b), (b))
 
     SubTreeDecl((double value), (value))
 #undef SubTreeDecl
@@ -1539,28 +1548,28 @@ SubTreeDecl((const CodeTree &b), (b))
     tree = 0;
 }
 
-const SubTree &SubTree::operator=(const SubTree &b) {
+const SubTree& SubTree::operator=(const SubTree& b) {
     sign = b.sign;
-    CodeTree *oldtree = tree;
+    CodeTree* oldtree = tree;
     tree = new CodeTree(*b.tree);
     delete oldtree;
     return *this;
 }
 
-const SubTree &SubTree::operator=(const CodeTree &b) {
+const SubTree& SubTree::operator=(const CodeTree& b) {
     sign = false;
-    CodeTree *oldtree = tree;
+    CodeTree* oldtree = tree;
     tree = new CodeTree(b);
     delete oldtree;
     return *this;
 }
 
-bool SubTree::operator<(const SubTree &b) const {
+bool SubTree::operator<(const SubTree& b) const {
     if (getsign() != b.getsign()) return getsign() < b.getsign();
     return *tree < *b.tree;
 }
 
-bool SubTree::operator==(const SubTree &b) const {
+bool SubTree::operator==(const SubTree& b) const {
     return sign == b.sign && *tree == *b.tree;
 }
 
@@ -1592,9 +1601,9 @@ void SubTree::CheckConstInv() {
 
 }  // namespace
 
-void FunctionParser::MakeTree(void *r) const {
+void FunctionParser::MakeTree(void* r) const {
     // Dirty hack. Should be fixed.
-    CodeTree *result = static_cast<CodeTree *>(r);
+    CodeTree* result = static_cast<CodeTree*>(r);
 
     vector<CodeTree> stack(1);
 
@@ -1625,9 +1634,9 @@ void FunctionParser::MakeTree(void *r) const {
 
     list<unsigned> labels;
 
-    const unsigned *const ByteCode = data->ByteCode;
+    const unsigned* const ByteCode = data->ByteCode;
     const unsigned ByteCodeSize = data->ByteCodeSize;
-    const double *const Immed = data->Immed;
+    const double* const Immed = data->Immed;
 
     for (unsigned IP = 0, DP = 0;; ++IP) {
         while (labels.size() > 0 && *labels.begin() == IP) {
@@ -1722,7 +1731,7 @@ void FunctionParser::MakeTree(void *r) const {
                     // assert(opcode >= cAbs);
                     unsigned funcno = opcode - cAbs;
                     assert(funcno < sizeof(Functions) / sizeof(Functions[0]));
-                    const FuncDefinition &func = Functions[funcno];
+                    const FuncDefinition& func = Functions[funcno];
 
                     // const FuncDefinition& func = Functions[opcode-cAbs];
 

@@ -54,7 +54,7 @@ class AtmoswingAppDownscaler : public wxAppConsole
 
     void CleanUp();
 
-    virtual void OnInitCmdLine(wxCmdLineParser &parser);
+    virtual void OnInitCmdLine(wxCmdLineParser& parser);
 
     wxString GetLocalPath();
 
@@ -64,7 +64,7 @@ class AtmoswingAppDownscaler : public wxAppConsole
 
     bool InitForCmdLineOnly();
 
-    virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
+    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
 
     virtual bool OnExceptionInMainLoop();
 
@@ -81,7 +81,7 @@ class AtmoswingAppDownscaler : public wxAppConsole
     vi m_predictandStationIds;
     bool m_doProcessing;
 #if USE_GUI
-    wxSingleInstanceChecker *m_singleInstanceChecker;
+    wxSingleInstanceChecker* m_singleInstanceChecker;
 #endif
 };
 

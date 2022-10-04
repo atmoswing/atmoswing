@@ -52,7 +52,7 @@
 // Comment out the following line if your compiler supports the (non-standard)
 // asinh, acosh and atanh functions and you want them to be supported. If
 // you are not sure, just leave it (those function will then not be supported).
-//#define NO_ASINH
+// #define NO_ASINH
 #if defined(__BORLANDC__)  // || defined(__VISUALC__)  // || defined(__WATCOMC__)
 
 // use our own asin/cos/tanh functions from since compilier doesn't have them
@@ -113,11 +113,12 @@ using namespace FUNCTIONPARSERTYPES;
 // ----------------------------------------------------------------------------
 // wxFunctionParser - a thin wrapper around FunctionParser
 // ----------------------------------------------------------------------------
-wxFunctionParser::wxFunctionParser() : m_ok(false) {
+wxFunctionParser::wxFunctionParser()
+    : m_ok(false) {
     m_functionParser = new FunctionParser;
 }
 
-wxFunctionParser::wxFunctionParser(const wxFunctionParser &fP) {
+wxFunctionParser::wxFunctionParser(const wxFunctionParser& fP) {
     m_functionParser = new FunctionParser(*fP.GetFunctionParser());
     m_function = fP.GetFunctionString();
     m_variables = fP.GetVariableString();
@@ -128,12 +129,12 @@ wxFunctionParser::~wxFunctionParser() {
     delete m_functionParser;
 }
 
-int wxFunctionParser::Parse(const wxString &function, const wxString &vars, bool useDegrees) {
+int wxFunctionParser::Parse(const wxString& function, const wxString& vars, bool useDegrees) {
     m_function = function;
     m_variables = vars;
 
-    std::string Function = (const char *)wxConvUTF8.cWX2MB(function.c_str());
-    std::string Vars = (const char *)wxConvUTF8.cWX2MB(vars.c_str());
+    std::string Function = (const char*)wxConvUTF8.cWX2MB(function.c_str());
+    std::string Vars = (const char*)wxConvUTF8.cWX2MB(vars.c_str());
 
     int ret = m_functionParser->Parse(Function, Vars, useDegrees);
     m_ok = (ret == -1) && ErrorMsg().IsEmpty();
@@ -142,7 +143,7 @@ int wxFunctionParser::Parse(const wxString &function, const wxString &vars, bool
 }
 
 wxString wxFunctionParser::ErrorMsg() const {
-    const char *msg = m_functionParser->ErrorMsg();
+    const char* msg = m_functionParser->ErrorMsg();
     if (!msg) return wxEmptyString;
 
     return wxConvUTF8.cMB2WX(msg);
@@ -152,7 +153,7 @@ wxFunctionParser::ParseErrorType wxFunctionParser::GetParseErrorType() const {
     return (wxFunctionParser::ParseErrorType)m_functionParser->GetParseErrorType();
 }
 
-double wxFunctionParser::Eval(const double *Vars) {
+double wxFunctionParser::Eval(const double* Vars) {
     return m_functionParser->Eval(Vars);
 }
 
@@ -160,18 +161,18 @@ int wxFunctionParser::EvalError() const {
     return m_functionParser->EvalError();
 }
 
-bool wxFunctionParser::AddConstant(const wxString &name, double value) {
-    std::string Name = (const char *)wxConvUTF8.cWX2MB(name.c_str());
+bool wxFunctionParser::AddConstant(const wxString& name, double value) {
+    std::string Name = (const char*)wxConvUTF8.cWX2MB(name.c_str());
     return m_functionParser->AddConstant(Name, value);
 }
 
-bool wxFunctionParser::AddFunction(const wxString &name, FunctionPtr fP, unsigned paramsAmount) {
-    std::string Name = (const char *)wxConvUTF8.cWX2MB(name.c_str());
+bool wxFunctionParser::AddFunction(const wxString& name, FunctionPtr fP, unsigned paramsAmount) {
+    std::string Name = (const char*)wxConvUTF8.cWX2MB(name.c_str());
     return m_functionParser->AddFunction(Name, fP, paramsAmount);
 }
 
-bool wxFunctionParser::AddFunction(const wxString &name, wxFunctionParser &fP) {
-    std::string Name = (const char *)wxConvUTF8.cWX2MB(name.c_str());
+bool wxFunctionParser::AddFunction(const wxString& name, wxFunctionParser& fP) {
+    std::string Name = (const char*)wxConvUTF8.cWX2MB(name.c_str());
     return m_functionParser->AddFunction(Name, *fP.GetFunctionParser());
 }
 
@@ -200,7 +201,7 @@ wxString wxFunctionParser::GetVariableName(size_t n) const {
     return wxEmptyString;
 }
 
-wxFunctionParser &wxFunctionParser::operator=(const wxFunctionParser &cpy) {
+wxFunctionParser& wxFunctionParser::operator=(const wxFunctionParser& cpy) {
     *m_functionParser = *cpy.GetFunctionParser();
     m_function = cpy.GetFunctionString();
     m_variables = cpy.GetVariableString();
@@ -232,10 +233,10 @@ const unsigned FUNC_AMOUNT = sizeof(Functions) / sizeof(Functions[0]);
 
 // BCB4 does not implement the standard lower_bound function.
 // This is used instead:
-const FuncDefinition *fp_lower_bound(const FuncDefinition *first, const FuncDefinition *last,
-                                     const FuncDefinition &value) {
+const FuncDefinition* fp_lower_bound(const FuncDefinition* first, const FuncDefinition* last,
+                                     const FuncDefinition& value) {
     while (first < last) {
-        const FuncDefinition *middle = first + (last - first) / 2;
+        const FuncDefinition* middle = first + (last - first) / 2;
         if (*middle < value)
             first = middle + 1;
         else
@@ -247,11 +248,11 @@ const FuncDefinition *fp_lower_bound(const FuncDefinition *first, const FuncDefi
 // Returns a pointer to the FuncDefinition instance which 'name' is
 // the same as the one given by 'F'. If no such function name exists,
 // returns 0.
-inline const FuncDefinition *FindFunction(const char *F) {
+inline const FuncDefinition* FindFunction(const char* F) {
     FuncDefinition func = {F, 0, 0, 0};
     while (isalnum(F[func.nameLength])) ++func.nameLength;
     if (func.nameLength) {
-        const FuncDefinition *found = fp_lower_bound(Functions, Functions + FUNC_AMOUNT, func);
+        const FuncDefinition* found = fp_lower_bound(Functions, Functions + FUNC_AMOUNT, func);
         if (found == Functions + FUNC_AMOUNT || func < *found) return 0;
         return found;
     }
@@ -264,7 +265,7 @@ inline const FuncDefinition *FindFunction(const char *F) {
 //---------------------------------------------------------------------------
 void FunctionParser::copyOnWrite() {
     if (data->referenceCounter > 1) {
-        Data *oldData = data;
+        Data* oldData = data;
         data = new Data(*oldData);
         --(oldData->referenceCounter);
         data->referenceCounter = 1;
@@ -289,7 +290,7 @@ FunctionParser::~FunctionParser() {
     }
 }
 
-FunctionParser::FunctionParser(const FunctionParser &cpy)
+FunctionParser::FunctionParser(const FunctionParser& cpy)
     : parseErrorType(cpy.parseErrorType),
       evalErrorType(cpy.evalErrorType),
       data(cpy.data),
@@ -297,7 +298,7 @@ FunctionParser::FunctionParser(const FunctionParser &cpy)
     ++(data->referenceCounter);
 }
 
-FunctionParser &FunctionParser::operator=(const FunctionParser &cpy) {
+FunctionParser& FunctionParser::operator=(const FunctionParser& cpy) {
     if (data != cpy.data) {
         if (--(data->referenceCounter) == 0) delete data;
 
@@ -337,7 +338,7 @@ FunctionParser::Data::~Data() {
 }
 
 // Makes a deep-copy of Data:
-FunctionParser::Data::Data(const Data &cpy)
+FunctionParser::Data::Data(const Data& cpy)
     : varAmount(cpy.varAmount),
       useDegreeConversion(cpy.useDegreeConversion),
       Variables(cpy.Variables),
@@ -369,7 +370,7 @@ FunctionParser::Data::Data(const Data &cpy)
 //===========================================================================
 namespace {
 // Error messages returned by ErrorMsg():
-const char *ParseErrorMessage[] = {"Syntax error",                     // 0
+const char* ParseErrorMessage[] = {"Syntax error",                     // 0
                                    "Mismatched parenthesis",           // 1
                                    "Missing ')'",                      // 2
                                    "Empty parentheses",                // 3
@@ -385,7 +386,7 @@ const char *ParseErrorMessage[] = {"Syntax error",                     // 0
                                    ""};
 
 // Parse variables
-bool ParseVars(const string &Vars, map<string, unsigned> &dest) {
+bool ParseVars(const string& Vars, map<string, unsigned>& dest) {
     unsigned varNumber = VarBegin;
     unsigned ind1 = 0, ind2;
 
@@ -403,7 +404,7 @@ bool ParseVars(const string &Vars, map<string, unsigned> &dest) {
 }
 }  // namespace
 
-bool FunctionParser::isValidName(const std::string &name) const {
+bool FunctionParser::isValidName(const std::string& name) const {
     if (name.empty() || (!isalpha(name[0]) && name[0] != '_')) return false;
     for (unsigned i = 0; i < name.size(); ++i)
         if (!isalnum(name[i]) && name[i] != '_') return false;
@@ -414,9 +415,9 @@ bool FunctionParser::isValidName(const std::string &name) const {
 }
 
 // Constants:
-bool FunctionParser::AddConstant(const string &name, double value) {
+bool FunctionParser::AddConstant(const string& name, double value) {
     if (isValidName(name)) {
-        const char *n = name.c_str();
+        const char* n = name.c_str();
         if (FindVariable(n, data->FuncParserNames) != data->FuncParserNames.end() ||
             FindVariable(n, data->FuncPtrNames) != data->FuncPtrNames.end())
             return false;
@@ -430,9 +431,9 @@ bool FunctionParser::AddConstant(const string &name, double value) {
 }
 
 // Function pointers
-bool FunctionParser::AddFunction(const std::string &name, FunctionPtr func, unsigned paramsAmount) {
+bool FunctionParser::AddFunction(const std::string& name, FunctionPtr func, unsigned paramsAmount) {
     if (isValidName(name)) {
-        const char *n = name.c_str();
+        const char* n = name.c_str();
         if (FindVariable(n, data->FuncParserNames) != data->FuncParserNames.end() ||
             FindConstant(n) != data->Constants.end())
             return false;
@@ -446,16 +447,16 @@ bool FunctionParser::AddFunction(const std::string &name, FunctionPtr func, unsi
     return false;
 }
 
-bool FunctionParser::checkRecursiveLinking(const FunctionParser *fp) const {
+bool FunctionParser::checkRecursiveLinking(const FunctionParser* fp) const {
     if (fp == this) return true;
     for (unsigned i = 0; i < fp->data->FuncParsers.size(); ++i)
         if (checkRecursiveLinking(fp->data->FuncParsers[i])) return true;
     return false;
 }
 
-bool FunctionParser::AddFunction(const std::string &name, FunctionParser &parser) {
+bool FunctionParser::AddFunction(const std::string& name, FunctionParser& parser) {
     if (isValidName(name)) {
-        const char *n = name.c_str();
+        const char* n = name.c_str();
         if (FindVariable(n, data->FuncPtrNames) != data->FuncPtrNames.end() || FindConstant(n) != data->Constants.end())
             return false;
 
@@ -472,7 +473,7 @@ bool FunctionParser::AddFunction(const std::string &name, FunctionParser &parser
 
 // Main parsing function
 // ---------------------
-int FunctionParser::Parse(const std::string &Function, const std::string &Vars, bool useDegrees) {
+int FunctionParser::Parse(const std::string& Function, const std::string& Vars, bool useDegrees) {
     copyOnWrite();
 
     data->Variables.clear();
@@ -483,7 +484,7 @@ int FunctionParser::Parse(const std::string &Function, const std::string &Vars, 
     }
     data->varAmount = data->Variables.size();  // this is for Eval()
 
-    const char *Func = Function.c_str();
+    const char* Func = Function.c_str();
 
     parseErrorType = FP_NO_ERROR;
 
@@ -501,13 +502,13 @@ int FunctionParser::Parse(const std::string &Function, const std::string &Vars, 
 }
 
 namespace {
-const char *const fpOperators[] = {"+", "-", "*", "/", "%", "^", "=", "!=", "<=", "<", ">=", ">", "&", "|", 0};
+const char* const fpOperators[] = {"+", "-", "*", "/", "%", "^", "=", "!=", "<=", "<", ">=", ">", "&", "|", 0};
 
 // Is given char an operator?
 // (Returns 0 if not, else the size of the operator)
-inline int IsOperator(const char *F) {
+inline int IsOperator(const char* F) {
     for (unsigned opInd = 0; fpOperators[opInd]; ++opInd) {
-        const char *op = fpOperators[opInd];
+        const char* op = fpOperators[opInd];
         for (unsigned n = 0; F[n] == *op; ++n) {
             ++op;
             if (*op == 0) return op - fpOperators[opInd];
@@ -517,15 +518,15 @@ inline int IsOperator(const char *F) {
 }
 
 // skip whitespace
-inline void sws(const char *F, int &Ind) {
+inline void sws(const char* F, int& Ind) {
     while (F[Ind] && isspace(F[Ind])) ++Ind;
 }
 }  // namespace
 
 // Returns an iterator to the variable with the same name as 'F', or to
 // Variables.end() if no such variable exists:
-inline FunctionParser::Data::VarMap_t::const_iterator FunctionParser::FindVariable(const char *F,
-                                                                                   const Data::VarMap_t &vars) const {
+inline FunctionParser::Data::VarMap_t::const_iterator FunctionParser::FindVariable(const char* F,
+                                                                                   const Data::VarMap_t& vars) const {
     if (vars.size()) {
         unsigned ind = 0;
         while (isalnum(F[ind]) || F[ind] == '_') ++ind;
@@ -537,7 +538,7 @@ inline FunctionParser::Data::VarMap_t::const_iterator FunctionParser::FindVariab
     return vars.end();
 }
 
-inline FunctionParser::Data::ConstMap_t::const_iterator FunctionParser::FindConstant(const char *F) const {
+inline FunctionParser::Data::ConstMap_t::const_iterator FunctionParser::FindConstant(const char* F) const {
     if (data->Constants.size()) {
         unsigned ind = 0;
         while (isalnum(F[ind]) || F[ind] == '_') ++ind;
@@ -552,16 +553,16 @@ inline FunctionParser::Data::ConstMap_t::const_iterator FunctionParser::FindCons
 //---------------------------------------------------------------------------
 // Check function string syntax
 // ----------------------------
-int FunctionParser::CheckSyntax(const char *Function) {
-    const Data::VarMap_t &Variables = data->Variables;
-    const Data::ConstMap_t &Constants = data->Constants;
-    const Data::VarMap_t &FuncPtrNames = data->FuncPtrNames;
-    const Data::VarMap_t &FuncParserNames = data->FuncParserNames;
+int FunctionParser::CheckSyntax(const char* Function) {
+    const Data::VarMap_t& Variables = data->Variables;
+    const Data::ConstMap_t& Constants = data->Constants;
+    const Data::VarMap_t& FuncPtrNames = data->FuncPtrNames;
+    const Data::VarMap_t& FuncParserNames = data->FuncParserNames;
 
     vector<int> functionParenthDepth;
 
     int Ind = 0, ParenthCnt = 0, c;
-    char *Ptr;
+    char* Ptr;
 
     while (true) {
         sws(Function, Ind);
@@ -581,7 +582,7 @@ int FunctionParser::CheckSyntax(const char *Function) {
 
         // Check for math function
         bool foundFunc = false;
-        const FuncDefinition *fptr = FindFunction(&Function[Ind]);
+        const FuncDefinition* fptr = FindFunction(&Function[Ind]);
         if (fptr) {
             Ind += fptr->nameLength;
             foundFunc = true;
@@ -703,7 +704,7 @@ int FunctionParser::CheckSyntax(const char *Function) {
 
 // Compile function string to bytecode
 // -----------------------------------
-bool FunctionParser::Compile(const char *Function) {
+bool FunctionParser::Compile(const char* Function) {
     if (data->ByteCode) {
         delete[] data->ByteCode;
         data->ByteCode = 0;
@@ -789,7 +790,7 @@ inline void FunctionParser::incStackPtr() {
 }
 
 // Compile if()
-int FunctionParser::CompileIf(const char *F, int ind) {
+int FunctionParser::CompileIf(const char* F, int ind) {
     int ind2 = CompileExpression(F, ind, true);  // condition
     sws(F, ind2);
     if (F[ind2] != ',') {
@@ -833,7 +834,7 @@ int FunctionParser::CompileIf(const char *F, int ind) {
     return ind2 + 1;
 }
 
-int FunctionParser::CompileFunctionParams(const char *F, int ind, unsigned requiredParams) {
+int FunctionParser::CompileFunctionParams(const char* F, int ind, unsigned requiredParams) {
     int ind2 = ind;
     if (requiredParams > 0) {
         unsigned curStackPtr = StackPtr;
@@ -854,7 +855,7 @@ int FunctionParser::CompileFunctionParams(const char *F, int ind, unsigned requi
 }
 
 // Compiles element
-int FunctionParser::CompileElement(const char *F, int ind) {
+int FunctionParser::CompileElement(const char* F, int ind) {
     sws(F, ind);
     char c = F[ind];
 
@@ -866,8 +867,8 @@ int FunctionParser::CompileElement(const char *F, int ind) {
 
     if (isdigit(c) || c == '.' /*|| c=='-'*/)  // Number
     {
-        const char *startPtr = &F[ind];
-        char *endPtr;
+        const char* startPtr = &F[ind];
+        char* endPtr;
         double val = strtod(startPtr, &endPtr);
         AddImmediate(val);
         AddCompiledByte(cImmed);
@@ -877,7 +878,7 @@ int FunctionParser::CompileElement(const char *F, int ind) {
 
     if (isalpha(c) || c == '_')  // Function, variable or constant
     {
-        const FuncDefinition *func = FindFunction(F + ind);
+        const FuncDefinition* func = FindFunction(F + ind);
         if (func)  // is function
         {
             int ind2 = ind + func->nameLength;
@@ -950,7 +951,7 @@ int FunctionParser::CompileElement(const char *F, int ind) {
 }
 
 // Compiles '^'
-int FunctionParser::CompilePow(const char *F, int ind) {
+int FunctionParser::CompilePow(const char* F, int ind) {
     int ind2 = CompileElement(F, ind);
     sws(F, ind2);
 
@@ -965,7 +966,7 @@ int FunctionParser::CompilePow(const char *F, int ind) {
 }
 
 // Compiles unary '-'
-int FunctionParser::CompileUnaryMinus(const char *F, int ind) {
+int FunctionParser::CompileUnaryMinus(const char* F, int ind) {
     sws(F, ind);
     if (F[ind] == '-' || F[ind] == '!') {
         int ind2 = ind + 1;
@@ -992,7 +993,7 @@ int FunctionParser::CompileUnaryMinus(const char *F, int ind) {
 }
 
 // Compiles '*', '/' and '%'
-int FunctionParser::CompileMult(const char *F, int ind) {
+int FunctionParser::CompileMult(const char* F, int ind) {
     int ind2 = CompileUnaryMinus(F, ind);
     sws(F, ind2);
     char op;
@@ -1018,7 +1019,7 @@ int FunctionParser::CompileMult(const char *F, int ind) {
 }
 
 // Compiles '+' and '-'
-int FunctionParser::CompileAddition(const char *F, int ind) {
+int FunctionParser::CompileAddition(const char* F, int ind) {
     int ind2 = CompileMult(F, ind);
     sws(F, ind2);
     char op;
@@ -1034,7 +1035,7 @@ int FunctionParser::CompileAddition(const char *F, int ind) {
 }
 
 // Compiles '=', '<' and '>'
-int FunctionParser::CompileComparison(const char *F, int ind) {
+int FunctionParser::CompileComparison(const char* F, int ind) {
     int ind2 = CompileAddition(F, ind);
     sws(F, ind2);
     char op;
@@ -1064,7 +1065,7 @@ int FunctionParser::CompileComparison(const char *F, int ind) {
 }
 
 // Compiles '&'
-int FunctionParser::CompileAnd(const char *F, int ind) {
+int FunctionParser::CompileAnd(const char* F, int ind) {
     int ind2 = CompileComparison(F, ind);
     sws(F, ind2);
 
@@ -1079,7 +1080,7 @@ int FunctionParser::CompileAnd(const char *F, int ind) {
 }
 
 // Compiles '|'
-int FunctionParser::CompileOr(const char *F, int ind) {
+int FunctionParser::CompileOr(const char* F, int ind) {
     int ind2 = CompileAnd(F, ind);
     sws(F, ind2);
 
@@ -1094,7 +1095,7 @@ int FunctionParser::CompileOr(const char *F, int ind) {
 }
 
 // Compiles ','
-int FunctionParser::CompileExpression(const char *F, int ind, bool stopAtComma) {
+int FunctionParser::CompileExpression(const char* F, int ind, bool stopAtComma) {
     int ind2 = CompileOr(F, ind);
     sws(F, ind2);
 
@@ -1110,7 +1111,7 @@ int FunctionParser::CompileExpression(const char *F, int ind, bool stopAtComma) 
 
 // Return parse error message
 // --------------------------
-const char *FunctionParser::ErrorMsg() const {
+const char* FunctionParser::ErrorMsg() const {
     if (parseErrorType != FP_NO_ERROR) return ParseErrorMessage[parseErrorType];
     return 0;
 }
@@ -1141,10 +1142,10 @@ inline double RadiansToDegrees(double radians) {
 }
 }  // namespace
 
-double FunctionParser::Eval(const double *Vars) {
-    const unsigned *const ByteCode = data->ByteCode;
-    const double *const Immed = data->Immed;
-    double *const Stack = data->Stack;
+double FunctionParser::Eval(const double* Vars) {
+    const unsigned* const ByteCode = data->ByteCode;
+    const double* const Immed = data->Immed;
+    double* const Stack = data->Stack;
     const unsigned ByteCodeSize = data->ByteCodeSize;
     unsigned IP, DP = 0;
     int SP = -1;
@@ -1475,7 +1476,7 @@ double FunctionParser::Eval(const double *Vars) {
 
 #ifdef FUNCTIONPARSER_SUPPORT_DEBUG_OUTPUT
 namespace {
-inline void printHex(std::ostream &dest, unsigned n) {
+inline void printHex(std::ostream& dest, unsigned n) {
     dest.width(8);
     dest.fill('0');
     hex(dest);  // uppercase(dest);
@@ -1483,9 +1484,9 @@ inline void printHex(std::ostream &dest, unsigned n) {
 }
 }  // namespace
 
-void FunctionParser::PrintByteCode(std::ostream &dest) const {
-    const unsigned *const ByteCode = data->ByteCode;
-    const double *const Immed = data->Immed;
+void FunctionParser::PrintByteCode(std::ostream& dest) const {
+    const unsigned* const ByteCode = data->ByteCode;
+    const double* const Immed = data->Immed;
 
     for (unsigned IP = 0, DP = 0; IP < data->ByteCodeSize; ++IP) {
         printHex(dest, IP);
@@ -1622,7 +1623,7 @@ void FunctionParser::PrintByteCode(std::ostream &dest) const {
 #endif
 
 #ifndef SUPPORT_OPTIMIZER
-void FunctionParser::MakeTree(void *) const {}
+void FunctionParser::MakeTree(void*) const {}
 void FunctionParser::Optimize() {
     // Do nothing if no optimizations are supported.
 }

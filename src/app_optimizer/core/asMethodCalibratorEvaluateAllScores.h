@@ -38,7 +38,7 @@ class asMethodCalibratorEvaluateAllScores : public asMethodCalibrator {
     ~asMethodCalibratorEvaluateAllScores() override;
 
   protected:
-    bool Calibrate(asParametersCalibration &params) override;
+    bool Calibrate(asParametersCalibration& params) override;
 
   private:
 };

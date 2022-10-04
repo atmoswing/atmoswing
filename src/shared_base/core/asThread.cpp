@@ -27,7 +27,10 @@
 
 #include "asThread.h"
 
-asThread::asThread(Type type) : wxThread(wxTHREAD_DETACHED), m_type(type), m_device(0) {}
+asThread::asThread(Type type)
+    : wxThread(wxTHREAD_DETACHED),
+      m_type(type),
+      m_device(0) {}
 
 wxThread::ExitCode asThread::Entry() {
     return nullptr;

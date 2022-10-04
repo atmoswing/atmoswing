@@ -40,14 +40,14 @@ vrLayerVectorFcstDots::vrLayerVectorFcstDots() {
 
 vrLayerVectorFcstDots::~vrLayerVectorFcstDots() {}
 
-long vrLayerVectorFcstDots::AddFeature(OGRGeometry *geometry, void *data) {
+long vrLayerVectorFcstDots::AddFeature(OGRGeometry* geometry, void* data) {
     wxASSERT(m_layer);
-    OGRFeature *feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
+    OGRFeature* feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
     wxASSERT(m_layer);
     feature->SetGeometry(geometry);
 
     if (data != nullptr) {
-        wxArrayDouble *dataArray = (wxArrayDouble *)data;
+        wxArrayDouble* dataArray = (wxArrayDouble*)data;
         wxASSERT(dataArray->GetCount() == 4);
 
         for (int iDat = 0; iDat < dataArray->size(); iDat++) {
@@ -67,17 +67,17 @@ long vrLayerVectorFcstDots::AddFeature(OGRGeometry *geometry, void *data) {
     return featureID;
 }
 
-void vrLayerVectorFcstDots::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometry *geometry,
-                                       const wxRect2DDouble &coord, const vrRender *render, vrLabel *label,
+void vrLayerVectorFcstDots::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry,
+                                       const wxRect2DDouble& coord, const vrRender* render, vrLabel* label,
                                        double pxsize) {
     // Set the defaut pen
     wxASSERT(render->GetType() == vrRENDER_VECTOR);
-    vrRenderVector *renderVector = (vrRenderVector *)render;
+    vrRenderVector* renderVector = (vrRenderVector*)render;
     wxPen defaultPen(renderVector->GetColorPen(), renderVector->GetSize());
     wxPen selPen(*wxGREEN, 3);
 
     // Get graphics context
-    wxGraphicsContext *gc = dc->GetGraphicsContext();
+    wxGraphicsContext* gc = dc->GetGraphicsContext();
     wxASSERT(gc);
 
     if (gc) {
@@ -91,7 +91,7 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometr
         gc->SetFont(defFont, renderVector->GetColorPen());
 
         // Get geometries
-        OGRPoint *geom = (OGRPoint *)geometry;
+        OGRPoint* geom = (OGRPoint*)geometry;
 
         wxPoint point = _GetPointFromReal(wxPoint2DDouble(geom->getX(), geom->getY()), coord.GetLeftTop(), pxsize);
 
@@ -128,13 +128,13 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometr
     return;
 }
 
-void vrLayerVectorFcstDots::_CreatePath(wxGraphicsPath &path, const wxPoint &center) {
+void vrLayerVectorFcstDots::_CreatePath(wxGraphicsPath& path, const wxPoint& center) {
     const wxDouble radius = 15 * g_ppiScaleDc;
 
     path.AddCircle(center.x, center.y, radius);
 }
 
-void vrLayerVectorFcstDots::_Paint(wxGraphicsContext *gdc, wxGraphicsPath &path, double value) {
+void vrLayerVectorFcstDots::_Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value) {
     // wxColour colour(255,0,0); -> red
     // wxColour colour(0,0,255); -> blue
     // wxColour colour(0,255,0); -> green
@@ -167,7 +167,7 @@ void vrLayerVectorFcstDots::_Paint(wxGraphicsContext *gdc, wxGraphicsPath &path,
     gdc->DrawPath(path);
 }
 
-void vrLayerVectorFcstDots::_AddLabel(wxGraphicsContext *gdc, const wxPoint &center, double value) {
+void vrLayerVectorFcstDots::_AddLabel(wxGraphicsContext* gdc, const wxPoint& center, double value) {
     wxString label = wxString::Format("%1.1f", value);
     wxDouble w, h;
     gdc->GetTextExtent(label, &w, &h);

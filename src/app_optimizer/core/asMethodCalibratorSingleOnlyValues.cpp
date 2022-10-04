@@ -28,11 +28,12 @@
 
 #include "asMethodCalibratorSingleOnlyValues.h"
 
-asMethodCalibratorSingleOnlyValues::asMethodCalibratorSingleOnlyValues() : asMethodCalibrator() {}
+asMethodCalibratorSingleOnlyValues::asMethodCalibratorSingleOnlyValues()
+    : asMethodCalibrator() {}
 
 asMethodCalibratorSingleOnlyValues::~asMethodCalibratorSingleOnlyValues() {}
 
-bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &params) {
+bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration& params) {
     // Check that we really handle a single case
     bool checkSizes = true;
     wxString errorField = wxEmptyString;
@@ -122,8 +123,8 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
 
     if (!checkSizes) {
         errorField = errorField.Remove(errorField.Length() - 3, 2);  // Removes the last coma
-        wxString errorMessage =
-            _("The following parameters are not compatible with the single assessment: ") + errorField;
+        wxString errorMessage = _("The following parameters are not compatible with the single assessment: ") +
+                                errorField;
         wxLogError(errorMessage);
         return false;
     }
@@ -140,7 +141,7 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
 
     wxLogMessage(_("Do not process a score. Use to save intermediate values."));
 
-    for (const auto &stationId : stationsId) {
+    for (const auto& stationId : stationsId) {
         ClearAll();
 
         // Create results objects

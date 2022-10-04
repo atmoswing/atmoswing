@@ -52,7 +52,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotFunction;
 //   then call SetLM_LeastSquareProgressHandler( LM_LeastSquareProgressHandler );
 
 extern "C" {
-typedef bool (*LM_LeastSquareProgressHandler_)(const wxString &WXUNUSED(text), int WXUNUSED(current),
+typedef bool (*LM_LeastSquareProgressHandler_)(const wxString& WXUNUSED(text), int WXUNUSED(current),
                                                int WXUNUSED(max));
 extern void SetLM_LeastSquareProgressHandler(LM_LeastSquareProgressHandler_ handler);
 extern void SetLM_LeastSquareProgressHandlerTicks(int iterations);
@@ -95,7 +95,7 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
     // Initialize everything, returns sucess, on failure GetResultMessage()
     //   you may call Create and then Fit on a single instance on this
     //   as many times as you like.
-    bool Create(const wxPlotData &plotData, const wxPlotFunction &plotFunc);
+    bool Create(const wxPlotData& plotData, const wxPlotFunction& plotFunc);
 
     // Has this been sucessfully created and is ready to be Fit()
     bool Ok() const {
@@ -105,7 +105,7 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
     // After creation fit the plotFunc's vars to the plotData, returns # iterations
     //   initial_vals are initial guesses for the variables which may be NULL
     //   specify the number of initial variables with init_count
-    int Fit(const double *initial_vals = NULL, int init_count = 0);
+    int Fit(const double* initial_vals = NULL, int init_count = 0);
 
     // returns true if this is currently fitting
     bool IsFitting() const {
@@ -149,7 +149,7 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
     }
 
     // Get the evaluated variables, size is (plotFunc.GetNumberVars() - 1, x is excluded)
-    double *GetVariables() const {
+    double* GetVariables() const {
         return m_x;
     }
 
@@ -163,8 +163,8 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
     void ReInit();  // only after a call to destroy - reset the vars
     void Destroy();
 
-    wxPlotData *m_plotData;
-    wxPlotFunction *m_plotFunc;
+    wxPlotData* m_plotData;
+    wxPlotFunction* m_plotFunc;
     double m_init_value;
     wxString m_resultMsg;
     bool m_ok;
@@ -172,15 +172,15 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
     bool m_abort_fitting;
 
     // this is the function to calculate the difference
-    virtual void fcn(int m, int n, double x[], double fvec[], int *iflag);
+    virtual void fcn(int m, int n, double x[], double fvec[], int* iflag);
 
     void lmdif(int m, int n, double x[], double fvec[], double ftol, double xtol, double gtol, int maxfev,
-               double epsfcn, double diag[], int mode, double factor, int nprint, int *info, int *nfev, double fjac[],
+               double epsfcn, double diag[], int mode, double factor, int nprint, int* info, int* nfev, double fjac[],
                int ldfjac, int ipvt[], double qtf[], double wa1[], double wa2[], double wa3[], double wa4[]);
 
     // implementation - you probably don't want to mess with these!
 
-    void lmpar(int n, double r[], int ldr, int ipvt[], double diag[], double qtb[], double delta, double *par,
+    void lmpar(int n, double r[], int ldr, int ipvt[], double diag[], double qtb[], double delta, double* par,
                double x[], double sdiag[], double wa1[], double wa2[]);
 
     void qrfac(int m, int n, double a[], int lda, int pivot, int ipvt[], int lipvt, double rdiag[], double acnorm[],
@@ -191,7 +191,7 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
 
     double enorm(int n, double x[]);
 
-    void fdjac2(int m, int n, double x[], double fvec[], double fjac[], int ldfjac, int *iflag, double epsfcn,
+    void fdjac2(int m, int n, double x[], double fvec[], double fjac[], int ldfjac, int* iflag, double epsfcn,
                 double wa[]);
 
     int m_n;              // # of variables of plotFunc
@@ -207,15 +207,15 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
     double m_gtol;        // cosine of the angle between fvec and any column of the jacobian, if less done
     double m_epsfcn;      // step length for the forward-difference approximation
     double m_factor;      // initial step bound
-    double *m_vars;       // variables + 1, where last is var 'x' for wxPlotFunction
-    double *m_x;          // variables (size m_n)
-    double *m_fvec;       // output of evaluated functions (size m_m)
-    double *m_diag;       // multiplicative scale factors for the variables, see m_mode
+    double* m_vars;       // variables + 1, where last is var 'x' for wxPlotFunction
+    double* m_x;          // variables (size m_n)
+    double* m_fvec;       // output of evaluated functions (size m_m)
+    double* m_diag;       // multiplicative scale factors for the variables, see m_mode
     int m_mode;           // =1 the vars scaled internally. if 2, scaling specified by m_diag.
-    double *m_fjac;       // output m by n array
+    double* m_fjac;       // output m by n array
     int m_ldfjac;         // the leading dimension of the array fjac >= m_m
-    double *m_qtf;        // output array the first n elements of the vector (q transpose)*fvec
-    int *m_ipvt;          // integer output array of length n
+    double* m_qtf;        // output array the first n elements of the vector (q transpose)*fvec
+    int* m_ipvt;          // integer output array of length n
     int m_maxfev;         // maximum number of iterations to try
 
   private:

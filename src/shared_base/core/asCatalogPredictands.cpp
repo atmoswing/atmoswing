@@ -30,7 +30,7 @@
 
 #include "asFileXml.h"
 
-asCatalogPredictands::asCatalogPredictands(const wxString &filePath)
+asCatalogPredictands::asCatalogPredictands(const wxString& filePath)
     : wxObject(),
       m_catalogFilePath(filePath),
       m_setId(wxEmptyString),
@@ -61,10 +61,10 @@ bool asCatalogPredictands::Load() {
     if (!xmlFile.CheckRootElement()) return false;
 
     // Get data
-    wxXmlNode *nodeDataset = xmlFile.GetRoot()->GetChildren();
+    wxXmlNode* nodeDataset = xmlFile.GetRoot()->GetChildren();
     while (nodeDataset) {
         if (nodeDataset->GetName() == "dataset") {
-            wxXmlNode *nodeProp = nodeDataset->GetChildren();
+            wxXmlNode* nodeProp = nodeDataset->GetChildren();
             while (nodeProp) {
                 if (nodeProp->GetName() == "id") {
                     m_setId = asFileXml::GetString(nodeProp);
@@ -95,12 +95,12 @@ bool asCatalogPredictands::Load() {
                 } else if (nodeProp->GetName() == "coordinate_system") {
                     m_coordSys = asFileXml::GetString(nodeProp);
                 } else if (nodeProp->GetName() == "stations") {
-                    wxXmlNode *nodeData = nodeProp->GetChildren();
+                    wxXmlNode* nodeData = nodeProp->GetChildren();
                     while (nodeData) {
                         if (nodeData->GetName() == "station") {
                             DataStruct station;
 
-                            wxXmlNode *nodeDetail = nodeData->GetChildren();
+                            wxXmlNode* nodeDetail = nodeData->GetChildren();
                             while (nodeDetail) {
                                 if (nodeDetail->GetName() == "official_id") {
                                     station.officialId = asFileXml::GetString(nodeDetail);

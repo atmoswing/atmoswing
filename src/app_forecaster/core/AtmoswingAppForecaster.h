@@ -51,13 +51,13 @@ class AtmoswingAppForecaster : public wxAppConsole
 
     int OnExit() override;
 
-    void OnInitCmdLine(wxCmdLineParser &parser) override;
+    void OnInitCmdLine(wxCmdLineParser& parser) override;
 
     bool InitLog();
 
     bool SetUseAsCmdLine();
 
-    bool OnCmdLineParsed(wxCmdLineParser &parser) override;
+    bool OnCmdLineParsed(wxCmdLineParser& parser) override;
 
   private:
     bool m_doConfig;
@@ -66,7 +66,7 @@ class AtmoswingAppForecaster : public wxAppConsole
     double m_forecastDate;
     int m_forecastPastDays;
 #if USE_GUI
-    wxSingleInstanceChecker *m_singleInstanceChecker;
+    wxSingleInstanceChecker* m_singleInstanceChecker;
 #endif
 };
 

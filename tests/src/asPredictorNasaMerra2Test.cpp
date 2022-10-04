@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorNasaMerra2, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/z", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -53,7 +53,7 @@ TEST(PredictorNasaMerra2, GetCorrectPredictors) {
 }
 
 TEST(PredictorNasaMerra2Subset, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst6_3d_ana_Np/z", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -183,7 +183,7 @@ TEST(PredictorNasaMerra2, LoadEasy) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-nasa-merra2/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
@@ -253,7 +253,7 @@ TEST(PredictorNasaMerra2, LoadBorderLeft) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-nasa-merra2/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 

@@ -34,25 +34,25 @@
 
 class asWizardBatchForecasts : public asWizardBatchForecastsVirtual {
   public:
-    asWizardBatchForecasts(wxWindow *parent, asBatchForecasts *batchForecasts, wxWindowID id = wxID_ANY);
+    asWizardBatchForecasts(wxWindow* parent, asBatchForecasts* batchForecasts, wxWindowID id = wxID_ANY);
 
     ~asWizardBatchForecasts() override = default;
 
-    wxWizardPage *GetFirstPage() const {
+    wxWizardPage* GetFirstPage() const {
         return m_pages.Item(0);
     }
 
-    wxWizardPage *GetSecondPage() const {
+    wxWizardPage* GetSecondPage() const {
         return m_pages.Item(1);
     }
 
   protected:
-    void OnWizardFinished(wxWizardEvent &event) override;
+    void OnWizardFinished(wxWizardEvent& event) override;
 
-    void OnLoadExistingBatchForecasts(wxCommandEvent &event) override;
+    void OnLoadExistingBatchForecasts(wxCommandEvent& event) override;
 
   private:
-    asBatchForecasts *m_batchForecasts;
+    asBatchForecasts* m_batchForecasts;
 };
 
 #endif

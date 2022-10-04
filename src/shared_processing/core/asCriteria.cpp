@@ -36,15 +36,15 @@
 #include "asCriteriaS0.h"
 #include "asCriteriaS0obs.h"
 #include "asCriteriaS1.h"
-#include "asCriteriaS1obs.h"
 #include "asCriteriaS1G.h"
 #include "asCriteriaS1grads.h"
+#include "asCriteriaS1obs.h"
 #include "asCriteriaS2.h"
 #include "asCriteriaS2grads.h"
 #include "asCriteriaSAD.h"
 #include "asPredictor.h"
 
-asCriteria::asCriteria(const wxString &name, const wxString &fullname, Order order)
+asCriteria::asCriteria(const wxString& name, const wxString& fullname, Order order)
     : m_name(name),
       m_fullName(fullname),
       m_order(order),
@@ -56,7 +56,7 @@ asCriteria::asCriteria(const wxString &name, const wxString &fullname, Order ord
 
 asCriteria::~asCriteria() = default;
 
-asCriteria *asCriteria::GetInstance(const wxString &criteriaString) {
+asCriteria* asCriteria::GetInstance(const wxString& criteriaString) {
     if (criteriaString.CmpNoCase("S1") == 0 || criteriaString.CmpNoCase("S1s") == 0) {
         // Teweles-Wobus
         return new asCriteriaS1();
@@ -105,7 +105,7 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString) {
     }
 }
 
-void asCriteria::CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2) {
+void asCriteria::CheckNaNs(const asPredictor* ptor1, const asPredictor* ptor2) {
     if (wxFileConfig::Get()->ReadBool("/General/SkipNansCheck", false)) {
         m_checkNaNs = false;
         return;

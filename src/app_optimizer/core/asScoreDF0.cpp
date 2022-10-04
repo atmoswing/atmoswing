@@ -32,7 +32,7 @@ asScoreDF0::asScoreDF0()
     : asScore(asScore::DF0, _("Difference of F(0)"), _("Absolute difference of the frequency of null precipitations."),
               Asc, 0, NaNf) {}
 
-float asScoreDF0::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreDF0::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -90,6 +90,6 @@ float asScoreDF0::Assess(float obs, const a1f &values, int nbElements) const {
     return std::abs((1.0f - F(indexLastZero)) - FxObs);
 }
 
-bool asScoreDF0::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreDF0::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     return true;
 }

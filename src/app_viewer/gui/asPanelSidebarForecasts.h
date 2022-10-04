@@ -38,8 +38,8 @@
 
 class asPanelSidebarForecasts : public asPanelSidebar {
   public:
-    asPanelSidebarForecasts(wxWindow *parent, asForecastManager *forecastManager, wxWindowID id = wxID_ANY,
-                            const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
+    asPanelSidebarForecasts(wxWindow* parent, asForecastManager* forecastManager, wxWindowID id = wxID_ANY,
+                            const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
                             long style = wxTAB_TRAVERSAL);
 
     ~asPanelSidebarForecasts() override = default;
@@ -48,22 +48,22 @@ class asPanelSidebarForecasts : public asPanelSidebar {
 
     void Update() override;
 
-    asListBoxForecasts *GetForecastsCtrl() const {
+    asListBoxForecasts* GetForecastsCtrl() const {
         return m_forecastsCtrl;
     }
 
-    asListBoxQuantiles *GetQuantilesCtrl() const {
+    asListBoxQuantiles* GetQuantilesCtrl() const {
         return m_quantilesCtrl;
     }
 
-    asListBoxForecastDisplay *GetForecastDisplayCtrl() const {
+    asListBoxForecastDisplay* GetForecastDisplayCtrl() const {
         return m_forecastDisplayCtrl;
     }
 
   private:
-    asListBoxForecasts *m_forecastsCtrl;
-    asListBoxQuantiles *m_quantilesCtrl;
-    asListBoxForecastDisplay *m_forecastDisplayCtrl;
+    asListBoxForecasts* m_forecastsCtrl;
+    asListBoxQuantiles* m_quantilesCtrl;
+    asListBoxForecastDisplay* m_forecastDisplayCtrl;
 };
 
 #endif

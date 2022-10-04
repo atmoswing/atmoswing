@@ -34,13 +34,13 @@
 
 class asPredictorOper : public asPredictor {
   public:
-    explicit asPredictorOper(const wxString &dataId);
+    explicit asPredictorOper(const wxString& dataId);
 
     ~asPredictorOper() override = default;
 
     static void SetDefaultPredictorsUrls();
 
-    static asPredictorOper *GetInstance(const wxString &datasetId, const wxString &dataId);
+    static asPredictorOper* GetInstance(const wxString& datasetId, const wxString& dataId);
 
     int Download();
 
@@ -70,7 +70,7 @@ class asPredictorOper : public asPredictor {
         return m_fileNames;
     }
 
-    void SetFileNames(const vwxs &val) {
+    void SetFileNames(const vwxs& val) {
         m_fileNames = val;
     }
 
@@ -82,7 +82,7 @@ class asPredictorOper : public asPredictor {
         return m_predictorsRealtimeDir;
     }
 
-    void SetPredictorsRealtimeDirectory(const wxString &dir) {
+    void SetPredictorsRealtimeDirectory(const wxString& dir) {
         m_predictorsRealtimeDir = dir;
     }
 
@@ -111,9 +111,9 @@ class asPredictorOper : public asPredictor {
     vwxs m_urls;
     vd m_dataDates;
 
-    void ListFiles(asTimeArray &timeArray) override;
+    void ListFiles(asTimeArray& timeArray) override;
 
-    bool CheckTimeArray(asTimeArray &timeArray) override;
+    bool CheckTimeArray(asTimeArray& timeArray) override;
 };
 
 #endif

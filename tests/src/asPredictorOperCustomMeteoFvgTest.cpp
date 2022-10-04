@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorOperCustomMeteoFvg, GetCorrectPredictors) {
-    asPredictorOper *predictor;
+    asPredictorOper* predictor;
 
     predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "DP500925");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
@@ -154,9 +154,9 @@ TEST(PredictorOperCustomMeteoFvg, LoadSingleDay) {
     double step = 0.125;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
     wxASSERT(predictor);
 
     // Create file names
@@ -205,9 +205,9 @@ TEST(PredictorOperCustomMeteoFvg, LoadLastTimeStep) {
     double step = 0.125;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
     wxASSERT(predictor);
 
     // Create file names
@@ -257,9 +257,9 @@ TEST(PredictorOperCustomMeteoFvg, LoadFullTimeArray) {
     double step = 0.125;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
     wxASSERT(predictor);
 
     // Create file names
@@ -327,9 +327,9 @@ TEST(PredictorOperCustomMeteoFvg, StandardizeWithProvidedMeanAndSd) {
     double step = 0.125;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
     wxASSERT(predictor);
 
     // Create file names

@@ -52,7 +52,7 @@ TEST(Score, ProcessCRPSapproxRectangle) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance(asScore::CRPSAR);
+    asScore* score = asScore::GetInstance(asScore::CRPSAR);
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -102,7 +102,7 @@ TEST(Score, ProcessCRPSexactPrimitive) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("CRPSEP");
+    asScore* score = asScore::GetInstance("CRPSEP");
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -152,7 +152,7 @@ TEST(Score, ProcessCRPSapproxRectangle1983) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("CRPSAR");
+    asScore* score = asScore::GetInstance("CRPSAR");
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -202,7 +202,7 @@ TEST(Score, ProcessCRPSexactPrimitive1983) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance(asScore::CRPSEP);
+    asScore* score = asScore::GetInstance(asScore::CRPSEP);
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -252,7 +252,7 @@ TEST(Score, ProcessCRPSapproxRectangle30Analogs1983) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance(asScore::CRPSAR);
+    asScore* score = asScore::GetInstance(asScore::CRPSAR);
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -302,7 +302,7 @@ TEST(Score, ProcessCRPSexactPrimitive30Analogs1983) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance(asScore::CRPSEP);
+    asScore* score = asScore::GetInstance(asScore::CRPSEP);
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -352,7 +352,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance(asScore::CRPSsharpnessAR);
+    asScore* score = asScore::GetInstance(asScore::CRPSsharpnessAR);
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -405,7 +405,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("CRPSsharpnessEP");
+    asScore* score = asScore::GetInstance("CRPSsharpnessEP");
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -458,7 +458,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle1983) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("CRPSsharpnessAR");
+    asScore* score = asScore::GetInstance("CRPSsharpnessAR");
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -511,7 +511,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive1983) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance(asScore::CRPSsharpnessEP);
+    asScore* score = asScore::GetInstance(asScore::CRPSsharpnessEP);
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -564,7 +564,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance(asScore::CRPSsharpnessAR);
+    asScore* score = asScore::GetInstance(asScore::CRPSsharpnessAR);
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -617,7 +617,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance(asScore::CRPSsharpnessEP);
+    asScore* score = asScore::GetInstance(asScore::CRPSsharpnessEP);
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -670,7 +670,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance(asScore::CRPSaccuracyAR);
+    asScore* score = asScore::GetInstance(asScore::CRPSaccuracyAR);
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -721,7 +721,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("CRPSaccuracyEP");
+    asScore* score = asScore::GetInstance("CRPSaccuracyEP");
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -772,7 +772,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle1983) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("CRPSaccuracyAR");
+    asScore* score = asScore::GetInstance("CRPSaccuracyAR");
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -823,7 +823,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive1983) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance(asScore::CRPSaccuracyEP);
+    asScore* score = asScore::GetInstance(asScore::CRPSaccuracyEP);
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -874,7 +874,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle30Analogs1983) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance(asScore::CRPSaccuracyAR);
+    asScore* score = asScore::GetInstance(asScore::CRPSaccuracyAR);
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -925,7 +925,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983) {
     values.resize(nAnalogs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance(asScore::CRPSaccuracyEP);
+    asScore* score = asScore::GetInstance(asScore::CRPSaccuracyEP);
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
@@ -957,7 +957,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983) {
     wxDELETE(score);
 }
 
-void InitConstantDistribution(a2f &vecForecast, a1f &vecObs) {
+void InitConstantDistribution(a2f& vecForecast, a1f& vecObs) {
     // Time
     int timeLength = 410;
 
@@ -1058,7 +1058,7 @@ void InitConstantDistribution(a2f &vecForecast, a1f &vecObs) {
     vecObs[373] = 0.69f;
 }
 
-void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs) {
+void InitRealisticDistribution(a2f& vecForecast, a1f& vecObs) {
     // Data from Wilks (2006)
 
     // Time
@@ -1133,7 +1133,7 @@ TEST(Score, ProcessPCwithConstantDistributionOnQuantile) {
     InitConstantDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("PC");
+    asScore* score = asScore::GetInstance("PC");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.5f);
 
@@ -1146,7 +1146,7 @@ TEST(Score, ProcessPCwithConstantDistributionOnQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("PC", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("PC", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1164,7 +1164,7 @@ TEST(Score, ProcessPConQuantile) {
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("PC");
+    asScore* score = asScore::GetInstance("PC");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1177,7 +1177,7 @@ TEST(Score, ProcessPConQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("PC", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("PC", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1195,7 +1195,7 @@ TEST(Score, ProcessTSonQuantile) {
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("TS");
+    asScore* score = asScore::GetInstance("TS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1208,7 +1208,7 @@ TEST(Score, ProcessTSonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("TS", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("TS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1226,7 +1226,7 @@ TEST(Score, ProcessBIASonQuantile) {
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("BIAS");
+    asScore* score = asScore::GetInstance("BIAS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1239,7 +1239,7 @@ TEST(Score, ProcessBIASonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("BIAS", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("BIAS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1257,7 +1257,7 @@ TEST(Score, ProcessFARAonQuantile) {
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("FARA");
+    asScore* score = asScore::GetInstance("FARA");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1270,7 +1270,7 @@ TEST(Score, ProcessFARAonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("FARA", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("FARA", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1288,7 +1288,7 @@ TEST(Score, ProcessHonQuantile) {
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("H");
+    asScore* score = asScore::GetInstance("H");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1301,7 +1301,7 @@ TEST(Score, ProcessHonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("H", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("H", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1319,7 +1319,7 @@ TEST(Score, ProcessFonQuantile) {
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("F");
+    asScore* score = asScore::GetInstance("F");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1332,7 +1332,7 @@ TEST(Score, ProcessFonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("F", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("F", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1350,7 +1350,7 @@ TEST(Score, ProcessHSSonQuantile) {
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("HSS");
+    asScore* score = asScore::GetInstance("HSS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1363,7 +1363,7 @@ TEST(Score, ProcessHSSonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("HSS", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("HSS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1381,7 +1381,7 @@ TEST(Score, ProcessPSSonQuantile) {
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("PSS");
+    asScore* score = asScore::GetInstance("PSS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1394,7 +1394,7 @@ TEST(Score, ProcessPSSonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("PSS", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("PSS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1412,7 +1412,7 @@ TEST(Score, ProcessGSSonQuantile) {
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("GSS");
+    asScore* score = asScore::GetInstance("GSS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1425,7 +1425,7 @@ TEST(Score, ProcessGSSonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("GSS", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("GSS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1481,7 +1481,7 @@ TEST(Score, ProcessMAEonQuantile) {
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("MAE");
+    asScore* score = asScore::GetInstance("MAE");
     score->SetQuantile(0.6f);
 
     a1f results = a1f::Zero(vecObs.size());
@@ -1493,7 +1493,7 @@ TEST(Score, ProcessMAEonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("MAE", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("MAE", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1549,7 +1549,7 @@ TEST(Score, ProcessMSEonQuantile) {
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("MSE");
+    asScore* score = asScore::GetInstance("MSE");
     score->SetQuantile(0.6f);
 
     a1f results = a1f::Zero(vecObs.size());
@@ -1561,7 +1561,7 @@ TEST(Score, ProcessMSEonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("MSE", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("MSE", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1617,7 +1617,7 @@ TEST(Score, ProcessMSEonMean) {
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("MSE");
+    asScore* score = asScore::GetInstance("MSE");
     score->SetOnMean(true);
 
     a1f results = a1f::Zero(vecObs.size());
@@ -1629,7 +1629,7 @@ TEST(Score, ProcessMSEonMean) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("MSE", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("MSE", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1685,7 +1685,7 @@ TEST(Score, ProcessRMSEonQuantile) {
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("RMSE");
+    asScore* score = asScore::GetInstance("RMSE");
     score->SetQuantile(0.6f);
 
     a1f results = a1f::Zero(vecObs.size());
@@ -1697,7 +1697,7 @@ TEST(Score, ProcessRMSEonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("RMSE", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("RMSE", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1753,7 +1753,7 @@ TEST(Score, ProcessBSonQuantile) {
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("BS");
+    asScore* score = asScore::GetInstance("BS");
     score->SetQuantile(0.6f);
     score->SetThreshold(0.4f);
 
@@ -1766,7 +1766,7 @@ TEST(Score, ProcessBSonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("BS", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("BS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1822,7 +1822,7 @@ TEST(Score, ProcessBSSonQuantile) {
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("BSS");
+    asScore* score = asScore::GetInstance("BSS");
     score->SetQuantile(0.6f);
     score->SetThreshold(0.4f);
 
@@ -1837,7 +1837,7 @@ TEST(Score, ProcessBSSonQuantile) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("BSS", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("BSS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1902,7 +1902,7 @@ TEST(Score, ProcessRankHistogram) {
         1.0f, 1.5f, 3.0f;
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("RankHistogram");
+    asScore* score = asScore::GetInstance("RankHistogram");
 
     a1f results = a1f::Zero(vecObs.size());
     a1f pseudoDates = a1f::Zero(vecObs.size());
@@ -1938,7 +1938,7 @@ TEST(Score, ProcessRankHistogram) {
     EXPECT_EQ(20, results[18]);
     EXPECT_EQ(24, results[19]);
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("RankHistogram", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("RankHistogram", "Total");
     finalScore->SetRanksNb(nAnalogs + 1);
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     a1f scoreVal = finalScore->AssessOnArray(pseudoDates, results, emptyTimeArray);
@@ -2017,7 +2017,7 @@ TEST(Score, ProcessRankHistogramReliability) {
         1.0f, 1.5f, 3.0f;
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("RankHistogramReliability");
+    asScore* score = asScore::GetInstance("RankHistogramReliability");
 
     a1f results = a1f::Zero(vecObs.size());
     a1f pseudoDates = a1f::Zero(vecObs.size());
@@ -2029,7 +2029,7 @@ TEST(Score, ProcessRankHistogramReliability) {
         EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("RankHistogramReliability", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("RankHistogramReliability", "Total");
     finalScore->SetRanksNb(nAnalogs + 1);
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
@@ -2084,7 +2084,7 @@ TEST(Score, ProcessCRPSreliability) {
     vecObs << 2.0f, 2.0f, 7.0f, 11.0f, 10.0f, 2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -6.0f, -7.0f, -5.0f, 0.0f, 2.0f;
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("CRPSreliability");
+    asScore* score = asScore::GetInstance("CRPSreliability");
 
     a2f results = a2f::Zero(vecObs.size(), 3 * (nAnalogs + 1));
     a1f pseudoDates = a1f::Zero(vecObs.size());
@@ -2096,7 +2096,7 @@ TEST(Score, ProcessCRPSreliability) {
         EXPECT_TRUE(!asHasNaN(&res[0], &res[res.size() - 1]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("CRPSreliability", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("CRPSreliability", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -2150,7 +2150,7 @@ TEST(Score, ProcessCRPSpotential) {
     vecObs << 2.0f, 2.0f, 7.0f, 11.0f, 10.0f, 2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -6.0f, -7.0f, -5.0f, 0.0f, 2.0f;
 
     // Instantiate the score
-    asScore *score = asScore::GetInstance("CRPSpotential");
+    asScore* score = asScore::GetInstance("CRPSpotential");
 
     a2f results = a2f::Zero(vecObs.size(), 3 * (nAnalogs + 1));
     a1f pseudoDates = a1f::Zero(vecObs.size());
@@ -2162,7 +2162,7 @@ TEST(Score, ProcessCRPSpotential) {
         EXPECT_TRUE(!asHasNaN(&res[0], &res[res.size() - 1]));
     }
 
-    asTotalScore *finalScore = asTotalScore::GetInstance("CRPSpotential", "Total");
+    asTotalScore* finalScore = asTotalScore::GetInstance("CRPSpotential", "Total");
     finalScore->SetRanksNb(nAnalogs + 1);
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);

@@ -36,45 +36,45 @@
 
 class asPanelSidebarCaptionForecastDotsDrawing : public wxPanel {
   public:
-    explicit asPanelSidebarCaptionForecastDotsDrawing(wxWindow *parent, wxWindowID id = wxID_ANY,
-                                                      const wxPoint &pos = wxDefaultPosition,
-                                                      const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    explicit asPanelSidebarCaptionForecastDotsDrawing(wxWindow* parent, wxWindowID id = wxID_ANY,
+                                                      const wxPoint& pos = wxDefaultPosition,
+                                                      const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
     ~asPanelSidebarCaptionForecastDotsDrawing() override;
 
     void DrawColorbar(double maxval);
 
   private:
-    wxBitmap *m_bmpColorbar;
-    wxGraphicsContext *m_gdc;
+    wxBitmap* m_bmpColorbar;
+    wxGraphicsContext* m_gdc;
 
-    void SetBitmapColorbar(wxBitmap *bmp);
+    void SetBitmapColorbar(wxBitmap* bmp);
 
-    void CreateColorbarPath(wxGraphicsPath &path);
+    void CreateColorbarPath(wxGraphicsPath& path);
 
-    void CreateColorbarText(wxGraphicsContext *gc, wxGraphicsPath &path, double valmax);
+    void CreateColorbarText(wxGraphicsContext* gc, wxGraphicsPath& path, double valmax);
 
-    void CreateColorbarOtherClasses(wxGraphicsContext *gc, wxGraphicsPath &path);
+    void CreateColorbarOtherClasses(wxGraphicsContext* gc, wxGraphicsPath& path);
 
-    void FillColorbar(wxGraphicsContext *gdc, wxGraphicsPath &path);
+    void FillColorbar(wxGraphicsContext* gdc, wxGraphicsPath& path);
 
-    void OnPaint(wxPaintEvent &event);
+    void OnPaint(wxPaintEvent& event);
 };
 
 class asPanelSidebarCaptionForecastDots : public asPanelSidebar {
   public:
-    explicit asPanelSidebarCaptionForecastDots(wxWindow *parent, wxWindowID id = wxID_ANY,
-                                               const wxPoint &pos = wxDefaultPosition,
-                                               const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    explicit asPanelSidebarCaptionForecastDots(wxWindow* parent, wxWindowID id = wxID_ANY,
+                                               const wxPoint& pos = wxDefaultPosition,
+                                               const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
     ~asPanelSidebarCaptionForecastDots() override;
 
     void SetColorbarMax(double maxval);
 
   private:
-    asPanelSidebarCaptionForecastDotsDrawing *m_panelDrawing;
+    asPanelSidebarCaptionForecastDotsDrawing* m_panelDrawing;
 
-    void OnPaint(wxPaintEvent &event);
+    void OnPaint(wxPaintEvent& event);
 };
 
 #endif

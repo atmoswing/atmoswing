@@ -31,8 +31,6 @@
 #include "asFileBatchForecasts.h"
 #include "asIncludes.h"
 
-
-
 class asBatchForecasts : public wxObject {
   public:
     enum Export {
@@ -46,7 +44,7 @@ class asBatchForecasts : public wxObject {
 
     ~asBatchForecasts() override = default;
 
-    bool Load(const wxString &filePath);
+    bool Load(const wxString& filePath);
 
     bool Save() const;
 
@@ -60,7 +58,7 @@ class asBatchForecasts : public wxObject {
         return m_filePath;
     }
 
-    void SetFilePath(const wxString &path) {
+    void SetFilePath(const wxString& path) {
         m_filePath = path;
     }
 
@@ -86,7 +84,7 @@ class asBatchForecasts : public wxObject {
         return m_forecastsOutputDirectory;
     }
 
-    void SetForecastsOutputDirectory(const wxString &val) {
+    void SetForecastsOutputDirectory(const wxString& val) {
         m_forecastsOutputDirectory = val;
     }
 
@@ -94,7 +92,7 @@ class asBatchForecasts : public wxObject {
         return m_exportsOutputDirectory;
     }
 
-    void SetExportsOutputDirectory(const wxString &val) {
+    void SetExportsOutputDirectory(const wxString& val) {
         m_exportsOutputDirectory = val;
     }
 
@@ -102,7 +100,7 @@ class asBatchForecasts : public wxObject {
         return m_parametersFileDirectory;
     }
 
-    void SetParametersFileDirectory(const wxString &val) {
+    void SetParametersFileDirectory(const wxString& val) {
         m_parametersFileDirectory = val;
     }
 
@@ -110,7 +108,7 @@ class asBatchForecasts : public wxObject {
         return m_predictorsArchiveDirectory;
     }
 
-    void SetPredictorsArchiveDirectory(const wxString &val) {
+    void SetPredictorsArchiveDirectory(const wxString& val) {
         m_predictorsArchiveDirectory = val;
     }
 
@@ -118,7 +116,7 @@ class asBatchForecasts : public wxObject {
         return m_predictorsRealtimeDirectory;
     }
 
-    void SetPredictorsRealtimeDirectory(const wxString &val) {
+    void SetPredictorsRealtimeDirectory(const wxString& val) {
         m_predictorsRealtimeDirectory = val;
     }
 
@@ -126,7 +124,7 @@ class asBatchForecasts : public wxObject {
         return m_predictandDBDirectory;
     }
 
-    void SetPredictandDBDirectory(const wxString &val) {
+    void SetPredictandDBDirectory(const wxString& val) {
         m_predictandDBDirectory = val;
     }
 
@@ -135,7 +133,7 @@ class asBatchForecasts : public wxObject {
         return m_forecastFileNames[i];
     }
 
-    void SetForecastFileName(int i, const wxString &val) {
+    void SetForecastFileName(int i, const wxString& val) {
         wxASSERT((int)m_forecastFileNames.size() > i);
         m_forecastFileNames[i] = val;
     }

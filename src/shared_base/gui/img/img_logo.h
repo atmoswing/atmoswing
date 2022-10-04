@@ -18,6 +18,6 @@ extern void initialize_img_logo();
 
 void cleanup_img_logo();
 
-extern wxBitmap *_img_logo;
+extern wxBitmap* _img_logo;
 
 #endif /* _LOGO_H_ */

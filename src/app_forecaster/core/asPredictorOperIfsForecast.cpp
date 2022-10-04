@@ -30,7 +30,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorOperIfsForecast::asPredictorOperIfsForecast(const wxString &dataId) : asPredictorOper(dataId) {
+asPredictorOperIfsForecast::asPredictorOperIfsForecast(const wxString& dataId)
+    : asPredictorOper(dataId) {
     // Set the basic properties.
     m_datasetId = "ECMWF_IFS_GRIB";
     m_provider = "ECMWF";
@@ -109,6 +110,6 @@ bool asPredictorOperIfsForecast::Init() {
     return true;
 }
 
-void asPredictorOperIfsForecast::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorOperIfsForecast::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + refValue;
 }

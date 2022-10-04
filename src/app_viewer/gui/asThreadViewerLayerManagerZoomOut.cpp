@@ -27,9 +27,9 @@
 
 #include "asThreadViewerLayerManagerZoomOut.h"
 
-asThreadViewerLayerManagerZoomOut::asThreadViewerLayerManagerZoomOut(vrViewerLayerManager *viewerLayerManager,
-                                                                     wxCriticalSection *critSectionViewerLayerManager,
-                                                                     const vrRealRect &fittedRect)
+asThreadViewerLayerManagerZoomOut::asThreadViewerLayerManagerZoomOut(vrViewerLayerManager* viewerLayerManager,
+                                                                     wxCriticalSection* critSectionViewerLayerManager,
+                                                                     const vrRealRect& fittedRect)
     : asThread(),
       m_viewerLayerManager(viewerLayerManager),
       m_critSectionViewerLayerManager(critSectionViewerLayerManager),

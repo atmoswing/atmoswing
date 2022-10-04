@@ -39,11 +39,10 @@
 #include "asResultsTotalScore.h"
 #include "asResultsValues.h"
 
-void Ref1(const wxString &paramsFile, bool shortVersion) {
+void Ref1(const wxString& paramsFile, bool shortVersion) {
     // Create predictand database
-    auto *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
-                                                     asPredictand::Daily,
-                                                     asPredictand::Station);
+    auto* predictand =
+        new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -93,7 +92,7 @@ void Ref1(const wxString &paramsFile, bool shortVersion) {
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyAR");
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -208,7 +207,7 @@ void Ref1(const wxString &paramsFile, bool shortVersion) {
 #ifdef TEST_CUDA
 
 TEST(MethodCalibrator, Ref1Cuda) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
 
     wxString paramsFile = "parameters_calibration_R1_shorter.xml";
@@ -246,7 +245,7 @@ TEST(MethodCalibrator, Ref1Cuda) {
         EXPECT_FALSE(containsNaNs);
         printf(_("             ---> GPU time: %.3f sec\n"), float(sw2.Time()) / 1000.0f);
 
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -274,7 +273,7 @@ TEST(MethodCalibrator, Ref1Cuda) {
 #endif
 
 TEST(MethodCalibrator, Ref1Multithreads) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
 
@@ -282,14 +281,14 @@ TEST(MethodCalibrator, Ref1Multithreads) {
 }
 
 TEST(MethodCalibrator, Ref1Standard) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asSTANDARD);
 
     Ref1("parameters_calibration_R1_full.xml", false);
 }
 
 TEST(MethodCalibrator, Ref1CalibPeriodMultithreads) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
 
@@ -297,15 +296,15 @@ TEST(MethodCalibrator, Ref1CalibPeriodMultithreads) {
 }
 
 TEST(MethodCalibrator, Ref1CalibPeriodStandard) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asSTANDARD);
 
     Ref1("parameters_calibration_R1_calib_period.xml", true);
 }
 
-void Ref2(const wxString &paramsFile, bool shortVersion) {
+void Ref2(const wxString& paramsFile, bool shortVersion) {
     // Create predictand database
-    asPredictandPrecipitation *predictand =
+    asPredictandPrecipitation* predictand =
         new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
@@ -361,7 +360,7 @@ void Ref2(const wxString &paramsFile, bool shortVersion) {
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyEP");
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -483,7 +482,7 @@ void Ref2(const wxString &paramsFile, bool shortVersion) {
 }
 
 TEST(MethodCalibrator, Ref2Multithreads) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
 
@@ -491,14 +490,14 @@ TEST(MethodCalibrator, Ref2Multithreads) {
 }
 
 TEST(MethodCalibrator, Ref2Standard) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asSTANDARD);
 
     Ref2("parameters_calibration_R2_full.xml", false);
 }
 
 TEST(MethodCalibrator, Ref2CalibPeriodMultithreads) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
 
@@ -506,14 +505,14 @@ TEST(MethodCalibrator, Ref2CalibPeriodMultithreads) {
 }
 
 TEST(MethodCalibrator, Ref2CalibPeriodStandard) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asSTANDARD);
 
     Ref2("parameters_calibration_R2_calib_period.xml", true);
 }
 
 TEST(MethodCalibrator, PreloadingSimple) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asSTANDARD);
 
     wxString dataFileDir = wxFileName::GetCwd();
@@ -548,7 +547,7 @@ TEST(MethodCalibrator, PreloadingSimple) {
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreload, &paramsPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -572,7 +571,7 @@ TEST(MethodCalibrator, PreloadingSimple) {
 }
 
 TEST(MethodCalibrator, PreloadingWithDumping) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asSTANDARD);
     pConfig->Write("/General/DumpPredictorData", true);
 
@@ -608,7 +607,7 @@ TEST(MethodCalibrator, PreloadingWithDumping) {
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreload, &paramsPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -634,7 +633,7 @@ TEST(MethodCalibrator, PreloadingWithDumping) {
 }
 
 TEST(MethodCalibrator, PreloadingWithPreprocessing) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asSTANDARD);
     pConfig->Write("/General/DumpPredictorData", false);
 
@@ -665,7 +664,7 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing) {
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreload, &paramsPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -696,7 +695,7 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing) {
 }
 
 TEST(MethodCalibrator, ComplexPredictorHours) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asSTANDARD);
 
     wxString dataFileDir = wxFileName::GetCwd();
@@ -779,7 +778,7 @@ TEST(MethodCalibrator, ComplexPredictorHours) {
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator3.GetAnalogsDates(anaDatesPreloadNeg, &paramsPreloadNeg, 0, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -787,7 +786,7 @@ TEST(MethodCalibrator, ComplexPredictorHours) {
 
 void Ref1Preloading() {
     // Create predictand database
-    asPredictandPrecipitation *predictand =
+    asPredictandPrecipitation* predictand =
         new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
@@ -841,7 +840,7 @@ void Ref1Preloading() {
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyAR");
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -928,7 +927,7 @@ void Ref1Preloading() {
 }
 
 TEST(MethodCalibrator, Ref1PreloadingMultithreaded) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
 
@@ -937,7 +936,7 @@ TEST(MethodCalibrator, Ref1PreloadingMultithreaded) {
 
 void Ref1PreloadingSubset() {
     // Create predictand database
-    asPredictandPrecipitation *predictand =
+    asPredictandPrecipitation* predictand =
         new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
@@ -990,7 +989,7 @@ void Ref1PreloadingSubset() {
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyAR");
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -1001,7 +1000,7 @@ void Ref1PreloadingSubset() {
 }
 
 TEST(MethodCalibrator, Ref1PreloadingSubsetMultithreaded) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
 
@@ -1009,7 +1008,7 @@ TEST(MethodCalibrator, Ref1PreloadingSubsetMultithreaded) {
 }
 
 TEST(MethodCalibrator, SmallerSpatialArea) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
 
     wxString dataFileDir = wxFileName::GetCwd();
@@ -1098,7 +1097,7 @@ TEST(MethodCalibrator, SmallerSpatialArea) {
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator4.GetAnalogsDates(anaDatesPreprocPreload, &paramsPreprocPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -1140,7 +1139,7 @@ TEST(MethodCalibrator, SmallerSpatialArea) {
 
 void Ref2Preloading() {
     // Create predictand database
-    asPredictandPrecipitation *predictand =
+    asPredictandPrecipitation* predictand =
         new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
@@ -1194,7 +1193,7 @@ void Ref2Preloading() {
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyEP");
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -1280,7 +1279,7 @@ void Ref2Preloading() {
 }
 
 TEST(MethodCalibrator, Ref2PreloadingMultithreads) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
 
@@ -1288,7 +1287,7 @@ TEST(MethodCalibrator, Ref2PreloadingMultithreads) {
 }
 
 TEST(MethodCalibrator, Ref2PreloadingStandard) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asSTANDARD);
 
     Ref2Preloading();
@@ -1296,7 +1295,7 @@ TEST(MethodCalibrator, Ref2PreloadingStandard) {
 
 void Ref2SavingIntermediateResults() {
     // Create predictand database
-    asPredictandPrecipitation *predictand =
+    asPredictandPrecipitation* predictand =
         new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
@@ -1375,7 +1374,7 @@ void Ref2SavingIntermediateResults() {
         ASSERT_TRUE(anaScoresCRPS2.GetTargetDates().size() > 0);
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, &params, anaScoresCRPS2, step));
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -1461,7 +1460,7 @@ void Ref2SavingIntermediateResults() {
 TEST(MethodCalibrator, Ref2SavingIntermediateResults) {
     wxString tmpDir = asConfig::GetTempDir() + "IntermediateResults";
 
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
 
@@ -1474,7 +1473,7 @@ TEST(MethodCalibrator, Ref2SavingIntermediateResults) {
 
 void Ref2MergeByHalfAndMultiply() {
     // Create predictand database
-    asPredictandPrecipitation *predictand =
+    asPredictandPrecipitation* predictand =
         new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
@@ -1528,7 +1527,7 @@ void Ref2MergeByHalfAndMultiply() {
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyEP");
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }
@@ -1614,7 +1613,7 @@ void Ref2MergeByHalfAndMultiply() {
 }
 
 TEST(MethodCalibrator, Ref2MergeByHalfAndMultiply) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
 
@@ -1624,7 +1623,7 @@ TEST(MethodCalibrator, Ref2MergeByHalfAndMultiply) {
 TEST(MethodCalibrator, PreloadingWithLevelCorrection) {
     wxLogNull logNull;
 
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
     pConfig->Write("/General/ParallelDataLoad", false);  // In order to avoid warning messages
@@ -1659,7 +1658,7 @@ TEST(MethodCalibrator, PreloadingWithLevelCorrection) {
         step++;
         ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, &params, anaDates, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxPrintf(e.what());
         return;
     }

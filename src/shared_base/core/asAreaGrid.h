@@ -36,16 +36,15 @@ class asParameters;
 
 class asAreaGrid : public asArea {
   public:
-    static asAreaGrid *GetInstance(const asParameters *params, int iStep, int iPtor);
+    static asAreaGrid* GetInstance(const asParameters* params, int iStep, int iPtor);
 
-    static asAreaGrid *GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
-                                   int yPtsNb, double yStep, int flatAllowed = asFLAT_FORBIDDEN,
-                                   bool isLatLon = true);
+    static asAreaGrid* GetInstance(const wxString& type, double xMin, int xPtsNb, double xStep, double yMin, int yPtsNb,
+                                   double yStep, int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    static asAreaGrid *GetInstance(double xMin, int xPtsNb, double xStep, double yMin, int yPtsNb, double yStep,
+    static asAreaGrid* GetInstance(double xMin, int xPtsNb, double xStep, double yMin, int yPtsNb, double yStep,
                                    int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+    asAreaGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
                int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
     asAreaGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
@@ -53,9 +52,9 @@ class asAreaGrid : public asArea {
 
     asAreaGrid();
 
-    virtual bool InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed = true, bool getLarger = false);
+    virtual bool InitializeAxes(const a1d& lons, const a1d& lats, bool strideAllowed = true, bool getLarger = false);
 
-    virtual bool GridsOverlay(asAreaGrid *otherArea) const = 0;
+    virtual bool GridsOverlay(asAreaGrid* otherArea) const = 0;
 
     void CorrectCornersWithAxes();
 
@@ -101,11 +100,11 @@ class asAreaGrid : public asArea {
     int m_yPtsNb;
 
   private:
-    bool CreateAxes(const a1d &lons, const a1d &lats, bool getLarger = false);
+    bool CreateAxes(const a1d& lons, const a1d& lats, bool getLarger = false);
 
-    bool AreaDefinedByPointsNb(const a1d &lons, const a1d &lats);
+    bool AreaDefinedByPointsNb(const a1d& lons, const a1d& lats);
 
-    bool HandleAreaDefinedByPointsNb(const a1d &lons, const a1d &lats);
+    bool HandleAreaDefinedByPointsNb(const a1d& lons, const a1d& lats);
 };
 
 #endif

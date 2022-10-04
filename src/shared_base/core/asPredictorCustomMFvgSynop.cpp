@@ -30,7 +30,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorCustomMFvgSynop::asPredictorCustomMFvgSynop(const wxString &dataId) : asPredictorEcmwfIfsGrib(dataId) {
+asPredictorCustomMFvgSynop::asPredictorCustomMFvgSynop(const wxString& dataId)
+    : asPredictorEcmwfIfsGrib(dataId) {
     // Set the basic properties.
     m_datasetId = "Custom_MeteoFVG_Synop";
     m_provider = "ECMWF";
@@ -146,7 +147,7 @@ bool asPredictorCustomMFvgSynop::Init() {
     return true;
 }
 
-void asPredictorCustomMFvgSynop::ListFiles(asTimeArray &timeArray) {
+void asPredictorCustomMFvgSynop::ListFiles(asTimeArray& timeArray) {
     // Check product directory
     if (!wxDirExists(GetFullDirectoryPath())) {
         asThrowException(

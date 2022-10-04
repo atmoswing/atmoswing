@@ -39,17 +39,17 @@ class asResultsForecast : public asResults {
 
     ~asResultsForecast() override = default;
 
-    void Init(asParametersForecast &params, double leadTimeOrigin);
+    void Init(asParametersForecast& params, double leadTimeOrigin);
 
-    bool IsCompatibleWith(asResultsForecast *otherForecast) const;
+    bool IsCompatibleWith(asResultsForecast* otherForecast) const;
 
-    bool IsSameAs(asResultsForecast *otherForecast) const;
+    bool IsSameAs(asResultsForecast* otherForecast) const;
 
     bool IsSpecificForStationId(int stationId) const;
 
     int GetStationRowFromId(int stationId) const;
 
-    void SetForecastsDirectory(const wxString &val) {
+    void SetForecastsDirectory(const wxString& val) {
         m_forecastsDir = val;
     }
 
@@ -57,7 +57,7 @@ class asResultsForecast : public asResults {
         return m_predictandDatasetId;
     }
 
-    void SetPredictandDatasetId(const wxString &val) {
+    void SetPredictandDatasetId(const wxString& val) {
         m_predictandDatasetId = val;
     }
 
@@ -69,7 +69,7 @@ class asResultsForecast : public asResults {
         return m_predictandStationIds;
     }
 
-    void SetPredictandStationIds(const vi &val) {
+    void SetPredictandStationIds(const vi& val) {
         m_predictandStationIds = val;
     }
 
@@ -158,7 +158,7 @@ class asResultsForecast : public asResults {
 
     wxString GetStationNameAndHeight(int iStat) const;
 
-    void SetStationNames(const vwxs &stationsNames) {
+    void SetStationNames(const vwxs& stationsNames) {
         m_stationNames = stationsNames;
     }
 
@@ -168,11 +168,11 @@ class asResultsForecast : public asResults {
         return m_stationIds[i];
     }
 
-    void SetStationIds(const a1i &stationsIds) {
+    void SetStationIds(const a1i& stationsIds) {
         m_stationIds = stationsIds;
     }
 
-    void SetStationOfficialIds(const vwxs &stationsOfficialIds) {
+    void SetStationOfficialIds(const vwxs& stationsOfficialIds) {
         m_stationOfficialIds = stationsOfficialIds;
     }
 
@@ -182,7 +182,7 @@ class asResultsForecast : public asResults {
         return m_stationHeights[i];
     }
 
-    void SetStationHeights(const a1f &stationsHeights) {
+    void SetStationHeights(const a1f& stationsHeights) {
         m_stationHeights = stationsHeights;
     }
 
@@ -192,7 +192,7 @@ class asResultsForecast : public asResults {
         return m_stationXCoords[i];
     }
 
-    void SetStationXCoords(const a1d &stationsXCoords) {
+    void SetStationXCoords(const a1d& stationsXCoords) {
         m_stationXCoords = stationsXCoords;
     }
 
@@ -202,7 +202,7 @@ class asResultsForecast : public asResults {
         return m_stationYCoords[i];
     }
 
-    void SetStationYCoords(const a1d &stationsYCoords) {
+    void SetStationYCoords(const a1d& stationsYCoords) {
         m_stationYCoords = stationsYCoords;
     }
 
@@ -210,7 +210,7 @@ class asResultsForecast : public asResults {
         return m_referenceAxis;
     }
 
-    void SetReferenceAxis(const a1f &referenceAxis) {
+    void SetReferenceAxis(const a1f& referenceAxis) {
         m_referenceAxis = referenceAxis;
         m_hasReferenceValues = true;
     }
@@ -238,7 +238,7 @@ class asResultsForecast : public asResults {
         return m_referenceValues;
     }
 
-    void SetReferenceValues(const a2f &referenceValues) {
+    void SetReferenceValues(const a2f& referenceValues) {
         m_referenceValues = referenceValues;
     }
 
@@ -246,11 +246,11 @@ class asResultsForecast : public asResults {
         return (int)m_targetDates.size();
     }
 
-    a1f &GetTargetDates() {
+    a1f& GetTargetDates() {
         return m_targetDates;
     }
 
-    void SetTargetDates(const a1d &refDates) {
+    void SetTargetDates(const a1d& refDates) {
         m_targetDates.resize(refDates.rows());
         for (int i = 0; i < refDates.size(); i++) {
             m_targetDates[i] = (float)refDates[i];
@@ -258,17 +258,17 @@ class asResultsForecast : public asResults {
         }
     }
 
-    void SetTargetDates(const a1f &refDates) {
+    void SetTargetDates(const a1f& refDates) {
         m_targetDates.resize(refDates.rows());
         m_targetDates = refDates;
     }
 
-    a1f &GetAnalogsCriteria(int i) {
+    a1f& GetAnalogsCriteria(int i) {
         wxASSERT(m_analogsCriteria.size() > i);
         return m_analogsCriteria[i];
     }
 
-    void SetAnalogsCriteria(int i, const a1f &analogsCriteria) {
+    void SetAnalogsCriteria(int i, const a1f& analogsCriteria) {
         if (m_analogsCriteria.size() >= i + 1) {
             m_analogsCriteria[i] = analogsCriteria;
         } else if (m_analogsCriteria.size() == i) {
@@ -278,7 +278,7 @@ class asResultsForecast : public asResults {
         }
     }
 
-    a2f &GetAnalogsValuesRaw(int iLead) {
+    a2f& GetAnalogsValuesRaw(int iLead) {
         wxASSERT(m_analogsValuesRaw.size() > iLead);
         return m_analogsValuesRaw[iLead];
     }
@@ -290,7 +290,7 @@ class asResultsForecast : public asResults {
         return vals;
     }
 
-    void SetAnalogsValuesRaw(int iLead, int iStat, const a1f &analogsValuesRaw) {
+    void SetAnalogsValuesRaw(int iLead, int iStat, const a1f& analogsValuesRaw) {
         if (m_analogsValuesRaw.size() >= iLead + 1) {
             wxASSERT(m_analogsValuesRaw[iLead].rows() > iStat);
             wxASSERT(m_analogsValuesRaw[iLead].cols() == analogsValuesRaw.size());
@@ -307,7 +307,7 @@ class asResultsForecast : public asResults {
         }
     }
 
-    a2f &GetAnalogsValuesNorm(int iLead) {
+    a2f& GetAnalogsValuesNorm(int iLead) {
         wxASSERT(m_analogsValuesNorm.size() > iLead);
         return m_analogsValuesNorm[iLead];
     }
@@ -319,7 +319,7 @@ class asResultsForecast : public asResults {
         return vals;
     }
 
-    void SetAnalogsValuesNorm(int iLead, int iStat, const a1f &analogsValuesNorm) {
+    void SetAnalogsValuesNorm(int iLead, int iStat, const a1f& analogsValuesNorm) {
         if (m_analogsValuesNorm.size() >= iLead + 1) {
             wxASSERT(m_analogsValuesNorm[iLead].rows() > iStat);
             wxASSERT(m_analogsValuesNorm[iLead].cols() == analogsValuesNorm.size());
@@ -341,12 +341,12 @@ class asResultsForecast : public asResults {
         return (int)m_analogsDates[i].size();
     }
 
-    a1f &GetAnalogsDates(int i) {
+    a1f& GetAnalogsDates(int i) {
         wxASSERT(m_analogsDates.size() > i);
         return m_analogsDates[i];
     }
 
-    void SetAnalogsDates(int i, const a1f &analogsDates) {
+    void SetAnalogsDates(int i, const a1f& analogsDates) {
         if (m_analogsDates.size() >= i + 1) {
             m_analogsDates[i] = analogsDates;
         } else if (m_analogsDates.size() == i) {

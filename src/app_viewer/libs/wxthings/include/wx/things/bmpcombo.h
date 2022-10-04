@@ -55,16 +55,17 @@ enum wxBmpComboBox_Style {
 
 class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
   public:
-    wxBmpComboBox() : DropDownBase() {
+    wxBmpComboBox()
+        : DropDownBase() {
         Init();
     }
 
     // Compatible with a wxComboBox, uses strings only
-    wxBmpComboBox(wxWindow *parent, wxWindowID id,
-                  const wxString &value = wxEmptyString,  // used only if first choice is !null
-                  const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, int n = 0,
-                  const wxString choices[] = (const wxString *)NULL, long style = wxBMPCOMBO_RIGHT,
-                  const wxValidator &val = wxDefaultValidator, const wxString &name = wxT("wxBmpComboBox"))
+    wxBmpComboBox(wxWindow* parent, wxWindowID id,
+                  const wxString& value = wxEmptyString,  // used only if first choice is !null
+                  const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, int n = 0,
+                  const wxString choices[] = (const wxString*)NULL, long style = wxBMPCOMBO_RIGHT,
+                  const wxValidator& val = wxDefaultValidator, const wxString& name = wxT("wxBmpComboBox"))
         : DropDownBase() {
         Init();
         if ((n > 0) || (!value.IsEmpty())) {
@@ -78,10 +79,10 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
 
     // Native constructor (only adds first item) you probably want to
     // use the largest item first so that the size is correct from the start.
-    wxBmpComboBox(wxWindow *parent, wxWindowID id, const wxString &label, const wxBitmap &bitmap,
-                  const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
-                  long style = wxBMPCOMBO_RIGHT, const wxValidator &val = wxDefaultValidator,
-                  const wxString &name = wxT("wxBmpComboBox"))
+    wxBmpComboBox(wxWindow* parent, wxWindowID id, const wxString& label, const wxBitmap& bitmap,
+                  const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
+                  long style = wxBMPCOMBO_RIGHT, const wxValidator& val = wxDefaultValidator,
+                  const wxString& name = wxT("wxBmpComboBox"))
         : DropDownBase() {
         Init();
         Append(label, bitmap);
@@ -90,19 +91,19 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
 
     virtual ~wxBmpComboBox();
 
-    bool Create(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition,
-                const wxSize &size = wxDefaultSize, long style = wxBMPCOMBO_RIGHT,
-                const wxValidator &val = wxDefaultValidator, const wxString &name = wxT("wxBmpComboBox"));
+    bool Create(wxWindow* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition,
+                const wxSize& size = wxDefaultSize, long style = wxBMPCOMBO_RIGHT,
+                const wxValidator& val = wxDefaultValidator, const wxString& name = wxT("wxBmpComboBox"));
 
     // Style is either wxBMPCOMBO_LEFT or wxBMPCOMBO_RIGHT
     bool SetButtonStyle(long style);
 
     // Append/Insert an item, either label and bitmap may be empty/null
-    int Append(const wxString &label, const wxBitmap &bitmap);
+    int Append(const wxString& label, const wxBitmap& bitmap);
 
     // Inserts item with image into the list before pos. Not valid for wxCB_SORT or wxCB_SORT
     // styles, use Append instead.
-    int Insert(const wxString &item, const wxBitmap &bitmap, unsigned int pos);
+    int Insert(const wxString& item, const wxBitmap& bitmap, unsigned int pos);
 
     // Clear or delete a single or number of items starting from n
     void Clear();
@@ -125,16 +126,16 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
 
     wxBitmap GetItemBitmap(int n) const;
 
-    void SetItemBitmap(int n, const wxBitmap &bitmap);
+    void SetItemBitmap(int n, const wxBitmap& bitmap);
 
-    void SetLabel(int n, const wxString &label);
+    void SetLabel(int n, const wxString& label);
 
-    void SetItem(int n, const wxString &label, const wxBitmap &bitmap) {
+    void SetItem(int n, const wxString& label, const wxBitmap& bitmap) {
         SetLabel(n, label);
         SetItemBitmap(n, bitmap);
     }
 
-    virtual bool SetBackgroundColour(const wxColour &colour);
+    virtual bool SetBackgroundColour(const wxColour& colour);
 
     virtual void HidePopup();
 
@@ -146,7 +147,7 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
     void Thaw();
 
     // implementation
-    wxBmpComboLabel *GetLabelWindow() {
+    wxBmpComboLabel* GetLabelWindow() {
         return m_labelWin;
     }
 
@@ -163,16 +164,16 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
         return m_itemSize;
     }
 
-    void CalcLabelBitmapPos(int n, const wxSize &area, wxPoint &labelPos, wxPoint &bitmapPos) const;
+    void CalcLabelBitmapPos(int n, const wxSize& area, wxPoint& labelPos, wxPoint& bitmapPos) const;
 
     void CalcLayout();
 
-    void DrawItem(wxDC &dc, int n) const;
+    void DrawItem(wxDC& dc, int n) const;
 
   protected:
     virtual void DoSetSize(int x, int y, int width, int height, int sizeFlags = wxSIZE_AUTO);
 
-    void OnSize(wxSizeEvent &event);
+    void OnSize(wxSizeEvent& event);
 
     virtual wxSize DoGetBestSize() const;
 
@@ -180,7 +181,7 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
 
     virtual bool DoShowPopup();
 
-    wxBmpComboLabel *m_labelWin;
+    wxBmpComboLabel* m_labelWin;
 
     wxArrayPtrVoid m_bitmaps;  // the individual bitmaps
     wxArrayString m_labels;    // the individual labels
@@ -207,16 +208,16 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
 // ==========================================================================
 class WXDLLIMPEXP_THINGS wxBmpComboLabel : public wxWindow {
   public:
-    wxBmpComboLabel(wxBmpComboBox *parent = NULL, int style = wxSUNKEN_BORDER)
+    wxBmpComboLabel(wxBmpComboBox* parent = NULL, int style = wxSUNKEN_BORDER)
         : wxWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, style),
           m_bmpCombo(parent) {}
 
   protected:
-    void OnPaint(wxPaintEvent &event);
+    void OnPaint(wxPaintEvent& event);
 
-    void OnChar(wxKeyEvent &event);
+    void OnChar(wxKeyEvent& event);
 
-    wxBmpComboBox *m_bmpCombo;
+    wxBmpComboBox* m_bmpCombo;
 
   private:
     DECLARE_ABSTRACT_CLASS(wxBmpComboLabel)
@@ -230,17 +231,17 @@ class WXDLLIMPEXP_THINGS wxBmpComboLabel : public wxWindow {
 
 class WXDLLIMPEXP_THINGS wxBmpComboPopupChild : public wxScrolledWindow {
   public:
-    wxBmpComboPopupChild(wxWindow *parent, wxBmpComboBox *owner);
+    wxBmpComboPopupChild(wxWindow* parent, wxBmpComboBox* owner);
 
-    void DrawSelection(int n, wxDC &dc);
+    void DrawSelection(int n, wxDC& dc);
 
-    void OnMouse(wxMouseEvent &event);
+    void OnMouse(wxMouseEvent& event);
 
-    void OnPaint(wxPaintEvent &event);
+    void OnPaint(wxPaintEvent& event);
 
-    void OnKeyDown(wxKeyEvent &event);
+    void OnKeyDown(wxKeyEvent& event);
 
-    wxBmpComboBox *m_bmpCombo;
+    wxBmpComboBox* m_bmpCombo;
     int m_last_selection;
 
   private:

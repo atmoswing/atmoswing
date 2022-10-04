@@ -1061,7 +1061,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
     return;
 }
 
-void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints) {
+void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs& otherParam, vi& crossingPoints) {
     wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
@@ -1102,8 +1102,8 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
                 }
                 if (m_hasChromosomeMutationRadius) {
                     float mutRadius = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
-                    SetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt,
-                        otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt));
+                    SetSelfAdaptationMutationRadiusFromChromosome(
+                        counterSelfAdapt, otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt));
                     otherParam.SetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt, mutRadius);
                 }
             }
@@ -1113,7 +1113,7 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints,
+void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs& otherParam, vi& crossingPoints,
                                                     bool shareBeta, double betaMin, double betaMax) {
     wxASSERT(!crossingPoints.empty());
 
@@ -1175,7 +1175,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints,
+void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs& otherParam, vi& crossingPoints,
                                                      bool shareBeta, double betaMin, double betaMax) {
     wxASSERT(!crossingPoints.empty());
 
@@ -1237,7 +1237,7 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints,
+void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGAs& otherParam, vi& crossingPoints,
                                                       bool shareBeta, double betaMin, double betaMax) {
     wxASSERT(!crossingPoints.empty());
 
@@ -1321,8 +1321,8 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &otherParam,
-                                                  asParametersOptimizationGAs &thirdParam, vi &crossingPoints) {
+void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs& otherParam,
+                                                  asParametersOptimizationGAs& thirdParam, vi& crossingPoints) {
     wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
@@ -1384,7 +1384,7 @@ void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &o
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::LinearInterpolation(asParametersOptimizationGAs &otherParam, bool shareBeta) {
+void asParametersOptimizationGAs::LinearInterpolation(asParametersOptimizationGAs& otherParam, bool shareBeta) {
     double beta = asRandom(0.0, 1.0);
     int counterSelfAdapt = 0;
     int counter = 0;
@@ -1425,7 +1425,7 @@ void asParametersOptimizationGAs::LinearInterpolation(asParametersOptimizationGA
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::MutateUniformDistribution(double probability, bool &hasMutated) {
+void asParametersOptimizationGAs::MutateUniformDistribution(double probability, bool& hasMutated) {
     int counter = 0;
 
     do {
@@ -1443,7 +1443,7 @@ void asParametersOptimizationGAs::MutateUniformDistribution(double probability, 
 }
 
 void asParametersOptimizationGAs::MutateNormalDistribution(double probability, double stdDevRatioRange,
-                                                           bool &hasMutated) {
+                                                           bool& hasMutated) {
     int counter = 0;
 
     do {
@@ -1451,8 +1451,8 @@ void asParametersOptimizationGAs::MutateNormalDistribution(double probability, d
             if (asRandom(0.0, 1.0) < probability) {
                 if (GetParamType(counter) < 3) {
                     double mean = GetParameterValue(counter);
-                    double stdDev =
-                        stdDevRatioRange * (GetParameterUpperLimit(counter) - GetParameterLowerLimit(counter));
+                    double stdDev = stdDevRatioRange *
+                                    (GetParameterUpperLimit(counter) - GetParameterLowerLimit(counter));
                     double step = GetParameterIteration(counter);
                     double newVal = asRandomNormal(mean, stdDev, step);
                     SetParameterValue(counter, newVal);
@@ -1471,10 +1471,10 @@ void asParametersOptimizationGAs::MutateNormalDistribution(double probability, d
 }
 
 void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen, int nbGenMax, double minRate,
-                                                   bool &hasMutated) {
+                                                   bool& hasMutated) {
     double ratioGens = (double)nbGen / (double)nbGenMax;
-    double cstFactor =
-        (1.0 - wxMin(ratioGens, 1.0) * (1.0 - minRate)) * (1.0 - wxMin(ratioGens, 1.0) * (1.0 - minRate));
+    double cstFactor = (1.0 - wxMin(ratioGens, 1.0) * (1.0 - minRate)) *
+                       (1.0 - wxMin(ratioGens, 1.0) * (1.0 - minRate));
 
     int counter = 0;
 
@@ -1510,7 +1510,7 @@ void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::MutateSelfAdaptationRate(bool &hasMutated) {
+void asParametersOptimizationGAs::MutateSelfAdaptationRate(bool& hasMutated) {
     // Mutate mutation probability
     if (asRandom(0.0, 1.0) < m_adaptMutationRate) {
         m_adaptMutationRate = asRandom(0.0, 1.0);
@@ -1520,7 +1520,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRate(bool &hasMutated) {
     MutateUniformDistribution(m_adaptMutationRate, hasMutated);
 }
 
-void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated) {
+void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool& hasMutated) {
     // Mutate mutation probability
     if (asRandom(0.0, 1.0) < m_adaptMutationRate) {
         m_adaptMutationRate = asRandom(0.0, 1.0);
@@ -1565,7 +1565,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated) {
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMutated) {
+void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool& hasMutated) {
     wxASSERT(!m_chromosomeMutationRate.empty());
     wxASSERT(m_chromosomeMutationRate.size() == GetChromosomeLength());
 
@@ -1597,7 +1597,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &hasMutated) {
+void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool& hasMutated) {
     wxASSERT(!m_chromosomeMutationRate.empty());
     wxASSERT(!m_chromosomeMutationRadius.empty());
     wxASSERT(m_chromosomeMutationRate.size() == m_chromosomeMutationRadius.size());
@@ -1655,7 +1655,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::MutateMultiScale(double probability, bool &hasMutated) {
+void asParametersOptimizationGAs::MutateMultiScale(double probability, bool& hasMutated) {
     // Choose the radius
     double radiusChoice = asRandom(0.0, 1.0);
     double radius = 0;

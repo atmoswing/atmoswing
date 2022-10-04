@@ -40,13 +40,17 @@ class asFile : public wxObject {
         Append     // add content to an already existing file
     };
 
-    enum FileType { Netcdf, Grib, Text };
+    enum FileType {
+        Netcdf,
+        Grib,
+        Text
+    };
 
-    explicit asFile(const wxString &fileName, const FileMode &fileMode = asFile::ReadOnly);
+    explicit asFile(const wxString& fileName, const FileMode& fileMode = asFile::ReadOnly);
 
     ~asFile() override;
 
-    static bool Exists(const wxString &filePath);
+    static bool Exists(const wxString& filePath);
 
     bool Find();
 
