@@ -30,7 +30,7 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorOperCustomFvgForecast::asPredictorOperCustomFvgForecast(const wxString &dataId)
+asPredictorOperCustomFvgForecast::asPredictorOperCustomFvgForecast(const wxString& dataId)
     : asPredictorOperIfsForecast(dataId) {
     // Set the basic properties.
     m_datasetId = "Custom_MeteoFVG_Forecast";
@@ -44,7 +44,6 @@ asPredictorOperCustomFvgForecast::asPredictorOperCustomFvgForecast(const wxStrin
 }
 
 bool asPredictorOperCustomFvgForecast::Init() {
-
     m_parameter = Other;
 
     if (m_dataId.IsSameAs("DP500925", false)) {
@@ -147,16 +146,15 @@ bool asPredictorOperCustomFvgForecast::Init() {
     return true;
 }
 
-void asPredictorOperCustomFvgForecast::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorOperCustomFvgForecast::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + refValue;
 }
 
 double asPredictorOperCustomFvgForecast::FixTimeValue(double time) const {
-
     if (m_dataId.Contains("cp_sfc")) {
-        time -= 3.0/24.0;
+        time -= 3.0 / 24.0;
     } else if (m_dataId.Contains("tp_sfc")) {
-        time -= 3.0/24.0;
+        time -= 3.0 / 24.0;
     }
 
     return time;

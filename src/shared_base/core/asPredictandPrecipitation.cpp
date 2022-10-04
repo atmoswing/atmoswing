@@ -51,7 +51,7 @@ bool asPredictandPrecipitation::InitContainers() {
     return InitBaseContainers();
 }
 
-bool asPredictandPrecipitation::Load(const wxString &filePath) {
+bool asPredictandPrecipitation::Load(const wxString& filePath) {
     // Open the NetCDF file
     wxLogVerbose(_("Opening the file %s"), filePath);
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
@@ -96,7 +96,7 @@ bool asPredictandPrecipitation::Load(const wxString &filePath) {
     return true;
 }
 
-bool asPredictandPrecipitation::Save(const wxString &destinationDir) const {
+bool asPredictandPrecipitation::Save(const wxString& destinationDir) const {
     // Get the file path
     wxString predictandDBFilePath = GetDBFilePathSaving(destinationDir);
 
@@ -179,9 +179,8 @@ bool asPredictandPrecipitation::Save(const wxString &destinationDir) const {
     return true;
 }
 
-bool asPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
-                                                  const wxString &patternDir, const wxString &destinationDir) {
-
+bool asPredictandPrecipitation::BuildPredictandDB(const wxString& catalogFilePath, const wxString& dataDir,
+                                                  const wxString& patternDir, const wxString& destinationDir) {
     // Initialize the members
     if (!InitMembers(catalogFilePath)) return false;
 
@@ -327,7 +326,7 @@ bool asPredictandPrecipitation::BuildDailyPrecipitationsForAllReturnPeriods() {
     for (int iStat = 0; iStat < m_stationsNb; iStat++) {
         for (int iRetPeriod = 0; iRetPeriod < m_returnPeriods.size(); iRetPeriod++) {
             float F = 1 - (1 / m_returnPeriods[iRetPeriod]);  // Probability of not overtaking
-            float u = -log(-log(F));  // Gumbel variable
+            float u = -log(-log(F));                          // Gumbel variable
             int iDuration = asFind(&m_gumbelDuration(iStat, 0), &m_gumbelDuration(iStat, m_gumbelDuration.cols() - 1),
                                    duration, 0.00001f);
             float val = m_gumbelParamB(iStat, iDuration) * u + m_gumbelParamA(iStat, iDuration);

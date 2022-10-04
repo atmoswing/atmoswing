@@ -35,7 +35,7 @@
 
 class asForecastManager {
   public:
-    asForecastManager(wxWindow *parent, asWorkspace *workspace);
+    asForecastManager(wxWindow* parent, asWorkspace* workspace);
 
     virtual ~asForecastManager();
 
@@ -45,15 +45,15 @@ class asForecastManager {
 
     void ClearForecasts();
 
-    bool Open(const wxString &filePath, bool doRefresh = true);
+    bool Open(const wxString& filePath, bool doRefresh = true);
 
-    bool OpenPastForecast(int methodRow, int forecastRow, const wxString &filePath);
+    bool OpenPastForecast(int methodRow, int forecastRow, const wxString& filePath);
 
     void LoadPastForecast(int methodRow, int forecastRow);
 
     void LoadPastForecast(int methodRow);
 
-    void AddDirectoryPastForecasts(const wxString &dir);
+    void AddDirectoryPastForecasts(const wxString& dir);
 
     int GetLinearIndex(int methodRow, int forecastRow) const;
 
@@ -61,7 +61,7 @@ class asForecastManager {
 
     int GetForecastRowFromLinearIndex(int linearIndex) const;
 
-    asResultsForecastAggregator *GetAggregator() const {
+    asResultsForecastAggregator* GetAggregator() const {
         return m_aggregator;
     }
 
@@ -85,11 +85,11 @@ class asForecastManager {
         return m_aggregator->GetPastForecastsNb(methodRow, forecastRow);
     }
 
-    asResultsForecast *GetForecast(int methodRow, int forecastRow) const {
+    asResultsForecast* GetForecast(int methodRow, int forecastRow) const {
         return m_aggregator->GetForecast(methodRow, forecastRow);
     }
 
-    asResultsForecast *GetPastForecast(int methodRow, int forecastRow, int leadtimeRow) const {
+    asResultsForecast* GetPastForecast(int methodRow, int forecastRow, int leadtimeRow) const {
         return m_aggregator->GetPastForecast(methodRow, forecastRow, leadtimeRow);
     }
 
@@ -167,9 +167,9 @@ class asForecastManager {
 
   protected:
   private:
-    wxWindow *m_parent;
-    asWorkspace *m_workspace;
-    asResultsForecastAggregator *m_aggregator;
+    wxWindow* m_parent;
+    asWorkspace* m_workspace;
+    asResultsForecastAggregator* m_aggregator;
     double m_leadTimeOrigin;
     wxArrayString m_directoriesPastForecasts;
 };

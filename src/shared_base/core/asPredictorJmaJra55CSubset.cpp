@@ -30,7 +30,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorJmaJra55CSubset::asPredictorJmaJra55CSubset(const wxString &dataId) : asPredictorJmaJra55Subset(dataId) {
+asPredictorJmaJra55CSubset::asPredictorJmaJra55CSubset(const wxString& dataId)
+    : asPredictorJmaJra55Subset(dataId) {
     // Set the basic properties.
     m_datasetId = "JMA_JRA_55C_subset";
     m_datasetName = "Japanese 55-year Reanalysis Conventional";

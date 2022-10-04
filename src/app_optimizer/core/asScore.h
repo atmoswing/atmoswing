@@ -69,26 +69,26 @@ class asScore : public wxObject {
 
     asScore();
 
-    asScore(Score score, const wxString &name, const wxString &fullname, Order order, float scaleBest = NaNf,
+    asScore(Score score, const wxString& name, const wxString& fullname, Order order, float scaleBest = NaNf,
             float scaleWorst = NaNf, bool usesClimatology = false, bool singleValue = true);
 
     ~asScore() override = default;
 
-    static asScore *GetInstance(Score scoreEnums);
+    static asScore* GetInstance(Score scoreEnums);
 
-    static asScore *GetInstance(const wxString &scoreString);
+    static asScore* GetInstance(const wxString& scoreString);
 
-    virtual bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) = 0;
+    virtual bool ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) = 0;
 
-    virtual float Assess(float obs, const a1f &values, int nbElements) const = 0;
+    virtual float Assess(float obs, const a1f& values, int nbElements) const = 0;
 
-    virtual a1f AssessOnArray(float obs, const a1f &values, int nbElements) const;
+    virtual a1f AssessOnArray(float obs, const a1f& values, int nbElements) const;
 
     bool CheckObservedValue(float obs) const;
 
-    bool CheckVectorLength(const a1f &values, int nbElements) const;
+    bool CheckVectorLength(const a1f& values, int nbElements) const;
 
-    int CleanNans(const a1f &valuesIn, a1f &valuesOut, int nbElements) const;
+    int CleanNans(const a1f& valuesIn, a1f& valuesOut, int nbElements) const;
 
     wxString GetName() const {
         return m_name;

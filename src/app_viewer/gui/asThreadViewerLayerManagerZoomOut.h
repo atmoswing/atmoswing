@@ -34,8 +34,8 @@
 
 class asThreadViewerLayerManagerZoomOut : public asThread {
   public:
-    asThreadViewerLayerManagerZoomOut(vrViewerLayerManager *viewerLayerManager,
-                                      wxCriticalSection *critSectionViewerLayerManager, const vrRealRect &fittedRect);
+    asThreadViewerLayerManagerZoomOut(vrViewerLayerManager* viewerLayerManager,
+                                      wxCriticalSection* critSectionViewerLayerManager, const vrRealRect& fittedRect);
 
     ~asThreadViewerLayerManagerZoomOut() override = default;
 
@@ -43,8 +43,8 @@ class asThreadViewerLayerManagerZoomOut : public asThread {
 
   protected:
   private:
-    vrViewerLayerManager *m_viewerLayerManager;
-    wxCriticalSection *m_critSectionViewerLayerManager;
+    vrViewerLayerManager* m_viewerLayerManager;
+    wxCriticalSection* m_critSectionViewerLayerManager;
     vrRealRect m_rect;
 };
 

@@ -97,13 +97,13 @@ class asParameters : public wxObject {
 
     void AddPredictor();  // To the last step
 
-    void AddPredictor(ParamsStep &step);
+    void AddPredictor(ParamsStep& step);
 
     void AddPredictor(int iStep);
 
     void RemovePredictor(int iStep, int iPtor);
 
-    virtual bool LoadFromFile(const wxString &filePath = wxEmptyString);
+    virtual bool LoadFromFile(const wxString& filePath = wxEmptyString);
 
     bool FixAnalogsNb();
 
@@ -121,7 +121,7 @@ class asParameters : public wxObject {
 
     wxString GetPredictandStationIdsString() const;
 
-    static wxString PredictandStationIdsToString(const vi &predictandStationIds);
+    static wxString PredictandStationIdsToString(const vi& predictandStationIds);
 
     virtual bool FixTimeLimits();
 
@@ -131,15 +131,15 @@ class asParameters : public wxObject {
 
     virtual wxString Print() const;
 
-    bool IsSameAs(const asParameters &params) const;
+    bool IsSameAs(const asParameters& params) const;
 
-    bool IsSameAs(const VectorParamsStep &params, const vi &predictandStationIds, int analogsIntervalDays) const;
+    bool IsSameAs(const VectorParamsStep& params, const vi& predictandStationIds, int analogsIntervalDays) const;
 
-    bool IsCloseTo(const asParameters &params) const;
+    bool IsCloseTo(const asParameters& params) const;
 
-    bool IsCloseTo(const VectorParamsStep &params, const vi &predictandStationIds, int analogsIntervalDays) const;
+    bool IsCloseTo(const VectorParamsStep& params, const vi& predictandStationIds, int analogsIntervalDays) const;
 
-    bool PrintAndSaveTemp(const wxString &filePath = wxEmptyString) const;
+    bool PrintAndSaveTemp(const wxString& filePath = wxEmptyString) const;
 
     virtual bool GetValuesFromString(wxString stringVals);  // We copy the string as we'll modify it.
 
@@ -159,7 +159,7 @@ class asParameters : public wxObject {
         return m_methodId;
     }
 
-    void SetMethodId(const wxString &val) {
+    void SetMethodId(const wxString& val) {
         m_methodId = val;
     }
 
@@ -167,7 +167,7 @@ class asParameters : public wxObject {
         return m_methodIdDisplay;
     }
 
-    void SetMethodIdDisplay(const wxString &val) {
+    void SetMethodIdDisplay(const wxString& val) {
         m_methodIdDisplay = val;
     }
 
@@ -175,7 +175,7 @@ class asParameters : public wxObject {
         return m_specificTag;
     }
 
-    void SetSpecificTag(const wxString &val) {
+    void SetSpecificTag(const wxString& val) {
         m_specificTag = val;
     }
 
@@ -183,7 +183,7 @@ class asParameters : public wxObject {
         return m_specificTagDisplay;
     }
 
-    void SetSpecificTagDisplay(const wxString &val) {
+    void SetSpecificTagDisplay(const wxString& val) {
         m_specificTagDisplay = val;
     }
 
@@ -191,7 +191,7 @@ class asParameters : public wxObject {
         return m_description;
     }
 
-    void SetDescription(const wxString &val) {
+    void SetDescription(const wxString& val) {
         m_description = val;
     }
 
@@ -199,7 +199,7 @@ class asParameters : public wxObject {
         return m_dateProcessed;
     }
 
-    void SetDateProcessed(const wxString &val) {
+    void SetDateProcessed(const wxString& val) {
         m_dateProcessed = val;
     }
 
@@ -215,7 +215,7 @@ class asParameters : public wxObject {
         return m_archiveStart;
     }
 
-    void SetArchiveStart(const wxString &val) {
+    void SetArchiveStart(const wxString& val) {
         m_archiveStart = asTime::GetTimeFromString(val);
     }
 
@@ -223,7 +223,7 @@ class asParameters : public wxObject {
         return m_archiveEnd;
     }
 
-    void SetArchiveEnd(const wxString &val) {
+    void SetArchiveEnd(const wxString& val) {
         m_archiveEnd = asTime::GetTimeFromString(val);
     }
 
@@ -259,13 +259,13 @@ class asParameters : public wxObject {
         return m_timeArrayTargetMode;
     }
 
-    void SetTimeArrayTargetMode(const wxString &val);
+    void SetTimeArrayTargetMode(const wxString& val);
 
     wxString GetTimeArrayTargetPredictandSerieName() const {
         return m_timeArrayTargetPredictandSerieName;
     }
 
-    void SetTimeArrayTargetPredictandSerieName(const wxString &val);
+    void SetTimeArrayTargetPredictandSerieName(const wxString& val);
 
     float GetTimeArrayTargetPredictandMinThreshold() const {
         return m_timeArrayTargetPredictandMinThreshold;
@@ -283,7 +283,7 @@ class asParameters : public wxObject {
         return m_timeArrayAnalogsMode;
     }
 
-    void SetTimeArrayAnalogsMode(const wxString &val);
+    void SetTimeArrayAnalogsMode(const wxString& val);
 
     int GetAnalogsExcludeDays() const {
         return m_analogsExcludeDays;
@@ -355,7 +355,7 @@ class asParameters : public wxObject {
 
     vwxs GetPreloadDataIds(int iStep, int iPtor) const {
         vwxs vals;
-        for (const auto &preloadDataId : m_steps[iStep].predictors[iPtor].preloadDataIds) {
+        for (const auto& preloadDataId : m_steps[iStep].predictors[iPtor].preloadDataIds) {
             vals.push_back(preloadDataId);
         }
         return vals;
@@ -421,7 +421,7 @@ class asParameters : public wxObject {
         return m_steps[iStep].predictors[iPtor].preprocessMethod;
     }
 
-    void SetPreprocessMethod(int iStep, int iPtor, const wxString &val);
+    void SetPreprocessMethod(int iStep, int iPtor, const wxString& val);
 
     bool NeedsGradientPreprocessing(int iStep, int iPtor) const;
 
@@ -433,11 +433,11 @@ class asParameters : public wxObject {
 
     wxString GetPreprocessDatasetId(int iStep, int iPtor, int iPre) const;
 
-    void SetPreprocessDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetPreprocessDatasetId(int iStep, int iPtor, int iPre, const wxString& val);
 
     wxString GetPreprocessDataId(int iStep, int iPtor, int iPre) const;
 
-    void SetPreprocessDataId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetPreprocessDataId(int iStep, int iPtor, int iPre, const wxString& val);
 
     float GetPreprocessLevel(int iStep, int iPtor, int iPre) const;
 
@@ -457,13 +457,13 @@ class asParameters : public wxObject {
         return m_steps[iStep].predictors[iPtor].datasetId;
     }
 
-    void SetPredictorDatasetId(int iStep, int iPtor, const wxString &val);
+    void SetPredictorDatasetId(int iStep, int iPtor, const wxString& val);
 
     wxString GetPredictorDataId(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].dataId;
     }
 
-    void SetPredictorDataId(int iStep, int iPtor, const wxString &val);
+    void SetPredictorDataId(int iStep, int iPtor, const wxString& val);
 
     float GetPredictorLevel(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].level;
@@ -475,7 +475,7 @@ class asParameters : public wxObject {
         return m_steps[iStep].predictors[iPtor].gridType;
     }
 
-    void SetPredictorGridType(int iStep, int iPtor, const wxString &val);
+    void SetPredictorGridType(int iStep, int iPtor, const wxString& val);
 
     double GetPredictorXmin(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].xMin;
@@ -551,7 +551,7 @@ class asParameters : public wxObject {
         return m_steps[iStep].predictors[iPtor].criteria;
     }
 
-    void SetPredictorCriteria(int iStep, int iPtor, const wxString &val);
+    void SetPredictorCriteria(int iStep, int iPtor, const wxString& val);
 
     float GetPredictorWeight(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].weight;
@@ -606,17 +606,17 @@ class asParameters : public wxObject {
     wxString m_predictandDatasetId;
     double m_predictandTimeHours;
 
-    bool ParseDescription(asFileParameters &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseDescription(asFileParameters& fileParams, const wxXmlNode* nodeProcess);
 
-    bool ParseTimeProperties(asFileParameters &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseTimeProperties(asFileParameters& fileParams, const wxXmlNode* nodeProcess);
 
-    bool ParseAnalogDatesParams(asFileParameters &fileParams, int iStep, const wxXmlNode *nodeProcess);
+    bool ParseAnalogDatesParams(asFileParameters& fileParams, int iStep, const wxXmlNode* nodeProcess);
 
-    bool ParsePredictors(asFileParameters &fileParams, int iStep, int iPtor, const wxXmlNode *nodeParamBlock);
+    bool ParsePredictors(asFileParameters& fileParams, int iStep, int iPtor, const wxXmlNode* nodeParamBlock);
 
-    bool ParsePreprocessedPredictors(asFileParameters &fileParams, int iStep, int iPtor, const wxXmlNode *nodeParam);
+    bool ParsePreprocessedPredictors(asFileParameters& fileParams, int iStep, int iPtor, const wxXmlNode* nodeParam);
 
-    bool ParseAnalogValuesParams(asFileParameters &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseAnalogValuesParams(asFileParameters& fileParams, const wxXmlNode* nodeProcess);
 };
 
 #endif

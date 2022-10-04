@@ -28,10 +28,10 @@
 
 #include "asThreadInternetDownload.h"
 
-asThreadInternetDownload::asThreadInternetDownload(const vwxs &urls, const vwxs &fileNames,
-                                                   const wxString &destinationDir, bool usesProxy,
-                                                   const wxString &proxyAddress, const long proxyPort,
-                                                   const wxString &proxyUser, const wxString &proxyPasswd, int start,
+asThreadInternetDownload::asThreadInternetDownload(const vwxs& urls, const vwxs& fileNames,
+                                                   const wxString& destinationDir, bool usesProxy,
+                                                   const wxString& proxyAddress, const long proxyPort,
+                                                   const wxString& proxyUser, const wxString& proxyPasswd, int start,
                                                    int end)
     : asThread(),
       m_urls(urls),
@@ -50,14 +50,14 @@ asThreadInternetDownload::asThreadInternetDownload(const vwxs &urls, const vwxs 
 
 wxThread::ExitCode asThreadInternetDownload::Entry() {
     // Initialize
-    CURL *curl;
+    CURL* curl;
     CURLcode res;
     curl = curl_easy_init();
 
     // Do the job
     if (curl) {
         // Set a buffer for the error messages
-        auto *errorbuffer = new char[CURL_ERROR_SIZE];
+        auto* errorbuffer = new char[CURL_ERROR_SIZE];
         curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorbuffer);
         // Some servers don't like requests that are made without a user-agent field, so we provide one
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
@@ -91,7 +91,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
                                                     nullptr};
 
                 // Define the URL
-                curl_easy_setopt(curl, CURLOPT_URL, (const char *)url.mb_str(wxConvUTF8));
+                curl_easy_setopt(curl, CURLOPT_URL, (const char*)url.mb_str(wxConvUTF8));
                 // Define our callback to get called when there's data to be written
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, asInternet::WriteFile);
                 // Set a pointer to our struct to pass to the callback
@@ -100,14 +100,14 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
                 // If a proxy is used
                 if (m_usesProxy) {
                     if (!m_proxyAddress.IsEmpty()) {
-                        curl_easy_setopt(curl, CURLOPT_PROXY, (const char *)m_proxyAddress.mb_str(wxConvUTF8));
+                        curl_easy_setopt(curl, CURLOPT_PROXY, (const char*)m_proxyAddress.mb_str(wxConvUTF8));
                     }
                     if (m_proxyPort > 0) {
                         curl_easy_setopt(curl, CURLOPT_PROXYPORT, m_proxyPort);
                     }
                     if (!m_proxyUser.IsEmpty()) {
                         wxString proxyLogin = m_proxyUser + ":" + m_proxyPasswd;
-                        curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, (const char *)proxyLogin.mb_str(wxConvUTF8));
+                        curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, (const char*)proxyLogin.mb_str(wxConvUTF8));
                     }
                 }
 

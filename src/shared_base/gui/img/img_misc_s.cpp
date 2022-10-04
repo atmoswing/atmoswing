@@ -11,15 +11,15 @@
 
 #include "img_misc.h"
 
-wxBitmap *_img_bullet_green;
-wxBitmap *_img_bullet_red;
-wxBitmap *_img_bullet_white;
-wxBitmap *_img_bullet_yellow;
-wxBitmap *_img_close;
-wxBitmap *_img_hidden;
-wxBitmap *_img_plus;
-wxBitmap *_img_shown;
-wxBitmap *_img_update;
+wxBitmap* _img_bullet_green;
+wxBitmap* _img_bullet_red;
+wxBitmap* _img_bullet_white;
+wxBitmap* _img_bullet_yellow;
+wxBitmap* _img_close;
+wxBitmap* _img_hidden;
+wxBitmap* _img_plus;
+wxBitmap* _img_shown;
+wxBitmap* _img_update;
 
 void initialize_img_misc_s() {
     {

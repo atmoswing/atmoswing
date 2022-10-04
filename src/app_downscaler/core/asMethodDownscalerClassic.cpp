@@ -31,18 +31,19 @@
 #include "asResultsDates.h"
 #include "asResultsValues.h"
 
-asMethodDownscalerClassic::asMethodDownscalerClassic() : asMethodDownscaler() {}
+asMethodDownscalerClassic::asMethodDownscalerClassic()
+    : asMethodDownscaler() {}
 
 asMethodDownscalerClassic::~asMethodDownscalerClassic() {}
 
-bool asMethodDownscalerClassic::Downscale(asParametersDownscaling &params) {
+bool asMethodDownscalerClassic::Downscale(asParametersDownscaling& params) {
     // Extract the stations IDs
     vvi stationsId = params.GetPredictandStationIdsVector();
 
     // Create a analogsdate object to save previous analogs dates selection.
     asResultsDates anaDatesPrevious;
 
-    for (const auto &stationId : stationsId) {
+    for (const auto& stationId : stationsId) {
         ClearAll();
 
         // Create results objects

@@ -30,7 +30,8 @@
 
 #include "asFileParametersForecast.h"
 
-asParametersForecast::asParametersForecast() : asParameters() {}
+asParametersForecast::asParametersForecast()
+    : asParameters() {}
 
 asParametersForecast::~asParametersForecast() {}
 
@@ -40,12 +41,12 @@ void asParametersForecast::AddStep() {
     m_stepsForecast.push_back(stepForecast);
 }
 
-void asParametersForecast::AddPredictorForecast(ParamsStepForecast &step) {
+void asParametersForecast::AddPredictorForecast(ParamsStepForecast& step) {
     ParamsPredictorForecast predictor;
     step.predictors.push_back(predictor);
 }
 
-bool asParametersForecast::LoadFromFile(const wxString &filePath) {
+bool asParametersForecast::LoadFromFile(const wxString& filePath) {
     wxLogVerbose(_("Loading parameters file."));
 
     if (filePath.IsEmpty()) {
@@ -59,7 +60,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath) {
     if (!fileParams.CheckRootElement()) return false;
 
     int iStep = 0;
-    wxXmlNode *nodeProcess = fileParams.GetRoot()->GetChildren();
+    wxXmlNode* nodeProcess = fileParams.GetRoot()->GetChildren();
     while (nodeProcess) {
         if (nodeProcess->GetName() == "description") {
             if (!ParseDescription(fileParams, nodeProcess)) return false;
@@ -101,8 +102,8 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath) {
     return true;
 }
 
-bool asParametersForecast::ParseDescription(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess) {
-    wxXmlNode *nodeParam = nodeProcess->GetChildren();
+bool asParametersForecast::ParseDescription(asFileParametersForecast& fileParams, const wxXmlNode* nodeProcess) {
+    wxXmlNode* nodeParam = nodeProcess->GetChildren();
     while (nodeParam) {
         if (nodeParam->GetName() == "method_id") {
             SetMethodId(fileParams.GetString(nodeParam));
@@ -126,11 +127,11 @@ bool asParametersForecast::ParseDescription(asFileParametersForecast &fileParams
     return true;
 }
 
-bool asParametersForecast::ParseTimeProperties(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess) {
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+bool asParametersForecast::ParseTimeProperties(asFileParametersForecast& fileParams, const wxXmlNode* nodeProcess) {
+    wxXmlNode* nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "archive_period") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "start_year") {
                     SetArchiveYearStart(fileParams.GetInt(nodeParam));
@@ -148,7 +149,7 @@ bool asParametersForecast::ParseTimeProperties(asFileParametersForecast &filePar
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "lead_time") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "lead_time_days") {
                     SetLeadTimeDaysVector(fileParams.GetVectorDouble(nodeParam));
@@ -163,7 +164,7 @@ bool asParametersForecast::ParseTimeProperties(asFileParametersForecast &filePar
             SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock));
             SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "time_array_analogs") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "time_array") {
                     SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam));
@@ -184,10 +185,10 @@ bool asParametersForecast::ParseTimeProperties(asFileParametersForecast &filePar
     return true;
 }
 
-bool asParametersForecast::ParseAnalogDatesParams(asFileParametersForecast &fileParams, int iStep,
-                                                  const wxXmlNode *nodeProcess) {
+bool asParametersForecast::ParseAnalogDatesParams(asFileParametersForecast& fileParams, int iStep,
+                                                  const wxXmlNode* nodeProcess) {
     int iPtor = 0;
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+    wxXmlNode* nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "analogs_number") {
             SetAnalogsNumberLeadTimeVector(iStep, fileParams.GetVectorInt(nodeParamBlock));
@@ -196,7 +197,7 @@ bool asParametersForecast::ParseAnalogDatesParams(asFileParametersForecast &file
             AddPredictorForecast(m_stepsForecast[iStep]);
             SetPreprocess(iStep, iPtor, false);
             SetPreload(iStep, iPtor, false);
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "preload") {
                     SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
@@ -230,7 +231,7 @@ bool asParametersForecast::ParseAnalogDatesParams(asFileParametersForecast &file
                 } else if (nodeParam->GetName() == "members") {
                     SetPredictorMembersNb(iStep, iPtor, fileParams.GetInt(nodeParam));
                 } else if (nodeParam->GetName() == "spatial_window") {
-                    wxXmlNode *nodeWindow = nodeParam->GetChildren();
+                    wxXmlNode* nodeWindow = nodeParam->GetChildren();
                     while (nodeWindow) {
                         if (nodeWindow->GetName() == "grid_type") {
                             SetPredictorGridType(iStep, iPtor, fileParams.GetString(nodeWindow, "regular"));
@@ -269,15 +270,15 @@ bool asParametersForecast::ParseAnalogDatesParams(asFileParametersForecast &file
     return true;
 }
 
-bool asParametersForecast::ParsePreprocessedPredictors(asFileParametersForecast &fileParams, int iStep, int iPtor,
-                                                       const wxXmlNode *nodeParam) {
+bool asParametersForecast::ParsePreprocessedPredictors(asFileParametersForecast& fileParams, int iStep, int iPtor,
+                                                       const wxXmlNode* nodeParam) {
     int iPre = 0;
-    wxXmlNode *nodePreprocess = nodeParam->GetChildren();
+    wxXmlNode* nodePreprocess = nodeParam->GetChildren();
     while (nodePreprocess) {
         if (nodePreprocess->GetName() == "preprocessing_method") {
             SetPreprocessMethod(iStep, iPtor, fileParams.GetString(nodePreprocess));
         } else if (nodePreprocess->GetName() == "preprocessing_data") {
-            wxXmlNode *nodeParamPreprocess = nodePreprocess->GetChildren();
+            wxXmlNode* nodeParamPreprocess = nodePreprocess->GetChildren();
             while (nodeParamPreprocess) {
                 if (nodeParamPreprocess->GetName() == "realtime_dataset_id") {
                     SetPreprocessRealtimeDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess));
@@ -307,11 +308,11 @@ bool asParametersForecast::ParsePreprocessedPredictors(asFileParametersForecast 
     return true;
 }
 
-bool asParametersForecast::ParseAnalogValuesParams(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess) {
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+bool asParametersForecast::ParseAnalogValuesParams(asFileParametersForecast& fileParams, const wxXmlNode* nodeProcess) {
+    wxXmlNode* nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "predictand") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "station_id" || nodeParam->GetName() == "station_ids") {
                     SetPredictandStationIds(fileParams.GetString(nodeParam));
@@ -362,8 +363,9 @@ bool asParametersForecast::InputsOK() const {
     if (GetTimeArrayAnalogsMode().CmpNoCase("interval_days") == 0 ||
         GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays") == 0) {
         if (GetAnalogsIntervalDays() <= 0) {
-            wxLogError(_("The interval days for the analogs preselection "
-                "was not provided in the parameters file."));
+            wxLogError(
+                _("The interval days for the analogs preselection "
+                  "was not provided in the parameters file."));
             return false;
         }
         if (GetAnalogsExcludeDays() <= 0) {
@@ -378,7 +380,8 @@ bool asParametersForecast::InputsOK() const {
     for (int i = 0; i < GetStepsNb(); i++) {
         if (GetAnalogsNumberLeadTimeVector(i).size() != GetLeadTimeDaysVector().size()) {
             wxLogError(_("The length of the analogs numbers (step %d) "
-                         "do not match the number of lead times."), i);
+                         "do not match the number of lead times."),
+                       i);
             return false;
         }
 
@@ -386,75 +389,86 @@ bool asParametersForecast::InputsOK() const {
             if (NeedsPreprocessing(i, j)) {
                 if (GetPreprocessMethod(i, j).IsEmpty()) {
                     wxLogError(_("The preprocessing method (step %d, predictor %d) was not "
-                                 "provided in the parameters file."), i, j);
+                                 "provided in the parameters file."),
+                               i, j);
                     return false;
                 }
 
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
                     if (GetPreprocessRealtimeDatasetId(i, j, k).IsEmpty()) {
                         wxLogError(_("The realtime dataset for preprocessing (step %d, predictor %d) "
-                                     "was not provided in the parameters file."), i, j);
+                                     "was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                     if (GetPreprocessRealtimeDataId(i, j, k).IsEmpty()) {
                         wxLogError(_("The realtime data for preprocessing (step %d, predictor %d) "
-                                     "was not provided in the parameters file."), i, j);
+                                     "was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                     if (GetPreprocessArchiveDatasetId(i, j, k).IsEmpty()) {
                         wxLogError(_("The archive dataset for preprocessing (step %d, predictor %d) "
-                                     "was not provided in the parameters file."), i, j);
+                                     "was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                     if (GetPreprocessArchiveDataId(i, j, k).IsEmpty()) {
                         wxLogError(_("The archive data for preprocessing (step %d, predictor %d) "
-                                     "was not provided in the parameters file."), i, j);
+                                     "was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                 }
             } else {
                 if (GetPredictorRealtimeDatasetId(i, j).IsEmpty()) {
-                    wxLogError(
-                        _("The realtime dataset (step %d, predictor %d) was not "
-                          "provided in the parameters file."), i, j);
+                    wxLogError(_("The realtime dataset (step %d, predictor %d) was not "
+                                 "provided in the parameters file."),
+                               i, j);
                     return false;
                 }
                 if (GetPredictorRealtimeDataId(i, j).IsEmpty()) {
                     wxLogError(_("The realtime data (step %d, predictor %d) was "
-                                 "not provided in the parameters file."), i, j);
+                                 "not provided in the parameters file."),
+                               i, j);
                     return false;
                 }
                 if (GetPredictorArchiveDatasetId(i, j).IsEmpty()) {
-                    wxLogError(
-                        _("The archive dataset (step %d, predictor %d) was not "
-                          "provided in the parameters file."), i, j);
+                    wxLogError(_("The archive dataset (step %d, predictor %d) was not "
+                                 "provided in the parameters file."),
+                               i, j);
                     return false;
                 }
                 if (GetPredictorArchiveDataId(i, j).IsEmpty()) {
                     wxLogError(_("The archive data (step %d, predictor %d) was "
-                                 "not provided in the parameters file."), i, j);
+                                 "not provided in the parameters file."),
+                               i, j);
                     return false;
                 }
             }
 
             if (GetPredictorGridType(i, j).IsEmpty()) {
                 wxLogError(_("The grid type (step %d, predictor %d) "
-                             "is empty in the parameters file."), i, j);
+                             "is empty in the parameters file."),
+                           i, j);
                 return false;
             }
             if (GetPredictorXptsnb(i, j) == 0) {
                 wxLogError(_("The X points nb value (step %d, predictor %d) "
-                             "was not provided in the parameters file."), i, j);
+                             "was not provided in the parameters file."),
+                           i, j);
                 return false;
             }
             if (GetPredictorYptsnb(i, j) == 0) {
                 wxLogError(_("The Y points nb value (step %d, predictor %d) "
-                             "was not provided in the parameters file."), i, j);
+                             "was not provided in the parameters file."),
+                           i, j);
                 return false;
             }
             if (GetPredictorCriteria(i, j).IsEmpty()) {
                 wxLogError(_("The criteria (step %d, predictor %d) was "
-                             "not provided in the parameters file."), i, j);
+                             "not provided in the parameters file."),
+                           i, j);
                 return false;
             }
         }
@@ -482,7 +496,7 @@ void asParametersForecast::SetLeadTimeDaysVector(vd val) {
 
 void asParametersForecast::SetLeadTimeHoursVector(vd val) {
     wxASSERT(val.size() > 0);
-    for (float hour: val) {
+    for (float hour : val) {
         m_leadTimeDaysVect.push_back(hour / 24.0);
     }
 }
@@ -501,22 +515,22 @@ void asParametersForecast::SetAnalogsNumberLeadTimeVector(int iStep, vi val) {
     }
 }
 
-void asParametersForecast::SetPredictorArchiveDatasetId(int iStep, int iPtor, const wxString &val) {
+void asParametersForecast::SetPredictorArchiveDatasetId(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
     m_stepsForecast[iStep].predictors[iPtor].archiveDatasetId = val;
 }
 
-void asParametersForecast::SetPredictorArchiveDataId(int iStep, int iPtor, const wxString &val) {
+void asParametersForecast::SetPredictorArchiveDataId(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
     m_stepsForecast[iStep].predictors[iPtor].archiveDataId = val;
 }
 
-void asParametersForecast::SetPredictorRealtimeDatasetId(int iStep, int iPtor, const wxString &val) {
+void asParametersForecast::SetPredictorRealtimeDatasetId(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
     m_stepsForecast[iStep].predictors[iPtor].realtimeDatasetId = val;
 }
 
-void asParametersForecast::SetPredictorRealtimeDataId(int iStep, int iPtor, const wxString &val) {
+void asParametersForecast::SetPredictorRealtimeDataId(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
     m_stepsForecast[iStep].predictors[iPtor].realtimeDataId = val;
 }
@@ -526,7 +540,7 @@ wxString asParametersForecast::GetPreprocessArchiveDatasetId(int iStep, int iPto
     return m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre];
 }
 
-void asParametersForecast::SetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre, const wxString &val) {
+void asParametersForecast::SetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre, const wxString& val) {
     wxASSERT(!val.IsEmpty());
     if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= iPre + 1) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre] = val;
@@ -540,7 +554,7 @@ wxString asParametersForecast::GetPreprocessArchiveDataId(int iStep, int iPtor, 
     return m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds[iPre];
 }
 
-void asParametersForecast::SetPreprocessArchiveDataId(int iStep, int iPtor, int iPre, const wxString &val) {
+void asParametersForecast::SetPreprocessArchiveDataId(int iStep, int iPtor, int iPre, const wxString& val) {
     wxASSERT(!val.IsEmpty());
     if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= iPre + 1) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds[iPre] = val;
@@ -554,7 +568,7 @@ wxString asParametersForecast::GetPreprocessRealtimeDatasetId(int iStep, int iPt
     return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds[iPre];
 }
 
-void asParametersForecast::SetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre, const wxString &val) {
+void asParametersForecast::SetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre, const wxString& val) {
     wxASSERT(!val.IsEmpty());
     if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= iPre + 1) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds[iPre] = val;
@@ -568,7 +582,7 @@ wxString asParametersForecast::GetPreprocessRealtimeDataId(int iStep, int iPtor,
     return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds[iPre];
 }
 
-void asParametersForecast::SetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre, const wxString &val) {
+void asParametersForecast::SetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre, const wxString& val) {
     wxASSERT(!val.IsEmpty());
     if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= iPre + 1) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds[iPre] = val;
@@ -577,7 +591,7 @@ void asParametersForecast::SetPreprocessRealtimeDataId(int iStep, int iPtor, int
     }
 }
 
-void asParametersForecast::SetPredictandDatabase(const wxString &val) {
+void asParametersForecast::SetPredictandDatabase(const wxString& val) {
     wxASSERT(!val.IsEmpty());
     m_predictandDatabase = val;
 }

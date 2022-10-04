@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorNcepCfsr, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("NCEP_CFSR", "pl/z", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -74,7 +74,7 @@ TEST(PredictorNcepCfsr, LoadEasy) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_CFSR", "pgbh/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_CFSR", "pgbh/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
@@ -154,7 +154,7 @@ TEST(PredictorNcepCfsr, LoadBorderLeft) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_CFSR", "pgbh/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_CFSR", "pgbh/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 

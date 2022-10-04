@@ -36,7 +36,7 @@ class asArea;
 
 class asPredictorOperCustomFvgForecast : public asPredictorOperIfsForecast {
   public:
-    explicit asPredictorOperCustomFvgForecast(const wxString &dataId);
+    explicit asPredictorOperCustomFvgForecast(const wxString& dataId);
 
     ~asPredictorOperCustomFvgForecast() override = default;
 
@@ -47,7 +47,7 @@ class asPredictorOperCustomFvgForecast : public asPredictorOperIfsForecast {
     wxString GetFileName(const double date, const int leadTime) override;
 
   protected:
-    void ConvertToMjd(a1d &time, double refValue = NaNd) const override;
+    void ConvertToMjd(a1d& time, double refValue = NaNd) const override;
 
     double FixTimeValue(double time) const override;
 

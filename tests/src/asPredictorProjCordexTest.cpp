@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorProjCordex, GetCorrectPredictors) {
-    asPredictorProj *predictor;
+    asPredictorProj* predictor;
 
     predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "zg200", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -128,7 +128,7 @@ TEST(PredictorProjCordex, LoadEasy) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-cordex/");
 
-    asPredictorProj *predictor =
+    asPredictorProj* predictor =
         asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "zg500", predictorDataDir);
 
     double xMin = 100;
@@ -182,7 +182,7 @@ TEST(PredictorProjCordex, LoadOver2Files) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-cordex/");
 
-    asPredictorProj *predictor =
+    asPredictorProj* predictor =
         asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "zg500", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
@@ -263,7 +263,7 @@ TEST(PredictorProjCordex, LoadAnotherModel) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-cordex/");
 
-    asPredictorProj *predictor =
+    asPredictorProj* predictor =
         asPredictorProj::GetInstance("CORDEX", "ICHEC-EC-EARTH", "rcp85", "psl", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);

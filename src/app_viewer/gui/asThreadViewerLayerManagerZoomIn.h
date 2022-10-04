@@ -34,8 +34,8 @@
 
 class asThreadViewerLayerManagerZoomIn : public asThread {
   public:
-    asThreadViewerLayerManagerZoomIn(vrViewerLayerManager *viewerLayerManager,
-                                     wxCriticalSection *critSectionViewerLayerManager, const vrRealRect &fittedRect);
+    asThreadViewerLayerManagerZoomIn(vrViewerLayerManager* viewerLayerManager,
+                                     wxCriticalSection* critSectionViewerLayerManager, const vrRealRect& fittedRect);
 
     ~asThreadViewerLayerManagerZoomIn() override = default;
 
@@ -43,8 +43,8 @@ class asThreadViewerLayerManagerZoomIn : public asThread {
 
   protected:
   private:
-    vrViewerLayerManager *m_viewerLayerManager;
-    wxCriticalSection *m_critSectionViewerLayerManager;
+    vrViewerLayerManager* m_viewerLayerManager;
+    wxCriticalSection* m_critSectionViewerLayerManager;
     vrRealRect m_rect;
 };
 

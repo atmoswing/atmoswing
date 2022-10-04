@@ -55,13 +55,14 @@ class WXDLLIMPEXP_THINGS DropDownPopup;
 
 class WXDLLIMPEXP_THINGS DropDownBase : public wxControl {
   public:
-    DropDownBase() : wxControl() {
+    DropDownBase()
+        : wxControl() {
         Init();
     }
 
-    DropDownBase(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-                 const wxSize &size = wxDefaultSize, long style = 0, const wxValidator &val = wxDefaultValidator,
-                 const wxString &name = wxT("DropDownBase"))
+    DropDownBase(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
+                 const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& val = wxDefaultValidator,
+                 const wxString& name = wxT("DropDownBase"))
         : wxControl() {
         Init();
         Create(parent, id, pos, size, style, val, name);
@@ -69,9 +70,9 @@ class WXDLLIMPEXP_THINGS DropDownBase : public wxControl {
 
     virtual ~DropDownBase();
 
-    bool Create(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-                const wxSize &size = wxDefaultSize, long style = 0, const wxValidator &val = wxDefaultValidator,
-                const wxString &name = wxT("DropDownBase"));
+    bool Create(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
+                const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& val = wxDefaultValidator,
+                const wxString& name = wxT("DropDownBase"));
 
     virtual bool ShowPopup();
 
@@ -80,21 +81,21 @@ class WXDLLIMPEXP_THINGS DropDownBase : public wxControl {
     bool IsPopupShown();
 
     // implementation
-    void OnDropButton(wxCommandEvent &event);
+    void OnDropButton(wxCommandEvent& event);
 
-    wxCustomButton *GetDropDownButton() {
+    wxCustomButton* GetDropDownButton() {
         return m_dropdownButton;
     }
 
     // Get the popup window, NULL when not shown
-    DropDownPopup *GetPopupWindow() {
+    DropDownPopup* GetPopupWindow() {
         return m_popupWin;
     }
 
   protected:
     virtual void DoSetSize(int x, int y, int width, int height, int sizeFlags = wxSIZE_AUTO);
 
-    void OnSize(wxSizeEvent &event);
+    void OnSize(wxSizeEvent& event);
 
     virtual wxSize DoGetBestSize() const;
 
@@ -107,8 +108,8 @@ class WXDLLIMPEXP_THINGS DropDownBase : public wxControl {
         return max_height;
     }
 
-    wxCustomButton *m_dropdownButton;
-    DropDownPopup *m_popupWin;
+    wxCustomButton* m_dropdownButton;
+    DropDownPopup* m_popupWin;
 
   private:
     void Init();
@@ -124,28 +125,30 @@ class WXDLLIMPEXP_THINGS DropDownBase : public wxControl {
 
 class WXDLLIMPEXP_THINGS DropDownPopup : public wxPopupTransientWindow {
   public:
-    DropDownPopup() : wxPopupTransientWindow() {
+    DropDownPopup()
+        : wxPopupTransientWindow() {
         Init();
     }
 
-    DropDownPopup(DropDownBase *parent, int style = wxBORDER_NONE) : wxPopupTransientWindow() {
+    DropDownPopup(DropDownBase* parent, int style = wxBORDER_NONE)
+        : wxPopupTransientWindow() {
         Init();
         Create(parent, style);
     }
 
     virtual ~DropDownPopup();
 
-    bool Create(DropDownBase *parent, int style = wxBORDER_NONE);
+    bool Create(DropDownBase* parent, int style = wxBORDER_NONE);
 
-    virtual void Popup(wxWindow *focus = NULL);
+    virtual void Popup(wxWindow* focus = NULL);
 
     virtual void Dismiss();
 
-    virtual bool ProcessLeftDown(wxMouseEvent &event);
+    virtual bool ProcessLeftDown(wxMouseEvent& event);
 
-    virtual void SetChild(wxWindow *child);
+    virtual void SetChild(wxWindow* child);
 
-    virtual wxWindow *GetChild() const {
+    virtual wxWindow* GetChild() const {
         return m_childWin;
     }
 
@@ -158,22 +161,22 @@ class WXDLLIMPEXP_THINGS DropDownPopup : public wxPopupTransientWindow {
 
     void StopTimer();
 
-    void PushPopupHandler(wxWindow *child);
+    void PushPopupHandler(wxWindow* child);
 
-    void PopPopupHandler(wxWindow *child);
+    void PopPopupHandler(wxWindow* child);
 
-    void OnMouse(wxMouseEvent &event);
+    void OnMouse(wxMouseEvent& event);
 
-    void OnKeyDown(wxKeyEvent &event);
+    void OnKeyDown(wxKeyEvent& event);
 
-    void OnTimer(wxTimerEvent &event);
+    void OnTimer(wxTimerEvent& event);
 
-    void OnIdle(wxIdleEvent &event);
+    void OnIdle(wxIdleEvent& event);
 
     wxPoint m_mouse;       // last/current mouse position
-    wxWindow *m_childWin;  // store our own child pointer
-    DropDownBase *m_owner;
-    wxTimer *m_timer;       // timer for tracking mouse position
+    wxWindow* m_childWin;  // store our own child pointer
+    DropDownBase* m_owner;
+    wxTimer* m_timer;       // timer for tracking mouse position
     bool m_popped_handler;  // state of the event handler
 
   private:

@@ -28,9 +28,10 @@
 
 #include "asScoreBS.h"
 
-asScoreBS::asScoreBS() : asScore(asScore::BS, _("Brier score"), _("Brier score"), Asc, 0, NaNf) {}
+asScoreBS::asScoreBS()
+    : asScore(asScore::BS, _("Brier score"), _("Brier score"), Asc, 0, NaNf) {}
 
-float asScoreBS::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreBS::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(!asIsNaN(m_threshold));
@@ -94,6 +95,6 @@ float asScoreBS::Assess(float obs, const a1f &values, int nbElements) const {
     return (probaOccurrence - probaObs) * (probaOccurrence - probaObs);
 }
 
-bool asScoreBS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreBS::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     return true;
 }

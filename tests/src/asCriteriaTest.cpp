@@ -117,7 +117,7 @@ TEST(Criteria, S1) {
     critS1[9] = 61.8f;
 
     // Instantiate the criteria
-    asCriteria *criteria = asCriteria::GetInstance("S1");
+    asCriteria* criteria = asCriteria::GetInstance("S1");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -177,15 +177,15 @@ TEST(Criteria, S1preprocessed) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
-    std::vector<asPredictor *> vdata;
+    std::vector<asPredictor*> vdata;
     vdata.push_back(predictor);
     vva2f hgtOriginal = predictor->GetData();
 
     wxString method = "SimpleGradients";
-    asPredictor *gradients = new asPredictor(*predictor);
+    asPredictor* gradients = new asPredictor(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
     vva2f hgtPreproc = gradients->GetData();
 
@@ -208,8 +208,8 @@ TEST(Criteria, S1preprocessed) {
     EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
-    asCriteria *criteria = asCriteria::GetInstance("S1");
-    asCriteria *criteriaGrads = asCriteria::GetInstance("S1grads");
+    asCriteria* criteria = asCriteria::GetInstance("S1");
+    asCriteria* criteriaGrads = asCriteria::GetInstance("S1grads");
 
     // Loop on every candidate
     for (int iCand = 1; iCand < candidatesNb; iCand++) {
@@ -248,15 +248,15 @@ TEST(Criteria, S2preprocessed) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
-    std::vector<asPredictor *> vdata;
+    std::vector<asPredictor*> vdata;
     vdata.push_back(predictor);
     vva2f hgtOriginal = predictor->GetData();
 
     wxString method = "SimpleCurvature";
-    asPredictor *curv = new asPredictor(*predictor);
+    asPredictor* curv = new asPredictor(*predictor);
     asPreprocessor::Preprocess(vdata, method, curv);
     vva2f hgtPreproc = curv->GetData();
 
@@ -279,8 +279,8 @@ TEST(Criteria, S2preprocessed) {
     EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
-    asCriteria *criteria = asCriteria::GetInstance("S2");
-    asCriteria *criteriaGrads = asCriteria::GetInstance("S2grads");
+    asCriteria* criteria = asCriteria::GetInstance("S2");
+    asCriteria* criteriaGrads = asCriteria::GetInstance("S2grads");
 
     // Loop on every candidate
     for (int iCand = 1; iCand < candidatesNb; iCand++) {
@@ -408,7 +408,7 @@ TEST(Criteria, RSE) {
     critRMSE[6] = 1791.5f;
 
     // Instantiate the criteria
-    asCriteria *criteria = asCriteria::GetInstance("RSE");
+    asCriteria* criteria = asCriteria::GetInstance("RSE");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -579,7 +579,7 @@ TEST(Criteria, RMSE) {
     critRMSE[6] = 632.32f;
 
     // Instantiate the criteria
-    asCriteria *criteria = asCriteria::GetInstance("RMSE");
+    asCriteria* criteria = asCriteria::GetInstance("RMSE");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -656,7 +656,7 @@ TEST(Criteria, RMSEwithNaNs) {
     candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
         0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
 
-    asCriteria *criteria = asCriteria::GetInstance("RMSE");
+    asCriteria* criteria = asCriteria::GetInstance("RMSE");
 
     float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
 
@@ -797,7 +797,7 @@ TEST(Criteria, Differences) {
     results[9] = 1354;
     results[10] = 908;
 
-    asCriteria *criteriaSAD = asCriteria::GetInstance("SAD");
+    asCriteria* criteriaSAD = asCriteria::GetInstance("SAD");
 
     float res;
     for (int i = 0; i < 11; i++) {
@@ -821,7 +821,7 @@ TEST(Criteria, Differences) {
     results[9] = 338.5;
     results[10] = 227;
 
-    asCriteria *criteriaMD = asCriteria::GetInstance("MD");
+    asCriteria* criteriaMD = asCriteria::GetInstance("MD");
 
     for (int i = 0; i < 11; i++) {
         res = criteriaMD->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
@@ -848,7 +848,7 @@ TEST(Criteria, DMV) {
     candDataNaN << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
         0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
 
-    asCriteria *criteria = asCriteria::GetInstance("DMV");
+    asCriteria* criteria = asCriteria::GetInstance("DMV");
 
     float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
     float resNaN = criteria->Assess(refDataNaN, candDataNaN, refDataNaN.rows(), refDataNaN.cols());
@@ -876,7 +876,7 @@ TEST(Criteria, DSD) {
     candDataNaN << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
         0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
 
-    asCriteria *criteria = asCriteria::GetInstance("DSD");
+    asCriteria* criteria = asCriteria::GetInstance("DSD");
 
     float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
     float resNaN = criteria->Assess(refDataNaN, candDataNaN, refDataNaN.rows(), refDataNaN.cols());

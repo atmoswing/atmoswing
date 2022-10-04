@@ -33,17 +33,17 @@
 
 class asDialogProgressBar : public wxObject {
   public:
-    asDialogProgressBar(const wxString &dialogMessage, int valueMax);
+    asDialogProgressBar(const wxString& dialogMessage, int valueMax);
 
     ~asDialogProgressBar() override;
 
     void Destroy();
 
-    bool Update(int value, const wxString &message = wxEmptyString);
+    bool Update(int value, const wxString& message = wxEmptyString);
 
   protected:
   private:
-    wxProgressDialog *m_progressBar;
+    wxProgressDialog* m_progressBar;
     bool m_initiated;
     int m_steps;
     int m_delayUpdate;

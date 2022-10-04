@@ -55,7 +55,7 @@ class AtmoswingAppOptimizer : public wxAppConsole
 
     void CleanUp();
 
-    virtual void OnInitCmdLine(wxCmdLineParser &parser);
+    virtual void OnInitCmdLine(wxCmdLineParser& parser);
 
     wxString GetLocalPath();
 
@@ -65,7 +65,7 @@ class AtmoswingAppOptimizer : public wxAppConsole
 
     bool InitForCmdLineOnly();
 
-    virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
+    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
 
     virtual bool OnExceptionInMainLoop();
 
@@ -81,7 +81,7 @@ class AtmoswingAppOptimizer : public wxAppConsole
     wxString m_calibMethod;
     bool m_doProcessing;
 #if USE_GUI
-    wxSingleInstanceChecker *m_singleInstanceChecker;
+    wxSingleInstanceChecker* m_singleInstanceChecker;
 #endif
 };
 

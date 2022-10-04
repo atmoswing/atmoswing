@@ -28,11 +28,12 @@
 
 #include "asMethodCalibratorClassicVarExplo.h"
 
-asMethodCalibratorClassicVarExplo::asMethodCalibratorClassicVarExplo() : asMethodCalibratorClassic() {}
+asMethodCalibratorClassicVarExplo::asMethodCalibratorClassicVarExplo()
+    : asMethodCalibratorClassic() {}
 
 asMethodCalibratorClassicVarExplo::~asMethodCalibratorClassicVarExplo() = default;
 
-bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &params) {
+bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration& params) {
     int iStep;
     wxFileConfig::Get()->Read("/VariablesExplo/Step", &iStep, params.GetStepsNb() - 1);
 
@@ -54,7 +55,7 @@ bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &param
         } else {
             vwxs vPredictorDataId = params.GetPredictorDataIdVector(iStep, iPtor);
 
-            for (const auto &dataId : vPredictorDataId) {
+            for (const auto& dataId : vPredictorDataId) {
                 params.SetPredictorDataId(iStep, iPtor, dataId);
 
                 vd vPredictorHours = params.GetPredictorHourVector(iStep, iPtor);
@@ -69,7 +70,7 @@ bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &param
 
                         vwxs vPredictorCriteria = params.GetPredictorCriteriaVector(iStep, iPtor);
 
-                        for (const auto &criteria : vPredictorCriteria) {
+                        for (const auto& criteria : vPredictorCriteria) {
                             params.SetPredictorCriteria(iStep, iPtor, criteria);
 
                             vf slctPredictorLevels;

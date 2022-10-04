@@ -30,7 +30,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorNcepCfsrSubset::asPredictorNcepCfsrSubset(const wxString &dataId) : asPredictor(dataId) {
+asPredictorNcepCfsrSubset::asPredictorNcepCfsrSubset(const wxString& dataId)
+    : asPredictor(dataId) {
     // Downloaded from
     // http://rda.ucar.edu/datasets/ds093.0/index.html#!cgi-bin/datasets/getSubset?dsnum=093.0&action=customize&_da=y
     // Set the basic properties.
@@ -342,7 +343,7 @@ bool asPredictorNcepCfsrSubset::Init() {
     return true;
 }
 
-void asPredictorNcepCfsrSubset::ListFiles(asTimeArray &timeArray) {
+void asPredictorNcepCfsrSubset::ListFiles(asTimeArray& timeArray) {
     auto firstDay = int(std::floor((timeArray.GetStartingDay() - 1.0) / 5.0) * 5.0 + 1.0);
     double fileStart = asTime::GetMJD(timeArray.GetStartingYear(), timeArray.GetStartingMonth(), firstDay);
     double fileEnd = fileStart + 4;
@@ -374,6 +375,6 @@ void asPredictorNcepCfsrSubset::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-void asPredictorNcepCfsrSubset::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorNcepCfsrSubset::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + refValue;
 }

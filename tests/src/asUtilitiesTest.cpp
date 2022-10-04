@@ -194,16 +194,16 @@ TEST(Utilities, IsInfLongDoubleTrue) {
 
 TEST(Utilities, CountNotNaNFloat) {
     float array[] = {0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.0f, NaNf};
-    float *pVectStart = &array[0];
-    float *pVectEnd = &array[9];
+    float* pVectStart = &array[0];
+    float* pVectEnd = &array[9];
     int result = asCountNotNaN(pVectStart, pVectEnd);
     EXPECT_EQ(8, result);
 }
 
 TEST(Utilities, CountNotNaNDouble) {
     double array[] = {0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10, NaNd};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     int result = asCountNotNaN(pVectStart, pVectEnd);
     EXPECT_EQ(8, result);
 }
@@ -304,8 +304,8 @@ TEST(Utilities, ExtractUniqueValuesDouble) {
 
 TEST(Utilities, SortedArraySearchIntAscFirst) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 0;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -313,8 +313,8 @@ TEST(Utilities, SortedArraySearchIntAscFirst) {
 
 TEST(Utilities, SortedArraySearchIntAscMid) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 8;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(6, result);
@@ -322,8 +322,8 @@ TEST(Utilities, SortedArraySearchIntAscMid) {
 
 TEST(Utilities, SortedArraySearchIntAscLast) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 100;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(9, result);
@@ -331,8 +331,8 @@ TEST(Utilities, SortedArraySearchIntAscLast) {
 
 TEST(Utilities, SortedArraySearchIntAscOutofRange) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 1000;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -340,8 +340,8 @@ TEST(Utilities, SortedArraySearchIntAscOutofRange) {
 
 TEST(Utilities, SortedArraySearchIntAscNotFound) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 6;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     EXPECT_EQ(asNOT_FOUND, result);
@@ -349,8 +349,8 @@ TEST(Utilities, SortedArraySearchIntAscNotFound) {
 
 TEST(Utilities, SortedArraySearchIntAscTolerFirst) {
     int array[] = {0, 3, 4, 5, 6, 7, 8, 9, 10, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = -1;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(0, result);
@@ -358,8 +358,8 @@ TEST(Utilities, SortedArraySearchIntAscTolerFirst) {
 
 TEST(Utilities, SortedArraySearchIntAscTolerFirstLimit) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = -1;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(0, result);
@@ -367,8 +367,8 @@ TEST(Utilities, SortedArraySearchIntAscTolerFirstLimit) {
 
 TEST(Utilities, SortedArraySearchIntAscTolerMid) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 11;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(8, result);
@@ -376,8 +376,8 @@ TEST(Utilities, SortedArraySearchIntAscTolerMid) {
 
 TEST(Utilities, SortedArraySearchIntAscTolerMidLimit) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 11;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(8, result);
@@ -385,8 +385,8 @@ TEST(Utilities, SortedArraySearchIntAscTolerMidLimit) {
 
 TEST(Utilities, SortedArraySearchIntAscTolerLast) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 102;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 3);
     EXPECT_EQ(9, result);
@@ -394,8 +394,8 @@ TEST(Utilities, SortedArraySearchIntAscTolerLast) {
 
 TEST(Utilities, SortedArraySearchIntAscTolerLastLimit) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 102;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 2);
     EXPECT_EQ(9, result);
@@ -403,8 +403,8 @@ TEST(Utilities, SortedArraySearchIntAscTolerLastLimit) {
 
 TEST(Utilities, SortedArraySearchIntDescFirst) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 100;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -412,8 +412,8 @@ TEST(Utilities, SortedArraySearchIntDescFirst) {
 
 TEST(Utilities, SortedArraySearchIntDescMid) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 8;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(3, result);
@@ -421,8 +421,8 @@ TEST(Utilities, SortedArraySearchIntDescMid) {
 
 TEST(Utilities, SortedArraySearchIntDescLast) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 0;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(9, result);
@@ -430,8 +430,8 @@ TEST(Utilities, SortedArraySearchIntDescLast) {
 
 TEST(Utilities, SortedArraySearchIntDescOutofRange) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = -1;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -439,8 +439,8 @@ TEST(Utilities, SortedArraySearchIntDescOutofRange) {
 
 TEST(Utilities, SortedArraySearchIntDescNotFound) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 6;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     EXPECT_EQ(asNOT_FOUND, result);
@@ -448,8 +448,8 @@ TEST(Utilities, SortedArraySearchIntDescNotFound) {
 
 TEST(Utilities, SortedArraySearchIntDescTolerFirst) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = -1;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(9, result);
@@ -457,8 +457,8 @@ TEST(Utilities, SortedArraySearchIntDescTolerFirst) {
 
 TEST(Utilities, SortedArraySearchIntDescTolerFirstLimit) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = -1;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(9, result);
@@ -466,8 +466,8 @@ TEST(Utilities, SortedArraySearchIntDescTolerFirstLimit) {
 
 TEST(Utilities, SortedArraySearchIntDescTolerMid) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 11;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 3);
     EXPECT_EQ(1, result);
@@ -475,8 +475,8 @@ TEST(Utilities, SortedArraySearchIntDescTolerMid) {
 
 TEST(Utilities, SortedArraySearchIntDescTolerMidLimit) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 11;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(1, result);
@@ -484,8 +484,8 @@ TEST(Utilities, SortedArraySearchIntDescTolerMidLimit) {
 
 TEST(Utilities, SortedArraySearchIntDescTolerLast) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 102;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 3);
     EXPECT_EQ(0, result);
@@ -493,8 +493,8 @@ TEST(Utilities, SortedArraySearchIntDescTolerLast) {
 
 TEST(Utilities, SortedArraySearchIntDescTolerLastLimit) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int targetvalue = 102;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 2);
     EXPECT_EQ(0, result);
@@ -502,8 +502,8 @@ TEST(Utilities, SortedArraySearchIntDescTolerLastLimit) {
 
 TEST(Utilities, SortedArraySearchIntUniqueVal) {
     int array[] = {9};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[0];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[0];
     int targetvalue = 9;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -511,8 +511,8 @@ TEST(Utilities, SortedArraySearchIntUniqueVal) {
 
 TEST(Utilities, SortedArraySearchIntUniqueValToler) {
     int array[] = {9};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[0];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[0];
     int targetvalue = 8;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(0, result);
@@ -520,8 +520,8 @@ TEST(Utilities, SortedArraySearchIntUniqueValToler) {
 
 TEST(Utilities, SortedArraySearchIntUniqueValOutofRange) {
     int array[] = {9};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[0];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[0];
     int targetvalue = 11;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -529,8 +529,8 @@ TEST(Utilities, SortedArraySearchIntUniqueValOutofRange) {
 
 TEST(Utilities, SortedArraySearchIntArraySameVal) {
     int array[] = {9, 9, 9, 9};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[3];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[3];
     int targetvalue = 9;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -538,8 +538,8 @@ TEST(Utilities, SortedArraySearchIntArraySameVal) {
 
 TEST(Utilities, SortedArraySearchIntArraySameValTolerDown) {
     int array[] = {9, 9, 9, 9};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[3];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[3];
     int targetvalue = 8;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(0, result);
@@ -547,8 +547,8 @@ TEST(Utilities, SortedArraySearchIntArraySameValTolerDown) {
 
 TEST(Utilities, SortedArraySearchIntArraySameValTolerUp) {
     int array[] = {9, 9, 9, 9};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[3];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[3];
     int targetvalue = 10;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(0, result);
@@ -556,8 +556,8 @@ TEST(Utilities, SortedArraySearchIntArraySameValTolerUp) {
 
 TEST(Utilities, SortedArraySearchIntArraySameValOutofRange) {
     int array[] = {9, 9, 9, 9};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[3];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[3];
     int targetvalue = 11;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -565,8 +565,8 @@ TEST(Utilities, SortedArraySearchIntArraySameValOutofRange) {
 
 TEST(Utilities, SortedArraySearchDoubleAscFirst) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 0.354;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -574,8 +574,8 @@ TEST(Utilities, SortedArraySearchDoubleAscFirst) {
 
 TEST(Utilities, SortedArraySearchDoubleAscMid) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 5.75;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(5, result);
@@ -583,8 +583,8 @@ TEST(Utilities, SortedArraySearchDoubleAscMid) {
 
 TEST(Utilities, SortedArraySearchDoubleAscLast) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 100;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(9, result);
@@ -592,8 +592,8 @@ TEST(Utilities, SortedArraySearchDoubleAscLast) {
 
 TEST(Utilities, SortedArraySearchDoubleAscOutofRange) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 1000;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -601,8 +601,8 @@ TEST(Utilities, SortedArraySearchDoubleAscOutofRange) {
 
 TEST(Utilities, SortedArraySearchDoubleAscNotFound) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 6;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
     EXPECT_EQ(asNOT_FOUND, result);
@@ -610,8 +610,8 @@ TEST(Utilities, SortedArraySearchDoubleAscNotFound) {
 
 TEST(Utilities, SortedArraySearchDoubleAscTolerFirst) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = -1.12;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 3);
     EXPECT_EQ(0, result);
@@ -619,8 +619,8 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerFirst) {
 
 TEST(Utilities, SortedArraySearchDoubleAscTolerFirstLimit) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = -1;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1.354);
     EXPECT_EQ(0, result);
@@ -628,8 +628,8 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerFirstLimit) {
 
 TEST(Utilities, SortedArraySearchDoubleAscTolerFirstOutLimit) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = -1;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1.353, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -637,8 +637,8 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerFirstOutLimit) {
 
 TEST(Utilities, SortedArraySearchDoubleAscTolerMid) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 11;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(8, result);
@@ -646,8 +646,8 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerMid) {
 
 TEST(Utilities, SortedArraySearchDoubleAscTolerMidLimit) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 11.45;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(8, result);
@@ -655,8 +655,8 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerMidLimit) {
 
 TEST(Utilities, SortedArraySearchDoubleAscTolerMidLimitOut) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 11.45;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 0.99, asHIDE_WARNINGS);
     EXPECT_EQ(asNOT_FOUND, result);
@@ -664,8 +664,8 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerMidLimitOut) {
 
 TEST(Utilities, SortedArraySearchDoubleAscTolerLast) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 102.21;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 3);
     EXPECT_EQ(9, result);
@@ -673,8 +673,8 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerLast) {
 
 TEST(Utilities, SortedArraySearchDoubleAscTolerLastLimit) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 101.5;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1.5);
     EXPECT_EQ(9, result);
@@ -682,8 +682,8 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerLastLimit) {
 
 TEST(Utilities, SortedArraySearchDoubleAscTolerLastOutLimit) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 101.5;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1.499, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -691,8 +691,8 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerLastOutLimit) {
 
 TEST(Utilities, SortedArraySearchDoubleDescFirst) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 100;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -700,8 +700,8 @@ TEST(Utilities, SortedArraySearchDoubleDescFirst) {
 
 TEST(Utilities, SortedArraySearchDoubleDescMid) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 5.75;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(4, result);
@@ -709,8 +709,8 @@ TEST(Utilities, SortedArraySearchDoubleDescMid) {
 
 TEST(Utilities, SortedArraySearchDoubleDescLast) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 0.354;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(9, result);
@@ -718,8 +718,8 @@ TEST(Utilities, SortedArraySearchDoubleDescLast) {
 
 TEST(Utilities, SortedArraySearchDoubleDescOutofRange) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = -1.23;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -727,8 +727,8 @@ TEST(Utilities, SortedArraySearchDoubleDescOutofRange) {
 
 TEST(Utilities, SortedArraySearchDoubleDescNotFound) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 6.2;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
     EXPECT_EQ(asNOT_FOUND, result);
@@ -736,8 +736,8 @@ TEST(Utilities, SortedArraySearchDoubleDescNotFound) {
 
 TEST(Utilities, SortedArraySearchDoubleDescTolerFirst) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = -1;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 2);
     EXPECT_EQ(9, result);
@@ -745,8 +745,8 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerFirst) {
 
 TEST(Utilities, SortedArraySearchDoubleDescTolerFirstLimit) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = -1;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1.354);
     EXPECT_EQ(9, result);
@@ -754,8 +754,8 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerFirstLimit) {
 
 TEST(Utilities, SortedArraySearchDoubleDescTolerFirstOutLimit) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = -1;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1.353, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -763,8 +763,8 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerFirstOutLimit) {
 
 TEST(Utilities, SortedArraySearchDoubleDescTolerMid) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 11.23;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 3);
     EXPECT_EQ(1, result);
@@ -772,8 +772,8 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerMid) {
 
 TEST(Utilities, SortedArraySearchDoubleDescTolerMidLimit) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 11.45;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(1, result);
@@ -781,8 +781,8 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerMidLimit) {
 
 TEST(Utilities, SortedArraySearchDoubleDescTolerMidOutLimit) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 11.45;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 0.999, asHIDE_WARNINGS);
     EXPECT_EQ(asNOT_FOUND, result);
@@ -790,8 +790,8 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerMidOutLimit) {
 
 TEST(Utilities, SortedArraySearchDoubleDescTolerLast) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 102.42;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 3);
     EXPECT_EQ(0, result);
@@ -799,8 +799,8 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerLast) {
 
 TEST(Utilities, SortedArraySearchDoubleDescTolerLastLimit) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 102.21;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 2.21);
     EXPECT_EQ(0, result);
@@ -808,8 +808,8 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerLastLimit) {
 
 TEST(Utilities, SortedArraySearchDoubleDescTolerLastOutLimit) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 102.21;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 2.2, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -817,8 +817,8 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerLastOutLimit) {
 
 TEST(Utilities, SortedArraySearchDoubleUniqueVal) {
     double array[] = {9.3401};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[0];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[0];
     double targetvalue = 9.3401;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -826,8 +826,8 @@ TEST(Utilities, SortedArraySearchDoubleUniqueVal) {
 
 TEST(Utilities, SortedArraySearchDoubleUniqueValToler) {
     double array[] = {9.3401};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[0];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[0];
     double targetvalue = 8;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1.3401);
     EXPECT_EQ(0, result);
@@ -835,8 +835,8 @@ TEST(Utilities, SortedArraySearchDoubleUniqueValToler) {
 
 TEST(Utilities, SortedArraySearchDoubleUniqueValOutofRange) {
     double array[] = {9.3401};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[0];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[0];
     double targetvalue = 11;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -844,8 +844,8 @@ TEST(Utilities, SortedArraySearchDoubleUniqueValOutofRange) {
 
 TEST(Utilities, SortedArraySearchDoubleArraySameVal) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[3];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[3];
     double targetvalue = 9.34;
     int result = asFind(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -853,8 +853,8 @@ TEST(Utilities, SortedArraySearchDoubleArraySameVal) {
 
 TEST(Utilities, SortedArraySearchDoubleArraySameValTolerDown) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[3];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[3];
     double targetvalue = 8;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1.5);
     EXPECT_EQ(0, result);
@@ -862,8 +862,8 @@ TEST(Utilities, SortedArraySearchDoubleArraySameValTolerDown) {
 
 TEST(Utilities, SortedArraySearchDoubleArraySameValTolerUp) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[3];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[3];
     double targetvalue = 10;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1);
     EXPECT_EQ(0, result);
@@ -871,8 +871,8 @@ TEST(Utilities, SortedArraySearchDoubleArraySameValTolerUp) {
 
 TEST(Utilities, SortedArraySearchDoubleArraySameValOutofRange) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[3];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[3];
     double targetvalue = 11;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -889,8 +889,8 @@ TEST(Utilities, SortedArraySearchRoleOfToleranceInSearch) {
         27.619, 29.523, 31.428, 33.333, 35.238, 37.142, 39.047, 40.952, 42.856, 44.761, 46.666, 48.571, 50.475, 52.380,
         54.285, 56.189, 58.094, 59.999, 61.903, 63.808, 65.713, 67.617, 69.522, 71.426, 73.331, 75.235, 77.139, 79.043,
         80.947, 82.851, 84.753, 86.653, 88.542;
-    double *pVectStart = &values[0];
-    double *pVectEnd = &values[93];
+    double* pVectStart = &values[0];
+    double* pVectEnd = &values[93];
     double targetvalue = 29.523;
     int result = asFind(pVectStart, pVectEnd, targetvalue, 0.01);
     EXPECT_EQ(62, result);
@@ -898,8 +898,8 @@ TEST(Utilities, SortedArraySearchRoleOfToleranceInSearch) {
 
 TEST(Utilities, SortedArraySearchClosestDoubleAscFirst) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 0.394;
     int result = asFindClosest(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -907,8 +907,8 @@ TEST(Utilities, SortedArraySearchClosestDoubleAscFirst) {
 
 TEST(Utilities, SortedArraySearchClosestDoubleAscMid) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 5.55;
     int result = asFindClosest(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(5, result);
@@ -916,8 +916,8 @@ TEST(Utilities, SortedArraySearchClosestDoubleAscMid) {
 
 TEST(Utilities, SortedArraySearchClosestDoubleAscLast) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 99.9;
     int result = asFindClosest(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(9, result);
@@ -925,8 +925,8 @@ TEST(Utilities, SortedArraySearchClosestDoubleAscLast) {
 
 TEST(Utilities, SortedArraySearchClosestDoubleAscOutofRange) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 1000;
     int result = asFindClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -934,8 +934,8 @@ TEST(Utilities, SortedArraySearchClosestDoubleAscOutofRange) {
 
 TEST(Utilities, SortedArraySearchClosestDoubleDescFirst) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 100;
     int result = asFindClosest(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -943,8 +943,8 @@ TEST(Utilities, SortedArraySearchClosestDoubleDescFirst) {
 
 TEST(Utilities, SortedArraySearchClosestDoubleDescMid) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 5.55;
     int result = asFindClosest(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(4, result);
@@ -952,8 +952,8 @@ TEST(Utilities, SortedArraySearchClosestDoubleDescMid) {
 
 TEST(Utilities, SortedArraySearchClosestDoubleDescLast) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 0.354;
     int result = asFindClosest(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(9, result);
@@ -961,8 +961,8 @@ TEST(Utilities, SortedArraySearchClosestDoubleDescLast) {
 
 TEST(Utilities, SortedArraySearchClosestDoubleDescOutofRange) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = -1.23;
     int result = asFindClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -970,8 +970,8 @@ TEST(Utilities, SortedArraySearchClosestDoubleDescOutofRange) {
 
 TEST(Utilities, SortedArraySearchClosestDoubleUniqueVal) {
     double array[] = {9.3401};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[0];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[0];
     double targetvalue = 9.3401;
     int result = asFindClosest(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -979,8 +979,8 @@ TEST(Utilities, SortedArraySearchClosestDoubleUniqueVal) {
 
 TEST(Utilities, SortedArraySearchClosestDoubleUniqueValOutofRange) {
     double array[] = {9.3401};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[0];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[0];
     double targetvalue = 11;
     int result = asFindClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -988,8 +988,8 @@ TEST(Utilities, SortedArraySearchClosestDoubleUniqueValOutofRange) {
 
 TEST(Utilities, SortedArraySearchClosestDoubleArraySameVal) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[3];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[3];
     double targetvalue = 9.34;
     int result = asFindClosest(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -997,8 +997,8 @@ TEST(Utilities, SortedArraySearchClosestDoubleArraySameVal) {
 
 TEST(Utilities, SortedArraySearchClosestDoubleArraySameValOutofRange) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[3];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[3];
     double targetvalue = 11;
     int result = asFindClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -1006,8 +1006,8 @@ TEST(Utilities, SortedArraySearchClosestDoubleArraySameValOutofRange) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleAscFirst) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 1.394;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -1015,8 +1015,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleAscFirst) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleAscMid) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 5.55;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(4, result);
@@ -1024,8 +1024,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleAscMid) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleAscLast) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 99.9;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(8, result);
@@ -1033,8 +1033,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleAscLast) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleAscLastExact) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 100;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(9, result);
@@ -1042,8 +1042,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleAscLastExact) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleAscOutofRange) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 1000;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -1051,8 +1051,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleAscOutofRange) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleDescFirst) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 40.12;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(1, result);
@@ -1060,8 +1060,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleDescFirst) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleDescMid) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 5.55;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(5, result);
@@ -1069,8 +1069,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleDescMid) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleDescLast) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 0.360;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(9, result);
@@ -1078,8 +1078,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleDescLast) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleDescLastExact) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 0.354;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(9, result);
@@ -1087,8 +1087,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleDescLastExact) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleDescOutofRange) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = -1.23;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -1096,8 +1096,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleDescOutofRange) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleUniqueVal) {
     double array[] = {9.3401};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[0];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[0];
     double targetvalue = 9.3401;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -1105,8 +1105,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleUniqueVal) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleUniqueValOutofRange) {
     double array[] = {9.3401};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[0];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[0];
     double targetvalue = 11;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -1114,8 +1114,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleUniqueValOutofRange) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleArraySameVal) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[3];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[3];
     double targetvalue = 9.34;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -1123,8 +1123,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleArraySameVal) {
 
 TEST(Utilities, SortedArraySearchFloorDoubleArraySameValOutofRange) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[3];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[3];
     double targetvalue = 11;
     int result = asFindFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -1132,8 +1132,8 @@ TEST(Utilities, SortedArraySearchFloorDoubleArraySameValOutofRange) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleAscFirst) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 0.354;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -1141,8 +1141,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleAscFirst) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleAscMid) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 5.55;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(5, result);
@@ -1150,8 +1150,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleAscMid) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleAscLast) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 10.46;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(9, result);
@@ -1159,8 +1159,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleAscLast) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleAscLastExact) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 100;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(9, result);
@@ -1168,8 +1168,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleAscLastExact) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleAscOutofRange) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 1000;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -1177,8 +1177,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleAscOutofRange) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleDescFirst) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 40.12;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -1186,8 +1186,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleDescFirst) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleDescMid) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 5.55;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(4, result);
@@ -1195,8 +1195,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleDescMid) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleDescLast) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 0.360;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(8, result);
@@ -1204,8 +1204,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleDescLast) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleDescLastExact) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = 0.354;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(9, result);
@@ -1213,8 +1213,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleDescLastExact) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleDescOutofRange) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double targetvalue = -1.23;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -1222,8 +1222,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleDescOutofRange) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleUniqueVal) {
     double array[] = {9.3401};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[0];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[0];
     double targetvalue = 9.3401;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -1231,8 +1231,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleUniqueVal) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleUniqueValOutofRange) {
     double array[] = {9.3401};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[0];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[0];
     double targetvalue = 11;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -1240,8 +1240,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleUniqueValOutofRange) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleArraySameVal) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[3];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[3];
     double targetvalue = 9.34;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue);
     EXPECT_EQ(0, result);
@@ -1249,8 +1249,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleArraySameVal) {
 
 TEST(Utilities, SortedArraySearchCeilDoubleArraySameValOutofRange) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[3];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[3];
     double targetvalue = 11;
     int result = asFindCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
@@ -1258,8 +1258,8 @@ TEST(Utilities, SortedArraySearchCeilDoubleArraySameValOutofRange) {
 
 TEST(Utilities, SortedArrayInsertIntAscFirst) {
     int array[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int newvalue = 1;
     EXPECT_TRUE(asArrayInsert(pVectStart, pVectEnd, Asc, newvalue));
     int arrayResults[] = {1, 2, 3, 4, 6, 9, 17, 18, 20, 40};
@@ -1270,8 +1270,8 @@ TEST(Utilities, SortedArrayInsertIntAscFirst) {
 
 TEST(Utilities, SortedArrayInsertIntAscFirstNeg) {
     int array[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int newvalue = -2;
     EXPECT_TRUE(asArrayInsert(pVectStart, pVectEnd, Asc, newvalue));
     int arrayResults[] = {-2, 0, 1, 4, 6, 9, 17, 18, 20, 40};
@@ -1282,8 +1282,8 @@ TEST(Utilities, SortedArrayInsertIntAscFirstNeg) {
 
 TEST(Utilities, SortedArrayInsertIntAscMid) {
     int array[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int newvalue = 8;
     EXPECT_TRUE(asArrayInsert(pVectStart, pVectEnd, Asc, newvalue));
     int arrayResults[] = {0, 1, 4, 6, 8, 9, 17, 18, 20, 40};
@@ -1294,8 +1294,8 @@ TEST(Utilities, SortedArrayInsertIntAscMid) {
 
 TEST(Utilities, SortedArrayInsertIntAscEnd) {
     int array[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 100};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int newvalue = 90;
     EXPECT_TRUE(asArrayInsert(pVectStart, pVectEnd, Asc, newvalue));
     int arrayResults[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 90};
@@ -1306,8 +1306,8 @@ TEST(Utilities, SortedArrayInsertIntAscEnd) {
 
 TEST(Utilities, SortedArrayInsertFloatAscMid) {
     float array[] = {0.134631f, 1.13613f, 4.346f, 6.835f, 9.1357f, 17.23456f, 18.2364f, 20.75f, 40.54f, 100.235f};
-    float *pVectStart = &array[0];
-    float *pVectEnd = &array[9];
+    float* pVectStart = &array[0];
+    float* pVectEnd = &array[9];
     float newvalue = 9.105646f;
     EXPECT_TRUE(asArrayInsert(pVectStart, pVectEnd, Asc, newvalue));
     float arrayResults[] = {0.134631f, 1.13613f,  4.346f,   6.835f, 9.105646f,
@@ -1319,8 +1319,8 @@ TEST(Utilities, SortedArrayInsertFloatAscMid) {
 
 TEST(Utilities, SortedArrayInsertDoubleAscMid) {
     double array[] = {0.134631, 1.13613, 4.346, 6.835, 9.1357, 17.23456, 18.2364, 20.75, 40.54, 100.235};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     double newvalue = 9.105646;
     EXPECT_TRUE(asArrayInsert(pVectStart, pVectEnd, Asc, newvalue));
     double arrayResults[] = {0.134631, 1.13613, 4.346, 6.835, 9.105646, 9.1357, 17.23456, 18.2364, 20.75, 40.54};
@@ -1331,8 +1331,8 @@ TEST(Utilities, SortedArrayInsertDoubleAscMid) {
 
 TEST(Utilities, SortedArrayInsertIntDescFirst) {
     int array[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 2};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int newvalue = 101;
     EXPECT_TRUE(asArrayInsert(pVectStart, pVectEnd, Desc, newvalue));
     int arrayResults[] = {101, 100, 40, 20, 18, 17, 9, 6, 4, 3};
@@ -1343,8 +1343,8 @@ TEST(Utilities, SortedArrayInsertIntDescFirst) {
 
 TEST(Utilities, SortedArrayInsertIntDescMid) {
     int array[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 2};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int newvalue = 8;
     EXPECT_TRUE(asArrayInsert(pVectStart, pVectEnd, Desc, newvalue));
     int arrayResults[] = {100, 40, 20, 18, 17, 9, 8, 6, 4, 3};
@@ -1355,8 +1355,8 @@ TEST(Utilities, SortedArrayInsertIntDescMid) {
 
 TEST(Utilities, SortedArrayInsertIntDescEnd) {
     int array[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 2};
-    int *pVectStart = &array[0];
-    int *pVectEnd = &array[9];
+    int* pVectStart = &array[0];
+    int* pVectEnd = &array[9];
     int newvalue = 3;
     EXPECT_TRUE(asArrayInsert(pVectStart, pVectEnd, Desc, newvalue));
     int arrayResults[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 3};
@@ -1367,8 +1367,8 @@ TEST(Utilities, SortedArrayInsertIntDescEnd) {
 
 TEST(Utilities, SortedArrayInsertFloatDescMid) {
     float array[] = {100.1345f, 40.2345f, 20.2345f, 18.567f, 17.2134f, 9.67f, 6.1346f, 4.7135f, 3.1f, 2.2345f};
-    float *pVectStart = &array[0];
-    float *pVectEnd = &array[9];
+    float* pVectStart = &array[0];
+    float* pVectEnd = &array[9];
     float newvalue = 9.105646f;
     EXPECT_TRUE(asArrayInsert(pVectStart, pVectEnd, Desc, newvalue));
     float arrayResults[] = {100.1345f, 40.2345f, 20.2345f, 18.567f, 17.2134f, 9.67f, 9.105646f, 6.1346f, 4.7135f, 3.1f};
@@ -1455,8 +1455,8 @@ TEST(Utilities, SortedArraysInsertDoubleAscMid) {
 TEST(Utilities, SortArrayAsc) {
     double arrayRef[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     EXPECT_TRUE(asSortArray(pVectStart, pVectEnd, Asc));
     for (int i = 0; i < 10; ++i) {
         EXPECT_DOUBLE_EQ(arrayRef[i], array[i]);
@@ -1466,8 +1466,8 @@ TEST(Utilities, SortArrayAsc) {
 TEST(Utilities, SortArrayDesc) {
     double arrayRef[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
     EXPECT_TRUE(asSortArray(pVectStart, pVectEnd, Desc));
     for (int i = 0; i < 10; ++i) {
         EXPECT_DOUBLE_EQ(arrayRef[i], array[i]);
@@ -1479,10 +1479,10 @@ TEST(Utilities, SortArraysAsc) {
     double array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
     double arrayOtherRef[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     double arrayOther[] = {8, 3, 1, 10, 6, 2, 7, 9, 5, 4};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
-    double *pVectStartOther = &arrayOther[0];
-    double *pVectEndOther = &arrayOther[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
+    double* pVectStartOther = &arrayOther[0];
+    double* pVectEndOther = &arrayOther[9];
     EXPECT_TRUE(asSortArrays(pVectStart, pVectEnd, pVectStartOther, pVectEndOther, Asc));
     for (int i = 0; i < 10; ++i) {
         EXPECT_DOUBLE_EQ(arrayRef[i], array[i]);
@@ -1495,10 +1495,10 @@ TEST(Utilities, SortArraysDesc) {
     double array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
     double arrayOtherRef[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
     double arrayOther[] = {8, 3, 1, 10, 6, 2, 7, 9, 5, 4};
-    double *pVectStart = &array[0];
-    double *pVectEnd = &array[9];
-    double *pVectStartOther = &arrayOther[0];
-    double *pVectEndOther = &arrayOther[9];
+    double* pVectStart = &array[0];
+    double* pVectEnd = &array[9];
+    double* pVectStartOther = &arrayOther[0];
+    double* pVectEndOther = &arrayOther[9];
     EXPECT_TRUE(asSortArrays(pVectStart, pVectEnd, pVectStartOther, pVectEndOther, Desc));
     for (int i = 0; i < 10; ++i) {
         EXPECT_DOUBLE_EQ(arrayRef[i], array[i]);

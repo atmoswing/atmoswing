@@ -31,11 +31,12 @@
 #include "asFileNetcdf.h"
 #include "asParametersScoring.h"
 
-asResultsScores::asResultsScores() : asResults() {}
+asResultsScores::asResultsScores()
+    : asResults() {}
 
 asResultsScores::~asResultsScores() {}
 
-void asResultsScores::Init(asParametersScoring *params) {
+void asResultsScores::Init(asParametersScoring* params) {
     m_predictandStationIds = params->GetPredictandStationIds();
 
     // Resize to 0 to avoid keeping old results

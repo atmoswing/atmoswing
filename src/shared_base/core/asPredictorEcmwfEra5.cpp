@@ -33,7 +33,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorEcmwfEra5::asPredictorEcmwfEra5(const wxString &dataId) : asPredictor(dataId) {
+asPredictorEcmwfEra5::asPredictorEcmwfEra5(const wxString& dataId)
+    : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "ECMWF_ERA5";
     m_provider = "ECMWF";
@@ -225,7 +226,7 @@ bool asPredictorEcmwfEra5::Init() {
     return true;
 }
 
-void asPredictorEcmwfEra5::ListFiles(asTimeArray &timeArray) {
+void asPredictorEcmwfEra5::ListFiles(asTimeArray& timeArray) {
     // Case 1: single file with the variable name
     wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".nc";
 
@@ -278,6 +279,6 @@ void asPredictorEcmwfEra5::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-void asPredictorEcmwfEra5::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorEcmwfEra5::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + asTime::GetMJD(1900, 1, 1);
 }

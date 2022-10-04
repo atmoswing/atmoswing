@@ -38,15 +38,15 @@ class asPanelsManagerForecasts;
 
 class asPanelForecast : public asPanelForecastVirtual {
   public:
-    explicit asPanelForecast(wxWindow *parent);
+    explicit asPanelForecast(wxWindow* parent);
 
     bool Layout() override;
 
-    awxLed *GetLed() const {
+    awxLed* GetLed() const {
         return m_led;
     }
 
-    void SetPanelsManager(asPanelsManagerForecasts *panelManager) {
+    void SetPanelsManager(asPanelsManagerForecasts* panelManager) {
         m_panelsManager = panelManager;
     }
 
@@ -54,20 +54,20 @@ class asPanelForecast : public asPanelForecastVirtual {
         return m_textCtrlParametersFileName->GetValue();
     }
 
-    void SetParametersFileName(const wxString &val) {
+    void SetParametersFileName(const wxString& val) {
         m_textCtrlParametersFileName->SetValue(val);
     }
 
   protected:
-    wxWindow *m_parentFrame;
-    awxLed *m_led;
+    wxWindow* m_parentFrame;
+    awxLed* m_led;
 
-    void ClosePanel(wxCommandEvent &event) override;
+    void ClosePanel(wxCommandEvent& event) override;
 
-    void ChangeForecastName(wxCommandEvent &event);
+    void ChangeForecastName(wxCommandEvent& event);
 
   private:
-    asPanelsManagerForecasts *m_panelsManager;
+    asPanelsManagerForecasts* m_panelsManager;
 };
 
 #endif

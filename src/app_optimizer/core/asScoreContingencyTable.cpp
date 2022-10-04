@@ -31,7 +31,7 @@
 asScoreContingencyTable::asScoreContingencyTable()
     : asScore(asScore::ContingencyTable, _("Contingency table"), _("Contingency table"), Asc, NaNf, NaNf) {}
 
-float asScoreContingencyTable::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreContingencyTable::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(!asIsNaN(m_threshold));
@@ -92,6 +92,6 @@ float asScoreContingencyTable::Assess(float obs, const a1f &values, int nbElemen
     return score;
 }
 
-bool asScoreContingencyTable::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreContingencyTable::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     return true;
 }

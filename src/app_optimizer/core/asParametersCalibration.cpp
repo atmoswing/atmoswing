@@ -31,7 +31,8 @@
 #include "asAreaGrid.h"
 #include "asFileParametersCalibration.h"
 
-asParametersCalibration::asParametersCalibration() : asParametersScoring() {}
+asParametersCalibration::asParametersCalibration()
+    : asParametersScoring() {}
 
 asParametersCalibration::~asParametersCalibration() {}
 
@@ -42,7 +43,7 @@ void asParametersCalibration::AddStep() {
     m_stepsVect.push_back(stepVect);
 }
 
-bool asParametersCalibration::LoadFromFile(const wxString &filePath) {
+bool asParametersCalibration::LoadFromFile(const wxString& filePath) {
     wxLogVerbose(_("Loading parameters file."));
 
     if (filePath.IsEmpty()) {
@@ -56,7 +57,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath) {
     if (!fileParams.CheckRootElement()) return false;
 
     int iStep = 0;
-    wxXmlNode *nodeProcess = fileParams.GetRoot()->GetChildren();
+    wxXmlNode* nodeProcess = fileParams.GetRoot()->GetChildren();
     while (nodeProcess) {
         if (nodeProcess->GetName() == "description") {
             if (!ParseDescription(fileParams, nodeProcess)) return false;
@@ -102,8 +103,8 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath) {
     return true;
 }
 
-bool asParametersCalibration::ParseDescription(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess) {
-    wxXmlNode *nodeParam = nodeProcess->GetChildren();
+bool asParametersCalibration::ParseDescription(asFileParametersCalibration& fileParams, const wxXmlNode* nodeProcess) {
+    wxXmlNode* nodeParam = nodeProcess->GetChildren();
     while (nodeParam) {
         if (nodeParam->GetName() == "method_id") {
             SetMethodId(fileParams.GetString(nodeParam));
@@ -124,12 +125,12 @@ bool asParametersCalibration::ParseDescription(asFileParametersCalibration &file
     return true;
 }
 
-bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &fileParams,
-                                                  const wxXmlNode *nodeProcess) {
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration& fileParams,
+                                                  const wxXmlNode* nodeProcess) {
+    wxXmlNode* nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "archive_period") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "start_year") {
                     SetArchiveYearStart(fileParams.GetInt(nodeParam));
@@ -147,7 +148,7 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "calibration_period") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "start_year") {
                     SetCalibrationYearStart(fileParams.GetInt(nodeParam));
@@ -165,7 +166,7 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "validation_period") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             int yStart = 0, yEnd = 0;
             while (nodeParam) {
                 if (nodeParam->GetName() == "years") {
@@ -187,7 +188,7 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
             SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock));
             SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "time_array_target") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "time_array") {
                     SetTimeArrayTargetMode(fileParams.GetString(nodeParam));
@@ -203,7 +204,7 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "time_array_analogs") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "time_array") {
                     SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam));
@@ -224,10 +225,10 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
     return true;
 }
 
-bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration &fileParams, int iStep,
-                                                     const wxXmlNode *nodeProcess) {
+bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration& fileParams, int iStep,
+                                                     const wxXmlNode* nodeProcess) {
     int iPtor = 0;
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+    wxXmlNode* nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "analogs_number") {
             SetAnalogsNumberVector(iStep, fileParams.GetVectorInt(nodeParamBlock));
@@ -236,7 +237,7 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
             AddPredictorVect(m_stepsVect[iStep]);
             SetPreprocess(iStep, iPtor, false);
             SetPreload(iStep, iPtor, false);
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "preload") {
                     SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
@@ -260,7 +261,7 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
                 } else if (nodeParam->GetName() == "members") {
                     SetPredictorMembersNb(iStep, iPtor, fileParams.GetInt(nodeParam));
                 } else if (nodeParam->GetName() == "spatial_window") {
-                    wxXmlNode *nodeWindow = nodeParam->GetChildren();
+                    wxXmlNode* nodeWindow = nodeParam->GetChildren();
                     while (nodeWindow) {
                         if (nodeWindow->GetName() == "grid_type") {
                             SetPredictorGridType(iStep, iPtor, fileParams.GetString(nodeWindow, "regular"));
@@ -299,15 +300,15 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
     return true;
 }
 
-bool asParametersCalibration::ParsePreprocessedPredictors(asFileParametersCalibration &fileParams, int iStep, int iPtor,
-                                                          const wxXmlNode *nodeParam) {
+bool asParametersCalibration::ParsePreprocessedPredictors(asFileParametersCalibration& fileParams, int iStep, int iPtor,
+                                                          const wxXmlNode* nodeParam) {
     int iPre = 0;
-    wxXmlNode *nodePreprocess = nodeParam->GetChildren();
+    wxXmlNode* nodePreprocess = nodeParam->GetChildren();
     while (nodePreprocess) {
         if (nodePreprocess->GetName() == "preprocessing_method") {
             SetPreprocessMethod(iStep, iPtor, fileParams.GetString(nodePreprocess));
         } else if (nodePreprocess->GetName() == "preprocessing_data") {
-            wxXmlNode *nodeParamPre = nodePreprocess->GetChildren();
+            wxXmlNode* nodeParamPre = nodePreprocess->GetChildren();
             while (nodeParamPre) {
                 if (nodeParamPre->GetName() == "dataset_id") {
                     SetPreprocessDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPre));
@@ -337,12 +338,12 @@ bool asParametersCalibration::ParsePreprocessedPredictors(asFileParametersCalibr
     return true;
 }
 
-bool asParametersCalibration::ParseAnalogValuesParams(asFileParametersCalibration &fileParams,
-                                                      const wxXmlNode *nodeProcess) {
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+bool asParametersCalibration::ParseAnalogValuesParams(asFileParametersCalibration& fileParams,
+                                                      const wxXmlNode* nodeProcess) {
+    wxXmlNode* nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "predictand") {
-            wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "station_id" || nodeParam->GetName() == "station_ids") {
                     if (!SetPredictandStationIdsVector(fileParams.GetStationIdsVector(nodeParam))) return false;
@@ -361,8 +362,8 @@ bool asParametersCalibration::ParseAnalogValuesParams(asFileParametersCalibratio
     return true;
 }
 
-bool asParametersCalibration::ParseScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess) {
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+bool asParametersCalibration::ParseScore(asFileParametersCalibration& fileParams, const wxXmlNode* nodeProcess) {
+    wxXmlNode* nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "score") {
             if (!SetScoreNameVector(fileParams.GetVectorString(nodeParamBlock))) return false;
@@ -422,10 +423,14 @@ bool asParametersCalibration::SetPreloadingProperties() {
             if (NeedsPreloading(iStep, iPtor)) {
                 SetPreloadXmin(iStep, iPtor, GetPredictorXminVector(iStep, iPtor)[0]);
                 SetPreloadYmin(iStep, iPtor, GetPredictorYminVector(iStep, iPtor)[0]);
-                SetPreloadXptsnb(iStep, iPtor,(int)GetPredictorXminVector(iStep, iPtor).size() - 1 +
-                            GetPredictorXptsnbVector(iStep, iPtor)[GetPredictorXptsnbVector(iStep, iPtor).size() - 1]);
-                SetPreloadYptsnb(iStep, iPtor, (int)GetPredictorYminVector(iStep, iPtor).size() - 1 +
-                            GetPredictorYptsnbVector(iStep, iPtor)[GetPredictorYptsnbVector(iStep, iPtor).size() - 1]);
+                SetPreloadXptsnb(
+                    iStep, iPtor,
+                    (int)GetPredictorXminVector(iStep, iPtor).size() - 1 +
+                        GetPredictorXptsnbVector(iStep, iPtor)[GetPredictorXptsnbVector(iStep, iPtor).size() - 1]);
+                SetPreloadYptsnb(
+                    iStep, iPtor,
+                    (int)GetPredictorYminVector(iStep, iPtor).size() - 1 +
+                        GetPredictorYptsnbVector(iStep, iPtor)[GetPredictorYptsnbVector(iStep, iPtor).size() - 1]);
             }
 
             // Change predictor properties when preprocessing
@@ -483,8 +488,8 @@ bool asParametersCalibration::SetPreloadingProperties() {
     return true;
 }
 
-void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf &preprocLevels,
-                                                             vd &preprocHours) const {
+void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf& preprocLevels,
+                                                             vd& preprocHours) const {
     for (int iPre = 0; iPre < GetPreprocessSize(iStep, iPtor); ++iPre) {
         vf preprocLevelsTmp = GetPreprocessLevelVector(iStep, iPtor, iPre);
         for (int i = 0; i < preprocLevelsTmp.size(); ++i) {

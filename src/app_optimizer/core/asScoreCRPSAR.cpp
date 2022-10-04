@@ -33,7 +33,7 @@ asScoreCRPSAR::asScoreCRPSAR()
     : asScore(asScore::CRPSAR, _("CRPS Approx Rectangle"),
               _("Continuous Ranked Probability Score approximation with the rectangle method"), Asc, 0, NaNf) {}
 
-float asScoreCRPSAR::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreCRPSAR::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -102,6 +102,6 @@ float asScoreCRPSAR::Assess(float obs, const a1f &values, int nbElements) const 
     return crps;
 }
 
-bool asScoreCRPSAR::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreCRPSAR::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     return true;
 }

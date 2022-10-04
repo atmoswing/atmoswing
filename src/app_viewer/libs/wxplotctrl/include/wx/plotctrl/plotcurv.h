@@ -56,7 +56,12 @@ enum wxPlotSymbol_Type {
     wxPLOTSYMBOL_MAXTYPE
 };
 
-enum wxPlotPen_Type { wxPLOTPEN_NORMAL, wxPLOTPEN_ACTIVE, wxPLOTPEN_SELECTED, wxPLOTPEN_MAXTYPE };
+enum wxPlotPen_Type {
+    wxPLOTPEN_NORMAL,
+    wxPLOTPEN_ACTIVE,
+    wxPLOTPEN_SELECTED,
+    wxPLOTPEN_MAXTYPE
+};
 
 #define wxPLOTCURVE_OPTION_FILENAME wxT("File.Name")
 #define wxPLOTCURVE_OPTION_EOLMODE wxT("EOL.Mode")
@@ -80,11 +85,11 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCurveRefData : public wxObjectRefData, public w
   public:
     wxPlotCurveRefData();
 
-    wxPlotCurveRefData(const wxPlotCurveRefData &data);
+    wxPlotCurveRefData(const wxPlotCurveRefData& data);
 
     virtual ~wxPlotCurveRefData() {}
 
-    void Copy(const wxPlotCurveRefData &source);
+    void Copy(const wxPlotCurveRefData& source);
 
     wxRect2DDouble m_boundingRect;  // bounds the curve or part to draw
     // if width or height <= 0 then no bounds
@@ -117,7 +122,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCurve : public wxObject {
     // Make a clone of this curve, same as increasing the ref count, but
     // the new object is created on the heap. See wxPlotFunction, wxPlotData
     // Note: Cannot be pure virtual because of the wxArray of wxPlotCurves.
-    virtual wxPlotCurve *Clone() const {
+    virtual wxPlotCurve* Clone() const {
         return new wxPlotCurve;
     }
 
@@ -137,26 +142,26 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCurve : public wxObject {
     //                DON'T call SetBoundingRect unless you know what you're doing
     virtual wxRect2DDouble GetBoundingRect() const;
 
-    virtual void SetBoundingRect(const wxRect2DDouble &rect);
+    virtual void SetBoundingRect(const wxRect2DDouble& rect);
 
     // Get/Set Pens for Normal, Active, Selected drawing
     //  if these are not set it resorts to the defaults
     wxGenericPen GetPen(wxPlotPen_Type colour_type) const;
 
-    void SetPen(wxPlotPen_Type colour_type, const wxGenericPen &pen);
+    void SetPen(wxPlotPen_Type colour_type, const wxGenericPen& pen);
 
     // Get/Set Default Pens for Normal, Active, Selected drawing for all curves
     //   these are the pens that are used when a wxPlotCurve/Function/Data is created
     //   default: Normal(0,0,0,1,wxSOLID), Active(0,0,255,1,wxSOLID), Selected(255,0,0,1,wxSOLID)
     static wxGenericPen GetDefaultPen(wxPlotPen_Type colour_type);
 
-    static void SetDefaultPen(wxPlotPen_Type colour_type, const wxGenericPen &pen);
+    static void SetDefaultPen(wxPlotPen_Type colour_type, const wxGenericPen& pen);
 
     // Get/Set Pens for Normal, Active, Selected drawing
     //  if these are not set it resorts to the defaults
     wxBrush GetBrush() const;
 
-    void SetBrush(const wxBrush &brush);
+    void SetBrush(const wxBrush& brush);
 
     //-------------------------------------------------------------------------
     // Get/Set Option names/values
@@ -166,7 +171,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCurve : public wxObject {
     size_t GetOptionCount() const;
 
     // return the index of the option or wxNOT_FOUND (-1)
-    int HasOption(const wxString &name) const;
+    int HasOption(const wxString& name) const;
 
     // Get the name/value at the index position
     wxString GetOptionName(size_t index) const;
@@ -175,19 +180,19 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCurve : public wxObject {
 
     // Set an option, if update=true then force it, else only set it if not found
     //   returns the index of the option
-    int SetOption(const wxString &name, const wxString &value, bool update = true);
+    int SetOption(const wxString& name, const wxString& value, bool update = true);
 
-    int SetOption(const wxString &name, int option, bool update = true);
+    int SetOption(const wxString& name, int option, bool update = true);
 
     // Get an option returns the index if found
     //   returns wxNOT_FOUND (-1) if it doesn't exist and value isn't changed
-    int GetOption(const wxString &name, wxString &value) const;
+    int GetOption(const wxString& name, wxString& value) const;
 
     // returns wxEmptyString if not found
-    wxString GetOption(const wxString &name) const;
+    wxString GetOption(const wxString& name) const;
 
     // returns 0 if not found
-    int GetOptionInt(const wxString &name) const;
+    int GetOptionInt(const wxString& name) const;
 
     // get the arrays of option values
     wxArrayString GetOptionNames() const;
@@ -199,34 +204,34 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCurve : public wxObject {
     //  You can store any extra info here.
     //-------------------------------------------------------------------------
 
-    void SetClientObject(wxClientData *data);
+    void SetClientObject(wxClientData* data);
 
-    wxClientData *GetClientObject() const;
+    wxClientData* GetClientObject() const;
 
-    void SetClientData(void *data);
+    void SetClientData(void* data);
 
-    void *GetClientData() const;
+    void* GetClientData() const;
 
     //-------------------------------------------------------------------------
     // operators
-    bool operator==(const wxPlotCurve &plotCurve) const {
+    bool operator==(const wxPlotCurve& plotCurve) const {
         return m_refData == plotCurve.m_refData;
     }
 
-    bool operator!=(const wxPlotCurve &plotCurve) const {
+    bool operator!=(const wxPlotCurve& plotCurve) const {
         return m_refData != plotCurve.m_refData;
     }
 
-    wxPlotCurve &operator=(const wxPlotCurve &plotCurve) {
+    wxPlotCurve& operator=(const wxPlotCurve& plotCurve) {
         if ((*this) != plotCurve) Ref(plotCurve);
         return *this;
     }
 
   private:
     // ref counting code
-    virtual wxObjectRefData *CreateRefData() const;
+    virtual wxObjectRefData* CreateRefData() const;
 
-    virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
+    virtual wxObjectRefData* CloneRefData(const wxObjectRefData* data) const;
 
     DECLARE_DYNAMIC_CLASS(wxPlotCurve);
 };

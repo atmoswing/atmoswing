@@ -52,31 +52,32 @@ enum {
 
 class WXDLLIMPEXP_THINGS wxSpinCtrlDbl : public wxControl {
   public:
-    wxSpinCtrlDbl() : wxControl() {
+    wxSpinCtrlDbl()
+        : wxControl() {
         Init();
     }
 
     // Native constructor - note &parent, this is to avoid ambiguity
-    wxSpinCtrlDbl(wxWindow &parent, wxWindowID id, const wxString &value = wxEmptyString,
-                  const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxSize(95, -1), long style = 0,
+    wxSpinCtrlDbl(wxWindow& parent, wxWindowID id, const wxString& value = wxEmptyString,
+                  const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(95, -1), long style = 0,
                   double min = 0.0, double max = 100.0, double initial = 0.0, double increment = 1.0,
-                  int digits = wxSPINCTRLDBL_AUTODIGITS, const wxString &name = _T("wxSpinCtrlDbl")) {
+                  int digits = wxSPINCTRLDBL_AUTODIGITS, const wxString& name = _T("wxSpinCtrlDbl")) {
         Init();
         Create(&parent, id, value, pos, size, style, min, max, initial, increment, digits, name);
     }
 
     // wxSpinCtrl compatibility, call SetIncrement(increment,digits) after
-    wxSpinCtrlDbl(wxWindow *parent, wxWindowID id = wxID_ANY, const wxString &value = wxEmptyString,
-                  const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxSize(95, -1), long style = 0,
-                  int min = 0, int max = 100, int initial = 0, const wxString &name = _T("wxSpinCtrlDbl")) {
+    wxSpinCtrlDbl(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& value = wxEmptyString,
+                  const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(95, -1), long style = 0,
+                  int min = 0, int max = 100, int initial = 0, const wxString& name = _T("wxSpinCtrlDbl")) {
         Init();
         Create(parent, id, value, pos, size, style, (double)min, (double)max, (double)initial, 1.0, -1, name);
     }
 
-    bool Create(wxWindow *parent, wxWindowID id = wxID_ANY, const wxString &value = wxEmptyString,
-                const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxSize(100, -1), long style = 0,
+    bool Create(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& value = wxEmptyString,
+                const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(100, -1), long style = 0,
                 double min = 0.0, double max = 100.0, double initial = 0.0, double increment = 1.0,
-                int digits = wxSPINCTRLDBL_AUTODIGITS, const wxString &name = _T("wxSpinCtrlDbl"));
+                int digits = wxSPINCTRLDBL_AUTODIGITS, const wxString& name = _T("wxSpinCtrlDbl"));
 
     virtual ~wxSpinCtrlDbl();
 
@@ -100,7 +101,7 @@ class WXDLLIMPEXP_THINGS wxSpinCtrlDbl : public wxControl {
     }
 
     // Set the value as text, if force then set text as is
-    virtual void SetValue(const wxString &text, bool force);
+    virtual void SetValue(const wxString& text, bool force);
 
     // Set the allowed range, if max_val < min_val then no range and all vals allowed.
     void SetRange(double min_val, double max_val);
@@ -119,7 +120,7 @@ class WXDLLIMPEXP_THINGS wxSpinCtrlDbl : public wxControl {
     void SetDigits(int digits = wxSPINCTRLDBL_AUTODIGITS, formatType fmt = lg_fmt);
 
     // Set the format string to use, ie. format="%.2lf" for .01
-    void SetFormat(const wxString &format);
+    void SetFormat(const wxString& format);
 
     // Set the control the the default value.
     virtual void SetDefaultValue() {
@@ -179,34 +180,34 @@ class WXDLLIMPEXP_THINGS wxSpinCtrlDbl : public wxControl {
         return (m_value == m_default_value);
     }
 
-    virtual bool SetFont(const wxFont &font);
+    virtual bool SetFont(const wxFont& font);
 
     wxFont GetFont() const;
 
-    virtual bool SetBackgroundColour(const wxColour &colour);
+    virtual bool SetBackgroundColour(const wxColour& colour);
 
     wxColour GetBackgroundColour() const;
 
-    virtual bool SetForegroundColour(const wxColour &colour);
+    virtual bool SetForegroundColour(const wxColour& colour);
 
     wxColour GetForegroundColour() const;
 
     // for setting... stuff
-    wxTextCtrl *GetTextCtrl() {
-        return (wxTextCtrl *)m_textCtrl;
+    wxTextCtrl* GetTextCtrl() {
+        return (wxTextCtrl*)m_textCtrl;
     }
 
   protected:
-    void OnSpinUp(wxSpinEvent &event);
+    void OnSpinUp(wxSpinEvent& event);
 
-    void OnSpinDown(wxSpinEvent &event);
+    void OnSpinDown(wxSpinEvent& event);
 
-    void OnTextEnter(wxCommandEvent &event);
+    void OnTextEnter(wxCommandEvent& event);
 
-    void OnText(wxCommandEvent &event);
+    void OnText(wxCommandEvent& event);
 
     // the textctrl is subclassed to get at pgup/dn and then sent here
-    void OnChar(wxKeyEvent &event);
+    void OnChar(wxKeyEvent& event);
 
     virtual void SyncSpinToText(bool send_event = true, bool force_valid = true);
 
@@ -216,13 +217,13 @@ class WXDLLIMPEXP_THINGS wxSpinCtrlDbl : public wxControl {
 
     virtual wxSize DoGetBestSize() const;
 
-    virtual void DoSetToolTip(wxToolTip *tip);
+    virtual void DoSetToolTip(wxToolTip* tip);
 
-    void OnFocus(wxFocusEvent &event);  // pass focus to textctrl, for wxTAB_TRAVERSAL
-    void OnKillFocus(wxFocusEvent &event);
+    void OnFocus(wxFocusEvent& event);  // pass focus to textctrl, for wxTAB_TRAVERSAL
+    void OnKillFocus(wxFocusEvent& event);
 
-    wxSpinButton *m_spinButton;
-    wxSpinCtrlDblTextCtrl *m_textCtrl;
+    wxSpinButton* m_spinButton;
+    wxSpinCtrlDblTextCtrl* m_textCtrl;
 
     double m_min;            // min allowed value
     double m_max;            // max allowed value

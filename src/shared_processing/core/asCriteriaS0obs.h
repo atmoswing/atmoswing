@@ -37,7 +37,7 @@ class asCriteriaS0obs : public asCriteria {
 
     ~asCriteriaS0obs() override;
 
-    float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
+    float Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const override;
 
   protected:
   private:

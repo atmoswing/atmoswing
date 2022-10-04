@@ -90,7 +90,7 @@ typedef Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> a2f
 typedef std::vector<a1f, Eigen::aligned_allocator<a1f>> va1f;
 typedef std::vector<a1d, Eigen::aligned_allocator<a1d>> va1d;
 typedef std::vector<a2f, Eigen::aligned_allocator<a2f>> va2f;
-typedef std::vector<a2f *, Eigen::aligned_allocator<a2f *>> vpa2f;
+typedef std::vector<a2f*, Eigen::aligned_allocator<a2f*>> vpa2f;
 typedef std::vector<std::vector<a2f, Eigen::aligned_allocator<a2f>>> vva2f;
 typedef std::vector<std::vector<std::vector<a2f, Eigen::aligned_allocator<a2f>>>> vvva2f;
 

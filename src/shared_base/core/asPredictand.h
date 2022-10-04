@@ -37,9 +37,22 @@ class asFileNetcdf;
 
 class asPredictand : public wxObject {
   public:
-    enum Parameter { Precipitation, AirTemperature, Lightning, Wind };
+    enum Parameter {
+        Precipitation,
+        AirTemperature,
+        Lightning,
+        Wind
+    };
 
-    enum Unit { nb, mm, m, in, percent, degC, degK };
+    enum Unit {
+        nb,
+        mm,
+        m,
+        in,
+        percent,
+        degC,
+        degK
+    };
 
     enum TemporalResolution {
         Daily,
@@ -54,40 +67,45 @@ class asPredictand : public wxObject {
         Weekly
     };
 
-    enum SpatialAggregation { Station, Groupment, Catchment, Region };
+    enum SpatialAggregation {
+        Station,
+        Groupment,
+        Catchment,
+        Region
+    };
 
     asPredictand(Parameter parameter, TemporalResolution temporalResolution, SpatialAggregation spatialAggregation);
 
     ~asPredictand() override = default;
 
-    static Parameter StringToParameterEnum(const wxString &parameterStr);
+    static Parameter StringToParameterEnum(const wxString& parameterStr);
 
     static wxString ParameterEnumToString(Parameter parameter);
 
-    static Unit StringToUnitEnum(const wxString &unitStr);
+    static Unit StringToUnitEnum(const wxString& unitStr);
 
-    static TemporalResolution StringToTemporalResolutionEnum(const wxString &temporalResolution);
+    static TemporalResolution StringToTemporalResolutionEnum(const wxString& temporalResolution);
 
     static wxString TemporalResolutionEnumToString(TemporalResolution temporalResolution);
 
-    static SpatialAggregation StringToSpatialAggregationEnum(const wxString &spatialAggregation);
+    static SpatialAggregation StringToSpatialAggregationEnum(const wxString& spatialAggregation);
 
     static wxString SpatialAggregationEnumToString(SpatialAggregation spatialAggregation);
 
-    static asPredictand *GetInstance(const wxString &parameterStr, const wxString &temporalResolutionStr,
-                                     const wxString &spatialAggregationStr);
+    static asPredictand* GetInstance(const wxString& parameterStr, const wxString& temporalResolutionStr,
+                                     const wxString& spatialAggregationStr);
 
-    static asPredictand *GetInstance(Parameter parameter, TemporalResolution temporalResolution,
+    static asPredictand* GetInstance(Parameter parameter, TemporalResolution temporalResolution,
                                      SpatialAggregation spatialAggregation);
 
-    static asPredictand *GetInstance(const wxString &filePath);
+    static asPredictand* GetInstance(const wxString& filePath);
 
-    virtual bool Load(const wxString &filePath) = 0;
+    virtual bool Load(const wxString& filePath) = 0;
 
-    virtual bool Save(const wxString &filePath) const = 0;
+    virtual bool Save(const wxString& filePath) const = 0;
 
-    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir, const wxString &patternDir,
-                                   const wxString &destinationDir) = 0;
+    virtual bool BuildPredictandDB(const wxString& catalogFilePath, const wxString& dataDir, const wxString& patternDir,
+                                   const wxString& destinationDir) = 0;
 
     virtual bool HasReferenceAxis() const {
         return false;
@@ -138,27 +156,27 @@ class asPredictand : public wxObject {
         return m_timeLength;
     }
 
-    vwxs &GetStationNamesArray() {
+    vwxs& GetStationNamesArray() {
         return m_stationNames;
     }
 
-    vwxs &GetStationOfficialIdsArray() {
+    vwxs& GetStationOfficialIdsArray() {
         return m_stationOfficialIds;
     }
 
-    a1f &GetStationHeightsArray() {
+    a1f& GetStationHeightsArray() {
         return m_stationHeights;
     }
 
-    a1i &GetStationsIdArray() {
+    a1i& GetStationsIdArray() {
         return m_stationIds;
     }
 
-    a1d &GetStationXCoordsArray() {
+    a1d& GetStationXCoordsArray() {
         return m_stationXCoords;
     }
 
-    a1d &GetStationYCoordsArray() {
+    a1d& GetStationYCoordsArray() {
         return m_stationYCoords;
     }
 
@@ -176,7 +194,7 @@ class asPredictand : public wxObject {
         }
     }
 
-    a1d &GetTime() {
+    a1d& GetTime() {
         return m_time;
     }
 
@@ -212,30 +230,30 @@ class asPredictand : public wxObject {
     a1d m_stationStarts;
     a1d m_stationEnds;
 
-    wxString GetDBFilePathSaving(const wxString &destinationDir) const;
+    wxString GetDBFilePathSaving(const wxString& destinationDir) const;
 
-    bool InitMembers(const wxString &catalogFilePath);
+    bool InitMembers(const wxString& catalogFilePath);
 
     bool InitBaseContainers();
 
-    bool LoadCommonData(asFileNetcdf &ncFile);
+    bool LoadCommonData(asFileNetcdf& ncFile);
 
-    void SetCommonDefinitions(asFileNetcdf &ncFile) const;
+    void SetCommonDefinitions(asFileNetcdf& ncFile) const;
 
-    bool SaveCommonData(asFileNetcdf &ncFile) const;
+    bool SaveCommonData(asFileNetcdf& ncFile) const;
 
-    bool ParseData(const wxString &catalogFile, const wxString &directory = wxEmptyString,
-                   const wxString &patternDir = wxEmptyString);
+    bool ParseData(const wxString& catalogFile, const wxString& directory = wxEmptyString,
+                   const wxString& patternDir = wxEmptyString);
 
     a2f GetAnnualMax(double timeStepDays = 1, int nansNbMax = 10) const;
 
-    bool SetStationProperties(asCatalogPredictands &currentData, size_t stationIndex);
+    bool SetStationProperties(asCatalogPredictands& currentData, size_t stationIndex);
 
-    bool GetFileContent(asCatalogPredictands &currentData, size_t stationIndex,
-                        const wxString &directory = wxEmptyString, const wxString &patternDir = wxEmptyString);
+    bool GetFileContent(asCatalogPredictands& currentData, size_t stationIndex,
+                        const wxString& directory = wxEmptyString, const wxString& patternDir = wxEmptyString);
 
   private:
-    float ParseAndCheckDataValue(asCatalogPredictands &currentData, wxString &dataStr) const;
+    float ParseAndCheckDataValue(asCatalogPredictands& currentData, wxString& dataStr) const;
 };
 
 #endif

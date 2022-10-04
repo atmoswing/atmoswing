@@ -31,7 +31,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorNoaaOisst2::asPredictorNoaaOisst2(const wxString &dataId) : asPredictor(dataId) {
+asPredictorNoaaOisst2::asPredictorNoaaOisst2(const wxString& dataId)
+    : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "NOAA_OISST_v2";
     m_provider = "NOAA";
@@ -85,7 +86,7 @@ bool asPredictorNoaaOisst2::Init() {
     return true;
 }
 
-void asPredictorNoaaOisst2::ListFiles(asTimeArray &timeArray) {
+void asPredictorNoaaOisst2::ListFiles(asTimeArray& timeArray) {
     for (double date = timeArray.GetFirst(); date <= timeArray.GetLast(); date++) {
         // Build the file path (ex: %d/AVHRR/sst4-path-eot.%4d%02d%02d.nc)
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, asTime::GetYear(date),
@@ -94,6 +95,6 @@ void asPredictorNoaaOisst2::ListFiles(asTimeArray &timeArray) {
     }
 }
 
-void asPredictorNoaaOisst2::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorNoaaOisst2::ConvertToMjd(a1d& time, double refValue) const {
     time += asTime::GetMJD(1978, 1, 1);
 }

@@ -28,9 +28,10 @@
 
 #include "asTotalScoreMean.h"
 
-asTotalScoreMean::asTotalScoreMean(const wxString &periodString) : asTotalScore(periodString) {}
+asTotalScoreMean::asTotalScoreMean(const wxString& periodString)
+    : asTotalScore(periodString) {}
 
-float asTotalScoreMean::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
+float asTotalScoreMean::Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(scores.rows() > 1);
 

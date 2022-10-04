@@ -30,7 +30,7 @@
 
 #include "asPanelsManagerForecasts.h"
 
-asPanelForecast::asPanelForecast(wxWindow *parent)
+asPanelForecast::asPanelForecast(wxWindow* parent)
     : asPanelForecastVirtual(parent),
       m_parentFrame(nullptr),
       m_panelsManager(nullptr) {
@@ -59,7 +59,7 @@ asPanelForecast::asPanelForecast(wxWindow *parent)
 #endif
 }
 
-void asPanelForecast::ClosePanel(wxCommandEvent &event) {
+void asPanelForecast::ClosePanel(wxCommandEvent& event) {
     m_panelsManager->RemovePanel(this);
 }
 
@@ -68,6 +68,6 @@ bool asPanelForecast::Layout() {
     return true;
 }
 
-void asPanelForecast::ChangeForecastName(wxCommandEvent &event) {
+void asPanelForecast::ChangeForecastName(wxCommandEvent& event) {
     //
 }

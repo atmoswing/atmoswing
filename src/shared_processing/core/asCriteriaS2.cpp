@@ -27,7 +27,8 @@
 
 #include "asCriteriaS2.h"
 
-asCriteriaS2::asCriteriaS2() : asCriteria("S2", _("Derivative of Teweles-Wobus score"), Asc) {
+asCriteriaS2::asCriteriaS2()
+    : asCriteria("S2", _("Derivative of Teweles-Wobus score"), Asc) {
     m_minPointsNb = 3;
     m_scaleWorst = 200;
     m_canUseInline = false;
@@ -35,7 +36,7 @@ asCriteriaS2::asCriteriaS2() : asCriteria("S2", _("Derivative of Teweles-Wobus s
 
 asCriteriaS2::~asCriteriaS2() = default;
 
-float asCriteriaS2::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
+float asCriteriaS2::Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() > 2);

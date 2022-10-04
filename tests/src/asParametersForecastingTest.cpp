@@ -40,8 +40,8 @@ TEST(ParametersForecasting, ParametersLoadFromFile) {
     EXPECT_EQ(asTime::GetMJD(2011, 4, 1, 6), params.GetArchiveStart());
     EXPECT_EQ(asTime::GetMJD(2018, 9, 30, 18), params.GetArchiveEnd());
     EXPECT_EQ(15, params.GetLeadTimeNb());
-    EXPECT_EQ(6.0/24.0, params.GetLeadTimeDaysVector()[0]);
-    EXPECT_EQ(90.0/24.0, params.GetLeadTimeDaysVector()[14]);
+    EXPECT_EQ(6.0 / 24.0, params.GetLeadTimeDaysVector()[0]);
+    EXPECT_EQ(90.0 / 24.0, params.GetLeadTimeDaysVector()[14]);
     EXPECT_EQ(6, params.GetAnalogsTimeStepHours());
     EXPECT_EQ(6, params.GetTargetTimeStepHours());
     EXPECT_EQ(200, params.GetAnalogsIntervalDays());

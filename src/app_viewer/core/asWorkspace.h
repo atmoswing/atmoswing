@@ -44,7 +44,7 @@ class asWorkspace : public wxObject {
 
     ~asWorkspace() override = default;
 
-    bool Load(const wxString &filePath);
+    bool Load(const wxString& filePath);
 
     bool Save() const;
 
@@ -58,7 +58,7 @@ class asWorkspace : public wxObject {
         return m_filePath;
     }
 
-    void SetFilePath(wxString &path) {
+    void SetFilePath(wxString& path) {
         m_filePath = path;
     }
 
@@ -66,7 +66,7 @@ class asWorkspace : public wxObject {
         return m_forecastsDirectory;
     }
 
-    void SetForecastsDirectory(const wxString &val) {
+    void SetForecastsDirectory(const wxString& val) {
         m_forecastsDirectory = val;
     }
 
@@ -75,7 +75,7 @@ class asWorkspace : public wxObject {
         return m_layerPaths[i];
     }
 
-    void SetLayerPath(int i, const wxString &val) {
+    void SetLayerPath(int i, const wxString& val) {
         wxASSERT((int)m_layerPaths.size() > i);
         m_layerPaths[i] = val;
     }
@@ -85,7 +85,7 @@ class asWorkspace : public wxObject {
         return m_layerTypes[i];
     }
 
-    void SetLayerType(int i, const wxString &val) {
+    void SetLayerType(int i, const wxString& val) {
         wxASSERT((int)m_layerTypes.size() > i);
         m_layerTypes[i] = val;
     }
@@ -127,7 +127,7 @@ class asWorkspace : public wxObject {
         return m_layerLineColors[i];
     }
 
-    void SetLayerLineColor(int i, wxColour &val) {
+    void SetLayerLineColor(int i, wxColour& val) {
         wxASSERT((int)m_layerLineColors.size() > i);
         m_layerLineColors[i] = val;
     }
@@ -137,7 +137,7 @@ class asWorkspace : public wxObject {
         return m_layerFillColors[i];
     }
 
-    void SetLayerFillColor(int i, wxColour &val) {
+    void SetLayerFillColor(int i, wxColour& val) {
         wxASSERT((int)m_layerFillColors.size() > i);
         m_layerFillColors[i] = val;
     }
@@ -147,7 +147,7 @@ class asWorkspace : public wxObject {
         return m_layerBrushStyles[i];
     }
 
-    void SetLayerBrushStyle(int i, wxBrushStyle &val) {
+    void SetLayerBrushStyle(int i, wxBrushStyle& val) {
         wxASSERT((int)m_layerBrushStyles.size() > i);
         m_layerBrushStyles[i] = val;
     }

@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorJmaJra55Subset, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_p125/z", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -77,7 +77,7 @@ TEST(PredictorJmaJra55Subset, GetCorrectPredictors) {
 }
 
 TEST(PredictorJmaJra55CSubset, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("JMA_JRA_55C_subset", "anl_p125/z", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -139,7 +139,7 @@ TEST(PredictorJmaJra55Subset, LoadEasy) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-jma-jra55-ncar-subset/");
 
-    asPredictor *predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
@@ -203,7 +203,7 @@ TEST(PredictorJmaJra55Subset, Around360) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-jma-jra55-ncar-subset/");
 
-    asPredictor *predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));

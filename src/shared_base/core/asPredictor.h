@@ -119,12 +119,12 @@ class asPredictor : public wxObject {
         J_m2
     };
 
-    explicit asPredictor(const wxString &dataId);
+    explicit asPredictor(const wxString& dataId);
 
     ~asPredictor() override = default;
 
-    static asPredictor *GetInstance(const wxString &datasetId, const wxString &dataId,
-                                    const wxString &directory = wxEmptyString);
+    static asPredictor* GetInstance(const wxString& datasetId, const wxString& dataId,
+                                    const wxString& directory = wxEmptyString);
 
     virtual bool Init();
 
@@ -132,15 +132,15 @@ class asPredictor : public wxObject {
 
     bool CheckFilesPresence();
 
-    bool Load(asAreaGrid *desiredArea, asTimeArray &timeArray, float level);
+    bool Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float level);
 
-    bool Load(asAreaGrid &desiredArea, asTimeArray &timeArray, float level);
+    bool Load(asAreaGrid& desiredArea, asTimeArray& timeArray, float level);
 
-    bool Load(asAreaGrid &desiredArea, double date, float level);
+    bool Load(asAreaGrid& desiredArea, double date, float level);
 
-    bool Load(asAreaGrid *desiredArea, double date, float level);
+    bool Load(asAreaGrid* desiredArea, double date, float level);
 
-    bool ClipToArea(asAreaGrid *desiredArea);
+    bool ClipToArea(asAreaGrid* desiredArea);
 
     bool StandardizeData(double mean = NaNd, double sd = NaNd);
 
@@ -154,7 +154,7 @@ class asPredictor : public wxObject {
 
     bool DumpFileExists() const;
 
-    bool SetData(vva2f &val);
+    bool SetData(vva2f& val);
 
     float GetMinValue() const;
 
@@ -162,7 +162,7 @@ class asPredictor : public wxObject {
 
     bool HasNaN() const;
 
-    vva2f &GetData() {
+    vva2f& GetData() {
         wxASSERT((int)m_data.size() >= (int)m_time.size());
         wxASSERT(m_data.size() >= 1);
         wxASSERT(m_data[0].size() >= 1);
@@ -241,7 +241,7 @@ class asPredictor : public wxObject {
         m_standardized = val;
     }
 
-    static bool IsLatLon(const wxString &datasetId);
+    static bool IsLatLon(const wxString& datasetId);
 
     bool IsLatLon() const {
         return m_isLatLon;
@@ -271,7 +271,7 @@ class asPredictor : public wxObject {
         return m_preprocessMethod;
     }
 
-    void SetPreprocessMethod(const wxString &val) {
+    void SetPreprocessMethod(const wxString& val) {
         m_preprocessMethod = val;
     }
 
@@ -351,7 +351,7 @@ class asPredictor : public wxObject {
         m_level = val;
     }
 
-    void SetTimeArray(const a1d &time) {
+    void SetTimeArray(const a1d& time) {
         m_time = time;
     }
 
@@ -446,57 +446,57 @@ class asPredictor : public wxObject {
     vwxs m_files;
     int m_percentMissingAllowed;
 
-    virtual void ListFiles(asTimeArray &timeArray);
+    virtual void ListFiles(asTimeArray& timeArray);
 
-    bool EnquireFileStructure(asTimeArray &timeArray);
+    bool EnquireFileStructure(asTimeArray& timeArray);
 
-    bool ExtractFromFiles(asAreaGrid *&dataArea, asTimeArray &timeArray);
+    bool ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeArray);
 
-    virtual void ConvertToMjd(a1d &time, double refValue = NaNd) const;
+    virtual void ConvertToMjd(a1d& time, double refValue = NaNd) const;
 
     virtual double FixTimeValue(double time) const;
 
-    virtual bool CheckTimeArray(asTimeArray &timeArray);
+    virtual bool CheckTimeArray(asTimeArray& timeArray);
 
-    virtual bool GetAxesIndexes(asAreaGrid *&dataArea, asTimeArray &timeArray);
+    virtual bool GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray);
 
-    size_t *GetIndexesStartNcdf() const;
+    size_t* GetIndexesStartNcdf() const;
 
-    size_t *GetIndexesCountNcdf() const;
+    size_t* GetIndexesCountNcdf() const;
 
-    ptrdiff_t *GetIndexesStrideNcdf() const;
+    ptrdiff_t* GetIndexesStrideNcdf() const;
 
-    int *GetIndexesStartGrib() const;
+    int* GetIndexesStartGrib() const;
 
-    int *GetIndexesCountGrib() const;
+    int* GetIndexesCountGrib() const;
 
-    bool GetDataFromFile(asFileNetcdf &ncFile);
+    bool GetDataFromFile(asFileNetcdf& ncFile);
 
-    bool GetDataFromFile(asFileGrib &gbFile);
+    bool GetDataFromFile(asFileGrib& gbFile);
 
     bool EnquireNetcdfFileStructure();
 
-    bool ExtractFromNetcdfFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray);
+    bool ExtractFromNetcdfFile(const wxString& fileName, asAreaGrid*& dataArea, asTimeArray& timeArray);
 
-    bool EnquireGribFileStructure(asTimeArray &timeArray);
+    bool EnquireGribFileStructure(asTimeArray& timeArray);
 
-    bool ExtractFromGribFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray);
+    bool ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dataArea, asTimeArray& timeArray);
 
-    bool ParseFileStructure(asFileNetcdf &ncFile);
+    bool ParseFileStructure(asFileNetcdf& ncFile);
 
-    bool ParseFileStructure(asFileGrib *gbFile0);
+    bool ParseFileStructure(asFileGrib* gbFile0);
 
-    bool ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1);
+    bool ParseFileStructure(asFileGrib* gbFile0, asFileGrib* gbFile1);
 
     bool CheckFileStructure();
 
     bool HasDesiredLevel(bool useWarnings = true);
 
-    bool InterpolateOnGrid(asAreaGrid *dataArea, asAreaGrid *desiredArea);
+    bool InterpolateOnGrid(asAreaGrid* dataArea, asAreaGrid* desiredArea);
 
     bool TransformData();
 
-    asAreaGrid *CreateMatchingArea(asAreaGrid *desiredArea);
+    asAreaGrid* CreateMatchingArea(asAreaGrid* desiredArea);
 
     bool IsPressureLevel() const;
 
@@ -541,11 +541,11 @@ class asPredictor : public wxObject {
   private:
     wxString m_directoryPath;
 
-    bool ExtractSpatialAxes(asFileNetcdf &ncFile);
+    bool ExtractSpatialAxes(asFileNetcdf& ncFile);
 
-    bool ExtractLevelAxis(asFileNetcdf &ncFile);
+    bool ExtractLevelAxis(asFileNetcdf& ncFile);
 
-    bool ExtractTimeAxis(asFileNetcdf &ncFile);
+    bool ExtractTimeAxis(asFileNetcdf& ncFile);
 
     bool FillWithNaNs();
 

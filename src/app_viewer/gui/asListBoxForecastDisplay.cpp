@@ -36,11 +36,11 @@ END_EVENT_TABLE()
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, wxCommandEvent);
 
-asListBoxForecastDisplay::asListBoxForecastDisplay(wxWindow *parent, wxWindowID id, const wxPoint &pos,
-                                                   const wxSize &size, int n, const wxString choices[], long style)
+asListBoxForecastDisplay::asListBoxForecastDisplay(wxWindow* parent, wxWindowID id, const wxPoint& pos,
+                                                   const wxSize& size, int n, const wxString choices[], long style)
     : wxListBox(parent, id, pos, size, n, choices, style) {}
 
-void asListBoxForecastDisplay::OnForecastDisplaySlctChange(wxCommandEvent &event) {
+void asListBoxForecastDisplay::OnForecastDisplaySlctChange(wxCommandEvent& event) {
     wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED);
     eventSlct.SetInt(event.GetInt());
     GetParent()->ProcessWindowEvent(eventSlct);

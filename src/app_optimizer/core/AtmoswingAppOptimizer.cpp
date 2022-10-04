@@ -152,7 +152,6 @@ static const wxString cmdLineLogo =
         "_________________________________________\n"
         "\n");
 
-
 bool AtmoswingAppOptimizer::OnInit() {
 #if _DEBUG
 #ifdef __WXMSW__
@@ -213,7 +212,7 @@ bool AtmoswingAppOptimizer::OnInit() {
     initialize_images(g_ppiScaleDc);
 
     // Create frame
-    AtmoswingFrameOptimizer *frame = new AtmoswingFrameOptimizer(0L);
+    AtmoswingFrameOptimizer* frame = new AtmoswingFrameOptimizer(0L);
     frame->OnInit();
 
 #ifdef __WXMSW__
@@ -296,7 +295,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly() {
     if (g_local) {
         wxString dirData = wxFileName::GetCwd() + DS + "data" + DS;
 
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
 
         // Define the default preferences
         pConfig->Write("/General/MultiInstances", true);
@@ -322,10 +321,10 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly() {
 
     // Check that the config files correspond if reloading data
     if (g_resumePreviousRun) {
-        wxConfigBase *pConfigNow = wxFileConfig::Get();
+        wxConfigBase* pConfigNow = wxFileConfig::Get();
         wxString refIniPath = GetLocalPath();
         refIniPath.Append("AtmoSwing.ini");
-        wxFileConfig *pConfigRef =
+        wxFileConfig* pConfigRef =
             new wxFileConfig("AtmoSwing", wxEmptyString, refIniPath, refIniPath, wxCONFIG_USE_LOCAL_FILE);
 
         // Check that the number of groups are identical.
@@ -377,7 +376,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly() {
     return true;
 }
 
-void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser &parser) {
+void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser& parser) {
     wxAppConsole::OnInitCmdLine(parser);
 
     parser.SetDesc(g_cmdLineDesc);
@@ -387,7 +386,7 @@ void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser &parser) {
     parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser) {
+bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if runs with GUI or CL
     if (parser.Found("calibration-method")) {
         SetUseAsCmdLine();
@@ -441,7 +440,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser) {
         }
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, iniPath, iniPath, wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig* pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, iniPath, iniPath, wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     } else {
         // Create user directory
@@ -449,7 +448,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser) {
         userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
         // Set the local config object
-        wxFileConfig *pConfig =
+        wxFileConfig* pConfig =
             new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini",
                              asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
@@ -912,11 +911,11 @@ int AtmoswingAppOptimizer::OnRun() {
         } else {
             asLog::PrintToConsole(wxString::Format("Wrong calibration method selection (%s).\n", m_calibMethod));
         }
-    } catch (std::bad_alloc &ba) {
+    } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught: %s"), msg);
         return 1;
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         return 1;
@@ -941,7 +940,7 @@ void AtmoswingAppOptimizer::CleanUp() {
 #endif
 
     // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *)nullptr);
+    delete wxFileConfig::Set((wxFileConfig*)nullptr);
 
     // Delete threads manager and log
     DeleteThreadsManager();

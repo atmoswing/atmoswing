@@ -44,17 +44,17 @@ class asTotalScore : public wxObject {
         Spring,          // partial mean on spring only
     };
 
-    explicit asTotalScore(const wxString &periodString);
+    explicit asTotalScore(const wxString& periodString);
 
     ~asTotalScore() override;
 
-    static asTotalScore *GetInstance(const wxString &scoreString, const wxString &periodString);
+    static asTotalScore* GetInstance(const wxString& scoreString, const wxString& periodString);
 
-    virtual float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const = 0;
+    virtual float Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const = 0;
 
-    virtual float Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const;
+    virtual float Assess(const a1f& targetDates, const a2f& scores, const asTimeArray& timeArray) const;
 
-    virtual a1f AssessOnArray(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
+    virtual a1f AssessOnArray(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const;
 
     bool SingleValue() const {
         return m_singleValue;

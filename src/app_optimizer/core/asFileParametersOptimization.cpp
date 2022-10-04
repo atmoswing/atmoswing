@@ -28,7 +28,7 @@
 
 #include "asFileParametersOptimization.h"
 
-asFileParametersOptimization::asFileParametersOptimization(const wxString &fileName, const FileMode &fileMode)
+asFileParametersOptimization::asFileParametersOptimization(const wxString& fileName, const FileMode& fileMode)
     : asFileParameters(fileName, fileMode) {}  // FindAndOpen() processed by asFileXml
 
 asFileParametersOptimization::~asFileParametersOptimization() {}

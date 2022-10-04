@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorNoaa20Cr2c, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("NOAA_20CR_v2c", "pl/air", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
@@ -98,7 +98,7 @@ TEST(PredictorNoaa20Cr2c, LoadEasy) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-noaa-20crv2c/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NOAA_20CR_v2c", "pressure/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NOAA_20CR_v2c", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -154,7 +154,7 @@ TEST(PredictorNoaa20Cr2c, LoadBorderLeft) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-noaa-20crv2c/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NOAA_20CR_v2c", "pressure/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NOAA_20CR_v2c", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 

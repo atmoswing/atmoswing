@@ -48,7 +48,7 @@ asResultsForecast::asResultsForecast()
       m_hasReferenceValues(false),
       m_leadTimeOrigin(0.0) {}
 
-void asResultsForecast::Init(asParametersForecast &params, double leadTimeOrigin) {
+void asResultsForecast::Init(asParametersForecast& params, double leadTimeOrigin) {
     // Resize to 0 to avoid keeping old results
     m_targetDates.resize(0);
     m_stationNames.resize(0);
@@ -544,7 +544,7 @@ bool asResultsForecast::Load() {
 
         ncFile.Close();
 
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
 
@@ -632,7 +632,7 @@ bool asResultsForecast::Load() {
 
 wxArrayString asResultsForecast::GetStationNamesWxArrayString() const {
     wxArrayString stationsNames;
-    for (const auto &stationName : m_stationNames) {
+    for (const auto& stationName : m_stationNames) {
         stationsNames.Add(stationName);
     }
     return stationsNames;
@@ -687,7 +687,7 @@ void asResultsForecast::SetPredictandStationIds(wxString val) {
     }
 }
 
-bool asResultsForecast::IsCompatibleWith(asResultsForecast *otherForecast) const {
+bool asResultsForecast::IsCompatibleWith(asResultsForecast* otherForecast) const {
     bool compatible = true;
 
     if (!m_methodId.IsSameAs(otherForecast->GetMethodId(), false)) compatible = false;
@@ -722,7 +722,7 @@ bool asResultsForecast::IsCompatibleWith(asResultsForecast *otherForecast) const
         compatible = false;
     } else {
         for (int i = 0; i < m_referenceAxis.size(); i++) {
-            if (!asIsNaN(m_referenceAxis[i]) && m_referenceAxis[i] != referenceAxis[i]){
+            if (!asIsNaN(m_referenceAxis[i]) && m_referenceAxis[i] != referenceAxis[i]) {
                 compatible = false;
             }
         }
@@ -737,7 +737,7 @@ bool asResultsForecast::IsCompatibleWith(asResultsForecast *otherForecast) const
     return true;
 }
 
-bool asResultsForecast::IsSameAs(asResultsForecast *otherForecast) const {
+bool asResultsForecast::IsSameAs(asResultsForecast* otherForecast) const {
     if (!IsCompatibleWith(otherForecast)) return false;
 
     if (!m_specificTag.IsSameAs(otherForecast->GetSpecificTag(), false)) return false;

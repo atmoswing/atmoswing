@@ -22,14 +22,14 @@ extern void initialize_img_misc_l();
 
 void cleanup_img_misc();
 
-extern wxBitmap *_img_bullet_green;
-extern wxBitmap *_img_bullet_red;
-extern wxBitmap *_img_bullet_white;
-extern wxBitmap *_img_bullet_yellow;
-extern wxBitmap *_img_close;
-extern wxBitmap *_img_hidden;
-extern wxBitmap *_img_plus;
-extern wxBitmap *_img_shown;
-extern wxBitmap *_img_update;
+extern wxBitmap* _img_bullet_green;
+extern wxBitmap* _img_bullet_red;
+extern wxBitmap* _img_bullet_white;
+extern wxBitmap* _img_bullet_yellow;
+extern wxBitmap* _img_close;
+extern wxBitmap* _img_hidden;
+extern wxBitmap* _img_plus;
+extern wxBitmap* _img_shown;
+extern wxBitmap* _img_update;
 
 #endif /* _MISC_H_ */

@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorNcepCfsrSubset, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/z", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -218,7 +218,7 @@ TEST(PredictorNcepCfsrSubset, LoadEasy) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
@@ -298,7 +298,7 @@ TEST(PredictorNcepCfsrSubset, LoadWithNegativeValues) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -362,7 +362,7 @@ TEST(PredictorNcepCfsrSubset, LoadBorderLeft) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -422,7 +422,7 @@ TEST(PredictorNcepCfsrSubset, LoadBorderLeftOn720) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -482,7 +482,7 @@ TEST(PredictorNcepCfsrSubset, LoadBorderRight) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictor *predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 

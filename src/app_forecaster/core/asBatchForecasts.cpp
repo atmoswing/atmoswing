@@ -41,7 +41,7 @@ asBatchForecasts::asBatchForecasts()
     m_predictandDBDirectory = baseDir + "Data" + DS + "Predictands";
 }
 
-bool asBatchForecasts::Load(const wxString &filePath) {
+bool asBatchForecasts::Load(const wxString& filePath) {
     ClearForecasts();
 
     // Open the file
@@ -57,7 +57,7 @@ bool asBatchForecasts::Load(const wxString &filePath) {
     }
 
     // Get data
-    wxXmlNode *node = fileBatch.GetRoot()->GetChildren();
+    wxXmlNode* node = fileBatch.GetRoot()->GetChildren();
     while (node) {
         if (node->GetName() == "forecasts_output_directory") {
             m_forecastsOutputDirectory = asFileBatchForecasts::GetString(node);
@@ -74,7 +74,7 @@ bool asBatchForecasts::Load(const wxString &filePath) {
         } else if (node->GetName() == "export_synthesis") {
             m_export = (asBatchForecasts::Export)asFileBatchForecasts::GetInt(node);
         } else if (node->GetName() == "forecasts") {
-            wxXmlNode *nodeForecast = node->GetChildren();
+            wxXmlNode* nodeForecast = node->GetChildren();
             while (nodeForecast) {
                 if (nodeForecast->GetName() == "filename") {
                     m_forecastFileNames.push_back(asFileBatchForecasts::GetString(nodeForecast));
@@ -112,7 +112,7 @@ bool asBatchForecasts::Save() const {
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("export_synthesis", m_export));
 
     // Forecasts
-    wxXmlNode *nodeForecasts = new wxXmlNode(wxXML_ELEMENT_NODE, "forecasts");
+    wxXmlNode* nodeForecasts = new wxXmlNode(wxXML_ELEMENT_NODE, "forecasts");
     for (int iFcst = 0; iFcst < GetForecastsNb(); iFcst++) {
         nodeForecasts->AddChild(fileBatch.CreateNodeWithValue("filename", m_forecastFileNames[iFcst]));
     }

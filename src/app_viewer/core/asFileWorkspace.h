@@ -33,7 +33,7 @@
 
 class asFileWorkspace : public asFileXml {
   public:
-    explicit asFileWorkspace(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
+    explicit asFileWorkspace(const wxString& fileName, const FileMode& fileMode = asFile::Replace);
 
     ~asFileWorkspace() override = default;
 

@@ -37,7 +37,7 @@ asParametersScoring::asParametersScoring()
 
 asParametersScoring::~asParametersScoring() {}
 
-void asParametersScoring::AddPredictorVect(ParamsStepVect &step) {
+void asParametersScoring::AddPredictorVect(ParamsStepVect& step) {
     ParamsPredictorVect predictor;
 
     predictor.dataId.push_back("");
@@ -53,7 +53,7 @@ void asParametersScoring::AddPredictorVect(ParamsStepVect &step) {
     step.predictors.push_back(predictor);
 }
 
-bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath) const {
+bool asParametersScoring::GenerateSimpleParametersFile(const wxString& filePath) const {
     wxLogVerbose(_("Generating parameters file."));
 
     if (filePath.IsEmpty()) {
@@ -68,7 +68,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     if (!fileParams.EditRootElement()) return false;
 
     // Description
-    wxXmlNode *nodeDescr = new wxXmlNode(wxXML_ELEMENT_NODE, "description");
+    wxXmlNode* nodeDescr = new wxXmlNode(wxXML_ELEMENT_NODE, "description");
     nodeDescr->AddChild(fileParams.CreateNodeWithValue("method_id", GetMethodId()));
     nodeDescr->AddChild(fileParams.CreateNodeWithValue("method_id_display", GetMethodIdDisplay()));
     nodeDescr->AddChild(fileParams.CreateNodeWithValue("specific_tag", GetSpecificTag()));
@@ -78,16 +78,16 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     fileParams.AddChild(nodeDescr);
 
     // Time properties
-    wxXmlNode *nodeTime = new wxXmlNode(wxXML_ELEMENT_NODE, "time_properties");
+    wxXmlNode* nodeTime = new wxXmlNode(wxXML_ELEMENT_NODE, "time_properties");
 
-    wxXmlNode *nodeTimeArchivePeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "archive_period");
+    wxXmlNode* nodeTimeArchivePeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "archive_period");
     nodeTime->AddChild(nodeTimeArchivePeriod);
     wxString archiveStart = asTime::GetStringTime(GetArchiveStart(), "DD.MM.YYYY");
     nodeTimeArchivePeriod->AddChild(fileParams.CreateNodeWithValue("start", archiveStart));
     wxString archiveEnd = asTime::GetStringTime(GetArchiveEnd(), "DD.MM.YYYY");
     nodeTimeArchivePeriod->AddChild(fileParams.CreateNodeWithValue("end", archiveEnd));
 
-    wxXmlNode *nodeTimeCalibrationPeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "calibration_period");
+    wxXmlNode* nodeTimeCalibrationPeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "calibration_period");
     nodeTime->AddChild(nodeTimeCalibrationPeriod);
     wxString calibrationStart = asTime::GetStringTime(GetCalibrationStart(), "DD.MM.YYYY");
     nodeTimeCalibrationPeriod->AddChild(fileParams.CreateNodeWithValue("start", calibrationStart));
@@ -95,7 +95,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     nodeTimeCalibrationPeriod->AddChild(fileParams.CreateNodeWithValue("end", calibrationEnd));
 
     if (HasValidationPeriod()) {
-        wxXmlNode *nodeTimeValidationPeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "validation_period");
+        wxXmlNode* nodeTimeValidationPeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "validation_period");
         nodeTime->AddChild(nodeTimeValidationPeriod);
         wxString validationYears;
         vi validationYearsVect = GetValidationYearsVector();
@@ -112,7 +112,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     timeArrayTimeStep << GetTargetTimeStepHours();
     nodeTime->AddChild(fileParams.CreateNodeWithValue("time_step", timeArrayTimeStep));
 
-    wxXmlNode *nodeTimeArrayTarget = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_target");
+    wxXmlNode* nodeTimeArrayTarget = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_target");
     nodeTime->AddChild(nodeTimeArrayTarget);
     nodeTimeArrayTarget->AddChild(fileParams.CreateNodeWithValue("time_array", GetTimeArrayTargetMode()));
     if (GetTimeArrayTargetMode().IsSameAs("predictand_thresholds")) {
@@ -124,7 +124,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
             fileParams.CreateNodeWithValue("predictand_max_threshold", GetTimeArrayTargetPredictandMaxThreshold()));
     }
 
-    wxXmlNode *nodeTimeArrayAnalogs = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_analogs");
+    wxXmlNode* nodeTimeArrayAnalogs = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_analogs");
     nodeTime->AddChild(nodeTimeArrayAnalogs);
     nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("time_array", GetTimeArrayAnalogsMode()));
     nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("interval_days", GetAnalogsIntervalDays()));
@@ -134,29 +134,30 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
 
     // Analog dates
     for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
-        wxXmlNode *nodeAnalogDates = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_dates");
+        wxXmlNode* nodeAnalogDates = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_dates");
 
         nodeAnalogDates->AddChild(fileParams.CreateNodeWithValue("analogs_number", GetAnalogsNumber(iStep)));
 
         // Predictors
         for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
-            wxXmlNode *nodePredictor = new wxXmlNode(wxXML_ELEMENT_NODE, "predictor");
+            wxXmlNode* nodePredictor = new wxXmlNode(wxXML_ELEMENT_NODE, "predictor");
             nodeAnalogDates->AddChild(nodePredictor);
 
             nodePredictor->AddChild(fileParams.CreateNodeWithValue("preload", NeedsPreloading(iStep, iPtor)));
             nodePredictor->AddChild(fileParams.CreateNodeWithValue("standardize", GetStandardize(iStep, iPtor)));
-            nodePredictor->AddChild(fileParams.CreateNodeWithValue("standardize_mean", GetStandardizeMean(iStep, iPtor)));
+            nodePredictor->AddChild(
+                fileParams.CreateNodeWithValue("standardize_mean", GetStandardizeMean(iStep, iPtor)));
             nodePredictor->AddChild(fileParams.CreateNodeWithValue("standardize_sd", GetStandardizeSd(iStep, iPtor)));
 
             if (NeedsPreprocessing(iStep, iPtor)) {
-                wxXmlNode *nodePreprocessing = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing");
+                wxXmlNode* nodePreprocessing = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing");
                 nodePredictor->AddChild(nodePreprocessing);
 
                 nodePreprocessing->AddChild(
                     fileParams.CreateNodeWithValue("preprocessing_method", GetPreprocessMethod(iStep, iPtor)));
 
                 for (int iPre = 0; iPre < GetPreprocessSize(iStep, iPtor); iPre++) {
-                    wxXmlNode *nodePreprocessingData = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing_data");
+                    wxXmlNode* nodePreprocessingData = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing_data");
                     nodePreprocessing->AddChild(nodePreprocessingData);
 
                     nodePreprocessingData->AddChild(
@@ -176,7 +177,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                 nodePredictor->AddChild(fileParams.CreateNodeWithValue("time", GetPredictorHour(iStep, iPtor)));
             }
 
-            wxXmlNode *nodeWindow = new wxXmlNode(wxXML_ELEMENT_NODE, "spatial_window");
+            wxXmlNode* nodeWindow = new wxXmlNode(wxXML_ELEMENT_NODE, "spatial_window");
             nodePredictor->AddChild(nodeWindow);
 
             nodeWindow->AddChild(fileParams.CreateNodeWithValue("grid_type", GetPredictorGridType(iStep, iPtor)));
@@ -195,9 +196,9 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     }
 
     // Analogs values
-    wxXmlNode *nodeAnalogValues = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_values");
+    wxXmlNode* nodeAnalogValues = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_values");
 
-    wxXmlNode *nodePredictand = new wxXmlNode(wxXML_ELEMENT_NODE, "predictand");
+    wxXmlNode* nodePredictand = new wxXmlNode(wxXML_ELEMENT_NODE, "predictand");
     nodeAnalogValues->AddChild(nodePredictand);
 
     vvi predictandStationIdsVect = GetPredictandStationIdsVector();
@@ -207,7 +208,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     fileParams.AddChild(nodeAnalogValues);
 
     // Forecast scores
-    wxXmlNode *nodeAnalogScore = new wxXmlNode(wxXML_ELEMENT_NODE, "evaluation");
+    wxXmlNode* nodeAnalogScore = new wxXmlNode(wxXML_ELEMENT_NODE, "evaluation");
 
     nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("score", GetScoreName()));
 
@@ -254,7 +255,7 @@ bool asParametersScoring::PreprocessingDataIdsOk() {
     return true;
 }
 
-wxString asParametersScoring::GetPredictandStationIdsVectorString(vvi &predictandStationIdsVect) const {
+wxString asParametersScoring::GetPredictandStationIdsVectorString(vvi& predictandStationIdsVect) const {
     wxString ids;
 
     for (int i = 0; i < (int)predictandStationIdsVect.size(); i++) {

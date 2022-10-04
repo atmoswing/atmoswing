@@ -25,7 +25,7 @@ them exists. Otherwise, the radius of the circle is: r^2 = (a_0 - p_0)^2 + (a_1 
 Simplified by Jim Ward.
 */
 
-wxCircleDouble::wxCircleDouble(const wxPoint2DDouble &p1, const wxPoint2DDouble &p2, const wxPoint2DDouble &p3) {
+wxCircleDouble::wxCircleDouble(const wxPoint2DDouble& p1, const wxPoint2DDouble& p2, const wxPoint2DDouble& p3) {
     wxDouble A = p2.m_x - p1.m_x, B = p2.m_y - p1.m_y, C = p3.m_x - p1.m_x, D = p3.m_y - p1.m_y;
 
     wxDouble E = A * (p1.m_x + p2.m_x) + B * (p1.m_y + p2.m_y), F = C * (p1.m_x + p3.m_x) + D * (p1.m_y + p3.m_y),
@@ -40,7 +40,7 @@ wxCircleDouble::wxCircleDouble(const wxPoint2DDouble &p1, const wxPoint2DDouble 
     m_r = sqrt((p1.m_x - m_x) * (p1.m_x - m_x) + (p1.m_y - m_y) * (p1.m_y - m_y));
 }
 
-int wxCircleDouble::IntersectLine(const wxRay2DDouble &line, wxPoint2DDouble *pt1, wxPoint2DDouble *pt2) const {
+int wxCircleDouble::IntersectLine(const wxRay2DDouble& line, wxPoint2DDouble* pt1, wxPoint2DDouble* pt2) const {
     // if (line.GetDistanceToPoint(m_origin) > m_r) return 0;
 
     wxDouble l1_x = m_x - m_r, l1_y = line.GetYFromX(l1_x);

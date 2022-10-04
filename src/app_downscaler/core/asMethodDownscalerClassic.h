@@ -37,7 +37,7 @@ class asMethodDownscalerClassic : public asMethodDownscaler {
     virtual ~asMethodDownscalerClassic();
 
   protected:
-    virtual bool Downscale(asParametersDownscaling &params);
+    virtual bool Downscale(asParametersDownscaling& params);
 
   private:
 };

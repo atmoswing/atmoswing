@@ -28,7 +28,7 @@
 
 #include "asUtilities.h"
 
-bool asRemoveDir(const wxString &path) {
+bool asRemoveDir(const wxString& path) {
     wxString f = wxFindFirstFile(path + DS + "*.*");
     while (!f.empty()) {
         wxRemoveFile(f);
@@ -157,7 +157,7 @@ double asRound(const double value) {
     }
 }
 
-float asMean(const int *pArrStart, const int *pArrEnd) {
+float asMean(const int* pArrStart, const int* pArrEnd) {
     float sum = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
         // Does not check for NaNs, as there are no NaN for integers
@@ -167,7 +167,7 @@ float asMean(const int *pArrStart, const int *pArrEnd) {
     return sum / nb;
 }
 
-float asMean(const float *pArrStart, const float *pArrEnd) {
+float asMean(const float* pArrStart, const float* pArrEnd) {
     float sum = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
         if (!asIsNaN(*(pArrStart + i))) {
@@ -178,7 +178,7 @@ float asMean(const float *pArrStart, const float *pArrEnd) {
     return sum / nb;
 }
 
-double asMean(const double *pArrStart, const double *pArrEnd) {
+double asMean(const double* pArrStart, const double* pArrEnd) {
     double sum = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
         if (!asIsNaN(*(pArrStart + i))) {
@@ -189,7 +189,7 @@ double asMean(const double *pArrStart, const double *pArrEnd) {
     return sum / nb;
 }
 
-float asStDev(const int *pArrStart, const int *pArrEnd, const int sample) {
+float asStDev(const int* pArrStart, const int* pArrEnd, const int sample) {
     float sum = 0, sumsquares = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
         // Dones't check for NaNs, as there are no NaN for intergers
@@ -207,7 +207,7 @@ float asStDev(const int *pArrStart, const int *pArrEnd, const int sample) {
     }
 }
 
-float asStDev(const float *pArrStart, const float *pArrEnd, const int sample) {
+float asStDev(const float* pArrStart, const float* pArrEnd, const int sample) {
     float sum = 0, sumsquares = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
         if (!asIsNaN(*(pArrStart + i))) {
@@ -226,7 +226,7 @@ float asStDev(const float *pArrStart, const float *pArrEnd, const int sample) {
     }
 }
 
-double asStDev(const double *pArrStart, const double *pArrEnd, const int sample) {
+double asStDev(const double* pArrStart, const double* pArrEnd, const int sample) {
     double sum = 0, sumsquares = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
         if (!asIsNaN(*(pArrStart + i))) {
@@ -268,7 +268,7 @@ a1f asGetCumulativeFrequency(const int size) {
     return F;
 }
 
-float asGetValueForQuantile(const a1f &values, const float quantile) {
+float asGetValueForQuantile(const a1f& values, const float quantile) {
     float value = NaNf;
     int size = values.size();
 
@@ -330,7 +330,7 @@ bool asIsInf(const long double value) {
     return value == Infld;
 }
 
-int asCountNotNaN(const float *pArrStart, const float *pArrEnd) {
+int asCountNotNaN(const float* pArrStart, const float* pArrEnd) {
     int counter = 0;
 
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -342,7 +342,7 @@ int asCountNotNaN(const float *pArrStart, const float *pArrEnd) {
     return counter;
 }
 
-int asCountNotNaN(const double *pArrStart, const double *pArrEnd) {
+int asCountNotNaN(const double* pArrStart, const double* pArrEnd) {
     int counter = 0;
 
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -354,11 +354,11 @@ int asCountNotNaN(const double *pArrStart, const double *pArrEnd) {
     return counter;
 }
 
-bool asHasNaN(const a2f &data) {
+bool asHasNaN(const a2f& data) {
     return !((data == data)).all();
 }
 
-bool asHasNaN(const float *pArrStart, const float *pArrEnd) {
+bool asHasNaN(const float* pArrStart, const float* pArrEnd) {
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
         if (asIsNaN(*(pArrStart + i))) {
             return true;
@@ -368,7 +368,7 @@ bool asHasNaN(const float *pArrStart, const float *pArrEnd) {
     return false;
 }
 
-bool asHasNaN(const double *pArrStart, const double *pArrEnd) {
+bool asHasNaN(const double* pArrStart, const double* pArrEnd) {
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
         if (asIsNaN(*(pArrStart + i))) {
             return true;
@@ -378,7 +378,7 @@ bool asHasNaN(const double *pArrStart, const double *pArrEnd) {
     return false;
 }
 
-int asMinArray(const int *pArrStart, const int *pArrEnd) {
+int asMinArray(const int* pArrStart, const int* pArrEnd) {
     int min;
 
     min = *(pArrStart);
@@ -392,7 +392,7 @@ int asMinArray(const int *pArrStart, const int *pArrEnd) {
     return min;
 }
 
-float asMinArray(const float *pArrStart, const float *pArrEnd) {
+float asMinArray(const float* pArrStart, const float* pArrEnd) {
     float min;
     int i = 0;
 
@@ -413,7 +413,7 @@ float asMinArray(const float *pArrStart, const float *pArrEnd) {
     return min;
 }
 
-double asMinArray(const double *pArrStart, const double *pArrEnd) {
+double asMinArray(const double* pArrStart, const double* pArrEnd) {
     double min;
     int i = 0;
 
@@ -434,7 +434,7 @@ double asMinArray(const double *pArrStart, const double *pArrEnd) {
     return min;
 }
 
-int asMinArrayIndex(const int *pArrStart, const int *pArrEnd) {
+int asMinArrayIndex(const int* pArrStart, const int* pArrEnd) {
     int min;
     int index;
     int i = 0;
@@ -452,7 +452,7 @@ int asMinArrayIndex(const int *pArrStart, const int *pArrEnd) {
     return index;
 }
 
-int asMinArrayIndex(const float *pArrStart, const float *pArrEnd) {
+int asMinArrayIndex(const float* pArrStart, const float* pArrEnd) {
     float min;
     int index;
     int i = 0;
@@ -470,7 +470,7 @@ int asMinArrayIndex(const float *pArrStart, const float *pArrEnd) {
     return index;
 }
 
-int asMinArrayIndex(const double *pArrStart, const double *pArrEnd) {
+int asMinArrayIndex(const double* pArrStart, const double* pArrEnd) {
     double min;
     int index;
     int i = 0;
@@ -488,7 +488,7 @@ int asMinArrayIndex(const double *pArrStart, const double *pArrEnd) {
     return index;
 }
 
-int asMaxArray(const int *pArrStart, const int *pArrEnd) {
+int asMaxArray(const int* pArrStart, const int* pArrEnd) {
     int max;
     int i = 0;
 
@@ -503,7 +503,7 @@ int asMaxArray(const int *pArrStart, const int *pArrEnd) {
     return max;
 }
 
-float asMaxArray(const float *pArrStart, const float *pArrEnd) {
+float asMaxArray(const float* pArrStart, const float* pArrEnd) {
     float max;
     int i = 0;
 
@@ -524,7 +524,7 @@ float asMaxArray(const float *pArrStart, const float *pArrEnd) {
     return max;
 }
 
-double asMaxArray(const double *pArrStart, const double *pArrEnd) {
+double asMaxArray(const double* pArrStart, const double* pArrEnd) {
     double max;
     int i = 0;
 
@@ -545,7 +545,7 @@ double asMaxArray(const double *pArrStart, const double *pArrEnd) {
     return max;
 }
 
-int asMaxArrayIndex(const int *pArrStart, const int *pArrEnd) {
+int asMaxArrayIndex(const int* pArrStart, const int* pArrEnd) {
     int max;
     int index;
     int i = 0;
@@ -563,7 +563,7 @@ int asMaxArrayIndex(const int *pArrStart, const int *pArrEnd) {
     return index;
 }
 
-int asMaxArrayIndex(const float *pArrStart, const float *pArrEnd) {
+int asMaxArrayIndex(const float* pArrStart, const float* pArrEnd) {
     float max;
     int index;
     int i = 0;
@@ -581,7 +581,7 @@ int asMaxArrayIndex(const float *pArrStart, const float *pArrEnd) {
     return index;
 }
 
-int asMaxArrayIndex(const double *pArrStart, const double *pArrEnd) {
+int asMaxArrayIndex(const double* pArrStart, const double* pArrEnd) {
     double max;
     int index;
     int i = 0;
@@ -599,7 +599,7 @@ int asMaxArrayIndex(const double *pArrStart, const double *pArrEnd) {
     return index;
 }
 
-int asMinArrayStep(const int *pArrStart, const int *pArrEnd, const int tolerance) {
+int asMinArrayStep(const int* pArrStart, const int* pArrEnd, const int tolerance) {
     // Copy data to not alter original array
     a1i copyData(pArrEnd - pArrStart + 1);
 
@@ -632,7 +632,7 @@ int asMinArrayStep(const int *pArrStart, const int *pArrEnd, const int tolerance
     return minstep;
 }
 
-float asMinArrayStep(const float *pArrStart, const float *pArrEnd, const float tolerance) {
+float asMinArrayStep(const float* pArrStart, const float* pArrEnd, const float tolerance) {
     int nbNotNans = asCountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
@@ -672,7 +672,7 @@ float asMinArrayStep(const float *pArrStart, const float *pArrEnd, const float t
     return minstep;
 }
 
-double asMinArrayStep(const double *pArrStart, const double *pArrEnd, const double tolerance) {
+double asMinArrayStep(const double* pArrStart, const double* pArrEnd, const double tolerance) {
     int nbNotNans = asCountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
@@ -712,7 +712,7 @@ double asMinArrayStep(const double *pArrStart, const double *pArrEnd, const doub
     return minstep;
 }
 
-a1i asExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int tolerance) {
+a1i asExtractUniqueValues(const int* pArrStart, const int* pArrEnd, const int tolerance) {
     int j = 0;
 
     // Copy data to not alter original array
@@ -748,7 +748,7 @@ a1i asExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int to
     return resultArray;
 }
 
-a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const float tolerance) {
+a1f asExtractUniqueValues(const float* pArrStart, const float* pArrEnd, const float tolerance) {
     int nbNotNans = asCountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
@@ -787,7 +787,7 @@ a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const fl
     return resultArray;
 }
 
-a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const double tolerance) {
+a1d asExtractUniqueValues(const double* pArrStart, const double* pArrEnd, const double tolerance) {
     int nbNotNans = asCountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
@@ -826,23 +826,23 @@ a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const 
     return resultArray;
 }
 
-int asFind(const int *pArrStart, const int *pArrEnd, const int targetValue, const int tolerance,
+int asFind(const int* pArrStart, const int* pArrEnd, const int targetValue, const int tolerance,
            const int showWarning) {
     return asFindT<int>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
-int asFind(const float *pArrStart, const float *pArrEnd, const float targetValue, const float tolerance,
+int asFind(const float* pArrStart, const float* pArrEnd, const float targetValue, const float tolerance,
            const int showWarning) {
     return asFindT<float>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
-int asFind(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance,
+int asFind(const double* pArrStart, const double* pArrEnd, const double targetValue, const double tolerance,
            int showWarning) {
     return asFindT<double>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
 template <class T>
-int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance, const int showWarning) {
+int asFindT(const T* pArrStart, const T* pArrEnd, const T targetValue, const T tolerance, const int showWarning) {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
 
@@ -850,8 +850,8 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = (T *)pArrStart;
-    pLast = (T *)pArrEnd;
+    pFirst = (T*)pArrStart;
+    pLast = (T*)pArrEnd;
 
     // Check array order
     if (*pLast > *pFirst) {
@@ -871,9 +871,9 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = (T *)pArrStart;
+            pLast = (T*)pArrStart;
         } else if (pLast - pArrEnd > 0) {
-            pLast = (T *)pArrEnd - 1;
+            pLast = (T*)pArrEnd - 1;
         } else if (pLast - pArrEnd == 0) {
             pLast -= 1;
         }
@@ -929,9 +929,9 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = (T *)pArrStart + 1;
+            pFirst = (T*)pArrStart + 1;
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = (T *)pArrEnd;
+            pFirst = (T*)pArrEnd;
         } else if (pFirst - pArrStart == 0) {
             pFirst += 1;
         }
@@ -987,20 +987,20 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
     }
 }
 
-int asFindClosest(const int *pArrStart, const int *pArrEnd, const int targetValue, const int showWarning) {
+int asFindClosest(const int* pArrStart, const int* pArrEnd, const int targetValue, const int showWarning) {
     return asFindClosestT<int>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asFindClosest(const float *pArrStart, const float *pArrEnd, const float targetValue, const int showWarning) {
+int asFindClosest(const float* pArrStart, const float* pArrEnd, const float targetValue, const int showWarning) {
     return asFindClosestT<float>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asFindClosest(const double *pArrStart, const double *pArrEnd, const double targetValue, const int showWarning) {
+int asFindClosest(const double* pArrStart, const double* pArrEnd, const double targetValue, const int showWarning) {
     return asFindClosestT<double>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
 template <class T>
-int asFindClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, const int showWarning) {
+int asFindClosestT(const T* pArrStart, const T* pArrEnd, const T targetValue, const int showWarning) {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
 
@@ -1008,8 +1008,8 @@ int asFindClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, co
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = (T *)pArrStart;
-    pLast = (T *)pArrEnd;
+    pFirst = (T*)pArrStart;
+    pLast = (T*)pArrEnd;
 
     // Check array order
     if (*pLast > *pFirst) {
@@ -1037,9 +1037,9 @@ int asFindClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, co
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = (T *)pArrStart;
+            pLast = (T*)pArrStart;
         } else if (pLast - pArrEnd > 0) {
-            pLast = (T *)pArrEnd - 1;
+            pLast = (T*)pArrEnd - 1;
         } else if (pLast - pArrEnd == 0) {
             pLast -= 1;
         }
@@ -1075,9 +1075,9 @@ int asFindClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, co
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = (T *)pArrStart + 1;
+            pFirst = (T*)pArrStart + 1;
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = (T *)pArrEnd;
+            pFirst = (T*)pArrEnd;
         } else if (pFirst - pArrStart == 0) {
             pFirst += 1;
         }
@@ -1105,20 +1105,20 @@ int asFindClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, co
     }
 }
 
-int asFindFloor(const int *pArrStart, const int *pArrEnd, const int targetValue, const int showWarning) {
+int asFindFloor(const int* pArrStart, const int* pArrEnd, const int targetValue, const int showWarning) {
     return asFindFloorT<int>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asFindFloor(const float *pArrStart, const float *pArrEnd, const float targetValue, const int showWarning) {
+int asFindFloor(const float* pArrStart, const float* pArrEnd, const float targetValue, const int showWarning) {
     return asFindFloorT<float>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asFindFloor(const double *pArrStart, const double *pArrEnd, const double targetValue, const int showWarning) {
+int asFindFloor(const double* pArrStart, const double* pArrEnd, const double targetValue, const int showWarning) {
     return asFindFloorT<double>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
 template <class T>
-int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, const int showWarning) {
+int asFindFloorT(const T* pArrStart, const T* pArrEnd, const T targetValue, const int showWarning) {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
 
@@ -1126,8 +1126,8 @@ int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, cons
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = (T *)pArrStart;
-    pLast = (T *)pArrEnd;
+    pFirst = (T*)pArrStart;
+    pLast = (T*)pArrEnd;
 
     double tolerance = 0;
     /*
@@ -1161,9 +1161,9 @@ int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, cons
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = (T *)pArrStart;
+            pLast = (T*)pArrStart;
         } else if (pLast - pArrEnd > 0) {
-            pLast = (T *)pArrEnd;
+            pLast = (T*)pArrEnd;
         }
 
         // If the value was not found, return floor value
@@ -1193,9 +1193,9 @@ int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, cons
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = (T *)pArrStart;
+            pFirst = (T*)pArrStart;
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = (T *)pArrEnd;
+            pFirst = (T*)pArrEnd;
         }
 
         // If the value was not found, return floor value
@@ -1217,20 +1217,20 @@ int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, cons
     }
 }
 
-int asFindCeil(const int *pArrStart, const int *pArrEnd, const int targetValue, const int showWarning) {
+int asFindCeil(const int* pArrStart, const int* pArrEnd, const int targetValue, const int showWarning) {
     return asFindCeilT<int>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asFindCeil(const float *pArrStart, const float *pArrEnd, const float targetValue, const int showWarning) {
+int asFindCeil(const float* pArrStart, const float* pArrEnd, const float targetValue, const int showWarning) {
     return asFindCeilT<float>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asFindCeil(const double *pArrStart, const double *pArrEnd, const double targetValue, const int showWarning) {
+int asFindCeil(const double* pArrStart, const double* pArrEnd, const double targetValue, const int showWarning) {
     return asFindCeilT<double>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
 template <class T>
-int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const int showWarning) {
+int asFindCeilT(const T* pArrStart, const T* pArrEnd, const T targetValue, const int showWarning) {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
 
@@ -1238,8 +1238,8 @@ int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = (T *)pArrStart;
-    pLast = (T *)pArrEnd;
+    pFirst = (T*)pArrStart;
+    pLast = (T*)pArrEnd;
 
     double tolerance = 0;
     /*
@@ -1273,9 +1273,9 @@ int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = (T *)pArrStart;
+            pLast = (T*)pArrStart;
         } else if (pLast - pArrEnd > 0) {
-            pLast = (T *)pArrEnd;
+            pLast = (T*)pArrEnd;
         }
 
         // If the value was not found, return ceil value
@@ -1305,9 +1305,9 @@ int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = (T *)pArrStart;
+            pFirst = (T*)pArrStart;
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = (T *)pArrEnd;
+            pFirst = (T*)pArrEnd;
         }
 
         // If the value was not found, return ceil value
@@ -1329,20 +1329,20 @@ int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const
     }
 }
 
-bool asArrayInsert(int *pArrStart, int *pArrEnd, const Order order, const int val) {
+bool asArrayInsert(int* pArrStart, int* pArrEnd, const Order order, const int val) {
     return asArrayInsertT<int>(pArrStart, pArrEnd, order, val);
 }
 
-bool asArrayInsert(float *pArrStart, float *pArrEnd, const Order order, const float val) {
+bool asArrayInsert(float* pArrStart, float* pArrEnd, const Order order, const float val) {
     return asArrayInsertT<float>(pArrStart, pArrEnd, order, val);
 }
 
-bool asArrayInsert(double *pArrStart, double *pArrEnd, const Order order, const double val) {
+bool asArrayInsert(double* pArrStart, double* pArrEnd, const Order order, const double val) {
     return asArrayInsertT<double>(pArrStart, pArrEnd, order, val);
 }
 
 template <class T>
-bool asArrayInsertT(T *pArrStart, T *pArrEnd, const Order order, const T val) {
+bool asArrayInsertT(T* pArrStart, T* pArrEnd, const Order order, const T val) {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
 
@@ -1386,23 +1386,23 @@ bool asArrayInsertT(T *pArrStart, T *pArrEnd, const Order order, const T val) {
     return true;
 }
 
-bool asArraysInsert(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, const Order order,
+bool asArraysInsert(int* pArrRefStart, int* pArrRefEnd, int* pArrOtherStart, int* pArrOtherEnd, const Order order,
                     const int valRef, const int valOther) {
     return asArraysInsertT<int>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order, valRef, valOther);
 }
 
-bool asArraysInsert(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd,
+bool asArraysInsert(float* pArrRefStart, float* pArrRefEnd, float* pArrOtherStart, float* pArrOtherEnd,
                     const Order order, const float valRef, const float valOther) {
     return asArraysInsertT<float>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order, valRef, valOther);
 }
 
-bool asArraysInsert(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd,
+bool asArraysInsert(double* pArrRefStart, double* pArrRefEnd, double* pArrOtherStart, double* pArrOtherEnd,
                     const Order order, const double valRef, const double valOther) {
     return asArraysInsertT<double>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order, valRef, valOther);
 }
 
 template <class T>
-bool asArraysInsertT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, const Order order,
+bool asArraysInsertT(T* pArrRefStart, T* pArrRefEnd, T* pArrOtherStart, T* pArrOtherEnd, const Order order,
                      const T valRef, const T valOther) {
     wxASSERT(pArrRefStart);
     wxASSERT(pArrRefEnd);
@@ -1463,20 +1463,20 @@ bool asArraysInsertT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrO
     return true;
 }
 
-bool asSortArray(int *pArrRefStart, int *pArrRefEnd, const Order order) {
+bool asSortArray(int* pArrRefStart, int* pArrRefEnd, const Order order) {
     return asSortArrayT<int>(pArrRefStart, pArrRefEnd, order);
 }
 
-bool asSortArray(float *pArrRefStart, float *pArrRefEnd, const Order order) {
+bool asSortArray(float* pArrRefStart, float* pArrRefEnd, const Order order) {
     return asSortArrayT<float>(pArrRefStart, pArrRefEnd, order);
 }
 
-bool asSortArray(double *pArrRefStart, double *pArrRefEnd, const Order order) {
+bool asSortArray(double* pArrRefStart, double* pArrRefEnd, const Order order) {
     return asSortArrayT<double>(pArrRefStart, pArrRefEnd, order);
 }
 
 template <class T>
-bool asSortArrayT(T *pArrRefStart, T *pArrRefEnd, const Order order) {
+bool asSortArrayT(T* pArrRefStart, T* pArrRefEnd, const Order order) {
     wxASSERT(pArrRefStart);
     wxASSERT(pArrRefEnd);
 
@@ -1496,20 +1496,20 @@ bool asSortArrayT(T *pArrRefStart, T *pArrRefEnd, const Order order) {
     return true;
 }
 
-bool asSortArrays(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, const Order order) {
+bool asSortArrays(int* pArrRefStart, int* pArrRefEnd, int* pArrOtherStart, int* pArrOtherEnd, const Order order) {
     return asSortArraysT<int>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order);
 }
 
-bool asSortArrays(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd, Order order) {
+bool asSortArrays(float* pArrRefStart, float* pArrRefEnd, float* pArrOtherStart, float* pArrOtherEnd, Order order) {
     return asSortArraysT<float>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order);
 }
 
-bool asSortArrays(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd, Order order) {
+bool asSortArrays(double* pArrRefStart, double* pArrRefEnd, double* pArrOtherStart, double* pArrOtherEnd, Order order) {
     return asSortArraysT<double>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order);
 }
 
 template <class T>
-bool asSortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, const Order order) {
+bool asSortArraysT(T* pArrRefStart, T* pArrRefEnd, T* pArrOtherStart, T* pArrOtherEnd, const Order order) {
     wxASSERT(pArrRefStart);
     wxASSERT(pArrRefEnd);
     wxASSERT(pArrOtherStart);
@@ -1536,7 +1536,7 @@ bool asSortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOth
 }
 
 template <class T>
-void asQuickSort(T *pArr, const int low, const int high, const Order order) {
+void asQuickSort(T* pArr, const int low, const int high, const Order order) {
     int L, R;
     T pivot, tmp;
 
@@ -1580,7 +1580,7 @@ void asQuickSort(T *pArr, const int low, const int high, const Order order) {
 }
 
 template <class T>
-void asQuickSortMulti(T *pArrRef, T *pArrOther, const int low, const int high, const Order order) {
+void asQuickSortMulti(T* pArrRef, T* pArrOther, const int low, const int high, const Order order) {
     int L, R;
     T pivot, tmp;
 
@@ -1628,7 +1628,7 @@ void asQuickSortMulti(T *pArrRef, T *pArrOther, const int low, const int high, c
     if (L < high) asQuickSortMulti<T>(pArrRef, pArrOther, L, high, order);
 }
 
-vf asExtractVectorFrom(const wxString &data) {
+vf asExtractVectorFrom(const wxString& data) {
     wxString subStr = data;
     vf res;
 
@@ -1646,7 +1646,7 @@ vf asExtractVectorFrom(const wxString &data) {
     return res;
 }
 
-wxString asVectorToString(const vf &data) {
+wxString asVectorToString(const vf& data) {
     wxString str;
     for (size_t i = 0; i < data.size(); ++i) {
         if (i != 0) str << ",";
@@ -1656,7 +1656,7 @@ wxString asVectorToString(const vf &data) {
     return str;
 }
 
-wxString asExtractParamValueAndCut(wxString &str, const wxString &tag) {
+wxString asExtractParamValueAndCut(wxString& str, const wxString& tag) {
     size_t iLeft, iRight;
     wxString subStr;
 

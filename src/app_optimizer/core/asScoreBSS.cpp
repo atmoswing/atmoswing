@@ -30,9 +30,10 @@
 
 #include "asScoreBS.h"
 
-asScoreBSS::asScoreBSS() : asScore(asScore::BSS, _("BS Skill Score"), _("BS Skill Score"), Desc, 1, NaNf, true) {}
+asScoreBSS::asScoreBSS()
+    : asScore(asScore::BSS, _("BS Skill Score"), _("BS Skill Score"), Desc, 1, NaNf, true) {}
 
-float asScoreBSS::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreBSS::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(m_scoreClimatology != 0);
@@ -57,7 +58,7 @@ float asScoreBSS::Assess(float obs, const a1f &values, int nbElements) const {
     return skillScore;
 }
 
-bool asScoreBSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreBSS::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     wxASSERT(!asHasNaN(&refVals[0], &refVals[refVals.size() - 1]));
     wxASSERT(!asHasNaN(&climatologyData[0], &climatologyData[climatologyData.size() - 1]));
 
@@ -65,7 +66,7 @@ bool asScoreBSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatol
     a1f scoresClimatology(refVals.size());
 
     // Set the original score and process
-    asScore *score = asScore::GetInstance(asScore::BS);
+    asScore* score = asScore::GetInstance(asScore::BS);
     score->SetThreshold(GetThreshold());
     score->SetQuantile(GetQuantile());
     score->SetOnMean(GetOnMean());

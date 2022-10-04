@@ -71,9 +71,9 @@ EVT_PLOTCTRL_MOUSE_FUNC_CHANGED(wxID_ANY, asPanelPlot::OnPlotCtrl)
 
 END_EVENT_TABLE()
 
-asPanelPlot::asPanelPlot(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
+asPanelPlot::asPanelPlot(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
     : wxPanel(parent, id, pos, size, style) {
-    wxBoxSizer *bSizer;
+    wxBoxSizer* bSizer;
     bSizer = new wxBoxSizer(wxVERTICAL);
 
     m_plotCtrl = new wxPlotCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
@@ -116,7 +116,7 @@ asPanelPlot::asPanelPlot(wxWindow *parent, wxWindowID id, const wxPoint &pos, co
     bSizer->Fit(this);
 }
 
-void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent &event) {
+void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent& event) {
     // Check that the pointer is set
     if (!m_plotCtrl) return;
 

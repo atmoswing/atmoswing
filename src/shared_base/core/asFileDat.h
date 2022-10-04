@@ -54,21 +54,21 @@ class asFileDat : public asFileText {
         int dataEnd;
     };
 
-    asFileDat(const wxString &fileName, const FileMode &fileMode);
+    asFileDat(const wxString& fileName, const FileMode& fileMode);
 
     ~asFileDat() override = default;
 
     bool Close() override;
 
-    static Pattern GetPattern(const wxString &fileName, const wxString &directory = wxEmptyString);
+    static Pattern GetPattern(const wxString& fileName, const wxString& directory = wxEmptyString);
 
-    static int GetPatternLineMaxCharWidth(const Pattern &pattern);
+    static int GetPatternLineMaxCharWidth(const Pattern& pattern);
 
   protected:
   private:
-    static void InitPattern(Pattern &pattern);
+    static void InitPattern(Pattern& pattern);
 
-    static FileStructType StringToStructType(const wxString &structTypeStr);
+    static FileStructType StringToStructType(const wxString& structTypeStr);
 };
 
 #endif

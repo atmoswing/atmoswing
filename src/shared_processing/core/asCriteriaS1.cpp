@@ -28,7 +28,8 @@
 
 #include "asCriteriaS1.h"
 
-asCriteriaS1::asCriteriaS1() : asCriteria("S1", _("Teweles-Wobus score"), Asc) {
+asCriteriaS1::asCriteriaS1()
+    : asCriteria("S1", _("Teweles-Wobus score"), Asc) {
     m_minPointsNb = 2;
     m_scaleWorst = 200;
     m_canUseInline = false;
@@ -36,7 +37,7 @@ asCriteriaS1::asCriteriaS1() : asCriteria("S1", _("Teweles-Wobus score"), Asc) {
 
 asCriteriaS1::~asCriteriaS1() = default;
 
-float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
+float asCriteriaS1::Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() == rowsNb);
@@ -53,15 +54,20 @@ float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, 
 
     dividend = (((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)) -
                  (evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)))
-                    .abs()).sum() +
+                    .abs())
+                   .sum() +
                (((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)) -
                  (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)))
-                    .abs()).sum();
+                    .abs())
+                   .sum();
 
-    divisor = ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)).abs()
+    divisor =
+        ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1))
+             .abs()
              .max((evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)).abs()))
             .sum() +
-        ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)).abs()
+        ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb))
+             .abs()
              .max((evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)).abs()))
             .sum();
 

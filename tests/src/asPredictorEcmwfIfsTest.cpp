@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorEcmwfIfs, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("ECMWF_IFS_GRIB", "z", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);

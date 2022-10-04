@@ -30,7 +30,8 @@
 
 #include "asFileXml.h"
 
-asFileDat::asFileDat(const wxString &fileName, const FileMode &fileMode) : asFileText(fileName, fileMode) {}
+asFileDat::asFileDat(const wxString& fileName, const FileMode& fileMode)
+    : asFileText(fileName, fileMode) {}
 
 bool asFileDat::Close() {
     wxASSERT(m_opened);
@@ -38,7 +39,7 @@ bool asFileDat::Close() {
     return true;
 }
 
-void asFileDat::InitPattern(asFileDat::Pattern &pattern) {
+void asFileDat::InitPattern(asFileDat::Pattern& pattern) {
     pattern.headerLines = 0;
     pattern.parseTime = false;
     pattern.timeYearBegin = 0;
@@ -55,7 +56,7 @@ void asFileDat::InitPattern(asFileDat::Pattern &pattern) {
     pattern.dataEnd = 0;
 }
 
-asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxString &directory) {
+asFileDat::Pattern asFileDat::GetPattern(const wxString& fileName, const wxString& directory) {
     asFileDat::Pattern pattern;
 
     InitPattern(pattern);
@@ -82,12 +83,12 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
     // Get data
     long charStart, charEnd;
     wxString charStartStr, charEndStr, attributeStart, attributeEnd;
-    wxXmlNode *node = xmlFile.GetRoot()->GetChildren();
+    wxXmlNode* node = xmlFile.GetRoot()->GetChildren();
     if (node->GetName() == "pattern") {
         pattern.id = node->GetAttribute("id");
         pattern.name = node->GetAttribute("name");
 
-        wxXmlNode *nodeParam = node->GetChildren();
+        wxXmlNode* nodeParam = node->GetChildren();
         while (nodeParam) {
             if (nodeParam->GetName() == "structure_type") {
                 pattern.structType = StringToStructType(asFileXml::GetString(nodeParam));
@@ -112,7 +113,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
                     asThrowException(_("The file structure type in undefined"));
                 }
 
-                wxXmlNode *nodeTime = nodeParam->GetChildren();
+                wxXmlNode* nodeTime = nodeParam->GetChildren();
                 while (nodeTime) {
                     charStartStr = nodeTime->GetAttribute(attributeStart);
                     charStartStr.ToLong(&charStart);
@@ -145,7 +146,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
                     asThrowException(_("The file structure type in undefined"));
                 }
 
-                wxXmlNode *nodeData = nodeParam->GetChildren();
+                wxXmlNode* nodeData = nodeParam->GetChildren();
                 while (nodeData) {
                     charStartStr = nodeData->GetAttribute(attributeStart);
                     charStartStr.ToLong(&charStart);
@@ -175,7 +176,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
     return pattern;
 }
 
-asFileDat::FileStructType asFileDat::StringToStructType(const wxString &structTypeStr) {
+asFileDat::FileStructType asFileDat::StringToStructType(const wxString& structTypeStr) {
     if (structTypeStr.CmpNoCase("tabs_delimited") == 0) {
         return asFileDat::TabsDelimited;
     } else if (structTypeStr.CmpNoCase("constant_width") == 0) {
@@ -185,7 +186,7 @@ asFileDat::FileStructType asFileDat::StringToStructType(const wxString &structTy
     }
 }
 
-int asFileDat::GetPatternLineMaxCharWidth(const asFileDat::Pattern &pattern) {
+int asFileDat::GetPatternLineMaxCharWidth(const asFileDat::Pattern& pattern) {
     int maxwidth = 0;
 
     maxwidth = wxMax(maxwidth, pattern.timeYearEnd);

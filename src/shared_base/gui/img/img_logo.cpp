@@ -11,7 +11,7 @@
 
 #include "images.h"
 
-wxBitmap *_img_logo;
+wxBitmap* _img_logo;
 
 void initialize_img_logo() {
     {

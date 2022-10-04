@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorCustomUnilNR1, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("Custom_Unil_NR1", "hgt", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);

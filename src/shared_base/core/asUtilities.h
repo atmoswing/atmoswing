@@ -34,7 +34,7 @@
 
 #include "asIncludes.h"
 
-bool asRemoveDir(const wxString &path);
+bool asRemoveDir(const wxString& path);
 
 void asInitRandom();
 
@@ -67,30 +67,30 @@ float asRound(float value);
 
 double asRound(double value);
 
-float asMean(const int *pArrStart, const int *pArrEnd);
+float asMean(const int* pArrStart, const int* pArrEnd);
 
-float asMean(const float *pArrStart, const float *pArrEnd);
+float asMean(const float* pArrStart, const float* pArrEnd);
 
-double asMean(const double *pArrStart, const double *pArrEnd);
-
-/** Standard Deviation of an array
- * \link http://easycalculation.com/statistics/learn-standard-deviation.php
- */
-float asStDev(const int *pArrStart, const int *pArrEnd, int sample = asSAMPLE);
+double asMean(const double* pArrStart, const double* pArrEnd);
 
 /** Standard Deviation of an array
  * \link http://easycalculation.com/statistics/learn-standard-deviation.php
  */
-float asStDev(const float *pArrStart, const float *pArrEnd, int sample = asSAMPLE);
+float asStDev(const int* pArrStart, const int* pArrEnd, int sample = asSAMPLE);
 
 /** Standard Deviation of an array
  * \link http://easycalculation.com/statistics/learn-standard-deviation.php
  */
-double asStDev(const double *pArrStart, const double *pArrEnd, int sample = asSAMPLE);
+float asStDev(const float* pArrStart, const float* pArrEnd, int sample = asSAMPLE);
+
+/** Standard Deviation of an array
+ * \link http://easycalculation.com/statistics/learn-standard-deviation.php
+ */
+double asStDev(const double* pArrStart, const double* pArrEnd, int sample = asSAMPLE);
 
 a1f asGetCumulativeFrequency(int size);
 
-float asGetValueForQuantile(const a1f &values, float quantile);
+float asGetValueForQuantile(const a1f& values, float quantile);
 
 bool asIsNaN(int value);
 
@@ -110,142 +110,142 @@ bool asIsInf(double value);
 
 bool asIsInf(long double value);
 
-int asCountNotNaN(const float *pArrStart, const float *pArrEnd);
+int asCountNotNaN(const float* pArrStart, const float* pArrEnd);
 
-int asCountNotNaN(const double *pArrStart, const double *pArrEnd);
+int asCountNotNaN(const double* pArrStart, const double* pArrEnd);
 
-bool asHasNaN(const a2f &data);
+bool asHasNaN(const a2f& data);
 
-bool asHasNaN(const float *pArrStart, const float *pArrEnd);
+bool asHasNaN(const float* pArrStart, const float* pArrEnd);
 
-bool asHasNaN(const double *pArrStart, const double *pArrEnd);
+bool asHasNaN(const double* pArrStart, const double* pArrEnd);
 
-int asMinArray(const int *pArrStart, const int *pArrEnd);
+int asMinArray(const int* pArrStart, const int* pArrEnd);
 
-float asMinArray(const float *pArrStart, const float *pArrEnd);
+float asMinArray(const float* pArrStart, const float* pArrEnd);
 
-double asMinArray(const double *pArrStart, const double *pArrEnd);
+double asMinArray(const double* pArrStart, const double* pArrEnd);
 
-int asMinArrayIndex(const int *pArrStart, const int *pArrEnd);
+int asMinArrayIndex(const int* pArrStart, const int* pArrEnd);
 
-int asMinArrayIndex(const float *pArrStart, const float *pArrEnd);
+int asMinArrayIndex(const float* pArrStart, const float* pArrEnd);
 
-int asMinArrayIndex(const double *pArrStart, const double *pArrEnd);
+int asMinArrayIndex(const double* pArrStart, const double* pArrEnd);
 
-int asMaxArray(const int *pArrStart, const int *pArrEnd);
+int asMaxArray(const int* pArrStart, const int* pArrEnd);
 
-float asMaxArray(const float *pArrStart, const float *pArrEnd);
+float asMaxArray(const float* pArrStart, const float* pArrEnd);
 
-double asMaxArray(const double *pArrStart, const double *pArrEnd);
+double asMaxArray(const double* pArrStart, const double* pArrEnd);
 
-int asMaxArrayIndex(const int *pArrStart, const int *pArrEnd);
+int asMaxArrayIndex(const int* pArrStart, const int* pArrEnd);
 
-int asMaxArrayIndex(const float *pArrStart, const float *pArrEnd);
+int asMaxArrayIndex(const float* pArrStart, const float* pArrEnd);
 
-int asMaxArrayIndex(const double *pArrStart, const double *pArrEnd);
+int asMaxArrayIndex(const double* pArrStart, const double* pArrEnd);
 
-int asMinArrayStep(const int *pArrStart, const int *pArrEnd, int tolerance = 0);
+int asMinArrayStep(const int* pArrStart, const int* pArrEnd, int tolerance = 0);
 
-float asMinArrayStep(const float *pArrStart, const float *pArrEnd, float tolerance = 0.000001);
+float asMinArrayStep(const float* pArrStart, const float* pArrEnd, float tolerance = 0.000001);
 
-double asMinArrayStep(const double *pArrStart, const double *pArrEnd, double tolerance = 0.000000001);
+double asMinArrayStep(const double* pArrStart, const double* pArrEnd, double tolerance = 0.000000001);
 
-a1i asExtractUniqueValues(const int *pArrStart, const int *pArrEnd, int tolerance = 0);
+a1i asExtractUniqueValues(const int* pArrStart, const int* pArrEnd, int tolerance = 0);
 
-a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, float tolerance = 0.000001);
+a1f asExtractUniqueValues(const float* pArrStart, const float* pArrEnd, float tolerance = 0.000001);
 
-a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd, double tolerance = 0.000000001);
+a1d asExtractUniqueValues(const double* pArrStart, const double* pArrEnd, double tolerance = 0.000000001);
 
-int asFind(const int *pArrStart, const int *pArrEnd, int targetValue, int tolerance = 0,
+int asFind(const int* pArrStart, const int* pArrEnd, int targetValue, int tolerance = 0,
            int showWarning = asSHOW_WARNINGS);
 
-int asFind(const float *pArrStart, const float *pArrEnd, float targetValue, float tolerance = 0.0,
+int asFind(const float* pArrStart, const float* pArrEnd, float targetValue, float tolerance = 0.0,
            int showWarning = asSHOW_WARNINGS);
 
-int asFind(const double *pArrStart, const double *pArrEnd, double targetValue, double tolerance = 0.0,
+int asFind(const double* pArrStart, const double* pArrEnd, double targetValue, double tolerance = 0.0,
            int showWarning = asSHOW_WARNINGS);
 
 template <class T>
-int asFindT(const T *pArrStart, const T *pArrEnd, T targetValue, T tolerance = 0, int showWarning = asSHOW_WARNINGS);
+int asFindT(const T* pArrStart, const T* pArrEnd, T targetValue, T tolerance = 0, int showWarning = asSHOW_WARNINGS);
 
-int asFindClosest(const int *pArrStart, const int *pArrEnd, int targetValue, int showWarning = asSHOW_WARNINGS);
+int asFindClosest(const int* pArrStart, const int* pArrEnd, int targetValue, int showWarning = asSHOW_WARNINGS);
 
-int asFindClosest(const float *pArrStart, const float *pArrEnd, float targetValue, int showWarning = asSHOW_WARNINGS);
+int asFindClosest(const float* pArrStart, const float* pArrEnd, float targetValue, int showWarning = asSHOW_WARNINGS);
 
-int asFindClosest(const double *pArrStart, const double *pArrEnd, double targetValue,
+int asFindClosest(const double* pArrStart, const double* pArrEnd, double targetValue,
                   int showWarning = asSHOW_WARNINGS);
 
 template <class T>
-int asFindClosestT(const T *pArrStart, const T *pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
+int asFindClosestT(const T* pArrStart, const T* pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
 
-int asFindFloor(const int *pArrStart, const int *pArrEnd, int targetValue, int showWarning = asSHOW_WARNINGS);
+int asFindFloor(const int* pArrStart, const int* pArrEnd, int targetValue, int showWarning = asSHOW_WARNINGS);
 
-int asFindFloor(const float *pArrStart, const float *pArrEnd, float targetValue, int showWarning = asSHOW_WARNINGS);
+int asFindFloor(const float* pArrStart, const float* pArrEnd, float targetValue, int showWarning = asSHOW_WARNINGS);
 
-int asFindFloor(const double *pArrStart, const double *pArrEnd, double targetValue, int showWarning = asSHOW_WARNINGS);
-
-template <class T>
-int asFindFloorT(const T *pArrStart, const T *pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
-
-int asFindCeil(const int *pArrStart, const int *pArrEnd, int targetValue, int showWarning = asSHOW_WARNINGS);
-
-int asFindCeil(const float *pArrStart, const float *pArrEnd, float targetValue, int showWarning = asSHOW_WARNINGS);
-
-int asFindCeil(const double *pArrStart, const double *pArrEnd, double targetValue, int showWarning = asSHOW_WARNINGS);
+int asFindFloor(const double* pArrStart, const double* pArrEnd, double targetValue, int showWarning = asSHOW_WARNINGS);
 
 template <class T>
-int asFindCeilT(const T *pArrStart, const T *pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
+int asFindFloorT(const T* pArrStart, const T* pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
 
-bool asArrayInsert(int *pArrStart, int *pArrEnd, Order order, int val);
+int asFindCeil(const int* pArrStart, const int* pArrEnd, int targetValue, int showWarning = asSHOW_WARNINGS);
 
-bool asArrayInsert(float *pArrStart, float *pArrEnd, Order order, float val);
+int asFindCeil(const float* pArrStart, const float* pArrEnd, float targetValue, int showWarning = asSHOW_WARNINGS);
 
-bool asArrayInsert(double *pArrStart, double *pArrEnd, Order order, double val);
+int asFindCeil(const double* pArrStart, const double* pArrEnd, double targetValue, int showWarning = asSHOW_WARNINGS);
 
 template <class T>
-bool asArrayInsertT(T *pArrStart, T *pArrEnd, Order order, T val);
+int asFindCeilT(const T* pArrStart, const T* pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
 
-bool asArraysInsert(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, Order order, int valRef,
+bool asArrayInsert(int* pArrStart, int* pArrEnd, Order order, int val);
+
+bool asArrayInsert(float* pArrStart, float* pArrEnd, Order order, float val);
+
+bool asArrayInsert(double* pArrStart, double* pArrEnd, Order order, double val);
+
+template <class T>
+bool asArrayInsertT(T* pArrStart, T* pArrEnd, Order order, T val);
+
+bool asArraysInsert(int* pArrRefStart, int* pArrRefEnd, int* pArrOtherStart, int* pArrOtherEnd, Order order, int valRef,
                     int valOther);
 
-bool asArraysInsert(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd, Order order,
+bool asArraysInsert(float* pArrRefStart, float* pArrRefEnd, float* pArrOtherStart, float* pArrOtherEnd, Order order,
                     float valRef, float valOther);
 
-bool asArraysInsert(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd, Order order,
+bool asArraysInsert(double* pArrRefStart, double* pArrRefEnd, double* pArrOtherStart, double* pArrOtherEnd, Order order,
                     double valRef, double valOther);
 
 template <class T>
-bool asArraysInsertT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, Order order, T valRef,
+bool asArraysInsertT(T* pArrRefStart, T* pArrRefEnd, T* pArrOtherStart, T* pArrOtherEnd, Order order, T valRef,
                      T valOther);
 
-bool asSortArray(int *pArrRefStart, int *pArrRefEnd, Order order);
+bool asSortArray(int* pArrRefStart, int* pArrRefEnd, Order order);
 
-bool asSortArray(float *pArrRefStart, float *pArrRefEnd, Order order);
+bool asSortArray(float* pArrRefStart, float* pArrRefEnd, Order order);
 
-bool asSortArray(double *pArrRefStart, double *pArrRefEnd, Order order);
-
-template <class T>
-bool asSortArrayT(T *pArrRefStart, T *pArrRefEnd, Order order);
-
-bool asSortArrays(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, Order order);
-
-bool asSortArrays(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd, Order order);
-
-bool asSortArrays(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd, Order order);
+bool asSortArray(double* pArrRefStart, double* pArrRefEnd, Order order);
 
 template <class T>
-bool asSortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, Order order);
+bool asSortArrayT(T* pArrRefStart, T* pArrRefEnd, Order order);
+
+bool asSortArrays(int* pArrRefStart, int* pArrRefEnd, int* pArrOtherStart, int* pArrOtherEnd, Order order);
+
+bool asSortArrays(float* pArrRefStart, float* pArrRefEnd, float* pArrOtherStart, float* pArrOtherEnd, Order order);
+
+bool asSortArrays(double* pArrRefStart, double* pArrRefEnd, double* pArrOtherStart, double* pArrOtherEnd, Order order);
 
 template <class T>
-void asQuickSort(T *pArr, int low, int high, Order order);
+bool asSortArraysT(T* pArrRefStart, T* pArrRefEnd, T* pArrOtherStart, T* pArrOtherEnd, Order order);
 
 template <class T>
-void asQuickSortMulti(T *pArr, T *pArrOther, int low, int high, Order order);
+void asQuickSort(T* pArr, int low, int high, Order order);
 
-vf asExtractVectorFrom(const wxString &data);
+template <class T>
+void asQuickSortMulti(T* pArr, T* pArrOther, int low, int high, Order order);
 
-wxString asVectorToString(const vf &data);
+vf asExtractVectorFrom(const wxString& data);
 
-wxString asExtractParamValueAndCut(wxString &str, const wxString &tag);
+wxString asVectorToString(const vf& data);
+
+wxString asExtractParamValueAndCut(wxString& str, const wxString& tag);
 
 #endif

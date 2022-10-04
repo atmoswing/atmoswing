@@ -36,16 +36,16 @@ class asArea;
 
 class asPredictorCustomLtheNR1 : public asPredictorCustomUnilNR1 {
   public:
-    explicit asPredictorCustomLtheNR1(const wxString &dataId);
+    explicit asPredictorCustomLtheNR1(const wxString& dataId);
 
     ~asPredictorCustomLtheNR1() override = default;
 
     bool Init() override;
 
   protected:
-    void ListFiles(asTimeArray &timeArray) override;
+    void ListFiles(asTimeArray& timeArray) override;
 
-    void ConvertToMjd(a1d &time, double refValue = NaNd) const override;
+    void ConvertToMjd(a1d& time, double refValue = NaNd) const override;
 
   private:
 };

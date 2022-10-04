@@ -31,7 +31,10 @@
 #include "asFileNetcdf.h"
 #include "asParametersScoring.h"
 
-asResultsTotalScore::asResultsTotalScore() : asResults(), m_hasSingleValue(true), m_score(NaNf) {}
+asResultsTotalScore::asResultsTotalScore()
+    : asResults(),
+      m_hasSingleValue(true),
+      m_score(NaNf) {}
 
 asResultsTotalScore::~asResultsTotalScore() {}
 

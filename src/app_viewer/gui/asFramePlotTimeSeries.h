@@ -36,8 +36,8 @@ class asForecastManager;
 
 class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
   public:
-    asFramePlotTimeSeries(wxWindow *parent, int selectedMethod, int selectedForecast, int selectedStation,
-                          asForecastManager *forecastManager, wxWindowID id = asWINDOW_PLOTS_TIMESERIES);
+    asFramePlotTimeSeries(wxWindow* parent, int selectedMethod, int selectedForecast, int selectedStation,
+                          asForecastManager* forecastManager, wxWindowID id = asWINDOW_PLOTS_TIMESERIES);
 
     ~asFramePlotTimeSeries() override = default;
 
@@ -59,25 +59,25 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
         Interpretation
     };
 
-    asPanelPlot *m_panelPlot;
-    asForecastManager *m_forecastManager;
+    asPanelPlot* m_panelPlot;
+    asForecastManager* m_forecastManager;
     int m_selectedStation;
     int m_selectedMethod;
     int m_selectedForecast;
     float m_maxVal;
     vd m_leadTimes;
 
-    void OnClose(wxCloseEvent &evt);
+    void OnClose(wxCloseEvent& evt);
 
-    void OnTocSelectionChange(wxCommandEvent &event) override;
+    void OnTocSelectionChange(wxCommandEvent& event) override;
 
-    void OnExportTXT(wxCommandEvent &event) override;
+    void OnExportTXT(wxCommandEvent& event) override;
 
-    void OnExportSVG(wxCommandEvent &event);
+    void OnExportSVG(wxCommandEvent& event);
 
-    void OnPreview(wxCommandEvent &event) override;
+    void OnPreview(wxCommandEvent& event) override;
 
-    void OnPrint(wxCommandEvent &event) override;
+    void OnPrint(wxCommandEvent& event) override;
 
     void InitCheckListBox();
 

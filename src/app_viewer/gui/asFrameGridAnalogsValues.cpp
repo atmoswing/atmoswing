@@ -30,8 +30,8 @@
 
 #include "asForecastManager.h"
 
-asFrameGridAnalogsValues::asFrameGridAnalogsValues(wxWindow *parent, int methodRow, int forecastRow,
-                                                   asForecastManager *forecastManager, wxWindowID id)
+asFrameGridAnalogsValues::asFrameGridAnalogsValues(wxWindow* parent, int methodRow, int forecastRow,
+                                                   asForecastManager* forecastManager, wxWindowID id)
     : asFrameGridAnalogsValuesVirtual(parent),
       m_forecastManager(forecastManager),
       m_selectedMethod(methodRow),
@@ -85,7 +85,7 @@ void asFrameGridAnalogsValues::RebuildChoiceForecast() {
     }
 }
 
-void asFrameGridAnalogsValues::OnChoiceForecastChange(wxCommandEvent &event) {
+void asFrameGridAnalogsValues::OnChoiceForecastChange(wxCommandEvent& event) {
     int linearIndex = event.GetInt();
     m_selectedMethod = m_forecastManager->GetMethodRowFromLinearIndex(linearIndex);
     m_selectedForecast = m_forecastManager->GetForecastRowFromLinearIndex(linearIndex);
@@ -109,7 +109,7 @@ void asFrameGridAnalogsValues::OnChoiceForecastChange(wxCommandEvent &event) {
     UpdateGrid();
 }
 
-void asFrameGridAnalogsValues::OnChoiceStationChange(wxCommandEvent &event) {
+void asFrameGridAnalogsValues::OnChoiceStationChange(wxCommandEvent& event) {
     m_selectedStation = event.GetInt();
 
     RebuildChoiceForecast();
@@ -117,13 +117,13 @@ void asFrameGridAnalogsValues::OnChoiceStationChange(wxCommandEvent &event) {
     UpdateGrid();  // Doesn't change for criteria
 }
 
-void asFrameGridAnalogsValues::OnChoiceDateChange(wxCommandEvent &event) {
+void asFrameGridAnalogsValues::OnChoiceDateChange(wxCommandEvent& event) {
     m_selectedDate = event.GetInt();
 
     UpdateGrid();
 }
 
-void asFrameGridAnalogsValues::SortGrid(wxGridEvent &event) {
+void asFrameGridAnalogsValues::SortGrid(wxGridEvent& event) {
     // On a row label
     if (event.GetCol() == -1) {
         event.Skip();
@@ -150,7 +150,7 @@ bool asFrameGridAnalogsValues::UpdateGrid() {
 
     if (m_forecastManager->GetMethodsNb() < 1) return false;
 
-    asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     a1f dates = forecast->GetAnalogsDates(m_selectedDate);
     a1f values = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
     a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);

@@ -22,16 +22,16 @@ extern void initialize_img_toolbar_l();
 
 void cleanup_img_toolbar();
 
-extern wxBitmap *_img_frame_analogs;
-extern wxBitmap *_img_frame_distributions;
-extern wxBitmap *_img_map_fit;
-extern wxBitmap *_img_map_move;
-extern wxBitmap *_img_map_select;
-extern wxBitmap *_img_map_zoom_in;
-extern wxBitmap *_img_map_zoom_out;
-extern wxBitmap *_img_open;
-extern wxBitmap *_img_preferences;
-extern wxBitmap *_img_run;
-extern wxBitmap *_img_stop;
+extern wxBitmap* _img_frame_analogs;
+extern wxBitmap* _img_frame_distributions;
+extern wxBitmap* _img_map_fit;
+extern wxBitmap* _img_map_move;
+extern wxBitmap* _img_map_select;
+extern wxBitmap* _img_map_zoom_in;
+extern wxBitmap* _img_map_zoom_out;
+extern wxBitmap* _img_open;
+extern wxBitmap* _img_preferences;
+extern wxBitmap* _img_run;
+extern wxBitmap* _img_stop;
 
 #endif /* _TOOLBAR_H_ */

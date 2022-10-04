@@ -30,12 +30,12 @@
 
 #include "asAreaGrid.h"
 #include "asInternet.h"
+#include "asPredictorOperCustomFvgForecast.h"
 #include "asPredictorOperGfsForecast.h"
 #include "asPredictorOperIfsForecast.h"
-#include "asPredictorOperCustomFvgForecast.h"
 #include "asTimeArray.h"
 
-asPredictorOper::asPredictorOper(const wxString &dataId)
+asPredictorOper::asPredictorOper(const wxString& dataId)
     : asPredictor(dataId),
       m_leadTimeStart(0),
       m_leadTimeEnd(0),
@@ -50,47 +50,54 @@ asPredictorOper::asPredictorOper(const wxString &dataId)
       m_restrictTimeStepHours(0) {}
 
 void asPredictorOper::SetDefaultPredictorsUrls() {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
 
     wxString url;
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/"
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
         "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_"
         "500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_HGT=on&subregion=&"
         "leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]%2F[CURRENTDATE-hh]%2Fatmos";
     pConfig->Write("/PredictorsUrl/GFS/hgt", pConfig->Read("/PredictorsUrl/GFS/hgt", url));
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/"
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
         "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_"
         "500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_TMP=on&subregion=&"
         "leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]%2F[CURRENTDATE-hh]%2Fatmos";
     pConfig->Write("/PredictorsUrl/GFS/temp", pConfig->Read("/PredictorsUrl/GFS/temp", url));
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/"
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
         "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_"
         "500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VVEL=on&subregion=&"
         "leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]%2F[CURRENTDATE-hh]%2Fatmos";
     pConfig->Write("/PredictorsUrl/GFS/vvel", pConfig->Read("/PredictorsUrl/GFS/vvel", url));
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/"
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
         "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_"
         "500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_RH=on&subregion=&leftlon="
         "-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]%2F[CURRENTDATE-hh]%2Fatmos";
     pConfig->Write("/PredictorsUrl/GFS/rh", pConfig->Read("/PredictorsUrl/GFS/rh", url));
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/"
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
         "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_"
         "500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_UGRD=on&subregion=&"
         "leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]%2F[CURRENTDATE-hh]%2Fatmos";
     pConfig->Write("/PredictorsUrl/GFS/uwnd", pConfig->Read("/PredictorsUrl/GFS/uwnd", url));
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/"
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
         "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_"
         "500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VGRD=on&subregion=&"
         "leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]%2F[CURRENTDATE-hh]%2Fatmos";
     pConfig->Write("/PredictorsUrl/GFS/vwnd", pConfig->Read("/PredictorsUrl/GFS/vwnd", url));
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/"
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
         "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_entire_atmosphere_%5C%"
         "28considered_as_a_single_layer%5C%29=on&var_PWAT=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&"
         "dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]%2F[CURRENTDATE-hh]%2Fatmos";
@@ -99,8 +106,8 @@ void asPredictorOper::SetDefaultPredictorsUrls() {
     pConfig->Flush();
 }
 
-asPredictorOper *asPredictorOper::GetInstance(const wxString &datasetId, const wxString &dataId) {
-    asPredictorOper *predictor = nullptr;
+asPredictorOper* asPredictorOper::GetInstance(const wxString& datasetId, const wxString& dataId) {
+    asPredictorOper* predictor = nullptr;
 
     if (datasetId.IsSameAs("NWS_GFS_Forecast", false)) {
         predictor = new asPredictorOperGfsForecast(dataId);
@@ -126,7 +133,7 @@ int asPredictorOper::Download() {
     return asInternet::Download(GetUrls(), GetFileNames(), m_predictorsRealtimeDir);
 }
 
-bool asPredictorOper::CheckTimeArray(asTimeArray &timeArray) {
+bool asPredictorOper::CheckTimeArray(asTimeArray& timeArray) {
     return true;
 }
 
@@ -213,8 +220,8 @@ bool asPredictorOper::BuildFilenamesUrls() {
         double diff = desiredTime - m_runDateInUse;
         m_leadTimeStart = (int)(diff * 24.0);
         m_leadTimeStep = m_restrictTimeStepHours;
-        m_leadTimeEnd = (int)floor((m_leadTimeEnd - m_leadTimeStart) / m_leadTimeStep) *
-                            m_leadTimeStep + m_leadTimeStart;
+        m_leadTimeEnd = (int)floor((m_leadTimeEnd - m_leadTimeStart) / m_leadTimeStep) * m_leadTimeStep +
+                        m_leadTimeStart;
     }
 
     wxASSERT(m_leadTimeStep > 0);
@@ -263,8 +270,8 @@ bool asPredictorOper::BuildFilenamesUrls() {
     return true;
 }
 
-void asPredictorOper::ListFiles(asTimeArray &timeArray) {
-    for (const auto &currfileName : m_fileNames) {
+void asPredictorOper::ListFiles(asTimeArray& timeArray) {
+    for (const auto& currfileName : m_fileNames) {
         wxString filePath = wxEmptyString;
 
         // Check if the volume is present

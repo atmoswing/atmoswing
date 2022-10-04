@@ -35,7 +35,7 @@ asScoreCRPSaccurEP::asScoreCRPSaccurEP()
     : asScore(asScore::CRPSaccuracyEP, _("CRPS Accuracy Exact Primitive"),
               _("Continuous Ranked Probability Score Accuracy exact solution"), Asc, 0, NaNf) {}
 
-float asScoreCRPSaccurEP::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreCRPSaccurEP::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -56,6 +56,6 @@ float asScoreCRPSaccurEP::Assess(float obs, const a1f &values, int nbElements) c
     return CRPS - CRPSsharpness;
 }
 
-bool asScoreCRPSaccurEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreCRPSaccurEP::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     return true;
 }

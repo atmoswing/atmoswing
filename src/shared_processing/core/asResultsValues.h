@@ -38,47 +38,47 @@ class asResultsValues : public asResults {
 
     virtual ~asResultsValues();
 
-    void Init(asParameters *arams);
+    void Init(asParameters* arams);
 
-    a1f &GetTargetDates() {
+    a1f& GetTargetDates() {
         return m_targetDates;
     }
 
-    void SetTargetDates(a1f &refDates) {
+    void SetTargetDates(a1f& refDates) {
         m_targetDates.resize(refDates.rows());
         m_targetDates = refDates;
     }
 
-    va1f &GetTargetValues() {
+    va1f& GetTargetValues() {
         return m_targetValuesNorm;
     }
 
-    void SetTargetValuesNorm(va1f &targetValuesNorm) {
+    void SetTargetValuesNorm(va1f& targetValuesNorm) {
         m_targetValuesNorm = targetValuesNorm;
     }
 
-    void SetTargetValuesRaw(va1f &targetValuesRaw) {
+    void SetTargetValuesRaw(va1f& targetValuesRaw) {
         m_targetValuesRaw = targetValuesRaw;
     }
 
-    a2f &GetAnalogsCriteria() {
+    a2f& GetAnalogsCriteria() {
         return m_analogsCriteria;
     }
 
-    void SetAnalogsCriteria(a2f &analogsCriteria) {
+    void SetAnalogsCriteria(a2f& analogsCriteria) {
         m_analogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
         m_analogsCriteria = analogsCriteria;
     }
 
-    va2f &GetAnalogsValues() {
+    va2f& GetAnalogsValues() {
         return m_analogsValuesNorm;
     }
 
-    va2f &GetAnalogsValuesNorm() {
+    va2f& GetAnalogsValuesNorm() {
         return m_analogsValuesNorm;
     }
 
-    void SetAnalogsValuesNorm(va2f &analogsValuesNorm) {
+    void SetAnalogsValuesNorm(va2f& analogsValuesNorm) {
         m_analogsValuesNorm = analogsValuesNorm;
     }
 
@@ -86,7 +86,7 @@ class asResultsValues : public asResults {
         return m_analogsValuesRaw;
     }
 
-    void SetAnalogsValuesRaw(va2f &analogsValuesRaw) {
+    void SetAnalogsValuesRaw(va2f& analogsValuesRaw) {
         m_analogsValuesRaw = analogsValuesRaw;
     }
 

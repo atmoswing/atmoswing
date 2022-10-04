@@ -44,11 +44,11 @@ class asResultsScoresMap : public asResults {
 
     void Init();
 
-    bool Add(asParametersScoring &params, float score);
+    bool Add(asParametersScoring& params, float score);
 
     bool MakeMap();
 
-    bool Save(asParametersCalibration &params);
+    bool Save(asParametersCalibration& params);
 
   protected:
     void BuildFileName();

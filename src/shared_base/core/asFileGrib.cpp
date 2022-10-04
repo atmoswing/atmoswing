@@ -31,7 +31,7 @@
 
 #include "eccodes.h"
 
-asFileGrib::asFileGrib(const wxString &fileName, const FileMode &fileMode)
+asFileGrib::asFileGrib(const wxString& fileName, const FileMode& fileMode)
     : asFile(fileName, fileMode),
       m_filtPtr(nullptr),
       m_version(0),
@@ -92,7 +92,7 @@ bool asFileGrib::OpenDataset() {
 
 bool asFileGrib::ParseStructure() {
     int err = 0;
-    codes_handle *h;
+    codes_handle* h;
 
     // Loop over the GRIB messages in the source
     while ((h = codes_handle_new_from_file(0, m_filtPtr, PRODUCT_GRIB, &err)) != NULL) {
@@ -122,13 +122,13 @@ bool asFileGrib::ParseStructure() {
     return CheckGribErrorCode(err);
 }
 
-void asFileGrib::ExtractTime(codes_handle *h) {
+void asFileGrib::ExtractTime(codes_handle* h) {
     // Keys: https://apps.ecmwf.int/codes/grib/format/edition-independent/2/
 
     // Get reference date
     size_t dataDateLength = 20;
-    char *buffer1 = NULL;
-    buffer1 = (char *)malloc(dataDateLength * sizeof(char));
+    char* buffer1 = NULL;
+    buffer1 = (char*)malloc(dataDateLength * sizeof(char));
     CODES_CHECK(codes_get_string(h, "dataDate", &buffer1[0], &dataDateLength), 0);
     wxString dataDate(buffer1, wxConvUTF8);
     free(buffer1);
@@ -136,8 +136,8 @@ void asFileGrib::ExtractTime(codes_handle *h) {
     m_refDates.push_back(refDate);
 
     size_t dataTimeLength = 20;
-    char *buffer2 = NULL;
-    buffer2 = (char *)malloc(dataTimeLength * sizeof(char));
+    char* buffer2 = NULL;
+    buffer2 = (char*)malloc(dataTimeLength * sizeof(char));
     CODES_CHECK(codes_get_string(h, "dataTime", &buffer2[0], &dataTimeLength), 0);
     wxString dataTime(buffer2, wxConvUTF8);
     free(buffer2);
@@ -176,13 +176,13 @@ void asFileGrib::ExtractTime(codes_handle *h) {
     m_times.push_back(time);
 }
 
-void asFileGrib::ExtractLevel(codes_handle *h) {
+void asFileGrib::ExtractLevel(codes_handle* h) {
     // Keys: https://apps.ecmwf.int/codes/grib/format/edition-independent/3/
 
     // Get level type
     size_t typeLength = 255;
-    char *typeVal = NULL;
-    typeVal = (char *)malloc(typeLength * sizeof(char));
+    char* typeVal = NULL;
+    typeVal = (char*)malloc(typeLength * sizeof(char));
     CODES_CHECK(codes_get_string(h, "typeOfLevel", &typeVal[0], &typeLength), 0);
     wxString type(typeVal, wxConvUTF8);
     free(typeVal);
@@ -210,7 +210,7 @@ void asFileGrib::ExtractLevel(codes_handle *h) {
     m_levels.push_back(level);
 }
 
-void asFileGrib::ExtractAxes(codes_handle *h) {
+void asFileGrib::ExtractAxes(codes_handle* h) {
     // Keys: https://apps.ecmwf.int/codes/grib/format/edition-independent/1/
     long latsNb;
     CODES_CHECK(codes_get_long(h, "Nj", &latsNb), 0);
@@ -235,7 +235,7 @@ void asFileGrib::ExtractAxes(codes_handle *h) {
     m_yAxes.push_back(latAxis);
 }
 
-void asFileGrib::ExtractGribCode(codes_handle *h) {
+void asFileGrib::ExtractGribCode(codes_handle* h) {
     if (m_version == 2) {
         // Get discipline
         long discipline;
@@ -277,7 +277,7 @@ bool asFileGrib::CheckGribErrorCode(int ierr) const {
     return false;
 }
 
-bool asFileGrib::GetXaxis(a1d &uaxis) const {
+bool asFileGrib::GetXaxis(a1d& uaxis) const {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
     wxASSERT(m_xAxes.size() > m_index);
@@ -287,7 +287,7 @@ bool asFileGrib::GetXaxis(a1d &uaxis) const {
     return true;
 }
 
-bool asFileGrib::GetYaxis(a1d &vaxis) const {
+bool asFileGrib::GetYaxis(a1d& vaxis) const {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
     wxASSERT(m_yAxes.size() > m_index);
@@ -297,7 +297,7 @@ bool asFileGrib::GetYaxis(a1d &vaxis) const {
     return true;
 }
 
-bool asFileGrib::GetLevels(a1d &levels) const {
+bool asFileGrib::GetLevels(a1d& levels) const {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
 
@@ -421,7 +421,7 @@ vd asFileGrib::GetRealForecastTimeArray() const {
     return forecastTimeArray;
 }
 
-bool asFileGrib::SetIndexPosition(const vi &gribCode, const float level, const bool useWarnings) {
+bool asFileGrib::SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings) {
     wxASSERT(gribCode.size() == 4);
 
     // Find corresponding data
@@ -463,7 +463,7 @@ bool asFileGrib::SetIndexPositionAnyLevel(const vi gribCode) {
     return false;
 }
 
-bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue) {
+bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], float* pValue) {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
 
@@ -490,17 +490,17 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
 
     int iTime = iTimeStart;
 
-    for (auto &date : fullTimeArray) {
+    for (auto& date : fullTimeArray) {
         wxASSERT(iTime < timeArray.size());
 
         wxString refDate = asTime::GetStringTime(referenceDateArray[iTime], YYYYMMDD);
         char refDateChar[10];
-        strncpy(refDateChar, (const char *)refDate.mb_str(wxConvUTF8), 9);
+        strncpy(refDateChar, (const char*)refDate.mb_str(wxConvUTF8), 9);
         double refTime = referenceTimeArray[iTime];
         double forecastTime = forecastTimeArray[iTime];
 
-        codes_index *index = nullptr;
-        codes_handle *h = nullptr;
+        codes_index* index = nullptr;
+        codes_handle* h = nullptr;
         int err = 0;
         int count = 0;
 
@@ -587,7 +587,7 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
             count++;
 
             // Get data
-            double *values = NULL;
+            double* values = NULL;
             size_t valuesLenth = 0;
             CODES_CHECK(codes_get_size(h, "values", &valuesLenth), 0);
             values = new double[valuesLenth + 1];
@@ -617,7 +617,7 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
                 }
             }
 
-            delete[](values);
+            delete[] (values);
             codes_handle_delete(h);
         }
 

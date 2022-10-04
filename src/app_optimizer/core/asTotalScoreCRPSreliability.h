@@ -34,16 +34,16 @@
 
 class asTotalScoreCRPSreliability : public asTotalScore {
   public:
-    explicit asTotalScoreCRPSreliability(const wxString &periodString);
+    explicit asTotalScoreCRPSreliability(const wxString& periodString);
 
     ~asTotalScoreCRPSreliability() override = default;
 
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override {
+    float Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const override {
         wxLogError(_("The CRPS reliability score needs a 2D array as input !"));
         return NaNf;
     }
 
-    float Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const override;
+    float Assess(const a1f& targetDates, const a2f& scores, const asTimeArray& timeArray) const override;
 
   protected:
   private:

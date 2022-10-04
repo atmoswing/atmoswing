@@ -35,7 +35,7 @@ class asArea;
 
 class asPredictorJmaJra55CSubset : public asPredictorJmaJra55Subset {
   public:
-    explicit asPredictorJmaJra55CSubset(const wxString &dataId);
+    explicit asPredictorJmaJra55CSubset(const wxString& dataId);
 
     ~asPredictorJmaJra55CSubset() override = default;
 

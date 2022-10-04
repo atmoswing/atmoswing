@@ -34,7 +34,7 @@
 
 class asFileParametersForecast : public asFileParameters {
   public:
-    asFileParametersForecast(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
+    asFileParametersForecast(const wxString& fileName, const FileMode& fileMode = asFile::Replace);
 
     virtual ~asFileParametersForecast();
 

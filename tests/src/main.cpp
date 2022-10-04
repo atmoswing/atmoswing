@@ -35,7 +35,7 @@
 #define UNIT_TESTING
 #endif
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     int resultTest = -2;
 
     try {
@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
         Log()->SetLevel(2);
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwing.ini",
+        wxFileConfig* pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwing.ini",
                                                  asConfig::GetTempDir() + "AtmoSwing.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
 
@@ -91,9 +91,9 @@ int main(int argc, char **argv) {
         wxUninitialize();
         DeleteThreadsManager();
         DeleteLog();
-        delete wxFileConfig::Set((wxFileConfig *)nullptr);
+        delete wxFileConfig::Set((wxFileConfig*)nullptr);
 
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxPrintf(_("Exception caught: %s\n"), msg);
     }

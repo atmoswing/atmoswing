@@ -30,11 +30,12 @@
 
 #include "asFileNetcdf.h"
 
-asResultsValues::asResultsValues() : asResults() {}
+asResultsValues::asResultsValues()
+    : asResults() {}
 
 asResultsValues::~asResultsValues() {}
 
-void asResultsValues::Init(asParameters *params) {
+void asResultsValues::Init(asParameters* params) {
     m_predictandStationIds = params->GetPredictandStationIds();
 
     // Resize to 0 to avoid keeping old results

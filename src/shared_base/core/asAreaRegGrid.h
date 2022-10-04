@@ -34,7 +34,7 @@
 
 class asAreaRegGrid : public asAreaGrid {
   public:
-    asAreaRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, double xStep,
+    asAreaRegGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR, double xStep,
                   double yStep, int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
     asAreaRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
@@ -45,9 +45,9 @@ class asAreaRegGrid : public asAreaGrid {
 
     ~asAreaRegGrid() override = default;
 
-    bool GridsOverlay(asAreaGrid *otherArea) const override;
+    bool GridsOverlay(asAreaGrid* otherArea) const override;
 
-    bool InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed = true, bool getLarger = false) override;
+    bool InitializeAxes(const a1d& lons, const a1d& lats, bool strideAllowed = true, bool getLarger = false) override;
 
     double GetXstep() const override {
         return m_xStep;

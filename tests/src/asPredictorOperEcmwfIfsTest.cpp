@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorOperEcmwfIfs, GetCorrectPredictors) {
-    asPredictorOper *predictor;
+    asPredictorOper* predictor;
 
     predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
@@ -82,9 +82,9 @@ TEST(PredictorOperEcmwfIfs, LoadSingleDay) {
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -132,9 +132,9 @@ TEST(PredictorOperEcmwfIfs, LoadSecondTimeStep) {
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -182,9 +182,9 @@ TEST(PredictorOperEcmwfIfs, LoadLastTimeStep) {
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -232,9 +232,9 @@ TEST(PredictorOperEcmwfIfs, LoadFullTimeArray) {
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -318,9 +318,9 @@ TEST(PredictorOperEcmwfIfs, LoadTimeArrayWithoutFirst) {
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
 
     // Create file names

@@ -29,8 +29,8 @@
 
 wxDEFINE_EVENT(asEVT_ACTION_ANALOG_DATE_SELECTION_CHANGED, wxCommandEvent);
 
-asPanelSidebarAnalogDates::asPanelSidebarAnalogDates(wxWindow *parent, wxWindowID id, const wxPoint &pos,
-                                                     const wxSize &size, long style)
+asPanelSidebarAnalogDates::asPanelSidebarAnalogDates(wxWindow* parent, wxWindowID id, const wxPoint& pos,
+                                                     const wxSize& size, long style)
     : asPanelSidebar(parent, id, pos, size, style) {
     m_header->SetLabelText(_("Analog dates"));
 
@@ -57,7 +57,7 @@ asPanelSidebarAnalogDates::~asPanelSidebarAnalogDates() {
                            wxListEventHandler(asPanelSidebarAnalogDates::OnDateSelection), nullptr, this);
 }
 
-void asPanelSidebarAnalogDates::OnDateSelection(wxListEvent &event) {
+void asPanelSidebarAnalogDates::OnDateSelection(wxListEvent& event) {
     // Send event
     wxCommandEvent eventParent(asEVT_ACTION_ANALOG_DATE_SELECTION_CHANGED);
     eventParent.SetInt(event.GetInt());
@@ -65,7 +65,7 @@ void asPanelSidebarAnalogDates::OnDateSelection(wxListEvent &event) {
     GetParent()->ProcessWindowEvent(eventParent);
 }
 
-void asPanelSidebarAnalogDates::SetChoices(a1f &arrayDate, a1f &arrayCriteria) {
+void asPanelSidebarAnalogDates::SetChoices(a1f& arrayDate, a1f& arrayCriteria) {
     // To speed up inserting we hide the control temporarily
     m_listCtrl->Freeze();
 

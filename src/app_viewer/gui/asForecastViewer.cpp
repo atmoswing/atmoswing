@@ -35,8 +35,8 @@
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_SELECT_FIRST, wxCommandEvent);
 
-asForecastViewer::asForecastViewer(asFrameForecast *parent, asForecastManager *forecastManager,
-                                   vrLayerManager *layerManager, vrViewerLayerManager *viewerLayerManager) {
+asForecastViewer::asForecastViewer(asFrameForecast* parent, asForecastManager* forecastManager,
+                                   vrLayerManager* layerManager, vrViewerLayerManager* viewerLayerManager) {
     m_parent = parent;
     m_forecastManager = forecastManager;
     m_layerManager = layerManager;
@@ -80,7 +80,7 @@ asForecastViewer::asForecastViewer(asFrameForecast *parent, asForecastManager *f
     m_methodSelection = -1;
     m_forecastSelection = -1;
 
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Read("/ForecastViewer/DisplaySelection", &m_forecastDisplaySelection, 3);
     pConfig->Read("/ForecastViewer/QuantileSelection", &m_quantileSelection, 0);
     if (m_forecastDisplaySelection >= m_returnPeriods.size()) {
@@ -94,7 +94,7 @@ asForecastViewer::asForecastViewer(asFrameForecast *parent, asForecastManager *f
 }
 
 asForecastViewer::~asForecastViewer() {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/ForecastViewer/DisplaySelection", m_forecastDisplaySelection);
     pConfig->Write("/ForecastViewer/QuantileSelection", m_quantileSelection);
 }
@@ -196,7 +196,7 @@ void asForecastViewer::Redraw() {
     if (m_returnPeriods.size() != m_displayForecast.size()) return;
 
     // Get data
-    std::vector<asResultsForecast *> forecasts;
+    std::vector<asResultsForecast*> forecasts;
 
     if (m_forecastSelection < 0) {
         for (int i = 0; i < m_forecastManager->GetForecastsNb(m_methodSelection); i++) {
@@ -214,8 +214,8 @@ void asForecastViewer::Redraw() {
     m_viewerLayerManager->FreezeBegin();
     for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         if (m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameSpecific) {
-            vrRenderer *renderer = m_viewerLayerManager->GetRenderer(i);
-            vrLayer *layer = renderer->GetLayer();
+            vrRenderer* renderer = m_viewerLayerManager->GetRenderer(i);
+            vrLayer* layer = renderer->GetLayer();
             wxASSERT(renderer);
             m_viewerLayerManager->Remove(renderer);
             // Close layer
@@ -224,8 +224,8 @@ void asForecastViewer::Redraw() {
     }
     for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         if (m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameOther) {
-            vrRenderer *renderer = m_viewerLayerManager->GetRenderer(i);
-            vrLayer *layer = renderer->GetLayer();
+            vrRenderer* renderer = m_viewerLayerManager->GetRenderer(i);
+            vrLayer* layer = renderer->GetLayer();
             wxASSERT(renderer);
             m_viewerLayerManager->Remove(renderer);
             // Close layer
@@ -259,8 +259,8 @@ void asForecastViewer::Redraw() {
     // Display according to the chosen display type
     if (m_leadTimeIndex == m_forecastManager->GetLeadTimeLengthMax()) {
         // Create the layers
-        auto *layerSpecific = new vrLayerVectorFcstRing();
-        auto *layerOther = new vrLayerVectorFcstRing();
+        auto* layerSpecific = new vrLayerVectorFcstRing();
+        auto* layerOther = new vrLayerVectorFcstRing();
         if (!layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)) {
             wxFAIL;
             m_viewerLayerManager->FreezeEnd();
@@ -315,12 +315,12 @@ void asForecastViewer::Redraw() {
 
             // Select the accurate forecast
             bool accurateForecast = false;
-            asResultsForecast *forecast = nullptr;
+            asResultsForecast* forecast = nullptr;
             if (m_forecastSelection >= 0) {
                 forecast = forecasts[0];
                 accurateForecast = forecast->IsSpecificForStationId(currentId);
             } else {
-                for (auto &fcst : forecasts) {
+                for (auto& fcst : forecasts) {
                     accurateForecast = fcst->IsSpecificForStationId(currentId);
                     if (accurateForecast) {
                         forecast = fcst;
@@ -405,7 +405,7 @@ void asForecastViewer::Redraw() {
 
         if (layerOther->GetFeatureCount() > 0) {
             m_layerManager->Add(layerOther);
-            auto *renderOther = new vrRenderVector();
+            auto* renderOther = new vrRenderVector();
             renderOther->SetSize(1);
             renderOther->SetColorPen(wxColor(150, 150, 150));
             m_viewerLayerManager->Add(-1, layerOther, renderOther);
@@ -414,7 +414,7 @@ void asForecastViewer::Redraw() {
         }
 
         m_layerManager->Add(layerSpecific);
-        auto *renderSpecific = new vrRenderVector();
+        auto* renderSpecific = new vrRenderVector();
         renderSpecific->SetSize(1);
         renderSpecific->SetColorPen(*wxBLACK);
         m_viewerLayerManager->Add(-1, layerSpecific, renderSpecific);
@@ -422,8 +422,8 @@ void asForecastViewer::Redraw() {
 
     } else {
         // Create the layer
-        auto *layerSpecific = new vrLayerVectorFcstDots();
-        auto *layerOther = new vrLayerVectorFcstDots();
+        auto* layerSpecific = new vrLayerVectorFcstDots();
+        auto* layerOther = new vrLayerVectorFcstDots();
         if (!layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)) {
             wxFAIL;
             m_viewerLayerManager->FreezeEnd();
@@ -471,12 +471,12 @@ void asForecastViewer::Redraw() {
 
             // Select the accurate forecast
             bool accurateForecast = false;
-            asResultsForecast *forecast = nullptr;
+            asResultsForecast* forecast = nullptr;
             if (m_forecastSelection >= 0) {
                 forecast = forecasts[0];
                 accurateForecast = forecast->IsSpecificForStationId(currentId);
             } else {
-                for (auto &fcst : forecasts) {
+                for (auto& fcst : forecasts) {
                     accurateForecast = fcst->IsSpecificForStationId(currentId);
                     if (accurateForecast) {
                         forecast = fcst;
@@ -566,7 +566,7 @@ void asForecastViewer::Redraw() {
 
         if (layerOther->GetFeatureCount() > 0) {
             m_layerManager->Add(layerOther);
-            auto *renderOther = new vrRenderVector();
+            auto* renderOther = new vrRenderVector();
             renderOther->SetSize(1);
             renderOther->SetColorPen(wxColor(150, 150, 150));
             m_viewerLayerManager->Add(-1, layerOther, renderOther);
@@ -575,7 +575,7 @@ void asForecastViewer::Redraw() {
         }
 
         m_layerManager->Add(layerSpecific);
-        auto *renderSpecific = new vrRenderVector();
+        auto* renderSpecific = new vrRenderVector();
         renderSpecific->SetSize(1);
         renderSpecific->SetColorPen(*wxBLACK);
         m_viewerLayerManager->Add(-1, layerSpecific, renderSpecific);

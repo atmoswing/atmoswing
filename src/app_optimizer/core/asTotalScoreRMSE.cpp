@@ -28,8 +28,9 @@
 
 #include "asTotalScoreRMSE.h"
 
-asTotalScoreRMSE::asTotalScoreRMSE(const wxString &periodString) : asTotalScoreMSE(periodString) {}
+asTotalScoreRMSE::asTotalScoreRMSE(const wxString& periodString)
+    : asTotalScoreMSE(periodString) {}
 
-float asTotalScoreRMSE::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
+float asTotalScoreRMSE::Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const {
     return std::sqrt(asTotalScoreMSE::Assess(targetDates, scores, timeArray));
 }

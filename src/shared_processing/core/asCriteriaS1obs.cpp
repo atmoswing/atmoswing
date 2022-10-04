@@ -27,7 +27,8 @@
 
 #include "asCriteriaS1obs.h"
 
-asCriteriaS1obs::asCriteriaS1obs() : asCriteria("S1obs", _("S01 with division by actual value"), Asc) {
+asCriteriaS1obs::asCriteriaS1obs()
+    : asCriteria("S1obs", _("S01 with division by actual value"), Asc) {
     m_minPointsNb = 2;
     m_scaleWorst = 200;
     m_canUseInline = false;
@@ -35,7 +36,7 @@ asCriteriaS1obs::asCriteriaS1obs() : asCriteria("S1obs", _("S01 with division by
 
 asCriteriaS1obs::~asCriteriaS1obs() = default;
 
-float asCriteriaS1obs::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
+float asCriteriaS1obs::Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() == rowsNb);
@@ -52,13 +53,15 @@ float asCriteriaS1obs::Assess(const a2f &refData, const a2f &evalData, int rowsN
 
     dividend = (((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)) -
                  (evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)))
-                    .abs()).sum() +
+                    .abs())
+                   .sum() +
                (((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)) -
                  (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)))
-                    .abs()).sum();
+                    .abs())
+                   .sum();
 
     divisor = ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)).abs()).sum() +
-        ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)).abs()).sum();
+              ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)).abs()).sum();
 
     if (divisor > 0) {
         return 100.0f * (dividend / divisor);  // Can be NaN

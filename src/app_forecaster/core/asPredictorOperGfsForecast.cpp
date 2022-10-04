@@ -31,7 +31,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId) : asPredictorOper(dataId) {
+asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString& dataId)
+    : asPredictorOper(dataId) {
     // Set the basic properties.
     m_datasetId = "NWS_GFS_Forecast";
     m_provider = "NWS";
@@ -59,7 +60,7 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId) :
 asPredictorOperGfsForecast::~asPredictorOperGfsForecast() {}
 
 bool asPredictorOperGfsForecast::Init() {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
 
     // Last element in grib code: level type (http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-5.shtml)
 

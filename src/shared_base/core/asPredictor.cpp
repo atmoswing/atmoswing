@@ -60,7 +60,7 @@
 #include "asPredictorNoaaOisst2.h"
 #include "asTimeArray.h"
 
-asPredictor::asPredictor(const wxString &dataId)
+asPredictor::asPredictor(const wxString& dataId)
     : m_fileType(asFile::Netcdf),
       m_initialized(false),
       m_standardized(false),
@@ -108,8 +108,8 @@ asPredictor::asPredictor(const wxString &dataId)
     }
 }
 
-asPredictor *asPredictor::GetInstance(const wxString &datasetId, const wxString &dataId, const wxString &directory) {
-    asPredictor *predictor = nullptr;
+asPredictor* asPredictor::GetInstance(const wxString& datasetId, const wxString& dataId, const wxString& directory) {
+    asPredictor* predictor = nullptr;
 
     if (datasetId.IsSameAs("GenericNetcdf", false)) {
         predictor = new asPredictorGenericNetcdf(dataId);
@@ -180,7 +180,7 @@ bool asPredictor::Init() {
     return false;
 }
 
-bool asPredictor::SetData(vva2f &val) {
+bool asPredictor::SetData(vva2f& val) {
     wxASSERT(m_time.size() > 0);
     wxASSERT((int)m_time.size() == (int)val.size());
 
@@ -418,7 +418,7 @@ bool asPredictor::CheckFilesPresence() {
     return true;
 }
 
-bool asPredictor::Load(asAreaGrid *desiredArea, asTimeArray &timeArray, float level) {
+bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float level) {
     m_level = level;
 
     if (!m_initialized) {
@@ -459,7 +459,7 @@ bool asPredictor::Load(asAreaGrid *desiredArea, asTimeArray &timeArray, float le
         }
 
         // Create a new area matching the dataset
-        asAreaGrid *dataArea = CreateMatchingArea(desiredArea);
+        asAreaGrid* dataArea = CreateMatchingArea(desiredArea);
 
         // Store time array
         m_time = timeArray.GetTimeArray();
@@ -505,11 +505,11 @@ bool asPredictor::Load(asAreaGrid *desiredArea, asTimeArray &timeArray, float le
         }
 
         wxDELETE(dataArea);
-    } catch (std::bad_alloc &ba) {
+    } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation (%s) caught when loading data %s (%s)."), msg, m_dataId, m_datasetName);
         return false;
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         wxLogError(_("Failed to load data (exception)."));
@@ -521,29 +521,29 @@ bool asPredictor::Load(asAreaGrid *desiredArea, asTimeArray &timeArray, float le
     return true;
 }
 
-bool asPredictor::Load(asAreaGrid &desiredArea, asTimeArray &timeArray, float level) {
+bool asPredictor::Load(asAreaGrid& desiredArea, asTimeArray& timeArray, float level) {
     return Load(&desiredArea, timeArray, level);
 }
 
-bool asPredictor::Load(asAreaGrid &desiredArea, double date, float level) {
+bool asPredictor::Load(asAreaGrid& desiredArea, double date, float level) {
     asTimeArray timeArray(date);
     timeArray.Init();
 
     return Load(&desiredArea, timeArray, level);
 }
 
-bool asPredictor::Load(asAreaGrid *desiredArea, double date, float level) {
+bool asPredictor::Load(asAreaGrid* desiredArea, double date, float level) {
     asTimeArray timeArray(date);
     timeArray.Init();
 
     return Load(desiredArea, timeArray, level);
 }
 
-void asPredictor::ListFiles(asTimeArray &timeArray) {
+void asPredictor::ListFiles(asTimeArray& timeArray) {
     m_files = vwxs();
 }
 
-bool asPredictor::CheckTimeArray(asTimeArray &timeArray) {
+bool asPredictor::CheckTimeArray(asTimeArray& timeArray) {
     // Check the time steps
     if ((timeArray.GetTimeStepDays() > 0) && (m_fStr.timeStep / 24.0 > timeArray.GetTimeStepDays())) {
         wxLogError(_("The desired timestep is smaller than the data timestep."));
@@ -567,7 +567,7 @@ bool asPredictor::CheckTimeArray(asTimeArray &timeArray) {
     return true;
 }
 
-void asPredictor::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictor::ConvertToMjd(a1d& time, double refValue) const {
     wxFAIL;
 }
 
@@ -575,7 +575,7 @@ double asPredictor::FixTimeValue(double time) const {
     return time;
 }
 
-bool asPredictor::EnquireFileStructure(asTimeArray &timeArray) {
+bool asPredictor::EnquireFileStructure(asTimeArray& timeArray) {
     wxASSERT(m_files.size() > 0);
 
     switch (m_fileType) {
@@ -593,10 +593,10 @@ bool asPredictor::EnquireFileStructure(asTimeArray &timeArray) {
     return false;
 }
 
-bool asPredictor::ExtractFromFiles(asAreaGrid *&dataArea, asTimeArray &timeArray) {
+bool asPredictor::ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeArray) {
     switch (m_fileType) {
         case (asFile::Netcdf): {
-            for (const auto &fileName : m_files) {
+            for (const auto& fileName : m_files) {
                 if (!ExtractFromNetcdfFile(fileName, dataArea, timeArray)) {
                     return false;
                 }
@@ -604,7 +604,7 @@ bool asPredictor::ExtractFromFiles(asAreaGrid *&dataArea, asTimeArray &timeArray
             break;
         }
         case (asFile::Grib): {
-            for (const auto &fileName : m_files) {
+            for (const auto& fileName : m_files) {
                 if (!ExtractFromGribFile(fileName, dataArea, timeArray)) {
                     return false;
                 }
@@ -645,7 +645,7 @@ bool asPredictor::EnquireNetcdfFileStructure() {
     return true;
 }
 
-bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray) {
+bool asPredictor::ExtractFromNetcdfFile(const wxString& fileName, asAreaGrid*& dataArea, asTimeArray& timeArray) {
     // Open the NetCDF file
     ThreadsManager().CritSectionNetCDF().Enter();
     asFileNetcdf ncFile(fileName, asFileNetcdf::ReadOnly);
@@ -685,7 +685,7 @@ bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asAreaGrid *&d
     return true;
 }
 
-bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray) {
+bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
     wxASSERT(m_files.size() > 0);
 
     a1d times = timeArray.GetTimeArray();
@@ -754,7 +754,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray) {
     return true;
 }
 
-bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaGrid *&dataArea, asTimeArray &timeArray) {
+bool asPredictor::ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dataArea, asTimeArray& timeArray) {
     // Handle missing file
     if (fileName.IsEmpty()) {
         if (FillWithNaNs()) {
@@ -835,7 +835,7 @@ bool asPredictor::FillWithNaNs() {
     return true;
 }
 
-bool asPredictor::ParseFileStructure(asFileNetcdf &ncFile) {
+bool asPredictor::ParseFileStructure(asFileNetcdf& ncFile) {
     if (!ExtractSpatialAxes(ncFile)) return false;
     if (!ExtractLevelAxis(ncFile)) return false;
     if (!ExtractTimeAxis(ncFile)) return false;
@@ -843,7 +843,7 @@ bool asPredictor::ParseFileStructure(asFileNetcdf &ncFile) {
     return CheckFileStructure();
 }
 
-bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile) {
+bool asPredictor::ExtractTimeAxis(asFileNetcdf& ncFile) {
     m_fStr.time = a1d(ncFile.GetVarLength(m_fStr.dimTimeName));
 
     switch (ncFile.GetVarType(m_fStr.dimTimeName)) {
@@ -894,7 +894,7 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile) {
     return true;
 }
 
-bool asPredictor::ExtractLevelAxis(asFileNetcdf &ncFile) {
+bool asPredictor::ExtractLevelAxis(asFileNetcdf& ncFile) {
     if (m_fStr.hasLevelDim) {
         m_fStr.levels = a1d(ncFile.GetVarLength(m_fStr.dimLevelName));
 
@@ -940,7 +940,7 @@ bool asPredictor::ExtractLevelAxis(asFileNetcdf &ncFile) {
     return true;
 }
 
-bool asPredictor::ExtractSpatialAxes(asFileNetcdf &ncFile) {
+bool asPredictor::ExtractSpatialAxes(asFileNetcdf& ncFile) {
     if (!ncFile.HasVariable(m_fStr.dimLonName)) {
         if (ncFile.HasVariable("x")) {
             m_fStr.dimLonName = "x";
@@ -999,7 +999,7 @@ bool asPredictor::ExtractSpatialAxes(asFileNetcdf &ncFile) {
     return true;
 }
 
-bool asPredictor::ParseFileStructure(asFileGrib *gbFile0) {
+bool asPredictor::ParseFileStructure(asFileGrib* gbFile0) {
     // Get full axes from the file
     gbFile0->GetXaxis(m_fStr.lons);
     gbFile0->GetYaxis(m_fStr.lats);
@@ -1020,7 +1020,7 @@ bool asPredictor::ParseFileStructure(asFileGrib *gbFile0) {
     return CheckFileStructure();
 }
 
-bool asPredictor::ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1) {
+bool asPredictor::ParseFileStructure(asFileGrib* gbFile0, asFileGrib* gbFile1) {
     // Get full axes from the file
     gbFile0->GetXaxis(m_fStr.lons);
     gbFile0->GetYaxis(m_fStr.lats);
@@ -1087,7 +1087,7 @@ bool asPredictor::HasDesiredLevel(bool useWarnings) {
     return false;
 }
 
-asAreaGrid *asPredictor::CreateMatchingArea(asAreaGrid *desiredArea) {
+asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
     wxASSERT(m_fStr.lons.size() > 0);
     wxASSERT(m_fStr.lats.size() > 0);
 
@@ -1099,7 +1099,7 @@ asAreaGrid *asPredictor::CreateMatchingArea(asAreaGrid *desiredArea) {
         }
 
         if (desiredArea->IsRegular()) {
-            auto desiredAreaReg = dynamic_cast<asAreaRegGrid *>(desiredArea);
+            auto desiredAreaReg = dynamic_cast<asAreaRegGrid*>(desiredArea);
 
             if (!strideAllowed) {
                 m_fInd.lonStep = 1;
@@ -1131,7 +1131,7 @@ asAreaGrid *asPredictor::CreateMatchingArea(asAreaGrid *desiredArea) {
             return dataArea;
 
         } else {
-            auto desiredAreaGen = dynamic_cast<asAreaGenGrid *>(desiredArea);
+            auto desiredAreaGen = dynamic_cast<asAreaGenGrid*>(desiredArea);
             m_fInd.lonStep = 1;
             m_fInd.latStep = 1;
             auto dataArea = new asAreaGenGrid(*desiredAreaGen);
@@ -1154,10 +1154,9 @@ asAreaGrid *asPredictor::CreateMatchingArea(asAreaGrid *desiredArea) {
     return nullptr;
 }
 
-bool asPredictor::GetAxesIndexes(asAreaGrid *&dataArea, asTimeArray &timeArray) {
-
+bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) {
     int iStartTimeArray = timeArray.GetIndexFirstAfter(m_fStr.time[0], m_fStr.timeStep);
-    int iEndTimeArray = timeArray.GetIndexFirstBefore(m_fStr.time[m_fStr.time.size()-1], m_fStr.timeStep);
+    int iEndTimeArray = timeArray.GetIndexFirstBefore(m_fStr.time[m_fStr.time.size() - 1], m_fStr.timeStep);
 
     if (iStartTimeArray == asOUT_OF_RANGE || iEndTimeArray == asOUT_OF_RANGE) {
         m_fInd.timeCountFile = 0;
@@ -1168,9 +1167,10 @@ bool asPredictor::GetAxesIndexes(asAreaGrid *&dataArea, asTimeArray &timeArray) 
     m_fInd.timeStartStorage = iStartTimeArray;
 
     if (m_fStr.time.size() > 1) {
-
-        int iStartTimeFile = asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size()-1], timeArray[iStartTimeArray]);
-        int iEndTimeFile = asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size()-1], timeArray[iEndTimeArray]);
+        int iStartTimeFile =
+            asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size() - 1], timeArray[iStartTimeArray]);
+        int iEndTimeFile =
+            asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size() - 1], timeArray[iEndTimeArray]);
 
         if (iStartTimeFile == asOUT_OF_RANGE || iEndTimeFile == asOUT_OF_RANGE) {
             return false;
@@ -1199,30 +1199,30 @@ bool asPredictor::GetAxesIndexes(asAreaGrid *&dataArea, asTimeArray &timeArray) 
 
     if (dataArea) {
         // Get the spatial extent
-        auto lonMin = (float) dataArea->GetXaxisStart();
-        auto latMinStart = (float) dataArea->GetYaxisStart();
-        auto latMinEnd = (float) dataArea->GetYaxisEnd();
+        auto lonMin = (float)dataArea->GetXaxisStart();
+        auto latMinStart = (float)dataArea->GetYaxisStart();
+        auto latMinEnd = (float)dataArea->GetYaxisEnd();
 
         // The dimensions lengths
         m_fInd.area.lonCount = dataArea->GetXaxisPtsnb();
         m_fInd.area.latCount = dataArea->GetYaxisPtsnb();
 
         // Get the spatial indices of the desired data
-        m_fInd.area.lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
-                                             lonMin, 0.01f, asHIDE_WARNINGS);
+        m_fInd.area.lonStart =
+            asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin, 0.01f, asHIDE_WARNINGS);
         if (m_fInd.area.lonStart == asOUT_OF_RANGE) {
             // If not found, try with negative angles
-            m_fInd.area.lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
-                                                 lonMin - 360, 0.01f, asHIDE_WARNINGS);
+            m_fInd.area.lonStart =
+                asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin - 360, 0.01f, asHIDE_WARNINGS);
         }
         if (m_fInd.area.lonStart == asOUT_OF_RANGE) {
             // If not found, try with angles above 360 degrees
-            m_fInd.area.lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
-                                                 lonMin + 360, 0.01f, asHIDE_WARNINGS);
+            m_fInd.area.lonStart =
+                asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin + 360, 0.01f, asHIDE_WARNINGS);
         }
         if (m_fInd.area.lonStart < 0) {
-            wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin,
-                       m_fStr.lons[0], (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1]);
+            wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin, m_fStr.lons[0],
+                       (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1]);
             return false;
         }
         wxASSERT_MSG(m_fInd.area.lonStart >= 0,
@@ -1231,8 +1231,8 @@ bool asPredictor::GetAxesIndexes(asAreaGrid *&dataArea, asTimeArray &timeArray) 
 
         int indexStartLat1 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinStart, 0.01f);
         int indexStartLat2 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinEnd, 0.01f);
-        wxASSERT_MSG(indexStartLat1 >= 0, wxString::Format("Looking for %g in %g to %g", latMinStart,
-                                                           m_fStr.lats[0], m_fStr.lats[m_fStr.lats.size() - 1]));
+        wxASSERT_MSG(indexStartLat1 >= 0, wxString::Format("Looking for %g in %g to %g", latMinStart, m_fStr.lats[0],
+                                                           m_fStr.lats[m_fStr.lats.size() - 1]));
         wxASSERT_MSG(indexStartLat2 >= 0, wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fStr.lats[0],
                                                            m_fStr.lats[m_fStr.lats.size() - 1]));
         m_fInd.area.latStart = wxMin(indexStartLat1, indexStartLat2);
@@ -1262,7 +1262,7 @@ bool asPredictor::GetAxesIndexes(asAreaGrid *&dataArea, asTimeArray &timeArray) 
     return true;
 }
 
-size_t *asPredictor::GetIndexesStartNcdf() const {
+size_t* asPredictor::GetIndexesStartNcdf() const {
     if (!m_isEnsemble) {
         if (m_fStr.hasLevelDim) {
             static size_t array[4] = {0, 0, 0, 0};
@@ -1302,7 +1302,7 @@ size_t *asPredictor::GetIndexesStartNcdf() const {
     }
 }
 
-size_t *asPredictor::GetIndexesCountNcdf() const {
+size_t* asPredictor::GetIndexesCountNcdf() const {
     if (!m_isEnsemble) {
         if (m_fStr.hasLevelDim) {
             static size_t array[4] = {0, 0, 0, 0};
@@ -1342,7 +1342,7 @@ size_t *asPredictor::GetIndexesCountNcdf() const {
     }
 }
 
-ptrdiff_t *asPredictor::GetIndexesStrideNcdf() const {
+ptrdiff_t* asPredictor::GetIndexesStrideNcdf() const {
     if (!m_isEnsemble) {
         if (m_fStr.hasLevelDim) {
             static ptrdiff_t array[4] = {0, 0, 0, 0};
@@ -1382,7 +1382,7 @@ ptrdiff_t *asPredictor::GetIndexesStrideNcdf() const {
     }
 }
 
-int *asPredictor::GetIndexesStartGrib() const {
+int* asPredictor::GetIndexesStartGrib() const {
     static int array[3] = {0, 0, 0};
     array[0] = m_fInd.timeStartFile;
     array[1] = m_fInd.area.lonStart;
@@ -1391,7 +1391,7 @@ int *asPredictor::GetIndexesStartGrib() const {
     return array;
 }
 
-int *asPredictor::GetIndexesCountGrib() const {
+int* asPredictor::GetIndexesCountGrib() const {
     static int array[3] = {0, 0, 0};
     array[0] = m_fInd.timeCountFile;
     array[1] = m_fInd.area.lonCount;
@@ -1400,7 +1400,7 @@ int *asPredictor::GetIndexesCountGrib() const {
     return array;
 }
 
-bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile) {
+bool asPredictor::GetDataFromFile(asFileNetcdf& ncFile) {
     // Check if loading data is relevant
     if (m_fInd.timeCountFile == 0) {
         return true;
@@ -1426,12 +1426,12 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile) {
     dataF.resize(totLength);
 
     // Get data from netCDF file.
-    ncFile.GetVarSample(m_fileVarName, GetIndexesStartNcdf(), GetIndexesCountNcdf(),
-                        GetIndexesStrideNcdf(), &dataF[0]);
+    ncFile.GetVarSample(m_fileVarName, GetIndexesStartNcdf(), GetIndexesCountNcdf(), GetIndexesStrideNcdf(), &dataF[0]);
 
     // Allocate space into compositeData if not already done
     if (m_data.capacity() == 0) {
-        int totSize = m_fInd.memberCount * m_time.size() * m_fInd.area.latCount * (m_fInd.area.lonCount + 1);  // +1 in case of a border
+        int totSize = m_fInd.memberCount * m_time.size() * m_fInd.area.latCount *
+                      (m_fInd.area.lonCount + 1);  // +1 in case of a border
         m_data.reserve(totSize);
     }
 
@@ -1447,7 +1447,6 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile) {
     int iTimeFile = m_fInd.timeStartFile;
     int iTimeData = 0;
     while (iTimeStorage < m_fInd.timeStartStorage + m_fInd.timeCountStorage) {
-
         if (!m_fInd.timeConsistent) {
             if (iTimeFile > m_fInd.timeStartFile + m_fInd.timeCountFile - 1) {
                 // Fill with NaN if data are missing after the data
@@ -1476,15 +1475,13 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile) {
 
             for (int iLat = 0; iLat < m_fInd.area.latCount; iLat++) {
                 for (int iLon = 0; iLon < m_fInd.area.lonCount; iLon++) {
-                    ind = iLon + iLat * m_fInd.area.lonCount +
-                          iMem * m_fInd.area.lonCount * m_fInd.area.latCount +
+                    ind = iLon + iLat * m_fInd.area.lonCount + iMem * m_fInd.area.lonCount * m_fInd.area.latCount +
                           iTimeData * m_fInd.memberCount * m_fInd.area.lonCount * m_fInd.area.latCount;
                     if (m_fStr.lats.size() > 0 && m_fStr.lats[1] > m_fStr.lats[0]) {
                         int latRevIndex = m_fInd.area.latCount - 1 - iLat;
                         ind = iLon + latRevIndex * m_fInd.area.lonCount +
                               iMem * m_fInd.area.lonCount * m_fInd.area.latCount +
-                              iTimeData * m_fInd.memberCount * m_fInd.area.lonCount *
-                              m_fInd.area.latCount;
+                              iTimeData * m_fInd.memberCount * m_fInd.area.lonCount * m_fInd.area.latCount;
                     }
 
                     latLonData(iLat, iLon) = dataF[ind];
@@ -1517,7 +1514,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile) {
     return true;
 }
 
-bool asPredictor::GetDataFromFile(asFileGrib &gbFile) {
+bool asPredictor::GetDataFromFile(asFileGrib& gbFile) {
     // Check if loading data is relevant
     if (m_fInd.timeCountFile == 0 || m_fInd.timeCountStorage == 0) {
         return true;
@@ -1544,7 +1541,8 @@ bool asPredictor::GetDataFromFile(asFileGrib &gbFile) {
 
     // Allocate space into compositeData if not already done
     if (m_data.capacity() == 0) {
-        int totSize = m_fInd.memberCount * m_time.size() * m_fInd.area.latCount * (m_fInd.area.lonCount + 1);  // +1 in case of a border
+        int totSize = m_fInd.memberCount * m_time.size() * m_fInd.area.latCount *
+                      (m_fInd.area.lonCount + 1);  // +1 in case of a border
         m_data.reserve(totSize);
     }
 
@@ -1560,7 +1558,6 @@ bool asPredictor::GetDataFromFile(asFileGrib &gbFile) {
     int iTimeFile = m_fInd.timeStartFile;
     int iTimeData = 0;
     while (iTimeStorage < m_fInd.timeStartStorage + m_fInd.timeCountStorage) {
-
         if (!m_fInd.timeConsistent) {
             if (iTimeFile > m_fInd.timeStartFile + m_fInd.timeCountFile - 1) {
                 // Fill with NaN if data are missing after the data
@@ -1648,7 +1645,6 @@ bool asPredictor::TransformData() {
 }
 
 bool asPredictor::StandardizeData(double mean, double sd) {
-
     bool nansReplaced = wxFileConfig::Get()->ReadBool("/General/ReplaceNans", false);
 
     if (m_data[0].size() > 1) {
@@ -1661,8 +1657,8 @@ bool asPredictor::StandardizeData(double mean, double sd) {
         double sum = 0;
         int count = 0;
 
-        for (auto &datTime : m_data) {
-            for (auto &datMem : datTime) {
+        for (auto& datTime : m_data) {
+            for (auto& datMem : datTime) {
                 if (!nansReplaced) {
                     sum += datMem.isNaN().select(0, datMem).sum();
                     count += datMem.size() - datMem.isNaN().count();
@@ -1682,8 +1678,8 @@ bool asPredictor::StandardizeData(double mean, double sd) {
         // Get the standard deviation
         sd = 0;
 
-        for (auto &datTime : m_data) {
-            for (auto &datMem : datTime) {
+        for (auto& datTime : m_data) {
+            for (auto& datMem : datTime) {
                 if (!nansReplaced) {
                     sd += (datMem - mean).isNaN().select(0, datMem - mean).cwiseAbs2().sum();
                 } else {
@@ -1700,8 +1696,8 @@ bool asPredictor::StandardizeData(double mean, double sd) {
     }
 
     // Standardize
-    for (auto &datTime : m_data) {
-        for (auto &datMem : datTime) {
+    for (auto& datTime : m_data) {
+        for (auto& datMem : datTime) {
             datMem = (datMem - mean) / sd;
         }
     }
@@ -1711,7 +1707,7 @@ bool asPredictor::StandardizeData(double mean, double sd) {
     return true;
 }
 
-bool asPredictor::ClipToArea(asAreaGrid *desiredArea) {
+bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
     double xMin = desiredArea->GetXmin();
     double xMax = desiredArea->GetXmax();
     if (xMin > xMax) {
@@ -1726,7 +1722,8 @@ bool asPredictor::ClipToArea(asAreaGrid *desiredArea) {
     int xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin, toleranceLon, asHIDE_WARNINGS);
     int xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax, toleranceLon, asHIDE_WARNINGS);
     if (xStartIndex < 0) {
-        xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + 360, toleranceLon, asHIDE_WARNINGS);
+        xStartIndex =
+            asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + 360, toleranceLon, asHIDE_WARNINGS);
         xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax + 360, toleranceLon, asHIDE_WARNINGS);
         if (xStartIndex < 0 || xEndIndex < 0) {
             xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin - 360, toleranceLon);
@@ -2015,7 +2012,7 @@ bool asPredictor::Inline() {
     return true;
 }
 
-bool asPredictor::InterpolateOnGrid(asAreaGrid *dataArea, asAreaGrid *desiredArea) {
+bool asPredictor::InterpolateOnGrid(asAreaGrid* dataArea, asAreaGrid* desiredArea) {
     wxASSERT(dataArea);
     wxASSERT(desiredArea);
     bool changeXstart = false, changeXsteps = false, changeYstart = false, changeYsteps = false;
@@ -2198,14 +2195,14 @@ bool asPredictor::InterpolateOnGrid(asAreaGrid *dataArea, asAreaGrid *desiredAre
                             valLLcorner = m_data[iTime][iMem](indexYfloor, indexXfloor);
                             valULcorner = m_data[iTime][iMem](indexYceil, indexXfloor);
 
-                            latlonTimeData[iTime][iMem](iLat, iLon) =
-                                (1 - dX) * (1 - dY) * valLLcorner + (1 - dX) * (dY)*valULcorner;
+                            latlonTimeData[iTime][iMem](iLat, iLon) = (1 - dX) * (1 - dY) * valLLcorner +
+                                                                      (1 - dX) * (dY)*valULcorner;
                         } else if (dY == 0) {
                             valLLcorner = m_data[iTime][iMem](indexYfloor, indexXfloor);
                             valLRcorner = m_data[iTime][iMem](indexYfloor, indexXceil);
 
-                            latlonTimeData[iTime][iMem](iLat, iLon) =
-                                (1 - dX) * (1 - dY) * valLLcorner + (dX) * (1 - dY) * valLRcorner;
+                            latlonTimeData[iTime][iMem](iLat, iLon) = (1 - dX) * (1 - dY) * valLLcorner +
+                                                                      (dX) * (1 - dY) * valLRcorner;
                         } else {
                             valLLcorner = m_data[iTime][iMem](indexYfloor, indexXfloor);
                             valULcorner = m_data[iTime][iMem](indexYceil, indexXfloor);
@@ -2237,8 +2234,8 @@ float asPredictor::GetMinValue() const {
     float minValue = m_data[0][0](0, 0);
     float tmpValue;
 
-    for (const auto &dat : m_data) {
-        for (const auto &v : dat) {
+    for (const auto& dat : m_data) {
+        for (const auto& v : dat) {
             tmpValue = v.minCoeff();
             if (tmpValue < minValue) {
                 minValue = tmpValue;
@@ -2253,8 +2250,8 @@ float asPredictor::GetMaxValue() const {
     float maxValue = m_data[0][0](0, 0);
     float tmpValue;
 
-    for (const auto &dat : m_data) {
-        for (const auto &v : dat) {
+    for (const auto& dat : m_data) {
+        for (const auto& v : dat) {
             tmpValue = v.maxCoeff();
             if (tmpValue > maxValue) {
                 maxValue = tmpValue;
@@ -2266,8 +2263,8 @@ float asPredictor::GetMaxValue() const {
 }
 
 bool asPredictor::HasNaN() const {
-    for (const auto &dat : m_data) {
-        for (const auto &v : dat) {
+    for (const auto& dat : m_data) {
+        for (const auto& v : dat) {
             if (v.hasNaN()) {
                 return true;
             }
@@ -2277,7 +2274,7 @@ bool asPredictor::HasNaN() const {
     return false;
 }
 
-bool asPredictor::IsLatLon(const wxString &datasetId) {
+bool asPredictor::IsLatLon(const wxString& datasetId) {
     if (datasetId.IsSameAs("CORDEX", false)) {
         return false;
     }

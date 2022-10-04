@@ -36,13 +36,14 @@
 
 #include "AtmoswingMainViewer.h"
 
-AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame) : asFrameForecast(frame) {
+AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame* frame)
+    : asFrameForecast(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
 
     // Config file
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
 
     // Create log window and file
     delete wxLog::SetActiveTarget(new asLogGui());
@@ -51,15 +52,15 @@ AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame) : asFrameForecast(fra
     Log()->CreateFile("AtmoSwingViewer.log");
 }
 
-void AtmoswingFrameViewer::OnClose(wxCloseEvent &event) {
+void AtmoswingFrameViewer::OnClose(wxCloseEvent& event) {
     Close(true);
 }
 
-void AtmoswingFrameViewer::OnQuit(wxCommandEvent &event) {
+void AtmoswingFrameViewer::OnQuit(wxCommandEvent& event) {
     Close(true);
 }
 
-void AtmoswingFrameViewer::OnShowLog(wxCommandEvent &event) {
+void AtmoswingFrameViewer::OnShowLog(wxCommandEvent& event) {
     wxASSERT(m_logWindow);
     m_logWindow->Show();
 }

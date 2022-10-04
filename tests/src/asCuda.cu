@@ -27,13 +27,13 @@
 
 #include "asCuda.cuh"
 
-__global__ void add(int n, float *x, float *y) {
+__global__ void add(int n, float* x, float* y) {
     int index = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
     for (int i = index; i < n; i += stride) y[i] = x[i] + y[i];
 }
 
-__global__ void addStreams(int n, float *x, float *y, int offset) {
+__global__ void addStreams(int n, float* x, float* y, int offset) {
     int index = offset + blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
     for (int i = index; i < n; i += stride) y[i] = x[i] + y[i];
@@ -45,12 +45,12 @@ bool CudaProcessSum() {
     int N = 1 << 20;
 
     float *hx, *dx = nullptr;
-    hx = (float *)malloc(N * sizeof(float));
-    checkCudaErrors(cudaMalloc((void **)&dx, N * sizeof(float)));
+    hx = (float*)malloc(N * sizeof(float));
+    checkCudaErrors(cudaMalloc((void**)&dx, N * sizeof(float)));
 
     float *hy, *dy = nullptr;
-    hy = (float *)malloc(N * sizeof(float));
-    checkCudaErrors(cudaMalloc((void **)&dy, N * sizeof(float)));
+    hy = (float*)malloc(N * sizeof(float));
+    checkCudaErrors(cudaMalloc((void**)&dy, N * sizeof(float)));
 
     // initialize x and y arrays on the host
     for (int i = 0; i < N; i++) {
@@ -95,12 +95,12 @@ bool CudaProcessSumWithStreams() {
     int streamSize = N / nStreams;
 
     float *hx, *dx = nullptr;
-    hx = (float *)malloc(N * sizeof(float));
-    checkCudaErrors(cudaMalloc((void **)&dx, N * sizeof(float)));
+    hx = (float*)malloc(N * sizeof(float));
+    checkCudaErrors(cudaMalloc((void**)&dx, N * sizeof(float)));
 
     float *hy, *dy = nullptr;
-    hy = (float *)malloc(N * sizeof(float));
-    checkCudaErrors(cudaMalloc((void **)&dy, N * sizeof(float)));
+    hy = (float*)malloc(N * sizeof(float));
+    checkCudaErrors(cudaMalloc((void**)&dy, N * sizeof(float)));
 
     // initialize x and y arrays on the host
     for (int i = 0; i < N; i++) {
@@ -127,7 +127,7 @@ bool CudaProcessSumWithStreams() {
 
     checkCudaErrors(cudaDeviceSynchronize());
 
-    for (auto &stream : streams) cudaStreamDestroy(stream);
+    for (auto& stream : streams) cudaStreamDestroy(stream);
 
     // Check for errors (all values should be 3.0f)
     float maxError = 0.0f;

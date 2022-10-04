@@ -33,10 +33,10 @@
 
 class asFramePreferencesDownscaler : public asFramePreferencesDownscalerVirtual {
   public:
-    explicit asFramePreferencesDownscaler(wxWindow *parent, wxWindowID id = asWINDOW_PREFERENCES);
+    explicit asFramePreferencesDownscaler(wxWindow* parent, wxWindowID id = asWINDOW_PREFERENCES);
 
   protected:
-    void CloseFrame(wxCommandEvent &event) override;
+    void CloseFrame(wxCommandEvent& event) override;
 
     void Update() override;
 
@@ -44,11 +44,11 @@ class asFramePreferencesDownscaler : public asFramePreferencesDownscalerVirtual 
 
     void SavePreferences() const;
 
-    void SaveAndClose(wxCommandEvent &event) override;
+    void SaveAndClose(wxCommandEvent& event) override;
 
-    void ApplyChanges(wxCommandEvent &event) override;
+    void ApplyChanges(wxCommandEvent& event) override;
 
-    void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
+    void OnChangeMultithreadingCheckBox(wxCommandEvent& event) override;
 };
 
 #endif

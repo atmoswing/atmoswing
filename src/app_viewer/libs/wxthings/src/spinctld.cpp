@@ -15,9 +15,9 @@
 
 #ifndef WX_PRECOMP
 
+#include "wx/crt.h"
 #include "wx/textctrl.h"
 #include "wx/valtext.h"  // for wxTextValidator
-#include "wx/crt.h"
 
 #endif  // WX_PRECOMP
 
@@ -53,9 +53,9 @@
 // the textctrl used for the wxSpinCtrlDbl, needed for keypresses
 class wxSpinCtrlDblTextCtrl : public wxTextCtrl {
   public:
-    wxSpinCtrlDblTextCtrl(wxWindow *parent, wxWindowID id, const wxString &value = wxEmptyString,
-                          const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, long style = 0,
-                          const wxValidator &validator = wxDefaultValidator, const wxString &name = wxTextCtrlNameStr);
+    wxSpinCtrlDblTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value = wxEmptyString,
+                          const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0,
+                          const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr);
 
     // MSW sends extra kill focus event
     virtual ~wxSpinCtrlDblTextCtrl() {
@@ -63,10 +63,10 @@ class wxSpinCtrlDblTextCtrl : public wxTextCtrl {
         m_parent = NULL;
     }
 
-    wxSpinCtrlDbl *m_parent;
+    wxSpinCtrlDbl* m_parent;
 
-    void OnChar(wxKeyEvent &event);         // pass chars to wxSpinCtrlDbl
-    void OnKillFocus(wxFocusEvent &event);  // sync the spin to textctrl
+    void OnChar(wxKeyEvent& event);         // pass chars to wxSpinCtrlDbl
+    void OnKillFocus(wxFocusEvent& event);  // sync the spin to textctrl
 
   private:
     DECLARE_EVENT_TABLE()
@@ -79,18 +79,18 @@ EVT_CHAR(wxSpinCtrlDblTextCtrl::OnChar)
 EVT_KILL_FOCUS(wxSpinCtrlDblTextCtrl::OnKillFocus)
 END_EVENT_TABLE()
 
-wxSpinCtrlDblTextCtrl::wxSpinCtrlDblTextCtrl(wxWindow *parent, wxWindowID id, const wxString &value, const wxPoint &pos,
-                                             const wxSize &size, long style, const wxValidator &validator,
-                                             const wxString &name)
+wxSpinCtrlDblTextCtrl::wxSpinCtrlDblTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value, const wxPoint& pos,
+                                             const wxSize& size, long style, const wxValidator& validator,
+                                             const wxString& name)
     : wxTextCtrl(parent, id, value, pos, size, style, validator, name) {
-    m_parent = (wxSpinCtrlDbl *)parent;
+    m_parent = (wxSpinCtrlDbl*)parent;
 }
 
-void wxSpinCtrlDblTextCtrl::OnChar(wxKeyEvent &event) {
+void wxSpinCtrlDblTextCtrl::OnChar(wxKeyEvent& event) {
     if (m_parent) m_parent->OnChar(event);
 }
 
-void wxSpinCtrlDblTextCtrl::OnKillFocus(wxFocusEvent &event) {
+void wxSpinCtrlDblTextCtrl::OnKillFocus(wxFocusEvent& event) {
     if (m_parent) m_parent->SyncSpinToText(true);
     event.Skip();
 }
@@ -110,7 +110,7 @@ EVT_SET_FOCUS(wxSpinCtrlDbl::OnFocus)
 EVT_KILL_FOCUS(wxSpinCtrlDbl::OnKillFocus)
 END_EVENT_TABLE()
 
-    void wxSpinCtrlDbl::Init() {
+void wxSpinCtrlDbl::Init() {
     m_min = 0;
     m_max = 100;
     m_value = 0;
@@ -122,9 +122,9 @@ END_EVENT_TABLE()
     m_textCtrl = NULL;
 }
 
-bool wxSpinCtrlDbl::Create(wxWindow *parent, wxWindowID id, const wxString &value, const wxPoint &pos,
-                           const wxSize &size, long style, double min, double max, double initial, double increment,
-                           int digits, const wxString &name) {
+bool wxSpinCtrlDbl::Create(wxWindow* parent, wxWindowID id, const wxString& value, const wxPoint& pos,
+                           const wxSize& size, long style, double min, double max, double initial, double increment,
+                           int digits, const wxString& name) {
     if (!wxControl::Create(parent, id, pos, size, style | wxNO_BORDER, wxDefaultValidator, name)) return false;
 
     wxControl::SetLabel(name);
@@ -188,7 +188,7 @@ wxSpinCtrlDbl::~wxSpinCtrlDbl() {
     {
         m_textCtrl->m_parent = NULL;
 
-        wxSpinCtrlDblTextCtrl *text = m_textCtrl;
+        wxSpinCtrlDblTextCtrl* text = m_textCtrl;
         m_textCtrl = NULL;
         delete text;
     }
@@ -229,7 +229,7 @@ static wxSize s_spinctrl_bestSize(-999, -999);
 wxSize wxSpinCtrlDbl::DoGetBestSize() const {
     // wxPrintf(wxT("GetBestSize %d\n"), GetId());
     if (s_spinctrl_bestSize.x == -999) {
-        wxSpinCtrl spin((wxWindow *)this, wxID_ANY);
+        wxSpinCtrl spin((wxWindow*)this, wxID_ANY);
         s_spinctrl_bestSize = spin.GetBestSize();
         // oops something went wrong, set to reasonable value
         if (s_spinctrl_bestSize.GetWidth() < 20) s_spinctrl_bestSize.SetWidth(95);
@@ -239,7 +239,7 @@ wxSize wxSpinCtrlDbl::DoGetBestSize() const {
     return s_spinctrl_bestSize;
 }
 
-void wxSpinCtrlDbl::DoSetToolTip(wxToolTip *tip) {
+void wxSpinCtrlDbl::DoSetToolTip(wxToolTip* tip) {
     // forward tip to textctrl only since having the tip pop up on the buttons
     // is distracting.
     if (tip && m_textCtrl) {
@@ -258,7 +258,7 @@ void wxSpinCtrlDbl::DoSendEvent() {
     GetEventHandler()->ProcessEvent(event);
 }
 
-void wxSpinCtrlDbl::OnSpinUp(wxSpinEvent &WXUNUSED(event)) {
+void wxSpinCtrlDbl::OnSpinUp(wxSpinEvent& WXUNUSED(event)) {
     if (m_textCtrl && m_textCtrl->IsModified()) SyncSpinToText(false);
 
     if (InRange(m_value + m_increment)) {
@@ -268,7 +268,7 @@ void wxSpinCtrlDbl::OnSpinUp(wxSpinEvent &WXUNUSED(event)) {
     }
 }
 
-void wxSpinCtrlDbl::OnSpinDown(wxSpinEvent &WXUNUSED(event)) {
+void wxSpinCtrlDbl::OnSpinDown(wxSpinEvent& WXUNUSED(event)) {
     if (m_textCtrl && m_textCtrl->IsModified()) SyncSpinToText(false);
 
     if (InRange(m_value - m_increment)) {
@@ -278,17 +278,17 @@ void wxSpinCtrlDbl::OnSpinDown(wxSpinEvent &WXUNUSED(event)) {
     }
 }
 
-void wxSpinCtrlDbl::OnTextEnter(wxCommandEvent &event) {
+void wxSpinCtrlDbl::OnTextEnter(wxCommandEvent& event) {
     SyncSpinToText(true);
     event.Skip();
 }
 
-void wxSpinCtrlDbl::OnText(wxCommandEvent &event) {
+void wxSpinCtrlDbl::OnText(wxCommandEvent& event) {
     // wxPrintf(wxT("Text '%s'\n"), event.GetString()); fflush(stdout);
     event.Skip();
 }
 
-void wxSpinCtrlDbl::OnChar(wxKeyEvent &event) {
+void wxSpinCtrlDbl::OnChar(wxKeyEvent& event) {
     double modifier = 1.0;
     if (event.m_shiftDown) modifier = 2.0;
     if (event.m_controlDown) modifier *= 10.0;
@@ -372,7 +372,7 @@ void wxSpinCtrlDbl::SetValue(double value) {
     }
 }
 
-void wxSpinCtrlDbl::SetValue(const wxString &text, bool force) {
+void wxSpinCtrlDbl::SetValue(const wxString& text, bool force) {
     if (!m_textCtrl) return;
 
     double value;
@@ -465,7 +465,7 @@ void wxSpinCtrlDbl::SetDigits(int digits, formatType fmt) {
     SetValue(m_value);
 }
 
-void wxSpinCtrlDbl::SetFormat(const wxString &format) {
+void wxSpinCtrlDbl::SetFormat(const wxString& format) {
     wxString wxstr;
     if (wxstr.Printf(format.c_str(), 123456.123456) > 0) m_textFormat = format;
 
@@ -486,13 +486,13 @@ void wxSpinCtrlDbl::SetSnapToTicks(bool forceTicks) {
     }
 }
 
-void wxSpinCtrlDbl::OnFocus(wxFocusEvent &event) {
+void wxSpinCtrlDbl::OnFocus(wxFocusEvent& event) {
     if (m_textCtrl) m_textCtrl->SetFocus();  // this is to pass TAB navigation
 
     event.Skip();
 }
 
-void wxSpinCtrlDbl::OnKillFocus(wxFocusEvent &event) {
+void wxSpinCtrlDbl::OnKillFocus(wxFocusEvent& event) {
     SyncSpinToText(true);
     event.Skip();
 }
@@ -521,7 +521,7 @@ void wxSpinCtrlDbl::SyncSpinToText(bool send_event, bool force_valid) {
     }
 }
 
-bool wxSpinCtrlDbl::SetFont(const wxFont &font) {
+bool wxSpinCtrlDbl::SetFont(const wxFont& font) {
     if (!m_textCtrl) return false;
     return m_textCtrl->SetFont(font);
 }
@@ -531,7 +531,7 @@ wxFont wxSpinCtrlDbl::GetFont() const {
     return m_textCtrl->GetFont();
 }
 
-bool wxSpinCtrlDbl::SetBackgroundColour(const wxColour &colour) {
+bool wxSpinCtrlDbl::SetBackgroundColour(const wxColour& colour) {
     if (!m_textCtrl) return wxControl::SetBackgroundColour(colour);
     bool ret = false;
     ret = m_textCtrl->SetBackgroundColour(colour);
@@ -544,7 +544,7 @@ wxColour wxSpinCtrlDbl::GetBackgroundColour() const {
     return m_textCtrl->GetBackgroundColour();
 }
 
-bool wxSpinCtrlDbl::SetForegroundColour(const wxColour &colour) {
+bool wxSpinCtrlDbl::SetForegroundColour(const wxColour& colour) {
     if (!m_textCtrl) return wxControl::SetForegroundColour(colour);
     bool ret = false;
     ret = m_textCtrl->SetForegroundColour(colour);

@@ -33,7 +33,7 @@
 
 class asFileParametersDownscaling : public asFileParameters {
   public:
-    asFileParametersDownscaling(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
+    asFileParametersDownscaling(const wxString& fileName, const FileMode& fileMode = asFile::Replace);
 
     virtual ~asFileParametersDownscaling();
 

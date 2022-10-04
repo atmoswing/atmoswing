@@ -50,37 +50,37 @@ class asParametersOptimizationGAs : public asParametersOptimization {
 
     void InitChromosomeSelfAdaptationMutationRadius();
 
-    void SimpleCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints);
+    void SimpleCrossover(asParametersOptimizationGAs& otherParam, vi& crossingPoints);
 
-    void BlendingCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints, bool shareBeta,
+    void BlendingCrossover(asParametersOptimizationGAs& otherParam, vi& crossingPoints, bool shareBeta,
                            double betaMin = 0.0, double betaMax = 1.0);
 
-    void HeuristicCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints, bool shareBeta,
+    void HeuristicCrossover(asParametersOptimizationGAs& otherParam, vi& crossingPoints, bool shareBeta,
                             double betaMin = 0.0, double betaMax = 1.0);
 
-    void BinaryLikeCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints, bool shareBeta,
+    void BinaryLikeCrossover(asParametersOptimizationGAs& otherParam, vi& crossingPoints, bool shareBeta,
                              double betaMin = 0.0, double betaMax = 1.0);
 
-    void LinearCrossover(asParametersOptimizationGAs &otherParam, asParametersOptimizationGAs &thirdParam,
-                         vi &crossingPoints);
+    void LinearCrossover(asParametersOptimizationGAs& otherParam, asParametersOptimizationGAs& thirdParam,
+                         vi& crossingPoints);
 
-    void LinearInterpolation(asParametersOptimizationGAs &otherParam, bool shareBeta);
+    void LinearInterpolation(asParametersOptimizationGAs& otherParam, bool shareBeta);
 
-    void MutateUniformDistribution(double probability, bool &hasMutated);
+    void MutateUniformDistribution(double probability, bool& hasMutated);
 
-    void MutateNormalDistribution(double probability, double stdDevRatioRange, bool &hasMutated);
+    void MutateNormalDistribution(double probability, double stdDevRatioRange, bool& hasMutated);
 
-    void MutateNonUniform(double probability, int nbGen, int nbGenMax, double minRate, bool &hasMutated);
+    void MutateNonUniform(double probability, int nbGen, int nbGenMax, double minRate, bool& hasMutated);
 
-    void MutateSelfAdaptationRate(bool &hasMutated);
+    void MutateSelfAdaptationRate(bool& hasMutated);
 
-    void MutateSelfAdaptationRadius(bool &hasMutated);
+    void MutateSelfAdaptationRadius(bool& hasMutated);
 
-    void MutateSelfAdaptationRateChromosome(bool &hasMutated);
+    void MutateSelfAdaptationRateChromosome(bool& hasMutated);
 
-    void MutateSelfAdaptationRadiusChromosome(bool &hasMutated);
+    void MutateSelfAdaptationRadiusChromosome(bool& hasMutated);
 
-    void MutateMultiScale(double probability, bool &hasMutated);
+    void MutateMultiScale(double probability, bool& hasMutated);
 
     int GetChromosomeLength() {
         return (int)m_chromosomeIndices.size();
@@ -106,7 +106,7 @@ class asParametersOptimizationGAs : public asParametersOptimization {
         return m_chromosomeMutationRate;
     }
 
-    void SetChromosomeMutationRate(vf &val) {
+    void SetChromosomeMutationRate(vf& val) {
         m_chromosomeMutationRate = val;
     }
 
@@ -114,7 +114,7 @@ class asParametersOptimizationGAs : public asParametersOptimization {
         return m_chromosomeMutationRadius;
     }
 
-    void SetChromosomeMutationRadius(vf &val) {
+    void SetChromosomeMutationRadius(vf& val) {
         m_chromosomeMutationRadius = val;
     }
 

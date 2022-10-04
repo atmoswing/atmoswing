@@ -37,23 +37,23 @@ TEST(FileXml, SaveAndLoadXmlFileWxStyle) {
     // Write
     wxXmlDocument doc;
 
-    wxXmlNode *nodeBase = new wxXmlNode(wxXML_ELEMENT_NODE, "base");
+    wxXmlNode* nodeBase = new wxXmlNode(wxXML_ELEMENT_NODE, "base");
 
-    wxXmlNode *nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE, "building");
+    wxXmlNode* nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE, "building");
     nodeBuilding->AddAttribute("id", L"R\u00F4tillon");
 
     wxString stringHopital(L"h\u00F4pital", wxConvUTF8);
     ASSERT_TRUE(stringHopital.size() > 0);
-    wxXmlNode *nodeType = new wxXmlNode(wxXML_ELEMENT_NODE, "building_type");
-    wxXmlNode *nodeTypeValue = new wxXmlNode(wxXML_TEXT_NODE, "building_type", stringHopital);
+    wxXmlNode* nodeType = new wxXmlNode(wxXML_ELEMENT_NODE, "building_type");
+    wxXmlNode* nodeTypeValue = new wxXmlNode(wxXML_TEXT_NODE, "building_type", stringHopital);
     nodeType->AddChild(nodeTypeValue);
 
-    wxXmlNode *nodeLocation = new wxXmlNode(wxXML_ELEMENT_NODE, "building_location");
-    wxXmlNode *nodeLocationValue = new wxXmlNode(wxXML_TEXT_NODE, "building_location", L"Z\u00FCrich");
+    wxXmlNode* nodeLocation = new wxXmlNode(wxXML_ELEMENT_NODE, "building_location");
+    wxXmlNode* nodeLocationValue = new wxXmlNode(wxXML_TEXT_NODE, "building_location", L"Z\u00FCrich");
     nodeLocation->AddChild(nodeLocationValue);
 
-    wxXmlNode *nodeHeight = new wxXmlNode(wxXML_ELEMENT_NODE, "building_height");
-    wxXmlNode *nodeHeightValue = new wxXmlNode(wxXML_TEXT_NODE, "building_height", "40");
+    wxXmlNode* nodeHeight = new wxXmlNode(wxXML_ELEMENT_NODE, "building_height");
+    wxXmlNode* nodeHeightValue = new wxXmlNode(wxXML_TEXT_NODE, "building_height", "40");
     nodeHeight->AddChild(nodeHeightValue);
 
     nodeBuilding->AddChild(nodeType);
@@ -73,20 +73,20 @@ TEST(FileXml, SaveAndLoadXmlFileWxStyle) {
 
     EXPECT_EQ("base", doc2.GetRoot()->GetName());
 
-    wxXmlNode *childBuilding = doc2.GetRoot()->GetChildren();
+    wxXmlNode* childBuilding = doc2.GetRoot()->GetChildren();
     EXPECT_EQ(L"R\u00F4tillon", childBuilding->GetAttribute("id"));
     EXPECT_TRUE(childBuilding->GetAttribute("id").size() > 0);
 
-    wxXmlNode *childBuildingType = childBuilding->GetChildren();
+    wxXmlNode* childBuildingType = childBuilding->GetChildren();
     EXPECT_EQ("building_type", childBuildingType->GetName());
     EXPECT_EQ(L"h\u00F4pital", childBuildingType->GetNodeContent());
     EXPECT_TRUE(childBuildingType->GetNodeContent().size() > 0);
 
-    wxXmlNode *childBuildingLocation = childBuildingType->GetNext();
+    wxXmlNode* childBuildingLocation = childBuildingType->GetNext();
     EXPECT_EQ("building_location", childBuildingLocation->GetName());
     EXPECT_EQ(L"Z\u00FCrich", childBuildingLocation->GetNodeContent());
 
-    wxXmlNode *childBuildingHeight = childBuildingLocation->GetNext();
+    wxXmlNode* childBuildingHeight = childBuildingLocation->GetNext();
     EXPECT_EQ("building_height", childBuildingHeight->GetName());
     EXPECT_EQ("40", childBuildingHeight->GetNodeContent());
 
@@ -105,7 +105,7 @@ TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle) {
     asFileXml fileXml(filePath, asFile::Replace);
     ASSERT_TRUE(fileXml.Open());
 
-    wxXmlNode *nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE, "building");
+    wxXmlNode* nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE, "building");
     nodeBuilding->AddAttribute("id", wxString(L"R\u00F4tillon", wxConvUTF8));
 
     nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_type", stringHopital));
@@ -122,20 +122,20 @@ TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle) {
 
     EXPECT_EQ("atmoswing", fileXml2.GetRoot()->GetName());
 
-    wxXmlNode *childBuilding = fileXml2.GetRoot()->GetChildren();
+    wxXmlNode* childBuilding = fileXml2.GetRoot()->GetChildren();
     EXPECT_EQ(L"R\u00F4tillon", childBuilding->GetAttribute("id"));
     EXPECT_TRUE(childBuilding->GetAttribute("id").size() > 0);
 
-    wxXmlNode *childBuildingType = childBuilding->GetChildren();
+    wxXmlNode* childBuildingType = childBuilding->GetChildren();
     EXPECT_EQ("building_type", childBuildingType->GetName());
     EXPECT_EQ(stringHopital, childBuildingType->GetNodeContent());
     EXPECT_TRUE(childBuildingType->GetNodeContent().size() > 0);
 
-    wxXmlNode *childBuildingLocation = childBuildingType->GetNext();
+    wxXmlNode* childBuildingLocation = childBuildingType->GetNext();
     EXPECT_EQ("building_location", childBuildingLocation->GetName());
     EXPECT_EQ(L"Z\u00FCrich", childBuildingLocation->GetNodeContent());
 
-    wxXmlNode *childBuildingHeight = childBuildingLocation->GetNext();
+    wxXmlNode* childBuildingHeight = childBuildingLocation->GetNext();
     EXPECT_EQ("building_height", childBuildingHeight->GetName());
     EXPECT_EQ("40", childBuildingHeight->GetNodeContent());
 

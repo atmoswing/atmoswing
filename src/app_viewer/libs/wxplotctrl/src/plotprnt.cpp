@@ -36,14 +36,14 @@
 //-----------------------------------------------------------------------------
 IMPLEMENT_ABSTRACT_CLASS(wxPlotPrintout, wxPrintout)
 
-wxPrintData *wxPlotPrintout::s_wxPlotPrintData = NULL;
-wxPageSetupData *wxPlotPrintout::s_wxPlotPageSetupData = NULL;
+wxPrintData* wxPlotPrintout::s_wxPlotPrintData = NULL;
+wxPageSetupData* wxPlotPrintout::s_wxPlotPageSetupData = NULL;
 bool wxPlotPrintout::s_wxPlotPrintdata_static = false;
 bool wxPlotPrintout::s_wxPlotPagesetupdata_static = false;
 
-wxPrintData *wxPlotPrintout::GetPrintData(bool create_on_demand) {
+wxPrintData* wxPlotPrintout::GetPrintData(bool create_on_demand) {
     if (create_on_demand && (s_wxPlotPrintData == NULL)) {
-        wxPrintData *printData = new wxPrintData;
+        wxPrintData* printData = new wxPrintData;
         printData->SetPaperId(wxPAPER_A4_ROTATED);
         SetPrintData(printData, false);
     }
@@ -51,9 +51,9 @@ wxPrintData *wxPlotPrintout::GetPrintData(bool create_on_demand) {
     return s_wxPlotPrintData;
 }
 
-wxPageSetupData *wxPlotPrintout::GetPageSetupData(bool create_on_demand) {
+wxPageSetupData* wxPlotPrintout::GetPageSetupData(bool create_on_demand) {
     if (create_on_demand && (s_wxPlotPageSetupData == NULL)) {
-        wxPageSetupData *pageSetupData = new wxPageSetupData;
+        wxPageSetupData* pageSetupData = new wxPageSetupData;
         pageSetupData->SetPaperSize(wxPAPER_LETTER);
         pageSetupData->SetMarginTopLeft(wxPoint(20, 20));
         pageSetupData->SetMarginBottomRight(wxPoint(20, 20));
@@ -71,21 +71,23 @@ bool wxPlotPrintout::GetPageSetupDataStatic() {
     return s_wxPlotPagesetupdata_static;
 }
 
-void wxPlotPrintout::SetPrintData(wxPrintData *printData, bool is_static) {
+void wxPlotPrintout::SetPrintData(wxPrintData* printData, bool is_static) {
     if (s_wxPlotPrintData && !s_wxPlotPrintdata_static) delete s_wxPlotPrintData;
 
     s_wxPlotPrintData = printData;
     s_wxPlotPrintdata_static = is_static;
 }
 
-void wxPlotPrintout::SetPageSetupData(wxPageSetupData *pageSetupData, bool is_static) {
+void wxPlotPrintout::SetPageSetupData(wxPageSetupData* pageSetupData, bool is_static) {
     if (s_wxPlotPageSetupData && !s_wxPlotPagesetupdata_static) delete s_wxPlotPageSetupData;
 
     s_wxPlotPageSetupData = pageSetupData;
     s_wxPlotPagesetupdata_static = is_static;
 }
 
-wxPlotPrintout::wxPlotPrintout(wxPlotCtrl *plotCtrl, const wxString &title) : wxPrintout(title), m_plotCtrl(plotCtrl) {
+wxPlotPrintout::wxPlotPrintout(wxPlotCtrl* plotCtrl, const wxString& title)
+    : wxPrintout(title),
+      m_plotCtrl(plotCtrl) {
     wxASSERT_MSG(m_plotCtrl != NULL, wxT("NULL wxPlotCtrl for printing"));
 }
 
@@ -96,7 +98,7 @@ bool wxPlotPrintout::OnBeginDocument(int startPage, int endPage) {
 }
 
 bool wxPlotPrintout::OnPrintPage(int page_n) {
-    wxDC *dc = GetDC();
+    wxDC* dc = GetDC();
     wxCHECK_MSG(dc && m_plotCtrl, false, wxT("Invalid dc or plotctrl"));
 
     if (page_n != 1) return false;
@@ -191,11 +193,11 @@ bool wxPlotPrintout::ShowPrintDialog() {
     return wxPrinter::GetLastError() == wxPRINTER_NO_ERROR;
 }
 
-bool wxPlotPrintout::ShowPrintPreviewDialog(const wxString &frameTitle) {
+bool wxPlotPrintout::ShowPrintPreviewDialog(const wxString& frameTitle) {
     wxCHECK_MSG(GetPlotCtrl(), false, wxT("Invalid plot window"));
     // Pass two printout objects: for preview, and possible printing.
     wxPrintDialogData printDialogData(*wxPlotPrintout::GetPrintData(true));
-    wxPrintPreview *preview = new wxPrintPreview(new wxPlotPrintout(GetPlotCtrl(), GetTitle()),
+    wxPrintPreview* preview = new wxPrintPreview(new wxPlotPrintout(GetPlotCtrl(), GetTitle()),
                                                  new wxPlotPrintout(GetPlotCtrl(), GetTitle()), &printDialogData);
     if (!preview->Ok()) {
         delete preview;
@@ -207,7 +209,7 @@ bool wxPlotPrintout::ShowPrintPreviewDialog(const wxString &frameTitle) {
     wxRect r(wxGetClientDisplayRect());
     r.width = wxMin(r.width, 600);
     r.height = wxMin(r.height, 650);
-    wxPreviewFrame *frame = new wxPreviewFrame(preview, GetPlotCtrl(), frameTitle, wxDefaultPosition, r.GetSize());
+    wxPreviewFrame* frame = new wxPreviewFrame(preview, GetPlotCtrl(), frameTitle, wxDefaultPosition, r.GetSize());
     frame->Centre(wxBOTH);
     frame->Initialize();
     frame->Show(true);
@@ -252,7 +254,8 @@ class wxPlotCtrlModule : public wxModule {
     DECLARE_DYNAMIC_CLASS(wxPlotCtrlModule)
 
   public:
-    wxPlotCtrlModule() : wxModule() {}
+    wxPlotCtrlModule()
+        : wxModule() {}
 
     bool OnInit() {
         return true;

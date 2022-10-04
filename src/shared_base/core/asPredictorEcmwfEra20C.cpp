@@ -30,7 +30,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorEcmwfEra20C::asPredictorEcmwfEra20C(const wxString &dataId) : asPredictor(dataId) {
+asPredictorEcmwfEra20C::asPredictorEcmwfEra20C(const wxString& dataId)
+    : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "ECMWF_ERA_20C_3h";
     m_provider = "ECMWF";
@@ -129,10 +130,10 @@ bool asPredictorEcmwfEra20C::Init() {
     return true;
 }
 
-void asPredictorEcmwfEra20C::ListFiles(asTimeArray &timeArray) {
+void asPredictorEcmwfEra20C::ListFiles(asTimeArray& timeArray) {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
-void asPredictorEcmwfEra20C::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorEcmwfEra20C::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + asTime::GetMJD(1900, 1, 1);
 }

@@ -37,7 +37,7 @@ TEST(AreaGrid, CheckConsistency) {
     int yPtsNb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_DOUBLE_EQ(-5, area->GetCornerUL().x);
     EXPECT_DOUBLE_EQ(-5, area->GetCornerLL().x);
@@ -55,7 +55,7 @@ TEST(AreaGrid, CheckConsistencyException) {
     int yPtsNb = -5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asAreaGrid *area = nullptr;
+    asAreaGrid* area = nullptr;
     ASSERT_THROW(area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step), std::exception);
     wxDELETE(area);
 }
@@ -67,7 +67,7 @@ TEST(AreaGrid, GetBoundsSplitted) {
     int yPtsNb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
@@ -87,7 +87,7 @@ TEST(AreaGrid, GetUYaxisSize) {
     int yPtsNb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
@@ -106,7 +106,7 @@ TEST(AreaGrid, GetUYaxisSizeStepLon) {
     double xStep = 5;
     double yStep = 2.5;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
@@ -125,7 +125,7 @@ TEST(AreaGrid, GetUYaxisSizeStepLonMoved) {
     double xStep = 5;
     double yStep = 2.5;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
@@ -144,7 +144,7 @@ TEST(AreaGrid, GetUYaxisLimits) {
     double xStep = 5;
     double yStep = 2.5;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
@@ -156,4 +156,3 @@ TEST(AreaGrid, GetUYaxisLimits) {
     EXPECT_DOUBLE_EQ(40, area->GetYaxisEnd());
     wxDELETE(area);
 }
-

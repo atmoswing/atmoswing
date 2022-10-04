@@ -28,7 +28,8 @@
 
 #include "asCriteriaS1grads.h"
 
-asCriteriaS1grads::asCriteriaS1grads() : asCriteria("S1grads", _("Teweles-Wobus on gradients"), Asc) {
+asCriteriaS1grads::asCriteriaS1grads()
+    : asCriteria("S1grads", _("Teweles-Wobus on gradients"), Asc) {
     m_minPointsNb = 2;
     m_scaleWorst = 200;
     m_canUseInline = true;
@@ -36,7 +37,7 @@ asCriteriaS1grads::asCriteriaS1grads() : asCriteria("S1grads", _("Teweles-Wobus 
 
 asCriteriaS1grads::~asCriteriaS1grads() = default;
 
-float asCriteriaS1grads::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
+float asCriteriaS1grads::Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() > 0);

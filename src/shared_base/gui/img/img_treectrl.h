@@ -22,10 +22,10 @@ extern void initialize_img_treectrl_l();
 
 void cleanup_img_treectrl();
 
-extern wxBitmap *_img_icon_lightning;
-extern wxBitmap *_img_icon_other;
-extern wxBitmap *_img_icon_precip;
-extern wxBitmap *_img_icon_temp;
-extern wxBitmap *_img_icon_wind;
+extern wxBitmap* _img_icon_lightning;
+extern wxBitmap* _img_icon_other;
+extern wxBitmap* _img_icon_precip;
+extern wxBitmap* _img_icon_temp;
+extern wxBitmap* _img_icon_wind;
 
 #endif /* _TREECTRL_H_ */

@@ -43,7 +43,7 @@ bool asPredictandTemperature::InitContainers() {
     return InitBaseContainers();
 }
 
-bool asPredictandTemperature::Load(const wxString &filePath) {
+bool asPredictandTemperature::Load(const wxString& filePath) {
     // Open the NetCDF file
     wxLogVerbose(_("Opening the file %s"), filePath);
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
@@ -63,7 +63,7 @@ bool asPredictandTemperature::Load(const wxString &filePath) {
     return true;
 }
 
-bool asPredictandTemperature::Save(const wxString &destinationDir) const {
+bool asPredictandTemperature::Save(const wxString& destinationDir) const {
     // Get the file path
     wxString predictandDBFilePath = GetDBFilePathSaving(destinationDir);
 
@@ -86,9 +86,8 @@ bool asPredictandTemperature::Save(const wxString &destinationDir) const {
     return true;
 }
 
-bool asPredictandTemperature::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
-                                                const wxString &patternDir, const wxString &destinationDir) {
-
+bool asPredictandTemperature::BuildPredictandDB(const wxString& catalogFilePath, const wxString& dataDir,
+                                                const wxString& patternDir, const wxString& destinationDir) {
     // Initialize the members
     if (!InitMembers(catalogFilePath)) return false;
 

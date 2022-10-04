@@ -27,7 +27,7 @@
 
 #include "asDialogProgressBar.h"
 
-asDialogProgressBar::asDialogProgressBar(const wxString &dialogMessage, int valueMax)
+asDialogProgressBar::asDialogProgressBar(const wxString& dialogMessage, int valueMax)
     : m_progressBar(nullptr),
       m_initiated(false),
       m_steps(100),
@@ -70,7 +70,7 @@ void asDialogProgressBar::Destroy() {
     }
 }
 
-bool asDialogProgressBar::Update(int value, const wxString &message) {
+bool asDialogProgressBar::Update(int value, const wxString& message) {
     wxString newMessage = message;
 
     if (m_initiated) {

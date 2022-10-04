@@ -122,7 +122,7 @@ bool asMethodOptimizerGeneticAlgorithms::SortScoresAndParametersTemp() {
     return true;
 }
 
-bool asMethodOptimizerGeneticAlgorithms::SetBestParameters(asResultsParametersArray &results) {
+bool asMethodOptimizerGeneticAlgorithms::SetBestParameters(asResultsParametersArray& results) {
     wxASSERT(!m_parameters.empty());
     wxASSERT(!m_scoresCalib.empty());
 
@@ -161,7 +161,7 @@ bool asMethodOptimizerGeneticAlgorithms::SetBestParameters(asResultsParametersAr
 
 bool asMethodOptimizerGeneticAlgorithms::Manager() {
     ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     m_popSize = pConfig->ReadLong("/GAs/PopulationSize", 500);
     m_paramsNb = m_popSize;
     m_allowElitismForTheBest = pConfig->ReadBool("/GAs/AllowElitismForTheBest", true);
@@ -181,12 +181,12 @@ bool asMethodOptimizerGeneticAlgorithms::Manager() {
             DeletePreloadedArchiveData();
             return false;
         }
-    } catch (std::bad_alloc &ba) {
+    } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught in GAs: %s"), msg);
         DeletePreloadedArchiveData();
         return false;
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught in the GAs: %s"), msg);
         DeletePreloadedArchiveData();
@@ -219,19 +219,19 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
     vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
     asResultsParametersArray resFinalPopulation;
-    resFinalPopulation.Init(wxString::Format(_("station_%s_final_population"),
-                                             GetPredictandStationIdsList(stationId).c_str()));
+    resFinalPopulation.Init(
+        wxString::Format(_("station_%s_final_population"), GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray resBestIndividual;
-    resBestIndividual.Init(wxString::Format(_("station_%s_best_individual"),
-                                            GetPredictandStationIdsList(stationId).c_str()));
-    m_resGenerations.Init(wxString::Format(_("station_%s_generations"),
-                                           GetPredictandStationIdsList(stationId).c_str()));
+    resBestIndividual.Init(
+        wxString::Format(_("station_%s_best_individual"), GetPredictandStationIdsList(stationId).c_str()));
+    m_resGenerations.Init(
+        wxString::Format(_("station_%s_generations"), GetPredictandStationIdsList(stationId).c_str()));
     wxString resXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     resXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time.c_str(),
                                            GetPredictandStationIdsList(stationId).c_str()));
     wxString operatorsFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
-    operatorsFilePath.Append(wxString::Format("/%s_station_%s_operators.txt", time.c_str(),
-                                              GetPredictandStationIdsList(stationId).c_str()));
+    operatorsFilePath.Append(
+        wxString::Format("/%s_station_%s_operators.txt", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
 
     // Initialize parameters before loading data.
     InitParameters(params);
@@ -249,12 +249,12 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
             return false;
         }
         wxLogMessage(_("Predictor data preloaded."));
-    } catch (std::bad_alloc &ba) {
+    } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught during data preloading (in GAs): %s"), msg);
         DeletePreloadedArchiveData();
         return false;
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught during data preloading (in GAs): %s"), msg);
         DeletePreloadedArchiveData();
@@ -278,7 +278,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
     }
 
     // Get a score object to extract the score order
-    asScore *score = asScore::GetInstance(params.GetScoreName());
+    asScore* score = asScore::GetInstance(params.GetScoreName());
     Order scoreOrder = score->GetOrder();
     wxDELETE(score);
     SetScoreOrder(scoreOrder);
@@ -329,12 +329,12 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
 #endif
 
             // Get a parameters set
-            asParametersOptimizationGAs *nextParams = GetNextParameters();
+            asParametersOptimizationGAs* nextParams = GetNextParameters();
 
             if (nextParams) {
                 // Add it to the threads
-                auto *thread = new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator],
-                                                             &m_scoreClimatology);
+                auto* thread =
+                    new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
 #ifdef USE_CUDA
                 if (method == asCUDA) {
                     thread->SetDevice(device);
@@ -488,8 +488,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
     return true;
 }
 
-bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizationGAs &params,
-                                                           const wxString &operatorsFilePath) {
+bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizationGAs& params,
+                                                           const wxString& operatorsFilePath) {
     if (!g_resumePreviousRun) {
         return true;
     }
@@ -504,16 +504,16 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
     // Check if the resulting file is already present
     vi stationId = params.GetPredictandStationIds();
-    wxString finalFilePattern = wxString::Format("*_station_%s_best_individual.txt",
-                                                 GetPredictandStationIdsList(stationId).c_str());
+    wxString finalFilePattern =
+        wxString::Format("*_station_%s_best_individual.txt", GetPredictandStationIdsList(stationId).c_str());
     if (dir.HasFiles(finalFilePattern)) {
         wxLogMessage(_("The directory %s already contains the resulting file."), resultsDir.c_str());
         return false;
     }
 
     // Look for intermediate results to load
-    wxString generationsFilePattern = wxString::Format("*_station_%s_generations.txt",
-                                                       GetPredictandStationIdsList(stationId).c_str());
+    wxString generationsFilePattern =
+        wxString::Format("*_station_%s_generations.txt", GetPredictandStationIdsList(stationId).c_str());
     if (!dir.HasFiles(generationsFilePattern)) {
         return true;
     }
@@ -532,7 +532,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
     }
 
     wxString msg = wxString::Format(_("Previous intermediate results were found "
-                                      "and will be loaded (%d lines)."), nLines);
+                                      "and will be loaded (%d lines)."),
+                                    nLines);
     wxLogWarning(msg);
     asLog::PrintToConsole(msg);
     asFileText prevResults(filePath, asFile::ReadOnly);
@@ -556,8 +557,9 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             break;
         } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
                    (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-            wxLogError(_("The number of steps do not correspond between the "
-                         "current and the previous parameters."));
+            wxLogError(
+                _("The number of steps do not correspond between the "
+                  "current and the previous parameters."));
             return false;
         }
 
@@ -573,8 +575,9 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             break;
         } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
                    (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-            wxLogError(_("The number of predictors do not correspond between the "
-                         "current and the previous parameters."));
+            wxLogError(
+                _("The number of predictors do not correspond between the "
+                  "current and the previous parameters."));
             return false;
         }
 
@@ -590,8 +593,9 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             break;
         } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
                    (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-            wxLogError(_("The number of atmospheric levels do not correspond between "
-                         "the current and the previous parameters."));
+            wxLogError(
+                _("The number of atmospheric levels do not correspond between "
+                  "the current and the previous parameters."));
             return false;
         }
 
@@ -673,8 +677,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
     wxCopyFile(filePath, m_resGenerations.GetFilePath());
 
     // Restore operators
-    wxString operatorsFilePattern = wxString::Format("*_station_%s_operators.txt",
-                                                     GetPredictandStationIdsList(stationId).c_str());
+    wxString operatorsFilePattern =
+        wxString::Format("*_station_%s_operators.txt", GetPredictandStationIdsList(stationId).c_str());
     if (dir.HasFiles(operatorsFilePattern)) {
         return true;
     }
@@ -712,8 +716,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         if (fileLineOper.IsEmpty()) break;
 
         if (iVar >= m_parameters.size()) {
-            wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."),
-                       (int)m_parameters.size(), iVar + 1);
+            wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."), (int)m_parameters.size(),
+                       iVar + 1);
             return false;
         }
 
@@ -785,7 +789,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
     return true;
 }
 
-bool asMethodOptimizerGeneticAlgorithms::HasPreviousRunConverged(asParametersOptimizationGAs &params) {
+bool asMethodOptimizerGeneticAlgorithms::HasPreviousRunConverged(asParametersOptimizationGAs& params) {
     wxString resultsDir = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     wxDir dir(resultsDir);
 
@@ -805,7 +809,7 @@ bool asMethodOptimizerGeneticAlgorithms::HasPreviousRunConverged(asParametersOpt
     return false;
 }
 
-bool asMethodOptimizerGeneticAlgorithms::SaveOperators(const wxString &filePath) {
+bool asMethodOptimizerGeneticAlgorithms::SaveOperators(const wxString& filePath) {
     // Open the file
     asFileText fileRes(filePath, asFileText::Append);
     if (!fileRes.Open()) return false;
@@ -813,7 +817,7 @@ bool asMethodOptimizerGeneticAlgorithms::SaveOperators(const wxString &filePath)
     wxString content = wxEmptyString;
 
     // Write every parameter one after the other
-    for (auto &parameter : m_parameters) {
+    for (auto& parameter : m_parameters) {
         switch (m_mutationsModeType) {
             case (RandomUniformConstant):
             case (RandomUniformVariable):
@@ -875,7 +879,7 @@ bool asMethodOptimizerGeneticAlgorithms::SaveOperators(const wxString &filePath)
     return true;
 }
 
-void asMethodOptimizerGeneticAlgorithms::InitParameters(asParametersOptimizationGAs &params) {
+void asMethodOptimizerGeneticAlgorithms::InitParameters(asParametersOptimizationGAs& params) {
     // Get a first parameters set to get the number of unknown variables
     params.InitRandomValues();
     wxLogVerbose(_("The population is made of %d individuals."), m_popSize);
@@ -924,7 +928,7 @@ void asMethodOptimizerGeneticAlgorithms::InitParameters(asParametersOptimization
     m_scoreValid = NaNf;
 }
 
-asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParameters() {
+asParametersOptimizationGAs* asMethodOptimizerGeneticAlgorithms::GetNextParameters() {
     wxASSERT(m_iterator <= m_paramsNb);
 
     while (m_iterator < m_paramsNb) {
@@ -1006,7 +1010,7 @@ bool asMethodOptimizerGeneticAlgorithms::HasConverged() {
     // NB: The parameters and scores are already sorted !
 
     ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     int convergenceStepsNb;
     pConfig->Read("/GAs/ConvergenceStepsNb", &convergenceStepsNb, 20);
     ThreadsManager().CritSectionConfig().Leave();
@@ -1127,7 +1131,7 @@ bool asMethodOptimizerGeneticAlgorithms::NaturalSelection() {
     ClearTemp();
 
     ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     double ratioIntermediateGeneration;
     pConfig->Read("/GAs/RatioIntermediateGeneration", &ratioIntermediateGeneration, 0.5);
     ThreadsManager().CritSectionConfig().Leave();
@@ -1217,7 +1221,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating() {
     wxLogVerbose(_("Applying mating."));
 
     ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     ThreadsManager().CritSectionConfig().Leave();
 
     // Build chromosomes
@@ -1948,7 +1952,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation() {
     wxLogVerbose(_("Applying mutations."));
 
     ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     ThreadsManager().CritSectionConfig().Leave();
 
     m_parameters.clear();

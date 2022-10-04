@@ -32,15 +32,15 @@
 #include "asPredictorProjCordex.h"
 #include "asTimeArray.h"
 
-asPredictorProj::asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario)
+asPredictorProj::asPredictorProj(const wxString& dataId, const wxString& model, const wxString& scenario)
     : asPredictor(dataId),
       m_model(model),
       m_scenario(scenario) {}
 
-asPredictorProj *asPredictorProj::GetInstance(const wxString &datasetId, const wxString &model,
-                                              const wxString &scenario, const wxString &dataId,
-                                              const wxString &directory) {
-    asPredictorProj *predictor = nullptr;
+asPredictorProj* asPredictorProj::GetInstance(const wxString& datasetId, const wxString& model,
+                                              const wxString& scenario, const wxString& dataId,
+                                              const wxString& directory) {
+    asPredictorProj* predictor = nullptr;
 
     if (datasetId.IsSameAs("CMIP5", false)) {
         predictor = new asPredictorProjCmip5(dataId, model, scenario);

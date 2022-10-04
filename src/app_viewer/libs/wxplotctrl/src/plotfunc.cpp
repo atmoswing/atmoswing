@@ -42,34 +42,36 @@ const wxPlotFunction wxNullPlotFunction;
 
 class wxPlotFuncRefData : public wxPlotCurveRefData {
   public:
-    wxPlotFuncRefData() : wxPlotCurveRefData() {}
+    wxPlotFuncRefData()
+        : wxPlotCurveRefData() {}
 
-    wxPlotFuncRefData(const wxPlotFuncRefData &data);
+    wxPlotFuncRefData(const wxPlotFuncRefData& data);
 
     wxFunctionParser m_parser;
 };
 
-wxPlotFuncRefData::wxPlotFuncRefData(const wxPlotFuncRefData &data) : wxPlotCurveRefData() {
+wxPlotFuncRefData::wxPlotFuncRefData(const wxPlotFuncRefData& data)
+    : wxPlotCurveRefData() {
     wxPlotCurveRefData::Copy(data);
     m_parser = data.m_parser;
 }
 
-#define M_PLOTFUNCDATA ((wxPlotFuncRefData *)m_refData)
+#define M_PLOTFUNCDATA ((wxPlotFuncRefData*)m_refData)
 
 //-----------------------------------------------------------------------------
 // wxPlotFunction
 //-----------------------------------------------------------------------------
 IMPLEMENT_DYNAMIC_CLASS(wxPlotFunction, wxPlotCurve);
 
-wxObjectRefData *wxPlotFunction::CreateRefData() const {
+wxObjectRefData* wxPlotFunction::CreateRefData() const {
     return new wxPlotFuncRefData;
 }
 
-wxObjectRefData *wxPlotFunction::CloneRefData(const wxObjectRefData *data) const {
-    return new wxPlotFuncRefData(*(const wxPlotFuncRefData *)data);
+wxObjectRefData* wxPlotFunction::CloneRefData(const wxObjectRefData* data) const {
+    return new wxPlotFuncRefData(*(const wxPlotFuncRefData*)data);
 }
 
-bool wxPlotFunction::Create(const wxPlotFunction &curve) {
+bool wxPlotFunction::Create(const wxPlotFunction& curve) {
     wxCHECK_MSG(curve.Ok(), false, wxT("invalid plot function"));
     UnRef();
     Ref(curve);
@@ -84,7 +86,7 @@ bool wxPlotFunction::Ok() const {
     return m_refData && M_PLOTFUNCDATA->m_parser.Ok();
 }
 
-int wxPlotFunction::Create(const wxString &function, const wxString &vars, bool useDegrees) {
+int wxPlotFunction::Create(const wxString& function, const wxString& vars, bool useDegrees) {
     UnRef();
 
     m_refData = new wxPlotFuncRefData();
@@ -97,7 +99,7 @@ int wxPlotFunction::Create(const wxString &function, const wxString &vars, bool 
     return -1;
 }
 
-int wxPlotFunction::Parse(const wxString &function, const wxString &vars, bool useDegrees) {
+int wxPlotFunction::Parse(const wxString& function, const wxString& vars, bool useDegrees) {
     wxCHECK_MSG(m_refData, 0, wxT("Invalid plotfunction"));
 
     int i = M_PLOTFUNCDATA->m_parser.Parse(function, vars, useDegrees);
@@ -143,12 +145,12 @@ double wxPlotFunction::GetY(double x) const {
     return M_PLOTFUNCDATA->m_parser.Eval(&x);
 }
 
-double wxPlotFunction::GetValue(double *x) const {
+double wxPlotFunction::GetValue(double* x) const {
     wxCHECK_MSG(Ok(), 0.0, wxT("invalid plotfunction"));
     return M_PLOTFUNCDATA->m_parser.Eval(x);
 }
 
-bool wxPlotFunction::AddConstant(const wxString &name, double value) {
+bool wxPlotFunction::AddConstant(const wxString& name, double value) {
     wxCHECK_MSG(Ok(), false, wxT("invalid plotfunction"));
     return M_PLOTFUNCDATA->m_parser.AddConstant(name, value);
 }
@@ -178,13 +180,13 @@ wxPlotFunction wxClipboardGetPlotFunction() {
     return plotFunc;
 }
 
-bool wxClipboardSetPlotFunction(const wxPlotFunction &plotFunc) {
+bool wxClipboardSetPlotFunction(const wxPlotFunction& plotFunc) {
     wxCHECK_MSG(plotFunc.Ok(), false, wxT("Invalid wxPlotFunction to copy to clipboard"));
     bool is_opened = wxTheClipboard->IsOpened();
 
     if (is_opened || wxTheClipboard->Open()) {
         wxString str = plotFunc.GetFunctionString() + wxT(";") + plotFunc.GetVariableString();
-        wxTextDataObject *textDataObject = new wxTextDataObject(str);
+        wxTextDataObject* textDataObject = new wxTextDataObject(str);
         wxTheClipboard->SetData(textDataObject);
 
         if (!is_opened) wxTheClipboard->Close();

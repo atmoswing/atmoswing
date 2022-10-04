@@ -32,8 +32,8 @@
  * asPanelSidebarCaptionForecastDots
  */
 
-asPanelSidebarCaptionForecastDots::asPanelSidebarCaptionForecastDots(wxWindow *parent, wxWindowID id,
-                                                                     const wxPoint &pos, const wxSize &size, long style)
+asPanelSidebarCaptionForecastDots::asPanelSidebarCaptionForecastDots(wxWindow* parent, wxWindowID id,
+                                                                     const wxPoint& pos, const wxSize& size, long style)
     : asPanelSidebar(parent, id, pos, size, style) {
     m_header->SetLabelText(_("Forecast caption"));
 
@@ -52,7 +52,7 @@ asPanelSidebarCaptionForecastDots::~asPanelSidebarCaptionForecastDots() {
     Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDots::OnPaint), nullptr, this);
 }
 
-void asPanelSidebarCaptionForecastDots::OnPaint(wxPaintEvent &event) {
+void asPanelSidebarCaptionForecastDots::OnPaint(wxPaintEvent& event) {
     event.Skip();
 }
 
@@ -64,9 +64,9 @@ void asPanelSidebarCaptionForecastDots::SetColorbarMax(double valmax) {
  * asPanelSidebarCaptionForecastDotsDrawing
  */
 
-asPanelSidebarCaptionForecastDotsDrawing::asPanelSidebarCaptionForecastDotsDrawing(wxWindow *parent, wxWindowID id,
-                                                                                   const wxPoint &pos,
-                                                                                   const wxSize &size, long style)
+asPanelSidebarCaptionForecastDotsDrawing::asPanelSidebarCaptionForecastDotsDrawing(wxWindow* parent, wxWindowID id,
+                                                                                   const wxPoint& pos,
+                                                                                   const wxSize& size, long style)
     : wxPanel(parent, id, pos, size, style) {
     m_bmpColorbar = nullptr;
     m_gdc = nullptr;
@@ -84,7 +84,7 @@ asPanelSidebarCaptionForecastDotsDrawing::~asPanelSidebarCaptionForecastDotsDraw
 }
 
 void asPanelSidebarCaptionForecastDotsDrawing::DrawColorbar(double valmax) {
-    auto *bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(50 * g_ppiScaleDc));
+    auto* bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(50 * g_ppiScaleDc));
     wxASSERT(bmp);
 
     // Create device context
@@ -93,7 +93,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::DrawColorbar(double valmax) {
     dc.Clear();
 
     // Create graphics context
-    wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
+    wxGraphicsContext* gc = wxGraphicsContext::Create(dc);
 
     if (gc) {
         gc->SetPen(*wxBLACK);
@@ -118,7 +118,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::DrawColorbar(double valmax) {
     Refresh();
 }
 
-void asPanelSidebarCaptionForecastDotsDrawing::SetBitmapColorbar(wxBitmap *bmp) {
+void asPanelSidebarCaptionForecastDotsDrawing::SetBitmapColorbar(wxBitmap* bmp) {
     wxDELETE(m_bmpColorbar);
     wxASSERT(!m_bmpColorbar);
 
@@ -129,7 +129,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::SetBitmapColorbar(wxBitmap *bmp) 
     }
 }
 
-void asPanelSidebarCaptionForecastDotsDrawing::OnPaint(wxPaintEvent &event) {
+void asPanelSidebarCaptionForecastDotsDrawing::OnPaint(wxPaintEvent& event) {
     wxPaintDC dc(this);
 
     if (m_bmpColorbar != nullptr) {
@@ -141,7 +141,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::OnPaint(wxPaintEvent &event) {
     event.Skip();
 }
 
-void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarPath(wxGraphicsPath &path) {
+void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarPath(wxGraphicsPath& path) {
     int startX = 30;
     int endX = 210 * g_ppiScaleDc;
     int startY = 2 * g_ppiScaleDc;
@@ -154,7 +154,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarPath(wxGraphicsPath
     path.CloseSubpath();
 }
 
-void asPanelSidebarCaptionForecastDotsDrawing::FillColorbar(wxGraphicsContext *gc, wxGraphicsPath &path) {
+void asPanelSidebarCaptionForecastDotsDrawing::FillColorbar(wxGraphicsContext* gc, wxGraphicsPath& path) {
     // Get the path box
     wxDouble x, y, w, h;
     path.GetBox(&x, &y, &w, &h);
@@ -166,7 +166,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::FillColorbar(wxGraphicsContext *g
     gc->DrawPath(path);
 }
 
-void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarText(wxGraphicsContext *gc, wxGraphicsPath &path,
+void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarText(wxGraphicsContext* gc, wxGraphicsPath& path,
                                                                   double valmax) {
     gc->SetPen(*wxBLACK);
 
@@ -209,7 +209,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarText(wxGraphicsCont
     gc->DrawText(labelEnd, x + w + 4, y + dy);
 }
 
-void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarOtherClasses(wxGraphicsContext *gc, wxGraphicsPath &path) {
+void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarOtherClasses(wxGraphicsContext* gc, wxGraphicsPath& path) {
     gc->SetPen(*wxBLACK);
 
     // Get the path box

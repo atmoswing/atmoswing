@@ -212,29 +212,29 @@ enum wxPlotCtrlStyleUse_Type {
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlArea : public wxWindow {
   public:
-    wxPlotCtrlArea(wxWindow *parent, wxWindowID win_id, const wxPoint &pos = wxDefaultPosition,
-                   const wxSize &size = wxSize(100, 100), long style = wxNO_BORDER | wxWANTS_CHARS | wxCLIP_CHILDREN,
-                   const wxString &name = wxT("wxPlotCtrlArea"));
+    wxPlotCtrlArea(wxWindow* parent, wxWindowID win_id, const wxPoint& pos = wxDefaultPosition,
+                   const wxSize& size = wxSize(100, 100), long style = wxNO_BORDER | wxWANTS_CHARS | wxCLIP_CHILDREN,
+                   const wxString& name = wxT("wxPlotCtrlArea"));
 
     virtual ~wxPlotCtrlArea() {}
 
     // implementation
-    void OnEraseBackground(wxEraseEvent &) {}
+    void OnEraseBackground(wxEraseEvent&) {}
 
-    void OnPaint(wxPaintEvent &event);
+    void OnPaint(wxPaintEvent& event);
 
-    void OnMouse(wxMouseEvent &event);
+    void OnMouse(wxMouseEvent& event);
 
-    void OnChar(wxKeyEvent &event);
+    void OnChar(wxKeyEvent& event);
 
-    void OnKeyDown(wxKeyEvent &event);
+    void OnKeyDown(wxKeyEvent& event);
 
-    void OnKeyUp(wxKeyEvent &event);
+    void OnKeyUp(wxKeyEvent& event);
 
     wxRect m_mouseRect;  // mouse drag rectangle, or 0,0,0,0 when not dragging
     wxPoint m_mousePt;   // last mouse position
     wxBitmap m_bitmap;   // backing bitmap to reduce flicker
-    wxPlotCtrl *m_owner;
+    wxPlotCtrl* m_owner;
 
   private:
     DECLARE_ABSTRACT_CLASS(wxPlotCtrlArea)
@@ -248,10 +248,10 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlArea : public wxWindow {
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlAxis : public wxWindow {
   public:
-    wxPlotCtrlAxis(wxPlotCtrlAxis_Type axis_type, wxWindow *parent, wxWindowID win_id,
-                   const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
+    wxPlotCtrlAxis(wxPlotCtrlAxis_Type axis_type, wxWindow* parent, wxWindowID win_id,
+                   const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
                    long style = wxNO_BORDER | wxWANTS_CHARS | wxCLIP_CHILDREN,
-                   const wxString &name = wxT("wxPlotCtrlAxis"));
+                   const wxString& name = wxT("wxPlotCtrlAxis"));
 
     virtual ~wxPlotCtrlAxis() {}
 
@@ -260,18 +260,18 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlAxis : public wxWindow {
     }
 
     // implementation
-    void OnEraseBackground(wxEraseEvent &) {}
+    void OnEraseBackground(wxEraseEvent&) {}
 
-    void OnPaint(wxPaintEvent &event);
+    void OnPaint(wxPaintEvent& event);
 
-    void OnMouse(wxMouseEvent &event);
+    void OnMouse(wxMouseEvent& event);
 
-    void OnChar(wxKeyEvent &event);
+    void OnChar(wxKeyEvent& event);
 
     wxPoint m_mousePt;                // last mouse position
     wxPlotCtrlAxis_Type m_axis_type;  // X or Y axis
     wxBitmap m_bitmap;                // backing bitmap to reduce flicker
-    wxPlotCtrl *m_owner;
+    wxPlotCtrl* m_owner;
 
   private:
     DECLARE_ABSTRACT_CLASS(wxPlotCtrlAxis)
@@ -290,20 +290,21 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlAxis : public wxWindow {
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
   public:
-    wxPlotCtrl() : wxWindow() {
+    wxPlotCtrl()
+        : wxWindow() {
         Init();
     }
 
-    wxPlotCtrl(wxWindow *parent, wxWindowID win_id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-               const wxSize &size = wxDefaultSize, wxPlotCtrlAxis_Type flags = wxPLOTCTRL_DEFAULT,
-               const wxString &name = wxT("wxPlotCtrl")) {
+    wxPlotCtrl(wxWindow* parent, wxWindowID win_id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
+               const wxSize& size = wxDefaultSize, wxPlotCtrlAxis_Type flags = wxPLOTCTRL_DEFAULT,
+               const wxString& name = wxT("wxPlotCtrl")) {
         Init();
         (void)Create(parent, win_id, pos, size, flags, name);
     }
 
-    bool Create(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-                const wxSize &size = wxDefaultSize, wxPlotCtrlAxis_Type flags = wxPLOTCTRL_DEFAULT,
-                const wxString &name = wxT("wxPlotCtrl"));
+    bool Create(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
+                const wxSize& size = wxDefaultSize, wxPlotCtrlAxis_Type flags = wxPLOTCTRL_DEFAULT,
+                const wxString& name = wxT("wxPlotCtrl"));
 
     virtual ~wxPlotCtrl();
 
@@ -318,13 +319,13 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     // ------------------------------------------------------------------------
 
     // Add a curve to the plot, takes ownership of the curve and deletes it
-    bool AddCurve(wxPlotCurve *curve, bool select = true, bool send_event = false);
+    bool AddCurve(wxPlotCurve* curve, bool select = true, bool send_event = false);
 
     // Add a curve to the plot, increases ref count
-    bool AddCurve(const wxPlotCurve &curve, bool select = true, bool send_event = false);
+    bool AddCurve(const wxPlotCurve& curve, bool select = true, bool send_event = false);
 
     // Delete this curve
-    bool DeleteCurve(wxPlotCurve *curve, bool send_event = false);
+    bool DeleteCurve(wxPlotCurve* curve, bool send_event = false);
 
     // Delete the curve at the curve_index, if curve_index = -1, delete all curves
     bool DeleteCurve(int curve_index, bool send_event = false);
@@ -339,15 +340,15 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     }
 
     // Get the curve at this index
-    wxPlotCurve *GetCurve(int curve_index) const;
+    wxPlotCurve* GetCurve(int curve_index) const;
 
     // returns NULL if curve_index is not wxPlotData or derived from it
-    wxPlotData *GetDataCurve(int curve_index) const {
+    wxPlotData* GetDataCurve(int curve_index) const {
         return wxDynamicCast(GetCurve(curve_index), wxPlotData);
     }
 
     // returns NULL if curve_index is not wxPlotFunction or derived from it
-    wxPlotFunction *GetFunctionCurve(int curve_index) const {
+    wxPlotFunction* GetFunctionCurve(int curve_index) const {
         return wxDynamicCast(GetCurve(curve_index), wxPlotFunction);
     }
 
@@ -363,22 +364,22 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     // Else the function must be some sort of subclassed wxPlotCurve
 
     // Sets the currently active curve, NULL for none active
-    void SetActiveCurve(wxPlotCurve *curve, bool send_event = false);
+    void SetActiveCurve(wxPlotCurve* curve, bool send_event = false);
 
     // Gets the currently active curve, NULL if none
-    wxPlotCurve *GetActiveCurve() const {
+    wxPlotCurve* GetActiveCurve() const {
         return m_activeCurve;
     }
 
     // Gets the currently active curve as a wxPlotFunction
     //    returns NULL if its not a wxPlotFunction, even if a curve is active
-    wxPlotFunction *GetActiveFuncCurve() const {
+    wxPlotFunction* GetActiveFuncCurve() const {
         return wxDynamicCast(m_activeCurve, wxPlotFunction);
     }
 
     // Gets the currently active curve as a wxPlotData
     //    returns NULL if its not a wxPlotData, even if a curve is active
-    wxPlotData *GetActiveDataCurve() const {
+    wxPlotData* GetActiveDataCurve() const {
         return wxDynamicCast(m_activeCurve, wxPlotData);
     }
 
@@ -401,7 +402,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     //-------------------------------------------------------------------------
 
     // Add a marker to be displayed
-    int AddMarker(const wxPlotMarker &marker);
+    int AddMarker(const wxPlotMarker& marker);
 
     void RemoveMarker(int marker);
 
@@ -409,7 +410,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     wxPlotMarker GetMarker(int marker) const;
 
-    wxArrayPlotMarker &GetMarkerArray() {
+    wxArrayPlotMarker& GetMarkerArray() {
         return m_plotMarkers;
     }
 
@@ -457,21 +458,21 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     // double valued selections can be made for wxPlotCurves and wxPlotFunctions
     //   for curves that are wxPlotData, the selection is empty, see GetDataCurveSelections
-    const wxArrayRangeDoubleSelection &GetCurveSelections() const {
+    const wxArrayRangeDoubleSelection& GetCurveSelections() const {
         return m_curveSelections;
     }
 
     // Get the particluar selection for the curve at index curve_index
-    wxRangeDoubleSelection *GetCurveSelection(int curve_index) const;
+    wxRangeDoubleSelection* GetCurveSelection(int curve_index) const;
 
     // the selections of wxPlotData curves are indexes of the data
     //   for curves that are wxPlotCurves or wxPlotFunctions the selection is empty
-    const wxArrayRangeIntSelection &GetDataCurveSelections() const {
+    const wxArrayRangeIntSelection& GetDataCurveSelections() const {
         return m_dataSelections;
     }
 
     // Get the particluar selection for the curve at index curve_index
-    wxRangeIntSelection *GetDataCurveSelection(int curve_index) const;
+    wxRangeIntSelection* GetDataCurveSelection(int curve_index) const;
 
     // Get the number of individual selections of this curve
     int GetSelectedRangeCount(int curve_index) const;
@@ -480,11 +481,11 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     //   this works for all plotcurve classes, for wxPlotData they're converted to the indexes however
     //   if there's nothing to select or already selected it returns false
     //   if curve_index == -1 then try to select points in all curves
-    bool SelectRectangle(int curve_index, const wxRect2DDouble &rect, bool send_event = false) {
+    bool SelectRectangle(int curve_index, const wxRect2DDouble& rect, bool send_event = false) {
         return DoSelectRectangle(curve_index, rect, true, send_event);
     }
 
-    bool DeselectRectangle(int curve_index, const wxRect2DDouble &rect, bool send_event = false) {
+    bool DeselectRectangle(int curve_index, const wxRect2DDouble& rect, bool send_event = false) {
         return DoSelectRectangle(curve_index, rect, false, send_event);
     }
 
@@ -492,25 +493,25 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     //   this works for all plotcurve classes, for wxPlotData they're converted to the indexes however
     //   if there's nothing to select or already selected it returns false
     //   if curve_index == -1 then try to select points in all curves
-    bool SelectXRange(int curve_index, const wxRangeDouble &range, bool send_event = false) {
+    bool SelectXRange(int curve_index, const wxRangeDouble& range, bool send_event = false) {
         return DoSelectRectangle(
             curve_index, wxRect2DDouble(range.m_min, -wxPlotCtrl_MAX_DBL, range.GetRange(), wxPlotCtrl_MAX_RANGE), true,
             send_event);
     }
 
-    bool DeselectXRange(int curve_index, const wxRangeDouble &range, bool send_event = false) {
+    bool DeselectXRange(int curve_index, const wxRangeDouble& range, bool send_event = false) {
         return DoSelectRectangle(
             curve_index, wxRect2DDouble(range.m_min, -wxPlotCtrl_MAX_DBL, range.GetRange(), wxPlotCtrl_MAX_RANGE),
             false, send_event);
     }
 
-    bool SelectYRange(int curve_index, const wxRangeDouble &range, bool send_event = false) {
+    bool SelectYRange(int curve_index, const wxRangeDouble& range, bool send_event = false) {
         return DoSelectRectangle(
             curve_index, wxRect2DDouble(-wxPlotCtrl_MAX_DBL, range.m_min, wxPlotCtrl_MAX_RANGE, range.GetRange()), true,
             send_event);
     }
 
-    bool DeselectYRange(int curve_index, const wxRangeDouble &range, bool send_event = false) {
+    bool DeselectYRange(int curve_index, const wxRangeDouble& range, bool send_event = false) {
         return DoSelectRectangle(
             curve_index, wxRect2DDouble(-wxPlotCtrl_MAX_DBL, range.m_min, wxPlotCtrl_MAX_RANGE, range.GetRange()),
             false, send_event);
@@ -519,11 +520,11 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     // Select a single point wxRangeInt(pt, pt) or a range of points wxRangeInt(pt1, pt2)
     //   if there's nothing to select or already selected it returns false,
     //   this ONLY works for wxPlotData curves
-    bool SelectDataRange(int curve_index, const wxRangeInt &range, bool send_event = false) {
+    bool SelectDataRange(int curve_index, const wxRangeInt& range, bool send_event = false) {
         return DoSelectDataRange(curve_index, range, true, send_event);
     }
 
-    bool DeselectDataRange(int curve_index, const wxRangeInt &range, bool send_event = false) {
+    bool DeselectDataRange(int curve_index, const wxRangeInt& range, bool send_event = false) {
         return DoSelectDataRange(curve_index, range, false, send_event);
     }
 
@@ -531,9 +532,9 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     bool ClearSelectedRanges(int curve_index, bool send_event = false);
 
     // internal use, or not...
-    virtual bool DoSelectRectangle(int curve_index, const wxRect2DDouble &rect, bool select, bool send_event = false);
+    virtual bool DoSelectRectangle(int curve_index, const wxRect2DDouble& rect, bool select, bool send_event = false);
 
-    virtual bool DoSelectDataRange(int curve_index, const wxRangeInt &range, bool select, bool send_event = false);
+    virtual bool DoSelectDataRange(int curve_index, const wxRangeInt& range, bool select, bool send_event = false);
 
     // called from DoSelect... when selecting to ensure that the current selection
     // matches the SetSelectionType by unselecting as appropriate
@@ -570,43 +571,43 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     }
 
     // Get the bounds of the plot window view in plot coords
-    const wxRect2DDouble &GetViewRect() const {
+    const wxRect2DDouble& GetViewRect() const {
         return m_viewRect;
     }
 
     // Set the bounds of the plot window
-    bool SetViewRect(const wxRect2DDouble &view, bool send_event = false);
+    bool SetViewRect(const wxRect2DDouble& view, bool send_event = false);
 
     // Get the zoom factor = (pixel size of window)/(GetViewRect().m_width or height)
-    const wxPoint2DDouble &GetZoom() const {
+    const wxPoint2DDouble& GetZoom() const {
         return m_zoom;
     }
 
     // Zoom, if zoom_x or zoom_y <= 0 then fit that axis to window and center it
-    bool SetZoom(const wxPoint2DDouble &zoom, bool around_center = true, bool send_event = false);
+    bool SetZoom(const wxPoint2DDouble& zoom, bool around_center = true, bool send_event = false);
 
     virtual bool SetZoom(double zoom_x, double zoom_y, double origin_x, double origin_y, bool send_event = false);
 
     // Zoom in window client coordinates, window.[xy] is top left (unlike plot axis)
-    bool SetZoom(const wxRect &window, bool send_event = false);
+    bool SetZoom(const wxRect& window, bool send_event = false);
 
     // Set/Get the default size the plot should take when either no curves are
     //   loaded or only plot(curves/functions) that have no bounds are loaded
     //   The width and the height must both be > 0
-    void SetDefaultBoundingRect(const wxRect2DDouble &rect, bool send_event = false);
+    void SetDefaultBoundingRect(const wxRect2DDouble& rect, bool send_event = false);
 
-    const wxRect2DDouble &GetDefaultBoundingRect() const {
+    const wxRect2DDouble& GetDefaultBoundingRect() const {
         return m_defaultPlotRect;
     }
 
     // Get the bounding rect of all the curves,
     //    equals the default if no curves or no bounds on the curves
-    const wxRect2DDouble &GetCurveBoundingRect() const {
+    const wxRect2DDouble& GetCurveBoundingRect() const {
         return m_curveBoundingRect;
     }
 
     // Get client rect of the wxPlotCtrlArea window, 0, 0, client_width, client_height
-    const wxRect &GetPlotAreaRect() const {
+    const wxRect& GetPlotAreaRect() const {
         return m_areaClientRect;
     }
 
@@ -628,7 +629,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     // Given the input x, y zooms and the SetAspectRatio ratio correct the
     //   input zooms and origins. Only adjusts input variables.
-    void FixAspectRatio(double *zoom_x, double *zoom_y, double *origin_x, double *origin_y) const;
+    void FixAspectRatio(double* zoom_x, double* zoom_y, double* origin_x, double* origin_y) const;
 
     // ------------------------------------------------------------------------
     // Mouse Functions for the area window
@@ -636,7 +637,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     // The current (last) pixel position of the mouse in the plotArea from the
     //   wxMouseEvent.
-    const wxPoint &GetAreaMouseCoord() const {
+    const wxPoint& GetAreaMouseCoord() const {
         return m_area->m_mousePt;
     }
 
@@ -647,7 +648,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     }
 
     // Get the rect during dragging mouse, else 0
-    const wxRect &GetAreaMouseMarkedRect() const {
+    const wxRect& GetAreaMouseMarkedRect() const {
         return m_area->m_mouseRect;
     }
 
@@ -814,26 +815,26 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
         return m_area->GetBackgroundColour();
     }
 
-    virtual bool SetBackgroundColour(const wxColour &colour);
+    virtual bool SetBackgroundColour(const wxColour& colour);
 
     // Get/Set the colour of the grid lines in the plot area, default grey
     wxColour GetGridColour() const {
         return m_area->GetForegroundColour();
     }
 
-    void SetGridColour(const wxColour &colour);
+    void SetGridColour(const wxColour& colour);
 
     // Get/Set the colour of the border around the plot area, default black
     wxColour GetBorderColour() const {
         return m_borderColour;
     }
 
-    void SetBorderColour(const wxColour &colour);
+    void SetBorderColour(const wxColour& colour);
 
     // Get/Set the colour of the cursor marker, default green
     wxColour GetCursorColour() const;
 
-    void SetCursorColour(const wxColour &colour);
+    void SetCursorColour(const wxColour& colour);
 
     // Get/Set the cursor size, the size of the circle drawn for the cursor.
     //   set size to 0 to not have the cursor shown (default = 2)
@@ -846,18 +847,18 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     wxColour GetAxisColour() const;
 
-    void SetAxisFont(const wxFont &font);
+    void SetAxisFont(const wxFont& font);
 
-    void SetAxisColour(const wxColour &colour);
+    void SetAxisColour(const wxColour& colour);
 
     // Get/Set axis label fonts and colour, default swiss and black
     wxFont GetAxisLabelFont() const;
 
     wxColour GetAxisLabelColour() const;
 
-    void SetAxisLabelFont(const wxFont &font);
+    void SetAxisLabelFont(const wxFont& font);
 
-    void SetAxisLabelColour(const wxColour &colour);
+    void SetAxisLabelColour(const wxColour& colour);
 
     // Get/Set the title font and colour, default swiss and black
     wxFont GetPlotTitleFont() const {
@@ -868,18 +869,18 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
         return m_titleColour;
     }
 
-    void SetPlotTitleFont(const wxFont &font);
+    void SetPlotTitleFont(const wxFont& font);
 
-    void SetPlotTitleColour(const wxColour &colour);
+    void SetPlotTitleColour(const wxColour& colour);
 
     // Get/Set the key font and colour
     wxFont GetKeyFont() const;
 
     wxColour GetKeyColour() const;
 
-    void SetKeyFont(const wxFont &font);
+    void SetKeyFont(const wxFont& font);
 
-    void SetKeyColour(const wxColour &colour);
+    void SetKeyColour(const wxColour& colour);
 
     // ------------------------------------------------------------------------
     // Title, axis labels, and key values and visibility
@@ -909,17 +910,17 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     }
 
     // Get/Set and show/hide the axis labels
-    const wxString &GetXAxisLabel() const {
+    const wxString& GetXAxisLabel() const {
         return m_xLabel;
     }
 
-    const wxString &GetYAxisLabel() const {
+    const wxString& GetYAxisLabel() const {
         return m_yLabel;
     }
 
-    void SetXAxisLabel(const wxString &label);
+    void SetXAxisLabel(const wxString& label);
 
-    void SetYAxisLabel(const wxString &label);
+    void SetYAxisLabel(const wxString& label);
 
     bool GetShowXAxisLabel() const {
         return m_show_xlabel;
@@ -940,11 +941,11 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     }
 
     // Get/Set and show/hide the title
-    const wxString &GetPlotTitle() const {
+    const wxString& GetPlotTitle() const {
         return m_title;
     }
 
-    void SetPlotTitle(const wxString &title);
+    void SetPlotTitle(const wxString& title);
 
     bool GetShowPlotTitle() const {
         return m_show_title;
@@ -956,7 +957,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     }
 
     // Show a key with the function/data names, pos is %width and %height (0-100)
-    const wxString &GetKeyString() const {
+    const wxString& GetKeyString() const {
         return m_keyString;
     }
 
@@ -973,7 +974,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     bool GetKeyInside() const;
 
-    void SetKeyPosition(const wxPoint &pos, bool stay_inside = true);
+    void SetKeyPosition(const wxPoint& pos, bool stay_inside = true);
 
     void SetKeyBottom(bool put_bottom);
 
@@ -1008,43 +1009,43 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     // ------------------------------------------------------------------------
 
     // EVT_MOUSE_EVENTS from the area and axis windows are passed to these functions
-    virtual void ProcessAreaEVT_MOUSE_EVENTS(wxMouseEvent &event);
+    virtual void ProcessAreaEVT_MOUSE_EVENTS(wxMouseEvent& event);
 
-    virtual void ProcessAxisEVT_MOUSE_EVENTS(wxMouseEvent &event);
+    virtual void ProcessAxisEVT_MOUSE_EVENTS(wxMouseEvent& event);
 
     // EVT_CHAR from the area and axis windows are passed to these functions
-    virtual void ProcessAreaEVT_CHAR(wxKeyEvent &event) {
+    virtual void ProcessAreaEVT_CHAR(wxKeyEvent& event) {
         OnChar(event);
     }
 
-    virtual void ProcessAreaEVT_KEY_DOWN(wxKeyEvent &event);
+    virtual void ProcessAreaEVT_KEY_DOWN(wxKeyEvent& event);
 
-    virtual void ProcessAreaEVT_KEY_UP(wxKeyEvent &event);
+    virtual void ProcessAreaEVT_KEY_UP(wxKeyEvent& event);
 
-    virtual void ProcessAxisEVT_CHAR(wxKeyEvent &event) {
+    virtual void ProcessAxisEVT_CHAR(wxKeyEvent& event) {
         OnChar(event);
     }
 
     // EVT_PAINT events forwarded from the Area and Axis windows
-    virtual void ProcessAreaEVT_PAINT(wxPaintEvent &event, wxPaintDC &paintDC, wxPlotCtrlArea *areaWin);
+    virtual void ProcessAreaEVT_PAINT(wxPaintEvent& event, wxPaintDC& paintDC, wxPlotCtrlArea* areaWin);
 
-    virtual void ProcessAxisEVT_PAINT(wxPaintEvent &event, wxPaintDC &paintDC, wxPlotCtrlAxis *axisWin);
+    virtual void ProcessAxisEVT_PAINT(wxPaintEvent& event, wxPaintDC& paintDC, wxPlotCtrlAxis* axisWin);
 
-    void OnChar(wxKeyEvent &event);
+    void OnChar(wxKeyEvent& event);
 
     void HideScrollBars();
 
-    void OnScroll(wxScrollEvent &event);
+    void OnScroll(wxScrollEvent& event);
 
-    void OnPaint(wxPaintEvent &event);
+    void OnPaint(wxPaintEvent& event);
 
-    void OnEraseBackground(wxEraseEvent &) {}
+    void OnEraseBackground(wxEraseEvent&) {}
 
-    void OnIdle(wxIdleEvent &event);
+    void OnIdle(wxIdleEvent& event);
 
-    void OnMouse(wxMouseEvent &event);
+    void OnMouse(wxMouseEvent& event);
 
-    void OnTextEnter(wxCommandEvent &event);
+    void OnTextEnter(wxCommandEvent& event);
 
     // ------------------------------------------------------------------------
     // Drawing functions
@@ -1075,38 +1076,38 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     }
 
     // Draw the wxPlotCtrl (this window)
-    virtual void DrawPlotCtrl(wxDC *dc);
+    virtual void DrawPlotCtrl(wxDC* dc);
 
     // Draw the area window
-    virtual void DrawAreaWindow(wxDC *dc, const wxRect &rect);
+    virtual void DrawAreaWindow(wxDC* dc, const wxRect& rect);
 
     // Draw a wxPlotData derived curve
-    virtual void DrawDataCurve(wxGraphicsContext *gc, wxPlotData *curve, int curve_index, const wxRect &rect);
+    virtual void DrawDataCurve(wxGraphicsContext* gc, wxPlotData* curve, int curve_index, const wxRect& rect);
 
-    virtual void DrawDataCurve(wxDC *dc, wxPlotData *curve, int curve_index, const wxRect &rect);
+    virtual void DrawDataCurve(wxDC* dc, wxPlotData* curve, int curve_index, const wxRect& rect);
 
     // Draw a generic wxPlotCurve curve
-    virtual void DrawCurve(wxGraphicsContext *gc, wxPlotCurve *curve, int curve_index, const wxRect &rect);
+    virtual void DrawCurve(wxGraphicsContext* gc, wxPlotCurve* curve, int curve_index, const wxRect& rect);
 
-    virtual void DrawCurve(wxDC *dc, wxPlotCurve *curve, int curve_index, const wxRect &rect);
+    virtual void DrawCurve(wxDC* dc, wxPlotCurve* curve, int curve_index, const wxRect& rect);
 
     // Draw the key
-    virtual void DrawKey(wxDC *dc);
+    virtual void DrawKey(wxDC* dc);
 
     // Draw the left click drag marker, type is wxPlotCtrl_Marker_Type
-    virtual void DrawMouseMarker(wxDC *dc, int type, const wxRect &rect);
+    virtual void DrawMouseMarker(wxDC* dc, int type, const wxRect& rect);
 
     // Draw a crosshair cursor at the point (mouse cursor)
-    virtual void DrawCrosshairCursor(wxDC *dc, const wxPoint &pos);
+    virtual void DrawCrosshairCursor(wxDC* dc, const wxPoint& pos);
 
     // Draw the cursor marking a single point in a curve wxPlotCtrl::GetCursorPoint
-    virtual void DrawCurveCursor(wxDC *dc);
+    virtual void DrawCurveCursor(wxDC* dc);
 
     // Draw the tick marks or grid lines
-    virtual void DrawTickMarks(wxDC *dc, const wxRect &rect);
+    virtual void DrawTickMarks(wxDC* dc, const wxRect& rect);
 
     // Draw markers
-    virtual void DrawMarkers(wxDC *dc, const wxRect &rect);
+    virtual void DrawMarkers(wxDC* dc, const wxRect& rect);
 
     // redraw this wxPlotData between these two indexes (for (de)select redraw)
     virtual void RedrawDataCurve(int index, int min_index, int max_index);
@@ -1115,13 +1116,13 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     virtual void RedrawCurve(int index, double min_x, double max_x);
 
     // Draw the X or Y axis onto the dc
-    virtual void DrawXAxis(wxDC *dc, bool refresh);
+    virtual void DrawXAxis(wxDC* dc, bool refresh);
 
-    virtual void DrawYAxis(wxDC *dc, bool refresh);
+    virtual void DrawYAxis(wxDC* dc, bool refresh);
 
     // Draw the plot axes and plotctrl on this wxDC for printing, sort of WYSIWYG
     //   the plot is drawn to fit inside the boundingRect (i.e. the margins)
-    void DrawWholePlot(wxDC *dc, const wxRect &boundingRect, double dpi = 72);
+    void DrawWholePlot(wxDC* dc, const wxRect& boundingRect, double dpi = 72);
 
     // ------------------------------------------------------------------------
     // Axis tick calculations
@@ -1164,10 +1165,10 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     virtual void CalcYAxisTickPositions();
 
-    void FormatAxisTickLables(wxArrayString &axisLabels, double current, wxString tickFormat = wxEmptyString,
+    void FormatAxisTickLables(wxArrayString& axisLabels, double current, wxString tickFormat = wxEmptyString,
                               wxPlotCtrlAxis_TicksType tickType = wxPLOTCTRL_VALUE);
 
-    wxString GetDateStringFromMJD(double date, const wxString &format);
+    wxString GetDateStringFromMJD(double date, const wxString& format);
 
     // ------------------------------------------------------------------------
     // Utilities
@@ -1176,11 +1177,11 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     // Find a curve at pt, in rect of size +- dxdyPt, starting with active curve
     // return sucess, setting curve_index, data_index if data curve, and if
     // curvePt fills the exact point in the curve.
-    bool FindCurve(const wxPoint2DDouble &pt, const wxPoint2DDouble &dxdyPt, int &curve_index, int &data_index,
-                   wxPoint2DDouble *curvePt = NULL) const;
+    bool FindCurve(const wxPoint2DDouble& pt, const wxPoint2DDouble& dxdyPt, int& curve_index, int& data_index,
+                   wxPoint2DDouble* curvePt = NULL) const;
 
     // if n is !finite send wxEVT_PLOTCTRL_ERROR if msg is not empty
-    bool IsFinite(double n, const wxString &msg = wxEmptyString) const;
+    bool IsFinite(double n, const wxString& msg = wxEmptyString) const;
 
     // call this whenever you adjust the size of a data curve
     //    this necessary to know the default zoom to show them
@@ -1195,7 +1196,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
         return ((m_areaClientRect.height - clienty) / m_zoom.m_y + m_viewRect.GetTop());
     }
 
-    inline wxRect2DDouble GetPlotRectFromClientRect(const wxRect &clientRect) const {
+    inline wxRect2DDouble GetPlotRectFromClientRect(const wxRect& clientRect) const {
         return wxRect2DDouble(GetPlotCoordFromClientX(clientRect.x), GetPlotCoordFromClientY(clientRect.GetBottom()),
                               clientRect.width / m_zoom.m_x, clientRect.height / m_zoom.m_y);
     }
@@ -1210,7 +1211,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
         return y < INT_MAX ? int(y) : INT_MAX;
     }
 
-    inline wxRect GetClientRectFromPlotRect(const wxRect2DDouble &plotRect) const {
+    inline wxRect GetClientRectFromPlotRect(const wxRect2DDouble& plotRect) const {
         double w = plotRect.m_width * m_zoom.m_x + 0.5;
         double h = plotRect.m_height * m_zoom.m_y + 0.5;
         return wxRect(GetClientCoordFromPlotX(plotRect.m_x), GetClientCoordFromPlotY(plotRect.GetBottom()),
@@ -1218,15 +1219,15 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     }
 
     // Get the windows
-    wxPlotCtrlArea *GetPlotArea() const {
+    wxPlotCtrlArea* GetPlotArea() const {
         return m_area;
     }
 
-    wxPlotCtrlAxis *GetPlotXAxis() const {
+    wxPlotCtrlAxis* GetPlotXAxis() const {
         return m_xAxis;
     }
 
-    wxPlotCtrlAxis *GetPlotYAxis() const {
+    wxPlotCtrlAxis* GetPlotYAxis() const {
         return m_yAxis;
     }
 
@@ -1235,16 +1236,20 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     void UpdateWindowSize();
 
-    void DoSize(const wxRect &boundingRect = wxRect(0, 0, 0, 0), bool set_window_sizes = true);
+    void DoSize(const wxRect& boundingRect = wxRect(0, 0, 0, 0), bool set_window_sizes = true);
 
     // who's got the focus, if this then draw the bitmap to show it, internal
     bool CheckFocus();
 
     // send event returning true if it's allowed
-    bool DoSendEvent(wxPlotCtrlEvent &event) const;
+    bool DoSendEvent(wxPlotCtrlEvent& event) const;
 
     // Start the mouse timer with the win_id, stops old if for different id
-    enum mouseTimerIDs { ID_AREA_TIMER = 10, ID_XAXIS_TIMER, ID_YAXIS_TIMER };
+    enum mouseTimerIDs {
+        ID_AREA_TIMER = 10,
+        ID_XAXIS_TIMER,
+        ID_YAXIS_TIMER
+    };
 
     void StartMouseTimer(wxWindowID win_id);
 
@@ -1252,22 +1257,22 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     bool IsTimerRunning();
 
-    void OnTimer(wxTimerEvent &event);
+    void OnTimer(wxTimerEvent& event);
 
     // A locker for the captured window, set to NULL to release
-    void SetCaptureWindow(wxWindow *win);
+    void SetCaptureWindow(wxWindow* win);
 
-    wxWindow *GetCaptureWindow() const {
+    wxWindow* GetCaptureWindow() const {
         return m_winCapture;
     }
 
   protected:
-    void OnSize(wxSizeEvent &event);
+    void OnSize(wxSizeEvent& event);
 
     bool m_drawOnScreen;
 
     wxArrayPlotCurve m_curves;   // all the curves
-    wxPlotCurve *m_activeCurve;  // currently active curve
+    wxPlotCurve* m_activeCurve;  // currently active curve
     int m_active_index;          // index in array of currently active curve
 
     wxPlotMarker m_cursorMarker;  // marker to draw for cursor
@@ -1335,24 +1340,24 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     bool m_correct_ticks;                                       // tick correction
 
     // drawers
-    wxPlotDrawerArea *m_areaDrawer;
-    wxPlotDrawerXAxis *m_xAxisDrawer;
-    wxPlotDrawerYAxis *m_yAxisDrawer;
-    wxPlotDrawerKey *m_keyDrawer;
-    wxPlotDrawerCurve *m_curveDrawer;
-    wxPlotDrawerDataCurve *m_dataCurveDrawer;
-    wxPlotDrawerMarker *m_markerDrawer;
+    wxPlotDrawerArea* m_areaDrawer;
+    wxPlotDrawerXAxis* m_xAxisDrawer;
+    wxPlotDrawerYAxis* m_yAxisDrawer;
+    wxPlotDrawerKey* m_keyDrawer;
+    wxPlotDrawerCurve* m_curveDrawer;
+    wxPlotDrawerDataCurve* m_dataCurveDrawer;
+    wxPlotDrawerMarker* m_markerDrawer;
 
     // windows
-    wxPlotCtrlArea *m_area;
+    wxPlotCtrlArea* m_area;
     wxPlotCtrlAxis *m_xAxis, *m_yAxis;
     wxScrollBar *m_xAxisScrollbar, *m_yAxisScrollbar;
 
     // textctrl for label/title editor, created and deleted as necessary
-    wxTextCtrl *m_textCtrl;
+    wxTextCtrl* m_textCtrl;
 
     // focusing and bitmap to display focus
-    wxWindow *m_focusedWin;
+    wxWindow* m_focusedWin;
     bool m_greedy_focus;
 
     // remember what needs to be repainted so unnecessary EVT_PAINTS are skipped
@@ -1366,8 +1371,8 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     long m_min_exponential;    // minimum number displayed as an exponential
     double m_pen_print_width;  // width of a 1 pixel pen in mm when printed
 
-    wxTimer *m_timer;        // don't use, see accessor functions
-    wxWindow *m_winCapture;  // don't use, see accessor functions
+    wxTimer* m_timer;        // don't use, see accessor functions
+    wxWindow* m_winCapture;  // don't use, see accessor functions
 
     wxPlotCtrlMouse_Type m_area_mouse_func;
     wxPlotCtrlMarker_Type m_area_mouse_marker;
@@ -1391,9 +1396,9 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlEvent : public wxNotifyEvent {
   public:
-    wxPlotCtrlEvent(wxEventType commandType = wxEVT_NULL, wxWindowID id = wxID_ANY, wxPlotCtrl *window = NULL);
+    wxPlotCtrlEvent(wxEventType commandType = wxEVT_NULL, wxWindowID id = wxID_ANY, wxPlotCtrl* window = NULL);
 
-    wxPlotCtrlEvent(const wxPlotCtrlEvent &event)
+    wxPlotCtrlEvent(const wxPlotCtrlEvent& event)
         : wxNotifyEvent(event),
           m_curve(event.m_curve),
           m_curve_index(event.m_curve_index),
@@ -1426,11 +1431,11 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlEvent : public wxNotifyEvent {
     }
 
     // pointer to the curve, NULL if not appropriate for the event type
-    wxPlotCurve *GetCurve() const {
+    wxPlotCurve* GetCurve() const {
         return m_curve;
     }
 
-    void SetCurve(wxPlotCurve *curve, int curve_index) {
+    void SetCurve(wxPlotCurve* curve, int curve_index) {
         m_curve = curve;
         m_curve_index = curve_index;
     }
@@ -1448,7 +1453,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlEvent : public wxNotifyEvent {
         return m_curve && (wxDynamicCast(m_curve, wxPlotData) != NULL);
     }
 
-    wxPlotCtrl *GetPlotCtrl() const {
+    wxPlotCtrl* GetPlotCtrl() const {
         return wxDynamicCast(GetEventObject(), wxPlotCtrl);
     }
 
@@ -1461,11 +1466,11 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlEvent : public wxNotifyEvent {
     }
 
   protected:
-    virtual wxEvent *Clone() const {
+    virtual wxEvent* Clone() const {
         return new wxPlotCtrlEvent(*this);
     }
 
-    wxPlotCurve *m_curve;
+    wxPlotCurve* m_curve;
     int m_curve_index;
     int m_curve_dataindex;
     int m_mouse_func;
@@ -1481,9 +1486,9 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlEvent : public wxNotifyEvent {
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlSelEvent : public wxPlotCtrlEvent {
   public:
-    wxPlotCtrlSelEvent(wxEventType commandType = wxEVT_NULL, wxWindowID id = wxID_ANY, wxPlotCtrl *window = NULL);
+    wxPlotCtrlSelEvent(wxEventType commandType = wxEVT_NULL, wxWindowID id = wxID_ANY, wxPlotCtrl* window = NULL);
 
-    wxPlotCtrlSelEvent(const wxPlotCtrlSelEvent &event)
+    wxPlotCtrlSelEvent(const wxPlotCtrlSelEvent& event)
         : wxPlotCtrlEvent(event),
           m_dataRange(event.m_dataRange),
           m_curveRange(event.m_curveRange),
@@ -1499,7 +1504,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlSelEvent : public wxPlotCtrlEvent {
         return m_dataRange;
     }
 
-    void SetDataSelectionRange(const wxRangeInt &range, bool selecting) {
+    void SetDataSelectionRange(const wxRangeInt& range, bool selecting) {
         m_dataRange = range;
         m_selecting = selecting;
     }
@@ -1509,22 +1514,22 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlSelEvent : public wxPlotCtrlEvent {
         return m_curveRange;
     }
 
-    void SetCurveSelectionRange(const wxRangeDouble &range, bool selecting) {
+    void SetCurveSelectionRange(const wxRangeDouble& range, bool selecting) {
         m_curveRange = range;
         m_selecting = selecting;
     }
 
     // for a wxPlotData this is filled with the (de)selected ranges.
     //   there will only be more than one for unordered wxPlotDatas
-    const wxRangeIntSelection &GetDataSelections() const {
+    const wxRangeIntSelection& GetDataSelections() const {
         return m_dataSelection;
     }
 
-    wxRangeIntSelection &GetDataSelections() {
+    wxRangeIntSelection& GetDataSelections() {
         return m_dataSelection;
     }
 
-    void SetDataSelections(const wxRangeIntSelection &ranges) {
+    void SetDataSelections(const wxRangeIntSelection& ranges) {
         m_dataSelection = ranges;
     }
 
@@ -1534,7 +1539,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlSelEvent : public wxPlotCtrlEvent {
     }
 
   protected:
-    virtual wxEvent *Clone() const {
+    virtual wxEvent* Clone() const {
         return new wxPlotCtrlSelEvent(*this);
     }
 
@@ -1644,7 +1649,7 @@ END_DECLARE_EVENT_TYPES()
 // wxPlotCtrlEvent macros
 // ----------------------------------------------------------------------------
 
-typedef void (wxEvtHandler::*wxPlotCtrlEventFunction)(wxPlotCtrlEvent &);
+typedef void (wxEvtHandler::*wxPlotCtrlEventFunction)(wxPlotCtrlEvent&);
 
 #define wxPlotCtrlEventHandler(func) \
     (wxObjectEventFunction)(wxEventFunction) wxStaticCastEvent(wxPlotCtrlEventFunction, &func)
@@ -1685,19 +1690,19 @@ typedef void (wxEvtHandler::*wxPlotCtrlEventFunction)(wxPlotCtrlEvent &);
 #define EVT_PLOTCTRL_MOUSE_FUNC_CHANGING(id, fn) wx__DECLARE_PLOTCTRLEVT(wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGING, id, fn)
 #define EVT_PLOTCTRL_MOUSE_FUNC_CHANGED(id, fn) wx__DECLARE_PLOTCTRLEVT(wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGED, id, fn)
 
-typedef void (wxEvtHandler::*wxPlotCtrlSelEventFunction)(wxPlotCtrlSelEvent &);
+typedef void (wxEvtHandler::*wxPlotCtrlSelEventFunction)(wxPlotCtrlSelEvent&);
 
 #define wxPlotCtrlSelEventHandler(func) \
     (wxObjectEventFunction)(wxEventFunction) wxStaticCastEvent(wxPlotCtrlSelEventFunction, &func)
 #define wx__DECLARE_PLOTCTRLSELEVT(evt, id, fn) wx__DECLARE_EVT1(evt, id, wxPlotCtrlSelEventHandler(fn))
 
-//#define EVT_PLOTCTRL_RANGE_SEL_CREATING(id, fn) DECLARE_EVENT_TABLE_ENTRY(wxEVT_PLOTCTRL_RANGE_SEL_CREATING, id,
-// wxID_ANY, (wxObjectEventFunction) (wxEventFunction) wxStaticCastEvent( wxPlotCtrlSelEventFunction, & fn ), (wxObject
+// #define EVT_PLOTCTRL_RANGE_SEL_CREATING(id, fn) DECLARE_EVENT_TABLE_ENTRY(wxEVT_PLOTCTRL_RANGE_SEL_CREATING, id,
+//  wxID_ANY, (wxObjectEventFunction) (wxEventFunction) wxStaticCastEvent( wxPlotCtrlSelEventFunction, & fn ), (wxObject
 //*) NULL ), #define EVT_PLOTCTRL_RANGE_SEL_CREATED(id, fn)  DECLARE_EVENT_TABLE_ENTRY(wxEVT_PLOTCTRL_RANGE_SEL_CREATED,
-// id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) wxStaticCastEvent( wxPlotCtrlSelEventFunction, & fn ),
+//  id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) wxStaticCastEvent( wxPlotCtrlSelEventFunction, & fn ),
 //(wxObject *) NULL ), #define EVT_PLOTCTRL_RANGE_SEL_CHANGING(id, fn)
-// DECLARE_EVENT_TABLE_ENTRY(wxEVT_PLOTCTRL_RANGE_SEL_CHANGING, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction)
-// wxStaticCastEvent( wxPlotCtrlSelEventFunction, & fn ), (wxObject *) NULL ),
+//  DECLARE_EVENT_TABLE_ENTRY(wxEVT_PLOTCTRL_RANGE_SEL_CHANGING, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction)
+//  wxStaticCastEvent( wxPlotCtrlSelEventFunction, & fn ), (wxObject *) NULL ),
 #define EVT_PLOTCTRL_RANGE_SEL_CHANGED(id, fn) wx__DECLARE_PLOTCTRLSELEVT(wxEVT_PLOTCTRL_RANGE_SEL_CHANGED, id, fn)
 
 /*

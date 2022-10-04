@@ -111,13 +111,13 @@ class asParametersScoring : public asParameters {
 
     ~asParametersScoring() override;
 
-    void AddPredictorVect(ParamsStepVect &step);
+    void AddPredictorVect(ParamsStepVect& step);
 
-    bool GenerateSimpleParametersFile(const wxString &filePath) const;
+    bool GenerateSimpleParametersFile(const wxString& filePath) const;
 
     bool PreprocessingDataIdsOk();
 
-    wxString GetPredictandStationIdsVectorString(vvi &predictandStationIdsVect) const;
+    wxString GetPredictandStationIdsVectorString(vvi& predictandStationIdsVect) const;
 
     wxString Print() const override;
 
@@ -139,7 +139,7 @@ class asParametersScoring : public asParameters {
         return m_calibrationStart;
     }
 
-    void SetCalibrationStart(const wxString &val) {
+    void SetCalibrationStart(const wxString& val) {
         m_calibrationStart = asTime::GetTimeFromString(val);
     }
 
@@ -147,7 +147,7 @@ class asParametersScoring : public asParameters {
         return m_calibrationEnd;
     }
 
-    void SetCalibrationEnd(const wxString &val) {
+    void SetCalibrationEnd(const wxString& val) {
         m_calibrationEnd = asTime::GetTimeFromString(val);
     }
 
@@ -172,7 +172,7 @@ class asParametersScoring : public asParameters {
         return m_score.name;
     }
 
-    void SetScoreName(const wxString &val) {
+    void SetScoreName(const wxString& val) {
         wxASSERT(!val.IsEmpty());
         m_score.name = val;
     }
@@ -209,7 +209,7 @@ class asParametersScoring : public asParameters {
         return m_score.timeArrayMode;
     }
 
-    void SetScoreTimeArrayMode(const wxString &val) {
+    void SetScoreTimeArrayMode(const wxString& val) {
         wxASSERT(!val.IsEmpty());
         m_score.timeArrayMode = val;
     }

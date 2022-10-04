@@ -33,7 +33,7 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorCustomMFvgSynopPacked::asPredictorCustomMFvgSynopPacked(const wxString &dataId)
+asPredictorCustomMFvgSynopPacked::asPredictorCustomMFvgSynopPacked(const wxString& dataId)
     : asPredictorCustomMFvgSynop(dataId) {
     // Set the basic properties.
     m_datasetId = "Custom_MeteoFVG_Synop_Packed";
@@ -45,7 +45,7 @@ asPredictorCustomMFvgSynopPacked::asPredictorCustomMFvgSynopPacked(const wxStrin
     m_warnMissingFiles = true;
 }
 
-void asPredictorCustomMFvgSynopPacked::ListFiles(asTimeArray &timeArray) {
+void asPredictorCustomMFvgSynopPacked::ListFiles(asTimeArray& timeArray) {
     // Case 1: single file with the variable name
     wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".grib";
 

@@ -43,13 +43,13 @@ class asParametersOptimization : public asParametersScoring {
 
     void AddStep();
 
-    void AddPredictorIteration(ParamsStep &step);
+    void AddPredictorIteration(ParamsStep& step);
 
-    void AddPredictorUpperLimit(ParamsStep &step);
+    void AddPredictorUpperLimit(ParamsStep& step);
 
-    void AddPredictorLowerLimit(ParamsStep &step);
+    void AddPredictorLowerLimit(ParamsStep& step);
 
-    void AddPredictorLocks(ParamsStepBool &step);
+    void AddPredictorLocks(ParamsStepBool& step);
 
     void InitRandomValues();
 
@@ -57,7 +57,7 @@ class asParametersOptimization : public asParametersScoring {
 
     bool SetPreloadingProperties();
 
-    bool LoadFromFile(const wxString &filePath);
+    bool LoadFromFile(const wxString& filePath);
 
     void CheckRange();
 
@@ -71,7 +71,7 @@ class asParametersOptimization : public asParametersScoring {
 
     void LockAll();
 
-    void Unlock(vi &indices);
+    void Unlock(vi& indices);
 
     int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre) const {
         return GetPreprocessDataIdVector(iStep, iPtor, iPre).size();
@@ -488,26 +488,26 @@ class asParametersOptimization : public asParametersScoring {
     VectorParamsStepBool m_stepsLocks;
 
   private:
-    bool ParseDescription(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseDescription(asFileParametersOptimization& fileParams, const wxXmlNode* nodeProcess);
 
-    bool ParseTimeProperties(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseTimeProperties(asFileParametersOptimization& fileParams, const wxXmlNode* nodeProcess);
 
-    bool ParseAnalogDatesParams(asFileParametersOptimization &fileParams, int iStep, const wxXmlNode *nodeProcess);
+    bool ParseAnalogDatesParams(asFileParametersOptimization& fileParams, int iStep, const wxXmlNode* nodeProcess);
 
-    bool ParsePredictors(asFileParametersOptimization &fileParams, int iStep, int iPtor,
-                         const wxXmlNode *nodeParamBlock);
+    bool ParsePredictors(asFileParametersOptimization& fileParams, int iStep, int iPtor,
+                         const wxXmlNode* nodeParamBlock);
 
-    bool ParsePreprocessedPredictors(asFileParametersOptimization &fileParams, int iStep, int iPtor,
-                                     const wxXmlNode *nodeParam);
+    bool ParsePreprocessedPredictors(asFileParametersOptimization& fileParams, int iStep, int iPtor,
+                                     const wxXmlNode* nodeParam);
 
-    bool ParsePreprocessedPredictorDataset(asFileParametersOptimization &fileParams, int iStep, int iPtor, int iPre,
-                                           const wxXmlNode *nodePreprocess);
+    bool ParsePreprocessedPredictorDataset(asFileParametersOptimization& fileParams, int iStep, int iPtor, int iPre,
+                                           const wxXmlNode* nodePreprocess);
 
-    bool ParseSpatialWindow(asFileParametersOptimization &fileParams, int iStep, int iPtor, const wxXmlNode *nodeParam);
+    bool ParseSpatialWindow(asFileParametersOptimization& fileParams, int iStep, int iPtor, const wxXmlNode* nodeParam);
 
-    bool ParseAnalogValuesParams(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseAnalogValuesParams(asFileParametersOptimization& fileParams, const wxXmlNode* nodeProcess);
 
-    bool ParseScore(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseScore(asFileParametersOptimization& fileParams, const wxXmlNode* nodeProcess);
 };
 
 #endif

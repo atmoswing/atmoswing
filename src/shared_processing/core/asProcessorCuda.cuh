@@ -53,10 +53,10 @@ enum CudaCriteria {
 
 class asProcessorCuda {
   public:
-    static bool ProcessCriteria(const float *dData, std::vector<long> ptorStart, int indicesTarg,
-                                const int *indicesArch, float *dRes, int nbCandidates, std::vector<int> &colsNb,
-                                std::vector<int> &rowsNb, std::vector<float> &weights,
-                                std::vector<CudaCriteria> &criteria, cudaStream_t &stream, int offset);
+    static bool ProcessCriteria(const float* dData, std::vector<long> ptorStart, int indicesTarg,
+                                const int* indicesArch, float* dRes, int nbCandidates, std::vector<int>& colsNb,
+                                std::vector<int>& rowsNb, std::vector<float>& weights,
+                                std::vector<CudaCriteria>& criteria, cudaStream_t& stream, int offset);
 
     static bool SelectBestDevice();
 

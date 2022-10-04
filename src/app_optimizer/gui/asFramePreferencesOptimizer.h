@@ -34,10 +34,10 @@
 
 class asFramePreferencesOptimizer : public asFramePreferencesOptimizerVirtual {
   public:
-    explicit asFramePreferencesOptimizer(wxWindow *parent, wxWindowID id = asWINDOW_PREFERENCES);
+    explicit asFramePreferencesOptimizer(wxWindow* parent, wxWindowID id = asWINDOW_PREFERENCES);
 
   protected:
-    void CloseFrame(wxCommandEvent &event) override;
+    void CloseFrame(wxCommandEvent& event) override;
 
     void Update() override;
 
@@ -45,11 +45,11 @@ class asFramePreferencesOptimizer : public asFramePreferencesOptimizerVirtual {
 
     void SavePreferences() const;
 
-    void SaveAndClose(wxCommandEvent &event) override;
+    void SaveAndClose(wxCommandEvent& event) override;
 
-    void ApplyChanges(wxCommandEvent &event) override;
+    void ApplyChanges(wxCommandEvent& event) override;
 
-    void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
+    void OnChangeMultithreadingCheckBox(wxCommandEvent& event) override;
 };
 
 #endif

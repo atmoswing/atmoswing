@@ -58,9 +58,9 @@ class asParametersDownscaling : public asParameters {
 
     void AddStep();
 
-    void AddPredictorProj(ParamsStepProj &step);
+    void AddPredictorProj(ParamsStepProj& step);
 
-    bool LoadFromFile(const wxString &filePath);
+    bool LoadFromFile(const wxString& filePath);
 
     bool InputsOK() const;
 
@@ -68,7 +68,7 @@ class asParametersDownscaling : public asParameters {
 
     void InitValues();
 
-    void SetModel(const wxString &model) {
+    void SetModel(const wxString& model) {
         m_model = model;
     }
 
@@ -76,7 +76,7 @@ class asParametersDownscaling : public asParameters {
         return m_model;
     }
 
-    void SetScenario(const wxString &scenario) {
+    void SetScenario(const wxString& scenario) {
         m_scenario = scenario;
     }
 
@@ -94,21 +94,21 @@ class asParametersDownscaling : public asParameters {
         return m_stepsProj[iStep].predictors[iPtor].datasetId;
     }
 
-    void SetPredictorProjDatasetId(int iStep, int iPtor, const wxString &val);
+    void SetPredictorProjDatasetId(int iStep, int iPtor, const wxString& val);
 
     wxString GetPredictorProjDataId(int iStep, int iPtor) const {
         return m_stepsProj[iStep].predictors[iPtor].dataId;
     }
 
-    void SetPredictorProjDataId(int iStep, int iPtor, const wxString &val);
+    void SetPredictorProjDataId(int iStep, int iPtor, const wxString& val);
 
     wxString GetPreprocessProjDatasetId(int iStep, int iPtor, int iPre) const;
 
-    void SetPreprocessProjDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetPreprocessProjDatasetId(int iStep, int iPtor, int iPre, const wxString& val);
 
     wxString GetPreprocessProjDataId(int iStep, int iPtor, int iPre) const;
 
-    void SetPreprocessProjDataId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetPreprocessProjDataId(int iStep, int iPtor, int iPre, const wxString& val);
 
     void SetPredictorProjMembersNb(int iStep, int iPtor, int val) {
         m_stepsProj[iStep].predictors[iPtor].membersNb = val;
@@ -160,16 +160,16 @@ class asParametersDownscaling : public asParameters {
     vvi m_predictandStationIdsVect;
     VectorParamsStepProj m_stepsProj;
 
-    bool ParseDescription(asFileParametersDownscaling &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseDescription(asFileParametersDownscaling& fileParams, const wxXmlNode* nodeProcess);
 
-    bool ParseTimeProperties(asFileParametersDownscaling &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseTimeProperties(asFileParametersDownscaling& fileParams, const wxXmlNode* nodeProcess);
 
-    bool ParseAnalogDatesParams(asFileParametersDownscaling &fileParams, int iStep, const wxXmlNode *nodeProcess);
+    bool ParseAnalogDatesParams(asFileParametersDownscaling& fileParams, int iStep, const wxXmlNode* nodeProcess);
 
-    bool ParsePreprocessedPredictors(asFileParametersDownscaling &fileParams, int iStep, int iPtor,
-                                     const wxXmlNode *nodeParam);
+    bool ParsePreprocessedPredictors(asFileParametersDownscaling& fileParams, int iStep, int iPtor,
+                                     const wxXmlNode* nodeParam);
 
-    bool ParseAnalogValuesParams(asFileParametersDownscaling &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseAnalogValuesParams(asFileParametersDownscaling& fileParams, const wxXmlNode* nodeProcess);
 };
 
 #endif

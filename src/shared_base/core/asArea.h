@@ -33,7 +33,7 @@
 
 class asArea : public wxObject {
   public:
-    asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+    asArea(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
            int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
     asArea(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
@@ -43,7 +43,7 @@ class asArea : public wxObject {
 
     ~asArea() override = default;
 
-    void CheckPoint(Coo &point);
+    void CheckPoint(Coo& point);
 
     bool IsLatLon() const {
         return m_isLatLon;
@@ -53,7 +53,7 @@ class asArea : public wxObject {
         return m_cornerUL;
     }
 
-    void SetCornerUL(const Coo &val, bool noInit = false) {
+    void SetCornerUL(const Coo& val, bool noInit = false) {
         m_cornerUL = val;
         if (!noInit) Init();
     }
@@ -62,7 +62,7 @@ class asArea : public wxObject {
         return m_cornerUR;
     }
 
-    void SetCornerUR(const Coo &val, bool noInit = false) {
+    void SetCornerUR(const Coo& val, bool noInit = false) {
         m_cornerUR = val;
         if (!noInit) Init();
     }
@@ -71,7 +71,7 @@ class asArea : public wxObject {
         return m_cornerLL;
     }
 
-    void SetCornerLL(const Coo &val, bool noInit = false) {
+    void SetCornerLL(const Coo& val, bool noInit = false) {
         m_cornerLL = val;
         if (!noInit) Init();
     }
@@ -80,7 +80,7 @@ class asArea : public wxObject {
         return m_cornerLR;
     }
 
-    void SetCornerLR(const Coo &val, bool noInit = false) {
+    void SetCornerLR(const Coo& val, bool noInit = false) {
         m_cornerLR = val;
         if (!noInit) Init();
     }

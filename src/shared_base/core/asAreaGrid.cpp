@@ -36,7 +36,7 @@
 #include "asPredictor.h"
 #include "asTypeDefs.h"
 
-asAreaGrid *asAreaGrid::GetInstance(const asParameters *params, int iStep, int iPtor) {
+asAreaGrid* asAreaGrid::GetInstance(const asParameters* params, int iStep, int iPtor) {
     wxString gridType = params->GetPredictorGridType(iStep, iPtor);
     double xMin = params->GetPredictorXmin(iStep, iPtor);
     int xPtsNb = params->GetPredictorXptsnb(iStep, iPtor);
@@ -50,7 +50,7 @@ asAreaGrid *asAreaGrid::GetInstance(const asParameters *params, int iStep, int i
     return GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, flatAllowed, isLatLon);
 }
 
-asAreaGrid *asAreaGrid::GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
+asAreaGrid* asAreaGrid::GetInstance(const wxString& type, double xMin, int xPtsNb, double xStep, double yMin,
                                     int yPtsNb, double yStep, int flatAllowed, bool isLatLon) {
     if (type.IsSameAs("Regular", false)) {
         if (xStep > 0 && yStep > 0) {
@@ -68,12 +68,12 @@ asAreaGrid *asAreaGrid::GetInstance(const wxString &type, double xMin, int xPtsN
     }
 }
 
-asAreaGrid *asAreaGrid::GetInstance(double xMin, int xPtsNb, double xStep, double yMin, int yPtsNb,
-                                    double yStep, int flatAllowed, bool isLatLon) {
+asAreaGrid* asAreaGrid::GetInstance(double xMin, int xPtsNb, double xStep, double yMin, int yPtsNb, double yStep,
+                                    int flatAllowed, bool isLatLon) {
     return GetInstance("Generic", xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, flatAllowed, isLatLon);
 }
 
-asAreaGrid::asAreaGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+asAreaGrid::asAreaGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
                        int flatAllowed, bool isLatLon)
     : asArea(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon),
       m_isRegular(false),
@@ -98,7 +98,7 @@ asAreaGrid::asAreaGrid()
       m_xPtsNb(0),
       m_yPtsNb(0) {}
 
-bool asAreaGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed, bool getLarger) {
+bool asAreaGrid::InitializeAxes(const a1d& lons, const a1d& lats, bool strideAllowed, bool getLarger) {
     m_isInitialized = true;
 
     if (AreaDefinedByPointsNb(lons, lats)) return HandleAreaDefinedByPointsNb(lons, lats);
@@ -125,8 +125,7 @@ void asAreaGrid::CorrectCornersWithAxes() {
         SetCornerUR(cornerUR, true);
     }
 
-    if (GetCornerLL().x > GetCornerLR().x ||
-        GetCornerUL().x > GetCornerUR().x) {
+    if (GetCornerLL().x > GetCornerLR().x || GetCornerUL().x > GetCornerUR().x) {
         if (m_isLatLon) {
             Coo cornerLR = GetCornerLR();
             cornerLR.x += 360;
@@ -158,7 +157,7 @@ void asAreaGrid::CorrectCornersWithAxes() {
     }
 }
 
-bool asAreaGrid::CreateAxes(const a1d &lons, const a1d &lats, bool getLarger) {
+bool asAreaGrid::CreateAxes(const a1d& lons, const a1d& lats, bool getLarger) {
     int indexXmin, indexXmax;
     auto nlons = int(lons.size() - 1);
 
@@ -224,7 +223,8 @@ bool asAreaGrid::CreateAxes(const a1d &lons, const a1d &lats, bool getLarger) {
     wxASSERT(indexXmin <= indexXmax);
 
     if (indexXmin > indexXmax) {
-        wxLogError(_("The index (%d) of the longitude min is larger than the one for the longitude max (%d)."), indexXmin, indexXmax);
+        wxLogError(_("The index (%d) of the longitude min is larger than the one for the longitude max (%d)."),
+                   indexXmin, indexXmax);
         return false;
     }
 
@@ -284,7 +284,7 @@ bool asAreaGrid::CreateAxes(const a1d &lons, const a1d &lats, bool getLarger) {
         if (indexYmin > indexYmax) {
             int tmp = indexYmax;
             if (IsRegular()) {
-                asAreaRegGrid areaReg = dynamic_cast<asAreaRegGrid &>(*this);
+                asAreaRegGrid areaReg = dynamic_cast<asAreaRegGrid&>(*this);
                 if (areaReg.GetYstep() > areaReg.GetYstepData()) {
                     auto newIndex = (float)indexYmin;
                     float stepIndY = areaReg.GetYstep() / areaReg.GetYstepData();
@@ -310,8 +310,7 @@ bool asAreaGrid::CreateAxes(const a1d &lons, const a1d &lats, bool getLarger) {
     }
 
     if (indexYmin < 0 || indexYmax < 0) {
-        wxLogError(_("Cannot find one the corresponding value (%g or %g) on the latitude axis."),
-                   GetYmin(), GetYmax());
+        wxLogError(_("Cannot find one the corresponding value (%g or %g) on the latitude axis."), GetYmin(), GetYmax());
         return false;
     }
 
@@ -325,11 +324,11 @@ bool asAreaGrid::CreateAxes(const a1d &lons, const a1d &lats, bool getLarger) {
     return true;
 }
 
-bool asAreaGrid::AreaDefinedByPointsNb(const a1d &lons, const a1d &lats) {
+bool asAreaGrid::AreaDefinedByPointsNb(const a1d& lons, const a1d& lats) {
     return m_xPtsNb > 0 && m_yPtsNb > 0 && GetXmin() == GetXmax() && GetYmin() == GetYmax();
 }
 
-bool asAreaGrid::HandleAreaDefinedByPointsNb(const a1d &lons, const a1d &lats) {
+bool asAreaGrid::HandleAreaDefinedByPointsNb(const a1d& lons, const a1d& lats) {
     int indexYmin = asFindClosest(&lats[0], &lats[lats.size() - 1], GetYmin());
     int indexYmax = 0;
     a1d latsAxis;

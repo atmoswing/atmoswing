@@ -34,22 +34,22 @@
 
 class asWizardWorkspace : public asWizardWorkspaceVirtual {
   public:
-    asWizardWorkspace(wxWindow *parent, wxWindowID id = wxID_ANY);
+    asWizardWorkspace(wxWindow* parent, wxWindowID id = wxID_ANY);
 
     ~asWizardWorkspace();
 
-    wxWizardPage *GetFirstPage() const {
+    wxWizardPage* GetFirstPage() const {
         return m_pages.Item(0);
     }
 
-    wxWizardPage *GetSecondPage() const {
+    wxWizardPage* GetSecondPage() const {
         return m_pages.Item(1);
     }
 
   protected:
-    void OnWizardFinished(wxWizardEvent &event);
+    void OnWizardFinished(wxWizardEvent& event);
 
-    void OnLoadExistingWorkspace(wxCommandEvent &event);
+    void OnLoadExistingWorkspace(wxCommandEvent& event);
 
   private:
     asWorkspace m_workspace;

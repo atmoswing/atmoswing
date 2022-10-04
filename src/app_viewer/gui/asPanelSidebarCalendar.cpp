@@ -30,7 +30,7 @@
 
 #include "images.h"
 
-asPanelSidebarCalendar::asPanelSidebarCalendar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size,
+asPanelSidebarCalendar::asPanelSidebarCalendar(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size,
                                                long style)
     : asPanelSidebar(parent, id, pos, size, style) {
     m_header->SetLabelText(_("Day of the forecast"));
@@ -40,7 +40,7 @@ asPanelSidebarCalendar::asPanelSidebarCalendar(wxWindow *parent, wxWindowID id, 
                            wxCAL_MONDAY_FIRST | wxCAL_SHOW_HOLIDAYS | wxCAL_SHOW_SURROUNDING_WEEKS);
     m_sizerContent->Add(m_calendarForecastDate, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
 
-    wxBoxSizer *bSizer35;
+    wxBoxSizer* bSizer35;
     bSizer35 = new wxBoxSizer(wxHORIZONTAL);
 
     m_staticTextForecastHour = new wxStaticText(this, wxID_ANY, wxT("Hour (UTM)"), wxDefaultPosition, wxDefaultSize, 0);
@@ -69,7 +69,7 @@ asPanelSidebarCalendar::~asPanelSidebarCalendar() {
                               wxCommandEventHandler(asPanelSidebarCalendar::OnSetPresentDate), nullptr, this);
 }
 
-void asPanelSidebarCalendar::OnSetPresentDate(wxCommandEvent &event) {
+void asPanelSidebarCalendar::OnSetPresentDate(wxCommandEvent& event) {
     SetPresentDate();
 }
 

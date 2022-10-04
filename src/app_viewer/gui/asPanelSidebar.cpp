@@ -30,12 +30,12 @@
 
 #include "images.h"
 
-asPanelSidebar::asPanelSidebar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
+asPanelSidebar::asPanelSidebar(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
     : asPanelSidebarVirtual(parent, id, pos, size, style) {
     m_bitmapCaret->SetBitmap(*_img_shown);
 }
 
-void asPanelSidebar::OnReducePanel(wxMouseEvent &event) {
+void asPanelSidebar::OnReducePanel(wxMouseEvent& event) {
     GetParent()->Freeze();
 
     if (m_sizerMain->IsShown(m_sizerContent)) {
@@ -65,6 +65,6 @@ void asPanelSidebar::ReducePanel() {
     }
 }
 
-void asPanelSidebar::OnPaint(wxCommandEvent &event) {
+void asPanelSidebar::OnPaint(wxCommandEvent& event) {
     event.Skip();
 }

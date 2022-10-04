@@ -30,7 +30,7 @@
 
 #include "asParameters.h"
 
-asThreadPreloadArchiveData::asThreadPreloadArchiveData(asMethodStandard *method, asParameters *params, int iStep,
+asThreadPreloadArchiveData::asThreadPreloadArchiveData(asMethodStandard* method, asParameters* params, int iStep,
                                                        int iPtor, int i)
     : asThread(asThread::PreloadData),
       m_method(method),  // copy pointer

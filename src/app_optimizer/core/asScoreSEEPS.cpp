@@ -38,7 +38,7 @@ asScoreSEEPS::asScoreSEEPS()
 
 asScoreSEEPS::~asScoreSEEPS() {}
 
-float asScoreSEEPS::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreSEEPS::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(!asIsNaN(m_p1));
@@ -122,7 +122,7 @@ float asScoreSEEPS::Assess(float obs, const a1f &values, int nbElements) const {
     return score;
 }
 
-bool asScoreSEEPS::ProcessScoreClimatology(const a1f &refVals, const a1f &climData) {
+bool asScoreSEEPS::ProcessScoreClimatology(const a1f& refVals, const a1f& climData) {
     wxASSERT(!asHasNaN(&refVals[0], &refVals[refVals.size() - 1]));
     wxASSERT(!asHasNaN(&climData[0], &climData[climData.size() - 1]));
 

@@ -30,7 +30,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString &dataId) : asPredictor(dataId) {
+asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString& dataId)
+    : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "ECMWF_IFS_GRIB";
     m_provider = "ECMWF";
@@ -112,6 +113,6 @@ bool asPredictorEcmwfIfsGrib::Init() {
     return true;
 }
 
-void asPredictorEcmwfIfsGrib::ConvertToMjd(a1d &time, double refValue) const {
+void asPredictorEcmwfIfsGrib::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + refValue;
 }

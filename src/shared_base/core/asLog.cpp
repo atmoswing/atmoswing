@@ -31,9 +31,9 @@
 #include <wx/ffile.h>
 
 // Global log functions
-asLog *g_pLog = new asLog();
+asLog* g_pLog = new asLog();
 
-asLog *Log() {
+asLog* Log() {
     return g_pLog;
 }
 
@@ -45,7 +45,9 @@ void DeleteLog() {
     delete wxLog::SetActiveTarget(nullptr);
 }
 
-asLog::asLog() : m_logFile(nullptr), m_logChain(nullptr) {}
+asLog::asLog()
+    : m_logFile(nullptr),
+      m_logChain(nullptr) {}
 
 asLog::~asLog() {
     delete wxLog::SetActiveTarget(nullptr);  // Instead of deleting m_logChain
@@ -60,7 +62,7 @@ void asLog::ClearCurrentTarget() {
     }
 }
 
-void asLog::CreateFile(const wxString &fileName) {
+void asLog::CreateFile(const wxString& fileName) {
     // Create the log file
     ClearCurrentTarget();
     wxString logpath = asConfig::GetLogDir();
@@ -75,7 +77,7 @@ void asLog::CreateFile(const wxString &fileName) {
     }
 }
 
-void asLog::CreateFileAtPath(const wxString &fullPath) {
+void asLog::CreateFileAtPath(const wxString& fullPath) {
     // Create the log file
     ClearCurrentTarget();
     m_logFile = new wxFFile(fullPath, "w");
@@ -87,7 +89,7 @@ void asLog::CreateFileAtPath(const wxString &fullPath) {
     }
 }
 
-void asLog::CreateFileOnly(const wxString &fileName) {
+void asLog::CreateFileOnly(const wxString& fileName) {
     // Create the log file
     ClearCurrentTarget();
     wxString logPath = asConfig::GetLogDir();
@@ -97,7 +99,7 @@ void asLog::CreateFileOnly(const wxString &fileName) {
     delete wxLog::SetActiveTarget(new wxLogStderr(m_logFile->fp()));
 }
 
-void asLog::CreateFileOnlyAtPath(const wxString &fullPath) {
+void asLog::CreateFileOnlyAtPath(const wxString& fullPath) {
     // Create the log file
     ClearCurrentTarget();
     m_logFile = new wxFFile(fullPath, "w");
@@ -121,10 +123,10 @@ void asLog::SetLevel(int val) {
     }
 }
 
-void asLog::PrintToConsole(const wxString &msg) {
+void asLog::PrintToConsole(const wxString& msg) {
 #ifndef __WIN32__
     if (!g_guiMode) {
-        wxMessageOutput *msgOut = wxMessageOutput::Get();
+        wxMessageOutput* msgOut = wxMessageOutput::Get();
         if (msgOut) {
             msgOut->Printf(msg);
         }
@@ -133,7 +135,7 @@ void asLog::PrintToConsole(const wxString &msg) {
 }
 
 #if USE_GUI
-void asLogGui::DoLogRecord(wxLogLevel level, const wxString &msg, const wxLogRecordInfo &info) {
+void asLogGui::DoLogRecord(wxLogLevel level, const wxString& msg, const wxLogRecordInfo& info) {
     if (level <= wxLOG_Error) {
         wxLogGui::DoLogRecord(level, msg, info);
     }

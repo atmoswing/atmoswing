@@ -35,7 +35,15 @@
 
 class asFileNetcdf : public asFile {
   public:
-    enum Type { Byte, Char, Short, Int, Float, Double, String };
+    enum Type {
+        Byte,
+        Char,
+        Short,
+        Int,
+        Float,
+        Double,
+        String
+    };
 
     enum Format {
         Classic = NC_FORMAT_CLASSIC,
@@ -44,7 +52,7 @@ class asFileNetcdf : public asFile {
         Netcdf4Classic = NC_FORMAT_NETCDF4_CLASSIC
     };
 
-    asFileNetcdf(const wxString &fileName, const FileMode &fileMode);
+    asFileNetcdf(const wxString& fileName, const FileMode& fileMode);
 
     ~asFileNetcdf() override;
 
@@ -54,108 +62,108 @@ class asFileNetcdf : public asFile {
 
     bool ForceClose();
 
-    void DefDim(const wxString &dimName, const size_t &dimSize = 0);
+    void DefDim(const wxString& dimName, const size_t& dimSize = 0);
 
-    void DefVar(const wxString &varName, nc_type dataType, const int &varSize, const vstds &dimNames);
+    void DefVar(const wxString& varName, nc_type dataType, const int& varSize, const vstds& dimNames);
 
-    void DefVarDeflate(const wxString &varName, int shuffle = 0, int deflateLevel = 2);
+    void DefVarDeflate(const wxString& varName, int shuffle = 0, int deflateLevel = 2);
 
-    void PutAtt(const wxString &attName, const wxString &textStr, const wxString &varName = wxEmptyString);
+    void PutAtt(const wxString& attName, const wxString& textStr, const wxString& varName = wxEmptyString);
 
-    void PutAtt(const wxString &attName, const short *attrValue, size_t length = 1,
-                const wxString &varName = wxEmptyString);
+    void PutAtt(const wxString& attName, const short* attrValue, size_t length = 1,
+                const wxString& varName = wxEmptyString);
 
-    void PutAtt(const wxString &attName, const int *attrValue, size_t length = 1,
-                const wxString &varName = wxEmptyString);
+    void PutAtt(const wxString& attName, const int* attrValue, size_t length = 1,
+                const wxString& varName = wxEmptyString);
 
-    void PutAtt(const wxString &attName, const float *attrValue, size_t length = 1,
-                const wxString &varName = wxEmptyString);
+    void PutAtt(const wxString& attName, const float* attrValue, size_t length = 1,
+                const wxString& varName = wxEmptyString);
 
-    void PutAtt(const wxString &attName, const double *attrValue, size_t length = 1,
-                const wxString &varName = wxEmptyString);
+    void PutAtt(const wxString& attName, const double* attrValue, size_t length = 1,
+                const wxString& varName = wxEmptyString);
 
-    void PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount, const short *pData);
+    void PutVarArray(const wxString& varName, const size_t* arrStart, const size_t* arrCount, const short* pData);
 
-    void PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount, const int *pData);
+    void PutVarArray(const wxString& varName, const size_t* arrStart, const size_t* arrCount, const int* pData);
 
-    void PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount, const float *pData);
+    void PutVarArray(const wxString& varName, const size_t* arrStart, const size_t* arrCount, const float* pData);
 
-    void PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount, const double *pData);
+    void PutVarArray(const wxString& varName, const size_t* arrStart, const size_t* arrCount, const double* pData);
 
-    void PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount, const void *pData);
+    void PutVarArray(const wxString& varName, const size_t* arrStart, const size_t* arrCount, const void* pData);
 
-    void PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount, const wxString *pData,
+    void PutVarArray(const wxString& varName, const size_t* arrStart, const size_t* arrCount, const wxString* pData,
                      size_t totSize);
 
     void StartDef();
 
     void EndDef();
 
-    int GetDimId(const wxString &dimName);
+    int GetDimId(const wxString& dimName);
 
-    bool HasVariable(const wxString &varName);
+    bool HasVariable(const wxString& varName);
 
-    int GetVarId(const wxString &varName);
+    int GetVarId(const wxString& varName);
 
-    bool HasAttribute(const wxString &attName, const wxString &varName = wxEmptyString);
+    bool HasAttribute(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    int GetAttId(const wxString &attName, const wxString &varName = wxEmptyString);
+    int GetAttId(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    short GetAttShort(const wxString &attName, const wxString &varName = wxEmptyString);
+    short GetAttShort(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    int GetAttInt(const wxString &attName, const wxString &varName = wxEmptyString);
+    int GetAttInt(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    float GetAttFloat(const wxString &attName, const wxString &varName = wxEmptyString);
+    float GetAttFloat(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    double GetAttDouble(const wxString &attName, const wxString &varName = wxEmptyString);
+    double GetAttDouble(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    char GetAttChar(const wxString &attName, const wxString &varName = wxEmptyString);
+    char GetAttChar(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    wxString GetAttString(const wxString &attName, const wxString &varName = wxEmptyString);
+    wxString GetAttString(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    void GetVar(const wxString &varName, short *pValue);
+    void GetVar(const wxString& varName, short* pValue);
 
-    void GetVar(const wxString &varName, int *pValue);
+    void GetVar(const wxString& varName, int* pValue);
 
-    void GetVar(const wxString &varName, float *pValue);
+    void GetVar(const wxString& varName, float* pValue);
 
-    void GetVar(const wxString &varName, double *pValue);
+    void GetVar(const wxString& varName, double* pValue);
 
-    void GetVar(const wxString &varName, wxString *pValue, size_t totSize);
+    void GetVar(const wxString& varName, wxString* pValue, size_t totSize);
 
-    short GetVarOneShort(const wxString &varName, size_t arrIndex = 0);
+    short GetVarOneShort(const wxString& varName, size_t arrIndex = 0);
 
-    int GetVarOneInt(const wxString &varName, size_t arrIndex = 0);
+    int GetVarOneInt(const wxString& varName, size_t arrIndex = 0);
 
-    float GetVarOneFloat(const wxString &varName, size_t arrIndex = 0);
+    float GetVarOneFloat(const wxString& varName, size_t arrIndex = 0);
 
-    double GetVarOneDouble(const wxString &varName, size_t arrIndex = 0);
+    double GetVarOneDouble(const wxString& varName, size_t arrIndex = 0);
 
-    void GetVarArray(const wxString &varName, const size_t indexStart[], const size_t indexCount[], short *pValue);
+    void GetVarArray(const wxString& varName, const size_t indexStart[], const size_t indexCount[], short* pValue);
 
-    void GetVarArray(const wxString &varName, const size_t indexStart[], const size_t indexCount[], int *pValue);
+    void GetVarArray(const wxString& varName, const size_t indexStart[], const size_t indexCount[], int* pValue);
 
-    void GetVarArray(const wxString &varName, const size_t indexStart[], const size_t indexCount[], float *pValue);
+    void GetVarArray(const wxString& varName, const size_t indexStart[], const size_t indexCount[], float* pValue);
 
-    void GetVarArray(const wxString &varName, const size_t indexStart[], const size_t indexCount[], double *pValue);
+    void GetVarArray(const wxString& varName, const size_t indexStart[], const size_t indexCount[], double* pValue);
 
-    void GetVarSample(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                      const ptrdiff_t indexStride[], short *pValue);
+    void GetVarSample(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
+                      const ptrdiff_t indexStride[], short* pValue);
 
-    void GetVarSample(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                      const ptrdiff_t indexStride[], int *pValue);
+    void GetVarSample(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
+                      const ptrdiff_t indexStride[], int* pValue);
 
-    void GetVarSample(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                      const ptrdiff_t indexStride[], float *pValue);
+    void GetVarSample(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
+                      const ptrdiff_t indexStride[], float* pValue);
 
-    void GetVarSample(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                      const ptrdiff_t indexStride[], double *pValue);
+    void GetVarSample(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
+                      const ptrdiff_t indexStride[], double* pValue);
 
-    size_t GetDimLength(const wxString &dimName);
+    size_t GetDimLength(const wxString& dimName);
 
-    size_t GetVarLength(const wxString &varName);
+    size_t GetVarLength(const wxString& varName);
 
-    nc_type GetVarType(const wxString &varName);
+    nc_type GetVarType(const wxString& varName);
 
     size_t GetVarsNb() const {
         return m_struct.vars.size();
@@ -190,7 +198,7 @@ class asFileNetcdf : public asFile {
         wxString name;
         nc_type type;
         size_t length;
-        void *pValue;
+        void* pValue;
     };
 
     struct NcVarStruct {
@@ -226,7 +234,7 @@ class asFileNetcdf : public asFile {
 
     bool ParseStruct();
 
-    size_t GetVarLength(int &varId) const;
+    size_t GetVarLength(int& varId) const;
 };
 
 #endif

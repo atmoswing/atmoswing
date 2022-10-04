@@ -28,8 +28,8 @@
 
 #include "asPanelSidebarGisLayers.h"
 
-asPanelSidebarGisLayers::asPanelSidebarGisLayers(wxWindow *parent, wxWindowID id, const wxPoint &pos,
-                                                 const wxSize &size, long style)
+asPanelSidebarGisLayers::asPanelSidebarGisLayers(wxWindow* parent, wxWindowID id, const wxPoint& pos,
+                                                 const wxSize& size, long style)
     : asPanelSidebar(parent, id, pos, size, style) {
     m_header->SetLabelText(_("GIS layers"));
 

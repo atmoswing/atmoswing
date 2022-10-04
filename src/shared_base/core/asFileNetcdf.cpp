@@ -28,7 +28,7 @@
 
 #include "asFileNetcdf.h"
 
-asFileNetcdf::asFileNetcdf(const wxString &fileName, const FileMode &fileMode)
+asFileNetcdf::asFileNetcdf(const wxString& fileName, const FileMode& fileMode)
     : asFile(fileName, fileMode),
       m_fileId(0),
       m_status(0),
@@ -134,7 +134,7 @@ void asFileNetcdf::HandleErrorNetcdf() {
     }
 }
 
-void asFileNetcdf::DefDim(const wxString &dimName, const size_t &dimSize) {
+void asFileNetcdf::DefDim(const wxString& dimName, const size_t& dimSize) {
     wxASSERT(m_opened);
 
     int dimId;
@@ -152,7 +152,7 @@ void asFileNetcdf::DefDim(const wxString &dimName, const size_t &dimSize) {
     }
 }
 
-void asFileNetcdf::DefVar(const wxString &varName, nc_type dataType, const int &varSize, const vstds &dimNames) {
+void asFileNetcdf::DefVar(const wxString& varName, nc_type dataType, const int& varSize, const vstds& dimNames) {
     wxASSERT(m_opened);
 
     int varId, dimId, nDims;
@@ -173,7 +173,7 @@ void asFileNetcdf::DefVar(const wxString &varName, nc_type dataType, const int &
     if (m_status) HandleErrorNetcdf();
 }
 
-void asFileNetcdf::DefVarDeflate(const wxString &varName, int shuffle, int deflateLevel) {
+void asFileNetcdf::DefVarDeflate(const wxString& varName, int shuffle, int deflateLevel) {
     wxASSERT(m_opened);
 
     int varId;
@@ -185,7 +185,7 @@ void asFileNetcdf::DefVarDeflate(const wxString &varName, int shuffle, int defla
     if (m_status) HandleErrorNetcdf();
 }
 
-void asFileNetcdf::PutAtt(const wxString &attName, const wxString &textStr, const wxString &varName) {
+void asFileNetcdf::PutAtt(const wxString& attName, const wxString& textStr, const wxString& varName) {
     wxASSERT(m_opened);
 
     int attId, varId;
@@ -197,7 +197,8 @@ void asFileNetcdf::PutAtt(const wxString &attName, const wxString &textStr, cons
 
     // Check if global or not
     if ((varName.IsEmpty())) {
-        m_status = nc_put_att_text(m_fileId, NC_GLOBAL, attName.mb_str(wxConvUTF8), strlen(buffer.data()), buffer.data());
+        m_status =
+            nc_put_att_text(m_fileId, NC_GLOBAL, attName.mb_str(wxConvUTF8), strlen(buffer.data()), buffer.data());
         if (m_status) HandleErrorNetcdf();
         // Get the ID
         m_status = nc_inq_attid(m_fileId, NC_GLOBAL, attName.mb_str(wxConvUTF8), &attId);
@@ -213,7 +214,7 @@ void asFileNetcdf::PutAtt(const wxString &attName, const wxString &textStr, cons
     }
 }
 
-void asFileNetcdf::PutAtt(const wxString &attName, const short *attrValue, size_t length, const wxString &varName) {
+void asFileNetcdf::PutAtt(const wxString& attName, const short* attrValue, size_t length, const wxString& varName) {
     wxASSERT(m_opened);
 
     int attId, varId;
@@ -239,7 +240,7 @@ void asFileNetcdf::PutAtt(const wxString &attName, const short *attrValue, size_
     }
 }
 
-void asFileNetcdf::PutAtt(const wxString &attName, const int *attrValue, size_t length, const wxString &varName) {
+void asFileNetcdf::PutAtt(const wxString& attName, const int* attrValue, size_t length, const wxString& varName) {
     wxASSERT(m_opened);
 
     int attId, varId;
@@ -265,7 +266,7 @@ void asFileNetcdf::PutAtt(const wxString &attName, const int *attrValue, size_t 
     }
 }
 
-void asFileNetcdf::PutAtt(const wxString &attName, const float *attrValue, size_t length, const wxString &varName) {
+void asFileNetcdf::PutAtt(const wxString& attName, const float* attrValue, size_t length, const wxString& varName) {
     wxASSERT(m_opened);
 
     int attId, varId;
@@ -291,7 +292,7 @@ void asFileNetcdf::PutAtt(const wxString &attName, const float *attrValue, size_
     }
 }
 
-void asFileNetcdf::PutAtt(const wxString &attName, const double *attrValue, size_t length, const wxString &varName) {
+void asFileNetcdf::PutAtt(const wxString& attName, const double* attrValue, size_t length, const wxString& varName) {
     wxASSERT(m_opened);
 
     int attId, varId;
@@ -317,8 +318,8 @@ void asFileNetcdf::PutAtt(const wxString &attName, const double *attrValue, size
     }
 }
 
-void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount,
-                               const short *pData) {
+void asFileNetcdf::PutVarArray(const wxString& varName, const size_t* arrStart, const size_t* arrCount,
+                               const short* pData) {
     wxASSERT(m_opened);
 
     int varId;
@@ -334,8 +335,8 @@ void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, 
     if (m_status) HandleErrorNetcdf();
 }
 
-void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount,
-                               const int *pData) {
+void asFileNetcdf::PutVarArray(const wxString& varName, const size_t* arrStart, const size_t* arrCount,
+                               const int* pData) {
     wxASSERT(m_opened);
 
     int varId;
@@ -351,8 +352,8 @@ void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, 
     if (m_status) HandleErrorNetcdf();
 }
 
-void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount,
-                               const float *pData) {
+void asFileNetcdf::PutVarArray(const wxString& varName, const size_t* arrStart, const size_t* arrCount,
+                               const float* pData) {
     wxASSERT(m_opened);
 
     int varId;
@@ -368,8 +369,8 @@ void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, 
     if (m_status) HandleErrorNetcdf();
 }
 
-void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount,
-                               const double *pData) {
+void asFileNetcdf::PutVarArray(const wxString& varName, const size_t* arrStart, const size_t* arrCount,
+                               const double* pData) {
     wxASSERT(m_opened);
 
     int varId;
@@ -385,8 +386,8 @@ void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, 
     if (m_status) HandleErrorNetcdf();
 }
 
-void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount,
-                               const void *pData) {
+void asFileNetcdf::PutVarArray(const wxString& varName, const size_t* arrStart, const size_t* arrCount,
+                               const void* pData) {
     wxASSERT(m_opened);
 
     int varId;
@@ -402,13 +403,13 @@ void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, 
     if (m_status) HandleErrorNetcdf();
 }
 
-void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount,
-                               const wxString *pData, const size_t totSize) {
+void asFileNetcdf::PutVarArray(const wxString& varName, const size_t* arrStart, const size_t* arrCount,
+                               const wxString* pData, const size_t totSize) {
     wxASSERT(m_opened);
 
     // From http://bytes.com/topic/c/answers/127614-best-way-copy-vector-string-char
     // Allocate memory for an array of character strings
-    auto **cstr = new char *[totSize];
+    auto** cstr = new char*[totSize];
 
     // For each string, allocate memory in the character array and copy
     for (long i = 0; i < totSize; i++) {
@@ -428,7 +429,7 @@ void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, 
     m_status = nc_inq_varid(m_fileId, varName.mb_str(wxConvUTF8), &varId);
     if (m_status) HandleErrorNetcdf();
     // Write data
-    m_status = nc_put_vara_string(m_fileId, varId, arrStart, arrCount, (const char **)cstr);
+    m_status = nc_put_vara_string(m_fileId, varId, arrStart, arrCount, (const char**)cstr);
     if (m_status) HandleErrorNetcdf();
 
     // Free dynamic memory
@@ -467,7 +468,7 @@ void asFileNetcdf::EndDef() {
     ParseStruct();
 }
 
-int asFileNetcdf::GetDimId(const wxString &dimName) {
+int asFileNetcdf::GetDimId(const wxString& dimName) {
     wxASSERT(m_opened);
 
     int id = asNOT_FOUND;
@@ -487,7 +488,7 @@ int asFileNetcdf::GetDimId(const wxString &dimName) {
     return id;
 }
 
-bool asFileNetcdf::HasVariable(const wxString &varName) {
+bool asFileNetcdf::HasVariable(const wxString& varName) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -503,7 +504,7 @@ bool asFileNetcdf::HasVariable(const wxString &varName) {
     return false;
 }
 
-int asFileNetcdf::GetVarId(const wxString &varName) {
+int asFileNetcdf::GetVarId(const wxString& varName) {
     wxASSERT(m_opened);
 
     int id = asNOT_FOUND;
@@ -523,7 +524,7 @@ int asFileNetcdf::GetVarId(const wxString &varName) {
     return id;
 }
 
-bool asFileNetcdf::HasAttribute(const wxString &attName, const wxString &varName) {
+bool asFileNetcdf::HasAttribute(const wxString& attName, const wxString& varName) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -549,7 +550,7 @@ bool asFileNetcdf::HasAttribute(const wxString &attName, const wxString &varName
     return false;
 }
 
-int asFileNetcdf::GetAttId(const wxString &attName, const wxString &varName) {
+int asFileNetcdf::GetAttId(const wxString& attName, const wxString& varName) {
     wxASSERT(m_opened);
 
     int id = asNOT_FOUND;
@@ -581,7 +582,7 @@ int asFileNetcdf::GetAttId(const wxString &attName, const wxString &varName) {
     return id;
 }
 
-short asFileNetcdf::GetAttShort(const wxString &attName, const wxString &varName) {
+short asFileNetcdf::GetAttShort(const wxString& attName, const wxString& varName) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -595,7 +596,7 @@ short asFileNetcdf::GetAttShort(const wxString &attName, const wxString &varName
 
         // Check the given type
         if (nctype == NC_INT) {
-            return (short)*(int *)m_struct.atts[attId].pValue;
+            return (short)*(int*)m_struct.atts[attId].pValue;
         } else if (nctype != NC_SHORT) {
             asThrowException(
                 wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -603,7 +604,7 @@ short asFileNetcdf::GetAttShort(const wxString &attName, const wxString &varName
         }
 
         // Get value
-        return *(short *)m_struct.atts[attId].pValue;
+        return *(short*)m_struct.atts[attId].pValue;
 
     } else {  // Variable attribute
         int varId = GetVarId(varName);
@@ -614,7 +615,7 @@ short asFileNetcdf::GetAttShort(const wxString &attName, const wxString &varName
 
         // Check the given type
         if (nctype == NC_INT) {
-            return (short)*(int *)m_struct.vars[varId].atts[attId].pValue;
+            return (short)*(int*)m_struct.vars[varId].atts[attId].pValue;
         } else if (nctype != NC_SHORT) {
             asThrowException(
                 wxString::Format(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -622,11 +623,11 @@ short asFileNetcdf::GetAttShort(const wxString &attName, const wxString &varName
         }
 
         // Get value
-        return *(short *)m_struct.vars[varId].atts[attId].pValue;
+        return *(short*)m_struct.vars[varId].atts[attId].pValue;
     }
 }
 
-int asFileNetcdf::GetAttInt(const wxString &attName, const wxString &varName) {
+int asFileNetcdf::GetAttInt(const wxString& attName, const wxString& varName) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -640,7 +641,7 @@ int asFileNetcdf::GetAttInt(const wxString &attName, const wxString &varName) {
 
         // Check the given type
         if (nctype == NC_SHORT) {
-            return (int)*(short *)m_struct.atts[attId].pValue;
+            return (int)*(short*)m_struct.atts[attId].pValue;
         } else if (nctype != NC_INT) {
             asThrowException(
                 wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -648,7 +649,7 @@ int asFileNetcdf::GetAttInt(const wxString &attName, const wxString &varName) {
         }
 
         // Get value
-        return *(int *)m_struct.atts[attId].pValue;
+        return *(int*)m_struct.atts[attId].pValue;
 
     } else {  // Variable attribute
         int varId = GetVarId(varName);
@@ -659,7 +660,7 @@ int asFileNetcdf::GetAttInt(const wxString &attName, const wxString &varName) {
 
         // Check the given type
         if (nctype == NC_SHORT) {
-            return (int)*(short *)m_struct.vars[varId].atts[attId].pValue;
+            return (int)*(short*)m_struct.vars[varId].atts[attId].pValue;
         } else if (nctype != NC_INT) {
             asThrowException(
                 wxString::Format(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -667,11 +668,11 @@ int asFileNetcdf::GetAttInt(const wxString &attName, const wxString &varName) {
         }
 
         // Get value
-        return *(int *)m_struct.vars[varId].atts[attId].pValue;
+        return *(int*)m_struct.vars[varId].atts[attId].pValue;
     }
 }
 
-float asFileNetcdf::GetAttFloat(const wxString &attName, const wxString &varName) {
+float asFileNetcdf::GetAttFloat(const wxString& attName, const wxString& varName) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -685,7 +686,7 @@ float asFileNetcdf::GetAttFloat(const wxString &attName, const wxString &varName
 
         // Check the given type
         if (nctype == NC_DOUBLE) {
-            return (float)*(double *)m_struct.atts[attId].pValue;
+            return (float)*(double*)m_struct.atts[attId].pValue;
         } else if (nctype != NC_FLOAT) {
             asThrowException(
                 wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -693,7 +694,7 @@ float asFileNetcdf::GetAttFloat(const wxString &attName, const wxString &varName
         }
 
         // Get value
-        return *(float *)m_struct.atts[attId].pValue;
+        return *(float*)m_struct.atts[attId].pValue;
 
     } else {  // Variable attribute
         int varId = GetVarId(varName);
@@ -704,7 +705,7 @@ float asFileNetcdf::GetAttFloat(const wxString &attName, const wxString &varName
 
         // Check the given type
         if (nctype == NC_DOUBLE) {
-            return (float)*(double *)m_struct.vars[varId].atts[attId].pValue;
+            return (float)*(double*)m_struct.vars[varId].atts[attId].pValue;
         } else if (nctype != NC_FLOAT) {
             asThrowException(
                 wxString::Format(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -712,11 +713,11 @@ float asFileNetcdf::GetAttFloat(const wxString &attName, const wxString &varName
         }
 
         // Get value
-        return *(float *)m_struct.vars[varId].atts[attId].pValue;
+        return *(float*)m_struct.vars[varId].atts[attId].pValue;
     }
 }
 
-double asFileNetcdf::GetAttDouble(const wxString &attName, const wxString &varName) {
+double asFileNetcdf::GetAttDouble(const wxString& attName, const wxString& varName) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -730,7 +731,7 @@ double asFileNetcdf::GetAttDouble(const wxString &attName, const wxString &varNa
 
         // Check the given type
         if (nctype == NC_FLOAT) {
-            return (double)*(float *)m_struct.atts[attId].pValue;
+            return (double)*(float*)m_struct.atts[attId].pValue;
         } else if (nctype != NC_DOUBLE) {
             asThrowException(
                 wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -738,7 +739,7 @@ double asFileNetcdf::GetAttDouble(const wxString &attName, const wxString &varNa
         }
 
         // Get value
-        return *(double *)m_struct.atts[attId].pValue;
+        return *(double*)m_struct.atts[attId].pValue;
 
     } else {  // Variable attribute
         int varId = GetVarId(varName);
@@ -749,7 +750,7 @@ double asFileNetcdf::GetAttDouble(const wxString &attName, const wxString &varNa
 
         // Check the given type
         if (nctype == NC_FLOAT) {
-            return (double)*(float *)m_struct.vars[varId].atts[attId].pValue;
+            return (double)*(float*)m_struct.vars[varId].atts[attId].pValue;
         } else if (nctype != NC_DOUBLE) {
             asThrowException(
                 wxString::Format(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -757,11 +758,11 @@ double asFileNetcdf::GetAttDouble(const wxString &attName, const wxString &varNa
         }
 
         // Get value
-        return *(double *)m_struct.vars[varId].atts[attId].pValue;
+        return *(double*)m_struct.vars[varId].atts[attId].pValue;
     }
 }
 
-char asFileNetcdf::GetAttChar(const wxString &attName, const wxString &varName) {
+char asFileNetcdf::GetAttChar(const wxString& attName, const wxString& varName) {
     wxASSERT(m_opened);
 
     char val;
@@ -777,11 +778,12 @@ char asFileNetcdf::GetAttChar(const wxString &attName, const wxString &varName) 
 
         // Check the given type
         if (nctype != NC_CHAR)
-            asThrowException(wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+            asThrowException(
+                wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
                                  attName, (int)nctype, (int)NC_CHAR));
 
         // Get value
-        val = *(char *)m_struct.atts[attId].pValue;
+        val = *(char*)m_struct.atts[attId].pValue;
 
     } else {  // Variable attribute
         int varId = GetVarId(varName);
@@ -797,13 +799,13 @@ char asFileNetcdf::GetAttChar(const wxString &attName, const wxString &varName) 
                                  varName, attName, (int)nctype, (int)NC_CHAR));
 
         // Get value
-        val = *(char *)m_struct.vars[varId].atts[attId].pValue;
+        val = *(char*)m_struct.vars[varId].atts[attId].pValue;
     }
 
     return val;
 }
 
-wxString asFileNetcdf::GetAttString(const wxString &attName, const wxString &varName) {
+wxString asFileNetcdf::GetAttString(const wxString& attName, const wxString& varName) {
     wxASSERT(m_opened);
 
     size_t len;
@@ -819,7 +821,7 @@ wxString asFileNetcdf::GetAttString(const wxString &attName, const wxString &var
 
         // Allocate
         len = m_struct.atts[attId].length;
-        auto *text = new char[len + 1]; /* + 1 for trailing null */
+        auto* text = new char[len + 1]; /* + 1 for trailing null */
 
         // Check the given type
         nc_type nctype = m_struct.atts[attId].type;
@@ -851,7 +853,7 @@ wxString asFileNetcdf::GetAttString(const wxString &attName, const wxString &var
 
         // Allocate
         len = m_struct.vars[varId].atts[attId].length;
-        auto *text = new char[len + 1]; /* + 1 for trailing null */
+        auto* text = new char[len + 1]; /* + 1 for trailing null */
 
         // Check the given type
         nc_type nctype = m_struct.vars[varId].atts[attId].type;
@@ -879,7 +881,7 @@ wxString asFileNetcdf::GetAttString(const wxString &attName, const wxString &var
     return attrValue;
 }
 
-size_t asFileNetcdf::GetDimLength(const wxString &dimName) {
+size_t asFileNetcdf::GetDimLength(const wxString& dimName) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -892,7 +894,7 @@ size_t asFileNetcdf::GetDimLength(const wxString &dimName) {
     return m_struct.dims[dimId].length;
 }
 
-size_t asFileNetcdf::GetVarLength(const wxString &varName) {
+size_t asFileNetcdf::GetVarLength(const wxString& varName) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -904,7 +906,7 @@ size_t asFileNetcdf::GetVarLength(const wxString &varName) {
     return m_struct.vars[varId].length;
 }
 
-nc_type asFileNetcdf::GetVarType(const wxString &varName) {
+nc_type asFileNetcdf::GetVarType(const wxString& varName) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -916,7 +918,7 @@ nc_type asFileNetcdf::GetVarType(const wxString &varName) {
     return m_struct.vars[varId].type;
 }
 
-void asFileNetcdf::GetVar(const wxString &varName, short *pValue) {
+void asFileNetcdf::GetVar(const wxString& varName, short* pValue) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -937,7 +939,7 @@ void asFileNetcdf::GetVar(const wxString &varName, short *pValue) {
     if (m_status) HandleErrorNetcdf();
 }
 
-void asFileNetcdf::GetVar(const wxString &varName, int *pValue) {
+void asFileNetcdf::GetVar(const wxString& varName, int* pValue) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -958,7 +960,7 @@ void asFileNetcdf::GetVar(const wxString &varName, int *pValue) {
     if (m_status) HandleErrorNetcdf();
 }
 
-void asFileNetcdf::GetVar(const wxString &varName, float *pValue) {
+void asFileNetcdf::GetVar(const wxString& varName, float* pValue) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -979,7 +981,7 @@ void asFileNetcdf::GetVar(const wxString &varName, float *pValue) {
     if (m_status) HandleErrorNetcdf();
 }
 
-void asFileNetcdf::GetVar(const wxString &varName, double *pValue) {
+void asFileNetcdf::GetVar(const wxString& varName, double* pValue) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1000,7 +1002,7 @@ void asFileNetcdf::GetVar(const wxString &varName, double *pValue) {
     if (m_status) HandleErrorNetcdf();
 }
 
-void asFileNetcdf::GetVar(const wxString &varName, wxString *pValue, const size_t totSize) {
+void asFileNetcdf::GetVar(const wxString& varName, wxString* pValue, const size_t totSize) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1017,7 +1019,7 @@ void asFileNetcdf::GetVar(const wxString &varName, wxString *pValue, const size_
                                           varName, (int)nctype, (int)NC_STRING));
 
     // Get value
-    std::vector<char *> data(totSize);
+    std::vector<char*> data(totSize);
     m_status = nc_get_var_string(m_fileId, varId, &data[0]);
     if (m_status) HandleErrorNetcdf();
 
@@ -1028,7 +1030,7 @@ void asFileNetcdf::GetVar(const wxString &varName, wxString *pValue, const size_
     }
 }
 
-short asFileNetcdf::GetVarOneShort(const wxString &varName, size_t arrIndex) {
+short asFileNetcdf::GetVarOneShort(const wxString& varName, size_t arrIndex) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1052,7 +1054,7 @@ short asFileNetcdf::GetVarOneShort(const wxString &varName, size_t arrIndex) {
     return val;
 }
 
-int asFileNetcdf::GetVarOneInt(const wxString &varName, size_t arrIndex) {
+int asFileNetcdf::GetVarOneInt(const wxString& varName, size_t arrIndex) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1076,7 +1078,7 @@ int asFileNetcdf::GetVarOneInt(const wxString &varName, size_t arrIndex) {
     return val;
 }
 
-float asFileNetcdf::GetVarOneFloat(const wxString &varName, size_t arrIndex) {
+float asFileNetcdf::GetVarOneFloat(const wxString& varName, size_t arrIndex) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1100,7 +1102,7 @@ float asFileNetcdf::GetVarOneFloat(const wxString &varName, size_t arrIndex) {
     return val;
 }
 
-double asFileNetcdf::GetVarOneDouble(const wxString &varName, size_t arrIndex) {
+double asFileNetcdf::GetVarOneDouble(const wxString& varName, size_t arrIndex) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1124,8 +1126,8 @@ double asFileNetcdf::GetVarOneDouble(const wxString &varName, size_t arrIndex) {
     return val;
 }
 
-void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                               short *pValue) {
+void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
+                               short* pValue) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1155,8 +1157,8 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
     }
 }
 
-void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                               int *pValue) {
+void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
+                               int* pValue) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1186,8 +1188,8 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
     }
 }
 
-void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                               float *pValue) {
+void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
+                               float* pValue) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1217,8 +1219,8 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
     }
 }
 
-void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                               double *pValue) {
+void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
+                               double* pValue) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1248,8 +1250,8 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
     }
 }
 
-void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                                const ptrdiff_t indexStride[], short *pValue) {
+void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
+                                const ptrdiff_t indexStride[], short* pValue) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1280,8 +1282,8 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
     }
 }
 
-void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                                const ptrdiff_t indexStride[], int *pValue) {
+void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
+                                const ptrdiff_t indexStride[], int* pValue) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1312,8 +1314,8 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
     }
 }
 
-void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                                const ptrdiff_t indexStride[], float *pValue) {
+void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
+                                const ptrdiff_t indexStride[], float* pValue) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1344,8 +1346,8 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
     }
 }
 
-void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                                const ptrdiff_t indexStride[], double *pValue) {
+void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
+                                const ptrdiff_t indexStride[], double* pValue) {
     wxASSERT(m_opened);
 
     // Check that the file is not in define mode
@@ -1377,8 +1379,8 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
 }
 
 void asFileNetcdf::ClearStruct() {
-    for (auto &var : m_struct.vars) {
-        for (auto &att : var.atts) {
+    for (auto& var : m_struct.vars) {
+        for (auto& att : var.atts) {
             if (att.pValue != nullptr) {
                 nc_type nctype = att.type;
 
@@ -1387,37 +1389,37 @@ void asFileNetcdf::ClearStruct() {
                 switch (nctype) {
                     case NC_CHAR:  // NC_CHAR - ISO/ASCII character
                     {
-                        delete static_cast<char *>(att.pValue);
+                        delete static_cast<char*>(att.pValue);
                         break;
                     }
 
                     case NC_SHORT:  // NC_SHORT - signed 2 byte integer
                     {
-                        delete static_cast<short *>(att.pValue);
+                        delete static_cast<short*>(att.pValue);
                         break;
                     }
 
                     case NC_INT:  // NC_INT - signed 4 byte integer
                     {
-                        delete static_cast<int32_t *>(att.pValue);
+                        delete static_cast<int32_t*>(att.pValue);
                         break;
                     }
 
                     case NC_INT64:  // NC_INT64 - signed 8 byte integer
                     {
-                        delete static_cast<int64_t *>(att.pValue);
+                        delete static_cast<int64_t*>(att.pValue);
                         break;
                     }
 
                     case NC_FLOAT:  // NC_FLOAT - single precision floating point number
                     {
-                        delete static_cast<float *>(att.pValue);
+                        delete static_cast<float*>(att.pValue);
                         break;
                     }
 
                     case NC_DOUBLE:  // NC_DOUBLE - double precision floating point number
                     {
-                        delete static_cast<double *>(att.pValue);
+                        delete static_cast<double*>(att.pValue);
                         break;
                     }
 
@@ -1433,44 +1435,44 @@ void asFileNetcdf::ClearStruct() {
         }
     }
 
-    for (auto &att : m_struct.atts) {
+    for (auto& att : m_struct.atts) {
         if (att.pValue != nullptr) {
             nc_type nctype = att.type;
 
             switch (nctype) {
                 case NC_CHAR:  // NC_CHAR - ISO/ASCII character
                 {
-                    delete static_cast<char *>(att.pValue);
+                    delete static_cast<char*>(att.pValue);
                     break;
                 }
 
                 case NC_SHORT:  // NC_SHORT - signed 2 byte integer
                 {
-                    delete static_cast<short *>(att.pValue);
+                    delete static_cast<short*>(att.pValue);
                     break;
                 }
 
                 case NC_INT:  // NC_INT - signed 4 byte integer
                 {
-                    delete static_cast<int32_t *>(att.pValue);
+                    delete static_cast<int32_t*>(att.pValue);
                     break;
                 }
 
                 case NC_INT64:  // NC_INT64 - signed 8 byte integer
                 {
-                    delete static_cast<int64_t *>(att.pValue);
+                    delete static_cast<int64_t*>(att.pValue);
                     break;
                 }
 
                 case NC_FLOAT:  // NC_FLOAT - single precision floating point number
                 {
-                    delete static_cast<float *>(att.pValue);
+                    delete static_cast<float*>(att.pValue);
                     break;
                 }
 
                 case NC_DOUBLE:  // NC_DOUBLE - double precision floating point number
                 {
-                    delete static_cast<double *>(att.pValue);
+                    delete static_cast<double*>(att.pValue);
                     break;
                 }
 
@@ -1645,7 +1647,7 @@ bool asFileNetcdf::ParseStruct() {
         }
 
         // Find the corresponding dimension to get its length
-        for (auto &dim : m_struct.dims) {
+        for (auto& dim : m_struct.dims) {
             if (m_struct.vars[varId].name.IsSameAs(dim.name)) {
                 m_struct.vars[varId].length = dim.length;
             }
@@ -1729,7 +1731,7 @@ bool asFileNetcdf::ParseStruct() {
     return true;
 }
 
-size_t asFileNetcdf::GetVarLength(int &varId) const {
+size_t asFileNetcdf::GetVarLength(int& varId) const {
     wxASSERT(m_opened);
 
     // No previous checks necessary

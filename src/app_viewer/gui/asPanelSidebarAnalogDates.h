@@ -35,17 +35,17 @@
 
 class asPanelSidebarAnalogDates : public asPanelSidebar {
   public:
-    asPanelSidebarAnalogDates(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-                              const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarAnalogDates(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
+                              const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
     ~asPanelSidebarAnalogDates() override;
 
-    void SetChoices(a1f &arrayDate, a1f &arrayCriteria);
+    void SetChoices(a1f& arrayDate, a1f& arrayCriteria);
 
   private:
-    wxListCtrl *m_listCtrl;
+    wxListCtrl* m_listCtrl;
 
-    void OnDateSelection(wxListEvent &event);
+    void OnDateSelection(wxListEvent& event);
 };
 
 #endif

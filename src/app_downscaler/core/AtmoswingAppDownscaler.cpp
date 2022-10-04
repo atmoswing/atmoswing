@@ -148,7 +148,7 @@ bool AtmoswingAppDownscaler::OnInit() {
     initialize_images(g_ppiScaleDc);
 
     // Create frame
-    AtmoswingFrameDownscaler *frame = new AtmoswingFrameDownscaler(0L);
+    AtmoswingFrameDownscaler* frame = new AtmoswingFrameDownscaler(0L);
     frame->OnInit();
 
 #ifdef __WXMSW__
@@ -217,7 +217,7 @@ bool AtmoswingAppDownscaler::InitForCmdLineOnly() {
     if (g_local) {
         wxString dirData = wxFileName::GetCwd() + DS + "data" + DS;
 
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
 
         // Define the default preferences
         pConfig->Write("/General/MultiInstances", true);
@@ -240,7 +240,7 @@ bool AtmoswingAppDownscaler::InitForCmdLineOnly() {
     return true;
 }
 
-void AtmoswingAppDownscaler::OnInitCmdLine(wxCmdLineParser &parser) {
+void AtmoswingAppDownscaler::OnInitCmdLine(wxCmdLineParser& parser) {
     wxAppConsole::OnInitCmdLine(parser);
 
     parser.SetDesc(g_cmdLineDesc);
@@ -250,7 +250,7 @@ void AtmoswingAppDownscaler::OnInitCmdLine(wxCmdLineParser &parser) {
     parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser) {
+bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if runs with GUI or CL
     if (parser.Found("downscaling-method")) {
         SetUseAsCmdLine();
@@ -298,7 +298,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser) {
         iniPath.Append("AtmoSwing.ini");
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, iniPath, iniPath, wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig* pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, iniPath, iniPath, wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     } else {
         // Create user directory
@@ -306,7 +306,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser) {
         userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
         // Set the local config object
-        wxFileConfig *pConfig =
+        wxFileConfig* pConfig =
             new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingDownscaler.ini",
                              asConfig::GetUserDataDir() + "AtmoSwingDownscaler.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
@@ -469,11 +469,11 @@ int AtmoswingAppDownscaler::OnRun() {
         } else {
             asLog::PrintToConsole(wxString::Format("Wrong downscaling method selection (%s).\n", m_downscalingMethod));
         }
-    } catch (std::bad_alloc &ba) {
+    } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught: %s"), msg);
         return 1;
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         return 1;
@@ -498,7 +498,7 @@ void AtmoswingAppDownscaler::CleanUp() {
 #endif
 
     // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *)nullptr);
+    delete wxFileConfig::Set((wxFileConfig*)nullptr);
 
     // Delete threads manager and log
     DeleteThreadsManager();

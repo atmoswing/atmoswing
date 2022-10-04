@@ -28,9 +28,10 @@
 
 #include "asScoreMAE.h"
 
-asScoreMAE::asScoreMAE() : asScore(asScore::MAE, _("Mean absolute error"), _("Mean absolute error"), Asc, 0, NaNf) {}
+asScoreMAE::asScoreMAE()
+    : asScore(asScore::MAE, _("Mean absolute error"), _("Mean absolute error"), Asc, 0, NaNf) {}
 
-float asScoreMAE::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreMAE::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -74,6 +75,6 @@ float asScoreMAE::Assess(float obs, const a1f &values, int nbElements) const {
     return score;
 }
 
-bool asScoreMAE::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreMAE::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     return true;
 }

@@ -28,9 +28,10 @@
 
 #include "asTotalScoreFAR.h"
 
-asTotalScoreFAR::asTotalScoreFAR(const wxString &periodString) : asTotalScore(periodString) {}
+asTotalScoreFAR::asTotalScoreFAR(const wxString& periodString)
+    : asTotalScore(periodString) {}
 
-float asTotalScoreFAR::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
+float asTotalScoreFAR::Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(scores.rows() > 1);
 

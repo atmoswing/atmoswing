@@ -41,13 +41,12 @@ class asTimeArray;
 
 class asThreadGetAnalogsSubDates : public asThread {
   public:
-    asThreadGetAnalogsSubDates(std::vector<asPredictor *> predictorsArchive,
-                               std::vector<asPredictor *> predictorsTarget, asTimeArray *timeArrayArchiveData,
-                               asTimeArray *timeArrayTargetData, a1f *timeTargetSelection,
-                               std::vector<asCriteria *> criteria, asParameters *params, int step, vpa2f &vRefData,
-                               vpa2f &vEvalData, a1i &vRowsNb, a1i &vColsNb, int start, int end,
-                               a2f *finalAnalogsCriteria, a2f *finalAnalogsDates, a2f *previousAnalogsDates,
-                               bool *containsNaNs, bool *success);
+    asThreadGetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive, std::vector<asPredictor*> predictorsTarget,
+                               asTimeArray* timeArrayArchiveData, asTimeArray* timeArrayTargetData,
+                               a1f* timeTargetSelection, std::vector<asCriteria*> criteria, asParameters* params,
+                               int step, vpa2f& vRefData, vpa2f& vEvalData, a1i& vRowsNb, a1i& vColsNb, int start,
+                               int end, a2f* finalAnalogsCriteria, a2f* finalAnalogsDates, a2f* previousAnalogsDates,
+                               bool* containsNaNs, bool* success);
 
     virtual ~asThreadGetAnalogsSubDates();
 
@@ -55,13 +54,13 @@ class asThreadGetAnalogsSubDates : public asThread {
 
   protected:
   private:
-    std::vector<asPredictor *> m_pPredictorsArchive;
-    std::vector<asPredictor *> m_pPredictorsTarget;
-    asTimeArray *m_pTimeArrayArchiveData;
-    asTimeArray *m_pTimeArrayTargetData;
-    a1f *m_pTimeTargetSelection;
-    std::vector<asCriteria *> m_criteria;
-    asParameters *m_params;
+    std::vector<asPredictor*> m_pPredictorsArchive;
+    std::vector<asPredictor*> m_pPredictorsTarget;
+    asTimeArray* m_pTimeArrayArchiveData;
+    asTimeArray* m_pTimeArrayTargetData;
+    a1f* m_pTimeTargetSelection;
+    std::vector<asCriteria*> m_criteria;
+    asParameters* m_params;
     int m_step;
     vpa2f m_vTargData;
     vpa2f m_vArchData;
@@ -69,11 +68,11 @@ class asThreadGetAnalogsSubDates : public asThread {
     a1i m_vColsNb;
     int m_start;
     int m_end;
-    a2f *m_pFinalAnalogsCriteria;
-    a2f *m_pFinalAnalogsDates;
-    a2f *m_pPreviousAnalogsDates;
-    bool *m_pContainsNaNs;
-    bool *m_success;
+    a2f* m_pFinalAnalogsCriteria;
+    a2f* m_pFinalAnalogsDates;
+    a2f* m_pPreviousAnalogsDates;
+    bool* m_pContainsNaNs;
+    bool* m_success;
 };
 
 #endif

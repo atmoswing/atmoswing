@@ -37,7 +37,7 @@ asScoreCRPSS::asScoreCRPSS()
 
 asScoreCRPSS::~asScoreCRPSS() {}
 
-float asScoreCRPSS::Assess(float obs, const a1f &values, int nbElements) const {
+float asScoreCRPSS::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(m_scoreClimatology != 0);
@@ -62,12 +62,12 @@ float asScoreCRPSS::Assess(float obs, const a1f &values, int nbElements) const {
     return skillScore;
 }
 
-bool asScoreCRPSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
+bool asScoreCRPSS::ProcessScoreClimatology(const a1f& refVals, const a1f& climatologyData) {
     // Containers for final results
     a1f scoresClimatology(refVals.size());
 
     // Set the original score and process
-    asScore *score = asScore::GetInstance(asScore::CRPSAR);
+    asScore* score = asScore::GetInstance(asScore::CRPSAR);
     score->SetThreshold(GetThreshold());
     score->SetQuantile(GetQuantile());
     score->SetOnMean(GetOnMean());

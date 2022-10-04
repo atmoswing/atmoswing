@@ -35,11 +35,11 @@
 #include "asTimeArray.h"
 
 asThreadGetAnalogsSubDates::asThreadGetAnalogsSubDates(
-    std::vector<asPredictor *> predictorsArchive, std::vector<asPredictor *> predictorsTarget,
-    asTimeArray *timeArrayArchiveData, asTimeArray *timeArrayTargetData, a1f *timeTargetSelection,
-    std::vector<asCriteria *> criteria, asParameters *params, int step, vpa2f &vTargData, vpa2f &vArchData,
-    a1i &vRowsNb, a1i &vColsNb, int start, int end, a2f *finalAnalogsCriteria, a2f *finalAnalogsDates,
-    a2f *previousAnalogsDates, bool *containsNaNs, bool *success)
+    std::vector<asPredictor*> predictorsArchive, std::vector<asPredictor*> predictorsTarget,
+    asTimeArray* timeArrayArchiveData, asTimeArray* timeArrayTargetData, a1f* timeTargetSelection,
+    std::vector<asCriteria*> criteria, asParameters* params, int step, vpa2f& vTargData, vpa2f& vArchData, a1i& vRowsNb,
+    a1i& vColsNb, int start, int end, a2f* finalAnalogsCriteria, a2f* finalAnalogsDates, a2f* previousAnalogsDates,
+    bool* containsNaNs, bool* success)
     : asThread(asThread::ProcessorGetAnalogsDates),
       m_pPredictorsArchive(std::move(predictorsArchive)),
       m_pPredictorsTarget(std::move(predictorsTarget)),
@@ -129,7 +129,6 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
 
             // Loop through the previous analogs for candidate data
             for (int iPrevAnalog = 0; iPrevAnalog < analogsNbPrevious; iPrevAnalog++) {
-
                 if (asIsNaN(currentAnalogsDates[iPrevAnalog])) {
                     *m_pContainsNaNs = true;
                     continue;
@@ -202,8 +201,9 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
 
                     counter++;
                 } else {
-                    wxLogError(_("The date was not found in the array (Analogs subdates fct). "
-                        "That should not happen."));
+                    wxLogError(
+                        _("The date was not found in the array (Analogs subdates fct). "
+                          "That should not happen."));
                     *m_success = false;
                     return (wxThread::ExitCode)-1;
                 }

@@ -51,7 +51,7 @@ wxString asConfig::GetTempDir() {
     return tempDir;
 }
 
-wxString asConfig::CreateTempFileName(const wxString &prefix) {
+wxString asConfig::CreateTempFileName(const wxString& prefix) {
     wxString path = asConfig::GetTempDir() + prefix;
 
     static const size_t numTries = 1000;
@@ -65,7 +65,7 @@ wxString asConfig::CreateTempFileName(const wxString &prefix) {
     return wxEmptyString;
 }
 
-wxString asConfig::CreateTempDir(const wxString &prefix) {
+wxString asConfig::CreateTempDir(const wxString& prefix) {
     wxString path = asConfig::GetTempDir() + prefix;
 
     static const size_t numTries = 1000;
@@ -103,7 +103,7 @@ wxString asConfig::GetUserDataDir() {
     wxString userDataDir = "/app/config/";
 #else
     ThreadsManager().CritSectionConfig().Enter();
-    wxStandardPathsBase &stdPth = wxStandardPaths::Get();
+    wxStandardPathsBase& stdPth = wxStandardPaths::Get();
     stdPth.UseAppInfo(0);
     wxString userDataDir = stdPth.GetUserDataDir();
 

@@ -33,22 +33,22 @@
 
 class asPanelSidebarStationsList : public asPanelSidebar {
   public:
-    explicit asPanelSidebarStationsList(wxWindow *parent, wxWindowID id = wxID_ANY,
-                                        const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
+    explicit asPanelSidebarStationsList(wxWindow* parent, wxWindowID id = wxID_ANY,
+                                        const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
                                         long style = wxTAB_TRAVERSAL);
 
     ~asPanelSidebarStationsList() override;
 
-    void SetChoices(wxArrayString &arrayStation);
+    void SetChoices(wxArrayString& arrayStation);
 
-    wxChoice *GetChoiceCtrl() const {
+    wxChoice* GetChoiceCtrl() const {
         return m_choiceStationSelection;
     }
 
   private:
-    wxChoice *m_choiceStationSelection;
+    wxChoice* m_choiceStationSelection;
 
-    void OnStationSelection(wxCommandEvent &event);
+    void OnStationSelection(wxCommandEvent& event);
 };
 
 #endif

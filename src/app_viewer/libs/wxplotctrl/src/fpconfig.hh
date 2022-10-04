@@ -15,7 +15,7 @@
  asinh, acosh and atanh functions and you want them to be supported. If
  you are not sure, just leave it (those function will then not be supported).
 */
-//#define NO_ASINH wxplotctrl - we provide our own asin/cos/tanh in fparser.cpp
+// #define NO_ASINH wxplotctrl - we provide our own asin/cos/tanh in fparser.cpp
 
 /*
  Uncomment the following line to disable the eval() function if it could
@@ -25,7 +25,7 @@
  amounts of time to evaluate even though the maximum recursion is never
  reached. This may be undesirable in some applications.
 */
-//#define DISABLE_EVAL
+// #define DISABLE_EVAL
 
 /*
  Maximum recursion level for eval() calls:

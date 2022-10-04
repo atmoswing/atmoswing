@@ -28,7 +28,7 @@
 
 #include "asFramePreferencesOptimizer.h"
 
-asFramePreferencesOptimizer::asFramePreferencesOptimizer(wxWindow *parent, wxWindowID id)
+asFramePreferencesOptimizer::asFramePreferencesOptimizer(wxWindow* parent, wxWindowID id)
     : asFramePreferencesOptimizerVirtual(parent, id) {
     LoadPreferences();
     Fit();
@@ -39,7 +39,7 @@ asFramePreferencesOptimizer::asFramePreferencesOptimizer(wxWindow *parent, wxWin
 #endif
 }
 
-void asFramePreferencesOptimizer::CloseFrame(wxCommandEvent &event) {
+void asFramePreferencesOptimizer::CloseFrame(wxCommandEvent& event) {
     Close();
 }
 
@@ -48,7 +48,7 @@ void asFramePreferencesOptimizer::Update() {
 }
 
 void asFramePreferencesOptimizer::LoadPreferences() {
-    wxConfigBase *pConfig;
+    wxConfigBase* pConfig;
     pConfig = wxFileConfig::Get();
 
     // Fix the color of the file/dir pickers
@@ -135,7 +135,7 @@ void asFramePreferencesOptimizer::LoadPreferences() {
 void asFramePreferencesOptimizer::SavePreferences() const {
     wxBusyCursor wait;
 
-    wxConfigBase *pConfig;
+    wxConfigBase* pConfig;
     pConfig = wxFileConfig::Get();
 
     /*
@@ -203,7 +203,7 @@ void asFramePreferencesOptimizer::SavePreferences() const {
     pConfig->Flush();
 }
 
-void asFramePreferencesOptimizer::OnChangeMultithreadingCheckBox(wxCommandEvent &event) {
+void asFramePreferencesOptimizer::OnChangeMultithreadingCheckBox(wxCommandEvent& event) {
     if (event.GetInt() == 0) {
         m_radioBoxProcessingMethods->Enable(asMULTITHREADS, false);
         if (m_radioBoxProcessingMethods->GetSelection() == asMULTITHREADS) {
@@ -214,11 +214,11 @@ void asFramePreferencesOptimizer::OnChangeMultithreadingCheckBox(wxCommandEvent 
     }
 }
 
-void asFramePreferencesOptimizer::SaveAndClose(wxCommandEvent &event) {
+void asFramePreferencesOptimizer::SaveAndClose(wxCommandEvent& event) {
     SavePreferences();
     Close();
 }
 
-void asFramePreferencesOptimizer::ApplyChanges(wxCommandEvent &event) {
+void asFramePreferencesOptimizer::ApplyChanges(wxCommandEvent& event) {
     SavePreferences();
 }

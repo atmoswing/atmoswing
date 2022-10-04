@@ -35,12 +35,12 @@ class asArea;
 
 class asPredictorCustomMFvgSynopPacked : public asPredictorCustomMFvgSynop {
   public:
-    explicit asPredictorCustomMFvgSynopPacked(const wxString &dataId);
+    explicit asPredictorCustomMFvgSynopPacked(const wxString& dataId);
 
     ~asPredictorCustomMFvgSynopPacked() override = default;
 
   protected:
-    void ListFiles(asTimeArray &timeArray) override;
+    void ListFiles(asTimeArray& timeArray) override;
 
   private:
 };

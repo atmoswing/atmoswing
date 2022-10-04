@@ -28,21 +28,21 @@
 #ifndef ATMOSWING_MAIN_DOWNSCALER_H
 #define ATMOSWING_MAIN_DOWNSCALER_H
 
-//#include "version.h"
+// #include "version.h"
 #include "AtmoswingAppDownscaler.h"
 #include "asFrameDownscaler.h"
 #include "asIncludes.h"
 
 class AtmoswingFrameDownscaler : public asFrameDownscaler {
   public:
-    explicit AtmoswingFrameDownscaler(wxFrame *frame);
+    explicit AtmoswingFrameDownscaler(wxFrame* frame);
 
     ~AtmoswingFrameDownscaler() override;
 
   private:
-    virtual void OnClose(wxCloseEvent &event);
+    virtual void OnClose(wxCloseEvent& event);
 
-    virtual void OnQuit(wxCommandEvent &event);
+    virtual void OnQuit(wxCommandEvent& event);
 
     void SetDefaultOptions();
 };

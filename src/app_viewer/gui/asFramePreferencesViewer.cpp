@@ -28,7 +28,7 @@
 
 #include "asFramePreferencesViewer.h"
 
-asFramePreferencesViewer::asFramePreferencesViewer(wxWindow *parent, asWorkspace *workspace, wxWindowID id)
+asFramePreferencesViewer::asFramePreferencesViewer(wxWindow* parent, asWorkspace* workspace, wxWindowID id)
     : asFramePreferencesViewerVirtual(parent, id),
       m_workspace(workspace) {
     LoadPreferences();
@@ -40,7 +40,7 @@ asFramePreferencesViewer::asFramePreferencesViewer(wxWindow *parent, asWorkspace
 #endif
 }
 
-void asFramePreferencesViewer::CloseFrame(wxCommandEvent &event) {
+void asFramePreferencesViewer::CloseFrame(wxCommandEvent& event) {
     Close();
 }
 
@@ -49,7 +49,7 @@ void asFramePreferencesViewer::Update() {
 }
 
 void asFramePreferencesViewer::LoadPreferences() {
-    wxConfigBase *pConfig;
+    wxConfigBase* pConfig;
     pConfig = wxFileConfig::Get();
 
     // Fix the color of the file/dir pickers
@@ -141,7 +141,7 @@ void asFramePreferencesViewer::LoadPreferences() {
 void asFramePreferencesViewer::SavePreferences() {
     wxBusyCursor wait;
 
-    wxConfigBase *pConfig;
+    wxConfigBase* pConfig;
     pConfig = wxFileConfig::Get();
 
     /*
@@ -240,11 +240,11 @@ void asFramePreferencesViewer::SavePreferences() {
     m_workspace->Save();
 }
 
-void asFramePreferencesViewer::SaveAndClose(wxCommandEvent &event) {
+void asFramePreferencesViewer::SaveAndClose(wxCommandEvent& event) {
     SavePreferences();
     Close();
 }
 
-void asFramePreferencesViewer::ApplyChanges(wxCommandEvent &event) {
+void asFramePreferencesViewer::ApplyChanges(wxCommandEvent& event) {
     SavePreferences();
 }

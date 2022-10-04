@@ -44,27 +44,27 @@ class FunctionParser {
         FP_NO_ERROR
     };
 
-    int Parse(const std::string &Function, const std::string &Vars, bool useDegrees = false);
+    int Parse(const std::string& Function, const std::string& Vars, bool useDegrees = false);
 
-    const char *ErrorMsg() const;
+    const char* ErrorMsg() const;
 
     inline ParseErrorType GetParseErrorType() const {
         return parseErrorType;
     }
 
-    double Eval(const double *Vars);
+    double Eval(const double* Vars);
 
     inline int EvalError() const {
         return evalErrorType;
     }
 
-    bool AddConstant(const std::string &name, double value);
+    bool AddConstant(const std::string& name, double value);
 
-    typedef double (*FunctionPtr)(const double *);
+    typedef double (*FunctionPtr)(const double*);
 
-    bool AddFunction(const std::string &name, FunctionPtr, unsigned paramsAmount);
+    bool AddFunction(const std::string& name, FunctionPtr, unsigned paramsAmount);
 
-    bool AddFunction(const std::string &name, FunctionParser &);
+    bool AddFunction(const std::string& name, FunctionParser&);
 
     void Optimize();
 
@@ -82,13 +82,13 @@ class FunctionParser {
 
     // Copy constructor and assignment operator (implemented using the
     // copy-on-write technique for efficiency):
-    FunctionParser(const FunctionParser &);
+    FunctionParser(const FunctionParser&);
 
-    FunctionParser &operator=(const FunctionParser &);
+    FunctionParser& operator=(const FunctionParser&);
 
 #ifdef FUNCTIONPARSER_SUPPORT_DEBUG_OUTPUT
     // For debugging purposes only:
-    void PrintByteCode(std::ostream &dest) const;
+    void PrintByteCode(std::ostream& dest) const;
 #endif
 
     //========================================================================
@@ -118,53 +118,55 @@ class FunctionParser {
             FunctionPtr ptr;
             unsigned params;
 
-            FuncPtrData(FunctionPtr p, unsigned par) : ptr(p), params(par) {}
+            FuncPtrData(FunctionPtr p, unsigned par)
+                : ptr(p),
+                  params(par) {}
         };
 
         std::vector<FuncPtrData> FuncPtrs;
 
         VarMap_t FuncParserNames;
-        std::vector<FunctionParser *> FuncParsers;
+        std::vector<FunctionParser*> FuncParsers;
 
-        unsigned *ByteCode;
+        unsigned* ByteCode;
         unsigned ByteCodeSize;
-        double *Immed;
+        double* Immed;
         unsigned ImmedSize;
-        double *Stack;
+        double* Stack;
         unsigned StackSize;
 
         Data();
 
         ~Data();
 
-        Data(const Data &);
+        Data(const Data&);
 
-        Data &operator=(const Data &);  // not implemented on purpose
+        Data& operator=(const Data&);  // not implemented on purpose
     };
 
-    Data *data;
+    Data* data;
     unsigned evalRecursionLevel;
 
     // Temp data needed in Compile():
     unsigned StackPtr;
-    std::vector<unsigned> *tempByteCode;
-    std::vector<double> *tempImmed;
+    std::vector<unsigned>* tempByteCode;
+    std::vector<double>* tempImmed;
 
     // Private methods:
     // ---------------
     void copyOnWrite();
 
-    bool checkRecursiveLinking(const FunctionParser *) const;
+    bool checkRecursiveLinking(const FunctionParser*) const;
 
-    bool isValidName(const std::string &) const;
+    bool isValidName(const std::string&) const;
 
-    Data::VarMap_t::const_iterator FindVariable(const char *, const Data::VarMap_t &) const;
+    Data::VarMap_t::const_iterator FindVariable(const char*, const Data::VarMap_t&) const;
 
-    Data::ConstMap_t::const_iterator FindConstant(const char *) const;
+    Data::ConstMap_t::const_iterator FindConstant(const char*) const;
 
-    int CheckSyntax(const char *);
+    int CheckSyntax(const char*);
 
-    bool Compile(const char *);
+    bool Compile(const char*);
 
     bool IsVariable(int);
 
@@ -176,29 +178,29 @@ class FunctionParser {
 
     inline void incStackPtr();
 
-    int CompileIf(const char *, int);
+    int CompileIf(const char*, int);
 
-    int CompileFunctionParams(const char *, int, unsigned);
+    int CompileFunctionParams(const char*, int, unsigned);
 
-    int CompileElement(const char *, int);
+    int CompileElement(const char*, int);
 
-    int CompilePow(const char *, int);
+    int CompilePow(const char*, int);
 
-    int CompileUnaryMinus(const char *, int);
+    int CompileUnaryMinus(const char*, int);
 
-    int CompileMult(const char *, int);
+    int CompileMult(const char*, int);
 
-    int CompileAddition(const char *, int);
+    int CompileAddition(const char*, int);
 
-    int CompileComparison(const char *, int);
+    int CompileComparison(const char*, int);
 
-    int CompileAnd(const char *, int);
+    int CompileAnd(const char*, int);
 
-    int CompileOr(const char *, int);
+    int CompileOr(const char*, int);
 
-    int CompileExpression(const char *, int, bool = false);
+    int CompileExpression(const char*, int, bool = false);
 
-    void MakeTree(void *) const;
+    void MakeTree(void*) const;
 };
 
 #endif

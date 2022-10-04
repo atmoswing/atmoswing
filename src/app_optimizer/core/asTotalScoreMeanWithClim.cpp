@@ -27,9 +27,10 @@
 
 #include "asTotalScoreMeanWithClim.h"
 
-asTotalScoreMeanWithClim::asTotalScoreMeanWithClim(const wxString &periodString) : asTotalScore(periodString) {}
+asTotalScoreMeanWithClim::asTotalScoreMeanWithClim(const wxString& periodString)
+    : asTotalScore(periodString) {}
 
-float asTotalScoreMeanWithClim::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
+float asTotalScoreMeanWithClim::Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(scores.rows() > 1);
 

@@ -7,3 +7,8 @@ BreakConstructorInitializers: BeforeColon
 BreakInheritanceList: BeforeColon
 PackConstructorInitializers: Never
 AllowShortFunctionsOnASingleLine: Empty
+PointerAlignment: Left
+DerivePointerAlignment: false
+AllowShortEnumsOnASingleLine: false
+AlignOperands: Align
+PenaltyBreakAssignment: 20

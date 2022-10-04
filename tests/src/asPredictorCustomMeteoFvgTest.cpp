@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorCustomMeteoFvg, GetCorrectSynopticPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "data/gh", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -133,7 +133,7 @@ TEST(PredictorCustomMeteoFvg, GetCorrectSynopticPredictors) {
 }
 
 TEST(PredictorCustomMeteoFvg, GetCorrectMesoPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/gh", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -267,12 +267,12 @@ TEST(PredictorCustomMeteoFvg, LoadSingleDay) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "gh_500", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "gh_500", predictorDataDir);
     wxASSERT(predictor);
 
     // Load
@@ -314,12 +314,12 @@ TEST(PredictorCustomMeteoFvg, LoadSingleDayVertdiff) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "vertdiff/MB500925", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "vertdiff/MB500925", predictorDataDir);
     wxASSERT(predictor);
 
     // Load
@@ -361,12 +361,12 @@ TEST(PredictorCustomMeteoFvg, LoadSecondTimeStep) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "gh_500", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "gh_500", predictorDataDir);
     wxASSERT(predictor);
 
     // Load
@@ -408,12 +408,12 @@ TEST(PredictorCustomMeteoFvg, LoadFullTimeArray) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "gh_500", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "gh_500", predictorDataDir);
     wxASSERT(predictor);
 
     // Load
@@ -491,12 +491,12 @@ TEST(PredictorCustomMeteoFvg, LoadFullTimeArrayMeso) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "gh_500", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "gh_500", predictorDataDir);
     wxASSERT(predictor);
 
     // Load
@@ -574,12 +574,12 @@ TEST(PredictorCustomMeteoFvg, LoadPacked) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg-packed/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop_packed", "gh_500", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop_packed", "gh_500", predictorDataDir);
     wxASSERT(predictor);
 
     // Load
@@ -709,12 +709,12 @@ TEST(PredictorCustomMeteoFvg, LoadMesoPacked) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg-packed/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso_packed", "gh_500", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso_packed", "gh_500", predictorDataDir);
     wxASSERT(predictor);
 
     // Load
@@ -844,12 +844,12 @@ TEST(PredictorCustomMeteoFvg, LoadPackedPartial) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg-packed/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop_packed", "gh_500", predictorDataDir);
+    asPredictor* predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop_packed", "gh_500", predictorDataDir);
     wxASSERT(predictor);
 
     // Load

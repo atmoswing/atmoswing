@@ -28,9 +28,10 @@
 
 #include "asTotalScorePSS.h"
 
-asTotalScorePSS::asTotalScorePSS(const wxString &periodString) : asTotalScore(periodString) {}
+asTotalScorePSS::asTotalScorePSS(const wxString& periodString)
+    : asTotalScore(periodString) {}
 
-float asTotalScorePSS::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
+float asTotalScorePSS::Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(scores.rows() > 1);
 

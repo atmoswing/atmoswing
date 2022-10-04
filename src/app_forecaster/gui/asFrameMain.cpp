@@ -50,7 +50,8 @@ EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSED, asFrameMain::OnStatusMethodUpdate)
 EVT_COMMAND(wxID_ANY, asEVT_ACTION_OPEN_BATCHFORECASTS, asFrameMain::OnOpenBatchForecasts)
 END_EVENT_TABLE()
 
-asFrameMain::asFrameMain(wxWindow *parent) : asFrameMainVirtual(parent) {
+asFrameMain::asFrameMain(wxWindow* parent)
+    : asFrameMainVirtual(parent) {
     m_forecaster = nullptr;
     m_logWindow = nullptr;
 
@@ -71,7 +72,7 @@ asFrameMain::asFrameMain(wxWindow *parent) : asFrameMainVirtual(parent) {
     m_ledDownloading->SetState(awxLED_OFF);
     m_sizerLeds->Add(m_ledDownloading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxStaticText *textDownloading =
+    wxStaticText* textDownloading =
         new wxStaticText(m_panelMain, wxID_ANY, _("Downloading predictors"), wxDefaultPosition, wxDefaultSize, 0);
     textDownloading->Wrap(-1);
     m_sizerLeds->Add(textDownloading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -80,7 +81,7 @@ asFrameMain::asFrameMain(wxWindow *parent) : asFrameMainVirtual(parent) {
     m_ledLoading->SetState(awxLED_OFF);
     m_sizerLeds->Add(m_ledLoading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxStaticText *textLoading =
+    wxStaticText* textLoading =
         new wxStaticText(m_panelMain, wxID_ANY, _("Loading data"), wxDefaultPosition, wxDefaultSize, 0);
     textLoading->Wrap(-1);
     m_sizerLeds->Add(textLoading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -89,7 +90,7 @@ asFrameMain::asFrameMain(wxWindow *parent) : asFrameMainVirtual(parent) {
     m_ledProcessing->SetState(awxLED_OFF);
     m_sizerLeds->Add(m_ledProcessing, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxStaticText *textProcessing =
+    wxStaticText* textProcessing =
         new wxStaticText(m_panelMain, wxID_ANY, _("Processing"), wxDefaultPosition, wxDefaultSize, 0);
     textProcessing->Wrap(-1);
     m_sizerLeds->Add(textProcessing, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -98,7 +99,7 @@ asFrameMain::asFrameMain(wxWindow *parent) : asFrameMainVirtual(parent) {
     m_ledSaving->SetState(awxLED_OFF);
     m_sizerLeds->Add(m_ledSaving, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxStaticText *textSaving =
+    wxStaticText* textSaving =
         new wxStaticText(m_panelMain, wxID_ANY, _("Saving results"), wxDefaultPosition, wxDefaultSize, 0);
     textSaving->Wrap(-1);
     m_sizerLeds->Add(textSaving, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -143,7 +144,7 @@ void asFrameMain::OnInit() {
     SetPresentDate();
 
     // Open last batch file
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     wxString batchFilePath = pConfig->Read("/BatchForecasts/LastOpened", wxEmptyString);
 
     // Check provided files
@@ -172,7 +173,7 @@ void asFrameMain::OnInit() {
     }
 }
 
-void asFrameMain::OnOpenBatchForecasts(wxCommandEvent &event) {
+void asFrameMain::OnOpenBatchForecasts(wxCommandEvent& event) {
     // Ask for a batch file
     wxFileDialog openFileDialog(this, _("Select a batch file"), wxEmptyString, wxEmptyString,
                                 "AtmoSwing forecaster batch (*.asfb)|*.asfb",
@@ -186,7 +187,7 @@ void asFrameMain::OnOpenBatchForecasts(wxCommandEvent &event) {
     wxString batchFilePath = openFileDialog.GetPath();
 
     // Save preferences
-    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/BatchForecasts/LastOpened", batchFilePath);
 
     // Do open the batch file
@@ -199,11 +200,11 @@ void asFrameMain::OnOpenBatchForecasts(wxCommandEvent &event) {
     }
 }
 
-void asFrameMain::OnSaveBatchForecasts(wxCommandEvent &event) {
+void asFrameMain::OnSaveBatchForecasts(wxCommandEvent& event) {
     SaveBatchForecasts();
 }
 
-void asFrameMain::OnSaveBatchForecastsAs(wxCommandEvent &event) {
+void asFrameMain::OnSaveBatchForecastsAs(wxCommandEvent& event) {
     // Ask for a batch file
     wxFileDialog openFileDialog(this, _("Select a path to save the batch file"), wxEmptyString, wxEmptyString,
                                 "AtmoSwing forecaster batch (*.asfb)|*.asfb", wxFD_SAVE | wxFD_CHANGE_DIR);
@@ -218,7 +219,7 @@ void asFrameMain::OnSaveBatchForecastsAs(wxCommandEvent &event) {
 
     if (SaveBatchForecasts()) {
         // Save preferences
-        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxConfigBase* pConfig = wxFileConfig::Get();
         pConfig->Write("/BatchForecasts/LastOpened", batchFilePath);
     }
 }
@@ -242,7 +243,7 @@ bool asFrameMain::UpdateBatchForecasts() {
     m_batchForecasts.ClearForecasts();
 
     for (int i = 0; i < m_panelsManager->GetPanelsNb(); i++) {
-        asPanelForecast *panel = m_panelsManager->GetPanel(i);
+        asPanelForecast* panel = m_panelsManager->GetPanel(i);
 
         m_batchForecasts.AddForecast();
 
@@ -252,7 +253,7 @@ bool asFrameMain::UpdateBatchForecasts() {
     return true;
 }
 
-void asFrameMain::OnNewBatchForecasts(wxCommandEvent &event) {
+void asFrameMain::OnNewBatchForecasts(wxCommandEvent& event) {
     asWizardBatchForecasts wizard(this, &m_batchForecasts);
     wizard.RunWizard(wizard.GetSecondPage());
 }
@@ -267,7 +268,7 @@ bool asFrameMain::OpenBatchForecasts() {
 
     // Create the panels
     for (int i = 0; i < m_batchForecasts.GetForecastsNb(); i++) {
-        auto *panel = new asPanelForecast(m_scrolledWindowForecasts);
+        auto* panel = new asPanelForecast(m_scrolledWindowForecasts);
         panel->SetParametersFileName(m_batchForecasts.GetForecastFileName(i));
         panel->Layout();
         m_sizerForecasts->Add(panel, 0, wxALL | wxEXPAND, 5);
@@ -287,46 +288,46 @@ void asFrameMain::Update() {
     DisplayLogLevelMenu();
 }
 
-void asFrameMain::OpenFramePredictandDB(wxCommandEvent &event) {
+void asFrameMain::OpenFramePredictandDB(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto *frame = new asFramePredictandDB(this);
+    auto* frame = new asFramePredictandDB(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameMain::OnConfigureDirectories(wxCommandEvent &event) {
+void asFrameMain::OnConfigureDirectories(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto *frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
+    auto* frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameMain::OpenFramePreferences(wxCommandEvent &event) {
+void asFrameMain::OpenFramePreferences(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto *frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
+    auto* frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameMain::OpenFrameAbout(wxCommandEvent &event) {
+void asFrameMain::OpenFrameAbout(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto *frame = new asFrameAbout(this);
+    auto* frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameMain::OnShowLog(wxCommandEvent &event) {
+void asFrameMain::OnShowLog(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     wxASSERT(m_logWindow);
     m_logWindow->DoShow(true);
 }
 
-void asFrameMain::OnLogLevel1(wxCommandEvent &event) {
+void asFrameMain::OnLogLevel1(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     Log()->SetLevel(1);
@@ -334,11 +335,11 @@ void asFrameMain::OnLogLevel1(wxCommandEvent &event) {
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
     m_menuLogLevel->FindItemByPosition(2)->Check(false);
     wxFileConfig::Get()->Write("/General/LogLevel", 1l);
-    wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
+    wxWindow* prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
 
-void asFrameMain::OnLogLevel2(wxCommandEvent &event) {
+void asFrameMain::OnLogLevel2(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     Log()->SetLevel(2);
@@ -346,11 +347,11 @@ void asFrameMain::OnLogLevel2(wxCommandEvent &event) {
     m_menuLogLevel->FindItemByPosition(1)->Check(true);
     m_menuLogLevel->FindItemByPosition(2)->Check(false);
     wxFileConfig::Get()->Write("/General/LogLevel", 2l);
-    wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
+    wxWindow* prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
 
-void asFrameMain::OnLogLevel3(wxCommandEvent &event) {
+void asFrameMain::OnLogLevel3(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     Log()->SetLevel(3);
@@ -358,11 +359,11 @@ void asFrameMain::OnLogLevel3(wxCommandEvent &event) {
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
     m_menuLogLevel->FindItemByPosition(2)->Check(true);
     wxFileConfig::Get()->Write("/General/LogLevel", 3l);
-    wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
+    wxWindow* prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
 
-void asFrameMain::OnStatusMethodUpdate(wxCommandEvent &event) {
+void asFrameMain::OnStatusMethodUpdate(wxCommandEvent& event) {
     int eventInt = event.GetInt();
     wxEventType eventType = event.GetEventType();
 
@@ -441,7 +442,7 @@ void asFrameMain::DisplayLogLevelMenu() {
     }
 }
 
-void asFrameMain::LaunchForecasting(wxCommandEvent &event) {
+void asFrameMain::LaunchForecasting(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     UpdateBatchForecasts();
@@ -478,15 +479,15 @@ void asFrameMain::LaunchForecasting(wxCommandEvent &event) {
     wxDELETE(m_forecaster);
 }
 
-void asFrameMain::CancelForecasting(wxCommandEvent &event) {
+void asFrameMain::CancelForecasting(wxCommandEvent& event) {
     if (m_forecaster) {
         m_forecaster->Cancel();
     }
 }
 
-void asFrameMain::AddForecast(wxCommandEvent &event) {
+void asFrameMain::AddForecast(wxCommandEvent& event) {
     Freeze();
-    auto *panel = new asPanelForecast(m_scrolledWindowForecasts);
+    auto* panel = new asPanelForecast(m_scrolledWindowForecasts);
     panel->Layout();
     m_sizerForecasts->Add(panel, 0, wxALL | wxEXPAND, 5);
     Layout();  // For the scrollbar
@@ -496,7 +497,7 @@ void asFrameMain::AddForecast(wxCommandEvent &event) {
     m_panelsManager->AddPanel(panel);
 }
 
-void asFrameMain::OnSetPresentDate(wxCommandEvent &event) {
+void asFrameMain::OnSetPresentDate(wxCommandEvent& event) {
     SetPresentDate();
 }
 

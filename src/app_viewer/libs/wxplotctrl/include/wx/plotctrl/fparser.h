@@ -79,13 +79,13 @@ class WXDLLIMPEXP_PLOTCTRL wxFunctionParser {
 
     // Copy constructor and assignment operator (implemented using the
     // copy-on-write technique for efficiency):
-    wxFunctionParser(const wxFunctionParser &);
+    wxFunctionParser(const wxFunctionParser&);
 
     virtual ~wxFunctionParser();
 
     // Parse the function string and a comma delimited list of the variables
     // in the function. func = "sin(x) + 2*t*x", vars = "x,t"
-    int Parse(const wxString &Function, const wxString &Vars, bool useDegrees = false);
+    int Parse(const wxString& Function, const wxString& Vars, bool useDegrees = false);
 
     // Get a readable error message if error after a call to parse or empty string
     wxString ErrorMsg() const;
@@ -95,21 +95,21 @@ class WXDLLIMPEXP_PLOTCTRL wxFunctionParser {
 
     // Evaluate the function (must have called Parse first) where vars is an
     //  array of the variable values to use.
-    double Eval(const double *Vars);
+    double Eval(const double* Vars);
 
     // Not really sure - some sort of error flag?
     int EvalError() const;
 
     // Add a constant to the function parser
-    bool AddConstant(const wxString &name, double value);
+    bool AddConstant(const wxString& name, double value);
 
     // Function type that can be added to the parser
-    typedef double (*FunctionPtr)(const double *);
+    typedef double (*FunctionPtr)(const double*);
 
     // Add a function to the parser
-    bool AddFunction(const wxString &name, FunctionPtr, unsigned paramsAmount);
+    bool AddFunction(const wxString& name, FunctionPtr, unsigned paramsAmount);
 
-    bool AddFunction(const wxString &name, wxFunctionParser &);
+    bool AddFunction(const wxString& name, wxFunctionParser&);
 
     // Try to optimize the parser, use after sucessful call to Parse
     void Optimize();
@@ -139,15 +139,15 @@ class WXDLLIMPEXP_PLOTCTRL wxFunctionParser {
     bool GetUseDegrees() const;
 
     // operators
-    wxFunctionParser &operator=(const wxFunctionParser &);
+    wxFunctionParser& operator=(const wxFunctionParser&);
 
     // implementation
-    FunctionParser *GetFunctionParser() const {
+    FunctionParser* GetFunctionParser() const {
         return m_functionParser;
     }
 
   protected:
-    FunctionParser *m_functionParser;
+    FunctionParser* m_functionParser;
     wxString m_function, m_variables;
     bool m_ok;
 };

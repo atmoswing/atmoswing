@@ -34,8 +34,8 @@
 
 class asThreadViewerLayerManagerReload : public asThread {
   public:
-    asThreadViewerLayerManagerReload(vrViewerLayerManager *viewerLayerManager,
-                                     wxCriticalSection *critSectionViewerLayerManager);
+    asThreadViewerLayerManagerReload(vrViewerLayerManager* viewerLayerManager,
+                                     wxCriticalSection* critSectionViewerLayerManager);
 
     ~asThreadViewerLayerManagerReload() override = default;
 
@@ -43,8 +43,8 @@ class asThreadViewerLayerManagerReload : public asThread {
 
   protected:
   private:
-    vrViewerLayerManager *m_viewerLayerManager;
-    wxCriticalSection *m_critSectionViewerLayerManager;
+    vrViewerLayerManager* m_viewerLayerManager;
+    wxCriticalSection* m_critSectionViewerLayerManager;
 };
 
 #endif

@@ -36,11 +36,11 @@
 #include "asTimeArray.h"
 
 asThreadGetAnalogsDates::asThreadGetAnalogsDates(
-    std::vector<asPredictor *> predictorsArchive, std::vector<asPredictor *> predictorsTarget,
-    asTimeArray *timeArrayArchiveData, asTimeArray *timeArrayArchiveSelection, asTimeArray *timeArrayTargetData,
-    asTimeArray *timeArrayTargetSelection, std::vector<asCriteria *> criteria, asParameters *params, int step,
-    a1i &vRowsNb, a1i &vColsNb, int start, int end, a2f *finalAnalogsCriteria, a2f *finalAnalogsDates,
-    bool *containsNaNs, bool allowDuplicateDates, bool *success)
+    std::vector<asPredictor*> predictorsArchive, std::vector<asPredictor*> predictorsTarget,
+    asTimeArray* timeArrayArchiveData, asTimeArray* timeArrayArchiveSelection, asTimeArray* timeArrayTargetData,
+    asTimeArray* timeArrayTargetSelection, std::vector<asCriteria*> criteria, asParameters* params, int step,
+    a1i& vRowsNb, a1i& vColsNb, int start, int end, a2f* finalAnalogsCriteria, a2f* finalAnalogsDates,
+    bool* containsNaNs, bool allowDuplicateDates, bool* success)
     : asThread(asThread::ProcessorGetAnalogsDates),
       m_pPredictorsArchive(std::move(predictorsArchive)),
       m_pPredictorsTarget(std::move(predictorsTarget)),
@@ -171,8 +171,9 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
                         if (!m_allowDuplicateDates && iMem > 0) {
                             if (counter <= analogsNb - 1) {
                                 wxFAIL;
-                                wxLogError(_("It should not happen that the array of "
-                                    "analogue dates is not full when adding members."));
+                                wxLogError(
+                                    _("It should not happen that the array of "
+                                      "analogue dates is not full when adding members."));
                                 *m_success = false;
                                 return (wxThread::ExitCode)-1;
                             }
@@ -185,8 +186,9 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
 
                         counter++;
                     } else {
-                        wxLogError(_("The date was not found in the array (Analogs Dates fct, "
-                            "multithreaded option). That should not happen."));
+                        wxLogError(
+                            _("The date was not found in the array (Analogs Dates fct, "
+                              "multithreaded option). That should not happen."));
                         wxLogError(_("Start: %g, end: %g, desired value: %g."), timeArchiveData[iTimeArchStart],
                                    timeArchiveData[timeArchiveData.size() - 1], dateArrayArchiveSelection[iDateArch]);
                         *m_success = false;

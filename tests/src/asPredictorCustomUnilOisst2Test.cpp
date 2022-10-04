@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 TEST(PredictorCustomUnilOisst2, GetCorrectPredictors) {
-    asPredictor *predictor;
+    asPredictor* predictor;
 
     predictor = asPredictor::GetInstance("Custom_Unil_OISST_v2", "sst", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::SeaSurfaceTemperature);

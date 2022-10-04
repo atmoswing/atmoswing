@@ -28,8 +28,8 @@
 
 #include "asThreadRandomSet.h"
 
-asThreadRandomSet::asThreadRandomSet(asMethodOptimizerRandomSet *optimizer, asParametersOptimization *params,
-                                     float *finalScoreCalib, vf *scoreClimatology)
+asThreadRandomSet::asThreadRandomSet(asMethodOptimizerRandomSet* optimizer, asParametersOptimization* params,
+                                     float* finalScoreCalib, vf* scoreClimatology)
     : asThread(asThread::MethodOptimizerRandomSet),
       m_optimizer(optimizer),
       m_params(params),

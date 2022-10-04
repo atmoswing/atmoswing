@@ -31,7 +31,8 @@
 #include "asFileNetcdf.h"
 #include "asParametersCalibration.h"
 
-asResultsScoresMap::asResultsScoresMap() : asResults() {
+asResultsScoresMap::asResultsScoresMap()
+    : asResults() {
     m_scores.reserve(100);
     m_lon.reserve(100);
     m_lat.reserve(100);
@@ -69,7 +70,7 @@ void asResultsScoresMap::BuildFileName() {
     m_filePath.Append(".nc");
 }
 
-bool asResultsScoresMap::Add(asParametersScoring &params, float score) {
+bool asResultsScoresMap::Add(asParametersScoring& params, float score) {
     if (!params.GetPredictorGridType(0, 0).IsSameAs("Regular", false))
         asThrowException(_("asResultsScoresMap::Add is not ready to use on unregular grids"));
 
@@ -111,7 +112,7 @@ bool asResultsScoresMap::MakeMap() {
     return true;
 }
 
-bool asResultsScoresMap::Save(asParametersCalibration &params) {
+bool asResultsScoresMap::Save(asParametersCalibration& params) {
     // Build the map (spatialize the data)
     MakeMap();
 

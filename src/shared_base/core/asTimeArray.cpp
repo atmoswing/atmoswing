@@ -44,7 +44,7 @@ asTimeArray::asTimeArray(double start, double end, double timeStepHours, Mode mo
     wxASSERT(m_timeStepDays > 0);
 }
 
-asTimeArray::asTimeArray(double start, double end, double timeStepHours, const wxString &mode)
+asTimeArray::asTimeArray(double start, double end, double timeStepHours, const wxString& mode)
     : asTime(),
       m_initialized(false),
       m_start(start),
@@ -86,7 +86,10 @@ asTimeArray::asTimeArray(double date)
       m_end(date),
       m_timeStepDays(0) {}
 
-asTimeArray::asTimeArray(vd &timeArray) : asTime(), m_initialized(false), m_mode(Custom) {
+asTimeArray::asTimeArray(vd& timeArray)
+    : asTime(),
+      m_initialized(false),
+      m_mode(Custom) {
     wxASSERT(timeArray.size() > 1);
     wxASSERT(timeArray[timeArray.size() - 1] > timeArray[0]);
 
@@ -101,7 +104,10 @@ asTimeArray::asTimeArray(vd &timeArray) : asTime(), m_initialized(false), m_mode
     }
 }
 
-asTimeArray::asTimeArray(a1d &timeArray) : asTime(), m_initialized(false), m_mode(Custom) {
+asTimeArray::asTimeArray(a1d& timeArray)
+    : asTime(),
+      m_initialized(false),
+      m_mode(Custom) {
     wxASSERT(timeArray.size() > 0);
 
     // Get values
@@ -231,7 +237,7 @@ void asTimeArray::RemoveExcludedDates(double targetDate, double exclusionDays) {
     }
 }
 
-bool asTimeArray::Init(asPredictand &predictand, const wxString &seriesName, int stationId, float minThreshold,
+bool asTimeArray::Init(asPredictand& predictand, const wxString& seriesName, int stationId, float minThreshold,
                        float maxThreshold) {
     m_timeArray.resize(0);
 
@@ -523,7 +529,7 @@ bool asTimeArray::BuildArraySeason() {
     return true;
 }
 
-bool asTimeArray::BuildArrayPredictandThresholds(asPredictand &predictand, const wxString &seriesName, int stationId,
+bool asTimeArray::BuildArrayPredictandThresholds(asPredictand& predictand, const wxString& seriesName, int stationId,
                                                  float minThreshold, float maxThreshold) {
     // Build a simple array for reference
     if (!BuildArraySimple()) {
@@ -774,7 +780,7 @@ bool asTimeArray::IsYearForbidden(int year) const {
     return index != asOUT_OF_RANGE && index != asNOT_FOUND;
 }
 
-void asTimeArray::fixStartIfForbidden(double &currentStart) const {
+void asTimeArray::fixStartIfForbidden(double& currentStart) const {
     int currentStartYear = GetYear(currentStart);
     if (IsYearForbidden(currentStartYear)) {
         double yearEnd = GetMJD(currentStartYear, 12, 31, 23, 59);
@@ -784,7 +790,7 @@ void asTimeArray::fixStartIfForbidden(double &currentStart) const {
     }
 }
 
-void asTimeArray::fixEndIfForbidden(double &currentEnd) const {
+void asTimeArray::fixEndIfForbidden(double& currentEnd) const {
     int currentEndYear = GetYear(currentEnd);
     if (IsYearForbidden(currentEndYear)) {
         double yearStart = GetMJD(currentEndYear, 1, 1, 0, 0);

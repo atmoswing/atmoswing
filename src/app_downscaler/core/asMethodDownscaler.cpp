@@ -42,7 +42,8 @@
 
 #endif
 
-asMethodDownscaler::asMethodDownscaler() : asMethodStandard() {
+asMethodDownscaler::asMethodDownscaler()
+    : asMethodStandard() {
     // Seeds the random generator
     asInitRandom();
 }
@@ -99,24 +100,24 @@ void asMethodDownscaler::ClearAll() {
     m_parameters.clear();
 }
 
-double asMethodDownscaler::GetTimeStartDownscaling(asParametersDownscaling *params) const {
+double asMethodDownscaler::GetTimeStartDownscaling(asParametersDownscaling* params) const {
     return params->GetDownscalingStart() + params->GetTimeShiftDays();
 }
 
-double asMethodDownscaler::GetTimeEndDownscaling(asParametersDownscaling *params) const {
+double asMethodDownscaler::GetTimeEndDownscaling(asParametersDownscaling* params) const {
     return params->GetDownscalingEnd() - params->GetTimeSpanDays();
 }
 
-double asMethodDownscaler::GetEffectiveArchiveDataStart(asParameters *params) const {
+double asMethodDownscaler::GetEffectiveArchiveDataStart(asParameters* params) const {
     return GetTimeStartArchive(params);
 }
 
-double asMethodDownscaler::GetEffectiveArchiveDataEnd(asParameters *params) const {
+double asMethodDownscaler::GetEffectiveArchiveDataEnd(asParameters* params) const {
     return GetTimeEndArchive(params);
 }
 
-bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDownscaling *params, int iStep,
-                                         bool &containsNaNs) {
+bool asMethodDownscaler::GetAnalogsDates(asResultsDates& results, asParametersDownscaling* params, int iStep,
+                                         bool& containsNaNs) {
     // Initialize the result object
     results.SetCurrentStep(iStep);
     results.Init(params);
@@ -145,7 +146,7 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
     }
 
     // Load the archive data
-    std::vector<asPredictor *> predictorsArch;
+    std::vector<asPredictor*> predictorsArch;
     if (!LoadArchiveData(predictorsArch, params, iStep, GetTimeStartArchive(params), GetTimeEndArchive(params))) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictorsArch);
@@ -153,7 +154,7 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
     }
 
     // Load the scenario data
-    std::vector<asPredictor *> predictorsProj;
+    std::vector<asPredictor*> predictorsProj;
     if (!LoadProjectionData(predictorsProj, params, iStep, GetTimeStartDownscaling(params),
                             GetTimeEndDownscaling(params))) {
         wxLogError(_("Failed loading predictor data."));
@@ -163,10 +164,10 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
     }
 
     // Create the criterion
-    std::vector<asCriteria *> criteria;
+    std::vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         // Instantiate a score object
-        asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
+        asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
         criteria.push_back(criterion);
     }
 
@@ -216,8 +217,8 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
     return true;
 }
 
-bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates &results, asParametersDownscaling *params,
-                                            asResultsDates &anaDates, int iStep, bool &containsNaNs) {
+bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates& results, asParametersDownscaling* params,
+                                            asResultsDates& anaDates, int iStep, bool& containsNaNs) {
     // Initialize the result object
     results.SetCurrentStep(iStep);
     results.Init(params);
@@ -231,7 +232,7 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates &results, asParameter
     wxLogVerbose(_("Date arrays created."));
 
     // Load the predictor data
-    std::vector<asPredictor *> predictors;
+    std::vector<asPredictor*> predictors;
     if (!LoadArchiveData(predictors, params, iStep, timeStart, timeEnd)) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
@@ -239,10 +240,10 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates &results, asParameter
     }
 
     // Create the score objects
-    std::vector<asCriteria *> criteria;
+    std::vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         wxLogVerbose(_("Creating a criterion object."));
-        asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
+        asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
         criteria.push_back(criterion);
         wxLogVerbose(_("Criterion object created."));
     }
@@ -271,8 +272,8 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates &results, asParameter
     return true;
 }
 
-bool asMethodDownscaler::GetAnalogsValues(asResultsValues &results, asParametersDownscaling *params,
-                                          asResultsDates &anaDates, int iStep) {
+bool asMethodDownscaler::GetAnalogsValues(asResultsValues& results, asParametersDownscaling* params,
+                                          asResultsDates& anaDates, int iStep) {
     // Initialize the result object
     results.SetCurrentStep(iStep);
     results.Init(params);
@@ -289,7 +290,7 @@ bool asMethodDownscaler::GetAnalogsValues(asResultsValues &results, asParameters
     return true;
 }
 
-bool asMethodDownscaler::SaveDetails(asParametersDownscaling *params) {
+bool asMethodDownscaler::SaveDetails(asParametersDownscaling* params) {
     asResultsDates anaDatesPrevious;
     asResultsDates anaDates;
     asResultsValues anaValues;
@@ -319,7 +320,7 @@ bool asMethodDownscaler::SaveDetails(asParametersDownscaling *params) {
     return true;
 }
 
-bool asMethodDownscaler::LoadProjectionData(std::vector<asPredictor *> &predictors, asParametersDownscaling *params,
+bool asMethodDownscaler::LoadProjectionData(std::vector<asPredictor*>& predictors, asParametersDownscaling* params,
                                             int iStep, double timeStartData, double timeEndData) {
     try {
         // Loop through every predictor
@@ -340,11 +341,11 @@ bool asMethodDownscaler::LoadProjectionData(std::vector<asPredictor *> &predicto
 
             wxLogVerbose(_("Projection data loaded."));
         }
-    } catch (std::bad_alloc &ba) {
+    } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation during scenario data loading: %s"), msg);
         return false;
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception during scenario data loading: %s"), msg);
         return false;
@@ -353,8 +354,8 @@ bool asMethodDownscaler::LoadProjectionData(std::vector<asPredictor *> &predicto
     return true;
 }
 
-bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
-                                                                   asParametersDownscaling *params, int iStep,
+bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<asPredictor*>& predictors,
+                                                                   asParametersDownscaling* params, int iStep,
                                                                    int iPtor, double timeStartData,
                                                                    double timeEndData) {
     // Date array object instantiation for the data loading.
@@ -364,7 +365,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
     timeArray.Init();
 
     // Loading the datasets information
-    asPredictorProj *predictor = asPredictorProj::GetInstance(
+    asPredictorProj* predictor = asPredictorProj::GetInstance(
         params->GetPredictorProjDatasetId(iStep, iPtor), params->GetModel(), params->GetScenario(),
         params->GetPredictorProjDataId(iStep, iPtor), m_predictorProjectionDataDir);
     if (!predictor) {
@@ -377,7 +378,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
     }
 
     // Area object instantiation
-    asAreaGrid *area = asAreaGrid::GetInstance(params, iStep, iPtor);
+    asAreaGrid* area = asAreaGrid::GetInstance(params, iStep, iPtor);
     wxASSERT(area);
 
     // Data loading
@@ -402,10 +403,10 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
     return true;
 }
 
-bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPredictor *> &predictors,
-                                                                asParametersDownscaling *params, int iStep, int iPtor,
+bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPredictor*>& predictors,
+                                                                asParametersDownscaling* params, int iStep, int iPtor,
                                                                 double timeStartData, double timeEndData) {
-    std::vector<asPredictorProj *> predictorsPreprocess;
+    std::vector<asPredictorProj*> predictorsPreprocess;
 
     int preprocessSize = params->GetPreprocessSize(iStep, iPtor);
 
@@ -419,7 +420,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
         timeArray.Init();
 
         // Loading the dataset information
-        asPredictorProj *predictorPreprocess = asPredictorProj::GetInstance(
+        asPredictorProj* predictorPreprocess = asPredictorProj::GetInstance(
             params->GetPreprocessProjDatasetId(iStep, iPtor, iPre), params->GetModel(), params->GetScenario(),
             params->GetPreprocessProjDataId(iStep, iPtor, iPre), m_predictorProjectionDataDir);
         if (!predictorPreprocess) {
@@ -433,7 +434,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
         }
 
         // Area object instantiation
-        asAreaGrid *area = asAreaGrid::GetInstance(params, iStep, iPtor);
+        asAreaGrid* area = asAreaGrid::GetInstance(params, iStep, iPtor);
         wxASSERT(area);
 
         // Data loading
@@ -451,7 +452,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
     // Fix the criteria if S1
     params->FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
-    auto *predictor = new asPredictorProj(*predictorsPreprocess[0]);
+    auto* predictor = new asPredictorProj(*predictorsPreprocess[0]);
     if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), predictor)) {
         wxLogError(_("Data preprocessing failed."));
         Cleanup(predictorsPreprocess);
@@ -475,34 +476,34 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
     return true;
 }
 
-bool asMethodDownscaler::Preprocess(std::vector<asPredictorProj *> predictors, const wxString &method,
-                                    asPredictor *result) {
-    std::vector<asPredictor *> ptorsPredictors(predictors.begin(), predictors.end());
+bool asMethodDownscaler::Preprocess(std::vector<asPredictorProj*> predictors, const wxString& method,
+                                    asPredictor* result) {
+    std::vector<asPredictor*> ptorsPredictors(predictors.begin(), predictors.end());
 
     return asPreprocessor::Preprocess(ptorsPredictors, method, result);
 }
 
-void asMethodDownscaler::Cleanup(std::vector<asPredictorProj *> predictors) {
+void asMethodDownscaler::Cleanup(std::vector<asPredictorProj*> predictors) {
     if (!predictors.empty()) {
-        for (auto &predictor : predictors) {
+        for (auto& predictor : predictors) {
             wxDELETE(predictor);
         }
         predictors.resize(0);
     }
 }
 
-void asMethodDownscaler::Cleanup(std::vector<asPredictor *> predictors) {
+void asMethodDownscaler::Cleanup(std::vector<asPredictor*> predictors) {
     if (!predictors.empty()) {
-        for (auto &predictor : predictors) {
+        for (auto& predictor : predictors) {
             wxDELETE(predictor);
         }
         predictors.resize(0);
     }
 }
 
-void asMethodDownscaler::Cleanup(std::vector<asCriteria *> criteria) {
+void asMethodDownscaler::Cleanup(std::vector<asCriteria*> criteria) {
     if (!criteria.empty()) {
-        for (auto &i : criteria) {
+        for (auto& i : criteria) {
             wxDELETE(i);
         }
         criteria.resize(0);

@@ -30,7 +30,7 @@
 
 #include <cmath>
 
-asAreaRegGrid::asAreaRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+asAreaRegGrid::asAreaRegGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
                              double xStep, double yStep, int flatAllowed, bool isLatLon)
     : asAreaGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon),
       m_xStep(xStep),
@@ -61,10 +61,10 @@ asAreaRegGrid::asAreaRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, i
     m_yStepData = 0;
 }
 
-bool asAreaRegGrid::GridsOverlay(asAreaGrid *otherArea) const {
+bool asAreaRegGrid::GridsOverlay(asAreaGrid* otherArea) const {
     if (!otherArea->IsRegular()) return false;
 
-    auto *otherAreaRegular(dynamic_cast<asAreaRegGrid *>(otherArea));
+    auto* otherAreaRegular(dynamic_cast<asAreaRegGrid*>(otherArea));
 
     if (!otherAreaRegular) return false;
 
@@ -75,7 +75,7 @@ bool asAreaRegGrid::GridsOverlay(asAreaGrid *otherArea) const {
     return true;
 }
 
-bool asAreaRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed, bool getLarger) {
+bool asAreaRegGrid::InitializeAxes(const a1d& lons, const a1d& lats, bool strideAllowed, bool getLarger) {
     wxASSERT(lons.size() > 1);
     wxASSERT(lats.size() > 1);
 
