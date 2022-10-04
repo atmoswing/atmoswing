@@ -67,38 +67,25 @@ asArea::asArea()
       m_isLatLon(true) {}
 
 void asArea::Init() {
-    if (m_isLatLon && !DoCheckPoints()) asThrowException(_("Use asAreaComp in this case."));
+    if (m_isLatLon) DoCheckPoints();
     if (!CheckConsistency()) asThrowException(_("Unable to build a consistent area with the given coordinates."));
     if (!IsRectangle()) asThrowException(_("The provided area is not rectangle."));
 }
 
-bool asArea::DoCheckPoints() {
-    return !(!CheckPoint(m_cornerUL, asEDIT_FORBIDDEN) || !CheckPoint(m_cornerUR, asEDIT_FORBIDDEN) ||
-             !CheckPoint(m_cornerLL, asEDIT_FORBIDDEN) || !CheckPoint(m_cornerLR, asEDIT_FORBIDDEN));
+void asArea::DoCheckPoints() {
+    CheckPoint(m_cornerUL);
+    CheckPoint(m_cornerUR);
+    CheckPoint(m_cornerLL);
+    CheckPoint(m_cornerLR);
 }
 
-bool asArea::CheckPoint(Coo &point, int changesAllowed) {
-    // We always consider WGS84 for the predictors
+void asArea::CheckPoint(Coo &point) {
     if (point.y < -90) {
-        return false;
+        point.y = -90;
     }
     if (point.y > 90) {
-        return false;
+        point.y = 90;
     }
-    if (point.x < 0) {
-        if (changesAllowed == asEDIT_ALLOWED) {
-            point.x += 360;
-        }
-        return false;
-    }
-    if (point.x > 360) {
-        if (changesAllowed == asEDIT_ALLOWED) {
-            point.x -= 360;
-        }
-        return false;
-    }
-
-    return true;
 }
 
 bool asArea::CheckConsistency() {

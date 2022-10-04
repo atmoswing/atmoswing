@@ -41,8 +41,9 @@
 
 void Ref1(const wxString &paramsFile, bool shortVersion) {
     // Create predictand database
-    auto *predictand =
-        new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    auto *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                     asPredictand::Daily,
+                                                     asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");

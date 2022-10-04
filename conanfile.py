@@ -12,6 +12,8 @@ class AmtoSwing(ConanFile):
         "sqlite3/3.39.2",
         "eigen/3.4.0",
         "netcdf/4.8.1",
+        "libdeflate/1.12",
+        "libjpeg/9e",
         "eccodes/2.27.0@terranum-conan+eccodes/stable",
     ]
 
@@ -20,6 +22,7 @@ class AmtoSwing(ConanFile):
         "enable_benchmark": [True, False],
         "code_coverage": [True, False],
         "with_gui": [True, False],
+        "use_cuda": [True, False],
         "build_forecaster": [True, False],
         "build_viewer": [True, False],
         "build_optimizer": [True, False],
@@ -30,6 +33,7 @@ class AmtoSwing(ConanFile):
         "enable_benchmark": False,
         "code_coverage": False,
         "with_gui": True,
+        "use_cuda": False,
         "build_forecaster": True,
         "build_viewer": True,
         "build_optimizer": True,
@@ -49,10 +53,7 @@ class AmtoSwing(ConanFile):
         else:
             self.requires("wxbase/3.2.1@terranum-conan+wxbase/stable")
         if self.options.build_viewer:
-            if self.settings.os == "Windows":
-                self.requires("gdal/3.5.1@terranum-conan+gdal/stable")
-            else:
-                self.requires("gdal/3.4.1@terranum-conan+gdal/stable")
+            self.requires("gdal/3.5.1@terranum-conan+gdal/stable")
 
     def configure(self):
         if self.options.code_coverage:
@@ -96,6 +97,7 @@ class AmtoSwing(ConanFile):
         cmake.definitions["BUILD_BENCHMARK"] = self.options.enable_benchmark
         cmake.definitions["USE_CODECOV"] = self.options.code_coverage
         cmake.definitions["USE_GUI"] = self.options.with_gui
+        cmake.definitions["USE_CUDA"] = self.options.use_cuda
         cmake.definitions["BUILD_FORECASTER"] = self.options.build_forecaster
         cmake.definitions["BUILD_VIEWER"] = self.options.build_viewer
         cmake.definitions["BUILD_OPTIMIZER"] = self.options.build_optimizer

@@ -43,7 +43,7 @@ class asArea : public wxObject {
 
     ~asArea() override = default;
 
-    bool CheckPoint(Coo &point, int changesAllowed = asEDIT_FORBIDDEN);
+    void CheckPoint(Coo &point);
 
     bool IsLatLon() const {
         return m_isLatLon;
@@ -110,7 +110,7 @@ class asArea : public wxObject {
     virtual void Init();
 
   private:
-    bool DoCheckPoints();
+    void DoCheckPoints();
 
     bool CheckConsistency();
 };

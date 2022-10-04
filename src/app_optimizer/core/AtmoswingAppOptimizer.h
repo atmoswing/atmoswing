@@ -36,7 +36,7 @@
 
 #include "asIncludes.h"
 
-#if wxUSE_GUI
+#if USE_GUI
 
 class AtmoswingAppOptimizer : public wxApp
 #else
@@ -80,7 +80,7 @@ class AtmoswingAppOptimizer : public wxAppConsole
     vi m_predictandStationIds;
     wxString m_calibMethod;
     bool m_doProcessing;
-#if wxUSE_GUI
+#if USE_GUI
     wxSingleInstanceChecker *m_singleInstanceChecker;
 #endif
 };

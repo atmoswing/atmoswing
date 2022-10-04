@@ -27,7 +27,7 @@
 
 #include "asParametersDownscaling.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asFileParametersDownscaling.h"
 
 asParametersDownscaling::asParametersDownscaling() : asParameters(), m_downscalingStart(NaNd), m_downscalingEnd(NaNd) {}

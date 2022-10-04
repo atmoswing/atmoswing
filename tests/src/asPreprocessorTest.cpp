@@ -28,7 +28,7 @@
 
 #include <gtest/gtest.h>
 
-#include "asAreaCompRegGrid.h"
+#include "asAreaRegGrid.h"
 #include "asPredictor.h"
 #include "asPreprocessor.h"
 #include "asTimeArray.h"
@@ -44,7 +44,7 @@ TEST(Preprocessor, Gradients) {
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -59,8 +59,8 @@ TEST(Preprocessor, Gradients) {
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
-    EXPECT_EQ(5, area.GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, area.GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, area.GetXaxisPtsnb());
+    EXPECT_EQ(3, area.GetYaxisPtsnb());
     EXPECT_DOUBLE_EQ(2.5, area.GetXstep());
     EXPECT_DOUBLE_EQ(2.5, area.GetYstep());
     EXPECT_EQ(5, predictor->GetLonPtsnb());
@@ -204,7 +204,7 @@ TEST(Preprocessor, GradientsMultithreading) {
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -219,8 +219,8 @@ TEST(Preprocessor, GradientsMultithreading) {
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
-    EXPECT_EQ(5, area.GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, area.GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, area.GetXaxisPtsnb());
+    EXPECT_EQ(3, area.GetYaxisPtsnb());
     EXPECT_DOUBLE_EQ(2.5, area.GetXstep());
     EXPECT_DOUBLE_EQ(2.5, area.GetYstep());
     EXPECT_EQ(5, predictor->GetLonPtsnb());
@@ -337,7 +337,7 @@ TEST(Preprocessor, Addition) {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(0, 5, 0, 60, 3, 0);
+    asAreaGrid *area = asAreaGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
     timearray1.Init();
@@ -354,14 +354,14 @@ TEST(Preprocessor, Addition) {
     asPredictor *predictor3 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
-    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, area->GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, area->GetXaxisPtsnb());
+    EXPECT_EQ(3, area->GetYaxisPtsnb());
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
-    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, area->GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, area->GetXaxisPtsnb());
+    EXPECT_EQ(3, area->GetYaxisPtsnb());
     ASSERT_TRUE(predictor3->Load(area, timearray3, 0));
-    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, area->GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, area->GetXaxisPtsnb());
+    EXPECT_EQ(3, area->GetYaxisPtsnb());
 
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
@@ -448,7 +448,7 @@ TEST(Preprocessor, Average) {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(0, 5, 0, 60, 3, 0);
+    asAreaGrid *area = asAreaGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
     timearray1.Init();
@@ -468,8 +468,8 @@ TEST(Preprocessor, Average) {
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
     ASSERT_TRUE(predictor3->Load(area, timearray3, 0));
 
-    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, area->GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, area->GetXaxisPtsnb());
+    EXPECT_EQ(3, area->GetYaxisPtsnb());
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
@@ -555,7 +555,7 @@ TEST(Preprocessor, Difference) {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(0, 5, 0, 60, 3, 0);
+    asAreaGrid *area = asAreaGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
     timearray1.Init();
@@ -571,8 +571,8 @@ TEST(Preprocessor, Difference) {
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
 
-    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, area->GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, area->GetXaxisPtsnb());
+    EXPECT_EQ(3, area->GetYaxisPtsnb());
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
@@ -646,7 +646,7 @@ TEST(Preprocessor, Multiplication) {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(0, 5, 0, 60, 3, 0);
+    asAreaGrid *area = asAreaGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
     timearray1.Init();
@@ -662,8 +662,8 @@ TEST(Preprocessor, Multiplication) {
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
 
-    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, area->GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, area->GetXaxisPtsnb());
+    EXPECT_EQ(3, area->GetYaxisPtsnb());
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 

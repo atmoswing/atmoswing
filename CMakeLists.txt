@@ -139,13 +139,6 @@ endif (WIN32)
 if (USE_VLD)
     find_package(VLD)
     include_directories(${VLD_INCLUDE_DIRS})
-else (USE_VLD)
-    # unset for wxhgversion
-    unset(VLD_INCLUDE_DIR CACHE)
-    unset(VLD_LIBRARY CACHE)
-    unset(VLD_LIBRARY_DEBUG CACHE)
-    unset(VLD_LIBRARY_DIR CACHE)
-    unset(VLD_ROOT_DIR CACHE)
 endif (USE_VLD)
 
 # Cppcheck

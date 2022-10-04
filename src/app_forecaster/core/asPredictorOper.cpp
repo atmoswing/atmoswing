@@ -28,7 +28,7 @@
 
 #include "asPredictorOper.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asInternet.h"
 #include "asPredictorOperGfsForecast.h"
 #include "asPredictorOperIfsForecast.h"

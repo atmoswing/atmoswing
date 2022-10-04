@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
@@ -267,7 +267,7 @@ TEST(PredictorCustomMeteoFvg, LoadSingleDay) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
@@ -314,7 +314,7 @@ TEST(PredictorCustomMeteoFvg, LoadSingleDayVertdiff) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
@@ -361,7 +361,7 @@ TEST(PredictorCustomMeteoFvg, LoadSecondTimeStep) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
@@ -408,7 +408,7 @@ TEST(PredictorCustomMeteoFvg, LoadFullTimeArray) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
@@ -491,7 +491,7 @@ TEST(PredictorCustomMeteoFvg, LoadFullTimeArrayMeso) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
@@ -574,7 +574,7 @@ TEST(PredictorCustomMeteoFvg, LoadPacked) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg-packed/");
@@ -709,7 +709,7 @@ TEST(PredictorCustomMeteoFvg, LoadMesoPacked) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg-packed/");
@@ -844,7 +844,7 @@ TEST(PredictorCustomMeteoFvg, LoadPackedPartial) {
     double step = 0.25;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg-packed/");

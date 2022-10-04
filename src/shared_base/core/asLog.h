@@ -62,7 +62,7 @@ class asLog : public wxObject {
     wxLogChain *m_logChain;
 };
 
-#if wxUSE_GUI
+#if USE_GUI
 class asLogGui : public wxLogGui {
   protected:
     void DoLogRecord(wxLogLevel level, const wxString &msg, const wxLogRecordInfo &info) override;

@@ -68,11 +68,11 @@ if (USE_CUDA)
 endif (USE_CUDA)
 
 if (USE_GUI)
-    set_target_properties(atmoswing-downscaler PROPERTIES COMPILE_DEFINITIONS "APP_DOWNSCALER; MINIMAL_LINKS; wxUSE_GUI=1")
-    set_target_properties(asprocessing PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=1")
+    set_target_properties(atmoswing-downscaler PROPERTIES COMPILE_DEFINITIONS "APP_DOWNSCALER; MINIMAL_LINKS; USE_GUI=1")
+    set_target_properties(asprocessing PROPERTIES COMPILE_DEFINITIONS "USE_GUI=1")
 else (USE_GUI)
-    set_target_properties(atmoswing-downscaler PROPERTIES COMPILE_DEFINITIONS "APP_DOWNSCALER; MINIMAL_LINKS; wxUSE_GUI=0")
-    set_target_properties(asprocessing PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=0")
+    set_target_properties(atmoswing-downscaler PROPERTIES COMPILE_DEFINITIONS "APP_DOWNSCALER; MINIMAL_LINKS; USE_GUI=0")
+    set_target_properties(asprocessing PROPERTIES COMPILE_DEFINITIONS "USE_GUI=0")
 endif (USE_GUI)
 
 

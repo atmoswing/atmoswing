@@ -56,7 +56,7 @@ class asConfig : public wxObject {
 
     static wxString GetDefaultUserWorkingDir();
 
-#if wxUSE_GUI
+#if USE_GUI
     static wxColour GetFrameBgColour();
 #endif
 

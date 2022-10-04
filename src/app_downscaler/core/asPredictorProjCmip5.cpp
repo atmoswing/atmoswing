@@ -30,7 +30,7 @@
 #include <wx/dir.h>
 #include <wx/regex.h>
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorProjCmip5::asPredictorProjCmip5(const wxString &dataId, const wxString &model, const wxString &scenario)

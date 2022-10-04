@@ -107,10 +107,6 @@ if (USE_CUDA)
     target_link_libraries(astestscuda ${CUDA_cudadevrt_LIBRARY})
     target_link_libraries(astestscuda ${CUDA_cudart_static_LIBRARY})
     add_definitions(-DUSE_CUDA)
-else (USE_CUDA)
-    # unset for wxhgversion
-    unset(CUDA_INCLUDE_DIRS CACHE)
-    unset(CUDA_CUDA_LIBRARY CACHE)
 endif (USE_CUDA)
 
 ##### DECLARE EXECUTABLE
@@ -135,9 +131,9 @@ endif ()
 
 if(WIN32)
     set_target_properties(atmoswing-tests PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
-    set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; wxUSE_GUI=0; _CONSOLE")
+    set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=0; _CONSOLE")
 else()
-    set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; wxUSE_GUI=0")
+    set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=0")
 endif()
 
 

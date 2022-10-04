@@ -27,7 +27,7 @@
 
 #include "asPredictorOperCustomFvgForecast.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorOperCustomFvgForecast::asPredictorOperCustomFvgForecast(const wxString &dataId)

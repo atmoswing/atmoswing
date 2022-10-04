@@ -208,7 +208,7 @@ bool asPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFilePat
 
     wxLogVerbose(_("Predictand DB saved."));
 
-#if wxUSE_GUI
+#if USE_GUI
     if (!g_silentMode) {
         wxMessageBox(_("Predictand DB saved."));
     }
@@ -259,7 +259,7 @@ bool asPredictandPrecipitation::MakeGumbelAdjustment() {
     m_gumbelParamA.resize(m_stationsNb, duration.size());
     m_gumbelParamB.resize(m_stationsNb, duration.size());
 
-#if wxUSE_GUI
+#if USE_GUI
     // The progress bar
     asDialogProgressBar ProgressBar(_("Making Gumbel adjustments."), duration.size() - 1);
 #endif
@@ -268,7 +268,7 @@ bool asPredictandPrecipitation::MakeGumbelAdjustment() {
         // Get the annual max
         a2f annualMax = GetAnnualMax(duration[iDuration]);
 
-#if wxUSE_GUI
+#if USE_GUI
         if (!ProgressBar.Update(iDuration)) {
             wxLogError(_("The process has been canceled by the user."));
             return false;
@@ -303,7 +303,7 @@ bool asPredictandPrecipitation::MakeGumbelAdjustment() {
             m_gumbelParamB(iStat, iDuration) = b;
         }
     }
-#if wxUSE_GUI
+#if USE_GUI
     ProgressBar.Destroy();
 #endif
 

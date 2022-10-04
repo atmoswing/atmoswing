@@ -135,7 +135,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     a2f finalAnalogsCriteria(timeTargetSelectionSize, analogsNb);
     a2f finalAnalogsDates(timeTargetSelectionSize, analogsNb);
 
-#if wxUSE_GUI
+#if USE_GUI
     // The progress bar
     asDialogProgressBar ProgressBar(_("Processing the data comparison."), timeTargetSelectionSize);
 #endif
@@ -850,7 +850,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
     a2f finalAnalogsCriteria(timeTargetSelectionSize, analogsNb);
     a2f finalAnalogsDates(timeTargetSelectionSize, analogsNb);
 
-#if wxUSE_GUI
+#if USE_GUI
     // The progress bar
     asDialogProgressBar ProgressBar(_("Processing the data comparison."), timeTargetSelectionSize);
 #endif
@@ -1284,7 +1284,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             asThrowException(_("The processing method is not correctly defined."));
     }
 
-#if wxUSE_GUI
+#if USE_GUI
     ProgressBar.Destroy();
 #endif
 

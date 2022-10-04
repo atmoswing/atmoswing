@@ -531,7 +531,7 @@ bool asPredictand::SetStationProperties(asCatalogPredictands &currentData, size_
 }
 
 bool asPredictand::ParseData(const wxString &catalogFile, const wxString &directory, const wxString &patternDir) {
-#if wxUSE_GUI
+#if USE_GUI
     // The progress bar
     asDialogProgressBar ProgressBar(_("Loading data from files.\n"), m_stationsNb);
 #endif
@@ -542,7 +542,7 @@ bool asPredictand::ParseData(const wxString &catalogFile, const wxString &direct
 
     // Get the stations list
     for (int iStat = 0; iStat < catalog.GetStationsNb(); iStat++) {
-#if wxUSE_GUI
+#if USE_GUI
         // Update the progress bar.
         wxString fileNameMessage =
             wxString::Format(_("Loading data from files.\nFile: %s"), catalog.GetStationFilename(iStat));
@@ -559,7 +559,7 @@ bool asPredictand::ParseData(const wxString &catalogFile, const wxString &direct
         if (!GetFileContent(catalog, iStat, directory, patternDir)) return false;
     }
 
-#if wxUSE_GUI
+#if USE_GUI
     ProgressBar.Destroy();
 #endif
 

@@ -93,7 +93,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
         ThreadsManager().Wait(threadType);
 
         // Enable message box and flush the logs
-#if wxUSE_GUI
+#if USE_GUI
         wxTheApp->Yield();
 #else
         wxLog::FlushActive();
@@ -115,7 +115,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 
         // Do the job
         if (curl) {
-#if wxUSE_GUI
+#if USE_GUI
             // The progress bar
             wxString msg = _("Downloading predictors.\n");
             asDialogProgressBar progressBar(msg, urls.size());
@@ -152,7 +152,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                     }
                 }
 
-#if wxUSE_GUI
+#if USE_GUI
                 // Update the progress bar
                 wxString updateMsg = wxString::Format(_("Downloading file %s\n"), fileName) +
                                      wxString::Format(_("Downloading: %d / %d files"), iFile + 1, (int)urls.size());
@@ -210,7 +210,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                 }
             }
 
-#if wxUSE_GUI
+#if USE_GUI
             progressBar.Destroy();
 #endif
 

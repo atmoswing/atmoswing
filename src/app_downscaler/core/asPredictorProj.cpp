@@ -27,7 +27,7 @@
 
 #include "asPredictorProj.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asPredictorProjCmip5.h"
 #include "asPredictorProjCordex.h"
 #include "asTimeArray.h"

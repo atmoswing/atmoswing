@@ -28,7 +28,7 @@
 
 #include "asParametersCalibration.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asFileParametersCalibration.h"
 
 asParametersCalibration::asParametersCalibration() : asParametersScoring() {}

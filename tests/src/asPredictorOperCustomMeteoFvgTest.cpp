@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asPredictorOper.h"
 #include "asTimeArray.h"
 
@@ -154,7 +154,7 @@ TEST(PredictorOperCustomMeteoFvg, LoadSingleDay) {
     double step = 0.125;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
     wxASSERT(predictor);
@@ -205,7 +205,7 @@ TEST(PredictorOperCustomMeteoFvg, LoadLastTimeStep) {
     double step = 0.125;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
     wxASSERT(predictor);
@@ -257,7 +257,7 @@ TEST(PredictorOperCustomMeteoFvg, LoadFullTimeArray) {
     double step = 0.125;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
     wxASSERT(predictor);
@@ -327,7 +327,7 @@ TEST(PredictorOperCustomMeteoFvg, StandardizeWithProvidedMeanAndSd) {
     double step = 0.125;
     float level = 500;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+    asAreaGrid *area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
     wxASSERT(predictor);

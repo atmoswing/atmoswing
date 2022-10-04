@@ -132,7 +132,7 @@ void asLog::PrintToConsole(const wxString &msg) {
 #endif
 }
 
-#if wxUSE_GUI
+#if USE_GUI
 void asLogGui::DoLogRecord(wxLogLevel level, const wxString &msg, const wxLogRecordInfo &info) {
     if (level <= wxLOG_Error) {
         wxLogGui::DoLogRecord(level, msg, info);

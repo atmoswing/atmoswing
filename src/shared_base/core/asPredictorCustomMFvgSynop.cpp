@@ -27,7 +27,7 @@
 
 #include "asPredictorCustomMFvgSynop.h"
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorCustomMFvgSynop::asPredictorCustomMFvgSynop(const wxString &dataId) : asPredictorEcmwfIfsGrib(dataId) {

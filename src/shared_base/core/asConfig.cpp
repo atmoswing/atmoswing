@@ -143,7 +143,7 @@ wxString asConfig::GetDefaultUserWorkingDir() {
     return dirData;
 }
 
-#if wxUSE_GUI
+#if USE_GUI
 wxColour asConfig::GetFrameBgColour() {
 #if defined(__WIN32__)
     return wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);

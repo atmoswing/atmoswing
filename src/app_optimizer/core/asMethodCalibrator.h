@@ -31,7 +31,7 @@
 
 #include <utility>
 
-#include "asAreaCompGrid.h"
+#include "asAreaGrid.h"
 #include "asCriteria.h"
 #include "asIncludes.h"
 #include "asMethodStandard.h"
