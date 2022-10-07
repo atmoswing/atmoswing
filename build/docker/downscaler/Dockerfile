@@ -4,7 +4,7 @@
 # Steps ordered from the less frequently changed to the more frequently
 # changed to ensure the build cache is reused.
 
-FROM debian:bullseye AS builder
+FROM ubuntu:22.04 AS builder
 
 WORKDIR /app
 RUN mkdir libs
@@ -72,7 +72,7 @@ RUN cp -a /app/libs/lib/*.so* /app/deploy/lib/ \
 
 
 # Build final image
-FROM debian:bullseye-slim AS runner
+FROM ubuntu:22.04 AS runner
 
 WORKDIR /app
 
