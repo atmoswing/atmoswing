@@ -3,9 +3,7 @@ name: Coverity scan
 on:
   push:
     branches:
-    - main
-    - fix/*
-    - coverity-scan
+    - code-analysis
 
 env:
   BUILD_TYPE: RelWithDebInfo
