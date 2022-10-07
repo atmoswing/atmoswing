@@ -1,0 +1,82 @@
+name: Windows builds
+
+on: push
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build-server-version:
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+
+      - name: Cache Conan libs
+        id: cache-conan
+        uses: actions/cache@v3
+        with:
+          path: $HOME\.conan
+          key: ${{runner.os}}-conan
+
+      - name: Setup Conan
+        run: |
+          pip install conan
+          conan profile new default --detect --force
+          conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
+          conan config set general.revisions_enabled=1
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/bin
+
+      - name: Get dependencies
+        working-directory: ${{github.workspace}}/bin
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing
+
+      - name: Build
+        working-directory: ${{github.workspace}}/bin
+        run: conan build ..
+
+      - name: Test
+        working-directory: ${{github.workspace}}/bin/bin
+        run: ./atmoswing-tests
+
+
+  build-desktop-version:
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+
+      - name: Cache Conan libs
+        id: cache-conan
+        uses: actions/cache@v3
+        with:
+          path: $HOME\.conan
+          key: ${{runner.os}}-conan
+
+      - name: Setup Conan
+        run: |
+          pip install conan
+          conan profile new default --detect --force
+          conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
+          conan config set general.revisions_enabled=1
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/bin
+
+      - name: Get dependencies
+        working-directory: ${{github.workspace}}/bin
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o enable_tests=True --build=missing
+
+      - name: Build
+        working-directory: ${{github.workspace}}/bin
+        run: conan build ..
+
+      - name: Test
+        working-directory: ${{github.workspace}}/bin/bin
+        run: ./atmoswing-tests

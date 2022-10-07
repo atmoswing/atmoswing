@@ -1,14 +1,6 @@
 name: Linux builds
 
-on:
-  push:
-    branches:
-      - main
-      - feature/*
-  pull_request:
-    branches:
-      - main
-      - feature/*
+on: push
 
 env:
   BUILD_TYPE: Release
@@ -26,8 +18,8 @@ jobs:
         id: cache-conan
         uses: actions/cache@v3
         with:
-          path: /home/runner/.conan
-          key: ${{ runner.os }}-conan
+          path: $HOME/.conan
+          key: ${{runner.os}}-conan
 
       - name: Setup Conan
         run: |
@@ -68,8 +60,8 @@ jobs:
         id: cache-conan
         uses: actions/cache@v3
         with:
-          path: /home/runner/.conan
-          key: ${{ runner.os }}-conan
+          path: $HOME/.conan
+          key: ${{runner.os}}-conan
 
       - name: Setup Conan
         run: |
@@ -113,8 +105,8 @@ jobs:
         id: cache-conan
         uses: actions/cache@v3
         with:
-          path: /home/runner/.conan
-          key: ${{ runner.os }}-conan
+          path: $HOME/.conan
+          key: ${{runner.os}}-conan
 
       - name: Setup Conan
         run: |
