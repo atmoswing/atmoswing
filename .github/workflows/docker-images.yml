@@ -33,7 +33,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Copy Dockerfile
-        run: cp docker/forecaster/Dockerfile Dockerfile
+        run: cp build/docker/forecaster/Dockerfile Dockerfile
 
       - name: Build and push
         uses: docker/build-push-action@v2
@@ -64,7 +64,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Copy Dockerfile
-        run: cp docker/downscaler/Dockerfile Dockerfile
+        run: cp build/docker/downscaler/Dockerfile Dockerfile
 
       - name: Build and push
         uses: docker/build-push-action@v2
@@ -95,7 +95,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Copy Dockerfile
-        run: cp docker/optimizer/Dockerfile Dockerfile
+        run: cp build/docker/optimizer/Dockerfile Dockerfile
 
       - name: Build and push
         uses: docker/build-push-action@v2
