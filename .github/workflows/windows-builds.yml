@@ -26,7 +26,6 @@ jobs:
           pip install conan
           conan profile new default --detect --force
           conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
-          conan config set general.revisions_enabled=1
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/bin
@@ -64,7 +63,6 @@ jobs:
           pip install conan
           conan profile new default --detect --force
           conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
-          conan config set general.revisions_enabled=1
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/bin

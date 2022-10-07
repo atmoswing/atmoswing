@@ -2,58 +2,53 @@ name: Coverity scan
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+    - main
+    - fix/*
+    - coverity-scan
 
 env:
   BUILD_TYPE: RelWithDebInfo
 
 jobs:
   coverity-scan:
-    runs-on: ubuntu-latest
+    name: Coverity scan
 
-    env:
-      TOKEN: ${{secrets.COVERITY_SCAN_TOKEN}}
+    runs-on: ubuntu-22.04
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Install libraries
-        run: sudo apt-get install libwxbase3.0-dev libnetcdf-dev libcurl4-openssl-dev libsqlite3-dev libssl-dev libproj-dev libeccodes-dev libopenjp2-7-dev lcov
+      - uses: actions/setup-python@v4
 
-      - name: Build Jasper lib
-        run: chmod +x ci/github/build-jasper.sh && ci/github/build-jasper.sh
+      - name: Cache Conan libs
+        id: cache-conan
+        uses: actions/cache@v3
+        with:
+          path: $HOME/.conan
+          key: ${{runner.os}}-conan
+
+      - name: Setup Conan
+        run: |
+          pip install conan
+          conan profile new default --detect --force
+          conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
+          conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/bin
 
-      - name: Download Coverity Build Tool
+      - name: Get dependencies
         working-directory: ${{github.workspace}}/bin
-        run: |
-          wget -q https://scan.coverity.com/download/cxx/linux64 --post-data "token=$TOKEN&project=atmoswing%2Fatmoswing" -O cov-analysis-linux64.tar.gz
-          mkdir cov-analysis-linux64
-          tar xzf cov-analysis-linux64.tar.gz --strip 1 -C cov-analysis-linux64
+        run: conan install .. -s build_type=Release -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing --build=openjpeg
 
-      - name: Configure CMake
+      - name: Configure
         working-directory: ${{github.workspace}}/bin
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 -DCREATE_INSTALLER=0 -DUSE_GUI=0 -DUSE_CODECOV=1
+        run: cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DUSE_UNITTEST=1
 
-      - name: Build
-        working-directory: ${{github.workspace}}/bin
-        run: |
-          export PATH=`pwd`/cov-analysis-linux64/bin:$PATH
-          cov-build --dir cov-int make
-
-      - name: Submit results to Coverity Scan
-        working-directory: ${{github.workspace}}/bin
-        run: |
-          tar czvf atmoswing.tgz cov-int
-          curl \
-            --form project=atmoswing/atmoswing \
-            --form token=$TOKEN \
-            --form email=pascal.horton@giub.unibe.ch \
-            --form file=@atmoswing.tgz \
-            --form version=main \
-            --form description="AtmoSwing build submitted from GitHub Actions" \
-            https://scan.coverity.com/builds?project=atmoswing%2Fatmoswing
+      - uses: vapier/coverity-scan-action@v1
+        with:
+          email: ${{ secrets.COVERITY_SCAN_EMAIL }}
+          token: ${{ secrets.COVERITY_SCAN_TOKEN }}
+          working-directory: ${{github.workspace}}/bin
+          command: make -j $(nproc)
