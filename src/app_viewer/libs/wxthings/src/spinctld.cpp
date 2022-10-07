@@ -15,9 +15,9 @@
 
 #ifndef WX_PRECOMP
 
-#include "wx/crt.h"
 #include "wx/textctrl.h"
 #include "wx/valtext.h"  // for wxTextValidator
+#include "wx/crt.h"
 
 #endif  // WX_PRECOMP
 
