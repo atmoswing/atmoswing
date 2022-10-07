@@ -48,7 +48,7 @@ jobs:
 
       - uses: vapier/coverity-scan-action@v1
         with:
-          email: ${{ secrets.COVERITY_SCAN_EMAIL }}
-          token: ${{ secrets.COVERITY_SCAN_TOKEN }}
+          email: ${{secrets.COVERITY_SCAN_EMAIL}}
+          token: ${{secrets.COVERITY_SCAN_TOKEN}}
           working-directory: ${{github.workspace}}/bin
           command: make -j $(nproc)

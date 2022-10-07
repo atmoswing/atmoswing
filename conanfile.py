@@ -27,6 +27,7 @@ class AmtoSwing(ConanFile):
         "build_viewer": [True, False],
         "build_optimizer": [True, False],
         "build_downscaler": [True, False],
+        "create_installer": [True, False],
     }
     default_options = {
         "enable_tests": True,
@@ -38,6 +39,7 @@ class AmtoSwing(ConanFile):
         "build_viewer": True,
         "build_optimizer": True,
         "build_downscaler": True,
+        "create_installer": False,
     }
 
     generators = "cmake", "gcc"
@@ -102,11 +104,18 @@ class AmtoSwing(ConanFile):
         cmake.definitions["BUILD_VIEWER"] = self.options.build_viewer
         cmake.definitions["BUILD_OPTIMIZER"] = self.options.build_optimizer
         cmake.definitions["BUILD_DOWNSCALER"] = self.options.build_downscaler
+        cmake.definitions["CREATE_INSTALLER"] = self.options.create_installer
 
         if self.options.code_coverage:
             cmake.definitions["BUILD_TESTS"] = "ON"
         if self.options.build_viewer:
+            self.options.with_gui = True
             cmake.definitions["USE_GUI"] = "ON"
+        if self.settings.os == "Windows":
+            if self.options.with_gui:
+                cmake.definitions["wxWidgets_CONFIGURATION"] = "mswu"
+            else:
+                cmake.definitions["wxWidgets_CONFIGURATION"] = "baseu"
 
         cmake.configure()
         cmake.build()
