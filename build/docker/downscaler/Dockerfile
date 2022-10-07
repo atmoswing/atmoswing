@@ -11,64 +11,34 @@ RUN mkdir libs
 ARG LIB_DIR=/app/libs
 
 # Setup build environment
-RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    build-essential \
-    ca-certificates \
-    git \
-    gnome-devel \
-    make \
-    cmake \
-    unzip \
-    wget
+RUN export DEBIAN_FRONTEND=noninteractive \
+    && apt-get update \
+    && apt-get install -y cmake python3 python3-pip git ca-certificates
 
-# Install dependencies
-RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    libcurl4 \
-    libnetcdf-dev \
-    libopenjp2-7-dev \
-    libsqlite3-dev \
-    sqlite3 \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    libtiff5-dev \
-    libwxbase3.0-dev \
-    libproj-dev \
-    libeccodes-dev
-
-# Build Jasper
-ARG JASPER_VERSION=2.0.16
-RUN wget --no-check-certificate --tries=20 -O jasper.tar.gz \
-        https://github.com/mdadams/jasper/archive/version-${JASPER_VERSION}.tar.gz \
-    && tar -xzf jasper.tar.gz \
-    && rm -f jasper.tar.gz \
-    && cd jasper-version-${JASPER_VERSION} \
-    && mkdir bld \
-    && cd bld \
-    && cmake .. -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${LIB_DIR} \
-    && make -j$(nproc) \
-    && make install \
-    && cd .. \
-    && cd .. \
-    && rm -rf jasper-version-${JASPER_VERSION}
+# Setup conan
+RUN python3 -m pip install conan \
+    && conan profile new default --detect \
+    && conan profile update settings.compiler.libcxx=libstdc++11 default \
+    && conan remote add gitlab https://gitlab.com/api/v4/packages/conan \
 
 # Copy source code
-RUN mkdir src
+RUN mkdir src && mkdir src/bin
 COPY ./ src
 
 # Build AtmoSwing
-RUN cd src \
-    && cmake CMakeLists.txt -DBUILD_OPTIMIZER=0 -DBUILD_FORECASTER=0 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 \
-        -DON_DOCKER=ON -DCREATE_INSTALLER=OFF -DUSE_GUI=0 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$LIB_DIR \
-    && make -j$(nproc)
+RUN cd src/bin \
+    && conan install .. -s build_type=Release --build=missing -o enable_tests=False -o with_gui=False  \
+        -o build_forecaster=False -o build_viewer=False -o build_optimizer=False -o build_downscaler=True \
+    && conan build ..
 
 # Prepare files for deployment
 RUN mkdir /app/deploy \
-    && mkdir /app/deploy/lib \
-    && mkdir /app/deploy/bin
-RUN cp -a /app/libs/lib/*.so* /app/deploy/lib/ \
-    && cp -a /app/libs/share /app/deploy/share \
-    && cp -a /app/src/data /app/deploy/share/atmoswing \
-    && cp -a /app/src/Release/* /app/deploy/bin/
+    && mkdir /app/deploy/bin \
+    && mkdir /app/deploy/share \
+RUN ls /app/src/bin/ -R
+RUN cp -a /app/src/data /app/deploy/share/atmoswing \
+    && cp -a /app/src/bin/bin/* /app/deploy/bin/ \
+    && cp a /app/src/bin/share/* /app/deploy/share/
 
 
 # Build final image
@@ -77,21 +47,12 @@ FROM ubuntu:22.04 AS runner
 WORKDIR /app
 
 # Install dependencies
-RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    libcurl4 \
-    libnetcdf18 \
-    libopenjp2-7 \
-    libtiff5 \
-    libwxbase3.0-0v5 \
-    openssl \
-    sqlite3 \
-    libproj19 \
-    libeccodes0 \
-    unzip
+RUN export DEBIAN_FRONTEND=noninteractive \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates
 
 # Copy from builder
-COPY --from=builder  /app/deploy /usr/local
+COPY --from=builder  /app/deploy /usr
 
-ENTRYPOINT ["/usr/local/bin/atmoswing-downscaler"]
+ENTRYPOINT ["/usr/bin/atmoswing-downscaler"]
 CMD ["--help"]
