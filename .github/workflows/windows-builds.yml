@@ -18,7 +18,7 @@ jobs:
         id: cache-conan
         uses: pat-s/always-upload-cache@v3.0.1
         with:
-          path: $HOME\.conan
+          path: C:/Users/runneradmin/.conan
           key: ${{runner.os}}-conan
 
       - name: Setup Conan
@@ -62,7 +62,7 @@ jobs:
         id: cache-conan
         uses: pat-s/always-upload-cache@v3.0.1
         with:
-          path: $HOME\.conan
+          path: C:/Users/runneradmin/.conan
           key: ${{runner.os}}-conan
 
       - name: Setup Conan
