@@ -24,7 +24,7 @@ jobs:
         uses: pat-s/always-upload-cache@v3.0.1
         with:
           path: /home/runner/.conan
-          key: ${{runner.os}}-conan
+          key: conan-linux-coverity
 
       - name: Setup Conan
         run: |

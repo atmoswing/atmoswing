@@ -19,7 +19,7 @@ jobs:
         uses: pat-s/always-upload-cache@v3.0.1
         with:
           path: C:/Users/runneradmin/.conan
-          key: ${{runner.os}}-conan
+          key: conan-windows-server
 
       - name: Setup Conan
         run: |
@@ -63,7 +63,7 @@ jobs:
         uses: pat-s/always-upload-cache@v3.0.1
         with:
           path: C:/Users/runneradmin/.conan
-          key: ${{runner.os}}-conan
+          key: conan-windows-desktop
 
       - name: Setup Conan
         run: |
