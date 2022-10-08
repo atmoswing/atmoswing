@@ -4,11 +4,13 @@ on: push
 
 env:
   BUILD_TYPE: Release
-  ECCODES_DEFINITION_PATH: {{github.workspace}}/bin/share/eccodes
 
 jobs:
   build-server-version:
     runs-on: windows-2022
+
+    env:
+      ECCODES_DEFINITION_PATH: {{github.workspace}}/bin/share/eccodes
 
     steps:
       - uses: actions/checkout@v3
