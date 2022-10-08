@@ -85,13 +85,13 @@ class AmtoSwing(ConanFile):
             if self.options.enable_tests:
                 self.copy("*", dst="bin", src="res", root_package="proj")
 
-        # Copy gdal library data
+        # Copy eccodes library data
         if self.settings.os == "Windows" or self.settings.os == "Linux":
-            self.copy("*", dst="share", src="res", root_package="gdal")
+            self.copy("*", dst="share/eccodes", src="share/eccodes", root_package="eccodes")
         if self.settings.os == "Macos":
-            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/proj", src="res", root_package="gdal")
+            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/eccodes", src="share/eccodes", root_package="eccodes")
             if self.options.enable_tests:
-                self.copy("*", dst="bin", src="res", root_package="gdal")
+                self.copy("*", dst="bin", src="share/eccodes", root_package="eccodes")
 
     def build(self):
         cmake = CMake(self)
