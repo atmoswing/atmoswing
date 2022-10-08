@@ -82,10 +82,6 @@ jobs:
         working-directory: ${{github.workspace}}/bin
         run: conan build ..
 
-      - name: Test
-        working-directory: ${{github.workspace}}/bin/bin
-        run: ./atmoswing-tests
-
       - name: Make installer
         working-directory: ${{github.workspace}}/bin
         run: |
