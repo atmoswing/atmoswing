@@ -59,7 +59,7 @@ jobs:
       - name: Install system libraries
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y libgtk-3-dev libx11-dev libx11-xcb-dev
+          sudo apt-get install -y libgtk-3-dev libx11-dev libx11-xcb-dev libfontenc-dev
 
       - name: Cache Conan libs
         id: cache-conan
