@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-2022
 
     env:
-      ECCODES_DEFINITION_PATH: {{github.workspace}}/bin/share/eccodes
+      ECCODES_DEFINITION_PATH: $GITHUB_WORKSPACE\bin\share\eccodes
 
     steps:
       - uses: actions/checkout@v3
