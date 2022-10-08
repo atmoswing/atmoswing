@@ -39,7 +39,7 @@ include_directories(${CONAN_INCLUDE_DIRS})
 # Version number
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "1")
-set(VERSION_PATCH "4")
+set(VERSION_PATCH "5")
 add_definitions(-DATMOSWING_MAJOR_VERSION=${VERSION_MAJOR})
 add_definitions(-DATMOSWING_MINOR_VERSION=${VERSION_MINOR})
 add_definitions(-DATMOSWING_PATCH_VERSION=${VERSION_PATCH})
