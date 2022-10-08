@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-2022
 
     env:
-      ECCODES_DEFINITION_PATH: D:\a\atmoswing\atmoswing\bin\share\eccodes
+      ECCODES_DEFINITION_PATH: D:\a\atmoswing\atmoswing\bin\share\eccodes\definitions
 
     steps:
       - uses: actions/checkout@v3
