@@ -165,7 +165,7 @@ endif (USE_CODECOV)
 
 ##### DISPLAY SOME INFORMATION
 
-include(atmoswing_shared_compilation_flags)
+include(atmoswing_definitions_and_flags)
 
 # Add components
 add_subdirectory(src/shared_base)

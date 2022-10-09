@@ -33,6 +33,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_definitions(-DUSE_JPEG2000)
 add_definitions(-DEIGEN_NO_DEBUG)
+add_definitions(${CONAN_DEFINES_WXWIDGETS})
 
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
