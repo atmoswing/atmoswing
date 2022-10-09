@@ -22,7 +22,8 @@ RUN python3 -m pip install conan \
     && conan remote add gitlab https://gitlab.com/api/v4/packages/conan \
 
 # Copy source code
-RUN mkdir src && mkdir src/bin
+RUN mkdir src
+RUN mkdir src/bin
 COPY ./ src
 
 # Build AtmoSwing
