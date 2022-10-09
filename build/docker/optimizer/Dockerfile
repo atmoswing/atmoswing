@@ -27,7 +27,7 @@ COPY ./ src
 
 # Build AtmoSwing
 RUN cd src/bin \
-    && conan install .. -s build_type=Release --build=missing -o enable_tests=False -o with_gui=False  \
+    && conan install .. -s build_type=Release --build=missing --build=openjpeg -o enable_tests=False -o with_gui=False  \
         -o build_forecaster=False -o build_viewer=False -o build_optimizer=True -o build_downscaler=False \
     && conan build ..
 
