@@ -48,7 +48,9 @@ int main(int argc, char** argv) {
         g_guiMode = false;
 
         // Initialize wxWidgets (also wxApp)
-        wxEntryStart(0, nullptr);
+        int argcApp = 0;
+        wxChar **argvApp = NULL;
+        wxEntryStart(argcApp, argvApp);
 
         // Set the log
         Log()->CreateFile("AtmoSwingTests.log");
