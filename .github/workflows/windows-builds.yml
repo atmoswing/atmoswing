@@ -51,7 +51,6 @@ jobs:
         working-directory: ${{github.workspace}}/bin
         run: |
           cpack -C release -G ZIP
-          cpack -C release -G NSIS
           cpack -C release -G WIX
 
 
@@ -93,5 +92,4 @@ jobs:
         working-directory: ${{github.workspace}}/bin
         run: |
           cpack -C release -G ZIP
-          cpack -C release -G NSIS
           cpack -C release -G WIX
