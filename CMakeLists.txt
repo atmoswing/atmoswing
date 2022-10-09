@@ -156,9 +156,9 @@ if (USE_CODECOV)
     include(CodeCoverage)
     append_coverage_compiler_flags()
     set(COVERAGE_EXCLUDES '/usr/*'
-        '${PROJECT_SOURCE_DIR}/tests/src/*'
-        '${PROJECT_SOURCE_DIR}/libs/*'
-        '${CMAKE_BINARY_DIR}/_deps/*')
+        '**/tests/*'
+        '**/.conan/*'
+        '**/_deps/*')
     setup_target_for_coverage(NAME atmoswing-coverage EXECUTABLE atmoswing-tests DEPENDENCIES atmoswing-tests)
 endif (USE_CODECOV)
 
