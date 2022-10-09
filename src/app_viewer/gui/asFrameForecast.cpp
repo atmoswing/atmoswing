@@ -1234,7 +1234,7 @@ bool asFrameForecast::OpenForecast(const wxArrayString& names) {
             continueClosing = true;
         }
 
-        wxGetApp().Yield();
+        wxTheApp->Yield();
         wxWakeUpIdle();
     }
 

@@ -60,7 +60,7 @@ bool asMethodForecasting::Manager() {
     asPredictorOper::SetDefaultPredictorsUrls();
 
 #if USE_GUI
-    if (g_responsive) wxGetApp().Yield();
+    if (g_responsive) wxTheApp->Yield();
 #endif
     m_cancel = false;
 
@@ -85,7 +85,7 @@ bool asMethodForecasting::Manager() {
         // Execute the forecasts
         for (int i = 0; i < m_batchForecasts->GetForecastsNb(); i++) {
 #if USE_GUI
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
             if (m_cancel) return false;
 
             // Send event
@@ -95,7 +95,7 @@ bool asMethodForecasting::Manager() {
                 m_parent->ProcessWindowEvent(eventRunning);
             }
 
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
 #endif
             asLog::PrintToConsole(wxString::Format("Processing %s... ", m_batchForecasts->GetForecastFileName(i)));
             wxLogMessage("Processing %s", m_batchForecasts->GetForecastFileName(i));
@@ -110,7 +110,7 @@ bool asMethodForecasting::Manager() {
             m_predictandDBFilePath = predictandDBDir + DS + params.GetPredictandDatabase();
 
 #if USE_GUI
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
 #endif
 
             // Watch
@@ -195,7 +195,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
     bool forecastDateChanged = true;
     while (forecastDateChanged) {
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
         if (m_cancel) return false;
 
@@ -212,7 +212,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
                 m_aggregator.Add(results);
             }
 #if USE_GUI
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
 #endif
             return true;
         }
@@ -224,13 +224,13 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
             m_parent->ProcessWindowEvent(eventDownloading);
         }
 
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
 
         forecastDateChanged = false;
         for (int iStep = 0; iStep < stepsNb; iStep++) {
 #if USE_GUI
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
 #endif
             if (m_cancel) return false;
             if (!DownloadRealtimePredictors(params, iStep, forecastDateChanged)) return false;
@@ -248,7 +248,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
                 m_aggregator.Add(results);
             }
 #if USE_GUI
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
 #endif
             return true;
         }
@@ -263,7 +263,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
     }
 
 #if USE_GUI
-    if (g_responsive) wxGetApp().Yield();
+    if (g_responsive) wxTheApp->Yield();
 #endif
     if (m_cancel) return false;
 
@@ -273,7 +273,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
     wxLogVerbose(_("Predictand DB loaded."));
 
 #if USE_GUI
-    if (g_responsive) wxGetApp().Yield();
+    if (g_responsive) wxTheApp->Yield();
 #endif
     if (m_cancel) return false;
 
@@ -284,7 +284,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
 
     for (int iStep = 0; iStep < stepsNb; iStep++) {
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
         if (m_cancel) {
             wxDELETE(results);
@@ -309,7 +309,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
         // At last get the values
         if (iStep == stepsNb - 1) {
 #if USE_GUI
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
 #endif
             if (m_cancel) {
                 wxDELETE(results);
@@ -376,14 +376,14 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast& param
                                                      bool& forecastDateChanged) {
     for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
         if (m_cancel) return false;
 
         wxLogVerbose(_("Downloading data."));
 
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
 
         if (!params.NeedsPreprocessing(iStep, iPtor)) {
@@ -407,7 +407,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast& param
 
             for (int iPre = 0; iPre < preprocessSize; iPre++) {
 #if USE_GUI
-                if (g_responsive) wxGetApp().Yield();
+                if (g_responsive) wxTheApp->Yield();
 #endif
                 if (m_cancel) return false;
 
@@ -456,7 +456,7 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
     if (resultsCheck.Exists()) {
         wxLogVerbose(_("Forecast already exists."));
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
         return true;
     }
@@ -474,7 +474,7 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
     int counterFails = 0;
     while (true) {
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
         if (m_cancel) {
             return false;
@@ -495,7 +495,7 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
                     if (resultsCheck.Exists()) {
                         wxLogVerbose(_("Forecast already exists."));
 #if USE_GUI
-                        if (g_responsive) wxGetApp().Yield();
+                        if (g_responsive) wxTheApp->Yield();
 #endif
                         return true;
                     }
@@ -538,7 +538,7 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
                 if (resultsCheck.Exists()) {
                     wxLogVerbose(_("Forecast already exists."));
 #if USE_GUI
-                    if (g_responsive) wxGetApp().Yield();
+                    if (g_responsive) wxTheApp->Yield();
 #endif
                     return true;
                 }
@@ -676,7 +676,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
         wxLogVerbose(_("Loading data (step %d, predictor nb %d)."), iStep, iPtor);
 
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
 
         if (!params.NeedsPreprocessing(iStep, iPtor)) {
@@ -825,7 +825,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             for (int iPre = 0; iPre < preprocessSize; iPre++) {
                 wxLogVerbose(_("Loading predictor %d."), iPre);
 #if USE_GUI
-                if (g_responsive) wxGetApp().Yield();
+                if (g_responsive) wxTheApp->Yield();
 #endif
 
                 // Date array object instantiation for the data loading.

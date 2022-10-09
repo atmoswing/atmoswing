@@ -6,14 +6,14 @@ class AmtoSwing(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
 
     requires = [
-        "proj/9.0.1",
-        "libcurl/7.84.0",
-        "libtiff/4.3.0",
-        "sqlite3/3.39.2",
+        "proj/9.0.0",
+        "libcurl/7.83.1",
+        "libtiff/4.4.0",
+        "sqlite3/3.38.5",
         "eigen/3.4.0",
         "netcdf/4.8.1",
         "libdeflate/1.12",
-        "libjpeg/9e",
+        "libjpeg/9d",
         "eccodes/2.27.0@terranum-conan+eccodes/stable",
     ]
 
@@ -27,6 +27,7 @@ class AmtoSwing(ConanFile):
         "build_viewer": [True, False],
         "build_optimizer": [True, False],
         "build_downscaler": [True, False],
+        "create_installer": [True, False],
     }
     default_options = {
         "enable_tests": True,
@@ -38,6 +39,7 @@ class AmtoSwing(ConanFile):
         "build_viewer": True,
         "build_optimizer": True,
         "build_downscaler": True,
+        "create_installer": False,
     }
 
     generators = "cmake", "gcc"
@@ -61,7 +63,7 @@ class AmtoSwing(ConanFile):
         self.options["gdal"].with_curl = True # for xml support
         self.options["gdal"].shared = True
         if self.settings.os == "Linux":
-            self.options["wxwidgets"].webview = False  # webview control isn't available on linux.
+            self.options["openjpeg"].build_codec = True # force rebuild due to gclib issue with the package on Conan center
         if not self.options.with_gui:
             self.options["wxbase"].xml = True
             self.options["wxbase"].sockets = True
@@ -83,13 +85,13 @@ class AmtoSwing(ConanFile):
             if self.options.enable_tests:
                 self.copy("*", dst="bin", src="res", root_package="proj")
 
-        # Copy gdal library data
+        # Copy eccodes library data
         if self.settings.os == "Windows" or self.settings.os == "Linux":
-            self.copy("*", dst="share", src="res", root_package="gdal")
+            self.copy("*", dst="share/eccodes", src="share/eccodes", root_package="eccodes")
         if self.settings.os == "Macos":
-            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/proj", src="res", root_package="gdal")
+            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/eccodes", src="share/eccodes", root_package="eccodes")
             if self.options.enable_tests:
-                self.copy("*", dst="bin", src="res", root_package="gdal")
+                self.copy("*", dst="bin", src="share/eccodes", root_package="eccodes")
 
     def build(self):
         cmake = CMake(self)
@@ -102,11 +104,18 @@ class AmtoSwing(ConanFile):
         cmake.definitions["BUILD_VIEWER"] = self.options.build_viewer
         cmake.definitions["BUILD_OPTIMIZER"] = self.options.build_optimizer
         cmake.definitions["BUILD_DOWNSCALER"] = self.options.build_downscaler
+        cmake.definitions["CREATE_INSTALLER"] = self.options.create_installer
 
         if self.options.code_coverage:
             cmake.definitions["BUILD_TESTS"] = "ON"
         if self.options.build_viewer:
+            self.options.with_gui = True
             cmake.definitions["USE_GUI"] = "ON"
+        if self.settings.os == "Windows":
+            if self.options.with_gui:
+                cmake.definitions["wxWidgets_CONFIGURATION"] = "mswu"
+            else:
+                cmake.definitions["wxWidgets_CONFIGURATION"] = "baseu"
 
         cmake.configure()
         cmake.build()

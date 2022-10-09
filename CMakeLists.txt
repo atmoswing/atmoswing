@@ -39,7 +39,7 @@ include_directories(${CONAN_INCLUDE_DIRS})
 # Version number
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "1")
-set(VERSION_PATCH "4")
+set(VERSION_PATCH "5")
 add_definitions(-DATMOSWING_MAJOR_VERSION=${VERSION_MAJOR})
 add_definitions(-DATMOSWING_MINOR_VERSION=${VERSION_MINOR})
 add_definitions(-DATMOSWING_PATCH_VERSION=${VERSION_PATCH})
@@ -156,16 +156,16 @@ if (USE_CODECOV)
     include(CodeCoverage)
     append_coverage_compiler_flags()
     set(COVERAGE_EXCLUDES '/usr/*'
-        '${PROJECT_SOURCE_DIR}/tests/src/*'
-        '${PROJECT_SOURCE_DIR}/libs/*'
-        '${CMAKE_BINARY_DIR}/_deps/*')
+        '**/tests/*'
+        '**/.conan/*'
+        '**/_deps/*')
     setup_target_for_coverage(NAME atmoswing-coverage EXECUTABLE atmoswing-tests DEPENDENCIES atmoswing-tests)
 endif (USE_CODECOV)
 
 
 ##### DISPLAY SOME INFORMATION
 
-include(atmoswing_shared_compilation_flags)
+include(atmoswing_definitions_and_flags)
 
 # Add components
 add_subdirectory(src/shared_base)

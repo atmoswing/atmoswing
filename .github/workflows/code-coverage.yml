@@ -1,0 +1,67 @@
+name: Code coverage
+
+on: push
+
+env:
+  BUILD_TYPE: RelWithDebInfo
+
+jobs:
+  coverage-scan:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install system libraries
+        run: sudo apt install lcov
+
+      - name: Cache Conan libs
+        id: cache-conan
+        uses: pat-s/always-upload-cache@v3.0.1
+        with:
+          path: /home/runner/.conan
+          key: conan-linux-codecover
+
+      - name: Setup Conan
+        run: |
+          pip install conan
+          conan profile new default --detect --force
+          conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/bin
+
+      - name: Get dependencies
+        working-directory: ${{github.workspace}}/bin
+        run: conan install .. -s build_type=Release -o build_viewer=False -o with_gui=False -o enable_tests=True -o code_coverage=True --build=missing
+
+      - name: Configure with CMake
+        working-directory: ${{github.workspace}}/bin
+        run: cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DUSE_CODECOV=1 -DBUILD_TESTS=1 -DBUILD_VIEWER=0 -DUSE_GUI=0
+
+      - name: Build and run code coverage
+        working-directory: ${{github.workspace}}/bin
+        run: cmake --build . --config ${{env.BUILD_TYPE}} --target atmoswing-coverage
+
+      - name: Preparing coverage data
+        working-directory: ${{github.workspace}}/bin
+        run: lcov --directory . --capture --output-file coverage.info
+
+      - name: Cleaning up coverage data
+        working-directory: ${{github.workspace}}/bin
+        run: lcov --remove coverage.info "/usr/*" "*/_deps/*" "*/tests/*" "*/.conan/*" --output-file coverage.info
+
+      - name: Display code coverage report
+        working-directory: ${{github.workspace}}/bin
+        run: lcov --list coverage.info
+
+      - uses: codecov/codecov-action@v2
+        with:
+          files: ${{github.workspace}}/bin/coverage.info
+          fail_ci_if_error: true
+          verbose: true

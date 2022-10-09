@@ -1,4 +1,4 @@
-name: Linux builds
+name: Windows builds
 
 on: push
 
@@ -7,7 +7,10 @@ env:
 
 jobs:
   build-server-version:
-    runs-on: ubuntu-22.04
+    runs-on: windows-2022
+
+    env:
+      ECCODES_DEFINITION_PATH: D:\a\atmoswing\atmoswing\bin\share\eccodes\definitions
 
     steps:
       - uses: actions/checkout@v3
@@ -20,22 +23,21 @@ jobs:
         id: cache-conan
         uses: pat-s/always-upload-cache@v3.0.1
         with:
-          path: /home/runner/.conan
-          key: conan-linux-server
+          path: C:/Users/runneradmin/.conan
+          key: conan-windows-server
 
       - name: Setup Conan
         run: |
           pip install conan
           conan profile new default --detect --force
           conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
-          conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/bin
 
       - name: Get dependencies
         working-directory: ${{github.workspace}}/bin
-        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=False -o with_gui=False -o enable_tests=True -o create_installer=True --build=missing
 
       - name: Build
         working-directory: ${{github.workspace}}/bin
@@ -44,10 +46,16 @@ jobs:
       - name: Test
         working-directory: ${{github.workspace}}/bin/bin
         run: ./atmoswing-tests
+
+      - name: Make installer
+        working-directory: ${{github.workspace}}/bin
+        run: |
+          cpack -C release -G ZIP
+          cpack -C release -G WIX
 
 
   build-desktop-version:
-    runs-on: ubuntu-22.04
+    runs-on: windows-2022
 
     steps:
       - uses: actions/checkout@v3
@@ -56,41 +64,32 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install system libraries
-        run: |
-          sudo apt-get update -y
-          # GTK 3.0 libraries
-          sudo apt-get install libgtk-3-0 libgtk-3-dev
-          sudo apt-get install libx11-xcb-dev libfontenc-dev libxaw7-dev libxmu-dev libxmuu-dev libxpm-dev libxres-dev libxss-dev
-          sudo apt-get install libxv-dev libxvmc-dev libxxf86vm-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev
-          sudo apt-get install libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev
-          sudo apt-get install libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-dri3-dev libxcb-util-dev
-
       - name: Cache Conan libs
         id: cache-conan
         uses: pat-s/always-upload-cache@v3.0.1
         with:
-          path: /home/runner/.conan
-          key: conan-linux-desktop
+          path: C:/Users/runneradmin/.conan
+          key: conan-windows-desktop
 
       - name: Setup Conan
         run: |
           pip install conan
           conan profile new default --detect --force
           conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
-          conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/bin
 
       - name: Get dependencies
         working-directory: ${{github.workspace}}/bin
-        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o enable_tests=True --build=missing
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o enable_tests=False -o create_installer=True --build=missing
 
       - name: Build
         working-directory: ${{github.workspace}}/bin
         run: conan build ..
 
-      - name: Test
-        working-directory: ${{github.workspace}}/bin/bin
-        run: ./atmoswing-tests
+      - name: Make installer
+        working-directory: ${{github.workspace}}/bin
+        run: |
+          cpack -C release -G ZIP
+          cpack -C release -G WIX
