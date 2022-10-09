@@ -38,7 +38,7 @@ RUN mkdir /app/deploy \
 RUN ls /app/src/bin/ -R
 RUN cp -a /app/src/data /app/deploy/share/atmoswing \
     && cp -a /app/src/bin/bin/* /app/deploy/bin/ \
-    && cp a /app/src/bin/share/* /app/deploy/share/
+    && cp -a /app/src/bin/share/* /app/deploy/share/
 
 
 # Build final image
