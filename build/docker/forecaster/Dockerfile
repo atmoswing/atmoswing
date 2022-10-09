@@ -34,7 +34,7 @@ RUN cd src/bin \
 # Prepare files for deployment
 RUN mkdir /app/deploy \
     && mkdir /app/deploy/bin \
-    && mkdir /app/deploy/share \
+    && mkdir /app/deploy/share
 RUN ls /app/src/bin/ -R
 RUN cp -a /app/src/data /app/deploy/share/atmoswing \
     && cp -a /app/src/bin/bin/* /app/deploy/bin/ \
