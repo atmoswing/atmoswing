@@ -97,7 +97,7 @@ bool asMethodOptimizerRandomSet::Manager() {
     // Add threads when they become available
     while (m_iterator < m_paramsNb) {
 #ifndef UNIT_TESTING
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
         if (m_cancel) {
             return false;
@@ -121,7 +121,7 @@ bool asMethodOptimizerRandomSet::Manager() {
                 firstRun = false;
 
 #ifndef UNIT_TESTING
-                if (g_responsive) wxGetApp().Yield();
+                if (g_responsive) wxTheApp->Yield();
 #endif
 
                 if (m_cancel) return false;

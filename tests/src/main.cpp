@@ -28,6 +28,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <wx/init.h>
 
 #include "asGlobVars.h"
 
@@ -46,12 +47,13 @@ int main(int argc, char** argv) {
         g_silentMode = true;
         g_guiMode = false;
 
-        // Initialize the library because wxApp is not called
-        wxInitialize();
+        // Initialize wxWidgets (also wxApp)
+        wxEntryStart(0, nullptr);
 
         // Set the log
         Log()->CreateFile("AtmoSwingTests.log");
         Log()->SetLevel(2);
+        wxLogNull logNo;
 
         // Set the local config object
         wxFileConfig* pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwing.ini",
@@ -88,7 +90,7 @@ int main(int argc, char** argv) {
         resultTest = RUN_ALL_TESTS();
 
         // Cleanup
-        wxUninitialize();
+        wxEntryCleanup();
         DeleteThreadsManager();
         DeleteLog();
         delete wxFileConfig::Set((wxFileConfig*)nullptr);
