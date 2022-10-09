@@ -1,5 +1,24 @@
 # Changelog AtmoSwing
 
+## v2.1.5 [09 Oct 2022]
+
+### Changed
+
+* Moved the dependencies management to conan
+* Simplified the areas management by removing the composite approach.
+* Some code clean up and code formatting.
+* Moved all CI workflows to GitHub actions.
+
+### Fixed
+
+* The weights computed by the optimizer cannot take negative values.
+* Addition of S0 and S1 with normalization by the reference value.
+* GFS urls on nomads have been fixed.
+* Optimizer: fixed convergence check when previous results are loaded.
+* Optimizer: relaxed criteria for convergence in GAs (using tolerance).
+* Optimizer: fixed an issue with latitude values > 90° that were not corrected.
+
+
 ## v2.1.4 [09 Oct 2020]
 
 ### Changed
@@ -10,6 +29,7 @@
 
 * Fixed an issue with missing dates in the FVG dataset.
 * Fixed an issue with NaNs in the standardization.
+
 
 ## v2.1.3 [13 Jul 2020]
 
@@ -49,6 +69,7 @@
 * Fixing issue when the reference axis is NaN.
 * Fixing lead times in plots.
 
+
 ## v2.1.2 [02 Dec 2019]
 
 ### Added
@@ -77,6 +98,7 @@
 * Some (rarely used) variables definition in some reanalyses were wrong.
 * Fixed an issue with latitudes axis when resampling.
 
+
 ## v2.1.1 [17 Jul 2019]
 
 ### Added
@@ -102,6 +124,7 @@
 * Fixing a log path issue.
 * Fixing a memory leak due to ecCodes index not deleted.
 * Fixing a bug when interval days are not used.
+
 
 ## v2.1.0 [23 May 2019]
 
@@ -159,6 +182,7 @@
 * Fix a bug in multithreaded downloads.
 * Fix command line usage of builds with GUIs.
 
+
 ## v2.0.1 [12 Dec 2018]
 
 ### Added
@@ -174,6 +198,7 @@
 
 * Fixing About panel size and Ubuntu dependencies.
 * Fixing CMake issues.
+
 
 ## v2.0.0 [19 Nov 2018]
 
@@ -245,6 +270,7 @@
 * Fixing Monte Carlo analysis.
 * Fixing background color.
 
+
 ## v1.5.0
 
 ### Added
@@ -293,6 +319,7 @@
 * Fix loading of previous runs in the Optimizer.
 * Fix of an issue of precision when looking for time values in an array.
 
+
 ## v1.4.3
 
 ### Added
@@ -329,6 +356,7 @@
 * Applying code inspection recommendations.
 * Fix of a segmentation fault in the optimizer.
 
+
 ## v1.4.2
 
 ### Added
@@ -351,6 +379,7 @@
 * Removing Projection specification from WMS files.
 * Past forecasts do load again.
 * Fix of a bug in data preloading.
+
 
 ## v1.4.1
 
@@ -395,6 +424,7 @@
 * Debugging netcdf issues under Linux.
 * Fixing namespace issues.
 
+
 ## v1.3.3
 
 ### Added
@@ -428,6 +458,7 @@
 * Now keeps the same model selection when opening new forecasts.
 * Now keeps the same lead time when opening new forecasts.
 
+
 ## v1.3.2
 
 ### Added
@@ -457,6 +488,7 @@
 * Fix of a bug on the single instance checker.
 * Limitation of the zoom level to avoid the memory issue related to GDAL caching mechanism.
 
+
 ## v1.3.1
 
 ### Changed
@@ -466,6 +498,7 @@
 ### Fixed
 
 * Debugging the new build process under Linux.
+
 
 ## v1.3.0
 
@@ -491,6 +524,7 @@
 * Correction of the rank histogram.
 * Reduced cURL outputs and fix of the multithreaded downloads.
 * Adding a missing MSVC dll in the installation package.
+
 
 ## v1.2.0
 
@@ -541,6 +575,7 @@
 * The precipitation predictand class has been secured for RowMajor and Colmajor.
 * Removing the exhaustive calibration.
 * Removal of intermediate results printing.
+
 
 ## v1.0.3
 
