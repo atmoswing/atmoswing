@@ -46,8 +46,17 @@ jobs:
         working-directory: ${{github.workspace}}/bin
         run: |
           cpack -C release -G ZIP
-          cpack -C release -G NSIS
           cpack -C release -G WIX
+
+      - name: Upload release
+        uses: xresloader/upload-to-github-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "bin/*.zip;bin/*.msi"
+          tags: true
+          draft: true
+          verbose: true
 
 
   build-desktop-version:
@@ -88,7 +97,6 @@ jobs:
         working-directory: ${{github.workspace}}/bin
         run: |
           cpack -C release -G ZIP
-          cpack -C release -G NSIS
           cpack -C release -G WIX
 
       - name: Upload release
@@ -96,7 +104,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "bin/*.zip;bin/*.msi;bin/*.exe"
+          file: "bin/*.zip;bin/*.msi"
           tags: true
           draft: true
           verbose: true
