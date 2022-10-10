@@ -60,8 +60,6 @@ list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/Atmoswing
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/AtmoswingAppDownscaler.h")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/AtmoswingAppDownscaler.cpp")
 
-message(STATUS ${src_tests})
-
 # CUDA library
 if (USE_CUDA)
     option(TEST_CUDA "Should CUDA implementation be tested ?" ON)

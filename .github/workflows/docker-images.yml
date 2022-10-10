@@ -10,7 +10,7 @@ on:
     branches:
       - main
   release:
-    types: [ released ]
+    types: [published]
 
 jobs:
   build-forecaster-image:

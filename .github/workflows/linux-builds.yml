@@ -35,7 +35,7 @@ jobs:
 
       - name: Get dependencies
         working-directory: ${{github.workspace}}/bin
-        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing --build=openjpeg
 
       - name: Build
         working-directory: ${{github.workspace}}/bin
@@ -85,7 +85,7 @@ jobs:
 
       - name: Get dependencies
         working-directory: ${{github.workspace}}/bin
-        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o enable_tests=True --build=missing
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o enable_tests=True --build=missing --build=openjpeg
 
       - name: Build
         working-directory: ${{github.workspace}}/bin

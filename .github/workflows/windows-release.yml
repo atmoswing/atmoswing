@@ -1,8 +1,8 @@
-name: Windows builds
+name: Windows release
 
 on:
   release:
-    types: [created]
+    types: [published]
 
 env:
   BUILD_TYPE: Release

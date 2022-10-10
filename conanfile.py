@@ -62,8 +62,6 @@ class AmtoSwing(ConanFile):
             self.options.enable_tests = True
         self.options["gdal"].with_curl = True # for xml support
         self.options["gdal"].shared = True
-        if self.settings.os == "Linux":
-            self.options["openjpeg"].build_codec = True # force rebuild due to gclib issue with the package on Conan center
         if not self.options.with_gui:
             self.options["wxbase"].xml = True
             self.options["wxbase"].sockets = True
