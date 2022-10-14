@@ -1,5 +1,12 @@
 # Changelog AtmoSwing
 
+## not released
+
+### Fixed
+
+* Time units were missing in the predictand db.
+
+
 ## v2.1.5 [11 Oct 2022]
 
 ### Changed

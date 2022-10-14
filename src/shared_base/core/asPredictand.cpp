@@ -480,16 +480,23 @@ void asPredictand::SetCommonDefinitions(asFileNetcdf& ncFile) const {
     // Put attributes for station_starts
     ncFile.PutAtt("long_name", "Start", "station_starts");
     ncFile.PutAtt("var_desc", "Start of the stations data", "station_starts");
-    ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "station_starts");
+    ncFile.PutAtt("units", "days since 1858-11-17 00:00:00.0", "station_starts");
+    ncFile.PutAtt("units_note", "Modified Julian Day Number (MJD)", "station_ends");
 
     // Put attributes for station_ends
     ncFile.PutAtt("long_name", "End", "station_ends");
     ncFile.PutAtt("var_desc", "End of the stations data", "station_ends");
-    ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "station_ends");
+    ncFile.PutAtt("units", "days since 1858-11-17 00:00:00.0", "station_ends");
+    ncFile.PutAtt("units_note", "Modified Julian Day Number (MJD)", "station_ends");
 
     // Put attributes for data
     ncFile.PutAtt("long_name", "Data", "data");
-    ncFile.PutAtt("var_desc", "Data (whithout any treatment)", "data");
+    ncFile.PutAtt("var_desc", "Data (without any treatment)", "data");
+
+    // Put attributes for time
+    ncFile.PutAtt("long_name", "Time", "time");
+    ncFile.PutAtt("units", "days since 1858-11-17 00:00:00.0", "time");
+    ncFile.PutAtt("units_note", "Modified Julian Day Number (MJD)", "time");
 }
 
 bool asPredictand::SaveCommonData(asFileNetcdf& ncFile) const {
