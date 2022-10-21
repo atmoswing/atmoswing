@@ -174,6 +174,8 @@ class asTimeArray : public asTime {
 
     int GetIndexFirstBefore(double date, double dataTimeStep) const;
 
+    void KeepOnlyRange(int start, int end);
+
   protected:
   private:
     bool m_initialized;

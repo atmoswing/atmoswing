@@ -53,8 +53,7 @@ asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
       m_crossoverType(0),
       m_mutationsModeType(0),
       m_allowElitismForTheBest(true),
-      m_useMiniBatches(true),
-      m_miniBatchSize(365) {
+      m_epochMax(30) {
     m_warnFailedLoadingData = false;
 }
 
@@ -170,8 +169,9 @@ bool asMethodOptimizerGeneticAlgorithms::Manager() {
     m_couplesSelectionType = (int)pConfig->ReadLong("/GAs/CouplesSelectionOperator", 0l);
     m_crossoverType = (int)pConfig->ReadLong("/GAs/CrossoverOperator", 0l);
     m_mutationsModeType = (int)pConfig->ReadLong("/GAs/MutationOperator", 0l);
-    m_useMiniBatches = pConfig->ReadBool("/GAs/UseMiniBatches", true);
-    m_miniBatchSize = (int)pConfig->ReadLong("/GAs/MiniBatchSize", 365l);
+    m_useMiniBatches = pConfig->ReadBool("/GAs/UseMiniBatches", false);
+    m_miniBatchSize = (int)pConfig->ReadLong("/GAs/MiniBatchSize", 128l);
+    m_epochMax = (int)pConfig->ReadLong("/GAs/NumberOfEpochs", 30l);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Reset the score of the climatology
@@ -284,6 +284,27 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
     wxLogVerbose(_("Loading the Predictand DB."));
     if (!LoadPredictandDB(m_predictandDBFilePath)) return false;
     wxLogVerbose(_("Predictand DB loaded."));
+
+    int miniBatchSizeMax = 0;
+
+    // Define time range if using mini-batches
+    if (m_useMiniBatches) {
+        // Create the target time array as reference for mini-batches
+        asTimeArray timeArrayTarget(GetTimeStartCalibration(&params), GetTimeEndCalibration(&params),
+                                    params.GetTargetTimeStepHours(), params.GetTimeArrayTargetMode());
+        if (!m_validationMode && params.HasValidationPeriod()) {
+            timeArrayTarget.SetForbiddenYears(params.GetValidationYearsVector());
+        }
+
+        if (!timeArrayTarget.Init()) {
+            wxLogError(_("The time array mode for the target dates is not correctly defined."));
+            return false;
+        }
+
+        miniBatchSizeMax = timeArrayTarget.GetSize();
+        m_miniBatchStart = 0;
+        m_miniBatchEnd = wxMin(m_miniBatchStart + m_miniBatchSize, miniBatchSizeMax) - 1;
+    }
 
     // Watch
     wxStopWatch sw;
@@ -430,6 +451,18 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
         m_meanScores.push_back(meanScore);
 
         wxLogMessage(_("Mean %g, best %g"), meanScore, bestScore);
+
+        // Update mini-batches
+        if (m_useMiniBatches) {
+            m_miniBatchStart += m_miniBatchSize;
+            int minNbDays = 32;
+            if (m_miniBatchStart + minNbDays >= miniBatchSizeMax) {
+                m_miniBatchStart = 0;
+                m_epoch++;
+                wxLogMessage(_("Epoch number %d"), m_epoch);
+            }
+            m_miniBatchEnd = wxMin(m_miniBatchStart + m_miniBatchSize, miniBatchSizeMax) - 1;
+        }
 
         // Check if we should end
         if (HasConverged()) {
@@ -957,6 +990,13 @@ bool asMethodOptimizerGeneticAlgorithms::Optimize() {
 
 bool asMethodOptimizerGeneticAlgorithms::HasConverged() {
     // NB: The parameters and scores are already sorted !
+
+    if (m_useMiniBatches) {
+        if (m_epoch > m_epochMax) {
+            return true;
+        }
+        return false;
+    }
 
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase* pConfig = wxFileConfig::Get();

@@ -914,6 +914,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
         if (counter == index) {
             int val = asRound(newVal);
             SetAnalogsIntervalDays(val);
+            return;
         }
     }
     counter++;
@@ -923,6 +924,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
             if (counter == index) {
                 int val = asRound(newVal);
                 SetAnalogsNumber(i, val);
+                return;
             }
         }
         counter++;
@@ -939,6 +941,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                             if (val >= vect.size()) val = vect.size() - 1;
 
                             SetPreprocessDataId(i, j, k, vect[val]);
+                            return;
                         }
                     }
                     counter++;
@@ -952,6 +955,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                             if (val >= vect.size()) val = vect.size() - 1;
 
                             SetPreprocessLevel(i, j, k, vect[val]);
+                            return;
                         }
                     }
                     counter++;
@@ -960,6 +964,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                         if (counter == index) {
                             int val = asRound(newVal);
                             SetPreprocessHour(i, j, k, val);
+                            return;
                         }
                     }
                     counter++;
@@ -974,6 +979,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                         if (val >= vect.size()) val = vect.size() - 1;
 
                         SetPredictorDataId(i, j, vect[val]);
+                        return;
                     }
                 }
                 counter++;
@@ -987,6 +993,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                         if (val >= vect.size()) val = vect.size() - 1;
 
                         SetPredictorLevel(i, j, vect[val]);
+                        return;
                     }
                 }
                 counter++;
@@ -995,6 +1002,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                     if (counter == index) {
                         int val = asRound(newVal);
                         SetPredictorHour(i, j, val);
+                        return;
                     }
                 }
                 counter++;
@@ -1003,6 +1011,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
             if (!m_stepsLocks[i].predictors[j].xMin) {
                 if (counter == index) {
                     SetPredictorXmin(i, j, newVal);
+                    return;
                 }
             }
             counter++;
@@ -1011,6 +1020,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                 if (counter == index) {
                     int val = asRound(newVal);
                     SetPredictorXptsnb(i, j, val);
+                    return;
                 }
             }
             counter++;
@@ -1018,6 +1028,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
             if (!m_stepsLocks[i].predictors[j].yMin) {
                 if (counter == index) {
                     SetPredictorYmin(i, j, newVal);
+                    return;
                 }
             }
             counter++;
@@ -1026,6 +1037,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                 if (counter == index) {
                     int val = asRound(newVal);
                     SetPredictorYptsnb(i, j, val);
+                    return;
                 }
             }
             counter++;
@@ -1034,6 +1046,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                 if (counter == index) {
                     float val = (float)newVal;
                     SetPredictorWeight(i, j, val);
+                    return;
                 }
             }
             counter++;
@@ -1047,6 +1060,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                     if (val >= vect.size()) val = vect.size() - 1;
 
                     SetPredictorCriteria(i, j, vect[val]);
+                    return;
                 }
             }
             counter++;

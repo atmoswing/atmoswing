@@ -38,7 +38,12 @@ asMethodCalibrator::asMethodCalibrator()
     : asMethodStandard(),
       m_scoreOrder(Asc),
       m_scoreValid(NaNf),
-      m_validationMode(false) {
+      m_validationMode(false),
+      m_useMiniBatches(false),
+      m_miniBatchSize(365),
+      m_miniBatchStart(0),
+      m_miniBatchEnd(0),
+      m_epoch(1) {
     // Seeds the random generator
     asInitRandom();
 }
@@ -540,6 +545,10 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
     // If in validation mode, only keep validation years
     if (m_validationMode) {
         timeArrayTarget.KeepOnlyYears(params->GetValidationYearsVector());
+    }
+
+    if (m_useMiniBatches) {
+        timeArrayTarget.KeepOnlyRange(m_miniBatchStart, m_miniBatchEnd);
     }
 
     // Data date array

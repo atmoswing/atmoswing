@@ -143,6 +143,11 @@ class asMethodCalibrator : public asMethodStandard {
     std::vector<asParametersCalibration> m_parametersTemp;
     asParametersCalibration m_originalParams;
     bool m_validationMode;
+    bool m_useMiniBatches;
+    int m_miniBatchSize;
+    int m_miniBatchStart;
+    int m_miniBatchEnd;
+    int m_epoch;
 
     virtual bool Calibrate(asParametersCalibration& params) = 0;
 
@@ -152,11 +157,11 @@ class asMethodCalibrator : public asMethodStandard {
 
     double GetEffectiveArchiveDataEnd(asParameters* params) const override;
 
-  private:
     double GetTimeStartCalibration(asParametersScoring* params) const;
 
     double GetTimeEndCalibration(asParametersScoring* params) const;
 
+  private:
     void LoadScoreOrder(asParametersCalibration& params);
 };
 
