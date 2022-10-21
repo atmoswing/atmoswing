@@ -103,8 +103,8 @@ void asPanelSidebarAlarms::SetData(a1f& dates, a2f& values) {
 
     // Delete and recreate the panel. Cannot get it work with a resize...
     wxDELETE(m_panelDrawing);
-    m_panelDrawing =
-        new asPanelSidebarAlarmsDrawing(this, wxID_ANY, wxDefaultPosition, wxSize(width, totHeight), wxTAB_TRAVERSAL);
+    m_panelDrawing = new asPanelSidebarAlarmsDrawing(this, wxID_ANY, wxDefaultPosition, wxSize(width, totHeight),
+                                                     wxTAB_TRAVERSAL);
     m_panelDrawing->SetParent(this);
     m_panelDrawing->Layout();
     m_panelDrawing->DrawAlarms(dates, names, values);

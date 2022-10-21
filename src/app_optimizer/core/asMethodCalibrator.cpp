@@ -358,8 +358,8 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring* params) {
     }
 
     // Check if data are effectively available for this period
-    int indexPredictandTimeStart =
-        asFindCeil(&predictandTime[0], &predictandTime[predictandTime.size() - 1], timeStart);
+    int indexPredictandTimeStart = asFindCeil(&predictandTime[0], &predictandTime[predictandTime.size() - 1],
+                                              timeStart);
     int indexPredictandTimeEnd = asFindFloor(&predictandTime[0], &predictandTime[predictandTime.size() - 1], timeEnd);
 
     if (indexPredictandTimeStart < 0 || indexPredictandTimeEnd < 0) {

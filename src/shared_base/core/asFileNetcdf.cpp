@@ -197,8 +197,8 @@ void asFileNetcdf::PutAtt(const wxString& attName, const wxString& textStr, cons
 
     // Check if global or not
     if ((varName.IsEmpty())) {
-        m_status =
-            nc_put_att_text(m_fileId, NC_GLOBAL, attName.mb_str(wxConvUTF8), strlen(buffer.data()), buffer.data());
+        m_status = nc_put_att_text(m_fileId, NC_GLOBAL, attName.mb_str(wxConvUTF8), strlen(buffer.data()),
+                                   buffer.data());
         if (m_status) HandleErrorNetcdf();
         // Get the ID
         m_status = nc_inq_attid(m_fileId, NC_GLOBAL, attName.mb_str(wxConvUTF8), &attId);
@@ -1566,8 +1566,8 @@ bool asFileNetcdf::ParseStruct() {
         m_struct.atts[attId].name = tmpName;
 
         // Get the attribute type and length
-        m_status =
-            nc_inq_att(m_fileId, NC_GLOBAL, attNameChar, &m_struct.atts[attId].type, &m_struct.atts[attId].length);
+        m_status = nc_inq_att(m_fileId, NC_GLOBAL, attNameChar, &m_struct.atts[attId].type,
+                              &m_struct.atts[attId].length);
         if (m_status) HandleErrorNetcdf();
         size_t len = m_struct.atts[attId].length;
 

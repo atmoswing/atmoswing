@@ -242,8 +242,8 @@ void asForecastViewer::Redraw() {
     if (forecasts[0]->HasReferenceValues() && returnPeriod != 0) {
         a1f forecastReferenceAxis = forecasts[0]->GetReferenceAxis();
 
-        indexReferenceAxis =
-            asFind(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size() - 1], returnPeriod);
+        indexReferenceAxis = asFind(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size() - 1],
+                                    returnPeriod);
         if ((indexReferenceAxis == asNOT_FOUND) || (indexReferenceAxis == asOUT_OF_RANGE)) {
             wxLogError(_("The desired reference value is not available in the forecast file."));
             m_viewerLayerManager->FreezeEnd();

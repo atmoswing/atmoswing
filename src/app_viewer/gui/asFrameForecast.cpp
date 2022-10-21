@@ -149,8 +149,8 @@ asFrameForecast::asFrameForecast(wxWindow* parent, wxWindowID id)
 
     // VroomGIS
     m_layerManager = new vrLayerManager();
-    m_viewerLayerManager =
-        new vrViewerLayerManager(m_layerManager, this, m_displayCtrl, m_panelSidebarGisLayers->GetTocCtrl());
+    m_viewerLayerManager = new vrViewerLayerManager(m_layerManager, this, m_displayCtrl,
+                                                    m_panelSidebarGisLayers->GetTocCtrl());
     //    m_layerManager->AllowReprojectOnTheFly(true);
 
     // Forecast manager
@@ -1439,8 +1439,8 @@ void asFrameForecast::OnToolAction(wxCommandEvent& event) {
 
         // Moving view
 #if defined(__WIN32__)
-        asThreadViewerLayerManagerZoomIn* thread =
-            new asThreadViewerLayerManagerZoomIn(m_viewerLayerManager, &m_critSectionViewerLayerManager, fittedRect);
+        asThreadViewerLayerManagerZoomIn* thread = new asThreadViewerLayerManagerZoomIn(
+            m_viewerLayerManager, &m_critSectionViewerLayerManager, fittedRect);
         ThreadsManager().AddThread(thread);
 #else
         m_viewerLayerManager->Zoom(fittedRect);
@@ -1461,8 +1461,8 @@ void asFrameForecast::OnToolAction(wxCommandEvent& event) {
 
         // Moving view
 #if defined(__WIN32__)
-        asThreadViewerLayerManagerZoomOut* thread =
-            new asThreadViewerLayerManagerZoomOut(m_viewerLayerManager, &m_critSectionViewerLayerManager, fittedRect);
+        asThreadViewerLayerManagerZoomOut* thread = new asThreadViewerLayerManagerZoomOut(
+            m_viewerLayerManager, &m_critSectionViewerLayerManager, fittedRect);
         ThreadsManager().AddThread(thread);
 #else
         m_viewerLayerManager->ZoomOut(fittedRect);

@@ -403,12 +403,12 @@ bool asResultsForecast::Load() {
                     return false;
                 }
             } else {
-                m_predictandParameter =
-                    asPredictand::StringToParameterEnum(ncFile.GetAttString("predictand_parameter"));
-                m_predictandTemporalResolution =
-                    asPredictand::StringToTemporalResolutionEnum(ncFile.GetAttString("predictand_temporal_resolution"));
-                m_predictandSpatialAggregation =
-                    asPredictand::StringToSpatialAggregationEnum(ncFile.GetAttString("predictand_spatial_aggregation"));
+                m_predictandParameter = asPredictand::StringToParameterEnum(
+                    ncFile.GetAttString("predictand_parameter"));
+                m_predictandTemporalResolution = asPredictand::StringToTemporalResolutionEnum(
+                    ncFile.GetAttString("predictand_temporal_resolution"));
+                m_predictandSpatialAggregation = asPredictand::StringToSpatialAggregationEnum(
+                    ncFile.GetAttString("predictand_spatial_aggregation"));
             }
 
             m_predictandDatasetId = ncFile.GetAttString("predictand_dataset_id");

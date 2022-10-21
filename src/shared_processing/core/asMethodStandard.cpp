@@ -478,8 +478,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters* para
             double yStep = params->GetPredictorYstep(iStep, iPtor);
             int flatAllowed = params->GetPredictorFlatAllowed(iStep, iPtor);
             bool isLatLon = asPredictor::IsLatLon(params->GetPredictorDatasetId(iStep, iPtor));
-            asAreaGrid* area =
-                asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, flatAllowed, isLatLon);
+            asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, flatAllowed,
+                                                       isLatLon);
             wxASSERT(area);
             area->AllowResizeFromData();
 
@@ -678,9 +678,9 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters* params,
                 timeArray.Init();
 
                 // Loading the datasets information
-                asPredictor* predictorPreprocess =
-                    asPredictor::GetInstance(params->GetPreprocessDatasetId(iStep, iPtor, iPre),
-                                             params->GetPreprocessDataId(iStep, iPtor, iPre), m_predictorDataDir);
+                asPredictor* predictorPreprocess = asPredictor::GetInstance(
+                    params->GetPreprocessDatasetId(iStep, iPtor, iPre), params->GetPreprocessDataId(iStep, iPtor, iPre),
+                    m_predictorDataDir);
                 if (!predictorPreprocess) {
                     Cleanup(predictorsPreprocess);
                     return false;
@@ -716,8 +716,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters* params,
                 double yStep = params->GetPredictorYstep(iStep, iPtor);
                 int flatAllowed = params->GetPredictorFlatAllowed(iStep, iPtor);
                 bool isLatLon = asPredictor::IsLatLon(params->GetPredictorDatasetId(iStep, iPtor));
-                asAreaGrid* area =
-                    asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, flatAllowed, isLatLon);
+                asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep,
+                                                           flatAllowed, isLatLon);
                 wxASSERT(area);
                 area->AllowResizeFromData();
 

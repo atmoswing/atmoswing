@@ -742,10 +742,10 @@ void mpScaleX::Plot(wxDC& dc, mpWindow& w) {
         }
 
         // double n = floor( (w.GetPosX() - (double)extend / w.GetScaleX()) / step ) * step ;
-        double n0 =
-            floor((w.GetPosX() /* - (double)(extend - w.GetMarginLeft() - w.GetMarginRight())/ w.GetScaleX() */) /
-                  step) *
-            step;
+        double n0 = floor(
+                        (w.GetPosX() /* - (double)(extend - w.GetMarginLeft() - w.GetMarginRight())/ w.GetScaleX() */) /
+                        step) *
+                    step;
         double n = 0;
 #ifdef MATHPLOT_DO_LOGGING
         wxLogMessage(wxT("mpScaleX::Plot: dig: %f , step: %f, end: %f, n: %f"), dig, step, end, n0);
@@ -980,9 +980,9 @@ void mpScaleY::Plot(wxDC& dc, mpWindow& w) {
         //         fmt.Printf(wxT("%%.%dg"), (tmp >= -1) ? 2 : -tmp);
         //     }
 
-        double n =
-            floor((w.GetPosY() - (double)(extend - w.GetMarginTop() - w.GetMarginBottom()) / w.GetScaleY()) / step) *
-            step;
+        double n = floor((w.GetPosY() - (double)(extend - w.GetMarginTop() - w.GetMarginBottom()) / w.GetScaleY()) /
+                         step) *
+                   step;
 
         /* wxCoord startPx = m_drawOutsideMargins ? 0 : w.GetMarginLeft(); */
         wxCoord endPx = m_drawOutsideMargins ? w.GetScrX() : w.GetScrX() - w.GetMarginRight();
@@ -1092,13 +1092,13 @@ EVT_PAINT(mpWindow::OnPaint)
 EVT_SIZE(mpWindow::OnSize)
 EVT_SCROLLWIN_THUMBTRACK(mpWindow::OnScrollThumbTrack)
 EVT_SCROLLWIN_PAGEUP(mpWindow::OnScrollPageUp)
-EVT_SCROLLWIN_PAGEDOWN(mpWindow::OnScrollPageDown) EVT_SCROLLWIN_LINEUP(mpWindow::OnScrollLineUp)
-    EVT_SCROLLWIN_LINEDOWN(mpWindow::OnScrollLineDown) EVT_SCROLLWIN_TOP(mpWindow::OnScrollTop)
-        EVT_SCROLLWIN_BOTTOM(mpWindow::OnScrollBottom)
+EVT_SCROLLWIN_PAGEDOWN(mpWindow::OnScrollPageDown)
+EVT_SCROLLWIN_LINEUP(mpWindow::OnScrollLineUp) EVT_SCROLLWIN_LINEDOWN(mpWindow::OnScrollLineDown)
+    EVT_SCROLLWIN_TOP(mpWindow::OnScrollTop) EVT_SCROLLWIN_BOTTOM(mpWindow::OnScrollBottom)
 
-            EVT_MIDDLE_UP(mpWindow::OnShowPopupMenu) EVT_RIGHT_DOWN(mpWindow::OnMouseRightDown)  // JLB
-    EVT_RIGHT_UP(mpWindow::OnShowPopupMenu) EVT_MOUSEWHEEL(mpWindow::OnMouseWheel)               // JLB
-    EVT_MOTION(mpWindow::OnMouseMove)                                                            // JLB
+        EVT_MIDDLE_UP(mpWindow::OnShowPopupMenu) EVT_RIGHT_DOWN(mpWindow::OnMouseRightDown)  // JLB
+    EVT_RIGHT_UP(mpWindow::OnShowPopupMenu) EVT_MOUSEWHEEL(mpWindow::OnMouseWheel)           // JLB
+    EVT_MOTION(mpWindow::OnMouseMove)                                                        // JLB
     EVT_LEFT_DOWN(mpWindow::OnMouseLeftDown) EVT_LEFT_UP(mpWindow::OnMouseLeftRelease)
 
         EVT_MENU(mpID_CENTER, mpWindow::OnCenter) EVT_MENU(mpID_FIT, mpWindow::OnFit)

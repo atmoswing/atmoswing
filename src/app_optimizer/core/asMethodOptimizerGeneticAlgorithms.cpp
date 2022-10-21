@@ -330,8 +330,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
 
             if (nextParams) {
                 // Add it to the threads
-                auto* thread =
-                    new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                auto* thread = new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator],
+                                                             &m_scoreClimatology);
 #ifdef USE_CUDA
                 if (method == asCUDA) {
                     thread->SetDevice(device);
@@ -499,16 +499,14 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
     // Check if the resulting file is already present
     vi stationId = params.GetPredictandStationIds();
-    wxString finalFilePattern =
-        wxString::Format("*_station_%s_best_individual.txt", GetStationIdsList(stationId));
+    wxString finalFilePattern = wxString::Format("*_station_%s_best_individual.txt", GetStationIdsList(stationId));
     if (dir.HasFiles(finalFilePattern)) {
         wxLogMessage(_("The directory %s already contains the resulting file."), resultsDir);
         return false;
     }
 
     // Look for intermediate results to load
-    wxString generationsFilePattern =
-        wxString::Format("*_station_%s_generations.txt", GetStationIdsList(stationId));
+    wxString generationsFilePattern = wxString::Format("*_station_%s_generations.txt", GetStationIdsList(stationId));
     if (!dir.HasFiles(generationsFilePattern)) {
         return true;
     }
@@ -668,8 +666,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
     wxCopyFile(filePath, m_resGenerations.GetFilePath());
 
     // Restore operators
-    wxString operatorsFilePattern =
-        wxString::Format("*_station_%s_operators.txt", GetStationIdsList(stationId));
+    wxString operatorsFilePattern = wxString::Format("*_station_%s_operators.txt", GetStationIdsList(stationId));
     if (dir.HasFiles(operatorsFilePattern)) {
         return true;
     }
@@ -789,8 +786,7 @@ bool asMethodOptimizerGeneticAlgorithms::HasPreviousRunConverged(asParametersOpt
     } else {
         // Check if the resulting file is already present
         vi stationId = params.GetPredictandStationIds();
-        wxString finalFilePattern =
-            wxString::Format("*_station_%s_best_individual.txt", GetStationIdsList(stationId));
+        wxString finalFilePattern = wxString::Format("*_station_%s_best_individual.txt", GetStationIdsList(stationId));
         if (dir.HasFiles(finalFilePattern)) {
             wxLogMessage(_("The directory %s already contains the resulting file."), resultsDir);
             return true;
@@ -1000,8 +996,8 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation() {
         switch (m_scoreOrder) {
             case (Asc): {
                 float actualBest = m_scoresCalib[0];
-                int prevBestIndex =
-                    asMinArrayIndex(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1]);
+                int prevBestIndex = asMinArrayIndex(&m_scoresCalibTemp[0],
+                                                    &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1]);
                 if (m_scoresCalibTemp[prevBestIndex] < actualBest) {
                     wxLogMessage(_("Application of elitism after mutation."));
                     // Randomly select a row to replace
@@ -1014,8 +1010,8 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation() {
             }
             case (Desc): {
                 float actualBest = m_scoresCalib[0];
-                int prevBestIndex =
-                    asMaxArrayIndex(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1]);
+                int prevBestIndex = asMaxArrayIndex(&m_scoresCalibTemp[0],
+                                                    &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1]);
                 if (m_scoresCalibTemp[prevBestIndex] > actualBest) {
                     wxLogMessage(_("Application of elitism after mutation."));
                     // Randomly select a row to replace

@@ -306,9 +306,9 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
         userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
         // Set the local config object
-        wxFileConfig* pConfig =
-            new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingDownscaler.ini",
-                             asConfig::GetUserDataDir() + "AtmoSwingDownscaler.ini", wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig* pConfig = new wxFileConfig(
+            "AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingDownscaler.ini",
+            asConfig::GetUserDataDir() + "AtmoSwingDownscaler.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     }
 

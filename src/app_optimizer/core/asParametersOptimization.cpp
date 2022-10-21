@@ -636,9 +636,9 @@ bool asParametersOptimization::SetPreloadingProperties() {
                 }
 
                 if (!IsPredictorXptsnbLocked(iStep, iPtor)) {
-                    int xBasePtsNb =
-                        std::abs(GetPredictorXminUpperLimit(iStep, iPtor) - GetPredictorXminLowerLimit(iStep, iPtor)) /
-                        GetPredictorXstep(iStep, iPtor);
+                    int xBasePtsNb = std::abs(GetPredictorXminUpperLimit(iStep, iPtor) -
+                                              GetPredictorXminLowerLimit(iStep, iPtor)) /
+                                     GetPredictorXstep(iStep, iPtor);
                     SetPreloadXptsnb(iStep, iPtor,
                                      xBasePtsNb + GetPredictorXptsnbUpperLimit(iStep, iPtor));  // No need to add +1
                 } else {
@@ -646,9 +646,9 @@ bool asParametersOptimization::SetPreloadingProperties() {
                 }
 
                 if (!IsPredictorYptsnbLocked(iStep, iPtor)) {
-                    int yBasePtsNb =
-                        std::abs(GetPredictorYminUpperLimit(iStep, iPtor) - GetPredictorYminLowerLimit(iStep, iPtor)) /
-                        GetPredictorYstep(iStep, iPtor);
+                    int yBasePtsNb = std::abs(GetPredictorYminUpperLimit(iStep, iPtor) -
+                                              GetPredictorYminLowerLimit(iStep, iPtor)) /
+                                     GetPredictorYstep(iStep, iPtor);
                     SetPreloadYptsnb(iStep, iPtor,
                                      yBasePtsNb + GetPredictorYptsnbUpperLimit(iStep, iPtor));  // No need to add +1
                 } else {
@@ -1118,8 +1118,8 @@ bool asParametersOptimization::FixWeights() {
             if (totWeightLocked > 1) {
                 float precision = GetPredictorWeightIteration(i, j);
                 float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                newWeight =
-                    wxMax(precision * asRound(newWeight * (1.0 / precision)), GetPredictorWeightLowerLimit(i, j));
+                newWeight = wxMax(precision * asRound(newWeight * (1.0 / precision)),
+                                  GetPredictorWeightLowerLimit(i, j));
                 newSum += newWeight;
 
                 SetPredictorWeight(i, j, newWeight);
@@ -1127,8 +1127,8 @@ bool asParametersOptimization::FixWeights() {
                 if (!IsPredictorWeightLocked(i, j)) {
                     float precision = GetPredictorWeightIteration(i, j);
                     float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                    newWeight =
-                        wxMax(precision * asRound(newWeight * (1.0 / precision)), GetPredictorWeightLowerLimit(i, j));
+                    newWeight = wxMax(precision * asRound(newWeight * (1.0 / precision)),
+                                      GetPredictorWeightLowerLimit(i, j));
                     newSum += newWeight;
 
                     SetPredictorWeight(i, j, newWeight);
@@ -1137,8 +1137,8 @@ bool asParametersOptimization::FixWeights() {
         }
 
         // Last weight: difference to 0
-        float lastWeight =
-            wxMax(1.0f - newSum - totWeightLocked, GetPredictorWeightLowerLimit(i, GetPredictorsNb(i) - 1));
+        float lastWeight = wxMax(1.0f - newSum - totWeightLocked,
+                                 GetPredictorWeightLowerLimit(i, GetPredictorsNb(i) - 1));
         SetPredictorWeight(i, GetPredictorsNb(i) - 1, lastWeight);
     }
 

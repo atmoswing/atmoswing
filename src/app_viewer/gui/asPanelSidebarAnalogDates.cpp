@@ -36,8 +36,8 @@ asPanelSidebarAnalogDates::asPanelSidebarAnalogDates(wxWindow* parent, wxWindowI
 
     wxSize listSize = wxSize();
     listSize.SetHeight(120);
-    m_listCtrl =
-        new wxListCtrl(this, wxID_ANY, wxDefaultPosition, listSize, wxLC_REPORT | wxNO_BORDER | wxLC_SINGLE_SEL);
+    m_listCtrl = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, listSize,
+                                wxLC_REPORT | wxNO_BORDER | wxLC_SINGLE_SEL);
     m_listCtrl->InsertColumn(0l, _("Analog"), wxLIST_FORMAT_RIGHT, 50);
     m_listCtrl->InsertColumn(1l, _("Date"), wxLIST_FORMAT_LEFT, 100);
     m_listCtrl->InsertColumn(2l, _("Criteria"), wxLIST_FORMAT_LEFT, 80);

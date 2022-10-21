@@ -131,11 +131,11 @@ bool asCatalogPredictands::Load() {
                                 } else if (nodeDetail->GetName() == "file_pattern") {
                                     station.filePattern = asFileXml::GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "start") {
-                                    station.startDate =
-                                        asTime::GetTimeFromString(asFileXml::GetString(nodeDetail), guess);
+                                    station.startDate = asTime::GetTimeFromString(asFileXml::GetString(nodeDetail),
+                                                                                  guess);
                                 } else if (nodeDetail->GetName() == "end") {
-                                    station.endDate =
-                                        asTime::GetTimeFromString(asFileXml::GetString(nodeDetail), guess);
+                                    station.endDate = asTime::GetTimeFromString(asFileXml::GetString(nodeDetail),
+                                                                                guess);
                                 } else {
                                     xmlFile.UnknownNode(nodeDetail);
                                 }

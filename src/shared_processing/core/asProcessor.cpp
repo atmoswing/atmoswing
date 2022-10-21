@@ -538,8 +538,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor*> predictorsArchive,
 
                     // Loop through the date array for candidate data
                     for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
-                        int iTimeArchRelative =
-                            FindNextDate(dateArrayArchiveSelection, timeArchiveData, iTimeArchStart, iDateArch);
+                        int iTimeArchRelative = FindNextDate(dateArrayArchiveSelection, timeArchiveData, iTimeArchStart,
+                                                             iDateArch);
 
                         // Check if a row was found
                         if (iTimeArchRelative == asNOT_FOUND || iTimeArchRelative == asOUT_OF_RANGE) {
@@ -1374,10 +1374,10 @@ bool asProcessor::GetAnalogsValues(asPredictand& predictand, asResultsDates& ana
     // Get start and end indices for the analogs dates
     double timeStartTarg = wxMax(timeStart, (double)timeTargetSelection[0]);
     double timeEndTarg = wxMin(timeEnd, (double)timeTargetSelection[timeTargetSelectionLength - 1]);
-    int indexTargDatesStart =
-        asFindCeil(&timeTargetSelection[0], &timeTargetSelection[timeTargetSelectionLength - 1], timeStartTarg);
-    int indexTargDatesEnd =
-        asFindFloor(&timeTargetSelection[0], &timeTargetSelection[timeTargetSelectionLength - 1], timeEndTarg);
+    int indexTargDatesStart = asFindCeil(&timeTargetSelection[0], &timeTargetSelection[timeTargetSelectionLength - 1],
+                                         timeStartTarg);
+    int indexTargDatesEnd = asFindFloor(&timeTargetSelection[0], &timeTargetSelection[timeTargetSelectionLength - 1],
+                                        timeEndTarg);
     int targTimeLength = 0;
     bool ignoreTargetValues;
     if (indexTargDatesStart == asNOT_FOUND || indexTargDatesStart == asOUT_OF_RANGE ||

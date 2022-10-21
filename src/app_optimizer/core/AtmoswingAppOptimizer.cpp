@@ -322,8 +322,8 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly() {
         wxConfigBase* pConfigNow = wxFileConfig::Get();
         wxString refIniPath = GetLocalPath();
         refIniPath.Append("AtmoSwing.ini");
-        wxFileConfig* pConfigRef =
-            new wxFileConfig("AtmoSwing", wxEmptyString, refIniPath, refIniPath, wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig* pConfigRef = new wxFileConfig("AtmoSwing", wxEmptyString, refIniPath, refIniPath,
+                                                    wxCONFIG_USE_LOCAL_FILE);
 
         // Check that the number of groups are identical.
         int groupsNb = pConfigNow->GetNumberOfGroups(true);
@@ -446,9 +446,9 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
         userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
         // Set the local config object
-        wxFileConfig* pConfig =
-            new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini",
-                             asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini", wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig* pConfig = new wxFileConfig(
+            "AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini",
+            asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     }
 

@@ -425,9 +425,9 @@ bool asParameters::SetPreloadingProperties() {
                 int preprocSize = GetPreprocessSize(iStep, iPtor);
 
                 // Different actions depending on the preprocessing method.
-                wxString msg =
-                    _("The size of the provided predictors (%d) does not match the requirements (%d) in the "
-                      "preprocessing %s method.");
+                wxString msg = _(
+                    "The size of the provided predictors (%d) does not match the requirements (%d) in the "
+                    "preprocessing %s method.");
                 if (NeedsGradientPreprocessing(iStep, iPtor)) {
                     if (preprocSize != 1) {
                         wxLogError(msg, preprocSize, 1, "Gradient");
@@ -607,9 +607,9 @@ bool asParameters::PreprocessingPropertiesOk() const {
                 int preprocSize = GetPreprocessSize(iStep, iPtor);
 
                 // Different actions depending on the preprocessing method.
-                wxString msg =
-                    _("The size of the provided predictors (%d) does not match the requirements (%d) "
-                      "in the preprocessing %s method.");
+                wxString msg = _(
+                    "The size of the provided predictors (%d) does not match the requirements (%d) "
+                    "in the preprocessing %s method.");
                 if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("Addition") ||
                     method.IsSameAs("Average")) {
                     // No constraints

@@ -82,8 +82,8 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration& params) {
         resultsTested.Init(wxString::Format(_("station_%s_tested_parameters"), GetStationIdsList(stationId)));
         asResultsParametersArray resultsBest;
         resultsBest.Init(wxString::Format(_("station_%s_best_parameters"), GetStationIdsList(stationId)));
-        wxString resultsXmlFilePath =
-            wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+        wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir",
+                                                                asConfig::GetDefaultUserWorkingDir());
         wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
         resultsXmlFilePath.Append(
             wxString::Format("/%s_station_%s_best_parameters.xml", time, GetStationIdsList(stationId)));

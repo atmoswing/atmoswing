@@ -840,8 +840,8 @@ double asParametersCalibration::GetPredictorXminLowerLimit(int iStep, int iPtor)
     wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastRow = m_stepsVect[iStep].predictors[iPtor].xMin.size() - 1;
     wxASSERT(lastRow >= 0);
-    double val =
-        asMinArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0], &m_stepsVect[iStep].predictors[iPtor].xMin[lastRow]);
+    double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0],
+                            &m_stepsVect[iStep].predictors[iPtor].xMin[lastRow]);
     return val;
 }
 
@@ -858,8 +858,8 @@ double asParametersCalibration::GetPredictorYminLowerLimit(int iStep, int iPtor)
     wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastRow = m_stepsVect[iStep].predictors[iPtor].yMin.size() - 1;
     wxASSERT(lastRow >= 0);
-    double val =
-        asMinArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0], &m_stepsVect[iStep].predictors[iPtor].yMin[lastRow]);
+    double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0],
+                            &m_stepsVect[iStep].predictors[iPtor].yMin[lastRow]);
     return val;
 }
 
@@ -900,8 +900,8 @@ double asParametersCalibration::GetPredictorXminUpperLimit(int iStep, int iPtor)
     wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastRow = m_stepsVect[iStep].predictors[iPtor].xMin.size() - 1;
     wxASSERT(lastRow >= 0);
-    double val =
-        asMaxArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0], &m_stepsVect[iStep].predictors[iPtor].xMin[lastRow]);
+    double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0],
+                            &m_stepsVect[iStep].predictors[iPtor].xMin[lastRow]);
     return val;
 }
 
@@ -918,8 +918,8 @@ double asParametersCalibration::GetPredictorYminUpperLimit(int iStep, int iPtor)
     wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastRow = m_stepsVect[iStep].predictors[iPtor].yMin.size() - 1;
     wxASSERT(lastRow >= 0);
-    double val =
-        asMaxArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0], &m_stepsVect[iStep].predictors[iPtor].yMin[lastRow]);
+    double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0],
+                            &m_stepsVect[iStep].predictors[iPtor].yMin[lastRow]);
     return val;
 }
 

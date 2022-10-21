@@ -27,8 +27,8 @@
 
 #include "asVersion.h"
 
-const wxString g_version =
-    wxString::Format("%d.%d.%d", ATMOSWING_MAJOR_VERSION, ATMOSWING_MINOR_VERSION, ATMOSWING_PATCH_VERSION);
+const wxString g_version = wxString::Format("%d.%d.%d", ATMOSWING_MAJOR_VERSION, ATMOSWING_MINOR_VERSION,
+                                            ATMOSWING_PATCH_VERSION);
 
 wxString asVersion::GetFullString() {
     wxString versionNb = "Version " + g_version;

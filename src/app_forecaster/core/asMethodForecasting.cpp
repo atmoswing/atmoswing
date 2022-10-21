@@ -412,9 +412,9 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast& param
                 if (m_cancel) return false;
 
                 // Instantiate a predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
 
                 if (!predictorRealtimePreprocess) {
                     wxDELETE(predictorRealtimePreprocess);
@@ -590,16 +590,16 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             }
 
             predictorRealtime->SetRunDateInUse(m_forecastDate);
-            lastLeadTime =
-                wxMin(lastLeadTime, predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
+            lastLeadTime = wxMin(lastLeadTime,
+                                 predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
 
             wxDELETE(predictorRealtime);
         } else {
             for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
                 // Instantiate a predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
                 if (!predictorRealtimePreprocess) {
                     return false;
                 }
@@ -848,10 +848,10 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 timeArrayDataTarget.Init();
 
                 // Instantiate an archive predictor object
-                asPredictor* predictorArchivePreprocess =
-                    asPredictor::GetInstance(params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
-                                             params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
-                                             m_batchForecasts->GetPredictorsArchiveDirectory());
+                asPredictor* predictorArchivePreprocess = asPredictor::GetInstance(
+                    params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
+                    m_batchForecasts->GetPredictorsArchiveDirectory());
                 if (!predictorArchivePreprocess) {
                     return false;
                 }
@@ -865,9 +865,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 }
 
                 // Instantiate an realtime predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
                 if (!predictorRealtimePreprocess) {
                     wxDELETE(predictorArchivePreprocess);
                     return false;
@@ -1094,16 +1094,16 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
             }
             predictorRealtime->SetPredictorsRealtimeDirectory(m_batchForecasts->GetPredictorsRealtimeDirectory());
             predictorRealtime->SetRunDateInUse(m_forecastDate);
-            lastLeadTime =
-                wxMin(lastLeadTime, predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
+            lastLeadTime = wxMin(lastLeadTime,
+                                 predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
 
             wxDELETE(predictorRealtime);
         } else {
             for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
                 // Instantiate a predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
                 if (!predictorRealtimePreprocess) {
                     return false;
                 }
@@ -1331,10 +1331,10 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                 timeArrayDataTarget.Init();
 
                 // Instantiate an archive predictor object
-                asPredictor* predictorArchivePreprocess =
-                    asPredictor::GetInstance(params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
-                                             params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
-                                             m_batchForecasts->GetPredictorsArchiveDirectory());
+                asPredictor* predictorArchivePreprocess = asPredictor::GetInstance(
+                    params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
+                    m_batchForecasts->GetPredictorsArchiveDirectory());
                 if (!predictorArchivePreprocess) {
                     return false;
                 }
@@ -1348,9 +1348,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                 }
 
                 // Instantiate an realtime predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
                 if (!predictorRealtimePreprocess) {
                     wxDELETE(predictorArchivePreprocess);
                     return false;

@@ -551,8 +551,8 @@ bool asPredictand::ParseData(const wxString& catalogFile, const wxString& direct
     for (int iStat = 0; iStat < catalog.GetStationsNb(); iStat++) {
 #if USE_GUI
         // Update the progress bar.
-        wxString fileNameMessage =
-            wxString::Format(_("Loading data from files.\nFile: %s"), catalog.GetStationFilename(iStat));
+        wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"),
+                                                    catalog.GetStationFilename(iStat));
         if (!ProgressBar.Update(iStat, fileNameMessage)) {
             wxLogError(_("The process has been canceled by the user."));
             return false;
@@ -657,8 +657,8 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, size_t stat
                                 .ToDouble(&valTimeMinute);
                         }
 
-                        double dateData =
-                            asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour, valTimeMinute, 0);
+                        double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour,
+                                                         valTimeMinute, 0);
 
                         // Find matching date
                         while (dateData - m_time(timeIndex) > 0.0001) {
@@ -667,8 +667,8 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, size_t stat
                     }
 
                     // Get predictand value
-                    wxString dataStr =
-                        lineContent.Mid(filePattern.dataBegin - 1, filePattern.dataEnd - filePattern.dataBegin + 1);
+                    wxString dataStr = lineContent.Mid(filePattern.dataBegin - 1,
+                                                       filePattern.dataEnd - filePattern.dataBegin + 1);
 
                     // Put value in the matrix
                     m_dataRaw(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
@@ -732,8 +732,8 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, size_t stat
                             vColumns[filePattern.timeMinuteBegin - 1].ToDouble(&valTimeMinute);
                         }
 
-                        double dateData =
-                            asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour, valTimeMinute, 0);
+                        double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour,
+                                                         valTimeMinute, 0);
 
                         // Find matching date
                         while (dateData - m_time(timeIndex) > 0.0001) {
@@ -857,8 +857,8 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const {
             int nansNb = 0;
 
             // Find begining and end of the year
-            int rowstart =
-                asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 1, 1), asHIDE_WARNINGS);
+            int rowstart = asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 1, 1),
+                                       asHIDE_WARNINGS);
             int rowend = asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 12, 31, 59, 59),
                                      asHIDE_WARNINGS);
             if ((rowend == asOUT_OF_RANGE) | (rowend == asNOT_FOUND)) {
