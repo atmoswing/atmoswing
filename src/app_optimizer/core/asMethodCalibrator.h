@@ -96,7 +96,7 @@ class asMethodCalibrator : public asMethodStandard {
 
     virtual bool SetBestParameters(asResultsParametersArray& results);
 
-    wxString GetPredictandStationIdsList(vi& stationIds) const;
+    wxString GetStationIdsList(vi& stationIds) const;
 
     bool Manager() override;
 

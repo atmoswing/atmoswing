@@ -299,7 +299,7 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray& results) {
     return true;
 }
 
-wxString asMethodCalibrator::GetPredictandStationIdsList(vi& stationIds) const {
+wxString asMethodCalibrator::GetStationIdsList(vi& stationIds) const {
     wxString id;
 
     if (stationIds.size() == 1) {

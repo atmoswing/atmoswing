@@ -164,11 +164,11 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
         ClearAll();
 
         vi stationId = stationsId[iStat];
-        wxLogMessage(_("Processing station %s"), GetPredictandStationIdsList(stationId));
+        wxLogMessage(_("Processing station %s"), GetStationIdsList(stationId));
 
         // Create result objects to save the parameters sets
         asResultsParametersArray results;
-        results.Init(wxString::Format(_("station_%s_evaluation"), GetPredictandStationIdsList(stationId)));
+        results.Init(wxString::Format(_("station_%s_evaluation"), GetStationIdsList(stationId)));
 
         // Set the next station ID
         params.SetPredictandStationIds(stationId);
