@@ -398,9 +398,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
 
         if (m_assessmentCounter > 0) {  // Skip if is resuming
 
-            if (!m_enableHistory) {
-                m_resGenerations.Clear();
-            }
+            m_resGenerations.Clear();
 
             // Save the full generation
             for (int i = 0; i < m_parameters.size(); i++) {
@@ -626,7 +624,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         vectScores.push_back(prevScoresCalib);
 
         // Get the parameters
-        if (m_enableHistory || iLine >= iLastGen) {
+        if (iLine >= iLastGen) {
             prevParams = m_parameters[0];
             if (!prevParams.GetValuesFromString(fileLine)) {
                 return false;
@@ -647,10 +645,6 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         iLine++;
     } while (!prevResults.EndOfFile());
     prevResults.Close();
-
-    if (m_enableHistory) {
-        m_resGenerations.ProcessMedianScores();
-    }
 
     wxLogMessage(_("%d former results have been reloaded."), m_resGenerations.GetCount());
     asLog::PrintToConsole(wxString::Format(_("%d former results have been reloaded.\n"), m_resGenerations.GetCount()));
@@ -936,44 +930,6 @@ asParametersOptimizationGAs* asMethodOptimizerGeneticAlgorithms::GetNextParamete
         if (!asIsNaN(m_scoresCalib[m_iterator])) {
             m_iterator++;
             continue;
-        }
-
-        if (m_enableHistory) {
-            // Look for similar parameters sets that were already assessed
-            if (m_resGenerations.HasBeenAssessed(m_parameters[m_iterator], m_scoresCalib[m_iterator])) {
-                m_nbSameParams++;
-                m_iterator++;
-                continue;
-            }
-
-            // Look for close parameters sets that were already assessed
-            float scoreCloseParams;
-            if (!m_bestScores.empty() &&
-                m_resGenerations.HasCloseOneBeenAssessed(m_parameters[m_iterator], scoreCloseParams)) {
-                switch (m_scoreOrder) {
-                    case (Asc): {
-                        if (scoreCloseParams > m_resGenerations.GetMedianScore()) {
-                            m_scoresCalib[m_iterator] = scoreCloseParams;
-                            m_nbCloseParams++;
-                            m_iterator++;
-                            continue;
-                        }
-                        break;
-                    }
-                    case (Desc): {
-                        if (scoreCloseParams < m_resGenerations.GetMedianScore()) {
-                            m_scoresCalib[m_iterator] = scoreCloseParams;
-                            m_nbCloseParams++;
-                            m_iterator++;
-                            continue;
-                        }
-                        break;
-                    }
-                    default: {
-                        wxLogError(_("Wrong order in score."));
-                    }
-                }
-            }
         }
 
         m_assessmentCounter++;
