@@ -53,7 +53,8 @@ asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
       m_crossoverType(0),
       m_mutationsModeType(0),
       m_allowElitismForTheBest(true),
-      m_enableHistory(false) {
+      m_useMiniBatches(true),
+      m_miniBatchSize(365) {
     m_warnFailedLoadingData = false;
 }
 
@@ -169,7 +170,8 @@ bool asMethodOptimizerGeneticAlgorithms::Manager() {
     m_couplesSelectionType = (int)pConfig->ReadLong("/GAs/CouplesSelectionOperator", 0l);
     m_crossoverType = (int)pConfig->ReadLong("/GAs/CrossoverOperator", 0l);
     m_mutationsModeType = (int)pConfig->ReadLong("/GAs/MutationOperator", 0l);
-    m_enableHistory = pConfig->ReadBool("/GAs/EnableHistory", false);
+    m_useMiniBatches = pConfig->ReadBool("/GAs/UseMiniBatches", true);
+    m_miniBatchSize = (int)pConfig->ReadLong("/GAs/MiniBatchSize", 365l);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Reset the score of the climatology

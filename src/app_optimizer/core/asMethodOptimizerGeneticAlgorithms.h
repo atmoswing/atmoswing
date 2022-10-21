@@ -95,7 +95,8 @@ class asMethodOptimizerGeneticAlgorithms : public asMethodOptimizer {
     int m_crossoverType;
     int m_mutationsModeType;
     bool m_allowElitismForTheBest;
-    bool m_enableHistory;
+    bool m_useMiniBatches;
+    int m_miniBatchSize;
     vf m_bestScores;
     vf m_meanScores;
 
