@@ -167,7 +167,7 @@ bool asFileText::EndOfFile() const {
 int asFileText::CountLines(const wxString& filePath) {
     asFileText file(filePath, asFile::ReadOnly);
     if (!file.Open()) {
-        wxLogError(_("Couldn't open the file %s."), filePath.c_str());
+        wxLogError(_("Couldn't open the file %s."), filePath);
         return 0;
     }
 

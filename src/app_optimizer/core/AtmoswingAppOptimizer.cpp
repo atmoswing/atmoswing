@@ -357,7 +357,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly() {
                         if (!valNow.IsEmpty() && !valNow.IsSameAs(valRef)) {
                             wxLogError(_("The option %s (under Optimizer/%s) differ from the previous config file (%s "
                                          "!= %s)."),
-                                       entryName.c_str(), subGroupName.c_str(), valNow.c_str(), valRef.c_str());
+                                       entryName, subGroupName, valNow, valRef);
                             return false;
                         }
                     } while (pConfigNow->GetNextEntry(entryName, entryIndex));
