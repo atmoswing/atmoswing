@@ -170,8 +170,8 @@ bool asMethodOptimizerGeneticAlgorithms::Manager() {
     m_crossoverType = (int)pConfig->ReadLong("/GAs/CrossoverOperator", 0l);
     m_mutationsModeType = (int)pConfig->ReadLong("/GAs/MutationOperator", 0l);
     m_useMiniBatches = pConfig->ReadBool("/GAs/UseMiniBatches", false);
-    m_miniBatchSize = (int)pConfig->ReadLong("/GAs/MiniBatchSize", 128l);
-    m_epochMax = (int)pConfig->ReadLong("/GAs/NumberOfEpochs", 30l);
+    m_miniBatchSize = (int)pConfig->ReadLong("/GAs/MiniBatchSize", 1825l);
+    m_epochMax = (int)pConfig->ReadLong("/GAs/NumberOfEpochs", 10l);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Reset the score of the climatology
