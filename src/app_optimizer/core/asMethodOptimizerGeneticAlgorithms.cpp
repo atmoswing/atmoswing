@@ -127,34 +127,34 @@ bool asMethodOptimizerGeneticAlgorithms::SetBestParameters(asResultsParametersAr
     wxASSERT(!m_scoresCalib.empty());
 
     // Extract selected parameters & best parameters
-    float bestscore = m_scoresCalib[0];
-    int bestscorerow = 0;
+    float bestScore = m_scoresCalib[0];
+    int iBestScore = 0;
 
     for (int i = 0; i < m_parameters.size(); i++) {
         if (m_scoreOrder == Asc) {
-            if (m_scoresCalib[i] < bestscore) {
-                bestscore = m_scoresCalib[i];
-                bestscorerow = i;
+            if (m_scoresCalib[i] < bestScore) {
+                bestScore = m_scoresCalib[i];
+                iBestScore = i;
             }
         } else {
-            if (m_scoresCalib[i] > bestscore) {
-                bestscore = m_scoresCalib[i];
-                bestscorerow = i;
+            if (m_scoresCalib[i] > bestScore) {
+                bestScore = m_scoresCalib[i];
+                iBestScore = i;
             }
         }
     }
 
-    if (bestscorerow != 0) {
+    if (iBestScore != 0) {
         // Re-validate
-        SaveDetails(m_parameters[bestscorerow]);
-        Validate(m_parameters[bestscorerow]);
+        SaveDetails(m_parameters[iBestScore]);
+        Validate(m_parameters[iBestScore]);
     }
 
     // Sort according to the level and the observation time
-    asParametersScoring sortedParams = m_parameters[bestscorerow];
+    asParametersScoring sortedParams = m_parameters[iBestScore];
     sortedParams.SortLevelsAndTime();
 
-    results.Add(sortedParams, m_scoresCalib[bestscorerow], m_scoreValid);
+    results.Add(sortedParams, m_scoresCalib[iBestScore], m_scoreValid);
 
     return true;
 }
