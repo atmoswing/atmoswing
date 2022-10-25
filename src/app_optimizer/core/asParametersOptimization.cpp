@@ -322,7 +322,7 @@ bool asParametersOptimization::ParseAnalogDatesParams(asFileParametersOptimizati
             AddPredictorLowerLimit(m_stepsLowerLimit[iStep]);
             AddPredictorLocks(m_stepsLocks[iStep]);
             SetPreprocess(iStep, iPtor, false);
-            SetPreload(iStep, iPtor, false);
+            SetPreload(iStep, iPtor, true);
             if (!ParsePredictors(fileParams, iStep, iPtor, nodeParamBlock)) return false;
             iPtor++;
         } else {
@@ -339,6 +339,9 @@ bool asParametersOptimization::ParsePredictors(asFileParametersOptimization& fil
     while (nodeParam) {
         if (nodeParam->GetName() == "preload") {
             SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
+            if (!fileParams.GetBool(nodeParam)) {
+                wxLogWarning(_("The preload option has been disabled. This can result in very long computation time."));
+            }
         } else if (nodeParam->GetName() == "standardize") {
             SetStandardize(iStep, iPtor, fileParams.GetBool(nodeParam));
         } else if (nodeParam->GetName() == "standardize_mean") {
