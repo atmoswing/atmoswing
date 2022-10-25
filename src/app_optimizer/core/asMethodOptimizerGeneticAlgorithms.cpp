@@ -412,7 +412,10 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
         SortScoresAndParameters();
 
         // Elitism after mutation must occur after evaluation
-        ElitismAfterMutation();
+        if (!m_useMiniBatches) {
+            ElitismAfterMutation();
+        }
+        ClearTemp();
 
         if (m_assessmentCounter > 0) {  // Skip if is resuming
 
@@ -995,6 +998,10 @@ bool asMethodOptimizerGeneticAlgorithms::HasConverged() {
         if (m_epoch > m_epochMax) {
             return true;
         }
+        // Always reset the score values for the mini-batch approach as the sample changes.
+        for (int i = 0; i < m_parameters.size(); i++) {
+            m_scoresCalib[i] = NaNf;
+        }
         return false;
     }
 
@@ -1068,8 +1075,6 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation() {
             }
         }
     }
-
-    ClearTemp();
 
     return true;
 }
