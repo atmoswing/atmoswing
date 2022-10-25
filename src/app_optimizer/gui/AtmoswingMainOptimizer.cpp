@@ -109,7 +109,7 @@ void AtmoswingFrameOptimizer::SetDefaultOptions() {
     pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads == -1) maxThreads = 2;
-    pConfig->Write("/Processing/ThreadsNb", pConfig->Read("/Processing/ThreadsNb", wxString::Format("%d", maxThreads)));
+    pConfig->Write("/Processing/ThreadsNb", pConfig->Read("/Processing/ThreadsNb", asStrF("%d", maxThreads)));
     long processingMethod = pConfig->Read("/Processing/Method", (long)asMULTITHREADS);
     if (!allowMultithreading) {
         processingMethod = (long)asSTANDARD;

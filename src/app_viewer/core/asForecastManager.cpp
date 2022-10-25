@@ -236,13 +236,13 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow) {
             wxString nowstrV3 = asTime::GetStringTime(currentTimeHour, "YYYY-MM-DD_hh");
             wxString forecastname = m_aggregator->GetForecast(methodRow, forecastRow)->GetMethodId() + '.' +
                                     m_aggregator->GetForecast(methodRow, forecastRow)->GetSpecificTag();
-            wxString filenameV4 = wxString::Format("%s.%s.nc", nowstrV3, forecastname);
+            wxString filenameV4 = asStrF("%s.%s.nc", nowstrV3, forecastname);
             wxString fullPathV4 = currentDirPath + filenameV4;
-            wxString filenameV3 = wxString::Format("%s.%s.asff", nowstrV3, forecastname);
+            wxString filenameV3 = asStrF("%s.%s.asff", nowstrV3, forecastname);
             wxString fullPathV3 = currentDirPath + filenameV3;
-            wxString filenameV2 = wxString::Format("%s.%s.asff", nowstrV1, forecastname);
+            wxString filenameV2 = asStrF("%s.%s.asff", nowstrV1, forecastname);
             wxString fullPathV2 = currentDirPath + filenameV2;
-            wxString filenameV1 = wxString::Format("%s.%s.fcst", nowstrV1, forecastname);
+            wxString filenameV1 = asStrF("%s.%s.fcst", nowstrV1, forecastname);
             wxString fullPathV1 = currentDirPath + filenameV1;
 
             if (wxFileName::FileExists(fullPathV3)) {

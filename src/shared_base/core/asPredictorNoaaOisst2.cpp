@@ -89,9 +89,9 @@ bool asPredictorNoaaOisst2::Init() {
 void asPredictorNoaaOisst2::ListFiles(asTimeArray& timeArray) {
     for (double date = timeArray.GetFirst(); date <= timeArray.GetLast(); date++) {
         // Build the file path (ex: %d/AVHRR/sst4-path-eot.%4d%02d%02d.nc)
-        m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, asTime::GetYear(date),
-                                                                    asTime::GetYear(date), asTime::GetMonth(date),
-                                                                    asTime::GetDay(date)));
+        m_files.push_back(GetFullDirectoryPath() + asStrF(m_fileNamePattern, asTime::GetYear(date),
+                                                          asTime::GetYear(date), asTime::GetMonth(date),
+                                                          asTime::GetDay(date)));
     }
 }
 

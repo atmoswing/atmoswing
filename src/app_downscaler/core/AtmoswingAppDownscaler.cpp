@@ -133,7 +133,7 @@ bool AtmoswingAppDownscaler::OnInit() {
 
     // Check that it is the unique instance
     if (!wxFileConfig::Get()->ReadBool("/General/MultiInstances", false)) {
-        const wxString instanceName = wxString::Format(wxT("atmoswing-downscaler-%s"), wxGetUserId());
+        const wxString instanceName = asStrF(wxT("atmoswing-downscaler-%s"), wxGetUserId());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if (m_singleInstanceChecker->IsAnotherRunning()) {
             wxMessageBox(_("Program already running, aborting."));
@@ -167,7 +167,7 @@ wxString AtmoswingAppDownscaler::GetLocalPath() {
     if (g_runNb > 0) {
         localPath.Append("runs");
         localPath.Append(DS);
-        localPath.Append(wxString::Format("%d", g_runNb));
+        localPath.Append(asStrF("%d", g_runNb));
         localPath.Append(DS);
     }
 
@@ -278,7 +278,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
         if (g_runNb > 0) {
             localPath.Append("runs");
             localPath.Append(DS);
-            localPath.Append(wxString::Format("%d", g_runNb));
+            localPath.Append(asStrF("%d", g_runNb));
             localPath.Append(DS);
 
             // Check if path already exists
@@ -325,7 +325,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if the user asked for the version
     if (parser.Found("version")) {
         wxString date(wxString::FromAscii(__DATE__));
-        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
+        asLog::PrintToConsole(asStrF("AtmoSwing version %s, %s\n", g_version, date));
 
         return true;
     }
@@ -467,7 +467,7 @@ int AtmoswingAppDownscaler::OnRun() {
             downscaler.SetPredictorDataDir(m_predictorsArchiveDir);
             downscaler.Manager();
         } else {
-            asLog::PrintToConsole(wxString::Format("Wrong downscaling method selection (%s).\n", m_downscalingMethod));
+            asLog::PrintToConsole(asStrF("Wrong downscaling method selection (%s).\n", m_downscalingMethod));
         }
     } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);

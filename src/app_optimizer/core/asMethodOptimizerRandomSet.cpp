@@ -59,12 +59,11 @@ bool asMethodOptimizerRandomSet::Manager() {
     vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
     asResultsParametersArray results_all;
-    results_all.Init(wxString::Format(_("station_%s_tested_parameters"), GetStationIdsList(stationId)));
+    results_all.Init(asStrF(_("station_%s_tested_parameters"), GetStationIdsList(stationId)));
     asResultsParametersArray results_best;
-    results_best.Init(wxString::Format(_("station_%s_best_parameters"), GetStationIdsList(stationId)));
+    results_best.Init(asStrF(_("station_%s_best_parameters"), GetStationIdsList(stationId)));
     wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
-    resultsXmlFilePath.Append(
-        wxString::Format("/%s_station_%s_best_parameters.xml", time, GetStationIdsList(stationId)));
+    resultsXmlFilePath.Append(asStrF("/%s_station_%s_best_parameters.xml", time, GetStationIdsList(stationId)));
 
     // Preload data
     if (!PreloadArchiveData(&params)) {

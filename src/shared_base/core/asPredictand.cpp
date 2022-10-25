@@ -551,8 +551,7 @@ bool asPredictand::ParseData(const wxString& catalogFile, const wxString& direct
     for (int iStat = 0; iStat < catalog.GetStationsNb(); iStat++) {
 #if USE_GUI
         // Update the progress bar.
-        wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"),
-                                                    catalog.GetStationFilename(iStat));
+        wxString fileNameMessage = asStrF(_("Loading data from files.\nFile: %s"), catalog.GetStationFilename(iStat));
         if (!ProgressBar.Update(iStat, fileNameMessage)) {
             wxLogError(_("The process has been canceled by the user."));
             return false;
@@ -770,8 +769,8 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, size_t stat
 
     // Check time width
     if (endIndex - startIndex != timeIndex - startIndex - 1) {
-        wxString messageTime = wxString::Format(_("The length of the data in \"%s / %s\" is not coherent"),
-                                                currentData.GetName(), currentData.GetStationName(stationIndex));
+        wxString messageTime = asStrF(_("The length of the data in \"%s / %s\" is not coherent"), currentData.GetName(),
+                                      currentData.GetStationName(stationIndex));
         wxLogError(messageTime);
         return false;
     }

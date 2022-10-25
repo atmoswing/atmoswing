@@ -221,14 +221,14 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
     vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
     asResultsParametersArray resFinalPopulation;
-    resFinalPopulation.Init(wxString::Format(_("station_%s_final_population"), GetStationIdsList(stationId)));
+    resFinalPopulation.Init(asStrF(_("station_%s_final_population"), GetStationIdsList(stationId)));
     asResultsParametersArray resBestIndividual;
-    resBestIndividual.Init(wxString::Format(_("station_%s_best_individual"), GetStationIdsList(stationId)));
-    m_resGenerations.Init(wxString::Format(_("station_%s_generations"), GetStationIdsList(stationId)));
+    resBestIndividual.Init(asStrF(_("station_%s_best_individual"), GetStationIdsList(stationId)));
+    m_resGenerations.Init(asStrF(_("station_%s_generations"), GetStationIdsList(stationId)));
     wxString resXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
-    resXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time, GetStationIdsList(stationId)));
+    resXmlFilePath.Append(asStrF("/%s_station_%s_best_parameters.xml", time, GetStationIdsList(stationId)));
     wxString operatorsFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
-    operatorsFilePath.Append(wxString::Format("/%s_station_%s_operators.txt", time, GetStationIdsList(stationId)));
+    operatorsFilePath.Append(asStrF("/%s_station_%s_operators.txt", time, GetStationIdsList(stationId)));
 
     // Initialize parameters before loading data.
     InitParameters(params);
@@ -510,7 +510,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
     ThreadsManager().CritSectionConfig().Enter();
     wxString statsFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
-    statsFilePath.Append(wxString::Format("%s_stats.txt", time));
+    statsFilePath.Append(asStrF("%s_stats.txt", time));
     asFileText stats(statsFilePath, asFile::New);
 
     return true;
@@ -532,14 +532,14 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
     // Check if the resulting file is already present
     vi stationId = params.GetPredictandStationIds();
-    wxString finalFilePattern = wxString::Format("*_station_%s_best_individual.txt", GetStationIdsList(stationId));
+    wxString finalFilePattern = asStrF("*_station_%s_best_individual.txt", GetStationIdsList(stationId));
     if (dir.HasFiles(finalFilePattern)) {
         wxLogMessage(_("The directory %s already contains the resulting file."), resultsDir);
         return false;
     }
 
     // Look for intermediate results to load
-    wxString generationsFilePattern = wxString::Format("*_station_%s_generations.txt", GetStationIdsList(stationId));
+    wxString generationsFilePattern = asStrF("*_station_%s_generations.txt", GetStationIdsList(stationId));
     if (!dir.HasFiles(generationsFilePattern)) {
         return true;
     }
@@ -557,9 +557,9 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         return false;
     }
 
-    wxString msg = wxString::Format(_("Previous intermediate results were found "
-                                      "and will be loaded (%d lines)."),
-                                    nLines);
+    wxString msg = asStrF(_("Previous intermediate results were found "
+                            "and will be loaded (%d lines)."),
+                          nLines);
     wxLogWarning(msg);
     asLog::PrintToConsole(msg);
     asFileText prevResults(filePath, asFile::ReadOnly);
@@ -675,7 +675,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
     prevResults.Close();
 
     wxLogMessage(_("%d former results have been reloaded."), m_resGenerations.GetCount());
-    asLog::PrintToConsole(wxString::Format(_("%d former results have been reloaded.\n"), m_resGenerations.GetCount()));
+    asLog::PrintToConsole(asStrF(_("%d former results have been reloaded.\n"), m_resGenerations.GetCount()));
 
     // Restore best and mean scores
     m_bestScores.resize(genNb);
@@ -699,7 +699,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
     wxCopyFile(filePath, m_resGenerations.GetFilePath());
 
     // Restore operators
-    wxString operatorsFilePattern = wxString::Format("*_station_%s_operators.txt", GetStationIdsList(stationId));
+    wxString operatorsFilePattern = asStrF("*_station_%s_operators.txt", GetStationIdsList(stationId));
     if (dir.HasFiles(operatorsFilePattern)) {
         return true;
     }
@@ -819,7 +819,7 @@ bool asMethodOptimizerGeneticAlgorithms::HasPreviousRunConverged(asParametersOpt
     } else {
         // Check if the resulting file is already present
         vi stationId = params.GetPredictandStationIds();
-        wxString finalFilePattern = wxString::Format("*_station_%s_best_individual.txt", GetStationIdsList(stationId));
+        wxString finalFilePattern = asStrF("*_station_%s_best_individual.txt", GetStationIdsList(stationId));
         if (dir.HasFiles(finalFilePattern)) {
             wxLogMessage(_("The directory %s already contains the resulting file."), resultsDir);
             return true;
@@ -1928,8 +1928,8 @@ bool asMethodOptimizerGeneticAlgorithms::Mating() {
         counter++;
     }
 
-    wxASSERT_MSG(m_parametersTemp.size() == m_popSize, wxString::Format("m_parametersTemp.size() = %d, m_popSize = %d",
-                                                                        (int)m_parametersTemp.size(), m_popSize));
+    wxASSERT_MSG(m_parametersTemp.size() == m_popSize,
+                 asStrF("m_parametersTemp.size() = %d, m_popSize = %d", (int)m_parametersTemp.size(), m_popSize));
     wxASSERT(m_parametersTemp.size() == m_scoresCalibTemp.size());
 
     return true;

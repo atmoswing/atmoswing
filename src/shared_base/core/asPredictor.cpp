@@ -1226,15 +1226,15 @@ bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) 
             return false;
         }
         wxASSERT_MSG(m_fInd.area.lonStart >= 0,
-                     wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", m_fStr.lons[0],
-                                      (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
+                     asStrF("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", m_fStr.lons[0],
+                            (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
 
         int indexStartLat1 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinStart, 0.01f);
         int indexStartLat2 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinEnd, 0.01f);
-        wxASSERT_MSG(indexStartLat1 >= 0, wxString::Format("Looking for %g in %g to %g", latMinStart, m_fStr.lats[0],
-                                                           m_fStr.lats[m_fStr.lats.size() - 1]));
-        wxASSERT_MSG(indexStartLat2 >= 0, wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fStr.lats[0],
-                                                           m_fStr.lats[m_fStr.lats.size() - 1]));
+        wxASSERT_MSG(indexStartLat1 >= 0, asStrF("Looking for %g in %g to %g", latMinStart, m_fStr.lats[0],
+                                                 m_fStr.lats[m_fStr.lats.size() - 1]));
+        wxASSERT_MSG(indexStartLat2 >= 0, asStrF("Looking for %g in %g to %g", latMinEnd, m_fStr.lats[0],
+                                                 m_fStr.lats[m_fStr.lats.size() - 1]));
         m_fInd.area.latStart = wxMin(indexStartLat1, indexStartLat2);
     } else {
         m_fInd.area.lonStart = 0;
@@ -2135,9 +2135,8 @@ bool asPredictor::InterpolateOnGrid(asAreaGrid* dataArea, asAreaGrid* desiredAre
                                    axisDataLat[axisDataLatEnd], axisDataLatEnd, (int)axisDataLat.size());
                         return false;
                     }
-                    wxASSERT_MSG(indexYfloor >= 0,
-                                 wxString::Format("%f in %f to %f", axisFinalLat[iLat], axisDataLat[indexLastLat],
-                                                  axisDataLat[axisDataLatEnd]));
+                    wxASSERT_MSG(indexYfloor >= 0, asStrF("%f in %f to %f", axisFinalLat[iLat],
+                                                          axisDataLat[indexLastLat], axisDataLat[axisDataLatEnd]));
                     wxASSERT(indexYceil >= 0);
 
                     // Save last index

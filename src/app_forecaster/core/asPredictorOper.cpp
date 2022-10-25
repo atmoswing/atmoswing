@@ -239,7 +239,7 @@ bool asPredictorOper::BuildFilenamesUrls() {
 
         wxString thisCommandLeadTime = thisCommand;
 
-        wxString timeStr = wxString::Format("%d", leadTime);
+        wxString timeStr = asStrF("%d", leadTime);
 
         thisCommandLeadTime.Replace("[LEADTIME-H]", timeStr);
         thisCommandLeadTime.Replace("[LEADTIME-h]", timeStr);
@@ -297,11 +297,11 @@ wxString asPredictorOper::GetDirStructure(const double date) {
 }
 
 wxString asPredictorOper::GetFileName(const double date, const int leadTime) {
-    wxString timeStr = wxString::Format("%d", leadTime);
+    wxString timeStr = asStrF("%d", leadTime);
     if (timeStr.Length() < 2) timeStr = "0" + timeStr;
     if (timeStr.Length() < 3) timeStr = "0" + timeStr;
 
     wxString dateStr = asTime::GetStringTime(date, "YYYYMMDDhh");
 
-    return wxString::Format("%s.%s.%s.%s.%s", dateStr, m_datasetId, m_dataId, timeStr, m_fileExtension);
+    return asStrF("%s.%s.%s.%s.%s", dateStr, m_datasetId, m_dataId, timeStr, m_fileExtension);
 }

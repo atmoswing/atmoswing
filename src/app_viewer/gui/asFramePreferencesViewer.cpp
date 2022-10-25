@@ -66,9 +66,9 @@ void asFramePreferencesViewer::LoadPreferences() {
     m_dirPickerForecastResults->SetPath(m_workspace->GetForecastsDirectory());
 
     // Forecast display
-    wxString colorbarMaxValue = wxString::Format("%g", m_workspace->GetColorbarMaxValue());
+    wxString colorbarMaxValue = asStrF("%g", m_workspace->GetColorbarMaxValue());
     m_textCtrlColorbarMaxValue->SetValue(colorbarMaxValue);
-    wxString pastDaysNb = wxString::Format("%d", m_workspace->GetTimeSeriesPlotPastDaysNb());
+    wxString pastDaysNb = asStrF("%d", m_workspace->GetTimeSeriesPlotPastDaysNb());
     m_textCtrlPastDaysNb->SetValue(pastDaysNb);
 
     // Alarms panel
@@ -95,7 +95,7 @@ void asFramePreferencesViewer::LoadPreferences() {
         default:
             m_choiceAlarmsReturnPeriod->SetSelection(2);
     }
-    wxString alarmsQuantile = wxString::Format("%g", m_workspace->GetAlarmsPanelQuantile());
+    wxString alarmsQuantile = asStrF("%g", m_workspace->GetAlarmsPanelQuantile());
     m_textCtrlAlarmsQuantile->SetValue(alarmsQuantile);
 
     /*

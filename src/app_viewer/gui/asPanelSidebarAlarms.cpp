@@ -60,7 +60,7 @@ void asPanelSidebarAlarms::Update() {
     int returnPeriodRef = m_workspace->GetAlarmsPanelReturnPeriod();
     float quantileThreshold = m_workspace->GetAlarmsPanelQuantile();
 
-    m_header->SetLabelText(wxString::Format(_("Alarms (T=%d, q=%g)"), returnPeriodRef, quantileThreshold));
+    m_header->SetLabelText(asStrF(_("Alarms (T=%d, q=%g)"), returnPeriodRef, quantileThreshold));
 
     a1f dates = m_forecastManager->GetFullTargetDates();
 
@@ -144,8 +144,8 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f& dates, const vwxs& names, a2f&
     // Get sizes
     int cols = dates.size();
     int rows = names.size();
-    wxASSERT_MSG((values.cols() == cols), wxString::Format("values.cols()=%d, cols=%d", (int)values.cols(), cols));
-    wxASSERT_MSG((values.rows() == rows), wxString::Format("values.rows()=%d, rows=%d", (int)values.rows(), rows));
+    wxASSERT_MSG((values.cols() == cols), asStrF("values.cols()=%d, cols=%d", (int)values.cols(), cols));
+    wxASSERT_MSG((values.rows() == rows), asStrF("values.rows()=%d, rows=%d", (int)values.rows(), rows));
 
     // Height of a grid row
     int cellHeight = 20 * g_ppiScaleDc;
@@ -182,7 +182,7 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f& dates, const vwxs& names, a2f&
 
             for (int iFcst = 0; iFcst < names.size(); iFcst++) {
                 if (iLead == 0) {
-                    wxString forecastStr = wxString::Format("%d", iFcst + 1);
+                    wxString forecastStr = asStrF("%d", iFcst + 1);
                     gc->SetFont(numFont, *wxBLACK);
                     CreateNbText(gc, startNb, cellHeight, iFcst, forecastStr);
                 }

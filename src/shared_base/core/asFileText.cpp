@@ -76,8 +76,7 @@ void asFileText::AddContent(const wxString& lineContent) {
 
     // Check the state flags
     if (m_file.fail())
-        asThrowException(
-            wxString::Format(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
+        asThrowException(asStrF(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
 }
 
 wxString asFileText::GetNextLine() {
@@ -90,11 +89,10 @@ wxString asFileText::GetNextLine() {
 
         // Check the state flags
         if ((!m_file.eof()) && (m_file.fail()))
-            asThrowException(
-                wxString::Format(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
+            asThrowException(asStrF(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
     } else {
-        asThrowException(wxString::Format(_("You are trying to read a line after the end of the file %s"),
-                                          m_fileName.GetFullPath()));
+        asThrowException(
+            asStrF(_("You are trying to read a line after the end of the file %s"), m_fileName.GetFullPath()));
     }
 
     wxString lineContent = wxString(tmpLineContent.c_str(), wxConvUTF8);

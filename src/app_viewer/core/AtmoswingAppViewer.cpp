@@ -83,7 +83,7 @@ bool AtmoswingAppViewer::OnInit() {
     m_singleInstanceChecker = nullptr;
 
     if (!pConfig->ReadBool("/General/MultiInstances", false)) {
-        const wxString instanceName = wxString::Format(wxT("atmoswing-viewer-%s"), wxGetUserId());
+        const wxString instanceName = asStrF(wxT("atmoswing-viewer-%s"), wxGetUserId());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if (m_singleInstanceChecker->IsAnotherRunning()) {
             // wxLogError(_("Program already running, aborting."));
@@ -137,7 +137,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if the user asked for the version
     if (parser.Found("v")) {
         wxString date(wxString::FromAscii(__DATE__));
-        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, (const wxChar*)date));
+        asLog::PrintToConsole(asStrF("AtmoSwing version %s, %s\n", g_version, (const wxChar*)date));
 
         return false;
     }

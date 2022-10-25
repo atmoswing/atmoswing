@@ -154,7 +154,7 @@ bool asPredictorNoaa20Cr2c::Init() {
 
 void asPredictorNoaa20Cr2c::ListFiles(asTimeArray& timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
-        m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
+        m_files.push_back(GetFullDirectoryPath() + asStrF(m_fileNamePattern, iYear));
     }
 }
 

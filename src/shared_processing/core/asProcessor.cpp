@@ -981,7 +981,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
                     int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
                                            timeTargetSelection[i], 0.01);
                     wxASSERT_MSG(iTimeTarg >= 0,
-                                 wxString::Format(_("Looking for %s in betwwen %s and %s."),
+                                 asStrF(_("Looking for %s in betwwen %s and %s."),
                                                   asTime::GetStringTime(timeTargetSelection[i], "DD.MM.YYYY hh:mm"),
                                                   asTime::GetStringTime(timeTargetData[0], "DD.MM.YYYY hh:mm"),
                                                   asTime::GetStringTime(timeTargetData[timeTargetDataSize - 1],
@@ -1103,8 +1103,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
                 vSuccess.push_back(success);
                 int start = end + 1;
                 end = ceil(((float)(iThread + 1) * (float)(timeTargetSelectionSize - 1) / (float)threadsNb));
-                wxASSERT_MSG(end >= start, wxString::Format("start = %d, end = %d, timeTargetSelectionSize = %d", start,
-                                                            end, timeTargetSelectionSize));
+                wxASSERT_MSG(end >= start, asStrF("start = %d, end = %d, timeTargetSelectionSize = %d", start, end,
+                                                  timeTargetSelectionSize));
 
                 asThreadGetAnalogsSubDates* thread = new asThreadGetAnalogsSubDates(
                     predictorsArchive, predictorsTarget, &timeArrayArchiveData, &timeArrayTargetData,
@@ -1156,11 +1156,10 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
                 int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
                                        timeTargetSelection[iAnalogDate], 0.01);
                 wxASSERT_MSG(iTimeTarg >= 0,
-                             wxString::Format(
-                                 _("Looking for %s in betwwen %s and %s."),
-                                 asTime::GetStringTime(timeTargetSelection[iAnalogDate], "DD.MM.YYYY hh:mm"),
-                                 asTime::GetStringTime(timeTargetData[0], "DD.MM.YYYY hh:mm"),
-                                 asTime::GetStringTime(timeTargetData[timeTargetDataSize - 1], "DD.MM.YYYY hh:mm")));
+                             asStrF(_("Looking for %s in betwwen %s and %s."),
+                                    asTime::GetStringTime(timeTargetSelection[iAnalogDate], "DD.MM.YYYY hh:mm"),
+                                    asTime::GetStringTime(timeTargetData[0], "DD.MM.YYYY hh:mm"),
+                                    asTime::GetStringTime(timeTargetData[timeTargetDataSize - 1], "DD.MM.YYYY hh:mm")));
 
                 if (iTimeTarg < 0) {
                     wxLogError(_("An unexpected error occurred."));
@@ -1208,12 +1207,11 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
                             wxASSERT(timeArchiveData.size() > iTimeArch);
                             wxASSERT_MSG(
                                 vArchData[iPtor]->size() == vTargData[iPtor]->size(),
-                                wxString::Format(
-                                    "%s (%d th element) in archive, %s (%d th element) in target: vArchData size = "
-                                    "%d, vTargData size = %d",
-                                    asTime::GetStringTime(timeArchiveData[iTimeArch], "DD.MM.YYYY hh:mm"), iTimeArch,
-                                    asTime::GetStringTime(timeTargetData[iTimeTarg], "DD.MM.YYYY hh:mm"), iTimeTarg,
-                                    (int)vArchData[iPtor]->size(), (int)vTargData[iPtor]->size()));
+                                asStrF("%s (%d th element) in archive, %s (%d th element) in target: vArchData size = "
+                                       "%d, vTargData size = %d",
+                                       asTime::GetStringTime(timeArchiveData[iTimeArch], "DD.MM.YYYY hh:mm"), iTimeArch,
+                                       asTime::GetStringTime(timeTargetData[iTimeTarg], "DD.MM.YYYY hh:mm"), iTimeTarg,
+                                       (int)vArchData[iPtor]->size(), (int)vTargData[iPtor]->size()));
                             float tmpScore = criteria[iPtor]->Assess(*vTargData[iPtor], *vArchData[iPtor],
                                                                      vRowsNb[iPtor], vColsNb[iPtor]);
 

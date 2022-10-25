@@ -447,10 +447,10 @@ void asFramePlotDistributions::PlotAllReturnPeriods() {
         wxPlotData plotData;
         plotData.Create(2);
         if (std::abs(retPeriods[i] - 2.33) < 0.1) {
-            plotData.SetFilename(wxString::Format("P%3.2f", retPeriods[i]));
+            plotData.SetFilename(asStrF("P%3.2f", retPeriods[i]));
         } else {
             auto roundedVal = (int)asRound(retPeriods[i]);
-            plotData.SetFilename(wxString::Format("P%d", roundedVal));
+            plotData.SetFilename(asStrF("P%d", roundedVal));
         }
         plotData.SetValue(0, val, -1);
         plotData.SetValue(1, val, 2);

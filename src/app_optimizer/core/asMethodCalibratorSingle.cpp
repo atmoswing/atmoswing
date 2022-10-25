@@ -65,25 +65,25 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration& params) {
     for (int iStep = 0; iStep < params.GetStepsNb(); iStep++) {
         if (params.GetAnalogsNumberVector(iStep).size() > 1) {
             checkSizes = false;
-            errorField.Append(wxString::Format("analogsNumber (step %d), ", iStep));
+            errorField.Append(asStrF("analogsNumber (step %d), ", iStep));
         }
         for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
             if (params.NeedsPreprocessing(iStep, iPtor)) {
                 for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
                     if (params.GetPreprocessDataIdVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(wxString::Format("preprocessDataId (step %d, predictor %d, preprocess %d), ",
-                                                           iStep, iPtor, iPre));
+                        errorField.Append(
+                            asStrF("preprocessDataId (step %d, predictor %d, preprocess %d), ", iStep, iPtor, iPre));
                     }
                     if (params.GetPreprocessLevelVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(wxString::Format("PreprocessLevel (step %d, predictor %d, preprocess %d), ",
-                                                           iStep, iPtor, iPre));
+                        errorField.Append(
+                            asStrF("PreprocessLevel (step %d, predictor %d, preprocess %d), ", iStep, iPtor, iPre));
                     }
                     if (params.GetPreprocessHourVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(wxString::Format("preprocessHours (step %d, predictor %d, preprocess %d), ",
-                                                           iStep, iPtor, iPre));
+                        errorField.Append(
+                            asStrF("preprocessHours (step %d, predictor %d, preprocess %d), ", iStep, iPtor, iPre));
                     }
                 }
             }
@@ -91,50 +91,50 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration& params) {
             // Do the other ones anyway
             if (params.GetPredictorDataIdVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorDataId (step %d, predictor %d), ", iStep, iPtor));
+                errorField.Append(asStrF("PredictorDataId (step %d, predictor %d), ", iStep, iPtor));
             }
             if (params.GetPredictorLevelVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorLevel (step %d, predictor %d), ", iStep, iPtor));
+                errorField.Append(asStrF("PredictorLevel (step %d, predictor %d), ", iStep, iPtor));
             }
             if (params.GetPredictorHourVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorHours (step %d, predictor %d), ", iStep, iPtor));
+                errorField.Append(asStrF("PredictorHours (step %d, predictor %d), ", iStep, iPtor));
             }
             if (params.GetPredictorXminVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorXmin (step %d, predictor %d), ", iStep, iPtor));
+                errorField.Append(asStrF("PredictorXmin (step %d, predictor %d), ", iStep, iPtor));
             }
             if (params.GetPredictorXptsnbVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorXptsnb (step %d, predictor %d), ", iStep, iPtor));
+                errorField.Append(asStrF("PredictorXptsnb (step %d, predictor %d), ", iStep, iPtor));
             }
             if (params.GetPredictorYminVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorYmin (step %d, predictor %d), ", iStep, iPtor));
+                errorField.Append(asStrF("PredictorYmin (step %d, predictor %d), ", iStep, iPtor));
             }
             if (params.GetPredictorYptsnbVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorYptsnb (step %d, predictor %d), ", iStep, iPtor));
+                errorField.Append(asStrF("PredictorYptsnb (step %d, predictor %d), ", iStep, iPtor));
             }
             if (params.GetPredictorCriteriaVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorCriteria (step %d, predictor %d), ", iStep, iPtor));
+                errorField.Append(asStrF("PredictorCriteria (step %d, predictor %d), ", iStep, iPtor));
             }
             if (params.GetPredictorWeightVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorWeight (step %d, predictor %d), ", iStep, iPtor));
+                errorField.Append(asStrF("PredictorWeight (step %d, predictor %d), ", iStep, iPtor));
             }
 
             if (params.NeedsPreprocessing(iStep, iPtor)) {
                 for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
                     if (params.GetPreprocessLevelVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(wxString::Format("PreprocessLevel (step %d, predictor %d), ", iStep, iPtor));
+                        errorField.Append(asStrF("PreprocessLevel (step %d, predictor %d), ", iStep, iPtor));
                     }
                     if (params.GetPreprocessHourVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(wxString::Format("PreprocessHoursV (step %d, predictor %d), ", iStep, iPtor));
+                        errorField.Append(asStrF("PreprocessHoursV (step %d, predictor %d), ", iStep, iPtor));
                     }
                 }
             }
@@ -173,7 +173,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration& params) {
 
         // Create result objects to save the parameters sets
         asResultsParametersArray results_tested;
-        results_tested.Init(wxString::Format(_("station_%s_tested_parameters"), GetStationIdsList(stationId)));
+        results_tested.Init(asStrF(_("station_%s_tested_parameters"), GetStationIdsList(stationId)));
 
         // Set the next station ID
         params.SetPredictandStationIds(stationId);

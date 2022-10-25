@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
 
         // Initialize wxWidgets (also wxApp)
         int argcApp = 0;
-        wxChar **argvApp = NULL;
+        wxChar** argvApp = NULL;
         wxEntryStart(argcApp, argvApp);
 
         // Set the log

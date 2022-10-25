@@ -169,10 +169,10 @@ wxString asPredictorOperCustomFvgForecast::GetDirStructure(const double date) {
 }
 
 wxString asPredictorOperCustomFvgForecast::GetFileName(const double date, const int leadTime) {
-    wxString timeStr = wxString::Format("%d", leadTime);
+    wxString timeStr = asStrF("%d", leadTime);
     if (timeStr.Length() < 2) timeStr = "0" + timeStr;
 
     wxString dateStr = asTime::GetStringTime(date, "YYYYMMDD");
 
-    return wxString::Format("%s.%s%s.%s", m_dataId, dateStr, timeStr, m_fileExtension);
+    return asStrF("%s.%s%s.%s", m_dataId, dateStr, timeStr, m_fileExtension);
 }

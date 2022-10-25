@@ -256,7 +256,7 @@ void asPredictorNasaMerra2Subset::ListFiles(asTimeArray& timeArray) {
     for (int i = 0; i < tArray.size(); i++) {
         Time t = asTime::GetTimeStruct(tArray[i]);
         if (tLast.year != t.year || tLast.month != t.month || tLast.day != t.day) {
-            wxString path = GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.month, t.day);
+            wxString path = GetFullDirectoryPath() + asStrF(m_fileNamePattern, t.year, t.month, t.day);
             if (t.year < 1992) {
                 path.Replace("MERRA2_*00", "MERRA2_100");
             } else if (t.year < 2001) {

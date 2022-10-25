@@ -106,8 +106,8 @@ void asListBoxForecasts::Update() {
 
         auto* itemMethod = new asForecastTreeItemData(methodRow, -1);
 
-        wxString label = wxString::Format("%d. %s (%s)", methodRow + 1, forecastFirst->GetMethodIdDisplay(),
-                                          forecastFirst->GetMethodId());
+        wxString label = asStrF("%d. %s (%s)", methodRow + 1, forecastFirst->GetMethodIdDisplay(),
+                                forecastFirst->GetMethodId());
         wxTreeItemId parentItemId = AppendItem(GetRootItem(), label, image, image, itemMethod);
 
         if (parentItemId.IsOk()) {

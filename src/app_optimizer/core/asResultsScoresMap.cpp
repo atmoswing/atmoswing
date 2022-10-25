@@ -66,7 +66,7 @@ void asResultsScoresMap::BuildFileName() {
     m_filePath.Append(DS);
     m_filePath.Append("RelevanceMap");
     m_filePath.Append(DS);
-    m_filePath.Append(wxString::Format("%s", GetPredictandStationIdsList()));
+    m_filePath.Append(asStrF("%s", GetPredictandStationIdsList()));
     m_filePath.Append(".nc");
 }
 

@@ -289,14 +289,14 @@ wxString asParametersScoring::Print() const {
     // Create content string
     wxString content = asParameters::Print();
 
-    content.Append(wxString::Format("|||| Score\t%s\t", GetScoreName()));
+    content.Append(asStrF("|||| Score\t%s\t", GetScoreName()));
     if (!asIsNaN(GetScoreQuantile())) {
-        content.Append(wxString::Format("quantile\t%f\t", GetScoreQuantile()));
+        content.Append(asStrF("quantile\t%f\t", GetScoreQuantile()));
     }
     if (!asIsNaN(GetScoreThreshold())) {
-        content.Append(wxString::Format("threshold\t%f\t", GetScoreThreshold()));
+        content.Append(asStrF("threshold\t%f\t", GetScoreThreshold()));
     }
-    content.Append(wxString::Format("TimeArray\t%s\t", GetScoreTimeArrayMode()));
+    content.Append(asStrF("TimeArray\t%s\t", GetScoreTimeArrayMode()));
 
     return content;
 }
@@ -311,8 +311,8 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals) {
     wxString strVal = asExtractParamValueAndCut(stringVals, "Score");
     if (!strVal.IsSameAs(GetScoreName())) {
         wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetScoreName(), strVal);
-        asLog::PrintToConsole(wxString::Format(
-            _("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"), GetScoreName(), strVal));
+        asLog::PrintToConsole(asStrF(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"),
+                                     GetScoreName(), strVal));
         return false;
     }
 

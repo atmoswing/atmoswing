@@ -198,7 +198,7 @@ bool AtmoswingAppOptimizer::OnInit() {
 
     // Check that it is the unique instance
     if (!wxFileConfig::Get()->ReadBool("/General/MultiInstances", false)) {
-        const wxString instanceName = wxString::Format(wxT("atmoswing-optimizer-%s"), wxGetUserId());
+        const wxString instanceName = asStrF(wxT("atmoswing-optimizer-%s"), wxGetUserId());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if (m_singleInstanceChecker->IsAnotherRunning()) {
             wxMessageBox(_("Program already running, aborting."));
@@ -232,7 +232,7 @@ wxString AtmoswingAppOptimizer::GetLocalPath() {
     if (g_runNb > 0) {
         localPath.Append("runs");
         localPath.Append(DS);
-        localPath.Append(wxString::Format("%d", g_runNb));
+        localPath.Append(asStrF("%d", g_runNb));
         localPath.Append(DS);
     }
 
@@ -248,7 +248,7 @@ bool AtmoswingAppOptimizer::InitLog() {
             while (wxFileName::Exists(fullPath)) {
                 increment++;
                 fullPath = GetLocalPath();
-                fullPath.Append(wxString::Format("AtmoSwingOptimizer-%d.log", increment));
+                fullPath.Append(asStrF("AtmoSwingOptimizer-%d.log", increment));
             }
         }
 
@@ -415,7 +415,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
         if (g_runNb > 0) {
             localPath.Append("runs");
             localPath.Append(DS);
-            localPath.Append(wxString::Format("%d", g_runNb));
+            localPath.Append(asStrF("%d", g_runNb));
             localPath.Append(DS);
 
             // Check if path already exists
@@ -436,7 +436,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
             while (wxFileName::Exists(iniPath)) {
                 increment++;
                 iniPath = localPath;
-                iniPath.Append(wxString::Format("AtmoSwing-%d.ini", increment));
+                iniPath.Append(asStrF("AtmoSwing-%d.ini", increment));
             }
         }
 
@@ -468,7 +468,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if the user asked for the version
     if (parser.Found("version")) {
         wxString date(wxString::FromAscii(__DATE__));
-        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
+        asLog::PrintToConsole(asStrF("AtmoSwing version %s, %s\n", g_version, date));
 
         return true;
     }
@@ -918,7 +918,7 @@ int AtmoswingAppOptimizer::OnRun() {
             calibrator.SetPredictorDataDir(m_predictorsDir);
             calibrator.Manager();
         } else {
-            asLog::PrintToConsole(wxString::Format("Wrong calibration method selection (%s).\n", m_calibMethod));
+            asLog::PrintToConsole(asStrF("Wrong calibration method selection (%s).\n", m_calibMethod));
         }
     } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);

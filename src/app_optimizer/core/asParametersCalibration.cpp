@@ -585,8 +585,7 @@ bool asParametersCalibration::InputsOK() const {
     // Analog dates
     for (int i = 0; i < GetStepsNb(); i++) {
         if (GetAnalogsNumberVector(i).empty()) {
-            wxLogError(
-                wxString::Format(_("The number of analogs (step %d) was not provided in the parameters file."), i));
+            wxLogError(_("The number of analogs (step %d) was not provided in the parameters file."), i);
             return false;
         }
 

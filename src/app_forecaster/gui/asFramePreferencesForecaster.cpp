@@ -151,7 +151,7 @@ void asFramePreferencesForecaster::LoadPreferences() {
     m_checkBoxAllowMultithreading->SetValue(allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads == -1) maxThreads = 2;
-    m_textCtrlThreadsNb->SetValue(pConfig->Read("/Processing/ThreadsNb", wxString::Format("%d", maxThreads)));
+    m_textCtrlThreadsNb->SetValue(pConfig->Read("/Processing/ThreadsNb", asStrF("%d", maxThreads)));
     m_sliderThreadsPriority->SetValue(pConfig->ReadLong("/Processing/ThreadsPriority", 95l));
 
     // Processing
