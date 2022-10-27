@@ -1,6 +1,6 @@
 [![AtmoSwing](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/logo/logo.png)](http://www.atmoswing.org)
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4075537.svg?style=flat-square)](https://doi.org/10.5281/zenodo.4075537)
+[![DOI](https://zenodo.org/badge/95885904.svg)](https://zenodo.org/badge/latestdoi/95885904)
 [![Linux builds](https://github.com/atmoswing/atmoswing/actions/workflows/linux-builds.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/linux-builds.yml)
 [![Windows builds](https://github.com/atmoswing/atmoswing/actions/workflows/windows-builds.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/windows-builds.yml)
 [![Docker images](https://github.com/atmoswing/atmoswing/actions/workflows/docker-images.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/docker-images.yml)
