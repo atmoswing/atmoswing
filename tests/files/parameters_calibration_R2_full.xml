@@ -30,6 +30,7 @@
   <analog_dates>
     <analogs_number>70</analogs_number>
     <predictor>
+      <preload>0</preload>
       <preprocessing>
         <preprocessing_method>SimpleGradients</preprocessing_method>
         <preprocessing_data>
@@ -50,6 +51,7 @@
       <criteria>S1</criteria>
     </predictor>
     <predictor>
+      <preload>0</preload>
       <preprocessing>
         <preprocessing_method>SimpleGradients</preprocessing_method>
         <preprocessing_data>
@@ -73,6 +75,7 @@
   <analog_dates>
     <analogs_number>30</analogs_number>
     <predictor>
+      <preload>0</preload>
       <preprocessing>
         <preprocessing_method>FormerHumidityIndex</preprocessing_method>
         <preprocessing_data>
