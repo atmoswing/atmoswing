@@ -104,6 +104,8 @@ class asMethodOptimizerGeneticAlgorithms : public asMethodOptimizer {
 
     bool SetBestParameters(asResultsParametersArray& results) override;
 
+    float ComputeScoreFullPeriod(asParametersOptimizationGAs& param);
+
     bool ResumePreviousRun(asParametersOptimizationGAs& params, const wxString& operatorsFilePath);
 
     bool HasPreviousRunConverged(asParametersOptimizationGAs& params);

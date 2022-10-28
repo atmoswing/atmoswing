@@ -145,6 +145,7 @@ class asMethodCalibrator : public asMethodStandard {
     bool m_validationMode;
     bool m_useMiniBatches;
     int m_miniBatchSize;
+    int m_miniBatchSizeMax;
     int m_miniBatchStart;
     int m_miniBatchEnd;
     int m_epoch;

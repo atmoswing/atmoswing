@@ -43,7 +43,7 @@
 
 asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
     : asMethodOptimizer(),
-      m_scoreCalibBest(NaNF),
+      m_scoreCalibBest(NaNf),
       m_generationNb(0),
       m_assessmentCounter(0),
       m_popSize(0),
@@ -61,7 +61,7 @@ asMethodOptimizerGeneticAlgorithms::~asMethodOptimizerGeneticAlgorithms() = defa
 void asMethodOptimizerGeneticAlgorithms::ClearAll() {
     m_parameters.clear();
     m_scoresCalib.clear();
-    m_scoreCalibBest = NaNF;
+    m_scoreCalibBest = NaNf;
     m_scoreValid = NaNf;
     m_bestScores.clear();
     m_meanScores.clear();
@@ -253,8 +253,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
     if (!LoadPredictandDB(m_predictandDBFilePath)) return false;
     wxLogVerbose(_("Predictand DB loaded."));
 
-    int miniBatchSizeMax = 0;
-
     // Define time range if using mini-batches
     if (m_useMiniBatches) {
         // Create the target time array as reference for mini-batches
@@ -269,9 +267,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
             return false;
         }
 
-        miniBatchSizeMax = timeArrayTarget.GetSize();
+        m_miniBatchSizeMax = timeArrayTarget.GetSize();
         m_miniBatchStart = 0;
-        m_miniBatchEnd = wxMin(m_miniBatchStart + m_miniBatchSize, miniBatchSizeMax) - 1;
+        m_miniBatchEnd = wxMin(m_miniBatchStart + m_miniBatchSize, m_miniBatchSizeMax) - 1;
     }
 
     // Watch
@@ -401,9 +399,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
                 bestScore = asMaxArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
                 break;
             }
-            default: {
-                return false;
-            }
         }
         m_bestScores.push_back(bestScore);
         m_meanScores.push_back(meanScore);
@@ -411,19 +406,35 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
         wxLogMessage(_("Mean %g, best %g"), meanScore, bestScore);
 
         // Update best
-        m_parameterBest = m_parameters[0];
-        m_scoreCalibBest = m_scoresCalib[0];
+        if (m_useMiniBatches) {
+            if (asIsNaN(m_scoreCalibBest)) {
+                m_parameterBest = m_parameters[0];
+                m_scoreCalibBest = ComputeScoreFullPeriod(m_parameterBest);
+            } else {
+                float scoreFullPeriod = ComputeScoreFullPeriod(m_parameters[0]);
+                if (m_scoreOrder == Asc && scoreFullPeriod < m_scoreCalibBest) {
+                    m_scoreCalibBest = scoreFullPeriod;
+                    m_parameterBest = m_parameters[0];
+                } else if (m_scoreOrder == Desc && scoreFullPeriod > m_scoreCalibBest) {
+                    m_scoreCalibBest = scoreFullPeriod;
+                    m_parameterBest = m_parameters[0];
+                }
+            }
+        } else {
+            m_parameterBest = m_parameters[0];
+            m_scoreCalibBest = m_scoresCalib[0];
+        }
 
         // Update mini-batches
         if (m_useMiniBatches) {
             m_miniBatchStart += m_miniBatchSize;
             int minNbDays = 32;
-            if (m_miniBatchStart + minNbDays >= miniBatchSizeMax) {
+            if (m_miniBatchStart + minNbDays >= m_miniBatchSizeMax) {
                 m_miniBatchStart = 0;
                 m_epoch++;
                 wxLogMessage(_("Epoch number %d"), m_epoch);
             }
-            m_miniBatchEnd = wxMin(m_miniBatchStart + m_miniBatchSize, miniBatchSizeMax) - 1;
+            m_miniBatchEnd = wxMin(m_miniBatchStart + m_miniBatchSize, m_miniBatchSizeMax) - 1;
         }
 
         // Check if we should end
@@ -476,6 +487,29 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
     asFileText stats(statsFilePath, asFile::New);
 
     return true;
+}
+
+float asMethodOptimizerGeneticAlgorithms::ComputeScoreFullPeriod(asParametersOptimizationGAs& param) {
+    int miniBatchStart = m_miniBatchStart;
+    int miniBatchEnd = m_miniBatchEnd;
+
+    m_miniBatchStart = 0;
+    m_miniBatchEnd = m_miniBatchSizeMax - 1;
+
+    float scoreFullPeriod = NaNf;
+    auto* thread = new asThreadGeneticAlgorithms(this, &param, &scoreFullPeriod, &m_scoreClimatology);
+#ifdef USE_CUDA
+    if (method == asCUDA) {
+        thread->SetDevice(device);
+    }
+#endif
+    ThreadsManager().AddThread(thread);
+    ThreadsManager().Wait(asThread::MethodOptimizerGeneticAlgorithms);
+
+    m_miniBatchStart = miniBatchStart;
+    m_miniBatchEnd = miniBatchEnd;
+
+    return scoreFullPeriod;
 }
 
 bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizationGAs& params,
@@ -999,9 +1033,12 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation() {
     // Apply elitism: If the best has been degraded during previous mutations, replace a random individual by the
     // previous best.
     if (m_allowElitismForTheBest && !asIsNaN(m_scoreCalibBest)) {
+        float actualBest = m_scoresCalib[0];
+        if (m_useMiniBatches) {
+            actualBest = ComputeScoreFullPeriod(m_parameters[0]);
+        }
         switch (m_scoreOrder) {
             case (Asc): {
-                float actualBest = m_scoresCalib[0];
                 if (m_scoreCalibBest < actualBest) {
                     wxLogMessage(_("Application of elitism after mutation."));
                     // Randomly select a row to replace
@@ -1013,7 +1050,6 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation() {
                 break;
             }
             case (Desc): {
-                float actualBest = m_scoresCalib[0];
                 if (m_scoreCalibBest > actualBest) {
                     wxLogMessage(_("Application of elitism after mutation."));
                     // Randomly select a row to replace
@@ -1037,11 +1073,14 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation() {
 bool asMethodOptimizerGeneticAlgorithms::ElitismAfterSelection() {
     // Apply elitism:If the best has not been selected, replace a random individual by the best.
     if (m_allowElitismForTheBest && !asIsNaN(m_scoreCalibBest)) {
+        SortScoresAndParameters();
+        float actualBest = m_scoresCalib[0];
+        if (m_useMiniBatches) {
+            actualBest = ComputeScoreFullPeriod(m_parameters[0]);
+        }
         switch (m_scoreOrder) {
             case (Asc): {
-                float prevBest = m_scoreCalibBest;
-                float actualBest = asMinArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
-                if (prevBest < actualBest) {
+                if (m_scoreCalibBest < actualBest) {
                     wxLogMessage(_("Application of elitism in the natural selection."));
                     // Randomly select a row to replace
                     int randomRow = asRandom(0, m_scoresCalib.size() - 1, 1);
@@ -1051,9 +1090,7 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterSelection() {
                 break;
             }
             case (Desc): {
-                float prevBest = m_scoreCalibBest;
-                float actualBest = asMaxArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
-                if (prevBest > actualBest) {
+                if (m_scoreCalibBest > actualBest) {
                     wxLogMessage(_("Application of elitism in the natural selection."));
                     // Randomly select a row to replace
                     int randomRow = asRandom(0, m_scoresCalib.size() - 1, 1);
