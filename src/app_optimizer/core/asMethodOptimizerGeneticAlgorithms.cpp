@@ -1291,8 +1291,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating() {
                     double sum = 0;
                     probabilities.push_back(0.0);
                     for (int i = 0; i < sizeParents; i++) {
-                        sum += m_scoresCalib[i] - m_scoresCalib[sizeParents - 1] +
-                               0.001;  // 0.001 to avoid null probs
+                        sum += m_scoresCalib[i] - m_scoresCalib[sizeParents - 1] + 0.001;  // 0.001 to avoid null probs
                     }
                     for (int i = 0; i < sizeParents; i++) {
                         if (sum > 0) {
