@@ -6,14 +6,15 @@ class AmtoSwing(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
 
     requires = [
-        "proj/9.0.0",
-        "libcurl/7.83.1",
+        "proj/9.0.1",
+        "libcurl/7.85.0",
         "libtiff/4.4.0",
-        "sqlite3/3.38.5",
+        "sqlite3/3.39.3",
         "eigen/3.4.0",
         "netcdf/4.8.1",
         "libdeflate/1.12",
-        "libjpeg/9d",
+        "libjpeg/9e",
+        "zlib/1.2.13",
         "eccodes/2.27.0@terranum-conan+eccodes/stable",
     ]
 
