@@ -80,8 +80,6 @@ class asMethodOptimizerGeneticAlgorithms : public asMethodOptimizer {
     bool ManageOneRun();
 
   protected:
-    int m_nbSameParams;
-    int m_nbCloseParams;
 
   private:
     std::vector<asParametersOptimizationGAs> m_parameters;

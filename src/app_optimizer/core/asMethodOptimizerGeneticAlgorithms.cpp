@@ -43,8 +43,7 @@
 
 asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
     : asMethodOptimizer(),
-      m_nbSameParams(0),
-      m_nbCloseParams(0),
+      m_scoreCalibBest(NaNF),
       m_generationNb(0),
       m_assessmentCounter(0),
       m_popSize(0),
@@ -398,15 +397,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
         wxLog::FlushActive();
 
         wxASSERT(m_iterator == m_paramsNb);
-
-        if (m_nbSameParams > 0) {
-            wxLogMessage(_("%d evaluations skipped (parameters were already assessed)."), m_nbSameParams);
-            m_nbSameParams = 0;
-        }
-        if (m_nbCloseParams > 0) {
-            wxLogMessage(_("%d evaluations skipped (similar parameters did not perform well)."), m_nbCloseParams);
-            m_nbCloseParams = 0;
-        }
 
         // Different operators consider that the scores are sorted !
         SortScoresAndParameters();
