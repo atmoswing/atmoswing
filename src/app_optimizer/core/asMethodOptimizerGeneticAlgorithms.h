@@ -83,7 +83,8 @@ class asMethodOptimizerGeneticAlgorithms : public asMethodOptimizer {
 
   private:
     std::vector<asParametersOptimizationGAs> m_parameters;
-    std::vector<asParametersOptimizationGAs> m_parametersTemp;
+    asParametersOptimizationGAs m_parameterBest;
+    float m_scoreCalibBest;
     asResultsParametersArray m_resGenerations;
     int m_generationNb;
     int m_assessmentCounter;
@@ -99,11 +100,7 @@ class asMethodOptimizerGeneticAlgorithms : public asMethodOptimizer {
 
     void ClearAll() override;
 
-    void ClearTemp() override;
-
     void SortScoresAndParameters();
-
-    bool SortScoresAndParametersTemp() override;
 
     bool SetBestParameters(asResultsParametersArray& results) override;
 
