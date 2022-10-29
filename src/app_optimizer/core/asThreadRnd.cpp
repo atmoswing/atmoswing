@@ -26,24 +26,19 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asThreadGeneticAlgorithms.h"
+#include "asThreadRnd.h"
 
-#ifdef USE_CUDA
-#include "asProcessorCuda.cuh"
-#endif
-
-asThreadGeneticAlgorithms::asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms* optimizer,
-                                                     asParametersOptimization* params, float* finalScoreCalib,
-                                                     vf* scoreClimatology)
-    : asThread(asThread::MethodOptimizerGeneticAlgorithms),
+asThreadRnd::asThreadRnd(asMethodOptimizerMC* optimizer, asParametersOptimization* params, float* finalScoreCalib,
+                         vf* scoreClimatology)
+    : asThread(asThread::MethodOptimizerRandomSet),
       m_optimizer(optimizer),
       m_params(params),
       m_finalScoreCalib(finalScoreCalib),
       m_scoreClimatology(scoreClimatology) {}
 
-asThreadGeneticAlgorithms::~asThreadGeneticAlgorithms() {}
+asThreadRnd::~asThreadRnd() {}
 
-wxThread::ExitCode asThreadGeneticAlgorithms::Entry() {
+wxThread::ExitCode asThreadRnd::Entry() {
     // Create results objects. Needs to be in a critical section because of access to the config pointer.
     asResultsDates anaDates;
     asResultsDates anaDatesPrevious;
@@ -51,20 +46,14 @@ wxThread::ExitCode asThreadGeneticAlgorithms::Entry() {
     asResultsScores anaScores;
     asResultsTotalScore anaScoreFinal;
 
-    *m_finalScoreCalib = NaNf;
-
     // Set the climatology score value
-    if (!m_scoreClimatology->empty()) {
+    if (m_scoreClimatology->size() != 0) {
+        wxLogVerbose(_("Process score of the climatology"));
         m_optimizer->SetScoreClimatology(*m_scoreClimatology);
     }
 
     // Process every step one after the other
     int stepsNb = m_params->GetStepsNb();
-
-#ifdef USE_CUDA
-    asProcessorCuda::SetDevice(m_device);
-#endif
-
     for (int iStep = 0; iStep < stepsNb; iStep++) {
         bool containsNaNs = false;
         if (iStep == 0) {
@@ -84,11 +73,6 @@ wxThread::ExitCode asThreadGeneticAlgorithms::Entry() {
             wxLogError(_("The dates selection contains NaNs"));
             return NULL;
         }
-        if (anaDates.GetTargetDates().size() == 0 || anaDates.GetAnalogsDates().size() == 0 ||
-            anaDates.GetAnalogsCriteria().size() == 0) {
-            wxLogError(_("The asResultsDates object is empty in asThreadGeneticAlgorithms."));
-            return NULL;
-        }
     }
     if (!m_optimizer->GetAnalogsValues(anaValues, m_params, anaDates, stepsNb - 1)) {
         wxLogError(_("Failed processing the analogs values"));
@@ -104,7 +88,7 @@ wxThread::ExitCode asThreadGeneticAlgorithms::Entry() {
     }
     *m_finalScoreCalib = anaScoreFinal.GetScore();
 
-    if (m_scoreClimatology->empty()) {
+    if (m_scoreClimatology->size() == 0) {
         *m_scoreClimatology = m_optimizer->GetScoreClimatology();
     }
 

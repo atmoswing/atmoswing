@@ -47,8 +47,8 @@
 #include "asMethodCalibratorEvaluateAllScores.h"
 #include "asMethodCalibratorSingleOnlyDates.h"
 #include "asMethodCalibratorSingleOnlyValues.h"
-#include "asMethodOptimizerGeneticAlgorithms.h"
-#include "asMethodOptimizerRandomSet.h"
+#include "asMethodOptimizerGAs.h"
+#include "asMethodOptimizerMC.h"
 
 IMPLEMENT_APP(AtmoswingAppOptimizer)
 
@@ -885,14 +885,14 @@ int AtmoswingAppOptimizer::OnRun() {
             calibrator.SetPredictorDataDir(m_predictorsDir);
             calibrator.Manager();
         } else if (m_calibMethod.IsSameAs("montecarlo", false)) {
-            asMethodOptimizerRandomSet optimizer;
+            asMethodOptimizerMC optimizer;
             optimizer.SetParamsFilePath(m_calibParamsFile);
             optimizer.SetPredictandDBFilePath(m_predictandDB);
             optimizer.SetPredictandStationIds(m_predictandStationIds);
             optimizer.SetPredictorDataDir(m_predictorsDir);
             optimizer.Manager();
         } else if (m_calibMethod.IsSameAs("ga", false)) {
-            asMethodOptimizerGeneticAlgorithms optimizer;
+            asMethodOptimizerGAs optimizer;
             optimizer.SetParamsFilePath(m_calibParamsFile);
             optimizer.SetPredictandDBFilePath(m_predictandDB);
             optimizer.SetPredictandStationIds(m_predictandStationIds);

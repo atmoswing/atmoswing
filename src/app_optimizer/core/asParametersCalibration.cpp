@@ -242,7 +242,8 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
                 if (nodeParam->GetName() == "preload") {
                     SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
                     if (!fileParams.GetBool(nodeParam)) {
-                        wxLogWarning(_("The preload option has been disabled. This can result in very long computation time."));
+                        wxLogWarning(
+                            _("The preload option has been disabled. This can result in very long computation time."));
                     }
                 } else if (nodeParam->GetName() == "standardize") {
                     SetStandardize(iStep, iPtor, fileParams.GetBool(nodeParam));

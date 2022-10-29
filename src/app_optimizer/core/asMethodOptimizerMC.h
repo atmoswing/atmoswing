@@ -31,11 +31,11 @@
 
 #include "asMethodOptimizer.h"
 
-class asMethodOptimizerRandomSet : public asMethodOptimizer {
+class asMethodOptimizerMC : public asMethodOptimizer {
   public:
-    asMethodOptimizerRandomSet();
+    asMethodOptimizerMC();
 
-    ~asMethodOptimizerRandomSet() override;
+    ~asMethodOptimizerMC() override;
 
     bool Manager() override;
 
