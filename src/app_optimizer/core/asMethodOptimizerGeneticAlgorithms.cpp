@@ -74,17 +74,19 @@ void asMethodOptimizerGeneticAlgorithms::SortScoresAndParameters() {
 
     if (m_parameters.size() == 1) return;
 
+    int paramsNb = m_scoresCalib.size();
+
     // Sort according to the score
-    a1f vIndices = a1f::LinSpaced(m_paramsNb, 0, m_paramsNb - 1);
-    asSortArrays(&m_scoresCalib[0], &m_scoresCalib[m_paramsNb - 1], &vIndices[0], &vIndices[m_paramsNb - 1],
+    a1f vIndices = a1f::LinSpaced(paramsNb, 0, paramsNb - 1);
+    asSortArrays(&m_scoresCalib[0], &m_scoresCalib[paramsNb - 1], &vIndices[0], &vIndices[paramsNb - 1],
                  m_scoreOrder);
 
     // Sort the parameters sets as the scores
     std::vector<asParametersOptimizationGAs> copyParameters;
-    for (int i = 0; i < m_paramsNb; i++) {
+    for (int i = 0; i < paramsNb; i++) {
         copyParameters.push_back(m_parameters[i]);
     }
-    for (int i = 0; i < m_paramsNb; i++) {
+    for (int i = 0; i < paramsNb; i++) {
         int index = vIndices(i);
         m_parameters[i] = copyParameters[index];
     }
