@@ -296,6 +296,17 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
 
     // Optimizer
     while (true) {
+        // Reassess the best parameter if mini-batch as the period has changed
+        if (m_useMiniBatches && !m_miniBatchAssessBestOnFullPeriod && !firstRun) {
+            auto* thread = new asThreadGAs(this, m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
+#ifdef USE_CUDA
+            if (method == asCUDA) {
+                thread->SetDevice(device);
+            }
+#endif
+            ThreadsManager().AddThread(thread);
+        }
+
         // Add threads when they become available
         while (m_iterator < m_paramsNb) {
 #ifndef UNIT_TESTING
@@ -411,14 +422,20 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
         if (m_useMiniBatches) {
             if (asIsNaN(m_scoreCalibBest)) {
                 m_parameterBest = m_parameters[0];
-                m_scoreCalibBest = ComputeScoreFullPeriod(m_parameterBest);
+                m_scoreCalibBest = m_scoresCalib[0];
+                if (m_miniBatchAssessBestOnFullPeriod) {
+                    m_scoreCalibBest = ComputeScoreFullPeriod(m_parameterBest);
+                }
             } else {
-                float scoreFullPeriod = ComputeScoreFullPeriod(m_parameters[0]);
-                if (m_scoreOrder == Asc && scoreFullPeriod < m_scoreCalibBest) {
-                    m_scoreCalibBest = scoreFullPeriod;
+                float scoreCurrentBest = m_scoresCalib[0];
+                if (m_miniBatchAssessBestOnFullPeriod) {
+                    scoreCurrentBest = ComputeScoreFullPeriod(m_parameters[0]);
+                }
+                if (m_scoreOrder == Asc && scoreCurrentBest < m_scoreCalibBest) {
+                    m_scoreCalibBest = scoreCurrentBest;
                     m_parameterBest = m_parameters[0];
-                } else if (m_scoreOrder == Desc && scoreFullPeriod > m_scoreCalibBest) {
-                    m_scoreCalibBest = scoreFullPeriod;
+                } else if (m_scoreOrder == Desc && scoreCurrentBest > m_scoreCalibBest) {
+                    m_scoreCalibBest = scoreCurrentBest;
                     m_parameterBest = m_parameters[0];
                 }
             }
@@ -1036,7 +1053,7 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation() {
     // previous best.
     if (m_allowElitismForTheBest && !asIsNaN(m_scoreCalibBest)) {
         float actualBest = m_scoresCalib[0];
-        if (m_useMiniBatches) {
+        if (m_useMiniBatches && m_miniBatchAssessBestOnFullPeriod) {
             actualBest = ComputeScoreFullPeriod(m_parameters[0]);
         }
         switch (m_scoreOrder) {
@@ -1073,11 +1090,11 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation() {
 }
 
 bool asMethodOptimizerGeneticAlgorithms::ElitismAfterSelection() {
-    // Apply elitism:If the best has not been selected, replace a random individual by the best.
+    // Apply elitism: If the best has not been selected, replace a random individual by the best.
     if (m_allowElitismForTheBest && !asIsNaN(m_scoreCalibBest)) {
         SortScoresAndParameters();
         float actualBest = m_scoresCalib[0];
-        if (m_useMiniBatches) {
+        if (m_useMiniBatches && m_miniBatchAssessBestOnFullPeriod) {
             actualBest = ComputeScoreFullPeriod(m_parameters[0]);
         }
         switch (m_scoreOrder) {
