@@ -452,6 +452,13 @@ bool asMethodOptimizerGAs::ManageOneRun() {
                 wxLogMessage(_("Epoch number %d"), m_epoch);
             }
             m_miniBatchEnd = wxMin(m_miniBatchStart + m_miniBatchSize, m_miniBatchSizeMax) - 1;
+
+            // If finished, reassess all parameters on the full period
+            if (m_epoch > m_epochMax && !m_miniBatchAssessBestOnFullPeriod) {
+                if (!ComputeAllScoresOnFullPeriod()) {
+                    return false;
+                }
+            }
         }
 
         // Check if we should end
@@ -527,6 +534,61 @@ float asMethodOptimizerGAs::ComputeScoreFullPeriod(asParametersOptimizationGAs& 
     m_miniBatchEnd = miniBatchEnd;
 
     return scoreFullPeriod;
+}
+
+bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
+    m_miniBatchStart = 0;
+    m_miniBatchEnd = m_miniBatchSizeMax - 1;
+
+    // Reassess the best parameter if mini-batch as the period has changed
+    auto* thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
+#ifdef USE_CUDA
+    if (method == asCUDA) {
+        thread->SetDevice(device);
+    }
+#endif
+    ThreadsManager().AddThread(thread);
+
+    // Add threads when they become available
+    m_iterator = 0;
+    while (m_iterator < m_paramsNb) {
+#ifndef UNIT_TESTING
+        if (g_responsive) wxTheApp->Yield();
+#endif
+        if (m_cancel) {
+            return false;
+        }
+
+        ThreadsManager().WaitForFreeThread(asThread::MethodOptimizerGeneticAlgorithms);
+
+#ifdef USE_CUDA
+        int device = 0;
+        if (method == asCUDA) {
+            device = ThreadsManager().GetFreeDevice(gpusNb);
+        }
+#endif
+
+        // Get a parameters set
+        asParametersOptimizationGAs* nextParams = GetNextParameters();
+
+        if (nextParams) {
+            // Add it to the threads
+            thread = new asThreadGAs(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+#ifdef USE_CUDA
+            if (method == asCUDA) {
+                thread->SetDevice(device);
+            }
+#endif
+            ThreadsManager().AddThread(thread);
+        }
+
+        wxASSERT(m_scoresCalib.size() <= m_paramsNb);
+
+        // Increment iterator
+        IncrementIterator();
+    }
+
+    return true;
 }
 
 bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params, const wxString& operatorsFilePath) {

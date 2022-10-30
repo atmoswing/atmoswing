@@ -105,6 +105,8 @@ class asMethodOptimizerGAs : public asMethodOptimizer {
 
     float ComputeScoreFullPeriod(asParametersOptimizationGAs& param);
 
+    bool ComputeAllScoresOnFullPeriod();
+
     bool ResumePreviousRun(asParametersOptimizationGAs& params, const wxString& operatorsFilePath);
 
     bool HasPreviousRunConverged(asParametersOptimizationGAs& params);
