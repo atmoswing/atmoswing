@@ -568,19 +568,14 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
         }
 #endif
 
-        // Get a parameters set
-        asParametersOptimizationGAs* nextParams = GetNextParameters();
-
-        if (nextParams) {
-            // Add it to the threads
-            thread = new asThreadGAs(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+        // Add it to the threads
+        thread = new asThreadGAs(this, &m_parameters[m_iterator], &m_scoresCalib[m_iterator], &m_scoreClimatology);
 #ifdef USE_CUDA
-            if (method == asCUDA) {
-                thread->SetDevice(device);
-            }
-#endif
-            ThreadsManager().AddThread(thread);
+        if (method == asCUDA) {
+            thread->SetDevice(device);
         }
+#endif
+        ThreadsManager().AddThread(thread);
 
         wxASSERT(m_scoresCalib.size() <= m_paramsNb);
 
