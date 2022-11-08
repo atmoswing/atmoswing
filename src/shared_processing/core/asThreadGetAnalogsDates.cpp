@@ -66,8 +66,8 @@ asThreadGetAnalogsDates::asThreadGetAnalogsDates(
     wxASSERT_MSG(m_end < timeArrayTargetSelection->GetSize(),
                  _("The given time array end is superior to the time array size."));
     wxASSERT_MSG(m_end != timeArrayTargetSelection->GetSize() - 2,
-                 wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
-                                  (int)timeArrayTargetSelection->GetSize()));
+                 asStrF(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
+                        (int)timeArrayTargetSelection->GetSize()));
 }
 
 asThreadGetAnalogsDates::~asThreadGetAnalogsDates() {}
@@ -108,8 +108,8 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
 
     // Loop through every timestep as target data
     for (int iDateTarg = m_start; iDateTarg <= m_end; iDateTarg++) {
-        int iTimeTargRelative =
-            asProcessor::FindNextDate(timeTargetSelection, timeTargetData, iTimeTargStart, iDateTarg);
+        int iTimeTargRelative = asProcessor::FindNextDate(timeTargetSelection, timeTargetData, iTimeTargStart,
+                                                          iDateTarg);
 
         // Check if a row was found
         if (iTimeTargRelative != asNOT_FOUND && iTimeTargRelative != asOUT_OF_RANGE) {

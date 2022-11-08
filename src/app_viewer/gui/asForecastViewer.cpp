@@ -242,8 +242,8 @@ void asForecastViewer::Redraw() {
     if (forecasts[0]->HasReferenceValues() && returnPeriod != 0) {
         a1f forecastReferenceAxis = forecasts[0]->GetReferenceAxis();
 
-        indexReferenceAxis =
-            asFind(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size() - 1], returnPeriod);
+        indexReferenceAxis = asFind(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size() - 1],
+                                    returnPeriod);
         if ((indexReferenceAxis == asNOT_FOUND) || (indexReferenceAxis == asOUT_OF_RANGE)) {
             wxLogError(_("The desired reference value is not available in the forecast file."));
             m_viewerLayerManager->FreezeEnd();
@@ -304,7 +304,7 @@ void asForecastViewer::Redraw() {
 
         // Adding a field for every lead time
         for (int i = 0; i < leadTimeSize; i++) {
-            OGRFieldDefn fieldLeadTime(wxString::Format("leadtime%d", i), OFTReal);
+            OGRFieldDefn fieldLeadTime(asStrF("leadtime%d", i), OFTReal);
             layerSpecific->AddField(fieldLeadTime);
             layerOther->AddField(fieldLeadTime);
         }
@@ -368,7 +368,7 @@ void asForecastViewer::Redraw() {
                 } else {
                     if (quantile >= 0) {
                         double forecastVal = asGetValueForQuantile(values, quantile);
-                        wxASSERT_MSG(forecastVal >= 0, wxString::Format("Forecast value = %g", forecastVal));
+                        wxASSERT_MSG(forecastVal >= 0, asStrF("Forecast value = %g", forecastVal));
                         forecastVal *= factor;
                         data.Add(forecastVal);
                     } else {
@@ -386,7 +386,7 @@ void asForecastViewer::Redraw() {
                             forecastVal = forecastVal60;
                         }
 
-                        wxASSERT_MSG(forecastVal >= 0, wxString::Format("Forecast value = %g", forecastVal));
+                        wxASSERT_MSG(forecastVal >= 0, asStrF("Forecast value = %g", forecastVal));
                         forecastVal *= factor;
                         data.Add(forecastVal);
                     }
@@ -528,7 +528,7 @@ void asForecastViewer::Redraw() {
             } else {
                 if (quantile >= 0) {
                     double forecastVal = asGetValueForQuantile(values, quantile);
-                    wxASSERT_MSG(forecastVal >= 0, wxString::Format("Forecast value = %g", forecastVal));
+                    wxASSERT_MSG(forecastVal >= 0, asStrF("Forecast value = %g", forecastVal));
                     data.Add(forecastVal);  // 1st real value
                     forecastVal *= factor;
                     data.Add(forecastVal);  // 2nd normalized
@@ -547,7 +547,7 @@ void asForecastViewer::Redraw() {
                         forecastVal = forecastVal60;
                     }
 
-                    wxASSERT_MSG(forecastVal >= 0, wxString::Format("Forecast value = %g", forecastVal));
+                    wxASSERT_MSG(forecastVal >= 0, asStrF("Forecast value = %g", forecastVal));
                     data.Add(forecastVal);  // 1st real value
                     forecastVal *= factor;
                     data.Add(forecastVal);  // 2nd normalized

@@ -236,11 +236,15 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
             AddPredictor(iStep);
             AddPredictorVect(m_stepsVect[iStep]);
             SetPreprocess(iStep, iPtor, false);
-            SetPreload(iStep, iPtor, false);
+            SetPreload(iStep, iPtor, true);
             wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "preload") {
                     SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
+                    if (!fileParams.GetBool(nodeParam)) {
+                        wxLogWarning(
+                            _("The preload option has been disabled. This can result in very long computation time."));
+                    }
                 } else if (nodeParam->GetName() == "standardize") {
                     SetStandardize(iStep, iPtor, fileParams.GetBool(nodeParam));
                 } else if (nodeParam->GetName() == "standardize_mean") {
@@ -585,8 +589,7 @@ bool asParametersCalibration::InputsOK() const {
     // Analog dates
     for (int i = 0; i < GetStepsNb(); i++) {
         if (GetAnalogsNumberVector(i).empty()) {
-            wxLogError(
-                wxString::Format(_("The number of analogs (step %d) was not provided in the parameters file."), i));
+            wxLogError(_("The number of analogs (step %d) was not provided in the parameters file."), i);
             return false;
         }
 
@@ -840,8 +843,8 @@ double asParametersCalibration::GetPredictorXminLowerLimit(int iStep, int iPtor)
     wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastRow = m_stepsVect[iStep].predictors[iPtor].xMin.size() - 1;
     wxASSERT(lastRow >= 0);
-    double val =
-        asMinArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0], &m_stepsVect[iStep].predictors[iPtor].xMin[lastRow]);
+    double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0],
+                            &m_stepsVect[iStep].predictors[iPtor].xMin[lastRow]);
     return val;
 }
 
@@ -858,8 +861,8 @@ double asParametersCalibration::GetPredictorYminLowerLimit(int iStep, int iPtor)
     wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastRow = m_stepsVect[iStep].predictors[iPtor].yMin.size() - 1;
     wxASSERT(lastRow >= 0);
-    double val =
-        asMinArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0], &m_stepsVect[iStep].predictors[iPtor].yMin[lastRow]);
+    double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0],
+                            &m_stepsVect[iStep].predictors[iPtor].yMin[lastRow]);
     return val;
 }
 
@@ -900,8 +903,8 @@ double asParametersCalibration::GetPredictorXminUpperLimit(int iStep, int iPtor)
     wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastRow = m_stepsVect[iStep].predictors[iPtor].xMin.size() - 1;
     wxASSERT(lastRow >= 0);
-    double val =
-        asMaxArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0], &m_stepsVect[iStep].predictors[iPtor].xMin[lastRow]);
+    double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0],
+                            &m_stepsVect[iStep].predictors[iPtor].xMin[lastRow]);
     return val;
 }
 
@@ -918,8 +921,8 @@ double asParametersCalibration::GetPredictorYminUpperLimit(int iStep, int iPtor)
     wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastRow = m_stepsVect[iStep].predictors[iPtor].yMin.size() - 1;
     wxASSERT(lastRow >= 0);
-    double val =
-        asMaxArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0], &m_stepsVect[iStep].predictors[iPtor].yMin[lastRow]);
+    double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0],
+                            &m_stepsVect[iStep].predictors[iPtor].yMin[lastRow]);
     return val;
 }
 

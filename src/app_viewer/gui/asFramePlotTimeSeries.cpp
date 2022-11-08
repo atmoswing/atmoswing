@@ -189,7 +189,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
     wxString stationName = m_forecastManager->GetStationName(m_selectedMethod, m_selectedForecast, m_selectedStation);
     wxString forecastName = m_forecastManager->GetForecastName(m_selectedMethod, m_selectedForecast);
     wxString date = asTime::GetStringTime(m_forecastManager->GetLeadTimeOrigin(), "YYYY.MM.DD hh");
-    wxString filename = wxString::Format("%sh - %s - %s", date, forecastName, stationName);
+    wxString filename = asStrF("%sh - %s - %s", date, forecastName, stationName);
 
     wxFileDialog dialog(this, wxT("Save file as"), wxEmptyString, filename, wxT("Text files (*.txt)|*.txt"),
                         wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -199,10 +199,10 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
         file.Open();
 
         // Add header
-        file.AddContent(wxString::Format(
-            "Forecast of the %sh\n", asTime::GetStringTime(m_forecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY hh")));
-        file.AddContent(wxString::Format("Forecast: %s\n", forecastName));
-        file.AddContent(wxString::Format("Station: %s\n", stationName));
+        file.AddContent(asStrF("Forecast of the %sh\n",
+                               asTime::GetStringTime(m_forecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY hh")));
+        file.AddContent(asStrF("Forecast: %s\n", forecastName));
+        file.AddContent(asStrF("Station: %s\n", stationName));
         file.AddContent("\n");
 
         // Quantiles
@@ -216,7 +216,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
         file.AddContent("Quantiles:\n");
         wxString leadTimes = "\t";
         for (double leadTime : m_leadTimes) {
-            leadTimes.Append(wxString::Format("%s\t", asTime::GetStringTime(leadTime, "DD.MM")));
+            leadTimes.Append(asStrF("%s\t", asTime::GetStringTime(leadTime, "DD.MM")));
         }
         file.AddContent(leadTimes + "\n");
 
@@ -224,13 +224,13 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
         for (int iPc = 0; iPc < pc.size(); iPc++) {
             float thisQuantile = pc[iPc];
 
-            wxString quantilesStr = wxString::Format("%f\t", thisQuantile);
+            wxString quantilesStr = asStrF("%f\t", thisQuantile);
 
             for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
                 a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
                 float pcVal = asGetValueForQuantile(analogs, thisQuantile);
 
-                quantilesStr.Append(wxString::Format("%f\t", pcVal));
+                quantilesStr.Append(asStrF("%f\t", pcVal));
             }
 
             file.AddContent(quantilesStr + "\n");
@@ -243,11 +243,11 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
 
         // Loop over the quantiles to display as polygons
         for (int rk = 0; rk < 10; rk++) {
-            wxString rankStr = wxString::Format("%d\t", rk + 1);
+            wxString rankStr = asStrF("%d\t", rk + 1);
 
             for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
                 a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-                rankStr.Append(wxString::Format("%f\t", analogs[rk]));
+                rankStr.Append(asStrF("%f\t", analogs[rk]));
             }
 
             file.AddContent(rankStr + "\n");
@@ -260,7 +260,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
 
         // Loop over the quantiles to display as polygons
         for (int rk = 0; rk < 10; rk++) {
-            wxString rankStr = wxString::Format("%d\t", rk + 1);
+            wxString rankStr = asStrF("%d\t", rk + 1);
 
             for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
                 a1f dates = forecast->GetAnalogsDates(iLead);
@@ -287,7 +287,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
 
         wxString allLeadtimesStr = "\t";
         for (int iLead = 0; iLead < leadtimes.size(); iLead++) {
-            allLeadtimesStr.Append(wxString::Format("%s\t", asTime::GetStringTime(leadtimes[iLead], "DD.MM")));
+            allLeadtimesStr.Append(asStrF("%s\t", asTime::GetStringTime(leadtimes[iLead], "DD.MM")));
         }
 
         a1f pcAll(4);
@@ -295,13 +295,13 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
 
         for (int iPc = 0; iPc < pcAll.size(); iPc++) {
             file.AddContent("\n");
-            file.AddContent(wxString::Format("Quantile %f:\n", pcAll[iPc]));
+            file.AddContent(asStrF("Quantile %f:\n", pcAll[iPc]));
             file.AddContent(allLeadtimesStr + "\n");
 
             for (int past = 0; past < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast);
                  past++) {
-                asResultsForecast* pastForecast =
-                    m_forecastManager->GetPastForecast(m_selectedMethod, m_selectedForecast, past);
+                asResultsForecast* pastForecast = m_forecastManager->GetPastForecast(m_selectedMethod,
+                                                                                     m_selectedForecast, past);
                 a1f dates = pastForecast->GetTargetDates();
                 wxString currentLine = asTime::GetStringTime(pastForecast->GetLeadTimeOrigin(), "DD.MM") + "\t";
 
@@ -319,7 +319,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
                         }
                     }
 
-                    currentLine.Append(wxString::Format("%f\t", pcVal));
+                    currentLine.Append(asStrF("%f\t", pcVal));
                 }
 
                 file.AddContent(currentLine + "\n");
@@ -478,10 +478,10 @@ void asFramePlotTimeSeries::PlotAllReturnPeriods() {
         wxPlotData plotData;
         plotData.Create(2);
         if (std::abs(retPeriods[i] - 2.33) < 0.1) {
-            plotData.SetFilename(wxString::Format("P%3.2f", retPeriods[i]));
+            plotData.SetFilename(asStrF("P%3.2f", retPeriods[i]));
         } else {
             auto roundedVal = (int)asRound(retPeriods[i]);
-            plotData.SetFilename(wxString::Format("P%d", roundedVal));
+            plotData.SetFilename(asStrF("P%d", roundedVal));
         }
         plotData.SetValue(0, m_leadTimes[0] - 10, val);
         plotData.SetValue(1, m_leadTimes[m_leadTimes.size() - 1] + 10, val);
@@ -672,7 +672,7 @@ void asFramePlotTimeSeries::PlotClassicQuantiles() {
         wxPlotData plotData;
         plotData.Create(m_leadTimes.size());
         auto quantileRounded = (int)(asRound(thisQuantile * 100.0));
-        plotData.SetFilename(wxString::Format("Quantile %d", quantileRounded));
+        plotData.SetFilename(asStrF("Quantile %d", quantileRounded));
         int counter = 0;
         for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
             a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);

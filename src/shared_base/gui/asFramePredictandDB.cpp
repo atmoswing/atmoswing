@@ -99,8 +99,8 @@ void asFramePredictandDB::OnDataSelection(wxCommandEvent& event) {
     switch (m_choiceDataParam->GetSelection()) {
         case 0:  // precipitation
         {
-            m_panelProcessing =
-                new asPanelProcessingPrecipitation(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+            m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain, wxID_ANY, wxDefaultPosition,
+                                                                   wxDefaultSize);
             m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
             break;
         }

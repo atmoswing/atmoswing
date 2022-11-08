@@ -199,8 +199,8 @@ void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarText(wxGraphicsCont
 
     // Set labels
     wxString labelStart = "0";
-    wxString labelMid = wxString::Format("%g", valmax / 2.0);
-    wxString labelEnd = wxString::Format("%g", valmax);
+    wxString labelMid = asStrF("%g", valmax / 2.0);
+    wxString labelEnd = asStrF("%g", valmax);
 
     // Draw text
     int dy = 12 * g_ppiScaleDc;

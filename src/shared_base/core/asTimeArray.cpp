@@ -799,3 +799,14 @@ void asTimeArray::fixEndIfForbidden(double& currentEnd) const {
         }
     }
 }
+
+void asTimeArray::KeepOnlyRange(int start, int end) {
+    a1d timeArray = m_timeArray;
+    wxASSERT(m_timeArray.size() > start);
+    wxASSERT(m_timeArray.size() > end);
+    m_timeArray.resize(end - start + 1);
+
+    for (int i = 0; i < m_timeArray.size(); i++) {
+        m_timeArray[i] = timeArray[start + i];
+    }
+}

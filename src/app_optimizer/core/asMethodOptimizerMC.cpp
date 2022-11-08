@@ -26,9 +26,9 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asMethodOptimizerRandomSet.h"
+#include "asMethodOptimizerMC.h"
 
-#include "asThreadRandomSet.h"
+#include "asThreadRnd.h"
 
 #ifndef UNIT_TESTING
 
@@ -36,12 +36,12 @@
 
 #endif
 
-asMethodOptimizerRandomSet::asMethodOptimizerRandomSet()
+asMethodOptimizerMC::asMethodOptimizerMC()
     : asMethodOptimizer() {}
 
-asMethodOptimizerRandomSet::~asMethodOptimizerRandomSet() {}
+asMethodOptimizerMC::~asMethodOptimizerMC() {}
 
-bool asMethodOptimizerRandomSet::Manager() {
+bool asMethodOptimizerMC::Manager() {
     // Seeds the random generator
     asInitRandom();
 
@@ -59,14 +59,11 @@ bool asMethodOptimizerRandomSet::Manager() {
     vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
     asResultsParametersArray results_all;
-    results_all.Init(
-        wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
+    results_all.Init(asStrF(_("station_%s_tested_parameters"), GetStationIdsList(stationId)));
     asResultsParametersArray results_best;
-    results_best.Init(
-        wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId).c_str()));
+    results_best.Init(asStrF(_("station_%s_best_parameters"), GetStationIdsList(stationId)));
     wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
-    resultsXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time.c_str(),
-                                               GetPredictandStationIdsList(stationId).c_str()));
+    resultsXmlFilePath.Append(asStrF("/%s_station_%s_best_parameters.xml", time, GetStationIdsList(stationId)));
 
     // Preload data
     if (!PreloadArchiveData(&params)) {
@@ -112,7 +109,7 @@ bool asMethodOptimizerRandomSet::Manager() {
 
         if (nextParams) {
             // Add it to the threads
-            auto* thread = new asThreadRandomSet(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+            auto* thread = new asThreadRnd(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
             ThreadsManager().AddThread(thread);
 
             // Wait until done to get the score of the climatology
@@ -177,7 +174,7 @@ bool asMethodOptimizerRandomSet::Manager() {
     return true;
 }
 
-void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization& params) {
+void asMethodOptimizerMC::InitParameters(asParametersOptimization& params) {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Read("/MonteCarlo/RandomNb", &m_paramsNb, 1000);
@@ -196,11 +193,11 @@ void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization& params
     }
 }
 
-asParametersOptimization* asMethodOptimizerRandomSet::GetNextParameters() {
+asParametersOptimization* asMethodOptimizerMC::GetNextParameters() {
     return &m_parameters[m_iterator];
 }
 
-bool asMethodOptimizerRandomSet::SetBestParameters(asResultsParametersArray& results) {
+bool asMethodOptimizerMC::SetBestParameters(asResultsParametersArray& results) {
     wxASSERT(!m_parameters.empty());
     wxASSERT(!m_scoresCalib.empty());
 

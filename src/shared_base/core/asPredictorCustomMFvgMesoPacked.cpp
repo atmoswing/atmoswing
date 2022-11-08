@@ -61,8 +61,7 @@ void asPredictorCustomMFvgMesoPacked::ListFiles(asTimeArray& timeArray) {
     if (nbFiles == 0) {
         nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, m_dataId + ".*.grib");
         if (nbFiles == 0) {
-            asThrowException(
-                wxString::Format(_("No file found for the FVG packed archive (%s/%s)."), m_product, m_dataId));
+            asThrowException(asStrF(_("No file found for the FVG packed archive (%s/%s)."), m_product, m_dataId));
         }
     }
 

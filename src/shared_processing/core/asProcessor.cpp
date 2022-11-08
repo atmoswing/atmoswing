@@ -538,8 +538,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor*> predictorsArchive,
 
                     // Loop through the date array for candidate data
                     for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
-                        int iTimeArchRelative =
-                            FindNextDate(dateArrayArchiveSelection, timeArchiveData, iTimeArchStart, iDateArch);
+                        int iTimeArchRelative = FindNextDate(dateArrayArchiveSelection, timeArchiveData, iTimeArchStart,
+                                                             iDateArch);
 
                         // Check if a row was found
                         if (iTimeArchRelative == asNOT_FOUND || iTimeArchRelative == asOUT_OF_RANGE) {
@@ -981,7 +981,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
                     int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
                                            timeTargetSelection[i], 0.01);
                     wxASSERT_MSG(iTimeTarg >= 0,
-                                 wxString::Format(_("Looking for %s in betwwen %s and %s."),
+                                 asStrF(_("Looking for %s in betwwen %s and %s."),
                                                   asTime::GetStringTime(timeTargetSelection[i], "DD.MM.YYYY hh:mm"),
                                                   asTime::GetStringTime(timeTargetData[0], "DD.MM.YYYY hh:mm"),
                                                   asTime::GetStringTime(timeTargetData[timeTargetDataSize - 1],
@@ -1103,8 +1103,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
                 vSuccess.push_back(success);
                 int start = end + 1;
                 end = ceil(((float)(iThread + 1) * (float)(timeTargetSelectionSize - 1) / (float)threadsNb));
-                wxASSERT_MSG(end >= start, wxString::Format("start = %d, end = %d, timeTargetSelectionSize = %d", start,
-                                                            end, timeTargetSelectionSize));
+                wxASSERT_MSG(end >= start, asStrF("start = %d, end = %d, timeTargetSelectionSize = %d", start, end,
+                                                  timeTargetSelectionSize));
 
                 asThreadGetAnalogsSubDates* thread = new asThreadGetAnalogsSubDates(
                     predictorsArchive, predictorsTarget, &timeArrayArchiveData, &timeArrayTargetData,
@@ -1156,11 +1156,10 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
                 int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
                                        timeTargetSelection[iAnalogDate], 0.01);
                 wxASSERT_MSG(iTimeTarg >= 0,
-                             wxString::Format(
-                                 _("Looking for %s in betwwen %s and %s."),
-                                 asTime::GetStringTime(timeTargetSelection[iAnalogDate], "DD.MM.YYYY hh:mm"),
-                                 asTime::GetStringTime(timeTargetData[0], "DD.MM.YYYY hh:mm"),
-                                 asTime::GetStringTime(timeTargetData[timeTargetDataSize - 1], "DD.MM.YYYY hh:mm")));
+                             asStrF(_("Looking for %s in betwwen %s and %s."),
+                                    asTime::GetStringTime(timeTargetSelection[iAnalogDate], "DD.MM.YYYY hh:mm"),
+                                    asTime::GetStringTime(timeTargetData[0], "DD.MM.YYYY hh:mm"),
+                                    asTime::GetStringTime(timeTargetData[timeTargetDataSize - 1], "DD.MM.YYYY hh:mm")));
 
                 if (iTimeTarg < 0) {
                     wxLogError(_("An unexpected error occurred."));
@@ -1208,12 +1207,11 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
                             wxASSERT(timeArchiveData.size() > iTimeArch);
                             wxASSERT_MSG(
                                 vArchData[iPtor]->size() == vTargData[iPtor]->size(),
-                                wxString::Format(
-                                    "%s (%d th element) in archive, %s (%d th element) in target: vArchData size = "
-                                    "%d, vTargData size = %d",
-                                    asTime::GetStringTime(timeArchiveData[iTimeArch], "DD.MM.YYYY hh:mm"), iTimeArch,
-                                    asTime::GetStringTime(timeTargetData[iTimeTarg], "DD.MM.YYYY hh:mm"), iTimeTarg,
-                                    (int)vArchData[iPtor]->size(), (int)vTargData[iPtor]->size()));
+                                asStrF("%s (%d th element) in archive, %s (%d th element) in target: vArchData size = "
+                                       "%d, vTargData size = %d",
+                                       asTime::GetStringTime(timeArchiveData[iTimeArch], "DD.MM.YYYY hh:mm"), iTimeArch,
+                                       asTime::GetStringTime(timeTargetData[iTimeTarg], "DD.MM.YYYY hh:mm"), iTimeTarg,
+                                       (int)vArchData[iPtor]->size(), (int)vTargData[iPtor]->size()));
                             float tmpScore = criteria[iPtor]->Assess(*vTargData[iPtor], *vArchData[iPtor],
                                                                      vRowsNb[iPtor], vColsNb[iPtor]);
 
@@ -1374,10 +1372,10 @@ bool asProcessor::GetAnalogsValues(asPredictand& predictand, asResultsDates& ana
     // Get start and end indices for the analogs dates
     double timeStartTarg = wxMax(timeStart, (double)timeTargetSelection[0]);
     double timeEndTarg = wxMin(timeEnd, (double)timeTargetSelection[timeTargetSelectionLength - 1]);
-    int indexTargDatesStart =
-        asFindCeil(&timeTargetSelection[0], &timeTargetSelection[timeTargetSelectionLength - 1], timeStartTarg);
-    int indexTargDatesEnd =
-        asFindFloor(&timeTargetSelection[0], &timeTargetSelection[timeTargetSelectionLength - 1], timeEndTarg);
+    int indexTargDatesStart = asFindCeil(&timeTargetSelection[0], &timeTargetSelection[timeTargetSelectionLength - 1],
+                                         timeStartTarg);
+    int indexTargDatesEnd = asFindFloor(&timeTargetSelection[0], &timeTargetSelection[timeTargetSelectionLength - 1],
+                                        timeEndTarg);
     int targTimeLength = 0;
     bool ignoreTargetValues;
     if (indexTargDatesStart == asNOT_FOUND || indexTargDatesStart == asOUT_OF_RANGE ||

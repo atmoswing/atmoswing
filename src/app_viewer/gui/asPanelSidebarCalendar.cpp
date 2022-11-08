@@ -35,9 +35,9 @@ asPanelSidebarCalendar::asPanelSidebarCalendar(wxWindow* parent, wxWindowID id, 
     : asPanelSidebar(parent, id, pos, size, style) {
     m_header->SetLabelText(_("Day of the forecast"));
 
-    m_calendarForecastDate =
-        new wxCalendarCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize,
-                           wxCAL_MONDAY_FIRST | wxCAL_SHOW_HOLIDAYS | wxCAL_SHOW_SURROUNDING_WEEKS);
+    m_calendarForecastDate = new wxCalendarCtrl(
+        this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize,
+        wxCAL_MONDAY_FIRST | wxCAL_SHOW_HOLIDAYS | wxCAL_SHOW_SURROUNDING_WEEKS);
     m_sizerContent->Add(m_calendarForecastDate, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
 
     wxBoxSizer* bSizer35;
@@ -77,7 +77,7 @@ void asPanelSidebarCalendar::SetPresentDate() {
     // Set the present date in the calendar and the hour field
     wxDateTime nowWx = asTime::NowWxDateTime(asUTM);
     Time nowStruct = asTime::NowTimeStruct(asUTM);
-    wxString hourStr = wxString::Format("%d", nowStruct.hour);
+    wxString hourStr = asStrF("%d", nowStruct.hour);
     m_calendarForecastDate->SetDate(nowWx);
     m_textCtrlForecastHour->SetValue(hourStr);
 }

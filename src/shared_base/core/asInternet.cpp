@@ -81,7 +81,7 @@ int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString
             wxASSERT(!fileNames.empty());
             wxASSERT(end >= start);
             wxASSERT_MSG(end < fileNames.size(),
-                         wxString::Format("Size of fileNames = %d, desired end = %d", (int)fileNames.size(), end));
+                         asStrF("Size of fileNames = %d, desired end = %d", (int)fileNames.size(), end));
 
             auto* thread = new asThreadInternetDownload(urls, fileNames, destinationDir, usesProxy, proxyAddress,
                                                         proxyPort, proxyUser, proxyPasswd, start, end);
@@ -154,8 +154,8 @@ int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString
 
 #if USE_GUI
                 // Update the progress bar
-                wxString updateMsg = wxString::Format(_("Downloading file %s\n"), fileName) +
-                                     wxString::Format(_("Downloading: %d / %d files"), iFile + 1, (int)urls.size());
+                wxString updateMsg = asStrF(_("Downloading file %s\n"), fileName) +
+                                     asStrF(_("Downloading: %d / %d files"), iFile + 1, (int)urls.size());
                 if (!progressBar.Update(iFile, updateMsg)) {
                     wxLogVerbose(_("The download has been canceled by the user."));
                     wxDELETEA(errorBfr);

@@ -97,7 +97,7 @@ bool asMethodForecasting::Manager() {
 
             if (g_responsive) wxTheApp->Yield();
 #endif
-            asLog::PrintToConsole(wxString::Format("Processing %s... ", m_batchForecasts->GetForecastFileName(i)));
+            asLog::PrintToConsole(asStrF("Processing %s... ", m_batchForecasts->GetForecastFileName(i)));
             wxLogMessage("Processing %s", m_batchForecasts->GetForecastFileName(i));
             fflush(stdout);
 
@@ -132,7 +132,7 @@ bool asMethodForecasting::Manager() {
                 Cleanup();
             } else {
                 // Display processing time
-                asLog::PrintToConsole(wxString::Format(_("done in %.1f sec.\n"), float(sw.Time()) / 1000.0f));
+                asLog::PrintToConsole(asStrF(_("done in %.1f sec.\n"), float(sw.Time()) / 1000.0f));
                 wxLogMessage(_("Processing of the forecast \"%s\" - \"%s\" took %.1f sec to execute"),
                              params.GetMethodIdDisplay(), params.GetSpecificTagDisplay(), float(sw.Time()) / 1000.0f);
                 fflush(stdout);
@@ -339,7 +339,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
 #if USE_GUI
                 if (!g_silentMode) wxMessageBox(msg);
 #else
-                asLog::PrintToConsole(wxString::Format(_("Exception caught: %s"), msg));
+                asLog::PrintToConsole(asStrF(_("Exception caught: %s"), msg));
 #endif
                 if (wxFileExists(results->GetFilePath())) {
                     wxRemoveFile(results->GetFilePath());
@@ -412,9 +412,9 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast& param
                 if (m_cancel) return false;
 
                 // Instantiate a predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
 
                 if (!predictorRealtimePreprocess) {
                     wxDELETE(predictorRealtimePreprocess);
@@ -590,16 +590,16 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             }
 
             predictorRealtime->SetRunDateInUse(m_forecastDate);
-            lastLeadTime =
-                wxMin(lastLeadTime, predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
+            lastLeadTime = wxMin(lastLeadTime,
+                                 predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
 
             wxDELETE(predictorRealtime);
         } else {
             for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
                 // Instantiate a predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
                 if (!predictorRealtimePreprocess) {
                     return false;
                 }
@@ -743,8 +743,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             // Check time array for real-time data
             vd listTimeArray = predictorRealtime->GetDataDates();
             wxASSERT_MSG(listTimeArray.size() >= timeArrayDataTarget.GetSize(),
-                         wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
-                                          (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
+                         asStrF("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
+                                (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
             for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
                 if (listTimeArray[i] != timeArrayDataTarget[i]) {
                     wxLogError(_("The real-time predictor time array is not consistent "
@@ -848,10 +848,10 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 timeArrayDataTarget.Init();
 
                 // Instantiate an archive predictor object
-                asPredictor* predictorArchivePreprocess =
-                    asPredictor::GetInstance(params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
-                                             params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
-                                             m_batchForecasts->GetPredictorsArchiveDirectory());
+                asPredictor* predictorArchivePreprocess = asPredictor::GetInstance(
+                    params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
+                    m_batchForecasts->GetPredictorsArchiveDirectory());
                 if (!predictorArchivePreprocess) {
                     return false;
                 }
@@ -865,9 +865,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 }
 
                 // Instantiate an realtime predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
                 if (!predictorRealtimePreprocess) {
                     wxDELETE(predictorArchivePreprocess);
                     return false;
@@ -897,8 +897,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 // Check time array for real-time data
                 vd listTimeArray = predictorRealtimePreprocess->GetDataDates();
                 wxASSERT_MSG(listTimeArray.size() >= timeArrayDataTarget.GetSize(),
-                             wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
-                                              (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
+                             asStrF("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
+                                    (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
 
                 for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
                     if (listTimeArray[i] != timeArrayDataTarget[i]) {
@@ -1094,16 +1094,16 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
             }
             predictorRealtime->SetPredictorsRealtimeDirectory(m_batchForecasts->GetPredictorsRealtimeDirectory());
             predictorRealtime->SetRunDateInUse(m_forecastDate);
-            lastLeadTime =
-                wxMin(lastLeadTime, predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
+            lastLeadTime = wxMin(lastLeadTime,
+                                 predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
 
             wxDELETE(predictorRealtime);
         } else {
             for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
                 // Instantiate a predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
                 if (!predictorRealtimePreprocess) {
                     return false;
                 }
@@ -1244,8 +1244,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
             // Check time array for real-time data
             vd listTimeArray = predictorRealtime->GetDataDates();
             wxASSERT_MSG(listTimeArray.size() >= timeArrayDataTarget.GetSize(),
-                         wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
-                                          (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
+                         asStrF("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
+                                (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
             for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
                 if (listTimeArray[i] != timeArrayDataTarget[i]) {
                     wxLogError(_("The real-time predictor time array is not consistent "
@@ -1331,10 +1331,10 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                 timeArrayDataTarget.Init();
 
                 // Instantiate an archive predictor object
-                asPredictor* predictorArchivePreprocess =
-                    asPredictor::GetInstance(params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
-                                             params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
-                                             m_batchForecasts->GetPredictorsArchiveDirectory());
+                asPredictor* predictorArchivePreprocess = asPredictor::GetInstance(
+                    params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
+                    m_batchForecasts->GetPredictorsArchiveDirectory());
                 if (!predictorArchivePreprocess) {
                     return false;
                 }
@@ -1348,9 +1348,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                 }
 
                 // Instantiate an realtime predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
                 if (!predictorRealtimePreprocess) {
                     wxDELETE(predictorArchivePreprocess);
                     return false;
@@ -1380,8 +1380,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                 // Check time array for real-time data
                 vd listTimeArray = predictorRealtimePreprocess->GetDataDates();
                 wxASSERT_MSG(listTimeArray.size() >= timeArrayDataTarget.GetSize(),
-                             wxString::Format("listTimeArray.size() = %d, timeArrayDataTarget.GetSize() = %d",
-                                              (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
+                             asStrF("listTimeArray.size() = %d, timeArrayDataTarget.GetSize() = %d",
+                                    (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
                 for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
                     if (listTimeArray[i] != timeArrayDataTarget[i]) {
                         wxLogError(_("The real-time predictor time array is not consistent "
@@ -1421,14 +1421,12 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
 
                 wxASSERT_MSG(
                     predictorArchivePreprocess->GetLatPtsnb() == predictorRealtimePreprocess->GetLatPtsnb(),
-                    wxString::Format(
-                        "predictorArchivePreprocess.GetLatPtsnb()=%d, predictorRealtimePreprocess.GetLatPtsnb()=%d",
-                        predictorArchivePreprocess->GetLatPtsnb(), predictorRealtimePreprocess->GetLatPtsnb()));
+                    asStrF("predictorArchivePreprocess.GetLatPtsnb()=%d, predictorRealtimePreprocess.GetLatPtsnb()=%d",
+                           predictorArchivePreprocess->GetLatPtsnb(), predictorRealtimePreprocess->GetLatPtsnb()));
                 wxASSERT_MSG(
                     predictorArchivePreprocess->GetLonPtsnb() == predictorRealtimePreprocess->GetLonPtsnb(),
-                    wxString::Format(
-                        "predictorArchivePreprocess.GetLonPtsnb()=%d, predictorRealtimePreprocess.GetLonPtsnb()=%d",
-                        predictorArchivePreprocess->GetLonPtsnb(), predictorRealtimePreprocess->GetLonPtsnb()));
+                    asStrF("predictorArchivePreprocess.GetLonPtsnb()=%d, predictorRealtimePreprocess.GetLonPtsnb()=%d",
+                           predictorArchivePreprocess->GetLonPtsnb(), predictorRealtimePreprocess->GetLonPtsnb()));
             }
 
             // Fix the criteria if S1

@@ -69,7 +69,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration& params) {
     asResultsDates anaDatesPrevious;
 
     for (auto stationId : stationsId) {
-        wxLogVerbose(_("Calibrating station %s."), GetPredictandStationIdsList(stationId));
+        wxLogVerbose(_("Calibrating station %s."), GetStationIdsList(stationId));
 
         // Reset the score of the climatology
         m_scoreClimatology.clear();
@@ -79,14 +79,13 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration& params) {
 
         // Create result objects to save the parameters sets
         asResultsParametersArray resultsTested;
-        resultsTested.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId)));
+        resultsTested.Init(asStrF(_("station_%s_tested_parameters"), GetStationIdsList(stationId)));
         asResultsParametersArray resultsBest;
-        resultsBest.Init(wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId)));
-        wxString resultsXmlFilePath =
-            wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+        resultsBest.Init(asStrF(_("station_%s_best_parameters"), GetStationIdsList(stationId)));
+        wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir",
+                                                                asConfig::GetDefaultUserWorkingDir());
         wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
-        resultsXmlFilePath.Append(
-            wxString::Format("/%s_station_%s_best_parameters.xml", time, GetPredictandStationIdsList(stationId)));
+        resultsXmlFilePath.Append(asStrF("/%s_station_%s_best_parameters.xml", time, GetStationIdsList(stationId)));
 
         // Create a complete relevance map
         wxLogVerbose(_("Creating the complete relevance map for a given predictor."));

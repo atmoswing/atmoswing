@@ -398,8 +398,7 @@ bool asParametersDownscaling::InputsOK() const {
     // Analog dates
     for (int i = 0; i < GetStepsNb(); i++) {
         if (GetAnalogsNumber(i) == 0) {
-            wxLogError(
-                wxString::Format(_("The number of analogs (step %d) was not provided in the parameters file."), i));
+            wxLogError(_("The number of analogs (step %d) was not provided in the parameters file."), i);
             return false;
         }
 

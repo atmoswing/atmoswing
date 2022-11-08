@@ -26,11 +26,29 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asTotalScoreRMSE.h"
+#ifndef AS_THREAD_METHOD_OPTIMIZER_RANDOM_SET_H
+#define AS_THREAD_METHOD_OPTIMIZER_RANDOM_SET_H
 
-asTotalScoreRMSE::asTotalScoreRMSE(const wxString& periodString)
-    : asTotalScoreMSE(periodString) {}
+#include "asIncludes.h"
+#include "asMethodOptimizerMC.h"
+#include "asParametersOptimization.h"
+#include "asThread.h"
 
-float asTotalScoreRMSE::Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const {
-    return std::sqrt(asTotalScoreMSE::Assess(targetDates, scores, timeArray));
-}
+class asThreadRnd : public asThread {
+  public:
+    asThreadRnd(asMethodOptimizerMC* optimizer, asParametersOptimization* params, float* finalScoreCalib,
+                vf* scoreClimatology);
+
+    virtual ~asThreadRnd();
+
+    ExitCode Entry();
+
+  protected:
+  private:
+    asMethodOptimizerMC* m_optimizer;
+    asParametersOptimization* m_params;
+    float* m_finalScoreCalib;
+    vf* m_scoreClimatology;
+};
+
+#endif

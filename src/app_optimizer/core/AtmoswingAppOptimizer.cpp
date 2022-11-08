@@ -47,8 +47,8 @@
 #include "asMethodCalibratorEvaluateAllScores.h"
 #include "asMethodCalibratorSingleOnlyDates.h"
 #include "asMethodCalibratorSingleOnlyValues.h"
-#include "asMethodOptimizerGeneticAlgorithms.h"
-#include "asMethodOptimizerRandomSet.h"
+#include "asMethodOptimizerGAs.h"
+#include "asMethodOptimizerMC.h"
 
 IMPLEMENT_APP(AtmoswingAppOptimizer)
 
@@ -97,6 +97,9 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
     {wxCMD_LINE_OPTION, NULL, "ve-step", "Variables exploration: step to process"},
     {wxCMD_LINE_OPTION, NULL, "mc-runs-nb", "Monte Carlo: number of runs"},
     {wxCMD_LINE_OPTION, NULL, "ga-config", "GAs: predefined configuration of options (1-5)"},
+    {wxCMD_LINE_OPTION, NULL, "ga-use-mini-batches", "GAs: use mini-batches (1/0)"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mini-batch-size", "GAs: size of the mini-batches"},
+    {wxCMD_LINE_OPTION, NULL, "ga-number-epochs", "GAs: number of epochs if using mini-batches"},
     {wxCMD_LINE_OPTION, NULL, "ga-ope-nat-sel", "GAs: operator choice for natural selection"},
     {wxCMD_LINE_OPTION, NULL, "ga-ope-coup-sel", "GAs: operator choice for couples selection"},
     {wxCMD_LINE_OPTION, NULL, "ga-ope-cross", "GAs: operator choice for chromosome crossover"},
@@ -132,8 +135,6 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
     {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-gens", "GAs: non uniform mutation - generations nb"},
     {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-min-r", "GAs: non uniform mutation - minimum rate"},
     {wxCMD_LINE_OPTION, NULL, "ga-mut-multi-scale-p", "GAs: multi-scale mutation - probability"},
-    {wxCMD_LINE_SWITCH, NULL, "ga-enable-history",
-     "Keep the previous optimizations in memory and compare to new ones."},
 
     {wxCMD_LINE_OPTION, NULL, "log-level",
      "Set a log level"
@@ -197,7 +198,7 @@ bool AtmoswingAppOptimizer::OnInit() {
 
     // Check that it is the unique instance
     if (!wxFileConfig::Get()->ReadBool("/General/MultiInstances", false)) {
-        const wxString instanceName = wxString::Format(wxT("atmoswing-optimizer-%s"), wxGetUserId());
+        const wxString instanceName = asStrF(wxT("atmoswing-optimizer-%s"), wxGetUserId());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if (m_singleInstanceChecker->IsAnotherRunning()) {
             wxMessageBox(_("Program already running, aborting."));
@@ -231,7 +232,7 @@ wxString AtmoswingAppOptimizer::GetLocalPath() {
     if (g_runNb > 0) {
         localPath.Append("runs");
         localPath.Append(DS);
-        localPath.Append(wxString::Format("%d", g_runNb));
+        localPath.Append(asStrF("%d", g_runNb));
         localPath.Append(DS);
     }
 
@@ -247,7 +248,7 @@ bool AtmoswingAppOptimizer::InitLog() {
             while (wxFileName::Exists(fullPath)) {
                 increment++;
                 fullPath = GetLocalPath();
-                fullPath.Append(wxString::Format("AtmoSwingOptimizer-%d.log", increment));
+                fullPath.Append(asStrF("AtmoSwingOptimizer-%d.log", increment));
             }
         }
 
@@ -324,8 +325,8 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly() {
         wxConfigBase* pConfigNow = wxFileConfig::Get();
         wxString refIniPath = GetLocalPath();
         refIniPath.Append("AtmoSwing.ini");
-        wxFileConfig* pConfigRef =
-            new wxFileConfig("AtmoSwing", wxEmptyString, refIniPath, refIniPath, wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig* pConfigRef = new wxFileConfig("AtmoSwing", wxEmptyString, refIniPath, refIniPath,
+                                                    wxCONFIG_USE_LOCAL_FILE);
 
         // Check that the number of groups are identical.
         int groupsNb = pConfigNow->GetNumberOfGroups(true);
@@ -359,7 +360,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly() {
                         if (!valNow.IsEmpty() && !valNow.IsSameAs(valRef)) {
                             wxLogError(_("The option %s (under Optimizer/%s) differ from the previous config file (%s "
                                          "!= %s)."),
-                                       entryName.c_str(), subGroupName.c_str(), valNow.c_str(), valRef.c_str());
+                                       entryName, subGroupName, valNow, valRef);
                             return false;
                         }
                     } while (pConfigNow->GetNextEntry(entryName, entryIndex));
@@ -414,7 +415,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
         if (g_runNb > 0) {
             localPath.Append("runs");
             localPath.Append(DS);
-            localPath.Append(wxString::Format("%d", g_runNb));
+            localPath.Append(asStrF("%d", g_runNb));
             localPath.Append(DS);
 
             // Check if path already exists
@@ -435,7 +436,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
             while (wxFileName::Exists(iniPath)) {
                 increment++;
                 iniPath = localPath;
-                iniPath.Append(wxString::Format("AtmoSwing-%d.ini", increment));
+                iniPath.Append(asStrF("AtmoSwing-%d.ini", increment));
             }
         }
 
@@ -448,9 +449,9 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
         userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
         // Set the local config object
-        wxFileConfig* pConfig =
-            new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini",
-                             asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini", wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig* pConfig = new wxFileConfig(
+            "AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini",
+            asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     }
 
@@ -467,7 +468,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if the user asked for the version
     if (parser.Found("version")) {
         wxString date(wxString::FromAscii(__DATE__));
-        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
+        asLog::PrintToConsole(asStrF("AtmoSwing version %s, %s\n", g_version, date));
 
         return true;
     }
@@ -658,6 +659,18 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
         }
     }
 
+    if (parser.Found("ga-use-mini-batches", &option)) {
+        wxFileConfig::Get()->Write("/GAs/UseMiniBatches", option);
+    }
+
+    if (parser.Found("ga-mini-batch-size", &option)) {
+        wxFileConfig::Get()->Write("/GAs/MiniBatchSize", option);
+    }
+
+    if (parser.Found("ga-number-epochs", &option)) {
+        wxFileConfig::Get()->Write("/GAs/NumberOfEpochs", option);
+    }
+
     if (parser.Found("ga-ope-nat-sel", &option)) {
         wxFileConfig::Get()->Write("/GAs/NaturalSelectionOperator", option);
     }
@@ -790,10 +803,6 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
         wxFileConfig::Get()->Write("/GAs/MutationsMultiScaleProbability", option);
     }
 
-    if (parser.Found("ga-enable-history")) {
-        wxFileConfig::Get()->Write("/GAs/EnableHistory", true);
-    }
-
     /*
      * Method choice
      */
@@ -876,14 +885,14 @@ int AtmoswingAppOptimizer::OnRun() {
             calibrator.SetPredictorDataDir(m_predictorsDir);
             calibrator.Manager();
         } else if (m_calibMethod.IsSameAs("montecarlo", false)) {
-            asMethodOptimizerRandomSet optimizer;
+            asMethodOptimizerMC optimizer;
             optimizer.SetParamsFilePath(m_calibParamsFile);
             optimizer.SetPredictandDBFilePath(m_predictandDB);
             optimizer.SetPredictandStationIds(m_predictandStationIds);
             optimizer.SetPredictorDataDir(m_predictorsDir);
             optimizer.Manager();
         } else if (m_calibMethod.IsSameAs("ga", false)) {
-            asMethodOptimizerGeneticAlgorithms optimizer;
+            asMethodOptimizerGAs optimizer;
             optimizer.SetParamsFilePath(m_calibParamsFile);
             optimizer.SetPredictandDBFilePath(m_predictandDB);
             optimizer.SetPredictandStationIds(m_predictandStationIds);
@@ -909,7 +918,7 @@ int AtmoswingAppOptimizer::OnRun() {
             calibrator.SetPredictorDataDir(m_predictorsDir);
             calibrator.Manager();
         } else {
-            asLog::PrintToConsole(wxString::Format("Wrong calibration method selection (%s).\n", m_calibMethod));
+            asLog::PrintToConsole(asStrF("Wrong calibration method selection (%s).\n", m_calibMethod));
         }
     } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);

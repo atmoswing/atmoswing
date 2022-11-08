@@ -41,8 +41,8 @@
 
 void Ref1(const wxString& paramsFile, bool shortVersion) {
     // Create predictand database
-    auto* predictand =
-        new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    auto* predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily,
+                                                     asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -172,8 +172,8 @@ void Ref1(const wxString& paramsFile, bool shortVersion) {
         }
 
         // Find target date in the array
-        int rowTargetDate =
-            asFindClosest(&resTargetDates[0], &resTargetDates[resTargetDates.rows() - 1], fileTargetDate);
+        int rowTargetDate = asFindClosest(&resTargetDates[0], &resTargetDates[resTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resTargetValues(rowTargetDate));
@@ -304,8 +304,8 @@ TEST(MethodCalibrator, Ref1CalibPeriodStandard) {
 
 void Ref2(const wxString& paramsFile, bool shortVersion) {
     // Create predictand database
-    asPredictandPrecipitation* predictand =
-        new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation* predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -445,8 +445,8 @@ void Ref2(const wxString& paramsFile, bool shortVersion) {
         }
 
         // Find target date in the array
-        int rowTargetDate =
-            asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1], fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -786,8 +786,8 @@ TEST(MethodCalibrator, ComplexPredictorHours) {
 
 void Ref1Preloading() {
     // Create predictand database
-    asPredictandPrecipitation* predictand =
-        new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation* predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -905,8 +905,8 @@ void Ref1Preloading() {
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate =
-            asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1], fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -936,8 +936,8 @@ TEST(MethodCalibrator, Ref1PreloadingMultithreaded) {
 
 void Ref1PreloadingSubset() {
     // Create predictand database
-    asPredictandPrecipitation* predictand =
-        new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation* predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1139,8 +1139,8 @@ TEST(MethodCalibrator, SmallerSpatialArea) {
 
 void Ref2Preloading() {
     // Create predictand database
-    asPredictandPrecipitation* predictand =
-        new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation* predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1259,8 +1259,8 @@ void Ref2Preloading() {
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate =
-            asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1], fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -1295,8 +1295,8 @@ TEST(MethodCalibrator, Ref2PreloadingStandard) {
 
 void Ref2SavingIntermediateResults() {
     // Create predictand database
-    asPredictandPrecipitation* predictand =
-        new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation* predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1438,8 +1438,8 @@ void Ref2SavingIntermediateResults() {
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate =
-            asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1], fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -1473,8 +1473,8 @@ TEST(MethodCalibrator, Ref2SavingIntermediateResults) {
 
 void Ref2MergeByHalfAndMultiply() {
     // Create predictand database
-    asPredictandPrecipitation* predictand =
-        new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation* predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1593,8 +1593,8 @@ void Ref2MergeByHalfAndMultiply() {
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate =
-            asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1], fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));

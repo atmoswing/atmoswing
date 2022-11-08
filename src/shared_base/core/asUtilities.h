@@ -34,6 +34,11 @@
 
 #include "asIncludes.h"
 
+template <typename... Args>
+wxString asStrF(const wxString& format, Args... args) {
+    return wxString::Format(format, args...);
+}
+
 bool asRemoveDir(const wxString& path);
 
 void asInitRandom();

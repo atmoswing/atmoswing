@@ -70,7 +70,7 @@ if (USE_CUDA)
     list(APPEND tests ${src_tests_cuh})
     if (TEST_CUDA)
         add_definitions(-DTEST_CUDA)
-    endif(TEST_CUDA)
+    endif (TEST_CUDA)
 endif (USE_CUDA)
 
 # Remove eventual duplicates
@@ -129,20 +129,20 @@ endif ()
 
 ##### DEFINITIONS
 
-if(WIN32)
+if (WIN32)
     set_target_properties(atmoswing-tests PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
     if (USE_GUI)
         set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=1; _CONSOLE")
     else (USE_GUI)
         set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=0; _CONSOLE")
     endif (USE_GUI)
-else()
+else ()
     if (USE_GUI)
         set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=1")
     else (USE_GUI)
         set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=0")
     endif (USE_GUI)
-endif()
+endif ()
 
 
 ##### LINKING

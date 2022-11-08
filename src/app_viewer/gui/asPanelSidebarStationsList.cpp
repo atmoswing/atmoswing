@@ -35,8 +35,8 @@ asPanelSidebarStationsList::asPanelSidebarStationsList(wxWindow* parent, wxWindo
     m_header->SetLabelText(_("Station selection"));
 
     wxArrayString stationSelectionChoices;
-    m_choiceStationSelection =
-        new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, stationSelectionChoices, 0);
+    m_choiceStationSelection = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, stationSelectionChoices,
+                                            0);
     m_choiceStationSelection->SetSelection(0);
     m_sizerContent->Add(m_choiceStationSelection, 0, wxALL | wxEXPAND, 5);
 

@@ -33,6 +33,7 @@
   <analog_dates>
     <analogs_number>70</analogs_number>
     <predictor>
+      <preload>0</preload>
       <dataset_id>Custom_LTHE_NR1</dataset_id>
       <data_id>hgt_1000hPa</data_id>
       <level>1000</level>
@@ -48,6 +49,7 @@
       <criteria>S1</criteria>
     </predictor>
     <predictor>
+      <preload>0</preload>
       <dataset_id>Custom_LTHE_NR1</dataset_id>
       <data_id>hgt_500hPa</data_id>
       <level>500</level>

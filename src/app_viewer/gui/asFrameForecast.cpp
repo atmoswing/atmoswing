@@ -149,8 +149,8 @@ asFrameForecast::asFrameForecast(wxWindow* parent, wxWindowID id)
 
     // VroomGIS
     m_layerManager = new vrLayerManager();
-    m_viewerLayerManager =
-        new vrViewerLayerManager(m_layerManager, this, m_displayCtrl, m_panelSidebarGisLayers->GetTocCtrl());
+    m_viewerLayerManager = new vrViewerLayerManager(m_layerManager, this, m_displayCtrl,
+                                                    m_panelSidebarGisLayers->GetTocCtrl());
     //    m_layerManager->AllowReprojectOnTheFly(true);
 
     // Forecast manager
@@ -1008,17 +1008,17 @@ bool asFrameForecast::OpenRecentForecasts() {
     // Check if today directory exists
     wxString basePath = forecastsDirectory + wxFileName::GetPathSeparator();
     wxFileName fullPath(basePath);
-    fullPath.AppendDir(wxString::Format("%d", asTime::GetYear(now)));
-    fullPath.AppendDir(wxString::Format("%02d", asTime::GetMonth(now)));
-    fullPath.AppendDir(wxString::Format("%02d", asTime::GetDay(now)));
+    fullPath.AppendDir(asStrF("%d", asTime::GetYear(now)));
+    fullPath.AppendDir(asStrF("%02d", asTime::GetMonth(now)));
+    fullPath.AppendDir(asStrF("%02d", asTime::GetDay(now)));
 
     // If does not exist, try the day before
     if (!fullPath.Exists()) {
         now--;
         fullPath = wxFileName(basePath);
-        fullPath.AppendDir(wxString::Format("%d", asTime::GetYear(now)));
-        fullPath.AppendDir(wxString::Format("%02d", asTime::GetMonth(now)));
-        fullPath.AppendDir(wxString::Format("%02d", asTime::GetDay(now)));
+        fullPath.AppendDir(asStrF("%d", asTime::GetYear(now)));
+        fullPath.AppendDir(asStrF("%02d", asTime::GetMonth(now)));
+        fullPath.AppendDir(asStrF("%02d", asTime::GetDay(now)));
     }
 
     // If does not exist, warn the user and return
@@ -1133,14 +1133,14 @@ void asFrameForecast::SwitchForecast(double increment) {
     for (int i = 0; i < 100; i++) {
         date += increment;
         fullPathV3 = wxFileName(basePath);
-        fullPathV3.AppendDir(wxString::Format("%d", asTime::GetYear(date)));
-        fullPathV3.AppendDir(wxString::Format("%02d", asTime::GetMonth(date)));
-        fullPathV3.AppendDir(wxString::Format("%02d", asTime::GetDay(date)));
+        fullPathV3.AppendDir(asStrF("%d", asTime::GetYear(date)));
+        fullPathV3.AppendDir(asStrF("%02d", asTime::GetMonth(date)));
+        fullPathV3.AppendDir(asStrF("%02d", asTime::GetDay(date)));
 
         fullPathV2 = fullPathV3;
 
-        prefixFileName = wxString::Format(patternFileNameV3, asTime::GetYear(date), asTime::GetMonth(date),
-                                          asTime::GetDay(date), asTime::GetHour(date));
+        prefixFileName = asStrF(patternFileNameV3, asTime::GetYear(date), asTime::GetMonth(date), asTime::GetDay(date),
+                                asTime::GetHour(date));
         fullPathV3.SetName(prefixFileName + partialFileNameV3);
 
         fullPathV4 = fullPathV3;
@@ -1152,8 +1152,8 @@ void asFrameForecast::SwitchForecast(double increment) {
 
         if (fullPathV3.Exists()) break;
 
-        prefixFileName = wxString::Format(patternFileNameV2, asTime::GetYear(date), asTime::GetMonth(date),
-                                          asTime::GetDay(date), asTime::GetHour(date));
+        prefixFileName = asStrF(patternFileNameV2, asTime::GetYear(date), asTime::GetMonth(date), asTime::GetDay(date),
+                                asTime::GetHour(date));
         fullPathV2.SetName(prefixFileName + partialFileNameV2);
         fullPathV2.SetExt("asff");
 
@@ -1396,8 +1396,7 @@ void asFrameForecast::OnMoveLayer(wxCommandEvent& event) {
     for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         posMenu.Append(
             asID_MENU_POPUP_LAYER + i,
-            wxString::Format("%d - %s", i + 1,
-                             m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetDisplayName().GetFullName()));
+            asStrF("%d - %s", i + 1, m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetDisplayName().GetFullName()));
     }
     wxPoint pos = wxGetMousePosition();
 
@@ -1439,8 +1438,8 @@ void asFrameForecast::OnToolAction(wxCommandEvent& event) {
 
         // Moving view
 #if defined(__WIN32__)
-        asThreadViewerLayerManagerZoomIn* thread =
-            new asThreadViewerLayerManagerZoomIn(m_viewerLayerManager, &m_critSectionViewerLayerManager, fittedRect);
+        asThreadViewerLayerManagerZoomIn* thread = new asThreadViewerLayerManagerZoomIn(
+            m_viewerLayerManager, &m_critSectionViewerLayerManager, fittedRect);
         ThreadsManager().AddThread(thread);
 #else
         m_viewerLayerManager->Zoom(fittedRect);
@@ -1461,8 +1460,8 @@ void asFrameForecast::OnToolAction(wxCommandEvent& event) {
 
         // Moving view
 #if defined(__WIN32__)
-        asThreadViewerLayerManagerZoomOut* thread =
-            new asThreadViewerLayerManagerZoomOut(m_viewerLayerManager, &m_critSectionViewerLayerManager, fittedRect);
+        asThreadViewerLayerManagerZoomOut* thread = new asThreadViewerLayerManagerZoomOut(
+            m_viewerLayerManager, &m_critSectionViewerLayerManager, fittedRect);
         ThreadsManager().AddThread(thread);
 #else
         m_viewerLayerManager->ZoomOut(fittedRect);
@@ -1729,7 +1728,7 @@ void asFrameForecast::ReloadViewerLayerManager() {
 void asFrameForecast::UpdateHeaderTexts() {
     // Set header text
     wxString dateForecast = asTime::GetStringTime(m_forecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY HH");
-    wxString dateStr = wxString::Format(_("Forecast of the %sh"), dateForecast);
+    wxString dateStr = asStrF(_("Forecast of the %sh"), dateForecast);
     m_staticTextForecastDate->SetLabel(dateStr);
 
     wxString forecastName;

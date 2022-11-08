@@ -38,7 +38,14 @@ asMethodCalibrator::asMethodCalibrator()
     : asMethodStandard(),
       m_scoreOrder(Asc),
       m_scoreValid(NaNf),
-      m_validationMode(false) {
+      m_validationMode(false),
+      m_useMiniBatches(false),
+      m_miniBatchAssessBestOnFullPeriod(false),
+      m_miniBatchSize(365),
+      m_miniBatchSizeMax(0),
+      m_miniBatchStart(0),
+      m_miniBatchEnd(0),
+      m_epoch(1) {
     // Seeds the random generator
     asInitRandom();
 }
@@ -299,7 +306,7 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray& results) {
     return true;
 }
 
-wxString asMethodCalibrator::GetPredictandStationIdsList(vi& stationIds) const {
+wxString asMethodCalibrator::GetStationIdsList(vi& stationIds) const {
     wxString id;
 
     if (stationIds.size() == 1) {
@@ -358,8 +365,8 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring* params) {
     }
 
     // Check if data are effectively available for this period
-    int indexPredictandTimeStart =
-        asFindCeil(&predictandTime[0], &predictandTime[predictandTime.size() - 1], timeStart);
+    int indexPredictandTimeStart = asFindCeil(&predictandTime[0], &predictandTime[predictandTime.size() - 1],
+                                              timeStart);
     int indexPredictandTimeEnd = asFindFloor(&predictandTime[0], &predictandTime[predictandTime.size() - 1], timeEnd);
 
     if (indexPredictandTimeStart < 0 || indexPredictandTimeEnd < 0) {
@@ -516,8 +523,8 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
         timeArrayTarget.SetForbiddenYears(params->GetValidationYearsVector());
     }
 
-    if (params->GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds") == 0 ||
-        params->GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds") == 0) {
+    if (!m_validationMode && (params->GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds") == 0 ||
+        params->GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds") == 0)) {
         vi stations = params->GetPredictandStationIds();
         if (stations.size() > 1) {
             wxLogError(_("You cannot use predictand thresholds with the multivariate approach."));
@@ -540,6 +547,10 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
     // If in validation mode, only keep validation years
     if (m_validationMode) {
         timeArrayTarget.KeepOnlyYears(params->GetValidationYearsVector());
+    }
+
+    if (!m_validationMode && m_useMiniBatches) {
+        timeArrayTarget.KeepOnlyRange(m_miniBatchStart, m_miniBatchEnd);
     }
 
     // Data date array

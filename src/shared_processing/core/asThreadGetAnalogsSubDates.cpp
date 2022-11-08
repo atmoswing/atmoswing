@@ -64,8 +64,8 @@ asThreadGetAnalogsSubDates::asThreadGetAnalogsSubDates(
     wxASSERT_MSG(m_end < m_pTimeTargetSelection->size(),
                  _("The given time array end is superior to the time array size."));
     wxASSERT_MSG(m_end != m_pTimeTargetSelection->size() - 2,
-                 wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
-                                  (int)m_pTimeTargetSelection->size()));
+                 asStrF(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
+                        (int)m_pTimeTargetSelection->size()));
 }
 
 asThreadGetAnalogsSubDates::~asThreadGetAnalogsSubDates() {}

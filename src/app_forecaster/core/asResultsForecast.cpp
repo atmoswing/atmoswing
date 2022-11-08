@@ -114,7 +114,7 @@ void asResultsForecast::BuildFileName() {
     wxString forecastname = m_methodId + '.' + m_specificTag;
     wxString nowstr = asTime::GetStringTime(m_leadTimeOrigin, "YYYY-MM-DD_hh");
     wxString ext = "nc";
-    wxString filename = wxString::Format("%s.%s.%s", nowstr, forecastname, ext);
+    wxString filename = asStrF("%s.%s.%s", nowstr, forecastname, ext);
     m_filePath.Append(filename);
 }
 
@@ -403,12 +403,12 @@ bool asResultsForecast::Load() {
                     return false;
                 }
             } else {
-                m_predictandParameter =
-                    asPredictand::StringToParameterEnum(ncFile.GetAttString("predictand_parameter"));
-                m_predictandTemporalResolution =
-                    asPredictand::StringToTemporalResolutionEnum(ncFile.GetAttString("predictand_temporal_resolution"));
-                m_predictandSpatialAggregation =
-                    asPredictand::StringToSpatialAggregationEnum(ncFile.GetAttString("predictand_spatial_aggregation"));
+                m_predictandParameter = asPredictand::StringToParameterEnum(
+                    ncFile.GetAttString("predictand_parameter"));
+                m_predictandTemporalResolution = asPredictand::StringToTemporalResolutionEnum(
+                    ncFile.GetAttString("predictand_temporal_resolution"));
+                m_predictandSpatialAggregation = asPredictand::StringToSpatialAggregationEnum(
+                    ncFile.GetAttString("predictand_spatial_aggregation"));
             }
 
             m_predictandDatasetId = ncFile.GetAttString("predictand_dataset_id");
@@ -643,9 +643,9 @@ wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArrayString() const 
     for (int i = 0; i < m_stationNames.size(); i++) {
         wxString label;
         if (!asIsNaN(m_stationHeights[i]) && m_stationHeights[i] != 0) {
-            label = wxString::Format("%s (%4.0fm)", m_stationNames[i], m_stationHeights[i]);
+            label = asStrF("%s (%4.0fm)", m_stationNames[i], m_stationHeights[i]);
         } else {
-            label = wxString::Format("%s", m_stationNames[i]);
+            label = asStrF("%s", m_stationNames[i]);
         }
         stationsNames.Add(label);
     }
@@ -655,9 +655,9 @@ wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArrayString() const 
 wxString asResultsForecast::GetStationNameAndHeight(int iStat) const {
     wxString stationName;
     if (!asIsNaN(m_stationHeights[iStat]) && m_stationHeights[iStat] != 0) {
-        stationName = wxString::Format("%s (%4.0fm)", m_stationNames[iStat], m_stationHeights[iStat]);
+        stationName = asStrF("%s (%4.0fm)", m_stationNames[iStat], m_stationHeights[iStat]);
     } else {
-        stationName = wxString::Format("%s", m_stationNames[iStat]);
+        stationName = asStrF("%s", m_stationNames[iStat]);
     }
     return stationName;
 }

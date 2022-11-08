@@ -1652,8 +1652,8 @@ TEST(Utilities, RandomUniformDistributionToFile) {
         double result6 = asRandom((float)0.0, (float)10.0, (float)2.5);
         double result7 = asRandom((int)0, (int)10);
         double result8 = asRandom((int)0, (int)10, (int)2);
-        content.Append(wxString::Format("%g\t%g\t%g\t%g", result1, result2, result3, result4));
-        content.Append(wxString::Format("\t%g\t%g\t%g\t%g\n", result5, result6, result7, result8));
+        content.Append(asStrF("%g\t%g\t%g\t%g", result1, result2, result3, result4));
+        content.Append(asStrF("\t%g\t%g\t%g\t%g\n", result5, result6, result7, result8));
     }
 
     fileRes.AddContent(content);
@@ -1689,8 +1689,8 @@ TEST(Utilities, RandomNormalDistributionToFile) {
         double result6 = asRandomNormal((float)10.0, (float)5.0, (float)2.5);
         double result7 = asRandomNormal((int)10, (int)5);
         double result8 = asRandomNormal((int)10, (int)5, (int)2);
-        content.Append(wxString::Format("%g\t%g\t%g\t%g", result1, result2, result3, result4));
-        content.Append(wxString::Format("\t%g\t%g\t%g\t%g\n", result5, result6, result7, result8));
+        content.Append(asStrF("%g\t%g\t%g\t%g", result1, result2, result3, result4));
+        content.Append(asStrF("\t%g\t%g\t%g\t%g\n", result5, result6, result7, result8));
     }
 
     fileRes.AddContent(content);

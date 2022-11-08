@@ -391,8 +391,8 @@ void wxBmpComboBox::CalcLabelBitmapPos(int n, const wxSize& area, wxPoint& label
     } else  // if ((m_label_style & wxBMPCOMBO_LEFT) != 0)
     {
         labelPos = wxPoint(BORDER, (area.y - lh) / 2);
-        bitmapPos =
-            wxPoint(BORDER * 2 + m_labelSize.x + (area.x - BORDER * 2 - m_labelSize.x - bw) / 2, (area.y - bh) / 2);
+        bitmapPos = wxPoint(BORDER * 2 + m_labelSize.x + (area.x - BORDER * 2 - m_labelSize.x - bw) / 2,
+                            (area.y - bh) / 2);
     }
 }
 

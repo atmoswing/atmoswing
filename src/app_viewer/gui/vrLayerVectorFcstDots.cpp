@@ -168,7 +168,7 @@ void vrLayerVectorFcstDots::_Paint(wxGraphicsContext* gdc, wxGraphicsPath& path,
 }
 
 void vrLayerVectorFcstDots::_AddLabel(wxGraphicsContext* gdc, const wxPoint& center, double value) {
-    wxString label = wxString::Format("%1.1f", value);
+    wxString label = asStrF("%1.1f", value);
     wxDouble w, h;
     gdc->GetTextExtent(label, &w, &h);
     gdc->DrawText(label, center.x - w / 2.0, center.y - h / 2.0);

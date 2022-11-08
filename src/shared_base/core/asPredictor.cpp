@@ -1167,10 +1167,10 @@ bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) 
     m_fInd.timeStartStorage = iStartTimeArray;
 
     if (m_fStr.time.size() > 1) {
-        int iStartTimeFile =
-            asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size() - 1], timeArray[iStartTimeArray]);
-        int iEndTimeFile =
-            asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size() - 1], timeArray[iEndTimeArray]);
+        int iStartTimeFile = asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size() - 1],
+                                           timeArray[iStartTimeArray]);
+        int iEndTimeFile = asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size() - 1],
+                                         timeArray[iEndTimeArray]);
 
         if (iStartTimeFile == asOUT_OF_RANGE || iEndTimeFile == asOUT_OF_RANGE) {
             return false;
@@ -1208,17 +1208,17 @@ bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) 
         m_fInd.area.latCount = dataArea->GetYaxisPtsnb();
 
         // Get the spatial indices of the desired data
-        m_fInd.area.lonStart =
-            asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin, 0.01f, asHIDE_WARNINGS);
+        m_fInd.area.lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin, 0.01f,
+                                      asHIDE_WARNINGS);
         if (m_fInd.area.lonStart == asOUT_OF_RANGE) {
             // If not found, try with negative angles
-            m_fInd.area.lonStart =
-                asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin - 360, 0.01f, asHIDE_WARNINGS);
+            m_fInd.area.lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin - 360, 0.01f,
+                                          asHIDE_WARNINGS);
         }
         if (m_fInd.area.lonStart == asOUT_OF_RANGE) {
             // If not found, try with angles above 360 degrees
-            m_fInd.area.lonStart =
-                asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin + 360, 0.01f, asHIDE_WARNINGS);
+            m_fInd.area.lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin + 360, 0.01f,
+                                          asHIDE_WARNINGS);
         }
         if (m_fInd.area.lonStart < 0) {
             wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin, m_fStr.lons[0],
@@ -1226,15 +1226,15 @@ bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) 
             return false;
         }
         wxASSERT_MSG(m_fInd.area.lonStart >= 0,
-                     wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", m_fStr.lons[0],
-                                      (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
+                     asStrF("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", m_fStr.lons[0],
+                            (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
 
         int indexStartLat1 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinStart, 0.01f);
         int indexStartLat2 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinEnd, 0.01f);
-        wxASSERT_MSG(indexStartLat1 >= 0, wxString::Format("Looking for %g in %g to %g", latMinStart, m_fStr.lats[0],
-                                                           m_fStr.lats[m_fStr.lats.size() - 1]));
-        wxASSERT_MSG(indexStartLat2 >= 0, wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fStr.lats[0],
-                                                           m_fStr.lats[m_fStr.lats.size() - 1]));
+        wxASSERT_MSG(indexStartLat1 >= 0, asStrF("Looking for %g in %g to %g", latMinStart, m_fStr.lats[0],
+                                                 m_fStr.lats[m_fStr.lats.size() - 1]));
+        wxASSERT_MSG(indexStartLat2 >= 0, asStrF("Looking for %g in %g to %g", latMinEnd, m_fStr.lats[0],
+                                                 m_fStr.lats[m_fStr.lats.size() - 1]));
         m_fInd.area.latStart = wxMin(indexStartLat1, indexStartLat2);
     } else {
         m_fInd.area.lonStart = 0;
@@ -1722,8 +1722,8 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
     int xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin, toleranceLon, asHIDE_WARNINGS);
     int xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax, toleranceLon, asHIDE_WARNINGS);
     if (xStartIndex < 0) {
-        xStartIndex =
-            asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + 360, toleranceLon, asHIDE_WARNINGS);
+        xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + 360, toleranceLon,
+                             asHIDE_WARNINGS);
         xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax + 360, toleranceLon, asHIDE_WARNINGS);
         if (xStartIndex < 0 || xEndIndex < 0) {
             xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin - 360, toleranceLon);
@@ -1876,8 +1876,8 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
                 for (int i = 0; i < originalData.size(); i++) {
                     for (int j = 0; j < originalData[i].size(); j++) {
                         a2f dat1 = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength, xLength);
-                        a2f dat2 =
-                            originalData[i][j].block(yStartIndexReal + m_axisLat.size(), xStartIndex, yLength, xLength);
+                        a2f dat2 = originalData[i][j].block(yStartIndexReal + m_axisLat.size(), xStartIndex, yLength,
+                                                            xLength);
                         a2f datMerged(2 * yLength, xLength);
                         datMerged.block(0, 0, yLength, xLength) = dat1;
                         datMerged.block(yLength, 0, yLength, xLength) = dat2;
@@ -2135,9 +2135,8 @@ bool asPredictor::InterpolateOnGrid(asAreaGrid* dataArea, asAreaGrid* desiredAre
                                    axisDataLat[axisDataLatEnd], axisDataLatEnd, (int)axisDataLat.size());
                         return false;
                     }
-                    wxASSERT_MSG(indexYfloor >= 0,
-                                 wxString::Format("%f in %f to %f", axisFinalLat[iLat], axisDataLat[indexLastLat],
-                                                  axisDataLat[axisDataLatEnd]));
+                    wxASSERT_MSG(indexYfloor >= 0, asStrF("%f in %f to %f", axisFinalLat[iLat],
+                                                          axisDataLat[indexLastLat], axisDataLat[axisDataLatEnd]));
                     wxASSERT(indexYceil >= 0);
 
                     // Save last index

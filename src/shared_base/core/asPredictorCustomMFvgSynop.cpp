@@ -150,15 +150,14 @@ bool asPredictorCustomMFvgSynop::Init() {
 void asPredictorCustomMFvgSynop::ListFiles(asTimeArray& timeArray) {
     // Check product directory
     if (!wxDirExists(GetFullDirectoryPath())) {
-        asThrowException(
-            wxString::Format(_("Cannot find predictor directory for FVG data (%s)."), GetFullDirectoryPath()));
+        asThrowException(asStrF(_("Cannot find predictor directory for FVG data (%s)."), GetFullDirectoryPath()));
     }
 
     // Check directory structure
     Time t0 = asTime::GetTimeStruct(timeArray[0]);
     bool skipMonthDayInPath = false;
-    if (!wxDirExists(GetFullDirectoryPath() + wxString::Format("%4d/%02d/%02d", t0.year, t0.month, t0.day))) {
-        if (wxDirExists(GetFullDirectoryPath() + wxString::Format("%4d", t0.year))) {
+    if (!wxDirExists(GetFullDirectoryPath() + asStrF("%4d/%02d/%02d", t0.year, t0.month, t0.day))) {
+        if (wxDirExists(GetFullDirectoryPath() + asStrF("%4d", t0.year))) {
             skipMonthDayInPath = true;
         } else {
             asThrowException(_("Cannot find coherent predictor directory structure for FVG data."));
@@ -170,19 +169,19 @@ void asPredictorCustomMFvgSynop::ListFiles(asTimeArray& timeArray) {
         wxString path;
         if (t.hour > 0) {
             if (!skipMonthDayInPath) {
-                path = GetFullDirectoryPath() + wxString::Format("%4d/%02d/%02d/", t.year, t.month, t.day);
+                path = GetFullDirectoryPath() + asStrF("%4d/%02d/%02d/", t.year, t.month, t.day);
             } else {
-                path = GetFullDirectoryPath() + wxString::Format("%4d/", t.year);
+                path = GetFullDirectoryPath() + asStrF("%4d/", t.year);
             }
-            m_files.push_back(path + wxString::Format(m_fileNamePattern, t.year, t.month, t.day, t.hour));
+            m_files.push_back(path + asStrF(m_fileNamePattern, t.year, t.month, t.day, t.hour));
         } else {
             Time t2 = asTime::GetTimeStruct(timeArray[i] - timeArray.GetTimeStepDays());
             if (!skipMonthDayInPath) {
-                path = GetFullDirectoryPath() + wxString::Format("%4d/%02d/%02d/", t2.year, t2.month, t2.day);
+                path = GetFullDirectoryPath() + asStrF("%4d/%02d/%02d/", t2.year, t2.month, t2.day);
             } else {
-                path = GetFullDirectoryPath() + wxString::Format("%4d/", t2.year);
+                path = GetFullDirectoryPath() + asStrF("%4d/", t2.year);
             }
-            m_files.push_back(path + wxString::Format(m_fileNamePattern, t2.year, t2.month, t2.day, 24));
+            m_files.push_back(path + asStrF(m_fileNamePattern, t2.year, t2.month, t2.day, 24));
         }
     }
 }

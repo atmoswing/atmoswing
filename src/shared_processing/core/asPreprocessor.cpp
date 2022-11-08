@@ -978,13 +978,11 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asPredictor*> 
     int inputSize = (int)predictors.size();
     int factorSize = inputSize / 2;
     if (inputSize < 2) {
-        wxLogError(
-            _("The number of predictors must be superior to 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
+        wxLogError(_("The number of predictors must be superior to 2 in PreprocessMergeByHalfAndMultiply"));
         return false;
     }
     if (inputSize % 2 != 0) {
-        wxLogError(
-            _("The number of predictors must be dividable by 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
+        wxLogError(_("The number of predictors must be dividable by 2 in PreprocessMergeByHalfAndMultiply"));
         return false;
     }
 

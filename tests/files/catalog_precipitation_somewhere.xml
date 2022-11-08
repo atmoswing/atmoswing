@@ -15,7 +15,7 @@
     <first_time_step>0</first_time_step>
     <nan>-9999</nan>
     <coordinate_system>EPSG:3857</coordinate_system>
-    
+
     <stations>
       <station>
         <id>1</id>

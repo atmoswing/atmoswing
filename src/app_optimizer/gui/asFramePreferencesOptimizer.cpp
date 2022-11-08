@@ -107,7 +107,7 @@ void asFramePreferencesOptimizer::LoadPreferences() {
     m_checkBoxAllowMultithreading->SetValue(allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads == -1) maxThreads = 2;
-    wxString processingMaxThreadNb = pConfig->Read("/Processing/ThreadsNb", wxString::Format("%d", maxThreads));
+    wxString processingMaxThreadNb = pConfig->Read("/Processing/ThreadsNb", asStrF("%d", maxThreads));
     m_textCtrlThreadsNb->SetValue(processingMaxThreadNb);
     m_sliderThreadsPriority->SetValue(pConfig->ReadLong("/Processing/ThreadsPriority", 95l));
 

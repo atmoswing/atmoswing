@@ -425,9 +425,9 @@ bool asParameters::SetPreloadingProperties() {
                 int preprocSize = GetPreprocessSize(iStep, iPtor);
 
                 // Different actions depending on the preprocessing method.
-                wxString msg =
-                    _("The size of the provided predictors (%d) does not match the requirements (%d) in the "
-                      "preprocessing %s method.");
+                wxString msg = _(
+                    "The size of the provided predictors (%d) does not match the requirements (%d) in the "
+                    "preprocessing %s method.");
                 if (NeedsGradientPreprocessing(iStep, iPtor)) {
                     if (preprocSize != 1) {
                         wxLogError(msg, preprocSize, 1, "Gradient");
@@ -607,9 +607,9 @@ bool asParameters::PreprocessingPropertiesOk() const {
                 int preprocSize = GetPreprocessSize(iStep, iPtor);
 
                 // Different actions depending on the preprocessing method.
-                wxString msg =
-                    _("The size of the provided predictors (%d) does not match the requirements (%d) "
-                      "in the preprocessing %s method.");
+                wxString msg = _(
+                    "The size of the provided predictors (%d) does not match the requirements (%d) "
+                    "in the preprocessing %s method.");
                 if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("Addition") ||
                     method.IsSameAs("Average")) {
                     // No constraints
@@ -900,47 +900,47 @@ wxString asParameters::Print() const {
     // Create content string
     wxString content = wxEmptyString;
 
-    content.Append(wxString::Format("Station\t%s\t", GetPredictandStationIdsString()));
-    content.Append(wxString::Format("DaysInt\t%d\t", GetAnalogsIntervalDays()));
-    content.Append(wxString::Format("ExcludeDays\t%d\t", GetAnalogsExcludeDays()));
+    content.Append(asStrF("Station\t%s\t", GetPredictandStationIdsString()));
+    content.Append(asStrF("DaysInt\t%d\t", GetAnalogsIntervalDays()));
+    content.Append(asStrF("ExcludeDays\t%d\t", GetAnalogsExcludeDays()));
 
     for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
-        content.Append(wxString::Format("|||| Step(%d)\t", iStep));
-        content.Append(wxString::Format("Anb\t%d\t", GetAnalogsNumber(iStep)));
+        content.Append(asStrF("|||| Step(%d)\t", iStep));
+        content.Append(asStrF("Anb\t%d\t", GetAnalogsNumber(iStep)));
 
         for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
-            content.Append(wxString::Format("|| Ptor(%d)\t", iPtor));
+            content.Append(asStrF("|| Ptor(%d)\t", iPtor));
 
             if (NeedsPreprocessing(iStep, iPtor)) {
-                content.Append(wxString::Format("%s\t", GetPreprocessMethod(iStep, iPtor)));
+                content.Append(asStrF("%s\t", GetPreprocessMethod(iStep, iPtor)));
 
                 for (int iPre = 0; iPre < GetPreprocessSize(iStep, iPtor); iPre++) {
-                    content.Append(wxString::Format("| %s %s\t", GetPreprocessDatasetId(iStep, iPtor, iPre),
-                                                    GetPreprocessDataId(iStep, iPtor, iPre)));
-                    content.Append(wxString::Format("Level\t%g\t", GetPreprocessLevel(iStep, iPtor, iPre)));
-                    content.Append(wxString::Format("Time\t%g\t", GetPreprocessHour(iStep, iPtor, iPre)));
+                    content.Append(asStrF("| %s %s\t", GetPreprocessDatasetId(iStep, iPtor, iPre),
+                                          GetPreprocessDataId(iStep, iPtor, iPre)));
+                    content.Append(asStrF("Level\t%g\t", GetPreprocessLevel(iStep, iPtor, iPre)));
+                    content.Append(asStrF("Time\t%g\t", GetPreprocessHour(iStep, iPtor, iPre)));
                 }
             } else {
                 content.Append(
-                    wxString::Format("%s %s\t", GetPredictorDatasetId(iStep, iPtor), GetPredictorDataId(iStep, iPtor)));
-                content.Append(wxString::Format("Level\t%g\t", GetPredictorLevel(iStep, iPtor)));
-                content.Append(wxString::Format("Time\t%g\t", GetPredictorHour(iStep, iPtor)));
+                    asStrF("%s %s\t", GetPredictorDatasetId(iStep, iPtor), GetPredictorDataId(iStep, iPtor)));
+                content.Append(asStrF("Level\t%g\t", GetPredictorLevel(iStep, iPtor)));
+                content.Append(asStrF("Time\t%g\t", GetPredictorHour(iStep, iPtor)));
             }
 
-            content.Append(wxString::Format("GridType\t%s\t", GetPredictorGridType(iStep, iPtor)));
-            content.Append(wxString::Format("xMin\t%g\t", GetPredictorXmin(iStep, iPtor)));
-            content.Append(wxString::Format("xPtsNb\t%d\t", GetPredictorXptsnb(iStep, iPtor)));
-            content.Append(wxString::Format("xStep\t%g\t", GetPredictorXstep(iStep, iPtor)));
-            content.Append(wxString::Format("yMin\t%g\t", GetPredictorYmin(iStep, iPtor)));
-            content.Append(wxString::Format("yPtsNb\t%d\t", GetPredictorYptsnb(iStep, iPtor)));
-            content.Append(wxString::Format("yStep\t%g\t", GetPredictorYstep(iStep, iPtor)));
-            content.Append(wxString::Format("Weight\t%e\t", GetPredictorWeight(iStep, iPtor)));
+            content.Append(asStrF("GridType\t%s\t", GetPredictorGridType(iStep, iPtor)));
+            content.Append(asStrF("xMin\t%g\t", GetPredictorXmin(iStep, iPtor)));
+            content.Append(asStrF("xPtsNb\t%d\t", GetPredictorXptsnb(iStep, iPtor)));
+            content.Append(asStrF("xStep\t%g\t", GetPredictorXstep(iStep, iPtor)));
+            content.Append(asStrF("yMin\t%g\t", GetPredictorYmin(iStep, iPtor)));
+            content.Append(asStrF("yPtsNb\t%d\t", GetPredictorYptsnb(iStep, iPtor)));
+            content.Append(asStrF("yStep\t%g\t", GetPredictorYstep(iStep, iPtor)));
+            content.Append(asStrF("Weight\t%e\t", GetPredictorWeight(iStep, iPtor)));
             if (!GetPreprocessMethod(iStep, iPtor).IsEmpty()) {
-                content.Append(wxString::Format("%s\t", GetPreprocessMethod(iStep, iPtor)));
+                content.Append(asStrF("%s\t", GetPreprocessMethod(iStep, iPtor)));
             } else {
                 content.Append("NoPreprocessing\t");
             }
-            content.Append(wxString::Format("Criteria\t%s\t", GetPredictorCriteria(iStep, iPtor)));
+            content.Append(asStrF("Criteria\t%s\t", GetPredictorCriteria(iStep, iPtor)));
         }
     }
 

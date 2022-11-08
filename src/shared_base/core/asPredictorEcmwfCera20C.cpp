@@ -134,7 +134,7 @@ bool asPredictorEcmwfCera20C::Init() {
 
 void asPredictorEcmwfCera20C::ListFiles(asTimeArray& timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
-        m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
+        m_files.push_back(GetFullDirectoryPath() + asStrF(m_fileNamePattern, iYear));
     }
 }
 
