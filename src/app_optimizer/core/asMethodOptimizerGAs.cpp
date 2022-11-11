@@ -768,9 +768,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
     if (m_useMiniBatches) {
         wxString parentDirStr(dir.GetName());
         parentDirStr = parentDirStr.Mid(0, parentDirStr.Len() - 7);
-        wxLogWarning("--- %s", parentDirStr);
         wxDir parentDir(parentDirStr);
-        wxLogWarning("--- %s", parentDir.GetName());
         wxString logFilePattern = asStrF("*.log");
         if (!parentDir.HasFiles(logFilePattern)) {
             wxLogError("No log file found to restore the number of epochs (directory: %s)", parentDir.GetName());
@@ -796,6 +794,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
             // Get the epoch nb
             int locEpochNb = fileLine.Find("Epoch number");
             wxString epochNbStr = fileLine.Mid(locEpochNb);
+            wxLogWarning("---%s", epochNbStr);
             long epochNb;
             epochNbStr.ToLong(&epochNb);
 
