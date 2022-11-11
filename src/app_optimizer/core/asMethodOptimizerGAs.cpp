@@ -769,9 +769,9 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
         wxFileName parentDirFileName(dir.GetName());
         parentDirFileName.RemoveLastDir();
         wxDir parentDir(parentDirFileName.GetFullPath());
-        wxString logFilePattern = asStrF("AtmoSwingOptimizer*.log");
+        wxString logFilePattern = asStrF("*.log");
         if (!parentDir.HasFiles(logFilePattern)) {
-            wxLogError("No log file found to restore the number of epochs");
+            wxLogError("No log file found to restore the number of epochs (directory: %s)", parentDir.GetName());
             return false;
         }
 
