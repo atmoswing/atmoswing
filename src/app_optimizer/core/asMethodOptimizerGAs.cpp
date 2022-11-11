@@ -794,7 +794,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
             // Get the epoch nb
             int locEpochNb = fileLine.Find("Epoch number");
             if (locEpochNb != wxNOT_FOUND) {
-                wxString epochNbStr = fileLine.Mid(12, epochNbStr.Len() - 12);
+                wxString epochNbStr = fileLine.Mid(22);
                 wxLogWarning("---%s", epochNbStr);
                 long epochNb;
                 epochNbStr.ToLong(&epochNb);
