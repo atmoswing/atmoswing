@@ -793,13 +793,15 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
 
             // Get the epoch nb
             int locEpochNb = fileLine.Find("Epoch number");
-            wxString epochNbStr = fileLine.Mid(locEpochNb);
-            wxLogWarning("---%s", epochNbStr);
-            long epochNb;
-            epochNbStr.ToLong(&epochNb);
+            if (locEpochNb != wxNOT_FOUND) {
+                wxString epochNbStr = fileLine.Mid(12);
+                wxLogWarning("---%s", epochNbStr);
+                long epochNb;
+                epochNbStr.ToLong(&epochNb);
 
-            // Overwrite to the last value
-            m_epoch = int(epochNb);
+                // Overwrite to the last value
+                m_epoch = int(epochNb);
+            }
 
             // Get next line
             fileLine = logContent.GetNextLine();
