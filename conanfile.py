@@ -15,6 +15,7 @@ class AmtoSwing(ConanFile):
         "libdeflate/1.12",
         "libjpeg/9e",
         "zlib/1.2.13",
+        "libpng/1.6.38",
         "eccodes/2.27.0@terranum-conan+eccodes/stable",
     ]
 
