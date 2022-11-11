@@ -175,6 +175,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     m_iterator = 0;
     m_assessmentCounter = 0;
     m_generationNb = 1;
+    m_epoch = 1;
 
     // Seeds the random generator
     asInitRandom();
@@ -795,10 +796,8 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
             int locEpochNb = fileLine.Find("Epoch number");
             if (locEpochNb != wxNOT_FOUND) {
                 wxString epochNbStr = fileLine.Mid(22);
-                wxLogWarning("---%s", epochNbStr);
                 long epochNb;
                 epochNbStr.ToLong(&epochNb);
-                wxLogWarning("-int-%d", int(epochNb));
 
                 // Overwrite to the last value
                 m_epoch = int(epochNb);
