@@ -764,6 +764,50 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
     m_iterator = m_paramsNb;
     m_generationNb = genNb;
 
+    // Update the epoch
+    if (m_useMiniBatches) {
+        wxFileName parentDirFileName(dir.GetName());
+        parentDirFileName.RemoveLastDir();
+        wxDir parentDir(parentDirFileName.GetFullPath());
+        wxString logFilePattern = asStrF("AtmoSwingOptimizer*.log");
+        if (!parentDir.HasFiles(logFilePattern)) {
+            wxLogError("No log file found to restore the number of epochs");
+            return false;
+        }
+
+        wxArrayString logFiles;
+        wxDir::GetAllFiles(parentDir.GetName(), &logFiles, logFilePattern, wxDIR_FILES);
+        logFiles.Sort();
+        wxString logFilePath = logFiles.Last();
+        logFiles.Clear();
+
+        asFileText logContent(logFilePath, asFile::ReadOnly);
+        if (!logContent.Open()) {
+            wxLogError(_("Couldn't open the file %s."), logFilePath);
+            return false;
+        }
+        fileLine = logContent.GetNextLine();
+
+        do {
+            if (fileLine.IsEmpty()) break;
+
+            // Get the epoch nb
+            int locEpochNb = fileLine.Find("Epoch number");
+            wxString epochNbStr = fileLine.Mid(locEpochNb);
+            long epochNb;
+            epochNbStr.ToLong(&epochNb);
+
+            // Overwrite to the last value
+            m_epoch = int(epochNb);
+
+            // Get next line
+            fileLine = logContent.GetNextLine();
+        } while (!logContent.EndOfFile());
+        logContent.Close();
+
+        wxLogMessage(_("Starting again from epoch %d."), m_epoch);
+    }
+
     // Copy file to the new target
     wxCopyFile(filePath, m_resGenerations.GetFilePath());
 

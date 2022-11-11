@@ -37,8 +37,8 @@
 #include "asMethodCalibratorSingle.h"
 #include "asMethodCalibratorSingleOnlyDates.h"
 #include "asMethodCalibratorSingleOnlyValues.h"
-#include "asMethodOptimizerGeneticAlgorithms.h"
-#include "asMethodOptimizerRandomSet.h"
+#include "asMethodOptimizerGAs.h"
+#include "asMethodOptimizerMC.h"
 #include "images.h"
 #include "wx/fileconf.h"
 
@@ -416,12 +416,12 @@ void asFrameOptimizer::Launch(wxCommandEvent& event) {
             }
             case 4:  // Random sets
             {
-                m_methodCalibrator = new asMethodOptimizerRandomSet();
+                m_methodCalibrator = new asMethodOptimizerMC();
                 break;
             }
             case 5:  // Genetic algorithms
             {
-                m_methodCalibrator = new asMethodOptimizerGeneticAlgorithms();
+                m_methodCalibrator = new asMethodOptimizerGAs();
                 break;
             }
             case 6:  // Scores evaluation
