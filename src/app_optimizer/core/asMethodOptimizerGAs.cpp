@@ -766,11 +766,10 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
 
     // Update the epoch
     if (m_useMiniBatches) {
-        wxFileName parentDirFileName(dir.GetName());
-        wxLogWarning("--- %s", parentDirFileName.GetFullPath());
-        parentDirFileName.RemoveLastDir();
-        wxLogWarning("--- %s", parentDirFileName.GetFullPath());
-        wxDir parentDir(parentDirFileName.GetFullPath());
+        wxString parentDirStr(dir.GetName());
+        parentDirStr = parentDirStr.Mid(0, parentDirStr.Len() - 7);
+        wxLogWarning("--- %s", parentDirStr);
+        wxDir parentDir(parentDirStr);
         wxLogWarning("--- %s", parentDir.GetName());
         wxString logFilePattern = asStrF("*.log");
         if (!parentDir.HasFiles(logFilePattern)) {
