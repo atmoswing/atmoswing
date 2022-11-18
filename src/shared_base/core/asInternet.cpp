@@ -143,7 +143,7 @@ int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString
 
                 // Use of a wxFileName object to create the directory.
                 wxFileName currentFilePath = wxFileName(filePath);
-                if (!currentFilePath.DirExists()) {
+                if (!currentFilePath.Exists()) {
                     if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL)) {
                         wxLogError(_("The directory to save real-time predictors data cannot be created."));
                         curl_easy_cleanup(curl);
@@ -175,6 +175,10 @@ int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString
                     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteFile);
                     // Set a pointer to our struct to pass to the callback
                     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &file);
+#if defined(__WIN32__)
+                    // Disable certificate check (CURLOPT_CAPATH does not work on Windows)
+                    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
+#endif
 
                     // If a proxy is used
                     if (usesProxy) {
