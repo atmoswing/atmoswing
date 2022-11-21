@@ -32,6 +32,7 @@
 #include "asInternet.h"
 #include "asPredictorOperCustomFvgForecast.h"
 #include "asPredictorOperGfsForecast.h"
+#include "asPredictorOperGfsForecastLocal.h"
 #include "asPredictorOperIfsForecast.h"
 #include "asTimeArray.h"
 
@@ -111,6 +112,8 @@ asPredictorOper* asPredictorOper::GetInstance(const wxString& datasetId, const w
 
     if (datasetId.IsSameAs("NWS_GFS_Forecast", false)) {
         predictor = new asPredictorOperGfsForecast(dataId);
+    } else if (datasetId.IsSameAs("NWS_GFS_Forecast_Local", false)) {
+        predictor = new asPredictorOperGfsForecastLocal(dataId);
     } else if (datasetId.IsSameAs("ECMWF_IFS_GRIB_Forecast", false)) {
         predictor = new asPredictorOperIfsForecast(dataId);
     } else if (datasetId.IsSameAs("Custom_MeteoFVG_Forecast", false)) {
