@@ -44,11 +44,6 @@ RUN cp -a /app/src/data /app/deploy/share/atmoswing \
 # Build final image
 FROM ubuntu:22.04 AS runner
 
-# Add user
-RUN useradd -ms /bin/bash forecaster
-USER newuser
-WORKDIR /home/forecaster
-
 # Install dependencies
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
@@ -56,6 +51,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Copy from builder
 COPY --from=builder  /app/deploy /usr
+
+# Add user
+RUN useradd -ms /bin/bash forecaster
+USER forecaster
+WORKDIR /home/forecaster
 
 ENTRYPOINT ["/usr/bin/atmoswing-forecaster"]
 CMD ["--help"]
