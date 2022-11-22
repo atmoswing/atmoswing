@@ -53,7 +53,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 COPY --from=builder  /app/deploy /usr
 
 # Add user
-RUN useradd -ms /bin/bash forecaster --create-home
+RUN useradd forecaster --create-home
 USER forecaster
 WORKDIR /home/forecaster
 
