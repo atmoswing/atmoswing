@@ -232,17 +232,18 @@ bool asPredictorOper::BuildFilenamesUrls() {
 
     // Change the lead times
     for (int leadTime = m_leadTimeStart; leadTime <= m_leadTimeEnd; leadTime += m_leadTimeStep) {
+        int currentLeadtime = leadTime;
         double runDateInUse = m_runDateInUse;
 
         // Manage if lead time if negative -> get previous download
-        while (leadTime < 0) {
-            leadTime += m_runUpdate;
+        while (currentLeadtime < 0) {
+            currentLeadtime += m_runUpdate;
             runDateInUse -= m_runUpdate / 24.0;
         }
 
         wxString thisCommandLeadTime = thisCommand;
 
-        wxString timeStr = asStrF("%d", leadTime);
+        wxString timeStr = asStrF("%d", currentLeadtime);
 
         thisCommandLeadTime.Replace("[LEADTIME-H]", timeStr);
         thisCommandLeadTime.Replace("[LEADTIME-h]", timeStr);
@@ -259,7 +260,7 @@ bool asPredictorOper::BuildFilenamesUrls() {
         // Filename
         wxString filePath = GetDirStructure(runDateInUse) + DS + GetFileName(runDateInUse, leadTime);
 
-        double dataDate = runDateInUse + leadTime / 24.0;
+        double dataDate = runDateInUse + currentLeadtime / 24.0;
 
         // Save resulting strings
         m_urls.push_back(thisCommandLeadTime);
