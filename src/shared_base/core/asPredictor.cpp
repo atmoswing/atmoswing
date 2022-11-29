@@ -435,12 +435,14 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
             wxLogError(_("Files not found for %s (%s)."), m_dataId, m_datasetName);
             return false;
         }
+        wxLogVerbose(_("Predictor files found."));
 
         // Get file axes
         if (!EnquireFileStructure(timeArray)) {
             wxLogError(_("Failing to get the file structure."));
             return false;
         }
+        wxLogVerbose(_("File structure parsed."));
 
         // Check the level availability
         if (!HasDesiredLevel(m_warnMissingLevels)) {
@@ -470,6 +472,7 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
         }
 
         // Extract composite data from files
+        wxLogVerbose(_("Extracting from files."));
         if (!ExtractFromFiles(dataArea, timeArray)) {
             if (m_warnMissingFiles && m_warnMissingLevels) {
                 wxLogWarning(_("Extracting data from files failed."));
@@ -481,6 +484,7 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
         }
 
         // Transform data
+        wxLogVerbose(_("Transforming data"));
         if (!TransformData()) {
             wxLogError(_("Data transformation has failed."));
             wxFAIL;
@@ -488,6 +492,7 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
         }
 
         // Interpolate the loaded data on the desired grid
+        wxLogVerbose(_("Interpolating predictor grid."));
         if (desiredArea && desiredArea->IsRegular() && !InterpolateOnGrid(dataArea, desiredArea)) {
             wxLogError(_("Interpolation failed."));
             wxDELETE(dataArea);
@@ -495,6 +500,7 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
         }
 
         // Check the data container length
+        wxLogVerbose(_("Loading forecast data (predictorRealtime->Load)."));
         if (m_time.size() > m_data.size()) {
             wxLogError(_("The date and the data array lengths do not match (time = %d and data = %d)."),
                        (int)m_time.size(), (int)m_data.size());
@@ -694,6 +700,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
     ThreadsManager().CritSectionGrib().Enter();
     asFileGrib gbFile0(m_files[0], asFileGrib::ReadOnly);
 
+    wxLogVerbose(_("Opening grib file to enquire the structure."));
     if (!gbFile0.Open()) {
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
@@ -701,6 +708,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
     }
 
     // Set index position
+    wxLogVerbose(_("Setting index position in the grib file."));
     if (!gbFile0.SetIndexPositionAnyLevel(m_gribCode)) {
         gbFile0.Close();
         ThreadsManager().CritSectionGrib().Leave();
@@ -711,8 +719,10 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
     if (m_fStr.singleTimeStep && m_files.size() > 1) {
         wxASSERT(times.size() > 1);
 
+        wxLogVerbose(_("Creating an instance of the grib object to enquire the structure (2nd file)."));
         asFileGrib gbFile1 = asFileGrib(m_files[1], asFileGrib::ReadOnly);
 
+        wxLogVerbose(_("Opening grib file to enquire the structure (2nd file)."));
         if (!gbFile1.Open()) {
             gbFile0.Close();
             ThreadsManager().CritSectionGrib().Leave();
@@ -720,6 +730,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
             return false;
         }
 
+        wxLogVerbose(_("Setting index position in the grib file (2nd file)."));
         if (!gbFile1.SetIndexPositionAnyLevel(m_gribCode)) {
             gbFile0.Close();
             gbFile1.Close();
@@ -728,6 +739,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
             return false;
         }
 
+        wxLogVerbose(_("Parsing the grib structure."));
         if (!ParseFileStructure(&gbFile0, &gbFile1)) {
             gbFile0.Close();
             gbFile1.Close();
@@ -739,6 +751,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
         gbFile1.Close();
 
     } else {
+        wxLogVerbose(_("Parsing the grib structure (single file)."));
         if (!ParseFileStructure(&gbFile0)) {
             gbFile0.Close();
             ThreadsManager().CritSectionGrib().Leave();
@@ -765,6 +778,7 @@ bool asPredictor::ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dat
     }
 
     // Open the Grib file
+    wxLogVerbose(_("Opening the grib file."));
     ThreadsManager().CritSectionGrib().Enter();
     asFileGrib gbFile(fileName, asFileGrib::ReadOnly);
     if (!gbFile.Open()) {
@@ -774,6 +788,7 @@ bool asPredictor::ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dat
     }
 
     // Set index position
+    wxLogVerbose(_("Setting index position in grib file."));
     if (!gbFile.SetIndexPosition(m_gribCode, m_level, m_warnMissingLevels)) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();
@@ -781,6 +796,7 @@ bool asPredictor::ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dat
     }
 
     // Parse file structure
+    wxLogVerbose(_("Parsing grib file structure."));
     if (!ParseFileStructure(&gbFile)) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();

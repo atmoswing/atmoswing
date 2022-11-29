@@ -55,6 +55,7 @@ asFileGrib::~asFileGrib() {
 
 bool asFileGrib::Open() {
     if (!Find()) return false;
+    wxLogVerbose(_("Grib file found."));
 
     if (!OpenDataset()) return false;
 
@@ -95,28 +96,38 @@ bool asFileGrib::ParseStructure() {
     codes_handle* h;
 
     // Loop over the GRIB messages in the source
-    while ((h = codes_handle_new_from_file(0, m_filtPtr, PRODUCT_GRIB, &err)) != NULL) {
-        if (!h) {
-            wxLogError("Unable to create handle from file %s", m_fileName.GetFullPath());
-            return false;
-        }
-        if (!CheckGribErrorCode(err)) {
-            return false;
-        }
+    wxLogVerbose(_("Creating handle from file %s"), m_fileName.GetFullPath());
+    try {
+        while ((h = codes_handle_new_from_file(0, m_filtPtr, PRODUCT_GRIB, &err)) != nullptr) {
+            if (!h) {
+                wxLogError(_("Unable to create handle from file %s"), m_fileName.GetFullPath());
+                return false;
+            }
 
-        if (m_version == 0) {
-            long version;
-            CODES_CHECK(codes_get_long(h, "editionNumber", &version), 0);
-            m_version = version;
+            wxLogVerbose(_("Check if Grib error"));
+            if (!CheckGribErrorCode(err)) {
+                return false;
+            }
+
+            if (m_version == 0) {
+                long version;
+                CODES_CHECK(codes_get_long(h, "editionNumber", &version), 0);
+                m_version = version;
+            }
+            wxASSERT(m_version == 1 || m_version == 2);
+
+            ExtractAxes(h);
+            ExtractLevel(h);
+            ExtractTime(h);
+            ExtractGribCode(h);
+
+            codes_handle_delete(h);
         }
-        wxASSERT(m_version == 1 || m_version == 2);
-
-        ExtractAxes(h);
-        ExtractLevel(h);
-        ExtractTime(h);
-        ExtractGribCode(h);
-
-        codes_handle_delete(h);
+    } catch (std::exception& e) {
+        wxString msg(e.what(), wxConvUTF8);
+        wxLogError(_("Exception caught: %s"), msg);
+        wxLogError(_("Failed to parse grib file (exception)."));
+        return false;
     }
 
     return CheckGribErrorCode(err);

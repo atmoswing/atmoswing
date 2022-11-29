@@ -793,7 +793,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             m_storagePredictorsArchive.push_back(predictorArchive);
 
             // Realtime data loading
-            wxLogVerbose(_("Loading forecast data."));
+            wxLogVerbose(_("Loading forecast data (predictorRealtime->Load)."));
             if (!predictorRealtime->Load(area, timeArrayDataTarget, params.GetPredictorLevel(iStep, iPtor))) {
                 wxLogError(_("Real-time data (%s) could not be loaded."), predictorRealtime->GetDataId());
                 wxDELETE(area);
@@ -926,7 +926,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 m_storagePredictorsArchivePreprocess.push_back(predictorArchivePreprocess);
 
                 // Realtime data loading
-                wxLogVerbose(_("Loading forecast data."));
+                wxLogVerbose(_("Loading forecast data (predictorRealtimePreprocess->Load)."));
                 if (!predictorRealtimePreprocess->Load(area, timeArrayDataTarget,
                                                        params.GetPreprocessLevel(iStep, iPtor, iPre))) {
                     wxLogError(_("Real-time data (%s) could not be loaded."), predictorRealtimePreprocess->GetDataId());
