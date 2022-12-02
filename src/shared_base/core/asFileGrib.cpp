@@ -53,6 +53,30 @@ asFileGrib::~asFileGrib() {
     Close();
 }
 
+void asFileGrib::SetContext() {
+    grib_context* context = grib_context_get_default();
+    codes_context_set_definitions_path(context, asFileGrib::GetDefinitionsPath());
+}
+
+wxString asFileGrib::GetDefinitionsPath() {
+    wxString definitionsPathEnv;
+    wxGetEnv("ECCODES_DEFINITION_PATH", &definitionsPathEnv);
+    wxConfigBase* pConfig = wxFileConfig::Get();
+    wxString definitionsPath = pConfig->Read("/Libraries/EcCodesDefinitions", definitionsPathEnv);
+
+    wxUniChar separator = wxFileName::GetPathSeparator();
+    if (!definitionsPath.EndsWith("definitions") &&
+        !definitionsPath.EndsWith("definitions" + wxString(separator))) {
+        definitionsPath += wxString(separator) + "definitions";
+    }
+
+    if (!wxDirExists(definitionsPath)) {
+        wxLogWarning(_("The ecCodes definition path '%s' was not found."), definitionsPath);
+    }
+
+    return definitionsPath;
+}
+
 bool asFileGrib::Open() {
     if (!Find()) return false;
     wxLogVerbose(_("Grib file found."));
@@ -98,7 +122,7 @@ bool asFileGrib::ParseStructure() {
     // Loop over the GRIB messages in the source
     wxLogVerbose(_("Creating handle from file %s"), m_fileName.GetFullPath());
     try {
-        while ((h = codes_handle_new_from_file(0, m_filtPtr, PRODUCT_GRIB, &err)) != nullptr) {
+        while ((h = codes_handle_new_from_file(NULL, m_filtPtr, PRODUCT_GRIB, &err)) != nullptr) {
             if (!h) {
                 wxLogError(_("Unable to create handle from file %s"), m_fileName.GetFullPath());
                 return false;
@@ -516,10 +540,10 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
         int count = 0;
 
         if (m_version == 2) {
-            index = codes_index_new(0, "discipline,parameterCategory,parameterNumber,level,dataDate,dataTime,endStep",
+            index = codes_index_new(NULL, "discipline,parameterCategory,parameterNumber,level,dataDate,dataTime,endStep",
                                     &err);
         } else if (m_version == 1) {
-            index = codes_index_new(0, "table2Version,indicatorOfParameter,level,dataDate,dataTime,endStep", &err);
+            index = codes_index_new(NULL, "table2Version,indicatorOfParameter,level,dataDate,dataTime,endStep", &err);
         }
 
         if (!CheckGribErrorCode(err)) {

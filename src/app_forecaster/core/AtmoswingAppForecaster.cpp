@@ -139,6 +139,9 @@ bool AtmoswingAppForecaster::OnInit() {
     // Init cURL
     asInternet::Init();
 
+    // Init ecCodes
+    asFileGrib::SetContext();
+
     // Call default behaviour
     if (!wxApp::OnInit()) {
         return false;
