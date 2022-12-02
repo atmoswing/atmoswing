@@ -301,6 +301,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     // Number of GPUs
     int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
     int gpusNb = GetGpusNb();
+    int device = 0;
 #endif
 
     // Optimizer
@@ -309,7 +310,6 @@ bool asMethodOptimizerGAs::ManageOneRun() {
         if (m_useMiniBatches && !m_miniBatchAssessBestOnFullPeriod && !firstRun) {
             auto* thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
 #ifdef USE_CUDA
-            int device = 0;
             if (method == asCUDA) {
                 device = ThreadsManager().GetFreeDevice(gpusNb);
                 thread->SetDevice(device);
@@ -558,7 +558,10 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
     auto* thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
 #ifdef USE_CUDA
     int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
+    int device = 0;
+    int gpusNb = GetGpusNb();
     if (method == asCUDA) {
+        device = ThreadsManager().GetFreeDevice(gpusNb);
         thread->SetDevice(device);
     }
 #endif
@@ -577,9 +580,7 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
         ThreadsManager().WaitForFreeThread(asThread::MethodOptimizerGeneticAlgorithms);
 
 #ifdef USE_CUDA
-        int device = 0;
         if (method == asCUDA) {
-            int gpusNb = GetGpusNb();
             device = ThreadsManager().GetFreeDevice(gpusNb);
         }
 #endif
