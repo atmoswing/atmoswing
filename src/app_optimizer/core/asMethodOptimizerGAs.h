@@ -97,6 +97,8 @@ class asMethodOptimizerGAs : public asMethodOptimizer {
     vf m_bestScores;
     vf m_meanScores;
 
+    int GetGpusNb();
+
     void ClearAll() override;
 
     void SortScoresAndParameters();

@@ -170,6 +170,23 @@ bool asMethodOptimizerGAs::Manager() {
     return true;
 }
 
+int asMethodOptimizerGAs::GetGpusNb() {
+    int gpusNb = 0;
+#ifdef USE_CUDA
+    // Number of GPUs
+    int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
+    if (method == asCUDA) {
+        gpusNb = (int)wxFileConfig::Get()->ReadLong("/Processing/GpusNb", 1);
+        int devicesFound = asProcessorCuda::GetDeviceCount();
+        if (gpusNb > devicesFound) {
+            wxLogWarning(_("%d GPUs provided, but only %d found."), gpusNb, devicesFound);
+            gpusNb = devicesFound;
+        }
+    }
+#endif
+    return gpusNb;
+}
+
 bool asMethodOptimizerGAs::ManageOneRun() {
     // Reset some data members
     m_iterator = 0;
@@ -283,15 +300,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 #ifdef USE_CUDA
     // Number of GPUs
     int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
-    int gpusNb = 0;
-    if (method == asCUDA) {
-        gpusNb = (int)wxFileConfig::Get()->ReadLong("/Processing/GpusNb", 1);
-        int devicesFound = asProcessorCuda::GetDeviceCount();
-        if (gpusNb > devicesFound) {
-            wxLogWarning(_("%d GPUs provided, but only %d found."), gpusNb, devicesFound);
-            gpusNb = devicesFound;
-        }
-    }
+    int gpusNb = GetGpusNb();
 #endif
 
     // Optimizer
@@ -300,7 +309,9 @@ bool asMethodOptimizerGAs::ManageOneRun() {
         if (m_useMiniBatches && !m_miniBatchAssessBestOnFullPeriod && !firstRun) {
             auto* thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
 #ifdef USE_CUDA
+            int device = 0;
             if (method == asCUDA) {
+                device = ThreadsManager().GetFreeDevice(gpusNb);
                 thread->SetDevice(device);
             }
 #endif
@@ -319,7 +330,6 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             ThreadsManager().WaitForFreeThread(threadType);
 
 #ifdef USE_CUDA
-            int device = 0;
             if (method == asCUDA) {
                 device = ThreadsManager().GetFreeDevice(gpusNb);
             }
@@ -524,7 +534,10 @@ float asMethodOptimizerGAs::ComputeScoreFullPeriod(asParametersOptimizationGAs& 
     float scoreFullPeriod = NaNf;
     auto* thread = new asThreadGAs(this, &param, &scoreFullPeriod, &m_scoreClimatology);
 #ifdef USE_CUDA
+    int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
     if (method == asCUDA) {
+        int gpusNb = GetGpusNb();
+        int device = ThreadsManager().GetFreeDevice(gpusNb);
         thread->SetDevice(device);
     }
 #endif
@@ -544,6 +557,7 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
     // Reassess the best parameter if mini-batch as the period has changed
     auto* thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
 #ifdef USE_CUDA
+    int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
     if (method == asCUDA) {
         thread->SetDevice(device);
     }
@@ -565,6 +579,7 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
 #ifdef USE_CUDA
         int device = 0;
         if (method == asCUDA) {
+            int gpusNb = GetGpusNb();
             device = ThreadsManager().GetFreeDevice(gpusNb);
         }
 #endif
