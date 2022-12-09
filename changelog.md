@@ -7,6 +7,38 @@
 * Time units were missing in the predictand db.
 
 
+## v2.1.7 [NOT RELEASED]
+
+### Added
+
+* Adding path to ecCodes definitions in the preferences.
+
+### Fixed
+
+* Fixing CUDA options issues.
+* Docker: adding ecCodes definitions path to the environment variables.
+
+
+## v2.1.6 [22 Nov 2022]
+
+### Added
+
+* A mini-batch approach has been implemented for Genetic Algorithms.
+* Adding a warning if the preload option if not enabled for calibration.
+* Adding local GFS dataset class to avoid downloading.
+
+### Changed
+
+* Improvement of time units description in generated nc files.
+* Removing usage of temporary storage in GAs optimization.
+* Curl: disable certificate checks on Windows as not supported.
+* Code formatting.
+
+### Removed
+
+* Removing the history approach in GAs optimisations (not efficient). 
+
+
 ## v2.1.5 [11 Oct 2022]
 
 ### Changed
