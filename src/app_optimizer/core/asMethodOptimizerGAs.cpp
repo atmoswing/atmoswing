@@ -794,35 +794,35 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
 
         wxArrayString logFiles;
         wxDir::GetAllFiles(parentDir.GetName(), &logFiles, logFilePattern, wxDIR_FILES);
-        logFiles.Sort();
-        wxString logFilePath = logFiles.Last();
-        logFiles.Clear();
 
-        asFileText logContent(logFilePath, asFile::ReadOnly);
-        if (!logContent.Open()) {
-            wxLogError(_("Couldn't open the file %s."), logFilePath);
-            return false;
-        }
-        fileLine = logContent.GetNextLine();
-
-        do {
-            if (fileLine.IsEmpty()) break;
-
-            // Get the epoch nb
-            int locEpochNb = fileLine.Find("Epoch number");
-            if (locEpochNb != wxNOT_FOUND) {
-                wxString epochNbStr = fileLine.Mid(22);
-                long epochNb;
-                epochNbStr.ToLong(&epochNb);
-
-                // Overwrite to the last value
-                m_epoch = int(epochNb);
+        m_epoch = 1;
+        for (auto logFilePath : logFiles) {
+            asFileText logContent(logFilePath, asFile::ReadOnly);
+            if (!logContent.Open()) {
+                wxLogWarning(_("Couldn't open the file %s."), logFilePath);
+                continue;
             }
-
-            // Get next line
             fileLine = logContent.GetNextLine();
-        } while (!logContent.EndOfFile());
-        logContent.Close();
+
+            do {
+                if (fileLine.IsEmpty()) break;
+
+                // Get the epoch nb
+                int locEpochNb = fileLine.Find("Epoch number");
+                if (locEpochNb != wxNOT_FOUND) {
+                    wxString epochNbStr = fileLine.Mid(22);
+                    long epochNb;
+                    epochNbStr.ToLong(&epochNb);
+
+                    // Overwrite to the last value
+                    m_epoch = wxMax(m_epoch, int(epochNb));
+                }
+
+                // Get next line
+                fileLine = logContent.GetNextLine();
+            } while (!logContent.EndOfFile());
+            logContent.Close();
+        }
 
         wxLogMessage(_("Starting again from epoch %d."), m_epoch);
     }
