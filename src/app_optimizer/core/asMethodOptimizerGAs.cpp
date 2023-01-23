@@ -307,7 +307,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     // Optimizer
     while (true) {
         // Reassess the best parameter if mini-batch as the period has changed
-        if (m_useMiniBatches && !m_miniBatchAssessBestOnFullPeriod && !firstRun) {
+        if (m_useMiniBatches && !firstRun) {
             auto* thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
 #ifdef USE_CUDA
             if (method == asCUDA) {
@@ -432,14 +432,8 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             if (asIsNaN(m_scoreCalibBest)) {
                 m_parameterBest = m_parameters[0];
                 m_scoreCalibBest = m_scoresCalib[0];
-                if (m_miniBatchAssessBestOnFullPeriod) {
-                    m_scoreCalibBest = ComputeScoreFullPeriod(m_parameterBest);
-                }
             } else {
                 float scoreCurrentBest = m_scoresCalib[0];
-                if (m_miniBatchAssessBestOnFullPeriod) {
-                    scoreCurrentBest = ComputeScoreFullPeriod(m_parameters[0]);
-                }
                 if (m_scoreOrder == Asc && scoreCurrentBest < m_scoreCalibBest) {
                     m_scoreCalibBest = scoreCurrentBest;
                     m_parameterBest = m_parameters[0];
@@ -465,7 +459,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             m_miniBatchEnd = wxMin(m_miniBatchStart + m_miniBatchSize, m_miniBatchSizeMax) - 1;
 
             // If finished, reassess all parameters on the full period
-            if (m_epoch > m_epochMax && !m_miniBatchAssessBestOnFullPeriod) {
+            if (m_epoch > m_epochMax) {
                 if (!ComputeAllScoresOnFullPeriod()) {
                     return false;
                 }
@@ -1170,9 +1164,6 @@ bool asMethodOptimizerGAs::ElitismAfterMutation() {
     // previous best.
     if (m_allowElitismForTheBest && !asIsNaN(m_scoreCalibBest)) {
         float actualBest = m_scoresCalib[0];
-        if (m_useMiniBatches && m_miniBatchAssessBestOnFullPeriod) {
-            actualBest = ComputeScoreFullPeriod(m_parameters[0]);
-        }
         switch (m_scoreOrder) {
             case (Asc): {
                 if (m_scoreCalibBest < actualBest) {
@@ -1211,9 +1202,6 @@ bool asMethodOptimizerGAs::ElitismAfterSelection() {
     if (m_allowElitismForTheBest && !asIsNaN(m_scoreCalibBest)) {
         SortScoresAndParameters();
         float actualBest = m_scoresCalib[0];
-        if (m_useMiniBatches && m_miniBatchAssessBestOnFullPeriod) {
-            actualBest = ComputeScoreFullPeriod(m_parameters[0]);
-        }
         switch (m_scoreOrder) {
             case (Asc): {
                 if (m_scoreCalibBest < actualBest) {

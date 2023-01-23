@@ -144,7 +144,6 @@ class asMethodCalibrator : public asMethodStandard {
     asParametersCalibration m_originalParams;
     bool m_validationMode;
     bool m_useMiniBatches;
-    bool m_miniBatchAssessBestOnFullPeriod;
     int m_miniBatchSize;
     int m_miniBatchSizeMax;
     int m_miniBatchStart;

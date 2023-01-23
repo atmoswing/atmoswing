@@ -40,7 +40,6 @@ asMethodCalibrator::asMethodCalibrator()
       m_scoreValid(NaNf),
       m_validationMode(false),
       m_useMiniBatches(false),
-      m_miniBatchAssessBestOnFullPeriod(false),
       m_miniBatchSize(365),
       m_miniBatchSizeMax(0),
       m_miniBatchStart(0),
