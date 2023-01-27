@@ -433,12 +433,11 @@ bool asMethodOptimizerGAs::ManageOneRun() {
                 m_parameterBest = m_parameters[0];
                 m_scoreCalibBest = m_scoresCalib[0];
             } else {
-                float scoreCurrentBest = m_scoresCalib[0];
-                if (m_scoreOrder == Asc && scoreCurrentBest < m_scoreCalibBest) {
-                    m_scoreCalibBest = scoreCurrentBest;
+                if (m_scoreOrder == Asc && m_scoresCalib[0] < m_scoreCalibBest) {
+                    m_scoreCalibBest = m_scoresCalib[0];
                     m_parameterBest = m_parameters[0];
-                } else if (m_scoreOrder == Desc && scoreCurrentBest > m_scoreCalibBest) {
-                    m_scoreCalibBest = scoreCurrentBest;
+                } else if (m_scoreOrder == Desc && m_scoresCalib[0] > m_scoreCalibBest) {
+                    m_scoreCalibBest = m_scoresCalib[0];
                     m_parameterBest = m_parameters[0];
                 }
             }
@@ -457,20 +456,25 @@ bool asMethodOptimizerGAs::ManageOneRun() {
                 wxLogMessage(_("Epoch number %d"), m_epoch);
             }
             m_miniBatchEnd = wxMin(m_miniBatchStart + m_miniBatchSize, m_miniBatchSizeMax) - 1;
-
-            // If finished, reassess all parameters on the full period
-            if (m_epoch > m_epochMax) {
-                if (!ComputeAllScoresOnFullPeriod()) {
-                    return false;
-                }
-                SortScoresAndParameters();
-                m_parameterBest = m_parameters[0];
-                m_scoreCalibBest = m_scoresCalib[0];
-            }
         }
 
         // Check if we should end
         if (HasConverged()) {
+            // If finished, reassess all parameters on the full period
+            if (m_useMiniBatches) {
+                if (!ComputeAllScoresOnFullPeriod()) {
+                    return false;
+                }
+                SortScoresAndParameters();
+                // The current best parameter might not be in the population !
+                if (m_scoreOrder == Asc && m_scoresCalib[0] < m_scoreCalibBest) {
+                    m_scoreCalibBest = m_scoresCalib[0];
+                    m_parameterBest = m_parameters[0];
+                } else if (m_scoreOrder == Desc && m_scoresCalib[0] > m_scoreCalibBest) {
+                    m_scoreCalibBest = m_scoresCalib[0];
+                    m_parameterBest = m_parameters[0];
+                }
+            }
             wxLogVerbose(_("Optimization process over."));
             for (int i = 0; i < m_parameters.size(); i++) {
                 resFinalPopulation.Add(m_parameters[i], m_scoresCalib[i]);
