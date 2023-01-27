@@ -477,6 +477,12 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             }
             break;
         } else {
+            // Always reset the score values for the mini-batch approach as the sample changes.
+            if (m_useMiniBatches) {
+                for (int i = 0; i < m_parameters.size(); i++) {
+                    m_scoresCalib[i] = NaNf;
+                }
+            }
             if (!Optimize()) {
                 wxLogError(_("The parameters could not be optimized"));
                 return false;
@@ -1126,10 +1132,6 @@ bool asMethodOptimizerGAs::HasConverged() {
     if (m_useMiniBatches) {
         if (m_epoch > m_epochMax) {
             return true;
-        }
-        // Always reset the score values for the mini-batch approach as the sample changes.
-        for (int i = 0; i < m_parameters.size(); i++) {
-            m_scoresCalib[i] = NaNf;
         }
         return false;
     }
