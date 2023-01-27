@@ -463,6 +463,15 @@ bool asMethodOptimizerGAs::ManageOneRun() {
                 if (!ComputeAllScoresOnFullPeriod()) {
                     return false;
                 }
+                SortScoresAndParameters();
+                float scoreCurrentBest = m_scoresCalib[0];
+                if (m_scoreOrder == Asc && scoreCurrentBest < m_scoreCalibBest) {
+                    m_scoreCalibBest = scoreCurrentBest;
+                    m_parameterBest = m_parameters[0];
+                } else if (m_scoreOrder == Desc && scoreCurrentBest > m_scoreCalibBest) {
+                    m_scoreCalibBest = scoreCurrentBest;
+                    m_parameterBest = m_parameters[0];
+                }
             }
         }
 
@@ -492,9 +501,12 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     cudaDeviceReset();
 #endif
 
+    // Sort according to level and time
+    m_parameterBest.SortLevelsAndTime();
+
     // Validate
-    SaveDetails(m_parameters[0]);
-    Validate(m_parameters[0]);
+    SaveDetails(m_parameterBest);
+    Validate(m_parameterBest);
 
     // Print parameters in a text file
     SetSelectedParameters(resFinalPopulation);
@@ -504,7 +516,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     if (!m_resGenerations.Print(m_resGenerations.GetCount() - m_parameters.size())) return false;
 
     // Generate xml file with the best parameters set
-    if (!m_parameters[0].GenerateSimpleParametersFile(resXmlFilePath)) {
+    if (!m_parameterBest.GenerateSimpleParametersFile(resXmlFilePath)) {
         wxLogError(_("The output xml parameters file could not be generated."));
     }
 
