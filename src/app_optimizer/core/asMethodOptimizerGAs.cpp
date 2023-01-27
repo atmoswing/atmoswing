@@ -464,14 +464,8 @@ bool asMethodOptimizerGAs::ManageOneRun() {
                     return false;
                 }
                 SortScoresAndParameters();
-                float scoreCurrentBest = m_scoresCalib[0];
-                if (m_scoreOrder == Asc && scoreCurrentBest < m_scoreCalibBest) {
-                    m_scoreCalibBest = scoreCurrentBest;
-                    m_parameterBest = m_parameters[0];
-                } else if (m_scoreOrder == Desc && scoreCurrentBest > m_scoreCalibBest) {
-                    m_scoreCalibBest = scoreCurrentBest;
-                    m_parameterBest = m_parameters[0];
-                }
+                m_parameterBest = m_parameters[0];
+                m_scoreCalibBest = m_scoresCalib[0];
             }
         }
 
