@@ -263,10 +263,10 @@ bool asMethodCalibrator::KeepIfBetter(asParametersCalibration& params, asResults
     return false;
 }
 
-bool asMethodCalibrator::SetSelectedParameters(asResultsParametersArray& results) {
+bool asMethodCalibrator::SetAllParameters(asResultsParametersArray& results) {
     // Extract selected parameters & best parameters
     for (int i = 0; i < m_parameters.size(); i++) {
-        results.Add(m_parameters[i], m_scoresCalib[i], m_scoreValid);
+        results.Add(m_parameters[i], m_scoresCalib[i]);
     }
 
     return true;

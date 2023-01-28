@@ -34,7 +34,7 @@
 
 asThreadGAs::asThreadGAs(asMethodOptimizerGAs* optimizer, asParametersOptimization* params, float* finalScoreCalib,
                          vf* scoreClimatology)
-    : asThread(asThread::MethodOptimizerGeneticAlgorithms),
+    : asThread(asThread::MethodOptimizerGAs),
       m_optimizer(optimizer),
       m_params(params),
       m_finalScoreCalib(finalScoreCalib),

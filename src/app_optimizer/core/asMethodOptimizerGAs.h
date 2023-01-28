@@ -103,8 +103,6 @@ class asMethodOptimizerGAs : public asMethodOptimizer {
 
     void SortScoresAndParameters();
 
-    bool SetBestParameters(asResultsParametersArray& results) override;
-
     float ComputeScoreFullPeriod(asParametersOptimizationGAs& param);
 
     bool ComputeAllScoresOnFullPeriod();

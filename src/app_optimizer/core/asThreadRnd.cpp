@@ -30,7 +30,7 @@
 
 asThreadRnd::asThreadRnd(asMethodOptimizerMC* optimizer, asParametersOptimization* params, float* finalScoreCalib,
                          vf* scoreClimatology)
-    : asThread(asThread::MethodOptimizerRandomSet),
+    : asThread(asThread::MethodOptimizerMC),
       m_optimizer(optimizer),
       m_params(params),
       m_finalScoreCalib(finalScoreCalib),

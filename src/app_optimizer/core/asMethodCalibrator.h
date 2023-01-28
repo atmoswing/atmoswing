@@ -92,7 +92,7 @@ class asMethodCalibrator : public asMethodStandard {
 
     bool KeepIfBetter(asParametersCalibration& params, asResultsTotalScore& scoreFinal);
 
-    bool SetSelectedParameters(asResultsParametersArray& results);
+    bool SetAllParameters(asResultsParametersArray& results);
 
     virtual bool SetBestParameters(asResultsParametersArray& results);
 

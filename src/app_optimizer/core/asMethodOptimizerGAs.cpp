@@ -91,43 +91,6 @@ void asMethodOptimizerGAs::SortScoresAndParameters() {
     }
 }
 
-bool asMethodOptimizerGAs::SetBestParameters(asResultsParametersArray& results) {
-    wxASSERT(!m_parameters.empty());
-    wxASSERT(!m_scoresCalib.empty());
-
-    // Extract selected parameters & best parameters
-    float bestScore = m_scoresCalib[0];
-    int iBestScore = 0;
-
-    for (int i = 0; i < m_parameters.size(); i++) {
-        if (m_scoreOrder == Asc) {
-            if (m_scoresCalib[i] < bestScore) {
-                bestScore = m_scoresCalib[i];
-                iBestScore = i;
-            }
-        } else {
-            if (m_scoresCalib[i] > bestScore) {
-                bestScore = m_scoresCalib[i];
-                iBestScore = i;
-            }
-        }
-    }
-
-    if (iBestScore != 0) {
-        // Re-validate
-        SaveDetails(m_parameters[iBestScore]);
-        Validate(m_parameters[iBestScore]);
-    }
-
-    // Sort according to the level and the observation time
-    asParametersScoring sortedParams = m_parameters[iBestScore];
-    sortedParams.SortLevelsAndTime();
-
-    results.Add(sortedParams, m_scoresCalib[iBestScore], m_scoreValid);
-
-    return true;
-}
-
 bool asMethodOptimizerGAs::Manager() {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase* pConfig = wxFileConfig::Get();
@@ -294,7 +257,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     // Watch
     wxStopWatch sw;
 
-    int threadType = asThread::MethodOptimizerGeneticAlgorithms;
+    int threadType = asThread::MethodOptimizerGAs;
     bool firstRun = true;
 
 #ifdef USE_CUDA
@@ -476,9 +439,6 @@ bool asMethodOptimizerGAs::ManageOneRun() {
                 }
             }
             wxLogVerbose(_("Optimization process over."));
-            for (int i = 0; i < m_parameters.size(); i++) {
-                resFinalPopulation.Add(m_parameters[i], m_scoresCalib[i]);
-            }
             break;
         } else {
             // Always reset the score values for the mini-batch approach as the sample changes.
@@ -513,9 +473,11 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     Validate(m_parameterBest);
 
     // Print parameters in a text file
-    SetSelectedParameters(resFinalPopulation);
+    SetAllParameters(resFinalPopulation);
     if (!resFinalPopulation.Print()) return false;
     SetBestParameters(resBestIndividual);
+    resBestIndividual.Add(m_parameterBest, m_scoreCalibBest, m_scoreValid);
+
     if (!resBestIndividual.Print()) return false;
     if (!m_resGenerations.Print(m_resGenerations.GetCount() - m_parameters.size())) return false;
 
@@ -552,7 +514,7 @@ float asMethodOptimizerGAs::ComputeScoreFullPeriod(asParametersOptimizationGAs& 
     }
 #endif
     ThreadsManager().AddThread(thread);
-    ThreadsManager().Wait(asThread::MethodOptimizerGeneticAlgorithms);
+    ThreadsManager().Wait(asThread::MethodOptimizerGAs);
 
     m_miniBatchStart = miniBatchStart;
     m_miniBatchEnd = miniBatchEnd;
@@ -587,7 +549,7 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
             return false;
         }
 
-        ThreadsManager().WaitForFreeThread(asThread::MethodOptimizerGeneticAlgorithms);
+        ThreadsManager().WaitForFreeThread(asThread::MethodOptimizerGAs);
 
 #ifdef USE_CUDA
         if (method == asCUDA) {
@@ -609,6 +571,9 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
         // Increment iterator
         IncrementIterator();
     }
+
+    // Wait until all done
+    ThreadsManager().Wait(asThread::MethodOptimizerGAs);
 
     return true;
 }

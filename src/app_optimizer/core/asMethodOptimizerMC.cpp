@@ -88,7 +88,7 @@ bool asMethodOptimizerMC::Manager() {
     // Watch
     wxStopWatch sw;
 
-    int threadType = asThread::MethodOptimizerRandomSet;
+    int threadType = asThread::MethodOptimizerMC;
     bool firstRun = true;
 
     // Add threads when they become available
