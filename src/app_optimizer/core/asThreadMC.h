@@ -26,20 +26,20 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AS_THREAD_METHOD_OPTIMIZER_RANDOM_SET_H
-#define AS_THREAD_METHOD_OPTIMIZER_RANDOM_SET_H
+#ifndef AS_THREAD_METHOD_OPTIMIZER_MC_H
+#define AS_THREAD_METHOD_OPTIMIZER_MC_H
 
 #include "asIncludes.h"
 #include "asMethodOptimizerMC.h"
 #include "asParametersOptimization.h"
 #include "asThread.h"
 
-class asThreadRnd : public asThread {
+class asThreadMC : public asThread {
   public:
-    asThreadRnd(asMethodOptimizerMC* optimizer, asParametersOptimization* params, float* finalScoreCalib,
-                vf* scoreClimatology);
+    asThreadMC(asMethodOptimizerMC* optimizer, asParametersOptimization* params, float* finalScoreCalib,
+               vf* scoreClimatology);
 
-    virtual ~asThreadRnd();
+    virtual ~asThreadMC();
 
     ExitCode Entry();
 

@@ -474,11 +474,16 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 
     // Print parameters in a text file
     SetAllParameters(resFinalPopulation);
-    if (!resFinalPopulation.Print()) return false;
-    SetBestParameters(resBestIndividual);
+    if (!resFinalPopulation.Print()) {
+        wxLogError(_("The file containing the final population could not be generated."));
+        return false;
+    }
     resBestIndividual.Add(m_parameterBest, m_scoreCalibBest, m_scoreValid);
 
-    if (!resBestIndividual.Print()) return false;
+    if (!resBestIndividual.Print()) {
+        wxLogError(_("The file containing the best individual could not be generated."));
+        return false;
+    }
     if (!m_resGenerations.Print(m_resGenerations.GetCount() - m_parameters.size())) return false;
 
     // Generate xml file with the best parameters set

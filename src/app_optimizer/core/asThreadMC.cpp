@@ -26,19 +26,19 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asThreadRnd.h"
+#include "asThreadMC.h"
 
-asThreadRnd::asThreadRnd(asMethodOptimizerMC* optimizer, asParametersOptimization* params, float* finalScoreCalib,
-                         vf* scoreClimatology)
+asThreadMC::asThreadMC(asMethodOptimizerMC* optimizer, asParametersOptimization* params, float* finalScoreCalib,
+                       vf* scoreClimatology)
     : asThread(asThread::MethodOptimizerMC),
       m_optimizer(optimizer),
       m_params(params),
       m_finalScoreCalib(finalScoreCalib),
       m_scoreClimatology(scoreClimatology) {}
 
-asThreadRnd::~asThreadRnd() {}
+asThreadMC::~asThreadMC() {}
 
-wxThread::ExitCode asThreadRnd::Entry() {
+wxThread::ExitCode asThreadMC::Entry() {
     // Create results objects. Needs to be in a critical section because of access to the config pointer.
     asResultsDates anaDates;
     asResultsDates anaDatesPrevious;
