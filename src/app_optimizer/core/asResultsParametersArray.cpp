@@ -85,14 +85,6 @@ void asResultsParametersArray::BuildFileName(const wxString& fileTag) {
     m_filePath.Append(asStrF("/%s_%s.txt", time, fileTag));
 }
 
-void asResultsParametersArray::Add(asParametersScoring& params, float scoreCalib) {
-    StoreValues(params);
-    m_scoresCalib.push_back(scoreCalib);
-    m_scoresValid.push_back(NaNf);
-
-    ProcessMedianScores();
-}
-
 void asResultsParametersArray::AddWithoutProcessingMedian(asParametersScoring& params, float scoreCalib) {
     StoreValues(params);
     m_scoresCalib.push_back(scoreCalib);

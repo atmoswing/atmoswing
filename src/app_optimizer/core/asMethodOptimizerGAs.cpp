@@ -473,7 +473,9 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     Validate(m_parameterBest);
 
     // Print parameters in a text file
-    SetAllParameters(resFinalPopulation);
+    for (int i = 0; i < m_parameters.size(); i++) {
+        resFinalPopulation.Add(m_parameters[i], m_scoresCalib[i]);
+    }
     if (!resFinalPopulation.Print()) {
         wxLogError(_("The file containing the final population could not be generated."));
         return false;
