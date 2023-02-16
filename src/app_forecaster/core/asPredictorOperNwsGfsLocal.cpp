@@ -22,30 +22,14 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2022 Pascal Horton, Terranum.
  */
 
-#ifndef AS_PREDICTOR_OPER_GFS_FORECAST_H
-#define AS_PREDICTOR_OPER_GFS_FORECAST_H
+#include "asAreaGrid.h"
+#include "asPredictorOperNwsGfsLocal.h"
+#include "asTimeArray.h"
 
-#include "asIncludes.h"
-#include "asPredictorOper.h"
-
-class asArea;
-
-class asPredictorOperGfsForecast : public asPredictorOper {
-  public:
-    asPredictorOperGfsForecast(const wxString& dataId);
-
-    virtual ~asPredictorOperGfsForecast();
-
-    bool Init();
-
-    wxString GetDirStructure();
-
-  protected:
-  private:
-};
-
-#endif
+asPredictorOperNwsGfsLocal::asPredictorOperNwsGfsLocal(const wxString& dataId)
+    : asPredictorOperNwsGfs(dataId) {
+    m_shouldDownload = false;
+}

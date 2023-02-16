@@ -25,13 +25,12 @@
  * Portions Copyright 2019-2020 Pascal Horton, University of Bern.
  */
 
-#include "asPredictorOperCustomFvgForecast.h"
-
 #include "asAreaGrid.h"
+#include "asPredictorOperCustomFvg.h"
 #include "asTimeArray.h"
 
-asPredictorOperCustomFvgForecast::asPredictorOperCustomFvgForecast(const wxString& dataId)
-    : asPredictorOperIfsForecast(dataId) {
+asPredictorOperCustomFvg::asPredictorOperCustomFvg(const wxString& dataId)
+    : asPredictorOperEcmwfIfs(dataId) {
     // Set the basic properties.
     m_datasetId = "Custom_MeteoFVG_Forecast";
     m_datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
@@ -43,7 +42,7 @@ asPredictorOperCustomFvgForecast::asPredictorOperCustomFvgForecast(const wxStrin
     m_percentMissingAllowed = 70;
 }
 
-bool asPredictorOperCustomFvgForecast::Init() {
+bool asPredictorOperCustomFvg::Init() {
     m_parameter = Other;
 
     if (m_dataId.IsSameAs("DP500925", false)) {
@@ -146,11 +145,7 @@ bool asPredictorOperCustomFvgForecast::Init() {
     return true;
 }
 
-void asPredictorOperCustomFvgForecast::ConvertToMjd(a1d& time, double refValue) const {
-    time = (time / 24.0) + refValue;
-}
-
-double asPredictorOperCustomFvgForecast::FixTimeValue(double time) const {
+double asPredictorOperCustomFvg::FixTimeValue(double time) const {
     if (m_dataId.Contains("cp_sfc")) {
         time -= 3.0 / 24.0;
     } else if (m_dataId.Contains("tp_sfc")) {
@@ -160,7 +155,7 @@ double asPredictorOperCustomFvgForecast::FixTimeValue(double time) const {
     return time;
 }
 
-wxString asPredictorOperCustomFvgForecast::GetDirStructure(const double date) {
+wxString asPredictorOperCustomFvg::GetDirStructure(const double date) {
     wxString dirStructure = "YYYYMMDD";
     dirStructure.Append(DS);
     dirStructure.Append("grib");
@@ -168,7 +163,7 @@ wxString asPredictorOperCustomFvgForecast::GetDirStructure(const double date) {
     return asTime::GetStringTime(date, dirStructure);
 }
 
-wxString asPredictorOperCustomFvgForecast::GetFileName(const double date, const int leadTime) {
+wxString asPredictorOperCustomFvg::GetFileName(const double date, const int leadTime) {
     wxString timeStr = asStrF("%d", leadTime);
     if (timeStr.Length() < 2) timeStr = "0" + timeStr;
 

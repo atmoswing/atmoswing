@@ -26,12 +26,11 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asPredictorOperGfsForecast.h"
-
 #include "asAreaGrid.h"
+#include "asPredictorOperNwsGfs.h"
 #include "asTimeArray.h"
 
-asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString& dataId)
+asPredictorOperNwsGfs::asPredictorOperNwsGfs(const wxString& dataId)
     : asPredictorOper(dataId) {
     // Set the basic properties.
     m_datasetId = "NWS_GFS_Forecast";
@@ -57,9 +56,9 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString& dataId)
     m_parameter = ParameterUndefined;
 }
 
-asPredictorOperGfsForecast::~asPredictorOperGfsForecast() {}
+asPredictorOperNwsGfs::~asPredictorOperNwsGfs() {}
 
-bool asPredictorOperGfsForecast::Init() {
+bool asPredictorOperNwsGfs::Init() {
     wxConfigBase* pConfig = wxFileConfig::Get();
 
     // Last element in grib code: level type (http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-5.shtml)

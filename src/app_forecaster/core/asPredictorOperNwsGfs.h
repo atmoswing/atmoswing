@@ -22,35 +22,29 @@
  */
 
 /*
- * Portions Copyright 2019-2020 Pascal Horton, University of Bern.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AS_PREDICTOR_OPER_FVG_FORECAST_H
-#define AS_PREDICTOR_OPER_FVG_FORECAST_H
+#ifndef AS_PREDICTOR_OPER_NWS_GFS_H
+#define AS_PREDICTOR_OPER_NWS_GFS_H
 
 #include "asIncludes.h"
-#include "asPredictorEcmwfIfsGrib.h"
-#include "asPredictorOperIfsForecast.h"
+#include "asPredictorOper.h"
 
 class asArea;
 
-class asPredictorOperCustomFvgForecast : public asPredictorOperIfsForecast {
+class asPredictorOperNwsGfs : public asPredictorOper {
   public:
-    explicit asPredictorOperCustomFvgForecast(const wxString& dataId);
+    asPredictorOperNwsGfs(const wxString& dataId);
 
-    ~asPredictorOperCustomFvgForecast() override = default;
+    virtual ~asPredictorOperNwsGfs();
 
-    bool Init() override;
+    bool Init();
 
-    wxString GetDirStructure(const double date) override;
-
-    wxString GetFileName(const double date, const int leadTime) override;
+    wxString GetDirStructure();
 
   protected:
-    void ConvertToMjd(a1d& time, double refValue = NaNd) const override;
-
-    double FixTimeValue(double time) const override;
-
   private:
 };
 

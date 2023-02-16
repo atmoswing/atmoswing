@@ -25,12 +25,11 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#include "asPredictorEcmwfIfsGrib.h"
-
 #include "asAreaGrid.h"
+#include "asPredictorEcmwfIfs.h"
 #include "asTimeArray.h"
 
-asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString& dataId)
+asPredictorEcmwfIfs::asPredictorEcmwfIfs(const wxString& dataId)
     : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "ECMWF_IFS_GRIB";
@@ -46,7 +45,7 @@ asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString& dataId)
     m_parameter = ParameterUndefined;
 }
 
-bool asPredictorEcmwfIfsGrib::Init() {
+bool asPredictorEcmwfIfs::Init() {
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("z", false)) {
         m_parameter = Geopotential;
@@ -117,6 +116,6 @@ bool asPredictorEcmwfIfsGrib::Init() {
     return true;
 }
 
-void asPredictorEcmwfIfsGrib::ConvertToMjd(a1d& time, double refValue) const {
+void asPredictorEcmwfIfs::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + refValue;
 }

@@ -30,10 +30,10 @@
 
 #include "asAreaGrid.h"
 #include "asInternet.h"
-#include "asPredictorOperCustomFvgForecast.h"
-#include "asPredictorOperGfsForecast.h"
-#include "asPredictorOperGfsForecastLocal.h"
-#include "asPredictorOperIfsForecast.h"
+#include "asPredictorOperCustomFvg.h"
+#include "asPredictorOperEcmwfIfs.h"
+#include "asPredictorOperNwsGfs.h"
+#include "asPredictorOperNwsGfsLocal.h"
 #include "asTimeArray.h"
 
 asPredictorOper::asPredictorOper(const wxString& dataId)
@@ -111,13 +111,13 @@ asPredictorOper* asPredictorOper::GetInstance(const wxString& datasetId, const w
     asPredictorOper* predictor = nullptr;
 
     if (datasetId.IsSameAs("NWS_GFS_Forecast", false)) {
-        predictor = new asPredictorOperGfsForecast(dataId);
+        predictor = new asPredictorOperNwsGfs(dataId);
     } else if (datasetId.IsSameAs("NWS_GFS_Forecast_Local", false)) {
-        predictor = new asPredictorOperGfsForecastLocal(dataId);
+        predictor = new asPredictorOperNwsGfsLocal(dataId);
     } else if (datasetId.IsSameAs("ECMWF_IFS_GRIB_Forecast", false)) {
-        predictor = new asPredictorOperIfsForecast(dataId);
+        predictor = new asPredictorOperEcmwfIfs(dataId);
     } else if (datasetId.IsSameAs("Custom_MeteoFVG_Forecast", false)) {
-        predictor = new asPredictorOperCustomFvgForecast(dataId);
+        predictor = new asPredictorOperCustomFvg(dataId);
     } else {
         wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return nullptr;

@@ -25,19 +25,19 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef AS_PREDICTOR_ECMWF_IFS_GRIB_H
-#define AS_PREDICTOR_ECMWF_IFS_GRIB_H
+#ifndef AS_PREDICTOR_ECMWF_IFS_H
+#define AS_PREDICTOR_ECMWF_IFS_H
 
 #include "asIncludes.h"
 #include "asPredictor.h"
 
 class asArea;
 
-class asPredictorEcmwfIfsGrib : public asPredictor {
+class asPredictorEcmwfIfs : public asPredictor {
   public:
-    explicit asPredictorEcmwfIfsGrib(const wxString& dataId);
+    explicit asPredictorEcmwfIfs(const wxString& dataId);
 
-    ~asPredictorEcmwfIfsGrib() override = default;
+    ~asPredictorEcmwfIfs() override = default;
 
     bool Init() override;
 

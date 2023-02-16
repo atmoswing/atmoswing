@@ -25,15 +25,15 @@
  * Portions Copyright 2022 Pascal Horton, Terranum.
  */
 
-#ifndef AS_PREDICTOR_OPER_GFS_FORECAST_LOCAL_H
-#define AS_PREDICTOR_OPER_GFS_FORECAST_LOCAL_H
+#ifndef AS_PREDICTOR_OPER_NWS_GFS_LOCAL_H
+#define AS_PREDICTOR_OPER_NWS_GFS_LOCAL_H
 
 #include "asIncludes.h"
-#include "asPredictorOperGfsForecast.h"
+#include "asPredictorOperNwsGfs.h"
 
-class asPredictorOperGfsForecastLocal : public asPredictorOperGfsForecast {
+class asPredictorOperNwsGfsLocal : public asPredictorOperNwsGfs {
   public:
-    asPredictorOperGfsForecastLocal(const wxString& dataId);
+    asPredictorOperNwsGfsLocal(const wxString& dataId);
 
   protected:
   private:

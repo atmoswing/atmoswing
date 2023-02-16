@@ -22,15 +22,34 @@
  */
 
 /*
- * Portions Copyright 2022 Pascal Horton, Terranum.
+ * Portions Copyright 2019-2020 Pascal Horton, University of Bern.
  */
 
-#include "asPredictorOperGfsForecastLocal.h"
+#ifndef AS_PREDICTOR_OPER_FVG_H
+#define AS_PREDICTOR_OPER_FVG_H
 
-#include "asAreaGrid.h"
-#include "asTimeArray.h"
+#include "asIncludes.h"
+#include "asPredictorEcmwfIfs.h"
+#include "asPredictorOperEcmwfIfs.h"
 
-asPredictorOperGfsForecastLocal::asPredictorOperGfsForecastLocal(const wxString& dataId)
-    : asPredictorOperGfsForecast(dataId) {
-    m_shouldDownload = false;
-}
+class asArea;
+
+class asPredictorOperCustomFvg : public asPredictorOperEcmwfIfs {
+  public:
+    explicit asPredictorOperCustomFvg(const wxString& dataId);
+
+    ~asPredictorOperCustomFvg() override = default;
+
+    bool Init() override;
+
+    wxString GetDirStructure(const double date) override;
+
+    wxString GetFileName(const double date, const int leadTime) override;
+
+  protected:
+    double FixTimeValue(double time) const override;
+
+  private:
+};
+
+#endif

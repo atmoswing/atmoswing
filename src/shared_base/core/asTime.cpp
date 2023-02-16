@@ -174,7 +174,6 @@ wxString asTime::GetStringTime(const Time& date, const wxString& format) {
     datestr.Replace("hh", hour);
     datestr.Replace("HH", hour);
     datestr.Replace("mm", minute);
-    datestr.Replace("HH", minute);
 
     return datestr;
 }

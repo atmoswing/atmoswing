@@ -25,15 +25,14 @@
  * Portions Copyright 2019-2020 Pascal Horton, University of Bern.
  */
 
-#include "asPredictorOperIfsForecast.h"
-
 #include "asAreaGrid.h"
+#include "asPredictorOperEcmwfIfs.h"
 #include "asTimeArray.h"
 
-asPredictorOperIfsForecast::asPredictorOperIfsForecast(const wxString& dataId)
+asPredictorOperEcmwfIfs::asPredictorOperEcmwfIfs(const wxString& dataId)
     : asPredictorOper(dataId) {
     // Set the basic properties.
-    m_datasetId = "ECMWF_IFS_GRIB";
+    m_datasetId = "ECMWF_IFS_GRIB_Forecast";
     m_provider = "ECMWF";
     m_datasetName = "Integrated Forecasting System (IFS) grib files";
     m_fileType = asFile::Grib;
@@ -58,7 +57,7 @@ asPredictorOperIfsForecast::asPredictorOperIfsForecast(const wxString& dataId)
     m_restrictTimeStepHours = 24;
 }
 
-bool asPredictorOperIfsForecast::Init() {
+bool asPredictorOperEcmwfIfs::Init() {
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("z", false)) {
         m_parameter = Geopotential;
@@ -114,6 +113,6 @@ bool asPredictorOperIfsForecast::Init() {
     return true;
 }
 
-void asPredictorOperIfsForecast::ConvertToMjd(a1d& time, double refValue) const {
+void asPredictorOperEcmwfIfs::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + refValue;
 }

@@ -45,7 +45,7 @@
 #include "asPredictorEcmwfEra20C.h"
 #include "asPredictorEcmwfEra5.h"
 #include "asPredictorEcmwfEraInterim.h"
-#include "asPredictorEcmwfIfsGrib.h"
+#include "asPredictorEcmwfIfs.h"
 #include "asPredictorGenericNetcdf.h"
 #include "asPredictorJmaJra55CSubset.h"
 #include "asPredictorJmaJra55Subset.h"
@@ -130,7 +130,7 @@ asPredictor* asPredictor::GetInstance(const wxString& datasetId, const wxString&
     } else if (datasetId.IsSameAs("ECMWF_CERA_20C", false)) {
         predictor = new asPredictorEcmwfCera20C(dataId);
     } else if (datasetId.IsSameAs("ECMWF_IFS_GRIB", false)) {
-        predictor = new asPredictorEcmwfIfsGrib(dataId);
+        predictor = new asPredictorEcmwfIfs(dataId);
     } else if (datasetId.IsSameAs("NASA_MERRA_2", false)) {
         predictor = new asPredictorNasaMerra2(dataId);
     } else if (datasetId.IsSameAs("NASA_MERRA_2_subset", false)) {
