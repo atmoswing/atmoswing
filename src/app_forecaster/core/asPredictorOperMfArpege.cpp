@@ -22,32 +22,32 @@
  */
 
 /*
- * Portions Copyright 2019-2020 Pascal Horton, University of Bern.
+ * Portions Copyright 2023 Pascal Horton, Terranum.
  */
 
 #include "asAreaGrid.h"
-#include "asPredictorOperEcmwfIfs.h"
+#include "asPredictorOperMfArpege.h"
 #include "asTimeArray.h"
 
-asPredictorOperEcmwfIfs::asPredictorOperEcmwfIfs(const wxString& dataId)
+asPredictorOperMfArpege::asPredictorOperMfArpege(const wxString& dataId)
     : asPredictorOper(dataId) {
     // Set the basic properties.
-    m_datasetId = "ECMWF_IFS_GRIB_Forecast";
-    m_provider = "ECMWF";
-    m_datasetName = "Integrated Forecasting System (IFS) grib files";
+    m_datasetId = "MF_ARPEGE_Forecast";
+    m_provider = "METEOFRANCE";
+    m_datasetName = "ARPEGE grib files";
     m_fileType = asFile::Grib;
     m_isEnsemble = false;
     m_strideAllowed = false;
     m_fStr.dimLatName = "lat";
     m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
-    m_fStr.dimLevelName = "level";
+    m_fStr.dimLevelName = "isobaric";
     m_fStr.hasLevelDim = false;
     m_fStr.singleTimeStep = true;
     m_nanValues.push_back(NaNd);
     m_nanValues.push_back(NaNf);
     m_parameter = ParameterUndefined;
-    m_fileExtension = "grib";
+    m_fileExtension = "grb";
     m_leadTimeStart = 0;
     m_leadTimeEnd = 240;
     m_leadTimeStep = 6;
@@ -57,51 +57,20 @@ asPredictorOperEcmwfIfs::asPredictorOperEcmwfIfs(const wxString& dataId)
     m_restrictTimeStepHours = 24;
 }
 
-bool asPredictorOperEcmwfIfs::Init() {
+bool asPredictorOperMfArpege::Init() {
     // Identify data ID and set the corresponding properties.
-    if (m_dataId.IsSameAs("z", false)) {
+    if (IsGeopotential()) {
         m_parameter = Geopotential;
-        m_gribCode = {0, 128, 129, 100};
+        m_gribCode = {0, 3, 4, 100};
         m_unit = m2_s2;
         m_fStr.hasLevelDim = true;
-    } else if (m_dataId.IsSameAs("gh", false)) {
-        m_parameter = GeopotentialHeight;
-        m_gribCode = {0, 128, 156, 100};
-        m_unit = m;
-        m_fStr.hasLevelDim = true;
-    } else if (IsAirTemperature()) {
-        m_parameter = AirTemperature;
-        m_gribCode = {0, 128, 130, 100};
-        m_unit = degK;
-        m_fStr.hasLevelDim = true;
-    } else if (IsVerticalVelocity()) {
-        m_parameter = VerticalVelocity;
-        m_gribCode = {0, 128, 135, 100};
-        m_unit = Pa_s;
-        m_fStr.hasLevelDim = true;
+        m_fileNamePattern = "ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_%d_%s_%s.grb";
     } else if (IsRelativeHumidity()) {
         m_parameter = RelativeHumidity;
-        m_gribCode = {0, 128, 157, 100};
+        m_gribCode = {0, 1, 1, 100};
         m_unit = percent;
         m_fStr.hasLevelDim = true;
-    } else if (IsUwindComponent()) {
-        m_parameter = Uwind;
-        m_gribCode = {0, 128, 131, 100};
-        m_unit = m_s;
-        m_fStr.hasLevelDim = true;
-    } else if (IsVwindComponent()) {
-        m_parameter = Vwind;
-        m_gribCode = {0, 128, 132, 100};
-        m_unit = m_s;
-        m_fStr.hasLevelDim = true;
-    } else if (IsTotalColumnWaterVapour()) {
-        m_parameter = PrecipitableWater;
-        m_gribCode = {0, 128, 137, 1};
-        m_unit = mm;
-    } else if (IsPrecipitableWater()) {
-        m_parameter = PrecipitableWater;
-        m_gribCode = {0, 128, 136, 200};
-        m_unit = mm;
+        m_fileNamePattern = "ARP_RELATIVE_HUMIDITY__ISOBARIC_SURFACE_%d_%s_%s.grb";
     } else {
         wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
         return false;
@@ -113,6 +82,14 @@ bool asPredictorOperEcmwfIfs::Init() {
     return true;
 }
 
-void asPredictorOperEcmwfIfs::ConvertToMjd(a1d& time, double refValue) const {
+void asPredictorOperMfArpege::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + refValue;
+}
+
+wxString asPredictorOperMfArpege::GetFileName(const double date, const int leadTime) {
+    double mjdTarget = date + double(leadTime) / 24.0;
+    wxString dateTarget = asTime::GetStringTime(mjdTarget, "YYYYMMDDhhmm");
+    wxString dateForecast = asTime::GetStringTime(date, "YYYYMMDDhhmm");
+
+    return asStrF(m_fileNamePattern, (int)m_level, dateTarget, dateForecast);
 }

@@ -31,7 +31,9 @@
 #include "asAreaGrid.h"
 #include "asInternet.h"
 #include "asPredictorOperCustomFvg.h"
+#include "asPredictorOperCustomVigicruesIfs.h"
 #include "asPredictorOperEcmwfIfs.h"
+#include "asPredictorOperMfArpege.h"
 #include "asPredictorOperNwsGfs.h"
 #include "asPredictorOperNwsGfsLocal.h"
 #include "asTimeArray.h"
@@ -116,8 +118,12 @@ asPredictorOper* asPredictorOper::GetInstance(const wxString& datasetId, const w
         predictor = new asPredictorOperNwsGfsLocal(dataId);
     } else if (datasetId.IsSameAs("ECMWF_IFS_GRIB_Forecast", false)) {
         predictor = new asPredictorOperEcmwfIfs(dataId);
+    } else if (datasetId.IsSameAs("MF_ARPEGE_Forecast", false)) {
+        predictor = new asPredictorOperMfArpege(dataId);
     } else if (datasetId.IsSameAs("Custom_MeteoFVG_Forecast", false)) {
         predictor = new asPredictorOperCustomFvg(dataId);
+    } else if (datasetId.IsSameAs("Custom_Vigicrues_IFS_Forecast", false)) {
+        predictor = new asPredictorOperCustomVigicruesIfs(dataId);
     } else {
         wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return nullptr;
