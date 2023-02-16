@@ -98,8 +98,12 @@ bool asPredictorEcmwfIfsGrib::Init() {
         m_gribCode = {0, 3, 114, 100};
         m_unit = W_m2;
         m_fStr.hasLevelDim = true;
+    } else if (IsTotalColumnWaterVapour()) {
+        m_parameter = PrecipitableWater;
+        m_gribCode = {0, 128, 137, 200};
+        m_unit = mm;
     } else if (IsPrecipitableWater()) {
-        m_parameter = PrecipitableWater;  // Total column water
+        m_parameter = PrecipitableWater;
         m_gribCode = {0, 128, 136, 200};
         m_unit = mm;
     } else {

@@ -2367,8 +2367,12 @@ bool asPredictor::IsVerticalVelocity() const {
            m_dataId.IsSameAs("omega", false);
 }
 
+bool asPredictor::IsTotalColumnWaterVapour() const {
+    return m_dataId.IsSameAs("tcwv", false);
+}
+
 bool asPredictor::IsPrecipitableWater() const {
-    return m_dataId.IsSameAs("pwat", false) || m_dataId.IsSameAs("p_wat", false) || m_dataId.IsSameAs("tcw", false) ||
+    return m_dataId.IsSameAs("pwat", false) || m_dataId.IsSameAs("p_wat", false) ||
            m_dataId.IsSameAs("pr_wtr", false) || m_dataId.IsSameAs("prwtr", false);
 }
 
