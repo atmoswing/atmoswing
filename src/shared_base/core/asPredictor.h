@@ -522,6 +522,8 @@ class asPredictor : public wxObject {
 
     bool IsVerticalVelocity() const;
 
+    bool IsTotalColumnWater() const;
+
     bool IsTotalColumnWaterVapour() const;
 
     bool IsPrecipitableWater() const;

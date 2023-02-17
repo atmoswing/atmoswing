@@ -82,8 +82,8 @@ bool asPredictorEcmwfEra20C::Init() {
 
     } else if (IsSurfaceLevel()) {
         m_fStr.hasLevelDim = false;
-        if (IsPrecipitableWater()) {
-            m_parameter = PrecipitableWater;
+        if (IsTotalColumnWater()) {
+            m_parameter = TotalColumnWater;
             m_parameterName = "Total column water";
             m_fileVarName = "tcw";
             m_unit = kg_m2;

@@ -2367,6 +2367,10 @@ bool asPredictor::IsVerticalVelocity() const {
            m_dataId.IsSameAs("omega", false);
 }
 
+bool asPredictor::IsTotalColumnWater() const {
+    return m_dataId.IsSameAs("tcw", false);
+}
+
 bool asPredictor::IsTotalColumnWaterVapour() const {
     return m_dataId.IsSameAs("tcwv", false);
 }
