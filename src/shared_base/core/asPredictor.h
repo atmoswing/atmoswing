@@ -49,6 +49,7 @@ class asPredictor : public wxObject {
         GeopotentialHeight,
         GeopotentialHeightAnomaly,
         PrecipitableWater,
+        TotalColumnWater,
         Precipitation,
         PrecipitationRate,
         RelativeHumidity,
@@ -82,7 +83,6 @@ class asPredictor : public wxObject {
         MontgomeryPotential,
         Vorticity,
         DewpointTemperature,
-        WaterVapour,
         MoistureFlux,
         MaximumBuoyancy,
         Other

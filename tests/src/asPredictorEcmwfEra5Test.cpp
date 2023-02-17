@@ -100,11 +100,11 @@ TEST(PredictorEcmwfEra5, GetCorrectPredictors) {
     wxDELETE(predictor);
 
     predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/tcw", ".");
-    ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::TotalColumnWater);
     wxDELETE(predictor);
 
     predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/tcwv", ".");
-    ASSERT_TRUE(predictor->GetParameter() == asPredictor::WaterVapour);
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
     wxDELETE(predictor);
 
     predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/u10", ".");

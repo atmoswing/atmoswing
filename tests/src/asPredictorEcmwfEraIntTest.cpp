@@ -136,11 +136,11 @@ TEST(PredictorEcmwfEraInt, GetCorrectPredictors) {
     wxDELETE(predictor);
 
     predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/tcw", ".");
-    ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::TotalColumnWater);
     wxDELETE(predictor);
 
     predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/tcwv", ".");
-    ASSERT_TRUE(predictor->GetParameter() == asPredictor::WaterVapour);
+    ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
     wxDELETE(predictor);
 
     predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/u10", ".");
