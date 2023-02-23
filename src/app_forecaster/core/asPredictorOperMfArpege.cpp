@@ -71,6 +71,24 @@ bool asPredictorOperMfArpege::Init() {
         m_unit = percent;
         m_fStr.hasLevelDim = true;
         m_fileNamePattern = "ARP_RELATIVE_HUMIDITY__ISOBARIC_SURFACE_%d_%s_%s.grb";
+    } else if (IsTotalColumnWaterVapour()) {
+        m_parameter = PrecipitableWater;
+        m_gribCode = {0, 1, 64, 1};
+        m_unit = kg_m2;
+        m_fStr.hasLevelDim = false;
+        m_fileNamePattern = "ARP_COLONNE_VAPO__ISOBARIC_SURFACE_%d_%s_%s.grb";
+    } else if (IsAirTemperature()) {
+        m_parameter = AirTemperature;
+        m_gribCode = {0, 0, 0, 100};
+        m_unit = degK;
+        m_fStr.hasLevelDim = true;
+        m_fileNamePattern = "ARP_TEMPERATURE__ISOBARIC_SURFACE_%d_%s_%s.grb";
+    } else if (IsVerticalVelocity()) {
+        m_parameter = VerticalVelocity;
+        m_gribCode = {0, 2, 8, 100};
+        m_unit = Pa_s;
+        m_fStr.hasLevelDim = true;
+        m_fileNamePattern = "ARP_VERTICAL_VELOCITY__ISOBARIC_SURFACE_%d_%s_%s.grb";
     } else {
         wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
         return false;
