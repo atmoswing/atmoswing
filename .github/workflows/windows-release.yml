@@ -28,7 +28,7 @@ jobs:
       - name: Setup Conan
         run: |
           pip install conan
-          conan profile new default --detect --force
+          conan profile detect --force
           conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
 
       - name: Create Build Environment
@@ -79,7 +79,7 @@ jobs:
       - name: Setup Conan
         run: |
           pip install conan
-          conan profile new default --detect --force
+          conan profile detect --force
           conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
 
       - name: Create Build Environment
