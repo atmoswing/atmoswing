@@ -29,11 +29,11 @@
 #define AS_PREDICTOR_CUSTOM_METEO_FVG_SYNOP_H
 
 #include "asIncludes.h"
-#include "asPredictorEcmwfIfsGrib.h"
+#include "asPredictorEcmwfIfs.h"
 
 class asArea;
 
-class asPredictorCustomMFvgSynop : public asPredictorEcmwfIfsGrib {
+class asPredictorCustomMFvgSynop : public asPredictorEcmwfIfs {
   public:
     explicit asPredictorCustomMFvgSynop(const wxString& dataId);
 

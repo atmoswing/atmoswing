@@ -68,9 +68,9 @@ bool asAreaRegGrid::GridsOverlay(asAreaGrid* otherArea) const {
 
     if (!otherAreaRegular) return false;
 
-    if (GetXstep() != otherAreaRegular->GetXstep()) return false;
+    if (std::fabs(GetXstep() - otherAreaRegular->GetXstep()) > 1e-10) return false;
 
-    if (GetYstep() != otherAreaRegular->GetYstep()) return false;
+    if (std::fabs(GetYstep() - otherAreaRegular->GetYstep()) > 1e-10) return false;
 
     return true;
 }

@@ -28,7 +28,7 @@
 
 #include "asMethodOptimizerMC.h"
 
-#include "asThreadRnd.h"
+#include "asThreadMC.h"
 
 #ifndef UNIT_TESTING
 
@@ -88,7 +88,7 @@ bool asMethodOptimizerMC::Manager() {
     // Watch
     wxStopWatch sw;
 
-    int threadType = asThread::MethodOptimizerRandomSet;
+    int threadType = asThread::MethodOptimizerMC;
     bool firstRun = true;
 
     // Add threads when they become available
@@ -109,7 +109,7 @@ bool asMethodOptimizerMC::Manager() {
 
         if (nextParams) {
             // Add it to the threads
-            auto* thread = new asThreadRnd(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+            auto* thread = new asThreadMC(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
             ThreadsManager().AddThread(thread);
 
             // Wait until done to get the score of the climatology

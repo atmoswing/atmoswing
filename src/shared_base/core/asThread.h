@@ -39,8 +39,8 @@ class asThread : public wxThread {
         PreloadData,
         ProcessorGetAnalogsDates,
         ProcessorGetAnalogsSubDates,
-        MethodOptimizerRandomSet,
-        MethodOptimizerGeneticAlgorithms
+        MethodOptimizerMC,
+        MethodOptimizerGAs
     };
 
     explicit asThread(Type type = Undefined);

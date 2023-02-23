@@ -383,7 +383,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_panelPathsCommon->SetSizer( m_sizerPanelPaths );
 	m_panelPathsCommon->Layout();
 	m_sizerPanelPaths->Fit( m_panelPathsCommon );
-	m_notebookBase->AddPage( m_panelPathsCommon, _("Batch file properties"), true );
+	m_notebookBase->AddPage( m_panelPathsCommon, _("Batch file properties"), false );
 	m_panelGeneralCommon = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
@@ -480,11 +480,30 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 
 	bSizer16->Add( sbSizer14, 0, wxEXPAND|wxALL, 5 );
 
+	wxStaticBoxSizer* sbSizer6;
+	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneralCommon, wxID_ANY, _("Libraries") ), wxVERTICAL );
+
+	wxBoxSizer* bSizer341;
+	bSizer341 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_staticTextEcCodesDefs = new wxStaticText( sbSizer6->GetStaticBox(), wxID_ANY, _("ecCodes definitions"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextEcCodesDefs->Wrap( -1 );
+	bSizer341->Add( m_staticTextEcCodesDefs, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_textCtrlEcCodesDefs = new wxTextCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer341->Add( m_textCtrlEcCodesDefs, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+
+	sbSizer6->Add( bSizer341, 1, wxEXPAND, 5 );
+
+
+	bSizer16->Add( sbSizer6, 0, wxEXPAND|wxALL, 5 );
+
 
 	m_panelGeneralCommon->SetSizer( bSizer16 );
 	m_panelGeneralCommon->Layout();
 	bSizer16->Fit( m_panelGeneralCommon );
-	m_notebookBase->AddPage( m_panelGeneralCommon, _("General options"), false );
+	m_notebookBase->AddPage( m_panelGeneralCommon, _("General options"), true );
 	m_panelAdvanced = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );

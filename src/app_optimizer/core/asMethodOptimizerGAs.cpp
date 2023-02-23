@@ -91,43 +91,6 @@ void asMethodOptimizerGAs::SortScoresAndParameters() {
     }
 }
 
-bool asMethodOptimizerGAs::SetBestParameters(asResultsParametersArray& results) {
-    wxASSERT(!m_parameters.empty());
-    wxASSERT(!m_scoresCalib.empty());
-
-    // Extract selected parameters & best parameters
-    float bestScore = m_scoresCalib[0];
-    int iBestScore = 0;
-
-    for (int i = 0; i < m_parameters.size(); i++) {
-        if (m_scoreOrder == Asc) {
-            if (m_scoresCalib[i] < bestScore) {
-                bestScore = m_scoresCalib[i];
-                iBestScore = i;
-            }
-        } else {
-            if (m_scoresCalib[i] > bestScore) {
-                bestScore = m_scoresCalib[i];
-                iBestScore = i;
-            }
-        }
-    }
-
-    if (iBestScore != 0) {
-        // Re-validate
-        SaveDetails(m_parameters[iBestScore]);
-        Validate(m_parameters[iBestScore]);
-    }
-
-    // Sort according to the level and the observation time
-    asParametersScoring sortedParams = m_parameters[iBestScore];
-    sortedParams.SortLevelsAndTime();
-
-    results.Add(sortedParams, m_scoresCalib[iBestScore], m_scoreValid);
-
-    return true;
-}
-
 bool asMethodOptimizerGAs::Manager() {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase* pConfig = wxFileConfig::Get();
@@ -168,6 +131,23 @@ bool asMethodOptimizerGAs::Manager() {
     DeletePreloadedArchiveData();
 
     return true;
+}
+
+int asMethodOptimizerGAs::GetGpusNb() {
+    int gpusNb = 0;
+#ifdef USE_CUDA
+    // Number of GPUs
+    int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
+    if (method == asCUDA) {
+        gpusNb = (int)wxFileConfig::Get()->ReadLong("/Processing/GpusNb", 1);
+        int devicesFound = asProcessorCuda::GetDeviceCount();
+        if (gpusNb > devicesFound) {
+            wxLogWarning(_("%d GPUs provided, but only %d found."), gpusNb, devicesFound);
+            gpusNb = devicesFound;
+        }
+    }
+#endif
+    return gpusNb;
 }
 
 bool asMethodOptimizerGAs::ManageOneRun() {
@@ -277,30 +257,24 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     // Watch
     wxStopWatch sw;
 
-    int threadType = asThread::MethodOptimizerGeneticAlgorithms;
+    int threadType = asThread::MethodOptimizerGAs;
     bool firstRun = true;
 
 #ifdef USE_CUDA
     // Number of GPUs
     int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
-    int gpusNb = 0;
-    if (method == asCUDA) {
-        gpusNb = (int)wxFileConfig::Get()->ReadLong("/Processing/GpusNb", 1);
-        int devicesFound = asProcessorCuda::GetDeviceCount();
-        if (gpusNb > devicesFound) {
-            wxLogWarning(_("%d GPUs provided, but only %d found."), gpusNb, devicesFound);
-            gpusNb = devicesFound;
-        }
-    }
+    int gpusNb = GetGpusNb();
+    int device = 0;
 #endif
 
     // Optimizer
     while (true) {
         // Reassess the best parameter if mini-batch as the period has changed
-        if (m_useMiniBatches && !m_miniBatchAssessBestOnFullPeriod && !firstRun) {
+        if (m_useMiniBatches && !firstRun) {
             auto* thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
 #ifdef USE_CUDA
             if (method == asCUDA) {
+                device = ThreadsManager().GetFreeDevice(gpusNb);
                 thread->SetDevice(device);
             }
 #endif
@@ -319,7 +293,6 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             ThreadsManager().WaitForFreeThread(threadType);
 
 #ifdef USE_CUDA
-            int device = 0;
             if (method == asCUDA) {
                 device = ThreadsManager().GetFreeDevice(gpusNb);
             }
@@ -422,19 +395,12 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             if (asIsNaN(m_scoreCalibBest)) {
                 m_parameterBest = m_parameters[0];
                 m_scoreCalibBest = m_scoresCalib[0];
-                if (m_miniBatchAssessBestOnFullPeriod) {
-                    m_scoreCalibBest = ComputeScoreFullPeriod(m_parameterBest);
-                }
             } else {
-                float scoreCurrentBest = m_scoresCalib[0];
-                if (m_miniBatchAssessBestOnFullPeriod) {
-                    scoreCurrentBest = ComputeScoreFullPeriod(m_parameters[0]);
-                }
-                if (m_scoreOrder == Asc && scoreCurrentBest < m_scoreCalibBest) {
-                    m_scoreCalibBest = scoreCurrentBest;
+                if (m_scoreOrder == Asc && m_scoresCalib[0] < m_scoreCalibBest) {
+                    m_scoreCalibBest = m_scoresCalib[0];
                     m_parameterBest = m_parameters[0];
-                } else if (m_scoreOrder == Desc && scoreCurrentBest > m_scoreCalibBest) {
-                    m_scoreCalibBest = scoreCurrentBest;
+                } else if (m_scoreOrder == Desc && m_scoresCalib[0] > m_scoreCalibBest) {
+                    m_scoreCalibBest = m_scoresCalib[0];
                     m_parameterBest = m_parameters[0];
                 }
             }
@@ -453,23 +419,34 @@ bool asMethodOptimizerGAs::ManageOneRun() {
                 wxLogMessage(_("Epoch number %d"), m_epoch);
             }
             m_miniBatchEnd = wxMin(m_miniBatchStart + m_miniBatchSize, m_miniBatchSizeMax) - 1;
-
-            // If finished, reassess all parameters on the full period
-            if (m_epoch > m_epochMax && !m_miniBatchAssessBestOnFullPeriod) {
-                if (!ComputeAllScoresOnFullPeriod()) {
-                    return false;
-                }
-            }
         }
 
         // Check if we should end
         if (HasConverged()) {
-            wxLogVerbose(_("Optimization process over."));
-            for (int i = 0; i < m_parameters.size(); i++) {
-                resFinalPopulation.Add(m_parameters[i], m_scoresCalib[i]);
+            // If finished, reassess all parameters on the full period
+            if (m_useMiniBatches) {
+                if (!ComputeAllScoresOnFullPeriod()) {
+                    return false;
+                }
+                SortScoresAndParameters();
+                // The current best parameter might not be in the population !
+                if (m_scoreOrder == Asc && m_scoresCalib[0] < m_scoreCalibBest) {
+                    m_scoreCalibBest = m_scoresCalib[0];
+                    m_parameterBest = m_parameters[0];
+                } else if (m_scoreOrder == Desc && m_scoresCalib[0] > m_scoreCalibBest) {
+                    m_scoreCalibBest = m_scoresCalib[0];
+                    m_parameterBest = m_parameters[0];
+                }
             }
+            wxLogVerbose(_("Optimization process over."));
             break;
         } else {
+            // Always reset the score values for the mini-batch approach as the sample changes.
+            if (m_useMiniBatches) {
+                for (int i = 0; i < m_parameters.size(); i++) {
+                    m_scoresCalib[i] = NaNf;
+                }
+            }
             if (!Optimize()) {
                 wxLogError(_("The parameters could not be optimized"));
                 return false;
@@ -488,19 +465,31 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     cudaDeviceReset();
 #endif
 
+    // Sort according to level and time
+    m_parameterBest.SortLevelsAndTime();
+
     // Validate
-    SaveDetails(m_parameters[0]);
-    Validate(m_parameters[0]);
+    SaveDetails(m_parameterBest);
+    Validate(m_parameterBest);
 
     // Print parameters in a text file
-    SetSelectedParameters(resFinalPopulation);
-    if (!resFinalPopulation.Print()) return false;
-    SetBestParameters(resBestIndividual);
-    if (!resBestIndividual.Print()) return false;
+    for (int i = 0; i < m_parameters.size(); i++) {
+        resFinalPopulation.Add(m_parameters[i], m_scoresCalib[i]);
+    }
+    if (!resFinalPopulation.Print()) {
+        wxLogError(_("The file containing the final population could not be generated."));
+        return false;
+    }
+    resBestIndividual.Add(m_parameterBest, m_scoreCalibBest, m_scoreValid);
+
+    if (!resBestIndividual.Print()) {
+        wxLogError(_("The file containing the best individual could not be generated."));
+        return false;
+    }
     if (!m_resGenerations.Print(m_resGenerations.GetCount() - m_parameters.size())) return false;
 
     // Generate xml file with the best parameters set
-    if (!m_parameters[0].GenerateSimpleParametersFile(resXmlFilePath)) {
+    if (!m_parameterBest.GenerateSimpleParametersFile(resXmlFilePath)) {
         wxLogError(_("The output xml parameters file could not be generated."));
     }
 
@@ -524,12 +513,15 @@ float asMethodOptimizerGAs::ComputeScoreFullPeriod(asParametersOptimizationGAs& 
     float scoreFullPeriod = NaNf;
     auto* thread = new asThreadGAs(this, &param, &scoreFullPeriod, &m_scoreClimatology);
 #ifdef USE_CUDA
+    int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
     if (method == asCUDA) {
+        int gpusNb = GetGpusNb();
+        int device = ThreadsManager().GetFreeDevice(gpusNb);
         thread->SetDevice(device);
     }
 #endif
     ThreadsManager().AddThread(thread);
-    ThreadsManager().Wait(asThread::MethodOptimizerGeneticAlgorithms);
+    ThreadsManager().Wait(asThread::MethodOptimizerGAs);
 
     m_miniBatchStart = miniBatchStart;
     m_miniBatchEnd = miniBatchEnd;
@@ -544,7 +536,11 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
     // Reassess the best parameter if mini-batch as the period has changed
     auto* thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
 #ifdef USE_CUDA
+    int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
+    int device = 0;
+    int gpusNb = GetGpusNb();
     if (method == asCUDA) {
+        device = ThreadsManager().GetFreeDevice(gpusNb);
         thread->SetDevice(device);
     }
 #endif
@@ -560,10 +556,9 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
             return false;
         }
 
-        ThreadsManager().WaitForFreeThread(asThread::MethodOptimizerGeneticAlgorithms);
+        ThreadsManager().WaitForFreeThread(asThread::MethodOptimizerGAs);
 
 #ifdef USE_CUDA
-        int device = 0;
         if (method == asCUDA) {
             device = ThreadsManager().GetFreeDevice(gpusNb);
         }
@@ -583,6 +578,9 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
         // Increment iterator
         IncrementIterator();
     }
+
+    // Wait until all done
+    ThreadsManager().Wait(asThread::MethodOptimizerGAs);
 
     return true;
 }
@@ -778,35 +776,35 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
 
         wxArrayString logFiles;
         wxDir::GetAllFiles(parentDir.GetName(), &logFiles, logFilePattern, wxDIR_FILES);
-        logFiles.Sort();
-        wxString logFilePath = logFiles.Last();
-        logFiles.Clear();
 
-        asFileText logContent(logFilePath, asFile::ReadOnly);
-        if (!logContent.Open()) {
-            wxLogError(_("Couldn't open the file %s."), logFilePath);
-            return false;
-        }
-        fileLine = logContent.GetNextLine();
-
-        do {
-            if (fileLine.IsEmpty()) break;
-
-            // Get the epoch nb
-            int locEpochNb = fileLine.Find("Epoch number");
-            if (locEpochNb != wxNOT_FOUND) {
-                wxString epochNbStr = fileLine.Mid(22);
-                long epochNb;
-                epochNbStr.ToLong(&epochNb);
-
-                // Overwrite to the last value
-                m_epoch = int(epochNb);
+        m_epoch = 1;
+        for (auto logFilePath : logFiles) {
+            asFileText logContent(logFilePath, asFile::ReadOnly);
+            if (!logContent.Open()) {
+                wxLogWarning(_("Couldn't open the file %s."), logFilePath);
+                continue;
             }
-
-            // Get next line
             fileLine = logContent.GetNextLine();
-        } while (!logContent.EndOfFile());
-        logContent.Close();
+
+            do {
+                if (fileLine.IsEmpty()) break;
+
+                // Get the epoch nb
+                int locEpochNb = fileLine.Find("Epoch number");
+                if (locEpochNb != wxNOT_FOUND) {
+                    wxString epochNbStr = fileLine.Mid(22);
+                    long epochNb;
+                    epochNbStr.ToLong(&epochNb);
+
+                    // Overwrite to the last value
+                    m_epoch = wxMax(m_epoch, int(epochNb));
+                }
+
+                // Get next line
+                fileLine = logContent.GetNextLine();
+            } while (!logContent.EndOfFile());
+            logContent.Close();
+        }
 
         wxLogMessage(_("Starting again from epoch %d."), m_epoch);
     }
@@ -1111,10 +1109,6 @@ bool asMethodOptimizerGAs::HasConverged() {
         if (m_epoch > m_epochMax) {
             return true;
         }
-        // Always reset the score values for the mini-batch approach as the sample changes.
-        for (int i = 0; i < m_parameters.size(); i++) {
-            m_scoresCalib[i] = NaNf;
-        }
         return false;
     }
 
@@ -1154,9 +1148,6 @@ bool asMethodOptimizerGAs::ElitismAfterMutation() {
     // previous best.
     if (m_allowElitismForTheBest && !asIsNaN(m_scoreCalibBest)) {
         float actualBest = m_scoresCalib[0];
-        if (m_useMiniBatches && m_miniBatchAssessBestOnFullPeriod) {
-            actualBest = ComputeScoreFullPeriod(m_parameters[0]);
-        }
         switch (m_scoreOrder) {
             case (Asc): {
                 if (m_scoreCalibBest < actualBest) {
@@ -1195,9 +1186,6 @@ bool asMethodOptimizerGAs::ElitismAfterSelection() {
     if (m_allowElitismForTheBest && !asIsNaN(m_scoreCalibBest)) {
         SortScoresAndParameters();
         float actualBest = m_scoresCalib[0];
-        if (m_useMiniBatches && m_miniBatchAssessBestOnFullPeriod) {
-            actualBest = ComputeScoreFullPeriod(m_parameters[0]);
-        }
         switch (m_scoreOrder) {
             case (Asc): {
                 if (m_scoreCalibBest < actualBest) {

@@ -171,6 +171,8 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 		wxTextCtrl* m_textCtrlProxyUser;
 		wxStaticText* m_staticTextProxyPasswd;
 		wxTextCtrl* m_textCtrlProxyPasswd;
+		wxStaticText* m_staticTextEcCodesDefs;
+		wxTextCtrl* m_textCtrlEcCodesDefs;
 		wxPanel* m_panelAdvanced;
 		wxNotebook* m_notebookAdvanced;
 		wxPanel* m_panelGeneral;

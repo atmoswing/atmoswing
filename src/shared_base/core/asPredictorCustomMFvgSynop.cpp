@@ -31,7 +31,7 @@
 #include "asTimeArray.h"
 
 asPredictorCustomMFvgSynop::asPredictorCustomMFvgSynop(const wxString& dataId)
-    : asPredictorEcmwfIfsGrib(dataId) {
+    : asPredictorEcmwfIfs(dataId) {
     // Set the basic properties.
     m_datasetId = "Custom_MeteoFVG_Synop";
     m_provider = "ECMWF";

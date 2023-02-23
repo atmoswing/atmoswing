@@ -45,11 +45,9 @@ class asResultsParametersArray : public asResults {
 
     void StoreValues(asParametersScoring& params);
 
-    void Add(asParametersScoring& params, float scoreCalib);
-
     void AddWithoutProcessingMedian(asParametersScoring& params, float scoreCalib);
 
-    void Add(asParametersScoring& params, float scoreCalib, float scoreValid);
+    void Add(asParametersScoring& params, float scoreCalib, float scoreValid = NaNf);
 
     void Add(asParametersScoring& params, const a1f& scoreCalib, const a1f& scoreValid);
 

@@ -40,6 +40,10 @@ class asFileGrib : public asFile {
 
     ~asFileGrib() override;
 
+    static void SetContext();
+
+    static wxString GetDefinitionsPath();
+
     bool Open() override;
 
     bool Close() override;

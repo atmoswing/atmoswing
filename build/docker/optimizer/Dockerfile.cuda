@@ -45,6 +45,7 @@ RUN cp -a /app/src/data /app/deploy/share/atmoswing \
 FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04 AS runner
 
 WORKDIR /app
+ENV ECCODES_DEFINITION_PATH=/usr/share/eccodes/definitions
 
 # Install dependencies
 RUN export DEBIAN_FRONTEND=noninteractive \

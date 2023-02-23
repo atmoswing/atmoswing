@@ -151,9 +151,9 @@ TEST(PredictorProjCordex, LoadEasy) {
     // pr[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
-    5875.949	5875.210	5874.214
-    5875.322	5874.633	5873.714
-    5874.811	5874.221	5873.410
+    5875.949   5875.210   5874.214
+    5875.322   5874.633   5873.714
+    5874.811   5874.221   5873.410
     */
 
     EXPECT_NEAR(5875.949, z[0][0](0, 0), 1E-3);
@@ -193,9 +193,9 @@ TEST(PredictorProjCordex, LoadOver2Files) {
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat) 25.12.2025
-    5840.507	5840.260	5840.018
-    5841.373	5841.219	5841.036
-    5842.273	5842.142	5841.948
+    5840.507   5840.260   5840.018
+    5841.373   5841.219   5841.036
+    5842.273   5842.142   5841.948
     */
 
     EXPECT_NEAR(5840.507, z[0][0](0, 0), 1E-3);
@@ -206,9 +206,9 @@ TEST(PredictorProjCordex, LoadOver2Files) {
     EXPECT_NEAR(5841.948, z[0][0](2, 2), 1E-3);
 
     /* Values time step 6 (horizontal=Lon, vertical=Lat) 31.12.2025
-    5812.036	5812.356	5812.426
-    5814.760	5815.128	5815.196
-    5817.457	5817.810	5817.814
+    5812.036   5812.356   5812.426
+    5814.760   5815.128   5815.196
+    5817.457   5817.810   5817.814
     */
 
     EXPECT_NEAR(5812.036, z[6][0](0, 0), 1E-3);
@@ -219,9 +219,9 @@ TEST(PredictorProjCordex, LoadOver2Files) {
     EXPECT_NEAR(5817.814, z[6][0](2, 2), 1E-3);
 
     /* Values time step 7 (horizontal=Lon, vertical=Lat) 01.01.2026
-    5813.837	5815.055	5816.039
-    5817.271	5818.455	5819.358
-    5820.580	5821.659	5822.421
+    5813.837   5815.055   5816.039
+    5817.271   5818.455   5819.358
+    5820.580   5821.659   5822.421
     */
 
     EXPECT_NEAR(5813.837, z[7][0](0, 0), 1E-3);
@@ -232,9 +232,9 @@ TEST(PredictorProjCordex, LoadOver2Files) {
     EXPECT_NEAR(5822.421, z[7][0](2, 2), 1E-3);
 
     /* Values time step 16 (horizontal=Lon, vertical=Lat) 10.01.2026
-    5797.511	5797.913	5798.130
-    5802.229	5802.723	5802.962
-    5806.777	5807.274	5807.468
+    5797.511   5797.913   5798.130
+    5802.229   5802.723   5802.962
+    5806.777   5807.274   5807.468
     */
 
     EXPECT_NEAR(5797.511, z[16][0](0, 0), 1E-3);
@@ -274,8 +274,8 @@ TEST(PredictorProjCordex, LoadAnotherModel) {
     // psl[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat) 01.01.2046
-    102389.211	102396.633
-    102392.961	102401.336
+    102389.211   102396.633
+    102392.961   102401.336
     */
 
     EXPECT_NEAR(102389.211, psl[0][0](0, 0), 1E-3);
@@ -284,8 +284,8 @@ TEST(PredictorProjCordex, LoadAnotherModel) {
     EXPECT_NEAR(102401.336, psl[0][0](1, 1), 1E-3);
 
     /* Values time step 1 (horizontal=Lon, vertical=Lat) 02.01.2046
-    102346.586	102354.922
-    102349.172	102358.336
+    102346.586   102354.922
+    102349.172   102358.336
     */
 
     EXPECT_NEAR(102346.586, psl[1][0](0, 0), 1E-3);
@@ -294,8 +294,8 @@ TEST(PredictorProjCordex, LoadAnotherModel) {
     EXPECT_NEAR(102358.336, psl[1][0](1, 1), 1E-3);
 
     /* Values time step 4 (horizontal=Lon, vertical=Lat) 05.01.2046
-    102453.555	102459.594
-    102462.055	102465.555
+    102453.555   102459.594
+    102462.055   102465.555
     */
 
     EXPECT_NEAR(102453.555, psl[4][0](0, 0), 1E-3);

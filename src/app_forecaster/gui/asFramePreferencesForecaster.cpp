@@ -28,6 +28,8 @@
 
 #include "asFramePreferencesForecaster.h"
 
+#include "asFileGrib.h"
+
 asFramePreferencesForecaster::asFramePreferencesForecaster(wxWindow* parent, asBatchForecasts* batchForecasts,
                                                            wxWindowID id)
     : asFramePreferencesForecasterVirtual(parent, id),
@@ -118,6 +120,9 @@ void asFramePreferencesForecaster::LoadPreferences() {
     m_textCtrlProxyPort->SetValue(pConfig->Read("/Internet/ProxyPort", wxEmptyString));
     m_textCtrlProxyUser->SetValue(pConfig->Read("/Internet/ProxyUser", wxEmptyString));
     m_textCtrlProxyPasswd->SetValue(pConfig->Read("/Internet/ProxyPasswd", wxEmptyString));
+
+    // Libraries
+    m_textCtrlEcCodesDefs->SetValue(pConfig->Read("/Libraries/EcCodesDefinitions", asFileGrib::GetDefinitionsPath()));
 
     /*
      * Advanced
@@ -239,6 +244,10 @@ void asFramePreferencesForecaster::SavePreferences() {
     pConfig->Write("/Internet/ProxyUser", proxyUser);
     wxString proxyPasswd = m_textCtrlProxyPasswd->GetValue();
     pConfig->Write("/Internet/ProxyPasswd", proxyPasswd);
+
+    // Libraries
+    wxString ecCodesDefs = m_textCtrlEcCodesDefs->GetValue();
+    pConfig->Write("/Libraries/EcCodesDefinitions", ecCodesDefs);
 
     /*
      * Advanced

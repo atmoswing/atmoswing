@@ -40,7 +40,6 @@ asMethodCalibrator::asMethodCalibrator()
       m_scoreValid(NaNf),
       m_validationMode(false),
       m_useMiniBatches(false),
-      m_miniBatchAssessBestOnFullPeriod(false),
       m_miniBatchSize(365),
       m_miniBatchSizeMax(0),
       m_miniBatchStart(0),
@@ -262,15 +261,6 @@ bool asMethodCalibrator::KeepIfBetter(asParametersCalibration& params, asResults
     }
 
     return false;
-}
-
-bool asMethodCalibrator::SetSelectedParameters(asResultsParametersArray& results) {
-    // Extract selected parameters & best parameters
-    for (int i = 0; i < m_parameters.size(); i++) {
-        results.Add(m_parameters[i], m_scoresCalib[i], m_scoreValid);
-    }
-
-    return true;
 }
 
 bool asMethodCalibrator::SetBestParameters(asResultsParametersArray& results) {

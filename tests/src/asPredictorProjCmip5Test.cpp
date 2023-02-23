@@ -122,9 +122,9 @@ TEST(PredictorProjCmip5, LoadEasy) {
     // pr[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
-    3.7753E-07	7.6832E-07	7.8179E-07	2.9757E-07
-    1.1153E-06	5.6990E-06	2.2500E-05	3.9894E-05
-    1.7723E-05	2.5831E-05	3.3057E-05	3.7672E-05
+    3.7753E-07   7.6832E-07   7.8179E-07   2.9757E-07
+    1.1153E-06   5.6990E-06   2.2500E-05   3.9894E-05
+    1.7723E-05   2.5831E-05   3.3057E-05   3.7672E-05
     */
 
     EXPECT_NEAR(3.7753E-07, pr[0][0](0, 0), 1E-11);
@@ -164,9 +164,9 @@ TEST(PredictorProjCmip5, LoadBorderLeft) {
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
-    |   1.6006E-07	2.0217E-07	3.0069E-07
-    |   4.4013E-07	5.9736E-07	5.9959E-07
-    |   8.9397E-06	9.3129E-06	1.1299E-05
+    |   1.6006E-07   2.0217E-07   3.0069E-07
+    |   4.4013E-07   5.9736E-07   5.9959E-07
+    |   8.9397E-06   9.3129E-06   1.1299E-05
     */
 
     EXPECT_NEAR(1.6006E-07, pr[0][0](0, 0), 1E-11);
@@ -206,8 +206,8 @@ TEST(PredictorProjCmip5, LoadWithPressureLevels) {
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
-    1535.979	1535.357	1534.495
-    1535.463	1534.927	1534.169
+    1535.979   1535.357   1534.495
+    1535.463   1534.927   1534.169
     */
 
     EXPECT_NEAR(1535.979, z[0][0](0, 0), 1E-3);
@@ -217,8 +217,8 @@ TEST(PredictorProjCmip5, LoadWithPressureLevels) {
     EXPECT_NEAR(1534.169, z[0][0](1, 2), 1E-3);
 
     /* Values time step 2 (horizontal=Lon, vertical=Lat)
-    1527.969	1527.435	1527.026
-    1527.722	1527.429	1527.128
+    1527.969   1527.435   1527.026
+    1527.722   1527.429   1527.128
     */
 
     EXPECT_NEAR(1527.969, z[2][0](0, 0), 1E-3);
@@ -257,8 +257,8 @@ TEST(PredictorProjCmip5, LoadOver2Years) {
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat) 25.12.2097
-    1522.466	1522.246	1521.932
-    1521.509	1521.456	1521.242
+    1522.466   1522.246   1521.932
+    1521.509   1521.456   1521.242
     */
 
     EXPECT_NEAR(1522.466, z[0][0](0, 0), 1E-3);
@@ -268,8 +268,8 @@ TEST(PredictorProjCmip5, LoadOver2Years) {
     EXPECT_NEAR(1521.242, z[0][0](1, 2), 1E-3);
 
     /* Values time step 6 (horizontal=Lon, vertical=Lat) 31.12.2097
-    1545.887	1545.936	1546.071
-    1545.491	1545.513	1545.718
+    1545.887   1545.936   1546.071
+    1545.491   1545.513   1545.718
     */
 
     EXPECT_NEAR(1545.887, z[6][0](0, 0), 1E-3);
@@ -279,8 +279,8 @@ TEST(PredictorProjCmip5, LoadOver2Years) {
     EXPECT_NEAR(1545.718, z[6][0](1, 2), 1E-3);
 
     /* Values time step 7 (horizontal=Lon, vertical=Lat) 01.01.2098
-    1551.731	1551.931	1551.975
-    1551.601	1551.694	1551.742
+    1551.731   1551.931   1551.975
+    1551.601   1551.694   1551.742
     */
 
     EXPECT_NEAR(1551.731, z[7][0](0, 0), 1E-3);
@@ -290,8 +290,8 @@ TEST(PredictorProjCmip5, LoadOver2Years) {
     EXPECT_NEAR(1551.742, z[7][0](1, 2), 1E-3);
 
     /* Values time step 16 (horizontal=Lon, vertical=Lat) 10.01.2098
-    1530.864	1530.571	1529.905
-    1530.402	1530.241	1529.734
+    1530.864   1530.571   1529.905
+    1530.402   1530.241   1529.734
     */
 
     EXPECT_NEAR(1530.864, z[16][0](0, 0), 1E-3);
@@ -330,8 +330,8 @@ TEST(PredictorProjCmip5, LoadAnotherModel) {
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat) 25.12.2096, 00:00
-    -8.808	-8.929	-8.980
-    -7.923	-8.043	-7.953
+    -8.808   -8.929   -8.980
+    -7.923   -8.043   -7.953
     */
 
     EXPECT_NEAR(-8.808, ua[0][0](0, 0), 1E-3);
@@ -341,8 +341,8 @@ TEST(PredictorProjCmip5, LoadAnotherModel) {
     EXPECT_NEAR(-7.953, ua[0][0](1, 2), 1E-3);
 
     /* Values time step 28 (horizontal=Lon, vertical=Lat) 31.12.2096, 24:00
-    -8.262	-8.479	-8.472
-    -8.564	-9.909	-10.521
+    -8.262   -8.479   -8.472
+    -8.564   -9.909   -10.521
     */
 
     EXPECT_NEAR(-8.262, ua[28][0](0, 0), 1E-3);
@@ -352,8 +352,8 @@ TEST(PredictorProjCmip5, LoadAnotherModel) {
     EXPECT_NEAR(-10.521, ua[28][0](1, 2), 1E-3);
 
     /* Values time step 29 (horizontal=Lon, vertical=Lat) 01.01.2097, 06:00
-    -7.018	-7.084	-7.398
-    -7.557	-8.015	-8.484
+    -7.018   -7.084   -7.398
+    -7.557   -8.015   -8.484
     */
 
     EXPECT_NEAR(-7.018, ua[29][0](0, 0), 1E-3);
@@ -363,8 +363,8 @@ TEST(PredictorProjCmip5, LoadAnotherModel) {
     EXPECT_NEAR(-8.484, ua[29][0](1, 2), 1E-3);
 
     /* Values time step 47 (horizontal=Lon, vertical=Lat) 05.01.2097, 18:00
-    -8.465	-7.094	-6.448
-    -8.283	-8.084	-7.850
+    -8.465   -7.094   -6.448
+    -8.283   -8.084   -7.850
     */
 
     EXPECT_NEAR(-8.465, ua[47][0](0, 0), 1E-3);
