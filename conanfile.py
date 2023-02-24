@@ -54,7 +54,7 @@ class AmtoSwing(ConanFile):
         else:
             self.requires("wxbase/3.2.1@terranum-conan+wxbase/stable")
         if self.options.build_viewer:
-            self.requires("gdal/3.5.1@terranum-conan+gdal/stable")
+            self.requires("gdal/3.5.2@terranum-conan+gdal/stable")
 
     def configure(self):
         if self.options.code_coverage:
