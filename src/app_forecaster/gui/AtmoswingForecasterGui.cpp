@@ -279,7 +279,7 @@ asPanelForecastVirtual::asPanelForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_textCtrlParametersFileName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_textCtrlParametersFileName->SetToolTip( _("Enter the parameters file name...") );
 
-	m_sizerFilename->Add( m_textCtrlParametersFileName, 0, wxEXPAND|wxTOP|wxRIGHT|wxLEFT, 2 );
+	m_sizerFilename->Add( m_textCtrlParametersFileName, 0, wxEXPAND|wxALL, 3 );
 
 
 	m_sizerHeader->Add( m_sizerFilename, 1, wxEXPAND, 5 );

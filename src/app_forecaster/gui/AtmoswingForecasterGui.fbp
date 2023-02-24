@@ -1335,7 +1335,7 @@
             <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
-            <property name="window_style">wxTAB_TRAVERSAL</property>
+            <property name="window_style">wxBORDER_NONE|wxTAB_TRAVERSAL</property>
             <object class="wxBoxSizer" expanded="0">
                 <property name="minimum_size"></property>
                 <property name="name">m_sizerPanel</property>
@@ -1360,8 +1360,8 @@
                                 <property name="orient">wxVERTICAL</property>
                                 <property name="permission">private</property>
                                 <object class="sizeritem" expanded="0">
-                                    <property name="border">2</property>
-                                    <property name="flag">wxEXPAND|wxTOP|wxRIGHT|wxLEFT</property>
+                                    <property name="border">3</property>
+                                    <property name="flag">wxEXPAND|wxALL</property>
                                     <property name="proportion">0</property>
                                     <object class="wxTextCtrl" expanded="0">
                                         <property name="BottomDockable">1</property>
