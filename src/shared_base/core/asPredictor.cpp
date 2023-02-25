@@ -2363,8 +2363,8 @@ bool asPredictor::IsSpecificHumidity() const {
 }
 
 bool asPredictor::IsVerticalVelocity() const {
-    return m_dataId.IsSameAs("w", false) || m_dataId.IsSameAs("vvel", false) || m_dataId.IsSameAs("wap", false) ||
-           m_dataId.IsSameAs("omega", false);
+    return m_dataId.IsSameAs("w", false) || m_dataId.IsSameAs("vvel", false) || m_dataId.IsSameAs("vv", false) ||
+           m_dataId.IsSameAs("wap", false) || m_dataId.IsSameAs("omega", false);
 }
 
 bool asPredictor::IsTotalColumnWater() const {

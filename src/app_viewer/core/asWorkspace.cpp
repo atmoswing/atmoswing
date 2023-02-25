@@ -77,7 +77,9 @@ bool asWorkspace::Load(const wxString& filePath) {
                         if (nodeLayerData->GetName() == "path") {
                             wxString path = asFileWorkspace::GetString(nodeLayerData);
                             wxFileName absolutePath(path);
-                            absolutePath.Normalize();
+                            if (absolutePath.IsRelative()) {
+                                absolutePath.MakeAbsolute(wxFileName(m_filePath).GetPath());
+                            }
                             m_layerPaths.push_back(absolutePath.GetFullPath());
                         } else if (nodeLayerData->GetName() == "type") {
                             m_layerTypes.push_back(asFileWorkspace::GetString(nodeLayerData));
@@ -157,7 +159,14 @@ bool asWorkspace::Save() const {
     for (int iLayer = 0; iLayer < GetLayersNb(); iLayer++) {
         wxXmlNode* nodeLayer = new wxXmlNode(wxXML_ELEMENT_NODE, "layer");
 
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("path", m_layerPaths[iLayer]));
+        wxString path = m_layerPaths[iLayer];
+        if (path.StartsWith(wxFileName(m_filePath).GetPath())) {
+            wxFileName relativePath = wxFileName(path);
+            relativePath.MakeRelativeTo(wxFileName(m_filePath).GetPath());
+            path = relativePath.GetFullPath();
+        }
+
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("path", path));
         nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("type", m_layerTypes[iLayer]));
         nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("transparency", m_layerTransparencies[iLayer]));
         nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("visibility", m_layerVisibilities[iLayer]));

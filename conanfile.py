@@ -5,20 +5,6 @@ import os
 class AmtoSwing(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
 
-    requires = [
-        "proj/9.0.1",
-        "libcurl/7.85.0",
-        "libtiff/4.4.0",
-        "sqlite3/3.39.3",
-        "eigen/3.4.0",
-        "netcdf/4.8.1",
-        "libdeflate/1.12",
-        "libjpeg/9e",
-        "zlib/1.2.13",
-        "libpng/1.6.38",
-        "eccodes/2.27.0@terranum-conan+eccodes/stable",
-    ]
-
     options = {
         "enable_tests": [True, False],
         "enable_benchmark": [True, False],
@@ -47,6 +33,17 @@ class AmtoSwing(ConanFile):
     generators = "cmake", "gcc"
 
     def requirements(self):
+        self.requires("proj/9.0.1")
+        self.requires("libcurl/7.85.0")
+        self.requires("libtiff/4.4.0")
+        self.requires("sqlite3/3.39.3")
+        self.requires("eigen/3.4.0")
+        self.requires("netcdf/4.8.1")
+        self.requires("libdeflate/1.12")
+        self.requires("libjpeg/9e")
+        self.requires("zlib/1.2.13")
+        self.requires("libpng/1.6.38")
+        self.requires("eccodes/2.27.0@terranum-conan+eccodes/stable")
         if self.options.enable_tests or self.options.code_coverage:
             self.requires("gtest/1.11.0")
         if self.options.enable_benchmark:
@@ -57,7 +54,7 @@ class AmtoSwing(ConanFile):
         else:
             self.requires("wxbase/3.2.1@terranum-conan+wxbase/stable")
         if self.options.build_viewer:
-            self.requires("gdal/3.5.1@terranum-conan+gdal/stable")
+            self.requires("gdal/3.5.2@terranum-conan+gdal/stable")
 
     def configure(self):
         if self.options.code_coverage:

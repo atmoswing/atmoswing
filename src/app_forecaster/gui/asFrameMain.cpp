@@ -176,7 +176,7 @@ void asFrameMain::OnInit() {
 void asFrameMain::OnOpenBatchForecasts(wxCommandEvent& event) {
     // Ask for a batch file
     wxFileDialog openFileDialog(this, _("Select a batch file"), wxEmptyString, wxEmptyString,
-                                "AtmoSwing forecaster batch (*.asfb)|*.asfb",
+                                "AtmoSwing forecaster batch (*.xml)|*.xml",
                                 wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR);
 
     // If canceled
@@ -207,7 +207,7 @@ void asFrameMain::OnSaveBatchForecasts(wxCommandEvent& event) {
 void asFrameMain::OnSaveBatchForecastsAs(wxCommandEvent& event) {
     // Ask for a batch file
     wxFileDialog openFileDialog(this, _("Select a path to save the batch file"), wxEmptyString, wxEmptyString,
-                                "AtmoSwing forecaster batch (*.asfb)|*.asfb", wxFD_SAVE | wxFD_CHANGE_DIR);
+                                "AtmoSwing forecaster batch (*.xml)|*.xml", wxFD_SAVE | wxFD_CHANGE_DIR);
 
     // If canceled
     if (openFileDialog.ShowModal() == wxID_CANCEL) return;

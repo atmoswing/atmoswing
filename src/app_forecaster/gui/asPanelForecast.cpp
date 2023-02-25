@@ -47,16 +47,6 @@ asPanelForecast::asPanelForecast(wxWindow* parent)
     if (col.IsOk()) {
         SetBackgroundColour(col);
     }
-
-#if defined(__WXMSW__)
-    SetWindowStyleFlag(wxRAISED_BORDER);
-#elif defined(__WXMAC__)
-    SetWindowStyleFlag(wxRAISED_BORDER);
-#elif defined(__UNIX__)
-    SetWindowStyleFlag(wxSIMPLE_BORDER);
-#else
-    SetWindowStyleFlag(wxRAISED_BORDER);
-#endif
 }
 
 void asPanelForecast::ClosePanel(wxCommandEvent& event) {

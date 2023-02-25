@@ -291,7 +291,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
         // Under Windows when invoking via a document in Explorer, we are passed the short form.
         // So normalize and make the long form.
         wxFileName fName(g_cmdFileName);
-        fName.Normalize(wxPATH_NORM_LONG | wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE);
+        fName.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE);
         g_cmdFileName = fName.GetFullPath();
 
         wxConfigBase* pConfig = wxFileConfig::Get();
