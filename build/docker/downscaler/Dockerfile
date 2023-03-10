@@ -13,10 +13,10 @@ ARG LIB_DIR=/app/libs
 # Setup build environment
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
-    && apt-get install -y cmake python3 python3-pip git ca-certificates
+    && apt-get install -y --no-install-recommends cmake python3 python3-pip git ca-certificates
 
 # Setup conan
-RUN python3 -m pip install conan \
+RUN python3 -m pip install conan==1.* \
     && conan profile new default --detect \
     && conan profile update settings.compiler.libcxx=libstdc++11 default \
     && conan remote add gitlab https://gitlab.com/api/v4/packages/conan
@@ -26,8 +26,8 @@ RUN mkdir src && mkdir src/bin
 COPY ./ src
 
 # Build AtmoSwing
-RUN cd src/bin \
-    && conan install .. -s build_type=Release --build=missing --build=openjpeg -o enable_tests=False -o with_gui=False  \
+WORKDIR /app/src/bin
+RUN conan install .. -s build_type=Release --build=missing --build=openjpeg -o enable_tests=False -o with_gui=False  \
         -o build_forecaster=False -o build_viewer=False -o build_optimizer=False -o build_downscaler=True \
     && conan build ..
 
@@ -50,7 +50,9 @@ ENV ECCODES_DEFINITION_PATH=/usr/share/eccodes/definitions
 # Install dependencies
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy from builder
 COPY --from=builder  /app/deploy /usr
