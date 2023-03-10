@@ -33,7 +33,8 @@
 #include "asCriteria.h"
 #include "asPredictor.h"
 
-bool asPreprocessor::Preprocess(const std::vector<asPredictor*>& predictors, const wxString& method, asPredictor* result) {
+bool asPreprocessor::Preprocess(const std::vector<asPredictor*>& predictors, const wxString& method,
+                                asPredictor* result) {
     wxASSERT(result);
 
     result->SetPreprocessMethod(method);
@@ -973,7 +974,8 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(const std::vector<asPredictor
     return true;
 }
 
-bool asPreprocessor::PreprocessMergeByHalfAndMultiply(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessMergeByHalfAndMultiply(const std::vector<asPredictor*>& predictors,
+                                                      asPredictor* result) {
     // More than one predictor
     int inputSize = (int)predictors.size();
     int factorSize = inputSize / 2;

@@ -980,12 +980,12 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
 
                     int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
                                            timeTargetSelection[i], 0.01);
-                    wxASSERT_MSG(iTimeTarg >= 0,
-                                 asStrF(_("Looking for %s in betwwen %s and %s."),
-                                                  asTime::GetStringTime(timeTargetSelection[i], "DD.MM.YYYY hh:mm"),
-                                                  asTime::GetStringTime(timeTargetData[0], "DD.MM.YYYY hh:mm"),
-                                                  asTime::GetStringTime(timeTargetData[timeTargetDataSize - 1],
-                                                                        "DD.MM.YYYY hh:mm")));
+                    wxASSERT_MSG(
+                        iTimeTarg >= 0,
+                        asStrF(_("Looking for %s in betwwen %s and %s."),
+                               asTime::GetStringTime(timeTargetSelection[i], "DD.MM.YYYY hh:mm"),
+                               asTime::GetStringTime(timeTargetData[0], "DD.MM.YYYY hh:mm"),
+                               asTime::GetStringTime(timeTargetData[timeTargetDataSize - 1], "DD.MM.YYYY hh:mm")));
 
                     // Get dates
                     currentAnalogsDates = analogsDates.row(i);

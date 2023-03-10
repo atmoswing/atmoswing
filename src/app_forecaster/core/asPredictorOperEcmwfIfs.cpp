@@ -25,8 +25,9 @@
  * Portions Copyright 2019-2020 Pascal Horton, University of Bern.
  */
 
-#include "asAreaGrid.h"
 #include "asPredictorOperEcmwfIfs.h"
+
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorOperEcmwfIfs::asPredictorOperEcmwfIfs(const wxString& dataId)

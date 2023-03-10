@@ -65,8 +65,7 @@ wxString asFileGrib::GetDefinitionsPath() {
     wxString definitionsPath = pConfig->Read("/Libraries/EcCodesDefinitions", definitionsPathEnv);
 
     wxUniChar separator = wxFileName::GetPathSeparator();
-    if (!definitionsPath.EndsWith("definitions") &&
-        !definitionsPath.EndsWith("definitions" + wxString(separator))) {
+    if (!definitionsPath.EndsWith("definitions") && !definitionsPath.EndsWith("definitions" + wxString(separator))) {
         definitionsPath += wxString(separator) + "definitions";
     }
 
@@ -536,8 +535,8 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
         int count = 0;
 
         if (m_version == 2) {
-            index = codes_index_new(NULL, "discipline,parameterCategory,parameterNumber,level,dataDate,dataTime,endStep",
-                                    &err);
+            index = codes_index_new(
+                NULL, "discipline,parameterCategory,parameterNumber,level,dataDate,dataTime,endStep", &err);
         } else if (m_version == 1) {
             index = codes_index_new(NULL, "table2Version,indicatorOfParameter,level,dataDate,dataTime,endStep", &err);
         }

@@ -1345,7 +1345,7 @@ bool asMethodOptimizerGAs::Mating() {
     ThreadsManager().CritSectionConfig().Leave();
 
     // Build chromosomes
-    for (auto & parameter : m_parameters) {
+    for (auto& parameter : m_parameters) {
         wxASSERT(parameter.GetChromosomeLength() > 0);
     }
 

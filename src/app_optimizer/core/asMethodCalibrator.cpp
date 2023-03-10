@@ -511,7 +511,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
     }
 
     if (!m_validationMode && (params->GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds") == 0 ||
-        params->GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds") == 0)) {
+                              params->GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds") == 0)) {
         vi stations = params->GetPredictandStationIds();
         if (stations.size() > 1) {
             wxLogError(_("You cannot use predictand thresholds with the multivariate approach."));

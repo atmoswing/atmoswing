@@ -41,17 +41,21 @@ class asPreprocessor : public wxObject {
 
     static bool PreprocessRealGradients(const std::vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessSimpleGradientsWithGaussianWeights(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessSimpleGradientsWithGaussianWeights(const std::vector<asPredictor*>& predictors,
+                                                             asPredictor* result);
 
-    static bool PreprocessRealGradientsWithGaussianWeights(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessRealGradientsWithGaussianWeights(const std::vector<asPredictor*>& predictors,
+                                                           asPredictor* result);
 
     static bool PreprocessSimpleCurvature(const std::vector<asPredictor*>& predictors, asPredictor* result);
 
     static bool PreprocessRealCurvature(const std::vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessSimpleCurvatureWithGaussianWeights(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessSimpleCurvatureWithGaussianWeights(const std::vector<asPredictor*>& predictors,
+                                                             asPredictor* result);
 
-    static bool PreprocessRealCurvatureWithGaussianWeights(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessRealCurvatureWithGaussianWeights(const std::vector<asPredictor*>& predictors,
+                                                           asPredictor* result);
 
     static bool PreprocessAddition(const std::vector<asPredictor*>& predictors, asPredictor* result);
 

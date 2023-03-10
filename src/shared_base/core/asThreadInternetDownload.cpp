@@ -103,14 +103,16 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
                 // If a proxy is used
                 if (m_usesProxy) {
                     if (!m_proxyAddress.IsEmpty()) {
-                        curl_easy_setopt(curl, CURLOPT_PROXY, static_cast<const char*>(m_proxyAddress.mb_str(wxConvUTF8)));
+                        curl_easy_setopt(curl, CURLOPT_PROXY,
+                                         static_cast<const char*>(m_proxyAddress.mb_str(wxConvUTF8)));
                     }
                     if (m_proxyPort > 0) {
                         curl_easy_setopt(curl, CURLOPT_PROXYPORT, m_proxyPort);
                     }
                     if (!m_proxyUser.IsEmpty()) {
                         wxString proxyLogin = m_proxyUser + ":" + m_proxyPasswd;
-                        curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, static_cast<const char*>(proxyLogin.mb_str(wxConvUTF8)));
+                        curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD,
+                                         static_cast<const char*>(proxyLogin.mb_str(wxConvUTF8)));
                     }
                 }
 
