@@ -307,7 +307,7 @@ class asParameters : public wxObject {
         return vec;
     }
 
-    void SetPredictandStationIds(vi val);
+    void SetPredictandStationIds(const vi& val);
 
     double GetPredictandTimeHours() const {
         return m_predictandTimeHours;

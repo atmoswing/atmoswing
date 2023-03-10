@@ -155,6 +155,7 @@ asFrameForecast::asFrameForecast(wxWindow* parent, wxWindowID id)
 
     // Forecast manager
     m_forecastManager = new asForecastManager(this, &m_workspace);
+    m_forecastManager->Init();
 
     // Forecast viewer
     m_forecastViewer = new asForecastViewer(this, m_forecastManager, m_layerManager, m_viewerLayerManager);
