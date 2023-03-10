@@ -223,7 +223,7 @@ bool asMethodCalibrator::PushBackInTempIfBetter(asParametersCalibration& params,
             break;
 
         default:
-            asThrowException(_("The score order is not correctly defined."));
+            asThrow(_("The score order is not correctly defined."));
     }
 
     return false;
@@ -254,7 +254,7 @@ bool asMethodCalibrator::KeepIfBetter(asParametersCalibration& params, asResults
             break;
 
         default:
-            asThrowException(_("The score order is not correctly defined."));
+            asThrow(_("The score order is not correctly defined."));
     }
 
     return false;
@@ -323,13 +323,13 @@ double asMethodCalibrator::GetTimeEndCalibration(asParametersScoring* params) co
 }
 
 double asMethodCalibrator::GetEffectiveArchiveDataStart(asParameters* params) const {
-    auto* paramsScoring = (asParametersScoring*)params;
+    auto* paramsScoring = dynamic_cast<asParametersScoring*>(params);
 
     return wxMin(GetTimeStartCalibration(paramsScoring), GetTimeStartArchive(paramsScoring));
 }
 
 double asMethodCalibrator::GetEffectiveArchiveDataEnd(asParameters* params) const {
-    auto* paramsScoring = (asParametersScoring*)params;
+    auto* paramsScoring = dynamic_cast<asParametersScoring*>(params);
 
     return wxMax(GetTimeEndCalibration(paramsScoring), GetTimeEndArchive(paramsScoring));
 }

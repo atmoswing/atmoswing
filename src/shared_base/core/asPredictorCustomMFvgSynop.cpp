@@ -150,7 +150,7 @@ bool asPredictorCustomMFvgSynop::Init() {
 void asPredictorCustomMFvgSynop::ListFiles(asTimeArray& timeArray) {
     // Check product directory
     if (!wxDirExists(GetFullDirectoryPath())) {
-        asThrowException(asStrF(_("Cannot find predictor directory for FVG data (%s)."), GetFullDirectoryPath()));
+        asThrow(asStrF(_("Cannot find predictor directory for FVG data (%s)."), GetFullDirectoryPath()));
     }
 
     // Check directory structure
@@ -160,7 +160,7 @@ void asPredictorCustomMFvgSynop::ListFiles(asTimeArray& timeArray) {
         if (wxDirExists(GetFullDirectoryPath() + asStrF("%4d", t0.year))) {
             skipMonthDayInPath = true;
         } else {
-            asThrowException(_("Cannot find coherent predictor directory structure for FVG data."));
+            asThrow(_("Cannot find coherent predictor directory structure for FVG data."));
         }
     }
 

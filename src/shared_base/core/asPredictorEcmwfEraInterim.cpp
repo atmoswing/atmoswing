@@ -326,7 +326,7 @@ void asPredictorEcmwfEraInterim::ListFiles(asTimeArray& timeArray) {
     size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, "*.nc");
 
     if (nbFiles == 0) {
-        asThrowException(_("No ERA-interim file found."));
+        asThrow(_("No ERA-interim file found."));
     }
 
     listFiles.Sort();

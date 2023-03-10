@@ -917,7 +917,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(const std::vector<asPredictor
             colsNew = colsNb1 + colsNb2;
             putBelow = false;
         } else {
-            asThrowException(_("The predictors sizes make them impossible to merge."));
+            asThrow(_("The predictors sizes make them impossible to merge."));
         }
 
         va2f tmp((long)membersNb, a2f(rowsNew, colsNew));

@@ -314,10 +314,6 @@ bool asPredictorNcepCfsrSubset::Init() {
         }
         m_fileNamePattern = "flxf06.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
-    } else if (IsIsentropicLevel()) {
-        wxLogError(_("Isentropic levels for CFSR are not implemented yet."));
-        return false;
-
     } else {
         wxLogError(_("level type not implemented for this reanalysis dataset."));
         return false;

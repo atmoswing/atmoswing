@@ -184,7 +184,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
                         // Add score and date to the vectors
                         scoreArrayOneDay[counter] = thisscore;
                         dateArrayOneDay[counter] = (float)timeArchiveData[iTimeArch];
-                    } else if (counter == analogsNb - 1) {
+                    } else {
                         // Add score and date to the vectors
                         scoreArrayOneDay[counter] = thisscore;
                         dateArrayOneDay[counter] = (float)timeArchiveData[iTimeArch];
