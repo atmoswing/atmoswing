@@ -566,6 +566,7 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
             m_parameters.push_back(param);
         }
         m_paramsNb = m_parameters.size();
+        m_scoresCalib.resize(m_paramsNb);
     }
 
     // Add threads when they become available
