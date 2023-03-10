@@ -854,8 +854,8 @@ int asFindT(const T* pArrStart, const T* pArrEnd, const T targetValue, const T t
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = (T*)pArrStart;
-    pLast = (T*)pArrEnd;
+    pFirst = const_cast<T*>(pArrStart);
+    pLast = const_cast<T*>(pArrEnd);
 
     // Check array order
     if (*pLast > *pFirst) {
@@ -1012,8 +1012,8 @@ int asFindClosestT(const T* pArrStart, const T* pArrEnd, const T targetValue, co
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = (T*)pArrStart;
-    pLast = (T*)pArrEnd;
+    pFirst = const_cast<T*>(pArrStart);
+    pLast = const_cast<T*>(pArrEnd);
 
     // Check array order
     if (*pLast > *pFirst) {

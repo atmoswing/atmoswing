@@ -1252,7 +1252,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
                             // Add score and date to the vectors
                             scoreArrayOneDay[counter] = thisScore;
                             dateArrayOneDay[counter] = (float)timeArchiveData[iTimeArch];
-                        } else if (counter == analogsNb - 1) {
+                        } else {
                             // Add score and date to the vectors
                             scoreArrayOneDay[counter] = thisScore;
                             dateArrayOneDay[counter] = (float)timeArchiveData[iTimeArch];
