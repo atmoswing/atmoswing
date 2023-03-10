@@ -26,10 +26,10 @@ The Viewer displays the forecasts in an interactive GIS environment. It contains
 
 This repository contains 4 different tools:
 
-* The Forecaster: automatically processes the forecast
-* The Viewer: displays the resulting files in a GIS environment
-* The Optimizer: optimizes the method for a given precipitation timeseries
-* The Downscaler: downscaling for climate impact studies
+*   The Forecaster: automatically processes the forecast
+*   The Viewer: displays the resulting files in a GIS environment
+*   The Optimizer: optimizes the method for a given precipitation timeseries
+*   The Downscaler: downscaling for climate impact studies
 
 Additionally, multiple unit tests are available and are built along with the software. It is highly recommended to run these tests before using AtmoSwing operationally.
 
@@ -53,15 +53,15 @@ You can download the releases under: https://github.com/atmoswing/atmoswing/rele
 
 Nightly (experimental) automatic builds are available for:
 
-* Linux (Ubuntu) & osx: https://console.cloud.google.com/storage/browser/atmoswing-deploy
-* Windows: https://ci.appveyor.com/project/pascalhorton/atmoswing
+*   Linux (Ubuntu) & osx: https://console.cloud.google.com/storage/browser/atmoswing-deploy
+*   Windows: https://ci.appveyor.com/project/pascalhorton/atmoswing
 
 ## How to build AtmoSwing ##
 
 The wiki (https://github.com/atmoswing/atmoswing/wiki) explains how to compile the required libraries and the source code of AtmoSwing. In order to get AtmoSwing compiled, follow these steps:
 
-1. [Get the required **libraries**](https://github.com/atmoswing/atmoswing/wiki/Libraries)
-3. [**Configure / build** with CMake](https://github.com/atmoswing/atmoswing/wiki/Build)
+1.  [Get the required **libraries**](https://github.com/atmoswing/atmoswing/wiki/Libraries)
+2.  [**Configure / build** with CMake](https://github.com/atmoswing/atmoswing/wiki/Build)
 
 ## How to contribute ##
 
@@ -72,11 +72,11 @@ When adding a new feature, please write a test along with it.
 Additionally, you can report issues or suggestions in the issues tracker (https://github.com/atmoswing/atmoswing/issues).
 
 AtmoSwing will follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) (not the case so far) with a few differences (mainly based on [wxWidgets Coding Guidelines](https://www.wxwidgets.org/develop/coding-guidelines)):
-* Use ``CamelCase`` for types (classes, structs, enums, unions), methods and functions 
-* Use ``camelCase`` for the variables.
-* Use ``m_`` prefix for member variables.
-* Global variables shouldn’t normally be used at all, but if they are, should have ``g_`` prefix.
-* Use Set/Get prefixes for accessors
+*   Use ``CamelCase`` for types (classes, structs, enums, unions), methods and functions 
+*   Use ``camelCase`` for the variables.
+*   Use ``m_`` prefix for member variables.
+*   Global variables shouldn’t normally be used at all, but if they are, should have ``g_`` prefix.
+*   Use Set/Get prefixes for accessors
 
 ## Credits ##
 
@@ -94,15 +94,15 @@ Copyright (C) 2016-2017, [University of Bern](http://www.geography.unibe.ch/), S
 
 Contributions:
 
-* Developed by Pascal Horton
-* Under the supervision of Charles Obled and Michel Jaboyedoff
-* With inputs from Lucien Schreiber, Richard Metzger and Renaud Marty
+*   Developed by Pascal Horton
+*   Under the supervision of Charles Obled and Michel Jaboyedoff
+*   With inputs from Lucien Schreiber, Richard Metzger and Renaud Marty
 
 Financial contributions:
 
-* 2008-2011 Cantons of Valais and Vaud (Switzerland): basis of the software from the MINERVE project.
-* 2011-2013 University of Lausanne (Switzerland): reorganization of the source code, improvement of the build system, documentation.
-* 2014 Direction régionale de l’environnement, de l’aménagement et du logement (France): addition of new forecast skill scores (reliability of the CRPS and rank histogram).
-* 2015 Cantons of Valais (Switzerland): addition of synthetic xml export and the aggregation of parametrizations in the viewer.
+*   2008-2011 Cantons of Valais and Vaud (Switzerland): basis of the software from the MINERVE project.
+*   2011-2013 University of Lausanne (Switzerland): reorganization of the source code, improvement of the build system, documentation.
+*   2014 Direction régionale de l’environnement, de l’aménagement et du logement (France): addition of new forecast skill scores (reliability of the CRPS and rank histogram).
+*   2015 Cantons of Valais (Switzerland): addition of synthetic xml export and the aggregation of parametrizations in the viewer.
 
 See both license.txt and notice.txt files for details about the license and its enforcement.
