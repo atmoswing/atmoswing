@@ -13,11 +13,11 @@ ARG LIB_DIR=/app/libs
 # Setup build environment
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
-    && apt-get install -y --no-install-recommends cmake python3 python3-pip git ca-certificates
+    && apt-get install -y --no-install-recommends cmake python3 python3-pip git ca-certificates build-essential
 
 # Setup conan
-RUN python3 -m pip install conan==1.* \
-    && conan profile new default --detect \
+RUN python3 -m pip install conan==1.*
+RUN conan profile new default --detect \
     && conan remote add gitlab https://gitlab.com/api/v4/packages/conan \
     && conan profile update settings.compiler.libcxx=libstdc++11 default
 
