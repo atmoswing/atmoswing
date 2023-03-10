@@ -1052,7 +1052,7 @@ void asFileNetcdf::GetVar(const wxString& varName, wxString* pValue, const size_
     }
 
     // Get value
-    std::vector<char*> data(totSize);
+    vector<char*> data(totSize);
     m_status = nc_get_var_string(m_fileId, varId, &data[0]);
     if (m_status) HandleErrorNetcdf();
 

@@ -207,16 +207,16 @@ class asFileNetcdf : public asFile {
         size_t length;
         nc_type type;
         vi dimIds;
-        std::vector<NcAttStruct> atts;
+        vector<NcAttStruct> atts;
     };
 
     struct NcStruct {
         int nUDims;
         vi uDimIds;
         asFileNetcdf::Format format;
-        std::vector<NcDimStruct> dims;
-        std::vector<NcVarStruct> vars;
-        std::vector<NcAttStruct> atts;
+        vector<NcDimStruct> dims;
+        vector<NcVarStruct> vars;
+        vector<NcAttStruct> atts;
     };
 
     NcStruct m_struct;

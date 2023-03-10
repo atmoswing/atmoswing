@@ -47,7 +47,7 @@ class asMethodOptimizerMC : public asMethodOptimizer {
     bool SetBestParameters(asResultsParametersArray& results) override;
 
   private:
-    std::vector<asParametersOptimization> m_parameters;
+    vector<asParametersOptimization> m_parameters;
 };
 
 #endif

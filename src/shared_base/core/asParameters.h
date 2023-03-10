@@ -78,14 +78,14 @@ class asParameters : public wxObject {
         float weight = 1;
     } ParamsPredictor;
 
-    typedef std::vector<ParamsPredictor> VectorParamsPredictors;
+    typedef vector<ParamsPredictor> VectorParamsPredictors;
 
     typedef struct ParamsStep {
         int analogsNumber = 0;
         VectorParamsPredictors predictors;
     } ParamsStep;
 
-    typedef std::vector<ParamsStep> VectorParamsStep;
+    typedef vector<ParamsStep> VectorParamsStep;
 
     asParameters();
 

@@ -556,9 +556,9 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
     return true;
 }
 
-bool asMethodForecasting::PreprocessRealtimePredictors(std::vector<asPredictorOper*> predictors, const wxString& method,
+bool asMethodForecasting::PreprocessRealtimePredictors(vector<asPredictorOper*> predictors, const wxString& method,
                                                        asPredictor* result) {
-    std::vector<asPredictor*> ptorsPredictors(predictors.begin(), predictors.end());
+    vector<asPredictor*> ptorsPredictors(predictors.begin(), predictors.end());
 
     return asPreprocessor::Preprocess(ptorsPredictors, method, result);
 }

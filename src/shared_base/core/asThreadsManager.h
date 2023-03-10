@@ -108,7 +108,7 @@ class asThreadsManager : public wxObject {
   protected:
   private:
     int m_idCounter;
-    std::vector<asThread*> m_threads;
+    vector<asThread*> m_threads;
     wxCriticalSection m_critSectionManager;
     wxCriticalSection m_critSectionPreloadedData;
     wxCriticalSection m_critSectionNetCDF;

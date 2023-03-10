@@ -65,15 +65,15 @@ class asMethodStandard : public wxObject {
 
     bool PreloadArchiveDataWithPreprocessing(asParameters* params, int iStep, int iPtor);
 
-    bool LoadArchiveData(std::vector<asPredictor*>& predictors, asParameters* params, int iStep, double timeStartData,
+    bool LoadArchiveData(vector<asPredictor*>& predictors, asParameters* params, int iStep, double timeStartData,
                          double timeEndData);
 
-    bool ExtractPreloadedArchiveData(std::vector<asPredictor*>& predictors, asParameters* params, int iStep, int iPtor);
+    bool ExtractPreloadedArchiveData(vector<asPredictor*>& predictors, asParameters* params, int iStep, int iPtor);
 
-    bool ExtractArchiveData(std::vector<asPredictor*>& predictors, asParameters* params, int iStep, int iPtor,
+    bool ExtractArchiveData(vector<asPredictor*>& predictors, asParameters* params, int iStep, int iPtor,
                             double timeStartData, double timeEndData);
 
-    bool PreprocessArchiveData(std::vector<asPredictor*>& predictors, asParameters* params, int iStep, int iPtor,
+    bool PreprocessArchiveData(vector<asPredictor*>& predictors, asParameters* params, int iStep, int iPtor,
                                double timeStartData, double timeEndData);
 
     bool GetRandomLevelValidData(asParameters* params, int iStep, int iPtor, int iPre, int iHour);
@@ -110,10 +110,10 @@ class asMethodStandard : public wxObject {
     wxString m_predictandDBFilePath;
     wxString m_predictorDataDir;
     asPredictand* m_predictandDB;
-    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictor*> > > > > m_preloadedArchive;
-    std::vector<vvb> m_preloadedArchivePointerCopy;
+    vector<vector<vector<vector<vector<asPredictor*> > > > > m_preloadedArchive;
+    vector<vvb> m_preloadedArchivePointerCopy;
 
-    bool Preprocess(std::vector<asPredictor*> predictors, const wxString& method, asPredictor* result);
+    bool Preprocess(vector<asPredictor*> predictors, const wxString& method, asPredictor* result);
 
     double GetTimeStartArchive(asParameters* params) const;
 
@@ -121,9 +121,9 @@ class asMethodStandard : public wxObject {
 
     virtual void InitializePreloadedArchiveDataContainers(asParameters* params);
 
-    virtual void Cleanup(std::vector<asPredictor*> predictors);
+    virtual void Cleanup(vector<asPredictor*> predictors);
 
-    virtual void Cleanup(std::vector<asCriteria*> criteria);
+    virtual void Cleanup(vector<asCriteria*> criteria);
 
     void DeletePreloadedArchiveData();
 

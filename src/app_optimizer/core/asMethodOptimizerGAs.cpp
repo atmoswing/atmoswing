@@ -86,7 +86,7 @@ void asMethodOptimizerGAs::SortScoresAndParameters() {
     asSortArrays(&m_scoresCalib[0], &m_scoresCalib[paramsNb - 1], &vIndices[0], &vIndices[paramsNb - 1], m_scoreOrder);
 
     // Sort the parameters sets as the scores
-    std::vector<asParametersOptimizationGAs> copyParameters;
+    vector<asParametersOptimizationGAs> copyParameters;
     for (int i = 0; i < paramsNb; i++) {
         copyParameters.push_back(m_parameters[i]);
     }
@@ -726,7 +726,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
     asParametersOptimizationGAs prevParams;
 
     // Parse the parameters data
-    std::vector<float> vectScores;
+    vector<float> vectScores;
     vectScores.reserve(nLines);
 
     int iLine = 0, iVar = 0;
@@ -1245,7 +1245,7 @@ bool asMethodOptimizerGAs::NaturalSelection() {
 
     wxLogVerbose(_("Applying natural selection."));
 
-    std::vector<asParametersOptimizationGAs> parameters = m_parameters;
+    vector<asParametersOptimizationGAs> parameters = m_parameters;
     vf scores = m_scoresCalib;
     m_parameters.clear();
     m_scoresCalib.clear();

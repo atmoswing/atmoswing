@@ -81,8 +81,8 @@ class asMethodOptimizerGAs : public asMethodOptimizer {
 
   protected:
   private:
-    std::vector<asParametersOptimizationGAs> m_parameters;
-    std::vector<asParametersOptimizationGAs> m_parametersBatchBests;
+    vector<asParametersOptimizationGAs> m_parameters;
+    vector<asParametersOptimizationGAs> m_parametersBatchBests;
     asParametersOptimizationGAs m_parameterBest;
     float m_scoreCalibBest;
     asResultsParametersArray m_resGenerations;

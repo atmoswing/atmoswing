@@ -275,7 +275,7 @@ bool asPredictor::LoadDumpedData() {
     file.Read(&m_axisLon[0], nLons * sizeof(double));
 
     m_data.resize(m_time.size(),
-                  std::vector<a2f, Eigen::aligned_allocator<a2f>>(m_membersNb, a2f(m_latPtsnb, m_lonPtsnb)));
+                  vector<a2f, Eigen::aligned_allocator<a2f>>(m_membersNb, a2f(m_latPtsnb, m_lonPtsnb)));
     size_t size = m_time.size() * m_membersNb * m_latPtsnb * m_lonPtsnb * sizeof(float);
 
     a2f data(m_time.size() * m_membersNb * m_latPtsnb, m_lonPtsnb);

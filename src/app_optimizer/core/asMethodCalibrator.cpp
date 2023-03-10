@@ -134,7 +134,7 @@ bool asMethodCalibrator::PushBackBestTemp() {
 void asMethodCalibrator::RemoveNaNsInTemp() {
     wxASSERT(m_parametersTemp.size() == m_scoresCalibTemp.size());
 
-    std::vector<asParametersCalibration> copyParametersTemp;
+    vector<asParametersCalibration> copyParametersTemp;
     vf copyScoresCalibTemp;
 
     for (int i = 0; i < m_scoresCalibTemp.size(); i++) {
@@ -190,7 +190,7 @@ bool asMethodCalibrator::SortScoresAndParametersTemp() {
     }
 
     // Sort the parameters sets as the scores
-    std::vector<asParametersCalibration> copyParameters;
+    vector<asParametersCalibration> copyParameters;
     for (int i = 0; i < m_scoresCalibTemp.size(); i++) {
         copyParameters.push_back(m_parametersTemp[i]);
     }
@@ -474,7 +474,7 @@ bool asMethodCalibrator::PreloadDataOnly(asParametersScoring* params) {
     timeArrayData.Init();
 
     // Load the predictor data
-    std::vector<asPredictor*> predictors;
+    vector<asPredictor*> predictors;
     if (!LoadArchiveData(predictors, params, 0, timeStartData, timeEndData)) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
@@ -559,7 +559,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
     wxLogVerbose(_("Date arrays created."));
 
     // Load the predictor data
-    std::vector<asPredictor*> predictors;
+    vector<asPredictor*> predictors;
     if (!LoadArchiveData(predictors, params, iStep, timeStartData, timeEndData)) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
@@ -567,7 +567,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
     }
 
     // Create the criterion
-    std::vector<asCriteria*> criteria;
+    vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         // Instantiate a score object
         asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
@@ -627,7 +627,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates& results, asParameter
     wxLogVerbose(_("Date arrays created."));
 
     // Load the predictor data
-    std::vector<asPredictor*> predictors;
+    vector<asPredictor*> predictors;
     if (!LoadArchiveData(predictors, params, iStep, timeStart, timeEnd)) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
@@ -635,7 +635,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates& results, asParameter
     }
 
     // Create the score objects
-    std::vector<asCriteria*> criteria;
+    vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         wxLogVerbose(_("Creating a criterion object."));
         asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));

@@ -180,7 +180,7 @@ TEST(Criteria, S1preprocessed) {
     asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
-    std::vector<asPredictor*> vdata;
+    vector<asPredictor*> vdata;
     vdata.push_back(predictor);
     vva2f hgtOriginal = predictor->GetData();
 
@@ -251,7 +251,7 @@ TEST(Criteria, S2preprocessed) {
     asPredictor* predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
-    std::vector<asPredictor*> vdata;
+    vector<asPredictor*> vdata;
     vdata.push_back(predictor);
     vva2f hgtOriginal = predictor->GetData();
 
