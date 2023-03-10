@@ -40,11 +40,8 @@ asMethodCalibrator::asMethodCalibrator()
       m_scoreValid(NaNf),
       m_validationMode(false),
       m_useMiniBatches(false),
-      m_miniBatchSize(365),
-      m_miniBatchSizeMax(0),
       m_miniBatchStart(0),
-      m_miniBatchEnd(0),
-      m_epoch(1) {
+      m_miniBatchEnd(0) {
     // Seeds the random generator
     asInitRandom();
 }

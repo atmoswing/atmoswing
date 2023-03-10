@@ -52,6 +52,10 @@ asMethodOptimizerGAs::asMethodOptimizerGAs()
       m_crossoverType(0),
       m_mutationsModeType(0),
       m_allowElitismForTheBest(true),
+      m_reassessMiniBatchBests(true),
+      m_miniBatchSize(365),
+      m_miniBatchSizeMax(0),
+      m_epoch(1),
       m_epochMax(30) {
     m_warnFailedLoadingData = false;
 }
@@ -60,6 +64,7 @@ asMethodOptimizerGAs::~asMethodOptimizerGAs() = default;
 
 void asMethodOptimizerGAs::ClearAll() {
     m_parameters.clear();
+    m_parametersBatchBests.clear();
     m_scoresCalib.clear();
     m_scoreCalibBest = NaNf;
     m_scoreValid = NaNf;
@@ -395,13 +400,22 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             if (asIsNaN(m_scoreCalibBest)) {
                 m_parameterBest = m_parameters[0];
                 m_scoreCalibBest = m_scoresCalib[0];
+                if (m_reassessMiniBatchBests) {
+                    m_parametersBatchBests.push_back(m_parameterBest);
+                }
             } else {
                 if (m_scoreOrder == Asc && m_scoresCalib[0] < m_scoreCalibBest) {
                     m_scoreCalibBest = m_scoresCalib[0];
                     m_parameterBest = m_parameters[0];
+                    if (m_reassessMiniBatchBests) {
+                        m_parametersBatchBests.push_back(m_parameterBest);
+                    }
                 } else if (m_scoreOrder == Desc && m_scoresCalib[0] > m_scoreCalibBest) {
                     m_scoreCalibBest = m_scoresCalib[0];
                     m_parameterBest = m_parameters[0];
+                    if (m_reassessMiniBatchBests) {
+                        m_parametersBatchBests.push_back(m_parameterBest);
+                    }
                 }
             }
         } else {
@@ -545,6 +559,14 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
     }
 #endif
     ThreadsManager().AddThread(thread);
+
+    // Restore all previously-selected best ones
+    if (m_reassessMiniBatchBests) {
+        for (const auto& param : m_parametersBatchBests) {
+            m_parameters.push_back(param);
+        }
+        m_paramsNb = m_parameters.size();
+    }
 
     // Add threads when they become available
     m_iterator = 0;

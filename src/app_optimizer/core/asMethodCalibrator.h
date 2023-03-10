@@ -142,11 +142,8 @@ class asMethodCalibrator : public asMethodStandard {
     asParametersCalibration m_originalParams;
     bool m_validationMode;
     bool m_useMiniBatches;
-    int m_miniBatchSize;
-    int m_miniBatchSizeMax;
     int m_miniBatchStart;
     int m_miniBatchEnd;
-    int m_epoch;
 
     virtual bool Calibrate(asParametersCalibration& params) = 0;
 
