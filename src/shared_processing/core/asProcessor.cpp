@@ -299,7 +299,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor*> predictorsArchive,
 
                     // Reset the index start target
                     int iTimeArchStart = 0;
-                    int iTimeArchRelative = 0;
+                    int iTimeArchRelative;
 
                     // Loop through the datesArchiveSlt for candidate data
                     for (int iDateArch = 0; iDateArch < datesArchiveSlt.GetSize(); iDateArch++) {
@@ -697,7 +697,7 @@ void asProcessor::InsertInArrays(bool isAsc, int analogsNb, float analogDate, fl
         // Add score and date to the vectors
         scoreArrayOneDay[counter] = score;
         dateArrayOneDay[counter] = analogDate;
-    } else if (counter == analogsNb - 1) {
+    } else {
         // Add score and date to the vectors
         scoreArrayOneDay[counter] = score;
         dateArrayOneDay[counter] = analogDate;
@@ -919,7 +919,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
 
             // Alloc space for predictor data
             float *hData, *dData = nullptr;
-            hData = (float*)malloc(totDataSize * sizeof(float));
+            hData = static_cast<float*>(malloc(totDataSize * sizeof(float)));
             checkCudaErrors(cudaMalloc((void**)&dData, totDataSize * sizeof(float)));
 
             // Copy predictor data to the host array
@@ -956,7 +956,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
 
             // Get a new container for variable vectors
             float* currentDates;
-            currentDates = (float*)malloc(nStreams * maxCandNb * sizeof(float));
+            currentDates = static_cast<float*>(malloc(nStreams * maxCandNb * sizeof(float)));
 
             // Alloc space for results
             float *hRes, *dRes = nullptr;

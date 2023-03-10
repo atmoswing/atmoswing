@@ -123,11 +123,6 @@ bool asFileGrib::ParseStructure() {
     try {
         codes_handle* h;
         while ((h = codes_handle_new_from_file(NULL, m_filtPtr, PRODUCT_GRIB, &err)) != nullptr) {
-            if (!h) {
-                wxLogError(_("Unable to create handle from file %s"), m_fileName.GetFullPath());
-                return false;
-            }
-
             wxLogVerbose(_("Check if Grib error"));
             if (!CheckGribErrorCode(err)) {
                 return false;
@@ -530,7 +525,7 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
 
         wxString refDate = asTime::GetStringTime(referenceDateArray[iTime], YYYYMMDD);
         char refDateChar[10];
-        strncpy(refDateChar, (const char*)refDate.mb_str(wxConvUTF8), 9);
+        strncpy(refDateChar, static_cast<const char*>(refDate.mb_str(wxConvUTF8)), 9);
         refDateChar[sizeof(refDateChar) - 1] = '\0';
         double refTime = referenceTimeArray[iTime];
         double forecastTime = forecastTimeArray[iTime];
@@ -623,11 +618,11 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
             count++;
 
             // Get data
-            double* values = NULL;
+            double* values = nullptr;
             size_t valuesLenth = 0;
-            CODES_CHECK(codes_get_size(h, "values", &valuesLenth), 0);
+            CODES_CHECK(codes_get_size(h, "values", &valuesLenth), nullptr);
             values = new double[valuesLenth + 1];
-            CODES_CHECK(codes_get_double_array(h, "values", values, &valuesLenth), 0);
+            CODES_CHECK(codes_get_double_array(h, "values", values, &valuesLenth), nullptr);
 
             if (nLats > 0 && m_yAxes[m_index][0] > m_yAxes[m_index][1]) {
                 for (int iLat = nLats - 1; iLat >= 0; iLat--) {

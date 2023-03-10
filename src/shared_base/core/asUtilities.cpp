@@ -875,9 +875,9 @@ int asFindT(const T* pArrStart, const T* pArrEnd, const T targetValue, const T t
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = (T*)pArrStart;
+            pLast = const_cast<T*>(pArrStart);
         } else if (pLast - pArrEnd > 0) {
-            pLast = (T*)pArrEnd - 1;
+            pLast = const_cast<T*>(pArrEnd) - 1;
         } else if (pLast - pArrEnd == 0) {
             pLast -= 1;
         }
@@ -933,9 +933,9 @@ int asFindT(const T* pArrStart, const T* pArrEnd, const T targetValue, const T t
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = (T*)pArrStart + 1;
+            pFirst = const_cast<T*>(pArrStart) + 1;
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = (T*)pArrEnd;
+            pFirst = const_cast<T*>(pArrEnd);
         } else if (pFirst - pArrStart == 0) {
             pFirst += 1;
         }
@@ -1130,8 +1130,8 @@ int asFindFloorT(const T* pArrStart, const T* pArrEnd, const T targetValue, cons
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = (T*)pArrStart;
-    pLast = (T*)pArrEnd;
+    pFirst = const_cast<T*>(pArrStart);
+    pLast = const_cast<T*>(pArrEnd);
 
     double tolerance = 0;
     /*
