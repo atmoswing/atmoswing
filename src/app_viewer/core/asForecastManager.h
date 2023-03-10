@@ -39,6 +39,8 @@ class asForecastManager {
 
     virtual ~asForecastManager();
 
+    void Init();
+
     bool HasForecasts() const;
 
     void ClearArrays();

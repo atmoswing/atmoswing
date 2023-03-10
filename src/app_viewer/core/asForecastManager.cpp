@@ -34,14 +34,19 @@ wxDEFINE_EVENT(asEVT_ACTION_FORECAST_NEW_ADDED, wxCommandEvent);
 asForecastManager::asForecastManager(wxWindow* parent, asWorkspace* workspace)
     : m_parent(parent),
       m_workspace(workspace),
-      m_aggregator(new asResultsForecastAggregator()),
+      m_aggregator(nullptr),
       m_leadTimeOrigin(0) {}
 
 asForecastManager::~asForecastManager() {
     wxDELETE(m_aggregator);
 }
 
+void asForecastManager::Init() {
+    m_aggregator = new asResultsForecastAggregator();
+}
+
 bool asForecastManager::HasForecasts() const {
+    wxASSERT(m_aggregator);
     return (m_aggregator->GetMethodsNb() > 0);
 }
 
@@ -50,6 +55,7 @@ void asForecastManager::AddDirectoryPastForecasts(const wxString& dir) {
 }
 
 int asForecastManager::GetLinearIndex(int methodRow, int forecastRow) const {
+    wxASSERT(m_aggregator);
     int counter = 0;
     for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
         for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
@@ -65,6 +71,7 @@ int asForecastManager::GetLinearIndex(int methodRow, int forecastRow) const {
 }
 
 int asForecastManager::GetMethodRowFromLinearIndex(int linearIndex) const {
+    wxASSERT(m_aggregator);
     int counter = 0;
     for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
         for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
@@ -80,6 +87,7 @@ int asForecastManager::GetMethodRowFromLinearIndex(int linearIndex) const {
 }
 
 int asForecastManager::GetForecastRowFromLinearIndex(int linearIndex) const {
+    wxASSERT(m_aggregator);
     int counter = 0;
     for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
         for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
@@ -95,6 +103,7 @@ int asForecastManager::GetForecastRowFromLinearIndex(int linearIndex) const {
 }
 
 void asForecastManager::ClearArrays() {
+    wxASSERT(m_aggregator);
     m_aggregator->ClearArrays();
 }
 
@@ -111,6 +120,8 @@ void asForecastManager::ClearForecasts() {
 }
 
 bool asForecastManager::Open(const wxString& filePath, bool doRefresh) {
+    wxASSERT(m_aggregator);
+
     // Check existance
     if (!wxFileName::FileExists(filePath)) {
         wxLogError(_("The file %s could not be found."), filePath);
@@ -164,6 +175,8 @@ bool asForecastManager::Open(const wxString& filePath, bool doRefresh) {
 }
 
 bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const wxString& filePath) {
+    wxASSERT(m_aggregator);
+
     // Check existance
     if (!wxFileName::FileExists(filePath)) {
         wxLogError(_("The file %s could not be found."), filePath);
@@ -201,6 +214,8 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
 }
 
 void asForecastManager::LoadPastForecast(int methodRow, int forecastRow) {
+    wxASSERT(m_aggregator);
+
     // Check if already loaded
     wxASSERT(m_aggregator->GetMethodsNb() > methodRow);
     wxASSERT(m_aggregator->GetPastMethodsNb() > methodRow);

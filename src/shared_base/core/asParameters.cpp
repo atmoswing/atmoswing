@@ -1154,7 +1154,7 @@ bool asParameters::GetValuesFromString(wxString stringVals) {
                     SetPreprocessHour(iStep, iPtor, iPre, float(dVal));
                 }
             } else {
-                strVal = asExtractParamValueAndCut(stringVals, "Ptor");
+                asExtractParamValueAndCut(stringVals, "Ptor");
                 stringVals = stringVals.AfterFirst('\t');
                 strVal = stringVals.AfterFirst(' ');
                 strVal = strVal.BeforeFirst('\t');
@@ -1281,7 +1281,7 @@ void asParameters::SetAnalogsIntervalDays(int val) {
     m_analogsIntervalDays = val;
 }
 
-void asParameters::SetPredictandStationIds(vi val) {
+void asParameters::SetPredictandStationIds(const vi& val) {
     m_predictandStationIds = val;
 }
 
