@@ -329,7 +329,6 @@ bool asResultsForecast::Load() {
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
-    int nLeadtime, nAnalogsTot, nStations;
     int versionMajor, versionMinor;
     vf analogsCriteria, analogsDates, analogsValuesRaw, analogsValuesNorm;
 
@@ -427,6 +426,7 @@ bool asResultsForecast::Load() {
         }
 
         // Get the elements size
+        int nLeadtime, nAnalogsTot, nStations;
         if (versionMajor == 1 && versionMinor == 0) {
             nLeadtime = ncFile.GetDimLength("leadtime");
             nAnalogsTot = ncFile.GetDimLength("analogstot");

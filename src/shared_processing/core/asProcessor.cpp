@@ -206,7 +206,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor*> predictorsArchive,
 
             // Alloc space for predictor data
             float *hData, *dData = nullptr;
-            hData = (float*)malloc(totDataSize * sizeof(float));
+            hData = static_cast<float*>(malloc(totDataSize * sizeof(float)));
             checkCudaErrors(cudaMalloc((void**)&dData, totDataSize * sizeof(float)));
 
             // Copy predictor data to the host array
@@ -254,7 +254,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor*> predictorsArchive,
 
             // Get a new container for variable vectors
             float* currentDates;
-            currentDates = (float*)malloc(nStreams * maxCandNb * sizeof(float));
+            currentDates = static_cast<float*>(malloc(nStreams * maxCandNb * sizeof(float)));
 
             // Alloc space for results
             float *hRes, *dRes = nullptr;

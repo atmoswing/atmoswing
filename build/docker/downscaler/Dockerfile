@@ -18,8 +18,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 # Setup conan
 RUN python3 -m pip install conan==1.* \
     && conan profile new default --detect \
-    && conan profile update settings.compiler.libcxx=libstdc++11 default \
-    && conan remote add gitlab https://gitlab.com/api/v4/packages/conan
+    && conan remote add gitlab https://gitlab.com/api/v4/packages/conan \
+    && conan profile update settings.compiler.libcxx=libstdc++11 default
 
 # Copy source code
 RUN mkdir src && mkdir src/bin

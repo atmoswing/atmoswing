@@ -1345,8 +1345,8 @@ bool asMethodOptimizerGAs::Mating() {
     ThreadsManager().CritSectionConfig().Leave();
 
     // Build chromosomes
-    for (int i = 0; i < m_parameters.size(); i++) {
-        wxASSERT(m_parameters[i].GetChromosomeLength() > 0);
+    for (auto & parameter : m_parameters) {
+        wxASSERT(parameter.GetChromosomeLength() > 0);
     }
 
     int sizeParents = int(m_parameters.size());
@@ -1652,18 +1652,13 @@ bool asMethodOptimizerGAs::Mating() {
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asRandom(0, chromosomeLength - 1, 1);
                     if (!crossingPoints.empty()) {
-                        // Check that is not already stored
-                        if (chromosomeLength > crossoverNbPoints) {
-                            for (int iPts = 0; iPts < crossingPoints.size(); iPts++) {
-                                if (crossingPoints[iPts] == crossingPoint) {
-                                    crossingPoints.erase(crossingPoints.begin() + iPts);
-                                    wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
-                                    iCross--;
-                                    break;
-                                }
+                        for (int iPts = 0; iPts < crossingPoints.size(); iPts++) {
+                            if (crossingPoints[iPts] == crossingPoint) {
+                                crossingPoints.erase(crossingPoints.begin() + iPts);
+                                wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
+                                iCross--;
+                                break;
                             }
-                        } else {
-                            wxLogVerbose(_("There are more crossing points than chromosomes."));
                         }
                     }
                     crossingPoints.push_back(crossingPoint);

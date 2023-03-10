@@ -36,7 +36,7 @@ void initialize_images(double ppiScaling) {
         initialize_img_misc_s();
         initialize_img_toolbar_s();
         initialize_img_treectrl_s();
-    } else if (ppiScaling > 1.25 && ppiScaling <= 1.75) {
+    } else if (ppiScaling <= 1.75) {
         initialize_img_misc_m();
         initialize_img_toolbar_m();
         initialize_img_treectrl_m();

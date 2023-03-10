@@ -117,11 +117,11 @@ bool asFileGrib::OpenDataset() {
 
 bool asFileGrib::ParseStructure() {
     int err = 0;
-    codes_handle* h;
 
     // Loop over the GRIB messages in the source
     wxLogVerbose(_("Creating handle from file %s"), m_fileName.GetFullPath());
     try {
+        codes_handle* h;
         while ((h = codes_handle_new_from_file(NULL, m_filtPtr, PRODUCT_GRIB, &err)) != nullptr) {
             if (!h) {
                 wxLogError(_("Unable to create handle from file %s"), m_fileName.GetFullPath());
@@ -163,7 +163,7 @@ void asFileGrib::ExtractTime(codes_handle* h) {
     // Get reference date
     size_t dataDateLength = 20;
     char* buffer1 = NULL;
-    buffer1 = (char*)malloc(dataDateLength * sizeof(char));
+    buffer1 = static_cast<char*>(malloc(dataDateLength * sizeof(char)));
     CODES_CHECK(codes_get_string(h, "dataDate", &buffer1[0], &dataDateLength), 0);
     wxString dataDate(buffer1, wxConvUTF8);
     free(buffer1);
@@ -172,7 +172,7 @@ void asFileGrib::ExtractTime(codes_handle* h) {
 
     size_t dataTimeLength = 20;
     char* buffer2 = NULL;
-    buffer2 = (char*)malloc(dataTimeLength * sizeof(char));
+    buffer2 = static_cast<char*>(malloc(dataTimeLength * sizeof(char)));
     CODES_CHECK(codes_get_string(h, "dataTime", &buffer2[0], &dataTimeLength), 0);
     wxString dataTime(buffer2, wxConvUTF8);
     free(buffer2);
@@ -217,7 +217,7 @@ void asFileGrib::ExtractLevel(codes_handle* h) {
     // Get level type
     size_t typeLength = 255;
     char* typeVal = NULL;
-    typeVal = (char*)malloc(typeLength * sizeof(char));
+    typeVal = static_cast<char*>(malloc(typeLength * sizeof(char)));
     CODES_CHECK(codes_get_string(h, "typeOfLevel", &typeVal[0], &typeLength), 0);
     wxString type(typeVal, wxConvUTF8);
     free(typeVal);

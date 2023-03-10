@@ -47,7 +47,7 @@ long vrLayerVectorFcstDots::AddFeature(OGRGeometry* geometry, void* data) {
     feature->SetGeometry(geometry);
 
     if (data != nullptr) {
-        wxArrayDouble* dataArray = (wxArrayDouble*)data;
+        wxArrayDouble* dataArray = static_cast<wxArrayDouble*>(data);
         wxASSERT(dataArray->GetCount() == 4);
 
         for (int iDat = 0; iDat < dataArray->size(); iDat++) {
@@ -68,12 +68,11 @@ long vrLayerVectorFcstDots::AddFeature(OGRGeometry* geometry, void* data) {
 }
 
 void vrLayerVectorFcstDots::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry,
-                                       const wxRect2DDouble& coord, const vrRender* render, vrLabel* label,
+                                       const wxRect2DDouble& coord, vrRenderVector* render, vrLabel* label,
                                        double pxsize) {
     // Set the defaut pen
     wxASSERT(render->GetType() == vrRENDER_VECTOR);
-    vrRenderVector* renderVector = (vrRenderVector*)render;
-    wxPen defaultPen(renderVector->GetColorPen(), renderVector->GetSize());
+    wxPen defaultPen(render->GetColorPen(), render->GetSize());
     wxPen selPen(*wxGREEN, 3);
 
     // Get graphics context
@@ -88,10 +87,10 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
 
         // Set font
         wxFont defFont(7, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-        gc->SetFont(defFont, renderVector->GetColorPen());
+        gc->SetFont(defFont, render->GetColorPen());
 
         // Get geometries
-        OGRPoint* geom = (OGRPoint*)geometry;
+        OGRPoint* geom = dynamic_cast<OGRPoint*>(geometry);
 
         wxPoint point = _GetPointFromReal(wxPoint2DDouble(geom->getX(), geom->getY()), coord.GetLeftTop(), pxsize);
 

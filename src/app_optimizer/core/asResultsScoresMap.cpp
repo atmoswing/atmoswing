@@ -177,7 +177,7 @@ bool asResultsScoresMap::Save(asParametersCalibration& params) {
 
     // Set the scores in a vector
     vf scores(nLevel * nLat * nLon);
-    int ind = 0;
+    int ind;
 
     for (int iLevel = 0; iLevel < nLevel; iLevel++) {
         for (int iLat = 0; iLat < nLat; iLat++) {
