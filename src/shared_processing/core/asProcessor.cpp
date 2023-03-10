@@ -615,7 +615,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor*> predictorsArchive,
         }
 
         default:
-            asThrowException(_("The processing method is not correctly defined."));
+            asThrow(_("The processing method is not correctly defined."));
     }
 
     // Copy results to the resulting object
@@ -1280,7 +1280,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
         }
 
         default:
-            asThrowException(_("The processing method is not correctly defined."));
+            asThrow(_("The processing method is not correctly defined."));
     }
 
 #if USE_GUI

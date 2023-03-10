@@ -72,7 +72,7 @@ void asResultsScoresMap::BuildFileName() {
 
 bool asResultsScoresMap::Add(asParametersScoring& params, float score) {
     if (!params.GetPredictorGridType(0, 0).IsSameAs("Regular", false))
-        asThrowException(_("asResultsScoresMap::Add is not ready to use on unregular grids"));
+        asThrow(_("asResultsScoresMap::Add is not ready to use on unregular grids"));
 
     m_scores.push_back(score);
     m_lon.push_back(

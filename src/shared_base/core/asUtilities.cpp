@@ -28,7 +28,7 @@
 
 #include "asUtilities.h"
 
-void asThrowException(const wxString& msg) {
+void asThrow(const wxString& msg) {
     throw std::runtime_error(msg.ToStdString());
 }
 

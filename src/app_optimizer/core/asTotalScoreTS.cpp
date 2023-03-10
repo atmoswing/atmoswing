@@ -58,7 +58,7 @@ float asTotalScoreTS::Assess(const a1f& targetDates, const a1f& scores, const as
         }
 
         default: {
-            asThrowException(_("Period not yet implemented in asTotalScoreTS."));
+            asThrow(_("Period not yet implemented in asTotalScoreTS."));
         }
     }
 

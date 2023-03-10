@@ -45,7 +45,7 @@ asFileGrib::asFileGrib(const wxString& fileName, const FileMode& fileMode)
         case (New):
         case (Append):
         default:
-            asThrowException(_("Grib files edition is not implemented."));
+            asThrow(_("Grib files edition is not implemented."));
     }
 }
 
@@ -201,7 +201,7 @@ void asFileGrib::ExtractTime(codes_handle* h) {
     } else if (timeUnit == 2) {
         // Days -> nothing to do
     } else {
-        asThrowException(_("Error reading grib file: unlisted time unit."));
+        asThrow(_("Error reading grib file: unlisted time unit."));
     }
 
     if (refTime > 100) {
@@ -232,7 +232,7 @@ void asFileGrib::ExtractLevel(codes_handle* h) {
         wxASSERT(codes_is_defined(h, "indicatorOfTypeOfLevel"));
         CODES_CHECK(codes_get_long(h, "indicatorOfTypeOfLevel", &typeCode), 0);
     } else {
-        asThrowException(_("Error reading grib file: type of level not found."));
+        asThrow(_("Error reading grib file: type of level not found."));
     }
     m_levelTypes.push_back((int)typeCode);
 

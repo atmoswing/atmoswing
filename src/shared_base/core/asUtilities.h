@@ -39,7 +39,7 @@ wxString asStrF(const wxString& format, Args... args) {
     return wxString::Format(format, args...);
 }
 
-void asThrowException(const wxString& msg);
+void asThrow(const wxString& msg);
 
 bool asRemoveDir(const wxString& path);
 

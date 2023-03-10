@@ -64,7 +64,7 @@ asAreaGrid* asAreaGrid::GetInstance(const wxString& type, double xMin, int xPtsN
         return new asAreaGenGrid(xMin, xPtsNb, yMin, yPtsNb, asFLAT_ALLOWED, isLatLon);
     } else {
         wxLogError(_("Given grid type: %s"), type);
-        asThrowException(_("The given grid type doesn't correspond to any existing option."));
+        asThrow(_("The given grid type doesn't correspond to any existing option."));
     }
 }
 
@@ -134,7 +134,7 @@ void asAreaGrid::CorrectCornersWithAxes() {
             cornerUR.x += 360;
             SetCornerUR(cornerUR, true);
         } else {
-            asThrowException(_("Inconsistent x coordinates on a non lat / lon axis."));
+            asThrow(_("Inconsistent x coordinates on a non lat / lon axis."));
         }
     }
 
