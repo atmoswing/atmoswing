@@ -28,6 +28,10 @@
 
 #include "asUtilities.h"
 
+void asThrowException(const wxString& msg) {
+    throw std::runtime_error(msg.ToStdString());
+}
+
 bool asRemoveDir(const wxString& path) {
     wxString f = wxFindFirstFile(path + DS + "*.*");
     while (!f.empty()) {
