@@ -2177,7 +2177,7 @@ bool asMethodOptimizerGAs::Mutation() {
             ThreadsManager().CritSectionConfig().Enter();
             pConfig->Read("/GAs/MutationsNonUniformProbability", &mutationsProbability, 0.2);
             pConfig->Read("/GAs/MutationsNonUniformMaxGensNbVar", &nbGenMax, 50);
-            pConfig->Read("/GAs/MutationsNonUniformMinRate", &minRate, 0.20);
+            pConfig->Read("/GAs/MutationsNonUniformMinRate", &minRate, 0.10);
             ThreadsManager().CritSectionConfig().Leave();
 
             for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
@@ -2258,7 +2258,7 @@ bool asMethodOptimizerGAs::Mutation() {
         case (MultiScale): {
             double mutationsProbability;
             ThreadsManager().CritSectionConfig().Enter();
-            pConfig->Read("/GAs/MutationsMultiScaleProbability", &mutationsProbability, 0.2);
+            pConfig->Read("/GAs/MutationsMultiScaleProbability", &mutationsProbability, 0.1);
             ThreadsManager().CritSectionConfig().Leave();
 
             for (int iInd = 0; iInd < m_parameters.size(); iInd++) {

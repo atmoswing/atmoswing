@@ -221,8 +221,8 @@ void asFrameOptimizer::LoadOptions() {
     m_choiceGAsCrossoverOperator->SetSelection(pConfig->ReadLong("/GAs/CrossoverOperator", 1l));
     m_choiceGAsMutationOperator->SetSelection(pConfig->ReadLong("/GAs/MutationOperator", 0l));
     m_textCtrlGAsRunNumbers->SetValue(pConfig->Read("/GAs/NbRuns", "20"));
-    m_textCtrlGAsPopulationSize->SetValue(pConfig->Read("/GAs/PopulationSize", "50"));
-    m_textCtrlGAsConvergenceNb->SetValue(pConfig->Read("/GAs/ConvergenceStepsNb", "20"));
+    m_textCtrlGAsPopulationSize->SetValue(pConfig->Read("/GAs/PopulationSize", "500"));
+    m_textCtrlGAsConvergenceNb->SetValue(pConfig->Read("/GAs/ConvergenceStepsNb", "30"));
     m_textCtrlGAsRatioIntermGen->SetValue(pConfig->Read("/GAs/RatioIntermediateGeneration", "0.5"));
     m_checkBoxGAsAllowElitism->SetValue(pConfig->ReadBool("/GAs/AllowElitismForTheBest", true));
     m_textCtrlGAsNaturalSlctTournamentProb->SetValue(
@@ -259,8 +259,8 @@ void asFrameOptimizer::LoadOptions() {
     m_textCtrlGAsMutationsNormalVarStdDevEnd->SetValue(pConfig->Read("/GAs/MutationsNormalVariableStdDevEnd", "0.01"));
     m_textCtrlGAsMutationsNonUniformProb->SetValue(pConfig->Read("/GAs/MutationsNonUniformProbability", "0.2"));
     m_textCtrlGAsMutationsNonUniformGensNb->SetValue(pConfig->Read("/GAs/MutationsNonUniformMaxGensNbVar", "50"));
-    m_textCtrlGAsMutationsNonUniformMinRate->SetValue(pConfig->Read("/GAs/MutationsNonUniformMinRate", "0.20"));
-    m_textCtrlGAsMutationsMultiScaleProb->SetValue(pConfig->Read("/GAs/MutationsMultiScaleProbability", "0.20"));
+    m_textCtrlGAsMutationsNonUniformMinRate->SetValue(pConfig->Read("/GAs/MutationsNonUniformMinRate", "0.10"));
+    m_textCtrlGAsMutationsMultiScaleProb->SetValue(pConfig->Read("/GAs/MutationsMultiScaleProbability", "0.10"));
 }
 
 void asFrameOptimizer::OnSaveDefault(wxCommandEvent& event) {
