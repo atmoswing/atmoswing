@@ -45,7 +45,6 @@ class vrRender;
 
 class vrLabel;
 
-// For dealing with GIS data stored into Fcst projects.
 class vrLayerVectorFcstRing : public vrLayerVectorOGR {
   public:
     vrLayerVectorFcstRing();

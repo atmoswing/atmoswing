@@ -43,6 +43,25 @@ asFramePredictors::asFramePredictors(wxWindow* parent, int selectedForecast, asF
                                      wxWindowID id)
     : asFramePredictorsVirtual(parent, id) {
     m_forecastManager = forecastManager;
+asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* forecastManager, asWorkspace* workspace,
+                                     int selectedForecast, wxWindowID id)
+    : asFramePredictorsVirtual(parent, id),
+      m_forecastManager(forecastManager),
+      m_workspace(workspace)
+{
+    // Toolbar
+    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), *_img_map_zoom_in, *_img_map_zoom_in, wxITEM_NORMAL, _("Zoom in"),
+                       _("Zoom in"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), *_img_map_zoom_out, *_img_map_zoom_out, wxITEM_NORMAL, _("Zoom out"),
+                       _("Zoom out"), nullptr);
+    m_toolBar->AddTool(asID_PAN, wxT("Pan"), *_img_map_move, *_img_map_move, wxITEM_NORMAL, _("Pan the map"),
+                       _("Move the map by panning"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), *_img_map_fit, *_img_map_fit, wxITEM_NORMAL, _("Zoom to visible layers"),
+                       _("Zoom view to the full extent of all visible layers"), nullptr);
+    m_toolBar->AddSeparator();
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
+                       _("Preferences"), _("Preferences"), nullptr);
+    m_toolBar->Realize();
 
     // Icon
 #ifdef __WXMSW__
@@ -52,4 +71,43 @@ asFramePredictors::asFramePredictors(wxWindow* parent, int selectedForecast, asF
 
 asFramePredictors::~asFramePredictors() {
     wxDELETE(m_layerManager);
+}
+
+void asFramePredictors::OnKeyDown(wxKeyEvent& event) {
+    m_KeyBoardState = wxKeyboardState(event.ControlDown(), event.ShiftDown(), event.AltDown(), event.MetaDown());
+    if (m_KeyBoardState.GetModifiers() != wxMOD_CMD) {
+        event.Skip();
+        return;
+    }
+
+    const vrDisplayTool* tool = m_displayCtrlLeft->GetTool();
+    if (!tool) {
+        event.Skip();
+        return;
+    }
+
+    if (tool->GetID() == wxID_ZOOM_IN) {
+        m_displayCtrlLeft->SetToolZoomOut();
+        m_displayCtrlRight->SetToolZoomOut();
+    }
+    event.Skip();
+}
+
+void asFramePredictors::OnKeyUp(wxKeyEvent& event) {
+    if (m_KeyBoardState.GetModifiers() != wxMOD_CMD) {
+        event.Skip();
+        return;
+    }
+
+    const vrDisplayTool* tool = m_displayCtrlLeft->GetTool();
+    if (!tool) {
+        event.Skip();
+        return;
+    }
+
+    if (tool->GetID() == wxID_ZOOM_OUT || tool->GetID() == wxID_ZOOM_IN) {
+        m_displayCtrlLeft->SetToolZoom();
+        m_displayCtrlRight->SetToolZoom();
+    }
+    event.Skip();
 }

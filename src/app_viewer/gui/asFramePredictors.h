@@ -35,18 +35,23 @@
 
 class asFramePredictors : public asFramePredictorsVirtual {
   public:
-    asFramePredictors(wxWindow* parent, int selectedForecast, asForecastManager* forecastManager,
-                      wxWindowID id = asWINDOW_PREDICTORS);
+    asFramePredictors(wxWindow* parent, asForecastManager* forecastManager, asWorkspace* workspace,
+                      int selectedForecast, wxWindowID id = asWINDOW_PREDICTORS);
 
     ~asFramePredictors();
 
   protected:
     wxKeyboardState m_KeyBoardState;
 
+    void OnKeyDown(wxKeyEvent& event);
+
+    void OnKeyUp(wxKeyEvent& event);
+
   private:
     asForecastManager* m_forecastManager;
     asPredictorsRenderer* m_predictorsViewer;
     asPredictorsManager* m_predictorsManager;
+    asWorkspace* m_workspace;
 
     DECLARE_EVENT_TABLE()
 };
