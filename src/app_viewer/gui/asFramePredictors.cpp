@@ -34,6 +34,8 @@
 #include "asThreadViewerLayerManagerZoomOut.h"
 #include "asThreadsManager.h"
 #endif
+#include "asResults.h"
+#include "img_toolbar.h"
 
 BEGIN_EVENT_TABLE(asFramePredictors, wxFrame)
 
@@ -63,6 +65,33 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
                        _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
+    // VroomGIS controls
+    m_displayCtrlLeft = new vrViewerDisplay(m_panelGISLeft, wxID_ANY, wxColour(255, 255, 255));
+    m_displayCtrlRight = new vrViewerDisplay(m_panelGISRight, wxID_ANY, wxColour(255, 255, 255));
+    m_sizerGISLeft->Add(m_displayCtrlLeft, 1, wxEXPAND | wxALL, 0);
+    m_sizerGISRight->Add(m_displayCtrlRight, 1, wxEXPAND | wxALL, 0);
+    m_panelGIS->Layout();
+    m_layerManager = new vrLayerManager();
+    m_viewerLayerManagerLeft = new vrViewerLayerManager(m_layerManager, this, m_displayCtrlLeft, m_tocCtrlLeft);
+    m_viewerLayerManagerRight = new vrViewerLayerManager(m_layerManager, this, m_displayCtrlRight, m_tocCtrlRight);
+
+    // Viewer
+    m_predictorsManager = new asPredictorsManager();
+    m_predictorsViewer = new asPredictorsRenderer(this, m_layerManager, m_predictorsManager, m_viewerLayerManagerLeft,
+                                                  m_viewerLayerManagerRight, m_checkListPredictors);
+
+    // Menus
+    m_menuTools->AppendCheckItem(asID_SET_SYNCRO_MODE, "Syncronize tools",
+                                 "When set to true, browsing is syncronized on all display");
+    m_menuTools->Check(asID_SET_SYNCRO_MODE, m_syncroTool);
+
+    // Connect Events
+    m_displayCtrlLeft->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFramePredictors::OnRightClick), nullptr, this);
+    m_displayCtrlLeft->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFramePredictors::OnKeyDown), nullptr, this);
+    m_displayCtrlLeft->Connect(wxEVT_KEY_UP, wxKeyEventHandler(asFramePredictors::OnKeyUp), nullptr, this);
+    this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
+                  wxCommandEventHandler(asFramePredictors::OpenFramePreferences));
+
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));
@@ -70,9 +99,34 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
 }
 
 asFramePredictors::~asFramePredictors() {
+    // Disconnect Events
+    m_displayCtrlLeft->Disconnect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFramePredictors::OnRightClick), nullptr, this);
+    m_displayCtrlLeft->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFramePredictors::OnKeyDown), nullptr, this);
+    m_displayCtrlLeft->Disconnect(wxEVT_KEY_UP, wxKeyEventHandler(asFramePredictors::OnKeyUp), nullptr, this);
+    this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
+                     wxCommandEventHandler(asFramePredictors::OpenFramePreferences));
+
     wxDELETE(m_layerManager);
 }
 
+void asFramePredictors::Init() {
+    if (m_forecastManager->GetMethodsNb() > 0) {
+        // Forecast list
+        wxArrayString arrayForecasts = m_forecastManager->GetAllForecastNamesWxArray();
+        m_choiceForecast->Set(arrayForecasts);
+        m_choiceForecast->Select(m_selectedForecast);
+
+        m_selectedTargetDate = 0;
+        m_selectedAnalogDate = 0;
+    InitExtent();
+}
+
+void asFramePredictors::InitExtent() {
+    // Desired extent
+    vrRealRect desiredExtent;
+    m_viewerLayerManagerLeft->InitializeExtent(desiredExtent);
+    m_viewerLayerManagerRight->InitializeExtent(desiredExtent);
+}
 void asFramePredictors::OnKeyDown(wxKeyEvent& event) {
     m_KeyBoardState = wxKeyboardState(event.ControlDown(), event.ShiftDown(), event.AltDown(), event.MetaDown());
     if (m_KeyBoardState.GetModifiers() != wxMOD_CMD) {
