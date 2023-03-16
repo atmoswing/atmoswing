@@ -26,14 +26,14 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AS_FRAME_FORECAST_H
-#define AS_FRAME_FORECAST_H
+#ifndef AS_FRAME_VIEWER_H
+#define AS_FRAME_VIEWER_H
 
 #include <wx/process.h>
 
 #include "AtmoswingViewerGui.h"
 #include "asForecastManager.h"
-#include "asForecastViewer.h"
+#include "asForecastRenderer.h"
 #include "asIncludes.h"
 #include "asLeadTimeSwitcher.h"
 #include "asLogWindow.h"
@@ -53,36 +53,36 @@ const int as_POPUP_OFFSET = 50;
 const int asID_MENU_POPUP_LAYER = wxID_HIGHEST + 2 + as_POPUP_OFFSET;
 
 /** Implementing vroomDropFiles */
-class asFrameForecast;
+class asFrameViewer;
 
 class vroomDropFiles : public wxFileDropTarget {
   private:
-    asFrameForecast* m_loaderFrame;
+    asFrameViewer* m_loaderFrame;
 
   public:
-    explicit vroomDropFiles(asFrameForecast* parent);
+    explicit vroomDropFiles(asFrameViewer* parent);
 
     bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames) override;
 };
 
 /** Implementing forecastDropFiles */
-class asFrameForecast;
+class asFrameViewer;
 
 class forecastDropFiles : public wxFileDropTarget {
   private:
-    asFrameForecast* m_loaderFrame;
+    asFrameViewer* m_loaderFrame;
 
   public:
-    explicit forecastDropFiles(asFrameForecast* parent);
+    explicit forecastDropFiles(asFrameViewer* parent);
 
     bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames) override;
 };
 
-class asFrameForecast : public asFrameForecastVirtual {
+class asFrameViewer : public asFrameViewerVirtual {
   public:
-    explicit asFrameForecast(wxWindow* parent, wxWindowID id = asWINDOW_MAIN);
+    explicit asFrameViewer(wxWindow* parent, wxWindowID id = asWINDOW_MAIN);
 
-    ~asFrameForecast() override;
+    ~asFrameViewer() override;
 
     void Init();
 
@@ -102,7 +102,7 @@ class asFrameForecast : public asFrameForecastVirtual {
     vrViewerDisplay* m_displayCtrl;
     wxKeyboardState m_keyBoardState;
     asForecastManager* m_forecastManager;
-    asForecastViewer* m_forecastViewer;
+    asForecastRenderer* m_forecastViewer;
     asPanelSidebarGisLayers* m_panelSidebarGisLayers;
     asPanelSidebarForecasts* m_panelSidebarForecasts;
     asPanelSidebarStationsList* m_panelSidebarStationsList;

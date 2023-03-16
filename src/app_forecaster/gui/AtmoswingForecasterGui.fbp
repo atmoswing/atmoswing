@@ -45,7 +45,7 @@
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
             <property name="minimum_size">600,700</property>
-            <property name="name">asFrameMainVirtual</property>
+            <property name="name">asFrameForecasterVirtual</property>
             <property name="pos"></property>
             <property name="size">600,700</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>

@@ -26,22 +26,22 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AS_FORECAST_VIEWER_H
-#define AS_FORECAST_VIEWER_H
+#ifndef AS_FORECAST_RENDERER_H
+#define AS_FORECAST_RENDERER_H
 
 #include "asIncludes.h"
 #include "vroomgis.h"
 
 class asForecastManager;
 
-class asFrameForecast;
+class asFrameViewer;
 
-class asForecastViewer {
+class asForecastRenderer {
   public:
-    asForecastViewer(asFrameForecast* parent, asForecastManager* forecastManager, vrLayerManager* layerManager,
-                     vrViewerLayerManager* viewerLayerManager);
+    asForecastRenderer(asFrameViewer* parent, asForecastManager* forecastManager, vrLayerManager* layerManager,
+                       vrViewerLayerManager* viewerLayerManager);
 
-    virtual ~asForecastViewer();
+    virtual ~asForecastRenderer();
 
     void FixForecastSelection();
 
@@ -105,7 +105,7 @@ class asForecastViewer {
     float m_leadTimeDate;
     float m_layerMaxValue;
     bool m_opened;
-    asFrameForecast* m_parent;
+    asFrameViewer* m_parent;
     asForecastManager* m_forecastManager;
     vrLayerManager* m_layerManager;
     vrViewerLayerManager* m_viewerLayerManager;

@@ -26,32 +26,31 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asFrameMain.h"
-
 #include "asFrameAbout.h"
+#include "asFrameForecaster.h"
 #include "asFramePredictandDB.h"
 #include "asFramePreferencesForecaster.h"
 #include "asPanelForecast.h"
 #include "asWizardBatchForecasts.h"
 
-BEGIN_EVENT_TABLE(asFrameMain, wxFrame)
-EVT_COMMAND(wxID_ANY, asEVT_STATUS_STARTING, asFrameMain::OnStatusMethodUpdate)
-EVT_COMMAND(wxID_ANY, asEVT_STATUS_RUNNING, asFrameMain::OnStatusMethodUpdate)
-EVT_COMMAND(wxID_ANY, asEVT_STATUS_FAILED, asFrameMain::OnStatusMethodUpdate)
-EVT_COMMAND(wxID_ANY, asEVT_STATUS_SUCCESS, asFrameMain::OnStatusMethodUpdate)
-EVT_COMMAND(wxID_ANY, asEVT_STATUS_DOWNLOADING, asFrameMain::OnStatusMethodUpdate)
-EVT_COMMAND(wxID_ANY, asEVT_STATUS_DOWNLOADED, asFrameMain::OnStatusMethodUpdate)
-EVT_COMMAND(wxID_ANY, asEVT_STATUS_LOADING, asFrameMain::OnStatusMethodUpdate)
-EVT_COMMAND(wxID_ANY, asEVT_STATUS_LOADED, asFrameMain::OnStatusMethodUpdate)
-EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVING, asFrameMain::OnStatusMethodUpdate)
-EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVED, asFrameMain::OnStatusMethodUpdate)
-EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSING, asFrameMain::OnStatusMethodUpdate)
-EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSED, asFrameMain::OnStatusMethodUpdate)
-EVT_COMMAND(wxID_ANY, asEVT_ACTION_OPEN_BATCHFORECASTS, asFrameMain::OnOpenBatchForecasts)
+BEGIN_EVENT_TABLE(asFrameForecaster, wxFrame)
+EVT_COMMAND(wxID_ANY, asEVT_STATUS_STARTING, asFrameForecaster::OnStatusMethodUpdate)
+EVT_COMMAND(wxID_ANY, asEVT_STATUS_RUNNING, asFrameForecaster::OnStatusMethodUpdate)
+EVT_COMMAND(wxID_ANY, asEVT_STATUS_FAILED, asFrameForecaster::OnStatusMethodUpdate)
+EVT_COMMAND(wxID_ANY, asEVT_STATUS_SUCCESS, asFrameForecaster::OnStatusMethodUpdate)
+EVT_COMMAND(wxID_ANY, asEVT_STATUS_DOWNLOADING, asFrameForecaster::OnStatusMethodUpdate)
+EVT_COMMAND(wxID_ANY, asEVT_STATUS_DOWNLOADED, asFrameForecaster::OnStatusMethodUpdate)
+EVT_COMMAND(wxID_ANY, asEVT_STATUS_LOADING, asFrameForecaster::OnStatusMethodUpdate)
+EVT_COMMAND(wxID_ANY, asEVT_STATUS_LOADED, asFrameForecaster::OnStatusMethodUpdate)
+EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVING, asFrameForecaster::OnStatusMethodUpdate)
+EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVED, asFrameForecaster::OnStatusMethodUpdate)
+EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSING, asFrameForecaster::OnStatusMethodUpdate)
+EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSED, asFrameForecaster::OnStatusMethodUpdate)
+EVT_COMMAND(wxID_ANY, asEVT_ACTION_OPEN_BATCHFORECASTS, asFrameForecaster::OnOpenBatchForecasts)
 END_EVENT_TABLE()
 
-asFrameMain::asFrameMain(wxWindow* parent)
-    : asFrameMainVirtual(parent) {
+asFrameForecaster::asFrameForecaster(wxWindow* parent)
+    : asFrameForecasterVirtual(parent) {
     m_forecaster = nullptr;
     m_logWindow = nullptr;
 
@@ -112,12 +111,12 @@ asFrameMain::asFrameMain(wxWindow* parent)
     m_panelsManager = new asPanelsManagerForecasts();
 
     // Connect events
-    this->Connect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameMain::LaunchForecasting));
-    this->Connect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameMain::CancelForecasting));
+    this->Connect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::LaunchForecasting));
+    this->Connect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::CancelForecasting));
     this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameMain::OpenFramePredictandDB));
+                  wxCommandEventHandler(asFrameForecaster::OpenFramePredictandDB));
     this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameMain::OpenFramePreferences));
+                  wxCommandEventHandler(asFrameForecaster::OpenFramePreferences));
 
     // Icon
 #ifdef __WXMSW__
@@ -125,19 +124,19 @@ asFrameMain::asFrameMain(wxWindow* parent)
 #endif
 }
 
-asFrameMain::~asFrameMain() {
+asFrameForecaster::~asFrameForecaster() {
     wxDELETE(m_panelsManager);
 
     // Disconnect events
-    this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameMain::LaunchForecasting));
-    this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameMain::CancelForecasting));
+    this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::LaunchForecasting));
+    this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::CancelForecasting));
     this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameMain::OpenFramePredictandDB));
+                     wxCommandEventHandler(asFrameForecaster::OpenFramePredictandDB));
     this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameMain::OpenFramePreferences));
+                     wxCommandEventHandler(asFrameForecaster::OpenFramePreferences));
 }
 
-void asFrameMain::OnInit() {
+void asFrameForecaster::OnInit() {
     wxBusyCursor wait;
 
     DisplayLogLevelMenu();
@@ -173,7 +172,7 @@ void asFrameMain::OnInit() {
     }
 }
 
-void asFrameMain::OnOpenBatchForecasts(wxCommandEvent& event) {
+void asFrameForecaster::OnOpenBatchForecasts(wxCommandEvent& event) {
     // Ask for a batch file
     wxFileDialog openFileDialog(this, _("Select a batch file"), wxEmptyString, wxEmptyString,
                                 "AtmoSwing forecaster batch (*.xml)|*.xml",
@@ -200,11 +199,11 @@ void asFrameMain::OnOpenBatchForecasts(wxCommandEvent& event) {
     }
 }
 
-void asFrameMain::OnSaveBatchForecasts(wxCommandEvent& event) {
+void asFrameForecaster::OnSaveBatchForecasts(wxCommandEvent& event) {
     SaveBatchForecasts();
 }
 
-void asFrameMain::OnSaveBatchForecastsAs(wxCommandEvent& event) {
+void asFrameForecaster::OnSaveBatchForecastsAs(wxCommandEvent& event) {
     // Ask for a batch file
     wxFileDialog openFileDialog(this, _("Select a path to save the batch file"), wxEmptyString, wxEmptyString,
                                 "AtmoSwing forecaster batch (*.xml)|*.xml", wxFD_SAVE | wxFD_CHANGE_DIR);
@@ -224,7 +223,7 @@ void asFrameMain::OnSaveBatchForecastsAs(wxCommandEvent& event) {
     }
 }
 
-bool asFrameMain::SaveBatchForecasts() {
+bool asFrameForecaster::SaveBatchForecasts() {
     wxBusyCursor wait;
 
     UpdateBatchForecasts();
@@ -239,7 +238,7 @@ bool asFrameMain::SaveBatchForecasts() {
     return true;
 }
 
-bool asFrameMain::UpdateBatchForecasts() {
+bool asFrameForecaster::UpdateBatchForecasts() {
     m_batchForecasts.ClearForecasts();
 
     for (int i = 0; i < m_panelsManager->GetPanelsNb(); i++) {
@@ -253,12 +252,12 @@ bool asFrameMain::UpdateBatchForecasts() {
     return true;
 }
 
-void asFrameMain::OnNewBatchForecasts(wxCommandEvent& event) {
+void asFrameForecaster::OnNewBatchForecasts(wxCommandEvent& event) {
     asWizardBatchForecasts wizard(this, &m_batchForecasts);
     wizard.RunWizard(wizard.GetSecondPage());
 }
 
-bool asFrameMain::OpenBatchForecasts() {
+bool asFrameForecaster::OpenBatchForecasts() {
     wxBusyCursor wait;
 
     Freeze();
@@ -284,11 +283,11 @@ bool asFrameMain::OpenBatchForecasts() {
     return true;
 }
 
-void asFrameMain::Update() {
+void asFrameForecaster::Update() {
     DisplayLogLevelMenu();
 }
 
-void asFrameMain::OpenFramePredictandDB(wxCommandEvent& event) {
+void asFrameForecaster::OpenFramePredictandDB(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     auto* frame = new asFramePredictandDB(this);
@@ -296,7 +295,7 @@ void asFrameMain::OpenFramePredictandDB(wxCommandEvent& event) {
     frame->Show();
 }
 
-void asFrameMain::OnConfigureDirectories(wxCommandEvent& event) {
+void asFrameForecaster::OnConfigureDirectories(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     auto* frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
@@ -304,7 +303,7 @@ void asFrameMain::OnConfigureDirectories(wxCommandEvent& event) {
     frame->Show();
 }
 
-void asFrameMain::OpenFramePreferences(wxCommandEvent& event) {
+void asFrameForecaster::OpenFramePreferences(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     auto* frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
@@ -312,7 +311,7 @@ void asFrameMain::OpenFramePreferences(wxCommandEvent& event) {
     frame->Show();
 }
 
-void asFrameMain::OpenFrameAbout(wxCommandEvent& event) {
+void asFrameForecaster::OpenFrameAbout(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     auto* frame = new asFrameAbout(this);
@@ -320,14 +319,14 @@ void asFrameMain::OpenFrameAbout(wxCommandEvent& event) {
     frame->Show();
 }
 
-void asFrameMain::OnShowLog(wxCommandEvent& event) {
+void asFrameForecaster::OnShowLog(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     wxASSERT(m_logWindow);
     m_logWindow->DoShow(true);
 }
 
-void asFrameMain::OnLogLevel1(wxCommandEvent& event) {
+void asFrameForecaster::OnLogLevel1(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     Log()->SetLevel(1);
@@ -339,7 +338,7 @@ void asFrameMain::OnLogLevel1(wxCommandEvent& event) {
     if (prefFrame) prefFrame->Update();
 }
 
-void asFrameMain::OnLogLevel2(wxCommandEvent& event) {
+void asFrameForecaster::OnLogLevel2(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     Log()->SetLevel(2);
@@ -351,7 +350,7 @@ void asFrameMain::OnLogLevel2(wxCommandEvent& event) {
     if (prefFrame) prefFrame->Update();
 }
 
-void asFrameMain::OnLogLevel3(wxCommandEvent& event) {
+void asFrameForecaster::OnLogLevel3(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     Log()->SetLevel(3);
@@ -363,7 +362,7 @@ void asFrameMain::OnLogLevel3(wxCommandEvent& event) {
     if (prefFrame) prefFrame->Update();
 }
 
-void asFrameMain::OnStatusMethodUpdate(wxCommandEvent& event) {
+void asFrameForecaster::OnStatusMethodUpdate(wxCommandEvent& event) {
     int eventInt = event.GetInt();
     wxEventType eventType = event.GetEventType();
 
@@ -418,7 +417,7 @@ void asFrameMain::OnStatusMethodUpdate(wxCommandEvent& event) {
     }
 }
 
-void asFrameMain::DisplayLogLevelMenu() {
+void asFrameForecaster::DisplayLogLevelMenu() {
     // Set log level in the menu
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -442,7 +441,7 @@ void asFrameMain::DisplayLogLevelMenu() {
     }
 }
 
-void asFrameMain::LaunchForecasting(wxCommandEvent& event) {
+void asFrameForecaster::LaunchForecasting(wxCommandEvent& event) {
     wxBusyCursor wait;
 
     UpdateBatchForecasts();
@@ -479,13 +478,13 @@ void asFrameMain::LaunchForecasting(wxCommandEvent& event) {
     wxDELETE(m_forecaster);
 }
 
-void asFrameMain::CancelForecasting(wxCommandEvent& event) {
+void asFrameForecaster::CancelForecasting(wxCommandEvent& event) {
     if (m_forecaster) {
         m_forecaster->Cancel();
     }
 }
 
-void asFrameMain::AddForecast(wxCommandEvent& event) {
+void asFrameForecaster::AddForecast(wxCommandEvent& event) {
     Freeze();
     auto* panel = new asPanelForecast(m_scrolledWindowForecasts);
     panel->Layout();
@@ -497,11 +496,11 @@ void asFrameMain::AddForecast(wxCommandEvent& event) {
     m_panelsManager->AddPanel(panel);
 }
 
-void asFrameMain::OnSetPresentDate(wxCommandEvent& event) {
+void asFrameForecaster::OnSetPresentDate(wxCommandEvent& event) {
     SetPresentDate();
 }
 
-void asFrameMain::SetPresentDate() {
+void asFrameForecaster::SetPresentDate() {
     // Set the present date in the calendar and the hour field
     wxDateTime nowWx = asTime::NowWxDateTime(asUTM);
     Time nowStruct = asTime::NowTimeStruct(asUTM);
@@ -510,7 +509,7 @@ void asFrameMain::SetPresentDate() {
     m_textCtrlForecastHour->SetValue(hourStr);
 }
 
-double asFrameMain::GetForecastDate() const {
+double asFrameForecaster::GetForecastDate() const {
     // Date
     wxDateTime forecastDateWx = m_calendarForecastDate->GetDate();
     double forecastDate = asTime::GetMJD(forecastDateWx);
@@ -526,7 +525,7 @@ double asFrameMain::GetForecastDate() const {
     return total;
 }
 
-void asFrameMain::SetForecastDate(double date) {
+void asFrameForecaster::SetForecastDate(double date) {
     // Calendar
     wxDateTime forecastDateWx = asTime::GetWxDateTime(date);
     m_calendarForecastDate->SetDate(forecastDateWx);
@@ -536,7 +535,7 @@ void asFrameMain::SetForecastDate(double date) {
     m_textCtrlForecastHour->SetValue(hourStr);
 }
 
-void asFrameMain::InitOverallProgress() {
+void asFrameForecaster::InitOverallProgress() {
     m_gauge->SetRange(m_batchForecasts.GetForecastsNb());
     m_gauge->SetValue(0);
 
@@ -546,7 +545,7 @@ void asFrameMain::InitOverallProgress() {
     m_staticTextProgressTot->SetLabel(totForecastsNb);
 }
 
-void asFrameMain::IncrementOverallProgress() {
+void asFrameForecaster::IncrementOverallProgress() {
     int gaugeValue = m_gauge->GetValue() + 1;
     m_gauge->SetValue(gaugeValue);
 

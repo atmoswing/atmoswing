@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AS_FRAME_MAIN
-#define AS_FRAME_MAIN
+#ifndef AS_FRAME_FORECASTER
+#define AS_FRAME_FORECASTER
 
 #include <wx/awx/led.h>
 
@@ -38,11 +38,11 @@
 #include "asMethodForecasting.h"
 #include "asPanelsManagerForecasts.h"
 
-class asFrameMain : public asFrameMainVirtual {
+class asFrameForecaster : public asFrameForecasterVirtual {
   public:
-    explicit asFrameMain(wxWindow* parent);
+    explicit asFrameForecaster(wxWindow* parent);
 
-    ~asFrameMain() override;
+    ~asFrameForecaster() override;
 
     void OnInit();
 

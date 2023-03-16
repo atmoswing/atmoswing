@@ -19,7 +19,7 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+asFrameViewerVirtual::asFrameViewerVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 1000,600 ), wxDefaultSize );
 
@@ -31,7 +31,7 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	bSizer11 = new wxBoxSizer( wxVERTICAL );
 
 	m_splitterGIS = new wxSplitterWindow( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER );
-	m_splitterGIS->Connect( wxEVT_IDLE, wxIdleEventHandler( asFrameForecastVirtual::m_splitterGISOnIdle ), NULL, this );
+	m_splitterGIS->Connect( wxEVT_IDLE, wxIdleEventHandler( asFrameViewerVirtual::m_splitterGISOnIdle ), NULL, this );
 	m_splitterGIS->SetMinimumPaneSize( 270 );
 
 	m_scrolledWindowOptions = new wxScrolledWindow( m_splitterGIS, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
@@ -249,35 +249,35 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	this->Centre( wxBOTH );
 
 	// Connect Events
-	m_button51->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadPreviousDay ), NULL, this );
-	m_button5->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadPreviousForecast ), NULL, this );
-	m_button6->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadNextForecast ), NULL, this );
-	m_button61->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadNextDay ), NULL, this );
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenWorkspace ), this, m_menuItemOpenWorkspace->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnSaveWorkspace ), this, m_menuItemSaveWorkspace->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnSaveWorkspaceAs ), this, m_menuItemSaveWorkspaceAs->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnNewWorkspace ), this, m_menuItemNewWorkspace->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenForecast ), this, m_menuItemOpenForecast->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenLayer ), this, m_menuItemOpenGISLayer->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnCloseLayer ), this, m_menuItemCloseGISLayer->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnMoveLayer ), this, m_menuItemMoveGISLayer->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnQuit ), this, m_menuItemQuit->GetId());
-	m_menuOptions->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OpenFramePreferences ), this, m_menuItemPreferences->GetId());
-	m_menuTools->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OpenFramePredictandDB ), this, m_menuItemBuildPredictandDB->GetId());
-	m_menuLog->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnShowLog ), this, m_menuItemShowLog->GetId());
-	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnLogLevel1 ), this, m_menuItemLogLevel1->GetId());
-	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnLogLevel2 ), this, m_menuItemLogLevel2->GetId());
-	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnLogLevel3 ), this, m_menuItemLogLevel3->GetId());
-	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OpenFrameAbout ), this, m_menuItemAbout->GetId());
+	m_button51->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadPreviousDay ), NULL, this );
+	m_button5->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadPreviousForecast ), NULL, this );
+	m_button6->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadNextForecast ), NULL, this );
+	m_button61->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadNextDay ), NULL, this );
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnOpenWorkspace ), this, m_menuItemOpenWorkspace->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnSaveWorkspace ), this, m_menuItemSaveWorkspace->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnSaveWorkspaceAs ), this, m_menuItemSaveWorkspaceAs->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnNewWorkspace ), this, m_menuItemNewWorkspace->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnOpenForecast ), this, m_menuItemOpenForecast->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnOpenLayer ), this, m_menuItemOpenGISLayer->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnCloseLayer ), this, m_menuItemCloseGISLayer->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnMoveLayer ), this, m_menuItemMoveGISLayer->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnQuit ), this, m_menuItemQuit->GetId());
+	m_menuOptions->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OpenFramePreferences ), this, m_menuItemPreferences->GetId());
+	m_menuTools->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OpenFramePredictandDB ), this, m_menuItemBuildPredictandDB->GetId());
+	m_menuLog->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnShowLog ), this, m_menuItemShowLog->GetId());
+	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnLogLevel1 ), this, m_menuItemLogLevel1->GetId());
+	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnLogLevel2 ), this, m_menuItemLogLevel2->GetId());
+	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnLogLevel3 ), this, m_menuItemLogLevel3->GetId());
+	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OpenFrameAbout ), this, m_menuItemAbout->GetId());
 }
 
-asFrameForecastVirtual::~asFrameForecastVirtual()
+asFrameViewerVirtual::~asFrameViewerVirtual()
 {
 	// Disconnect Events
-	m_button51->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadPreviousDay ), NULL, this );
-	m_button5->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadPreviousForecast ), NULL, this );
-	m_button6->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadNextForecast ), NULL, this );
-	m_button61->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadNextDay ), NULL, this );
+	m_button51->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadPreviousDay ), NULL, this );
+	m_button5->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadPreviousForecast ), NULL, this );
+	m_button6->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadNextForecast ), NULL, this );
+	m_button61->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadNextDay ), NULL, this );
 
 }
 

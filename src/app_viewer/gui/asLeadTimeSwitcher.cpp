@@ -27,7 +27,7 @@
 
 #include "asLeadTimeSwitcher.h"
 
-#include "asFrameForecast.h"
+#include "asFrameViewer.h"
 
 wxDEFINE_EVENT(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, wxCommandEvent);
 

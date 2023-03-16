@@ -26,16 +26,15 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#include "asForecastViewer.h"
-
 #include "asForecastManager.h"
-#include "asFrameForecast.h"
+#include "asForecastRenderer.h"
+#include "asFrameViewer.h"
 #include "vrLayerVectorFcstDots.h"
 #include "vrLayerVectorFcstRing.h"
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_SELECT_FIRST, wxCommandEvent);
 
-asForecastViewer::asForecastViewer(asFrameForecast* parent, asForecastManager* forecastManager,
+asForecastRenderer::asForecastRenderer(asFrameViewer* parent, asForecastManager* forecastManager,
                                    vrLayerManager* layerManager, vrViewerLayerManager* viewerLayerManager) {
     m_parent = parent;
     m_forecastManager = forecastManager;
@@ -93,32 +92,32 @@ asForecastViewer::asForecastViewer(asFrameForecast* parent, asForecastManager* f
     m_opened = false;
 }
 
-asForecastViewer::~asForecastViewer() {
+asForecastRenderer::~asForecastRenderer() {
     wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/ForecastViewer/DisplaySelection", m_forecastDisplaySelection);
     pConfig->Write("/ForecastViewer/QuantileSelection", m_quantileSelection);
 }
 
-void asForecastViewer::FixForecastSelection() {
+void asForecastRenderer::FixForecastSelection() {
     if (m_methodSelection < 0) {
         wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_SELECT_FIRST);
         m_parent->ProcessWindowEvent(eventSlct);
     }
 }
 
-void asForecastViewer::ResetForecastSelection() {
+void asForecastRenderer::ResetForecastSelection() {
     m_methodSelection = -1;
     m_forecastSelection = -1;
 }
 
-void asForecastViewer::SetForecast(int methodRow, int forecastRow) {
+void asForecastRenderer::SetForecast(int methodRow, int forecastRow) {
     m_methodSelection = methodRow;
     m_forecastSelection = forecastRow;
 
     Redraw();
 }
 
-float asForecastViewer::GetSelectedTargetDate() {
+float asForecastRenderer::GetSelectedTargetDate() {
     a1f targetDates;
 
     if (m_methodSelection < 0) {
@@ -138,7 +137,7 @@ float asForecastViewer::GetSelectedTargetDate() {
     return targetDates[m_leadTimeIndex];
 }
 
-void asForecastViewer::SetLeadTimeDate(float date) {
+void asForecastRenderer::SetLeadTimeDate(float date) {
     if (date > 0 && (m_methodSelection > 0)) {
         a1f targetDates;
 
@@ -155,7 +154,7 @@ void asForecastViewer::SetLeadTimeDate(float date) {
     }
 }
 
-void asForecastViewer::SetForecastDisplay(int i) {
+void asForecastRenderer::SetForecastDisplay(int i) {
     m_forecastDisplaySelection = i;
 
     wxString display = m_displayForecast.Item((size_t)m_forecastDisplaySelection);
@@ -164,7 +163,7 @@ void asForecastViewer::SetForecastDisplay(int i) {
     Redraw();
 }
 
-void asForecastViewer::SetQuantile(int i) {
+void asForecastRenderer::SetQuantile(int i) {
     m_quantileSelection = i;
 
     wxString quantile = m_displayQuantiles.Item((size_t)m_quantileSelection);
@@ -173,7 +172,7 @@ void asForecastViewer::SetQuantile(int i) {
     Redraw();
 }
 
-void asForecastViewer::LoadPastForecast() {
+void asForecastRenderer::LoadPastForecast() {
     wxBusyCursor wait;
 
     // Check that elements are selected
@@ -187,7 +186,7 @@ void asForecastViewer::LoadPastForecast() {
     }
 }
 
-void asForecastViewer::Redraw() {
+void asForecastRenderer::Redraw() {
     // Check that elements are selected
     if ((m_methodSelection == -1) || (m_forecastDisplaySelection == -1) || (m_quantileSelection == -1)) return;
     if (m_methodSelection >= m_forecastManager->GetMethodsNb()) return;
@@ -583,7 +582,7 @@ void asForecastViewer::Redraw() {
     }
 }
 
-void asForecastViewer::ChangeLeadTime(int val) {
+void asForecastRenderer::ChangeLeadTime(int val) {
     if (m_leadTimeIndex == val)  // Already selected
         return;
 

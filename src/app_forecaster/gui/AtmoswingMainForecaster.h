@@ -30,10 +30,10 @@
 #define AS_MAIN_FORECATSER_H
 
 #include "AtmoswingAppForecaster.h"
-#include "asFrameMain.h"
+#include "asFrameForecaster.h"
 #include "asIncludes.h"
 
-class AtmoswingFrameForecaster : public asFrameMain {
+class AtmoswingFrameForecaster : public asFrameForecaster {
   public:
     explicit AtmoswingFrameForecaster(wxFrame* frame);
 

@@ -47,9 +47,9 @@ WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asFrameForecastVirtual
+/// Class asFrameViewerVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFrameForecastVirtual : public wxFrame
+class asFrameViewerVirtual : public wxFrame
 {
 	private:
 
@@ -108,14 +108,14 @@ class asFrameForecastVirtual : public wxFrame
 
 	public:
 
-		asFrameForecastVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Viewer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameViewerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Viewer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
-		~asFrameForecastVirtual();
+		~asFrameViewerVirtual();
 
 		void m_splitterGISOnIdle( wxIdleEvent& )
 		{
 			m_splitterGIS->SetSashPosition( 270 );
-			m_splitterGIS->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFrameForecastVirtual::m_splitterGISOnIdle ), NULL, this );
+			m_splitterGIS->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFrameViewerVirtual::m_splitterGISOnIdle ), NULL, this );
 		}
 
 };

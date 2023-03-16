@@ -31,7 +31,7 @@
 
 #include <wx/listbox.h>
 
-class asForecastViewer;
+class asForecastRenderer;
 
 class asListBoxQuantiles : public wxListBox {
   public:
