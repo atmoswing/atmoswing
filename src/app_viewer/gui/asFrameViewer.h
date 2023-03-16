@@ -150,6 +150,8 @@ class asFrameViewer : public asFrameViewerVirtual {
 
     void OpenFrameGrid(wxCommandEvent& event);
 
+    void OpenFramePredictors(wxCommandEvent& event);
+
     void OpenFramePredictandDB(wxCommandEvent& event) override;
 
     void OpenFramePreferences(wxCommandEvent& event) override;

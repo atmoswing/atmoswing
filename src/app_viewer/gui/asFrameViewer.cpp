@@ -42,6 +42,7 @@
 #include "asFileText.h"
 #include "asFrameAbout.h"
 #include "asFrameGridAnalogsValues.h"
+#include "asFramePredictors.h"
 #include "asFramePlotDistributions.h"
 #include "asFramePlotTimeSeries.h"
 #include "asFramePreferencesViewer.h"
@@ -217,7 +218,7 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
                   wxCommandEventHandler(asFrameViewer::OpenFramePreferences));
     this->Connect(asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFramePlots));
     this->Connect(asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFrameGrid));
-    this->Connect(asID_FRAME_PREDICTORS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFrameGrid));
+    this->Connect(asID_FRAME_PREDICTORS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFramePredictors));
     this->Connect(asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OnOpenForecast));
     this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
                   wxCommandEventHandler(asFrameViewer::OpenFramePredictandDB));
@@ -290,8 +291,9 @@ asFrameViewer::~asFrameViewer() {
                      wxCommandEventHandler(asFrameViewer::OpenFramePreferences));
     this->Disconnect(asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED,
                      wxCommandEventHandler(asFrameViewer::OpenFramePlots));
-    this->Disconnect(asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameViewer::OpenFrameGrid));
+    this->Disconnect(asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFrameGrid));
+    this->Disconnect(asID_FRAME_PREDICTORS, wxEVT_COMMAND_TOOL_CLICKED,
+                     wxCommandEventHandler(asFrameViewer::OpenFramePredictors));
     this->Disconnect(asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OnOpenForecast));
     this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
                      wxCommandEventHandler(asFrameViewer::OpenFramePredictandDB));
@@ -755,6 +757,25 @@ void asFrameViewer::OpenFrameGrid(wxCommandEvent& event) {
         frameGrid->Layout();
         frameGrid->Init();
         frameGrid->Show();
+    }
+}
+
+void asFrameViewer::OpenFramePredictors(wxCommandEvent& event) {
+    if (m_forecastManager->HasForecasts()) {
+        wxBusyCursor wait;
+
+        auto* framePredictors = new asFramePredictors(this, m_forecastManager, &m_workspace);
+
+        if (g_ppiScaleDc > 1) {
+            wxSize frameSize = framePredictors->GetSize();
+            frameSize.x *= g_ppiScaleDc;
+            frameSize.y *= g_ppiScaleDc;
+            framePredictors->SetSize(frameSize);
+        }
+
+        framePredictors->Layout();
+        framePredictors->Init();
+        framePredictors->Show();
     }
 }
 
