@@ -29,170 +29,170 @@
 #include <gtest/gtest.h>
 
 #include "asFileText.h"
-#include "asUtilities.h"
+#include "asUtils.h"
 
-TEST(Utilities, IsRoundFloatTrue) {
+TEST(Utils, IsRoundFloatTrue) {
     float value = 2;
     EXPECT_TRUE(asIsRound(value));
 }
 
-TEST(Utilities, IsRoundFloatFalse) {
+TEST(Utils, IsRoundFloatFalse) {
     float value = 2.0001f;
     EXPECT_FALSE(asIsRound(value));
 }
 
-TEST(Utilities, IsRoundDoubleFalse) {
+TEST(Utils, IsRoundDoubleFalse) {
     double value = 2.00000001;
     EXPECT_FALSE(asIsRound(value));
 }
 
-TEST(Utilities, RoundFloatUp) {
+TEST(Utils, RoundFloatUp) {
     float value = 2.5;
     float result = asRound(value);
     EXPECT_EQ(3, result);
 }
 
-TEST(Utilities, RoundDoubleUp) {
+TEST(Utils, RoundDoubleUp) {
     double value = 2.5;
     double result = asRound(value);
     EXPECT_EQ(3, result);
 }
 
-TEST(Utilities, RoundFloatDown) {
+TEST(Utils, RoundFloatDown) {
     float value = 2.49999f;
     float result = asRound(value);
     EXPECT_EQ(2, result);
 }
 
-TEST(Utilities, RoundDoubleDown) {
+TEST(Utils, RoundDoubleDown) {
     double value = 2.499999999999;
     double result = asRound(value);
     EXPECT_EQ(2, result);
 }
 
-TEST(Utilities, RoundNegativeFloatDown) {
+TEST(Utils, RoundNegativeFloatDown) {
     float value = -2.5f;
     float result = asRound(value);
     EXPECT_EQ(-3, result);
 }
 
-TEST(Utilities, RoundNegativeDoubleDown) {
+TEST(Utils, RoundNegativeDoubleDown) {
     double value = -2.5;
     double result = asRound(value);
     EXPECT_EQ(-3, result);
 }
 
-TEST(Utilities, RoundNegativeFloatUp) {
+TEST(Utils, RoundNegativeFloatUp) {
     float value = -2.49999f;
     float result = asRound(value);
     EXPECT_EQ(-2, result);
 }
 
-TEST(Utilities, RoundNegativeDoubleUp) {
+TEST(Utils, RoundNegativeDoubleUp) {
     double value = -2.499999999999;
     double result = asRound(value);
     EXPECT_EQ(-2, result);
 }
 
-TEST(Utilities, RoundSmallFloatUp) {
+TEST(Utils, RoundSmallFloatUp) {
     float value = 0.5;
     float result = asRound(value);
     EXPECT_EQ(1, result);
 }
 
-TEST(Utilities, RoundSmallDoubleUp) {
+TEST(Utils, RoundSmallDoubleUp) {
     double value = 0.5;
     double result = asRound(value);
     EXPECT_EQ(1, result);
 }
 
-TEST(Utilities, RoundSmallFloatDown) {
+TEST(Utils, RoundSmallFloatDown) {
     float value = 0.49999f;
     float result = asRound(value);
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, RoundSmallDoubleDown) {
+TEST(Utils, RoundSmallDoubleDown) {
     double value = 0.499999999999;
     double result = asRound(value);
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, RoundSmallNegativeFloatDown) {
+TEST(Utils, RoundSmallNegativeFloatDown) {
     float value = -0.5f;
     float result = asRound(value);
     EXPECT_EQ(-1, result);
 }
 
-TEST(Utilities, RoundSmallNegativeDoubleDown) {
+TEST(Utils, RoundSmallNegativeDoubleDown) {
     double value = -0.5;
     double result = asRound(value);
     EXPECT_EQ(-1, result);
 }
 
-TEST(Utilities, RoundSmallNegativeFloatUp) {
+TEST(Utils, RoundSmallNegativeFloatUp) {
     float value = -0.49999f;
     float result = asRound(value);
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, RoundSmallNegativeDoubleUp) {
+TEST(Utils, RoundSmallNegativeDoubleUp) {
     double value = -0.499999999999;
     double result = asRound(value);
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, IsNaNOne) {
+TEST(Utils, IsNaNOne) {
     int value = 1;
     EXPECT_FALSE(asIsNaN((float)value));
 }
 
-TEST(Utilities, IsNaNZero) {
+TEST(Utils, IsNaNZero) {
     int value = 0;
     EXPECT_FALSE(asIsNaN((float)value));
 }
 
-TEST(Utilities, IsNaNFloatTrue) {
+TEST(Utils, IsNaNFloatTrue) {
     float value = NaNf;
     EXPECT_TRUE(asIsNaN(value));
 }
 
-TEST(Utilities, IsNaNDoubleTrue) {
+TEST(Utils, IsNaNDoubleTrue) {
     double value = NaNd;
     EXPECT_TRUE(asIsNaN(value));
 }
 
-TEST(Utilities, IsInfFloatFalse) {
+TEST(Utils, IsInfFloatFalse) {
     float value = -2151;
     EXPECT_FALSE(asIsInf(value));
 }
 
-TEST(Utilities, IsInfDoubleFalse) {
+TEST(Utils, IsInfDoubleFalse) {
     double value = -2151;
     EXPECT_FALSE(asIsInf(value));
 }
 
-TEST(Utilities, IsInfLongDoubleFalse) {
+TEST(Utils, IsInfLongDoubleFalse) {
     long double value = -2151;
     EXPECT_FALSE(asIsInf(value));
 }
 
-TEST(Utilities, IsInfFloatTrue) {
+TEST(Utils, IsInfFloatTrue) {
     float value = Inff;
     EXPECT_TRUE(asIsInf(value));
 }
 
-TEST(Utilities, IsInfDoubleTrue) {
+TEST(Utils, IsInfDoubleTrue) {
     double value = Infd;
     EXPECT_TRUE(asIsInf(value));
 }
 
-TEST(Utilities, IsInfLongDoubleTrue) {
+TEST(Utils, IsInfLongDoubleTrue) {
     long double value = Infld;
     EXPECT_TRUE(asIsInf(value));
 }
 
-TEST(Utilities, CountNotNaNFloat) {
+TEST(Utils, CountNotNaNFloat) {
     float array[] = {0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.0f, NaNf};
     float* pVectStart = &array[0];
     float* pVectEnd = &array[9];
@@ -200,7 +200,7 @@ TEST(Utilities, CountNotNaNFloat) {
     EXPECT_EQ(8, result);
 }
 
-TEST(Utilities, CountNotNaNDouble) {
+TEST(Utils, CountNotNaNDouble) {
     double array[] = {0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10, NaNd};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -208,61 +208,61 @@ TEST(Utilities, CountNotNaNDouble) {
     EXPECT_EQ(8, result);
 }
 
-TEST(Utilities, FindMinInt) {
+TEST(Utils, FindMinInt) {
     int array[] = {0, 0, -1, 1, 2, 3, 5, 0, 8, 9, 10, 0};
     int result = asMinArray(&array[0], &array[11]);
     EXPECT_EQ(-1, result);
 }
 
-TEST(Utilities, FindMinFloat) {
+TEST(Utils, FindMinFloat) {
     float array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.0f, NaNf};
     float result = asMinArray(&array[0], &array[11]);
     EXPECT_FLOAT_EQ(0.3465f, result);
 }
 
-TEST(Utilities, FindMinDouble) {
+TEST(Utils, FindMinDouble) {
     double array[] = {NaNd, NaNd, 0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10, NaNd};
     double result = asMinArray(&array[0], &array[11]);
     EXPECT_DOUBLE_EQ(0.3465, result);
 }
 
-TEST(Utilities, FindMaxInt) {
+TEST(Utils, FindMaxInt) {
     int array[] = {0, 0, -1, 1, 2, 3, 5, 0, 8, 9, 10, 0};
     int result = asMaxArray(&array[0], &array[11]);
     EXPECT_EQ(10, result);
 }
 
-TEST(Utilities, FindMaxFloat) {
+TEST(Utils, FindMaxFloat) {
     float array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.12f, NaNf};
     float result = asMaxArray(&array[0], &array[11]);
     EXPECT_FLOAT_EQ(10.12f, result);
 }
 
-TEST(Utilities, FindMaxDouble) {
+TEST(Utils, FindMaxDouble) {
     double array[] = {NaNd, NaNd, 0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10.12, NaNd};
     double result = asMaxArray(&array[0], &array[11]);
     EXPECT_DOUBLE_EQ(10.12, result);
 }
 
-TEST(Utilities, FindMinStepInt) {
+TEST(Utils, FindMinStepInt) {
     int array[] = {0, 10, 0, 1, 3, 5, 0, 8, 2, 9, 0, 0};
     int result = asMinArrayStep(&array[0], &array[11], 0);
     EXPECT_EQ(1, result);
 }
 
-TEST(Utilities, FindMinStepFloat) {
+TEST(Utils, FindMinStepFloat) {
     float array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f, NaNf};
     float result = asMinArrayStep(&array[0], &array[11], 0.0001f);
     EXPECT_FLOAT_EQ(0.37f, result);
 }
 
-TEST(Utilities, FindMinStepDouble) {
+TEST(Utils, FindMinStepDouble) {
     double array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465, NaNd};
     double result = asMinArrayStep(&array[0], &array[11]);
     EXPECT_FLOAT_EQ(0.37f, result);
 }
 
-TEST(Utilities, ExtractUniqueValuesInt) {
+TEST(Utils, ExtractUniqueValuesInt) {
     int array[] = {0, 10, 0, 1, 3, 5, 1, 8, 2, 9, 0, 9};
     ;
     a1i result(asExtractUniqueValues(&array[0], &array[11]));
@@ -276,7 +276,7 @@ TEST(Utilities, ExtractUniqueValuesInt) {
     EXPECT_EQ(10, result[7]);
 }
 
-TEST(Utilities, ExtractUniqueValuesFloat) {
+TEST(Utils, ExtractUniqueValuesFloat) {
     float array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f, NaNf};
     a1f result(asExtractUniqueValues(&array[0], &array[11], 0.0001f));
     EXPECT_FLOAT_EQ(0.3465f, result[0]);
@@ -289,7 +289,7 @@ TEST(Utilities, ExtractUniqueValuesFloat) {
     EXPECT_FLOAT_EQ(10.12f, result[7]);
 }
 
-TEST(Utilities, ExtractUniqueValuesDouble) {
+TEST(Utils, ExtractUniqueValuesDouble) {
     double array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465, NaNd};
     a1d result(asExtractUniqueValues(&array[0], &array[11]));
     EXPECT_DOUBLE_EQ(0.3465, result[0]);
@@ -302,7 +302,7 @@ TEST(Utilities, ExtractUniqueValuesDouble) {
     EXPECT_DOUBLE_EQ(10.12, result[7]);
 }
 
-TEST(Utilities, SortedArraySearchIntAscFirst) {
+TEST(Utils, SortedArraySearchIntAscFirst) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -311,7 +311,7 @@ TEST(Utilities, SortedArraySearchIntAscFirst) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchIntAscMid) {
+TEST(Utils, SortedArraySearchIntAscMid) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -320,7 +320,7 @@ TEST(Utilities, SortedArraySearchIntAscMid) {
     EXPECT_EQ(6, result);
 }
 
-TEST(Utilities, SortedArraySearchIntAscLast) {
+TEST(Utils, SortedArraySearchIntAscLast) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -329,7 +329,7 @@ TEST(Utilities, SortedArraySearchIntAscLast) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchIntAscOutofRange) {
+TEST(Utils, SortedArraySearchIntAscOutofRange) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -338,7 +338,7 @@ TEST(Utilities, SortedArraySearchIntAscOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchIntAscNotFound) {
+TEST(Utils, SortedArraySearchIntAscNotFound) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -347,7 +347,7 @@ TEST(Utilities, SortedArraySearchIntAscNotFound) {
     EXPECT_EQ(asNOT_FOUND, result);
 }
 
-TEST(Utilities, SortedArraySearchIntAscTolerFirst) {
+TEST(Utils, SortedArraySearchIntAscTolerFirst) {
     int array[] = {0, 3, 4, 5, 6, 7, 8, 9, 10, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -356,7 +356,7 @@ TEST(Utilities, SortedArraySearchIntAscTolerFirst) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchIntAscTolerFirstLimit) {
+TEST(Utils, SortedArraySearchIntAscTolerFirstLimit) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -365,7 +365,7 @@ TEST(Utilities, SortedArraySearchIntAscTolerFirstLimit) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchIntAscTolerMid) {
+TEST(Utils, SortedArraySearchIntAscTolerMid) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -374,7 +374,7 @@ TEST(Utilities, SortedArraySearchIntAscTolerMid) {
     EXPECT_EQ(8, result);
 }
 
-TEST(Utilities, SortedArraySearchIntAscTolerMidLimit) {
+TEST(Utils, SortedArraySearchIntAscTolerMidLimit) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -383,7 +383,7 @@ TEST(Utilities, SortedArraySearchIntAscTolerMidLimit) {
     EXPECT_EQ(8, result);
 }
 
-TEST(Utilities, SortedArraySearchIntAscTolerLast) {
+TEST(Utils, SortedArraySearchIntAscTolerLast) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -392,7 +392,7 @@ TEST(Utilities, SortedArraySearchIntAscTolerLast) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchIntAscTolerLastLimit) {
+TEST(Utils, SortedArraySearchIntAscTolerLastLimit) {
     int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -401,7 +401,7 @@ TEST(Utilities, SortedArraySearchIntAscTolerLastLimit) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchIntDescFirst) {
+TEST(Utils, SortedArraySearchIntDescFirst) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -410,7 +410,7 @@ TEST(Utilities, SortedArraySearchIntDescFirst) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchIntDescMid) {
+TEST(Utils, SortedArraySearchIntDescMid) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -419,7 +419,7 @@ TEST(Utilities, SortedArraySearchIntDescMid) {
     EXPECT_EQ(3, result);
 }
 
-TEST(Utilities, SortedArraySearchIntDescLast) {
+TEST(Utils, SortedArraySearchIntDescLast) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -428,7 +428,7 @@ TEST(Utilities, SortedArraySearchIntDescLast) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchIntDescOutofRange) {
+TEST(Utils, SortedArraySearchIntDescOutofRange) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -437,7 +437,7 @@ TEST(Utilities, SortedArraySearchIntDescOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchIntDescNotFound) {
+TEST(Utils, SortedArraySearchIntDescNotFound) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -446,7 +446,7 @@ TEST(Utilities, SortedArraySearchIntDescNotFound) {
     EXPECT_EQ(asNOT_FOUND, result);
 }
 
-TEST(Utilities, SortedArraySearchIntDescTolerFirst) {
+TEST(Utils, SortedArraySearchIntDescTolerFirst) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -455,7 +455,7 @@ TEST(Utilities, SortedArraySearchIntDescTolerFirst) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchIntDescTolerFirstLimit) {
+TEST(Utils, SortedArraySearchIntDescTolerFirstLimit) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -464,7 +464,7 @@ TEST(Utilities, SortedArraySearchIntDescTolerFirstLimit) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchIntDescTolerMid) {
+TEST(Utils, SortedArraySearchIntDescTolerMid) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -473,7 +473,7 @@ TEST(Utilities, SortedArraySearchIntDescTolerMid) {
     EXPECT_EQ(1, result);
 }
 
-TEST(Utilities, SortedArraySearchIntDescTolerMidLimit) {
+TEST(Utils, SortedArraySearchIntDescTolerMidLimit) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -482,7 +482,7 @@ TEST(Utilities, SortedArraySearchIntDescTolerMidLimit) {
     EXPECT_EQ(1, result);
 }
 
-TEST(Utilities, SortedArraySearchIntDescTolerLast) {
+TEST(Utils, SortedArraySearchIntDescTolerLast) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -491,7 +491,7 @@ TEST(Utilities, SortedArraySearchIntDescTolerLast) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchIntDescTolerLastLimit) {
+TEST(Utils, SortedArraySearchIntDescTolerLastLimit) {
     int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -500,7 +500,7 @@ TEST(Utilities, SortedArraySearchIntDescTolerLastLimit) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchIntUniqueVal) {
+TEST(Utils, SortedArraySearchIntUniqueVal) {
     int array[] = {9};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[0];
@@ -509,7 +509,7 @@ TEST(Utilities, SortedArraySearchIntUniqueVal) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchIntUniqueValToler) {
+TEST(Utils, SortedArraySearchIntUniqueValToler) {
     int array[] = {9};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[0];
@@ -518,7 +518,7 @@ TEST(Utilities, SortedArraySearchIntUniqueValToler) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchIntUniqueValOutofRange) {
+TEST(Utils, SortedArraySearchIntUniqueValOutofRange) {
     int array[] = {9};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[0];
@@ -527,7 +527,7 @@ TEST(Utilities, SortedArraySearchIntUniqueValOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchIntArraySameVal) {
+TEST(Utils, SortedArraySearchIntArraySameVal) {
     int array[] = {9, 9, 9, 9};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[3];
@@ -536,7 +536,7 @@ TEST(Utilities, SortedArraySearchIntArraySameVal) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchIntArraySameValTolerDown) {
+TEST(Utils, SortedArraySearchIntArraySameValTolerDown) {
     int array[] = {9, 9, 9, 9};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[3];
@@ -545,7 +545,7 @@ TEST(Utilities, SortedArraySearchIntArraySameValTolerDown) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchIntArraySameValTolerUp) {
+TEST(Utils, SortedArraySearchIntArraySameValTolerUp) {
     int array[] = {9, 9, 9, 9};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[3];
@@ -554,7 +554,7 @@ TEST(Utilities, SortedArraySearchIntArraySameValTolerUp) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchIntArraySameValOutofRange) {
+TEST(Utils, SortedArraySearchIntArraySameValOutofRange) {
     int array[] = {9, 9, 9, 9};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[3];
@@ -563,7 +563,7 @@ TEST(Utilities, SortedArraySearchIntArraySameValOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscFirst) {
+TEST(Utils, SortedArraySearchDoubleAscFirst) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -572,7 +572,7 @@ TEST(Utilities, SortedArraySearchDoubleAscFirst) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscMid) {
+TEST(Utils, SortedArraySearchDoubleAscMid) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -581,7 +581,7 @@ TEST(Utilities, SortedArraySearchDoubleAscMid) {
     EXPECT_EQ(5, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscLast) {
+TEST(Utils, SortedArraySearchDoubleAscLast) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -590,7 +590,7 @@ TEST(Utilities, SortedArraySearchDoubleAscLast) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscOutofRange) {
+TEST(Utils, SortedArraySearchDoubleAscOutofRange) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -599,7 +599,7 @@ TEST(Utilities, SortedArraySearchDoubleAscOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscNotFound) {
+TEST(Utils, SortedArraySearchDoubleAscNotFound) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -608,7 +608,7 @@ TEST(Utilities, SortedArraySearchDoubleAscNotFound) {
     EXPECT_EQ(asNOT_FOUND, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscTolerFirst) {
+TEST(Utils, SortedArraySearchDoubleAscTolerFirst) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -617,7 +617,7 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerFirst) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscTolerFirstLimit) {
+TEST(Utils, SortedArraySearchDoubleAscTolerFirstLimit) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -626,7 +626,7 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerFirstLimit) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscTolerFirstOutLimit) {
+TEST(Utils, SortedArraySearchDoubleAscTolerFirstOutLimit) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -635,7 +635,7 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerFirstOutLimit) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscTolerMid) {
+TEST(Utils, SortedArraySearchDoubleAscTolerMid) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -644,7 +644,7 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerMid) {
     EXPECT_EQ(8, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscTolerMidLimit) {
+TEST(Utils, SortedArraySearchDoubleAscTolerMidLimit) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -653,7 +653,7 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerMidLimit) {
     EXPECT_EQ(8, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscTolerMidLimitOut) {
+TEST(Utils, SortedArraySearchDoubleAscTolerMidLimitOut) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -662,7 +662,7 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerMidLimitOut) {
     EXPECT_EQ(asNOT_FOUND, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscTolerLast) {
+TEST(Utils, SortedArraySearchDoubleAscTolerLast) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -671,7 +671,7 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerLast) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscTolerLastLimit) {
+TEST(Utils, SortedArraySearchDoubleAscTolerLastLimit) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -680,7 +680,7 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerLastLimit) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleAscTolerLastOutLimit) {
+TEST(Utils, SortedArraySearchDoubleAscTolerLastOutLimit) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -689,7 +689,7 @@ TEST(Utilities, SortedArraySearchDoubleAscTolerLastOutLimit) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescFirst) {
+TEST(Utils, SortedArraySearchDoubleDescFirst) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -698,7 +698,7 @@ TEST(Utilities, SortedArraySearchDoubleDescFirst) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescMid) {
+TEST(Utils, SortedArraySearchDoubleDescMid) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -707,7 +707,7 @@ TEST(Utilities, SortedArraySearchDoubleDescMid) {
     EXPECT_EQ(4, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescLast) {
+TEST(Utils, SortedArraySearchDoubleDescLast) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -716,7 +716,7 @@ TEST(Utilities, SortedArraySearchDoubleDescLast) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescOutofRange) {
+TEST(Utils, SortedArraySearchDoubleDescOutofRange) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -725,7 +725,7 @@ TEST(Utilities, SortedArraySearchDoubleDescOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescNotFound) {
+TEST(Utils, SortedArraySearchDoubleDescNotFound) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -734,7 +734,7 @@ TEST(Utilities, SortedArraySearchDoubleDescNotFound) {
     EXPECT_EQ(asNOT_FOUND, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescTolerFirst) {
+TEST(Utils, SortedArraySearchDoubleDescTolerFirst) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -743,7 +743,7 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerFirst) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescTolerFirstLimit) {
+TEST(Utils, SortedArraySearchDoubleDescTolerFirstLimit) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -752,7 +752,7 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerFirstLimit) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescTolerFirstOutLimit) {
+TEST(Utils, SortedArraySearchDoubleDescTolerFirstOutLimit) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -761,7 +761,7 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerFirstOutLimit) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescTolerMid) {
+TEST(Utils, SortedArraySearchDoubleDescTolerMid) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -770,7 +770,7 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerMid) {
     EXPECT_EQ(1, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescTolerMidLimit) {
+TEST(Utils, SortedArraySearchDoubleDescTolerMidLimit) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -779,7 +779,7 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerMidLimit) {
     EXPECT_EQ(1, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescTolerMidOutLimit) {
+TEST(Utils, SortedArraySearchDoubleDescTolerMidOutLimit) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -788,7 +788,7 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerMidOutLimit) {
     EXPECT_EQ(asNOT_FOUND, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescTolerLast) {
+TEST(Utils, SortedArraySearchDoubleDescTolerLast) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -797,7 +797,7 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerLast) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescTolerLastLimit) {
+TEST(Utils, SortedArraySearchDoubleDescTolerLastLimit) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -806,7 +806,7 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerLastLimit) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleDescTolerLastOutLimit) {
+TEST(Utils, SortedArraySearchDoubleDescTolerLastOutLimit) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -815,7 +815,7 @@ TEST(Utilities, SortedArraySearchDoubleDescTolerLastOutLimit) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleUniqueVal) {
+TEST(Utils, SortedArraySearchDoubleUniqueVal) {
     double array[] = {9.3401};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[0];
@@ -824,7 +824,7 @@ TEST(Utilities, SortedArraySearchDoubleUniqueVal) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleUniqueValToler) {
+TEST(Utils, SortedArraySearchDoubleUniqueValToler) {
     double array[] = {9.3401};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[0];
@@ -833,7 +833,7 @@ TEST(Utilities, SortedArraySearchDoubleUniqueValToler) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleUniqueValOutofRange) {
+TEST(Utils, SortedArraySearchDoubleUniqueValOutofRange) {
     double array[] = {9.3401};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[0];
@@ -842,7 +842,7 @@ TEST(Utilities, SortedArraySearchDoubleUniqueValOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleArraySameVal) {
+TEST(Utils, SortedArraySearchDoubleArraySameVal) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[3];
@@ -851,7 +851,7 @@ TEST(Utilities, SortedArraySearchDoubleArraySameVal) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleArraySameValTolerDown) {
+TEST(Utils, SortedArraySearchDoubleArraySameValTolerDown) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[3];
@@ -860,7 +860,7 @@ TEST(Utilities, SortedArraySearchDoubleArraySameValTolerDown) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleArraySameValTolerUp) {
+TEST(Utils, SortedArraySearchDoubleArraySameValTolerUp) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[3];
@@ -869,7 +869,7 @@ TEST(Utilities, SortedArraySearchDoubleArraySameValTolerUp) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchDoubleArraySameValOutofRange) {
+TEST(Utils, SortedArraySearchDoubleArraySameValOutofRange) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[3];
@@ -878,7 +878,7 @@ TEST(Utilities, SortedArraySearchDoubleArraySameValOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchRoleOfToleranceInSearch) {
+TEST(Utils, SortedArraySearchRoleOfToleranceInSearch) {
     a1d values;
     values.resize(94);
     values << -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522,
@@ -896,7 +896,7 @@ TEST(Utilities, SortedArraySearchRoleOfToleranceInSearch) {
     EXPECT_EQ(62, result);
 }
 
-TEST(Utilities, SortedArraySearchClosestDoubleAscFirst) {
+TEST(Utils, SortedArraySearchClosestDoubleAscFirst) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -905,7 +905,7 @@ TEST(Utilities, SortedArraySearchClosestDoubleAscFirst) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchClosestDoubleAscMid) {
+TEST(Utils, SortedArraySearchClosestDoubleAscMid) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -914,7 +914,7 @@ TEST(Utilities, SortedArraySearchClosestDoubleAscMid) {
     EXPECT_EQ(5, result);
 }
 
-TEST(Utilities, SortedArraySearchClosestDoubleAscLast) {
+TEST(Utils, SortedArraySearchClosestDoubleAscLast) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -923,7 +923,7 @@ TEST(Utilities, SortedArraySearchClosestDoubleAscLast) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchClosestDoubleAscOutofRange) {
+TEST(Utils, SortedArraySearchClosestDoubleAscOutofRange) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -932,7 +932,7 @@ TEST(Utilities, SortedArraySearchClosestDoubleAscOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchClosestDoubleDescFirst) {
+TEST(Utils, SortedArraySearchClosestDoubleDescFirst) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -941,7 +941,7 @@ TEST(Utilities, SortedArraySearchClosestDoubleDescFirst) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchClosestDoubleDescMid) {
+TEST(Utils, SortedArraySearchClosestDoubleDescMid) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -950,7 +950,7 @@ TEST(Utilities, SortedArraySearchClosestDoubleDescMid) {
     EXPECT_EQ(4, result);
 }
 
-TEST(Utilities, SortedArraySearchClosestDoubleDescLast) {
+TEST(Utils, SortedArraySearchClosestDoubleDescLast) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -959,7 +959,7 @@ TEST(Utilities, SortedArraySearchClosestDoubleDescLast) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchClosestDoubleDescOutofRange) {
+TEST(Utils, SortedArraySearchClosestDoubleDescOutofRange) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -968,7 +968,7 @@ TEST(Utilities, SortedArraySearchClosestDoubleDescOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchClosestDoubleUniqueVal) {
+TEST(Utils, SortedArraySearchClosestDoubleUniqueVal) {
     double array[] = {9.3401};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[0];
@@ -977,7 +977,7 @@ TEST(Utilities, SortedArraySearchClosestDoubleUniqueVal) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchClosestDoubleUniqueValOutofRange) {
+TEST(Utils, SortedArraySearchClosestDoubleUniqueValOutofRange) {
     double array[] = {9.3401};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[0];
@@ -986,7 +986,7 @@ TEST(Utilities, SortedArraySearchClosestDoubleUniqueValOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchClosestDoubleArraySameVal) {
+TEST(Utils, SortedArraySearchClosestDoubleArraySameVal) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[3];
@@ -995,7 +995,7 @@ TEST(Utilities, SortedArraySearchClosestDoubleArraySameVal) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchClosestDoubleArraySameValOutofRange) {
+TEST(Utils, SortedArraySearchClosestDoubleArraySameValOutofRange) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[3];
@@ -1004,7 +1004,7 @@ TEST(Utilities, SortedArraySearchClosestDoubleArraySameValOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleAscFirst) {
+TEST(Utils, SortedArraySearchFloorDoubleAscFirst) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1013,7 +1013,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleAscFirst) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleAscMid) {
+TEST(Utils, SortedArraySearchFloorDoubleAscMid) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1022,7 +1022,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleAscMid) {
     EXPECT_EQ(4, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleAscLast) {
+TEST(Utils, SortedArraySearchFloorDoubleAscLast) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1031,7 +1031,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleAscLast) {
     EXPECT_EQ(8, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleAscLastExact) {
+TEST(Utils, SortedArraySearchFloorDoubleAscLastExact) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1040,7 +1040,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleAscLastExact) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleAscOutofRange) {
+TEST(Utils, SortedArraySearchFloorDoubleAscOutofRange) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1049,7 +1049,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleAscOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleDescFirst) {
+TEST(Utils, SortedArraySearchFloorDoubleDescFirst) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1058,7 +1058,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleDescFirst) {
     EXPECT_EQ(1, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleDescMid) {
+TEST(Utils, SortedArraySearchFloorDoubleDescMid) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1067,7 +1067,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleDescMid) {
     EXPECT_EQ(5, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleDescLast) {
+TEST(Utils, SortedArraySearchFloorDoubleDescLast) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1076,7 +1076,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleDescLast) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleDescLastExact) {
+TEST(Utils, SortedArraySearchFloorDoubleDescLastExact) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1085,7 +1085,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleDescLastExact) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleDescOutofRange) {
+TEST(Utils, SortedArraySearchFloorDoubleDescOutofRange) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1094,7 +1094,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleDescOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleUniqueVal) {
+TEST(Utils, SortedArraySearchFloorDoubleUniqueVal) {
     double array[] = {9.3401};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[0];
@@ -1103,7 +1103,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleUniqueVal) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleUniqueValOutofRange) {
+TEST(Utils, SortedArraySearchFloorDoubleUniqueValOutofRange) {
     double array[] = {9.3401};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[0];
@@ -1112,7 +1112,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleUniqueValOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleArraySameVal) {
+TEST(Utils, SortedArraySearchFloorDoubleArraySameVal) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[3];
@@ -1121,7 +1121,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleArraySameVal) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchFloorDoubleArraySameValOutofRange) {
+TEST(Utils, SortedArraySearchFloorDoubleArraySameValOutofRange) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[3];
@@ -1130,7 +1130,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleArraySameValOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleAscFirst) {
+TEST(Utils, SortedArraySearchCeilDoubleAscFirst) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1139,7 +1139,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleAscFirst) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleAscMid) {
+TEST(Utils, SortedArraySearchCeilDoubleAscMid) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1148,7 +1148,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleAscMid) {
     EXPECT_EQ(5, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleAscLast) {
+TEST(Utils, SortedArraySearchCeilDoubleAscLast) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1157,7 +1157,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleAscLast) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleAscLastExact) {
+TEST(Utils, SortedArraySearchCeilDoubleAscLastExact) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1166,7 +1166,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleAscLastExact) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleAscOutofRange) {
+TEST(Utils, SortedArraySearchCeilDoubleAscOutofRange) {
     double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1175,7 +1175,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleAscOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleDescFirst) {
+TEST(Utils, SortedArraySearchCeilDoubleDescFirst) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1184,7 +1184,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleDescFirst) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleDescMid) {
+TEST(Utils, SortedArraySearchCeilDoubleDescMid) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1193,7 +1193,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleDescMid) {
     EXPECT_EQ(4, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleDescLast) {
+TEST(Utils, SortedArraySearchCeilDoubleDescLast) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1202,7 +1202,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleDescLast) {
     EXPECT_EQ(8, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleDescLastExact) {
+TEST(Utils, SortedArraySearchCeilDoubleDescLastExact) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1211,7 +1211,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleDescLastExact) {
     EXPECT_EQ(9, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleDescOutofRange) {
+TEST(Utils, SortedArraySearchCeilDoubleDescOutofRange) {
     double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1220,7 +1220,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleDescOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleUniqueVal) {
+TEST(Utils, SortedArraySearchCeilDoubleUniqueVal) {
     double array[] = {9.3401};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[0];
@@ -1229,7 +1229,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleUniqueVal) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleUniqueValOutofRange) {
+TEST(Utils, SortedArraySearchCeilDoubleUniqueValOutofRange) {
     double array[] = {9.3401};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[0];
@@ -1238,7 +1238,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleUniqueValOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleArraySameVal) {
+TEST(Utils, SortedArraySearchCeilDoubleArraySameVal) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[3];
@@ -1247,7 +1247,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleArraySameVal) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utilities, SortedArraySearchCeilDoubleArraySameValOutofRange) {
+TEST(Utils, SortedArraySearchCeilDoubleArraySameValOutofRange) {
     double array[] = {9.34, 9.34, 9.34, 9.34};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[3];
@@ -1256,7 +1256,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleArraySameValOutofRange) {
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
-TEST(Utilities, SortedArrayInsertIntAscFirst) {
+TEST(Utils, SortedArrayInsertIntAscFirst) {
     int array[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -1268,7 +1268,7 @@ TEST(Utilities, SortedArrayInsertIntAscFirst) {
     }
 }
 
-TEST(Utilities, SortedArrayInsertIntAscFirstNeg) {
+TEST(Utils, SortedArrayInsertIntAscFirstNeg) {
     int array[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -1280,7 +1280,7 @@ TEST(Utilities, SortedArrayInsertIntAscFirstNeg) {
     }
 }
 
-TEST(Utilities, SortedArrayInsertIntAscMid) {
+TEST(Utils, SortedArrayInsertIntAscMid) {
     int array[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -1292,7 +1292,7 @@ TEST(Utilities, SortedArrayInsertIntAscMid) {
     }
 }
 
-TEST(Utilities, SortedArrayInsertIntAscEnd) {
+TEST(Utils, SortedArrayInsertIntAscEnd) {
     int array[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 100};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -1304,7 +1304,7 @@ TEST(Utilities, SortedArrayInsertIntAscEnd) {
     }
 }
 
-TEST(Utilities, SortedArrayInsertFloatAscMid) {
+TEST(Utils, SortedArrayInsertFloatAscMid) {
     float array[] = {0.134631f, 1.13613f, 4.346f, 6.835f, 9.1357f, 17.23456f, 18.2364f, 20.75f, 40.54f, 100.235f};
     float* pVectStart = &array[0];
     float* pVectEnd = &array[9];
@@ -1317,7 +1317,7 @@ TEST(Utilities, SortedArrayInsertFloatAscMid) {
     }
 }
 
-TEST(Utilities, SortedArrayInsertDoubleAscMid) {
+TEST(Utils, SortedArrayInsertDoubleAscMid) {
     double array[] = {0.134631, 1.13613, 4.346, 6.835, 9.1357, 17.23456, 18.2364, 20.75, 40.54, 100.235};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
@@ -1329,7 +1329,7 @@ TEST(Utilities, SortedArrayInsertDoubleAscMid) {
     }
 }
 
-TEST(Utilities, SortedArrayInsertIntDescFirst) {
+TEST(Utils, SortedArrayInsertIntDescFirst) {
     int array[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 2};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -1341,7 +1341,7 @@ TEST(Utilities, SortedArrayInsertIntDescFirst) {
     }
 }
 
-TEST(Utilities, SortedArrayInsertIntDescMid) {
+TEST(Utils, SortedArrayInsertIntDescMid) {
     int array[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 2};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -1353,7 +1353,7 @@ TEST(Utilities, SortedArrayInsertIntDescMid) {
     }
 }
 
-TEST(Utilities, SortedArrayInsertIntDescEnd) {
+TEST(Utils, SortedArrayInsertIntDescEnd) {
     int array[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 2};
     int* pVectStart = &array[0];
     int* pVectEnd = &array[9];
@@ -1365,7 +1365,7 @@ TEST(Utilities, SortedArrayInsertIntDescEnd) {
     }
 }
 
-TEST(Utilities, SortedArrayInsertFloatDescMid) {
+TEST(Utils, SortedArrayInsertFloatDescMid) {
     float array[] = {100.1345f, 40.2345f, 20.2345f, 18.567f, 17.2134f, 9.67f, 6.1346f, 4.7135f, 3.1f, 2.2345f};
     float* pVectStart = &array[0];
     float* pVectEnd = &array[9];
@@ -1377,7 +1377,7 @@ TEST(Utilities, SortedArrayInsertFloatDescMid) {
     }
 }
 
-TEST(Utilities, SortedArraysInsertIntAscFirst) {
+TEST(Utils, SortedArraysInsertIntAscFirst) {
     int arrayRef[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
     int arrayOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int newvalueRef = 1;
@@ -1392,7 +1392,7 @@ TEST(Utilities, SortedArraysInsertIntAscFirst) {
     }
 }
 
-TEST(Utilities, SortedArraysInsertIntAscMid) {
+TEST(Utils, SortedArraysInsertIntAscMid) {
     int arrayRef[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
     int arrayOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int newvalueRef = 11;
@@ -1407,7 +1407,7 @@ TEST(Utilities, SortedArraysInsertIntAscMid) {
     }
 }
 
-TEST(Utilities, SortedArraysInsertIntAscLast) {
+TEST(Utils, SortedArraysInsertIntAscLast) {
     int arrayRef[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
     int arrayOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int newvalueRef = 99;
@@ -1422,7 +1422,7 @@ TEST(Utilities, SortedArraysInsertIntAscLast) {
     }
 }
 
-TEST(Utilities, SortedArraysInsertFloatAscMid) {
+TEST(Utils, SortedArraysInsertFloatAscMid) {
     float arrayRef[] = {2.254f, 3.345f, 4.625f, 6.47f, 9.7f, 17.245f, 18.0f, 20.67f, 40.25f, 100.25f};
     float arrayOther[] = {1.7f, 2.4f, 3.346f, 4.7f, 5.1346f, 6.715f, 7.1346f, 8.1357f, 9.1346f, 10.715f};
     float newvalueRef = 11.175f;
@@ -1437,7 +1437,7 @@ TEST(Utilities, SortedArraysInsertFloatAscMid) {
     }
 }
 
-TEST(Utilities, SortedArraysInsertDoubleAscMid) {
+TEST(Utils, SortedArraysInsertDoubleAscMid) {
     double arrayRef[] = {2.254, 3.345, 4.625, 6.47, 9.7, 17.245, 18, 20.67, 40.25, 100.25};
     double arrayOther[] = {1.7, 2.4, 3.346, 4.7, 5.1346, 6.715, 7.1346, 8.1357, 9.1346, 10.715};
     double newvalueRef = 11.175;
@@ -1452,7 +1452,7 @@ TEST(Utilities, SortedArraysInsertDoubleAscMid) {
     }
 }
 
-TEST(Utilities, SortArrayAsc) {
+TEST(Utils, SortArrayAsc) {
     double arrayRef[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
     double* pVectStart = &array[0];
@@ -1463,7 +1463,7 @@ TEST(Utilities, SortArrayAsc) {
     }
 }
 
-TEST(Utilities, SortArrayDesc) {
+TEST(Utils, SortArrayDesc) {
     double arrayRef[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
     double* pVectStart = &array[0];
@@ -1474,7 +1474,7 @@ TEST(Utilities, SortArrayDesc) {
     }
 }
 
-TEST(Utilities, SortArraysAsc) {
+TEST(Utils, SortArraysAsc) {
     double arrayRef[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
     double array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
     double arrayOtherRef[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -1490,7 +1490,7 @@ TEST(Utilities, SortArraysAsc) {
     }
 }
 
-TEST(Utilities, SortArraysDesc) {
+TEST(Utils, SortArraysDesc) {
     double arrayRef[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
     double array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
     double arrayOtherRef[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
@@ -1506,13 +1506,13 @@ TEST(Utilities, SortArraysDesc) {
     }
 }
 
-TEST(Utilities, MeanInt) {
+TEST(Utils, MeanInt) {
     int array[] = {36, 8, 4, 6, 9, 56, 234, 45, 2475, 8, 2, 68, 9};
     float result = asMean(&array[0], &array[12]);
     EXPECT_FLOAT_EQ(227.692308f, result);
 }
 
-TEST(Utilities, MeanFloat) {
+TEST(Utils, MeanFloat) {
     float array[] = {36.6348600000f, 8.6544964000f,   4.2346846410f,  6.5284684000f,    9.5498463130f,
                      56.6546544100f, 234.6549840000f, 45.6876513510f, 2475.6465413513f, 8.8765431894f,
                      2.7764850000f,  68.1000000000f,  9.6846510000f};
@@ -1520,7 +1520,7 @@ TEST(Utilities, MeanFloat) {
     EXPECT_FLOAT_EQ(228.283374311977f, result);
 }
 
-TEST(Utilities, MeanDouble) {
+TEST(Utils, MeanDouble) {
     double array[] = {36.6348600000, 8.6544964000,   4.2346846410,  6.5284684000,    9.5498463130,
                       56.6546544100, 234.6549840000, 45.6876513510, 2475.6465413513, 8.8765431894,
                       2.7764850000,  68.1000000000,  9.6846510000};
@@ -1528,43 +1528,43 @@ TEST(Utilities, MeanDouble) {
     EXPECT_DOUBLE_EQ(228.283374311977, result);
 }
 
-TEST(Utilities, SdtDevSampleIntSample) {
+TEST(Utils, SdtDevSampleIntSample) {
     int array[] = {6, 113, 78, 35, 23, 56, 23, 2};
     float result = asStDev(&array[0], &array[7], asSAMPLE);
     EXPECT_FLOAT_EQ(38.17254062f, result);
 }
 
-TEST(Utilities, SdtDevSampleIntEntirePop) {
+TEST(Utils, SdtDevSampleIntEntirePop) {
     int array[] = {6, 113, 78, 35, 23, 56, 23, 2};
     float result = asStDev(&array[0], &array[7], asENTIRE_POPULATION);
     EXPECT_FLOAT_EQ(35.70714214f, result);
 }
 
-TEST(Utilities, SdtDevSampleFloatSample) {
+TEST(Utils, SdtDevSampleFloatSample) {
     float array[] = {6.1465134f, 113.134613f, 78.214334f, 35.23562346f, 23.21342f, 56.4527245f, 23.24657457f, 2.98467f};
     float result = asStDev(&array[0], &array[7], asSAMPLE);
     EXPECT_FLOAT_EQ(38.05574973f, result);
 }
 
-TEST(Utilities, SdtDevSampleFloatEntirePop) {
+TEST(Utils, SdtDevSampleFloatEntirePop) {
     float array[] = {6.1465134f, 113.134613f, 78.214334f, 35.23562346f, 23.21342f, 56.4527245f, 23.24657457f, 2.98467f};
     float result = asStDev(&array[0], &array[7], asENTIRE_POPULATION);
     EXPECT_FLOAT_EQ(35.59789427f, result);
 }
 
-TEST(Utilities, SdtDevSampleDoubleSample) {
+TEST(Utils, SdtDevSampleDoubleSample) {
     double array[] = {6.1465134, 113.134613, 78.214334, 35.23562346, 23.21342, 56.4527245, 23.24657457, 2.98467};
     double result = asStDev(&array[0], &array[7], asSAMPLE);
     EXPECT_FLOAT_EQ(38.05574973f, result);
 }
 
-TEST(Utilities, SdtDevSampleDoubleEntirePop) {
+TEST(Utils, SdtDevSampleDoubleEntirePop) {
     double array[] = {6.1465134, 113.134613, 78.214334, 35.23562346, 23.21342, 56.4527245, 23.24657457, 2.98467};
     double result = asStDev(&array[0], &array[7], asENTIRE_POPULATION);
     EXPECT_FLOAT_EQ(35.59789427f, result);
 }
 
-TEST(Utilities, RandomInt) {
+TEST(Utils, RandomInt) {
     asInitRandom();
     int result1, result2;
     result1 = asRandom(0, 10000, 2);
@@ -1572,7 +1572,7 @@ TEST(Utilities, RandomInt) {
     EXPECT_FALSE(result1 == result2);
 }
 
-TEST(Utilities, RandomFloat) {
+TEST(Utils, RandomFloat) {
     asInitRandom();
     float result1, result2;
     float start, end, step;
@@ -1598,7 +1598,7 @@ TEST(Utilities, RandomFloat) {
     EXPECT_EQ(0, std::fmod(result2 - start, step));
 }
 
-TEST(Utilities, RandomDouble) {
+TEST(Utils, RandomDouble) {
     asInitRandom();
     double result1, result2;
     double start, end, step;
@@ -1627,7 +1627,7 @@ TEST(Utilities, RandomDouble) {
 // View resulting file on Matlab:
 // 1. drag'n'drop in the Worskspace
 // 2. figure; hist(data(:,i), 100);
-TEST(Utilities, RandomUniformDistributionToFile) {
+TEST(Utils, RandomUniformDistributionToFile) {
     asInitRandom();
 
     // Create a file
@@ -1664,7 +1664,7 @@ TEST(Utilities, RandomUniformDistributionToFile) {
 // View resulting file on Matlab:
 // 1. drag'n'drop in the Worskspace
 // 2. figure; hist(data(:,i), 100);
-TEST(Utilities, RandomNormalDistributionToFile) {
+TEST(Utils, RandomNormalDistributionToFile) {
     asInitRandom();
 
     // Create a file

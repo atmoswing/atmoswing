@@ -26,7 +26,7 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asUtilities.h"
+#include "asUtils.h"
 
 void asThrow(const wxString& msg) {
     throw std::runtime_error(msg.ToStdString());

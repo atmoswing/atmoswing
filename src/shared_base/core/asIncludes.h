@@ -127,7 +127,7 @@
 // Some AtmoSwing stuff - frequently used classes
 //---------------------------------
 
-#include "asTypeDefs.h"
+#include "asTypeDefs.h" // Must be first
 
 #include "asConfig.h"
 #include "asGlobEnums.h"
@@ -136,7 +136,7 @@
 #include "asThreadsManager.h"
 #include "asThreadsManagerGlobalFunctions.h"
 #include "asTime.h"
-#include "asUtilities.h"
+#include "asUtils.h"
 #include "asVersion.h"
 
 #if USE_GUI
