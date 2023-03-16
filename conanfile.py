@@ -1,4 +1,5 @@
 from conans import ConanFile, CMake
+import os
 
 
 class AmtoSwing(ConanFile):
@@ -77,17 +78,29 @@ class AmtoSwing(ConanFile):
         if self.settings.os == "Windows" or self.settings.os == "Linux":
             self.copy("*", dst="share/proj", src="res", root_package="proj")
         if self.settings.os == "Macos":
-            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/proj", src="res", root_package="proj")
+            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/proj", src="res",
+                      root_package="proj")
             if self.options.enable_tests:
                 self.copy("*", dst="bin", src="res", root_package="proj")
 
         # Copy eccodes library data
         if self.settings.os == "Windows" or self.settings.os == "Linux":
-            self.copy("*", dst="share/eccodes", src="share/eccodes", root_package="eccodes")
+            self.copy("*", dst="share/eccodes", src="share/eccodes",
+                      root_package="eccodes")
         if self.settings.os == "Macos":
-            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/eccodes", src="share/eccodes", root_package="eccodes")
+            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/eccodes",
+                      src="share/eccodes", root_package="eccodes")
             if self.options.enable_tests:
                 self.copy("*", dst="bin", src="share/eccodes", root_package="eccodes")
+
+        # Copy data files
+        _source_folder = os.path.join(os.getcwd(), "..")
+        if self.settings.os == "Windows" or self.settings.os == "Linux":
+            self.copy("*", dst="share/atmoswing",
+                      src=os.path.join(_source_folder, "data"))
+        if self.settings.os == "Macos":
+            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/atmoswing",
+                      src=os.path.join(_source_folder, "data"))
 
     def build(self):
         cmake = CMake(self)
