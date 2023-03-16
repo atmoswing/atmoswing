@@ -593,7 +593,6 @@ short asFileNetcdf::GetAttShort(const wxString& attName, const wxString& varName
         int attId = GetAttId(attName);
         if (attId == asNOT_FOUND) {
             throw exception(_("Cannot find the desired attribute in the netCDF file."));
-            return NaNs;
         }
         nc_type nctype = m_struct.atts[attId].type;
 
@@ -603,7 +602,6 @@ short asFileNetcdf::GetAttShort(const wxString& attName, const wxString& varName
         } else if (nctype != NC_SHORT) {
             throw exception(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."), attName,
                            (int)nctype, (int)NC_SHORT));
-            return NaNs;
         }
 
         // Get value
@@ -613,12 +611,10 @@ short asFileNetcdf::GetAttShort(const wxString& attName, const wxString& varName
         int varId = GetVarId(varName);
         if (varId == asNOT_FOUND) {
             throw exception(_("Cannot find the desired variable in the netCDF file."));
-            return NaNs;
         }
         int attId = GetAttId(attName, varName);
         if (attId == asNOT_FOUND) {
             throw exception(_("Cannot find the desired attribute in the netCDF file."));
-            return NaNs;
         }
         nc_type nctype = m_struct.vars[varId].atts[attId].type;
 
@@ -628,7 +624,6 @@ short asFileNetcdf::GetAttShort(const wxString& attName, const wxString& varName
         } else if (nctype != NC_SHORT) {
             throw exception(asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
                            attName, (int)nctype, (int)NC_SHORT));
-            return NaNs;
         }
 
         // Get value
@@ -778,7 +773,6 @@ char asFileNetcdf::GetAttChar(const wxString& attName, const wxString& varName) 
         int attId = GetAttId(attName);
         if (attId == asNOT_FOUND) {
             throw exception(_("Cannot find the desired attribute in the netCDF file."));
-            return ' ';
         }
         nc_type nctype = m_struct.atts[attId].type;
 
@@ -795,12 +789,10 @@ char asFileNetcdf::GetAttChar(const wxString& attName, const wxString& varName) 
         int varId = GetVarId(varName);
         if (varId == asNOT_FOUND) {
             throw exception(_("Cannot find the desired variable in the netCDF file."));
-            return ' ';
         }
         int attId = GetAttId(attName, varName);
         if (attId == asNOT_FOUND) {
             throw exception(_("Cannot find the desired attribute in the netCDF file."));
-            return ' ';
         }
         nc_type nctype = m_struct.vars[varId].atts[attId].type;
 
@@ -872,7 +864,6 @@ wxString asFileNetcdf::GetAttString(const wxString& attName, const wxString& var
             wxDELETEA(text);
             throw exception(asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
                            attName, (int)nctype, (int)NC_CHAR));
-            return wxEmptyString;
         }
 
         // Get value
@@ -926,7 +917,6 @@ nc_type asFileNetcdf::GetVarType(const wxString& varName) {
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Variable name not found in the file."));
-        return NC_NAT;
     }
 
     return m_struct.vars[varId].type;
@@ -942,7 +932,6 @@ void asFileNetcdf::GetVar(const wxString& varName, short* pValue) {
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type
@@ -966,7 +955,6 @@ void asFileNetcdf::GetVar(const wxString& varName, int* pValue) {
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type
@@ -991,7 +979,6 @@ void asFileNetcdf::GetVar(const wxString& varName, float* pValue) {
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type
@@ -1016,7 +1003,6 @@ void asFileNetcdf::GetVar(const wxString& varName, double* pValue) {
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type
@@ -1041,7 +1027,6 @@ void asFileNetcdf::GetVar(const wxString& varName, wxString* pValue, const size_
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type
@@ -1073,7 +1058,6 @@ short asFileNetcdf::GetVarOneShort(const wxString& varName, size_t arrIndex) {
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return NaNs;
     }
 
     // Check the given type
@@ -1101,7 +1085,6 @@ int asFileNetcdf::GetVarOneInt(const wxString& varName, size_t arrIndex) {
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return NaNi;
     }
 
     // Check the given type
@@ -1129,7 +1112,6 @@ float asFileNetcdf::GetVarOneFloat(const wxString& varName, size_t arrIndex) {
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return NaNf;
     }
 
     // Check the given type
@@ -1157,7 +1139,6 @@ double asFileNetcdf::GetVarOneDouble(const wxString& varName, size_t arrIndex) {
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return NaNd;
     }
 
     // Check the given type
@@ -1186,7 +1167,6 @@ void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type
@@ -1220,7 +1200,6 @@ void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type
@@ -1254,7 +1233,6 @@ void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type
@@ -1288,7 +1266,6 @@ void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type
@@ -1322,7 +1299,6 @@ void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type
@@ -1357,7 +1333,6 @@ void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type
@@ -1392,7 +1367,6 @@ void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type. Allow the short type here.
@@ -1427,7 +1401,6 @@ void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
         throw exception(_("Cannot get the desired variable from the netCDF file."));
-        return;
     }
 
     // Check the given type
@@ -1500,7 +1473,6 @@ void asFileNetcdf::ClearStruct() {
                         throw exception(asStrF(
                             _("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
                             nctype, att.name));
-                        break;
                 }
 
                 att.pValue = nullptr;
@@ -1553,7 +1525,6 @@ void asFileNetcdf::ClearStruct() {
                     throw exception(
                         asStrF(_("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
                                nctype, att.name));
-                    break;
             }
 
             att.pValue = nullptr;

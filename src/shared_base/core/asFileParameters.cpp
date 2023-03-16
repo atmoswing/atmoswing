@@ -53,7 +53,6 @@ vi asFileParameters::BuildVectorInt(int min, int max, int step) {
     }
     if (step == 0) {
         throw exception(_("Error when building a vector from the parameters file: step=0."));
-        return vi(0);
     }
 
     int stepsnb = 1 + (max - min) / step;
