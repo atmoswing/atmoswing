@@ -54,6 +54,10 @@ class asFramePredictors : public asFramePredictorsVirtual {
 
     ~asFramePredictors();
 
+    void Init();
+
+    void InitExtent();
+
     void OpenDefaultLayers();
 
   protected:

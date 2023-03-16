@@ -841,18 +841,16 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 
 	m_staticTextChoiceForecast = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Forecast"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextChoiceForecast->Wrap( -1 );
-	m_sizerScrolledWindow->Add( m_staticTextChoiceForecast, 0, wxTOP|wxRIGHT|wxLEFT|wxALIGN_CENTER_HORIZONTAL, 5 );
+	m_sizerScrolledWindow->Add( m_staticTextChoiceForecast, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 
 	wxArrayString m_choiceForecastChoices;
 	m_choiceForecast = new wxChoice( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceForecastChoices, 0 );
 	m_choiceForecast->SetSelection( 0 );
-	m_choiceForecast->SetMaxSize( wxSize( 150,-1 ) );
-
-	m_sizerScrolledWindow->Add( m_choiceForecast, 0, wxEXPAND|wxALL, 5 );
+	m_sizerScrolledWindow->Add( m_choiceForecast, 0, wxALL|wxEXPAND, 5 );
 
 	m_staticTextCheckListPredictors = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Possible predictors"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextCheckListPredictors->Wrap( -1 );
-	m_sizerScrolledWindow->Add( m_staticTextCheckListPredictors, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	m_sizerScrolledWindow->Add( m_staticTextCheckListPredictors, 0, wxALL, 5 );
 
 	wxArrayString m_checkListPredictorsChoices;
 	m_checkListPredictors = new wxCheckListBox( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_checkListPredictorsChoices, 0 );
@@ -860,11 +858,11 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 
 	m_staticTextTocLeft = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Layers of the left panel"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextTocLeft->Wrap( -1 );
-	m_sizerScrolledWindow->Add( m_staticTextTocLeft, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	m_sizerScrolledWindow->Add( m_staticTextTocLeft, 0, wxALL, 5 );
 
 	m_staticTextTocRight = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Layers of the right panel"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextTocRight->Wrap( -1 );
-	m_sizerScrolledWindow->Add( m_staticTextTocRight, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	m_sizerScrolledWindow->Add( m_staticTextTocRight, 0, wxALL, 5 );
 
 
 	m_scrolledWindowOptions->SetSizer( m_sizerScrolledWindow );

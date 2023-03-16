@@ -43,6 +43,7 @@ EVT_MENU(asID_ZOOM_IN, asFramePredictors::OnToolZoomIn)
 EVT_MENU(asID_ZOOM_OUT, asFramePredictors::OnToolZoomOut)
 EVT_MENU(asID_ZOOM_FIT, asFramePredictors::OnToolZoomToFit)
 EVT_MENU(asID_PAN, asFramePredictors::OnToolPan)
+EVT_MENU(asID_CROSS_MARKER, asFramePredictors::OnToolSight)
 
 EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOM, asFramePredictors::OnToolAction)
 EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOMOUT, asFramePredictors::OnToolAction)
@@ -51,25 +52,45 @@ EVT_COMMAND(wxID_ANY, vrEVT_TOOL_SIGHT, asFramePredictors::OnToolAction)
 
 END_EVENT_TABLE()
 
-asFramePredictors::asFramePredictors(wxWindow* parent, int selectedForecast, asForecastManager* forecastManager,
-                                     wxWindowID id)
-    : asFramePredictorsVirtual(parent, id) {
-    m_forecastManager = forecastManager;
+/* vroomDropFilesPredictors */
+
+vroomDropFilesPredictors::vroomDropFilesPredictors(asFramePredictors* parent) {
+    wxASSERT(parent);
+    m_LoaderFrame = parent;
+}
+
+bool vroomDropFilesPredictors::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames) {
+    if (filenames.GetCount() == 0) return false;
+
+    m_LoaderFrame->OpenLayers(filenames);
+    return true;
+}
+
 asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* forecastManager, asWorkspace* workspace,
-                                     int selectedForecast, wxWindowID id)
+                                     wxWindowID id)
     : asFramePredictorsVirtual(parent, id),
       m_forecastManager(forecastManager),
       m_workspace(workspace)
 {
+    m_selectedForecast = 0;
+    m_selectedTargetDate = -1;
+    m_selectedAnalogDate = -1;
+    m_syncroTool = true;
+    m_displayPanelLeft = true;
+    m_displayPanelRight = true;
+
     // Toolbar
     m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), *_img_map_zoom_in, *_img_map_zoom_in, wxITEM_NORMAL, _("Zoom in"),
                        _("Zoom in"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), *_img_map_zoom_out, *_img_map_zoom_out, wxITEM_NORMAL, _("Zoom out"),
-                       _("Zoom out"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), *_img_map_zoom_out, *_img_map_zoom_out, wxITEM_NORMAL,
+                       _("Zoom out"), _("Zoom out"), nullptr);
     m_toolBar->AddTool(asID_PAN, wxT("Pan"), *_img_map_move, *_img_map_move, wxITEM_NORMAL, _("Pan the map"),
                        _("Move the map by panning"), nullptr);
     m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), *_img_map_fit, *_img_map_fit, wxITEM_NORMAL, _("Zoom to visible layers"),
                        _("Zoom view to the full extent of all visible layers"), nullptr);
+    m_toolBar->AddTool(asID_CROSS_MARKER, wxT("Marker overlay"), *_img_map_cross, *_img_map_cross, wxITEM_NORMAL,
+                       _("Display a cross marker overlay"), _("Display a cross marker overlay on both frames"),
+                       nullptr);
     m_toolBar->AddSeparator();
     m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
                        _("Preferences"), _("Preferences"), nullptr);
@@ -355,6 +376,11 @@ void asFramePredictors::OnToolPan(wxCommandEvent& event) {
     m_displayCtrlRight->SetToolPan();
 }
 
+void asFramePredictors::OnToolSight(wxCommandEvent& event) {
+    m_displayCtrlLeft->SetToolSight();
+    m_displayCtrlRight->SetToolSight();
+}
+
 
 void asFramePredictors::OnToolAction(wxCommandEvent& event) {
     auto msg = static_cast<vrDisplayToolMessage*>(event.GetClientData());
@@ -483,17 +509,17 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
 
         {
             wxClientDC dc(invertedMgr->GetDisplay());
-            wxDCOverlay overlaydc(m_overlay, &dc);
-            overlaydc.Clear();
+            wxDCOverlay overlayDc(m_overlay, &dc);
+            overlayDc.Clear();
         }
 
         m_overlay.Reset();
 
         if (msg->m_position != wxDefaultPosition) {
             wxClientDC dc(invertedMgr->GetDisplay());
-            wxDCOverlay overlaydc(m_overlay, &dc);
-            overlaydc.Clear();
-            dc.SetPen(*wxGREEN_PEN);
+            wxDCOverlay overlayDc(m_overlay, &dc);
+            overlayDc.Clear();
+            dc.SetPen(*wxRED_PEN);
             dc.CrossHair(msg->m_position);
         }
     } else {
