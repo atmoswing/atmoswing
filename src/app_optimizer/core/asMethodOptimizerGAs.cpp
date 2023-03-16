@@ -52,6 +52,10 @@ asMethodOptimizerGAs::asMethodOptimizerGAs()
       m_crossoverType(0),
       m_mutationsModeType(0),
       m_allowElitismForTheBest(true),
+      m_reassessMiniBatchBests(true),
+      m_miniBatchSize(365),
+      m_miniBatchSizeMax(0),
+      m_epoch(1),
       m_epochMax(30) {
     m_warnFailedLoadingData = false;
 }
@@ -60,6 +64,7 @@ asMethodOptimizerGAs::~asMethodOptimizerGAs() = default;
 
 void asMethodOptimizerGAs::ClearAll() {
     m_parameters.clear();
+    m_parametersBatchBests.clear();
     m_scoresCalib.clear();
     m_scoreCalibBest = NaNf;
     m_scoreValid = NaNf;
@@ -81,7 +86,7 @@ void asMethodOptimizerGAs::SortScoresAndParameters() {
     asSortArrays(&m_scoresCalib[0], &m_scoresCalib[paramsNb - 1], &vIndices[0], &vIndices[paramsNb - 1], m_scoreOrder);
 
     // Sort the parameters sets as the scores
-    std::vector<asParametersOptimizationGAs> copyParameters;
+    vector<asParametersOptimizationGAs> copyParameters;
     for (int i = 0; i < paramsNb; i++) {
         copyParameters.push_back(m_parameters[i]);
     }
@@ -395,13 +400,22 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             if (asIsNaN(m_scoreCalibBest)) {
                 m_parameterBest = m_parameters[0];
                 m_scoreCalibBest = m_scoresCalib[0];
+                if (m_reassessMiniBatchBests) {
+                    m_parametersBatchBests.push_back(m_parameterBest);
+                }
             } else {
                 if (m_scoreOrder == Asc && m_scoresCalib[0] < m_scoreCalibBest) {
                     m_scoreCalibBest = m_scoresCalib[0];
                     m_parameterBest = m_parameters[0];
+                    if (m_reassessMiniBatchBests) {
+                        m_parametersBatchBests.push_back(m_parameterBest);
+                    }
                 } else if (m_scoreOrder == Desc && m_scoresCalib[0] > m_scoreCalibBest) {
                     m_scoreCalibBest = m_scoresCalib[0];
                     m_parameterBest = m_parameters[0];
+                    if (m_reassessMiniBatchBests) {
+                        m_parametersBatchBests.push_back(m_parameterBest);
+                    }
                 }
             }
         } else {
@@ -545,6 +559,15 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
     }
 #endif
     ThreadsManager().AddThread(thread);
+
+    // Restore all previously-selected best ones
+    if (m_reassessMiniBatchBests) {
+        for (const auto& param : m_parametersBatchBests) {
+            m_parameters.push_back(param);
+        }
+        m_paramsNb = m_parameters.size();
+        m_scoresCalib.resize(m_paramsNb);
+    }
 
     // Add threads when they become available
     m_iterator = 0;
@@ -703,7 +726,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
     asParametersOptimizationGAs prevParams;
 
     // Parse the parameters data
-    std::vector<float> vectScores;
+    vector<float> vectScores;
     vectScores.reserve(nLines);
 
     int iLine = 0, iVar = 0;
@@ -1222,7 +1245,7 @@ bool asMethodOptimizerGAs::NaturalSelection() {
 
     wxLogVerbose(_("Applying natural selection."));
 
-    std::vector<asParametersOptimizationGAs> parameters = m_parameters;
+    vector<asParametersOptimizationGAs> parameters = m_parameters;
     vf scores = m_scoresCalib;
     m_parameters.clear();
     m_scoresCalib.clear();
@@ -1322,8 +1345,8 @@ bool asMethodOptimizerGAs::Mating() {
     ThreadsManager().CritSectionConfig().Leave();
 
     // Build chromosomes
-    for (int i = 0; i < m_parameters.size(); i++) {
-        wxASSERT(m_parameters[i].GetChromosomeLength() > 0);
+    for (auto& parameter : m_parameters) {
+        wxASSERT(parameter.GetChromosomeLength() > 0);
     }
 
     int sizeParents = int(m_parameters.size());
@@ -1629,18 +1652,13 @@ bool asMethodOptimizerGAs::Mating() {
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asRandom(0, chromosomeLength - 1, 1);
                     if (!crossingPoints.empty()) {
-                        // Check that is not already stored
-                        if (chromosomeLength > crossoverNbPoints) {
-                            for (int iPts = 0; iPts < crossingPoints.size(); iPts++) {
-                                if (crossingPoints[iPts] == crossingPoint) {
-                                    crossingPoints.erase(crossingPoints.begin() + iPts);
-                                    wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
-                                    iCross--;
-                                    break;
-                                }
+                        for (int iPts = 0; iPts < crossingPoints.size(); iPts++) {
+                            if (crossingPoints[iPts] == crossingPoint) {
+                                crossingPoints.erase(crossingPoints.begin() + iPts);
+                                wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
+                                iCross--;
+                                break;
                             }
-                        } else {
-                            wxLogVerbose(_("There are more crossing points than chromosomes."));
                         }
                     }
                     crossingPoints.push_back(crossingPoint);
@@ -2159,7 +2177,7 @@ bool asMethodOptimizerGAs::Mutation() {
             ThreadsManager().CritSectionConfig().Enter();
             pConfig->Read("/GAs/MutationsNonUniformProbability", &mutationsProbability, 0.2);
             pConfig->Read("/GAs/MutationsNonUniformMaxGensNbVar", &nbGenMax, 50);
-            pConfig->Read("/GAs/MutationsNonUniformMinRate", &minRate, 0.20);
+            pConfig->Read("/GAs/MutationsNonUniformMinRate", &minRate, 0.10);
             ThreadsManager().CritSectionConfig().Leave();
 
             for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
@@ -2240,7 +2258,7 @@ bool asMethodOptimizerGAs::Mutation() {
         case (MultiScale): {
             double mutationsProbability;
             ThreadsManager().CritSectionConfig().Enter();
-            pConfig->Read("/GAs/MutationsMultiScaleProbability", &mutationsProbability, 0.2);
+            pConfig->Read("/GAs/MutationsMultiScaleProbability", &mutationsProbability, 0.1);
             ThreadsManager().CritSectionConfig().Leave();
 
             for (int iInd = 0; iInd < m_parameters.size(); iInd++) {

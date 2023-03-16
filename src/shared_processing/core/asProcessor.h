@@ -49,16 +49,16 @@ struct CudaCallbackParams;
 
 class asProcessor : public wxObject {
   public:
-    static bool GetAnalogsDates(std::vector<asPredictor*> predictorsArchive, std::vector<asPredictor*> predictorsTarget,
+    static bool GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
                                 asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayArchiveSelection,
                                 asTimeArray& timeArrayTargetData, asTimeArray& timeArrayTargetSelection,
-                                std::vector<asCriteria*> criteria, asParameters* params, int step,
+                                vector<asCriteria*> criteria, asParameters* params, int step,
                                 asResultsDates& results, bool& containsNaNs);
 
-    static bool GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive,
-                                   std::vector<asPredictor*> predictorsTarget, asTimeArray& timeArrayArchiveData,
+    static bool GetAnalogsSubDates(vector<asPredictor*> predictorsArchive,
+                                   vector<asPredictor*> predictorsTarget, asTimeArray& timeArrayArchiveData,
                                    asTimeArray& timeArrayTargetData, asResultsDates& anaDates,
-                                   std::vector<asCriteria*> criteria, asParameters* params, int step,
+                                   vector<asCriteria*> criteria, asParameters* params, int step,
                                    asResultsDates& results, bool& containsNaNs);
 
     static bool GetAnalogsValues(asPredictand& predictand, asResultsDates& anaDates, asParameters* params,
@@ -76,9 +76,9 @@ class asProcessor : public wxObject {
 
   protected:
   private:
-    static bool CheckArchiveTimeArray(const std::vector<asPredictor*>& predictorsArchive, const a1d& timeArchiveData);
+    static bool CheckArchiveTimeArray(const vector<asPredictor*>& predictorsArchive, const a1d& timeArchiveData);
 
-    static bool CheckTargetTimeArray(const std::vector<asPredictor*>& predictorsTarget, const a1d& timeTargetData);
+    static bool CheckTargetTimeArray(const vector<asPredictor*>& predictorsTarget, const a1d& timeTargetData);
 };
 
 #endif

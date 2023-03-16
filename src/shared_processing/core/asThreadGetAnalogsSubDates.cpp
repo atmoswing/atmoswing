@@ -35,9 +35,9 @@
 #include "asTimeArray.h"
 
 asThreadGetAnalogsSubDates::asThreadGetAnalogsSubDates(
-    std::vector<asPredictor*> predictorsArchive, std::vector<asPredictor*> predictorsTarget,
+    vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
     asTimeArray* timeArrayArchiveData, asTimeArray* timeArrayTargetData, a1f* timeTargetSelection,
-    std::vector<asCriteria*> criteria, asParameters* params, int step, vpa2f& vTargData, vpa2f& vArchData, a1i& vRowsNb,
+    vector<asCriteria*> criteria, asParameters* params, int step, vpa2f& vTargData, vpa2f& vArchData, a1i& vRowsNb,
     a1i& vColsNb, int start, int end, a2f* finalAnalogsCriteria, a2f* finalAnalogsDates, a2f* previousAnalogsDates,
     bool* containsNaNs, bool* success)
     : asThread(asThread::ProcessorGetAnalogsDates),
@@ -184,7 +184,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
                         // Add score and date to the vectors
                         scoreArrayOneDay[counter] = thisscore;
                         dateArrayOneDay[counter] = (float)timeArchiveData[iTimeArch];
-                    } else if (counter == analogsNb - 1) {
+                    } else {
                         // Add score and date to the vectors
                         scoreArrayOneDay[counter] = thisscore;
                         dateArrayOneDay[counter] = (float)timeArchiveData[iTimeArch];

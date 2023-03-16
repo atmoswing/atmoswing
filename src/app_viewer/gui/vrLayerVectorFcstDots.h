@@ -40,6 +40,7 @@
 
 #include "asIncludes.h"
 #include "vrlayervector.h"
+#include "vrrender.h"
 
 class vrRender;
 
@@ -68,7 +69,7 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
     double m_valueMax;
 
     virtual void _DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry, const wxRect2DDouble& coord,
-                            const vrRender* render, vrLabel* label, double pxsize);
+                            vrRenderVector* render, vrLabel* label, double pxsize);
 
     void _CreatePath(wxGraphicsPath& path, const wxPoint& center);
 

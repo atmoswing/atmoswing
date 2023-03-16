@@ -84,7 +84,7 @@ void asPredictorGenericNetcdf::ListFiles(asTimeArray& timeArray) {
     size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, "*.nc");
 
     if (nbFiles == 0) {
-        asThrowException(_("No file found for the generic archive."));
+        asThrow(_("No file found for the generic archive."));
     }
 
     listFiles.Sort();

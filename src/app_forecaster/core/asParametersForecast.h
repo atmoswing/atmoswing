@@ -57,14 +57,14 @@ class asParametersForecast : public asParameters {
         int preprocessRealtimeMembersNb = 0;
     } ParamsPredictorForecast;
 
-    typedef std::vector<ParamsPredictorForecast> VectorParamsPredictorsForecast;
+    typedef vector<ParamsPredictorForecast> VectorParamsPredictorsForecast;
 
     typedef struct ParamsStepForecast {
         vi analogsNumberLeadTime;
         VectorParamsPredictorsForecast predictors;
     } ParamsStepForecast;
 
-    typedef std::vector<ParamsStepForecast> VectorParamsStepForecast;
+    typedef vector<ParamsStepForecast> VectorParamsStepForecast;
 
     asParametersForecast();
 

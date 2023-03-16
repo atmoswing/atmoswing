@@ -28,6 +28,10 @@
 
 #include "asUtilities.h"
 
+void asThrow(const wxString& msg) {
+    throw std::runtime_error(msg.ToStdString());
+}
+
 bool asRemoveDir(const wxString& path) {
     wxString f = wxFindFirstFile(path + DS + "*.*");
     while (!f.empty()) {
@@ -850,8 +854,8 @@ int asFindT(const T* pArrStart, const T* pArrEnd, const T targetValue, const T t
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = (T*)pArrStart;
-    pLast = (T*)pArrEnd;
+    pFirst = const_cast<T*>(pArrStart);
+    pLast = const_cast<T*>(pArrEnd);
 
     // Check array order
     if (*pLast > *pFirst) {
@@ -871,9 +875,9 @@ int asFindT(const T* pArrStart, const T* pArrEnd, const T targetValue, const T t
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = (T*)pArrStart;
+            pLast = const_cast<T*>(pArrStart);
         } else if (pLast - pArrEnd > 0) {
-            pLast = (T*)pArrEnd - 1;
+            pLast = const_cast<T*>(pArrEnd) - 1;
         } else if (pLast - pArrEnd == 0) {
             pLast -= 1;
         }
@@ -929,9 +933,9 @@ int asFindT(const T* pArrStart, const T* pArrEnd, const T targetValue, const T t
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = (T*)pArrStart + 1;
+            pFirst = const_cast<T*>(pArrStart) + 1;
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = (T*)pArrEnd;
+            pFirst = const_cast<T*>(pArrEnd);
         } else if (pFirst - pArrStart == 0) {
             pFirst += 1;
         }
@@ -1008,8 +1012,8 @@ int asFindClosestT(const T* pArrStart, const T* pArrEnd, const T targetValue, co
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = (T*)pArrStart;
-    pLast = (T*)pArrEnd;
+    pFirst = const_cast<T*>(pArrStart);
+    pLast = const_cast<T*>(pArrEnd);
 
     // Check array order
     if (*pLast > *pFirst) {
@@ -1037,9 +1041,9 @@ int asFindClosestT(const T* pArrStart, const T* pArrEnd, const T targetValue, co
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = (T*)pArrStart;
+            pLast = const_cast<T*>(pArrStart);
         } else if (pLast - pArrEnd > 0) {
-            pLast = (T*)pArrEnd - 1;
+            pLast = const_cast<T*>(pArrEnd) - 1;
         } else if (pLast - pArrEnd == 0) {
             pLast -= 1;
         }
@@ -1075,9 +1079,9 @@ int asFindClosestT(const T* pArrStart, const T* pArrEnd, const T targetValue, co
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = (T*)pArrStart + 1;
+            pFirst = const_cast<T*>(pArrStart) + 1;
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = (T*)pArrEnd;
+            pFirst = const_cast<T*>(pArrEnd);
         } else if (pFirst - pArrStart == 0) {
             pFirst += 1;
         }
@@ -1126,8 +1130,8 @@ int asFindFloorT(const T* pArrStart, const T* pArrEnd, const T targetValue, cons
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = (T*)pArrStart;
-    pLast = (T*)pArrEnd;
+    pFirst = const_cast<T*>(pArrStart);
+    pLast = const_cast<T*>(pArrEnd);
 
     double tolerance = 0;
     /*
@@ -1161,9 +1165,9 @@ int asFindFloorT(const T* pArrStart, const T* pArrEnd, const T targetValue, cons
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = (T*)pArrStart;
+            pLast = const_cast<T*>(pArrStart);
         } else if (pLast - pArrEnd > 0) {
-            pLast = (T*)pArrEnd;
+            pLast = const_cast<T*>(pArrEnd);
         }
 
         // If the value was not found, return floor value
@@ -1193,9 +1197,9 @@ int asFindFloorT(const T* pArrStart, const T* pArrEnd, const T targetValue, cons
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = (T*)pArrStart;
+            pFirst = const_cast<T*>(pArrStart);
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = (T*)pArrEnd;
+            pFirst = const_cast<T*>(pArrEnd);
         }
 
         // If the value was not found, return floor value
@@ -1238,8 +1242,8 @@ int asFindCeilT(const T* pArrStart, const T* pArrEnd, const T targetValue, const
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = (T*)pArrStart;
-    pLast = (T*)pArrEnd;
+    pFirst = const_cast<T*>(pArrStart);
+    pLast = const_cast<T*>(pArrEnd);
 
     double tolerance = 0;
     /*
@@ -1273,9 +1277,9 @@ int asFindCeilT(const T* pArrStart, const T* pArrEnd, const T targetValue, const
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = (T*)pArrStart;
+            pLast = const_cast<T*>(pArrStart);
         } else if (pLast - pArrEnd > 0) {
-            pLast = (T*)pArrEnd;
+            pLast = const_cast<T*>(pArrEnd);
         }
 
         // If the value was not found, return ceil value
@@ -1305,9 +1309,9 @@ int asFindCeilT(const T* pArrStart, const T* pArrEnd, const T targetValue, const
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = (T*)pArrStart;
+            pFirst = const_cast<T*>(pArrStart);
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = (T*)pArrEnd;
+            pFirst = const_cast<T*>(pArrEnd);
         }
 
         // If the value was not found, return ceil value

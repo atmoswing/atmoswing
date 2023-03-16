@@ -240,7 +240,7 @@ void asPredictorEcmwfEra5::ListFiles(asTimeArray& timeArray) {
     size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, "*.nc");
 
     if (nbFiles == 0) {
-        asThrowException(_("No ERA5 file found."));
+        asThrow(_("No ERA5 file found."));
     }
 
     listFiles.Sort();

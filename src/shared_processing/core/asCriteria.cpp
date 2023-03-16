@@ -111,7 +111,7 @@ void asCriteria::CheckNaNs(const asPredictor* ptor1, const asPredictor* ptor2) {
         return;
     }
 
-    if (!ptor1->HasNaN() && !ptor1->HasNaN()) {
+    if (!ptor1->HasNaN() && !ptor2->HasNaN()) {
         m_checkNaNs = false;
     }
 }

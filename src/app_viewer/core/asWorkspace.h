@@ -206,9 +206,9 @@ class asWorkspace : public wxObject {
     vb m_layerVisibilities;
     vi m_layerLineWidths;
 #if USE_GUI
-    std::vector<wxColour> m_layerLineColors;
-    std::vector<wxColour> m_layerFillColors;
-    std::vector<wxBrushStyle> m_layerBrushStyles;
+    vector<wxColour> m_layerLineColors;
+    vector<wxColour> m_layerFillColors;
+    vector<wxBrushStyle> m_layerBrushStyles;
 #endif
     double m_colorbarMaxValue;
     int m_timeSeriesPlotPastDaysNb;

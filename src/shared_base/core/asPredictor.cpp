@@ -275,7 +275,7 @@ bool asPredictor::LoadDumpedData() {
     file.Read(&m_axisLon[0], nLons * sizeof(double));
 
     m_data.resize(m_time.size(),
-                  std::vector<a2f, Eigen::aligned_allocator<a2f>>(m_membersNb, a2f(m_latPtsnb, m_lonPtsnb)));
+                  vector<a2f, Eigen::aligned_allocator<a2f>>(m_membersNb, a2f(m_latPtsnb, m_lonPtsnb)));
     size_t size = m_time.size() * m_membersNb * m_latPtsnb * m_lonPtsnb * sizeof(float);
 
     a2f data(m_time.size() * m_membersNb * m_latPtsnb, m_lonPtsnb);
@@ -1111,7 +1111,7 @@ asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
         bool strideAllowed = m_fileType == asFile::Netcdf;
 
         if (!desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats, true)) {
-            asThrowException(_("Failed at initializing the axes."));
+            asThrow(_("Failed at initializing the axes."));
         }
 
         if (desiredArea->IsRegular()) {
@@ -1127,7 +1127,7 @@ asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
 
             auto dataArea = new asAreaRegGrid(*desiredAreaReg);
             if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
-                asThrowException(_("Failed at initializing the axes."));
+                asThrow(_("Failed at initializing the axes."));
             }
 
             dataArea->CorrectCornersWithAxes();
@@ -1152,7 +1152,7 @@ asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
             m_fInd.latStep = 1;
             auto dataArea = new asAreaGenGrid(*desiredAreaGen);
             if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
-                asThrowException(_("Failed at initializing the axes."));
+                asThrow(_("Failed at initializing the axes."));
             }
 
             m_lonPtsnb = dataArea->GetXptsNb();
@@ -2299,7 +2299,7 @@ bool asPredictor::IsLatLon(const wxString& datasetId) {
 
 void asPredictor::CheckLevelTypeIsDefined() {
     if (m_product.IsEmpty()) {
-        asThrowException(
+        asThrow(
             _("The type of product must be defined for this dataset (prefix to the variable name. Ex: press/hgt)."));
     }
 }

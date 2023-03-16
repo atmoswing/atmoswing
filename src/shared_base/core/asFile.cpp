@@ -122,7 +122,7 @@ bool asFile::Find() {
             break;
 
         default:
-            asThrowException(_("The file access is not correctly set."));
+            asThrow(_("The file access is not correctly set."));
     }
 
     if (mkDir) {

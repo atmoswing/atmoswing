@@ -127,8 +127,6 @@
 // Some AtmoSwing stuff - frequently used classes
 //---------------------------------
 
-#define asThrowException(msg) throw std::runtime_error((const char*)msg.ToUTF8())
-
 #include "asTypeDefs.h"
 
 #include "asConfig.h"

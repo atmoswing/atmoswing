@@ -72,7 +72,7 @@ class asMethodForecasting : public asMethodStandard {
     bool GetFiles(asParametersForecast& params, asPredictorOper* predictorRealtime, bool& forecastDateChanged,
                   double hour);
 
-    bool PreprocessRealtimePredictors(std::vector<asPredictorOper*> predictors, const wxString& method,
+    bool PreprocessRealtimePredictors(vector<asPredictorOper*> predictors, const wxString& method,
                                       asPredictor* result);
 
     bool GetAnalogsDates(asResultsForecast& results, asParametersForecast& params, int iStep);
@@ -96,11 +96,11 @@ class asMethodForecasting : public asMethodStandard {
     asResultsForecastAggregator m_aggregator;
     vwxs m_resultsFilePaths;
     wxWindow* m_parent;
-    std::vector<asPredictor*> m_storagePredictorsArchivePreprocess;
-    std::vector<asPredictorOper*> m_storagePredictorsRealtimePreprocess;
-    std::vector<asPredictor*> m_storagePredictorsArchive;
-    std::vector<asPredictor*> m_storagePredictorsRealtime;
-    std::vector<asCriteria*> m_storageCriteria;
+    vector<asPredictor*> m_storagePredictorsArchivePreprocess;
+    vector<asPredictorOper*> m_storagePredictorsRealtimePreprocess;
+    vector<asPredictor*> m_storagePredictorsArchive;
+    vector<asPredictor*> m_storagePredictorsRealtime;
+    vector<asCriteria*> m_storageCriteria;
 };
 
 #endif

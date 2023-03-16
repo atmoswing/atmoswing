@@ -137,7 +137,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if the user asked for the version
     if (parser.Found("v")) {
         wxString date(wxString::FromAscii(__DATE__));
-        asLog::PrintToConsole(asStrF("AtmoSwing version %s, %s\n", g_version, (const wxChar*)date));
+        asLog::PrintToConsole(asStrF("AtmoSwing version %s, %s\n", g_version, static_cast<const wxChar*>(date)));
 
         return false;
     }

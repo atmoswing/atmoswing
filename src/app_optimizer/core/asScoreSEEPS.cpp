@@ -92,7 +92,7 @@ float asScoreSEEPS::Assess(float obs, const a1f& values, int nbElements) const {
     }
     // Forecasted 3, observed 1
     else if (value <= m_thresNull && obs > m_thresHigh) {
-        score = 0.5 * ((1.0 / m_p3) + (1.0 / 1.0 - m_p1));
+        score = 0.5 * ((1.0 / m_p3) + (1.0 / (1.0 - m_p1)));
     }
     // Forecasted 1, observed 2
     else if (value > m_thresNull && value <= m_thresHigh && obs <= m_thresNull) {

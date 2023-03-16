@@ -41,7 +41,7 @@ void asInternet::Cleanup() {
 }
 
 size_t asInternet::WriteFile(void* buffer, size_t size, size_t nmemb, void* stream) {
-    auto* out = (struct HttpFile*)stream;
+    auto* out = static_cast<struct HttpFile*>(stream);
     if (!out->stream) {
         // Open file for writing
         out->stream = fopen(out->fileName, "wb");
@@ -170,7 +170,7 @@ int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString
                                             nullptr};
 
                     // Define the URL
-                    curl_easy_setopt(curl, CURLOPT_URL, (const char*)url.mb_str(wxConvUTF8));
+                    curl_easy_setopt(curl, CURLOPT_URL, static_cast<const char*>(url.mb_str(wxConvUTF8)));
                     // Define our callback to get called when there's data to be written
                     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteFile);
                     // Set a pointer to our struct to pass to the callback
@@ -183,14 +183,16 @@ int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString
                     // If a proxy is used
                     if (usesProxy) {
                         if (!proxyAddress.IsEmpty()) {
-                            curl_easy_setopt(curl, CURLOPT_PROXY, (const char*)proxyAddress.mb_str(wxConvUTF8));
+                            curl_easy_setopt(curl, CURLOPT_PROXY,
+                                             static_cast<const char*>(proxyAddress.mb_str(wxConvUTF8)));
                         }
                         if (proxyPort > 0) {
                             curl_easy_setopt(curl, CURLOPT_PROXYPORT, proxyPort);
                         }
                         if (!proxyUser.IsEmpty()) {
                             wxString proxyLogin = proxyUser + ":" + proxyPasswd;
-                            curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, (const char*)proxyLogin.mb_str(wxConvUTF8));
+                            curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD,
+                                             static_cast<const char*>(proxyLogin.mb_str(wxConvUTF8)));
                         }
                     }
 
