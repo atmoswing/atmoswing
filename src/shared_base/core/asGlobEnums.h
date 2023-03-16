@@ -117,6 +117,7 @@ enum {
     asID_FRAME_DOTS,
     asID_FRAME_PLOTS,
     asID_FRAME_GRID,
+    asID_FRAME_PREDICTORS,
 };
 #endif
 

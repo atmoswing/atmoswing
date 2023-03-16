@@ -130,6 +130,8 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
                        _("Open distributions plots"), nullptr);
     m_toolBar->AddTool(asID_FRAME_GRID, wxT("Open analogs list"), *_img_frame_analogs, *_img_frame_analogs,
                        wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), nullptr);
+    m_toolBar->AddTool(asID_FRAME_PREDICTORS, wxT("Open predictor maps"), *_img_frame_predictors, *_img_frame_predictors,
+                       wxITEM_NORMAL, _("Open predictor maps"), _("Open predictor maps"), nullptr);
     m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
                        _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
@@ -215,6 +217,7 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
                   wxCommandEventHandler(asFrameViewer::OpenFramePreferences));
     this->Connect(asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFramePlots));
     this->Connect(asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFrameGrid));
+    this->Connect(asID_FRAME_PREDICTORS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFrameGrid));
     this->Connect(asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OnOpenForecast));
     this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
                   wxCommandEventHandler(asFrameViewer::OpenFramePredictandDB));
