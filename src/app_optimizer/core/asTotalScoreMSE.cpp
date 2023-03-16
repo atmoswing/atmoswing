@@ -83,7 +83,7 @@ float asTotalScoreMSE::Assess(const a1f& targetDates, const a1f& scores, const a
         }
 
         default: {
-            asThrow(_("Period not yet implemented in asTotalScoreMSE."));
+            throw exception(_("Period not yet implemented in asTotalScoreMSE."));
         }
     }
 }

@@ -227,9 +227,9 @@ void asPredictorJmaJra55Subset::ListFiles(asTimeArray& timeArray) {
                 size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, filePattern);
 
                 if (nbFiles == 0) {
-                    asThrow(asStrF(_("No JRA-55 file found for this pattern : %s."), filePattern));
+                    throw exception(asStrF(_("No JRA-55 file found for this pattern : %s."), filePattern));
                 } else if (nbFiles > 1) {
-                    asThrow(asStrF(_("Multiple JRA-55 files found for this pattern : %s."), filePattern));
+                    throw exception(asStrF(_("Multiple JRA-55 files found for this pattern : %s."), filePattern));
                 }
 
                 m_files.push_back(wxString(listFiles.Item(0)));
@@ -240,9 +240,9 @@ void asPredictorJmaJra55Subset::ListFiles(asTimeArray& timeArray) {
             size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, filePattern);
 
             if (nbFiles == 0) {
-                asThrow(asStrF(_("No JRA-55 file found for this pattern : %s."), filePattern));
+                throw exception(asStrF(_("No JRA-55 file found for this pattern : %s."), filePattern));
             } else if (nbFiles > 1) {
-                asThrow(asStrF(_("Multiple JRA-55 files found for this pattern : %s."), filePattern));
+                throw exception(asStrF(_("Multiple JRA-55 files found for this pattern : %s."), filePattern));
             }
 
             m_files.push_back(wxString(listFiles.Item(0)));

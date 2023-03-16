@@ -274,7 +274,7 @@ class asResultsForecast : public asResults {
         } else if (m_analogsCriteria.size() == i) {
             m_analogsCriteria.push_back(analogsCriteria);
         } else {
-            asThrow(_("The size of the criteria array does not fit with the required index."));
+            throw exception(_("The size of the criteria array does not fit with the required index."));
         }
     }
 
@@ -303,7 +303,7 @@ class asResultsForecast : public asResults {
             wxASSERT(m_analogsValuesRaw[iLead].cols() == analogsValuesRaw.size());
             m_analogsValuesRaw[iLead].row(iStat) = analogsValuesRaw;
         } else {
-            asThrow(_("The size of the values array does not fit with the required index."));
+            throw exception(_("The size of the values array does not fit with the required index."));
         }
     }
 
@@ -332,7 +332,7 @@ class asResultsForecast : public asResults {
             wxASSERT(m_analogsValuesNorm[iLead].cols() == analogsValuesNorm.size());
             m_analogsValuesNorm[iLead].row(iStat) = analogsValuesNorm;
         } else {
-            asThrow(_("The size of the values array does not fit with the required index."));
+            throw exception(_("The size of the values array does not fit with the required index."));
         }
     }
 
@@ -352,7 +352,7 @@ class asResultsForecast : public asResults {
         } else if (m_analogsDates.size() == i) {
             m_analogsDates.push_back(analogsDates);
         } else {
-            asThrow(_("The size of the dates array does not fit with the required index."));
+            throw exception(_("The size of the dates array does not fit with the required index."));
         }
     }
 

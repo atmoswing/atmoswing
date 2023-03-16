@@ -59,7 +59,7 @@ a1f asTotalScoreRankHistogram::AssessOnArray(const a1f& targetDates, const a1f& 
         }
 
         default: {
-            asThrow(_("Period not yet implemented in asTotalScoreRankHistogram."));
+            throw exception(_("Period not yet implemented in asTotalScoreRankHistogram."));
         }
     }
 
