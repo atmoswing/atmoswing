@@ -1439,7 +1439,7 @@ void asFrameViewer::OnMoveLayer(wxCommandEvent& event) {
 
 void asFrameViewer::OnToolAction(wxCommandEvent& event) {
     // Get event
-    auto* msg = (vrDisplayToolMessage*)event.GetClientData();
+    auto* msg = static_cast<vrDisplayToolMessage*>(event.GetClientData());
     wxASSERT(msg);
 
     if (msg->m_evtType == vrEVT_TOOL_ZOOM) {
@@ -1458,8 +1458,8 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
 
         // Moving view
 #if defined(__WIN32__)
-        asThreadViewerLayerManagerZoomIn* thread = new asThreadViewerLayerManagerZoomIn(
-            m_viewerLayerManager, &m_critSectionViewerLayerManager, fittedRect);
+        auto thread = new asThreadViewerLayerManagerZoomIn(m_viewerLayerManager, &m_critSectionViewerLayerManager,
+                                                           fittedRect);
         ThreadsManager().AddThread(thread);
 #else
         m_viewerLayerManager->Zoom(fittedRect);
@@ -1471,8 +1471,8 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
 
         // Get real rectangle
         vrRealRect realRect;
-        wxASSERT(coord->ConvertFromPixels(msg->m_rect, realRect));
         coord->ConvertFromPixels(msg->m_rect, realRect);
+        wxASSERT(realRect.IsOk());
 
         // Get fitted rectangle
         vrRealRect fittedRect = coord->GetRectFitted(realRect);
@@ -1480,8 +1480,8 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
 
         // Moving view
 #if defined(__WIN32__)
-        asThreadViewerLayerManagerZoomOut* thread = new asThreadViewerLayerManagerZoomOut(
-            m_viewerLayerManager, &m_critSectionViewerLayerManager, fittedRect);
+        auto thread = new asThreadViewerLayerManagerZoomOut(m_viewerLayerManager, &m_critSectionViewerLayerManager,
+                                                            fittedRect);
         ThreadsManager().AddThread(thread);
 #else
         m_viewerLayerManager->ZoomOut(fittedRect);
@@ -1587,7 +1587,7 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
         coord->SetExtent(actExtent);
         ReloadViewerLayerManager();
     } else {
-        wxLogError(_("Operation not supported now. Please contact the developers."));
+        wxLogError("Operation not yet supported.");
     }
 
     wxDELETE(msg);
