@@ -1360,10 +1360,6 @@ void asFrameViewer::OnToolPan(wxCommandEvent& event) {
 }
 
 void asFrameViewer::OnToolZoomToFit(wxCommandEvent& event) {
-    // Fit to all layers
-    // m_viewerLayerManager->ZoomToFit(true);
-    // ReloadViewerLayerManager();
-
     // Fit to the forecasts layer
     FitExtentToForecasts();
 }

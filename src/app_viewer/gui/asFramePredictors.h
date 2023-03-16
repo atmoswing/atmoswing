@@ -32,6 +32,20 @@
 #include "asForecastManager.h"
 #include "asIncludes.h"
 #include "asPredictorsRenderer.h"
+#include "vroomgis.h"
+#include "wx/dnd.h"
+
+
+/** Implementing vroomDropFiles */
+class asFramePredictors;
+class vroomDropFilesPredictors : public wxFileDropTarget {
+  private:
+    asFramePredictors* m_LoaderFrame;
+
+  public:
+    vroomDropFilesPredictors(asFramePredictors* parent);
+    virtual bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames);
+};
 
 class asFramePredictors : public asFramePredictorsVirtual {
   public:
@@ -44,6 +58,16 @@ class asFramePredictors : public asFramePredictorsVirtual {
 
   protected:
     wxKeyboardState m_KeyBoardState;
+
+    void OpenFramePreferences(wxCommandEvent& event);
+
+    void OnToolZoomIn(wxCommandEvent& event);
+
+    void OnToolZoomOut(wxCommandEvent& event);
+
+    void OnToolPan(wxCommandEvent& event);
+
+    void OnToolAction(wxCommandEvent& event);
 
     void OnKeyDown(wxKeyEvent& event);
 

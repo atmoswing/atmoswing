@@ -39,6 +39,15 @@
 #include "img_toolbar.h"
 
 BEGIN_EVENT_TABLE(asFramePredictors, wxFrame)
+EVT_MENU(asID_ZOOM_IN, asFramePredictors::OnToolZoomIn)
+EVT_MENU(asID_ZOOM_OUT, asFramePredictors::OnToolZoomOut)
+EVT_MENU(asID_ZOOM_FIT, asFramePredictors::OnToolZoomToFit)
+EVT_MENU(asID_PAN, asFramePredictors::OnToolPan)
+
+EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOM, asFramePredictors::OnToolAction)
+EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOMOUT, asFramePredictors::OnToolAction)
+EVT_COMMAND(wxID_ANY, vrEVT_TOOL_PAN, asFramePredictors::OnToolAction)
+EVT_COMMAND(wxID_ANY, vrEVT_TOOL_SIGHT, asFramePredictors::OnToolAction)
 
 END_EVENT_TABLE()
 
@@ -129,6 +138,15 @@ void asFramePredictors::InitExtent() {
     m_viewerLayerManagerLeft->InitializeExtent(desiredExtent);
     m_viewerLayerManagerRight->InitializeExtent(desiredExtent);
 }
+
+void asFramePredictors::OpenFramePreferences(wxCommandEvent& event) {
+    wxBusyCursor wait;
+
+    auto* frame = new asFramePreferencesViewer(this, m_workspace, asWINDOW_PREFERENCES);
+    frame->Fit();
+    frame->Show();
+}
+
 void asFramePredictors::OpenDefaultLayers() {
     // Default paths
     wxConfigBase* pConfig = wxFileConfig::Get();
@@ -320,4 +338,167 @@ void asFramePredictors::OnKeyUp(wxKeyEvent& event) {
         m_displayCtrlRight->SetToolZoom();
     }
     event.Skip();
+}
+
+void asFramePredictors::OnToolZoomIn(wxCommandEvent& event) {
+    m_displayCtrlLeft->SetToolZoom();
+    m_displayCtrlRight->SetToolZoom();
+}
+
+void asFramePredictors::OnToolZoomOut(wxCommandEvent& event) {
+    m_displayCtrlLeft->SetToolZoomOut();
+    m_displayCtrlRight->SetToolZoomOut();
+}
+
+void asFramePredictors::OnToolPan(wxCommandEvent& event) {
+    m_displayCtrlLeft->SetToolPan();
+    m_displayCtrlRight->SetToolPan();
+}
+
+
+void asFramePredictors::OnToolAction(wxCommandEvent& event) {
+    auto msg = static_cast<vrDisplayToolMessage*>(event.GetClientData());
+    wxASSERT(msg);
+
+    if (msg->m_evtType == vrEVT_TOOL_ZOOM) {
+        // Get rectangle
+        vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
+        wxASSERT(coord);
+
+        // Get real rectangle
+        vrRealRect realRect;
+        coord->ConvertFromPixels(msg->m_rect, realRect);
+        wxASSERT(realRect.IsOk());
+
+        // Get fitted rectangle
+        vrRealRect fittedRect = coord->GetRectFitted(realRect);
+        wxASSERT(fittedRect.IsOk());
+
+        if (!m_syncroTool) {
+#if defined(__WIN32__)
+            auto thread = new asThreadViewerLayerManagerZoomIn(msg->m_parentManager, &m_critSectionViewerLayerManager,
+                                                               fittedRect);
+            ThreadsManager().AddThread(thread);
+#else
+            msg->m_parentManager->Zoom(fittedRect);
+#endif
+        } else {
+            if (m_displayPanelLeft) {
+#if defined(__WIN32__)
+                auto thread = new asThreadViewerLayerManagerZoomIn(m_viewerLayerManagerLeft,
+                                                                   &m_critSectionViewerLayerManager, fittedRect);
+                ThreadsManager().AddThread(thread);
+#else
+                m_viewerLayerManagerLeft->Zoom(fittedRect);
+#endif
+            }
+            if (m_displayPanelRight) {
+#if defined(__WIN32__)
+                auto thread = new asThreadViewerLayerManagerZoomIn(m_viewerLayerManagerRight,
+                                                                   &m_critSectionViewerLayerManager, fittedRect);
+                ThreadsManager().AddThread(thread);
+#else
+                m_viewerLayerManagerRight->Zoom(fittedRect);
+#endif
+            }
+        }
+    } else if (msg->m_evtType == vrEVT_TOOL_ZOOMOUT) {
+        // Getting rectangle
+        vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
+        wxASSERT(coord);
+
+        // Get real rectangle
+        vrRealRect realRect;
+        coord->ConvertFromPixels(msg->m_rect, realRect);
+        wxASSERT(realRect.IsOk());
+
+        // Get fitted rectangle
+        vrRealRect fittedRect = coord->GetRectFitted(realRect);
+        wxASSERT(fittedRect.IsOk());
+
+        if (!m_syncroTool) {
+#if defined(__WIN32__)
+            auto thread = new asThreadViewerLayerManagerZoomOut(msg->m_parentManager, &m_critSectionViewerLayerManager,
+                                                                fittedRect);
+            ThreadsManager().AddThread(thread);
+#else
+            msg->m_parentManager->ZoomOut(fittedRect);
+#endif
+        } else {
+            if (m_displayPanelLeft) {
+#if defined(__WIN32__)
+                auto thread = new asThreadViewerLayerManagerZoomOut(m_viewerLayerManagerLeft,
+                                                                    &m_critSectionViewerLayerManager, fittedRect);
+                ThreadsManager().AddThread(thread);
+#else
+                m_viewerLayerManagerLeft->ZoomOut(fittedRect);
+#endif
+            }
+            if (m_displayPanelRight) {
+#if defined(__WIN32__)
+                auto thread = new asThreadViewerLayerManagerZoomOut(m_viewerLayerManagerRight,
+                                                                    &m_critSectionViewerLayerManager, fittedRect);
+                ThreadsManager().AddThread(thread);
+#else
+                m_viewerLayerManagerRight->ZoomOut(fittedRect);
+#endif
+            }
+        }
+    } else if (msg->m_evtType == vrEVT_TOOL_PAN) {
+        vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
+        wxASSERT(coord);
+
+        wxPoint movedPos = msg->m_position;
+        wxPoint2DDouble myMovedRealPt;
+        if (!coord->ConvertFromPixels(movedPos, myMovedRealPt)) {
+            wxLogError("Error converting point : %d, %d to real coordinate", movedPos.x, movedPos.y);
+            wxDELETE(msg);
+            return;
+        }
+
+        vrRealRect actExtent = coord->GetExtent();
+        actExtent.MoveLeftTopTo(myMovedRealPt);
+
+        if (!m_syncroTool) {
+            coord->SetExtent(actExtent);
+            msg->m_parentManager->Reload();
+            ReloadViewerLayerManagerLeft();
+            ReloadViewerLayerManagerRight();
+        } else {
+            if (m_displayPanelLeft) {
+                m_viewerLayerManagerLeft->GetDisplay()->GetCoordinate()->SetExtent(actExtent);
+                ReloadViewerLayerManagerLeft();
+            }
+            if (m_displayPanelRight) {
+                m_viewerLayerManagerRight->GetDisplay()->GetCoordinate()->SetExtent(actExtent);
+                ReloadViewerLayerManagerRight();
+            }
+        }
+
+    } else if (msg->m_evtType == vrEVT_TOOL_SIGHT) {
+        vrViewerLayerManager* invertedMgr = m_viewerLayerManagerLeft;
+        if (invertedMgr == msg->m_parentManager) {
+            invertedMgr = m_viewerLayerManagerRight;
+        }
+
+        {
+            wxClientDC dc(invertedMgr->GetDisplay());
+            wxDCOverlay overlaydc(m_overlay, &dc);
+            overlaydc.Clear();
+        }
+
+        m_overlay.Reset();
+
+        if (msg->m_position != wxDefaultPosition) {
+            wxClientDC dc(invertedMgr->GetDisplay());
+            wxDCOverlay overlaydc(m_overlay, &dc);
+            overlaydc.Clear();
+            dc.SetPen(*wxGREEN_PEN);
+            dc.CrossHair(msg->m_position);
+        }
+    } else {
+        wxLogError("Operation not yet supported.");
+    }
+
+    wxDELETE(msg);
 }
