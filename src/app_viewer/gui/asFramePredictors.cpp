@@ -34,6 +34,7 @@
 #include "asThreadViewerLayerManagerZoomOut.h"
 #include "asThreadsManager.h"
 #endif
+#include <wx/colour.h>
 #include "asResults.h"
 #include "img_toolbar.h"
 
@@ -119,6 +120,7 @@ void asFramePredictors::Init() {
         m_selectedTargetDate = 0;
         m_selectedAnalogDate = 0;
     InitExtent();
+    OpenDefaultLayers();
 }
 
 void asFramePredictors::InitExtent() {
@@ -127,6 +129,160 @@ void asFramePredictors::InitExtent() {
     m_viewerLayerManagerLeft->InitializeExtent(desiredExtent);
     m_viewerLayerManagerRight->InitializeExtent(desiredExtent);
 }
+void asFramePredictors::OpenDefaultLayers() {
+    // Default paths
+    wxConfigBase* pConfig = wxFileConfig::Get();
+    wxString dirData = asConfig::GetDataDir() + "share";
+    if (!wxDirExists(dirData)) {
+        dirData = asConfig::GetDataDir() + ".." + DS + "share";
+    }
+
+    wxString gisData = dirData + DS + "atmoswing" + DS + "gis" + DS + "shapefiles";
+
+    wxString continentsFilePath = pConfig->Read("/GIS/LayerContinentsFilePath", gisData + DS + "continents.shp");
+    wxString countriesFilePath = pConfig->Read("/GIS/LayerCountriesFilePath", gisData + DS + "countries.shp");
+    wxString latLongFilePath = pConfig->Read("/GIS/LayerLatLongFilePath", gisData + DS + "latlong.shp");
+    wxString geogridFilePath = pConfig->Read("/GIS/LayerGeogridFilePath", gisData + DS + "geogrid.shp");
+
+    // Try to open layers
+    m_viewerLayerManagerLeft->FreezeBegin();
+    m_viewerLayerManagerRight->FreezeBegin();
+    vrLayer* layer;
+
+    // Continents
+    if (wxFileName::FileExists(continentsFilePath)) {
+        if (m_layerManager->Open(wxFileName(continentsFilePath))) {
+            long continentsTransp = pConfig->ReadLong("/GIS/LayerContinentsTransp", 50);
+            long continentsColor = pConfig->ReadLong("/GIS/LayerContinentsColor", (long)0x99999999);
+            wxColour colorContinents;
+            colorContinents.SetRGB((wxUint32)continentsColor);
+            long continentsSize = pConfig->ReadLong("/GIS/LayerContinentsSize", 1);
+            bool continentsVisibility = pConfig->ReadBool("/GIS/LayerContinentsVisibility", true);
+
+            vrRenderVector* renderContinents1 = new vrRenderVector();
+            renderContinents1->SetTransparency(continentsTransp);
+            renderContinents1->SetColorPen(colorContinents);
+            renderContinents1->SetColorBrush(colorContinents);
+            renderContinents1->SetBrushStyle(wxBRUSHSTYLE_SOLID);
+            renderContinents1->SetSize(continentsSize);
+            vrRenderVector* renderContinents2 = new vrRenderVector();
+            renderContinents2->SetTransparency(continentsTransp);
+            renderContinents2->SetColorPen(colorContinents);
+            renderContinents2->SetColorBrush(colorContinents);
+            renderContinents2->SetBrushStyle(wxBRUSHSTYLE_SOLID);
+            renderContinents2->SetSize(continentsSize);
+
+            layer = m_layerManager->GetLayer(wxFileName(continentsFilePath));
+            wxASSERT(layer);
+            m_viewerLayerManagerLeft->Add(-1, layer, renderContinents1, nullptr, continentsVisibility);
+            m_viewerLayerManagerRight->Add(-1, layer, renderContinents2, nullptr, continentsVisibility);
+        } else {
+            wxLogWarning(_("The Continents layer file %s cound not be opened."), continentsFilePath.c_str());
+        }
+    } else {
+        wxLogWarning(_("The Continents layer file %s cound not be found."), continentsFilePath.c_str());
+    }
+
+    // Countries
+    if (wxFileName::FileExists(countriesFilePath)) {
+        if (m_layerManager->Open(wxFileName(countriesFilePath))) {
+            long countriesTransp = pConfig->ReadLong("/GIS/LayerCountriesTransp", 0);
+            long countriesColor = pConfig->ReadLong("/GIS/LayerCountriesColor", (long)0x77999999);
+            wxColour colorCountries;
+            colorCountries.SetRGB((wxUint32)countriesColor);
+            long countriesSize = pConfig->ReadLong("/GIS/LayerCountriesSize", 1);
+            bool countriesVisibility = pConfig->ReadBool("/GIS/LayerCountriesVisibility", true);
+
+            vrRenderVector* renderCountries1 = new vrRenderVector();
+            renderCountries1->SetTransparency(countriesTransp);
+            renderCountries1->SetColorPen(colorCountries);
+            renderCountries1->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
+            renderCountries1->SetSize(countriesSize);
+            vrRenderVector* renderCountries2 = new vrRenderVector();
+            renderCountries2->SetTransparency(countriesTransp);
+            renderCountries2->SetColorPen(colorCountries);
+            renderCountries2->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
+            renderCountries2->SetSize(countriesSize);
+
+            layer = m_layerManager->GetLayer(wxFileName(countriesFilePath));
+            wxASSERT(layer);
+            m_viewerLayerManagerLeft->Add(-1, layer, renderCountries1, nullptr, countriesVisibility);
+            m_viewerLayerManagerRight->Add(-1, layer, renderCountries2, nullptr, countriesVisibility);
+        } else {
+            wxLogWarning(_("The Countries layer file %s cound not be opened."), countriesFilePath.c_str());
+        }
+    } else {
+        wxLogWarning(_("The Countries layer file %s cound not be found."), countriesFilePath.c_str());
+    }
+
+    // LatLong
+    if (wxFileName::FileExists(latLongFilePath)) {
+        if (m_layerManager->Open(wxFileName(latLongFilePath))) {
+            long latLongTransp = pConfig->ReadLong("/GIS/LayerLatLongTransp", 80);
+            long latLongColor = pConfig->ReadLong("/GIS/LayerLatLongColor", (long)0xff999999);
+            wxColour colorLatLong;
+            colorLatLong.SetRGB((wxUint32)latLongColor);
+            long latLongSize = pConfig->ReadLong("/GIS/LayerLatLongSize", 1);
+            bool latLongVisibility = pConfig->ReadBool("/GIS/LayerLatLongVisibility", true);
+
+            vrRenderVector* renderLatLong1 = new vrRenderVector();
+            renderLatLong1->SetTransparency(latLongTransp);
+            renderLatLong1->SetColorPen(colorLatLong);
+            renderLatLong1->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
+            renderLatLong1->SetSize(latLongSize);
+            vrRenderVector* renderLatLong2 = new vrRenderVector();
+            renderLatLong2->SetTransparency(latLongTransp);
+            renderLatLong2->SetColorPen(colorLatLong);
+            renderLatLong2->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
+            renderLatLong2->SetSize(latLongSize);
+
+            layer = m_layerManager->GetLayer(wxFileName(latLongFilePath));
+            wxASSERT(layer);
+            m_viewerLayerManagerLeft->Add(-1, layer, renderLatLong1, nullptr, latLongVisibility);
+            m_viewerLayerManagerRight->Add(-1, layer, renderLatLong2, nullptr, latLongVisibility);
+        } else {
+            wxLogWarning(_("The LatLong layer file %s cound not be opened."), latLongFilePath.c_str());
+        }
+    } else {
+        wxLogWarning(_("The LatLong layer file %s cound not be found."), latLongFilePath.c_str());
+    }
+
+    // Geogrid
+    if (wxFileName::FileExists(geogridFilePath)) {
+        if (m_layerManager->Open(wxFileName(geogridFilePath))) {
+            long geogridTransp = pConfig->ReadLong("/GIS/LayerGeogridTransp", 80);
+            long geogridColor = pConfig->ReadLong("/GIS/LayerGeogridColor", (long)0xff999999);
+            wxColour colorGeogrid;
+            colorGeogrid.SetRGB((wxUint32)geogridColor);
+            long geogridSize = pConfig->ReadLong("/GIS/LayerGeogridSize", 2);
+            bool geogridVisibility = pConfig->ReadBool("/GIS/LayerGeogridVisibility", false);
+
+            vrRenderVector* renderGeogrid1 = new vrRenderVector();
+            renderGeogrid1->SetTransparency(geogridTransp);
+            renderGeogrid1->SetColorPen(colorGeogrid);
+            renderGeogrid1->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
+            renderGeogrid1->SetSize(geogridSize);
+            vrRenderVector* renderGeogrid2 = new vrRenderVector();
+            renderGeogrid2->SetTransparency(geogridTransp);
+            renderGeogrid2->SetColorPen(colorGeogrid);
+            renderGeogrid2->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
+            renderGeogrid2->SetSize(geogridSize);
+
+            layer = m_layerManager->GetLayer(wxFileName(geogridFilePath));
+            wxASSERT(layer);
+            m_viewerLayerManagerLeft->Add(-1, layer, renderGeogrid1, nullptr, geogridVisibility);
+            m_viewerLayerManagerRight->Add(-1, layer, renderGeogrid2, nullptr, geogridVisibility);
+        } else {
+            wxLogWarning(_("The Geogrid layer file %s cound not be opened."), geogridFilePath.c_str());
+        }
+    } else {
+        wxLogWarning(_("The Geogrid layer file %s cound not be found."), geogridFilePath.c_str());
+    }
+
+    m_viewerLayerManagerLeft->FreezeEnd();
+    m_viewerLayerManagerRight->FreezeEnd();
+}
+
 void asFramePredictors::OnKeyDown(wxKeyEvent& event) {
     m_KeyBoardState = wxKeyboardState(event.ControlDown(), event.ShiftDown(), event.AltDown(), event.MetaDown());
     if (m_KeyBoardState.GetModifiers() != wxMOD_CMD) {

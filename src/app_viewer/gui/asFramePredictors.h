@@ -40,6 +40,8 @@ class asFramePredictors : public asFramePredictorsVirtual {
 
     ~asFramePredictors();
 
+    void OpenDefaultLayers();
+
   protected:
     wxKeyboardState m_KeyBoardState;
 
