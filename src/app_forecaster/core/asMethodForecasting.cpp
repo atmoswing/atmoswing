@@ -119,7 +119,7 @@ bool asMethodForecasting::Manager() {
             // Forecast
             if (!Forecast(params)) {
                 asLog::PrintToConsole(_("FAILED!\n"));
-                wxLogError(_("The forecast could not be achieved"));
+                wxLogError(_("The forecast could not be processed"));
 
 #if USE_GUI
                 // Send event

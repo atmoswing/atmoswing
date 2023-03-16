@@ -477,6 +477,11 @@ bool asFileGrib::SetIndexPosition(const vi& gribCode, const float level, const b
 bool asFileGrib::SetIndexPositionAnyLevel(const vi gribCode) {
     wxASSERT(gribCode.size() == 4);
 
+    if (m_parameterCode1.empty()) {
+        wxLogError(_("The file %s is empty."), m_fileName.GetFullName());
+        return false;
+    }
+
     // Find corresponding data
     m_index = asNOT_FOUND;
     for (int i = 0; i < m_parameterCode3.size(); ++i) {
