@@ -68,11 +68,12 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
 }
 
 void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry,
-                                       const wxRect2DDouble& coord, vrRenderVector* render, vrLabel* label,
+                                       const wxRect2DDouble& coord, const vrRender* render, vrLabel* label,
                                        double pxsize) {
     // Set the defaut pen
     wxASSERT(render->GetType() == vrRENDER_VECTOR);
-    wxPen defaultPen(render->GetColorPen(), render->GetSize());
+    auto renderVector = const_cast<vrRenderVector*>(dynamic_cast<const vrRenderVector*>(render));
+    wxPen defaultPen(renderVector->GetColorPen(), renderVector->GetSize());
     wxPen selPen(*wxGREEN, 3);
 
     // Get graphics context
