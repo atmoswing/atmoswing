@@ -49,9 +49,9 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
   public:
     vrLayerVectorFcstDots();
 
-    virtual ~vrLayerVectorFcstDots();
+    ~vrLayerVectorFcstDots() override;
 
-    virtual long AddFeature(OGRGeometry* geometry, void* data = nullptr);
+    long AddFeature(OGRGeometry* geometry, void* data) override;
 
     void SetMaxValue(double val) {
         if (val < 0.1) {
@@ -66,14 +66,14 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
   protected:
     double m_valueMax;
 
-    virtual void _DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry, const wxRect2DDouble& coord,
-                            const vrRender* render, vrLabel* label, double pxsize);
+    void _DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry, const wxRect2DDouble& coord,
+                    const vrRender* render, vrLabel* label, double pxsize) override;
 
-    void _CreatePath(wxGraphicsPath& path, const wxPoint& center);
+    void CreatePath(wxGraphicsPath& path, const wxPoint& center);
 
-    void _Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value);
+    void Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value);
 
-    void _AddLabel(wxGraphicsContext* gdc, const wxPoint& center, double value);
+    void AddLabel(wxGraphicsContext* gdc, const wxPoint& center, double value);
 };
 
 #endif

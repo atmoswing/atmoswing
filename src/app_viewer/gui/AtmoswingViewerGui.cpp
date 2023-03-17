@@ -894,6 +894,8 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	wxArrayString m_choiceTargetDatesChoices;
 	m_choiceTargetDates = new wxChoice( m_panelLeft, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceTargetDatesChoices, 0 );
 	m_choiceTargetDates->SetSelection( 0 );
+	m_choiceTargetDates->SetMinSize( wxSize( 100,-1 ) );
+
 	bSizer34->Add( m_choiceTargetDates, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
@@ -950,6 +952,8 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	wxArrayString m_choiceAnalogDatesChoices;
 	m_choiceAnalogDates = new wxChoice( m_panelRight, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceAnalogDatesChoices, 0 );
 	m_choiceAnalogDates->SetSelection( 0 );
+	m_choiceAnalogDates->SetMinSize( wxSize( 100,-1 ) );
+
 	bSizer35->Add( m_choiceAnalogDates, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 

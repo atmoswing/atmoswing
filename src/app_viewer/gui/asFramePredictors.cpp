@@ -46,6 +46,7 @@ EVT_MENU(asID_ZOOM_OUT, asFramePredictors::OnToolZoomOut)
 EVT_MENU(asID_ZOOM_FIT, asFramePredictors::OnToolZoomToFit)
 EVT_MENU(asID_PAN, asFramePredictors::OnToolPan)
 EVT_MENU(asID_CROSS_MARKER, asFramePredictors::OnToolSight)
+EVT_MENU(asID_SET_SYNCRO_MODE, asFramePredictors::OnSyncroToolSwitch)
 
 EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOM, asFramePredictors::OnToolAction)
 EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOMOUT, asFramePredictors::OnToolAction)
@@ -117,8 +118,8 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
 
     // Viewer
     m_predictorsManager = new asPredictorsManager();
-    m_predictorsViewer = new asPredictorsRenderer(this, m_layerManager, m_predictorsManager, m_viewerLayerManagerLeft,
-                                                  m_viewerLayerManagerRight, m_checkListPredictors);
+    m_predictorsRenderer = new asPredictorsRenderer(this, m_layerManager, m_predictorsManager, m_viewerLayerManagerLeft,
+                                                    m_viewerLayerManagerRight, m_checkListPredictors);
 
     // Menus
     m_menuTools->AppendCheckItem(asID_SET_SYNCRO_MODE, "Syncronize tools",
@@ -588,6 +589,10 @@ void asFramePredictors::OnKeyUp(wxKeyEvent& event) {
     event.Skip();
 }
 
+void asFramePredictors::OnSyncroToolSwitch(wxCommandEvent& event) {
+    m_syncroTool = GetMenuBar()->IsChecked(asID_SET_SYNCRO_MODE);
+}
+
 void asFramePredictors::OnToolZoomIn(wxCommandEvent& event) {
     m_displayCtrlLeft->SetToolZoom();
     m_displayCtrlRight->SetToolZoom();
@@ -761,6 +766,22 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
     wxDELETE(msg);
 }
 
+void asFramePredictors::UpdateLayers() {
+    // Check that elements are selected
+    if ((m_selectedMethod == -1) || (m_selectedForecast == -1) || (m_selectedTargetDate == -1) ||
+        (m_selectedAnalogDate == -1)) {
+        return;
+    }
+
+    // Get dates
+    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    a1f targetDates = forecast->GetTargetDates();
+    double targetDate = targetDates[m_selectedTargetDate];
+    a1f analogDates = forecast->GetAnalogsDates(m_selectedTargetDate);
+    double analogDate = analogDates[m_selectedAnalogDate];
+
+    m_predictorsRenderer->Redraw(targetDate, analogDate);
+}
 
 void asFramePredictors::ReloadViewerLayerManagerLeft() {
 #if defined(__WIN32__)

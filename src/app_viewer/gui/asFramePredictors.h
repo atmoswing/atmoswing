@@ -65,9 +65,13 @@ class asFramePredictors : public asFramePredictorsVirtual {
   protected:
     wxKeyboardState m_KeyBoardState;
 
+    virtual void OnRightClick(wxMouseEvent& event) {
+        event.Skip();
+    }
+
   private:
     asForecastManager* m_forecastManager;
-    asPredictorsRenderer* m_predictorsViewer;
+    asPredictorsRenderer* m_predictorsRenderer;
     asPredictorsManager* m_predictorsManager;
     asWorkspace* m_workspace;
     int m_selectedMethod;
@@ -119,6 +123,8 @@ class asFramePredictors : public asFramePredictorsVirtual {
 
     void OnCloseLayer(wxCommandEvent& event);
 
+    void OnSyncroToolSwitch(wxCommandEvent& event);
+
     void OnToolZoomIn(wxCommandEvent& event);
 
     void OnToolZoomOut(wxCommandEvent& event);
@@ -126,6 +132,8 @@ class asFramePredictors : public asFramePredictorsVirtual {
     void OnToolPan(wxCommandEvent& event);
 
     void OnToolSight(wxCommandEvent& event);
+
+    void OnToolZoomToFit(wxCommandEvent& event);
 
     void OnToolAction(wxCommandEvent& event);
 
