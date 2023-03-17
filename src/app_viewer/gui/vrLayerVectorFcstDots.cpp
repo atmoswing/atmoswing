@@ -38,7 +38,7 @@ vrLayerVectorFcstDots::vrLayerVectorFcstDots() {
     m_valueMax = 1;
 }
 
-vrLayerVectorFcstDots::~vrLayerVectorFcstDots() {}
+vrLayerVectorFcstDots::~vrLayerVectorFcstDots() = default;
 
 long vrLayerVectorFcstDots::AddFeature(OGRGeometry* geometry, void* data) {
     wxASSERT(m_layer);
@@ -124,8 +124,6 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
     } else {
         wxLogError(_("Drawing of the symbol failed."));
     }
-
-    return;
 }
 
 void vrLayerVectorFcstDots::CreatePath(wxGraphicsPath& path, const wxPoint& center) {
@@ -134,7 +132,7 @@ void vrLayerVectorFcstDots::CreatePath(wxGraphicsPath& path, const wxPoint& cent
     path.AddCircle(center.x, center.y, radius);
 }
 
-void vrLayerVectorFcstDots::Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value) {
+void vrLayerVectorFcstDots::Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value) const {
     // wxColour colour(255,0,0); -> red
     // wxColour colour(0,0,255); -> blue
     // wxColour colour(0,255,0); -> green

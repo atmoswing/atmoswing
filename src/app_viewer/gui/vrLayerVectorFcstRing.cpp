@@ -38,7 +38,7 @@ vrLayerVectorFcstRing::vrLayerVectorFcstRing() {
     m_valueMax = 1;
 }
 
-vrLayerVectorFcstRing::~vrLayerVectorFcstRing() {}
+vrLayerVectorFcstRing::~vrLayerVectorFcstRing() = default;
 
 long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
     wxASSERT(m_layer);
@@ -177,7 +177,7 @@ void vrLayerVectorFcstRing::CreatePath(wxGraphicsPath& path, const wxPoint& cent
     path.CloseSubpath();
 }
 
-void vrLayerVectorFcstRing::Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value) {
+void vrLayerVectorFcstRing::Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value) const {
     // wxColour colour(255,0,0); -> red
     // wxColour colour(0,0,255); -> blue
     // wxColour colour(0,255,0); -> green
