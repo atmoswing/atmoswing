@@ -30,10 +30,12 @@
 #include "vrlabel.h"
 #include "vrrealrect.h"
 
+#define UseRasterIO 0
+
 vrLayerRasterPredictor::vrLayerRasterPredictor()
     : vrLayerRasterGDAL() {
     m_driverType = vrDRIVER_RASTER_MEMORY;
-};
+}
 
 vrLayerRasterPredictor::~vrLayerRasterPredictor() = default;
 
@@ -88,5 +90,36 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
         wxLogError(_("Setting geotransform to predictor layer failed."));
         return false;
     }
+
+    // Set data
+    GDALRasterBand* band = m_dataset->GetRasterBand(1);
+
+#if UseRasterIO
+    if (band->RasterIO(GF_Write, 0, 0, int(m_longitudes.size()), int(m_latitudes.size()), &m_data(0, 0),
+                       int(m_longitudes.size()), int(m_latitudes.size()), GDT_Float32, 0, 0, NULL) != CE_None) {
+        wxLogError(_("Setting data to predictor layer failed."));
+        return false;
+    }
+#else
+    int xBlockSize, yBlockSize;
+    band->GetBlockSize(&xBlockSize, &yBlockSize);
+
+    if (m_longitudes.size() != xBlockSize) {
+        wxLogError(_("The x block size does not match the data."));
+        return false;
+    }
+    if (yBlockSize != 1) {
+        wxLogError(_("The y block size should be 1."));
+        return false;
+    }
+
+    for (int y = 0; y < m_latitudes.size(); y++) {
+        if (band->WriteBlock(0, y, &m_data(y, 0)) != CE_None) {
+            wxLogError(_("Setting data to predictor layer failed."));
+            return false;
+        }
+    }
+#endif
+
     return true;
 }
