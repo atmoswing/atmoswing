@@ -76,6 +76,7 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
       m_selectedMethod(methodRow),
       m_selectedForecast(forecastRow)
 {
+    m_selectedForecast = wxMax(m_selectedForecast, 0);
     m_selectedTargetDate = -1;
     m_selectedAnalogDate = -1;
     m_syncroTool = true;
@@ -157,19 +158,27 @@ asFramePredictors::~asFramePredictors() {
 
 void asFramePredictors::Init() {
     if (m_forecastManager->GetMethodsNb() > 0) {
-        // Methods list
-        wxArrayString methods = m_forecastManager->GetMethodNamesWxArray();
-        m_choiceMethod->Set(methods);
-        m_choiceMethod->Select(m_selectedMethod);
-        // Forecast list
-        wxArrayString arrayForecasts = m_forecastManager->GetAllForecastNamesWxArray();
-        m_choiceForecast->Set(arrayForecasts);
-        m_choiceForecast->Select(m_selectedForecast);
+        UpdateMethodsList();
+        UpdateForecastList();
 
         m_selectedTargetDate = 0;
         m_selectedAnalogDate = 0;
     InitExtent();
     OpenDefaultLayers();
+}
+
+void asFramePredictors::UpdateForecastList() {
+    wxArrayString forecasts = m_forecastManager->GetForecastNamesWxArray(m_selectedMethod);
+    m_choiceForecast->Set(forecasts);
+    m_choiceForecast->Select(m_selectedForecast);
+}
+
+void asFramePredictors::UpdateMethodsList() {
+    wxArrayString methods = m_forecastManager->GetMethodNamesWxArray();
+    m_choiceMethod->Set(methods);
+    m_choiceMethod->Select(m_selectedMethod);
+
+    m_selectedForecast = wxMin(m_selectedForecast, m_forecastManager->GetForecastsNb(m_selectedMethod));
 }
 
 void asFramePredictors::InitExtent() {
@@ -231,6 +240,11 @@ void asFramePredictors::OnSwitchLeft(wxCommandEvent& event) {
 
 void asFramePredictors::OnPredictorSelectionChange(wxCommandEvent& event) {
     UpdateLayers();
+}
+
+void asFramePredictors::OnMethodChange(wxCommandEvent& event) {
+    m_selectedMethod = event.GetInt();
+    UpdateForecastList();
 }
 
 void asFramePredictors::OpenDefaultLayers() {

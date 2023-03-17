@@ -259,6 +259,23 @@ wxArrayString asResultsForecastAggregator::GetMethodNamesWxArray() const {
     return names;
 }
 
+wxArrayString asResultsForecastAggregator::GetForecastNamesWxArray(int methodRow) const {
+    wxASSERT(m_forecasts.size() > methodRow);
+    wxArrayString names;
+
+    for (auto forecast : m_forecasts[methodRow]) {
+        if (!forecast->GetSpecificTagDisplay().IsEmpty()) {
+            names.Add(forecast->GetSpecificTagDisplay());
+        } else {
+            names.Add(forecast->GetSpecificTag());
+        }
+    }
+
+    wxASSERT(!names.empty());
+
+    return names;
+}
+
 wxArrayString asResultsForecastAggregator::GetCombinedForecastNamesWxArray() const {
     wxArrayString names;
 

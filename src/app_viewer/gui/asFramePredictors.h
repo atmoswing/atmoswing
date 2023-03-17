@@ -65,6 +65,36 @@ class asFramePredictors : public asFramePredictorsVirtual {
   protected:
     wxKeyboardState m_KeyBoardState;
 
+  private:
+    asForecastManager* m_forecastManager;
+    asPredictorsRenderer* m_predictorsViewer;
+    asPredictorsManager* m_predictorsManager;
+    asWorkspace* m_workspace;
+    int m_selectedMethod;
+    int m_selectedForecast;
+    int m_selectedTargetDate;
+    int m_selectedAnalogDate;
+    bool m_syncroTool;
+    bool m_displayPanelLeft;
+    bool m_displayPanelRight;
+    wxOverlay m_overlay;
+#if defined(__WIN32__)
+    wxCriticalSection m_critSectionViewerLayerManager;
+#endif
+
+    // Vroomgis
+    vrLayerManager* m_layerManager;
+    vrViewerTOCList* m_tocCtrlLeft;
+    vrViewerTOCList* m_tocCtrlRight;
+    vrViewerLayerManager* m_viewerLayerManagerLeft;
+    vrViewerLayerManager* m_viewerLayerManagerRight;
+    vrViewerDisplay* m_displayCtrlLeft;
+    vrViewerDisplay* m_displayCtrlRight;
+
+    void UpdateMethodsList();
+
+    void UpdateForecastList();
+
     void OpenFramePreferences(wxCommandEvent& event);
 
     void OnSwitchRight(wxCommandEvent& event);
@@ -104,32 +134,6 @@ class asFramePredictors : public asFramePredictorsVirtual {
     void ReloadViewerLayerManagerLeft();
 
     void ReloadViewerLayerManagerRight();
-
-  private:
-    asForecastManager* m_forecastManager;
-    asPredictorsRenderer* m_predictorsViewer;
-    asPredictorsManager* m_predictorsManager;
-    asWorkspace* m_workspace;
-    int m_selectedMethod;
-    int m_selectedForecast;
-    int m_selectedTargetDate;
-    int m_selectedAnalogDate;
-    bool m_syncroTool;
-    bool m_displayPanelLeft;
-    bool m_displayPanelRight;
-    wxOverlay m_overlay;
-#if defined(__WIN32__)
-    wxCriticalSection m_critSectionViewerLayerManager;
-#endif
-
-    // Vroomgis
-    vrLayerManager* m_layerManager;
-    vrViewerTOCList* m_tocCtrlLeft;
-    vrViewerTOCList* m_tocCtrlRight;
-    vrViewerLayerManager* m_viewerLayerManagerLeft;
-    vrViewerLayerManager* m_viewerLayerManagerRight;
-    vrViewerDisplay* m_displayCtrlLeft;
-    vrViewerDisplay* m_displayCtrlRight;
 
     DECLARE_EVENT_TABLE()
 };

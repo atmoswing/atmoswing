@@ -103,10 +103,6 @@ class asForecastManager {
         m_leadTimeOrigin = val;
     }
 
-    wxString GetForecastName(int methodRow, int forecastRow) const {
-        return m_aggregator->GetForecastName(methodRow, forecastRow);
-    }
-
     wxString GetMethodName(int methodRow) const {
         return m_aggregator->GetMethodName(methodRow);
     }
@@ -117,6 +113,14 @@ class asForecastManager {
 
     wxArrayString GetMethodNamesWxArray() const {
         return m_aggregator->GetMethodNamesWxArray();
+    }
+
+    wxString GetForecastName(int methodRow, int forecastRow) const {
+        return m_aggregator->GetForecastName(methodRow, forecastRow);
+    }
+
+    wxArrayString GetForecastNamesWxArray(int methodRow) const {
+        return m_aggregator->GetForecastNamesWxArray(methodRow);
     }
 
     wxArrayString GetCombinedForecastNamesWxArray() const {

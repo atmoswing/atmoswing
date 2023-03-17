@@ -57,13 +57,15 @@ class asResultsForecastAggregator : public wxObject {
 
     asResultsForecast* GetPastForecast(int methodRow, int forecastRow, int leadTimeRow) const;
 
-    wxString GetForecastName(int methodRow, int forecastRow) const;
-
     wxString GetMethodName(int methodRow) const;
 
     vwxs GetMethodNames() const;
 
     wxArrayString GetMethodNamesWxArray() const;
+
+    wxString GetForecastName(int methodRow, int forecastRow) const;
+
+    wxArrayString GetForecastNamesWxArray(int methodRow) const;
 
     wxArrayString GetCombinedForecastNamesWxArray() const;
 
