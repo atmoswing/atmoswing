@@ -394,7 +394,7 @@ wxArrayString asResultsForecastAggregator::GetStationNames(int methodRow, int fo
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
 
-    stationNames = m_forecasts[methodRow][forecastRow]->GetStationNamesWxArrayString();
+    stationNames = m_forecasts[methodRow][forecastRow]->GetStationNamesWxArray();
 
     return stationNames;
 }
@@ -420,7 +420,7 @@ wxArrayString asResultsForecastAggregator::GetStationNamesWithHeights(int method
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
 
-    stationNames = m_forecasts[methodRow][forecastRow]->GetStationNamesAndHeightsWxArrayString();
+    stationNames = m_forecasts[methodRow][forecastRow]->GetStationNamesAndHeightsWxArray();
 
     return stationNames;
 }
@@ -465,7 +465,7 @@ int asResultsForecastAggregator::GetLeadTimeLengthMax() const {
     return length;
 }
 
-wxArrayString asResultsForecastAggregator::GetLeadTimes(int methodRow, int forecastRow) const {
+wxArrayString asResultsForecastAggregator::GetTargetDatesWxArray(int methodRow, int forecastRow) const {
     wxArrayString leadTimes;
 
     if (m_forecasts.empty()) return leadTimes;
@@ -473,13 +473,7 @@ wxArrayString asResultsForecastAggregator::GetLeadTimes(int methodRow, int forec
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
 
-    a1f dates = m_forecasts[methodRow][forecastRow]->GetTargetDates();
-
-    for (float date : dates) {
-        leadTimes.Add(asTime::GetStringTime(date, "DD.MM.YYYY HH"));
-    }
-
-    return leadTimes;
+    return m_forecasts[methodRow][forecastRow]->GetTargetDatesWxArray();;
 }
 
 a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, int returnPeriodRef,

@@ -95,6 +95,10 @@ class asFramePredictors : public asFramePredictorsVirtual {
 
     void UpdateForecastList();
 
+    void UpdateTargetDatesList();
+
+    void UpdateAnalogDatesList();
+
     void OpenFramePreferences(wxCommandEvent& event);
 
     void OnSwitchRight(wxCommandEvent& event);

@@ -93,7 +93,7 @@ class asResultsForecastAggregator : public wxObject {
 
     int GetLeadTimeLengthMax() const;
 
-    wxArrayString GetLeadTimes(int methodRow, int forecastRow) const;
+    wxArrayString GetTargetDatesWxArray(int methodRow, int forecastRow) const;
 
     a1f GetMethodMaxValues(a1f& dates, int methodRow, int returnPeriodRef, float quantileThreshold) const;
 

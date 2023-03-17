@@ -152,9 +152,9 @@ class asResultsForecast : public asResults {
         return m_stationNames[i];
     }
 
-    wxArrayString GetStationNamesWxArrayString() const;
+    wxArrayString GetStationNamesWxArray() const;
 
-    wxArrayString GetStationNamesAndHeightsWxArrayString() const;
+    wxArrayString GetStationNamesAndHeightsWxArray() const;
 
     wxString GetStationNameAndHeight(int iStat) const;
 
@@ -249,6 +249,10 @@ class asResultsForecast : public asResults {
     a1f& GetTargetDates() {
         return m_targetDates;
     }
+
+    wxString GetDateFormatting() const;
+
+    wxArrayString GetTargetDatesWxArray() const;
 
     void SetTargetDates(const a1d& refDates) {
         m_targetDates.resize(refDates.rows());

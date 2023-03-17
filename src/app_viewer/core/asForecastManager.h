@@ -171,8 +171,8 @@ class asForecastManager {
         return m_aggregator->GetLeadTimeLengthMax();
     }
 
-    wxArrayString GetLeadTimes(int methodRow, int forecastRow) const {
-        return m_aggregator->GetLeadTimes(methodRow, forecastRow);
+    wxArrayString GetTargetDatesWxArray(int methodRow, int forecastRow) const {
+        return m_aggregator->GetTargetDatesWxArray(methodRow, forecastRow);
     }
 
   protected:

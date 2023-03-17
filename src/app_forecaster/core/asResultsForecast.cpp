@@ -631,7 +631,7 @@ bool asResultsForecast::Load() {
     return true;
 }
 
-wxArrayString asResultsForecast::GetStationNamesWxArrayString() const {
+wxArrayString asResultsForecast::GetStationNamesWxArray() const {
     wxArrayString stationsNames;
     for (const auto& stationName : m_stationNames) {
         stationsNames.Add(stationName);
@@ -639,7 +639,7 @@ wxArrayString asResultsForecast::GetStationNamesWxArrayString() const {
     return stationsNames;
 }
 
-wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArrayString() const {
+wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArray() const {
     wxArrayString stationsNames;
     for (int i = 0; i < m_stationNames.size(); i++) {
         wxString label;
@@ -651,6 +651,28 @@ wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArrayString() const 
         stationsNames.Add(label);
     }
     return stationsNames;
+}
+
+wxString asResultsForecast::GetDateFormatting() const {
+    wxString format = "DD.MM.YYYY";
+    if (GetPredictandTemporalResolution() != asPredictand::Daily &&
+        GetPredictandTemporalResolution() != asPredictand::TwoDays &&
+        GetPredictandTemporalResolution() != asPredictand::ThreeDays &&
+        GetPredictandTemporalResolution() != asPredictand::Weekly) {
+        format = "DD.MM.YYYY hh";
+    }
+
+    return format;
+}
+
+wxArrayString asResultsForecast::GetTargetDatesWxArray() const {
+    wxArrayString dates;
+    wxString format = GetDateFormatting();
+    for (float date : m_targetDates) {
+        dates.Add(asTime::GetStringTime(date, format));
+    }
+
+    return dates;
 }
 
 wxString asResultsForecast::GetStationNameAndHeight(int iStat) const {

@@ -158,27 +158,51 @@ asFramePredictors::~asFramePredictors() {
 
 void asFramePredictors::Init() {
     if (m_forecastManager->GetMethodsNb() > 0) {
-        UpdateMethodsList();
-        UpdateForecastList();
-
         m_selectedTargetDate = 0;
         m_selectedAnalogDate = 0;
+        UpdateMethodsList();
+    }
+
+    // GIS
     InitExtent();
     OpenDefaultLayers();
-}
-
-void asFramePredictors::UpdateForecastList() {
-    wxArrayString forecasts = m_forecastManager->GetForecastNamesWxArray(m_selectedMethod);
-    m_choiceForecast->Set(forecasts);
-    m_choiceForecast->Select(m_selectedForecast);
 }
 
 void asFramePredictors::UpdateMethodsList() {
     wxArrayString methods = m_forecastManager->GetMethodNamesWxArray();
     m_choiceMethod->Set(methods);
+    m_selectedMethod = wxMin(m_selectedMethod, int(methods.Count()) - 1);
     m_choiceMethod->Select(m_selectedMethod);
+    UpdateForecastList();
+}
 
-    m_selectedForecast = wxMin(m_selectedForecast, m_forecastManager->GetForecastsNb(m_selectedMethod));
+void asFramePredictors::UpdateForecastList() {
+    wxArrayString forecasts = m_forecastManager->GetForecastNamesWxArray(m_selectedMethod);
+    m_choiceForecast->Set(forecasts);
+    m_selectedForecast = wxMin(m_selectedForecast, int(forecasts.Count()) - 1);
+    m_choiceForecast->Select(m_selectedForecast);
+    UpdateTargetDatesList();
+}
+
+void asFramePredictors::UpdateTargetDatesList() {
+    wxArrayString dates = m_forecastManager->GetTargetDatesWxArray(m_selectedMethod, m_selectedForecast);
+    m_choiceTargetDates->Set(dates);
+    m_selectedTargetDate = wxMin(m_selectedTargetDate, int(dates.Count()) - 1);
+    m_choiceTargetDates->Select(m_selectedTargetDate);
+    UpdateAnalogDatesList();
+}
+
+void asFramePredictors::UpdateAnalogDatesList() {
+    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    a1f analogDates = forecast->GetAnalogsDates(m_selectedTargetDate);
+    wxArrayString arrayAnalogDates;
+    wxString format = forecast->GetDateFormatting();
+    for (float analogDate : analogDates) {
+        arrayAnalogDates.Add(asTime::GetStringTime(analogDate, format));
+    }
+    m_choiceAnalogDates->Set(arrayAnalogDates);
+    m_selectedAnalogDate = wxMin(m_selectedAnalogDate, int(arrayAnalogDates.Count()) - 1);
+    m_choiceAnalogDates->Select(m_selectedAnalogDate);
 }
 
 void asFramePredictors::InitExtent() {
@@ -245,6 +269,21 @@ void asFramePredictors::OnPredictorSelectionChange(wxCommandEvent& event) {
 void asFramePredictors::OnMethodChange(wxCommandEvent& event) {
     m_selectedMethod = event.GetInt();
     UpdateForecastList();
+}
+
+void asFramePredictors::OnForecastChange(wxCommandEvent& event) {
+    m_selectedForecast = event.GetInt();
+    UpdateTargetDatesList();
+}
+
+void asFramePredictors::OnTargetDateChange(wxCommandEvent& event) {
+    m_selectedTargetDate = event.GetInt();
+    UpdateAnalogDatesList();
+}
+
+void asFramePredictors::OnAnalogDateChange(wxCommandEvent& event) {
+    m_selectedAnalogDate = event.GetInt();
+    UpdateLayers();
 }
 
 void asFramePredictors::OpenDefaultLayers() {
