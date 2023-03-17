@@ -198,13 +198,13 @@ void asFramePredictors::OpenDefaultLayers() {
             long continentsSize = pConfig->ReadLong("/GIS/LayerContinentsSize", 1);
             bool continentsVisibility = pConfig->ReadBool("/GIS/LayerContinentsVisibility", true);
 
-            vrRenderVector* renderContinents1 = new vrRenderVector();
+            auto renderContinents1 = new vrRenderVector();
             renderContinents1->SetTransparency(continentsTransp);
             renderContinents1->SetColorPen(colorContinents);
             renderContinents1->SetColorBrush(colorContinents);
             renderContinents1->SetBrushStyle(wxBRUSHSTYLE_SOLID);
             renderContinents1->SetSize(continentsSize);
-            vrRenderVector* renderContinents2 = new vrRenderVector();
+            auto renderContinents2 = new vrRenderVector();
             renderContinents2->SetTransparency(continentsTransp);
             renderContinents2->SetColorPen(colorContinents);
             renderContinents2->SetColorBrush(colorContinents);
@@ -232,12 +232,12 @@ void asFramePredictors::OpenDefaultLayers() {
             long countriesSize = pConfig->ReadLong("/GIS/LayerCountriesSize", 1);
             bool countriesVisibility = pConfig->ReadBool("/GIS/LayerCountriesVisibility", true);
 
-            vrRenderVector* renderCountries1 = new vrRenderVector();
+            auto renderCountries1 = new vrRenderVector();
             renderCountries1->SetTransparency(countriesTransp);
             renderCountries1->SetColorPen(colorCountries);
             renderCountries1->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
             renderCountries1->SetSize(countriesSize);
-            vrRenderVector* renderCountries2 = new vrRenderVector();
+            auto renderCountries2 = new vrRenderVector();
             renderCountries2->SetTransparency(countriesTransp);
             renderCountries2->SetColorPen(colorCountries);
             renderCountries2->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
@@ -264,12 +264,12 @@ void asFramePredictors::OpenDefaultLayers() {
             long latLongSize = pConfig->ReadLong("/GIS/LayerLatLongSize", 1);
             bool latLongVisibility = pConfig->ReadBool("/GIS/LayerLatLongVisibility", true);
 
-            vrRenderVector* renderLatLong1 = new vrRenderVector();
+            auto renderLatLong1 = new vrRenderVector();
             renderLatLong1->SetTransparency(latLongTransp);
             renderLatLong1->SetColorPen(colorLatLong);
             renderLatLong1->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
             renderLatLong1->SetSize(latLongSize);
-            vrRenderVector* renderLatLong2 = new vrRenderVector();
+            auto renderLatLong2 = new vrRenderVector();
             renderLatLong2->SetTransparency(latLongTransp);
             renderLatLong2->SetColorPen(colorLatLong);
             renderLatLong2->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
@@ -296,12 +296,12 @@ void asFramePredictors::OpenDefaultLayers() {
             long geogridSize = pConfig->ReadLong("/GIS/LayerGeogridSize", 2);
             bool geogridVisibility = pConfig->ReadBool("/GIS/LayerGeogridVisibility", false);
 
-            vrRenderVector* renderGeogrid1 = new vrRenderVector();
+            auto renderGeogrid1 = new vrRenderVector();
             renderGeogrid1->SetTransparency(geogridTransp);
             renderGeogrid1->SetColorPen(colorGeogrid);
             renderGeogrid1->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
             renderGeogrid1->SetSize(geogridSize);
-            vrRenderVector* renderGeogrid2 = new vrRenderVector();
+            auto renderGeogrid2 = new vrRenderVector();
             renderGeogrid2->SetTransparency(geogridTransp);
             renderGeogrid2->SetColorPen(colorGeogrid);
             renderGeogrid2->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
@@ -507,20 +507,25 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
             invertedMgr = m_viewerLayerManagerRight;
         }
 
-        {
-            wxClientDC dc(invertedMgr->GetDisplay());
-            wxDCOverlay overlayDc(m_overlay, &dc);
-            overlayDc.Clear();
-        }
-
-        m_overlay.Reset();
-
-        if (msg->m_position != wxDefaultPosition) {
-            wxClientDC dc(invertedMgr->GetDisplay());
-            wxDCOverlay overlayDc(m_overlay, &dc);
-            overlayDc.Clear();
-            dc.SetPen(*wxRED_PEN);
-            dc.CrossHair(msg->m_position);
+        switch (msg->m_mouseStatus) {
+            case vrMOUSE_DOWN:
+            case vrMOUSE_MOVE: {
+                wxClientDC dc(invertedMgr->GetDisplay());
+                wxDCOverlay overlayDc(m_overlay, &dc);
+                overlayDc.Clear();
+                dc.SetPen(*wxRED_PEN);
+                dc.CrossHair(msg->m_position);
+            } break;
+            case vrMOUSE_UP: {
+                wxClientDC dc(invertedMgr->GetDisplay());
+                wxDCOverlay overlayDc(m_overlay, &dc);
+                overlayDc.Clear();
+            }
+                m_overlay.Reset();
+                break;
+            case vrMOUSE_UNKNOWN:
+                wxLogError("Operation not recognized.");
+                break;
         }
     } else {
         wxLogError("Operation not yet supported.");
