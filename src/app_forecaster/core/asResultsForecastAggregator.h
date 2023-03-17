@@ -61,11 +61,11 @@ class asResultsForecastAggregator : public wxObject {
 
     wxString GetMethodName(int methodRow) const;
 
-    vwxs GetAllMethodNames() const;
+    vwxs GetMethodNames() const;
 
-    vwxs GetAllForecastNames() const;
+    wxArrayString GetMethodNamesWxArray() const;
 
-    wxArrayString GetAllForecastNamesWxArray() const;
+    wxArrayString GetCombinedForecastNamesWxArray() const;
 
     wxString GetFilePath(int methodRow, int forecastRow) const;
 

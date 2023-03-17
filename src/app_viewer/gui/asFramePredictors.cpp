@@ -69,12 +69,13 @@ bool vroomDropFilesPredictors::OnDropFiles(wxCoord x, wxCoord y, const wxArraySt
 }
 
 asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* forecastManager, asWorkspace* workspace,
-                                     wxWindowID id)
+                                     int methodRow, int forecastRow, wxWindowID id)
     : asFramePredictorsVirtual(parent, id),
       m_forecastManager(forecastManager),
-      m_workspace(workspace)
+      m_workspace(workspace),
+      m_selectedMethod(methodRow),
+      m_selectedForecast(forecastRow)
 {
-    m_selectedForecast = 0;
     m_selectedTargetDate = -1;
     m_selectedAnalogDate = -1;
     m_syncroTool = true;
@@ -93,7 +94,6 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     m_toolBar->AddTool(asID_CROSS_MARKER, wxT("Marker overlay"), *_img_map_cross, *_img_map_cross, wxITEM_NORMAL,
                        _("Display a cross marker overlay"), _("Display a cross marker overlay on both frames"),
                        nullptr);
-    m_toolBar->AddSeparator();
     m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
                        _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
@@ -104,6 +104,12 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     m_sizerGISLeft->Add(m_displayCtrlLeft, 1, wxEXPAND | wxALL, 0);
     m_sizerGISRight->Add(m_displayCtrlRight, 1, wxEXPAND | wxALL, 0);
     m_panelGIS->Layout();
+    m_tocCtrlLeft = new vrViewerTOCList(m_scrolledWindowOptions, wxID_ANY);
+    m_tocCtrlRight = new vrViewerTOCList(m_scrolledWindowOptions, wxID_ANY);
+    m_sizerScrolledWindow->Insert(7, m_tocCtrlLeft->GetControl(), 1, wxEXPAND, 0);
+    m_sizerScrolledWindow->Add(m_tocCtrlRight->GetControl(), 1, wxEXPAND, 0);
+    m_sizerScrolledWindow->Fit(m_scrolledWindowOptions);
+
     m_layerManager = new vrLayerManager();
     m_viewerLayerManagerLeft = new vrViewerLayerManager(m_layerManager, this, m_displayCtrlLeft, m_tocCtrlLeft);
     m_viewerLayerManagerRight = new vrViewerLayerManager(m_layerManager, this, m_displayCtrlRight, m_tocCtrlRight);
@@ -125,6 +131,13 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
                   wxCommandEventHandler(asFramePredictors::OpenFramePreferences));
 
+    // DND
+    m_scrolledWindowOptions->SetDropTarget(new vroomDropFilesPredictors(this));
+
+    // Bitmap
+    m_bpButtonSwitchRight->SetBitmapLabel(*_img_arrow_right);
+    m_bpButtonSwitchLeft->SetBitmapLabel(*_img_arrow_left);
+
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));
@@ -144,6 +157,10 @@ asFramePredictors::~asFramePredictors() {
 
 void asFramePredictors::Init() {
     if (m_forecastManager->GetMethodsNb() > 0) {
+        // Methods list
+        wxArrayString methods = m_forecastManager->GetMethodNamesWxArray();
+        m_choiceMethod->Set(methods);
+        m_choiceMethod->Select(m_selectedMethod);
         // Forecast list
         wxArrayString arrayForecasts = m_forecastManager->GetAllForecastNamesWxArray();
         m_choiceForecast->Set(arrayForecasts);
@@ -210,6 +227,10 @@ void asFramePredictors::OnSwitchLeft(wxCommandEvent& event) {
     Layout();
     Refresh();
     Thaw();
+}
+
+void asFramePredictors::OnPredictorSelectionChange(wxCommandEvent& event) {
+    UpdateLayers();
 }
 
 void asFramePredictors::OpenDefaultLayers() {
@@ -685,4 +706,23 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
     }
 
     wxDELETE(msg);
+}
+
+
+void asFramePredictors::ReloadViewerLayerManagerLeft() {
+#if defined(__WIN32__)
+    auto thread = new asThreadViewerLayerManagerReload(m_viewerLayerManagerLeft, &m_critSectionViewerLayerManager);
+    ThreadsManager().AddThread(thread);
+#else
+    m_viewerLayerManagerLeft->Reload();
+#endif
+}
+
+void asFramePredictors::ReloadViewerLayerManagerRight() {
+#if defined(__WIN32__)
+    auto thread = new asThreadViewerLayerManagerReload(m_viewerLayerManagerRight, &m_critSectionViewerLayerManager);
+    ThreadsManager().AddThread(thread);
+#else
+    m_viewerLayerManagerRight->Reload();
+#endif
 }

@@ -50,13 +50,15 @@ class vroomDropFilesPredictors : public wxFileDropTarget {
 class asFramePredictors : public asFramePredictorsVirtual {
   public:
     asFramePredictors(wxWindow* parent, asForecastManager* forecastManager, asWorkspace* workspace,
-                      int selectedForecast, wxWindowID id = asWINDOW_PREDICTORS);
+                      int methodRow, int forecastRow, wxWindowID id = asWINDOW_PREDICTORS);
 
     ~asFramePredictors();
 
     void Init();
 
     void InitExtent();
+
+    bool OpenLayers(const wxArrayString& names);
 
     void OpenDefaultLayers();
 
@@ -68,6 +70,20 @@ class asFramePredictors : public asFramePredictorsVirtual {
     void OnSwitchRight(wxCommandEvent& event);
 
     void OnSwitchLeft(wxCommandEvent& event);
+
+    void OnPredictorSelectionChange(wxCommandEvent& event);
+
+    void OnMethodChange(wxCommandEvent& event);
+
+    void OnForecastChange(wxCommandEvent& event);
+
+    void OnTargetDateChange(wxCommandEvent& event);
+
+    void OnAnalogDateChange(wxCommandEvent& event);
+
+    void OnOpenLayer(wxCommandEvent& event);
+
+    void OnCloseLayer(wxCommandEvent& event);
 
     void OnToolZoomIn(wxCommandEvent& event);
 
@@ -83,12 +99,22 @@ class asFramePredictors : public asFramePredictorsVirtual {
 
     void OnKeyUp(wxKeyEvent& event);
 
+    void UpdateLayers();
+
+    void ReloadViewerLayerManagerLeft();
+
+    void ReloadViewerLayerManagerRight();
+
   private:
     asForecastManager* m_forecastManager;
     asPredictorsRenderer* m_predictorsViewer;
     asPredictorsManager* m_predictorsManager;
     asWorkspace* m_workspace;
-    // vroomgis
+    int m_selectedMethod;
+    int m_selectedForecast;
+    int m_selectedTargetDate;
+    int m_selectedAnalogDate;
+    bool m_syncroTool;
     bool m_displayPanelLeft;
     bool m_displayPanelRight;
     wxOverlay m_overlay;

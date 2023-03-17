@@ -839,6 +839,15 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_scrolledWindowOptions->SetScrollRate( 5, 5 );
 	m_sizerScrolledWindow = new wxBoxSizer( wxVERTICAL );
 
+	m_staticTextChoiceMethod = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Method"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextChoiceMethod->Wrap( -1 );
+	m_sizerScrolledWindow->Add( m_staticTextChoiceMethod, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
+
+	wxArrayString m_choiceMethodChoices;
+	m_choiceMethod = new wxChoice( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceMethodChoices, 0 );
+	m_choiceMethod->SetSelection( 0 );
+	m_sizerScrolledWindow->Add( m_choiceMethod, 0, wxEXPAND|wxTOP|wxBOTTOM, 5 );
+
 	m_staticTextChoiceForecast = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Forecast"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextChoiceForecast->Wrap( -1 );
 	m_sizerScrolledWindow->Add( m_staticTextChoiceForecast, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
@@ -846,7 +855,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	wxArrayString m_choiceForecastChoices;
 	m_choiceForecast = new wxChoice( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceForecastChoices, 0 );
 	m_choiceForecast->SetSelection( 0 );
-	m_sizerScrolledWindow->Add( m_choiceForecast, 0, wxALL|wxEXPAND, 5 );
+	m_sizerScrolledWindow->Add( m_choiceForecast, 0, wxEXPAND|wxTOP|wxBOTTOM, 5 );
 
 	m_staticTextCheckListPredictors = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Possible predictors"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextCheckListPredictors->Wrap( -1 );
@@ -913,10 +922,10 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_sizerSwitch = new wxBoxSizer( wxVERTICAL );
 
 	m_bpButtonSwitchRight = new wxBitmapButton( m_panelSwitch, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 10,28 ), wxBU_AUTODRAW|0|wxBORDER_NONE );
-	m_sizerSwitch->Add( m_bpButtonSwitchRight, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxLEFT, 2 );
+	m_sizerSwitch->Add( m_bpButtonSwitchRight, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxLEFT, 1 );
 
 	m_bpButtonSwitchLeft = new wxBitmapButton( m_panelSwitch, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 10,28 ), wxBU_AUTODRAW|0|wxBORDER_NONE );
-	m_sizerSwitch->Add( m_bpButtonSwitchLeft, 0, wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxLEFT, 2 );
+	m_sizerSwitch->Add( m_bpButtonSwitchLeft, 0, wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxLEFT, 1 );
 
 
 	bSizer40->Add( m_sizerSwitch, 1, wxALIGN_CENTER|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
@@ -1001,6 +1010,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	this->Centre( wxBOTH );
 
 	// Connect Events
+	m_choiceMethod->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnMethodChange ), NULL, this );
 	m_choiceForecast->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnForecastChange ), NULL, this );
 	m_checkListPredictors->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePredictorsVirtual::OnPredictorSelectionChange ), NULL, this );
 	m_choiceTargetDates->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnTargetDateChange ), NULL, this );
@@ -1014,6 +1024,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 asFramePredictorsVirtual::~asFramePredictorsVirtual()
 {
 	// Disconnect Events
+	m_choiceMethod->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnMethodChange ), NULL, this );
 	m_choiceForecast->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnForecastChange ), NULL, this );
 	m_checkListPredictors->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePredictorsVirtual::OnPredictorSelectionChange ), NULL, this );
 	m_choiceTargetDates->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnTargetDateChange ), NULL, this );

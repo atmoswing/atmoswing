@@ -764,7 +764,9 @@ void asFrameViewer::OpenFramePredictors(wxCommandEvent& event) {
     if (m_forecastManager->HasForecasts()) {
         wxBusyCursor wait;
 
-        auto* framePredictors = new asFramePredictors(this, m_forecastManager, &m_workspace);
+        auto* framePredictors = new asFramePredictors(this, m_forecastManager, &m_workspace,
+                                                      m_forecastViewer->GetMethodSelection(),
+                                                      m_forecastViewer->GetForecastSelection());
 
         if (g_ppiScaleDc > 1) {
             wxSize frameSize = framePredictors->GetSize();
@@ -930,7 +932,7 @@ void asFrameViewer::OnCloseLayer(wxCommandEvent& event) {
     }
 
     // Choice dialog box
-    wxMultiChoiceDialog choiceDlg(this, _("Select Layer(s) to close"), _("Close layer(s)"), layersName);
+    wxMultiChoiceDialog choiceDlg(this, _("Select Layer(s) to close."), _("Close layer(s)"), layersName);
     if (choiceDlg.ShowModal() != wxID_OK) {
 #if defined(__WIN32__)
         m_critSectionViewerLayerManager.Leave();
@@ -943,7 +945,7 @@ void asFrameViewer::OnCloseLayer(wxCommandEvent& event) {
     // Get indices of layer to remove
     wxArrayInt layerToRemoveIndex = choiceDlg.GetSelections();
     if (layerToRemoveIndex.IsEmpty()) {
-        wxLogWarning(_("Nothing selected, no layer will be closed"));
+        wxLogWarning(_("Nothing selected, no layer will be closed."));
 #if defined(__WIN32__)
         m_critSectionViewerLayerManager.Leave();
 #endif

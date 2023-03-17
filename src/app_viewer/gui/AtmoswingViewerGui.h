@@ -316,6 +316,8 @@ class asFramePredictorsVirtual : public wxFrame
 		wxSplitterWindow* m_splitterToc;
 		wxScrolledWindow* m_scrolledWindowOptions;
 		wxBoxSizer* m_sizerScrolledWindow;
+		wxStaticText* m_staticTextChoiceMethod;
+		wxChoice* m_choiceMethod;
 		wxStaticText* m_staticTextChoiceForecast;
 		wxChoice* m_choiceForecast;
 		wxStaticText* m_staticTextCheckListPredictors;
@@ -343,6 +345,7 @@ class asFramePredictorsVirtual : public wxFrame
 		wxToolBar* m_toolBar;
 
 		// Virtual event handlers, override them in your derived class
+		virtual void OnMethodChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnForecastChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPredictorSelectionChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTargetDateChange( wxCommandEvent& event ) { event.Skip(); }

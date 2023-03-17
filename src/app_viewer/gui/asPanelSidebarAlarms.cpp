@@ -93,7 +93,7 @@ void asPanelSidebarAlarms::Update() {
 }
 
 void asPanelSidebarAlarms::SetData(a1f& dates, a2f& values) {
-    vwxs names = m_forecastManager->GetAllMethodNames();
+    vwxs names = m_forecastManager->GetMethodNames();
 
     // Required size
     int rows = values.rows();

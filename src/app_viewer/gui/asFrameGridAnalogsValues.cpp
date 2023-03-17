@@ -69,7 +69,7 @@ void asFrameGridAnalogsValues::Init() {
 
 void asFrameGridAnalogsValues::RebuildChoiceForecast() {
     // Reset forecast list
-    wxArrayString arrayForecasts = m_forecastManager->GetAllForecastNamesWxArray();
+    wxArrayString arrayForecasts = m_forecastManager->GetCombinedForecastNamesWxArray();
     m_choiceForecast->Set(arrayForecasts);
     int linearIndex = m_forecastManager->GetLinearIndex(m_selectedMethod, m_selectedForecast);
     m_choiceForecast->Select(linearIndex);

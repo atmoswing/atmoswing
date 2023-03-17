@@ -223,7 +223,7 @@ wxString asResultsForecastAggregator::GetMethodName(int methodRow) const {
     return name;
 }
 
-vwxs asResultsForecastAggregator::GetAllMethodNames() const {
+vwxs asResultsForecastAggregator::GetMethodNames() const {
     vwxs names;
 
     for (int methodRow = 0; methodRow < m_forecasts.size(); methodRow++) {
@@ -241,8 +241,8 @@ vwxs asResultsForecastAggregator::GetAllMethodNames() const {
     return names;
 }
 
-vwxs asResultsForecastAggregator::GetAllForecastNames() const {
-    vwxs names;
+wxArrayString asResultsForecastAggregator::GetMethodNamesWxArray() const {
+    wxArrayString names;
 
     for (int methodRow = 0; methodRow < m_forecasts.size(); methodRow++) {
         wxASSERT(!m_forecasts[methodRow].empty());
@@ -251,16 +251,7 @@ vwxs asResultsForecastAggregator::GetAllForecastNames() const {
         if (!methodName.IsSameAs(m_forecasts[methodRow][0]->GetMethodId())) {
             methodName.Append(asStrF(" (%s)", m_forecasts[methodRow][0]->GetMethodId()));
         }
-
-        for (int forecastRow = 0; forecastRow < m_forecasts[methodRow].size(); forecastRow++) {
-            wxString name = methodName;
-
-            if (!m_forecasts[methodRow][forecastRow]->GetSpecificTag().IsEmpty()) {
-                name.Append(" - ");
-                name.Append(m_forecasts[methodRow][forecastRow]->GetSpecificTagDisplay());
-            }
-            names.push_back(name);
-        }
+        names.Add(methodName);
     }
 
     wxASSERT(!names.empty());
@@ -268,7 +259,7 @@ vwxs asResultsForecastAggregator::GetAllForecastNames() const {
     return names;
 }
 
-wxArrayString asResultsForecastAggregator::GetAllForecastNamesWxArray() const {
+wxArrayString asResultsForecastAggregator::GetCombinedForecastNamesWxArray() const {
     wxArrayString names;
 
     for (const auto & method : m_forecasts) {
