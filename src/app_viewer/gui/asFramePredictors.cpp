@@ -39,6 +39,8 @@
 #include "img_toolbar.h"
 
 BEGIN_EVENT_TABLE(asFramePredictors, wxFrame)
+EVT_MENU(wxID_OPEN, asFramePredictors::OnOpenLayer)
+EVT_MENU(wxID_REMOVE, asFramePredictors::OnCloseLayer)
 EVT_MENU(asID_ZOOM_IN, asFramePredictors::OnToolZoomIn)
 EVT_MENU(asID_ZOOM_OUT, asFramePredictors::OnToolZoomOut)
 EVT_MENU(asID_ZOOM_FIT, asFramePredictors::OnToolZoomToFit)
@@ -86,8 +88,8 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
                        _("Zoom out"), _("Zoom out"), nullptr);
     m_toolBar->AddTool(asID_PAN, wxT("Pan"), *_img_map_move, *_img_map_move, wxITEM_NORMAL, _("Pan the map"),
                        _("Move the map by panning"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), *_img_map_fit, *_img_map_fit, wxITEM_NORMAL, _("Zoom to visible layers"),
-                       _("Zoom view to the full extent of all visible layers"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), *_img_map_fit, *_img_map_fit, wxITEM_NORMAL,
+                       _("Zoom to visible layers"), _("Zoom view to the full extent of all visible layers"), nullptr);
     m_toolBar->AddTool(asID_CROSS_MARKER, wxT("Marker overlay"), *_img_map_cross, *_img_map_cross, wxITEM_NORMAL,
                        _("Display a cross marker overlay"), _("Display a cross marker overlay on both frames"),
                        nullptr);
@@ -166,6 +168,48 @@ void asFramePredictors::OpenFramePreferences(wxCommandEvent& event) {
     auto* frame = new asFramePreferencesViewer(this, m_workspace, asWINDOW_PREFERENCES);
     frame->Fit();
     frame->Show();
+}
+
+void asFramePredictors::OnSwitchRight(wxCommandEvent& event) {
+    if (!m_displayPanelRight) return;
+
+    Freeze();
+
+    if (m_displayPanelLeft) {
+        m_sizerGIS->Hide(m_panelRight, true);
+        m_displayPanelRight = false;
+    } else {
+        m_sizerGIS->Show(m_panelLeft, true);
+        m_sizerGIS->Show(m_panelRight, true);
+        m_displayPanelLeft = true;
+        m_displayPanelRight = true;
+    }
+
+    m_sizerGIS->Fit(m_panelGIS);
+    Layout();
+    Refresh();
+    Thaw();
+}
+
+void asFramePredictors::OnSwitchLeft(wxCommandEvent& event) {
+    if (!m_displayPanelLeft) return;
+
+    Freeze();
+
+    if (m_displayPanelRight) {
+        m_sizerGIS->Hide(m_panelLeft, true);
+        m_displayPanelLeft = false;
+    } else {
+        m_sizerGIS->Show(m_panelLeft, true);
+        m_sizerGIS->Show(m_panelRight, true);
+        m_displayPanelLeft = true;
+        m_displayPanelRight = true;
+    }
+
+    m_sizerGIS->Fit(m_panelGIS);
+    Layout();
+    Refresh();
+    Thaw();
 }
 
 void asFramePredictors::OpenDefaultLayers() {
@@ -320,6 +364,115 @@ void asFramePredictors::OpenDefaultLayers() {
 
     m_viewerLayerManagerLeft->FreezeEnd();
     m_viewerLayerManagerRight->FreezeEnd();
+}
+
+bool asFramePredictors::OpenLayers(const wxArrayString& names) {
+    // Open files
+    for (unsigned int i = 0; i < names.GetCount(); i++) {
+        if (!m_layerManager->Open(wxFileName(names.Item(i)))) {
+            wxLogError(_("The layer could not be opened."));
+            return false;
+        }
+    }
+
+// Get files
+#if defined(__WIN32__)
+    m_critSectionViewerLayerManager.Enter();
+#endif
+    m_viewerLayerManagerLeft->FreezeBegin();
+    m_viewerLayerManagerRight->FreezeBegin();
+    for (unsigned int i = 0; i < names.GetCount(); i++) {
+        vrLayer* layer = m_layerManager->GetLayer(wxFileName(names.Item(i)));
+        wxASSERT(layer);
+
+        // Add files to the viewer
+        m_viewerLayerManagerLeft->Add(1, layer, nullptr);
+        m_viewerLayerManagerRight->Add(1, layer, nullptr);
+    }
+    m_viewerLayerManagerLeft->FreezeEnd();
+    m_viewerLayerManagerRight->FreezeEnd();
+#if defined(__WIN32__)
+    m_critSectionViewerLayerManager.Leave();
+#endif
+    return true;
+}
+
+void asFramePredictors::OnOpenLayer(wxCommandEvent& event) {
+    vrDrivers drivers;
+    wxFileDialog myFileDlg(this, _("Select GIS layers"), wxEmptyString, wxEmptyString, drivers.GetWildcards(),
+                           wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_MULTIPLE | wxFD_CHANGE_DIR);
+
+    wxArrayString pathsFileName;
+
+    // Try to open files
+    if (myFileDlg.ShowModal() == wxID_OK) {
+        myFileDlg.GetPaths(pathsFileName);
+        wxASSERT(pathsFileName.GetCount() > 0);
+
+        OpenLayers(pathsFileName);
+    }
+}
+
+void asFramePredictors::OnCloseLayer(wxCommandEvent& event) {
+#if defined(__WIN32__)
+    m_critSectionViewerLayerManager.Enter();
+#endif
+
+    wxArrayString layersName;
+    for (int i = 0; i < m_viewerLayerManagerLeft->GetCount(); i++) {
+        vrRenderer* renderer = m_viewerLayerManagerLeft->GetRenderer(i);
+        wxASSERT(renderer);
+        layersName.Add(renderer->GetLayer()->GetDisplayName().GetFullName());
+    }
+
+    if (layersName.IsEmpty()) {
+        wxLogError("No layer opened, nothing to close.");
+#if defined(__WIN32__)
+        m_critSectionViewerLayerManager.Leave();
+#endif
+        return;
+    }
+
+    wxMultiChoiceDialog choiceDlg(this, "Select Layer(s) to close.", "Close layer(s)", layersName);
+    if (choiceDlg.ShowModal() != wxID_OK) {
+#if defined(__WIN32__)
+        m_critSectionViewerLayerManager.Leave();
+#endif
+        return;
+    }
+
+    wxArrayInt layerToRemoveIndex = choiceDlg.GetSelections();
+    if (layerToRemoveIndex.IsEmpty()) {
+        wxLogWarning("Nothing selected, no layer will be closed.");
+#if defined(__WIN32__)
+        m_critSectionViewerLayerManager.Leave();
+#endif
+        return;
+    }
+
+    // Removing layer(s)
+    m_viewerLayerManagerLeft->FreezeBegin();
+    m_viewerLayerManagerRight->FreezeBegin();
+
+    for (int j = (signed)layerToRemoveIndex.GetCount() - 1; j >= 0; j--) {
+        // Remove from viewer manager (TOC and Display)
+        vrRenderer* rendererLeft = m_viewerLayerManagerLeft->GetRenderer(layerToRemoveIndex.Item(j));
+        vrLayer* layer = rendererLeft->GetLayer();
+        wxASSERT(rendererLeft);
+        m_viewerLayerManagerLeft->Remove(rendererLeft);
+
+        vrRenderer* rendererRight = m_viewerLayerManagerRight->GetRenderer(layerToRemoveIndex.Item(j));
+        wxASSERT(rendererRight);
+        m_viewerLayerManagerRight->Remove(rendererRight);
+
+        // Close layer (not used anymore);
+        m_layerManager->Close(layer);
+    }
+    m_viewerLayerManagerLeft->FreezeEnd();
+    m_viewerLayerManagerRight->FreezeEnd();
+#if defined(__WIN32__)
+    m_critSectionViewerLayerManager.Leave();
+#endif
 }
 
 void asFramePredictors::OnKeyDown(wxKeyEvent& event) {

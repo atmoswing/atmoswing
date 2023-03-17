@@ -65,11 +65,17 @@ class asFramePredictors : public asFramePredictorsVirtual {
 
     void OpenFramePreferences(wxCommandEvent& event);
 
+    void OnSwitchRight(wxCommandEvent& event);
+
+    void OnSwitchLeft(wxCommandEvent& event);
+
     void OnToolZoomIn(wxCommandEvent& event);
 
     void OnToolZoomOut(wxCommandEvent& event);
 
     void OnToolPan(wxCommandEvent& event);
+
+    void OnToolSight(wxCommandEvent& event);
 
     void OnToolAction(wxCommandEvent& event);
 
@@ -82,6 +88,22 @@ class asFramePredictors : public asFramePredictorsVirtual {
     asPredictorsRenderer* m_predictorsViewer;
     asPredictorsManager* m_predictorsManager;
     asWorkspace* m_workspace;
+    // vroomgis
+    bool m_displayPanelLeft;
+    bool m_displayPanelRight;
+    wxOverlay m_overlay;
+#if defined(__WIN32__)
+    wxCriticalSection m_critSectionViewerLayerManager;
+#endif
+
+    // Vroomgis
+    vrLayerManager* m_layerManager;
+    vrViewerTOCList* m_tocCtrlLeft;
+    vrViewerTOCList* m_tocCtrlRight;
+    vrViewerLayerManager* m_viewerLayerManagerLeft;
+    vrViewerLayerManager* m_viewerLayerManagerRight;
+    vrViewerDisplay* m_displayCtrlLeft;
+    vrViewerDisplay* m_displayCtrlRight;
 
     DECLARE_EVENT_TABLE()
 };
