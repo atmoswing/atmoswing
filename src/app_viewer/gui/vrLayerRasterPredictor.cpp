@@ -30,7 +30,8 @@
 #include "vrlabel.h"
 #include "vrrealrect.h"
 
-vrLayerRasterPredictor::vrLayerRasterPredictor() = default;
+vrLayerRasterPredictor::vrLayerRasterPredictor()
+    : vrLayerRasterGDAL(){};
 
 vrLayerRasterPredictor::~vrLayerRasterPredictor() = default;
 
@@ -44,7 +45,34 @@ bool vrLayerRasterPredictor::Close() {
     return true;
 }
 
-bool vrLayerRasterPredictor::_GetRasterData(unsigned char** imgData, const wxSize& outImgPxSize,
-                                           const wxRect& readImgPxInfo, const vrRender* render) {
-    return false;
+bool vrLayerRasterPredictor::CreateInMemory() {
+    // Try to close
+    Close();
+    wxASSERT(m_dataset == nullptr);
+
+    // Init filename and type
+    m_fileName = _("Predictor");
+    m_driverType = vrDRIVER_USER_DEFINED;
+
+    // Get driver
+    GDALDriver* poDriver = GetGDALDriverManager()->GetDriverByName("MEM");
+    if (poDriver == nullptr) {
+        wxLogError("Cannot get the memory driver.");
+        return false;
+    }
+
+    // Create dataset
+    m_dataset = poDriver->Create(_("Predictor"), int(m_longitudes.size()), int(m_latitudes.size()), 1, GDT_Float32, nullptr);
+    if (m_dataset == nullptr) {
+        wxLogError(_("Creation of memory dataset failed."));
+        return false;
+    }
+
+    // Set projection
+    if (m_dataset->SetProjection("EPSG:4326") != CE_None) {
+        wxLogError(_("Setting projection to predictor layer failed."));
+        return false;
+    }
+
+    return true;
 }

@@ -40,11 +40,27 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
 
     ~vrLayerRasterPredictor() override;
 
+    bool CreateInMemory();
+
+    void SetData(const a2f& data) {
+        m_data = data;
+    }
+
+    void SetLongitudes(const a1f& lon) {
+        m_longitudes = lon;
+    }
+
+    void SetLatitudes(const a1f& lat) {
+        m_latitudes = lat;
+    }
+
   protected:
-    bool _GetRasterData(unsigned char** imgData, const wxSize& outImgPxSize, const wxRect& readImgPxInfo,
-                        const vrRender* render) override;
 
   private:
+    a2f m_data;
+    a1f m_longitudes;
+    a1f m_latitudes;
+
     bool Close();
 };
 
