@@ -371,7 +371,7 @@ void asForecastRenderer::Redraw() {
                         forecastVal *= factor;
                         data.Add(forecastVal);
                     } else {
-                        // Interpretatio
+                        // Interpretation
                         double forecastVal = 0;
                         double forecastVal30 = asGetValueForQuantile(values, 0.2f);
                         double forecastVal60 = asGetValueForQuantile(values, 0.6f);

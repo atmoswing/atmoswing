@@ -40,7 +40,7 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
 
     ~vrLayerRasterPredictor() override;
 
-    bool CreateInMemory();
+    bool CreateInMemory(const wxFileName &name);
 
     void SetData(const a2f& data) {
         m_data = data;

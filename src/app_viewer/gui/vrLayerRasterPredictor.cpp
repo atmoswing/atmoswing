@@ -31,7 +31,9 @@
 #include "vrrealrect.h"
 
 vrLayerRasterPredictor::vrLayerRasterPredictor()
-    : vrLayerRasterGDAL(){};
+    : vrLayerRasterGDAL() {
+    m_driverType = vrDRIVER_RASTER_MEMORY;
+};
 
 vrLayerRasterPredictor::~vrLayerRasterPredictor() = default;
 
@@ -45,14 +47,13 @@ bool vrLayerRasterPredictor::Close() {
     return true;
 }
 
-bool vrLayerRasterPredictor::CreateInMemory() {
+bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
     // Try to close
     Close();
     wxASSERT(m_dataset == nullptr);
 
-    // Init filename and type
-    m_fileName = _("Predictor");
-    m_driverType = vrDRIVER_USER_DEFINED;
+    // Init filename
+    m_fileName = name;
 
     // Get driver
     GDALDriver* poDriver = GetGDALDriverManager()->GetDriverByName("MEM");
@@ -62,7 +63,8 @@ bool vrLayerRasterPredictor::CreateInMemory() {
     }
 
     // Create dataset
-    m_dataset = poDriver->Create(_("Predictor"), int(m_longitudes.size()), int(m_latitudes.size()), 1, GDT_Float32, nullptr);
+    m_dataset = poDriver->Create((const char*)m_fileName.GetFullPath().mb_str(wxConvUTF8), int(m_longitudes.size()),
+                                 int(m_latitudes.size()), 1, GDT_Float32, nullptr);
     if (m_dataset == nullptr) {
         wxLogError(_("Creation of memory dataset failed."));
         return false;
@@ -74,5 +76,17 @@ bool vrLayerRasterPredictor::CreateInMemory() {
         return false;
     }
 
+    // Set geotransform
+    double adfGeoTransform[6];
+    adfGeoTransform[0] = m_longitudes.minCoeff(); // top left x
+    adfGeoTransform[1] = m_longitudes[1] - m_longitudes[0]; // w-e pixel resolution
+    adfGeoTransform[2] = 0; // rotation, 0 if image is "north up"
+    adfGeoTransform[3] = m_latitudes.maxCoeff(); // top left y
+    adfGeoTransform[4] = 0; // rotation, 0 if image is "north up"
+    adfGeoTransform[5] = m_latitudes[1] - m_latitudes[0];  // n-s pixel resolution (negative value)
+    if (m_dataset->SetGeoTransform(adfGeoTransform) != CE_None) {
+        wxLogError(_("Setting geotransform to predictor layer failed."));
+        return false;
+    }
     return true;
 }
