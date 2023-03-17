@@ -913,10 +913,10 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_sizerSwitch = new wxBoxSizer( wxVERTICAL );
 
 	m_bpButtonSwitchRight = new wxBitmapButton( m_panelSwitch, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 10,28 ), wxBU_AUTODRAW|0|wxBORDER_NONE );
-	m_sizerSwitch->Add( m_bpButtonSwitchRight, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	m_sizerSwitch->Add( m_bpButtonSwitchRight, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxLEFT, 2 );
 
 	m_bpButtonSwitchLeft = new wxBitmapButton( m_panelSwitch, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 10,28 ), wxBU_AUTODRAW|0|wxBORDER_NONE );
-	m_sizerSwitch->Add( m_bpButtonSwitchLeft, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	m_sizerSwitch->Add( m_bpButtonSwitchLeft, 0, wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxLEFT, 2 );
 
 
 	bSizer40->Add( m_sizerSwitch, 1, wxALIGN_CENTER|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );

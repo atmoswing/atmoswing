@@ -5846,8 +5846,8 @@
                                                                     <property name="orient">wxVERTICAL</property>
                                                                     <property name="permission">none</property>
                                                                     <object class="sizeritem" expanded="0">
-                                                                        <property name="border">5</property>
-                                                                        <property name="flag">wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL</property>
+                                                                        <property name="border">2</property>
+                                                                        <property name="flag">wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxLEFT</property>
                                                                         <property name="proportion">0</property>
                                                                         <object class="wxBitmapButton" expanded="0">
                                                                             <property name="BottomDockable">1</property>
@@ -5920,8 +5920,8 @@
                                                                         </object>
                                                                     </object>
                                                                     <object class="sizeritem" expanded="0">
-                                                                        <property name="border">5</property>
-                                                                        <property name="flag">wxALIGN_CENTER_HORIZONTAL</property>
+                                                                        <property name="border">2</property>
+                                                                        <property name="flag">wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxLEFT</property>
                                                                         <property name="proportion">0</property>
                                                                         <object class="wxBitmapButton" expanded="0">
                                                                             <property name="BottomDockable">1</property>

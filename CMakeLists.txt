@@ -25,7 +25,7 @@ include(FetchContent)
 FetchContent_Declare(
         vroomgis
         GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
-        GIT_TAG c55377ba64c51239f705df5895b7e4d56ff3c838
+        GIT_TAG bbd6b7b884540881ffd24c5d51b6ae608ec2f1d6
         SOURCE_SUBDIR vroomgis)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)

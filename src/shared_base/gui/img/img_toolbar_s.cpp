@@ -561,6 +561,7 @@ void cleanup_img_toolbar() {
     wxDELETE(_img_map_select);
     wxDELETE(_img_map_zoom_in);
     wxDELETE(_img_map_zoom_out);
+    wxDELETE(_img_map_cross);
     wxDELETE(_img_open);
     wxDELETE(_img_preferences);
     wxDELETE(_img_run);
