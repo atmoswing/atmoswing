@@ -25,8 +25,9 @@
  * Portions Copyright 2023 Pascal Horton, Terranum.
  */
 
-#include "asAreaGrid.h"
 #include "asPredictorOperCustomVigicruesIfs.h"
+
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorOperCustomVigicruesIfs::asPredictorOperCustomVigicruesIfs(const wxString& dataId)

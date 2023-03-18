@@ -183,14 +183,16 @@ int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString
                     // If a proxy is used
                     if (usesProxy) {
                         if (!proxyAddress.IsEmpty()) {
-                            curl_easy_setopt(curl, CURLOPT_PROXY, static_cast<const char*>(proxyAddress.mb_str(wxConvUTF8)));
+                            curl_easy_setopt(curl, CURLOPT_PROXY,
+                                             static_cast<const char*>(proxyAddress.mb_str(wxConvUTF8)));
                         }
                         if (proxyPort > 0) {
                             curl_easy_setopt(curl, CURLOPT_PROXYPORT, proxyPort);
                         }
                         if (!proxyUser.IsEmpty()) {
                             wxString proxyLogin = proxyUser + ":" + proxyPasswd;
-                            curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, static_cast<const char*>(proxyLogin.mb_str(wxConvUTF8)));
+                            curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD,
+                                             static_cast<const char*>(proxyLogin.mb_str(wxConvUTF8)));
                         }
                     }
 

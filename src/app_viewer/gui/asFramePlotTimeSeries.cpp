@@ -653,7 +653,7 @@ void asFramePlotTimeSeries::PlotClassicQuantiles() {
     // Quantiles
     a1f pc(3);
     pc << 0.9f, 0.6f, 0.2f;
-    std::vector<wxColour> colours;
+    vector<wxColour> colours;
     colours.emplace_back(0, 0, 175);
     colours.emplace_back(0, 83, 255);
     colours.emplace_back(0, 226, 255);
@@ -718,7 +718,7 @@ void asFramePlotTimeSeries::PlotPastForecast(int i) {
     // Quantiles
     a1f pc(3);
     pc << 0.9f, 0.6f, 0.2f;
-    std::vector<wxColour> colours;
+    vector<wxColour> colours;
     colours.emplace_back(152, 152, 222);
     colours.emplace_back(152, 187, 255);
     colours.emplace_back(153, 243, 254);
@@ -779,7 +779,7 @@ void asFramePlotTimeSeries::PlotAllQuantiles() {
     a1f pcDown(5);
     pcDown << 0, 0.1f, 0.2f, 0.3f, 0.4f;
     float pcMid = 0.5f;
-    std::vector<wxColour> colours;
+    vector<wxColour> colours;
     colours.emplace_back(252, 252, 252);
     colours.emplace_back(220, 220, 220);
     colours.emplace_back(200, 200, 200);

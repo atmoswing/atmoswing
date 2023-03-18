@@ -196,7 +196,7 @@ void asForecastViewer::Redraw() {
     if (m_returnPeriods.size() != m_displayForecast.size()) return;
 
     // Get data
-    std::vector<asResultsForecast*> forecasts;
+    vector<asResultsForecast*> forecasts;
 
     if (m_forecastSelection < 0) {
         for (int i = 0; i < m_forecastManager->GetForecastsNb(m_methodSelection); i++) {

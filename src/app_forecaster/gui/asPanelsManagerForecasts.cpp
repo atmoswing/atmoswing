@@ -55,7 +55,7 @@ void asPanelsManagerForecasts::RemovePanel(asPanelForecast* panel) {
 
     int id = panel->GetId();
 
-    std::vector<asPanelForecast*> tmpArrayPanels;
+    vector<asPanelForecast*> tmpArrayPanels;
     tmpArrayPanels = m_arrayPanels;
     m_arrayPanels.clear();
 

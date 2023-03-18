@@ -25,8 +25,9 @@
  * Portions Copyright 2019-2020 Pascal Horton, University of Bern.
  */
 
-#include "asAreaGrid.h"
 #include "asPredictorOperCustomFvg.h"
+
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorOperCustomFvg::asPredictorOperCustomFvg(const wxString& dataId)

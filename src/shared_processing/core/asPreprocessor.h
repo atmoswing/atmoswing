@@ -35,39 +35,43 @@ class asPredictor;
 
 class asPreprocessor : public wxObject {
   public:
-    static bool Preprocess(const std::vector<asPredictor*>& predictors, const wxString& method, asPredictor* result);
+    static bool Preprocess(const vector<asPredictor*>& predictors, const wxString& method, asPredictor* result);
 
-    static bool PreprocessSimpleGradients(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessSimpleGradients(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessRealGradients(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessRealGradients(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessSimpleGradientsWithGaussianWeights(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessSimpleGradientsWithGaussianWeights(const vector<asPredictor*>& predictors,
+                                                             asPredictor* result);
 
-    static bool PreprocessRealGradientsWithGaussianWeights(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessRealGradientsWithGaussianWeights(const vector<asPredictor*>& predictors,
+                                                           asPredictor* result);
 
-    static bool PreprocessSimpleCurvature(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessSimpleCurvature(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessRealCurvature(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessRealCurvature(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessSimpleCurvatureWithGaussianWeights(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessSimpleCurvatureWithGaussianWeights(const vector<asPredictor*>& predictors,
+                                                             asPredictor* result);
 
-    static bool PreprocessRealCurvatureWithGaussianWeights(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessRealCurvatureWithGaussianWeights(const vector<asPredictor*>& predictors,
+                                                           asPredictor* result);
 
-    static bool PreprocessAddition(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessAddition(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessAverage(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessAverage(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessDifference(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessDifference(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessMultiplication(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessMultiplication(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessFormerHumidityIndex(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessFormerHumidityIndex(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessMergeByHalfAndMultiply(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessMergeByHalfAndMultiply(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessHumidityFlux(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessHumidityFlux(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessWindSpeed(const std::vector<asPredictor*>& predictors, asPredictor* result);
+    static bool PreprocessWindSpeed(const vector<asPredictor*>& predictors, asPredictor* result);
 
     static void GetHorizontalDistances(const a1d& lonAxis, const a1d& latAxis, a2f& distXs, a2f& distYs);
 

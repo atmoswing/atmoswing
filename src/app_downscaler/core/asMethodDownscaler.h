@@ -75,35 +75,35 @@ class asMethodDownscaler : public asMethodStandard {
   protected:
     wxString m_predictorProjectionDataDir;
     vi m_predictandStationIds;
-    std::vector<asParametersDownscaling> m_parameters;
+    vector<asParametersDownscaling> m_parameters;
 
     virtual bool Downscale(asParametersDownscaling& params) = 0;
 
-    bool LoadProjectionData(std::vector<asPredictor*>& predictors, asParametersDownscaling* params, int iStep,
+    bool LoadProjectionData(vector<asPredictor*>& predictors, asParametersDownscaling* params, int iStep,
                             double timeStartData, double timeEndData);
 
-    bool ExtractProjectionDataWithoutPreprocessing(std::vector<asPredictor*>& predictors,
+    bool ExtractProjectionDataWithoutPreprocessing(vector<asPredictor*>& predictors,
                                                    asParametersDownscaling* params, int iStep, int iPtor,
                                                    double timeStartData, double timeEndData);
 
-    bool ExtractProjectionDataWithPreprocessing(std::vector<asPredictor*>& predictors, asParametersDownscaling* params,
+    bool ExtractProjectionDataWithPreprocessing(vector<asPredictor*>& predictors, asParametersDownscaling* params,
                                                 int iStep, int iPtor, double timeStartData, double timeEndData);
 
-    bool Preprocess(std::vector<asPredictorProj*> predictors, const wxString& method, asPredictor* result);
+    bool Preprocess(vector<asPredictorProj*> predictors, const wxString& method, asPredictor* result);
 
     bool SaveDetails(asParametersDownscaling* params);
 
-    void Cleanup(std::vector<asPredictorProj*> predictors);
+    void Cleanup(vector<asPredictorProj*> predictors);
 
-    void Cleanup(std::vector<asPredictor*> predictors) override;
+    void Cleanup(vector<asPredictor*> predictors) override;
 
-    void Cleanup(std::vector<asCriteria*> criteria) override;
+    void Cleanup(vector<asCriteria*> criteria) override;
 
   private:
-    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictor*> > > > > m_preloadedArchive;
-    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorProj*> > > > > m_preloadedProjection;
-    std::vector<vvb> m_preloadedArchivePointerCopy;
-    std::vector<vvb> m_preloadedProjectionPointerCopy;
+    vector<vector<vector<vector<vector<asPredictor*> > > > > m_preloadedArchive;
+    vector<vector<vector<vector<vector<asPredictorProj*> > > > > m_preloadedProjection;
+    vector<vvb> m_preloadedArchivePointerCopy;
+    vector<vvb> m_preloadedProjectionPointerCopy;
 
     double GetTimeStartDownscaling(asParametersDownscaling* params) const;
 

@@ -137,13 +137,13 @@ class asMethodCalibrator : public asMethodStandard {
     Order m_scoreOrder;
     float m_scoreValid;
     vf m_scoreClimatology;
-    std::vector<asParametersCalibration> m_parameters;
-    std::vector<asParametersCalibration> m_parametersTemp;
+    vector<asParametersCalibration> m_parameters;
+    vector<asParametersCalibration> m_parametersTemp;
     asParametersCalibration m_originalParams;
     bool m_validationMode;
-    bool m_useMiniBatches;
-    int m_miniBatchStart;
-    int m_miniBatchEnd;
+    bool m_useBatches;
+    int m_batchStart;
+    int m_batchEnd;
 
     virtual bool Calibrate(asParametersCalibration& params) = 0;
 

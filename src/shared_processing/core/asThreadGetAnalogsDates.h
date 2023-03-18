@@ -41,10 +41,10 @@ class asTimeArray;
 
 class asThreadGetAnalogsDates : public asThread {
   public:
-    asThreadGetAnalogsDates(std::vector<asPredictor*> predictorsArchive, std::vector<asPredictor*> predictorsTarget,
+    asThreadGetAnalogsDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
                             asTimeArray* timeArrayArchiveData, asTimeArray* timeArrayArchiveSelection,
                             asTimeArray* timeArrayTargetData, asTimeArray* timeArrayTargetSelection,
-                            std::vector<asCriteria*> criteria, asParameters* params, int step, a1i& vRowsNb,
+                            vector<asCriteria*> criteria, asParameters* params, int step, a1i& vRowsNb,
                             a1i& vColsNb, int start, int end, a2f* finalAnalogsCriteria, a2f* finalAnalogsDates,
                             bool* containsNaNs, bool allowDuplicateDates, bool* success);
 
@@ -54,13 +54,13 @@ class asThreadGetAnalogsDates : public asThread {
 
   protected:
   private:
-    std::vector<asPredictor*> m_pPredictorsArchive;
-    std::vector<asPredictor*> m_pPredictorsTarget;
+    vector<asPredictor*> m_pPredictorsArchive;
+    vector<asPredictor*> m_pPredictorsTarget;
     asTimeArray* m_pTimeArrayArchiveData;
     asTimeArray* m_pTimeArrayArchiveSelection;
     asTimeArray* m_pTimeArrayTargetData;
     asTimeArray* m_pTimeArrayTargetSelection;
-    std::vector<asCriteria*> m_criteria;
+    vector<asCriteria*> m_criteria;
     asParameters* m_params;
     int m_step;
     vpa2f m_vTargData;

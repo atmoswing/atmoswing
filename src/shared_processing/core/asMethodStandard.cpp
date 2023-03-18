@@ -104,8 +104,8 @@ void asMethodStandard::Cancel() {
     m_cancel = true;
 }
 
-bool asMethodStandard::Preprocess(std::vector<asPredictor*> predictors, const wxString& method, asPredictor* result) {
-    std::vector<asPredictor*> ptorsPredictors(predictors.begin(), predictors.end());
+bool asMethodStandard::Preprocess(vector<asPredictor*> predictors, const wxString& method, asPredictor* result) {
+    vector<asPredictor*> ptorsPredictors(predictors.begin(), predictors.end());
 
     return asPreprocessor::Preprocess(ptorsPredictors, method, result);
 }
@@ -633,7 +633,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters* params,
     // Load data for every level and every hour
     for (int iLevel = 0; iLevel < preloadLevelsSize; iLevel++) {
         for (int iHour = 0; iHour < preloadHoursSize; iHour++) {
-            std::vector<asPredictor*> predictorsPreprocess;
+            vector<asPredictor*> predictorsPreprocess;
 
             for (int iPre = 0; iPre < preprocessSize; iPre++) {
                 wxLogVerbose(_("Preloading data for predictor %d (preprocess %d) of step %d."), iPtor, iPre, iStep);
@@ -783,7 +783,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters* params,
     return true;
 }
 
-bool asMethodStandard::LoadArchiveData(std::vector<asPredictor*>& predictors, asParameters* params, int iStep,
+bool asMethodStandard::LoadArchiveData(vector<asPredictor*>& predictors, asParameters* params, int iStep,
                                        double timeStartData, double timeEndData) {
     try {
         // Loop through every predictor
@@ -826,7 +826,7 @@ bool asMethodStandard::LoadArchiveData(std::vector<asPredictor*>& predictors, as
     return true;
 }
 
-bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor*>& predictors, asParameters* params,
+bool asMethodStandard::ExtractPreloadedArchiveData(vector<asPredictor*>& predictors, asParameters* params,
                                                    int iStep, int iPtor) {
     wxLogVerbose(_("Using preloaded data."));
 
@@ -1011,7 +1011,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor*>& pr
     wxDELETE(desiredArea);
 
     if (doPreprocessGradients) {
-        std::vector<asPredictor*> predictorsPreprocess;
+        vector<asPredictor*> predictorsPreprocess;
         predictorsPreprocess.push_back(desiredPredictor);
 
         auto* newPredictor = new asPredictor(*predictorsPreprocess[0]);
@@ -1034,7 +1034,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor*>& pr
     return true;
 }
 
-bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor*>& predictors, asParameters* params, int iStep,
+bool asMethodStandard::ExtractArchiveData(vector<asPredictor*>& predictors, asParameters* params, int iStep,
                                           int iPtor, double timeStartData, double timeEndData) {
     // Date array object instantiation for the data loading.
     double ptorStart = timeStartData + params->GetPredictorTimeAsDays(iStep, iPtor);
@@ -1084,7 +1084,7 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor*>& predictors,
     }
 
     if (params->IsCriteriaUsingGradients(iStep, iPtor)) {
-        std::vector<asPredictor*> predictorsPreprocess;
+        vector<asPredictor*> predictorsPreprocess;
         predictorsPreprocess.push_back(predictor);
 
         auto* newPredictor = new asPredictor(*predictorsPreprocess[0]);
@@ -1107,9 +1107,9 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor*>& predictors,
     return true;
 }
 
-bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor*>& predictors, asParameters* params, int iStep,
+bool asMethodStandard::PreprocessArchiveData(vector<asPredictor*>& predictors, asParameters* params, int iStep,
                                              int iPtor, double timeStartData, double timeEndData) {
-    std::vector<asPredictor*> predictorsPreprocess;
+    vector<asPredictor*> predictorsPreprocess;
 
     int preprocessSize = params->GetPreprocessSize(iStep, iPtor);
 
@@ -1184,7 +1184,7 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor*>& predicto
     return true;
 }
 
-void asMethodStandard::Cleanup(std::vector<asPredictor*> predictors) {
+void asMethodStandard::Cleanup(vector<asPredictor*> predictors) {
     if (!predictors.empty()) {
         for (auto& predictor : predictors) {
             wxDELETE(predictor);
@@ -1193,7 +1193,7 @@ void asMethodStandard::Cleanup(std::vector<asPredictor*> predictors) {
     }
 }
 
-void asMethodStandard::Cleanup(std::vector<asCriteria*> criteria) {
+void asMethodStandard::Cleanup(vector<asCriteria*> criteria) {
     if (!criteria.empty()) {
         for (auto& criterion : criteria) {
             wxDELETE(criterion);

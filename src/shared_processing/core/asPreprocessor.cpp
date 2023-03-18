@@ -33,7 +33,8 @@
 #include "asCriteria.h"
 #include "asPredictor.h"
 
-bool asPreprocessor::Preprocess(const std::vector<asPredictor*>& predictors, const wxString& method, asPredictor* result) {
+bool asPreprocessor::Preprocess(const vector<asPredictor*>& predictors, const wxString& method,
+                                asPredictor* result) {
     wxASSERT(result);
 
     result->SetPreprocessMethod(method);
@@ -78,7 +79,7 @@ bool asPreprocessor::Preprocess(const std::vector<asPredictor*>& predictors, con
     }
 }
 
-bool asPreprocessor::PreprocessSimpleGradients(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessSimpleGradients(const vector<asPredictor*>& predictors, asPredictor* result) {
     // Only one predictor
     wxASSERT(!predictors.empty());
     wxASSERT(predictors.size() == 1);
@@ -144,7 +145,7 @@ bool asPreprocessor::PreprocessSimpleGradients(const std::vector<asPredictor*>& 
     return true;
 }
 
-bool asPreprocessor::PreprocessRealGradients(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessRealGradients(const vector<asPredictor*>& predictors, asPredictor* result) {
     // Only one predictor
     wxASSERT(!predictors.empty());
     wxASSERT(predictors.size() == 1);
@@ -225,7 +226,7 @@ bool asPreprocessor::PreprocessRealGradients(const std::vector<asPredictor*>& pr
     return true;
 }
 
-bool asPreprocessor::PreprocessSimpleGradientsWithGaussianWeights(const std::vector<asPredictor*>& predictors,
+bool asPreprocessor::PreprocessSimpleGradientsWithGaussianWeights(const vector<asPredictor*>& predictors,
                                                                   asPredictor* result) {
     // Only one predictor
     wxASSERT(!predictors.empty());
@@ -295,7 +296,7 @@ bool asPreprocessor::PreprocessSimpleGradientsWithGaussianWeights(const std::vec
     return true;
 }
 
-bool asPreprocessor::PreprocessRealGradientsWithGaussianWeights(const std::vector<asPredictor*>& predictors,
+bool asPreprocessor::PreprocessRealGradientsWithGaussianWeights(const vector<asPredictor*>& predictors,
                                                                 asPredictor* result) {
     // Only one predictor
     wxASSERT(!predictors.empty());
@@ -382,7 +383,7 @@ bool asPreprocessor::PreprocessRealGradientsWithGaussianWeights(const std::vecto
     return true;
 }
 
-bool asPreprocessor::PreprocessSimpleCurvature(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessSimpleCurvature(const vector<asPredictor*>& predictors, asPredictor* result) {
     // Only one predictor
     wxASSERT(!predictors.empty());
     wxASSERT(predictors.size() == 1);
@@ -456,7 +457,7 @@ bool asPreprocessor::PreprocessSimpleCurvature(const std::vector<asPredictor*>& 
     return true;
 }
 
-bool asPreprocessor::PreprocessRealCurvature(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessRealCurvature(const vector<asPredictor*>& predictors, asPredictor* result) {
     // Only one predictor
     wxASSERT(!predictors.empty());
     wxASSERT(predictors.size() == 1);
@@ -539,7 +540,7 @@ bool asPreprocessor::PreprocessRealCurvature(const std::vector<asPredictor*>& pr
     return true;
 }
 
-bool asPreprocessor::PreprocessSimpleCurvatureWithGaussianWeights(const std::vector<asPredictor*>& predictors,
+bool asPreprocessor::PreprocessSimpleCurvatureWithGaussianWeights(const vector<asPredictor*>& predictors,
                                                                   asPredictor* result) {
     // Only one predictor
     wxASSERT(!predictors.empty());
@@ -617,7 +618,7 @@ bool asPreprocessor::PreprocessSimpleCurvatureWithGaussianWeights(const std::vec
     return true;
 }
 
-bool asPreprocessor::PreprocessRealCurvatureWithGaussianWeights(const std::vector<asPredictor*>& predictors,
+bool asPreprocessor::PreprocessRealCurvatureWithGaussianWeights(const vector<asPredictor*>& predictors,
                                                                 asPredictor* result) {
     // Only one predictor
     wxASSERT(!predictors.empty());
@@ -706,7 +707,7 @@ bool asPreprocessor::PreprocessRealCurvatureWithGaussianWeights(const std::vecto
     return true;
 }
 
-bool asPreprocessor::PreprocessAddition(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessAddition(const vector<asPredictor*>& predictors, asPredictor* result) {
     // More than one predictor
     if (predictors.size() < 2) {
         wxLogError(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessAddition"));
@@ -745,7 +746,7 @@ bool asPreprocessor::PreprocessAddition(const std::vector<asPredictor*>& predict
     return true;
 }
 
-bool asPreprocessor::PreprocessAverage(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessAverage(const vector<asPredictor*>& predictors, asPredictor* result) {
     // More than one predictor
     if (predictors.size() < 2) {
         wxLogError(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessAddition"));
@@ -785,7 +786,7 @@ bool asPreprocessor::PreprocessAverage(const std::vector<asPredictor*>& predicto
     return true;
 }
 
-bool asPreprocessor::PreprocessDifference(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessDifference(const vector<asPredictor*>& predictors, asPredictor* result) {
     // More than one predictor
     if (predictors.size() != 2) {
         wxLogError(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessDifference"));
@@ -822,7 +823,7 @@ bool asPreprocessor::PreprocessDifference(const std::vector<asPredictor*>& predi
     return true;
 }
 
-bool asPreprocessor::PreprocessMultiplication(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessMultiplication(const vector<asPredictor*>& predictors, asPredictor* result) {
     // More than one predictor
     if (predictors.size() < 2) {
         wxLogError(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessMultiplication"));
@@ -861,7 +862,7 @@ bool asPreprocessor::PreprocessMultiplication(const std::vector<asPredictor*>& p
     return true;
 }
 
-bool asPreprocessor::PreprocessFormerHumidityIndex(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessFormerHumidityIndex(const vector<asPredictor*>& predictors, asPredictor* result) {
     // More than one predictor
     int inputSize = predictors.size();
     if (inputSize != 4) {
@@ -973,7 +974,8 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(const std::vector<asPredictor
     return true;
 }
 
-bool asPreprocessor::PreprocessMergeByHalfAndMultiply(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessMergeByHalfAndMultiply(const vector<asPredictor*>& predictors,
+                                                      asPredictor* result) {
     // More than one predictor
     int inputSize = (int)predictors.size();
     int factorSize = inputSize / 2;
@@ -1046,7 +1048,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(const std::vector<asPredic
     return true;
 }
 
-bool asPreprocessor::PreprocessHumidityFlux(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessHumidityFlux(const vector<asPredictor*>& predictors, asPredictor* result) {
     // More than one predictor
     int inputSize = (int)predictors.size();
     if (inputSize != 4) {
@@ -1103,7 +1105,7 @@ bool asPreprocessor::PreprocessHumidityFlux(const std::vector<asPredictor*>& pre
     return true;
 }
 
-bool asPreprocessor::PreprocessWindSpeed(const std::vector<asPredictor*>& predictors, asPredictor* result) {
+bool asPreprocessor::PreprocessWindSpeed(const vector<asPredictor*>& predictors, asPredictor* result) {
     // More than one predictor
     int inputSize = (int)predictors.size();
     if (inputSize != 2) {

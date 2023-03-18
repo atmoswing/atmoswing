@@ -44,13 +44,13 @@ class asParametersDownscaling : public asParameters {
         int preprocessMembersNb = 0;
     } ParamsPredictorProj;
 
-    typedef std::vector<ParamsPredictorProj> VectorParamsPredictorsProj;
+    typedef vector<ParamsPredictorProj> VectorParamsPredictorsProj;
 
     typedef struct ParamsStepProj {
         VectorParamsPredictorsProj predictors;
     } ParamsStepProj;
 
-    typedef std::vector<ParamsStepProj> VectorParamsStepProj;
+    typedef vector<ParamsStepProj> VectorParamsStepProj;
 
     asParametersDownscaling();
 

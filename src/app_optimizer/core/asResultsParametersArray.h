@@ -73,7 +73,7 @@ class asResultsParametersArray : public asResults {
     void BuildFileName(const wxString& fileTag);
 
   private:
-    std::vector<asParametersScoring::VectorParamsStep> m_parameters;
+    vector<asParametersScoring::VectorParamsStep> m_parameters;
     asParametersScoring::ParamsScore m_scores;
     vvi m_predictandStationIds;
     vi m_analogsIntervalDays;

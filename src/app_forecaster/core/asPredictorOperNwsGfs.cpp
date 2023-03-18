@@ -26,8 +26,9 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asAreaGrid.h"
 #include "asPredictorOperNwsGfs.h"
+
+#include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorOperNwsGfs::asPredictorOperNwsGfs(const wxString& dataId)

@@ -65,14 +65,14 @@ class asParametersScoring : public asParameters {
         vf weight;
     } ParamsPredictorVect;
 
-    typedef std::vector<ParamsPredictorVect> VectorParamsPredictorsVect;
+    typedef vector<ParamsPredictorVect> VectorParamsPredictorsVect;
 
     typedef struct ParamsStepVect {
         vi analogsNumber;
         VectorParamsPredictorsVect predictors;
     } ParamsStepVect;
 
-    typedef std::vector<ParamsStepVect> VectorParamsStepVect;
+    typedef vector<ParamsStepVect> VectorParamsStepVect;
 
     typedef struct ParamsScoreVect {
         vwxs name;
@@ -98,14 +98,14 @@ class asParametersScoring : public asParameters {
         bool criteria = true;
     } ParamsPredictorBool;
 
-    typedef std::vector<ParamsPredictorBool> VectorParamsPredictorsBool;
+    typedef vector<ParamsPredictorBool> VectorParamsPredictorsBool;
 
     typedef struct ParamsStepBool {
         bool analogsNumber = false;
         VectorParamsPredictorsBool predictors;
     } ParamsStepBool;
 
-    typedef std::vector<ParamsStepBool> VectorParamsStepBool;
+    typedef vector<ParamsStepBool> VectorParamsStepBool;
 
     asParametersScoring();
 

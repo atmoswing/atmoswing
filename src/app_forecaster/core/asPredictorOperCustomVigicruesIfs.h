@@ -43,7 +43,6 @@ class asPredictorOperCustomVigicruesIfs : public asPredictorOperEcmwfIfs {
     wxString GetFileName(const double date, const int leadTime) override;
 
   protected:
-
   private:
 };
 

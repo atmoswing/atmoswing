@@ -331,7 +331,7 @@ a1f asResultsForecastAggregator::GetTargetDates(int methodRow, int forecastRow) 
 a1f asResultsForecastAggregator::GetFullTargetDates() const {
     float firstDate = 1.0E+9, lastDate = 0;
 
-    for (const auto & forecastGroup : m_forecasts) {
+    for (const auto& forecastGroup : m_forecasts) {
         for (auto forecast : forecastGroup) {
             a1f fcastDates = forecast->GetTargetDates();
             firstDate = wxMin(fcastDates[0], firstDate);
@@ -448,7 +448,7 @@ int asResultsForecastAggregator::GetLeadTimeLengthMax() const {
 
     int length = 0;
 
-    for (const auto & forecastGroup : m_forecasts) {
+    for (const auto& forecastGroup : m_forecasts) {
         for (auto forecast : forecastGroup) {
             length = wxMax(length, forecast->GetTargetDatesLength());
         }

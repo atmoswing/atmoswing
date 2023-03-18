@@ -228,8 +228,8 @@ EVT_KEY_DOWN(wxPlotCtrlArea::OnKeyDown)
 EVT_KEY_UP(wxPlotCtrlArea::OnKeyUp)
 END_EVENT_TABLE()
 
-    wxPlotCtrlArea::wxPlotCtrlArea(wxWindow* parent, wxWindowID win_id, const wxPoint& pos, const wxSize& size,
-                                   long style, const wxString& name) {
+wxPlotCtrlArea::wxPlotCtrlArea(wxWindow* parent, wxWindowID win_id, const wxPoint& pos, const wxSize& size, long style,
+                               const wxString& name) {
     m_owner = wxDynamicCast(parent, wxPlotCtrl);
 
     if (!wxWindow::Create(parent, win_id, pos, size, style, name)) return;
@@ -323,9 +323,10 @@ EVT_IDLE(wxPlotCtrl::OnIdle)
 EVT_MOUSE_EVENTS(wxPlotCtrl::OnMouse)
 EVT_TIMER(wxID_ANY, wxPlotCtrl::OnTimer)
 
-    EVT_TEXT_ENTER(wxID_ANY, wxPlotCtrl::OnTextEnter) END_EVENT_TABLE()
+EVT_TEXT_ENTER(wxID_ANY, wxPlotCtrl::OnTextEnter)
+END_EVENT_TABLE()
 
-        void wxPlotCtrl::Init() {
+    void wxPlotCtrl::Init() {
     m_drawOnScreen = true;
 
     m_activeCurve = NULL;

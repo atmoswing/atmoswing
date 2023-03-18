@@ -63,20 +63,21 @@ typedef struct Time {
 // std vector
 //---------------------------------
 
-typedef std::vector<bool> vb;
-typedef std::vector<short> vs;
-typedef std::vector<int> vi;
-typedef std::vector<long> vl;
-typedef std::vector<float> vf;
-typedef std::vector<double> vd;
-typedef std::vector<std::string> vstds;
-typedef std::vector<wxString> vwxs;
+using std::vector;
+typedef vector<bool> vb;
+typedef vector<short> vs;
+typedef vector<int> vi;
+typedef vector<long> vl;
+typedef vector<float> vf;
+typedef vector<double> vd;
+typedef vector<std::string> vstds;
+typedef vector<wxString> vwxs;
 
-typedef std::vector<vb> vvb;
-typedef std::vector<vi> vvi;
-typedef std::vector<vf> vvf;
-typedef std::vector<vd> vvd;
-typedef std::vector<vwxs> vvwxs;
+typedef vector<vb> vvb;
+typedef vector<vi> vvi;
+typedef vector<vf> vvf;
+typedef vector<vd> vvd;
+typedef vector<vwxs> vvwxs;
 
 //---------------------------------
 // Eigen3 arrays
@@ -87,12 +88,12 @@ typedef Eigen::Array<int, Eigen::Dynamic, 1> a1i;
 typedef Eigen::Array<float, Eigen::Dynamic, 1> a1f;
 typedef Eigen::Array<double, Eigen::Dynamic, 1> a1d;
 typedef Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> a2f;
-typedef std::vector<a1f, Eigen::aligned_allocator<a1f>> va1f;
-typedef std::vector<a1d, Eigen::aligned_allocator<a1d>> va1d;
-typedef std::vector<a2f, Eigen::aligned_allocator<a2f>> va2f;
-typedef std::vector<a2f*, Eigen::aligned_allocator<a2f*>> vpa2f;
-typedef std::vector<std::vector<a2f, Eigen::aligned_allocator<a2f>>> vva2f;
-typedef std::vector<std::vector<std::vector<a2f, Eigen::aligned_allocator<a2f>>>> vvva2f;
+typedef vector<a1f, Eigen::aligned_allocator<a1f>> va1f;
+typedef vector<a1d, Eigen::aligned_allocator<a1d>> va1d;
+typedef vector<a2f, Eigen::aligned_allocator<a2f>> va2f;
+typedef vector<a2f*, Eigen::aligned_allocator<a2f*>> vpa2f;
+typedef vector<vector<a2f, Eigen::aligned_allocator<a2f>>> vva2f;
+typedef vector<vector<vector<a2f, Eigen::aligned_allocator<a2f>>>> vvva2f;
 
 //---------------------------------
 // NaN & Inf

@@ -49,10 +49,10 @@
 #include "asProcessorCuda.cuh"
 #endif
 
-bool asProcessor::GetAnalogsDates(std::vector<asPredictor*> predictorsArchive,
-                                  std::vector<asPredictor*> predictorsTarget, asTimeArray& timeArrayArchiveData,
+bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive,
+                                  vector<asPredictor*> predictorsTarget, asTimeArray& timeArrayArchiveData,
                                   asTimeArray& timeArrayArchiveSelection, asTimeArray& timeArrayTargetData,
-                                  asTimeArray& timeArrayTargetSelection, std::vector<asCriteria*> criteria,
+                                  asTimeArray& timeArrayTargetSelection, vector<asCriteria*> criteria,
                                   asParameters* params, int step, asResultsDates& results, bool& containsNaNs) {
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
@@ -167,7 +167,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor*> predictorsArchive,
             vf weights(predictorsNb);
             vi colsNb(predictorsNb);
             vi rowsNb(predictorsNb);
-            std::vector<CudaCriteria> crit(predictorsNb);
+            vector<CudaCriteria> crit(predictorsNb);
 
             for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                 weights[iPtor] = params->GetPredictorWeight(step, iPtor);
@@ -423,8 +423,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor*> predictorsArchive,
             // Create and give data
             int end = -1;
             int threadType = -1;
-            std::vector<bool*> vContainsNaNs;
-            std::vector<bool*> vSuccess;
+            vector<bool*> vContainsNaNs;
+            vector<bool*> vSuccess;
             for (int iThread = 0; iThread < threadsNb; iThread++) {
                 bool* flag = new bool;
                 *flag = false;
@@ -629,7 +629,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor*> predictorsArchive,
     return true;
 }
 
-bool asProcessor::CheckTargetTimeArray(const std::vector<asPredictor*>& predictorsTarget, const a1d& timeTargetData) {
+bool asProcessor::CheckTargetTimeArray(const vector<asPredictor*>& predictorsTarget, const a1d& timeTargetData) {
     wxASSERT(predictorsTarget[0]);
     wxASSERT(timeTargetData.size() == predictorsTarget[0]->GetData().size());
     if ((size_t)timeTargetData.size() != predictorsTarget[0]->GetData().size()) {
@@ -643,7 +643,7 @@ bool asProcessor::CheckTargetTimeArray(const std::vector<asPredictor*>& predicto
     return true;
 }
 
-bool asProcessor::CheckArchiveTimeArray(const std::vector<asPredictor*>& predictorsArchive,
+bool asProcessor::CheckArchiveTimeArray(const vector<asPredictor*>& predictorsArchive,
                                         const a1d& timeArchiveData) {
     wxASSERT(timeArchiveData.size() > 0);
     wxASSERT(!predictorsArchive.empty());
@@ -759,10 +759,10 @@ void asProcessor::InsertInArraysNoDuplicate(bool isAsc, int analogsNb, float ana
     }
 }
 
-bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive,
-                                     std::vector<asPredictor*> predictorsTarget, asTimeArray& timeArrayArchiveData,
+bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive,
+                                     vector<asPredictor*> predictorsTarget, asTimeArray& timeArrayArchiveData,
                                      asTimeArray& timeArrayTargetData, asResultsDates& anaDates,
-                                     std::vector<asCriteria*> criteria, asParameters* params, int step,
+                                     vector<asCriteria*> criteria, asParameters* params, int step,
                                      asResultsDates& results, bool& containsNaNs) {
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
@@ -880,7 +880,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
             vf weights(predictorsNb);
             vi colsNb(predictorsNb);
             vi rowsNb(predictorsNb);
-            std::vector<CudaCriteria> crit(predictorsNb);
+            vector<CudaCriteria> crit(predictorsNb);
 
             for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                 weights[iPtor] = params->GetPredictorWeight(step, iPtor);
@@ -980,12 +980,12 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
 
                     int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
                                            timeTargetSelection[i], 0.01);
-                    wxASSERT_MSG(iTimeTarg >= 0,
-                                 asStrF(_("Looking for %s in betwwen %s and %s."),
-                                                  asTime::GetStringTime(timeTargetSelection[i], "DD.MM.YYYY hh:mm"),
-                                                  asTime::GetStringTime(timeTargetData[0], "DD.MM.YYYY hh:mm"),
-                                                  asTime::GetStringTime(timeTargetData[timeTargetDataSize - 1],
-                                                                        "DD.MM.YYYY hh:mm")));
+                    wxASSERT_MSG(
+                        iTimeTarg >= 0,
+                        asStrF(_("Looking for %s in betwwen %s and %s."),
+                               asTime::GetStringTime(timeTargetSelection[i], "DD.MM.YYYY hh:mm"),
+                               asTime::GetStringTime(timeTargetData[0], "DD.MM.YYYY hh:mm"),
+                               asTime::GetStringTime(timeTargetData[timeTargetDataSize - 1], "DD.MM.YYYY hh:mm")));
 
                     // Get dates
                     currentAnalogsDates = analogsDates.row(i);
@@ -1092,8 +1092,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor*> predictorsArchive
             // Create and give data
             int end = -1;
             int threadType = -1;
-            std::vector<bool*> vContainsNaNs;
-            std::vector<bool*> vSuccess;
+            vector<bool*> vContainsNaNs;
+            vector<bool*> vSuccess;
             for (int iThread = 0; iThread < threadsNb; iThread++) {
                 bool* flag = new bool;
                 *flag = false;
