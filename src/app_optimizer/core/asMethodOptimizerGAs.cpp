@@ -52,9 +52,9 @@ asMethodOptimizerGAs::asMethodOptimizerGAs()
       m_crossoverType(0),
       m_mutationsModeType(0),
       m_allowElitismForTheBest(true),
-      m_reassessMiniBatchBests(true),
-      m_miniBatchSize(365),
-      m_miniBatchSizeMax(0),
+      m_reassessBatchBests(true),
+      m_batchSize(365),
+      m_batchSizeMax(0),
       m_epoch(1),
       m_epochMax(30) {
     m_warnFailedLoadingData = false;
@@ -106,8 +106,8 @@ bool asMethodOptimizerGAs::Manager() {
     m_couplesSelectionType = (int)pConfig->ReadLong("/GAs/CouplesSelectionOperator", 0l);
     m_crossoverType = (int)pConfig->ReadLong("/GAs/CrossoverOperator", 0l);
     m_mutationsModeType = (int)pConfig->ReadLong("/GAs/MutationOperator", 0l);
-    m_useMiniBatches = pConfig->ReadBool("/GAs/UseMiniBatches", false);
-    m_miniBatchSize = (int)pConfig->ReadLong("/GAs/MiniBatchSize", 1825l);
+    m_useBatches = pConfig->ReadBool("/GAs/UseBatches", false);
+    m_batchSize = (int)pConfig->ReadLong("/GAs/BatchSize", 1825l);
     m_epochMax = (int)pConfig->ReadLong("/GAs/NumberOfEpochs", 10l);
     ThreadsManager().CritSectionConfig().Leave();
 
@@ -240,9 +240,9 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     if (!LoadPredictandDB(m_predictandDBFilePath)) return false;
     wxLogVerbose(_("Predictand DB loaded."));
 
-    // Define time range if using mini-batches
-    if (m_useMiniBatches) {
-        // Create the target time array as reference for mini-batches
+    // Define time range if using batches
+    if (m_useBatches) {
+        // Create the target time array as reference for batches
         asTimeArray timeArrayTarget(GetTimeStartCalibration(&params), GetTimeEndCalibration(&params),
                                     params.GetTargetTimeStepHours(), params.GetTimeArrayTargetMode());
         if (!m_validationMode && params.HasValidationPeriod()) {
@@ -254,9 +254,9 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             return false;
         }
 
-        m_miniBatchSizeMax = timeArrayTarget.GetSize();
-        m_miniBatchStart = 0;
-        m_miniBatchEnd = wxMin(m_miniBatchStart + m_miniBatchSize, m_miniBatchSizeMax) - 1;
+        m_batchSizeMax = timeArrayTarget.GetSize();
+        m_batchStart = 0;
+        m_batchEnd = wxMin(m_batchStart + m_batchSize, m_batchSizeMax) - 1;
     }
 
     // Watch
@@ -274,8 +274,8 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 
     // Optimizer
     while (true) {
-        // Reassess the best parameter if mini-batch as the period has changed
-        if (m_useMiniBatches && !firstRun) {
+        // Reassess the best parameter if batch as the period has changed
+        if (m_useBatches && !firstRun) {
             auto* thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
 #ifdef USE_CUDA
             if (method == asCUDA) {
@@ -396,24 +396,24 @@ bool asMethodOptimizerGAs::ManageOneRun() {
         wxLogMessage(_("Mean %g, best %g"), meanScore, bestScore);
 
         // Update best
-        if (m_useMiniBatches) {
+        if (m_useBatches) {
             if (asIsNaN(m_scoreCalibBest)) {
                 m_parameterBest = m_parameters[0];
                 m_scoreCalibBest = m_scoresCalib[0];
-                if (m_reassessMiniBatchBests) {
+                if (m_reassessBatchBests) {
                     m_parametersBatchBests.push_back(m_parameterBest);
                 }
             } else {
                 if (m_scoreOrder == Asc && m_scoresCalib[0] < m_scoreCalibBest) {
                     m_scoreCalibBest = m_scoresCalib[0];
                     m_parameterBest = m_parameters[0];
-                    if (m_reassessMiniBatchBests) {
+                    if (m_reassessBatchBests) {
                         m_parametersBatchBests.push_back(m_parameterBest);
                     }
                 } else if (m_scoreOrder == Desc && m_scoresCalib[0] > m_scoreCalibBest) {
                     m_scoreCalibBest = m_scoresCalib[0];
                     m_parameterBest = m_parameters[0];
-                    if (m_reassessMiniBatchBests) {
+                    if (m_reassessBatchBests) {
                         m_parametersBatchBests.push_back(m_parameterBest);
                     }
                 }
@@ -423,26 +423,36 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             m_scoreCalibBest = m_scoresCalib[0];
         }
 
-        // Update mini-batches
-        if (m_useMiniBatches) {
-            m_miniBatchStart += m_miniBatchSize;
+        // Update batches
+        if (m_useBatches) {
+            m_batchStart += m_batchSize;
             int minNbDays = 32;
-            if (m_miniBatchStart + minNbDays >= m_miniBatchSizeMax) {
-                m_miniBatchStart = 0;
+            if (m_batchStart + minNbDays >= m_batchSizeMax) {
+                m_batchStart = 0;
                 m_epoch++;
                 wxLogMessage(_("Epoch number %d"), m_epoch);
             }
-            m_miniBatchEnd = wxMin(m_miniBatchStart + m_miniBatchSize, m_miniBatchSizeMax) - 1;
+            m_batchEnd = wxMin(m_batchStart + m_batchSize, m_batchSizeMax) - 1;
         }
 
         // Check if we should end
         if (HasConverged()) {
             // If finished, reassess all parameters on the full period
-            if (m_useMiniBatches) {
+            if (m_useBatches) {
+                // Disable the batch mode.
+                m_useBatches = false;
+
+                // Clear previous results.
+                for (int i = 0; i < m_parameters.size(); i++) {
+                    m_scoresCalib[i] = NaNf;
+                }
+
+                // Reassess on the whole period.
                 if (!ComputeAllScoresOnFullPeriod()) {
                     return false;
                 }
                 SortScoresAndParameters();
+
                 // The current best parameter might not be in the population !
                 if (m_scoreOrder == Asc && m_scoresCalib[0] < m_scoreCalibBest) {
                     m_scoreCalibBest = m_scoresCalib[0];
@@ -455,8 +465,8 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             wxLogVerbose(_("Optimization process over."));
             break;
         } else {
-            // Always reset the score values for the mini-batch approach as the sample changes.
-            if (m_useMiniBatches) {
+            // Always reset the score values for the batch approach as the sample changes.
+            if (m_useBatches) {
                 for (int i = 0; i < m_parameters.size(); i++) {
                     m_scoresCalib[i] = NaNf;
                 }
@@ -518,11 +528,11 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 }
 
 float asMethodOptimizerGAs::ComputeScoreFullPeriod(asParametersOptimizationGAs& param) {
-    int miniBatchStart = m_miniBatchStart;
-    int miniBatchEnd = m_miniBatchEnd;
+    int batchStart = m_batchStart;
+    int batchEnd = m_batchEnd;
 
-    m_miniBatchStart = 0;
-    m_miniBatchEnd = m_miniBatchSizeMax - 1;
+    m_batchStart = 0;
+    m_batchEnd = m_batchSizeMax - 1;
 
     float scoreFullPeriod = NaNf;
     auto* thread = new asThreadGAs(this, &param, &scoreFullPeriod, &m_scoreClimatology);
@@ -537,17 +547,14 @@ float asMethodOptimizerGAs::ComputeScoreFullPeriod(asParametersOptimizationGAs& 
     ThreadsManager().AddThread(thread);
     ThreadsManager().Wait(asThread::MethodOptimizerGAs);
 
-    m_miniBatchStart = miniBatchStart;
-    m_miniBatchEnd = miniBatchEnd;
+    m_batchStart = batchStart;
+    m_batchEnd = batchEnd;
 
     return scoreFullPeriod;
 }
 
 bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
-    m_miniBatchStart = 0;
-    m_miniBatchEnd = m_miniBatchSizeMax - 1;
-
-    // Reassess the best parameter if mini-batch as the period has changed
+    // Reassess the best parameter if batch as the period has changed
     auto* thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
 #ifdef USE_CUDA
     int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
@@ -561,7 +568,7 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
     ThreadsManager().AddThread(thread);
 
     // Restore all previously-selected best ones
-    if (m_reassessMiniBatchBests) {
+    if (m_reassessBatchBests) {
         for (const auto& param : m_parametersBatchBests) {
             m_parameters.push_back(param);
         }
@@ -787,7 +794,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
     m_generationNb = genNb;
 
     // Update the epoch
-    if (m_useMiniBatches) {
+    if (m_useBatches) {
         wxString parentDirStr(dir.GetName());
         parentDirStr = parentDirStr.Mid(0, parentDirStr.Len() - 7);
         wxDir parentDir(parentDirStr);
@@ -1128,7 +1135,7 @@ bool asMethodOptimizerGAs::Optimize() {
 bool asMethodOptimizerGAs::HasConverged() {
     // NB: The parameters and scores are already sorted !
 
-    if (m_useMiniBatches) {
+    if (m_useBatches) {
         if (m_epoch > m_epochMax) {
             return true;
         }

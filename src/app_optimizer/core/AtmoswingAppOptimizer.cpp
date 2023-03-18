@@ -97,9 +97,9 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
     {wxCMD_LINE_OPTION, NULL, "ve-step", "Variables exploration: step to process"},
     {wxCMD_LINE_OPTION, NULL, "mc-runs-nb", "Monte Carlo: number of runs"},
     {wxCMD_LINE_OPTION, NULL, "ga-config", "GAs: predefined configuration of options (1-5)"},
-    {wxCMD_LINE_OPTION, NULL, "ga-use-mini-batches", "GAs: use mini-batches (1/0)"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mini-batch-size", "GAs: size of the mini-batches"},
-    {wxCMD_LINE_OPTION, NULL, "ga-number-epochs", "GAs: number of epochs if using mini-batches"},
+    {wxCMD_LINE_OPTION, NULL, "ga-use-batches", "GAs: use batches (1/0)"},
+    {wxCMD_LINE_OPTION, NULL, "ga-batch-size", "GAs: size of the batches"},
+    {wxCMD_LINE_OPTION, NULL, "ga-number-epochs", "GAs: number of epochs if using batches"},
     {wxCMD_LINE_OPTION, NULL, "ga-ope-nat-sel", "GAs: operator choice for natural selection"},
     {wxCMD_LINE_OPTION, NULL, "ga-ope-coup-sel", "GAs: operator choice for couples selection"},
     {wxCMD_LINE_OPTION, NULL, "ga-ope-cross", "GAs: operator choice for chromosome crossover"},
@@ -659,12 +659,12 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
         }
     }
 
-    if (parser.Found("ga-use-mini-batches", &option)) {
-        wxFileConfig::Get()->Write("/GAs/UseMiniBatches", option);
+    if (parser.Found("ga-use-batches", &option)) {
+        wxFileConfig::Get()->Write("/GAs/UseBatches", option);
     }
 
-    if (parser.Found("ga-mini-batch-size", &option)) {
-        wxFileConfig::Get()->Write("/GAs/MiniBatchSize", option);
+    if (parser.Found("ga-batch-size", &option)) {
+        wxFileConfig::Get()->Write("/GAs/BatchSize", option);
     }
 
     if (parser.Found("ga-number-epochs", &option)) {

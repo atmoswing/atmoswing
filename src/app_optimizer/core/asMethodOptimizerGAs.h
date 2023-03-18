@@ -94,9 +94,9 @@ class asMethodOptimizerGAs : public asMethodOptimizer {
     int m_crossoverType;
     int m_mutationsModeType;
     bool m_allowElitismForTheBest;
-    bool m_reassessMiniBatchBests;
-    int m_miniBatchSize;
-    int m_miniBatchSizeMax;
+    bool m_reassessBatchBests;
+    int m_batchSize;
+    int m_batchSizeMax;
     int m_epoch;
     int m_epochMax;
     vf m_bestScores;

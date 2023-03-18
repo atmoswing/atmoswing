@@ -141,9 +141,9 @@ class asMethodCalibrator : public asMethodStandard {
     vector<asParametersCalibration> m_parametersTemp;
     asParametersCalibration m_originalParams;
     bool m_validationMode;
-    bool m_useMiniBatches;
-    int m_miniBatchStart;
-    int m_miniBatchEnd;
+    bool m_useBatches;
+    int m_batchStart;
+    int m_batchEnd;
 
     virtual bool Calibrate(asParametersCalibration& params) = 0;
 

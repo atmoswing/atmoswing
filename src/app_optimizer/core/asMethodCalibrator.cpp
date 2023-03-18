@@ -39,9 +39,9 @@ asMethodCalibrator::asMethodCalibrator()
       m_scoreOrder(Asc),
       m_scoreValid(NaNf),
       m_validationMode(false),
-      m_useMiniBatches(false),
-      m_miniBatchStart(0),
-      m_miniBatchEnd(0) {
+      m_useBatches(false),
+      m_batchStart(0),
+      m_batchEnd(0) {
     // Seeds the random generator
     asInitRandom();
 }
@@ -536,8 +536,8 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
         timeArrayTarget.KeepOnlyYears(params->GetValidationYearsVector());
     }
 
-    if (!m_validationMode && m_useMiniBatches) {
-        timeArrayTarget.KeepOnlyRange(m_miniBatchStart, m_miniBatchEnd);
+    if (!m_validationMode && m_useBatches) {
+        timeArrayTarget.KeepOnlyRange(m_batchStart, m_batchEnd);
     }
 
     // Data date array
