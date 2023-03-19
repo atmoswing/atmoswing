@@ -489,12 +489,12 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     cudaDeviceReset();
 #endif
 
-    // Sort according to level and time
-    m_parameterBest.SortLevelsAndTime();
-
     // Validate
     SaveDetails(m_parameterBest);
     Validate(m_parameterBest);
+
+    // Sort according to level and time
+    m_parameterBest.SortLevelsAndTime();
 
     // Print parameters in a text file
     for (int i = 0; i < m_parameters.size(); i++) {
