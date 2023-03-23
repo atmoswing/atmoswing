@@ -110,7 +110,7 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
             return;
         }
 
-        // Set the defaut pen
+        // Set the default pen
         gc->SetPen(defaultPen);
         if (IsFeatureSelected(feature->GetFID())) {
             gc->SetPen(selPen);
