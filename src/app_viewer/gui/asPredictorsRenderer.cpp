@@ -46,52 +46,45 @@ asPredictorsRenderer::asPredictorsRenderer(wxWindow* parent, vrLayerManager* lay
 asPredictorsRenderer::~asPredictorsRenderer() = default;
 
 void asPredictorsRenderer::Redraw(double targetDate, double analogDate) {
+    m_viewerLayerManagerTarget->FreezeBegin();
+    RedrawRasterPredictor(_("Predictor - target"), m_viewerLayerManagerTarget);
+    m_viewerLayerManagerTarget->FreezeEnd();
+
+    m_viewerLayerManagerAnalog->FreezeBegin();
+    RedrawRasterPredictor(_("Predictor - analog"), m_viewerLayerManagerAnalog);
+    m_viewerLayerManagerAnalog->FreezeEnd();
+}
+
+void asPredictorsRenderer::RedrawRasterPredictor(const wxString &name, vrViewerLayerManager* viewerLayerManager) {
     // Create a memory layer
-    wxFileName memoryRasterTarget("", _("Predictor - target"), "memory");
-    wxFileName memoryRasterAnalog("", _("Predictor - analog"), "memory");
+    wxFileName memoryRaster("", name, "");
 
     // Check if memory layer already added
-    m_viewerLayerManagerTarget->FreezeBegin();
-    m_viewerLayerManagerAnalog->FreezeBegin();
-    for (int i = 0; i < m_viewerLayerManagerTarget->GetCount(); i++) {
-        if (m_viewerLayerManagerTarget->GetRenderer(i)->GetLayer()->GetFileName() == memoryRasterTarget) {
-            vrRenderer* renderer = m_viewerLayerManagerTarget->GetRenderer(i);
+    for (int i = 0; i < viewerLayerManager->GetCount(); i++) {
+        if (viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryRaster) {
+            vrRenderer* renderer = viewerLayerManager->GetRenderer(i);
             vrLayer* layer = renderer->GetLayer();
             wxASSERT(renderer);
-            m_viewerLayerManagerTarget->Remove(renderer);
-            // Close layer
-            m_layerManager->Close(layer);
-        }
-    }
-    for (int i = 0; i < m_viewerLayerManagerAnalog->GetCount(); i++) {
-        if (m_viewerLayerManagerAnalog->GetRenderer(i)->GetLayer()->GetFileName() == memoryRasterAnalog) {
-            vrRenderer* renderer = m_viewerLayerManagerAnalog->GetRenderer(i);
-            vrLayer* layer = renderer->GetLayer();
-            wxASSERT(renderer);
-            m_viewerLayerManagerAnalog->Remove(renderer);
+            viewerLayerManager->Remove(renderer);
             // Close layer
             m_layerManager->Close(layer);
         }
     }
 
     // Create the layers
-    auto* layerRasterTarget = new vrLayerRasterPredictor();
-    auto* layerRasterAnalog = new vrLayerRasterPredictor();
+    auto* layerRaster = new vrLayerRasterPredictor();
 
-    if (!layerRasterTarget->CreateInMemory(memoryRasterTarget)) {
+    if (!layerRaster->CreateInMemory(memoryRaster)) {
         wxFAIL;
-        m_viewerLayerManagerTarget->FreezeEnd();
-        m_viewerLayerManagerAnalog->FreezeEnd();
-        wxDELETE(layerRasterTarget);
-        wxDELETE(layerRasterAnalog);
+        wxDELETE(layerRaster);
         return;
     }
-    if (!layerRasterAnalog->CreateInMemory(memoryRasterAnalog)) {
-        wxFAIL;
-        m_viewerLayerManagerTarget->FreezeEnd();
-        m_viewerLayerManagerAnalog->FreezeEnd();
-        wxDELETE(layerRasterTarget);
-        wxDELETE(layerRasterAnalog);
-        return;
-    }
+
+    // Add layers to the layer manager
+    m_layerManager->Add(layerRaster);
+
+    // Create render and add to the layer managers
+    auto render = new vrRenderRasterPredictor();
+    render->SetTransparency(20);
+    viewerLayerManager->Add(-1, layerRaster, render, nullptr, true);
 }

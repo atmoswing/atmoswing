@@ -179,6 +179,7 @@ bool vrLayerRasterPredictor::_GetRasterData(unsigned char** imgData, const wxSiz
 
     auto predictorRender = dynamic_cast<vrRenderRasterPredictor*>(const_cast<vrRender*>(render));
     wxASSERT(predictorRender);
+    predictorRender->Init(m_parameter);
 
     // Transform to RGB
     for (unsigned int i = 0; i < imgRGBLen; i += 3) {

@@ -42,6 +42,10 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
 
     bool CreateInMemory(const wxFileName &name);
 
+    void SetParameter(asPredictor::Parameter parameter) {
+        m_parameter = parameter;
+    }
+
     void SetData(const a2f& data) {
         m_data = data;
     }
@@ -59,6 +63,7 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
                                 const vrRender* render);
 
   private:
+    asPredictor::Parameter m_parameter;
     a2f m_data;
     a1f m_longitudes;
     a1f m_latitudes;

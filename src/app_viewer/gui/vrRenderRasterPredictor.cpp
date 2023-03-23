@@ -108,7 +108,7 @@ bool vrRenderRasterPredictor::ParseACTfile() {
     ResizeColorTable(255);
 
     FILE* f;
-    uint8_t palette[256][3];
+    uint8_t palette[255][3];
 
     // Open the ACT file
     f = fopen(m_colorTableFile.GetFullPath(), "rb");
@@ -118,11 +118,11 @@ bool vrRenderRasterPredictor::ParseACTfile() {
     }
 
     // Read the entire contents into the palette array
-    fread(palette, 3, 256, f);
+    fread(palette, 3, 255, f);
     fclose(f);
 
     // Copy the palette values to the color table array
-    for (int i = 0; i < 256; i++) {
+    for (int i = 0; i < 255; i++) {
         m_colorTable(i, 0) = palette[i][0];
         m_colorTable(i, 1) = palette[i][1];
         m_colorTable(i, 2) = palette[i][2];
