@@ -34,10 +34,50 @@
 #include "asFileText.h"
 
 vrRenderRasterPredictor::vrRenderRasterPredictor()
-    : vrRenderRaster() {
+    : vrRenderRaster(),
+      m_parameter(asPredictor::GeopotentialHeight){
 }
 
 vrRenderRasterPredictor::~vrRenderRasterPredictor() = default;
+
+void vrRenderRasterPredictor::Init(asPredictor::Parameter parameter) {
+    m_parameter = parameter;
+
+    SelectColorTable();
+    ParseColorTable();
+    ScaleColors();
+}
+
+void vrRenderRasterPredictor::SelectColorTable() {
+    wxConfigBase* pConfig = wxFileConfig::Get();
+    wxString dirData = asConfig::GetDataDir() + "share";
+    if (!wxDirExists(dirData)) {
+        dirData = asConfig::GetDataDir() + ".." + DS + "share";
+    }
+
+    wxString colorFilesDir = dirData + DS + "atmoswing" + DS + "color_tables";
+    wxString filePath;
+
+    switch (m_parameter) {
+        case asPredictor::GeopotentialHeight:
+            filePath = pConfig->Read("/ColorTable/GeopotentialHeight", colorFilesDir + DS + "NEO_grav_anom.act");
+            break;
+        case asPredictor::PrecipitableWater:
+        case asPredictor::TotalColumnWater:
+            filePath = pConfig->Read("/ColorTable/PrecipitableWater", colorFilesDir + DS + "NEO_soil_moisture.act");
+            break;
+        case asPredictor::RelativeHumidity:
+            filePath = pConfig->Read("/ColorTable/RelativeHumidity", colorFilesDir + DS + "NEO_soil_moisture.act");
+            break;
+        case asPredictor::SpecificHumidity:
+            filePath = pConfig->Read("/ColorTable/SpecificHumidity", colorFilesDir + DS + "NEO_soil_moisture.act");
+            break;
+        default:
+            filePath = colorFilesDir + DS + "MPL_viridis.rgb";
+    }
+
+    m_colorTableFile = wxFileName(filePath);
+}
 
 wxImage::RGBValue vrRenderRasterPredictor::GetColorFromTable(double pxVal, double minVal, double range) {
 

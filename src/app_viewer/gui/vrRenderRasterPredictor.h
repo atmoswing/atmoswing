@@ -28,10 +28,11 @@
 #ifndef VR_RENDER_RASTER_PREDICTOR_H
 #define VR_RENDER_RASTER_PREDICTOR_H
 
-#include <asIncludes.h>
 #include <wx/image.h>
 
+#include "asIncludes.h"
 #include "vrrender.h"
+#include "asPredictor.h"
 
 
 class vrRenderRasterPredictor : public vrRenderRaster {
@@ -42,10 +43,13 @@ class vrRenderRasterPredictor : public vrRenderRaster {
 
     wxImage::RGBValue GetColorFromTable(double pxVal, double minVal, double range);
 
+    void Init(asPredictor::Parameter parameter);
+
   protected:
   private:
     wxFileName m_colorTableFile;
     a2f m_colorTable;
+    asPredictor::Parameter m_parameter;
 
     bool ParseColorTable();
 
@@ -57,6 +61,7 @@ class vrRenderRasterPredictor : public vrRenderRaster {
 
     void ScaleColors();
 
+    void SelectColorTable();
 };
 
 #endif
