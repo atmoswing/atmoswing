@@ -40,10 +40,23 @@ class vrRenderRasterPredictor : public vrRenderRaster {
 
     ~vrRenderRasterPredictor() override;
 
-    wxImage::RGBValue GetColorFromTable(int val);
+    wxImage::RGBValue GetColorFromTable(double pxVal, double minVal, double range);
 
   protected:
   private:
+    wxFileName m_colorTableFile;
+    a2f m_colorTable;
+
+    bool ParseColorTable();
+
+    bool ParseACTfile();
+
+    bool ParseRGBfile();
+
+    void ResizeColorTable(int size);
+
+    void ScaleColors();
+
 };
 
 #endif

@@ -27,7 +27,11 @@
 
 #include "vrRenderRasterPredictor.h"
 
+#include <fstream>
+#include <wx/tokenzr.h>
+
 #include "vrlabel.h"
+#include "asFileText.h"
 
 vrRenderRasterPredictor::vrRenderRasterPredictor()
     : vrRenderRaster() {
@@ -35,9 +39,123 @@ vrRenderRasterPredictor::vrRenderRasterPredictor()
 
 vrRenderRasterPredictor::~vrRenderRasterPredictor() = default;
 
-wxImage::RGBValue vrRenderRasterPredictor::GetColorFromTable(int val) {
+wxImage::RGBValue vrRenderRasterPredictor::GetColorFromTable(double pxVal, double minVal, double range) {
 
-    wxImage::RGBValue valRGB(val, val, 255-val);
+    int nColors = int(m_colorTable.rows());
+
+    int index = static_cast<int>((pxVal - minVal) * (nColors / range));
+    if (index < 0) index = 0;
+    if (index > nColors) index = nColors;
+
+    wxImage::RGBValue valRGB(int(m_colorTable(index, 0)), int(m_colorTable(index, 1)), int(m_colorTable(index, 2)));
 
     return valRGB;
+}
+
+bool vrRenderRasterPredictor::ParseColorTable() {
+    wxString extension = m_colorTableFile.GetExt();
+    if (extension == "act") {
+        return ParseACTfile();
+    } else if (extension == "rgb") {
+        return ParseRGBfile();
+    }
+
+    wxLogError(_("The color table format %s is not supported."), extension);
+    return false;
+}
+
+bool vrRenderRasterPredictor::ParseACTfile() {
+    ResizeColorTable(255);
+
+    FILE* f;
+    uint8_t palette[256][3];
+
+    // Open the ACT file
+    f = fopen(m_colorTableFile.GetFullPath(), "rb");
+    if (!f) {
+        wxLogError(_("Color table file %s could not be opened..."), m_colorTableFile.GetFullPath());
+        return false;
+    }
+
+    // Read the entire contents into the palette array
+    fread(palette, 3, 256, f);
+    fclose(f);
+
+    // Copy the palette values to the color table array
+    for (int i = 0; i < 256; i++) {
+        m_colorTable(i, 0) = palette[i][0];
+        m_colorTable(i, 1) = palette[i][1];
+        m_colorTable(i, 2) = palette[i][2];
+    }
+
+    return true;
+}
+
+bool vrRenderRasterPredictor::ParseRGBfile() {
+
+    asFileText file(m_colorTableFile.GetFullPath(), asFile::ReadOnly);
+    if (!file.Open()) {
+        wxLogError(_("Color table file %s could not be opened..."), m_colorTableFile.GetFullPath());
+        return false;
+    }
+
+    // First line should be the number of colors
+    wxString fileLine = file.GetNextLine();
+
+    int indexNColors = fileLine.Find("ncolors=");
+    if (indexNColors == wxNOT_FOUND) {
+        wxLogError(_("Color table format not supported (file %s)..."), m_colorTableFile.GetFullPath());
+        return false;
+    }
+    wxString strNColors = fileLine.SubString(indexNColors + 8, fileLine.Len() - 1);
+    long nColorsVal;
+    if (!strNColors.ToLong(&nColorsVal)) {
+        wxLogError(_("Color table format not supported (file %s)..."), m_colorTableFile.GetFullPath());
+        return false;
+    }
+    wxASSERT(nColorsVal > 0);
+
+    ResizeColorTable(nColorsVal);
+
+    // Skipping header
+    file.SkipLines(1);
+
+    for (int i = 0; i < nColorsVal; ++i) {
+        // Get next line
+        fileLine = file.GetNextLine();
+        if (fileLine.IsEmpty()) break;
+
+        int n = 0;
+        wxStringTokenizer tokenizer(fileLine, " ");
+        while ( tokenizer.HasMoreTokens() )
+        {
+            wxString token = tokenizer.GetNextToken();
+            double val;
+            if (!token.ToDouble(&val)) {
+                wxLogError(_("Color table format not supported (file %s)..."), m_colorTableFile.GetFullPath());
+                return false;
+            }
+
+            m_colorTable(i, n) = float(val);
+
+            if (n == 2) break;
+            n++;
+        }
+        if (file.EndOfFile()) break;
+    }
+
+    file.Close();
+
+    return false;
+}
+
+void vrRenderRasterPredictor::ResizeColorTable(int size) {
+    m_colorTable.resize(size, 3);
+    m_colorTable.fill(0);
+}
+
+void vrRenderRasterPredictor::ScaleColors() {
+    if (m_colorTable.maxCoeff() <= 1) {
+        m_colorTable *= 255;
+    }
 }

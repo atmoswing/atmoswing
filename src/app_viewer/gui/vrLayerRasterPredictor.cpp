@@ -26,6 +26,7 @@
  */
 
 #include "vrLayerRasterPredictor.h"
+#include "vrRenderRasterPredictor.h"
 
 #include "vrlabel.h"
 #include "vrrealrect.h"
@@ -120,6 +121,90 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
         }
     }
 #endif
+
+    return true;
+}
+
+bool vrLayerRasterPredictor::_GetRasterData(unsigned char** imgData, const wxSize& outImgPxSize,
+                                            const wxRect& readImgPxInfo, const vrRender* render) {
+    wxASSERT(m_dataset);
+    m_dataset->FlushCache();
+
+    // Create array for image data
+    unsigned int imgRGBLen = outImgPxSize.GetWidth() * outImgPxSize.GetHeight() * 3;
+    *imgData = (unsigned char*)malloc(imgRGBLen);
+    if (*imgData == nullptr) {
+        wxLogError(_("Image creation failed, out of memory"));
+        return false;
+    }
+
+    // Read band
+    GDALRasterBand* band = m_dataset->GetRasterBand(1);
+    int dataSize = GDALGetDataTypeSize(GDT_Float32) / 8;
+    void* rasterData = CPLMalloc(dataSize * outImgPxSize.GetWidth() * outImgPxSize.GetHeight());
+    if (band->RasterIO(GF_Read, readImgPxInfo.GetX(), readImgPxInfo.GetY(), readImgPxInfo.GetWidth(),
+                       readImgPxInfo.GetHeight(), rasterData, outImgPxSize.GetWidth(), outImgPxSize.GetHeight(),
+                       GDT_Float32, 0, 0) != CE_None) {
+        wxLogError(_("Error getting raster predictor data."));
+        if (rasterData != nullptr) {
+            CPLFree(rasterData);
+            rasterData = nullptr;
+        }
+        if (*imgData != nullptr) {
+            CPLFree(*imgData);
+            *imgData = nullptr;
+        }
+        return false;
+    }
+
+    // Computing statistics if not existing
+    if (!_HasStat()) {
+        if (!_ComputeStat()) {
+            if (rasterData != nullptr) {
+                CPLFree(rasterData);
+                rasterData = nullptr;
+            }
+            if (*imgData != nullptr) {
+                CPLFree(*imgData);
+                *imgData = nullptr;
+            }
+            return false;
+        }
+    }
+
+    double range = m_oneBandMax - m_oneBandMin;
+    if (range <= 0) {
+        range = 1;
+    }
+
+    auto predictorRender = dynamic_cast<vrRenderRasterPredictor*>(const_cast<vrRender*>(render));
+    wxASSERT(predictorRender);
+
+    // Transform to RGB
+    for (unsigned int i = 0; i < imgRGBLen; i += 3) {
+        double pxVal = _ReadGDALValueToDouble(rasterData, GDT_Float32, i / 3);
+
+        // Hande nodata
+        if (wxIsSameDouble(pxVal, m_oneBandNoData)) {
+            *(*imgData + i) = 255;
+            *(*imgData + i + 1) = 255;
+            *(*imgData + i + 2) = 255;
+
+            continue;
+        }
+
+        wxImage::RGBValue valRGB = predictorRender->GetColorFromTable(pxVal, m_oneBandMin, range);
+
+        *(*imgData + i) = valRGB.red;
+        *(*imgData + i + 1) = valRGB.green;
+        *(*imgData + i + 2) = valRGB.blue;
+    }
+    wxASSERT(rasterData != nullptr);
+    CPLFree(rasterData);
+    rasterData = nullptr;
+
+    CPLFree(rasterData);
+    rasterData = nullptr;
 
     return true;
 }

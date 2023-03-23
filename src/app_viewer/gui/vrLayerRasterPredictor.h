@@ -55,6 +55,8 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
     }
 
   protected:
+    virtual bool _GetRasterData(unsigned char** imgData, const wxSize& outImgPxSize, const wxRect& readImgPxInfo,
+                                const vrRender* render);
 
   private:
     a2f m_data;
