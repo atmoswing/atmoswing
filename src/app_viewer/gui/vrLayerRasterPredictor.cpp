@@ -125,6 +125,12 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
     return true;
 }
 
+wxFileName vrLayerRasterPredictor::GetDisplayName() {
+    wxFileName myName(m_fileName);
+    myName.SetExt(wxEmptyString);
+    return myName;
+}
+
 bool vrLayerRasterPredictor::_GetRasterData(unsigned char** imgData, const wxSize& outImgPxSize,
                                             const wxRect& readImgPxInfo, const vrRender* render) {
     wxASSERT(m_dataset);

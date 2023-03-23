@@ -42,6 +42,8 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
 
     bool CreateInMemory(const wxFileName &name);
 
+    wxFileName GetDisplayName() override;
+
     void SetParameter(asPredictor::Parameter parameter) {
         m_parameter = parameter;
     }

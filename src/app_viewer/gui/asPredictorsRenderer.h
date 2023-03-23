@@ -41,7 +41,10 @@ class asPredictorsRenderer {
 
     void Redraw(double targetDate, double analogDate);
 
-    void RedrawRasterPredictor(const wxString &name, vrViewerLayerManager* viewerLayerManager);
+    vrLayerRasterPredictor* RedrawRasterPredictor(const wxString &name, vrViewerLayerManager* viewerLayerManager);
+
+    void RedrawContourLines(const wxString& name, vrViewerLayerManager* viewerLayerManager,
+                            vrLayerRasterPredictor* layerRaster);
 
   protected:
   private:

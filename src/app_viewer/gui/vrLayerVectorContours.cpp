@@ -25,27 +25,15 @@
  * Portions Copyright 2022-2023 Pascal Horton, Terranum.
  */
 
-#ifndef VR_LAYER_RASTER_CONTOURS_H
-#define VR_LAYER_RASTER_CONTOURS_H
+#include "vrLayerVectorContours.h"
 
-#include <asIncludes.h>
+#include "vrlabel.h"
+#include "vrrender.h"
 
-#include "vrlayerraster.h"
+vrLayerVectorContours::vrLayerVectorContours() {
+    wxASSERT(!m_dataset);
+    wxASSERT(!m_layer);
+    m_driverType = vrDRIVER_VECTOR_MEMORY;
+}
 
-class vrRealRect;
-
-class vrRender;
-
-class vrLabel;
-
-class vrLayerRasterContours : public vrLayerRasterGDAL {
-  public:
-    vrLayerRasterContours();
-
-    virtual ~vrLayerRasterContours();
-
-  protected:
-  private:
-};
-
-#endif
+vrLayerVectorContours::~vrLayerVectorContours() = default;

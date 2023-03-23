@@ -25,11 +25,29 @@
  * Portions Copyright 2022-2023 Pascal Horton, Terranum.
  */
 
-#include "vrLayerRasterContours.h"
+#ifndef VR_LAYER_VECTORS_CONTOURS_H
+#define VR_LAYER_VECTORS_CONTOURS_H
 
-#include "vrlabel.h"
-#include "vrrealrect.h"
+// For compilers that support precompilation, includes "wx/wx.h".
+#include "wx/wxprec.h"
 
-vrLayerRasterContours::vrLayerRasterContours() {}
+#ifndef WX_PRECOMP
 
-vrLayerRasterContours::~vrLayerRasterContours() {}
+#include <wx/wx.h>
+
+#endif
+
+#include "asIncludes.h"
+#include "vrlayervector.h"
+
+
+class vrLayerVectorContours : public vrLayerVectorOGR {
+  public:
+    vrLayerVectorContours();
+
+    ~vrLayerVectorContours() override;
+
+  protected:
+};
+
+#endif
