@@ -86,7 +86,7 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
     adfGeoTransform[2] = 0; // rotation, 0 if image is "north up"
     adfGeoTransform[3] = m_latitudes.maxCoeff(); // top left y
     adfGeoTransform[4] = 0; // rotation, 0 if image is "north up"
-    adfGeoTransform[5] = m_latitudes[1] - m_latitudes[0];  // n-s pixel resolution (negative value)
+    adfGeoTransform[5] = m_latitudes[0] - m_latitudes[1];  // n-s pixel resolution (negative value)
     if (m_dataset->SetGeoTransform(adfGeoTransform) != CE_None) {
         wxLogError(_("Setting geotransform to predictor layer failed."));
         return false;
