@@ -778,6 +778,11 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
     wxLogMessage(_("%d former results have been reloaded."), m_resGenerations.GetCount());
     asLog::PrintToConsole(asStrF(_("%d former results have been reloaded.\n"), m_resGenerations.GetCount()));
 
+    if (m_useBatches && m_reassessBatchBests) {
+        wxLogMessage(_("%d generation bests have been reloaded."), int(m_parametersBatchBests.size()));
+        asLog::PrintToConsole(asStrF(_("%d generation bests have been reloaded.\n"), int(m_parametersBatchBests.size())));
+    }
+
     // Restore best and mean scores
     m_bestScores.resize(genNb);
     m_meanScores.resize(genNb);
