@@ -53,10 +53,10 @@ asMethodOptimizerGAs::asMethodOptimizerGAs()
       m_mutationsModeType(0),
       m_allowElitismForTheBest(true),
       m_reassessBatchBests(true),
-      m_batchSize(365),
+      m_batchSize(912),
       m_batchSizeMax(0),
       m_epoch(1),
-      m_epochMax(30) {
+      m_epochMax(10) {
     m_warnFailedLoadingData = false;
 }
 
@@ -107,7 +107,7 @@ bool asMethodOptimizerGAs::Manager() {
     m_crossoverType = (int)pConfig->ReadLong("/GAs/CrossoverOperator", 0l);
     m_mutationsModeType = (int)pConfig->ReadLong("/GAs/MutationOperator", 0l);
     m_useBatches = pConfig->ReadBool("/GAs/UseBatches", false);
-    m_batchSize = (int)pConfig->ReadLong("/GAs/BatchSize", 1825l);
+    m_batchSize = (int)pConfig->ReadLong("/GAs/BatchSize", 912l);
     m_epochMax = (int)pConfig->ReadLong("/GAs/NumberOfEpochs", 10l);
     ThreadsManager().CritSectionConfig().Leave();
 
@@ -655,9 +655,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
         return false;
     }
 
-    wxString msg = asStrF(_("Previous intermediate results were found "
-                            "and will be loaded (%d lines)."),
-                          nLines);
+    wxString msg = asStrF(_("Previous intermediate results were found and will be loaded (%d lines)."), nLines);
     wxLogWarning(msg);
     asLog::PrintToConsole(msg);
     asFileText prevResults(filePath, asFile::ReadOnly);
@@ -756,14 +754,19 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
                 return false;
             }
             m_resGenerations.AddWithoutProcessingMedian(prevParams, prevScoresCalib);
-        }
 
-        // Add to the new array
-        if (iLine >= iLastGen) {
             // Restore the last generation
             m_parameters[iVar] = prevParams;
             m_scoresCalib[iVar] = prevScoresCalib;
             iVar++;
+        } else if (m_useBatches && m_reassessBatchBests && iLine % m_popSize == 0) {
+            // Keep the best ones from previous generations
+            prevParams = m_parameters[0];
+            if (!prevParams.GetValuesFromString(fileLine)) {
+                return false;
+            }
+
+            m_parametersBatchBests.push_back(prevParams);
         }
 
         // Get next line
