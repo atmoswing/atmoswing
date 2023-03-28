@@ -1354,11 +1354,6 @@ bool asMethodOptimizerGAs::Mating() {
     wxConfigBase* pConfig = wxFileConfig::Get();
     ThreadsManager().CritSectionConfig().Leave();
 
-    // Build chromosomes
-    for (auto& parameter : m_parameters) {
-        wxASSERT(parameter.GetChromosomeLength() > 0);
-    }
-
     int sizeParents = int(m_parameters.size());
     int counter = 0;
     int counterSame = 0;
@@ -1557,6 +1552,7 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Get points
                 int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
@@ -1596,6 +1592,7 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Get points
                 int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
@@ -1652,6 +1649,7 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Get points
                 int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                wxASSERT(chromosomeLength > 0);
 
                 if (crossoverNbPoints >= chromosomeLength) {
                     wxLogError(_("The desired crossings number is superior or equal to the genes number."));
@@ -1702,6 +1700,7 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Get points
                 int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
                 bool previouslyCrossed = false;  // flag
@@ -1766,6 +1765,7 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Get points
                 int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
@@ -1822,6 +1822,7 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Get points
                 int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
@@ -1898,6 +1899,7 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Get points
                 int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
@@ -1958,6 +1960,7 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Get points
                 int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
