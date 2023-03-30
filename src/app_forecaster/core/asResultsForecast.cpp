@@ -392,7 +392,9 @@ bool asResultsForecast::Load() {
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
-    int nLeadtime, nStations, nPredictors;
+    int nLeadtime = 0;
+    int nStations = 0;
+    int nPredictors = 0;
     int versionMajor, versionMinor;
     vf analogsCriteria, analogsDates, analogsValuesRaw, analogsValuesNorm;
 
@@ -581,7 +583,16 @@ bool asResultsForecast::Load() {
 
         // Get predictors info
         if (versionMajor >= 3) {
-            ncFile.GetVar("station_names", &m_stationNames[0], nPredictors);
+            m_predictorDatasetIdsOper.resize(nPredictors);
+            m_predictorDatasetIdsArchive.resize(nPredictors);
+            m_predictorDataIdsOper.resize(nPredictors);
+            m_predictorDataIdsArchive.resize(nPredictors);
+            m_predictorLevels.resize(nPredictors);
+            m_predictorHours.resize(nPredictors);
+            m_predictorLonMin.resize(nPredictors);
+            m_predictorLonMax.resize(nPredictors);
+            m_predictorLatMin.resize(nPredictors);
+            m_predictorLatMax.resize(nPredictors);
 
             ncFile.GetVar("predictor_dataset_ids_realtime", &m_predictorDatasetIdsOper[0], nPredictors);
             ncFile.GetVar("predictor_dataset_ids_archive", &m_predictorDatasetIdsArchive[0], nPredictors);

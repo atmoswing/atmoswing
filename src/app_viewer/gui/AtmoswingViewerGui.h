@@ -37,6 +37,7 @@ WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 #include <wx/checklst.h>
 #include <wx/notebook.h>
 #include <wx/grid.h>
+#include <wx/listbox.h>
 #include <wx/bmpbuttn.h>
 #include <wx/textctrl.h>
 #include <wx/statbox.h>
@@ -321,7 +322,7 @@ class asFramePredictorsVirtual : public wxFrame
 		wxStaticText* m_staticTextChoiceForecast;
 		wxChoice* m_choiceForecast;
 		wxStaticText* m_staticTextCheckListPredictors;
-		wxCheckListBox* m_checkListPredictors;
+		wxListBox* m_listPredictors;
 		wxStaticText* m_staticTextTocLeft;
 		wxStaticText* m_staticTextTocRight;
 		wxPanel* m_panelGIS;
@@ -358,7 +359,7 @@ class asFramePredictorsVirtual : public wxFrame
 
 	public:
 
-		asFramePredictorsVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Predictors overview"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 800,600 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFramePredictorsVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Predictors overview"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~asFramePredictorsVirtual();
 

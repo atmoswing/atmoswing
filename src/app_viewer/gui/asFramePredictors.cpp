@@ -182,7 +182,30 @@ void asFramePredictors::UpdateForecastList() {
     m_choiceForecast->Set(forecasts);
     m_selectedForecast = wxMin(m_selectedForecast, int(forecasts.Count()) - 1);
     m_choiceForecast->Select(m_selectedForecast);
+    UpdatePredictorsList();
     UpdateTargetDatesList();
+}
+
+void asFramePredictors::UpdatePredictorsList() {
+    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    vwxs predictorDataIds = forecast->GetPredictorDataIdsOper();
+    vf predictorLevels = forecast->GetPredictorLevels();
+    vf predictorHours = forecast->GetPredictorHours();
+    wxArrayString dataListString;
+
+    for (int i = 0; i < predictorDataIds.size(); ++i) {
+        wxASSERT(predictorLevels.size() > i);
+        wxASSERT(predictorHours.size() > i);
+        if (int(predictorLevels[i]) == 0) {
+            dataListString.Add(asStrF("%s %dh", predictorDataIds[i], int(predictorHours[i])));
+        } else {
+            dataListString.Add(asStrF("%s %d %dh", predictorDataIds[i], int(predictorLevels[i]), int(predictorHours[i])));
+        }
+    }
+
+    m_listPredictors->Clear();
+    m_listPredictors->Set(dataListString);
+    m_listPredictors->Layout();
 }
 
 void asFramePredictors::UpdateTargetDatesList() {

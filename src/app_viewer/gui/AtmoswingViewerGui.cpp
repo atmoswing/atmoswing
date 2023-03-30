@@ -822,7 +822,7 @@ asFrameGridAnalogsValuesVirtual::~asFrameGridAnalogsValuesVirtual()
 
 asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 800,600 ), wxDefaultSize );
+	this->SetSizeHints( wxSize( 1000,600 ), wxDefaultSize );
 
 	wxBoxSizer* bSizer25;
 	bSizer25 = new wxBoxSizer( wxVERTICAL );
@@ -861,9 +861,8 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_staticTextCheckListPredictors->Wrap( -1 );
 	m_sizerScrolledWindow->Add( m_staticTextCheckListPredictors, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 
-	wxArrayString m_checkListPredictorsChoices;
-	m_checkListPredictors = new wxCheckListBox( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_checkListPredictorsChoices, 0 );
-	m_sizerScrolledWindow->Add( m_checkListPredictors, 1, wxEXPAND, 5 );
+	m_listPredictors = new wxListBox( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
+	m_sizerScrolledWindow->Add( m_listPredictors, 1, wxEXPAND, 5 );
 
 	m_staticTextTocLeft = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Layers of the left panel"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextTocLeft->Wrap( -1 );
@@ -990,6 +989,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 
 	this->SetSizer( bSizer25 );
 	this->Layout();
+	bSizer25->Fit( this );
 	m_menubar = new wxMenuBar( 0 );
 	m_menuFile = new wxMenu();
 	wxMenuItem* m_menuItemOpenGisLayer;
@@ -1016,7 +1016,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	// Connect Events
 	m_choiceMethod->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnMethodChange ), NULL, this );
 	m_choiceForecast->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnForecastChange ), NULL, this );
-	m_checkListPredictors->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePredictorsVirtual::OnPredictorSelectionChange ), NULL, this );
+	m_listPredictors->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnPredictorSelectionChange ), NULL, this );
 	m_choiceTargetDates->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnTargetDateChange ), NULL, this );
 	m_bpButtonSwitchRight->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictorsVirtual::OnSwitchRight ), NULL, this );
 	m_bpButtonSwitchLeft->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictorsVirtual::OnSwitchLeft ), NULL, this );
@@ -1030,7 +1030,7 @@ asFramePredictorsVirtual::~asFramePredictorsVirtual()
 	// Disconnect Events
 	m_choiceMethod->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnMethodChange ), NULL, this );
 	m_choiceForecast->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnForecastChange ), NULL, this );
-	m_checkListPredictors->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePredictorsVirtual::OnPredictorSelectionChange ), NULL, this );
+	m_listPredictors->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnPredictorSelectionChange ), NULL, this );
 	m_choiceTargetDates->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnTargetDateChange ), NULL, this );
 	m_bpButtonSwitchRight->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictorsVirtual::OnSwitchRight ), NULL, this );
 	m_bpButtonSwitchLeft->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictorsVirtual::OnSwitchLeft ), NULL, this );
