@@ -75,14 +75,15 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
       m_forecastManager(forecastManager),
       m_workspace(workspace),
       m_selectedMethod(methodRow),
-      m_selectedForecast(forecastRow)
+      m_selectedForecast(forecastRow),
+      m_syncroTool(true),
+      m_displayPanelLeft(true),
+      m_displayPanelRight(true),
+      m_selectedTargetDate(-1),
+      m_selectedAnalogDate(-1),
+      m_selectedPredictor(-1)
 {
     m_selectedForecast = wxMax(m_selectedForecast, 0);
-    m_selectedTargetDate = -1;
-    m_selectedAnalogDate = -1;
-    m_syncroTool = true;
-    m_displayPanelLeft = true;
-    m_displayPanelRight = true;
 
     // Toolbar
     m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), *_img_map_zoom_in, *_img_map_zoom_in, wxITEM_NORMAL, _("Zoom in"),
@@ -119,11 +120,11 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     // Viewer
     m_predictorsManager = new asPredictorsManager();
     m_predictorsRenderer = new asPredictorsRenderer(this, m_layerManager, m_predictorsManager, m_viewerLayerManagerLeft,
-                                                    m_viewerLayerManagerRight, m_checkListPredictors);
+                                                    m_viewerLayerManagerRight, m_listPredictors);
 
     // Menus
-    m_menuTools->AppendCheckItem(asID_SET_SYNCRO_MODE, "Syncronize tools",
-                                 "When set to true, browsing is syncronized on all display");
+    m_menuTools->AppendCheckItem(asID_SET_SYNCRO_MODE, "Synchronize tools",
+                                 "When set to true, browsing is synchronized on all display");
     m_menuTools->Check(asID_SET_SYNCRO_MODE, m_syncroTool);
 
     // Connect Events
@@ -182,6 +183,7 @@ void asFramePredictors::UpdateForecastList() {
     m_choiceForecast->Set(forecasts);
     m_selectedForecast = wxMin(m_selectedForecast, int(forecasts.Count()) - 1);
     m_choiceForecast->Select(m_selectedForecast);
+    m_selectedPredictor = 0;
     UpdatePredictorsList();
     UpdateTargetDatesList();
 }
@@ -287,6 +289,7 @@ void asFramePredictors::OnSwitchLeft(wxCommandEvent& event) {
 }
 
 void asFramePredictors::OnPredictorSelectionChange(wxCommandEvent& event) {
+    m_selectedPredictor = event.GetInt();
     UpdateLayers();
 }
 
@@ -792,7 +795,7 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
 void asFramePredictors::UpdateLayers() {
     // Check that elements are selected
     if ((m_selectedMethod == -1) || (m_selectedForecast == -1) || (m_selectedTargetDate == -1) ||
-        (m_selectedAnalogDate == -1)) {
+        (m_selectedAnalogDate == -1) || (m_selectedPredictor == -1)) {
         return;
     }
 
@@ -803,7 +806,18 @@ void asFramePredictors::UpdateLayers() {
     a1f analogDates = forecast->GetAnalogsDates(m_selectedTargetDate);
     double analogDate = analogDates[m_selectedAnalogDate];
 
-    m_predictorsRenderer->Redraw(targetDate, analogDate);
+    // Get domain
+    if (forecast->GetPredictorLonMin().size() == 0) {
+        wxLogError(_("Only forecasts of AtmoSwing 3+ can be visualized here."));
+        return;
+    }
+    vf domain;
+    domain.push_back(forecast->GetPredictorLonMin()[m_selectedPredictor]);
+    domain.push_back(forecast->GetPredictorLonMax()[m_selectedPredictor]);
+    domain.push_back(forecast->GetPredictorLatMin()[m_selectedPredictor]);
+    domain.push_back(forecast->GetPredictorLatMax()[m_selectedPredictor]);
+
+    m_predictorsRenderer->Redraw(targetDate, analogDate, domain);
 }
 
 void asFramePredictors::ReloadViewerLayerManagerLeft() {

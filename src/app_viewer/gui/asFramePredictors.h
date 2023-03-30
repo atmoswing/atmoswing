@@ -78,6 +78,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
     int m_selectedForecast;
     int m_selectedTargetDate;
     int m_selectedAnalogDate;
+    int m_selectedPredictor;
     bool m_syncroTool;
     bool m_displayPanelLeft;
     bool m_displayPanelRight;

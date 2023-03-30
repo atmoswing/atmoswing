@@ -33,6 +33,7 @@
 #include "vrLayerRasterPredictor.h"
 #include "vrRenderRasterPredictor.h"
 #include "vrLayerVectorContours.h"
+#include "vrLayerVectorDomain.h"
 #include "vrlayerraster.h"
 #include "vrrender.h"
 
@@ -40,7 +41,7 @@ asPredictorsRenderer::asPredictorsRenderer(wxWindow* parent, vrLayerManager* lay
                                            asPredictorsManager* predictorsManager,
                                            vrViewerLayerManager* viewerLayerManagerTarget,
                                            vrViewerLayerManager* viewerLayerManagerAnalog,
-                                           wxCheckListBox* checkListPredictors) {
+                                           wxListBox* listPredictors) {
     m_parent = parent;
     m_layerManager = layerManager;
     m_predictorsManager = predictorsManager;
@@ -50,15 +51,17 @@ asPredictorsRenderer::asPredictorsRenderer(wxWindow* parent, vrLayerManager* lay
 
 asPredictorsRenderer::~asPredictorsRenderer() = default;
 
-void asPredictorsRenderer::Redraw(double targetDate, double analogDate) {
+void asPredictorsRenderer::Redraw(double targetDate, double analogDate, vf &domain) {
     m_viewerLayerManagerTarget->FreezeBegin();
     vrLayerRasterPredictor* layerTarget = RedrawRasterPredictor(_("Predictor - target"), m_viewerLayerManagerTarget);
     RedrawContourLines(_("Contours - target"), m_viewerLayerManagerTarget, layerTarget);
+    RedrawSpatialWindow(_("Spatial window target"), m_viewerLayerManagerTarget, domain);
     m_viewerLayerManagerTarget->FreezeEnd();
 
     m_viewerLayerManagerAnalog->FreezeBegin();
     vrLayerRasterPredictor* layerAnalog = RedrawRasterPredictor(_("Predictor - analog"), m_viewerLayerManagerAnalog);
     RedrawContourLines(_("Contours - analog"), m_viewerLayerManagerAnalog, layerAnalog);
+    RedrawSpatialWindow(_("Spatial window analog"), m_viewerLayerManagerAnalog, domain);
     m_viewerLayerManagerAnalog->FreezeEnd();
 }
 
@@ -138,5 +141,54 @@ void asPredictorsRenderer::RedrawContourLines(const wxString& name, vrViewerLaye
     auto render = new vrRenderVector();
     render->SetTransparency(50);
     viewerLayerManager->Add(-1, layerVector, render, nullptr, true);
+}
 
+void asPredictorsRenderer::RedrawSpatialWindow(const wxString& name, vrViewerLayerManager* viewerLayerManager,
+                                               vf &domain) {
+    // Create a memory layer
+    wxFileName memoryVector("", name, "memory");
+
+    // Check if memory layer already added
+    for (int i = 0; i < viewerLayerManager->GetCount(); i++) {
+        if (viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryVector) {
+            vrRenderer* renderer = viewerLayerManager->GetRenderer(i);
+            vrLayer* layer = renderer->GetLayer();
+            wxASSERT(renderer);
+            viewerLayerManager->Remove(renderer);
+            // Close layer
+            m_layerManager->Close(layer);
+        }
+    }
+
+    // Create the layers
+    auto* layerVector = new vrLayerVectorDomain();
+
+    if (!layerVector->Create(memoryVector, wkbPolygon)) {
+        wxFAIL;
+        wxDELETE(layerVector);
+        return;
+    }
+
+    // Plot the domains
+    OGRLinearRing* ring = new OGRLinearRing();
+    ring->addPoint(domain[0], domain[3]);
+    ring->addPoint(domain[1], domain[3]);
+    ring->addPoint(domain[1], domain[2]);
+    ring->addPoint(domain[0], domain[2]);
+
+    OGRPolygon* domainPoly = new OGRPolygon();
+    domainPoly->addRingDirectly(ring);
+    domainPoly->closeRings();
+
+    layerVector->AddFeature(domainPoly);
+
+    // Add layers to the layer manager
+    m_layerManager->Add(layerVector);
+
+    // Create render and add to the layer managers
+    auto render = new vrRenderVector();
+    render->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
+    render->SetTransparency(50);
+    render->SetSize(2);
+    viewerLayerManager->Add(-1, layerVector, render, nullptr, true);
 }

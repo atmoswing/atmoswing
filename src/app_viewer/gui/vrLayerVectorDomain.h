@@ -25,36 +25,28 @@
  * Portions Copyright 2022-2023 Pascal Horton, Terranum.
  */
 
-#ifndef AS_PREDICTORS_VIEWER_H
-#define AS_PREDICTORS_VIEWER_H
+#ifndef VR_LAYER_VECTORS_DOMAIN_H
+#define VR_LAYER_VECTORS_DOMAIN_H
+
+#include "wx/wxprec.h"
+
+#ifndef WX_PRECOMP
+
+#include <wx/wx.h>
+
+#endif
 
 #include "asIncludes.h"
-#include "vroomgis.h"
+#include "vrlayervector.h"
 
-class asPredictorsManager;
 
-class asPredictorsRenderer {
+class vrLayerVectorDomain : public vrLayerVectorOGR {
   public:
-    asPredictorsRenderer();
+    vrLayerVectorDomain();
 
-    virtual ~asPredictorsRenderer();
-
-    void Redraw(double targetDate, double analogDate, vf &domain);
-
-    vrLayerRasterPredictor* RedrawRasterPredictor(const wxString &name, vrViewerLayerManager* viewerLayerManager);
-
-    void RedrawContourLines(const wxString& name, vrViewerLayerManager* viewerLayerManager,
-                            vrLayerRasterPredictor* layerRaster);
-
-    void RedrawSpatialWindow(const wxString& name, vrViewerLayerManager* viewerLayerManager, vf &domain);
+    ~vrLayerVectorDomain() override;
 
   protected:
-  private:
-    wxWindow* m_parent;
-    vrLayerManager* m_layerManager;
-    asPredictorsManager* m_predictorsManager;
-    vrViewerLayerManager* m_viewerLayerManagerTarget;
-    vrViewerLayerManager* m_viewerLayerManagerAnalog;
 };
 
 #endif

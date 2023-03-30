@@ -28,7 +28,6 @@
 #ifndef VR_LAYER_VECTORS_CONTOURS_H
 #define VR_LAYER_VECTORS_CONTOURS_H
 
-// For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
 #ifndef WX_PRECOMP
