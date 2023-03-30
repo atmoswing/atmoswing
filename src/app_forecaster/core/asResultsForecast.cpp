@@ -64,6 +64,16 @@ void asResultsForecast::Init(asParametersForecast& params, double leadTimeOrigin
     m_stationYCoords.resize(0);
     m_referenceAxis.resize(0);
     m_referenceValues.resize(0, 0);
+    m_predictorDatasetIdsOper.resize(0);
+    m_predictorDatasetIdsArchive.resize(0);
+    m_predictorDataIdsOper.resize(0);
+    m_predictorDataIdsArchive.resize(0);
+    m_predictorLevels.resize(0);
+    m_predictorHours.resize(0);
+    m_predictorLonMin.resize(0);
+    m_predictorLonMax.resize(0);
+    m_predictorLatMin.resize(0);
+    m_predictorLatMax.resize(0);
 
     m_methodId = params.GetMethodId();
     m_methodIdDisplay = params.GetMethodIdDisplay();

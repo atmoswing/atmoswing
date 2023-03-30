@@ -246,40 +246,80 @@ class asResultsForecast : public asResults {
         m_predictorDatasetIdsOper = predictorDatasetIdsOper;
     }
 
+    vwxs GetPredictorDatasetIdsOper() {
+        return m_predictorDatasetIdsOper;
+    }
+
     void SetPredictorDatasetIdsArchive(const vwxs& predictorDatasetIdsArchive) {
         m_predictorDatasetIdsArchive = predictorDatasetIdsArchive;
+    }
+
+    vwxs GetPredictorDatasetIdsArchive() {
+        return m_predictorDatasetIdsArchive;
     }
 
     void SetPredictorDataIdsOper(const vwxs& predictorDataIdsOper) {
         m_predictorDataIdsOper = predictorDataIdsOper;
     }
 
+    vwxs GetPredictorDataIdsOper() {
+        return m_predictorDataIdsOper;
+    }
+
     void SetPredictorDataIdsArchive(const vwxs& predictorDataIdsArchive) {
         m_predictorDataIdsArchive = predictorDataIdsArchive;
+    }
+
+    vwxs GetPredictorDataIdsArchive() {
+        return m_predictorDataIdsArchive;
     }
 
     void SetPredictorLevels(const vf& predictorLevels) {
         m_predictorLevels = predictorLevels;
     }
 
+    vf GetPredictorLevels() {
+        return m_predictorLevels;
+    }
+
     void SetPredictorHours(const vf& predictorHours) {
         m_predictorHours = predictorHours;
+    }
+
+    vf GetPredictorHours() {
+        return m_predictorHours;
     }
 
     void SetPredictorLonMin(const vf& predictorLonMin) {
         m_predictorLonMin = predictorLonMin;
     }
 
+    vf GetPredictorLonMin() {
+        return m_predictorLonMin;
+    }
+
     void SetPredictorLonMax(const vf& predictorLonMax) {
         m_predictorLonMax = predictorLonMax;
+    }
+
+    vf GetPredictorLonMax() {
+        return m_predictorLonMax;
     }
 
     void SetPredictorLatMin(const vf& predictorLatMin) {
         m_predictorLatMin = predictorLatMin;
     }
 
+    vf GetPredictorLatMin() {
+        return m_predictorLatMin;
+    }
+
     void SetPredictorLatMax(const vf& predictorLatMax) {
         m_predictorLatMax = predictorLatMax;
+    }
+
+    vf GetPredictorLatMax() {
+        return m_predictorLatMax;
     }
 
     int GetTargetDatesLength() const {
