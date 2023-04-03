@@ -232,8 +232,8 @@ void asFramePredictors::UpdateAnalogDatesList() {
 }
 
 void asFramePredictors::InitExtent() {
-    // Desired extent
-    vrRealRect desiredExtent;
+    vrRealRect desiredExtent = getDesiredExtent();
+
     m_viewerLayerManagerLeft->InitializeExtent(desiredExtent);
     m_viewerLayerManagerRight->InitializeExtent(desiredExtent);
 }
@@ -639,6 +639,34 @@ void asFramePredictors::OnToolSight(wxCommandEvent& event) {
     m_displayCtrlRight->SetToolSight();
 }
 
+void asFramePredictors::OnToolZoomToFit(wxCommandEvent& event) {
+    vrRealRect desiredExtent = getDesiredExtent();
+
+    if (m_displayPanelLeft) {
+        m_viewerLayerManagerLeft->InitializeExtent(desiredExtent);
+        ReloadViewerLayerManagerLeft();
+    }
+    if (m_displayPanelRight) {
+        m_viewerLayerManagerRight->InitializeExtent(desiredExtent);
+        ReloadViewerLayerManagerRight();
+    }
+}
+
+vrRealRect asFramePredictors::getDesiredExtent() const {
+    vf extent = m_forecastManager->GetMaxExtent();
+    float width = extent[1] - extent[0];
+    float height = extent[2] - extent[3];
+    float marginWidth = 0.2f * width;
+    float marginHeight = 0.2f * height;
+
+    vrRealRect desiredExtent;
+    desiredExtent.m_x = extent[0] - marginWidth;
+    desiredExtent.m_width = width + 2 * marginWidth;
+    desiredExtent.m_y = extent[3] + marginHeight;
+    desiredExtent.m_height = height - 2 * marginHeight;
+
+    return desiredExtent;
+}
 
 void asFramePredictors::OnToolAction(wxCommandEvent& event) {
     auto msg = static_cast<vrDisplayToolMessage*>(event.GetClientData());

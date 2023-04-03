@@ -476,6 +476,39 @@ wxArrayString asResultsForecastAggregator::GetTargetDatesWxArray(int methodRow, 
     return m_forecasts[methodRow][forecastRow]->GetTargetDatesWxArray();;
 }
 
+vf asResultsForecastAggregator::GetMaxExtent() const {
+    if (m_forecasts.empty() || m_forecasts[0].empty()) {
+        return {0, 0, 0, 0};
+    }
+
+    wxASSERT(m_forecasts[0][0]);
+    vf vecLonMin = m_forecasts[0][0]->GetPredictorLonMin();
+    vf vecLonMax = m_forecasts[0][0]->GetPredictorLonMax();
+    vf vecLatMin = m_forecasts[0][0]->GetPredictorLatMin();
+    vf vecLatMax = m_forecasts[0][0]->GetPredictorLatMax();
+
+    vf extent = {
+        *std::min_element(vecLonMin.begin(), vecLonMin.end()),
+        *std::max_element(vecLonMax.begin(), vecLonMax.end()),
+        *std::min_element(vecLatMin.begin(), vecLatMin.end()),
+        *std::max_element(vecLatMax.begin(), vecLatMax.end())};
+
+    for (const auto& method : m_forecasts) {
+        for (const auto& forecast : method) {
+            vecLonMin = forecast->GetPredictorLonMin();
+            vecLonMax = forecast->GetPredictorLonMax();
+            vecLatMin = forecast->GetPredictorLatMin();
+            vecLatMax = forecast->GetPredictorLatMax();
+            extent[0] = wxMin(extent[0], *std::min_element(vecLonMin.begin(), vecLonMin.end()));
+            extent[1] = wxMax(extent[1], *std::max_element(vecLonMax.begin(), vecLonMax.end()));
+            extent[2] = wxMin(extent[2], *std::min_element(vecLatMin.begin(), vecLatMin.end()));
+            extent[3] = wxMax(extent[3], *std::max_element(vecLatMax.begin(), vecLatMax.end()));
+        }
+    }
+
+    return extent;
+}
+
 a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, int returnPeriodRef,
                                                     float quantileThreshold) const {
     wxASSERT(returnPeriodRef >= 2);

@@ -149,6 +149,8 @@ class asFramePredictors : public asFramePredictorsVirtual {
     void ReloadViewerLayerManagerLeft();
 
     void ReloadViewerLayerManagerRight();
+    
+    vrRealRect getDesiredExtent() const;
 
     DECLARE_EVENT_TABLE()
 };

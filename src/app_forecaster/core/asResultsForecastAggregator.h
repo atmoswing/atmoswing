@@ -95,6 +95,8 @@ class asResultsForecastAggregator : public wxObject {
 
     wxArrayString GetTargetDatesWxArray(int methodRow, int forecastRow) const;
 
+    vf GetMaxExtent() const;
+
     a1f GetMethodMaxValues(a1f& dates, int methodRow, int returnPeriodRef, float quantileThreshold) const;
 
     a1f GetOverallMaxValues(a1f& dates, int returnPeriodRef, float quantileThreshold) const;

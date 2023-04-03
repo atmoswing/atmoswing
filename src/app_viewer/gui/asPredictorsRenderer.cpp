@@ -175,6 +175,8 @@ void asPredictorsRenderer::RedrawSpatialWindow(const wxString& name, vrViewerLay
     ring->addPoint(domain[1], domain[3]);
     ring->addPoint(domain[1], domain[2]);
     ring->addPoint(domain[0], domain[2]);
+    ring->addPoint(domain[0], domain[3]);
+    ring->closeRings();
 
     OGRPolygon* domainPoly = new OGRPolygon();
     domainPoly->addRingDirectly(ring);

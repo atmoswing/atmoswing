@@ -175,6 +175,10 @@ class asForecastManager {
         return m_aggregator->GetTargetDatesWxArray(methodRow, forecastRow);
     }
 
+    vf GetMaxExtent() const {
+        return m_aggregator->GetMaxExtent();
+    }
+
   protected:
   private:
     wxWindow* m_parent;
