@@ -105,6 +105,7 @@ class asPredictorsManager {
   protected:
   private:
     wxListBox* m_listPredictors;
+    asPredictor* m_predictor;
     bool m_isTargetPredictor;
     double m_date;
     vwxs m_datasetIds;

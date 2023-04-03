@@ -34,6 +34,7 @@ asPredictorsManager::asPredictorsManager(wxListBox* listPredictors)
 asPredictorsManager::~asPredictorsManager() = default;
 
 asPredictor::Parameter asPredictorsManager::GetParameter() {
+    return m_predictor->GetParameter();
 }
 
 bool asPredictorsManager::LoadData() {
