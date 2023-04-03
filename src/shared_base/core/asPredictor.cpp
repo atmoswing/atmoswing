@@ -1113,10 +1113,6 @@ asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
 
     bool strideAllowed = m_fileType == asFile::Netcdf;
 
-    if (!desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats, true)) {
-        throw exception(_("Failed at initializing the axes."));
-    }
-
     if (desiredArea->IsFull()) {
         double xMin = m_fStr.lons.minCoeff();
         int xPtsNb = (int)m_fStr.lons.size();
@@ -1128,17 +1124,25 @@ asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
             throw exception(_("Failed at initializing the axes."));
         }
 
+        m_fInd.lonStep = 1;
+        m_fInd.latStep = 1;
+
         m_lonPtsnb = dataArea->GetXptsNb();
         m_latPtsnb = dataArea->GetYptsNb();
-        m_axisLon = desiredArea->GetXaxis();
-        m_axisLat = desiredArea->GetYaxis();
+        m_axisLon = dataArea->GetXaxis();
+        m_axisLat = dataArea->GetYaxis();
 
         // Order latitude axis (as data will also be ordered)
         asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Desc);
 
         return dataArea;
+    }
 
-    } else if (desiredArea->IsRegular()) {
+    if (!desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats, true)) {
+        throw exception(_("Failed at initializing the axes."));
+    }
+
+    if (desiredArea->IsRegular()) {
         auto desiredAreaReg = dynamic_cast<asAreaGridRegular*>(desiredArea);
 
         if (!strideAllowed) {

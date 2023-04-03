@@ -52,17 +52,21 @@ asPredictorsRenderer::asPredictorsRenderer(wxWindow* parent, vrLayerManager* lay
 asPredictorsRenderer::~asPredictorsRenderer() = default;
 
 void asPredictorsRenderer::Redraw(vf &domain) {
-    m_viewerLayerManagerTarget->FreezeBegin();
-    vrLayerRasterPredictor* layerTarget = RedrawRasterPredictor(_("Predictor - target"), m_viewerLayerManagerTarget, m_predictorsManagerTarget);
-    RedrawContourLines(_("Contours - target"), m_viewerLayerManagerTarget, layerTarget);
-    RedrawSpatialWindow(_("Spatial window target"), m_viewerLayerManagerTarget, domain);
-    m_viewerLayerManagerTarget->FreezeEnd();
+    if (m_predictorsManagerTarget->LoadData()) {
+        m_viewerLayerManagerTarget->FreezeBegin();
+        vrLayerRasterPredictor* layerTarget = RedrawRasterPredictor(_("Predictor - target"), m_viewerLayerManagerTarget, m_predictorsManagerTarget);
+        RedrawContourLines(_("Contours - target"), m_viewerLayerManagerTarget, layerTarget);
+        RedrawSpatialWindow(_("Spatial window target"), m_viewerLayerManagerTarget, domain);
+        m_viewerLayerManagerTarget->FreezeEnd();
+    }
 
-    m_viewerLayerManagerAnalog->FreezeBegin();
-    vrLayerRasterPredictor* layerAnalog = RedrawRasterPredictor(_("Predictor - analog"), m_viewerLayerManagerAnalog, m_predictorsManagerAnalog);
-    RedrawContourLines(_("Contours - analog"), m_viewerLayerManagerAnalog, layerAnalog);
-    RedrawSpatialWindow(_("Spatial window analog"), m_viewerLayerManagerAnalog, domain);
-    m_viewerLayerManagerAnalog->FreezeEnd();
+    if (m_predictorsManagerAnalog->LoadData()) {
+        m_viewerLayerManagerAnalog->FreezeBegin();
+        vrLayerRasterPredictor* layerAnalog = RedrawRasterPredictor(_("Predictor - analog"), m_viewerLayerManagerAnalog, m_predictorsManagerAnalog);
+        RedrawContourLines(_("Contours - analog"), m_viewerLayerManagerAnalog, layerAnalog);
+        RedrawSpatialWindow(_("Spatial window analog"), m_viewerLayerManagerAnalog, domain);
+        m_viewerLayerManagerAnalog->FreezeEnd();
+    }
 }
 
 vrLayerRasterPredictor* asPredictorsRenderer::RedrawRasterPredictor(const wxString& name,
@@ -101,6 +105,8 @@ void asPredictorsRenderer::RedrawContourLines(const wxString& name, vrViewerLaye
 
     // Check if memory layer already added
     CloseLayerIfPresent(viewerLayerManager, memoryVector);
+
+    if (!layerRaster) return;
 
     // Create the layers
     auto* layerVector = new vrLayerVectorContours();

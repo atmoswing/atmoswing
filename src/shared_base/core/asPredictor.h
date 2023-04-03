@@ -172,6 +172,20 @@ class asPredictor : public wxObject {
         return m_data;
     }
 
+    a2f* GetData(int iTime, int iMem) {
+        wxASSERT((int)m_data.size() >= (int)m_time.size());
+        wxASSERT(m_data.size() >= iTime);
+        wxASSERT(m_data[iTime].size() >= iMem);
+        wxASSERT(m_data[iTime][iMem].cols() > 0);
+        wxASSERT(m_data[iTime][iMem].rows() > 0);
+
+        return &m_data[iTime][iMem];
+    }
+
+    bool HasSingleArray() {
+        return (m_data.size() == 1) && (m_data[0].size() == 1);
+    }
+
     wxString GetDataId() const {
         return m_dataId;
     }
@@ -317,6 +331,14 @@ class asPredictor : public wxObject {
 
     a1d GetLonAxis() const {
         return m_axisLon;
+    }
+
+    a1d* GetLatAxisPt() {
+        return &m_axisLat;
+    }
+
+    a1d* GetLonAxisPt() {
+        return &m_axisLon;
     }
 
     double GetXmin() const {

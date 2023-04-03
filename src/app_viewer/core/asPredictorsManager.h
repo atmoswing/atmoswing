@@ -34,7 +34,7 @@
 
 class asPredictorsManager {
   public:
-    explicit asPredictorsManager(wxListBox* listPredictors);
+    explicit asPredictorsManager(wxListBox* listPredictors, bool isTargetPredictor = false);
 
     virtual ~asPredictorsManager();
 
@@ -49,34 +49,35 @@ class asPredictorsManager {
     void SetDate(double date);
 
     int GetLongitudesNb() {
-        return int(m_longitudes.size());
+        return int(m_longitudes->size());
     }
 
     int GetLatitudesNb() {
-        return int(m_latitudes.size());
+        return int(m_latitudes->size());
     }
 
-    float GetLongitudeMin() {
-        return m_longitudes.minCoeff();
+    double GetLongitudeMin() {
+        return m_longitudes->minCoeff();
     }
 
-    float GetLatitudeMax() {
-        return m_latitudes.maxCoeff();
+    double GetLatitudeMax() {
+        return m_latitudes->maxCoeff();
     }
 
-    float GetLongitudeResol() {
-        wxASSERT(m_longitudes.size() > 1);
-        return m_longitudes[1] - m_longitudes[0];
+    double GetLongitudeResol() {
+        wxASSERT(m_longitudes->size() > 1);
+        return (*m_longitudes)(1) - (*m_longitudes)(0);
     }
 
-    float GetLatitudeResol() {
-        wxASSERT(m_latitudes.size() > 1);
-        return m_latitudes[1] - m_latitudes[0];
+    double GetLatitudeResol() {
+        wxASSERT(m_latitudes->size() > 1);
+        return (*m_latitudes)(1) - (*m_latitudes)(0);
     }
 
   protected:
   private:
     wxListBox* m_listPredictors;
+    bool m_isTargetPredictor;
     double m_date;
     a2f m_data;
     a1f m_longitudes;

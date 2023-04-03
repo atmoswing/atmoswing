@@ -37,6 +37,7 @@ asFileNetcdf::asFileNetcdf(const wxString& fileName, const FileMode& fileMode)
 }
 
 asFileNetcdf::~asFileNetcdf() {
+    Close();
     wxASSERT(m_fileId == 0);
 }
 

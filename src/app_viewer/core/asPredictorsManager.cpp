@@ -37,17 +37,57 @@ asPredictor::Parameter asPredictorsManager::GetParameter() {
 }
 
 bool asPredictorsManager::LoadData() {
+    if (!m_needsDataReload) return true;
+
+    wxDELETE(m_predictor);
+
+    int selection = m_listPredictors->GetSelection();
+    if (selection < 0) {
+        return false;
+    }
+
+    if (m_isTargetPredictor) {
+    } else {
+        m_predictor = asPredictor::GetInstance(m_datasetIds[selection], m_dataIds[selection], directory);
+    }
+
+    if (!m_predictor) {
+        wxLogError(_("Failed to get an instance of %s from %s."), m_dataIds[selection], m_datasetIds[selection]);
+        return false;
+    }
+
+    asAreaGridFull area = asAreaGridFull(true);
+    if (!m_predictor->Load(area, m_date, m_levels[selection])) {
+        wxLogError(_("The variable %s from %s could not be loaded."), m_dataIds[selection], m_datasetIds[selection]);
+        wxDELETE(m_predictor);
+        return false;
+    }
+
+    if (!m_predictor->HasSingleArray()) {
+        wxFAIL;
+        return false;
+    }
+
+    m_data = m_predictor->GetData(0, 0);
+    m_longitudes = m_predictor->GetLonAxisPt();
+    m_latitudes = m_predictor->GetLatAxisPt();
+
+    m_needsDataReload = false;
+
+    return true;
+}
+
 float* asPredictorsManager::GetData() {
-    return &m_data(0, 0);
+    return m_data->data();
 }
 
 float* asPredictorsManager::GetDataRow(int row) {
-    wxASSERT(m_data.rows() > row);
-    return &m_data(row, 0);
+    wxASSERT(m_data->rows() > row);
+    return &(*m_data)(row,0);
 }
 
 void asPredictorsManager::SetDate(double date) {
     if (m_date == date) return;
     m_date = date;
-    LoadData();
+    m_needsDataReload = true;
 }
