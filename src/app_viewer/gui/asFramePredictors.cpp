@@ -118,9 +118,11 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     m_viewerLayerManagerRight = new vrViewerLayerManager(m_layerManager, this, m_displayCtrlRight, m_tocCtrlRight);
 
     // Viewer
-    m_predictorsManager = new asPredictorsManager();
-    m_predictorsRenderer = new asPredictorsRenderer(this, m_layerManager, m_predictorsManager, m_viewerLayerManagerLeft,
-                                                    m_viewerLayerManagerRight, m_listPredictors);
+    m_predictorsManagerTarget = new asPredictorsManager(m_listPredictors);
+    m_predictorsManagerAnalog = new asPredictorsManager(m_listPredictors);
+    m_predictorsRenderer = new asPredictorsRenderer(this, m_layerManager, m_predictorsManagerTarget,
+                                                    m_predictorsManagerAnalog, m_viewerLayerManagerLeft,
+                                                    m_viewerLayerManagerRight);
 
     // Menus
     m_menuTools->AppendCheckItem(asID_SET_SYNCRO_MODE, "Synchronize tools",
@@ -845,7 +847,9 @@ void asFramePredictors::UpdateLayers() {
     domain.push_back(forecast->GetPredictorLatMin()[m_selectedPredictor]);
     domain.push_back(forecast->GetPredictorLatMax()[m_selectedPredictor]);
 
-    m_predictorsRenderer->Redraw(targetDate, analogDate, domain);
+    m_predictorsManagerTarget->SetDate(targetDate);
+    m_predictorsManagerAnalog->SetDate(analogDate);
+    m_predictorsRenderer->Redraw(domain);
 }
 
 void asFramePredictors::ReloadViewerLayerManagerLeft() {

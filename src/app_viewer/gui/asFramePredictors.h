@@ -72,7 +72,8 @@ class asFramePredictors : public asFramePredictorsVirtual {
   private:
     asForecastManager* m_forecastManager;
     asPredictorsRenderer* m_predictorsRenderer;
-    asPredictorsManager* m_predictorsManager;
+    asPredictorsManager* m_predictorsManagerTarget;
+    asPredictorsManager* m_predictorsManagerAnalog;
     asWorkspace* m_workspace;
     int m_selectedMethod;
     int m_selectedForecast;
@@ -149,7 +150,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
     void ReloadViewerLayerManagerLeft();
 
     void ReloadViewerLayerManagerRight();
-    
+
     vrRealRect getDesiredExtent() const;
 
     DECLARE_EVENT_TABLE()

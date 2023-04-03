@@ -27,6 +27,27 @@
 
 #include "asPredictorsManager.h"
 
-asPredictorsManager::asPredictorsManager() {}
+asPredictorsManager::asPredictorsManager(wxListBox* listPredictors)
+    : m_listPredictors(listPredictors),
+      m_date(-1) {}
 
-asPredictorsManager::~asPredictorsManager() {}
+asPredictorsManager::~asPredictorsManager() = default;
+
+asPredictor::Parameter asPredictorsManager::GetParameter() {
+}
+
+bool asPredictorsManager::LoadData() {
+float* asPredictorsManager::GetData() {
+    return &m_data(0, 0);
+}
+
+float* asPredictorsManager::GetDataRow(int row) {
+    wxASSERT(m_data.rows() > row);
+    return &m_data(row, 0);
+}
+
+void asPredictorsManager::SetDate(double date) {
+    if (m_date == date) return;
+    m_date = date;
+    LoadData();
+}

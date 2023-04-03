@@ -31,17 +31,25 @@
 #include "asIncludes.h"
 #include "vroomgis.h"
 
+
 class asPredictorsManager;
+
+class vrLayerRasterPredictor;
 
 class asPredictorsRenderer {
   public:
-    asPredictorsRenderer();
+    asPredictorsRenderer(wxWindow* parent, vrLayerManager* layerManager,
+                         asPredictorsManager* predictorsManagerTarget,
+                         asPredictorsManager* predictorsManagerAnalog,
+                         vrViewerLayerManager* viewerLayerManagerTarget,
+                         vrViewerLayerManager* viewerLayerManagerAnalog);
 
     virtual ~asPredictorsRenderer();
 
-    void Redraw(double targetDate, double analogDate, vf &domain);
+    void Redraw(vf &domain);
 
-    vrLayerRasterPredictor* RedrawRasterPredictor(const wxString &name, vrViewerLayerManager* viewerLayerManager);
+    vrLayerRasterPredictor* RedrawRasterPredictor(const wxString& name, vrViewerLayerManager* viewerLayerManager,
+                                                  asPredictorsManager* predictorsManager);
 
     void RedrawContourLines(const wxString& name, vrViewerLayerManager* viewerLayerManager,
                             vrLayerRasterPredictor* layerRaster);
@@ -52,9 +60,12 @@ class asPredictorsRenderer {
   private:
     wxWindow* m_parent;
     vrLayerManager* m_layerManager;
-    asPredictorsManager* m_predictorsManager;
+    asPredictorsManager* m_predictorsManagerTarget;
+    asPredictorsManager* m_predictorsManagerAnalog;
     vrViewerLayerManager* m_viewerLayerManagerTarget;
     vrViewerLayerManager* m_viewerLayerManagerAnalog;
+
+    void CloseLayerIfPresent(vrViewerLayerManager* viewerLayerManager, const wxFileName& memoryVector);
 };
 
 #endif

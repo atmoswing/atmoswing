@@ -38,51 +38,44 @@
 #include "vrrender.h"
 
 asPredictorsRenderer::asPredictorsRenderer(wxWindow* parent, vrLayerManager* layerManager,
-                                           asPredictorsManager* predictorsManager,
+                                           asPredictorsManager* predictorsManagerTarget,
+                                           asPredictorsManager* predictorsManagerAnalog,
                                            vrViewerLayerManager* viewerLayerManagerTarget,
-                                           vrViewerLayerManager* viewerLayerManagerAnalog,
-                                           wxListBox* listPredictors) {
-    m_parent = parent;
-    m_layerManager = layerManager;
-    m_predictorsManager = predictorsManager;
-    m_viewerLayerManagerTarget = viewerLayerManagerTarget;
-    m_viewerLayerManagerAnalog = viewerLayerManagerAnalog;
-}
+                                           vrViewerLayerManager* viewerLayerManagerAnalog)
+    : m_parent(parent),
+      m_layerManager(layerManager),
+      m_predictorsManagerTarget(predictorsManagerTarget),
+      m_predictorsManagerAnalog(predictorsManagerAnalog),
+      m_viewerLayerManagerTarget(viewerLayerManagerTarget),
+      m_viewerLayerManagerAnalog(viewerLayerManagerAnalog) {}
 
 asPredictorsRenderer::~asPredictorsRenderer() = default;
 
-void asPredictorsRenderer::Redraw(double targetDate, double analogDate, vf &domain) {
+void asPredictorsRenderer::Redraw(vf &domain) {
     m_viewerLayerManagerTarget->FreezeBegin();
-    vrLayerRasterPredictor* layerTarget = RedrawRasterPredictor(_("Predictor - target"), m_viewerLayerManagerTarget);
+    vrLayerRasterPredictor* layerTarget = RedrawRasterPredictor(_("Predictor - target"), m_viewerLayerManagerTarget, m_predictorsManagerTarget);
     RedrawContourLines(_("Contours - target"), m_viewerLayerManagerTarget, layerTarget);
     RedrawSpatialWindow(_("Spatial window target"), m_viewerLayerManagerTarget, domain);
     m_viewerLayerManagerTarget->FreezeEnd();
 
     m_viewerLayerManagerAnalog->FreezeBegin();
-    vrLayerRasterPredictor* layerAnalog = RedrawRasterPredictor(_("Predictor - analog"), m_viewerLayerManagerAnalog);
+    vrLayerRasterPredictor* layerAnalog = RedrawRasterPredictor(_("Predictor - analog"), m_viewerLayerManagerAnalog, m_predictorsManagerAnalog);
     RedrawContourLines(_("Contours - analog"), m_viewerLayerManagerAnalog, layerAnalog);
     RedrawSpatialWindow(_("Spatial window analog"), m_viewerLayerManagerAnalog, domain);
     m_viewerLayerManagerAnalog->FreezeEnd();
 }
 
-vrLayerRasterPredictor* asPredictorsRenderer::RedrawRasterPredictor(const wxString &name, vrViewerLayerManager* viewerLayerManager) {
+vrLayerRasterPredictor* asPredictorsRenderer::RedrawRasterPredictor(const wxString& name,
+                                                                    vrViewerLayerManager* viewerLayerManager,
+                                                                    asPredictorsManager* predictorsManager) {
     // Create a memory layer
     wxFileName memoryRaster("", name, "memory");
 
     // Check if memory layer already added
-    for (int i = 0; i < viewerLayerManager->GetCount(); i++) {
-        if (viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryRaster) {
-            vrRenderer* renderer = viewerLayerManager->GetRenderer(i);
-            vrLayer* layer = renderer->GetLayer();
-            wxASSERT(renderer);
-            viewerLayerManager->Remove(renderer);
-            // Close layer
-            m_layerManager->Close(layer);
-        }
-    }
+    CloseLayerIfPresent(viewerLayerManager, memoryRaster);
 
     // Create the layers
-    auto* layerRaster = new vrLayerRasterPredictor();
+    auto* layerRaster = new vrLayerRasterPredictor(predictorsManager);
 
     if (!layerRaster->CreateInMemory(memoryRaster)) {
         wxFAIL;
@@ -107,16 +100,7 @@ void asPredictorsRenderer::RedrawContourLines(const wxString& name, vrViewerLaye
     wxFileName memoryVector("", name, "memory");
 
     // Check if memory layer already added
-    for (int i = 0; i < viewerLayerManager->GetCount(); i++) {
-        if (viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryVector) {
-            vrRenderer* renderer = viewerLayerManager->GetRenderer(i);
-            vrLayer* layer = renderer->GetLayer();
-            wxASSERT(renderer);
-            viewerLayerManager->Remove(renderer);
-            // Close layer
-            m_layerManager->Close(layer);
-        }
-    }
+    CloseLayerIfPresent(viewerLayerManager, memoryVector);
 
     // Create the layers
     auto* layerVector = new vrLayerVectorContours();
@@ -149,16 +133,7 @@ void asPredictorsRenderer::RedrawSpatialWindow(const wxString& name, vrViewerLay
     wxFileName memoryVector("", name, "memory");
 
     // Check if memory layer already added
-    for (int i = 0; i < viewerLayerManager->GetCount(); i++) {
-        if (viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryVector) {
-            vrRenderer* renderer = viewerLayerManager->GetRenderer(i);
-            vrLayer* layer = renderer->GetLayer();
-            wxASSERT(renderer);
-            viewerLayerManager->Remove(renderer);
-            // Close layer
-            m_layerManager->Close(layer);
-        }
-    }
+    CloseLayerIfPresent(viewerLayerManager, memoryVector);
 
     // Create the layers
     auto* layerVector = new vrLayerVectorDomain();
@@ -193,4 +168,18 @@ void asPredictorsRenderer::RedrawSpatialWindow(const wxString& name, vrViewerLay
     render->SetTransparency(50);
     render->SetSize(2);
     viewerLayerManager->Add(-1, layerVector, render, nullptr, true);
+}
+
+void asPredictorsRenderer::CloseLayerIfPresent(vrViewerLayerManager* viewerLayerManager,
+                                               const wxFileName& memoryVector) {
+    for (int i = 0; i < viewerLayerManager->GetCount(); i++) {
+        if (viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryVector) {
+            vrRenderer* renderer = viewerLayerManager->GetRenderer(i);
+            vrLayer* layer = renderer->GetLayer();
+            wxASSERT(renderer);
+            viewerLayerManager->Remove(renderer);
+            // Close layer
+            m_layerManager->Close(layer);
+        }
+    }
 }

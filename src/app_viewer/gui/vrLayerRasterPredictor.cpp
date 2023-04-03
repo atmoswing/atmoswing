@@ -33,8 +33,9 @@
 
 #define UseRasterIO 0
 
-vrLayerRasterPredictor::vrLayerRasterPredictor()
-    : vrLayerRasterGDAL() {
+vrLayerRasterPredictor::vrLayerRasterPredictor(asPredictorsManager* predictorsManager)
+    : vrLayerRasterGDAL(),
+      m_predictorsManager(predictorsManager) {
     m_driverType = vrDRIVER_RASTER_MEMORY;
 }
 
@@ -66,8 +67,9 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
     }
 
     // Create dataset
-    m_dataset = poDriver->Create((const char*)m_fileName.GetFullPath().mb_str(wxConvUTF8), int(m_longitudes.size()),
-                                 int(m_latitudes.size()), 1, GDT_Float32, nullptr);
+    m_dataset = poDriver->Create((const char*)m_fileName.GetFullPath().mb_str(wxConvUTF8),
+                                 m_predictorsManager->GetLongitudesNb(), m_predictorsManager->GetLatitudesNb(), 1,
+                                 GDT_Float32, nullptr);
     if (m_dataset == nullptr) {
         wxLogError(_("Creation of memory dataset failed."));
         return false;
@@ -81,12 +83,12 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
 
     // Set geotransform
     double adfGeoTransform[6];
-    adfGeoTransform[0] = m_longitudes.minCoeff(); // top left x
-    adfGeoTransform[1] = m_longitudes[1] - m_longitudes[0]; // w-e pixel resolution
+    adfGeoTransform[0] = m_predictorsManager->GetLongitudeMin(); // top left x
+    adfGeoTransform[1] = m_predictorsManager->GetLongitudeResol(); // w-e pixel resolution
     adfGeoTransform[2] = 0; // rotation, 0 if image is "north up"
-    adfGeoTransform[3] = m_latitudes.maxCoeff(); // top left y
+    adfGeoTransform[3] = m_predictorsManager->GetLatitudeMax(); // top left y
     adfGeoTransform[4] = 0; // rotation, 0 if image is "north up"
-    adfGeoTransform[5] = m_latitudes[0] - m_latitudes[1];  // n-s pixel resolution (negative value)
+    adfGeoTransform[5] = - m_predictorsManager->GetLatitudeResol();  // n-s pixel resolution (negative value)
     if (m_dataset->SetGeoTransform(adfGeoTransform) != CE_None) {
         wxLogError(_("Setting geotransform to predictor layer failed."));
         return false;
@@ -96,8 +98,9 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
     GDALRasterBand* band = m_dataset->GetRasterBand(1);
 
 #if UseRasterIO
-    if (band->RasterIO(GF_Write, 0, 0, int(m_longitudes.size()), int(m_latitudes.size()), &m_data(0, 0),
-                       int(m_longitudes.size()), int(m_latitudes.size()), GDT_Float32, 0, 0, NULL) != CE_None) {
+    if (band->RasterIO(GF_Write, 0, 0, m_predictorsManager->GetLongitudesNb(), m_predictorsManager->GetLatitudesNb(),
+                       m_predictorsManager->GetData(), m_predictorsManager->GetLongitudesNb(),
+                       m_predictorsManager->GetLatitudesNb(), GDT_Float32, 0, 0, NULL) != CE_None) {
         wxLogError(_("Setting data to predictor layer failed."));
         return false;
     }
@@ -105,7 +108,7 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
     int xBlockSize, yBlockSize;
     band->GetBlockSize(&xBlockSize, &yBlockSize);
 
-    if (m_longitudes.size() != xBlockSize) {
+    if (m_predictorsManager->GetLongitudesNb() != xBlockSize) {
         wxLogError(_("The x block size does not match the data."));
         return false;
     }
@@ -114,13 +117,15 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
         return false;
     }
 
-    for (int y = 0; y < m_latitudes.size(); y++) {
-        if (band->WriteBlock(0, y, &m_data(y, 0)) != CE_None) {
+    for (int y = 0; y < m_predictorsManager->GetLatitudesNb(); y++) {
+        if (band->WriteBlock(0, y, m_predictorsManager->GetDataRow(y)) != CE_None) {
             wxLogError(_("Setting data to predictor layer failed."));
             return false;
         }
     }
 #endif
+
+    m_parameter = m_predictorsManager->GetParameter();
 
     return true;
 }

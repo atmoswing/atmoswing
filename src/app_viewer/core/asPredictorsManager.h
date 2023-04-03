@@ -30,14 +30,57 @@
 
 #include "asIncludes.h"
 
+#include "asPredictor.h"
+
 class asPredictorsManager {
   public:
-    asPredictorsManager();
+    explicit asPredictorsManager(wxListBox* listPredictors);
 
     virtual ~asPredictorsManager();
 
+    asPredictor::Parameter GetParameter();
+
+    bool LoadData();
+
+    float* GetData();
+
+    float* GetDataRow(int row);
+
+    void SetDate(double date);
+
+    int GetLongitudesNb() {
+        return int(m_longitudes.size());
+    }
+
+    int GetLatitudesNb() {
+        return int(m_latitudes.size());
+    }
+
+    float GetLongitudeMin() {
+        return m_longitudes.minCoeff();
+    }
+
+    float GetLatitudeMax() {
+        return m_latitudes.maxCoeff();
+    }
+
+    float GetLongitudeResol() {
+        wxASSERT(m_longitudes.size() > 1);
+        return m_longitudes[1] - m_longitudes[0];
+    }
+
+    float GetLatitudeResol() {
+        wxASSERT(m_latitudes.size() > 1);
+        return m_latitudes[1] - m_latitudes[0];
+    }
+
   protected:
   private:
+    wxListBox* m_listPredictors;
+    double m_date;
+    a2f m_data;
+    a1f m_longitudes;
+    a1f m_latitudes;
 };
 
 #endif

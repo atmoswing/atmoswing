@@ -32,11 +32,13 @@
 #include <wx/image.h>
 
 #include "vrlayerraster.h"
+#include "asPredictor.h"
+#include "asPredictorsManager.h"
 
 
 class vrLayerRasterPredictor : public vrLayerRasterGDAL {
   public:
-    vrLayerRasterPredictor();
+    vrLayerRasterPredictor(asPredictorsManager* predictorsManager);
 
     ~vrLayerRasterPredictor() override;
 
@@ -44,31 +46,13 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
 
     wxFileName GetDisplayName() override;
 
-    void SetParameter(asPredictor::Parameter parameter) {
-        m_parameter = parameter;
-    }
-
-    void SetData(const a2f& data) {
-        m_data = data;
-    }
-
-    void SetLongitudes(const a1f& lon) {
-        m_longitudes = lon;
-    }
-
-    void SetLatitudes(const a1f& lat) {
-        m_latitudes = lat;
-    }
-
   protected:
     virtual bool _GetRasterData(unsigned char** imgData, const wxSize& outImgPxSize, const wxRect& readImgPxInfo,
                                 const vrRender* render);
 
   private:
+    asPredictorsManager* m_predictorsManager;
     asPredictor::Parameter m_parameter;
-    a2f m_data;
-    a1f m_longitudes;
-    a1f m_latitudes;
 
     bool Close();
 };
