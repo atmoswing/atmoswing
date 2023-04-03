@@ -35,6 +35,8 @@ asPredictorsManager::asPredictorsManager(wxListBox* listPredictors, bool isTarge
       m_isTargetPredictor(isTargetPredictor),
       m_predictor(nullptr),
       m_date(-1),
+      m_forecastTimeStepHours(6),
+      m_leadTimeNb(5),
       m_needsDataReload(true){}
 
 asPredictorsManager::~asPredictorsManager() = default;
@@ -53,21 +55,42 @@ bool asPredictorsManager::LoadData() {
         return false;
     }
 
+    asAreaGridFull area = asAreaGridFull(true);
+
     if (m_isTargetPredictor) {
+        asPredictorOper* predictor = asPredictorOper::GetInstance(m_datasetIds[selection], m_dataIds[selection]);
+        if (!predictor) {
+            wxLogError(_("Failed to get an instance of %s from %s."), m_dataIds[selection], m_datasetIds[selection]);
+            return false;
+        }
+        predictor->SetPredictorsRealtimeDirectory(directory);
+        predictor->SetRunDateInUse(m_forecastDate);
+        predictor->RestrictTimeArray(m_hours[selection], m_forecastTimeStepHours, m_leadTimeNb);
+
+        if (!predictor->BuildFilenamesUrls()) {
+            return false;
+        }
+
+        if (!predictor->Load(area, m_date + m_hours[selection] / 24, m_levels[selection])) {
+            wxLogError(_("The variable %s from %s could not be loaded."), m_dataIds[selection], m_datasetIds[selection]);
+            wxDELETE(predictor);
+            return false;
+        }
+
+        m_predictor = predictor;
+
     } else {
         m_predictor = asPredictor::GetInstance(m_datasetIds[selection], m_dataIds[selection], directory);
-    }
+        if (!m_predictor) {
+            wxLogError(_("Failed to get an instance of %s from %s."), m_dataIds[selection], m_datasetIds[selection]);
+            return false;
+        }
 
-    if (!m_predictor) {
-        wxLogError(_("Failed to get an instance of %s from %s."), m_dataIds[selection], m_datasetIds[selection]);
-        return false;
-    }
-
-    asAreaGridFull area = asAreaGridFull(true);
-    if (!m_predictor->Load(area, m_date + m_hours[selection] / 24, m_levels[selection])) {
-        wxLogError(_("The variable %s from %s could not be loaded."), m_dataIds[selection], m_datasetIds[selection]);
-        wxDELETE(m_predictor);
-        return false;
+        if (!m_predictor->Load(area, m_date + m_hours[selection] / 24, m_levels[selection])) {
+            wxLogError(_("The variable %s from %s could not be loaded."), m_dataIds[selection], m_datasetIds[selection]);
+            wxDELETE(m_predictor);
+            return false;
+        }
     }
 
     if (!m_predictor->HasSingleArray()) {

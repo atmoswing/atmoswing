@@ -758,6 +758,16 @@ wxString asResultsForecast::GetDateFormatting() const {
     return format;
 }
 
+double asResultsForecast::GetForecastTimeStepHours() const {
+    if (GetPredictandTemporalResolution() == asPredictand::SixHourly) return 6;
+    if (GetPredictandTemporalResolution() == asPredictand::Daily) return 24;
+    if (GetPredictandTemporalResolution() == asPredictand::TwoDays) return 48;
+    if (GetPredictandTemporalResolution() == asPredictand::ThreeDays) return 3 * 24;
+    if (GetPredictandTemporalResolution() == asPredictand::Weekly) return 7 * 24;
+
+    return 24;
+}
+
 wxArrayString asResultsForecast::GetTargetDatesWxArray() const {
     wxArrayString dates;
     wxString format = GetDateFormatting();

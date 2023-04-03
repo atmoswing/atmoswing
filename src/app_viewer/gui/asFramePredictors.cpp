@@ -35,7 +35,9 @@
 #include "asThreadsManager.h"
 #endif
 #include <wx/colour.h>
-#include "asResults.h"
+
+#include "asPredictorsManager.h"
+#include "img_misc.h"
 #include "img_toolbar.h"
 
 BEGIN_EVENT_TABLE(asFramePredictors, wxFrame)
@@ -216,6 +218,9 @@ void asFramePredictors::UpdatePredictorsList() {
 void asFramePredictors::UpdatePredictorsProperties() {
     asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
+    m_predictorsManagerTarget->SetForecastDate(forecast->GetLeadTimeOrigin());
+    m_predictorsManagerTarget->SetForecastTimeStepHours(forecast->GetForecastTimeStepHours());
+    m_predictorsManagerTarget->SetLeadTimeNb(forecast->GetTargetDatesLength());
     m_predictorsManagerTarget->SetDatasetIds(forecast->GetPredictorDatasetIdsOper());
     m_predictorsManagerTarget->SetDataIds(forecast->GetPredictorDataIdsOper());
     m_predictorsManagerTarget->SetLevels(forecast->GetPredictorLevels());
@@ -313,21 +318,32 @@ void asFramePredictors::OnPredictorSelectionChange(wxCommandEvent& event) {
 
 void asFramePredictors::OnMethodChange(wxCommandEvent& event) {
     m_selectedMethod = event.GetInt();
+    m_predictorsManagerTarget->NeedsDataReload();
+    m_predictorsManagerAnalog->NeedsDataReload();
     UpdateForecastList();
+    UpdateLayers();
 }
 
 void asFramePredictors::OnForecastChange(wxCommandEvent& event) {
     m_selectedForecast = event.GetInt();
+    m_predictorsManagerTarget->NeedsDataReload();
+    m_predictorsManagerAnalog->NeedsDataReload();
     UpdateTargetDatesList();
+    UpdateLayers();
 }
 
 void asFramePredictors::OnTargetDateChange(wxCommandEvent& event) {
     m_selectedTargetDate = event.GetInt();
+    m_predictorsManagerTarget->NeedsDataReload();
+    m_predictorsManagerAnalog->NeedsDataReload();
     UpdateAnalogDatesList();
+    UpdateLayers();
 }
 
 void asFramePredictors::OnAnalogDateChange(wxCommandEvent& event) {
     m_selectedAnalogDate = event.GetInt();
+    m_predictorsManagerTarget->NeedsDataReload();
+    m_predictorsManagerAnalog->NeedsDataReload();
     UpdateLayers();
 }
 
@@ -383,38 +399,6 @@ void asFramePredictors::OpenDefaultLayers() {
         }
     } else {
         wxLogWarning(_("The Continents layer file %s cound not be found."), continentsFilePath.c_str());
-    }
-
-    // Countries
-    if (wxFileName::FileExists(countriesFilePath)) {
-        if (m_layerManager->Open(wxFileName(countriesFilePath))) {
-            long countriesTransp = pConfig->ReadLong("/GIS/LayerCountriesTransp", 0);
-            long countriesColor = pConfig->ReadLong("/GIS/LayerCountriesColor", (long)0x77999999);
-            wxColour colorCountries;
-            colorCountries.SetRGB((wxUint32)countriesColor);
-            long countriesSize = pConfig->ReadLong("/GIS/LayerCountriesSize", 1);
-            bool countriesVisibility = pConfig->ReadBool("/GIS/LayerCountriesVisibility", true);
-
-            auto renderCountries1 = new vrRenderVector();
-            renderCountries1->SetTransparency(countriesTransp);
-            renderCountries1->SetColorPen(colorCountries);
-            renderCountries1->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
-            renderCountries1->SetSize(countriesSize);
-            auto renderCountries2 = new vrRenderVector();
-            renderCountries2->SetTransparency(countriesTransp);
-            renderCountries2->SetColorPen(colorCountries);
-            renderCountries2->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
-            renderCountries2->SetSize(countriesSize);
-
-            layer = m_layerManager->GetLayer(wxFileName(countriesFilePath));
-            wxASSERT(layer);
-            m_viewerLayerManagerLeft->Add(-1, layer, renderCountries1, nullptr, countriesVisibility);
-            m_viewerLayerManagerRight->Add(-1, layer, renderCountries2, nullptr, countriesVisibility);
-        } else {
-            wxLogWarning(_("The Countries layer file %s cound not be opened."), countriesFilePath.c_str());
-        }
-    } else {
-        wxLogWarning(_("The Countries layer file %s cound not be found."), countriesFilePath.c_str());
     }
 
     // LatLong
@@ -479,6 +463,38 @@ void asFramePredictors::OpenDefaultLayers() {
         }
     } else {
         wxLogWarning(_("The Geogrid layer file %s cound not be found."), geogridFilePath.c_str());
+    }
+
+    // Countries
+    if (wxFileName::FileExists(countriesFilePath)) {
+        if (m_layerManager->Open(wxFileName(countriesFilePath))) {
+            long countriesTransp = pConfig->ReadLong("/GIS/LayerCountriesTransp", 0);
+            long countriesColor = pConfig->ReadLong("/GIS/LayerCountriesColor", (long)0x77999999);
+            wxColour colorCountries;
+            colorCountries.SetRGB((wxUint32)countriesColor);
+            long countriesSize = pConfig->ReadLong("/GIS/LayerCountriesSize", 1);
+            bool countriesVisibility = pConfig->ReadBool("/GIS/LayerCountriesVisibility", true);
+
+            auto renderCountries1 = new vrRenderVector();
+            renderCountries1->SetTransparency(countriesTransp);
+            renderCountries1->SetColorPen(colorCountries);
+            renderCountries1->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
+            renderCountries1->SetSize(countriesSize);
+            auto renderCountries2 = new vrRenderVector();
+            renderCountries2->SetTransparency(countriesTransp);
+            renderCountries2->SetColorPen(colorCountries);
+            renderCountries2->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
+            renderCountries2->SetSize(countriesSize);
+
+            layer = m_layerManager->GetLayer(wxFileName(countriesFilePath));
+            wxASSERT(layer);
+            m_viewerLayerManagerLeft->Add(-1, layer, renderCountries1, nullptr, countriesVisibility);
+            m_viewerLayerManagerRight->Add(-1, layer, renderCountries2, nullptr, countriesVisibility);
+        } else {
+            wxLogWarning(_("The Countries layer file %s cound not be opened."), countriesFilePath.c_str());
+        }
+    } else {
+        wxLogWarning(_("The Countries layer file %s cound not be found."), countriesFilePath.c_str());
     }
 
     m_viewerLayerManagerLeft->FreezeEnd();

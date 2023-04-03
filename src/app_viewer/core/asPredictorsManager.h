@@ -48,6 +48,19 @@ class asPredictorsManager {
 
     void SetDate(double date);
 
+    void SetForecastDate(double date) {
+        m_forecastDate = date;
+        m_needsDataReload = true;
+    }
+
+    void SetForecastTimeStepHours(double forecastTimeStepHours) {
+        m_forecastTimeStepHours = forecastTimeStepHours;
+    }
+
+    void SetLeadTimeNb(int leadTimeNb) {
+        m_leadTimeNb = leadTimeNb;
+    }
+
     void SetDatasetIds(const vwxs &predictorDatasetIds) {
         m_datasetIds = predictorDatasetIds;
         m_needsDataReload = true;
@@ -107,7 +120,10 @@ class asPredictorsManager {
     wxListBox* m_listPredictors;
     asPredictor* m_predictor;
     bool m_isTargetPredictor;
+    double m_forecastDate;
     double m_date;
+    double m_forecastTimeStepHours;
+    int m_leadTimeNb;
     vwxs m_datasetIds;
     vwxs m_dataIds;
     vf m_levels;

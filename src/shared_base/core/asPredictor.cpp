@@ -717,7 +717,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
 
     // Parse file structure
     if (m_fStr.singleTimeStep && m_files.size() > 1) {
-        wxASSERT(times.size() > 1);
+        wxASSERT(times.size() >= 1);
 
         wxLogVerbose(_("Creating an instance of the grib object to enquire the structure (2nd file)."));
         asFileGrib gbFile1 = asFileGrib(m_files[1], asFileGrib::ReadOnly);

@@ -332,6 +332,8 @@ class asResultsForecast : public asResults {
 
     wxString GetDateFormatting() const;
 
+    double GetForecastTimeStepHours() const;
+
     wxArrayString GetTargetDatesWxArray() const;
 
     void SetTargetDates(const a1d& refDates) {
