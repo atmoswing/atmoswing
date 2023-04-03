@@ -54,6 +54,10 @@ class asWorkspace : public wxObject {
 
     void AddLayer();
 
+    wxString GetPredictorOperDir(wxString& datasetId);
+
+    wxString GetPredictorArchiveDir(wxString& datasetId);
+
     wxString GetFilePath() const {
         return m_filePath;
     }

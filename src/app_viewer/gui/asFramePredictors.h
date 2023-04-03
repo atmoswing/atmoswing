@@ -39,12 +39,13 @@
 /** Implementing vroomDropFiles */
 class asFramePredictors;
 class vroomDropFilesPredictors : public wxFileDropTarget {
+  public:
+    explicit vroomDropFilesPredictors(asFramePredictors* parent);
+
+    bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames) override;
+
   private:
     asFramePredictors* m_LoaderFrame;
-
-  public:
-    vroomDropFilesPredictors(asFramePredictors* parent);
-    virtual bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames);
 };
 
 class asFramePredictors : public asFramePredictorsVirtual {
@@ -52,7 +53,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
     asFramePredictors(wxWindow* parent, asForecastManager* forecastManager, asWorkspace* workspace,
                       int methodRow, int forecastRow, wxWindowID id = asWINDOW_PREDICTORS);
 
-    ~asFramePredictors();
+    ~asFramePredictors() override;
 
     void Init();
 
@@ -111,23 +112,23 @@ class asFramePredictors : public asFramePredictorsVirtual {
 
     void OpenFramePreferences(wxCommandEvent& event);
 
-    void OnSwitchRight(wxCommandEvent& event);
+    void OnSwitchRight(wxCommandEvent& event) override;
 
-    void OnSwitchLeft(wxCommandEvent& event);
+    void OnSwitchLeft(wxCommandEvent& event) override;
 
-    void OnPredictorSelectionChange(wxCommandEvent& event);
+    void OnPredictorSelectionChange(wxCommandEvent& event) override;
 
-    void OnMethodChange(wxCommandEvent& event);
+    void OnMethodChange(wxCommandEvent& event) override;
 
-    void OnForecastChange(wxCommandEvent& event);
+    void OnForecastChange(wxCommandEvent& event) override;
 
-    void OnTargetDateChange(wxCommandEvent& event);
+    void OnTargetDateChange(wxCommandEvent& event) override;
 
-    void OnAnalogDateChange(wxCommandEvent& event);
+    void OnAnalogDateChange(wxCommandEvent& event) override;
 
-    void OnOpenLayer(wxCommandEvent& event);
+    void OnOpenLayer(wxCommandEvent& event) override;
 
-    void OnCloseLayer(wxCommandEvent& event);
+    void OnCloseLayer(wxCommandEvent& event) override;
 
     void OnSyncroToolSwitch(wxCommandEvent& event);
 

@@ -56,26 +56,26 @@ const int asID_MENU_POPUP_LAYER = wxID_HIGHEST + 2 + as_POPUP_OFFSET;
 class asFrameViewer;
 
 class vroomDropFiles : public wxFileDropTarget {
-  private:
-    asFrameViewer* m_loaderFrame;
-
   public:
     explicit vroomDropFiles(asFrameViewer* parent);
 
     bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames) override;
+
+  private:
+    asFrameViewer* m_loaderFrame;
 };
 
 /** Implementing forecastDropFiles */
 class asFrameViewer;
 
 class forecastDropFiles : public wxFileDropTarget {
-  private:
-    asFrameViewer* m_loaderFrame;
-
   public:
     explicit forecastDropFiles(asFrameViewer* parent);
 
     bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames) override;
+
+  private:
+    asFrameViewer* m_loaderFrame;
 };
 
 class asFrameViewer : public asFrameViewerVirtual {

@@ -31,10 +31,11 @@
 #include "asIncludes.h"
 
 #include "asPredictor.h"
+#include "asWorkspace.h"
 
 class asPredictorsManager {
   public:
-    explicit asPredictorsManager(wxListBox* listPredictors, bool isTargetPredictor = false);
+    explicit asPredictorsManager(wxListBox* listPredictors, asWorkspace* workspace, bool isTargetPredictor = false);
 
     virtual ~asPredictorsManager();
 
@@ -121,6 +122,7 @@ class asPredictorsManager {
 
   protected:
   private:
+    asWorkspace* m_workspace;
     wxListBox* m_listPredictors;
     asPredictor* m_predictor;
     bool m_isTargetPredictor;

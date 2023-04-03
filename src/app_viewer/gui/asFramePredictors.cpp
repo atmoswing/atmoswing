@@ -120,8 +120,8 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     m_viewerLayerManagerRight = new vrViewerLayerManager(m_layerManager, this, m_displayCtrlRight, m_tocCtrlRight);
 
     // Viewer
-    m_predictorsManagerTarget = new asPredictorsManager(m_listPredictors, true);
-    m_predictorsManagerAnalog = new asPredictorsManager(m_listPredictors);
+    m_predictorsManagerTarget = new asPredictorsManager(m_listPredictors, m_workspace, true);
+    m_predictorsManagerAnalog = new asPredictorsManager(m_listPredictors, m_workspace);
     m_predictorsRenderer = new asPredictorsRenderer(this, m_layerManager, m_predictorsManagerTarget,
                                                     m_predictorsManagerAnalog, m_viewerLayerManagerLeft,
                                                     m_viewerLayerManagerRight);

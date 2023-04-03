@@ -30,8 +30,9 @@
 #include "asAreaGridFull.h"
 #include "asPredictorOper.h"
 
-asPredictorsManager::asPredictorsManager(wxListBox* listPredictors, bool isTargetPredictor)
-    : m_listPredictors(listPredictors),
+asPredictorsManager::asPredictorsManager(wxListBox* listPredictors, asWorkspace* workspace, bool isTargetPredictor)
+    : m_workspace(workspace),
+      m_listPredictors(listPredictors),
       m_isTargetPredictor(isTargetPredictor),
       m_predictor(nullptr),
       m_date(-1),
@@ -58,6 +59,7 @@ bool asPredictorsManager::LoadData() {
     asAreaGridFull area = asAreaGridFull(true);
 
     if (m_isTargetPredictor) {
+        wxString directory = m_workspace->GetPredictorOperDir(m_datasetIds[selection]);
         asPredictorOper* predictor = asPredictorOper::GetInstance(m_datasetIds[selection], m_dataIds[selection]);
         if (!predictor) {
             wxLogError(_("Failed to get an instance of %s from %s."), m_dataIds[selection], m_datasetIds[selection]);
@@ -80,6 +82,7 @@ bool asPredictorsManager::LoadData() {
         m_predictor = predictor;
 
     } else {
+        wxString directory = m_workspace->GetPredictorArchiveDir(m_datasetIds[selection]);
         m_predictor = asPredictor::GetInstance(m_datasetIds[selection], m_dataIds[selection], directory);
         if (!m_predictor) {
             wxLogError(_("Failed to get an instance of %s from %s."), m_dataIds[selection], m_datasetIds[selection]);
