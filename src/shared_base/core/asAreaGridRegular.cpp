@@ -26,11 +26,11 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asAreaRegGrid.h"
-
 #include <cmath>
 
-asAreaRegGrid::asAreaRegGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
+#include "asAreaGridRegular.h"
+
+asAreaGridRegular::asAreaGridRegular(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
                              double xStep, double yStep, int flatAllowed, bool isLatLon)
     : asAreaGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon),
       m_xStep(xStep),
@@ -40,7 +40,7 @@ asAreaRegGrid::asAreaRegGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo
     m_yStepData = 0;
 }
 
-asAreaRegGrid::asAreaRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
+asAreaGridRegular::asAreaGridRegular(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
                              int flatAllowed, bool isLatLon)
     : asAreaGrid(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon),
       m_xStep(xStep),
@@ -50,7 +50,7 @@ asAreaRegGrid::asAreaRegGrid(double xMin, double xWidth, double xStep, double yM
     m_yStepData = 0;
 }
 
-asAreaRegGrid::asAreaRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
+asAreaGridRegular::asAreaGridRegular(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
     : asAreaGrid(xMin, 0, yMin, 0, flatAllowed, isLatLon),
       m_xStep(0),
       m_yStep(0) {
@@ -61,10 +61,10 @@ asAreaRegGrid::asAreaRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, i
     m_yStepData = 0;
 }
 
-bool asAreaRegGrid::GridsOverlay(asAreaGrid* otherArea) const {
+bool asAreaGridRegular::GridsOverlay(asAreaGrid* otherArea) const {
     if (!otherArea->IsRegular()) return false;
 
-    auto* otherAreaRegular(dynamic_cast<asAreaRegGrid*>(otherArea));
+    auto* otherAreaRegular(dynamic_cast<asAreaGridRegular*>(otherArea));
 
     if (!otherAreaRegular) return false;
 
@@ -75,7 +75,7 @@ bool asAreaRegGrid::GridsOverlay(asAreaGrid* otherArea) const {
     return true;
 }
 
-bool asAreaRegGrid::InitializeAxes(const a1d& lons, const a1d& lats, bool strideAllowed, bool getLarger) {
+bool asAreaGridRegular::InitializeAxes(const a1d& lons, const a1d& lats, bool strideAllowed, bool getLarger) {
     wxASSERT(lons.size() > 1);
     wxASSERT(lats.size() > 1);
 

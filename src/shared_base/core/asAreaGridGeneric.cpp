@@ -25,23 +25,22 @@
  * Portions Copyright 2018 Pascal Horton, University of Bern.
  */
 
-#include "asAreaGenGrid.h"
-
+#include "asAreaGridGeneric.h"
 #include "asTypeDefs.h"
 
-asAreaGenGrid::asAreaGenGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
+asAreaGridGeneric::asAreaGridGeneric(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
                              int flatAllowed, bool isLatLon)
     : asAreaGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon) {}
 
-asAreaGenGrid::asAreaGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed, bool isLatLon)
+asAreaGridGeneric::asAreaGridGeneric(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed, bool isLatLon)
     : asAreaGrid(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon) {}
 
-asAreaGenGrid::asAreaGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
+asAreaGridGeneric::asAreaGridGeneric(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
     : asAreaGrid(xMin, 0, yMin, 0, flatAllowed, isLatLon) {
     m_xPtsNb = xPtsNb;
     m_yPtsNb = yPtsNb;
 }
 
-bool asAreaGenGrid::GridsOverlay(asAreaGrid* otherArea) const {
+bool asAreaGridGeneric::GridsOverlay(asAreaGrid* otherArea) const {
     return false;
 }

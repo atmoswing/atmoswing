@@ -30,7 +30,7 @@
 #include <wx/filename.h>
 
 #include "asAreaGrid.h"
-#include "asAreaRegGrid.h"
+#include "asAreaGridRegular.h"
 #include "asPredictorOper.h"
 #include "asTimeArray.h"
 
@@ -169,7 +169,7 @@ TEST(PredictorOperNwsGfs, LoadEasyRegular) {
     double yWidth = 3;
     double step = 1;
     float level = 300;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -411,7 +411,7 @@ TEST(PredictorOperNwsGfs, LoadBorderRightRegular) {
     double yWidth = 3;
     double step = 1;
     float level = 300;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -568,7 +568,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStepLonLatRegular) {
     double xStep = 2;
     double yStep = 3;
     float level = 300;
-    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaGridRegular area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -673,7 +673,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatRoundStartRegular) {
     double xStep = 2.5;
     double yStep = 2.5;
     float level = 300;
-    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaGridRegular area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -824,7 +824,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatIrregularStartAndEnd
     double xStep = 2.5;
     double yStep = 2.5;
     float level = 300;
-    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaGridRegular area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -868,7 +868,7 @@ TEST(PredictorOperNwsGfsRegular, LoadVersion2017) {
     double yWidth = 3;
     double step = 0.5;
     float level = 300;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);

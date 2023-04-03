@@ -25,24 +25,24 @@
  * Portions Copyright 2018 Pascal Horton, University of Bern.
  */
 
-#ifndef AS_AREA_GEN_GRID_H
-#define AS_AREA_GEN_GRID_H
+#ifndef AS_AREA_GRID_GENERIC_H
+#define AS_AREA_GRID_GENERIC_H
 
 #include "asAreaGrid.h"
 #include "asIncludes.h"
 
-class asAreaGenGrid : public asAreaGrid {
+class asAreaGridGeneric : public asAreaGrid {
   public:
-    asAreaGenGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
+    asAreaGridGeneric(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
                   int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
+    asAreaGridGeneric(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
                   bool isLatLon = true);
 
-    asAreaGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
+    asAreaGridGeneric(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
                   bool isLatLon = true);
 
-    ~asAreaGenGrid() override = default;
+    ~asAreaGridGeneric() override = default;
 
     bool GridsOverlay(asAreaGrid* otherArea) const override;
 

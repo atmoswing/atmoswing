@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaRegGrid.h"
+#include "asAreaGridRegular.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
@@ -211,7 +211,7 @@ TEST(PredictorEcmwfEraInt, LoadEasy) {
     double yWidth = 3;
     double step = 0.75;
     float level = 1000;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -290,7 +290,7 @@ TEST(PredictorEcmwfEraInt, LoadBorderLeft) {
     double yWidth = 3;
     double step = 0.75;
     float level = 1000;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);

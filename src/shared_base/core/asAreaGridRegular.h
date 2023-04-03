@@ -26,24 +26,24 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AS_AREA_REGULAR_GRID_H
-#define AS_AREA_REGULAR_GRID_H
+#ifndef AS_AREA_GRID_REGULAR_H
+#define AS_AREA_GRID_REGULAR_H
 
 #include "asAreaGrid.h"
 #include "asIncludes.h"
 
-class asAreaRegGrid : public asAreaGrid {
+class asAreaGridRegular : public asAreaGrid {
   public:
-    asAreaRegGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR, double xStep,
+    asAreaGridRegular(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR, double xStep,
                   double yStep, int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
+    asAreaGridRegular(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
                   int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
+    asAreaGridRegular(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
                   bool isLatLon = true);
 
-    ~asAreaRegGrid() override = default;
+    ~asAreaGridRegular() override = default;
 
     bool GridsOverlay(asAreaGrid* otherArea) const override;
 

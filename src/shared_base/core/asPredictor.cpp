@@ -32,8 +32,8 @@
 #include <wx/dir.h>
 #include <wx/ffile.h>
 
-#include "asAreaGenGrid.h"
-#include "asAreaRegGrid.h"
+#include "asAreaGridGeneric.h"
+#include "asAreaGridRegular.h"
 #include "asPredictorCustomLtheNR1.h"
 #include "asPredictorCustomMFvgMeso.h"
 #include "asPredictorCustomMFvgMesoPacked.h"
@@ -1107,67 +1107,67 @@ asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
     wxASSERT(m_fStr.lons.size() > 0);
     wxASSERT(m_fStr.lats.size() > 0);
 
-    if (desiredArea) {
-        bool strideAllowed = m_fileType == asFile::Netcdf;
+    if (!desiredArea) {
+        return nullptr;
+    }
 
-        if (!desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats, true)) {
+    bool strideAllowed = m_fileType == asFile::Netcdf;
+
+    if (!desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats, true)) {
+        throw exception(_("Failed at initializing the axes."));
+    }
+
+    if (desiredArea->IsRegular()) {
+        auto desiredAreaReg = dynamic_cast<asAreaGridRegular*>(desiredArea);
+
+        if (!strideAllowed) {
+            m_fInd.lonStep = 1;
+            m_fInd.latStep = 1;
+        } else {
+            m_fInd.lonStep = desiredAreaReg->GetXstepStride();
+            m_fInd.latStep = desiredAreaReg->GetYstepStride();
+        }
+
+        auto dataArea = new asAreaGridRegular(*desiredAreaReg);
+        if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
             throw exception(_("Failed at initializing the axes."));
         }
 
-        if (desiredArea->IsRegular()) {
-            auto desiredAreaReg = dynamic_cast<asAreaRegGrid*>(desiredArea);
+        dataArea->CorrectCornersWithAxes();
 
-            if (!strideAllowed) {
-                m_fInd.lonStep = 1;
-                m_fInd.latStep = 1;
-            } else {
-                m_fInd.lonStep = desiredAreaReg->GetXstepStride();
-                m_fInd.latStep = desiredAreaReg->GetYstepStride();
-            }
-
-            auto dataArea = new asAreaRegGrid(*desiredAreaReg);
-            if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
-                throw exception(_("Failed at initializing the axes."));
-            }
-
-            dataArea->CorrectCornersWithAxes();
-
-            if (!strideAllowed) {
-                dataArea->SetSameStepAsData();
-            }
-
-            m_lonPtsnb = dataArea->GetXptsNb();
-            m_latPtsnb = dataArea->GetYptsNb();
-            m_axisLon = desiredArea->GetXaxis();
-            m_axisLat = desiredArea->GetYaxis();
-
-            // Order latitude axis (as data will also be ordered)
-            asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Desc);
-
-            return dataArea;
-
-        } else {
-            auto desiredAreaGen = dynamic_cast<asAreaGenGrid*>(desiredArea);
-            m_fInd.lonStep = 1;
-            m_fInd.latStep = 1;
-            auto dataArea = new asAreaGenGrid(*desiredAreaGen);
-            if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
-                throw exception(_("Failed at initializing the axes."));
-            }
-
-            m_lonPtsnb = dataArea->GetXptsNb();
-            m_latPtsnb = dataArea->GetYptsNb();
-            m_axisLon = desiredArea->GetXaxis();
-            m_axisLat = desiredArea->GetYaxis();
-
-            // Order latitude axis (as data will also be ordered)
-            asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Desc);
-
-            return dataArea;
+        if (!strideAllowed) {
+            dataArea->SetSameStepAsData();
         }
-    }
 
-    return nullptr;
+        m_lonPtsnb = dataArea->GetXptsNb();
+        m_latPtsnb = dataArea->GetYptsNb();
+        m_axisLon = desiredArea->GetXaxis();
+        m_axisLat = desiredArea->GetYaxis();
+
+        // Order latitude axis (as data will also be ordered)
+        asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Desc);
+
+        return dataArea;
+
+    } else {
+        auto desiredAreaGen = dynamic_cast<asAreaGridGeneric*>(desiredArea);
+        m_fInd.lonStep = 1;
+        m_fInd.latStep = 1;
+        auto dataArea = new asAreaGridGeneric(*desiredAreaGen);
+        if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
+            throw exception(_("Failed at initializing the axes."));
+        }
+
+        m_lonPtsnb = dataArea->GetXptsNb();
+        m_latPtsnb = dataArea->GetYptsNb();
+        m_axisLon = desiredArea->GetXaxis();
+        m_axisLat = desiredArea->GetYaxis();
+
+        // Order latitude axis (as data will also be ordered)
+        asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Desc);
+
+        return dataArea;
+    }
 }
 
 bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) {

@@ -28,15 +28,15 @@
 
 #include <gtest/gtest.h>
 
-#include "asAreaRegGrid.h"
+#include "asAreaGridRegular.h"
 
-TEST(AreaRegGrid, CheckConsistency) {
+TEST(AreaGridRegular, CheckConsistency) {
     double xMin = -5;
     double xWidth = 25;
     double yMin = 30;
     double yWidth = 10;
     double step = 2.5;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     EXPECT_DOUBLE_EQ(-5, area.GetCornerUL().x);
     EXPECT_DOUBLE_EQ(-5, area.GetCornerLL().x);
@@ -44,7 +44,7 @@ TEST(AreaRegGrid, CheckConsistency) {
     EXPECT_DOUBLE_EQ(20, area.GetCornerLR().x);
 }
 
-TEST(AreaRegGrid, CheckConsistencyException) {
+TEST(AreaGridRegular, CheckConsistencyException) {
     wxLogNull logNo;
 
     double xMin = 10;
@@ -52,10 +52,10 @@ TEST(AreaRegGrid, CheckConsistencyException) {
     double yMin = 40;
     double yWidth = -10;
     double step = 2.5;
-    ASSERT_THROW(asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step), std::exception);
+    ASSERT_THROW(asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step), std::exception);
 }
 
-TEST(AreaRegGrid, IsRectangleTrue) {
+TEST(AreaGridRegular, IsRectangleTrue) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;
@@ -66,11 +66,11 @@ TEST(AreaRegGrid, IsRectangleTrue) {
     cornerLR.x = 20;
     cornerLR.y = 30;
     double step = 2.5;
-    asAreaRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
+    asAreaGridRegular area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
     EXPECT_TRUE(area.IsRectangle());
 }
 
-TEST(AreaRegGrid, IsRectangleFalse) {
+TEST(AreaGridRegular, IsRectangleFalse) {
     wxLogNull logNo;
 
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
@@ -83,10 +83,10 @@ TEST(AreaRegGrid, IsRectangleFalse) {
     cornerLR.x = 20;
     cornerLR.y = 30;
     double step = 2.5;
-    ASSERT_THROW(asAreaRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step), std::exception);
+    ASSERT_THROW(asAreaGridRegular area(cornerUL, cornerUR, cornerLL, cornerLR, step, step), std::exception);
 }
 
-TEST(AreaRegGrid, GetBounds) {
+TEST(AreaGridRegular, GetBounds) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;
@@ -97,7 +97,7 @@ TEST(AreaRegGrid, GetBounds) {
     cornerLR.x = 20;
     cornerLR.y = 30;
     double step = 2.5;
-    asAreaRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
+    asAreaGridRegular area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
     EXPECT_DOUBLE_EQ(10, area.GetXmin());
     EXPECT_DOUBLE_EQ(30, area.GetYmin());
@@ -105,13 +105,13 @@ TEST(AreaRegGrid, GetBounds) {
     EXPECT_DOUBLE_EQ(40, area.GetYmax());
 }
 
-TEST(AreaRegGrid, GetBoundsSplitted) {
+TEST(AreaGridRegular, GetBoundsSplitted) {
     double xMin = -10;
     double xWidth = 30;
     double yMin = 30;
     double yWidth = 10;
     double step = 2.5;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     EXPECT_DOUBLE_EQ(-10, area.GetXmin());
     EXPECT_DOUBLE_EQ(20, area.GetXmax());
@@ -119,7 +119,7 @@ TEST(AreaRegGrid, GetBoundsSplitted) {
     EXPECT_DOUBLE_EQ(40, area.GetYmax());
 }
 
-TEST(AreaRegGrid, GetCornersSplitted) {
+TEST(AreaGridRegular, GetCornersSplitted) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -40;
     cornerUL.y = 40;
@@ -130,7 +130,7 @@ TEST(AreaRegGrid, GetCornersSplitted) {
     cornerLR.x = 10;
     cornerLR.y = 30;
     double step = 2.5;
-    asAreaRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
+    asAreaGridRegular area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
     EXPECT_DOUBLE_EQ(-40, area.GetCornerUL().x);
     EXPECT_DOUBLE_EQ(40, area.GetCornerUL().y);
@@ -142,7 +142,7 @@ TEST(AreaRegGrid, GetCornersSplitted) {
     EXPECT_DOUBLE_EQ(30, area.GetCornerLR().y);
 }
 
-TEST(AreaRegGrid, GetAxes) {
+TEST(AreaGridRegular, GetAxes) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -40;
     cornerUL.y = 40;
@@ -153,7 +153,7 @@ TEST(AreaRegGrid, GetAxes) {
     cornerLR.x = 10;
     cornerLR.y = 30;
     double step = 2.5;
-    asAreaRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
+    asAreaGridRegular area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
     a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
@@ -175,13 +175,13 @@ TEST(AreaRegGrid, GetAxes) {
     EXPECT_DOUBLE_EQ(40, vAxis(4));
 }
 
-TEST(AreaRegGrid, GetUYaxisSize) {
+TEST(AreaGridRegular, GetUYaxisSize) {
     double xMin = -40;
     double xWidth = 50;
     double yMin = 30;
     double yWidth = 10;
     double step = 2.5;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
@@ -191,14 +191,14 @@ TEST(AreaRegGrid, GetUYaxisSize) {
     EXPECT_EQ(5, area.GetYaxisPtsnb());
 }
 
-TEST(AreaRegGrid, GetUYaxisSizeStepLon) {
+TEST(AreaGridRegular, GetUYaxisSizeStepLon) {
     double xMin = -40;
     double xWidth = 50;
     double yMin = 30;
     double yWidth = 10;
     double xStep = 5;
     double yStep = 2.5;
-    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaGridRegular area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
@@ -208,14 +208,14 @@ TEST(AreaRegGrid, GetUYaxisSizeStepLon) {
     EXPECT_EQ(5, area.GetYaxisPtsnb());
 }
 
-TEST(AreaRegGrid, GetUYaxisSizeStepLonMoved) {
+TEST(AreaGridRegular, GetUYaxisSizeStepLonMoved) {
     double xMin = -7.5;
     double xWidth = 15;
     double yMin = 30;
     double yWidth = 10;
     double xStep = 5;
     double yStep = 2.5;
-    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaGridRegular area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
@@ -225,14 +225,14 @@ TEST(AreaRegGrid, GetUYaxisSizeStepLonMoved) {
     EXPECT_EQ(5, area.GetYaxisPtsnb());
 }
 
-TEST(AreaRegGrid, GetUYaxisLimits) {
+TEST(AreaGridRegular, GetUYaxisLimits) {
     double xMin = -10;
     double xWidth = 20;
     double yMin = 30;
     double yWidth = 10;
     double xStep = 5;
     double yStep = 2.5;
-    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaGridRegular area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
@@ -245,14 +245,14 @@ TEST(AreaRegGrid, GetUYaxisLimits) {
     EXPECT_DOUBLE_EQ(40, area.GetYaxisEnd());
 }
 
-TEST(AreaRegGrid, GetUYaxisLimitsMoved) {
+TEST(AreaGridRegular, GetUYaxisLimitsMoved) {
     double xMin = -7.5;
     double xWidth = 15;
     double yMin = 30;
     double yWidth = 10;
     double xStep = 5;
     double yStep = 2.5;
-    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaGridRegular area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     a1d lons = a1d::LinSpaced(145, -180.0, 180.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);

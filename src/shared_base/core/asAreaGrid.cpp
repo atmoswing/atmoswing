@@ -30,8 +30,8 @@
 
 #include <iostream>
 
-#include "asAreaGenGrid.h"
-#include "asAreaRegGrid.h"
+#include "asAreaGridGeneric.h"
+#include "asAreaGridRegular.h"
 #include "asParameters.h"
 #include "asPredictor.h"
 #include "asTypeDefs.h"
@@ -56,12 +56,12 @@ asAreaGrid* asAreaGrid::GetInstance(const wxString& type, double xMin, int xPtsN
         if (xStep > 0 && yStep > 0) {
             double xWidth = (double)(xPtsNb - 1) * xStep;
             double yWidth = (double)(yPtsNb - 1) * yStep;
-            return new asAreaRegGrid(xMin, xWidth, xStep, yMin, yWidth, yStep, flatAllowed, isLatLon);
+            return new asAreaGridRegular(xMin, xWidth, xStep, yMin, yWidth, yStep, flatAllowed, isLatLon);
         } else {
-            return new asAreaRegGrid(xMin, xPtsNb, yMin, yPtsNb, flatAllowed, isLatLon);
+            return new asAreaGridRegular(xMin, xPtsNb, yMin, yPtsNb, flatAllowed, isLatLon);
         }
     } else if (type.IsEmpty() || type.IsSameAs("Generic", false)) {
-        return new asAreaGenGrid(xMin, xPtsNb, yMin, yPtsNb, asFLAT_ALLOWED, isLatLon);
+        return new asAreaGridGeneric(xMin, xPtsNb, yMin, yPtsNb, asFLAT_ALLOWED, isLatLon);
     } else {
         wxLogError(_("Given grid type: %s"), type);
         throw exception(_("The given grid type doesn't correspond to any existing option."));
@@ -284,7 +284,7 @@ bool asAreaGrid::CreateAxes(const a1d& lons, const a1d& lats, bool getLarger) {
         if (indexYmin > indexYmax) {
             int tmp = indexYmax;
             if (IsRegular()) {
-                asAreaRegGrid areaReg = dynamic_cast<asAreaRegGrid&>(*this);
+                asAreaGridRegular areaReg = dynamic_cast<asAreaGridRegular&>(*this);
                 if (areaReg.GetYstep() > areaReg.GetYstepData()) {
                     auto newIndex = (float)indexYmin;
                     float stepIndY = areaReg.GetYstep() / areaReg.GetYstepData();
