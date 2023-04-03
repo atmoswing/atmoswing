@@ -186,6 +186,7 @@ void asFramePredictors::UpdateForecastList() {
     m_selectedForecast = wxMin(m_selectedForecast, int(forecasts.Count()) - 1);
     m_choiceForecast->Select(m_selectedForecast);
     m_selectedPredictor = 0;
+    UpdatePredictorsProperties();
     UpdatePredictorsList();
     UpdateTargetDatesList();
 }
@@ -210,6 +211,19 @@ void asFramePredictors::UpdatePredictorsList() {
     m_listPredictors->Clear();
     m_listPredictors->Set(dataListString);
     m_listPredictors->Layout();
+}
+
+void asFramePredictors::UpdatePredictorsProperties() {
+    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+
+    m_predictorsManagerTarget->SetDatasetIds(forecast->GetPredictorDatasetIdsOper());
+    m_predictorsManagerTarget->SetDataIds(forecast->GetPredictorDataIdsOper());
+    m_predictorsManagerTarget->SetLevels(forecast->GetPredictorLevels());
+    m_predictorsManagerTarget->SetHours(forecast->GetPredictorHours());
+    m_predictorsManagerAnalog->SetDatasetIds(forecast->GetPredictorDatasetIdsArchive());
+    m_predictorsManagerAnalog->SetDataIds(forecast->GetPredictorDataIdsArchive());
+    m_predictorsManagerAnalog->SetLevels(forecast->GetPredictorLevels());
+    m_predictorsManagerAnalog->SetHours(forecast->GetPredictorHours());
 }
 
 void asFramePredictors::UpdateTargetDatesList() {
@@ -292,6 +306,8 @@ void asFramePredictors::OnSwitchLeft(wxCommandEvent& event) {
 
 void asFramePredictors::OnPredictorSelectionChange(wxCommandEvent& event) {
     m_selectedPredictor = event.GetInt();
+    m_predictorsManagerTarget->NeedsDataReload();
+    m_predictorsManagerAnalog->NeedsDataReload();
     UpdateLayers();
 }
 
@@ -658,8 +674,8 @@ vrRealRect asFramePredictors::getDesiredExtent() const {
     vf extent = m_forecastManager->GetMaxExtent();
     float width = extent[1] - extent[0];
     float height = extent[2] - extent[3];
-    float marginWidth = 0.2f * width;
-    float marginHeight = 0.2f * height;
+    float marginWidth = 0.5f * width;
+    float marginHeight = 0.5f * height;
 
     vrRealRect desiredExtent;
     desiredExtent.m_x = extent[0] - marginWidth;

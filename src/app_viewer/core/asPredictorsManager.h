@@ -48,6 +48,26 @@ class asPredictorsManager {
 
     void SetDate(double date);
 
+    void SetDatasetIds(const vwxs &predictorDatasetIds) {
+        m_datasetIds = predictorDatasetIds;
+        m_needsDataReload = true;
+    }
+
+    void SetDataIds(const vwxs &predictorDataIds) {
+        m_dataIds = predictorDataIds;
+        m_needsDataReload = true;
+    }
+
+    void SetLevels(const vf &predictorLevels) {
+        m_levels = predictorLevels;
+        m_needsDataReload = true;
+    }
+
+    void SetHours(const vf &predictorHours) {
+        m_hours = predictorHours;
+        m_needsDataReload = true;
+    }
+
     int GetLongitudesNb() {
         return int(m_longitudes->size());
     }
@@ -58,6 +78,10 @@ class asPredictorsManager {
 
     double GetLongitudeMin() {
         return m_longitudes->minCoeff();
+    }
+
+    double GetLatitudeMin() {
+        return m_latitudes->minCoeff();
     }
 
     double GetLatitudeMax() {
@@ -74,14 +98,23 @@ class asPredictorsManager {
         return (*m_latitudes)(1) - (*m_latitudes)(0);
     }
 
+    void NeedsDataReload() {
+        m_needsDataReload = true;
+    }
+
   protected:
   private:
     wxListBox* m_listPredictors;
     bool m_isTargetPredictor;
     double m_date;
-    a2f m_data;
-    a1f m_longitudes;
-    a1f m_latitudes;
+    vwxs m_datasetIds;
+    vwxs m_dataIds;
+    vf m_levels;
+    vf m_hours;
+    bool m_needsDataReload;
+    a2f* m_data;
+    a1d* m_longitudes;
+    a1d* m_latitudes;
 };
 
 #endif

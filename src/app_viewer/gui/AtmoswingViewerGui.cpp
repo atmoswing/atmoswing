@@ -822,7 +822,7 @@ asFrameGridAnalogsValuesVirtual::~asFrameGridAnalogsValuesVirtual()
 
 asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 1000,600 ), wxDefaultSize );
+	this->SetSizeHints( wxSize( 1300,600 ), wxDefaultSize );
 
 	wxBoxSizer* bSizer25;
 	bSizer25 = new wxBoxSizer( wxVERTICAL );

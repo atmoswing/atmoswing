@@ -103,6 +103,8 @@ class asFramePredictors : public asFramePredictorsVirtual {
 
     void UpdatePredictorsList();
 
+    void UpdatePredictorsProperties();
+
     void UpdateTargetDatesList();
 
     void UpdateAnalogDatesList();

@@ -57,7 +57,7 @@ bool asPredictorsManager::LoadData() {
     }
 
     asAreaGridFull area = asAreaGridFull(true);
-    if (!m_predictor->Load(area, m_date, m_levels[selection])) {
+    if (!m_predictor->Load(area, m_date + m_hours[selection] / 24, m_levels[selection])) {
         wxLogError(_("The variable %s from %s could not be loaded."), m_dataIds[selection], m_datasetIds[selection]);
         wxDELETE(m_predictor);
         return false;

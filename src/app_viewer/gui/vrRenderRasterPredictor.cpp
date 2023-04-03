@@ -85,7 +85,7 @@ wxImage::RGBValue vrRenderRasterPredictor::GetColorFromTable(double pxVal, doubl
 
     int index = static_cast<int>((pxVal - minVal) * (nColors / range));
     if (index < 0) index = 0;
-    if (index > nColors) index = nColors;
+    if (index >= nColors) index = nColors - 1;
 
     wxImage::RGBValue valRGB(int(m_colorTable(index, 0)), int(m_colorTable(index, 1)), int(m_colorTable(index, 2)));
 
