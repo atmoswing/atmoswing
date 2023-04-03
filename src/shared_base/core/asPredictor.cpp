@@ -1117,7 +1117,28 @@ asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
         throw exception(_("Failed at initializing the axes."));
     }
 
-    if (desiredArea->IsRegular()) {
+    if (desiredArea->IsFull()) {
+        double xMin = m_fStr.lons.minCoeff();
+        int xPtsNb = (int)m_fStr.lons.size();
+        double yMin = m_fStr.lats.minCoeff();
+        int yPtsNb = (int)m_fStr.lats.size();
+
+        auto dataArea = new asAreaGridRegular(xMin, xPtsNb, yMin, yPtsNb, true, desiredArea->FlatsAllowed());
+        if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
+            throw exception(_("Failed at initializing the axes."));
+        }
+
+        m_lonPtsnb = dataArea->GetXptsNb();
+        m_latPtsnb = dataArea->GetYptsNb();
+        m_axisLon = desiredArea->GetXaxis();
+        m_axisLat = desiredArea->GetYaxis();
+
+        // Order latitude axis (as data will also be ordered)
+        asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Desc);
+
+        return dataArea;
+
+    } else if (desiredArea->IsRegular()) {
         auto desiredAreaReg = dynamic_cast<asAreaGridRegular*>(desiredArea);
 
         if (!strideAllowed) {

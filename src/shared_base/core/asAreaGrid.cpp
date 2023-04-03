@@ -77,6 +77,7 @@ asAreaGrid::asAreaGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& corn
                        int flatAllowed, bool isLatLon)
     : asArea(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon),
       m_isRegular(false),
+      m_isFull(false),
       m_isInitialized(false),
       m_allowResizeFromData(false),
       m_xPtsNb(0),
@@ -85,6 +86,7 @@ asAreaGrid::asAreaGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& corn
 asAreaGrid::asAreaGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed, bool isLatLon)
     : asArea(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon),
       m_isRegular(false),
+      m_isFull(false),
       m_isInitialized(false),
       m_allowResizeFromData(false),
       m_xPtsNb(0),
@@ -93,6 +95,7 @@ asAreaGrid::asAreaGrid(double xMin, double xWidth, double yMin, double yWidth, i
 asAreaGrid::asAreaGrid()
     : asArea(),
       m_isRegular(false),
+      m_isFull(false),
       m_isInitialized(false),
       m_allowResizeFromData(false),
       m_xPtsNb(0),
