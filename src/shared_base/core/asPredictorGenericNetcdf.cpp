@@ -132,6 +132,10 @@ bool asPredictorGenericNetcdf::Init() {
         m_parameter = PrecipitableWater;
         m_parameterName = "Total column water vapour";
         m_unit = kg_m2;
+    } else if (IsPrecipitableWater()) {
+        m_parameter = PrecipitableWater;
+        m_parameterName = "Precipitable water";
+        m_unit = kg_m2;
     } else if (m_dataId.IsSameAs("u10", false)) {
         m_parameter = Uwind;
         m_parameterName = "10 metre U wind component";

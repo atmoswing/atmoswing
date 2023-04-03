@@ -46,6 +46,10 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
 
     wxFileName GetDisplayName() override;
 
+    asPredictor::Parameter GetParameter() {
+        return m_parameter;
+    }
+
   protected:
     virtual bool _GetRasterData(unsigned char** imgData, const wxSize& outImgPxSize, const wxRect& readImgPxInfo,
                                 const vrRender* render);

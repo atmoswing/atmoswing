@@ -117,9 +117,24 @@ void asPredictorsRenderer::RedrawContourLines(const wxString& name, vrViewerLaye
         return;
     }
 
-    // Generate the contours
+    // Specify the contour intervals
     char **options = NULL;
-    options = CSLSetNameValue(options, "LEVEL_INTERVAL", "100");
+    switch (layerRaster->GetParameter()) {
+        case asPredictor::GeopotentialHeight:
+            options = CSLSetNameValue(options, "LEVEL_INTERVAL", "100");
+            break;
+        case asPredictor::RelativeHumidity:
+            options = CSLSetNameValue(options, "LEVEL_INTERVAL", "20");
+            break;
+        case asPredictor::PrecipitableWater:
+        case asPredictor::TotalColumnWater:
+            options = CSLSetNameValue(options, "LEVEL_INTERVAL", "10");
+            break;
+        default:
+            options = CSLSetNameValue(options, "LEVEL_INTERVAL", "10");
+    }
+
+    // Generate the contours
     GDALContourGenerateEx(layerRaster->GetDatasetRef()->GetRasterBand(1), layerVector->GetLayerRef(), options, nullptr,
                           nullptr);
     CSLDestroy(options);

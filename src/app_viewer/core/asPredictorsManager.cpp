@@ -27,9 +27,15 @@
 
 #include "asPredictorsManager.h"
 
-asPredictorsManager::asPredictorsManager(wxListBox* listPredictors)
+#include "asAreaGridFull.h"
+#include "asPredictorOper.h"
+
+asPredictorsManager::asPredictorsManager(wxListBox* listPredictors, bool isTargetPredictor)
     : m_listPredictors(listPredictors),
-      m_date(-1) {}
+      m_isTargetPredictor(isTargetPredictor),
+      m_predictor(nullptr),
+      m_date(-1),
+      m_needsDataReload(true){}
 
 asPredictorsManager::~asPredictorsManager() = default;
 
