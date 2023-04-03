@@ -116,6 +116,14 @@ float* asPredictorsManager::GetDataRow(int row) {
     return &(*m_data)(row,0);
 }
 
+float asPredictorsManager::GetDataMin() {
+    return m_data->minCoeff();
+}
+
+float asPredictorsManager::GetDataMax() {
+    return m_data->maxCoeff();
+}
+
 void asPredictorsManager::SetDate(double date) {
     if (m_date == date) return;
     m_date = date;

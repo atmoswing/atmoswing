@@ -52,7 +52,22 @@ asPredictorsRenderer::asPredictorsRenderer(wxWindow* parent, vrLayerManager* lay
 asPredictorsRenderer::~asPredictorsRenderer() = default;
 
 void asPredictorsRenderer::Redraw(vf &domain) {
-    if (m_predictorsManagerTarget->LoadData()) {
+    bool targetDataLoaded = m_predictorsManagerTarget->LoadData();
+    bool analogDataLoaded = m_predictorsManagerAnalog->LoadData();
+
+    double minVal = 99999999999;
+    double maxVal = -99999999999;
+
+    if (targetDataLoaded) {
+        minVal = wxMin(m_predictorsManagerTarget->GetDataMin(), minVal);
+        maxVal = wxMax(m_predictorsManagerTarget->GetDataMax(), maxVal);
+    }
+    if (analogDataLoaded) {
+        minVal = wxMin(m_predictorsManagerAnalog->GetDataMin(), minVal);
+        maxVal = wxMax(m_predictorsManagerAnalog->GetDataMax(), maxVal);
+    }
+
+    if (targetDataLoaded) {
         m_viewerLayerManagerTarget->FreezeBegin();
         wxString rasterPredictorName = _("Predictor - target");
         wxString contoursName = _("Contours - target");
@@ -60,13 +75,14 @@ void asPredictorsRenderer::Redraw(vf &domain) {
         CloseLayerIfPresent(m_viewerLayerManagerTarget, wxFileName("", rasterPredictorName, "memory"));
         CloseLayerIfPresent(m_viewerLayerManagerTarget, wxFileName("", contoursName, "memory"));
         CloseLayerIfPresent(m_viewerLayerManagerTarget, wxFileName("", spatialWindowName, "memory"));
-        vrLayerRasterPredictor* layerTarget = RedrawRasterPredictor(rasterPredictorName, m_viewerLayerManagerTarget, m_predictorsManagerTarget);
+        vrLayerRasterPredictor* layerTarget = RedrawRasterPredictor(rasterPredictorName, m_viewerLayerManagerTarget,
+                                                                    m_predictorsManagerTarget, minVal, maxVal);
         RedrawContourLines(contoursName, m_viewerLayerManagerTarget, layerTarget);
         RedrawSpatialWindow(spatialWindowName, m_viewerLayerManagerTarget, domain);
         m_viewerLayerManagerTarget->FreezeEnd();
     }
 
-    if (m_predictorsManagerAnalog->LoadData()) {
+    if (analogDataLoaded) {
         m_viewerLayerManagerAnalog->FreezeBegin();
         wxString rasterPredictorName = _("Predictor - analog");
         wxString contoursName = _("Contours - analog");
@@ -74,7 +90,8 @@ void asPredictorsRenderer::Redraw(vf &domain) {
         CloseLayerIfPresent(m_viewerLayerManagerAnalog, wxFileName("", rasterPredictorName, "memory"));
         CloseLayerIfPresent(m_viewerLayerManagerAnalog, wxFileName("", contoursName, "memory"));
         CloseLayerIfPresent(m_viewerLayerManagerAnalog, wxFileName("", spatialWindowName, "memory"));
-        vrLayerRasterPredictor* layerAnalog = RedrawRasterPredictor(rasterPredictorName, m_viewerLayerManagerAnalog, m_predictorsManagerAnalog);
+        vrLayerRasterPredictor* layerAnalog = RedrawRasterPredictor(rasterPredictorName, m_viewerLayerManagerAnalog,
+                                                                    m_predictorsManagerAnalog, minVal, maxVal);
         RedrawContourLines(contoursName, m_viewerLayerManagerAnalog, layerAnalog);
         RedrawSpatialWindow(spatialWindowName, m_viewerLayerManagerAnalog, domain);
         m_viewerLayerManagerAnalog->FreezeEnd();
@@ -83,12 +100,13 @@ void asPredictorsRenderer::Redraw(vf &domain) {
 
 vrLayerRasterPredictor* asPredictorsRenderer::RedrawRasterPredictor(const wxString& name,
                                                                     vrViewerLayerManager* viewerLayerManager,
-                                                                    asPredictorsManager* predictorsManager) {
+                                                                    asPredictorsManager* predictorsManager,
+                                                                    double minVal, double maxVal) {
     // Create a memory layer
     wxFileName memoryRaster("", name, "memory");
 
     // Create the layers
-    auto* layerRaster = new vrLayerRasterPredictor(predictorsManager);
+    auto* layerRaster = new vrLayerRasterPredictor(predictorsManager, minVal, maxVal);
 
     if (!layerRaster->CreateInMemory(memoryRaster)) {
         wxFAIL;

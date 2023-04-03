@@ -33,9 +33,11 @@
 
 #define UseRasterIO 0
 
-vrLayerRasterPredictor::vrLayerRasterPredictor(asPredictorsManager* predictorsManager)
+vrLayerRasterPredictor::vrLayerRasterPredictor(asPredictorsManager* predictorsManager, double minVal, double maxVal)
     : vrLayerRasterGDAL(),
-      m_predictorsManager(predictorsManager) {
+      m_predictorsManager(predictorsManager),
+      m_minVal(minVal),
+      m_maxVal(maxVal) {
     m_driverType = vrDRIVER_RASTER_MEMORY;
 }
 
@@ -168,22 +170,7 @@ bool vrLayerRasterPredictor::_GetRasterData(unsigned char** imgData, const wxSiz
         return false;
     }
 
-    // Computing statistics if not existing
-    if (!_HasStat()) {
-        if (!_ComputeStat()) {
-            if (rasterData != nullptr) {
-                CPLFree(rasterData);
-                rasterData = nullptr;
-            }
-            if (*imgData != nullptr) {
-                CPLFree(*imgData);
-                *imgData = nullptr;
-            }
-            return false;
-        }
-    }
-
-    double range = m_oneBandMax - m_oneBandMin;
+    double range = m_maxVal - m_minVal;
     if (range <= 0) {
         range = 1;
     }
@@ -205,7 +192,7 @@ bool vrLayerRasterPredictor::_GetRasterData(unsigned char** imgData, const wxSiz
             continue;
         }
 
-        wxImage::RGBValue valRGB = predictorRender->GetColorFromTable(pxVal, m_oneBandMin, range);
+        wxImage::RGBValue valRGB = predictorRender->GetColorFromTable(pxVal, m_minVal, range);
 
         *(*imgData + i) = valRGB.red;
         *(*imgData + i + 1) = valRGB.green;

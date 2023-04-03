@@ -38,7 +38,7 @@
 
 class vrLayerRasterPredictor : public vrLayerRasterGDAL {
   public:
-    vrLayerRasterPredictor(asPredictorsManager* predictorsManager);
+    vrLayerRasterPredictor(asPredictorsManager* predictorsManager, double minVal, double maxVal);
 
     ~vrLayerRasterPredictor() override;
 
@@ -57,6 +57,8 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
   private:
     asPredictorsManager* m_predictorsManager;
     asPredictor::Parameter m_parameter;
+    double m_minVal;
+    double m_maxVal;
 
     bool Close();
 };

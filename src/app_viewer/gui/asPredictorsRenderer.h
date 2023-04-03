@@ -49,7 +49,7 @@ class asPredictorsRenderer {
     void Redraw(vf &domain);
 
     vrLayerRasterPredictor* RedrawRasterPredictor(const wxString& name, vrViewerLayerManager* viewerLayerManager,
-                                                  asPredictorsManager* predictorsManager);
+                                                  asPredictorsManager* predictorsManager, double minVal, double maxVal);
 
     void RedrawContourLines(const wxString& name, vrViewerLayerManager* viewerLayerManager,
                             vrLayerRasterPredictor* layerRaster);

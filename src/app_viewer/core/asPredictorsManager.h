@@ -46,6 +46,10 @@ class asPredictorsManager {
 
     float* GetDataRow(int row);
 
+    float GetDataMin();
+
+    float GetDataMax();
+
     void SetDate(double date);
 
     void SetForecastDate(double date) {
