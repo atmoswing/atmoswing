@@ -1131,6 +1131,80 @@ asFramePreferencesViewerVirtual::asFramePreferencesViewerVirtual( wxWindow* pare
 	m_panelWorkspace->Layout();
 	bSizer55->Fit( m_panelWorkspace );
 	m_notebookBase->AddPage( m_panelWorkspace, _("Workspace"), true );
+	m_panelPaths = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer551;
+	bSizer551 = new wxBoxSizer( wxVERTICAL );
+
+	wxStaticBoxSizer* sbSizer5;
+	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( m_panelPaths, wxID_ANY, _("Path to the predictor datasets") ), wxVERTICAL );
+
+	wxFlexGridSizer* fgSizer6;
+	fgSizer6 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer6->AddGrowableCol( 1 );
+	fgSizer6->SetFlexibleDirection( wxBOTH );
+	fgSizer6->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	m_staticPredictorID = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, _("Dataset ID"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticPredictorID->Wrap( -1 );
+	fgSizer6->Add( m_staticPredictorID, 0, wxALL, 5 );
+
+	m_staticPredictorPaths = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, _("Path to the directory"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticPredictorPaths->Wrap( -1 );
+	fgSizer6->Add( m_staticPredictorPaths, 0, wxALL, 5 );
+
+	m_textCtrlDatasetId1 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, _("Generic_NCEP_R1"), wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId1, 1, wxALL|wxEXPAND, 5 );
+
+	m_dirPickerDataset1 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset1, 0, wxALL|wxEXPAND, 5 );
+
+	m_textCtrlDatasetId2 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, _("Generic_ECMWF_ERA5"), wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId2, 0, wxALL, 5 );
+
+	m_dirPickerDataset2 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset2, 0, wxALL|wxEXPAND, 5 );
+
+	m_textCtrlDatasetId3 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, _("NWS_GFS"), wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId3, 0, wxALL, 5 );
+
+	m_dirPickerDataset3 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset3, 0, wxALL|wxEXPAND, 5 );
+
+	m_textCtrlDatasetId4 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, _("ECMWF_IFS"), wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId4, 0, wxALL, 5 );
+
+	m_dirPickerDataset4 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset4, 0, wxALL|wxEXPAND, 5 );
+
+	m_textCtrlDatasetId5 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId5, 0, wxALL, 5 );
+
+	m_dirPickerDataset5 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset5, 0, wxALL|wxEXPAND, 5 );
+
+	m_textCtrlDatasetId6 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId6, 0, wxALL, 5 );
+
+	m_dirPickerDataset6 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset6, 0, wxALL|wxEXPAND, 5 );
+
+	m_textCtrlDatasetId7 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId7, 0, wxALL, 5 );
+
+	m_dirPickerDataset7 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset7, 0, wxALL|wxEXPAND, 5 );
+
+
+	sbSizer5->Add( fgSizer6, 1, wxEXPAND, 5 );
+
+
+	bSizer551->Add( sbSizer5, 1, wxEXPAND|wxALL, 5 );
+
+
+	m_panelPaths->SetSizer( bSizer551 );
+	m_panelPaths->Layout();
+	bSizer551->Fit( m_panelPaths );
+	m_notebookBase->AddPage( m_panelPaths, _("Paths"), false );
 	m_panelGeneralCommon = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
