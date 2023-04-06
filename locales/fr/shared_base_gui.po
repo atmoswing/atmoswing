@@ -1,0 +1,304 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-06 20:07+0200\n"
+"PO-Revision-Date: 2023-04-06 20:44+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: src/shared_base/gui/asDialogProgressBar.cpp:47
+#, fuzzy
+msgid "Please wait"
+msgstr "Veuillez patienter"
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:131
+#, fuzzy
+msgid "The given path for the predictand catalog is empty."
+msgstr "Le chemin d'accès au catalogue de prédicteurs est vide."
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:136
+#, fuzzy
+msgid "The given path for the data directory is empty."
+msgstr "Le chemin d'accès au répertoire de données est vide."
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:141
+#, fuzzy
+msgid "The given path for the output destination is empty."
+msgstr "Le chemin donné pour la destination de sortie est vide."
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:146
+#, fuzzy
+msgid "The given path for the patterns directory is empty."
+msgstr "Le chemin d'accès au répertoire des motifs est vide."
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:154
+#: src/shared_base/gui/asFramePredictandDB.cpp:188
+#, fuzzy
+msgid "Wrong selection of the temporal resolution option."
+msgstr "Mauvaise sélection de l'option de résolution temporelle."
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:195
+#: src/shared_base/gui/asFramePredictandDB.cpp:219
+#, fuzzy
+msgid "Wrong selection of the spatial aggregation option."
+msgstr "Mauvaise sélection de l'option d'agrégation spatiale."
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:225
+#: src/shared_base/gui/asFramePredictandDB.cpp:279
+#, fuzzy
+msgid "Wrong selection of the data parameter option."
+msgstr "Mauvaise sélection de l'option de paramètre de données."
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:242
+#, fuzzy
+msgid "The given return period is not consistent."
+msgstr "La période de retour donnée n'est pas cohérente."
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:275
+#, fuzzy
+msgid "Generic predictand database not yet implemented."
+msgstr "La base de données générique des prédicats n'a pas encore été mise en œuvre."
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:283
+#, fuzzy, c-format
+msgid "Exception caught: %s"
+msgstr "Une exception a été détectée : %s"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:29
+#, fuzzy
+msgid "Please select the file."
+msgstr "Veuillez sélectionner le fichier."
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:33
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:65
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:143
+#, fuzzy
+msgid "Select a file"
+msgstr "Séléctionner un fichier"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:33
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:65
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:143
+#, fuzzy
+msgid "*.*"
+msgstr "*.*"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:61
+#, fuzzy
+msgid "Please select the directory and the file name."
+msgstr "Veuillez sélectionner le répertoire et le nom du fichier."
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:101
+#, fuzzy
+msgid "Predictand parameter"
+msgstr "Paramètre du prédictand :"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:105
+#, fuzzy
+msgid "Precipitation"
+msgstr "Precipitation (Précipitations)"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:105
+#, fuzzy
+msgid "Temperature"
+msgstr "Temperature (Température)"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:105
+#, fuzzy
+msgid "Lightning"
+msgstr "Éclair"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:105
+#, fuzzy
+msgid "Other"
+msgstr "Other (Autre)"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:111
+#, fuzzy
+msgid "Temporal resolution"
+msgstr "Résolution temporelle :"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:115
+#, fuzzy
+msgid "24 hours"
+msgstr "24 heures"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:115
+#, fuzzy
+msgid "6 hours"
+msgstr "6 heures"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:115
+#, fuzzy
+msgid "1-hr MTW"
+msgstr "1 heure MTW"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:115
+#, fuzzy
+msgid "3-hr MTW"
+msgstr "3 heures MTW"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:115
+#, fuzzy
+msgid "6-hr MTW"
+msgstr "6 heures MTW"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:115
+#, fuzzy
+msgid "12-hr MTW"
+msgstr "12 heures MTW"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:121
+#, fuzzy
+msgid "Spatial aggregation"
+msgstr "Agrégation spatiale :"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:125
+#, fuzzy
+msgid "Station"
+msgstr "Station"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:125
+#, fuzzy
+msgid "Groupment"
+msgstr "Groupment (Groupement)"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:125
+#, fuzzy
+msgid "Catchment"
+msgstr "Catchment (Bassin versant)"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:125
+#, fuzzy
+msgid "Region"
+msgstr "Région"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:139
+#, fuzzy
+msgid "Select the predictand catalog"
+msgstr "Sélectionner le catalogue de prédicteurs"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:146
+#, fuzzy
+msgid "Select the predictand data directory"
+msgstr "Sélectionner le répertoire de données du prédictand"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:150
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:157
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:164
+#, fuzzy
+msgid "Select a folder"
+msgstr "Sélectionner un dossier"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:153
+#, fuzzy
+msgid "Select the directory containing the file patterns description"
+msgstr "Sélectionnez le répertoire contenant la description des modèles de fichiers"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:160
+#, fuzzy
+msgid "Select the destination directory"
+msgstr "Sélectionner le répertoire de destination"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:215
+#, fuzzy
+msgid "Precipitation data normalization"
+msgstr "Normalisation des données de précipitations"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:225
+#, fuzzy
+msgid "Normalize by the return period of"
+msgstr "Normaliser par la période de retour de"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:229
+#, fuzzy
+msgid "10"
+msgstr "10"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:232
+#, fuzzy
+msgid "years"
+msgstr "années"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:239
+#, fuzzy
+msgid "Process the square root"
+msgstr "Traiter la racine carrée"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:260
+#, fuzzy
+msgid "Lightning data normalization"
+msgstr "Normalisation des données Lightning"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:267
+#, fuzzy
+msgid "Process log10(nb+1)"
+msgstr "Processus log10(nb+1)"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:309
+#, fuzzy
+msgid "Main developer:"
+msgstr "Principal développeur :"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:315
+#, fuzzy
+msgid "Pascal Horton"
+msgstr "Pascal Horton"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:319
+#, fuzzy
+msgid "Developed at:"
+msgstr "Développé à :"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:325
+#, fuzzy
+msgid ""
+"University of Lausanne\n"
+"Terranum\n"
+"University of Bern"
+msgstr ""
+"Université de Lausanne\n"
+"Terranum\n"
+"Université de Berne"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:329
+#, fuzzy
+msgid "Special thanks to:"
+msgstr "Remerciements particuliers à :"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:335
+#, fuzzy
+msgid ""
+"Charles Obled\n"
+"Michel Jaboyedoff\n"
+"Lucien Schreiber\n"
+"Renaud Marty\n"
+"Richard Metzger"
+msgstr ""
+"Charles Obled\n"
+"Michel Jaboyedoff\n"
+"Lucien Schreiber\n"
+"Renaud Marty\n"
+"Richard Metzger"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:347
+#, fuzzy
+msgid "Credits"
+msgstr "Crédits"
+
+#: src/shared_base/gui/AtmoswingSharedGui.cpp:359
+#, fuzzy
+msgid "License"
+msgstr "Licence"

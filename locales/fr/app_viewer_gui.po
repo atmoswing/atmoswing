@@ -1,0 +1,1428 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-06 20:05+0200\n"
+"PO-Revision-Date: 2023-04-06 20:32+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:47
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:778
+#, fuzzy
+msgid "Value"
+msgstr "Valeur"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:48
+#, fuzzy
+msgid "Ratio P/P2"
+msgstr "Rapport P/P2"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:49
+#, fuzzy
+msgid "Ratio P/P5"
+msgstr "Rapport P/P5"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:50
+#, fuzzy
+msgid "Ratio P/P10"
+msgstr "Rapport P/P10"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:51
+#, fuzzy
+msgid "Ratio P/P20"
+msgstr "Rapport P/P20"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:52
+#, fuzzy
+msgid "Ratio P/P50"
+msgstr "Rapport P/P50"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:53
+#, fuzzy
+msgid "Ratio P/P100"
+msgstr "Rapport P/P100"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:54
+#, fuzzy
+msgid "Ratio P/P200"
+msgstr "Rapport P/P200"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:55
+#, fuzzy
+msgid "Ratio P/P300"
+msgstr "Rapport P/P300"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:56
+#, fuzzy
+msgid "Ratio P/P500"
+msgstr "Rapport P/P500"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:70
+#, fuzzy
+msgid "q90"
+msgstr "q90"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:71
+#, fuzzy
+msgid "q60"
+msgstr "q60"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:72
+#, fuzzy
+msgid "q20"
+msgstr "q20"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:161
+#, fuzzy, c-format
+msgid "Selected display : %s."
+msgstr "Affichage sélectionné : %s."
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:170
+#, fuzzy, c-format
+msgid "Selected quantile : %s."
+msgstr "Quantile sélectionné : %s."
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:247
+#, fuzzy
+msgid "The desired reference value is not available in the forecast file."
+msgstr ""
+"La valeur de référence souhaitée n'est pas disponible dans le fichier de "
+"prévision."
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:337
+#: src/app_viewer/gui/asForecastRenderer.cpp:493
+#, fuzzy, c-format
+msgid "%s is not associated to any forecast"
+msgstr "%s n'est associé à aucune prévision"
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:518
+#, fuzzy
+msgid "Lead time not available for this forecast."
+msgstr "Le délai d'exécution n'est pas disponible pour cette prévision."
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:177
+#, fuzzy
+msgid "Quantiles 90%, 60%, 20%"
+msgstr "Quantiles 90%, 60%, 20%"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:178
+#, fuzzy
+msgid "All analogs (points)"
+msgstr "Tous les analogues (points)"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:179
+#, fuzzy
+msgid "All analogs (curve)"
+msgstr "Tous les analogues (courbe)"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:180
+#, fuzzy
+msgid "10 best analogs (points)"
+msgstr "10 meilleurs analogues (points)"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:181
+#, fuzzy
+msgid "10 best analogs (curve)"
+msgstr "10 meilleurs analogues (courbe)"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:182
+#, fuzzy
+msgid "5 best analogs (points)"
+msgstr "5 meilleurs analogues (points)"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:183
+#, fuzzy
+msgid "5 best analogs (curve)"
+msgstr "5 meilleurs analogues (courbe)"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:184
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:107
+#, fuzzy
+msgid "10 year return period"
+msgstr "période de retour de 10 ans"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:185
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:108
+#, fuzzy
+msgid "All return periods"
+msgstr "Toutes les périodes de retour"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:197
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:133
+#, fuzzy
+msgid "Precipitation [mm]"
+msgstr "Précipitations [mm]"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:198
+#, fuzzy
+msgid "Cumulative frequency"
+msgstr "Fréquence cumulée"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:206
+#, fuzzy
+msgid "Analogs precipitation distribution"
+msgstr "Analogues distribution des précipitations"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:244
+#, fuzzy
+msgid "Analogues"
+msgstr "Analogues"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:245
+#, fuzzy
+msgid "Criteria of analogy"
+msgstr "Critères d'analogie"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:250
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:681
+#, fuzzy
+msgid "Criteria distribution"
+msgstr "Distribution des critères"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:283
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:356
+#, fuzzy
+msgid "The forecast contains NaNs. Plotting has been canceled."
+msgstr "La prévision contient des NaN. Le traçage a été annulé."
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:344
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:421
+#, fuzzy
+msgid "The option was not found."
+msgstr "L'option n'a pas été trouvée."
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:383
+#, fuzzy
+msgid "The forecast criteria contains NaNs. Plotting has been canceled."
+msgstr "Le critère de prévision contient des NaN. Le traçage a été annulé."
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:471
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:502
+#, fuzzy
+msgid "The return periods couldn't be added to the plot"
+msgstr "Les périodes de retour n'ont pas pu être ajoutées à la parcelle"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:504
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:535
+#, fuzzy
+msgid "The 10 year return period was not found in the data."
+msgstr "La période de retour de 10 ans n'a pas été trouvée dans les données."
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:553
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:602
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:652
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:713
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:800
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:588
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:645
+#, fuzzy
+msgid "The analogs data couldn't be added to the plot"
+msgstr "Les données analogiques n'ont pas pu être ajoutées au graphique"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:595
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:104
+#, fuzzy
+msgid "All analogs"
+msgstr "Tous les analogues"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:696
+#, fuzzy
+msgid "5 first analogs"
+msgstr "5 premiers analogues"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:699
+#, fuzzy
+msgid "10 first analogs"
+msgstr "10 premiers analogues"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:760
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:702
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:768
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:845
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:881
+#, fuzzy
+msgid "The quantiles couldn't be added to the plot"
+msgstr "Les quantiles n'ont pas pu être ajoutés au graphique"
+
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:102
+#, fuzzy
+msgid "3 quantiles"
+msgstr "3 quantiles"
+
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:103
+#, fuzzy
+msgid "All quantiles"
+msgstr "Tous les quantiles"
+
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:105
+#, fuzzy
+msgid "10 best analogs"
+msgstr "10 meilleurs analogues"
+
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:106
+#, fuzzy
+msgid "5 best analogs"
+msgstr "5 meilleurs analogues"
+
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:109
+#, fuzzy
+msgid "Previous forecasts"
+msgstr "Prévisions précédentes"
+
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:141
+#, fuzzy
+msgid "Forecasted time series"
+msgstr "Série temporelle prévue"
+
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:940
+#, fuzzy
+msgid "The interpretation curve couldn't be added to the plot"
+msgstr "La courbe d'interprétation n'a pas pu être ajoutée au graphique"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:91
+#: src/app_viewer/gui/asFramePredictors.cpp:92
+#: src/app_viewer/gui/asFrameViewer.cpp:121
+#: src/app_viewer/gui/asFrameViewer.cpp:122
+#, fuzzy
+msgid "Zoom in"
+msgstr "Agrandir"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:94
+#: src/app_viewer/gui/asFrameViewer.cpp:124
+#, fuzzy
+msgid "Zoom out"
+msgstr "Réduire"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:95
+#: src/app_viewer/gui/asFrameViewer.cpp:125
+#, fuzzy
+msgid "Pan the map"
+msgstr "Panoramique de la carte"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:96
+#: src/app_viewer/gui/asFrameViewer.cpp:126
+#, fuzzy
+msgid "Move the map by panning"
+msgstr "Déplacer la carte en effectuant un panoramique"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:98
+#: src/app_viewer/gui/asFrameViewer.cpp:128
+#, fuzzy
+msgid "Zoom to visible layers"
+msgstr "Zoom sur les couches visibles"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:98
+#: src/app_viewer/gui/asFrameViewer.cpp:128
+#, fuzzy
+msgid "Zoom view to the full extent of all visible layers"
+msgstr "Zoom sur l'ensemble des couches visibles"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:100
+#, fuzzy
+msgid "Display a cross marker overlay"
+msgstr "Afficher un marqueur de croix en surimpression"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:100
+#, fuzzy
+msgid "Display a cross marker overlay on both frames"
+msgstr "Affichage d'un marqueur de croix en surimpression sur les deux cadres"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:103
+#: src/app_viewer/gui/asFrameViewer.cpp:137
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:200
+#, fuzzy
+msgid "Preferences"
+msgstr "Préférences"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:415
+#, fuzzy, c-format
+msgid "The Continents layer file %s cound not be opened."
+msgstr "Le fichier de la couche Continents %s ne peut pas être ouvert."
+
+#: src/app_viewer/gui/asFramePredictors.cpp:418
+#, fuzzy, c-format
+msgid "The Continents layer file %s cound not be found."
+msgstr "Le fichier de la couche Continents %s est introuvable."
+
+#: src/app_viewer/gui/asFramePredictors.cpp:447
+#, fuzzy, c-format
+msgid "The LatLong layer file %s cound not be opened."
+msgstr "Le fichier de couche LatLong %s ne peut pas être ouvert."
+
+#: src/app_viewer/gui/asFramePredictors.cpp:450
+#, fuzzy, c-format
+msgid "The LatLong layer file %s cound not be found."
+msgstr "Le fichier de couche LatLong %s est introuvable."
+
+#: src/app_viewer/gui/asFramePredictors.cpp:479
+#, fuzzy, c-format
+msgid "The Geogrid layer file %s cound not be opened."
+msgstr "Le fichier de couche géogrille %s ne peut pas être ouvert."
+
+#: src/app_viewer/gui/asFramePredictors.cpp:482
+#, fuzzy, c-format
+msgid "The Geogrid layer file %s cound not be found."
+msgstr "Le fichier de couche géogrille %s est introuvable."
+
+#: src/app_viewer/gui/asFramePredictors.cpp:511
+#, fuzzy, c-format
+msgid "The Countries layer file %s cound not be opened."
+msgstr "Le fichier de la couche Pays %s ne peut pas être ouvert."
+
+#: src/app_viewer/gui/asFramePredictors.cpp:514
+#, fuzzy, c-format
+msgid "The Countries layer file %s cound not be found."
+msgstr "Le fichier de la couche Pays %s est introuvable."
+
+#: src/app_viewer/gui/asFramePredictors.cpp:525
+#: src/app_viewer/gui/asFrameViewer.cpp:868
+#, fuzzy
+msgid "The layer could not be opened."
+msgstr "La couche n'a pas pu être ouverte."
+
+#: src/app_viewer/gui/asFramePredictors.cpp:554
+#: src/app_viewer/gui/asFrameViewer.cpp:897
+#, fuzzy
+msgid "Select GIS layers"
+msgstr "Sélectionner les couches SIG"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:890
+#, fuzzy
+msgid "Only forecasts of AtmoSwing 3+ can be visualized here."
+msgstr "Seules les prévisions d'AtmoSwing 3+ peuvent être visualisées ici."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:117
+#, fuzzy
+msgid "Open forecast"
+msgstr "Prévisions ouvertes"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:118
+#, fuzzy
+msgid "Open a forecast"
+msgstr "Ouvrir une prévision"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:119
+#, fuzzy
+msgid "Select"
+msgstr "Sélectionner"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:120
+#, fuzzy
+msgid "Select data on the map"
+msgstr "Sélectionner des données sur la carte"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:130
+#: src/app_viewer/gui/asFrameViewer.cpp:131
+#, fuzzy
+msgid "Open distributions plots"
+msgstr "Diagrammes de distribution ouverts"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:133
+#, fuzzy
+msgid "Open analogs list"
+msgstr "Ouvrir la liste des analogues"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:135
+#, fuzzy
+msgid "Open predictor maps"
+msgstr "Cartes prédictives ouvertes"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:211
+#, fuzzy
+msgid "Welcome to AtmoSwing"
+msgstr "Bienvenue à AtmoSwing"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:308
+#, fuzzy
+msgid "Killing the forecast running process."
+msgstr "Mise à mort du processus d'exécution de la prévision."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:312
+#, fuzzy
+msgid "The forecast process has been killed successfully."
+msgstr "Le processus de prévision a été interrompu avec succès."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:315
+#, fuzzy
+msgid "The forecast process couldn't be killed (bad signal)."
+msgstr "Le processus de prévision n'a pas pu être tué (mauvais signal)."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:318
+#, fuzzy
+msgid "The forecast process couldn't be killed (access denied)."
+msgstr "Le processus de prévision n'a pas pu être tué (accès refusé)."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:321
+#, fuzzy
+msgid "The forecast process couldn't be killed (no process)."
+msgstr "Le processus de prévision n'a pas pu être tué (pas de processus)."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:324
+#, fuzzy
+msgid "The forecast process couldn't be killed (error)."
+msgstr "Le processus de prévision n'a pas pu être tué (erreur)."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:355
+#: src/app_viewer/gui/asFrameViewer.cpp:359
+#: src/app_viewer/gui/asFrameViewer.cpp:369
+#: src/app_viewer/gui/asFrameViewer.cpp:373
+#: src/app_viewer/gui/asFrameViewer.cpp:450
+#: src/app_viewer/gui/asFrameViewer.cpp:454
+#: src/app_viewer/gui/asFrameViewer.cpp:578
+#: src/app_viewer/gui/asFrameViewer.cpp:582
+#, fuzzy
+msgid "Failed to open the workspace file "
+msgstr "Échec de l'ouverture du fichier de l'espace de travail"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:433
+#, fuzzy
+msgid "Select a workspace"
+msgstr "Sélectionner un espace de travail"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:464
+#, fuzzy
+msgid "Select a path to save the workspace"
+msgstr "Sélectionnez un chemin d'accès pour enregistrer l'espace de travail"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:559
+#, fuzzy
+msgid "Could not save the worspace."
+msgstr "Impossible de sauvegarder l'espace de travail."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:652
+#, fuzzy, c-format
+msgid "The GIS layer type %s does not correspond to allowed values."
+msgstr "Le type de couche SIG %s ne correspond pas aux valeurs autorisées."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:655
+#, fuzzy, c-format
+msgid "The file %s cound not be opened."
+msgstr "Le fichier %s ne peut pas être ouvert."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:658
+#, fuzzy, c-format
+msgid "The file %s cound not be found."
+msgstr "Le fichier %s est introuvable."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:927
+#, fuzzy
+msgid "No layer opened, nothing to close."
+msgstr "Aucune couche ouverte, rien à fermer."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:935
+#, fuzzy
+msgid "Select Layer(s) to close."
+msgstr "Sélectionnez le(s) calque(s) à fermer."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:935
+#, fuzzy
+msgid "Close layer(s)"
+msgstr "Fermer la (les) couche(s)"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:948
+#, fuzzy
+msgid "Nothing selected, no layer will be closed."
+msgstr "Si rien n'est sélectionné, aucun calque ne sera fermé."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:978
+#, fuzzy
+msgid "Select a forecast file"
+msgstr "Sélectionner un fichier de prévisions"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1001
+#, fuzzy
+msgid "List of the forecasts not found."
+msgstr "Liste des prévisions non trouvée."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1053
+#, fuzzy, c-format
+msgid "No recent forecast was found under %s"
+msgstr "Aucune prévision récente n'a été trouvée sous %s"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1069
+#, fuzzy
+msgid ""
+"A file with an unconventional name was found in the forecasts directory."
+msgstr ""
+"Un fichier portant un nom non conventionnel a été trouvé dans le répertoire "
+"forecasts."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1077
+#, fuzzy, c-format
+msgid "Error when parsing the date: %s"
+msgstr "Erreur lors de l'analyse de la date : %s"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1098
+#: src/app_viewer/gui/asFrameViewer.cpp:1216
+#, fuzzy
+msgid "Failed to open the forecasts."
+msgstr "N'a pas réussi à ouvrir les prévisions."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1194
+#, fuzzy, c-format
+msgid "No previous/next forecast was found under %s"
+msgstr "Aucune prévision précédente/suivante n'a été trouvée sous %s"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1289
+#, fuzzy, c-format
+msgid "A forecast file could not be opened (%s)."
+msgstr "Un fichier de prévision n'a pas pu être ouvert (%s)."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1372
+#: src/app_viewer/gui/asFrameViewer.cpp:1525
+#: src/app_viewer/gui/asFrameViewer.cpp:1610
+#, fuzzy
+msgid "Forecast - specific.memory"
+msgstr "Prévisions - specific.memory"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1393
+#, fuzzy
+msgid "The forecasts layer was not found."
+msgstr "La couche de prévisions n'a pas été trouvée."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1404
+#, fuzzy
+msgid "Moving layer not possible with less than 2 layers"
+msgstr ""
+"Le déplacement d'une couche n'est pas possible avec moins de 2 couches"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1411
+#, fuzzy
+msgid "No layer selected, select a layer first"
+msgstr "Aucun calque n'est sélectionné, sélectionner d'abord un calque"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1417
+#, fuzzy
+msgid "Move layer to following position"
+msgstr "Déplacer le calque à la position suivante"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1546
+#: src/app_viewer/gui/asFrameViewer.cpp:1611
+#, fuzzy
+msgid "Forecast - other.memory"
+msgstr "Prévisions - other.memory"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1568
+#, fuzzy
+msgid "The desired layer was not found."
+msgstr "La couche souhaitée n'a pas été trouvée."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1582
+#, fuzzy, c-format
+msgid "Error converting point : %d, %d to real coordinate"
+msgstr "Erreur de conversion du point : %d, %d en coordonnées réelles"
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1753
+#, fuzzy, c-format
+msgid "Forecast of the %sh"
+msgstr "Prévision de la %sh"
+
+#: src/app_viewer/gui/asListBoxForecasts.cpp:83
+#, fuzzy
+msgid "Root"
+msgstr "Racine"
+
+#: src/app_viewer/gui/asPanelPlot.cpp:90
+#, fuzzy
+msgid "X Axis"
+msgstr "Axe X"
+
+#: src/app_viewer/gui/asPanelPlot.cpp:93
+#, fuzzy
+msgid "Y Axis"
+msgstr "Axe Y"
+
+#: src/app_viewer/gui/asPanelPlot.cpp:95
+#, fuzzy
+msgid "Title"
+msgstr "Titre"
+
+#: src/app_viewer/gui/asPanelPlot.cpp:210
+#, fuzzy
+msgid "The svg DC is not OK."
+msgstr "Le svg DC n'est pas OK."
+
+#: src/app_viewer/gui/asPanelSidebarAlarms.cpp:42
+#, fuzzy
+msgid "Alarms"
+msgstr "Alarmes"
+
+#: src/app_viewer/gui/asPanelSidebarAlarms.cpp:63
+#, fuzzy, c-format
+msgid "Alarms (T=%d, q=%g)"
+msgstr "Alarmes (T=%d, q=%g)"
+
+#: src/app_viewer/gui/asPanelSidebarAlarms.cpp:290
+#, fuzzy
+msgid "Incorrect mode for the alarm panel."
+msgstr "Mode incorrect pour le panneau d'alarme."
+
+#: src/app_viewer/gui/asPanelSidebarAnalogDates.cpp:35
+#, fuzzy
+msgid "Analog dates"
+msgstr "Les dates analogues"
+
+#: src/app_viewer/gui/asPanelSidebarAnalogDates.cpp:41
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:776
+#, fuzzy
+msgid "Analog"
+msgstr "Analogue"
+
+#: src/app_viewer/gui/asPanelSidebarAnalogDates.cpp:42
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:777
+#, fuzzy
+msgid "Date"
+msgstr "Date"
+
+#: src/app_viewer/gui/asPanelSidebarAnalogDates.cpp:43
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:779
+#, fuzzy
+msgid "Criteria"
+msgstr "Critère"
+
+#: src/app_viewer/gui/asPanelSidebarCalendar.cpp:36
+#, fuzzy
+msgid "Day of the forecast"
+msgstr "Jour de la prévision"
+
+#: src/app_viewer/gui/asPanelSidebarCaptionForecastDots.cpp:38
+#: src/app_viewer/gui/asPanelSidebarCaptionForecastRing.cpp:38
+#, fuzzy
+msgid "Forecast caption"
+msgstr "Légende des prévisions"
+
+#: src/app_viewer/gui/asPanelSidebarCaptionForecastDots.cpp:251
+#: src/app_viewer/gui/asPanelSidebarCaptionForecastRing.cpp:376
+#, fuzzy
+msgid "No rainfall"
+msgstr "Pas de précipitations"
+
+#: src/app_viewer/gui/asPanelSidebarCaptionForecastDots.cpp:252
+#: src/app_viewer/gui/asPanelSidebarCaptionForecastRing.cpp:377
+#, fuzzy
+msgid "Missing data"
+msgstr "Donnée manquante"
+
+#: src/app_viewer/gui/asPanelSidebarForecasts.cpp:36
+#, fuzzy
+msgid "Forecasts"
+msgstr "exports (synthèse des prévisions) : ``/app/exports``"
+
+#: src/app_viewer/gui/asPanelSidebarGisLayers.cpp:34
+#, fuzzy
+msgid "GIS layers"
+msgstr "Couches SIG"
+
+#: src/app_viewer/gui/asPanelSidebarStationsList.cpp:35
+#, fuzzy
+msgid "Station selection"
+msgstr "Sélection des stations"
+
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:88
+#, fuzzy
+msgid "Predictor - target"
+msgstr "Prédicteur - cible"
+
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:89
+#, fuzzy
+msgid "Contours - target"
+msgstr "Contours - cible"
+
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:90
+#, fuzzy
+msgid "Spatial window target"
+msgstr "Fenêtre spatiale cible"
+
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:104
+#, fuzzy
+msgid "Predictor - analog"
+msgstr "Prédicteur - analogique"
+
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:105
+#, fuzzy
+msgid "Contours - analog"
+msgstr "Contours - analogique"
+
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:106
+#, fuzzy
+msgid "Spatial window analog"
+msgstr "Fenêtre spatiale analogique"
+
+#: src/app_viewer/gui/asWizardWorkspace.cpp:77
+#, fuzzy
+msgid "Incorrect base map selection."
+msgstr "Sélection incorrecte de la carte de base."
+
+#: src/app_viewer/gui/asWizardWorkspace.cpp:89
+#, fuzzy, c-format
+msgid "Cannot find file %s"
+msgstr "Impossible de trouver le fichier %s"
+
+#: src/app_viewer/gui/AtmoswingMainViewer.cpp:42
+#, fuzzy, c-format
+msgid "Welcome to AtmoSwing %s."
+msgstr "Bienvenue sur AtmoSwing %s."
+
+#: src/app_viewer/gui/AtmoswingMainViewer.cpp:50
+#, fuzzy
+msgid "AtmoSwing log window"
+msgstr "Fenêtre d'enregistrement AtmoSwing"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:60
+#, fuzzy
+msgid "No forecast opened"
+msgstr "Aucune prévision n'a été ouverte"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:67
+#, fuzzy
+msgid "<<"
+msgstr "<<"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:73
+#, fuzzy
+msgid "<"
+msgstr "<"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:79
+#, fuzzy
+msgid ">"
+msgstr ">"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:85
+#, fuzzy
+msgid ">>"
+msgstr ">>"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:94
+#, fuzzy
+msgid "No forecast selected"
+msgstr "Aucune prévision sélectionnée"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:155
+#, fuzzy
+msgid "Open a workspace"
+msgstr "Ouvrir un espace de travail"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:159
+#, fuzzy
+msgid "Save the workspace"
+msgstr "Sauvegarder l'espace de travail"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:163
+#, fuzzy
+msgid "Save the workspace as"
+msgstr "Enregistrer l'espace de travail sous"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:167
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:323
+#, fuzzy
+msgid "Create a new workspace"
+msgstr "Créer un nouvel espace de travail"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:173
+#, fuzzy
+msgid "Open a forecast file"
+msgstr "|icon_open| Ouvrir un fichier de prévisions"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:179
+#, fuzzy
+msgid "Open a GIS layer"
+msgstr "Ouvrir une couche SIG"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:183
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1016
+#, fuzzy
+msgid "Close a GIS layer"
+msgstr "Fermer une couche SIG"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:187
+#, fuzzy
+msgid "Move the selected layer"
+msgstr "Déplacer le calque sélectionné"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:193
+#, fuzzy
+msgid "Quit"
+msgstr "Quitter"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:196
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1019
+#, fuzzy
+msgid "File"
+msgstr "Fichier"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:203
+#, fuzzy
+msgid "Options"
+msgstr "Options"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:207
+#, fuzzy
+msgid "Build predictand DB"
+msgstr "Construire une base de données prédictive"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:210
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1022
+#, fuzzy
+msgid "Tools"
+msgstr "Outils"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:214
+#, fuzzy
+msgid "Show Log Window"
+msgstr "Afficher la fenêtre du journal des évènements"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:218
+#, fuzzy
+msgid "Log level"
+msgstr "Niveau de journal"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:220
+#, fuzzy
+msgid "Only errors"
+msgstr "Erreurs seulement"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:224
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1292
+#, fuzzy
+msgid "Errors and warnings"
+msgstr "Erreurs et avertissements"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:228
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1295
+#, fuzzy
+msgid "Verbose"
+msgstr "Verbeux"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:233
+#, fuzzy
+msgid "Log"
+msgstr "Journal"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:237
+#, fuzzy
+msgid "About"
+msgstr "À propos"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:240
+#, fuzzy
+msgid "Help"
+msgstr "Aide"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:296
+#, fuzzy
+msgid "Load / create a workspace"
+msgstr "Charger / créer un espace de travail"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:302
+#, fuzzy
+msgid "Load an existing file"
+msgstr "Charger un fichier existant"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:306
+#, fuzzy
+msgid "Load workspace"
+msgstr "Charger l’environnement de travail"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:309
+#, fuzzy
+msgid "or continue to create a new workspace"
+msgstr "ou continuer à créer un nouvel espace de travail"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:329
+#, fuzzy
+msgid "Path to save the new file"
+msgstr "Chemin d'accès pour enregistrer le nouveau fichier"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:333
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1241
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1248
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1255
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1262
+#, fuzzy
+msgid "Select a file"
+msgstr "Séléctionner un fichier"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:333
+#, fuzzy
+msgid "*.asvw"
+msgstr "*.asvw"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:346
+#, fuzzy
+msgid "Workspace options"
+msgstr "Options de l'espace de travail"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:352
+#, fuzzy
+msgid "Path to the forecasts directory"
+msgstr "Chemin d'accès au répertoire des prévisions"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:356
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1077
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1174
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1180
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1186
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1192
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1198
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1204
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1210
+#, fuzzy
+msgid "Select a folder"
+msgstr "Sélectionner un dossier"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:359
+#, fuzzy
+msgid "Other workspace parameters can be defined in the preferences frame."
+msgstr ""
+"D'autres paramètres de l'espace de travail peuvent être définis dans le "
+"cadre des préférences."
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:373
+#, fuzzy
+msgid "Base map"
+msgstr "Carte de base"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:379
+#, fuzzy
+msgid "Choose the base map for your project"
+msgstr "Choisissez la carte de base pour votre projet"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:383
+#, fuzzy
+msgid "Custom layers"
+msgstr "Couches personnalisées"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:383
+#, fuzzy
+msgid "Terrain from Google maps (recommended)"
+msgstr "Terrain à partir de Google maps (recommandé)"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:383
+#, fuzzy
+msgid "Map from Google maps"
+msgstr "Carte de Google maps"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:383
+#, fuzzy
+msgid "Map from Openstreetmap"
+msgstr "Carte de OpenStreetMap"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:383
+#, fuzzy
+msgid "Map from ArcGIS Mapserver"
+msgstr "Carte à partir d'ArcGIS Mapserver"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:383
+#, fuzzy
+msgid "Satellite imagery from Google maps"
+msgstr "Images satellite de Google maps"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:383
+#, fuzzy
+msgid "Satellite imagery from VirtualEarth"
+msgstr "Images satellite de VirtualEarth"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:389
+#, fuzzy
+msgid ""
+"Other GIS layers can be added in the viewer frame directly, and be saved to "
+"the workspace."
+msgstr ""
+"D'autres couches SIG peuvent être ajoutées directement dans le cadre de "
+"visualisation et être enregistrées dans l'espace de travail."
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:437
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1396
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1404
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1412
+#, fuzzy
+msgid "..."
+msgstr "..."
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:494
+#, fuzzy
+msgid "Station name"
+msgstr "Nom de la station"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:500
+#, fuzzy
+msgid "Export as txt"
+msgstr "Exporter en txt"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:505
+#, fuzzy
+msgid "Preview"
+msgstr "Aperçu"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:511
+#, fuzzy
+msgid "Print"
+msgstr "Imprimer"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:597
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:724
+#, fuzzy
+msgid "Select forecast"
+msgstr "Sélectionner les prévisions"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:601
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:733
+#, fuzzy
+msgid "Select station"
+msgstr "Sélectionner une station"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:605
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:742
+#, fuzzy
+msgid "Select date"
+msgstr "Sélectionner une date"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:673
+#, fuzzy
+msgid "Predictands distribution"
+msgstr "Distribution des prédicats"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:842
+#, fuzzy
+msgid "Method"
+msgstr "Méthode"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:851
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:889
+#, fuzzy
+msgid "Forecast"
+msgstr "Prévision"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:860
+#, fuzzy
+msgid "Possible predictors"
+msgstr "Facteurs prédictifs possibles"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:867
+#, fuzzy
+msgid "Layers of the left panel"
+msgstr "Couches du panneau de gauche"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:871
+#, fuzzy
+msgid "Layers of the right panel"
+msgstr "Couches du panneau de droite"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:955
+#, fuzzy
+msgid "Analogs"
+msgstr "Le nombre d'analogues pour les différentes échéances"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1012
+#, fuzzy
+msgid "Open GIS layer"
+msgstr "Couche SIG ouverte"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1073
+#, fuzzy
+msgid "Directory containing the forecasts"
+msgstr "Répertoire contenant les prévisions"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1085
+#, fuzzy
+msgid "Set the maximum rainfall value for the colorbar"
+msgstr ""
+"Définir la valeur maximale de la pluviométrie pour la barre de couleur"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1092
+#, fuzzy
+msgid "mm/d"
+msgstr "mm/d"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1096
+#, fuzzy
+msgid "Number of past days to display on the timeseries"
+msgstr "Nombre de jours passés à afficher dans la série chronologique"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1107
+#, fuzzy
+msgid "Alarms panel"
+msgstr "Panneau des alarmes"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1114
+#, fuzzy
+msgid "Return period to display"
+msgstr "Période de retour à l'affichage"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1118
+#, fuzzy
+msgid "2"
+msgstr "2"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1118
+#, fuzzy
+msgid "5"
+msgstr "5"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1118
+#, fuzzy
+msgid "10"
+msgstr "10"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1118
+#, fuzzy
+msgid "20"
+msgstr "20"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1118
+#, fuzzy
+msgid "50"
+msgstr "50"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1118
+#, fuzzy
+msgid "100"
+msgstr "100"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1124
+#, fuzzy
+msgid "years"
+msgstr "années"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1128
+#, fuzzy
+msgid "Quantile to display"
+msgstr "Quantile à afficher"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1135
+#, fuzzy
+msgid "(in between 0 - 1)"
+msgstr "(entre 0 et 1)"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1149
+#, fuzzy
+msgid "Workspace"
+msgstr "Espace de travail (workspace)"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1155
+#, fuzzy
+msgid "Path to the predictor datasets"
+msgstr "Chemin d'accès aux ensembles de données prédicteurs"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1163
+#, fuzzy
+msgid "Dataset ID"
+msgstr "``<realtime_dataset_id>`` : Jeu de données des sorties PNT (NWP)"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1167
+#, fuzzy
+msgid "Path to the directory"
+msgstr "Chemin d'accès au répertoire"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1223
+#, fuzzy
+msgid "Paths"
+msgstr "Chemins"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1229
+#, fuzzy
+msgid "Paths to the color tables"
+msgstr "Chemins d'accès aux tableaux des couleurs"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1237
+#, fuzzy
+msgid "Geopotential height"
+msgstr "Hauteur géopotentielle"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1241
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1248
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1255
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1262
+#, fuzzy
+msgid "*.*"
+msgstr "*.*"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1244
+#, fuzzy
+msgid "Precipitable water"
+msgstr "Eau précipitable"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1251
+#, fuzzy
+msgid "Relative humidity"
+msgstr "Humidité relative"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1258
+#, fuzzy
+msgid "Specific humidity"
+msgstr "Humidité spécifique"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1275
+#, fuzzy
+msgid "Colors"
+msgstr "Couleurs"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1281
+#, fuzzy
+msgid "Logs"
+msgstr "Journaux"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1289
+#, fuzzy
+msgid "Errors only (recommanded)"
+msgstr "Erreurs uniquement (recommandé)"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1304
+#, fuzzy
+msgid "Display window"
+msgstr "Fenêtre d'affichage"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1308
+#, fuzzy
+msgid "Save to a file"
+msgstr "Enregistrer dans un fichier"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1324
+#, fuzzy
+msgid "Proxy configuration"
+msgstr "Configuration du proxy"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1326
+#, fuzzy
+msgid "Internet connection uses a proxy"
+msgstr "La connexion Internet utilise un proxy"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1332
+#, fuzzy
+msgid "Proxy address"
+msgstr "Adresse du mandataire"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1339
+#, fuzzy
+msgid "Port"
+msgstr "Port"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1352
+#, fuzzy
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1359
+#, fuzzy
+msgid "Password"
+msgstr "Mot de passe"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1376
+#, fuzzy
+msgid "General"
+msgstr "Général"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1381
+#, fuzzy
+msgid "Allow multiple instances of the viewer"
+msgstr "Autoriser plusieurs instances de l'observateur"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1385
+#, fuzzy
+msgid "User specific paths"
+msgstr "Chemins d'accès spécifiques à l'utilisateur"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1392
+#, fuzzy
+msgid "User working directory:"
+msgstr "Répertoire de travail de l'utilisateur :"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1400
+#, fuzzy
+msgid "Log file:"
+msgstr "Fichier journal :"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1408
+#, fuzzy
+msgid "Preferences file:"
+msgstr "Fichier de préférences :"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1426
+#, fuzzy
+msgid "Advanced"
+msgstr "Avancé"
+
+#: src/app_viewer/gui/vrLayerRasterPredictor.cpp:76
+#, fuzzy
+msgid "Creation of memory dataset failed."
+msgstr "La création d'un jeu de données de mémoire a échoué."
+
+#: src/app_viewer/gui/vrLayerRasterPredictor.cpp:82
+#, fuzzy
+msgid "Setting projection to predictor layer failed."
+msgstr "La définition de la projection sur la couche prédicteur a échoué."
+
+#: src/app_viewer/gui/vrLayerRasterPredictor.cpp:95
+#, fuzzy
+msgid "Setting geotransform to predictor layer failed."
+msgstr "Le réglage de la géotransformation sur la couche prédictive a échoué."
+
+#: src/app_viewer/gui/vrLayerRasterPredictor.cpp:106
+#: src/app_viewer/gui/vrLayerRasterPredictor.cpp:124
+#, fuzzy
+msgid "Setting data to predictor layer failed."
+msgstr "L'enregistrement des données dans la couche prédicteur a échoué."
+
+#: src/app_viewer/gui/vrLayerRasterPredictor.cpp:114
+#, fuzzy
+msgid "The x block size does not match the data."
+msgstr "La taille du bloc x ne correspond pas aux données."
+
+#: src/app_viewer/gui/vrLayerRasterPredictor.cpp:118
+#, fuzzy
+msgid "The y block size should be 1."
+msgstr "La taille du bloc y doit être de 1."
+
+#: src/app_viewer/gui/vrLayerRasterPredictor.cpp:150
+#, fuzzy
+msgid "Image creation failed, out of memory"
+msgstr "Échec de la création d'image, manque de mémoire"
+
+#: src/app_viewer/gui/vrLayerRasterPredictor.cpp:161
+#, fuzzy
+msgid "Error getting raster predictor data."
+msgstr "Erreur dans l'obtention des données du prédicteur matriciel."
+
+#: src/app_viewer/gui/vrLayerVectorFcstDots.cpp:59
+#: src/app_viewer/gui/vrLayerVectorFcstRing.cpp:59
+#, fuzzy
+msgid "Error creating feature"
+msgstr "Fonctionnalité de création d'erreurs"
+
+#: src/app_viewer/gui/vrLayerVectorFcstDots.cpp:125
+#: src/app_viewer/gui/vrLayerVectorFcstRing.cpp:145
+#, fuzzy
+msgid "Drawing of the symbol failed."
+msgstr "Le dessin du symbole a échoué."
+
+#: src/app_viewer/gui/vrRenderRasterPredictor.cpp:103
+#, fuzzy, c-format
+msgid "The color table format %s is not supported."
+msgstr "Le format de table de couleurs %s n'est pas pris en charge."
+
+#: src/app_viewer/gui/vrRenderRasterPredictor.cpp:116
+#: src/app_viewer/gui/vrRenderRasterPredictor.cpp:138
+#, fuzzy, c-format
+msgid "Color table file %s could not be opened..."
+msgstr "Le fichier de table des couleurs %s n'a pas pu être ouvert..."
+
+#: src/app_viewer/gui/vrRenderRasterPredictor.cpp:147
+#: src/app_viewer/gui/vrRenderRasterPredictor.cpp:153
+#: src/app_viewer/gui/vrRenderRasterPredictor.cpp:175
+#, fuzzy, c-format
+msgid "Color table format not supported (file %s)..."
+msgstr ""
+"Le format de la table des couleurs n'est pas pris en charge (fichier %s)..."
