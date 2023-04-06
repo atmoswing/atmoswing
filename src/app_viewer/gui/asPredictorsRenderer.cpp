@@ -235,6 +235,10 @@ void asPredictorsRenderer::CloseLayerIfPresent(vrViewerLayerManager* viewerLayer
 }
 
 double asPredictorsRenderer::ComputeStep(double minVal, double maxVal) const {
+    if (maxVal == minVal) {
+        return 100;
+    }
+
     double range = maxVal - minVal;
     double stepApprox = range / 10;
     double magnitudeFull = log10(stepApprox);
@@ -245,5 +249,6 @@ double asPredictorsRenderer::ComputeStep(double minVal, double maxVal) const {
     if (abs(stepHalf - stepApprox) < abs(stepFull - stepApprox)) {
         step = stepHalf;
     }
+
     return step;
 }
