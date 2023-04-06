@@ -119,12 +119,26 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     m_viewerLayerManagerLeft = new vrViewerLayerManager(m_layerManager, this, m_displayCtrlLeft, m_tocCtrlLeft);
     m_viewerLayerManagerRight = new vrViewerLayerManager(m_layerManager, this, m_displayCtrlRight, m_tocCtrlRight);
 
+    // Colorbars
+    m_panelPredictorsColorbarLeft = new asPanelPredictorsColorbar(m_panelColorbarLeft, wxID_ANY, wxDefaultPosition,
+                                                                  wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
+    m_panelPredictorsColorbarLeft->Layout();
+    m_sizerColorbarLeft->Add(m_panelPredictorsColorbarLeft, 1, wxEXPAND, 0);
+    m_panelColorbarLeft->Layout();
+
+    m_panelPredictorsColorbarRight = new asPanelPredictorsColorbar(m_panelColorbarRight, wxID_ANY, wxDefaultPosition,
+                                                                   wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
+    m_panelPredictorsColorbarRight->Layout();
+    m_sizerColorbarRight->Add(m_panelPredictorsColorbarRight, 1, wxEXPAND, 0);
+    m_panelColorbarRight->Layout();
+
     // Viewer
     m_predictorsManagerTarget = new asPredictorsManager(m_listPredictors, m_workspace, true);
     m_predictorsManagerAnalog = new asPredictorsManager(m_listPredictors, m_workspace);
     m_predictorsRenderer = new asPredictorsRenderer(this, m_layerManager, m_predictorsManagerTarget,
                                                     m_predictorsManagerAnalog, m_viewerLayerManagerLeft,
                                                     m_viewerLayerManagerRight);
+    m_predictorsRenderer->LinkToColorbars(m_panelPredictorsColorbarLeft, m_panelPredictorsColorbarRight);
 
     // Menus
     m_menuTools->AppendCheckItem(asID_SET_SYNCRO_MODE, "Synchronize tools",

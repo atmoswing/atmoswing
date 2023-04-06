@@ -30,6 +30,7 @@
 
 #include "asIncludes.h"
 #include "vroomgis.h"
+#include "asPanelPredictorsColorbar.h"
 
 
 class asPredictorsManager;
@@ -46,13 +47,15 @@ class asPredictorsRenderer {
 
     virtual ~asPredictorsRenderer();
 
-    void Redraw(vf &domain);
+    void LinkToColorbars(asPanelPredictorsColorbar* colorbarTarget, asPanelPredictorsColorbar* colorbarAnalog);
+
+    void Redraw(vf& domain);
 
     vrLayerRasterPredictor* RedrawRasterPredictor(const wxString& name, vrViewerLayerManager* viewerLayerManager,
                                                   asPredictorsManager* predictorsManager, double minVal, double maxVal);
 
     void RedrawContourLines(const wxString& name, vrViewerLayerManager* viewerLayerManager,
-                            vrLayerRasterPredictor* layerRaster);
+                            vrLayerRasterPredictor* layerRaster, double step);
 
     void RedrawSpatialWindow(const wxString& name, vrViewerLayerManager* viewerLayerManager, vf &domain);
 
@@ -64,8 +67,12 @@ class asPredictorsRenderer {
     asPredictorsManager* m_predictorsManagerAnalog;
     vrViewerLayerManager* m_viewerLayerManagerTarget;
     vrViewerLayerManager* m_viewerLayerManagerAnalog;
+    asPanelPredictorsColorbar* m_colorbarTarget;
+    asPanelPredictorsColorbar* m_colorbarAnalog;
 
     void CloseLayerIfPresent(vrViewerLayerManager* viewerLayerManager, const wxFileName& memoryVector);
+
+    double ComputeStep(double minVal, double maxVal) const;
 };
 
 #endif

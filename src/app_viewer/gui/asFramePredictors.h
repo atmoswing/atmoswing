@@ -31,10 +31,10 @@
 #include "AtmoswingViewerGui.h"
 #include "asForecastManager.h"
 #include "asIncludes.h"
+#include "asPanelPredictorsColorbar.h"
 #include "asPredictorsRenderer.h"
 #include "vroomgis.h"
 #include "wx/dnd.h"
-
 
 /** Implementing vroomDropFiles */
 class asFramePredictors;
@@ -76,6 +76,8 @@ class asFramePredictors : public asFramePredictorsVirtual {
     asPredictorsManager* m_predictorsManagerTarget;
     asPredictorsManager* m_predictorsManagerAnalog;
     asWorkspace* m_workspace;
+    asPanelPredictorsColorbar* m_panelPredictorsColorbarLeft;
+    asPanelPredictorsColorbar* m_panelPredictorsColorbarRight;
     int m_selectedMethod;
     int m_selectedForecast;
     int m_selectedTargetDate;

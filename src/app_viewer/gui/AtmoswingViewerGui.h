@@ -332,6 +332,8 @@ class asFramePredictorsVirtual : public wxFrame
 		wxChoice* m_choiceTargetDates;
 		wxPanel* m_panelGISLeft;
 		wxBoxSizer* m_sizerGISLeft;
+		wxPanel* m_panelColorbarLeft;
+		wxBoxSizer* m_sizerColorbarLeft;
 		wxPanel* m_panelSwitch;
 		wxBitmapButton* m_bpButtonSwitchRight;
 		wxBitmapButton* m_bpButtonSwitchLeft;
@@ -340,6 +342,8 @@ class asFramePredictorsVirtual : public wxFrame
 		wxChoice* m_choiceAnalogDates;
 		wxPanel* m_panelGISRight;
 		wxBoxSizer* m_sizerGISRight;
+		wxPanel* m_panelColorbarRight;
+		wxBoxSizer* m_sizerColorbarRight;
 		wxMenuBar* m_menubar;
 		wxMenu* m_menuFile;
 		wxMenu* m_menuTools;

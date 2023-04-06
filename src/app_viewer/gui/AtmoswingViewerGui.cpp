@@ -909,6 +909,14 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_sizerGISLeft->Fit( m_panelGISLeft );
 	bSizer371->Add( m_panelGISLeft, 1, wxEXPAND, 5 );
 
+	m_panelColorbarLeft = new wxPanel( m_panelLeft, wxID_ANY, wxDefaultPosition, wxSize( -1,30 ), wxTAB_TRAVERSAL );
+	m_sizerColorbarLeft = new wxBoxSizer( wxVERTICAL );
+
+
+	m_panelColorbarLeft->SetSizer( m_sizerColorbarLeft );
+	m_panelColorbarLeft->Layout();
+	bSizer371->Add( m_panelColorbarLeft, 0, wxALL|wxEXPAND, 5 );
+
 
 	m_panelLeft->SetSizer( bSizer371 );
 	m_panelLeft->Layout();
@@ -966,6 +974,14 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_panelGISRight->Layout();
 	m_sizerGISRight->Fit( m_panelGISRight );
 	bSizer38->Add( m_panelGISRight, 1, wxEXPAND, 5 );
+
+	m_panelColorbarRight = new wxPanel( m_panelRight, wxID_ANY, wxDefaultPosition, wxSize( -1,30 ), wxTAB_TRAVERSAL );
+	m_sizerColorbarRight = new wxBoxSizer( wxVERTICAL );
+
+
+	m_panelColorbarRight->SetSizer( m_sizerColorbarRight );
+	m_panelColorbarRight->Layout();
+	bSizer38->Add( m_panelColorbarRight, 0, wxALL|wxEXPAND, 5 );
 
 
 	m_panelRight->SetSizer( bSizer38 );

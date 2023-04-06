@@ -51,6 +51,12 @@ asPredictorsRenderer::asPredictorsRenderer(wxWindow* parent, vrLayerManager* lay
 
 asPredictorsRenderer::~asPredictorsRenderer() = default;
 
+void asPredictorsRenderer::LinkToColorbars(asPanelPredictorsColorbar* colorbarTarget,
+                                           asPanelPredictorsColorbar* colorbarAnalog) {
+    m_colorbarTarget = colorbarTarget;
+    m_colorbarAnalog = colorbarAnalog;
+}
+
 void asPredictorsRenderer::Redraw(vf &domain) {
     bool targetDataLoaded = m_predictorsManagerTarget->LoadData();
     bool analogDataLoaded = m_predictorsManagerAnalog->LoadData();
@@ -67,6 +73,16 @@ void asPredictorsRenderer::Redraw(vf &domain) {
         maxVal = wxMax(m_predictorsManagerAnalog->GetDataMax(), maxVal);
     }
 
+    double step = ComputeStep(minVal, maxVal);
+
+    // Set range and step to colorbar
+    wxASSERT(m_colorbarTarget);
+    wxASSERT(m_colorbarAnalog);
+    m_colorbarTarget->SetRange(minVal, maxVal);
+    m_colorbarAnalog->SetRange(minVal, maxVal);
+    m_colorbarTarget->SetStep(step);
+    m_colorbarAnalog->SetStep(step);
+
     if (targetDataLoaded) {
         m_viewerLayerManagerTarget->FreezeBegin();
         wxString rasterPredictorName = _("Predictor - target");
@@ -77,9 +93,10 @@ void asPredictorsRenderer::Redraw(vf &domain) {
         CloseLayerIfPresent(m_viewerLayerManagerTarget, wxFileName("", spatialWindowName, "memory"));
         vrLayerRasterPredictor* layerTarget = RedrawRasterPredictor(rasterPredictorName, m_viewerLayerManagerTarget,
                                                                     m_predictorsManagerTarget, minVal, maxVal);
-        RedrawContourLines(contoursName, m_viewerLayerManagerTarget, layerTarget);
+        RedrawContourLines(contoursName, m_viewerLayerManagerTarget, layerTarget, step);
         RedrawSpatialWindow(spatialWindowName, m_viewerLayerManagerTarget, domain);
         m_viewerLayerManagerTarget->FreezeEnd();
+        m_colorbarTarget->Refresh();
     }
 
     if (analogDataLoaded) {
@@ -92,9 +109,10 @@ void asPredictorsRenderer::Redraw(vf &domain) {
         CloseLayerIfPresent(m_viewerLayerManagerAnalog, wxFileName("", spatialWindowName, "memory"));
         vrLayerRasterPredictor* layerAnalog = RedrawRasterPredictor(rasterPredictorName, m_viewerLayerManagerAnalog,
                                                                     m_predictorsManagerAnalog, minVal, maxVal);
-        RedrawContourLines(contoursName, m_viewerLayerManagerAnalog, layerAnalog);
+        RedrawContourLines(contoursName, m_viewerLayerManagerAnalog, layerAnalog, step);
         RedrawSpatialWindow(spatialWindowName, m_viewerLayerManagerAnalog, domain);
         m_viewerLayerManagerAnalog->FreezeEnd();
+        m_colorbarAnalog->Refresh();
     }
 }
 
@@ -122,11 +140,14 @@ vrLayerRasterPredictor* asPredictorsRenderer::RedrawRasterPredictor(const wxStri
     render->SetTransparency(20);
     viewerLayerManager->Add(1, layerRaster, render, nullptr, true);
 
+    m_colorbarTarget->SetRender(render);
+    m_colorbarAnalog->SetRender(render);
+
     return layerRaster;
 }
 
 void asPredictorsRenderer::RedrawContourLines(const wxString& name, vrViewerLayerManager* viewerLayerManager,
-                                              vrLayerRasterPredictor* layerRaster) {
+                                              vrLayerRasterPredictor* layerRaster, double step) {
     // Create a memory layer
     wxFileName memoryVector("", name, "memory");
 
@@ -143,20 +164,7 @@ void asPredictorsRenderer::RedrawContourLines(const wxString& name, vrViewerLaye
 
     // Specify the contour intervals
     char **options = NULL;
-    switch (layerRaster->GetParameter()) {
-        case asPredictor::GeopotentialHeight:
-            options = CSLSetNameValue(options, "LEVEL_INTERVAL", "100");
-            break;
-        case asPredictor::RelativeHumidity:
-            options = CSLSetNameValue(options, "LEVEL_INTERVAL", "20");
-            break;
-        case asPredictor::PrecipitableWater:
-        case asPredictor::TotalColumnWater:
-            options = CSLSetNameValue(options, "LEVEL_INTERVAL", "10");
-            break;
-        default:
-            options = CSLSetNameValue(options, "LEVEL_INTERVAL", "10");
-    }
+    options = CSLSetNameValue(options, "LEVEL_INTERVAL", asStrF("%g", step));
 
     // Generate the contours
     GDALContourGenerateEx(layerRaster->GetDatasetRef()->GetRasterBand(1), layerVector->GetLayerRef(), options, nullptr,
@@ -224,4 +232,18 @@ void asPredictorsRenderer::CloseLayerIfPresent(vrViewerLayerManager* viewerLayer
             m_layerManager->Close(layer);
         }
     }
+}
+
+double asPredictorsRenderer::ComputeStep(double minVal, double maxVal) const {
+    double range = maxVal - minVal;
+    double stepApprox = range / 10;
+    double magnitudeFull = log10(stepApprox);
+    double magnitudeHalf = log10(2 * stepApprox);
+    double stepFull = pow(10, ceil(magnitudeFull));
+    double stepHalf = pow(10, ceil(magnitudeHalf)) / 2;
+    double step = stepFull;
+    if (abs(stepHalf - stepApprox) < abs(stepFull - stepApprox)) {
+        step = stepHalf;
+    }
+    return step;
 }
