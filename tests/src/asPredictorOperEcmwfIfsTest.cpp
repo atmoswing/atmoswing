@@ -35,35 +35,35 @@
 TEST(PredictorOperEcmwfIfs, GetCorrectPredictors) {
     asPredictorOper* predictor;
 
-    predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
+    predictor = asPredictorOper::GetInstance("ECMWF_IFS", "z");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "gh");
+    predictor = asPredictorOper::GetInstance("ECMWF_IFS", "gh");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "t");
+    predictor = asPredictorOper::GetInstance("ECMWF_IFS", "t");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "w");
+    predictor = asPredictorOper::GetInstance("ECMWF_IFS", "w");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "r");
+    predictor = asPredictorOper::GetInstance("ECMWF_IFS", "r");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "u");
+    predictor = asPredictorOper::GetInstance("ECMWF_IFS", "u");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "v");
+    predictor = asPredictorOper::GetInstance("ECMWF_IFS", "v");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "pwat");
+    predictor = asPredictorOper::GetInstance("ECMWF_IFS", "pwat");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
     wxDELETE(predictor);
 }
@@ -84,7 +84,7 @@ TEST(PredictorOperEcmwfIfs, LoadSingleDay) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -134,7 +134,7 @@ TEST(PredictorOperEcmwfIfs, LoadSecondTimeStep) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -184,7 +184,7 @@ TEST(PredictorOperEcmwfIfs, LoadLastTimeStep) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -234,7 +234,7 @@ TEST(PredictorOperEcmwfIfs, LoadFullTimeArray) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -320,7 +320,7 @@ TEST(PredictorOperEcmwfIfs, LoadTimeArrayWithoutFirst) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("ECMWF_IFS", "z");
     wxASSERT(predictor);
 
     // Create file names

@@ -35,47 +35,47 @@
 TEST(PredictorEcmwfIfs, GetCorrectPredictors) {
     asPredictor* predictor;
 
-    predictor = asPredictor::GetInstance("ECMWF_IFS_GRIB", "z", ".");
+    predictor = asPredictor::GetInstance("ECMWF_IFS", "z", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     wxDELETE(predictor);
 
-    predictor = asPredictor::GetInstance("ECMWF_IFS_GRIB", "gh", ".");
+    predictor = asPredictor::GetInstance("ECMWF_IFS", "gh", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
     wxDELETE(predictor);
 
-    predictor = asPredictor::GetInstance("ECMWF_IFS_GRIB", "t", ".");
+    predictor = asPredictor::GetInstance("ECMWF_IFS", "t", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
     wxDELETE(predictor);
 
-    predictor = asPredictor::GetInstance("ECMWF_IFS_GRIB", "w", ".");
+    predictor = asPredictor::GetInstance("ECMWF_IFS", "w", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
     wxDELETE(predictor);
 
-    predictor = asPredictor::GetInstance("ECMWF_IFS_GRIB", "r", ".");
+    predictor = asPredictor::GetInstance("ECMWF_IFS", "r", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
     wxDELETE(predictor);
 
-    predictor = asPredictor::GetInstance("ECMWF_IFS_GRIB", "sh", ".");
+    predictor = asPredictor::GetInstance("ECMWF_IFS", "sh", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
     wxDELETE(predictor);
 
-    predictor = asPredictor::GetInstance("ECMWF_IFS_GRIB", "u", ".");
+    predictor = asPredictor::GetInstance("ECMWF_IFS", "u", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
     wxDELETE(predictor);
 
-    predictor = asPredictor::GetInstance("ECMWF_IFS_GRIB", "v", ".");
+    predictor = asPredictor::GetInstance("ECMWF_IFS", "v", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
     wxDELETE(predictor);
 
-    predictor = asPredictor::GetInstance("ECMWF_IFS_GRIB", "thetaE", ".");
+    predictor = asPredictor::GetInstance("ECMWF_IFS", "thetaE", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialTemperature);
     wxDELETE(predictor);
 
-    predictor = asPredictor::GetInstance("ECMWF_IFS_GRIB", "thetaES", ".");
+    predictor = asPredictor::GetInstance("ECMWF_IFS", "thetaES", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialTemperature);
     wxDELETE(predictor);
 
-    predictor = asPredictor::GetInstance("ECMWF_IFS_GRIB", "pwat", ".");
+    predictor = asPredictor::GetInstance("ECMWF_IFS", "pwat", ".");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
     wxDELETE(predictor);
 }

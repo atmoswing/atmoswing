@@ -37,7 +37,7 @@
 #include "AtmoswingMainViewer.h"
 
 AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame* frame)
-    : asFrameForecast(frame) {
+    : asFrameViewer(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif

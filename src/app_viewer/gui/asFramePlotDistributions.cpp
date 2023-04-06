@@ -101,7 +101,7 @@ void asFramePlotDistributions::Init() {
     RebuildChoiceForecast();
 
     // Dates list
-    wxArrayString arrayDates = m_forecastManager->GetLeadTimes(m_selectedMethod, m_selectedForecast);
+    wxArrayString arrayDates = m_forecastManager->GetTargetDatesWxArray(m_selectedMethod, m_selectedForecast);
     m_choiceDate->Set(arrayDates);
     m_choiceDate->Select(m_selectedDate);
 
@@ -117,7 +117,7 @@ void asFramePlotDistributions::Init() {
 
 void asFramePlotDistributions::RebuildChoiceForecast() {
     // Reset forecast list
-    wxArrayString arrayForecasts = m_forecastManager->GetAllForecastNamesWxArray();
+    wxArrayString arrayForecasts = m_forecastManager->GetCombinedForecastNamesWxArray();
     m_choiceForecast->Set(arrayForecasts);
     int linearIndex = m_forecastManager->GetLinearIndex(m_selectedMethod, m_selectedForecast);
     m_choiceForecast->Select(linearIndex);
@@ -139,7 +139,7 @@ void asFramePlotDistributions::OnChoiceForecastChange(wxCommandEvent& event) {
     m_selectedForecast = m_forecastManager->GetForecastRowFromLinearIndex(linearIndex);
 
     // Dates list
-    wxArrayString arrayDates = m_forecastManager->GetLeadTimes(m_selectedMethod, m_selectedForecast);
+    wxArrayString arrayDates = m_forecastManager->GetTargetDatesWxArray(m_selectedMethod, m_selectedForecast);
     m_choiceDate->Set(arrayDates);
     if (arrayDates.size() <= m_selectedDate) {
         m_selectedDate = 0;

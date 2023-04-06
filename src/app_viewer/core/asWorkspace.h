@@ -54,6 +54,16 @@ class asWorkspace : public wxObject {
 
     void AddLayer();
 
+    void ClearPredictorDirs();
+
+    void AddPredictorDir(const wxString &id, const wxString &dir);
+
+    wxString GetPredictorId(int i, const wxString &defVal = wxEmptyString);
+
+    wxString GetPredictorDir(int i);
+
+    wxString GetPredictorDir(wxString& datasetId);
+
     wxString GetFilePath() const {
         return m_filePath;
     }
@@ -214,6 +224,8 @@ class asWorkspace : public wxObject {
     int m_timeSeriesPlotPastDaysNb;
     int m_alarmsPanelReturnPeriod;
     float m_alarmsPanelQuantile;
+    vwxs m_predictorIds;
+    vwxs m_predictorDirs;
 };
 
 #endif

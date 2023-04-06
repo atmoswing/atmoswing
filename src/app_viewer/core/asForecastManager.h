@@ -103,20 +103,28 @@ class asForecastManager {
         m_leadTimeOrigin = val;
     }
 
-    wxString GetForecastName(int methodRow, int forecastRow) const {
-        return m_aggregator->GetForecastName(methodRow, forecastRow);
-    }
-
     wxString GetMethodName(int methodRow) const {
         return m_aggregator->GetMethodName(methodRow);
     }
 
-    vwxs GetAllMethodNames() const {
-        return m_aggregator->GetAllMethodNames();
+    vwxs GetMethodNames() const {
+        return m_aggregator->GetMethodNames();
     }
 
-    wxArrayString GetAllForecastNamesWxArray() const {
-        return m_aggregator->GetAllForecastNamesWxArray();
+    wxArrayString GetMethodNamesWxArray() const {
+        return m_aggregator->GetMethodNamesWxArray();
+    }
+
+    wxString GetForecastName(int methodRow, int forecastRow) const {
+        return m_aggregator->GetForecastName(methodRow, forecastRow);
+    }
+
+    wxArrayString GetForecastNamesWxArray(int methodRow) const {
+        return m_aggregator->GetForecastNamesWxArray(methodRow);
+    }
+
+    wxArrayString GetCombinedForecastNamesWxArray() const {
+        return m_aggregator->GetCombinedForecastNamesWxArray();
     }
 
     wxString GetFilePath(int methodRow, int forecastRow) const {
@@ -163,8 +171,12 @@ class asForecastManager {
         return m_aggregator->GetLeadTimeLengthMax();
     }
 
-    wxArrayString GetLeadTimes(int methodRow, int forecastRow) const {
-        return m_aggregator->GetLeadTimes(methodRow, forecastRow);
+    wxArrayString GetTargetDatesWxArray(int methodRow, int forecastRow) const {
+        return m_aggregator->GetTargetDatesWxArray(methodRow, forecastRow);
+    }
+
+    vf GetMaxExtent() const {
+        return m_aggregator->GetMaxExtent();
     }
 
   protected:

@@ -99,6 +99,10 @@ class asArea : public wxObject {
 
     virtual bool IsRectangle() const;
 
+    bool FlatsAllowed() const {
+        return m_flatAllowed;
+    }
+
   protected:
     Coo m_cornerUL;
     Coo m_cornerUR;

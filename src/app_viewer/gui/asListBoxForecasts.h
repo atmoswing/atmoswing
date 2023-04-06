@@ -34,7 +34,7 @@
 #include "asForecastManager.h"
 #include "asIncludes.h"
 
-class asForecastViewer;
+class asForecastRenderer;
 
 class asForecastTreeItemData : public wxTreeItemData {
   public:

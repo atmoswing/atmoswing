@@ -28,7 +28,7 @@
 
 #include "asListBoxQuantiles.h"
 
-#include "asForecastViewer.h"
+#include "asForecastRenderer.h"
 #include "asIncludes.h"
 
 BEGIN_EVENT_TABLE(asListBoxQuantiles, wxListBox)

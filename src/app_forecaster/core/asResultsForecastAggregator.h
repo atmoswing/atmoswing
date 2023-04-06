@@ -57,15 +57,17 @@ class asResultsForecastAggregator : public wxObject {
 
     asResultsForecast* GetPastForecast(int methodRow, int forecastRow, int leadTimeRow) const;
 
-    wxString GetForecastName(int methodRow, int forecastRow) const;
-
     wxString GetMethodName(int methodRow) const;
 
-    vwxs GetAllMethodNames() const;
+    vwxs GetMethodNames() const;
 
-    vwxs GetAllForecastNames() const;
+    wxArrayString GetMethodNamesWxArray() const;
 
-    wxArrayString GetAllForecastNamesWxArray() const;
+    wxString GetForecastName(int methodRow, int forecastRow) const;
+
+    wxArrayString GetForecastNamesWxArray(int methodRow) const;
+
+    wxArrayString GetCombinedForecastNamesWxArray() const;
 
     wxString GetFilePath(int methodRow, int forecastRow) const;
 
@@ -91,7 +93,9 @@ class asResultsForecastAggregator : public wxObject {
 
     int GetLeadTimeLengthMax() const;
 
-    wxArrayString GetLeadTimes(int methodRow, int forecastRow) const;
+    wxArrayString GetTargetDatesWxArray(int methodRow, int forecastRow) const;
+
+    vf GetMaxExtent() const;
 
     a1f GetMethodMaxValues(a1f& dates, int methodRow, int returnPeriodRef, float quantileThreshold) const;
 

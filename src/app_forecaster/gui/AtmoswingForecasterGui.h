@@ -47,9 +47,9 @@ WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asFrameMainVirtual
+/// Class asFrameForecasterVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFrameMainVirtual : public wxFrame
+class asFrameForecasterVirtual : public wxFrame
 {
 	private:
 
@@ -98,9 +98,9 @@ class asFrameMainVirtual : public wxFrame
 
 	public:
 
-		asFrameMainVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Forecaster"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 600,700 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameForecasterVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Forecaster"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 600,700 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
-		~asFrameMainVirtual();
+		~asFrameForecasterVirtual();
 
 };
 

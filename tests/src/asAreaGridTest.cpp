@@ -28,7 +28,7 @@
 
 #include <gtest/gtest.h>
 
-#include "asAreaRegGrid.h"
+#include "asAreaGridRegular.h"
 
 TEST(AreaGrid, CheckConsistency) {
     double xMin = -5;

@@ -19,7 +19,7 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+asFrameViewerVirtual::asFrameViewerVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 1000,600 ), wxDefaultSize );
 
@@ -31,7 +31,7 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	bSizer11 = new wxBoxSizer( wxVERTICAL );
 
 	m_splitterGIS = new wxSplitterWindow( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER );
-	m_splitterGIS->Connect( wxEVT_IDLE, wxIdleEventHandler( asFrameForecastVirtual::m_splitterGISOnIdle ), NULL, this );
+	m_splitterGIS->Connect( wxEVT_IDLE, wxIdleEventHandler( asFrameViewerVirtual::m_splitterGISOnIdle ), NULL, this );
 	m_splitterGIS->SetMinimumPaneSize( 270 );
 
 	m_scrolledWindowOptions = new wxScrolledWindow( m_splitterGIS, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
@@ -249,35 +249,35 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	this->Centre( wxBOTH );
 
 	// Connect Events
-	m_button51->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadPreviousDay ), NULL, this );
-	m_button5->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadPreviousForecast ), NULL, this );
-	m_button6->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadNextForecast ), NULL, this );
-	m_button61->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadNextDay ), NULL, this );
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenWorkspace ), this, m_menuItemOpenWorkspace->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnSaveWorkspace ), this, m_menuItemSaveWorkspace->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnSaveWorkspaceAs ), this, m_menuItemSaveWorkspaceAs->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnNewWorkspace ), this, m_menuItemNewWorkspace->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenForecast ), this, m_menuItemOpenForecast->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenLayer ), this, m_menuItemOpenGISLayer->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnCloseLayer ), this, m_menuItemCloseGISLayer->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnMoveLayer ), this, m_menuItemMoveGISLayer->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnQuit ), this, m_menuItemQuit->GetId());
-	m_menuOptions->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OpenFramePreferences ), this, m_menuItemPreferences->GetId());
-	m_menuTools->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OpenFramePredictandDB ), this, m_menuItemBuildPredictandDB->GetId());
-	m_menuLog->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnShowLog ), this, m_menuItemShowLog->GetId());
-	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnLogLevel1 ), this, m_menuItemLogLevel1->GetId());
-	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnLogLevel2 ), this, m_menuItemLogLevel2->GetId());
-	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnLogLevel3 ), this, m_menuItemLogLevel3->GetId());
-	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OpenFrameAbout ), this, m_menuItemAbout->GetId());
+	m_button51->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadPreviousDay ), NULL, this );
+	m_button5->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadPreviousForecast ), NULL, this );
+	m_button6->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadNextForecast ), NULL, this );
+	m_button61->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadNextDay ), NULL, this );
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnOpenWorkspace ), this, m_menuItemOpenWorkspace->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnSaveWorkspace ), this, m_menuItemSaveWorkspace->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnSaveWorkspaceAs ), this, m_menuItemSaveWorkspaceAs->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnNewWorkspace ), this, m_menuItemNewWorkspace->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnOpenForecast ), this, m_menuItemOpenForecast->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnOpenLayer ), this, m_menuItemOpenGISLayer->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnCloseLayer ), this, m_menuItemCloseGISLayer->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnMoveLayer ), this, m_menuItemMoveGISLayer->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnQuit ), this, m_menuItemQuit->GetId());
+	m_menuOptions->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OpenFramePreferences ), this, m_menuItemPreferences->GetId());
+	m_menuTools->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OpenFramePredictandDB ), this, m_menuItemBuildPredictandDB->GetId());
+	m_menuLog->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnShowLog ), this, m_menuItemShowLog->GetId());
+	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnLogLevel1 ), this, m_menuItemLogLevel1->GetId());
+	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnLogLevel2 ), this, m_menuItemLogLevel2->GetId());
+	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OnLogLevel3 ), this, m_menuItemLogLevel3->GetId());
+	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameViewerVirtual::OpenFrameAbout ), this, m_menuItemAbout->GetId());
 }
 
-asFrameForecastVirtual::~asFrameForecastVirtual()
+asFrameViewerVirtual::~asFrameViewerVirtual()
 {
 	// Disconnect Events
-	m_button51->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadPreviousDay ), NULL, this );
-	m_button5->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadPreviousForecast ), NULL, this );
-	m_button6->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadNextForecast ), NULL, this );
-	m_button61->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadNextDay ), NULL, this );
+	m_button51->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadPreviousDay ), NULL, this );
+	m_button5->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadPreviousForecast ), NULL, this );
+	m_button6->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadNextForecast ), NULL, this );
+	m_button61->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameViewerVirtual::OnLoadNextDay ), NULL, this );
 
 }
 
@@ -822,7 +822,7 @@ asFrameGridAnalogsValuesVirtual::~asFrameGridAnalogsValuesVirtual()
 
 asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 800,600 ), wxDefaultSize );
+	this->SetSizeHints( wxSize( 1300,600 ), wxDefaultSize );
 
 	wxBoxSizer* bSizer25;
 	bSizer25 = new wxBoxSizer( wxVERTICAL );
@@ -839,32 +839,38 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_scrolledWindowOptions->SetScrollRate( 5, 5 );
 	m_sizerScrolledWindow = new wxBoxSizer( wxVERTICAL );
 
+	m_staticTextChoiceMethod = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Method"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextChoiceMethod->Wrap( -1 );
+	m_sizerScrolledWindow->Add( m_staticTextChoiceMethod, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
+
+	wxArrayString m_choiceMethodChoices;
+	m_choiceMethod = new wxChoice( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceMethodChoices, 0 );
+	m_choiceMethod->SetSelection( 0 );
+	m_sizerScrolledWindow->Add( m_choiceMethod, 0, wxEXPAND|wxBOTTOM, 5 );
+
 	m_staticTextChoiceForecast = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Forecast"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextChoiceForecast->Wrap( -1 );
-	m_sizerScrolledWindow->Add( m_staticTextChoiceForecast, 0, wxTOP|wxRIGHT|wxLEFT|wxALIGN_CENTER_HORIZONTAL, 5 );
+	m_sizerScrolledWindow->Add( m_staticTextChoiceForecast, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 
 	wxArrayString m_choiceForecastChoices;
 	m_choiceForecast = new wxChoice( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceForecastChoices, 0 );
 	m_choiceForecast->SetSelection( 0 );
-	m_choiceForecast->SetMaxSize( wxSize( 150,-1 ) );
-
-	m_sizerScrolledWindow->Add( m_choiceForecast, 0, wxEXPAND|wxALL, 5 );
+	m_sizerScrolledWindow->Add( m_choiceForecast, 0, wxEXPAND|wxBOTTOM, 5 );
 
 	m_staticTextCheckListPredictors = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Possible predictors"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextCheckListPredictors->Wrap( -1 );
-	m_sizerScrolledWindow->Add( m_staticTextCheckListPredictors, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	m_sizerScrolledWindow->Add( m_staticTextCheckListPredictors, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 
-	wxArrayString m_checkListPredictorsChoices;
-	m_checkListPredictors = new wxCheckListBox( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_checkListPredictorsChoices, 0 );
-	m_sizerScrolledWindow->Add( m_checkListPredictors, 1, wxEXPAND, 5 );
+	m_listPredictors = new wxListBox( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
+	m_sizerScrolledWindow->Add( m_listPredictors, 1, wxEXPAND, 5 );
 
 	m_staticTextTocLeft = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Layers of the left panel"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextTocLeft->Wrap( -1 );
-	m_sizerScrolledWindow->Add( m_staticTextTocLeft, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	m_sizerScrolledWindow->Add( m_staticTextTocLeft, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 
 	m_staticTextTocRight = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Layers of the right panel"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextTocRight->Wrap( -1 );
-	m_sizerScrolledWindow->Add( m_staticTextTocRight, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	m_sizerScrolledWindow->Add( m_staticTextTocRight, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 
 
 	m_scrolledWindowOptions->SetSizer( m_sizerScrolledWindow );
@@ -880,13 +886,15 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	wxBoxSizer* bSizer34;
 	bSizer34 = new wxBoxSizer( wxHORIZONTAL );
 
-	m_staticTextTargetDates = new wxStaticText( m_panelLeft, wxID_ANY, _("Forecast date"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextTargetDates = new wxStaticText( m_panelLeft, wxID_ANY, _("Forecast"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextTargetDates->Wrap( -1 );
 	bSizer34->Add( m_staticTextTargetDates, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	wxArrayString m_choiceTargetDatesChoices;
 	m_choiceTargetDates = new wxChoice( m_panelLeft, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceTargetDatesChoices, 0 );
 	m_choiceTargetDates->SetSelection( 0 );
+	m_choiceTargetDates->SetMinSize( wxSize( 100,-1 ) );
+
 	bSizer34->Add( m_choiceTargetDates, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
@@ -900,6 +908,14 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_panelGISLeft->Layout();
 	m_sizerGISLeft->Fit( m_panelGISLeft );
 	bSizer371->Add( m_panelGISLeft, 1, wxEXPAND, 5 );
+
+	m_panelColorbarLeft = new wxPanel( m_panelLeft, wxID_ANY, wxDefaultPosition, wxSize( -1,30 ), wxTAB_TRAVERSAL );
+	m_sizerColorbarLeft = new wxBoxSizer( wxVERTICAL );
+
+
+	m_panelColorbarLeft->SetSizer( m_sizerColorbarLeft );
+	m_panelColorbarLeft->Layout();
+	bSizer371->Add( m_panelColorbarLeft, 0, wxALL|wxEXPAND, 5 );
 
 
 	m_panelLeft->SetSizer( bSizer371 );
@@ -915,10 +931,10 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_sizerSwitch = new wxBoxSizer( wxVERTICAL );
 
 	m_bpButtonSwitchRight = new wxBitmapButton( m_panelSwitch, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 10,28 ), wxBU_AUTODRAW|0|wxBORDER_NONE );
-	m_sizerSwitch->Add( m_bpButtonSwitchRight, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	m_sizerSwitch->Add( m_bpButtonSwitchRight, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxLEFT, 1 );
 
 	m_bpButtonSwitchLeft = new wxBitmapButton( m_panelSwitch, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 10,28 ), wxBU_AUTODRAW|0|wxBORDER_NONE );
-	m_sizerSwitch->Add( m_bpButtonSwitchLeft, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	m_sizerSwitch->Add( m_bpButtonSwitchLeft, 0, wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxLEFT, 1 );
 
 
 	bSizer40->Add( m_sizerSwitch, 1, wxALIGN_CENTER|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
@@ -943,6 +959,8 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	wxArrayString m_choiceAnalogDatesChoices;
 	m_choiceAnalogDates = new wxChoice( m_panelRight, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceAnalogDatesChoices, 0 );
 	m_choiceAnalogDates->SetSelection( 0 );
+	m_choiceAnalogDates->SetMinSize( wxSize( 120,-1 ) );
+
 	bSizer35->Add( m_choiceAnalogDates, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
@@ -956,6 +974,14 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_panelGISRight->Layout();
 	m_sizerGISRight->Fit( m_panelGISRight );
 	bSizer38->Add( m_panelGISRight, 1, wxEXPAND, 5 );
+
+	m_panelColorbarRight = new wxPanel( m_panelRight, wxID_ANY, wxDefaultPosition, wxSize( -1,30 ), wxTAB_TRAVERSAL );
+	m_sizerColorbarRight = new wxBoxSizer( wxVERTICAL );
+
+
+	m_panelColorbarRight->SetSizer( m_sizerColorbarRight );
+	m_panelColorbarRight->Layout();
+	bSizer38->Add( m_panelColorbarRight, 0, wxALL|wxEXPAND, 5 );
 
 
 	m_panelRight->SetSizer( bSizer38 );
@@ -979,11 +1005,16 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 
 	this->SetSizer( bSizer25 );
 	this->Layout();
+	bSizer25->Fit( this );
 	m_menubar = new wxMenuBar( 0 );
 	m_menuFile = new wxMenu();
 	wxMenuItem* m_menuItemOpenGisLayer;
 	m_menuItemOpenGisLayer = new wxMenuItem( m_menuFile, wxID_ANY, wxString( _("Open GIS layer") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menuFile->Append( m_menuItemOpenGisLayer );
+
+	wxMenuItem* m_menuItemCloseGISLayer;
+	m_menuItemCloseGISLayer = new wxMenuItem( m_menuFile, wxID_ANY, wxString( _("Close a GIS layer") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuFile->Append( m_menuItemCloseGISLayer );
 
 	m_menubar->Append( m_menuFile, _("File") );
 
@@ -999,20 +1030,23 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	this->Centre( wxBOTH );
 
 	// Connect Events
+	m_choiceMethod->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnMethodChange ), NULL, this );
 	m_choiceForecast->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnForecastChange ), NULL, this );
-	m_checkListPredictors->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePredictorsVirtual::OnPredictorSelectionChange ), NULL, this );
+	m_listPredictors->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnPredictorSelectionChange ), NULL, this );
 	m_choiceTargetDates->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnTargetDateChange ), NULL, this );
 	m_bpButtonSwitchRight->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictorsVirtual::OnSwitchRight ), NULL, this );
 	m_bpButtonSwitchLeft->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictorsVirtual::OnSwitchLeft ), NULL, this );
 	m_choiceAnalogDates->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnAnalogDateChange ), NULL, this );
 	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnOpenLayer ), this, m_menuItemOpenGisLayer->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnCloseLayer ), this, m_menuItemCloseGISLayer->GetId());
 }
 
 asFramePredictorsVirtual::~asFramePredictorsVirtual()
 {
 	// Disconnect Events
+	m_choiceMethod->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnMethodChange ), NULL, this );
 	m_choiceForecast->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnForecastChange ), NULL, this );
-	m_checkListPredictors->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePredictorsVirtual::OnPredictorSelectionChange ), NULL, this );
+	m_listPredictors->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnPredictorSelectionChange ), NULL, this );
 	m_choiceTargetDates->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnTargetDateChange ), NULL, this );
 	m_bpButtonSwitchRight->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictorsVirtual::OnSwitchRight ), NULL, this );
 	m_bpButtonSwitchLeft->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictorsVirtual::OnSwitchLeft ), NULL, this );
@@ -1113,6 +1147,132 @@ asFramePreferencesViewerVirtual::asFramePreferencesViewerVirtual( wxWindow* pare
 	m_panelWorkspace->Layout();
 	bSizer55->Fit( m_panelWorkspace );
 	m_notebookBase->AddPage( m_panelWorkspace, _("Workspace"), true );
+	m_panelPaths = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer551;
+	bSizer551 = new wxBoxSizer( wxVERTICAL );
+
+	wxStaticBoxSizer* sbSizer5;
+	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( m_panelPaths, wxID_ANY, _("Path to the predictor datasets") ), wxVERTICAL );
+
+	wxFlexGridSizer* fgSizer6;
+	fgSizer6 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer6->AddGrowableCol( 1 );
+	fgSizer6->SetFlexibleDirection( wxBOTH );
+	fgSizer6->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	m_staticPredictorID = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, _("Dataset ID"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticPredictorID->Wrap( -1 );
+	fgSizer6->Add( m_staticPredictorID, 0, wxALL, 5 );
+
+	m_staticPredictorPaths = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, _("Path to the directory"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticPredictorPaths->Wrap( -1 );
+	fgSizer6->Add( m_staticPredictorPaths, 0, wxALL, 5 );
+
+	m_textCtrlDatasetId1 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId1, 1, wxALL|wxEXPAND, 5 );
+
+	m_dirPickerDataset1 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset1, 0, wxALL|wxEXPAND, 5 );
+
+	m_textCtrlDatasetId2 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId2, 0, wxALL, 5 );
+
+	m_dirPickerDataset2 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset2, 0, wxALL|wxEXPAND, 5 );
+
+	m_textCtrlDatasetId3 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId3, 0, wxALL, 5 );
+
+	m_dirPickerDataset3 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset3, 0, wxALL|wxEXPAND, 5 );
+
+	m_textCtrlDatasetId4 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId4, 0, wxALL, 5 );
+
+	m_dirPickerDataset4 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset4, 0, wxALL|wxEXPAND, 5 );
+
+	m_textCtrlDatasetId5 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId5, 0, wxALL, 5 );
+
+	m_dirPickerDataset5 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset5, 0, wxALL|wxEXPAND, 5 );
+
+	m_textCtrlDatasetId6 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId6, 0, wxALL, 5 );
+
+	m_dirPickerDataset6 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset6, 0, wxALL|wxEXPAND, 5 );
+
+	m_textCtrlDatasetId7 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	fgSizer6->Add( m_textCtrlDatasetId7, 0, wxALL, 5 );
+
+	m_dirPickerDataset7 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	fgSizer6->Add( m_dirPickerDataset7, 0, wxALL|wxEXPAND, 5 );
+
+
+	sbSizer5->Add( fgSizer6, 1, wxEXPAND, 5 );
+
+
+	bSizer551->Add( sbSizer5, 1, wxEXPAND|wxALL, 5 );
+
+
+	m_panelPaths->SetSizer( bSizer551 );
+	m_panelPaths->Layout();
+	bSizer551->Fit( m_panelPaths );
+	m_notebookBase->AddPage( m_panelPaths, _("Paths"), false );
+	m_panelColors = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer5511;
+	bSizer5511 = new wxBoxSizer( wxVERTICAL );
+
+	wxStaticBoxSizer* sbSizer51;
+	sbSizer51 = new wxStaticBoxSizer( new wxStaticBox( m_panelColors, wxID_ANY, _("Paths to the color tables") ), wxVERTICAL );
+
+	wxFlexGridSizer* fgSizer61;
+	fgSizer61 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer61->AddGrowableCol( 1 );
+	fgSizer61->SetFlexibleDirection( wxBOTH );
+	fgSizer61->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	m_staticText54 = new wxStaticText( sbSizer51->GetStaticBox(), wxID_ANY, _("Geopotential height"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText54->Wrap( -1 );
+	fgSizer61->Add( m_staticText54, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_filePickerColorZ = new wxFilePickerCtrl( sbSizer51->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a file"), _("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	fgSizer61->Add( m_filePickerColorZ, 0, wxALL|wxEXPAND, 5 );
+
+	RelativeHumidity = new wxStaticText( sbSizer51->GetStaticBox(), wxID_ANY, _("Precipitable water"), wxDefaultPosition, wxDefaultSize, 0 );
+	RelativeHumidity->Wrap( -1 );
+	fgSizer61->Add( RelativeHumidity, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_filePickerColorPwat = new wxFilePickerCtrl( sbSizer51->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a file"), _("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	fgSizer61->Add( m_filePickerColorPwat, 0, wxALL|wxEXPAND, 5 );
+
+	m_staticText57 = new wxStaticText( sbSizer51->GetStaticBox(), wxID_ANY, _("Relative humidity"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText57->Wrap( -1 );
+	fgSizer61->Add( m_staticText57, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_filePickerColorRh = new wxFilePickerCtrl( sbSizer51->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a file"), _("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	fgSizer61->Add( m_filePickerColorRh, 0, wxALL|wxEXPAND, 5 );
+
+	m_staticText58 = new wxStaticText( sbSizer51->GetStaticBox(), wxID_ANY, _("Specific humidity"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText58->Wrap( -1 );
+	fgSizer61->Add( m_staticText58, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_filePickerColorSh = new wxFilePickerCtrl( sbSizer51->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a file"), _("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	fgSizer61->Add( m_filePickerColorSh, 0, wxALL|wxEXPAND, 5 );
+
+
+	sbSizer51->Add( fgSizer61, 1, wxEXPAND, 5 );
+
+
+	bSizer5511->Add( sbSizer51, 1, wxEXPAND|wxALL, 5 );
+
+
+	m_panelColors->SetSizer( bSizer5511 );
+	m_panelColors->Layout();
+	bSizer5511->Fit( m_panelColors );
+	m_notebookBase->AddPage( m_panelColors, _("Colors"), false );
 	m_panelGeneralCommon = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );

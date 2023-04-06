@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaGenGrid.h"
+#include "asAreaGridGeneric.h"
 #include "asPredictorProj.h"
 #include "asTimeArray.h"
 
@@ -135,7 +135,7 @@ TEST(PredictorProjCordex, LoadEasy) {
     double xWidth = 100;
     double yMin = 250;
     double yWidth = 100;
-    asAreaGenGrid area(xMin, xWidth, yMin, yWidth, 0, predictor->IsLatLon());
+    asAreaGridGeneric area(xMin, xWidth, yMin, yWidth, 0, predictor->IsLatLon());
 
     double start = asTime::GetMJD(2023, 10, 17, 12, 00);
     double end = asTime::GetMJD(2023, 10, 17, 12, 00);
@@ -171,7 +171,7 @@ TEST(PredictorProjCordex, LoadOver2Files) {
     double xWidth = 100;
     double yMin = 250;
     double yWidth = 100;
-    asAreaGenGrid area(xMin, xWidth, yMin, yWidth, asFLAT_ALLOWED, asPredictor::IsLatLon("CORDEX"));
+    asAreaGridGeneric area(xMin, xWidth, yMin, yWidth, asFLAT_ALLOWED, asPredictor::IsLatLon("CORDEX"));
 
     double start = asTime::GetMJD(2025, 12, 25, 12, 00);
     double end = asTime::GetMJD(2026, 1, 10, 12, 00);
@@ -252,7 +252,7 @@ TEST(PredictorProjCordex, LoadAnotherModel) {
     double xWidth = 0.1;
     double yMin = -19.52;
     double yWidth = 0.1;
-    asAreaGenGrid area(xMin, xWidth, yMin, yWidth, asFLAT_ALLOWED, asPredictor::IsLatLon("CORDEX"));
+    asAreaGridGeneric area(xMin, xWidth, yMin, yWidth, asFLAT_ALLOWED, asPredictor::IsLatLon("CORDEX"));
 
     double start = asTime::GetMJD(2046, 1, 1, 12, 00);
     double end = asTime::GetMJD(2046, 1, 10, 12, 00);

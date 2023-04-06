@@ -28,7 +28,7 @@
 
 #include "asListBoxForecasts.h"
 
-#include "asForecastViewer.h"
+#include "asForecastRenderer.h"
 #include "images.h"
 
 BEGIN_EVENT_TABLE(asListBoxForecasts, wxTreeCtrl)

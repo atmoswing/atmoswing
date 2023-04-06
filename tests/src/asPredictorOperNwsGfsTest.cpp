@@ -30,38 +30,38 @@
 #include <wx/filename.h>
 
 #include "asAreaGrid.h"
-#include "asAreaRegGrid.h"
+#include "asAreaGridRegular.h"
 #include "asPredictorOper.h"
 #include "asTimeArray.h"
 
 TEST(PredictorOperNwsGfs, GetCorrectPredictors) {
     asPredictorOper* predictor;
 
-    predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "z");
+    predictor = asPredictorOper::GetInstance("NWS_GFS", "z");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "t");
+    predictor = asPredictorOper::GetInstance("NWS_GFS", "t");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "w");
+    predictor = asPredictorOper::GetInstance("NWS_GFS", "w");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "rh");
+    predictor = asPredictorOper::GetInstance("NWS_GFS", "rh");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "u");
+    predictor = asPredictorOper::GetInstance("NWS_GFS", "u");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "v");
+    predictor = asPredictorOper::GetInstance("NWS_GFS", "v");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "pwat");
+    predictor = asPredictorOper::GetInstance("NWS_GFS", "pwat");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
     wxDELETE(predictor);
 }
@@ -84,7 +84,7 @@ TEST(PredictorOperNwsGfs, LoadEasy) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -169,9 +169,9 @@ TEST(PredictorOperNwsGfs, LoadEasyRegular) {
     double yWidth = 3;
     double step = 1;
     float level = 300;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -258,7 +258,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValues) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -310,7 +310,7 @@ TEST(PredictorOperNwsGfs, LoadBorderLeft) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -362,7 +362,7 @@ TEST(PredictorOperNwsGfs, LoadBorderRight) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -411,9 +411,9 @@ TEST(PredictorOperNwsGfs, LoadBorderRightRegular) {
     double yWidth = 3;
     double step = 1;
     float level = 300;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -465,7 +465,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStepLon) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -519,7 +519,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStepLonLat) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -568,9 +568,9 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStepLonLatRegular) {
     double xStep = 2;
     double yStep = 3;
     float level = 300;
-    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaGridRegular area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -621,7 +621,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatRoundStart) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -673,9 +673,9 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatRoundStartRegular) {
     double xStep = 2.5;
     double yStep = 2.5;
     float level = 300;
-    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaGridRegular area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -729,7 +729,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatIrregularStart) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -779,7 +779,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatIrregularStartAndEnd
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -824,9 +824,9 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatIrregularStartAndEnd
     double xStep = 2.5;
     double yStep = 2.5;
     float level = 300;
-    asAreaRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+    asAreaGridRegular area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -856,8 +856,8 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatIrregularStartAndEnd
 
 TEST(PredictorOperNwsGfsRegular, LoadVersion2017) {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2017/2017121312.NWS_GFS_Forecast.hgt.012.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2017/2017121312.NWS_GFS_Forecast.hgt.024.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2017/2017121312.NWS_GFS.hgt.012.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2017/2017121312.NWS_GFS.hgt.024.grib2");
 
     asTimeArray dates(asTime::GetMJD(2017, 12, 14, 00, 00), asTime::GetMJD(2017, 12, 14, 12, 00), 12, "Simple");
     dates.Init();
@@ -868,9 +868,9 @@ TEST(PredictorOperNwsGfsRegular, LoadVersion2017) {
     double yWidth = 3;
     double step = 0.5;
     float level = 300;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("NWS_GFS", "hgt");
     wxASSERT(predictor);
 
     // Create file names

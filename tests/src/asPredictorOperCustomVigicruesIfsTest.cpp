@@ -35,11 +35,11 @@
 TEST(PredictorOperCustomVigicruesIfs, GetCorrectPredictors) {
     asPredictorOper* predictor;
 
-    predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS_Forecast", "z");
+    predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS", "z");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS_Forecast", "tcwv");
+    predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS", "tcwv");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
     wxDELETE(predictor);
 }
@@ -60,7 +60,7 @@ TEST(PredictorOperCustomVigicruesIfs, LoadSingleDay) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -110,7 +110,7 @@ TEST(PredictorOperCustomVigicruesIfs, LoadThirdTimeStep) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -160,7 +160,7 @@ TEST(PredictorOperCustomVigicruesIfs, LoadFullTimeArray) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -245,7 +245,7 @@ TEST(PredictorOperCustomVigicruesIfs, LoadTotalColumnWaterVapor) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS_Forecast", "tcwv");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS", "tcwv");
     wxASSERT(predictor);
 
     // Create file names
@@ -331,7 +331,7 @@ TEST(PredictorOperCustomVigicruesIfs, LoadRelativeHumidity) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS_Forecast", "r");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS", "r");
     wxASSERT(predictor);
 
     // Create file names
@@ -397,7 +397,7 @@ TEST(PredictorOperCustomVigicruesIfs, CanFindFiles) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS", "z");
     wxASSERT(predictor);
 
     predictor->SetPredictorsRealtimeDirectory(wxFileName::GetCwd() + "/files/data-custom-vigicrues-ifs");

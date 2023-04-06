@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaGenGrid.h"
+#include "asAreaGridGeneric.h"
 #include "asPredictorProj.h"
 #include "asTimeArray.h"
 
@@ -101,7 +101,7 @@ TEST(PredictorProjCmip5, LoadEasy) {
     double xWidth = 3;
     double yMin = 75.7;
     double yWidth = 2;
-    asAreaGenGrid area(xMin, xWidth, yMin, yWidth, 0);
+    asAreaGridGeneric area(xMin, xWidth, yMin, yWidth, 0);
 
     double start = asTime::GetMJD(2006, 1, 1, 12, 00);
     double end = asTime::GetMJD(2006, 1, 1, 12, 00);
@@ -143,7 +143,7 @@ TEST(PredictorProjCmip5, LoadBorderLeft) {
     double xWidth = 2;
     double yMin = 75.5;
     double yWidth = 2;
-    asAreaGenGrid area(xMin, xWidth, yMin, yWidth, 0);
+    asAreaGridGeneric area(xMin, xWidth, yMin, yWidth, 0);
 
     double start = asTime::GetMJD(2006, 1, 1, 12, 00);
     double end = asTime::GetMJD(2006, 1, 1, 12, 00);
@@ -185,7 +185,7 @@ TEST(PredictorProjCmip5, LoadWithPressureLevels) {
     double yMin = 1.683;
     double yWidth = 1;
     float level = 850;
-    asAreaGenGrid area(xMin, xWidth, yMin, yWidth);
+    asAreaGridGeneric area(xMin, xWidth, yMin, yWidth);
 
     double start = asTime::GetMJD(2097, 1, 1, 12, 00);
     double end = asTime::GetMJD(2097, 1, 3, 12, 00);
@@ -236,7 +236,7 @@ TEST(PredictorProjCmip5, LoadOver2Years) {
     double yMin = 1.683;
     double yWidth = 1;
     float level = 850;
-    asAreaGenGrid area(xMin, xWidth, yMin, yWidth);
+    asAreaGridGeneric area(xMin, xWidth, yMin, yWidth);
 
     double start = asTime::GetMJD(2097, 12, 25, 12, 00);
     double end = asTime::GetMJD(2098, 1, 10, 12, 00);
@@ -309,7 +309,7 @@ TEST(PredictorProjCmip5, LoadAnotherModel) {
     double yMin = 0.701;
     double yWidth = 2;
     float level = 500;
-    asAreaGenGrid area(xMin, xWidth, yMin, yWidth);
+    asAreaGridGeneric area(xMin, xWidth, yMin, yWidth);
 
     double start = asTime::GetMJD(2096, 12, 25, 00, 00);
     double end = asTime::GetMJD(2097, 1, 10, 00, 00);

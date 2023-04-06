@@ -37,7 +37,7 @@
 #include "AtmoswingMainForecaster.h"
 
 AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame* frame)
-    : asFrameMain(frame) {
+    : asFrameForecaster(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif

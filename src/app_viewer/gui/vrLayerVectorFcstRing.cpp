@@ -38,7 +38,7 @@ vrLayerVectorFcstRing::vrLayerVectorFcstRing() {
     m_valueMax = 1;
 }
 
-vrLayerVectorFcstRing::~vrLayerVectorFcstRing() {}
+vrLayerVectorFcstRing::~vrLayerVectorFcstRing() = default;
 
 long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
     wxASSERT(m_layer);
@@ -47,7 +47,7 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
     feature->SetGeometry(geometry);
 
     if (data != nullptr) {
-        wxArrayDouble* dataArray = static_cast<wxArrayDouble*>(data);
+        auto dataArray = static_cast<wxArrayDouble*>(data);
         wxASSERT(dataArray->GetCount() >= 3);
 
         for (int iDat = 0; iDat < dataArray->size(); iDat++) {
@@ -68,11 +68,12 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
 }
 
 void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry,
-                                       const wxRect2DDouble& coord, vrRenderVector* render, vrLabel* label,
+                                       const wxRect2DDouble& coord, const vrRender* render, vrLabel* label,
                                        double pxsize) {
     // Set the defaut pen
     wxASSERT(render->GetType() == vrRENDER_VECTOR);
-    wxPen defaultPen(render->GetColorPen(), render->GetSize());
+    auto renderVector = const_cast<vrRenderVector*>(dynamic_cast<const vrRenderVector*>(render));
+    wxPen defaultPen(renderVector->GetColorPen(), renderVector->GetSize());
     wxPen selPen(*wxGREEN, 3);
 
     // Get graphics context
@@ -86,7 +87,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
         wxRect2DDouble extWndRect(0, 0, extWidth, extHeight);
 
         // Get geometries
-        OGRPoint* geom = dynamic_cast<OGRPoint*>(geometry);
+        auto geom = dynamic_cast<OGRPoint*>(geometry);
 
         wxPoint point = _GetPointFromReal(wxPoint2DDouble(geom->getX(), geom->getY()), coord.GetLeftTop(), pxsize);
 
@@ -98,7 +99,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
         wxGraphicsPath path = gc->CreatePath();
 
         // Create first segment
-        _CreatePath(path, point, leadTimeSize, 0);
+        CreatePath(path, point, leadTimeSize, 0);
 
         // Ensure intersecting display
         wxRect2DDouble pathRect = path.GetBox();
@@ -109,7 +110,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
             return;
         }
 
-        // Set the defaut pen
+        // Set the default pen
         gc->SetPen(defaultPen);
         if (IsFeatureSelected(feature->GetFID())) {
             gc->SetPen(selPen);
@@ -117,17 +118,17 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
 
         // Get value to set color
         double value = feature->GetFieldAsDouble(3);
-        _Paint(gc, path, value);
+        Paint(gc, path, value);
 
         // Draw next segments
         for (int iLead = 1; iLead < leadTimeSize; iLead++) {
             // Create shape
             path = gc->CreatePath();
-            _CreatePath(path, point, leadTimeSize, iLead);
+            CreatePath(path, point, leadTimeSize, iLead);
 
             // Get value to set color
             value = feature->GetFieldAsDouble(iLead + 3);
-            _Paint(gc, path, value);
+            Paint(gc, path, value);
         }
 
         // Create a mark at the center
@@ -145,7 +146,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
     }
 }
 
-void vrLayerVectorFcstRing::_CreatePath(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb) {
+void vrLayerVectorFcstRing::CreatePath(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb) {
     const wxDouble radiusOut = 25 * g_ppiScaleDc;
     const wxDouble radiusIn = 10 * g_ppiScaleDc;
 
@@ -176,7 +177,7 @@ void vrLayerVectorFcstRing::_CreatePath(wxGraphicsPath& path, const wxPoint& cen
     path.CloseSubpath();
 }
 
-void vrLayerVectorFcstRing::_Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value) {
+void vrLayerVectorFcstRing::Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value) const {
     // wxColour colour(255,0,0); -> red
     // wxColour colour(0,0,255); -> blue
     // wxColour colour(0,255,0); -> green

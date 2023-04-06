@@ -223,7 +223,7 @@ wxString asResultsForecastAggregator::GetMethodName(int methodRow) const {
     return name;
 }
 
-vwxs asResultsForecastAggregator::GetAllMethodNames() const {
+vwxs asResultsForecastAggregator::GetMethodNames() const {
     vwxs names;
 
     for (int methodRow = 0; methodRow < m_forecasts.size(); methodRow++) {
@@ -241,34 +241,7 @@ vwxs asResultsForecastAggregator::GetAllMethodNames() const {
     return names;
 }
 
-vwxs asResultsForecastAggregator::GetAllForecastNames() const {
-    vwxs names;
-
-    for (int methodRow = 0; methodRow < m_forecasts.size(); methodRow++) {
-        wxASSERT(!m_forecasts[methodRow].empty());
-
-        wxString methodName = m_forecasts[methodRow][0]->GetMethodIdDisplay();
-        if (!methodName.IsSameAs(m_forecasts[methodRow][0]->GetMethodId())) {
-            methodName.Append(asStrF(" (%s)", m_forecasts[methodRow][0]->GetMethodId()));
-        }
-
-        for (int forecastRow = 0; forecastRow < m_forecasts[methodRow].size(); forecastRow++) {
-            wxString name = methodName;
-
-            if (!m_forecasts[methodRow][forecastRow]->GetSpecificTag().IsEmpty()) {
-                name.Append(" - ");
-                name.Append(m_forecasts[methodRow][forecastRow]->GetSpecificTagDisplay());
-            }
-            names.push_back(name);
-        }
-    }
-
-    wxASSERT(!names.empty());
-
-    return names;
-}
-
-wxArrayString asResultsForecastAggregator::GetAllForecastNamesWxArray() const {
+wxArrayString asResultsForecastAggregator::GetMethodNamesWxArray() const {
     wxArrayString names;
 
     for (int methodRow = 0; methodRow < m_forecasts.size(); methodRow++) {
@@ -278,13 +251,48 @@ wxArrayString asResultsForecastAggregator::GetAllForecastNamesWxArray() const {
         if (!methodName.IsSameAs(m_forecasts[methodRow][0]->GetMethodId())) {
             methodName.Append(asStrF(" (%s)", m_forecasts[methodRow][0]->GetMethodId()));
         }
+        names.Add(methodName);
+    }
 
-        for (int forecastRow = 0; forecastRow < m_forecasts[methodRow].size(); forecastRow++) {
+    wxASSERT(!names.empty());
+
+    return names;
+}
+
+wxArrayString asResultsForecastAggregator::GetForecastNamesWxArray(int methodRow) const {
+    wxASSERT(m_forecasts.size() > methodRow);
+    wxArrayString names;
+
+    for (auto forecast : m_forecasts[methodRow]) {
+        if (!forecast->GetSpecificTagDisplay().IsEmpty()) {
+            names.Add(forecast->GetSpecificTagDisplay());
+        } else {
+            names.Add(forecast->GetSpecificTag());
+        }
+    }
+
+    wxASSERT(!names.empty());
+
+    return names;
+}
+
+wxArrayString asResultsForecastAggregator::GetCombinedForecastNamesWxArray() const {
+    wxArrayString names;
+
+    for (const auto & method : m_forecasts) {
+        wxASSERT(!method.empty());
+
+        wxString methodName = method[0]->GetMethodIdDisplay();
+        if (!methodName.IsSameAs(method[0]->GetMethodId())) {
+            methodName.Append(asStrF(" (%s)", method[0]->GetMethodId()));
+        }
+
+        for (auto forecast : method) {
             wxString name = methodName;
 
-            if (!m_forecasts[methodRow][forecastRow]->GetSpecificTag().IsEmpty()) {
+            if (!forecast->GetSpecificTag().IsEmpty()) {
                 name.Append(" - ");
-                name.Append(m_forecasts[methodRow][forecastRow]->GetSpecificTagDisplay());
+                name.Append(forecast->GetSpecificTagDisplay());
             }
             names.Add(name);
         }
@@ -386,7 +394,7 @@ wxArrayString asResultsForecastAggregator::GetStationNames(int methodRow, int fo
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
 
-    stationNames = m_forecasts[methodRow][forecastRow]->GetStationNamesWxArrayString();
+    stationNames = m_forecasts[methodRow][forecastRow]->GetStationNamesWxArray();
 
     return stationNames;
 }
@@ -412,7 +420,7 @@ wxArrayString asResultsForecastAggregator::GetStationNamesWithHeights(int method
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
 
-    stationNames = m_forecasts[methodRow][forecastRow]->GetStationNamesAndHeightsWxArrayString();
+    stationNames = m_forecasts[methodRow][forecastRow]->GetStationNamesAndHeightsWxArray();
 
     return stationNames;
 }
@@ -457,7 +465,7 @@ int asResultsForecastAggregator::GetLeadTimeLengthMax() const {
     return length;
 }
 
-wxArrayString asResultsForecastAggregator::GetLeadTimes(int methodRow, int forecastRow) const {
+wxArrayString asResultsForecastAggregator::GetTargetDatesWxArray(int methodRow, int forecastRow) const {
     wxArrayString leadTimes;
 
     if (m_forecasts.empty()) return leadTimes;
@@ -465,13 +473,40 @@ wxArrayString asResultsForecastAggregator::GetLeadTimes(int methodRow, int forec
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
 
-    a1f dates = m_forecasts[methodRow][forecastRow]->GetTargetDates();
+    return m_forecasts[methodRow][forecastRow]->GetTargetDatesWxArray();;
+}
 
-    for (float date : dates) {
-        leadTimes.Add(asTime::GetStringTime(date, "DD.MM.YYYY HH"));
+vf asResultsForecastAggregator::GetMaxExtent() const {
+    if (m_forecasts.empty() || m_forecasts[0].empty()) {
+        return {0, 0, 0, 0};
     }
 
-    return leadTimes;
+    wxASSERT(m_forecasts[0][0]);
+    vf vecLonMin = m_forecasts[0][0]->GetPredictorLonMin();
+    vf vecLonMax = m_forecasts[0][0]->GetPredictorLonMax();
+    vf vecLatMin = m_forecasts[0][0]->GetPredictorLatMin();
+    vf vecLatMax = m_forecasts[0][0]->GetPredictorLatMax();
+
+    vf extent = {
+        *std::min_element(vecLonMin.begin(), vecLonMin.end()),
+        *std::max_element(vecLonMax.begin(), vecLonMax.end()),
+        *std::min_element(vecLatMin.begin(), vecLatMin.end()),
+        *std::max_element(vecLatMax.begin(), vecLatMax.end())};
+
+    for (const auto& method : m_forecasts) {
+        for (const auto& forecast : method) {
+            vecLonMin = forecast->GetPredictorLonMin();
+            vecLonMax = forecast->GetPredictorLonMax();
+            vecLatMin = forecast->GetPredictorLatMin();
+            vecLatMax = forecast->GetPredictorLatMax();
+            extent[0] = wxMin(extent[0], *std::min_element(vecLonMin.begin(), vecLonMin.end()));
+            extent[1] = wxMax(extent[1], *std::max_element(vecLonMax.begin(), vecLonMax.end()));
+            extent[2] = wxMin(extent[2], *std::min_element(vecLatMin.begin(), vecLatMin.end()));
+            extent[3] = wxMax(extent[3], *std::max_element(vecLatMax.begin(), vecLatMax.end()));
+        }
+    }
+
+    return extent;
 }
 
 a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, int returnPeriodRef,

@@ -119,7 +119,7 @@ bool asMethodForecasting::Manager() {
             // Forecast
             if (!Forecast(params)) {
                 asLog::PrintToConsole(_("FAILED!\n"));
-                wxLogError(_("The forecast could not be achieved"));
+                wxLogError(_("The forecast could not be processed"));
 
 #if USE_GUI
                 // Send event
@@ -1578,7 +1578,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast& results, asParamet
     // Set the predictands values to the corresponding analog dates
     wxASSERT(m_predictandDB);
 
-    // Extract the stations IDs and coordinates
+    // Set the stations IDs and coordinates
     wxASSERT(m_predictandDB->GetStationsNb() > 0);
     a1i stationsId = m_predictandDB->GetStationsIdArray();
     wxASSERT(stationsId.size() > 0);
@@ -1594,6 +1594,65 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast& results, asParamet
         a2f refValues = m_predictandDB->GetReferenceValuesArray();
         results.SetReferenceValues(refValues);
     }
+
+    // Set the predictor properties
+    vwxs predictorDatasetIdsOper;
+    vwxs predictorDatasetIdsArchive;
+    vwxs predictorDataIdsOper;
+    vwxs predictorDataIdsArchive;
+    vf predictorLevels;
+    vf predictorHours;
+    vf predictorXmin;
+    vf predictorXmax;
+    vf predictorYmin;
+    vf predictorYmax;
+
+    for (int i = 0; i < params.GetStepsNb(); ++i) {
+        for (int j = 0; j < params.GetPredictorsNb(i); ++j) {
+            auto xMin = float(params.GetPredictorXmin(i, j));
+            auto xMax = float(params.GetPredictorXmin(i, j) +
+                              params.GetPredictorXstep(i, j) * (params.GetPredictorXptsnb(i, j) - 1));
+            auto yMin = float(params.GetPredictorYmin(i, j));
+            auto yMax = float(params.GetPredictorYmin(i, j) +
+                              params.GetPredictorYstep(i, j) * (params.GetPredictorYptsnb(i, j) - 1));
+            if (params.NeedsPreprocessing(i, j)) {
+                for (int k = 0; k < params.GetPreprocessSize(i, j); ++k) {
+                    predictorDatasetIdsOper.push_back(params.GetPreprocessRealtimeDatasetId(i, j, k));
+                    predictorDatasetIdsArchive.push_back(params.GetPreprocessArchiveDatasetId(i, j, k));
+                    predictorDataIdsOper.push_back(params.GetPreprocessRealtimeDataId(i, j, k));
+                    predictorDataIdsArchive.push_back(params.GetPreprocessArchiveDataId(i, j, k));
+                    predictorLevels.push_back(params.GetPreprocessLevel(i, j, k));
+                    predictorHours.push_back(float(params.GetPreprocessHour(i, j, k)));
+                    predictorXmin.push_back(xMin);
+                    predictorXmax.push_back(xMax);
+                    predictorYmin.push_back(yMin);
+                    predictorYmax.push_back(yMax);
+                }
+            } else {
+                predictorDatasetIdsOper.push_back(params.GetPredictorRealtimeDatasetId(i, j));
+                predictorDatasetIdsArchive.push_back(params.GetPredictorArchiveDatasetId(i, j));
+                predictorDataIdsOper.push_back(params.GetPredictorRealtimeDataId(i, j));
+                predictorDataIdsArchive.push_back(params.GetPredictorArchiveDataId(i, j));
+                predictorLevels.push_back(params.GetPredictorLevel(i, j));
+                predictorHours.push_back(float(params.GetPredictorHour(i, j)));
+                predictorXmin.push_back(xMin);
+                predictorXmax.push_back(xMax);
+                predictorYmin.push_back(yMin);
+                predictorYmax.push_back(yMax);
+            }
+        }
+    }
+
+    results.SetPredictorDatasetIdsOper(predictorDatasetIdsOper);
+    results.SetPredictorDatasetIdsArchive(predictorDatasetIdsArchive);
+    results.SetPredictorDataIdsOper(predictorDataIdsOper);
+    results.SetPredictorDataIdsArchive(predictorDataIdsArchive);
+    results.SetPredictorLevels(predictorLevels);
+    results.SetPredictorHours(predictorHours);
+    results.SetPredictorLonMin(predictorXmin);
+    results.SetPredictorLonMax(predictorXmax);
+    results.SetPredictorLatMin(predictorYmin);
+    results.SetPredictorLatMax(predictorYmax);
 
     a1f leadTimes = results.GetTargetDates();
 

@@ -86,12 +86,17 @@ class asAreaGrid : public asArea {
         return m_isRegular;
     }
 
+    bool IsFull() const {
+        return m_isFull;
+    }
+
     void AllowResizeFromData() {
         m_allowResizeFromData = true;
     }
 
   protected:
     bool m_isRegular;
+    bool m_isFull;
     bool m_isInitialized;
     bool m_allowResizeFromData;
     a1d m_xAxis;
