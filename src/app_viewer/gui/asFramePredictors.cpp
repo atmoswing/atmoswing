@@ -244,8 +244,11 @@ void asFramePredictors::UpdateAnalogDatesList() {
     a1f analogDates = forecast->GetAnalogsDates(m_selectedTargetDate);
     wxArrayString arrayAnalogDates;
     wxString format = forecast->GetDateFormatting();
+    int rank = 0;
     for (float analogDate : analogDates) {
-        arrayAnalogDates.Add(asTime::GetStringTime(analogDate, format));
+        rank++;
+        wxString label = asStrF("%d - %s", rank, asTime::GetStringTime(analogDate, format));
+        arrayAnalogDates.Add(label);
     }
     m_choiceAnalogDates->Set(arrayAnalogDates);
     m_selectedAnalogDate = wxMin(m_selectedAnalogDate, int(arrayAnalogDates.Count()) - 1);

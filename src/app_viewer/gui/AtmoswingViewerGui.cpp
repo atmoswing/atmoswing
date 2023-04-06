@@ -886,7 +886,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	wxBoxSizer* bSizer34;
 	bSizer34 = new wxBoxSizer( wxHORIZONTAL );
 
-	m_staticTextTargetDates = new wxStaticText( m_panelLeft, wxID_ANY, _("Forecast date"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextTargetDates = new wxStaticText( m_panelLeft, wxID_ANY, _("Forecast"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextTargetDates->Wrap( -1 );
 	bSizer34->Add( m_staticTextTargetDates, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
