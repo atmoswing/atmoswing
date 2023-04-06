@@ -381,7 +381,7 @@ int asResultsForecastAggregator::GetForecastRowSpecificForStationRow(int methodR
         }
     }
 
-    wxLogWarning(_("No specific forecast was found for station n°%d"), stationRow);
+    wxLogWarning(_("No specific forecast was found for station %d"), stationRow);
 
     return 0;
 }

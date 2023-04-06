@@ -1,0 +1,64 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-06 20:04+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/app_viewer/core/asFileWorkspace.cpp:47
+#, c-format
+msgid "The file %s is not a parameters file for the Viewer."
+msgstr ""
+
+#: src/app_viewer/core/asForecastManager.cpp:127
+#: src/app_viewer/core/asForecastManager.cpp:182
+#, c-format
+msgid "The file %s could not be found."
+msgstr ""
+
+#: src/app_viewer/core/asForecastManager.cpp:135
+#: src/app_viewer/core/asForecastManager.cpp:190
+#, c-format
+msgid "The file extension (%s) is not correct."
+msgstr ""
+
+#: src/app_viewer/core/asPredictorsManager.cpp:65
+#: src/app_viewer/core/asPredictorsManager.cpp:88
+#, c-format
+msgid "Failed to get an instance of %s from %s."
+msgstr ""
+
+#: src/app_viewer/core/asPredictorsManager.cpp:77
+#: src/app_viewer/core/asPredictorsManager.cpp:93
+#, c-format
+msgid "The variable %s from %s could not be loaded."
+msgstr ""
+
+#: src/app_viewer/core/asWorkspace.cpp:48
+msgid "Cannot open the workspace file."
+msgstr ""
+
+#: src/app_viewer/core/asWorkspace.cpp:52
+msgid "Errors were found in the workspace file."
+msgstr ""
+
+#: src/app_viewer/core/asWorkspace.cpp:149
+msgid ""
+"The number of elements in the layers is not consistent in the workspace file."
+msgstr ""
+
+#: src/app_viewer/core/AtmoswingAppViewer.cpp:90
+msgid "Program already running, aborting."
+msgstr ""
