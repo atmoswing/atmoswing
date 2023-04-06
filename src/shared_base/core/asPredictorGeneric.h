@@ -33,11 +33,11 @@
 
 class asArea;
 
-class asPredictorGenericNetcdf : public asPredictor {
+class asPredictorGeneric : public asPredictor {
   public:
-    explicit asPredictorGenericNetcdf(const wxString& dataId);
+    explicit asPredictorGeneric(const wxString& dataId);
 
-    ~asPredictorGenericNetcdf() override = default;
+    ~asPredictorGeneric() override = default;
 
     bool Init() override;
 

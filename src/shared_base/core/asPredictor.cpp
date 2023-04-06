@@ -46,7 +46,7 @@
 #include "asPredictorEcmwfEra5.h"
 #include "asPredictorEcmwfEraInterim.h"
 #include "asPredictorEcmwfIfs.h"
-#include "asPredictorGenericNetcdf.h"
+#include "asPredictorGeneric.h"
 #include "asPredictorJmaJra55CSubset.h"
 #include "asPredictorJmaJra55Subset.h"
 #include "asPredictorNasaMerra2.h"
@@ -111,8 +111,9 @@ asPredictor::asPredictor(const wxString& dataId)
 asPredictor* asPredictor::GetInstance(const wxString& datasetId, const wxString& dataId, const wxString& directory) {
     asPredictor* predictor = nullptr;
 
-    if (datasetId.IsSameAs("GenericNetcdf", false)) {
-        predictor = new asPredictorGenericNetcdf(dataId);
+    if (datasetId.StartsWith("Generic") || datasetId.StartsWith("generic")) {
+        predictor = new asPredictorGeneric(dataId);
+        predictor->SetDatasetId(datasetId);
     } else if (datasetId.IsSameAs("NCEP_R1", false)) {
         predictor = new asPredictorNcepR1(dataId);
     } else if (datasetId.IsSameAs("NCEP_R2", false)) {

@@ -190,6 +190,10 @@ class asPredictor : public wxObject {
         return m_dataId;
     }
 
+    void SetDatasetId(const wxString &datasetId) {
+        m_datasetId = datasetId;
+    }
+
     wxString GetProduct() const {
         return m_product;
     }
