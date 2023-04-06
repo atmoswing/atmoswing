@@ -33,7 +33,7 @@
 asPredictorOperEcmwfIfs::asPredictorOperEcmwfIfs(const wxString& dataId)
     : asPredictorOper(dataId) {
     // Set the basic properties.
-    m_datasetId = "ECMWF_IFS_GRIB_Forecast";
+    m_datasetId = "ECMWF_IFS";
     m_provider = "ECMWF";
     m_datasetName = "Integrated Forecasting System (IFS) grib files";
     m_fileType = asFile::Grib;

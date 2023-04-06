@@ -33,7 +33,7 @@
 asPredictorOperCustomVigicruesIfs::asPredictorOperCustomVigicruesIfs(const wxString& dataId)
     : asPredictorOperEcmwfIfs(dataId) {
     // Set the basic properties.
-    m_datasetId = "Custom_Vigicrues_IFS_Forecast";
+    m_datasetId = "Custom_Vigicrues_IFS";
     m_datasetName = "Integrated Forecasting System (IFS) grib files for the Vigicrues network";
     m_fStr.hasLevelDim = true;
     m_leadTimeStart = 6;

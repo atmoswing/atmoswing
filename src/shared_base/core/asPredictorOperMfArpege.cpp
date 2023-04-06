@@ -33,7 +33,7 @@
 asPredictorOperMfArpege::asPredictorOperMfArpege(const wxString& dataId)
     : asPredictorOper(dataId) {
     // Set the basic properties.
-    m_datasetId = "MF_ARPEGE_Forecast";
+    m_datasetId = "MF_ARPEGE";
     m_provider = "METEOFRANCE";
     m_datasetName = "ARPEGE grib files";
     m_fileType = asFile::Grib;

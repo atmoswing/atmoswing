@@ -130,7 +130,7 @@ asPredictor* asPredictor::GetInstance(const wxString& datasetId, const wxString&
         predictor = new asPredictorEcmwfEra20C(dataId);
     } else if (datasetId.IsSameAs("ECMWF_CERA_20C", false)) {
         predictor = new asPredictorEcmwfCera20C(dataId);
-    } else if (datasetId.IsSameAs("ECMWF_IFS_GRIB", false)) {
+    } else if (datasetId.IsSameAs("ECMWF_IFS", false)) {
         predictor = new asPredictorEcmwfIfs(dataId);
     } else if (datasetId.IsSameAs("NASA_MERRA_2", false)) {
         predictor = new asPredictorNasaMerra2(dataId);

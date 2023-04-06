@@ -34,7 +34,7 @@
 asPredictorOperNwsGfs::asPredictorOperNwsGfs(const wxString& dataId)
     : asPredictorOper(dataId) {
     // Set the basic properties.
-    m_datasetId = "NWS_GFS_Forecast";
+    m_datasetId = "NWS_GFS";
     m_provider = "NWS";
     m_transformedBy = wxEmptyString;
     m_datasetName = "Global Forecast System";

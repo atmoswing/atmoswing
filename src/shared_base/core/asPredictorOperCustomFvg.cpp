@@ -33,7 +33,7 @@
 asPredictorOperCustomFvg::asPredictorOperCustomFvg(const wxString& dataId)
     : asPredictorOperEcmwfIfs(dataId) {
     // Set the basic properties.
-    m_datasetId = "Custom_MeteoFVG_Forecast";
+    m_datasetId = "Custom_MeteoFVG";
     m_datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
     m_fStr.hasLevelDim = true;
     m_leadTimeStart = 6;

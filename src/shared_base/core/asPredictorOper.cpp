@@ -112,17 +112,17 @@ void asPredictorOper::SetDefaultPredictorsUrls() {
 asPredictorOper* asPredictorOper::GetInstance(const wxString& datasetId, const wxString& dataId) {
     asPredictorOper* predictor = nullptr;
 
-    if (datasetId.IsSameAs("NWS_GFS_Forecast", false)) {
+    if (datasetId.IsSameAs("NWS_GFS", false)) {
         predictor = new asPredictorOperNwsGfs(dataId);
-    } else if (datasetId.IsSameAs("NWS_GFS_Forecast_Local", false)) {
+    } else if (datasetId.IsSameAs("NWS_GFS_Local", false)) {
         predictor = new asPredictorOperNwsGfsLocal(dataId);
-    } else if (datasetId.IsSameAs("ECMWF_IFS_GRIB_Forecast", false)) {
+    } else if (datasetId.IsSameAs("ECMWF_IFS", false)) {
         predictor = new asPredictorOperEcmwfIfs(dataId);
-    } else if (datasetId.IsSameAs("MF_ARPEGE_Forecast", false)) {
+    } else if (datasetId.IsSameAs("MF_ARPEGE", false)) {
         predictor = new asPredictorOperMfArpege(dataId);
-    } else if (datasetId.IsSameAs("Custom_MeteoFVG_Forecast", false)) {
+    } else if (datasetId.IsSameAs("Custom_MeteoFVG", false)) {
         predictor = new asPredictorOperCustomFvg(dataId);
-    } else if (datasetId.IsSameAs("Custom_Vigicrues_IFS_Forecast", false)) {
+    } else if (datasetId.IsSameAs("Custom_Vigicrues_IFS", false)) {
         predictor = new asPredictorOperCustomVigicruesIfs(dataId);
     } else {
         wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));

@@ -26,7 +26,7 @@
       <realtime_standardize>1</realtime_standardize>
       <realtime_standardize_mean>333.5554787289083</realtime_standardize_mean>
       <realtime_standardize_sd>19.838536332114153</realtime_standardize_sd>
-      <realtime_dataset_id>Custom_MeteoFVG_Forecast</realtime_dataset_id>
+      <realtime_dataset_id>Custom_MeteoFVG</realtime_dataset_id>
       <realtime_data_id>thetaES_925</realtime_data_id>
       <archive_dataset_id>Generic</archive_dataset_id>
       <archive_data_id>thetaES_925</archive_data_id>
