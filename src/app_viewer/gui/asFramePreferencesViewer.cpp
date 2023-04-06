@@ -99,6 +99,40 @@ void asFramePreferencesViewer::LoadPreferences() {
     m_textCtrlAlarmsQuantile->SetValue(alarmsQuantile);
 
     /*
+     * Paths
+     */
+
+    m_textCtrlDatasetId1->SetValue(m_workspace->GetPredictorId(1, "Generic_ECMWF_ERA5"));
+    m_dirPickerDataset1->SetPath(m_workspace->GetPredictorDir(1));
+    m_textCtrlDatasetId2->SetValue(m_workspace->GetPredictorId(2, "Generic_NCEP_R1"));
+    m_dirPickerDataset2->SetPath(m_workspace->GetPredictorDir(2));
+    m_textCtrlDatasetId3->SetValue(m_workspace->GetPredictorId(3, "NWS_GFS"));
+    m_dirPickerDataset3->SetPath(m_workspace->GetPredictorDir(3));
+    m_textCtrlDatasetId4->SetValue(m_workspace->GetPredictorId(4, "ECMWF_IFS"));
+    m_dirPickerDataset4->SetPath(m_workspace->GetPredictorDir(4));
+    m_textCtrlDatasetId5->SetValue(m_workspace->GetPredictorId(5));
+    m_dirPickerDataset5->SetPath(m_workspace->GetPredictorDir(5));
+    m_textCtrlDatasetId6->SetValue(m_workspace->GetPredictorId(6));
+    m_dirPickerDataset6->SetPath(m_workspace->GetPredictorDir(6));
+    m_textCtrlDatasetId7->SetValue(m_workspace->GetPredictorId(7));
+    m_dirPickerDataset7->SetPath(m_workspace->GetPredictorDir(7));
+
+    /*
+     * Colors
+     */
+
+    wxString dirData = asConfig::GetDataDir() + "share";
+    if (!wxDirExists(dirData)) {
+        dirData = asConfig::GetDataDir() + ".." + DS + "share";
+    }
+    wxString colorDir = dirData + DS + "atmoswing" + DS + "color_tables";
+
+    m_filePickerColorZ->SetPath(pConfig->Read("/ColorTable/GeopotentialHeight", colorDir + DS + "NEO_grav_anom.act"));
+    m_filePickerColorPwat->SetPath(pConfig->Read("/ColorTable/PrecipitableWater", colorDir + DS + "NEO_soil_moisture.act"));
+    m_filePickerColorRh->SetPath(pConfig->Read("/ColorTable/RelativeHumidity", colorDir + DS + "NEO_soil_moisture.act"));
+    m_filePickerColorSh->SetPath(pConfig->Read("/ColorTable/SpecificHumidity", colorDir + DS + "NEO_soil_moisture.act"));
+
+    /*
      * General
      */
 
@@ -197,6 +231,28 @@ void asFramePreferencesViewer::SavePreferences() {
     if (alarmsQuantileVal > 1) alarmsQuantileVal = 0.9;
     if (alarmsQuantileVal < 0) alarmsQuantileVal = 0.9;
     m_workspace->SetAlarmsPanelQuantile(alarmsQuantileVal);
+
+    /*
+     * Paths
+     */
+
+    m_workspace->ClearPredictorDirs();
+    m_workspace->AddPredictorDir(m_textCtrlDatasetId1->GetValue(), m_dirPickerDataset1->GetPath());
+    m_workspace->AddPredictorDir(m_textCtrlDatasetId2->GetValue(), m_dirPickerDataset2->GetPath());
+    m_workspace->AddPredictorDir(m_textCtrlDatasetId3->GetValue(), m_dirPickerDataset3->GetPath());
+    m_workspace->AddPredictorDir(m_textCtrlDatasetId4->GetValue(), m_dirPickerDataset4->GetPath());
+    m_workspace->AddPredictorDir(m_textCtrlDatasetId5->GetValue(), m_dirPickerDataset5->GetPath());
+    m_workspace->AddPredictorDir(m_textCtrlDatasetId6->GetValue(), m_dirPickerDataset6->GetPath());
+    m_workspace->AddPredictorDir(m_textCtrlDatasetId7->GetValue(), m_dirPickerDataset7->GetPath());
+
+    /*
+     * Colors
+     */
+
+    pConfig->Write("/ColorTable/GeopotentialHeight", m_filePickerColorZ->GetPath());
+    pConfig->Write("/ColorTable/PrecipitableWater", m_filePickerColorPwat->GetPath());
+    pConfig->Write("/ColorTable/RelativeHumidity", m_filePickerColorRh->GetPath());
+    pConfig->Write("/ColorTable/SpecificHumidity", m_filePickerColorSh->GetPath());
 
     /*
      * General

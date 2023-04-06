@@ -412,6 +412,15 @@ class asFramePreferencesViewerVirtual : public wxFrame
 		wxDirPickerCtrl* m_dirPickerDataset6;
 		wxTextCtrl* m_textCtrlDatasetId7;
 		wxDirPickerCtrl* m_dirPickerDataset7;
+		wxPanel* m_panelColors;
+		wxStaticText* m_staticText54;
+		wxFilePickerCtrl* m_filePickerColorZ;
+		wxStaticText* RelativeHumidity;
+		wxFilePickerCtrl* m_filePickerColorPwat;
+		wxStaticText* m_staticText57;
+		wxFilePickerCtrl* m_filePickerColorRh;
+		wxStaticText* m_staticText58;
+		wxFilePickerCtrl* m_filePickerColorSh;
 		wxPanel* m_panelGeneralCommon;
 		wxRadioButton* m_radioBtnLogLevel1;
 		wxRadioButton* m_radioBtnLogLevel2;

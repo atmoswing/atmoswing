@@ -951,7 +951,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	wxArrayString m_choiceAnalogDatesChoices;
 	m_choiceAnalogDates = new wxChoice( m_panelRight, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceAnalogDatesChoices, 0 );
 	m_choiceAnalogDates->SetSelection( 0 );
-	m_choiceAnalogDates->SetMinSize( wxSize( 100,-1 ) );
+	m_choiceAnalogDates->SetMinSize( wxSize( 120,-1 ) );
 
 	bSizer35->Add( m_choiceAnalogDates, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1152,25 +1152,25 @@ asFramePreferencesViewerVirtual::asFramePreferencesViewerVirtual( wxWindow* pare
 	m_staticPredictorPaths->Wrap( -1 );
 	fgSizer6->Add( m_staticPredictorPaths, 0, wxALL, 5 );
 
-	m_textCtrlDatasetId1 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, _("Generic_NCEP_R1"), wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	m_textCtrlDatasetId1 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
 	fgSizer6->Add( m_textCtrlDatasetId1, 1, wxALL|wxEXPAND, 5 );
 
 	m_dirPickerDataset1 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
 	fgSizer6->Add( m_dirPickerDataset1, 0, wxALL|wxEXPAND, 5 );
 
-	m_textCtrlDatasetId2 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, _("Generic_ECMWF_ERA5"), wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	m_textCtrlDatasetId2 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
 	fgSizer6->Add( m_textCtrlDatasetId2, 0, wxALL, 5 );
 
 	m_dirPickerDataset2 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
 	fgSizer6->Add( m_dirPickerDataset2, 0, wxALL|wxEXPAND, 5 );
 
-	m_textCtrlDatasetId3 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, _("NWS_GFS"), wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	m_textCtrlDatasetId3 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
 	fgSizer6->Add( m_textCtrlDatasetId3, 0, wxALL, 5 );
 
 	m_dirPickerDataset3 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
 	fgSizer6->Add( m_dirPickerDataset3, 0, wxALL|wxEXPAND, 5 );
 
-	m_textCtrlDatasetId4 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, _("ECMWF_IFS"), wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	m_textCtrlDatasetId4 = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
 	fgSizer6->Add( m_textCtrlDatasetId4, 0, wxALL, 5 );
 
 	m_dirPickerDataset4 = new wxDirPickerCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
@@ -1205,6 +1205,58 @@ asFramePreferencesViewerVirtual::asFramePreferencesViewerVirtual( wxWindow* pare
 	m_panelPaths->Layout();
 	bSizer551->Fit( m_panelPaths );
 	m_notebookBase->AddPage( m_panelPaths, _("Paths"), false );
+	m_panelColors = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer5511;
+	bSizer5511 = new wxBoxSizer( wxVERTICAL );
+
+	wxStaticBoxSizer* sbSizer51;
+	sbSizer51 = new wxStaticBoxSizer( new wxStaticBox( m_panelColors, wxID_ANY, _("Paths to the color tables") ), wxVERTICAL );
+
+	wxFlexGridSizer* fgSizer61;
+	fgSizer61 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer61->AddGrowableCol( 1 );
+	fgSizer61->SetFlexibleDirection( wxBOTH );
+	fgSizer61->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	m_staticText54 = new wxStaticText( sbSizer51->GetStaticBox(), wxID_ANY, _("Geopotential height"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText54->Wrap( -1 );
+	fgSizer61->Add( m_staticText54, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_filePickerColorZ = new wxFilePickerCtrl( sbSizer51->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a file"), _("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	fgSizer61->Add( m_filePickerColorZ, 0, wxALL|wxEXPAND, 5 );
+
+	RelativeHumidity = new wxStaticText( sbSizer51->GetStaticBox(), wxID_ANY, _("Precipitable water"), wxDefaultPosition, wxDefaultSize, 0 );
+	RelativeHumidity->Wrap( -1 );
+	fgSizer61->Add( RelativeHumidity, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_filePickerColorPwat = new wxFilePickerCtrl( sbSizer51->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a file"), _("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	fgSizer61->Add( m_filePickerColorPwat, 0, wxALL|wxEXPAND, 5 );
+
+	m_staticText57 = new wxStaticText( sbSizer51->GetStaticBox(), wxID_ANY, _("Relative humidity"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText57->Wrap( -1 );
+	fgSizer61->Add( m_staticText57, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_filePickerColorRh = new wxFilePickerCtrl( sbSizer51->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a file"), _("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	fgSizer61->Add( m_filePickerColorRh, 0, wxALL|wxEXPAND, 5 );
+
+	m_staticText58 = new wxStaticText( sbSizer51->GetStaticBox(), wxID_ANY, _("Specific humidity"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText58->Wrap( -1 );
+	fgSizer61->Add( m_staticText58, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_filePickerColorSh = new wxFilePickerCtrl( sbSizer51->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a file"), _("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	fgSizer61->Add( m_filePickerColorSh, 0, wxALL|wxEXPAND, 5 );
+
+
+	sbSizer51->Add( fgSizer61, 1, wxEXPAND, 5 );
+
+
+	bSizer5511->Add( sbSizer51, 1, wxEXPAND|wxALL, 5 );
+
+
+	m_panelColors->SetSizer( bSizer5511 );
+	m_panelColors->Layout();
+	bSizer5511->Fit( m_panelColors );
+	m_notebookBase->AddPage( m_panelColors, _("Colors"), false );
 	m_panelGeneralCommon = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
