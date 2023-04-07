@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-06 20:06+0200\n"
-"PO-Revision-Date: 2023-04-06 20:27+0200\n"
+"PO-Revision-Date: 2023-04-07 12:16+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -19,49 +19,40 @@ msgstr ""
 "X-Generator: Poedit 3.2.2\n"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:61
-#, fuzzy
 msgid "Run forecast"
-msgstr "Exécuter la prévision pour les dernières données disponibles"
+msgstr "Exécuter la prévision"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:62
-#, fuzzy
 msgid "Run forecast now"
-msgstr "Exécuter les prévisions maintenant"
+msgstr "Exécuter la prévision maintenant"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:63
-#, fuzzy
 msgid "Cancel forecast"
 msgstr "Annuler la prévision"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:64
-#, fuzzy
 msgid "Cancel current forecast"
 msgstr "Annuler les prévisions actuelles"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:66
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:193
-#, fuzzy
 msgid "Preferences"
 msgstr "Préférences"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:74
-#, fuzzy
 msgid "Downloading predictors"
-msgstr "Téléchargement des variables prédictives"
+msgstr "Téléchargement des variables prédicteurs"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:83
-#, fuzzy
 msgid "Loading data"
 msgstr "Chargement des données"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:92
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:636
-#, fuzzy
 msgid "Processing"
 msgstr "En cours"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:101
-#, fuzzy
 msgid "Saving results"
 msgstr "Sauvegarde des résultats"
 
@@ -69,176 +60,144 @@ msgstr "Sauvegarde des résultats"
 #: src/app_forecaster/gui/asFrameForecaster.cpp:165
 #: src/app_forecaster/gui/asFrameForecaster.cpp:194
 #: src/app_forecaster/gui/asFrameForecaster.cpp:198
-#, fuzzy
 msgid "Failed to open the batch file "
-msgstr "Échec de l'ouverture du fichier batch"
+msgstr "Échec de l'ouverture du fichier batch "
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:177
-#, fuzzy
 msgid "Select a batch file"
 msgstr "Sélectionner un fichier batch"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:208
-#, fuzzy
 msgid "Select a path to save the batch file"
-msgstr "Sélectionnez un chemin d'accès pour enregistrer le fichier de traitement par lots"
+msgstr "Sélectionnez un chemin d'accès pour enregistrer le fichier batch"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:232
-#, fuzzy
 msgid "Could not save the batch file."
 msgstr "Impossible d'enregistrer le fichier batch."
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:416
-#, fuzzy
 msgid "Event not identified."
 msgstr "Événement non identifié."
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:453
-#, fuzzy, c-format
+#, c-format
 msgid "Trying to run the forecast for the date %s"
 msgstr "Essai d'exécution de la prévision pour la date %s"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:456
-#, fuzzy
 msgid "The forecaster is already processing."
-msgstr "Le prévisionniste est déjà en train de traiter."
+msgstr "Le Forecaster est déjà en train de calculer."
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:464
-#, fuzzy
 msgid "Failed processing the forecast."
 msgstr "Échec du traitement de la prévision."
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:476
-#, fuzzy, c-format
+#, c-format
 msgid "Forecast processed for the date %s"
-msgstr "Prévision traitée pour la date %s"
+msgstr "Prévision effectuée pour la date %s"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:33
-#, fuzzy
 msgid "Start the forecast for a given date"
 msgstr "Lancer la prévision pour une date donnée"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:51
-#, fuzzy
 msgid "Hour (UTM)"
 msgstr "Heure (UTM)"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:67
-#, fuzzy
 msgid "Set current date."
-msgstr "Régler la date actuelle."
+msgstr "Régler sur la date actuelle."
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:87
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:95
-#, fuzzy
 msgid "0"
 msgstr "0"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:91
-#, fuzzy
 msgid "/"
 msgstr "/"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:112
-#, fuzzy
 msgid "Configure directories"
 msgstr "Configurer les répertoires"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:146
-#, fuzzy
 msgid "Add a parameters file."
 msgstr "Ajouter un fichier de paramètres."
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:174
-#, fuzzy
 msgid "Open a batch file"
 msgstr "Ouvrir un fichier batch"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:178
-#, fuzzy
 msgid "Save batch file"
-msgstr "Enregistrer le fichier de lot"
+msgstr "Enregistrer le fichier batch"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:182
-#, fuzzy
 msgid "Save batch file as"
 msgstr "Enregistrer le fichier batch sous"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:186
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:774
-#, fuzzy
 msgid "Create a new batch file"
 msgstr "Créer un nouveau fichier batch"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:189
-#, fuzzy
 msgid "File"
 msgstr "Fichier"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:196
-#, fuzzy
 msgid "Options"
 msgstr "Options"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:200
-#, fuzzy
 msgid "Build predictand DB"
-msgstr "Construire une base de données prédictive"
+msgstr "Construire une base de données des prédictands"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:203
-#, fuzzy
 msgid "Tools"
 msgstr "Outils"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:207
-#, fuzzy
 msgid "Show Log Window"
 msgstr "Afficher la fenêtre du journal des évènements"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:211
-#, fuzzy
 msgid "Log level"
 msgstr "Niveau de journal"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:213
-#, fuzzy
 msgid "Only errors"
 msgstr "Erreurs seulement"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:217
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:403
-#, fuzzy
 msgid "Errors and warnings"
 msgstr "Erreurs et avertissements"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:221
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:406
-#, fuzzy
 msgid "Verbose"
 msgstr "Verbeux"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:226
-#, fuzzy
 msgid "Log"
 msgstr "Journal"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:230
-#, fuzzy
 msgid "About"
 msgstr "À propos"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:233
-#, fuzzy
 msgid "Help"
 msgstr "Aide"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:280
-#, fuzzy
 msgid "Enter the parameters file name..."
 msgstr "Saisir le nom du fichier de paramètres..."
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:324
-#, fuzzy
 msgid "Directory containing the parameters files"
 msgstr "Répertoire contenant les fichiers de paramètres"
 
@@ -248,318 +207,256 @@ msgstr "Répertoire contenant les fichiers de paramètres"
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:349
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:356
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:363
-#, fuzzy
 msgid "Select a folder"
 msgstr "Sélectionner un dossier"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:331
-#, fuzzy
 msgid "Directory containing the predictand DB"
-msgstr "Répertoire contenant la base de données des prédicteurs"
+msgstr "Répertoire contenant la base de données des prédictands"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:338
-#, fuzzy
 msgid "Directory containing archive predictors"
-msgstr "Répertoire contenant les prédicteurs d'archives"
+msgstr "Répertoire contenant les archives de prédicteurs"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:345
-#, fuzzy
 msgid "Directory to save downloaded real-time predictors (GCM forecasts)"
-msgstr "Répertoire pour sauvegarder les prédicteurs en temps réel téléchargés (prévisions GCM)"
+msgstr "Répertoire pour sauvegarder les prédicteurs téléchargés (prévisions)"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:352
-#, fuzzy
 msgid "Directory to save forecast outputs (netCDF)"
 msgstr "Répertoire d'enregistrement des résultats de la prévision (netCDF)"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:359
-#, fuzzy
 msgid "Directory to save forecast exports (xml)"
-msgstr "Répertoire d'enregistrement des exportations de prévisions (xml)"
+msgstr "Répertoire d'enregistrement des exports de la prévision (xml)"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:369
-#, fuzzy
 msgid "Export:"
 msgstr "Exporter:"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:373
-#, fuzzy
 msgid "None"
 msgstr "Aucun"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:373
-#, fuzzy
 msgid "Full XML"
 msgstr "XML complet"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:373
-#, fuzzy
 msgid "Small CSV"
 msgstr "Petit CSV"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:373
-#, fuzzy
 msgid "Custom CSV for FVG"
-msgstr "CSV personnalisé pour le FVG"
+msgstr "CSV personnalisé pour FVG"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:386
-#, fuzzy
 msgid "Batch file properties"
 msgstr "Propriétés du fichier batch"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:392
-#, fuzzy
 msgid "Logs"
 msgstr "Journaux"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:400
-#, fuzzy
 msgid "Errors only (recommanded)"
 msgstr "Erreurs uniquement (recommandé)"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:415
-#, fuzzy
 msgid "Display window"
 msgstr "Fenêtre d'affichage"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:419
-#, fuzzy
 msgid "Save to a file"
 msgstr "Enregistrer dans un fichier"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:435
-#, fuzzy
 msgid "Proxy configuration"
 msgstr "Configuration du proxy"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:437
-#, fuzzy
 msgid "Internet connection uses a proxy"
 msgstr "La connexion Internet utilise un proxy"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:443
-#, fuzzy
 msgid "Proxy address"
-msgstr "Adresse du mandataire"
+msgstr "Adresse du proxy"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:450
-#, fuzzy
 msgid "Port"
 msgstr "Port"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:463
-#, fuzzy
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:470
-#, fuzzy
 msgid "Password"
 msgstr "Mot de passe"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:484
-#, fuzzy
 msgid "Libraries"
 msgstr "Bibliothèques"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:489
-#, fuzzy
 msgid "ecCodes definitions"
-msgstr "définitions des écocodes"
+msgstr "définitions ecCodes"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:506
-#, fuzzy
 msgid "General options"
 msgstr "Options générales"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:516
-#, fuzzy
 msgid "Silent (no progressbar, much faster)"
 msgstr "Silencieux (pas de barre de progression, beaucoup plus rapide)"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:516
-#, fuzzy
 msgid "Standard (recommanded)"
 msgstr "Standard (recommandé)"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:516
-#, fuzzy
 msgid "Verbose (not much used)"
 msgstr "Verbeux (peu utilisé)"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:518
-#, fuzzy
 msgid "GUI options"
 msgstr "Options de l'interface graphique"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:523
-#, fuzzy
 msgid "Predictor download"
 msgstr "Téléchargement des prédicteurs"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:530
-#, fuzzy
 msgid "Maximum number of previous time steps if download fails"
 msgstr "Nombre maximal de pas de temps précédents en cas d'échec du téléchargement"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:534
-#, fuzzy
 msgid "5"
 msgstr "5"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:545
-#, fuzzy
 msgid "Maximum parallel requests number"
 msgstr "Nombre maximum de requêtes parallèles"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:549
-#, fuzzy
 msgid "3"
 msgstr "3"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:560
-#, fuzzy
 msgid "Restrict downloads to needed lead times."
-msgstr "Limiter les téléchargements aux délais nécessaires."
+msgstr "Limiter les téléchargements aux échéances nécessaires."
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:572
-#, fuzzy
 msgid "Let the software be responsive while processing (recommended)."
-msgstr "Laisser le logiciel réagir pendant le traitement (recommandé)."
+msgstr "Laisser le logiciel réactif pendant le traitement (recommandé)."
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:576
-#, fuzzy
 msgid "Allow multiple instances of the forecaster"
-msgstr "Autoriser les instances multiples du Forecaster."
+msgstr "Autoriser les instances multiples du Forecaster"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:583
-#, fuzzy
 msgid "General"
 msgstr "Général"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:589
-#, fuzzy
 msgid "Multithreading"
 msgstr "Multithreading"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:591
-#, fuzzy
 msgid "Allow multithreading"
 msgstr "Permettre le multithreading"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:598
-#, fuzzy
 msgid "Max nb of threads"
-msgstr "Nb max de fils"
+msgstr "Nb max de threads"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:611
-#, fuzzy
 msgid "Threads priority"
-msgstr "Priorité aux fils"
+msgstr "Priorité des threads"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:624
-#, fuzzy
 msgid "Multithreaded (only if allowed hereabove)"
 msgstr "Multithreading (seulement si autorisé ci-dessus)"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:624
-#, fuzzy
 msgid "Standard (slower)"
 msgstr "Standard (plus lent)"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:626
-#, fuzzy
 msgid "Processing options"
 msgstr "Options de calculs"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:628
-#, fuzzy
 msgid "These options don't affect the results, only the processor efficiency."
 msgstr "Ces options n'affectent pas les résultats, mais seulement l'efficacité du processeur."
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:642
-#, fuzzy
 msgid "User specific paths"
 msgstr "Chemins d'accès spécifiques à l'utilisateur"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:649
-#, fuzzy
 msgid "User working directory:"
 msgstr "Répertoire de travail de l'utilisateur :"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:653
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:661
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:669
-#, fuzzy
 msgid "..."
 msgstr "..."
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:657
-#, fuzzy
 msgid "Log file:"
 msgstr "Fichier journal :"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:665
-#, fuzzy
 msgid "Preferences file:"
 msgstr "Fichier de préférences :"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:683
-#, fuzzy
 msgid "User paths"
-msgstr "Chemins d'utilisateurs"
+msgstr "Chemins de l'utilisateur"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:691
-#, fuzzy
 msgid "Advanced options"
 msgstr "Options avancées"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:747
-#, fuzzy
 msgid "Load / create a batch file"
 msgstr "Charger / créer un fichier batch"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:753
-#, fuzzy
 msgid "Provide the path to an existing file"
 msgstr "Fournir le chemin d'accès à un fichier existant"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:757
-#, fuzzy
 msgid "Load existing batch file"
 msgstr "Charger un fichier batch existant"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:760
-#, fuzzy
 msgid "or continue to create a new batch file"
 msgstr "ou continuer à créer un nouveau fichier batch"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:780
-#, fuzzy
 msgid "Path to save the new batch file"
 msgstr "Chemin d'enregistrement du nouveau fichier batch"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:784
-#, fuzzy
 msgid "Select a file"
 msgstr "Séléctionner un fichier"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:784
-#, fuzzy
 msgid "*.xml"
 msgstr "*.xml"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:787
-#, fuzzy
 msgid "The preferences frame will open to configure the required directories."
-msgstr "Le cadre des préférences s'ouvre pour configurer les répertoires requis."
+msgstr "La fenêtre des préférences va s'ouvrir pour configurer les répertoires requis."
 
 #: src/app_forecaster/gui/AtmoswingMainForecaster.cpp:42
-#, fuzzy, c-format
+#, c-format
 msgid "Welcome to AtmoSwing %s."
-msgstr "Bienvenue sur AtmoSwing %s."
+msgstr "Bienvenue dans AtmoSwing %s."
 
 #: src/app_forecaster/gui/AtmoswingMainForecaster.cpp:53
-#, fuzzy
 msgid "AtmoSwing log window"
-msgstr "Fenêtre d'enregistrement AtmoSwing"
+msgstr "Fenêtre du journal AtmoSwing"

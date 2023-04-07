@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-06 20:06+0200\n"
-"PO-Revision-Date: 2023-04-06 20:26+0200\n"
+"PO-Revision-Date: 2023-04-07 12:03+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -19,143 +19,125 @@ msgstr ""
 "X-Generator: Poedit 3.2.2\n"
 
 #: src/app_forecaster/core/asBatchForecasts.cpp:51
-#, fuzzy
 msgid "Cannot open the batch file."
 msgstr "Impossible d'ouvrir le fichier batch."
 
 #: src/app_forecaster/core/asBatchForecasts.cpp:55
-#, fuzzy
 msgid "Errors were found in the batch file."
 msgstr "Des erreurs ont été trouvées dans le fichier batch."
 
 #: src/app_forecaster/core/asFileBatchForecasts.cpp:48
 #: src/app_forecaster/core/asFileParametersForecast.cpp:48
-#, fuzzy, c-format
+#, c-format
 msgid "The file %s is not a parameters file for the Forecaster."
 msgstr "Le fichier %s n'est pas un fichier de paramètres pour le Forecaster."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:68
-#, fuzzy
 msgid "The date of the forecast has not been defined."
 msgstr "La date des prévisions n'a pas été définie."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:121
-#, fuzzy
 msgid "FAILED!\n"
 msgstr "ÉCHEC !\n"
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:122
-#, fuzzy
 msgid "The forecast could not be processed"
 msgstr "La prévision n'a pas pu être traitée"
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "done in %.1f sec.\n"
 msgstr "effectué en %.1f sec.\n"
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:136
-#, fuzzy, c-format
+#, c-format
 msgid "Processing of the forecast \"%s\" - \"%s\" took %.1f sec to execute"
-msgstr ""
-"Le traitement de la prévision \"%s\" - l'exécution de la prévision \"%s\" a "
-"pris %.1f secondes"
+msgstr "Le traitement de la prévision \"%s\" - \"%s\" a pris %.1f secondes"
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:155
-#, fuzzy
 msgid "The export of the synthetic xml failed."
 msgstr "L'exportation du xml synthétique a échoué."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:159
 #: src/app_forecaster/core/asMethodForecasting.cpp:163
-#, fuzzy
 msgid "The export of the synthetic csv failed."
 msgstr "L'exportation du csv synthétique a échoué."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:180
-#, fuzzy
 msgid "Forecasting over."
-msgstr "Les prévisions sont dépassées."
+msgstr "La prévision est terminée."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:206
 #: src/app_forecaster/core/asMethodForecasting.cpp:242
 #: src/app_forecaster/core/asMethodForecasting.cpp:457
 #: src/app_forecaster/core/asMethodForecasting.cpp:496
 #: src/app_forecaster/core/asMethodForecasting.cpp:538
-#, fuzzy
 msgid "Forecast already exists."
 msgstr "Les prévisions existent déjà."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:271
-#, fuzzy
 msgid "Loading the Predictand DB."
-msgstr "Chargement de la base de données des prédicteurs."
+msgstr "Chargement de la base de données des prédictands."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:273
-#, fuzzy
 msgid "Predictand DB loaded."
-msgstr "Predictand DB chargé."
+msgstr "BD des prédictands chargé."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:338
 #: src/app_forecaster/core/asMethodForecasting.cpp:342
 #: src/app_forecaster/core/asResultsForecast.cpp:643
-#, fuzzy, c-format
+#, c-format
 msgid "Exception caught: %s"
 msgstr "Une exception a été détectée : %s"
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:383
-#, fuzzy
 msgid "Downloading data."
 msgstr "Téléchargement de données."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:434
-#, fuzzy
 msgid "Data downloaded."
 msgstr "Données téléchargées."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:506
-#, fuzzy
 msgid "The maximum attempts is reached to download the real-time predictor."
 msgstr ""
-"Le nombre maximum de tentatives est atteint pour télécharger le prédicteur "
-"en temps réel."
+"Le nombre maximum de tentatives est atteint pour télécharger les prédicteurs "
+"prévus."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:522
-#, fuzzy, c-format
+#, c-format
 msgid "File not found: %s"
 msgstr "Le fichier n'a pas été trouvé : %s"
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:548
-#, fuzzy
 msgid "The maximum attempts is reached to search for the real-time predictor."
 msgstr ""
-"Le nombre maximum de tentatives est atteint pour rechercher le prédicteur en "
-"temps réel."
+"Le nombre maximum de tentatives est atteint pour rechercher le prédicteur "
+"prévu."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:549
-#, fuzzy, c-format
+#, c-format
 msgid "Directory: %s"
 msgstr "Répertoire : %s"
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:632
 #: src/app_forecaster/core/asMethodForecasting.cpp:1137
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The time array is not consistent in asMethodForecasting::GetAnalogsDates: "
 "size=%d."
 msgstr ""
-"Le tableau de temps n'est pas cohérent dans asMethodForecasting::"
+"Le tableau des dates n'est pas cohérent dans asMethodForecasting::"
 "GetAnalogsDates : size=%d."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:636
 #: src/app_forecaster/core/asMethodForecasting.cpp:1141
-#, fuzzy
 msgid "Date array created."
-msgstr "Date de création du tableau."
+msgstr "Création du tableau des dates."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:655
 #: src/app_forecaster/core/asMethodForecasting.cpp:1160
-#, fuzzy, c-format
+#, c-format
 msgid "Needed memory for data: %.2f Mb (cannot evaluate available memory)"
 msgstr ""
 "Mémoire nécessaire pour les données : %.2f Mo (impossible d'évaluer la "
@@ -163,18 +145,17 @@ msgstr ""
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:657
 #: src/app_forecaster/core/asMethodForecasting.cpp:1162
-#, fuzzy, c-format
+#, c-format
 msgid "Needed memory for data: %.2f Mb (%.2f Mb available)"
 msgstr "Mémoire nécessaire pour les données : %.2f Mo (%.2f Mo disponibles)"
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:659
 #: src/app_forecaster/core/asMethodForecasting.cpp:1164
-#, fuzzy
 msgid "Data cannot fit into available memory."
 msgstr "Les données ne tiennent pas dans la mémoire disponible."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:674
-#, fuzzy, c-format
+#, c-format
 msgid "Loading data (step %d, predictor nb %d)."
 msgstr "Chargement des données (étape %d, prédicteur nb %d)."
 
@@ -182,35 +163,32 @@ msgstr "Chargement des données (étape %d, prédicteur nb %d)."
 #: src/app_forecaster/core/asMethodForecasting.cpp:903
 #: src/app_forecaster/core/asMethodForecasting.cpp:1249
 #: src/app_forecaster/core/asMethodForecasting.cpp:1385
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The real-time predictor time array is not consistent (listTimeArray[%d](%f)!"
 "=timeArrayDataTarget[%d](%f))."
 msgstr ""
-"Le tableau de temps du prédicteur en temps réel n'est pas cohérent "
+"Le tableau des dates du prédicteur prévu n'est pas cohérent "
 "(listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:751
 #: src/app_forecaster/core/asMethodForecasting.cpp:906
 #: src/app_forecaster/core/asMethodForecasting.cpp:1252
 #: src/app_forecaster/core/asMethodForecasting.cpp:1388
-#, fuzzy
 msgid ""
 "It is likely that the lead times you defined go beyond the data availability."
 msgstr ""
-"Il est probable que les délais que vous avez définis dépassent la "
+"Il est probable que les échéances que vous avez définies dépassent la "
 "disponibilité des données."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:763
-#, fuzzy
 msgid "Data standardization is not yet implemented in operational forecasting."
 msgstr ""
-"La normalisation des données n'est pas encore mise en œuvre dans les "
+"La normalisation des données n'est pas encore implémentée dans les "
 "prévisions opérationnelles."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:771
 #: src/app_forecaster/core/asMethodForecasting.cpp:917
-#, fuzzy
 msgid "Loading archive data."
 msgstr "Chargement des données d'archives."
 
@@ -218,9 +196,9 @@ msgstr "Chargement des données d'archives."
 #: src/app_forecaster/core/asMethodForecasting.cpp:920
 #: src/app_forecaster/core/asMethodForecasting.cpp:1264
 #: src/app_forecaster/core/asMethodForecasting.cpp:1401
-#, fuzzy, c-format
+#, c-format
 msgid "Archive data (%s) could not be loaded."
-msgstr "Les données de l'archive (%s) n'ont pas pu être chargées."
+msgstr "Les données d'archive (%s) n'ont pas pu être chargées."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:784
 #: src/app_forecaster/core/asMethodForecasting.cpp:808
@@ -230,12 +208,10 @@ msgstr "Les données de l'archive (%s) n'ont pas pu être chargées."
 #: src/app_forecaster/core/asMethodForecasting.cpp:1297
 #: src/app_forecaster/core/asMethodForecasting.cpp:1466
 #: src/app_forecaster/core/asMethodForecasting.cpp:1475
-#, fuzzy
 msgid "Data standardisation has failed."
 msgstr "La normalisation des données a échoué."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:796
-#, fuzzy
 msgid "Loading forecast data (predictorRealtime->Load)."
 msgstr "Chargement des données de prévision (predictorRealtime->Load)."
 
@@ -243,24 +219,23 @@ msgstr "Chargement des données de prévision (predictorRealtime->Load)."
 #: src/app_forecaster/core/asMethodForecasting.cpp:932
 #: src/app_forecaster/core/asMethodForecasting.cpp:1287
 #: src/app_forecaster/core/asMethodForecasting.cpp:1412
-#, fuzzy, c-format
+#, c-format
 msgid "Real-time data (%s) could not be loaded."
-msgstr "Les données en temps réel (%s) n'ont pas pu être chargées."
+msgstr "Les prédicteurs prévus (%s) n'ont pas pu être chargées."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:821
 #: src/app_forecaster/core/asMethodForecasting.cpp:1309
-#, fuzzy, c-format
+#, c-format
 msgid "Preprocessing data (%d predictor(s)) while loading."
 msgstr "Prétraitement des données (%d prédicteur(s)) pendant le chargement."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:824
 #: src/app_forecaster/core/asMethodForecasting.cpp:1312
-#, fuzzy, c-format
+#, c-format
 msgid "Loading predictor %d."
 msgstr "Chargement du prédicteur %d."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:929
-#, fuzzy
 msgid "Loading forecast data (predictorRealtimePreprocess->Load)."
 msgstr ""
 "Chargement des données de prévision (predictorRealtimePreprocess->Load)."
@@ -269,112 +244,93 @@ msgstr ""
 #: src/app_forecaster/core/asMethodForecasting.cpp:967
 #: src/app_forecaster/core/asMethodForecasting.cpp:1441
 #: src/app_forecaster/core/asMethodForecasting.cpp:1456
-#, fuzzy
 msgid "Data preprocessing failed."
 msgstr "Le prétraitement des données a échoué."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1001
 #: src/app_forecaster/core/asMethodForecasting.cpp:1489
-#, fuzzy
 msgid "Data loaded"
 msgstr "Données chargées"
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1004
 #: src/app_forecaster/core/asMethodForecasting.cpp:1492
-#, fuzzy
 msgid "Creating a criterion object."
 msgstr "Création d'un objet critère."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1007
 #: src/app_forecaster/core/asMethodForecasting.cpp:1495
-#, fuzzy
 msgid "Criterion object created."
 msgstr "Objet de critère créé."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1021
 #: src/app_forecaster/core/asMethodForecasting.cpp:1509
-#, fuzzy
 msgid "Start processing the comparison."
-msgstr "Commencez à traiter la comparaison."
+msgstr "Début du traitement de la comparaison."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1044
 #: src/app_forecaster/core/asMethodForecasting.cpp:1547
-#, fuzzy
 msgid "Failed processing the analogs dates."
-msgstr "Échec du traitement des dates analogiques."
+msgstr "Échec du traitement des dates analogues."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1074
-#, fuzzy
 msgid "Creating a date arrays for the processor."
 msgstr "Création d'un tableau de dates pour le processeur."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1179
-#, fuzzy
 msgid "Loading data."
-msgstr "Chargement en en cours."
+msgstr "Chargement en cours."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1659
-#, fuzzy
 msgid "Start setting the predictand values to the corresponding analog dates."
 msgstr ""
-"Commencez à régler les valeurs des prédicteurs sur les dates analogiques "
+"Début de l'attribution des valeurs de prédictand aux les dates analogues "
 "correspondantes."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1698
-#, fuzzy
 msgid "Failed setting the predictand values to the corresponding analog dates."
 msgstr ""
-"Échec du réglage des valeurs des prédicats sur les dates analogiques "
+"Échec de l'attribution des valeurs de prédictand aux les dates analogues "
 "correspondantes."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1722
-#, fuzzy
 msgid "Predictands association over."
 msgstr "L'association des prédicteurs est terminée."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:50
-#, fuzzy
 msgid "Loading parameters file."
 msgstr "Chargement du fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:53
-#, fuzzy
 msgid "The given path to the parameters file is empty."
 msgstr "Le chemin d'accès au fichier de paramètres est vide."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:100
-#, fuzzy
 msgid "Parameters file loaded."
 msgstr "Fichier de paramètres chargé."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:339
-#, fuzzy
 msgid "The lead times were not provided in the parameters file."
-msgstr "Les délais n'ont pas été fournis dans le fichier des paramètres."
+msgstr "Les échéances n'ont pas été fournies dans le fichier des paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:344
-#, fuzzy
 msgid ""
 "The beginning of the archive period was not provided in the parameters file."
 msgstr ""
-"Le début de la période d'archivage n'a pas été indiqué dans le fichier de "
+"Le début de la période d'archive n'a pas été indiqué dans le fichier de "
 "paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:349
-#, fuzzy
 msgid "The end of the archive period was not provided in the parameters file."
 msgstr ""
-"La fin de la période d'archivage n'a pas été indiquée dans le fichier de "
+"La fin de la période d'archive n'a pas été indiquée dans le fichier de "
 "paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:354
 #: src/app_forecaster/core/asParametersForecast.cpp:359
-#, fuzzy
 msgid "The time step was not provided in the parameters file."
 msgstr "Le pas de temps n'a pas été fourni dans le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:367
-#, fuzzy
 msgid ""
 "The interval days for the analogs preselection was not provided in the "
 "parameters file."
@@ -383,25 +339,24 @@ msgstr ""
 "dans le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:373
-#, fuzzy
 msgid ""
 "The number of days to exclude around the target date was not provided in the "
 "parameters file."
 msgstr ""
-"Le nombre de jours à exclure autour de la date cible n'était pas indiqué "
-"dans le fichier de paramètres."
+"Le nombre de jours à exclure autour de la date cible n'a pas été fourni dans "
+"le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:382
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The length of the analogs numbers (step %d) do not match the number of lead "
 "times."
 msgstr ""
-"La longueur des numéros analogiques (étape %d) ne correspond pas au nombre "
-"de délais."
+"La longueur des nombres d'analogues (étape %d) ne correspond pas au nombre "
+"d'échéances."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:391
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The preprocessing method (step %d, predictor %d) was not provided in the "
 "parameters file."
@@ -410,25 +365,25 @@ msgstr ""
 "dans le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:399
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The realtime dataset for preprocessing (step %d, predictor %d) was not "
 "provided in the parameters file."
 msgstr ""
-"L'ensemble de données en temps réel pour le prétraitement (étape %d, "
-"prédicteur %d) n'a pas été fourni dans le fichier de paramètres."
+"Le jeu de données opérationnel pour le prétraitement (étape %d, prédicteur "
+"%d) n'a pas été fourni dans le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:405
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The realtime data for preprocessing (step %d, predictor %d) was not provided "
 "in the parameters file."
 msgstr ""
-"Les données en temps réel pour le prétraitement (étape %d, prédicteur %d) "
+"Les données opérationnelles pour le prétraitement (étape %d, prédicteur %d) "
 "n'ont pas été fournies dans le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:411
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The archive dataset for preprocessing (step %d, predictor %d) was not "
 "provided in the parameters file."
@@ -437,7 +392,7 @@ msgstr ""
 "%d) n'a pas été fourni dans le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:417
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The archive data for preprocessing (step %d, predictor %d) was not provided "
 "in the parameters file."
@@ -446,25 +401,25 @@ msgstr ""
 "pas été fournies dans le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:425
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The realtime dataset (step %d, predictor %d) was not provided in the "
 "parameters file."
 msgstr ""
-"L'ensemble de données en temps réel (étape %d, prédicteur %d) n'a pas été "
+"L'ensemble de données opérationnelles (étape %d, prédicteur %d) n'a pas été "
 "fourni dans le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:431
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The realtime data (step %d, predictor %d) was not provided in the parameters "
 "file."
 msgstr ""
-"Les données en temps réel (étape %d, prédicteur %d) n'ont pas été fournies "
+"Les données opérationnelles (étape %d, prédicteur %d) n'ont pas été fournies "
 "dans le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:437
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The archive dataset (step %d, predictor %d) was not provided in the "
 "parameters file."
@@ -473,7 +428,7 @@ msgstr ""
 "dans le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:443
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The archive data (step %d, predictor %d) was not provided in the parameters "
 "file."
@@ -482,32 +437,32 @@ msgstr ""
 "le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:451
-#, fuzzy, c-format
+#, c-format
 msgid "The grid type (step %d, predictor %d) is empty in the parameters file."
 msgstr ""
 "Le type de grille (pas %d, prédicteur %d) est vide dans le fichier de "
 "paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:457
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The X points nb value (step %d, predictor %d) was not provided in the "
 "parameters file."
 msgstr ""
-"La valeur nb des points X (étape %d, prédicteur %d) n'a pas été fournie dans "
+"La nombre de points en X (étape %d, prédicteur %d) n'a pas été fourni dans "
 "le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:463
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The Y points nb value (step %d, predictor %d) was not provided in the "
 "parameters file."
 msgstr ""
-"La valeur nb des points Y (étape %d, prédicteur %d) n'a pas été fournie dans "
+"La nombre de points en Y (étape %d, prédicteur %d) n'a pas été fourni dans "
 "le fichier de paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:469
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The criteria (step %d, predictor %d) was not provided in the parameters file."
 msgstr ""
@@ -515,26 +470,23 @@ msgstr ""
 "paramètres."
 
 #: src/app_forecaster/core/asParametersForecast.cpp:514
-#, fuzzy
 msgid ""
 "The lengths of the lead time and the number of analogs arrays are not "
 "consistent."
 msgstr ""
-"Les durées des délais et le nombre de tableaux d'analogues ne sont pas "
-"cohérents."
+"Les tailles des échéances et des nombre d'analogues ne sont pas cohérentes."
 
 #: src/app_forecaster/core/asResultsForecast.cpp:102
-#, fuzzy
 msgid "The provided ID or the tag is empty, which isn't allowed !"
 msgstr "L'ID fourni ou la balise est vide, ce qui n'est pas autorisé !"
 
 #: src/app_forecaster/core/asResultsForecast.cpp:152
-#, fuzzy, c-format
+#, c-format
 msgid "Saving forecast file: %s"
 msgstr "Enregistrement du fichier de prévisions : %s"
 
 #: src/app_forecaster/core/asResultsForecast.cpp:424
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The forecast file was made with more recent version of AtmoSwing (file "
 "version %d.%d). It cannot be opened here."
@@ -543,34 +495,31 @@ msgstr ""
 "d'AtmoSwing (version %d.%d). Il ne peut pas être ouvert ici."
 
 #: src/app_forecaster/core/asResultsForecast.cpp:431
-#, fuzzy
 msgid "The forecast file was made with an older version of AtmoSwing."
 msgstr ""
 "Le fichier de prévision a été réalisé avec une ancienne version d'AtmoSwing."
 
 #: src/app_forecaster/core/asResultsForecast.cpp:467
-#, fuzzy
 msgid "The spatial aggregation could not be converted."
 msgstr "L'agrégation spatiale n'a pas pu être convertie."
 
 #: src/app_forecaster/core/asResultsForecast.cpp:858
-#, fuzzy, c-format
+#, c-format
 msgid "The forecasts \"%s\" and \"%s\" are not compatible"
 msgstr "Les prévisions \"%s\" et \"%s\" ne sont pas compatibles"
 
 #: src/app_forecaster/core/asResultsForecastAggregator.cpp:67
-#, fuzzy
 msgid "This forecast has already been loaded."
 msgstr "Cette prévision a déjà été chargée."
 
 #: src/app_forecaster/core/asResultsForecastAggregator.cpp:77
-#, fuzzy, c-format
+#, c-format
 msgid "The forecast \"%s\" (%s) is not fully compatible with \"%s\" (%s)"
 msgstr ""
 "La prévision \"%s\" (%s) n'est pas entièrement compatible avec \"%s\" (%s)"
 
 #: src/app_forecaster/core/asResultsForecastAggregator.cpp:118
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The past forecast \"%s\" (%s) is not fully compatible with the current "
 "version of \"%s\" (%s)"
@@ -579,45 +528,38 @@ msgstr ""
 "version actuelle de \"%s\" (%s)"
 
 #: src/app_forecaster/core/asResultsForecastAggregator.cpp:367
-#, fuzzy, c-format
+#, c-format
 msgid "No specific forecast was found for station ID %d"
 msgstr "Aucune prévision spécifique n'a été trouvée pour l'ID de la station %d"
 
 #: src/app_forecaster/core/asResultsForecastAggregator.cpp:384
-#, fuzzy, c-format
+#, c-format
 msgid "No specific forecast was found for station %d"
 msgstr "Aucune prévision spécifique n'a été trouvée pour la station %d"
 
 #: src/app_forecaster/core/asResultsForecastAggregator.cpp:536
-#, fuzzy
 msgid "The desired return period is not available in the forecast file."
 msgstr ""
 "La période de retour souhaitée n'est pas disponible dans le fichier de "
 "prévision."
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:124
-#, fuzzy
 msgid "Program already running, aborting."
 msgstr "Programme déjà en cours d'exécution, interruption."
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:314
-#, fuzzy
 msgid "The value provided for 'forecast-past' could not be interpreted.\n"
-msgstr ""
-"La valeur fournie pour \"forecast-past\" n'a pas pu être interprétée.\n"
+msgstr "La valeur fournie pour 'forecast-past' n'a pas pu être interprétée.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:328
-#, fuzzy
 msgid "Wrong date format.\n"
 msgstr "Format de date incorrect.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:361
-#, fuzzy
 msgid "An existing batch file was found and has been loaded.\n"
 msgstr "Un fichier batch existant a été trouvé et a été chargé.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:372
-#, fuzzy
 msgid "Please provide a path to save the batch file.\n"
 msgstr ""
 "Veuillez indiquer un chemin d'accès pour enregistrer le fichier batch.\n"
@@ -630,9 +572,8 @@ msgstr ""
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:456
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:467
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:478
-#, fuzzy
 msgid "Current value (enter to keep): "
-msgstr "Valeur actuelle (entrer pour conserver) :"
+msgstr "Valeur actuelle (entrer pour conserver) : "
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:374
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:394
@@ -641,106 +582,92 @@ msgstr "Valeur actuelle (entrer pour conserver) :"
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:457
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:468
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:479
-#, fuzzy
 msgid "New value: "
-msgstr "Nouvelle valeur :"
+msgstr "Nouvelle valeur : "
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:384
-#, fuzzy
 msgid "The batch file exists and will be loaded.\n"
 msgstr "Le fichier batch existe et sera chargé.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:387
-#, fuzzy
 msgid "Failed opening the batch file.\n"
 msgstr "Échec de l'ouverture du fichier batch.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:392
-#, fuzzy
 msgid "Please provide a directory to save the forecasts.\n"
 msgstr "Veuillez indiquer un répertoire où enregistrer les prévisions.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:403
-#, fuzzy
 msgid "Do you want to export synthetic xml files of the forecasts ?\n"
 msgstr "Voulez-vous exporter des fichiers xml synthétiques des prévisions ?\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:413
-#, fuzzy
 msgid "New value (Y/N): "
-msgstr "Nouvelle valeur (O/N) :"
+msgstr "Nouvelle valeur (Y/N) : "
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:424
-#, fuzzy
 msgid "The provided value is not allowed. Please enter Y or N.\n"
-msgstr "La valeur fournie n'est pas autorisée. Veuillez saisir Y ou N.\n"
+msgstr ""
+"La valeur fournie n'est pas autorisée. Veuillez saisir Y (oui) ou N (non).\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:432
-#, fuzzy
 msgid "Please provide a directory to save the exports.\n"
-msgstr "Veuillez indiquer un répertoire où enregistrer les exportations.\n"
+msgstr "Veuillez indiquer un répertoire où enregistrer les exports.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:444
-#, fuzzy
 msgid "Please provide the directory containing the parameters files.\n"
 msgstr ""
 "Veuillez indiquer le répertoire contenant les fichiers de paramètres.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:455
-#, fuzzy
 msgid "Please provide the directory containing the archive predictors.\n"
-msgstr "Veuillez indiquer le répertoire contenant les prédicteurs archivés.\n"
+msgstr ""
+"Veuillez indiquer le répertoire contenant les archives de prédicteurs.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:466
-#, fuzzy
 msgid "Please provide a directory to save the downloaded predictors.\n"
 msgstr ""
 "Veuillez indiquer un répertoire où enregistrer les prédicteurs téléchargés.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:477
-#, fuzzy
 msgid "Please provide the directory containing the predictand database.\n"
 msgstr ""
 "Veuillez indiquer le répertoire contenant la base de données des "
-"prédicteurs.\n"
+"prédictands.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:488
-#, fuzzy
 msgid "Batch file created successfully.\n"
 msgstr "Fichier batch créé avec succès.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:495
-#, fuzzy
 msgid ""
 "Warning: there is no forecast listed in the batch file. Please create the "
 "batch file on a version with the graphical interface or edit the generated "
 "file manually.\n"
 msgstr ""
 "Attention : le fichier batch ne contient aucune prévision. Veuillez créer le "
-"fichier batch sur une version avec l'interface graphique ou éditer le "
+"fichier batch à l'aide une version avec l'interface graphique ou éditer le "
 "fichier généré manuellement.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:503
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:584
-#, fuzzy, c-format
+#, c-format
 msgid "Forecast started for the %s UTC"
 msgstr "Début des prévisions pour le %s UTC"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:514
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:563
-#, fuzzy
 msgid "Failed to open the batch file "
-msgstr "Échec de l'ouverture du fichier batch"
+msgstr "Échec de l'ouverture du fichier batch "
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:515
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:564
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open the batch file %s\n"
 msgstr "Échec de l'ouverture du fichier batch %s\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:519
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:568
-#, fuzzy
 msgid "Please run 'atmoswing-forecaster -c' first in order to configure."
 msgstr ""
 "Veuillez exécuter 'atmoswing-forecaster -c' en premier pour configurer le "
@@ -748,7 +675,6 @@ msgstr ""
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:520
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:569
-#, fuzzy
 msgid "Please run 'atmoswing-forecaster -c' first in order to configure.\n"
 msgstr ""
 "Veuillez exécuter 'atmoswing-forecaster -c' en premier pour configurer le "
@@ -756,18 +682,16 @@ msgstr ""
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:528
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:591
-#, fuzzy
 msgid "Failed processing the forecast."
 msgstr "Échec du traitement de la prévision."
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:529
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:592
-#, fuzzy
 msgid "Failed processing the forecast.\n"
 msgstr "Échec du traitement de la prévision.\n"
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:536
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:599
-#, fuzzy, c-format
+#, c-format
 msgid "Forecast processed for the date %s UTC"
 msgstr "Prévision traitée pour la date %s UTC"
