@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-06 20:07+0200\n"
-"PO-Revision-Date: 2023-04-06 20:49+0200\n"
+"PO-Revision-Date: 2023-04-07 11:33+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -19,64 +19,53 @@ msgstr ""
 "X-Generator: Poedit 3.2.2\n"
 
 #: src/shared_processing/core/asCriteria.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid "The predictor criteria was not correctly defined (%s)."
-msgstr "Le critère prédictif n'a pas été correctement défini (%s)."
+msgstr "Le critère n'a pas été correctement défini (%s)."
 
 #: src/shared_processing/core/asCriteriaDMV.cpp:31
-#, fuzzy
 msgid "Absolute difference in mean value (nonspatial)"
 msgstr "Différence absolue de la valeur moyenne (non spatiale)"
 
 #: src/shared_processing/core/asCriteriaDMV.cpp:51
-#, fuzzy
 msgid "Only NaNs in the DMV criteria calculation."
-msgstr "Seulement les NaN dans le calcul des critères DMV."
+msgstr "Seulement des NaN dans le calcul des critères DMV."
 
 #: src/shared_processing/core/asCriteriaDSD.cpp:31
-#, fuzzy
 msgid "Difference in standard deviation (nonspatial)"
-msgstr "Différence d'écart-type (non spatial) (``DSD``)"
+msgstr "Différence d'écart-type (non spatial)"
 
 #: src/shared_processing/core/asCriteriaDSD.cpp:55
-#, fuzzy
 msgid "Not enough data to process the DSD score."
 msgstr "Pas assez de données pour traiter le score DSD."
 
 #: src/shared_processing/core/asCriteriaMD.cpp:32
-#, fuzzy
 msgid "Mean Absolute Difference"
-msgstr "Différence moyenne absolue (``MD``)"
+msgstr "Différence moyenne absolue"
 
 #: src/shared_processing/core/asCriteriaMD.cpp:50
-#, fuzzy
 msgid "Only NaNs in the MD criteria calculation."
-msgstr "Seulement les NaNs dans le calcul des critères de MD."
+msgstr "Seulement des NaNs dans le calcul des critères MD."
 
 #: src/shared_processing/core/asCriteriaRMSE.cpp:32
-#, fuzzy
 msgid "Root Mean Square Error"
-msgstr "Erreur quadratique moyenne (``RMSE``)"
+msgstr "Erreur quadratique moyenne"
 
 #: src/shared_processing/core/asCriteriaRMSE.cpp:56
-#, fuzzy
 msgid "Only NaNs in the RMSE criteria calculation."
-msgstr "Seulement les NaN dans le calcul du critère RMSE."
+msgstr "Seulement des NaNs dans le calcul du critère RMSE."
 
 #: src/shared_processing/core/asCriteriaRSE.cpp:32
-#, fuzzy
 msgid "Root Squared Error"
 msgstr "Erreur quadratique"
 
 #: src/shared_processing/core/asCriteriaRSE.cpp:52
-#, fuzzy
 msgid "Only NaNs in the RSE criteria calculation."
-msgstr "Seulement les NaN dans le calcul des critères RSE."
+msgstr "Seulement des NaNs dans le calcul des critères RSE."
 
 #: src/shared_processing/core/asCriteriaS0.cpp:31
-#, fuzzy
 msgid "Teweles-Wobus on raw data"
-msgstr "Teweles-Wobus sur données brutes (``S0``)"
+msgstr "Teweles-Wobus sur données brutes"
 
 #: src/shared_processing/core/asCriteriaS0.cpp:63
 #: src/shared_processing/core/asCriteriaS0obs.cpp:63
@@ -85,109 +74,93 @@ msgstr "Teweles-Wobus sur données brutes (``S0``)"
 #: src/shared_processing/core/asCriteriaS1grads.cpp:67
 #: src/shared_processing/core/asCriteriaS1obs.cpp:70
 #: src/shared_processing/core/asCriteriaS2.cpp:83
-#, fuzzy
 msgid "Both dividend and divisor are equal to zero in the predictor criteria."
 msgstr ""
-"Le dividende et le diviseur sont tous deux égaux à zéro dans les critères du "
-"prédicteur."
+"Le dividende et le diviseur sont tous deux égaux à zéro dans le calcul du "
+"critère."
 
 #: src/shared_processing/core/asCriteriaS0obs.cpp:31
-#, fuzzy
 msgid "S0 with division by actual value"
 msgstr "S0 avec division par la valeur réelle"
 
 #: src/shared_processing/core/asCriteriaS1.cpp:32
-#, fuzzy
 msgid "Teweles-Wobus score"
 msgstr "Score Teweles-Wobus"
 
 #: src/shared_processing/core/asCriteriaS1.cpp:49
 #: src/shared_processing/core/asCriteriaS1G.cpp:48
 #: src/shared_processing/core/asCriteriaS1obs.cpp:48
-#, fuzzy
 msgid "NaNs are not handled in with S1 without preprocessing."
-msgstr "Les NaN ne sont pas traités avec S1 sans prétraitement."
+msgstr "Les NaNs ne sont pas gérés avec S1 sans prétraitement."
 
 #: src/shared_processing/core/asCriteriaS1G.cpp:31
-#, fuzzy
 msgid "Teweles-Wobus score with a Gaussian weighting"
 msgstr "Score de Teweles-Wobus avec une pondération gaussienne"
 
 #: src/shared_processing/core/asCriteriaS1grads.cpp:32
-#, fuzzy
 msgid "Teweles-Wobus on gradients"
-msgstr "Teweles-Wobus sur les pentes"
+msgstr "Teweles-Wobus sur les gradients"
 
 #: src/shared_processing/core/asCriteriaS1obs.cpp:31
-#, fuzzy
 msgid "S01 with division by actual value"
-msgstr "S01 avec division par la valeur réelle"
+msgstr "S1 avec division par la valeur réelle"
 
 #: src/shared_processing/core/asCriteriaS2.cpp:31
-#, fuzzy
 msgid "Derivative of Teweles-Wobus score"
 msgstr "Dérivée du score de Teweles-Wobus"
 
 #: src/shared_processing/core/asCriteriaS2.cpp:46
-#, fuzzy
 msgid "NaNs are not handled in with S2 without preprocessing."
-msgstr "Les NaN ne sont pas traités avec S2 sans prétraitement."
+msgstr "Les NaNs ne sont pas gérés avec S2 sans prétraitement."
 
 #: src/shared_processing/core/asCriteriaSAD.cpp:32
-#, fuzzy
 msgid "Sum of Absolute Differences"
-msgstr "Somme des différences absolues (``SAD``)"
+msgstr "Somme des différences absolues"
 
 #: src/shared_processing/core/asCriteriaSAD.cpp:50
-#, fuzzy
 msgid "Only NaNs in the SAD criteria calculation."
-msgstr "Seulement les NaN dans le calcul des critères du DAU."
+msgstr "Seulement ses NaNs dans le calcul du critère DAU."
 
 #: src/shared_processing/core/asMethodStandard.cpp:76
-#, fuzzy
 msgid "There is no predictand database file selected."
-msgstr "Il n'y a pas de fichier de base de données de prédiction sélectionné."
+msgstr "Pas de fichier de base de données de prédictands sélectionné."
 
 #: src/shared_processing/core/asMethodStandard.cpp:84
 #: src/shared_processing/core/asMethodStandard.cpp:92
-#, fuzzy
 msgid "Couldn't load the predictand database."
-msgstr "Impossible de charger la base de données predictand."
+msgstr "Impossible de charger la base de données des predictands."
 
 #: src/shared_processing/core/asMethodStandard.cpp:179
-#, fuzzy
 msgid "Preloading data with threads."
-msgstr "Préchargement des données avec des fils."
+msgstr "Préchargement des données avec des threads."
 
 #: src/shared_processing/core/asMethodStandard.cpp:227
-#, fuzzy
 msgid "Data preloaded with threads."
-msgstr "Données préchargées avec des fils."
+msgstr "Données préchargées avec des threads."
 
 #: src/shared_processing/core/asMethodStandard.cpp:240
-#, fuzzy, c-format
+#, c-format
 msgid "No data was preloaded for step %d, predictor %d and num %d."
 msgstr ""
 "Aucune donnée n'a été préchargée pour l'étape %d, le prédicteur %d et le num "
 "%d."
 
 #: src/shared_processing/core/asMethodStandard.cpp:247
-#, fuzzy, c-format
+#, c-format
 msgid "No data was preloaded for step %d and predictor %d."
 msgstr "Aucune donnée n'a été préchargée pour l'étape %d et le prédicteur %d."
 
 #: src/shared_processing/core/asMethodStandard.cpp:383
-#, fuzzy
 msgid "Share data pointer"
-msgstr "Pointeur de partage de données"
+msgstr "Partage du pointeur des données"
 
 #: src/shared_processing/core/asMethodStandard.cpp:415
-#, fuzzy, c-format
+#, c-format
 msgid "Preloading data for predictor %d of step %d."
 msgstr "Préchargement des données pour le prédicteur %d de l'étape %d."
 
 #: src/shared_processing/core/asMethodStandard.cpp:462
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Adapt Y axis extent according to the maximum allowed (from %.3f to %.3f)."
 msgstr ""
@@ -195,45 +168,43 @@ msgstr ""
 "%.3f)."
 
 #: src/shared_processing/core/asMethodStandard.cpp:464
-#, fuzzy, c-format
+#, c-format
 msgid "Remove %d points (%.3f-%.3f)/%.3f."
-msgstr "Enlever %d points (%.3f-%.3f)/%.3f."
+msgstr "Suppression de %d points (%.3f-%.3f)/%.3f."
 
 #: src/shared_processing/core/asMethodStandard.cpp:507
 #: src/shared_processing/core/asMethodStandard.cpp:940
-#, fuzzy
 msgid "Failed loading dumped data."
-msgstr "Échec du chargement des données vidées."
+msgstr "Échec du chargement des données temporaires."
 
 #: src/shared_processing/core/asMethodStandard.cpp:519
 #: src/shared_processing/core/asMethodStandard.cpp:725
-#, fuzzy, c-format
+#, c-format
 msgid "Loading %s data for level %d, %gh."
 msgstr "Chargement des données %s pour le niveau %d, %gh."
 
 #: src/shared_processing/core/asMethodStandard.cpp:524
 #: src/shared_processing/core/asMethodStandard.cpp:527
-#, fuzzy, c-format
+#, c-format
 msgid "The data (%s for level %d, at %gh) could not be loaded."
 msgstr "Les données (%s pour le niveau %d, à %gh) n'ont pas pu être chargées."
 
 #: src/shared_processing/core/asMethodStandard.cpp:536
-#, fuzzy, c-format
+#, c-format
 msgid "Bad allocation caught during data preloading: %s"
 msgstr "Mauvaise allocation détectée lors du préchargement des données : %s"
 
 #: src/shared_processing/core/asMethodStandard.cpp:543
-#, fuzzy, c-format
+#, c-format
 msgid "Exception caught during data preloading: %s"
 msgstr "Exception levée lors du préchargement des données : %s"
 
 #: src/shared_processing/core/asMethodStandard.cpp:548
-#, fuzzy
 msgid "Data loaded."
 msgstr "Données chargées."
 
 #: src/shared_processing/core/asMethodStandard.cpp:552
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The preloaded data has a different length than other data series: %d != %d"
 msgstr ""
@@ -244,42 +215,40 @@ msgstr ""
 #: src/shared_processing/core/asMethodStandard.cpp:752
 #: src/shared_processing/core/asMethodStandard.cpp:1081
 #: src/shared_processing/core/asMethodStandard.cpp:1174
-#, fuzzy
 msgid "Data standardisation has failed."
 msgstr "La normalisation des données a échoué."
 
 #: src/shared_processing/core/asMethodStandard.cpp:574
-#, fuzzy, c-format
+#, c-format
 msgid "File dumbed for %s (level %d, %gh)."
-msgstr "Fichier muet pour %s (niveau %d, %gh)."
+msgstr "Fichier temporaire créé pour %s (niveau %d, %gh)."
 
 #: src/shared_processing/core/asMethodStandard.cpp:589
-#, fuzzy, c-format
+#, c-format
 msgid "Preloading data for predictor preprocessed %d of step %d."
 msgstr ""
 "Préchargement des données pour le prédicteur prétraité %d de l'étape %d."
 
 #: src/shared_processing/core/asMethodStandard.cpp:627
-#, fuzzy
 msgid "Preprocessing method unknown in PreloadArchiveDataWithPreprocessing."
 msgstr ""
 "Méthode de prétraitement inconnue dans PreloadArchiveDataWithPreprocessing."
 
 #: src/shared_processing/core/asMethodStandard.cpp:631
 #: src/shared_processing/core/asMethodStandard.cpp:1116
-#, fuzzy, c-format
+#, c-format
 msgid "Preprocessing data (%d predictor(s)) while loading."
 msgstr "Prétraitement des données (%d prédicteur(s)) pendant le chargement."
 
 #: src/shared_processing/core/asMethodStandard.cpp:639
-#, fuzzy, c-format
+#, c-format
 msgid "Preloading data for predictor %d (preprocess %d) of step %d."
 msgstr ""
 "Préchargement des données pour le prédicteur %d (preprocess %d) de l'étape "
 "%d."
 
 #: src/shared_processing/core/asMethodStandard.cpp:705
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Adapt Y axis extent according to the maximum allowed (from %.2f to %.2f)."
 msgstr ""
@@ -289,12 +258,10 @@ msgstr ""
 #: src/shared_processing/core/asMethodStandard.cpp:728
 #: src/shared_processing/core/asMethodStandard.cpp:1071
 #: src/shared_processing/core/asMethodStandard.cpp:1150
-#, fuzzy
 msgid "The data could not be loaded."
 msgstr "Les données n'ont pas pu être chargées."
 
 #: src/shared_processing/core/asMethodStandard.cpp:737
-#, fuzzy
 msgid "Preprocessing data."
 msgstr "Prétraitement des données."
 
@@ -302,74 +269,66 @@ msgstr "Prétraitement des données."
 #: src/shared_processing/core/asMethodStandard.cpp:1019
 #: src/shared_processing/core/asMethodStandard.cpp:1092
 #: src/shared_processing/core/asMethodStandard.cpp:1165
-#, fuzzy
 msgid "Data preprocessing failed."
 msgstr "Le prétraitement des données a échoué."
 
 #: src/shared_processing/core/asMethodStandard.cpp:763
-#, fuzzy, c-format
+#, c-format
 msgid "Bad allocation caught in the data preprocessing: %s"
 msgstr "Mauvaise allocation détectée lors du prétraitement des données : %s"
 
 #: src/shared_processing/core/asMethodStandard.cpp:770
-#, fuzzy, c-format
+#, c-format
 msgid "Exception caught during data preprocessing: %s"
 msgstr "Une exception a été levée pendant le traitement des données : %s"
 
 #: src/shared_processing/core/asMethodStandard.cpp:776
-#, fuzzy
 msgid "Preprocessing over."
 msgstr "Prétraitement terminé."
 
 #: src/shared_processing/core/asMethodStandard.cpp:792
-#, fuzzy
 msgid "Could not preload the data."
 msgstr "Impossible de précharger les données."
 
 #: src/shared_processing/core/asMethodStandard.cpp:801
-#, fuzzy
 msgid "Loading data."
-msgstr "Chargement en en cours."
+msgstr "Chargement des données en cours."
 
 #: src/shared_processing/core/asMethodStandard.cpp:813
-#, fuzzy
 msgid "Data loaded"
 msgstr "Données chargées"
 
 #: src/shared_processing/core/asMethodStandard.cpp:818
-#, fuzzy, c-format
+#, c-format
 msgid "Bad allocation caught during data loading: %s"
 msgstr "Mauvaise allocation détectée lors du chargement des données : %s"
 
 #: src/shared_processing/core/asMethodStandard.cpp:822
-#, fuzzy, c-format
+#, c-format
 msgid "Exception caught during data loading: %s"
 msgstr "Exception lors du chargement des données : %s"
 
 #: src/shared_processing/core/asMethodStandard.cpp:831
-#, fuzzy
 msgid "Using preloaded data."
 msgstr "Utilisation de données préchargées."
 
 #: src/shared_processing/core/asMethodStandard.cpp:872
-#, fuzzy
 msgid ""
 "The criteria value has not been changed after the gradient preprocessing."
 msgstr ""
 "La valeur du critère n'a pas été modifiée après le prétraitement du gradient."
 
 #: src/shared_processing/core/asMethodStandard.cpp:900
-#, fuzzy, c-format
+#, c-format
 msgid "The level (%f) could not be found in the preloaded data."
 msgstr "Le niveau (%f) n'a pas été trouvé dans les données préchargées."
 
 #: src/shared_processing/core/asMethodStandard.cpp:904
-#, fuzzy, c-format
+#, c-format
 msgid "The hour (%d) could not be found in the preloaded data."
 msgstr "L'heure (%d) n'a pas été trouvée dans les données préchargées."
 
 #: src/shared_processing/core/asMethodStandard.cpp:917
-#, fuzzy
 msgid "The pointer to preloaded data is null."
 msgstr "Le pointeur sur les données préchargées est nul."
 
@@ -382,12 +341,11 @@ msgstr "Le pointeur sur les données préchargées est nul."
 #: src/shared_processing/core/asProcessor.cpp:1368
 #: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:109
 #: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:142
-#, fuzzy
 msgid "An unexpected error occurred."
 msgstr "Une erreur inattendue s’est produite."
 
 #: src/shared_processing/core/asMethodStandard.cpp:1005
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The data could not be extracted (iStep = %d, iPtor = %d, iPre = %d, iLevel = "
 "%d, iHour = %d)."
@@ -396,7 +354,6 @@ msgstr ""
 "iLevel = %d, iHour = %d)."
 
 #: src/shared_processing/core/asPreprocessor.cpp:77
-#, fuzzy
 msgid "The preprocessing method was not correctly defined."
 msgstr "La méthode de prétraitement n'a pas été correctement définie."
 
@@ -408,7 +365,6 @@ msgstr "La méthode de prétraitement n'a pas été correctement définie."
 #: src/shared_processing/core/asPreprocessor.cpp:465
 #: src/shared_processing/core/asPreprocessor.cpp:549
 #: src/shared_processing/core/asPreprocessor.cpp:627
-#, fuzzy
 msgid ""
 "The number of predictors must be equal to 1 in asPreprocessor::"
 "PreprocessGradients"
@@ -418,13 +374,11 @@ msgstr ""
 
 #: src/shared_processing/core/asPreprocessor.cpp:159
 #: src/shared_processing/core/asPreprocessor.cpp:311
-#, fuzzy
 msgid "The predictor must be lat/lon to process the real gradients."
 msgstr "Le prédicteur doit être lat/lon pour traiter les gradients réels."
 
 #: src/shared_processing/core/asPreprocessor.cpp:713
 #: src/shared_processing/core/asPreprocessor.cpp:752
-#, fuzzy
 msgid ""
 "The number of predictors must be superior to 1 in asPreprocessor::"
 "PreprocessAddition"
@@ -433,7 +387,6 @@ msgstr ""
 "PreprocessAddition"
 
 #: src/shared_processing/core/asPreprocessor.cpp:792
-#, fuzzy
 msgid ""
 "The number of predictors must be equal to 2 in asPreprocessor::"
 "PreprocessDifference"
@@ -442,7 +395,6 @@ msgstr ""
 "PreprocessDifference"
 
 #: src/shared_processing/core/asPreprocessor.cpp:829
-#, fuzzy
 msgid ""
 "The number of predictors must be superior to 1 in asPreprocessor::"
 "PreprocessMultiplication"
@@ -451,7 +403,6 @@ msgstr ""
 "PreprocessMultiplication"
 
 #: src/shared_processing/core/asPreprocessor.cpp:869
-#, fuzzy
 msgid ""
 "The number of predictors must be equal to 4 in asPreprocessor::"
 "PreprocessFormerHumidityIndex"
@@ -460,12 +411,10 @@ msgstr ""
 "PreprocessFormerHumidityIndex"
 
 #: src/shared_processing/core/asPreprocessor.cpp:921
-#, fuzzy
 msgid "The predictors sizes make them impossible to merge."
 msgstr "La taille des prédicteurs les rend impossibles à fusionner."
 
 #: src/shared_processing/core/asPreprocessor.cpp:983
-#, fuzzy
 msgid ""
 "The number of predictors must be superior to 2 in "
 "PreprocessMergeByHalfAndMultiply"
@@ -474,7 +423,6 @@ msgstr ""
 "PreprocessMergeByHalfAndMultiply"
 
 #: src/shared_processing/core/asPreprocessor.cpp:987
-#, fuzzy
 msgid ""
 "The number of predictors must be dividable by 2 in "
 "PreprocessMergeByHalfAndMultiply"
@@ -483,7 +431,6 @@ msgstr ""
 "PreprocessMergeByHalfAndMultiply"
 
 #: src/shared_processing/core/asPreprocessor.cpp:1055
-#, fuzzy
 msgid ""
 "The number of predictors must be equal to 4 in asPreprocessor::"
 "PreprocessHumidityFlux"
@@ -492,7 +439,6 @@ msgstr ""
 "PreprocessHumidityFlux"
 
 #: src/shared_processing/core/asPreprocessor.cpp:1112
-#, fuzzy
 msgid ""
 "The number of predictors must be equal to 2 in asPreprocessor::"
 "PreprocessWindSpeed"
@@ -501,42 +447,36 @@ msgstr ""
 "PreprocessWindSpeed"
 
 #: src/shared_processing/core/asProcessor.cpp:81
-#, fuzzy
 msgid "The Analogs SubDates method must be called for this step."
 msgstr "La méthode Analogs SubDates doit être appelée pour cette étape."
 
 #: src/shared_processing/core/asProcessor.cpp:102
-#, fuzzy
 msgid "The given analog number is superior to the time series."
-msgstr "Le nombre analogique donné est supérieur à la série temporelle."
+msgstr ""
+"Le nombre d'analogues donné est supérieur à la taille de la série temporelle."
 
 #: src/shared_processing/core/asProcessor.cpp:120
 #: src/shared_processing/core/asProcessor.cpp:833
-#, fuzzy
 msgid "All variables must contain the same number of members."
 msgstr "Toutes les variables doivent contenir le même nombre de membres."
 
 #: src/shared_processing/core/asProcessor.cpp:126
 #: src/shared_processing/core/asProcessor.cpp:839
-#, fuzzy
 msgid "You cannot combine criteria that are ascendant and descendant."
-msgstr "Vous ne pouvez pas combiner des critères ascendants et descendants."
+msgstr "Vous ne pouvez pas combiner des critères croissants et décroissants."
 
 #: src/shared_processing/core/asProcessor.cpp:140
 #: src/shared_processing/core/asProcessor.cpp:856
-#, fuzzy
 msgid "Processing the data comparison."
 msgstr "Traitement de la comparaison des données."
 
 #: src/shared_processing/core/asProcessor.cpp:149
 #: src/shared_processing/core/asProcessor.cpp:865
-#, fuzzy
 msgid "No support for ensemble datasets in CUDA yet."
 msgstr "Pas encore de prise en charge des ensembles de données dans CUDA."
 
 #: src/shared_processing/core/asProcessor.cpp:156
 #: src/shared_processing/core/asProcessor.cpp:872
-#, fuzzy
 msgid ""
 "The CUDA implementation is only available in calibration (prefect prog)."
 msgstr ""
@@ -544,13 +484,13 @@ msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:195
 #: src/shared_processing/core/asProcessor.cpp:908
-#, fuzzy, c-format
+#, c-format
 msgid "The %s criteria is not yet implemented for CUDA."
-msgstr "Le critère %s n'est pas encore mis en œuvre pour CUDA."
+msgstr "Le critère %s n'est pas encore implémenté pour CUDA."
 
 #: src/shared_processing/core/asProcessor.cpp:318
 #: src/shared_processing/core/asProcessor.cpp:546
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The candidate (%s) was not found in the array (%s - %s) (Target date: %s)."
 msgstr ""
@@ -561,110 +501,103 @@ msgstr ""
 #: src/shared_processing/core/asProcessor.cpp:462
 #: src/shared_processing/core/asProcessor.cpp:1051
 #: src/shared_processing/core/asProcessor.cpp:1131
-#, fuzzy
 msgid "NaNs were found in the criteria values."
-msgstr "Des NaN ont été trouvés dans les valeurs des critères."
+msgstr "Des NaNs ont été trouvés dans les valeurs des critères."
 
 #: src/shared_processing/core/asProcessor.cpp:375
 #: src/shared_processing/core/asProcessor.cpp:579
 #: src/shared_processing/core/asProcessor.cpp:1052
 #: src/shared_processing/core/asProcessor.cpp:1226
-#, fuzzy, c-format
+#, c-format
 msgid "Target date: %s, archive date: %s."
-msgstr "Date cible : %s, date d'archivage : %s."
+msgstr "Date cible : %s, date de l'archive : %s."
 
 #: src/shared_processing/core/asProcessor.cpp:388
-#, fuzzy
 msgid "There is not enough available data to satisfy the number of analogs."
 msgstr ""
 "Les données disponibles ne sont pas suffisantes pour satisfaire le nombre "
 "d'analogues."
 
 #: src/shared_processing/core/asProcessor.cpp:389
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Analogs number (%d) > resCounter (%d), date array size (%d) with %d days "
 "intervals."
 msgstr ""
-"Analogues nombre (%d) > resCounter (%d), date array size (%d) avec des "
-"intervalles de %d jours."
+"Nombre d'analogues (%d) > resCounter (%d), taille du vecteur des dates (%d) "
+"avec des intervalles de %d jours."
 
 #: src/shared_processing/core/asProcessor.cpp:473
 #: src/shared_processing/core/asProcessor.cpp:1143
-#, fuzzy
 msgid "Errors were found during extraction of the analog dates."
 msgstr ""
-"Des erreurs ont été constatées lors de l'extraction des dates analogiques."
+"Des erreurs ont été constatées lors de l'extraction des dates analogues."
 
 #: src/shared_processing/core/asProcessor.cpp:576
 #: src/shared_processing/core/asProcessor.cpp:1223
-#, fuzzy, c-format
+#, c-format
 msgid "NaNs were found in the criteria values (%s/%s)."
-msgstr "Des NaN ont été trouvés dans les valeurs des critères (%s/%s)."
+msgstr "Des NaNs ont été trouvés dans les valeurs des critères (%s/%s)."
 
 #: src/shared_processing/core/asProcessor.cpp:594
 #: src/shared_processing/core/asThreadGetAnalogsDates.cpp:175
-#, fuzzy
 msgid ""
 "It should not happen that the array of analogue dates is not full when "
 "adding members."
 msgstr ""
-"Il ne devrait pas arriver que le tableau des dates analogiques ne soit pas "
-"plein lors de l'ajout de membres."
+"Le tableau des dates analogues devrait être plein lors de l'ajout de membres."
 
 #: src/shared_processing/core/asProcessor.cpp:618
 #: src/shared_processing/core/asProcessor.cpp:1283
-#, fuzzy
 msgid "The processing method is not correctly defined."
 msgstr "La méthode de traitement n'est pas correctement définie."
 
 #: src/shared_processing/core/asProcessor.cpp:627
-#, fuzzy, c-format
+#, c-format
 msgid "The function asProcessor::GetAnalogsDates took %.3f s to execute"
 msgstr "La fonction asProcessor::GetAnalogsDates a mis %.3f s à s'exécuter"
 
 #: src/shared_processing/core/asProcessor.cpp:636
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The size of the time array and the target data are not equal (%d != %d)."
 msgstr ""
-"La taille du tableau des temps et celle des données cibles ne sont pas "
+"La taille du vecteur des dates et celle des données cibles ne sont pas "
 "égales (%d !=%d)."
 
 #: src/shared_processing/core/asProcessor.cpp:638
 #: src/shared_processing/core/asProcessor.cpp:655
-#, fuzzy, c-format
+#, c-format
 msgid "Time array starts on %s and ends on %s."
-msgstr "Le tableau des temps commence à %s et se termine à %s."
+msgstr "Le vecteur des dates commence à %s et se termine à %s."
 
 #: src/shared_processing/core/asProcessor.cpp:653
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The size of the time array and the archive data are not equal (%d != %d)."
 msgstr ""
-"La taille du tableau temporel et celle des données d'archives ne sont pas "
+"La taille du vecteur des dates et celle des données d'archives ne sont pas "
 "égales (%d !=%d)."
 
 #: src/shared_processing/core/asProcessor.cpp:790
-#, fuzzy
 msgid "The  Analogs Dates method cannot be called first."
 msgstr "La méthode Analogs Dates ne peut pas être appelée en premier."
 
 #: src/shared_processing/core/asProcessor.cpp:817
-#, fuzzy, c-format
+#, c-format
 msgid "The given analog number (%d) is superior to the previous step (%d)."
 msgstr ""
-"Le numéro analogique donné (%d) est supérieur à l'étape précédente (%d)."
+"Le nombre d'analogues donné (%d) est supérieur à celui de l'étape précédente "
+"(%d)."
 
 #: src/shared_processing/core/asProcessor.cpp:985
 #: src/shared_processing/core/asProcessor.cpp:1159
-#, fuzzy, c-format
+#, c-format
 msgid "Looking for %s in betwwen %s and %s."
 msgstr "Recherche de %s entre %s et %s."
 
 #: src/shared_processing/core/asProcessor.cpp:1002
 #: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:205
-#, fuzzy
 msgid ""
 "The date was not found in the array (Analogs subdates fct). That should not "
 "happen."
@@ -673,33 +606,31 @@ msgstr ""
 "devrait pas se produire."
 
 #: src/shared_processing/core/asProcessor.cpp:1193
-#, fuzzy
 msgid "The date was not found in the array (Analogs subdates fct)."
 msgstr "La date n'a pas été trouvée dans le tableau (Analogs subdates fct)."
 
 #: src/shared_processing/core/asProcessor.cpp:1299
-#, fuzzy, c-format
+#, c-format
 msgid "The function asProcessor::GetAnalogsSubDates took %.3f s to execute"
 msgstr "La fonction asProcessor::GetAnalogsSubDates a mis %.3f s à s'exécuter"
 
 #: src/shared_processing/core/asProcessor.cpp:1430
-#, fuzzy, c-format
+#, c-format
 msgid "The current analog date (%s) is outside of the allowed period (%s-%s))."
 msgstr ""
-"La date analogique actuelle (%s) est en dehors de la période autorisée (%s-"
+"La date analogue actuelle (%s) est en dehors de la période autorisée (%s-"
 "%s))."
 
 #: src/shared_processing/core/asProcessor.cpp:1443
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The current analog date (%s) was not found in the predictand time array (%s-"
 "%s)."
 msgstr ""
-"La date analogique actuelle (%s) n'a pas été trouvée dans le tableau de "
-"temps prédictif (%s-%s)."
+"La date analogue actuelle (%s) n'a pas été trouvée dans les predictands (%s-"
+"%s)."
 
 #: src/shared_processing/core/asResultsDates.cpp:143
-#, fuzzy
 msgid ""
 "The target date array is not consistent in the temp file (last value makes "
 "no sense)."
@@ -709,21 +640,17 @@ msgstr ""
 
 #: src/shared_processing/core/asThreadGetAnalogsDates.cpp:67
 #: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:65
-#, fuzzy
 msgid "The given time array end is superior to the time array size."
-msgstr ""
-"La fin du tableau de temps donnée est supérieure à la taille du tableau de "
-"temps."
+msgstr "La fin du tableau des dates est supérieure à sa taille."
 
 #: src/shared_processing/core/asThreadGetAnalogsDates.cpp:69
 #: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:67
-#, fuzzy, c-format
+#, c-format
 msgid "The given time array end is missing its last value (end=%d, size=%d)."
 msgstr ""
-"La dernière valeur du tableau de temps end est manquante (end=%d, size=%d)."
+"La dernière valeur du tableau des dates est manquante (end=%d, size=%d)."
 
 #: src/shared_processing/core/asThreadGetAnalogsDates.cpp:190
-#, fuzzy
 msgid ""
 "The date was not found in the array (Analogs Dates fct, multithreaded "
 "option). That should not happen."
@@ -732,6 +659,6 @@ msgstr ""
 "multithreaded). Cela ne devrait pas se produire."
 
 #: src/shared_processing/core/asThreadGetAnalogsDates.cpp:192
-#, fuzzy, c-format
+#, c-format
 msgid "Start: %g, end: %g, desired value: %g."
 msgstr "Début : %g, fin : %g, valeur souhaitée : %g."
