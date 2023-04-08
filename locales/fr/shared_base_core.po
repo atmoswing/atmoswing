@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-06 20:07+0200\n"
-"PO-Revision-Date: 2023-04-06 20:43+0200\n"
+"PO-Revision-Date: 2023-04-08 18:25+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -19,39 +19,35 @@ msgstr ""
 "X-Generator: Poedit 3.2.2\n"
 
 #: src/shared_base/core/asArea.cpp:71
-#, fuzzy
 msgid "Unable to build a consistent area with the given coordinates."
 msgstr ""
 "Impossible de construire une zone cohérente avec les coordonnées données."
 
 #: src/shared_base/core/asArea.cpp:72
-#, fuzzy
 msgid "The provided area is not rectangle."
 msgstr "La zone fournie n'est pas un rectangle."
 
 #: src/shared_base/core/asAreaGrid.cpp:66
-#, fuzzy, c-format
+#, c-format
 msgid "Given grid type: %s"
 msgstr "Type de grille donné : %s"
 
 #: src/shared_base/core/asAreaGrid.cpp:67
-#, fuzzy
 msgid "The given grid type doesn't correspond to any existing option."
 msgstr "Le type de grille donné ne correspond à aucune option existante."
 
 #: src/shared_base/core/asAreaGrid.cpp:140
-#, fuzzy
 msgid "Inconsistent x coordinates on a non lat / lon axis."
 msgstr "Coordonnées x incohérentes sur un axe non lat / lon."
 
 #: src/shared_base/core/asAreaGrid.cpp:220
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot find the corresponding value (%g) on the longitude axis."
 msgstr ""
 "Impossible de trouver la valeur correspondante (%g) sur l'axe de longitude."
 
 #: src/shared_base/core/asAreaGrid.cpp:229
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The index (%d) of the longitude min is larger than the one for the longitude "
 "max (%d)."
@@ -60,7 +56,7 @@ msgstr ""
 "max (%d)."
 
 #: src/shared_base/core/asAreaGrid.cpp:316
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Cannot find one the corresponding value (%g or %g) on the latitude axis."
 msgstr ""
@@ -69,207 +65,183 @@ msgstr ""
 
 #: src/shared_base/core/asAreaGrid.cpp:344
 #: src/shared_base/core/asAreaGrid.cpp:351
-#, fuzzy
 msgid "The number of points on the latitude axis was reduced to fit the data."
 msgstr ""
 "Le nombre de points sur l'axe des latitudes a été réduit pour s'adapter aux "
 "données."
 
 #: src/shared_base/core/asAreaGrid.cpp:368
-#, fuzzy
 msgid "A negative index was found during the area generation."
 msgstr "Un indice négatif a été trouvé lors de la génération de la zone."
 
 #: src/shared_base/core/asAreaGrid.cpp:373
-#, fuzzy
 msgid "The number of points on the longitude axis was reduced to fit the data."
 msgstr ""
 "Le nombre de points sur l'axe de longitude a été réduit pour s'adapter aux "
 "données."
 
 #: src/shared_base/core/asCatalogPredictands.cpp:52
-#, fuzzy
 msgid "No path was given for the predictand catalog."
-msgstr "Aucun chemin n'a été donné pour le catalogue des prédicats."
+msgstr "Aucun chemin n'a été donné pour le catalogue des prédictands."
 
 #: src/shared_base/core/asFile.cpp:48
-#, fuzzy, c-format
+#, c-format
 msgid "The file path is not OK %s"
 msgstr "Le chemin d'accès au fichier n'est pas OK %s"
 
 #: src/shared_base/core/asFile.cpp:125
-#, fuzzy
 msgid "The file access is not correctly set."
 msgstr "L'accès au fichier n'est pas correctement défini."
 
 #: src/shared_base/core/asFile.cpp:130
-#, fuzzy, c-format
+#, c-format
 msgid "The directory %s could not be created."
 msgstr "Le répertoire %s n'a pas pu être créé."
 
 #: src/shared_base/core/asFile.cpp:137
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot find the file %s"
 msgstr "Impossible de trouver le fichier %s"
 
 #: src/shared_base/core/asFile.cpp:142
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot find the directory %s"
 msgstr "Impossible de trouver le répertoire %s"
 
 #: src/shared_base/core/asFile.cpp:147
-#, fuzzy
 msgid "The file could not be accessed in the desired mode."
 msgstr "Le fichier n'a pas pu être accédé dans le mode souhaité."
 
 #: src/shared_base/core/asFile.cpp:152
-#, fuzzy
 msgid "The file should be overwritten, which is not allowed in the New mode."
 msgstr ""
 "Le fichier devrait être écrasé, ce qui n'est pas autorisé dans le mode "
 "Nouveau."
 
 #: src/shared_base/core/asFileDat.cpp:77
-#, fuzzy
 msgid "Cannot open the pattern file."
-msgstr "Impossible d'ouvrir le fichier de motifs."
+msgstr "Impossible d'ouvrir le fichier de patterns."
 
 #: src/shared_base/core/asFileDat.cpp:80
-#, fuzzy
 msgid "Errors were found in the pattern file."
-msgstr "Des erreurs ont été trouvées dans le fichier modèle."
+msgstr "Des erreurs ont été trouvées dans le fichier patterns."
 
 #: src/shared_base/core/asFileDat.cpp:105
 #: src/shared_base/core/asFileDat.cpp:185
-#, fuzzy
 msgid "The file structure type in unknown"
 msgstr "Le type de structure de fichier est inconnu"
 
 #: src/shared_base/core/asFileDat.cpp:113
 #: src/shared_base/core/asFileDat.cpp:146
-#, fuzzy
 msgid "The file structure type in undefined"
 msgstr "Le type de structure du fichier est indéfini"
 
 #: src/shared_base/core/asFileDat.cpp:173
-#, fuzzy
 msgid "Expecting the tag pattern in the pattern file..."
-msgstr "Attente du modèle de balise dans le fichier de modèle..."
+msgstr "Attente du modèle de balise dans le fichier pattern..."
 
 #: src/shared_base/core/asFileGrib.cpp:48
-#, fuzzy
 msgid "Grib files edition is not implemented."
 msgstr "L'édition des fichiers Grib n'est pas implémentée."
 
 #: src/shared_base/core/asFileGrib.cpp:73
-#, fuzzy, c-format
+#, c-format
 msgid "The ecCodes definition path '%s' was not found."
-msgstr "Le chemin de définition des ecCodes '%s' n'a pas été trouvé."
+msgstr "Le chemin de définition de ecCodes '%s' n'a pas été trouvé."
 
 #: src/shared_base/core/asFileGrib.cpp:81
-#, fuzzy
 msgid "Grib file found."
 msgstr "Fichier Grib trouvé."
 
 #: src/shared_base/core/asFileGrib.cpp:108
-#, fuzzy
 msgid "The opening of the grib file failed."
 msgstr "L'ouverture du fichier grib a échoué."
 
 #: src/shared_base/core/asFileGrib.cpp:121
-#, fuzzy, c-format
+#, c-format
 msgid "Creating handle from file %s"
-msgstr "Création d'un handle à partir d'un fichier %s"
+msgstr "Création d'un handle à partir du fichier %s"
 
 #: src/shared_base/core/asFileGrib.cpp:125
-#, fuzzy
 msgid "Check if Grib error"
-msgstr "Vérifier s'il y a une erreur de Grib"
+msgstr "Vérification de potentielles erreurs liées au fichier Grib"
 
 #: src/shared_base/core/asFileGrib.cpp:146
 #: src/shared_base/core/asPredictor.cpp:521
-#, fuzzy, c-format
+#, c-format
 msgid "Exception caught: %s"
 msgstr "Une exception a été détectée : %s"
 
 #: src/shared_base/core/asFileGrib.cpp:147
-#, fuzzy
 msgid "Failed to parse grib file (exception)."
 msgstr "Échec de l'analyse du fichier grib (exception)."
 
 #: src/shared_base/core/asFileGrib.cpp:198
-#, fuzzy
 msgid "Error reading grib file: unlisted time unit."
 msgstr "Erreur de lecture du fichier grib : unité de temps non répertoriée."
 
 #: src/shared_base/core/asFileGrib.cpp:229
-#, fuzzy
 msgid "Error reading grib file: type of level not found."
 msgstr "Erreur de lecture du fichier grib : type de niveau non trouvé."
 
 #: src/shared_base/core/asFileGrib.cpp:304
-#, fuzzy, c-format
+#, c-format
 msgid "Grib error (file %s): %s"
 msgstr "Erreur Grib (fichier %s) : %s"
 
 #: src/shared_base/core/asFileGrib.cpp:467
 #: src/shared_base/core/asFileGrib.cpp:470
-#, fuzzy, c-format
+#, c-format
 msgid "The desired parameter / level (%.0f) was not found in the file %s."
 msgstr ""
 "Le paramètre/niveau souhaité (%.0f) n'a pas été trouvé dans le fichier %s."
 
 #: src/shared_base/core/asFileGrib.cpp:481
-#, fuzzy, c-format
+#, c-format
 msgid "The file %s is empty."
 msgstr "Le fichier %s est vide."
 
 #: src/shared_base/core/asFileGrib.cpp:495
-#, fuzzy, c-format
+#, c-format
 msgid "The desired parameter was not found in the file %s."
 msgstr "Le paramètre souhaité n'a pas été trouvé dans le fichier %s."
 
 #: src/shared_base/core/asFileGrib.cpp:619
-#, fuzzy
 msgid "Multiple messages found in GRIB file for the given constraints."
 msgstr ""
 "Plusieurs messages ont été trouvés dans le fichier GRIB pour les contraintes "
 "données."
 
 #: src/shared_base/core/asFileGrib.cpp:660
-#, fuzzy
 msgid "GRIB message not found for the given constraints."
 msgstr "Message GRIB introuvable pour les contraintes données."
 
 #: src/shared_base/core/asFileNetcdf.cpp:51
-#, fuzzy
 msgid "Generated by AtmoSwing "
-msgstr "Généré par AtmoSwing"
+msgstr "Généré par AtmoSwing "
 
 #: src/shared_base/core/asFileNetcdf.cpp:61
 #: src/shared_base/core/asFileNetcdf.cpp:73
-#, fuzzy
 msgid "Failed parsing the file structure."
 msgstr "Échec de l'analyse de la structure du fichier."
 
 #: src/shared_base/core/asFileNetcdf.cpp:98
-#, fuzzy
 msgid "No valid NetCdf FileMode has been selected"
 msgstr "Aucun mode de fichier NetCdf valide n'a été sélectionné"
 
 #: src/shared_base/core/asFileNetcdf.cpp:133
-#, fuzzy, c-format
+#, c-format
 msgid "NetCDF error in file %s: %s"
 msgstr "Erreur NetCDF dans le fichier %s : %s"
 
 #: src/shared_base/core/asFileNetcdf.cpp:487
 #: src/shared_base/core/asFileNetcdf.cpp:523
-#, fuzzy, c-format
+#, c-format
 msgid "The desired variable doesn't exist: %s"
 msgstr "La variable souhaitée n'existe pas : %s"
 
 #: src/shared_base/core/asFileNetcdf.cpp:580
-#, fuzzy, c-format
+#, c-format
 msgid "The desired attribute doesn't exist: %s"
 msgstr "L'attribut souhaité n'existe pas : %s"
 
@@ -277,7 +249,6 @@ msgstr "L'attribut souhaité n'existe pas : %s"
 #: src/shared_base/core/asFileNetcdf.cpp:618
 #: src/shared_base/core/asFileNetcdf.cpp:776
 #: src/shared_base/core/asFileNetcdf.cpp:796
-#, fuzzy
 msgid "Cannot find the desired attribute in the netCDF file."
 msgstr "Impossible de trouver l'attribut souhaité dans le fichier netCDF."
 
@@ -287,16 +258,15 @@ msgstr "Impossible de trouver l'attribut souhaité dans le fichier netCDF."
 #: src/shared_base/core/asFileNetcdf.cpp:737
 #: src/shared_base/core/asFileNetcdf.cpp:782
 #: src/shared_base/core/asFileNetcdf.cpp:835
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The attribute (%s) type (%d) in file doesn't match the desired type (%d)."
 msgstr ""
-"Le type d'attribut (%s) (%d) dans le fichier ne correspond pas au type "
+"L'attribut (%s) de type (%d) dans le fichier ne correspond pas au type "
 "souhaité (%d)."
 
 #: src/shared_base/core/asFileNetcdf.cpp:614
 #: src/shared_base/core/asFileNetcdf.cpp:792
-#, fuzzy
 msgid "Cannot find the desired variable in the netCDF file."
 msgstr "Impossible de trouver la variable souhaitée dans le fichier netCDF."
 
@@ -306,7 +276,7 @@ msgstr "Impossible de trouver la variable souhaitée dans le fichier netCDF."
 #: src/shared_base/core/asFileNetcdf.cpp:755
 #: src/shared_base/core/asFileNetcdf.cpp:802
 #: src/shared_base/core/asFileNetcdf.cpp:866
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."
 msgstr ""
@@ -314,9 +284,8 @@ msgstr ""
 "souhaité (%d)."
 
 #: src/shared_base/core/asFileNetcdf.cpp:920
-#, fuzzy
 msgid "Variable name not found in the file."
-msgstr "Le nom de la variable n'est pas trouvé dans le fichier."
+msgstr "Le nom de la variable n'a pas été trouvé dans le fichier."
 
 #: src/shared_base/core/asFileNetcdf.cpp:935
 #: src/shared_base/core/asFileNetcdf.cpp:958
@@ -335,7 +304,6 @@ msgstr "Le nom de la variable n'est pas trouvé dans le fichier."
 #: src/shared_base/core/asFileNetcdf.cpp:1336
 #: src/shared_base/core/asFileNetcdf.cpp:1370
 #: src/shared_base/core/asFileNetcdf.cpp:1404
-#, fuzzy
 msgid "Cannot get the desired variable from the netCDF file."
 msgstr "Impossible d'obtenir la variable souhaitée à partir du fichier netCDF."
 
@@ -348,11 +316,11 @@ msgstr "Impossible d'obtenir la variable souhaitée à partir du fichier netCDF.
 #: src/shared_base/core/asFileNetcdf.cpp:1094
 #: src/shared_base/core/asFileNetcdf.cpp:1121
 #: src/shared_base/core/asFileNetcdf.cpp:1148
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The variable (%s) type (%d) in file doesn't match the desired type (%d)."
 msgstr ""
-"Le type (%s) de la variable (%d) dans le fichier ne correspond pas au type "
+"La variable (%s) de type (%d) dans le fichier ne correspond pas au type "
 "souhaité (%d)."
 
 #: src/shared_base/core/asFileNetcdf.cpp:1176
@@ -363,11 +331,11 @@ msgstr ""
 #: src/shared_base/core/asFileNetcdf.cpp:1342
 #: src/shared_base/core/asFileNetcdf.cpp:1376
 #: src/shared_base/core/asFileNetcdf.cpp:1410
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The variable (%s) type (%d) in file doesn't match the desired type (numeric)."
 msgstr ""
-"Le type (%s) de la variable (%d) dans le fichier ne correspond pas au type "
+"La variable (%s) de type (%d) dans le fichier ne correspond pas au type "
 "souhaité (numérique)."
 
 #: src/shared_base/core/asFileNetcdf.cpp:1188
@@ -378,15 +346,14 @@ msgstr ""
 #: src/shared_base/core/asFileNetcdf.cpp:1355
 #: src/shared_base/core/asFileNetcdf.cpp:1389
 #: src/shared_base/core/asFileNetcdf.cpp:1423
-#, fuzzy
 msgid "Requested indices: "
-msgstr "Indices demandés :"
+msgstr "Indices demandés : "
 
 #: src/shared_base/core/asFileNetcdf.cpp:1475
 #: src/shared_base/core/asFileNetcdf.cpp:1527
 #: src/shared_base/core/asFileNetcdf.cpp:1663
 #: src/shared_base/core/asFileNetcdf.cpp:1763
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "NetCDF file: data type (%d) of attribute %s not taken into account in "
 "AtmoSwing."
@@ -395,12 +362,11 @@ msgstr ""
 "dans AtmoSwing."
 
 #: src/shared_base/core/asFileNetcdf.cpp:1566
-#, fuzzy
 msgid "The NetCDF format is unknown"
 msgstr "Le format NetCDF est inconnu"
 
 #: src/shared_base/core/asFileParameters.cpp:52
-#, fuzzy, c-format
+#, c-format
 msgid "Error when building a vector from the parameters file: min=%d > max=%d."
 msgstr ""
 "Erreur lors de la construction d'un vecteur à partir du fichier de "
@@ -409,7 +375,6 @@ msgstr ""
 #: src/shared_base/core/asFileParameters.cpp:55
 #: src/shared_base/core/asFileParameters.cpp:93
 #: src/shared_base/core/asFileParameters.cpp:131
-#, fuzzy
 msgid "Error when building a vector from the parameters file: step=0."
 msgstr ""
 "Erreur lors de la construction d'un vecteur à partir du fichier de "
@@ -417,7 +382,7 @@ msgstr ""
 
 #: src/shared_base/core/asFileParameters.cpp:90
 #: src/shared_base/core/asFileParameters.cpp:128
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Error when building a vector from the parameters file: min=%.2f > max=%.2f."
 msgstr ""
@@ -447,7 +412,7 @@ msgstr ""
 #: src/shared_base/core/asFileXml.cpp:288
 #: src/shared_base/core/asFileXml.cpp:303
 #: src/shared_base/core/asFileXml.cpp:318
-#, fuzzy, c-format
+#, c-format
 msgid "Failed at converting the value of the element %s (XML file)."
 msgstr "Échec de la conversion de la valeur de l'élément %s (fichier XML)."
 
@@ -456,7 +421,7 @@ msgstr "Échec de la conversion de la valeur de l'élément %s (fichier XML)."
 #: src/shared_base/core/asFileParameters.cpp:310
 #: src/shared_base/core/asFileParameters.cpp:334
 #: src/shared_base/core/asFileParameters.cpp:413
-#, fuzzy, c-format
+#, c-format
 msgid "The method is not correctly defined for %s in the parameters file."
 msgstr ""
 "La méthode n'est pas correctement définie pour %s dans le fichier de "
@@ -464,13 +429,11 @@ msgstr ""
 
 #: src/shared_base/core/asFileParameters.cpp:428
 #: src/shared_base/core/asParameters.cpp:729
-#, fuzzy
 msgid "The station ID was not provided."
 msgstr "L'identifiant de la station n'a pas été fourni."
 
 #: src/shared_base/core/asFileParameters.cpp:438
 #: src/shared_base/core/asParameters.cpp:744
-#, fuzzy
 msgid ""
 "The format of the station ID is not correct (more than one opening bracket)."
 msgstr ""
@@ -479,7 +442,6 @@ msgstr ""
 
 #: src/shared_base/core/asFileParameters.cpp:444
 #: src/shared_base/core/asParameters.cpp:750
-#, fuzzy
 msgid ""
 "The format of the station ID is not correct (location of the closing "
 "bracket)."
@@ -489,42 +451,40 @@ msgstr ""
 
 #: src/shared_base/core/asFileParameters.cpp:464
 #: src/shared_base/core/asParameters.cpp:770
-#, fuzzy
 msgid "The format of the station ID is not correct (should be only digits)."
 msgstr ""
-"Le format de l'identifiant de la station n'est pas correct (il ne doit "
+"Le format de l'identifiant de la station n'est pas correct (ne doit "
 "comporter que des chiffres)."
 
 #: src/shared_base/core/asFileText.cpp:79
 #: src/shared_base/core/asFileText.cpp:92
-#, fuzzy, c-format
+#, c-format
 msgid "An error occured while trying to write in file %s"
 msgstr ""
 "Une erreur s'est produite lors de la tentative d'écriture dans le fichier %s"
 
 #: src/shared_base/core/asFileText.cpp:94
-#, fuzzy, c-format
+#, c-format
 msgid "You are trying to read a line after the end of the file %s"
 msgstr "Vous essayez de lire une ligne après la fin du fichier %s"
 
 #: src/shared_base/core/asFileText.cpp:133
 #: src/shared_base/core/asFileText.cpp:150
-#, fuzzy
 msgid "Reached the end of the file while skipping lines."
 msgstr "A atteint la fin du fichier en sautant des lignes."
 
 #: src/shared_base/core/asFileText.cpp:167
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open the file %s."
 msgstr "Impossible d'ouvrir le fichier %s."
 
 #: src/shared_base/core/asFileXml.cpp:39
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open the xml file %s"
 msgstr "Impossible d'ouvrir le fichier xml %s"
 
 #: src/shared_base/core/asFileXml.cpp:119
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The file %s is for an old version of AtmoSwing and is no longer supported "
 "(root: %s)."
@@ -533,17 +493,17 @@ msgstr ""
 "supporté (racine : %s)."
 
 #: src/shared_base/core/asFileXml.cpp:124
-#, fuzzy, c-format
+#, c-format
 msgid "The file %s is not an AtmoSwing file (root: %s)."
 msgstr "Le fichier %s n'est pas un fichier AtmoSwing (racine : %s)."
 
 #: src/shared_base/core/asFileXml.cpp:137
-#, fuzzy, c-format
+#, c-format
 msgid "The file version of %s is no longer supported."
 msgstr "La version du fichier %s n'est plus prise en charge."
 
 #: src/shared_base/core/asFileXml.cpp:144
-#, fuzzy, c-format
+#, c-format
 msgid "An unknown element was found in the file: %s"
 msgstr "Un élément inconnu a été trouvé dans le fichier : %s"
 
@@ -552,7 +512,6 @@ msgstr "Un élément inconnu a été trouvé dans le fichier : %s"
 #: src/shared_base/core/asFileXml.cpp:202
 #: src/shared_base/core/asFileXml.cpp:219
 #: src/shared_base/core/asFileXml.cpp:236
-#, fuzzy
 msgid "The node is empty in the xml file."
 msgstr "Le nœud est vide dans le fichier xml."
 
@@ -560,85 +519,79 @@ msgstr "Le nœud est vide dans le fichier xml."
 #: src/shared_base/core/asFileXml.cpp:297
 #: src/shared_base/core/asFileXml.cpp:312
 #: src/shared_base/core/asFileXml.cpp:327
-#, fuzzy, c-format
+#, c-format
 msgid "Empty %s attribute of the element %s (XML file)."
 msgstr "Attribut vide %s de l'élément %s (fichier XML)."
 
 #: src/shared_base/core/asInternet.cpp:120
-#, fuzzy
 msgid "Downloading predictors.\n"
-msgstr "Téléchargement de prédicteurs.\n"
+msgstr "Téléchargement des prédicteurs.\n"
 
 #: src/shared_base/core/asInternet.cpp:142
 #: src/shared_base/core/asThreadInternetDownload.cpp:74
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading file %s."
 msgstr "Téléchargement du fichier %s."
 
 #: src/shared_base/core/asInternet.cpp:148
 #: src/shared_base/core/asThreadInternetDownload.cpp:80
-#, fuzzy
 msgid "The directory to save real-time predictors data cannot be created."
 msgstr ""
 "Le répertoire d'enregistrement des données des variables prédicteurs en "
 "temps réel ne peut pas être créé."
 
 #: src/shared_base/core/asInternet.cpp:157
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading file %s\n"
 msgstr "Téléchargement du fichier %s\n"
 
 #: src/shared_base/core/asInternet.cpp:158
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading: %d / %d files"
 msgstr "Téléchargement : %d / %d fichiers"
 
 #: src/shared_base/core/asInternet.cpp:160
-#, fuzzy
 msgid "The download has been canceled by the user."
 msgstr "Le téléchargement a été annulé par l'utilisateur."
 
 #: src/shared_base/core/asInternet.cpp:207
 #: src/shared_base/core/asThreadInternetDownload.cpp:127
-#, fuzzy, c-format
+#, c-format
 msgid "Failed downloading file. Curl error code: %d"
 msgstr "Échec du téléchargement du fichier. Code d'erreur Curl : %d"
 
 #: src/shared_base/core/asInternet.cpp:208
 #: src/shared_base/core/asThreadInternetDownload.cpp:128
-#, fuzzy, c-format
+#, c-format
 msgid "Curl error message: %s"
 msgstr "Message d'erreur Curl : %s"
 
 #: src/shared_base/core/asInternet.cpp:209
 #: src/shared_base/core/asThreadInternetDownload.cpp:129
-#, fuzzy, c-format
+#, c-format
 msgid "URL: %s"
 msgstr "URL: %s"
 
 #: src/shared_base/core/asInternet.cpp:214
-#, fuzzy, c-format
+#, c-format
 msgid "File %d/%d downloaded successfully."
 msgstr "Fichier %d/%d téléchargé avec succès."
 
 #: src/shared_base/core/asParameters.cpp:90
-#, fuzzy
 msgid "Loading parameters file."
 msgstr "Chargement du fichier de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:93
-#, fuzzy
 msgid "The given path to the parameters file is empty."
 msgstr "Le chemin d'accès au fichier de paramètres est vide."
 
 #: src/shared_base/core/asParameters.cpp:138
-#, fuzzy
 msgid "Parameters file loaded."
 msgstr "Fichier de paramètres chargé."
 
 #: src/shared_base/core/asParameters.cpp:429
 #: src/shared_base/core/asParameters.cpp:611
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The size of the provided predictors (%d) does not match the requirements "
 "(%d) in the preprocessing %s method."
@@ -648,13 +601,12 @@ msgstr ""
 
 #: src/shared_base/core/asParameters.cpp:462
 #: src/shared_base/core/asParameters.cpp:637
-#, fuzzy, c-format
+#, c-format
 msgid "The %s preprocessing method is not yet handled with the preload option."
 msgstr ""
 "La méthode de prétraitement %s n'est pas encore gérée par l'option preload."
 
 #: src/shared_base/core/asParameters.cpp:477
-#, fuzzy
 msgid ""
 "The beginning of the archive period was not provided in the parameters file."
 msgstr ""
@@ -662,7 +614,6 @@ msgstr ""
 "paramètres."
 
 #: src/shared_base/core/asParameters.cpp:482
-#, fuzzy
 msgid "The end of the archive period was not provided in the parameters file."
 msgstr ""
 "La fin de la période d'archivage n'a pas été indiquée dans le fichier de "
@@ -670,12 +621,10 @@ msgstr ""
 
 #: src/shared_base/core/asParameters.cpp:487
 #: src/shared_base/core/asParameters.cpp:492
-#, fuzzy
 msgid "The time step was not provided in the parameters file."
 msgstr "Le pas de temps n'a pas été fourni dans le fichier de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:500
-#, fuzzy
 msgid ""
 "The predictand time series (for the threshold preselection) was not provided "
 "in the parameters  file."
@@ -684,15 +633,13 @@ msgstr ""
 "été fournie dans le fichier de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:505
-#, fuzzy
 msgid ""
 "The provided min/max predictand thresholds are equal in the parameters file."
 msgstr ""
-"Les seuils min/max des prédicteurs fournis sont égaux dans le fichier des "
+"Les seuils min/max des prédictands fournis sont égaux dans le fichier des "
 "paramètres."
 
 #: src/shared_base/core/asParameters.cpp:514
-#, fuzzy
 msgid ""
 "The interval days for the analogs preselection was not provided in the "
 "parameters file."
@@ -701,16 +648,15 @@ msgstr ""
 "dans le fichier de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:520
-#, fuzzy
 msgid ""
 "The number of days to exclude around the target date was not provided in the "
 "parameters file."
 msgstr ""
-"Le nombre de jours à exclure autour de la date cible n'était pas indiqué "
-"dans le fichier de paramètres."
+"Le nombre de jours à exclure autour de la date cible n'a pas été fourni dans "
+"le fichier de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:529
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The number of analogs (step %d) was not provided in the parameters file."
 msgstr ""
@@ -718,7 +664,7 @@ msgstr ""
 "paramètres."
 
 #: src/shared_base/core/asParameters.cpp:536
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The preprocessing method (step %d, predictor %d) was not provided in the "
 "parameters file."
@@ -727,16 +673,16 @@ msgstr ""
 "dans le fichier de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:544
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The dataset for preprocessing (step %d, predictor %d) was not provided in "
 "the parameters file."
 msgstr ""
-"L'ensemble de données pour le prétraitement (étape %d, prédicteur %d) n'a "
-"pas été fourni dans le fichier de paramètres."
+"Le jeu de données pour le prétraitement (étape %d, prédicteur %d) n'a pas "
+"été fourni dans le fichier de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:550
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The data for preprocessing (step %d, predictor %d) was not provided in the "
 "parameters file."
@@ -745,15 +691,15 @@ msgstr ""
 "fournies dans le fichier de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:558
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The dataset (step %d, predictor %d) was not provided in the parameters file."
 msgstr ""
-"L'ensemble de données (étape %d, prédicteur %d) n'a pas été fourni dans le "
+"Le jeu de données (étape %d, prédicteur %d) n'a pas été fourni dans le "
 "fichier de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:564
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The data (step %d, predictor %d) was not provided in the parameters file."
 msgstr ""
@@ -761,32 +707,32 @@ msgstr ""
 "de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:572
-#, fuzzy, c-format
+#, c-format
 msgid "The grid type (step %d, predictor %d) is empty in the parameters file."
 msgstr ""
-"Le type de grille (pas %d, prédicteur %d) est vide dans le fichier de "
+"Le type de grille (étape %d, prédicteur %d) est vide dans le fichier de "
 "paramètres."
 
 #: src/shared_base/core/asParameters.cpp:578
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The X points nb value (step %d, predictor %d) was not provided in the "
 "parameters file."
 msgstr ""
-"La valeur nb des points X (étape %d, prédicteur %d) n'a pas été fournie dans "
-"le fichier de paramètres."
+"La valeur nb de points en X (étape %d, prédicteur %d) n'a pas été fournie "
+"dans le fichier de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:584
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The Y points nb value (step %d, predictor %d) was not provided in the "
 "parameters file."
 msgstr ""
-"La valeur nb des points Y (étape %d, prédicteur %d) n'a pas été fournie dans "
-"le fichier de paramètres."
+"La valeur nb de points en Y (étape %d, prédicteur %d) n'a pas été fournie "
+"dans le fichier de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:590
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The criteria (step %d, predictor %d) was not provided in the parameters file."
 msgstr ""
@@ -794,52 +740,43 @@ msgstr ""
 "paramètres."
 
 #: src/shared_base/core/asParameters.cpp:1109
-#, fuzzy
 msgid "AtmoSwing current parameters\n"
 msgstr "Paramètres actuels d'AtmoSwing\n"
 
 #: src/shared_base/core/asParameters.cpp:1122
 #: src/shared_base/core/asUtils.cpp:1665
-#, fuzzy
 msgid "Error when parsing the parameters file"
 msgstr "Erreur lors de l'analyse du fichier de paramètres"
 
 #: src/shared_base/core/asParameters.cpp:1311
-#, fuzzy
 msgid "The provided preload data IDs vector is empty."
 msgstr "Le vecteur d'ID de données de préchargement fourni est vide."
 
 #: src/shared_base/core/asParameters.cpp:1316
-#, fuzzy
 msgid "There are empty values in the provided preload data IDs vector."
 msgstr ""
 "Le vecteur d'ID de données de préchargement fourni contient des valeurs "
 "vides."
 
 #: src/shared_base/core/asParameters.cpp:1336
-#, fuzzy
 msgid "The provided preload time (hours) vector is empty."
 msgstr "Le vecteur de temps de préchargement (heures) fourni est vide."
 
 #: src/shared_base/core/asParameters.cpp:1341
-#, fuzzy
 msgid "There are NaN values in the provided preload time (hours) vector."
 msgstr ""
 "Il y a des valeurs NaN dans le vecteur de temps de préchargement (heures) "
 "fourni."
 
 #: src/shared_base/core/asParameters.cpp:1359
-#, fuzzy
 msgid "The provided 'preload levels' vector is empty."
 msgstr "Le vecteur 'preload levels' fourni est vide."
 
 #: src/shared_base/core/asParameters.cpp:1364
-#, fuzzy
 msgid "There are NaN values in the provided 'preload levels' vector."
-msgstr "Le vecteur \"niveaux de précharge\" fourni contient des valeurs NaN."
+msgstr "Le vecteur 'preload levels' fourni contient des valeurs NaN."
 
 #: src/shared_base/core/asParameters.cpp:1513
-#, fuzzy
 msgid ""
 "Trying to access to an element outside of preprocessLevels in the parameters "
 "object."
@@ -848,42 +785,38 @@ msgstr ""
 "parameters."
 
 #: src/shared_base/core/asPredictand.cpp:65
-#, fuzzy, c-format
+#, c-format
 msgid "The Parameter enumeration (%s) entry doesn't exists"
 msgstr "L'entrée de l'énumération Parameter (%s) n'existe pas"
 
 #: src/shared_base/core/asPredictand.cpp:81
-#, fuzzy
 msgid "The given data parameter type in unknown."
-msgstr "Le type de paramètre de données donné est inconnu."
+msgstr "Le type de paramètre de données fourni est inconnu."
 
 #: src/shared_base/core/asPredictand.cpp:102
-#, fuzzy, c-format
+#, c-format
 msgid "The Unit enumeration (%s) entry doesn't exists"
 msgstr "L'entrée de l'énumération Unit (%s) n'existe pas"
 
 #: src/shared_base/core/asPredictand.cpp:141
-#, fuzzy, c-format
+#, c-format
 msgid "The temporalResolution enumeration (%s) entry doesn't exists"
 msgstr "L'entrée de l'énumération temporalResolution (%s) n'existe pas"
 
 #: src/shared_base/core/asPredictand.cpp:169
-#, fuzzy
 msgid "The given data temporal resolution type in unknown."
 msgstr "Le type de résolution temporelle des données est inconnu."
 
 #: src/shared_base/core/asPredictand.cpp:184
-#, fuzzy, c-format
+#, c-format
 msgid "The spatialAggregation enumeration (%s) entry doesn't exists"
 msgstr "L'entrée de l'énumération spatialAggregation (%s) n'existe pas"
 
 #: src/shared_base/core/asPredictand.cpp:200
-#, fuzzy
 msgid "The given data spatial aggregation type in unknown."
 msgstr "Le type d'agrégation spatiale des données est inconnu."
 
 #: src/shared_base/core/asPredictand.cpp:231
-#, fuzzy
 msgid ""
 "The predictand parameter is not listed in the asPredictand instance factory."
 msgstr ""
@@ -894,7 +827,7 @@ msgstr ""
 #: src/shared_base/core/asPredictandLightning.cpp:48
 #: src/shared_base/core/asPredictandPrecipitation.cpp:56
 #: src/shared_base/core/asPredictandTemperature.cpp:48
-#, fuzzy, c-format
+#, c-format
 msgid "Opening the file %s"
 msgstr "Ouverture du fichier %s"
 
@@ -902,7 +835,7 @@ msgstr "Ouverture du fichier %s"
 #: src/shared_base/core/asPredictandLightning.cpp:51
 #: src/shared_base/core/asPredictandPrecipitation.cpp:59
 #: src/shared_base/core/asPredictandTemperature.cpp:51
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open file %s"
 msgstr "Impossible d'ouvrir le fichier %s"
 
@@ -910,13 +843,11 @@ msgstr "Impossible d'ouvrir le fichier %s"
 #: src/shared_base/core/asPredictandLightning.cpp:54
 #: src/shared_base/core/asPredictandPrecipitation.cpp:62
 #: src/shared_base/core/asPredictandTemperature.cpp:54
-#, fuzzy
 msgid "File successfully opened"
 msgstr "Fichier ouvert avec succès"
 
 #: src/shared_base/core/asPredictand.cpp:251
 #: src/shared_base/core/asPredictand.cpp:347
-#, fuzzy
 msgid ""
 "The predictand DB file was made with an older version of AtmoSwing that is "
 "no longer supported. Please generate the file with the actual version."
@@ -926,22 +857,19 @@ msgstr ""
 "actuelle."
 
 #: src/shared_base/core/asPredictand.cpp:316
-#, fuzzy
 msgid "The stations number is inferior to 1."
 msgstr "Le nombre de stations est inférieur à 1."
 
 #: src/shared_base/core/asPredictand.cpp:320
-#, fuzzy
 msgid "The time length is inferior to 1."
 msgstr "La durée est inférieure à 1."
 
 #: src/shared_base/core/asPredictand.cpp:543
-#, fuzzy
 msgid "Loading data from files.\n"
 msgstr "Chargement de données à partir de fichiers.\n"
 
 #: src/shared_base/core/asPredictand.cpp:554
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Loading data from files.\n"
 "File: %s"
@@ -951,18 +879,17 @@ msgstr ""
 
 #: src/shared_base/core/asPredictand.cpp:556
 #: src/shared_base/core/asPredictandPrecipitation.cpp:272
-#, fuzzy
 msgid "The process has been canceled by the user."
 msgstr "Le processus a été annulé par l'utilisateur."
 
 #: src/shared_base/core/asPredictand.cpp:598
-#, fuzzy, c-format
+#, c-format
 msgid "The given start date for \"%s\" is out of the catalog range."
 msgstr ""
 "La date de début donnée pour \"%s\" est en dehors de la plage du catalogue."
 
 #: src/shared_base/core/asPredictand.cpp:614
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The time index is larger than the matrix (timeIndex = %d, m_timeLength = %d)."
 msgstr ""
@@ -971,12 +898,10 @@ msgstr ""
 
 #: src/shared_base/core/asPredictand.cpp:642
 #: src/shared_base/core/asPredictand.cpp:711
-#, fuzzy
 msgid "The data file pattern is not correctly defined."
 msgstr "Le modèle de fichier de données n'est pas correctement défini."
 
 #: src/shared_base/core/asPredictand.cpp:703
-#, fuzzy
 msgid ""
 "The data file pattern is not correctly defined. Trying to access an element "
 "(date) after the line width."
@@ -985,7 +910,6 @@ msgstr ""
 "d'accès à un élément (date) après la largeur de ligne."
 
 #: src/shared_base/core/asPredictand.cpp:718
-#, fuzzy
 msgid ""
 "The data file pattern is not correctly defined. Trying to access an element "
 "(hour) after the line width."
@@ -994,7 +918,6 @@ msgstr ""
 "d'accès à un élément (heure) après la largeur de ligne."
 
 #: src/shared_base/core/asPredictand.cpp:727
-#, fuzzy
 msgid ""
 "The data file pattern is not correctly defined. Trying to access an element "
 "(minute) after the line width."
@@ -1003,37 +926,34 @@ msgstr ""
 "d'accès à un élément (minute) après la largeur de ligne."
 
 #: src/shared_base/core/asPredictand.cpp:755
-#, fuzzy
 msgid "The line length doesn't match."
 msgstr "La longueur de la ligne ne correspond pas."
 
 #: src/shared_base/core/asPredictand.cpp:765
-#, fuzzy, c-format
+#, c-format
 msgid "The given end date for \"%s\" is out of the catalog range."
 msgstr ""
 "La date de fin donnée pour \"%s\" est en dehors de la plage du catalogue."
 
 #: src/shared_base/core/asPredictand.cpp:772
-#, fuzzy, c-format
+#, c-format
 msgid "The length of the data in \"%s / %s\" is not coherent"
 msgstr "La longueur des données dans \"%s / %s\" n'est pas cohérente"
 
 #: src/shared_base/core/asPredictand.cpp:811
-#, fuzzy
 msgid ""
 "The timestep for the extraction of the predictands maximums has to be a "
 "multiple of the data timestep."
 msgstr ""
-"Le pas de temps pour l'extraction des maximums des prédicteurs doit être un "
+"Le pas de temps pour l'extraction des maximums des prédictands doit être un "
 "multiple du pas de temps des données."
 
 #: src/shared_base/core/asPredictand.cpp:826
-#, fuzzy
 msgid ""
 "The timestep for the extraction of the predictands maximums cannot be lower "
 "than the data timestep."
 msgstr ""
-"Le pas de temps pour l'extraction des maximums des prédicteurs ne peut être "
+"Le pas de temps pour l'extraction des maximums des prédictands ne peut être "
 "inférieur au pas de temps des données."
 
 #: src/shared_base/core/asPredictandLightning.cpp:140
@@ -1042,46 +962,40 @@ msgstr ""
 #: src/shared_base/core/asPredictandPrecipitation.cpp:212
 #: src/shared_base/core/asPredictandTemperature.cpp:104
 #: src/shared_base/core/asPredictandTemperature.cpp:108
-#, fuzzy
 msgid "Predictand DB saved."
-msgstr "Predictand DB sauvegardé."
+msgstr "BD des prédictands sauvegardée."
 
 #: src/shared_base/core/asPredictandPrecipitation.cpp:248
-#, fuzzy
 msgid "The data time steps is not correctly defined."
 msgstr "Le pas de temps des données n'est pas correctement défini."
 
 #: src/shared_base/core/asPredictandPrecipitation.cpp:263
-#, fuzzy
 msgid "Making Gumbel adjustments."
-msgstr "Effectuer des ajustements de Gumbel."
+msgstr "Calcul des ajustements de Gumbel."
 
 #: src/shared_base/core/asPredictandPrecipitation.cpp:285
-#, fuzzy
 msgid ""
 "Caution, a time serie is shorter than 20 years. It is too short to process a "
 "Gumbel adjustment."
 msgstr ""
 "Attention, une série temporelle est inférieure à 20 ans. C'est trop court "
-"pour traiter un ajustement de Gumbel."
+"pour effectuer un ajustement de Gumbel."
 
 #: src/shared_base/core/asPredictandPrecipitation.cpp:289
-#, fuzzy
 msgid ""
 "Caution, a time serie is shorter than 30 years. It is a bit short to process "
 "a Gumbel adjustment."
 msgstr ""
 "Attention, une série temporelle est plus courte que 30 ans. C'est un peu "
-"court pour traiter un ajustement de Gumbel."
+"court pour effectuer un ajustement de Gumbel."
 
 #: src/shared_base/core/asPredictor.cpp:107
-#, fuzzy, c-format
+#, c-format
 msgid "The data ID (%s) does not contain the level type"
 msgstr "L'ID de données (%s) ne contient pas le type de niveau"
 
 #: src/shared_base/core/asPredictor.cpp:164
 #: src/shared_base/core/asPredictorOper.cpp:128
-#, fuzzy
 msgid "The requested dataset does not exist. Please correct the dataset Id."
 msgstr ""
 "Le jeu de données demandé n'existe pas. Veuillez corriger l'identifiant du "
@@ -1089,133 +1003,120 @@ msgstr ""
 
 #: src/shared_base/core/asPredictor.cpp:173
 #: src/shared_base/core/asPredictorOper.cpp:133
-#, fuzzy
 msgid "The predictor did not initialize correctly."
 msgstr "Le prédicteur ne s'est pas initialisé correctement."
 
 #: src/shared_base/core/asPredictor.cpp:212
-#, fuzzy, c-format
+#, c-format
 msgid "Failed creating the file %s"
 msgstr "Échec de la création du fichier %s"
 
 #: src/shared_base/core/asPredictor.cpp:240
-#, fuzzy, c-format
+#, c-format
 msgid "Failed writing the file %s"
 msgstr "Échec de l'écriture du fichier %s"
 
 #: src/shared_base/core/asPredictor.cpp:245
 #: src/shared_base/core/asPredictor.cpp:293
-#, fuzzy, c-format
+#, c-format
 msgid "Failed closing the file %s"
 msgstr "Échec de la fermeture du fichier %s"
 
 #: src/shared_base/core/asPredictor.cpp:261
-#, fuzzy, c-format
+#, c-format
 msgid "Failed opening the file %s"
 msgstr "Échec de l'ouverture du fichier %s"
 
 #: src/shared_base/core/asPredictor.cpp:348
-#, fuzzy, c-format
+#, c-format
 msgid "Empty files list for %s (%s)."
 msgstr "Liste de fichiers vide pour %s (%s)."
 
 #: src/shared_base/core/asPredictor.cpp:370
-#, fuzzy, c-format
+#, c-format
 msgid "No wildcard is yet authorized in the path (%s)"
-msgstr "Aucun joker n'est encore autorisé dans le chemin (%s)"
+msgstr "Aucun 'wildcard' n'est encore autorisé dans le chemin (%s)"
 
 #: src/shared_base/core/asPredictor.cpp:379
-#, fuzzy, c-format
+#, c-format
 msgid "Multiple files were found matching the name %s:"
 msgstr "Plusieurs fichiers correspondant au nom %s ont été trouvés :"
 
 #: src/shared_base/core/asPredictor.cpp:389
 #: src/shared_base/core/asPredictor.cpp:401
 #: src/shared_base/core/asPredictor.cpp:403
-#, fuzzy, c-format
+#, c-format
 msgid "File not found: %s"
 msgstr "Le fichier n'a pas été trouvé : %s"
 
 #: src/shared_base/core/asPredictor.cpp:415
-#, fuzzy, c-format
+#, c-format
 msgid "%.2f percent of the files are missing (%s, %s)."
-msgstr "%.2f pour cent des fichiers sont manquants (%s, %s)."
+msgstr "%.2f pourcent des fichiers sont manquants (%s, %s)."
 
 #: src/shared_base/core/asPredictor.cpp:427
-#, fuzzy, c-format
+#, c-format
 msgid "Error at initialization of the predictor dataset %s."
 msgstr ""
 "Erreur lors de l'initialisation de l'ensemble de données du prédicteur %s."
 
 #: src/shared_base/core/asPredictor.cpp:436
-#, fuzzy, c-format
+#, c-format
 msgid "Files not found for %s (%s)."
 msgstr "Fichiers non trouvés pour %s (%s)."
 
 #: src/shared_base/core/asPredictor.cpp:439
-#, fuzzy
 msgid "Predictor files found."
 msgstr "Fichiers de prédicteurs trouvés."
 
 #: src/shared_base/core/asPredictor.cpp:443
-#, fuzzy
 msgid "Failing to get the file structure."
 msgstr "Échec de l'obtention de la structure du fichier."
 
 #: src/shared_base/core/asPredictor.cpp:446
-#, fuzzy
 msgid "File structure parsed."
 msgstr "Structure de fichier analysée."
 
 #: src/shared_base/core/asPredictor.cpp:451
 #: src/shared_base/core/asPredictor.cpp:453
-#, fuzzy
 msgid "Failing to get the desired level."
-msgstr "Ne pas atteindre le niveau souhaité."
+msgstr "Échec de l'obtention du niveau souhaité."
 
 #: src/shared_base/core/asPredictor.cpp:460
-#, fuzzy
 msgid "The time array is not valid to load data."
-msgstr "Le tableau des temps n'est pas valide pour charger des données."
+msgstr "Le tableau des dates n'est pas valide pour charger des données."
 
 #: src/shared_base/core/asPredictor.cpp:476
-#, fuzzy
 msgid "Extracting from files."
 msgstr "Extraction à partir de fichiers."
 
 #: src/shared_base/core/asPredictor.cpp:479
 #: src/shared_base/core/asPredictor.cpp:481
-#, fuzzy
 msgid "Extracting data from files failed."
 msgstr "L'extraction des données des fichiers a échoué."
 
 #: src/shared_base/core/asPredictor.cpp:488
-#, fuzzy
 msgid "Transforming data"
-msgstr "Transformer les données"
+msgstr "Transformation les données"
 
 #: src/shared_base/core/asPredictor.cpp:490
-#, fuzzy
 msgid "Data transformation has failed."
 msgstr "La transformation des données a échoué."
 
 #: src/shared_base/core/asPredictor.cpp:496
-#, fuzzy
 msgid "Interpolating predictor grid."
 msgstr "Interpolation de la grille du prédicteur."
 
 #: src/shared_base/core/asPredictor.cpp:498
-#, fuzzy
 msgid "Interpolation failed."
 msgstr "L'interpolation a échoué."
 
 #: src/shared_base/core/asPredictor.cpp:504
-#, fuzzy
 msgid "Loading forecast data (predictorRealtime->Load)."
 msgstr "Chargement des données de prévision (predictorRealtime->Load)."
 
 #: src/shared_base/core/asPredictor.cpp:506
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The date and the data array lengths do not match (time = %d and data = %d)."
 msgstr ""
@@ -1223,34 +1124,31 @@ msgstr ""
 "= %d et data = %d)."
 
 #: src/shared_base/core/asPredictor.cpp:508
-#, fuzzy, c-format
+#, c-format
 msgid "Time array starts on %s and ends on %s."
-msgstr "Le tableau des temps commence à %s et se termine à %s."
+msgstr "Le tableau des dates commence le %s et se termine le %s."
 
 #: src/shared_base/core/asPredictor.cpp:517
-#, fuzzy, c-format
+#, c-format
 msgid "Bad allocation (%s) caught when loading data %s (%s)."
 msgstr ""
 "Mauvaise allocation (%s) détectée lors du chargement des données %s (%s)."
 
 #: src/shared_base/core/asPredictor.cpp:522
-#, fuzzy
 msgid "Failed to load data (exception)."
 msgstr "Échec du chargement des données (exception)."
 
 #: src/shared_base/core/asPredictor.cpp:556
-#, fuzzy
 msgid "The desired timestep is smaller than the data timestep."
 msgstr "Le pas de temps souhaité est inférieur au pas de temps des données."
 
 #: src/shared_base/core/asPredictor.cpp:563
-#, fuzzy
 msgid "The desired timestep is not a multiple of the data timestep."
 msgstr ""
 "Le pas de temps souhaité n'est pas un multiple du pas de temps des données."
 
 #: src/shared_base/core/asPredictor.cpp:569
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The desired startDate (%gh) is not coherent with the data properties "
 "(fractpart = %g)."
@@ -1260,22 +1158,18 @@ msgstr ""
 
 #: src/shared_base/core/asPredictor.cpp:596
 #: src/shared_base/core/asPredictor.cpp:622
-#, fuzzy
 msgid "Predictor file type not correctly defined."
 msgstr "Le type de fichier du prédicteur n'est pas correctement défini."
 
 #: src/shared_base/core/asPredictor.cpp:704
-#, fuzzy
 msgid "Opening grib file to enquire the structure."
 msgstr "Ouverture d'un fichier grib pour en connaître la structure."
 
 #: src/shared_base/core/asPredictor.cpp:712
-#, fuzzy
 msgid "Setting index position in the grib file."
 msgstr "Réglage de la position de l'index dans le fichier grib."
 
 #: src/shared_base/core/asPredictor.cpp:723
-#, fuzzy
 msgid ""
 "Creating an instance of the grib object to enquire the structure (2nd file)."
 msgstr ""
@@ -1283,102 +1177,86 @@ msgstr ""
 "fichier)."
 
 #: src/shared_base/core/asPredictor.cpp:726
-#, fuzzy
 msgid "Opening grib file to enquire the structure (2nd file)."
-msgstr "Ouverture du fichier grib pour demander la structure (2ème fichier)."
+msgstr "Ouverture du fichier grib pour interroger la structure (2ème fichier)."
 
 #: src/shared_base/core/asPredictor.cpp:734
-#, fuzzy
 msgid "Setting index position in the grib file (2nd file)."
-msgstr ""
-"Réglage de la position de l'index dans le fichier des nervures (2e fichier)."
+msgstr "Réglage de la position de l'index dans le fichier grib (2e fichier)."
 
 #: src/shared_base/core/asPredictor.cpp:743
-#, fuzzy
 msgid "Parsing the grib structure."
 msgstr "Analyse de la structure grib."
 
 #: src/shared_base/core/asPredictor.cpp:755
-#, fuzzy
 msgid "Parsing the grib structure (single file)."
 msgstr "Analyse de la structure grib (fichier unique)."
 
 #: src/shared_base/core/asPredictor.cpp:782
-#, fuzzy
 msgid "Opening the grib file."
 msgstr "Ouverture du fichier grib."
 
 #: src/shared_base/core/asPredictor.cpp:792
-#, fuzzy
 msgid "Setting index position in grib file."
 msgstr "Réglage de la position de l'index dans le fichier grib."
 
 #: src/shared_base/core/asPredictor.cpp:800
-#, fuzzy
 msgid "Parsing grib file structure."
 msgstr "Analyse de la structure du fichier grib."
 
 #: src/shared_base/core/asPredictor.cpp:834
-#, fuzzy
 msgid "The first file cannot be missing."
 msgstr "Le premier fichier ne peut pas être manquant."
 
 #: src/shared_base/core/asPredictor.cpp:840
-#, fuzzy
 msgid "Missing files are handled only when there is 1 file per time step."
 msgstr ""
-"Les fichiers manquants ne sont traités que lorsqu'il y a un fichier par pas "
-"de temps."
+"Les fichiers manquants sont gérés uniquement lorsqu'il y a un fichier par "
+"pas de temps."
 
 #: src/shared_base/core/asPredictor.cpp:885
-#, fuzzy
 msgid "Variable type not supported yet for the time dimension."
 msgstr ""
 "Le type de variable n'est pas encore pris en charge pour la dimension "
 "temporelle."
 
 #: src/shared_base/core/asPredictor.cpp:901
-#, fuzzy
 msgid "Time reference could not be extracted."
 msgstr "La référence temporelle n'a pas pu être extraite."
 
 #: src/shared_base/core/asPredictor.cpp:938
 #: src/shared_base/core/asPredictor.cpp:1012
-#, fuzzy
 msgid "Variable type not supported yet for the level dimension."
 msgstr ""
 "Le type de variable n'est pas encore pris en charge pour la dimension du "
-"niveau."
+"niveau (level)."
 
 #: src/shared_base/core/asPredictor.cpp:952
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown unit for the level dimension: %s."
 msgstr "Unité inconnue pour la dimension du niveau : %s."
 
 #: src/shared_base/core/asPredictor.cpp:969
-#, fuzzy
 msgid "X/longitude axis not found."
 msgstr "Axe X/longitude introuvable."
 
 #: src/shared_base/core/asPredictor.cpp:982
-#, fuzzy
 msgid "Y/latitude axis not found."
 msgstr "Axe Y/latitude introuvable."
 
 #: src/shared_base/core/asPredictor.cpp:1067
-#, fuzzy
 msgid "Longitude axis seems not consistent (multiple breaks)."
 msgstr "L'axe des longitudes ne semble pas cohérent (plusieurs ruptures)."
 
 #: src/shared_base/core/asPredictor.cpp:1094
-#, fuzzy, c-format
+#, c-format
 msgid "Level %f was requested and %f was found in file (single level)"
 msgstr ""
 "Le niveau %f a été demandé et %f a été trouvé dans le fichier (niveau unique)"
 
 #: src/shared_base/core/asPredictor.cpp:1099
 #: src/shared_base/core/asPredictor.cpp:1101
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot find level %f"
 msgstr "Impossible de trouver le niveau %f"
 
@@ -1386,81 +1264,72 @@ msgstr "Impossible de trouver le niveau %f"
 #: src/shared_base/core/asPredictor.cpp:1143
 #: src/shared_base/core/asPredictor.cpp:1159
 #: src/shared_base/core/asPredictor.cpp:1184
-#, fuzzy
 msgid "Failed at initializing the axes."
 msgstr "Échec de l'initialisation des axes."
 
 #: src/shared_base/core/asPredictor.cpp:1292
 #: src/shared_base/core/asPredictor.cpp:1299
-#, fuzzy, c-format
+#, c-format
 msgid "The desired level (%g) does not exist for %s"
 msgstr "Le niveau souhaité (%g) n'existe pas pour %s"
 
 #: src/shared_base/core/asPredictor.cpp:1567
-#, fuzzy
 msgid "Grib files do not handle stride."
-msgstr "Les fichiers Grib ne gèrent pas l'enjambement."
+msgstr "Les fichiers grib ne gèrent pas les 'strides'."
 
 #: src/shared_base/core/asPredictor.cpp:1693
-#, fuzzy
 msgid "The standardization of ensemble datasets is not yet supported."
 msgstr ""
 "La normalisation des ensembles de données n'est pas encore prise en charge."
 
 #: src/shared_base/core/asPredictor.cpp:1774
-#, fuzzy
 msgid ""
 "An error occurred while trying to clip data to another area (extended axis)."
 msgstr ""
-"Une erreur s'est produite lors de l'écrêtage des données dans une autre zone "
+"Une erreur s'est produite lors de la découpe des données dans une autre zone "
 "(axe étendu)."
 
 #: src/shared_base/core/asPredictor.cpp:1775
 #: src/shared_base/core/asPredictor.cpp:1783
-#, fuzzy, c-format
+#, c-format
 msgid "Looking for lon %.2f and %.2f in between %.2f to %.2f."
 msgstr "Recherche de lon %.2f et %.2f entre %.2f et %.2f."
 
 #: src/shared_base/core/asPredictor.cpp:1782
 #: src/shared_base/core/asPredictor.cpp:1799
-#, fuzzy
 msgid "An error occurred while trying to clip data to another area."
 msgstr ""
 "Une erreur s'est produite lors de l'extraction de données vers une autre "
 "zone."
 
 #: src/shared_base/core/asPredictor.cpp:1800
-#, fuzzy, c-format
+#, c-format
 msgid "Looking for lat %.2f and %.2f in between %.2f to %.2f."
 msgstr "Recherche des lattes %.2f et %.2f entre %.2f et %.2f."
 
 #: src/shared_base/core/asPredictor.cpp:1837
-#, fuzzy
 msgid "The preprocessed area cannot be clipped to another area."
-msgstr "La zone prétraitée ne peut pas être coupée dans une autre zone."
+msgstr "La zone prétraitée ne peut pas être coupée en une autre zone."
 
 #: src/shared_base/core/asPredictor.cpp:1850
 #: src/shared_base/core/asPredictor.cpp:1909
 #: src/shared_base/core/asPredictor.cpp:1953
-#, fuzzy
 msgid "Wrong axes lengths (cannot be clipped to another area)."
 msgstr ""
 "Longueurs d'axes erronées (impossibles à découper dans une autre zone)."
 
 #: src/shared_base/core/asPredictor.cpp:1986
-#, fuzzy
 msgid "Wrong preprocessing definition (cannot be clipped to another area)."
 msgstr ""
 "Mauvaise définition du prétraitement (ne peut pas être découpé dans une "
 "autre zone)."
 
 #: src/shared_base/core/asPredictor.cpp:2084
-#, fuzzy
 msgid "Interpolation not allowed on irregular grids."
 msgstr "L'interpolation n'est pas autorisée sur les grilles irrégulières."
 
 #: src/shared_base/core/asPredictor.cpp:2174
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The desired point is not available in the data for interpolation. Latitude "
 "%f was not found in between %f (index %d) to %f (index %d) (size = %d)."
@@ -1470,7 +1339,7 @@ msgstr ""
 "%f (index %d) (taille = %d)."
 
 #: src/shared_base/core/asPredictor.cpp:2207
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The desired point is not available in the data for interpolation. Longitude "
 "%f was not found in between %f to %f."
@@ -1479,13 +1348,12 @@ msgstr ""
 "l'interpolation. La longitude %f n'a pas été trouvée entre %f et %f."
 
 #: src/shared_base/core/asPredictor.cpp:2329
-#, fuzzy
 msgid ""
 "The type of product must be defined for this dataset (prefix to the variable "
 "name. Ex: press/hgt)."
 msgstr ""
-"Le type de produit doit être défini pour cet ensemble de données (préfixe du "
-"nom de la variable. Ex : press/hgt)."
+"Le type de produit doit être défini pour ce jeu de données (préfixe du nom "
+"de la variable. Ex : press/hgt)."
 
 #: src/shared_base/core/asPredictorCustomLtheNR1.cpp:79
 #: src/shared_base/core/asPredictorCustomMFvgMeso.cpp:77
@@ -1521,7 +1389,7 @@ msgstr ""
 #: src/shared_base/core/asPredictorOperEcmwfIfs.cpp:107
 #: src/shared_base/core/asPredictorOperMfArpege.cpp:94
 #: src/shared_base/core/asPredictorOperNwsGfs.cpp:110
-#, fuzzy, c-format
+#, c-format
 msgid "No '%s' parameter identified for the provided level type (%s)."
 msgstr ""
 "Aucun paramètre '%s' n'est identifié pour le type de niveau fourni (%s)."
@@ -1543,13 +1411,13 @@ msgstr ""
 #: src/shared_base/core/asPredictorNoaa20Cr2c.cpp:137
 #: src/shared_base/core/asPredictorNoaa20Cr2cEnsemble.cpp:134
 #: src/shared_base/core/asPredictorNoaaOisst2.cpp:71
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The provided data ID (%s) does not match any possible option in the dataset "
 "%s."
 msgstr ""
 "L'identifiant de données fourni (%s) ne correspond à aucune option possible "
-"dans l'ensemble de données %s."
+"dans le jeu de données %s."
 
 #: src/shared_base/core/asPredictorCustomLtheNR1.cpp:92
 #: src/shared_base/core/asPredictorCustomUnilNR1.cpp:123
@@ -1569,25 +1437,24 @@ msgstr ""
 #: src/shared_base/core/asPredictorNoaa20Cr2c.cpp:144
 #: src/shared_base/core/asPredictorNoaa20Cr2cEnsemble.cpp:141
 #: src/shared_base/core/asPredictorNoaaOisst2.cpp:78
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The path to the directory has not been set for the data %s from the dataset "
 "%s."
 msgstr ""
-"Le chemin d'accès au répertoire n'a pas été défini pour les données %s de "
-"l'ensemble de données %s."
+"Le chemin d'accès au répertoire n'a pas été défini pour les données %s du "
+"jeu de données %s."
 
 #: src/shared_base/core/asPredictorCustomMFvgMeso.cpp:91
 #: src/shared_base/core/asPredictorCustomMFvgSynop.cpp:153
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot find predictor directory for FVG data (%s)."
 msgstr ""
-"Impossible de trouver le répertoire des prédicteurs pour les données du GVF "
+"Impossible de trouver le répertoire des prédicteurs pour les données du FVG "
 "(%s)."
 
 #: src/shared_base/core/asPredictorCustomMFvgMeso.cpp:101
 #: src/shared_base/core/asPredictorCustomMFvgSynop.cpp:163
-#, fuzzy
 msgid "Cannot find coherent predictor directory structure for FVG data."
 msgstr ""
 "Impossible de trouver une structure de répertoire de prédicteurs cohérente "
@@ -1595,25 +1462,25 @@ msgstr ""
 
 #: src/shared_base/core/asPredictorCustomMFvgMesoPacked.cpp:64
 #: src/shared_base/core/asPredictorCustomMFvgSynopPacked.cpp:64
-#, fuzzy, c-format
+#, c-format
 msgid "No file found for the FVG packed archive (%s/%s)."
 msgstr "Aucun fichier n'a été trouvé pour le fichier d'archive du FVG (%s/%s)."
 
 #: src/shared_base/core/asPredictorCustomUnilOisst2.cpp:72
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The provided data ID (%s) does not match any possible option in dataset %s."
 msgstr ""
 "L'ID de la donnée fournie (%s) ne correspond à aucune option possible dans "
-"l'ensemble de données %s."
+"le jeu de données %s."
 
 #: src/shared_base/core/asPredictorCustomUnilOisst2.cpp:79
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The path to the directory has not been set for the data %s from dataset %s."
 msgstr ""
-"Le chemin d'accès au répertoire n'a pas été défini pour les données %s de "
-"l'ensemble de données %s."
+"Le chemin d'accès au répertoire n'a pas été défini pour les données %s du "
+"jeu de données %s."
 
 #: src/shared_base/core/asPredictorEcmwfCera20C.cpp:111
 #: src/shared_base/core/asPredictorEcmwfEra20C.cpp:109
@@ -1626,50 +1493,44 @@ msgstr ""
 #: src/shared_base/core/asPredictorNcepCfsr.cpp:92
 #: src/shared_base/core/asPredictorNcepCfsrSubset.cpp:318
 #: src/shared_base/core/asPredictorNcepR1.cpp:408
-#, fuzzy
 msgid "level type not implemented for this reanalysis dataset."
-msgstr "n'a pas été mis en œuvre pour ce jeu de données de réanalyse."
+msgstr ""
+"le type de niveau n'a pas été implémenté pour ce jeu de données de réanalyse."
 
 #: src/shared_base/core/asPredictorEcmwfEra5.cpp:243
-#, fuzzy
 msgid "No ERA5 file found."
 msgstr "Aucun fichier ERA5 n'a été trouvé."
 
 #: src/shared_base/core/asPredictorEcmwfEraInterim.cpp:329
-#, fuzzy
 msgid "No ERA-interim file found."
 msgstr "Aucun fichier ERA-interim n'a été trouvé."
 
 #: src/shared_base/core/asPredictorGeneric.cpp:203
-#, fuzzy
 msgid "No file found for the generic archive."
 msgstr "Aucun fichier n'a été trouvé pour l'archive générique."
 
 #: src/shared_base/core/asPredictorJmaJra55Subset.cpp:230
 #: src/shared_base/core/asPredictorJmaJra55Subset.cpp:243
-#, fuzzy, c-format
+#, c-format
 msgid "No JRA-55 file found for this pattern : %s."
-msgstr "Aucun fichier JRA-55 n'a été trouvé pour ce modèle : %s."
+msgstr "Aucun fichier JRA-55 n'a été trouvé pour ce pattern : %s."
 
 #: src/shared_base/core/asPredictorJmaJra55Subset.cpp:232
 #: src/shared_base/core/asPredictorJmaJra55Subset.cpp:245
-#, fuzzy, c-format
+#, c-format
 msgid "Multiple JRA-55 files found for this pattern : %s."
-msgstr "Plusieurs fichiers JRA-55 ont été trouvés pour ce modèle : %s."
+msgstr "Plusieurs fichiers JRA-55 ont été trouvés pour ce pattern : %s."
 
 #: src/shared_base/core/asPredictorNcepCfsr.cpp:78
-#, fuzzy, c-format
+#, c-format
 msgid "Parameter '%s' not implemented yet."
 msgstr "Le paramètre '%s' n'est pas encore implémenté."
 
 #: src/shared_base/core/asPredictorNcepCfsr.cpp:84
-#, fuzzy
 msgid "Isentropic levels for CFSR are not implemented yet."
-msgstr ""
-"Les niveaux isentropiques pour le CFSR ne sont pas encore mis en œuvre."
+msgstr "Les niveaux isentropiques pour le CFSR ne sont pas encore implémentés."
 
 #: src/shared_base/core/asPredictorNcepCfsr.cpp:88
-#, fuzzy
 msgid "Surface fluxes grids for CFSR are not implemented yet."
 msgstr ""
 "Les grilles de flux de surface pour CFSR ne sont pas encore implémentées."
@@ -1677,132 +1538,117 @@ msgstr ""
 #: src/shared_base/core/asPredictorNcepR2.cpp:310
 #: src/shared_base/core/asPredictorNoaa20Cr2c.cpp:131
 #: src/shared_base/core/asPredictorNoaa20Cr2cEnsemble.cpp:128
-#, fuzzy
 msgid "Product type not implemented for this reanalysis dataset."
 msgstr "Type de produit non implémenté pour ce jeu de données de réanalyse."
 
 #: src/shared_base/core/asPredictorOperCustomFvg.cpp:140
-#, fuzzy, c-format
+#, c-format
 msgid "No '%s' parameter identified."
-msgstr "Aucun paramètre '%s' n'est identifié."
+msgstr "Aucun paramètre '%s' n'a été identifié."
 
 #: src/shared_base/core/asThreadInternetDownload.cpp:134
-#, fuzzy, c-format
+#, c-format
 msgid "File %s downloaded successfully."
 msgstr "Fichier %s téléchargé avec succès."
 
 #: src/shared_base/core/asThreadsManager.cpp:139
-#, fuzzy, c-format
+#, c-format
 msgid "%d running threads (checking available threads)."
 msgstr ""
 "%d threads en cours d'exécution (vérification des threads disponibles)."
 
 #: src/shared_base/core/asThreadsManager.cpp:155
-#, fuzzy, c-format
+#, c-format
 msgid "%d running threads before addition of a new thread."
 msgstr "%d threads en cours d'exécution avant l'ajout d'un nouveau thread."
 
 #: src/shared_base/core/asThreadsManager.cpp:162
-#, fuzzy
 msgid "Cannot create the thread !"
-msgstr "Impossible de créer la discussion !"
+msgstr "Impossible de créer le thread !"
 
 #: src/shared_base/core/asThreadsManager.cpp:172
-#, fuzzy
 msgid "The thread array is currently full."
-msgstr "Le tableau des fils est actuellement plein."
+msgstr "Le liste des threads est actuellement pleine."
 
 #: src/shared_base/core/asThreadsManager.cpp:183
-#, fuzzy, c-format
+#, c-format
 msgid "A new thread was created (id=%d)."
-msgstr "Une nouvelle discussion a été créée (id=%d)."
+msgstr "Un nouveau thread a été créé (id=%d)."
 
 #: src/shared_base/core/asThreadsManager.cpp:214
-#, fuzzy, c-format
+#, c-format
 msgid "Thread %d couldn't be removed."
-msgstr "Le fil %d n'a pas pu être supprimé."
+msgstr "Le thread %d n'a pas pu être supprimé."
 
 #: src/shared_base/core/asThreadsManager.cpp:235
-#, fuzzy
 msgid "Thread array cleared."
-msgstr "Le tableau des fils est effacé."
+msgstr "Le tableau des threads est réinitialisé."
 
 #: src/shared_base/core/asThreadsManager.cpp:248
-#, fuzzy
 msgid "All threads have done."
-msgstr "Tous les fils l'ont fait."
+msgstr "Tous les threads ont terminé."
 
 #: src/shared_base/core/asThreadsManager.cpp:264
-#, fuzzy
 msgid "A thread is available."
-msgstr "Un fil est disponible."
+msgstr "Un thread est disponible."
 
 #: src/shared_base/core/asTime.cpp:72 src/shared_base/core/asTime.cpp:92
-#, fuzzy
 msgid "The timezone is not correctly set"
 msgstr "Le fuseau horaire n'est pas correctement défini"
 
 #: src/shared_base/core/asTime.cpp:216 src/shared_base/core/asTime.cpp:483
-#, fuzzy
 msgid "The date format is not correctly set"
 msgstr "Le format de la date n'est pas correctement défini"
 
 #: src/shared_base/core/asTime.cpp:224
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The length of the input date (%2.2d) is not as expected (%2.2d or %2.2d)"
 msgstr ""
-"La longueur de la date d'entrée (%2.2d) n'est pas celle attendue (%2.2d ou "
+"La longueur de la date en entrée (%2.2d) n'est pas celle attendue (%2.2d ou "
 "%2.2d)"
 
 #: src/shared_base/core/asTime.cpp:225
-#, fuzzy, c-format
+#, c-format
 msgid "The date (%s) conversion failed. Please check the format"
 msgstr "La conversion de la date (%s) a échoué. Veuillez vérifier le format"
 
 #: src/shared_base/core/asTime.cpp:531 src/shared_base/core/asTime.cpp:650
-#, fuzzy
 msgid "Incorrect method."
 msgstr "Méthode incorrecte."
 
 #: src/shared_base/core/asTimeArray.cpp:75
-#, fuzzy, c-format
+#, c-format
 msgid "Time array mode not correctly defined (%s)!"
-msgstr "Le mode de tableau temporel n'est pas correctement défini (%s) !"
+msgstr "Le mode de tableau des dates n'est pas correctement défini (%s) !"
 
 #: src/shared_base/core/asTimeArray.cpp:125
-#, fuzzy
 msgid "The given date is in an excluded year."
 msgstr "La date donnée se situe dans une année exclue."
 
 #: src/shared_base/core/asTimeArray.cpp:135
 #: src/shared_base/core/asTimeArray.cpp:182
-#, fuzzy
 msgid "Time array creation failed."
-msgstr "La création d'un tableau chronologique a échoué."
+msgstr "La création d'un tableau de dates a échoué."
 
 #: src/shared_base/core/asTimeArray.cpp:147
 #: src/shared_base/core/asTimeArray.cpp:174
 #: src/shared_base/core/asTimeArray.cpp:194
 #: src/shared_base/core/asTimeArray.cpp:251
 #: src/shared_base/core/asTimeArray.cpp:536
-#, fuzzy
 msgid "Time array creation failed"
-msgstr "Échec de la création d'un tableau temporel"
+msgstr "Échec de la création d'un tableau de dates"
 
 #: src/shared_base/core/asTimeArray.cpp:157
 #: src/shared_base/core/asTimeArray.cpp:246
-#, fuzzy
 msgid "The time array mode is not correctly set"
-msgstr "Le mode Time Array n'est pas correctement réglé"
+msgstr "Le mode 'time array' n'est pas correctement défini"
 
 #: src/shared_base/core/asTimeArray.cpp:200
-#, fuzzy
 msgid "The time array mode is not allowed for the analogs."
-msgstr "Le mode tableau temporel n'est pas autorisé pour les analogues."
+msgstr "Le mode du tableau des dates n'est pas autorisé pour les analogues."
 
 #: src/shared_base/core/asTimeArray.cpp:218
-#, fuzzy
 msgid ""
 "The 'exclude_days' parameter cannot be 0 or ignored. Defaulted to 30 days."
 msgstr ""
@@ -1811,61 +1657,55 @@ msgstr ""
 
 #: src/shared_base/core/asTimeArray.cpp:446
 #: src/shared_base/core/asTimeArray.cpp:479
-#, fuzzy, c-format
+#, c-format
 msgid "Month '%s' not recognized."
 msgstr "Le mois '%s' n'est pas reconnu."
 
 #: src/shared_base/core/asTimeArray.cpp:491
-#, fuzzy
 msgid "Season not recognized."
 msgstr "Saison non reconnue."
 
 #: src/shared_base/core/asTimeArray.cpp:550
-#, fuzzy
 msgid ""
 "The predictand series is not correctly defined in the time array "
 "construction."
 msgstr ""
 "La série de prédicteurs n'est pas correctement définie dans la construction "
-"du tableau temporel."
+"du tableau des dates."
 
 #: src/shared_base/core/asTimeArray.cpp:584
 #: src/shared_base/core/asTimeArray.cpp:589
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The day %s was not considered in the timearray due to difference in hours "
 "with %s."
 msgstr ""
-"Le jour %s n'a pas été pris en compte dans la grille horaire en raison de la "
-"différence d'heures avec %s."
+"Le jour %s n'a pas été pris en compte dans la liste des dates en raison de "
+"la différence d'heures avec %s."
 
 #: src/shared_base/core/asTimeArray.cpp:595
-#, fuzzy, c-format
+#, c-format
 msgid "%d days were in the precipitation range and %d were not."
 msgstr ""
-"les jours %d se situaient dans la fourchette des précipitations et les jours "
-"%d ne s'y situaient pas."
+"%d jours se situaient dans la fourchette des précipitations et %d de jours "
+"ne s'y situaient pas."
 
 #: src/shared_base/core/asTimeArray.cpp:598
-#, fuzzy
 msgid "The selection of the dates on the predictand threshold is empty!"
-msgstr "La sélection des dates sur le seuil du prédicat est vide !"
+msgstr "La sélection des dates sur la base du seuil du prédictand est vide !"
 
 #: src/shared_base/core/asTimeArray.cpp:613
 #: src/shared_base/core/asTimeArray.cpp:635
 #: src/shared_base/core/asTimeArray.cpp:652
-#, fuzzy
 msgid "Trying to get a date outside of the time array."
-msgstr "Essayer d'obtenir une date en dehors du tableau de temps."
+msgstr "Tentative d'obtention d'une date en dehors du tableau des dates."
 
 #: src/shared_base/core/asTimeArray.cpp:703
 #: src/shared_base/core/asTimeArray.cpp:750
-#, fuzzy
 msgid "The given year to remove fall outside of the time array."
-msgstr "L'année à supprimer se situe en dehors du tableau de temps."
+msgstr "L'année à supprimer se situe en dehors du tableau des dates."
 
 #: src/shared_base/core/asUtils.cpp:295
-#, fuzzy
 msgid "An unexpected error occurred."
 msgstr "Une erreur inattendue s’est produite."
 
@@ -1874,35 +1714,30 @@ msgstr "Une erreur inattendue s’est produite."
 #: src/shared_base/core/asUtils.cpp:1019 src/shared_base/core/asUtils.cpp:1057
 #: src/shared_base/core/asUtils.cpp:1143 src/shared_base/core/asUtils.cpp:1175
 #: src/shared_base/core/asUtils.cpp:1255 src/shared_base/core/asUtils.cpp:1287
-#, fuzzy, c-format
+#, c-format
 msgid "The value (%f) is out of the array range."
 msgstr "La valeur (%f) est en dehors de la plage du tableau."
 
 #: src/shared_base/core/asUtils.cpp:894 src/shared_base/core/asUtils.cpp:910
 #: src/shared_base/core/asUtils.cpp:952 src/shared_base/core/asUtils.cpp:968
-#, fuzzy
 msgid "The value was not found in the array."
 msgstr "La valeur n'a pas été trouvée dans le tableau."
 
 #: src/shared_base/core/asUtils.cpp:1372 src/shared_base/core/asUtils.cpp:1447
 #: src/shared_base/core/asUtils.cpp:1561 src/shared_base/core/asUtils.cpp:1605
-#, fuzzy
 msgid "Incorrect value of the order enumeration."
 msgstr "Valeur incorrecte de l'énumération de l'ordre."
 
 #: src/shared_base/core/asUtils.cpp:1417 src/shared_base/core/asUtils.cpp:1526
-#, fuzzy
 msgid "The dimension of the two arrays are not equal."
 msgstr "Les dimensions des deux tableaux ne sont pas égales."
 
 #: src/shared_base/core/asUtils.cpp:1420 src/shared_base/core/asUtils.cpp:1490
 #: src/shared_base/core/asUtils.cpp:1529
-#, fuzzy
 msgid "The array has an unique value."
 msgstr "Le tableau a une valeur unique."
 
 #: src/shared_base/core/asUtils.cpp:1423 src/shared_base/core/asUtils.cpp:1493
 #: src/shared_base/core/asUtils.cpp:1532
-#, fuzzy
 msgid "The array has a negative size..."
 msgstr "Le tableau a une taille négative..."
