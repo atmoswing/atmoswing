@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-06 20:06+0200\n"
-"PO-Revision-Date: 2023-04-06 20:29+0200\n"
+"PO-Revision-Date: 2023-04-09 14:36+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Generator: Poedit 3.2.2\n"
 
 #: src/app_optimizer/core/asFileParametersCalibration.cpp:49
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The file %s is not a parameters file for the Optimizer in calibration mode."
 msgstr ""
@@ -27,49 +27,44 @@ msgstr ""
 "calibration."
 
 #: src/app_optimizer/core/asFileParametersOptimization.cpp:48
-#, fuzzy, c-format
+#, c-format
 msgid "The file %s is not a parameters file for the Optimizer."
 msgstr "Le fichier %s n'est pas un fichier de paramètres pour l'Optimizer."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:90
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:482
 #: src/app_optimizer/core/asMethodOptimizerMC.cpp:158
-#, fuzzy, c-format
+#, c-format
 msgid "The whole processing took %.3f min to execute"
 msgstr "L'ensemble du traitement a duré %.3f min"
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:92
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:933
-#, fuzzy
 msgid "Calibration over."
-msgstr "L'étalonnage est terminé."
+msgstr "Le calage est terminé."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:95
-#, fuzzy
 msgid "The parameters could not be calibrated"
 msgstr "Les paramètres n'ont pas pu être calibrés"
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:226
 #: src/app_optimizer/core/asMethodCalibrator.cpp:257
-#, fuzzy
 msgid "The score order is not correctly defined."
-msgstr "L'ordre des notes n'est pas correctement défini."
+msgstr "L'ordre des scores n'est pas correctement défini."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:350
 #: src/app_optimizer/core/asMethodCalibrator.cpp:360
 #: src/app_optimizer/core/asMethodCalibrator.cpp:373
 #: src/app_optimizer/core/asMethodCalibrator.cpp:380
 #: src/app_optimizer/core/asMethodCalibrator.cpp:392
-#, fuzzy
 msgid "An unexpected error occurred."
 msgstr "Une erreur inattendue s’est produite."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:444
 #: src/app_optimizer/core/asMethodCalibrator.cpp:517
-#, fuzzy
 msgid "You cannot use predictand thresholds with the multivariate approach."
 msgstr ""
-"Il n'est pas possible d'utiliser des seuils de prédicteurs avec l'approche "
+"Il n'est pas possible d'utiliser des seuils de prédictands avec l'approche "
 "multivariée."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:451
@@ -77,133 +72,111 @@ msgstr ""
 #: src/app_optimizer/core/asMethodCalibrator.cpp:524
 #: src/app_optimizer/core/asMethodCalibrator.cpp:529
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:253
-#, fuzzy
 msgid "The time array mode for the target dates is not correctly defined."
 msgstr ""
-"Le mode de tableau temporel pour les dates cibles n'est pas correctement "
+"Le mode de tableau des dates pour les dates cibles n'est pas correctement "
 "défini."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:479
 #: src/app_optimizer/core/asMethodCalibrator.cpp:564
 #: src/app_optimizer/core/asMethodCalibrator.cpp:632
-#, fuzzy
 msgid "Failed loading predictor data."
-msgstr "Échec du chargement des données prédictives."
+msgstr "Échec du chargement des données prédicteurs."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:555
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The time array is not consistent in asMethodCalibrator::GetAnalogsDates: "
 "size=%d."
 msgstr ""
-"Le tableau de temps n'est pas cohérent dans asMethodCalibrator::"
+"Le tableau des dates n'est pas cohérent dans asMethodCalibrator::"
 "GetAnalogsDates : size=%d."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:559
 #: src/app_optimizer/core/asMethodCalibrator.cpp:627
-#, fuzzy
 msgid "Date arrays created."
-msgstr "Date de création des tableaux."
+msgstr "Tableaux des dates créés."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:597
 #: src/app_optimizer/core/asMethodCalibrator.cpp:654
-#, fuzzy
 msgid "Start processing the comparison."
-msgstr "Commencez à traiter la comparaison."
+msgstr "Début du calcul de la comparaison."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:601
 #: src/app_optimizer/core/asMethodCalibrator.cpp:657
-#, fuzzy
 msgid "Failed processing the analogs dates."
-msgstr "Échec du traitement des dates analogiques."
+msgstr "Échec du calcul des dates analogues."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:606
 #: src/app_optimizer/core/asMethodCalibrator.cpp:662
-#, fuzzy
 msgid "The processing is over."
-msgstr "Le traitement est terminé."
+msgstr "Le calcul est terminé."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:621
-#, fuzzy
 msgid "Creating a date arrays for the processor."
 msgstr "Création d'un tableau de dates pour le processeur."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:640
-#, fuzzy
 msgid "Creating a criterion object."
 msgstr "Création d'un objet critère."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:643
-#, fuzzy
 msgid "Criterion object created."
 msgstr "Objet de critère créé."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:678
-#, fuzzy
 msgid "Start setting the predictand values to the corresponding analog dates."
 msgstr ""
-"Commencez à régler les valeurs des prédicteurs sur les dates analogiques "
+"Début de l'attribution des valeurs de prédictand aux les dates analogues "
 "correspondantes."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:680
-#, fuzzy
 msgid "Failed setting the predictand values to the corresponding analog dates."
 msgstr ""
-"Échec du réglage des valeurs des prédicats sur les dates analogiques "
+"Échec de l'attribution des valeurs de prédictand aux les dates analogues "
 "correspondantes."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:683
-#, fuzzy
 msgid "Predictand association over."
-msgstr "La prédiction et l'association sont terminées."
+msgstr "L'association des prédicteurs est terminée."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:695
-#, fuzzy
 msgid "Instantiating a score object"
 msgstr "Instanciation d'un objet score"
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:702
-#, fuzzy
 msgid "Processing the score of the climatology."
-msgstr "Traitement du score de la climatologie."
+msgstr "Calcul du score de la climatologie."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:715
-#, fuzzy
 msgid "Start processing the score."
-msgstr "Commencez à traiter le score."
+msgstr "Début du calcul du score."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:718
-#, fuzzy
 msgid "Failed processing the score."
-msgstr "Échec du traitement du score."
+msgstr "Échec du calcul du score."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:735
-#, fuzzy
 msgid "Creating a date array for the final score."
 msgstr "Création d'un tableau de dates pour le score final."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:746
-#, fuzzy
 msgid "Date array created."
-msgstr "Date de création du tableau."
+msgstr "Tableau de dates créé."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:749
-#, fuzzy
 msgid "Start processing the final score."
-msgstr "Commencer à traiter le score final."
+msgstr "Début du calcul du score final."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:751
-#, fuzzy
 msgid "Failed to process the final score."
-msgstr "N'a pas réussi à traiter le score final."
+msgstr "Échec du calcul du score final."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:754
-#, fuzzy
 msgid "Processing over."
-msgstr "Traitement terminé."
+msgstr "Le calcul est terminé."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:776
-#, fuzzy
 msgid "Error assessing the number of analogues."
 msgstr "Erreur d'évaluation du nombre d'analogues."
 
@@ -219,134 +192,123 @@ msgstr "Erreur d'évaluation du nombre d'analogues."
 #: src/app_optimizer/core/asMethodOptimizer.cpp:102
 #: src/app_optimizer/core/asThreadGAs.cpp:83
 #: src/app_optimizer/core/asThreadMC.cpp:73
-#, fuzzy
 msgid "The dates selection contains NaNs"
-msgstr "La sélection des dates contient des NaN"
+msgstr "La sélection des dates contient des NaNs"
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:52
-#, fuzzy
 msgid "You need to preload the data for the classic calibration."
-msgstr "Vous devez précharger les données pour l'étalonnage classique."
+msgstr "Vous devez précharger les données pour la calibration classique."
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:66
-#, fuzzy
 msgid "all_station_best_parameters"
-msgstr "tous_les_meilleurs_paramètres_de_station"
+msgstr "all_station_best_parameters"
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:72
-#, fuzzy, c-format
+#, c-format
 msgid "Calibrating station %s."
-msgstr "Station d'étalonnage %s."
+msgstr "Calage de la station %s."
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:82
 #: src/app_optimizer/core/asMethodCalibratorSingle.cpp:176
 #: src/app_optimizer/core/asMethodOptimizerMC.cpp:62
-#, fuzzy, c-format
+#, c-format
 msgid "station_%s_tested_parameters"
-msgstr "station_%s_paramètres_testés"
+msgstr "station_%s_tested_parameters"
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:84
 #: src/app_optimizer/core/asMethodOptimizerMC.cpp:64
-#, fuzzy, c-format
+#, c-format
 msgid "station_%s_best_parameters"
 msgstr "station_%s_best_parameters"
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:91
-#, fuzzy
 msgid "Creating the complete relevance map for a given predictor."
 msgstr "Création de la carte de pertinence complète pour un prédicteur donné."
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:136
-#, fuzzy, c-format
+#, c-format
 msgid "Best point on relevance map: %.2f lat, %.2f lon"
 msgstr "Meilleur point sur la carte de pertinence : %.2f lat, %.2f lon"
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:162
-#, fuzzy
 msgid "Find the analogs number for every step."
-msgstr "Trouver le nombre d'analogues pour chaque étape."
+msgstr "Identification du nombre d'analogues pour chaque étape."
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:214
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:200
 #: src/app_optimizer/core/asMethodOptimizerMC.cpp:70
-#, fuzzy
 msgid "Could not preload the data."
 msgstr "Impossible de précharger les données."
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:219
-#, fuzzy, c-format
+#, c-format
 msgid "Bad allocation caught during data preloading: %s"
 msgstr "Mauvaise allocation détectée lors du préchargement des données : %s"
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:224
-#, fuzzy, c-format
+#, c-format
 msgid "Exception caught during data preloading: %s"
 msgstr "Exception levée lors du préchargement des données : %s"
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:387
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:499
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:725
-#, fuzzy, c-format
+#, c-format
 msgid "Process sub-level %d"
-msgstr "Sous-niveau du processus %d"
+msgstr "Calcul du sous-niveau %d"
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:414
-#, fuzzy, c-format
+#, c-format
 msgid "Time to process the relevance map: %.3f min."
-msgstr "Temps de traitement de la carte de pertinence : %.3f min."
+msgstr "Temps de calcul de la carte de pertinence : %.3f min."
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:422
-#, fuzzy
 msgid "Resize the spatial domain for every predictor."
-msgstr "Redimensionner le domaine spatial pour chaque prédicteur."
+msgstr "Redimensionnement du domaine spatial pour chaque prédicteur."
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:466
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:691
-#, fuzzy
 msgid "Resizing not correctly defined."
 msgstr "Le redimensionnement n'est pas correctement défini."
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:534
-#, fuzzy, c-format
+#, c-format
 msgid "Time to process the first resizing procedure: %.3f min."
 msgstr ""
 "Temps de traitement de la première procédure de redimensionnement : %.3f min."
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:543
-#, fuzzy
 msgid ""
 "Reshape again (calibration plus) the spatial domain for every predictor."
 msgstr ""
-"Remodeler à nouveau (étalonnage plus) le domaine spatial pour chaque "
+"Changer à nouveau (calibration plus) le domaine spatial pour chaque "
 "prédicteur."
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:758
-#, fuzzy, c-format
+#, c-format
 msgid "Time to process the second resizing procedure: %.3f min"
 msgstr "Durée de la deuxième procédure de redimensionnement : %.3f min"
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:846
-#, fuzzy
 msgid "The final dates selection contains NaNs"
 msgstr "La sélection finale des dates contient des NaN"
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:852
-#, fuzzy, c-format
+#, c-format
 msgid "Area: yMin = %.2f, yPtsNb = %d, xMin = %.2f, xPtsNb = %d"
 msgstr "Zone : yMin = %.2f, yPtsNb = %d, xMin = %.2f, xPtsNb = %d"
 
 #: src/app_optimizer/core/asMethodCalibratorClassicVarExplo.cpp:40
-#, fuzzy, c-format
+#, c-format
 msgid "Processing variables exploration for step %d"
 msgstr "Traitement de l'exploration des variables pour l'étape %d"
 
 #: src/app_optimizer/core/asMethodCalibratorClassicVarExplo.cpp:42
-#, fuzzy, c-format
+#, c-format
 msgid "Processing %d variables, %d hours, %d levels, %d criteria."
 msgstr "Traitement de %d variables, %d heures, %d niveaux, %d critères."
 
 #: src/app_optimizer/core/asMethodCalibratorClassicVarExplo.cpp:47
-#, fuzzy
 msgid ""
 "The given step number for variables exploration is above available steps."
 msgstr ""
@@ -354,28 +316,26 @@ msgstr ""
 "étapes disponibles."
 
 #: src/app_optimizer/core/asMethodCalibratorClassicVarExplo.cpp:53
-#, fuzzy
 msgid "Calibration method not implemented to work with preprocessed data."
 msgstr ""
-"La méthode d'étalonnage n'est pas mise en œuvre pour travailler avec des "
+"La méthode de calage n'est pas implémentée de manière à travailler avec des "
 "données prétraitées."
 
 #: src/app_optimizer/core/asMethodCalibratorEvaluateAllScores.cpp:150
-#, fuzzy
 msgid ""
 "The following parameters are not compatible with the EvaluateAllScores "
 "assessment: "
 msgstr ""
 "Les paramètres suivants ne sont pas compatibles avec l'évaluation "
-"EvaluateAllScores :"
+"EvaluateAllScores : "
 
 #: src/app_optimizer/core/asMethodCalibratorEvaluateAllScores.cpp:167
-#, fuzzy, c-format
+#, c-format
 msgid "Processing station %s"
-msgstr "Station de traitement %s"
+msgstr "Calcul de la station %s"
 
 #: src/app_optimizer/core/asMethodCalibratorEvaluateAllScores.cpp:171
-#, fuzzy, c-format
+#, c-format
 msgid "station_%s_evaluation"
 msgstr "station_%s_evaluation"
 
@@ -383,178 +343,162 @@ msgstr "station_%s_evaluation"
 #: src/app_optimizer/core/asMethodCalibratorEvaluateAllScores.cpp:298
 #: src/app_optimizer/core/asMethodCalibratorEvaluateAllScores.cpp:316
 #: src/app_optimizer/core/asMethodCalibratorEvaluateAllScores.cpp:348
-#, fuzzy, c-format
+#, c-format
 msgid "Processing %s"
 msgstr "Traitement %s"
 
 #: src/app_optimizer/core/asMethodCalibratorEvaluateAllScores.cpp:364
-#, fuzzy
 msgid "Processing the Verification Rank Histogram"
-msgstr "Traitement de l'histogramme des rangs de vérification"
+msgstr "Calcul du 'Verification Rank Histogram'"
 
 #: src/app_optimizer/core/asMethodCalibratorSingle.cpp:146
 #: src/app_optimizer/core/asMethodCalibratorSingleOnlyDates.cpp:125
 #: src/app_optimizer/core/asMethodCalibratorSingleOnlyValues.cpp:126
-#, fuzzy
 msgid ""
 "The following parameters are not compatible with the single assessment: "
 msgstr ""
-"Les paramètres suivants ne sont pas compatibles avec l'évaluation unique :"
+"Les paramètres suivants ne sont pas compatibles avec l'évaluation unique : "
 
 #: src/app_optimizer/core/asMethodCalibratorSingle.cpp:157
 #: src/app_optimizer/core/asMethodCalibratorSingleOnlyValues.cpp:137
-#, fuzzy
 msgid "all_station_parameters"
-msgstr "tous_les_paramètres_de_la_station"
+msgstr "all_station_parameters"
 
 #: src/app_optimizer/core/asMethodCalibratorSingleOnlyDates.cpp:134
 #: src/app_optimizer/core/asMethodCalibratorSingleOnlyValues.cpp:142
-#, fuzzy
 msgid "Do not process a score. Use to save intermediate values."
 msgstr ""
-"Ne pas traiter un score. Utiliser pour sauvegarder les valeurs "
+"Ne pas calculer un score. Utiliser pour sauvegarder les valeurs "
 "intermédiaires."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:125
-#, fuzzy, c-format
+#, c-format
 msgid "Bad allocation caught in GAs: %s"
-msgstr "Une mauvaise allocation est prise en compte dans les AG : %s"
+msgstr "Mauvaise allocation détectée dans les AGs : %s"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:130
-#, fuzzy, c-format
+#, c-format
 msgid "Exception caught in the GAs: %s"
-msgstr "Exception prise dans les GA : %s"
+msgstr "Exception détectée dans les GA : %s"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:150
-#, fuzzy, c-format
+#, c-format
 msgid "%d GPUs provided, but only %d found."
 msgstr "%d GPUs fournis, mais seulement %d trouvés."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:179
-#, fuzzy, c-format
+#, c-format
 msgid "station_%s_final_population"
-msgstr "station_%s_population_finale"
+msgstr "station_%s_final_population"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:181
-#, fuzzy, c-format
+#, c-format
 msgid "station_%s_best_individual"
-msgstr "station_%s_best_individual"
+msgstr "station_%s_final_population"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:182
-#, fuzzy, c-format
+#, c-format
 msgid "station_%s_generations"
-msgstr "station_%s_générations"
+msgstr "station_%s_generations"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:193
-#, fuzzy
 msgid "Optimization has already converged."
 msgstr "L'optimisation a déjà convergé."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:203
-#, fuzzy
 msgid "Predictor data preloaded."
 msgstr "Données du prédicteur préchargées."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:206
-#, fuzzy, c-format
+#, c-format
 msgid "Bad allocation caught during data preloading (in GAs): %s"
 msgstr ""
-"Mauvaise allocation détectée lors du préchargement des données (en GA) : %s"
+"Mauvaise allocation détectée lors du préchargement des données (GAs) : %s"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:211
-#, fuzzy, c-format
+#, c-format
 msgid "Exception caught during data preloading (in GAs): %s"
 msgstr ""
-"Exception rencontrée lors du préchargement des données (dans les GA) : %s"
+"Exception rencontrée lors du préchargement des données (dans les GAs) : %s"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:218
-#, fuzzy
 msgid "Failed to resume previous runs"
-msgstr "Échec de la reprise des exécutions précédentes"
+msgstr "Échec de la reprise des résultats précédents"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:226
-#, fuzzy
 msgid "Could not create the operators file."
 msgstr "Impossible de créer le fichier des opérateurs."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:239
 #: src/app_optimizer/core/asMethodOptimizerMC.cpp:84
-#, fuzzy
 msgid "Loading the Predictand DB."
-msgstr "Chargement de la base de données des prédicteurs."
+msgstr "Chargement de la base de données des prédictands."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:241
 #: src/app_optimizer/core/asMethodOptimizerMC.cpp:86
-#, fuzzy
 msgid "Predictand DB loaded."
-msgstr "Predictand DB chargé."
+msgstr "BD des prédictands chargé."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:346
 #: src/app_optimizer/core/asMethodOptimizerMC.cpp:142
-#, fuzzy, c-format
+#, c-format
 msgid "NaN found in the scores (element %d on %d in m_scoresCalib)."
 msgstr "NaN trouvé dans les scores (élément %d sur %d dans m_scoresCalib)."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:349
-#, fuzzy, c-format
+#, c-format
 msgid "Parameters #%d: %s"
 msgstr "Paramètres #%d : %s"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:396
-#, fuzzy, c-format
+#, c-format
 msgid "Mean %g, best %g"
-msgstr "Moyenne %g, meilleure %g"
+msgstr "Moyenne %g, meilleur %g"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:433
-#, fuzzy, c-format
+#, c-format
 msgid "Epoch number %d"
 msgstr "Numéro d'époque %d"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:465
-#, fuzzy
 msgid "Optimization process over."
 msgstr "Le processus d'optimisation est terminé."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:475
-#, fuzzy
 msgid "The parameters could not be optimized"
 msgstr "Les paramètres n'ont pas pu être optimisés"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:484
 #: src/app_optimizer/core/asMethodOptimizerMC.cpp:160
-#, fuzzy
 msgid "Optimization over."
 msgstr "Optimisation terminée."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:504
-#, fuzzy
 msgid "The file containing the final population could not be generated."
 msgstr "Le fichier contenant la population finale n'a pas pu être généré."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:510
-#, fuzzy
 msgid "The file containing the best individual could not be generated."
 msgstr "Le fichier contenant le meilleur individu n'a pas pu être généré."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:517
-#, fuzzy
 msgid "The output xml parameters file could not be generated."
 msgstr "Le fichier de paramètres xml de sortie n'a pas pu être généré."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:627
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:970
-#, fuzzy, c-format
+#, c-format
 msgid "The directory %s could not be opened."
 msgstr "Le répertoire %s n'a pas pu être ouvert."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:635
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:976
-#, fuzzy, c-format
+#, c-format
 msgid "The directory %s already contains the resulting file."
-msgstr "Le répertoire %s contient déjà le fichier résultant."
+msgstr "Le répertoire %s contient déjà le fichier résultat."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:654
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The number of former results is not consistent with the population size (%d)."
 msgstr ""
@@ -562,7 +506,7 @@ msgstr ""
 "population (%d)."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:658
-#, fuzzy, c-format
+#, c-format
 msgid "Previous intermediate results were found and will be loaded (%d lines)."
 msgstr ""
 "Les résultats intermédiaires précédents ont été trouvés et seront chargés "
@@ -571,205 +515,180 @@ msgstr ""
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:663
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:822
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:880
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open the file %s."
 msgstr "Impossible d'ouvrir le fichier %s."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:683
-#, fuzzy
 msgid ""
 "The number of steps do not correspond between the current and the previous "
 "parameters."
 msgstr ""
-"Le nombre de pas ne correspond pas entre le paramètre actuel et le paramètre "
-"précédent."
+"Le nombre d'étapes ne correspond pas entre les paramètres actuels et les "
+"paramètres précédents."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:701
-#, fuzzy
 msgid ""
 "The number of predictors do not correspond between the current and the "
 "previous parameters."
 msgstr ""
-"Le nombre de prédicteurs ne correspond pas aux paramètres actuels et "
-"précédents."
+"Le nombre de prédicteurs ne correspond pas entre les paramètres actuels et "
+"les paramètres précédents."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:719
-#, fuzzy
 msgid ""
 "The number of atmospheric levels do not correspond between the current and "
 "the previous parameters."
 msgstr ""
 "Le nombre de niveaux atmosphériques ne correspond pas entre les paramètres "
-"actuels et précédents."
+"actuels et les paramètres précédents."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:778
-#, fuzzy, c-format
+#, c-format
 msgid "%d former results have been reloaded."
-msgstr "%d Les anciens résultats ont été rechargés."
+msgstr "%d anciens résultats ont été rechargés."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:779
-#, fuzzy, c-format
+#, c-format
 msgid "%d former results have been reloaded.\n"
-msgstr "%d Les anciens résultats ont été rechargés.\n"
+msgstr "%d anciens résultats ont été rechargés.\n"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:782
-#, fuzzy, c-format
+#, c-format
 msgid "%d generation bests have been reloaded."
-msgstr "%d Les bests de génération ont été rechargés."
+msgstr "%d meilleurs individus ont été rechargés."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:783
-#, fuzzy, c-format
+#, c-format
 msgid "%d generation bests have been reloaded.\n"
-msgstr "%d Les bests de génération ont été rechargés.\n"
+msgstr "%d meilleurs individus ont été rechargés.\n"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:847
-#, fuzzy, c-format
+#, c-format
 msgid "Starting again from epoch %d."
 msgstr "Recommencer à partir de l'époque %d."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:865
-#, fuzzy
 msgid "Previous operators were found and will be loaded."
-msgstr "Les opérateurs précédents ont été trouvés et seront chargés."
+msgstr "Des opérateurs précédents ont été trouvés et seront chargés."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:866
-#, fuzzy
 msgid "Previous operators were found and will be loaded.\n"
-msgstr "Les opérateurs précédents ont été trouvés et seront chargés.\n"
+msgstr "Des opérateurs précédents ont été trouvés et seront chargés.\n"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:874
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:892
-#, fuzzy, c-format
+#, c-format
 msgid "Mismatch between number of parameters (%d) and operators (%d)."
 msgstr ""
 "Inadéquation entre le nombre de paramètres (%d) et les opérateurs (%d)."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:953
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1040
-#, fuzzy
 msgid "The mutation method was not found when saving operators."
 msgstr ""
 "La méthode de mutation n'a pas été trouvée lors de l'enregistrement des "
 "opérateurs."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1057
-#, fuzzy, c-format
+#, c-format
 msgid "The population is made of %d individuals."
 msgstr "La population est composée de %d individus."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1115
-#, fuzzy, c-format
+#, c-format
 msgid "m_parameters[%d] = %s"
-msgstr "m_paramètres[%d] = %s"
+msgstr "m_parameters[%d] = %s"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1138
-#, fuzzy, c-format
+#, c-format
 msgid "Generation number %d"
 msgstr "Numéro de génération %d"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1192
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1203
-#, fuzzy
 msgid "Application of elitism after mutation."
 msgstr "Application de l'élitisme après mutation."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1213
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1249
-#, fuzzy
 msgid "Score order not correctly defined."
-msgstr "L'ordre des notes n'est pas correctement défini."
+msgstr "L'ordre des scores n'est pas correctement défini."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1230
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1240
-#, fuzzy
 msgid "Application of elitism in the natural selection."
 msgstr "Application de l'élitisme dans la sélection naturelle."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1261
-#, fuzzy
 msgid "Applying natural selection."
 msgstr "Application de la sélection naturelle."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1279
-#, fuzzy
 msgid "Natural selection: ratio elitism"
-msgstr "Sélection naturelle : élitisme des ratios"
+msgstr "Sélection naturelle : élitisme par ratios"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1289
-#, fuzzy
 msgid "Natural selection: tournament"
 msgstr "Sélection naturelle : tournoi"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1340
-#, fuzzy
 msgid "The given natural selection method couldn't be found."
 msgstr "La méthode de sélection naturelle donnée n'a pas pu être trouvée."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1356
-#, fuzzy
 msgid "Applying mating."
 msgstr "Application de l'accouplement."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1370
-#, fuzzy
 msgid "Selecting couples."
 msgstr "Sélection des couples."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1374
-#, fuzzy
 msgid "Couples selection: rank pairing"
 msgstr "Sélection des couples : appariement des rangs"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1388
-#, fuzzy
 msgid "Couples selection: random"
 msgstr "Sélection des couples : au hasard"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1396
-#, fuzzy
 msgid "Couples selection: roulette wheel rank"
-msgstr "Sélection des couples : rang de la roulette"
+msgstr "Sélection des couples : roulette sur la base des rangs"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1413
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1450
-#, fuzzy, c-format
+#, c-format
 msgid "probabilities[last]-1.0=%f"
 msgstr "probabilities[last]-1.0=%f"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1428
-#, fuzzy
 msgid "Couples selection: roulette wheel score"
-msgstr "Sélection des couples : score à la roulette"
+msgstr "Sélection des couples : roulette sur la base des scores"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1444
-#, fuzzy
 msgid "The sum of the probabilities is null."
 msgstr "La somme des probabilités est nulle."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1464
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1470
-#, fuzzy
 msgid "Could not find a value in the probability distribution."
 msgstr "Impossible de trouver une valeur dans la distribution de probabilité."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1480
-#, fuzzy
 msgid "Couples selection: tournament"
 msgstr "Sélection des couples : tournoi"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1488
-#, fuzzy
 msgid "The number of individuals for tournament selection is inferior to 2."
 msgstr "Le nombre d'individus pour la sélection du tournoi est inférieur à 2."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1489
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1496
-#, fuzzy
 msgid "The number of individuals for tournament selection has been changed."
 msgstr "Le nombre d'individus pour la sélection du tournoi a été modifié."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1494
-#, fuzzy
 msgid ""
 "The number of individuals for tournament selection superior to the half of "
 "the intermediate population."
@@ -778,40 +697,35 @@ msgstr ""
 "de la population intermédiaire."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1524
-#, fuzzy
 msgid "The desired couples selection method is not yet implemented."
 msgstr ""
-"La méthode de sélection des couples souhaitée n'est pas encore mise en œuvre."
+"La méthode de sélection des couples souhaitée n'est pas encore implémentée."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1535
-#, fuzzy, c-format
+#, c-format
 msgid "m_scoresCalib[%d] = %f"
 msgstr "m_scoresCalib[%d] = %f"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1539
-#, fuzzy, c-format
+#, c-format
 msgid "probabilities[%d] = %f"
-msgstr "probabilités[%d] = %f"
+msgstr "probabilities[%d] = %f"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1541
-#, fuzzy
 msgid "The same two partners were chosen more than 100 times. Lost in a loop."
 msgstr ""
 "Les deux mêmes partenaires ont été choisis plus de 100 fois. Perdu dans une "
 "boucle."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1550
-#, fuzzy
 msgid "Crossing chromosomes."
 msgstr "Croisement de chromosomes."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1553
-#, fuzzy
 msgid "Crossing: single point crossover"
 msgstr "Croisement : croisement à point unique"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1593
-#, fuzzy
 msgid "Crossing: double points crossover"
 msgstr "Croisement : croisement à double point"
 
@@ -821,108 +735,90 @@ msgstr "Croisement : croisement à double point"
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1841
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1918
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1979
-#, fuzzy
 msgid "Crossing point already selected. Selection of a new one."
 msgstr ""
-"Point de passage déjà sélectionné. Sélection d'un nouveau point de passage."
+"Point de croisement déjà sélectionné. Sélection d'un nouveau point de "
+"croisement."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1617
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1790
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1847
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1924
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1985
-#, fuzzy
 msgid "There are more crossing points than chromosomes."
 msgstr "Il y a plus de points de croisement que de chromosomes."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1647
-#, fuzzy
 msgid "Crossing: multiple points crossover"
-msgstr "Croisement : croisement de plusieurs points"
+msgstr "Croisement : croisement à plusieurs points"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1660
-#, fuzzy
 msgid "The desired crossings number is superior or equal to the genes number."
 msgstr ""
 "Le nombre de croisements souhaité est supérieur ou égal au nombre de gènes."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1704
-#, fuzzy
 msgid "Crossing: uniform crossover"
 msgstr "Croisement : croisement uniforme"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1759
-#, fuzzy
 msgid "Crossing: limited blending"
 msgstr "Croisement : mélange limité"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1820
-#, fuzzy
 msgid "Crossing: linear crossover"
 msgstr "Croisement : croisement linéaire"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1893
-#, fuzzy
 msgid "Crossing: heuristic crossover"
 msgstr "Croisement : croisement heuristique"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1954
-#, fuzzy
 msgid "Crossing: binary-like crossover"
 msgstr "Croisement : croisement de type binaire"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2015
-#, fuzzy
 msgid "Crossing: linear interpolation"
 msgstr "Croisement : interpolation linéaire"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2041
-#, fuzzy
 msgid "Crossing: free interpolation"
 msgstr "Croisement : interpolation libre"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2067
-#, fuzzy
 msgid "The desired chromosomes crossing is not yet implemented."
-msgstr "Le croisement des chromosomes souhaité n'est pas encore mis en œuvre."
+msgstr "Le croisement des chromosomes souhaité n'est pas encore implémenté."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2084
-#, fuzzy
 msgid "Applying mutations."
 msgstr "Application des mutations."
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2302
-#, fuzzy
 msgid "The desired mutation method is not yet implemented."
-msgstr "La méthode de mutation souhaitée n'est pas encore mise en œuvre."
+msgstr "La méthode de mutation souhaitée n'est pas encore implémentée."
 
 #: src/app_optimizer/core/asMethodOptimizerMC.cpp:155
-#, fuzzy
 msgid "Random method over."
 msgstr "Méthode aléatoire terminée."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:47
 #: src/app_optimizer/core/asParametersOptimization.cpp:109
-#, fuzzy
 msgid "Loading parameters file."
 msgstr "Chargement du fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:50
 #: src/app_optimizer/core/asParametersOptimization.cpp:112
 #: src/app_optimizer/core/asParametersScoring.cpp:60
-#, fuzzy
 msgid "The given path to the parameters file is empty."
 msgstr "Le chemin d'accès au fichier de paramètres est vide."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:101
 #: src/app_optimizer/core/asParametersOptimization.cpp:163
-#, fuzzy
 msgid "Parameters file loaded."
 msgstr "Fichier de paramètres chargé."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:246
 #: src/app_optimizer/core/asParametersOptimization.cpp:343
-#, fuzzy
 msgid ""
 "The preload option has been disabled. This can result in very long "
 "computation time."
@@ -932,51 +828,45 @@ msgstr ""
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:383
 #: src/app_optimizer/core/asParametersOptimization.cpp:591
-#, fuzzy
 msgid "The postptocessing is not yet fully implemented."
-msgstr "La postptocessing n'est pas encore totalement mise en œuvre."
+msgstr "Le postptocessing n'est pas encore entièrement mis en œuvre."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:483
 #: src/app_optimizer/core/asParametersOptimization.cpp:723
-#, fuzzy, c-format
+#, c-format
 msgid "The %s preprocessing method is not yet handled with the preload option."
 msgstr ""
 "La méthode de prétraitement %s n'est pas encore gérée par l'option preload."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:528
-#, fuzzy
 msgid ""
 "The beginning of the archive period was not provided in the parameters file."
 msgstr ""
-"Le début de la période d'archivage n'a pas été indiqué dans le fichier de "
+"Le début de la période d'archive n'a pas été indiqué dans le fichier de "
 "paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:533
-#, fuzzy
 msgid "The end of the archive period was not provided in the parameters file."
 msgstr ""
-"La fin de la période d'archivage n'a pas été indiquée dans le fichier de "
+"La fin de la période d'archive n'a pas été indiquée dans le fichier de "
 "paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:538
-#, fuzzy
 msgid ""
 "The beginning of the calibration period was not provided in the parameters "
 "file."
 msgstr ""
-"Le début de la période d'étalonnage n'a pas été indiqué dans le fichier de "
+"Le début de la période de calage n'a pas été indiqué dans le fichier de "
 "paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:543
-#, fuzzy
 msgid ""
 "The end of the calibration period was not provided in the parameters file."
 msgstr ""
-"La fin de la période d'étalonnage n'a pas été indiquée dans le fichier des "
+"La fin de la période de calage n'a pas été indiquée dans le fichier des "
 "paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:548
-#, fuzzy
 msgid ""
 "The validation period was not provided in the parameters file (it can be on "
 "purpose)."
@@ -986,12 +876,10 @@ msgstr ""
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:553
 #: src/app_optimizer/core/asParametersCalibration.cpp:558
-#, fuzzy
 msgid "The time step was not provided in the parameters file."
 msgstr "Le pas de temps n'a pas été fourni dans le fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:566
-#, fuzzy
 msgid ""
 "The predictand time series (for the threshold preselection) was not provided "
 "in the parameters file."
@@ -1000,15 +888,13 @@ msgstr ""
 "été fournie dans le fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:571
-#, fuzzy
 msgid ""
 "The provided min/max predictand thresholds are equal in the parameters file."
 msgstr ""
-"Les seuils min/max des prédicteurs fournis sont égaux dans le fichier des "
+"Les seuils min/max des prédictands fournis sont égaux dans le fichier des "
 "paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:579
-#, fuzzy
 msgid ""
 "The interval days for the analogs preselection was not provided in the "
 "parameters file."
@@ -1017,16 +903,15 @@ msgstr ""
 "dans le fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:584
-#, fuzzy
 msgid ""
 "The number of days to exclude around the target date was not provided in the "
 "parameters file."
 msgstr ""
-"Le nombre de jours à exclure autour de la date cible n'était pas indiqué "
-"dans le fichier de paramètres."
+"Le nombre de jours à exclure autour de la date cible n'est pas fourni dans "
+"le fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:592
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The number of analogs (step %d) was not provided in the parameters file."
 msgstr ""
@@ -1034,7 +919,7 @@ msgstr ""
 "paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:600
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The preprocessing method (step %d, predictor %d) was not provided in the "
 "parameters file."
@@ -1043,16 +928,16 @@ msgstr ""
 "dans le fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:607
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The dataset for preprocessing (step %d, predictor %d) was not provided in "
 "the parameters file."
 msgstr ""
-"L'ensemble de données pour le prétraitement (étape %d, prédicteur %d) n'a "
-"pas été fourni dans le fichier de paramètres."
+"Le jeu de données pour le prétraitement (étape %d, prédicteur %d) n'a pas "
+"été fourni dans le fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:613
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The data for preprocessing (step %d, predictor %d) was not provided in the "
 "parameters file."
@@ -1061,7 +946,7 @@ msgstr ""
 "fournies dans le fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:619
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The level for preprocessing (step %d, predictor %d) was not provided in the "
 "parameters file."
@@ -1070,24 +955,24 @@ msgstr ""
 "le fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:625
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The time for preprocessing (step %d, predictor %d) was not provided in the "
 "parameters file."
 msgstr ""
-"La durée du prétraitement (étape %d, prédicteur %d) n'a pas été indiquée "
-"dans le fichier de paramètres."
+"L'heure du prétraitement (étape %d, prédicteur %d) n'a pas été indiquée dans "
+"le fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:633
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The dataset (step %d, predictor %d) was not provided in the parameters file."
 msgstr ""
-"L'ensemble de données (étape %d, prédicteur %d) n'a pas été fourni dans le "
+"Le jeu de données (étape %d, prédicteur %d) n'a pas été fourni dans le "
 "fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:637
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The data (step %d, predictor %d) was not provided in the parameters file."
 msgstr ""
@@ -1095,7 +980,7 @@ msgstr ""
 "de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:641
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The level (step %d, predictor %d) was not provided in the parameters file."
 msgstr ""
@@ -1103,22 +988,22 @@ msgstr ""
 "paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:645
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The time (step %d, predictor %d) was not provided in the parameters file."
 msgstr ""
-"Le temps (pas %d, prédicteur %d) n'a pas été fourni dans le fichier de "
+"L'heure (étape %d, prédicteur %d) n'a pas été fourni dans le fichier de "
 "paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:651
-#, fuzzy, c-format
+#, c-format
 msgid "The grid type (step %d, predictor %d) is empty in the parameters file."
 msgstr ""
-"Le type de grille (pas %d, prédicteur %d) est vide dans le fichier de "
+"Le type de grille (étape %d, prédicteur %d) est vide dans le fichier de "
 "paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:655
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The X min value (step %d, predictor %d) was not provided in the parameters "
 "file."
@@ -1127,16 +1012,16 @@ msgstr ""
 "fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:659
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The X points nb value (step %d, predictor %d) was not provided in the "
 "parameters file."
 msgstr ""
-"La valeur nb des points X (étape %d, prédicteur %d) n'a pas été fournie dans "
-"le fichier de paramètres."
+"La valeur nb des points en X (étape %d, prédicteur %d) n'a pas été fournie "
+"dans le fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:664
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The Y min value (step %d, predictor %d) was not provided in the parameters "
 "file."
@@ -1145,16 +1030,16 @@ msgstr ""
 "fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:668
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The Y points nb value (step %d, predictor %d) was not provided in the "
 "parameters file."
 msgstr ""
-"La valeur nb des points Y (étape %d, prédicteur %d) n'a pas été fournie dans "
-"le fichier de paramètres."
+"La valeur nb des points en Y (étape %d, prédicteur %d) n'a pas été fournie "
+"dans le fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:673
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The criteria (step %d, predictor %d) was not provided in the parameters file."
 msgstr ""
@@ -1162,7 +1047,6 @@ msgstr ""
 "paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:681
-#, fuzzy
 msgid ""
 "The station ID was not provided in the parameters file (it can be on "
 "purpose)."
@@ -1171,43 +1055,36 @@ msgstr ""
 "(cela peut être volontaire)."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:687
-#, fuzzy
 msgid "The score was not provided in the parameters file."
 msgstr "Le score n'a pas été fourni dans le fichier des paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:693
-#, fuzzy
 msgid "The total score was not provided in the parameters file."
 msgstr "Le score total n'a pas été fourni dans le fichier des paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:776
 #: src/app_optimizer/core/asParametersCalibration.cpp:780
-#, fuzzy
 msgid "The provided predictand ID vector is empty."
 msgstr "Le vecteur d'identification du prédictand fourni est vide."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:787
-#, fuzzy
 msgid "There are NaN values in the provided predictand ID vector."
 msgstr ""
 "Le vecteur d'identification du prédictand fourni contient des valeurs NaN."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:808
-#, fuzzy
 msgid "There are NaN values in the provided scores vector."
 msgstr "Le vecteur de scores fourni contient des valeurs NaN."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:813
-#, fuzzy
 msgid ""
 "The rank histogram can only be processed in the 'all scores' evaluation "
 "method."
 msgstr ""
 "L'histogramme des rangs ne peut être traité que dans la méthode d'évaluation "
-"\"toutes les notes\"."
+"'all scores'."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:837
-#, fuzzy
 msgid ""
 "Trying to access to an element outside of preprocessHours (lower limit) in "
 "the parameters object."
@@ -1216,7 +1093,6 @@ msgstr ""
 "inférieure) dans l'objet des paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:897
-#, fuzzy
 msgid ""
 "Trying to access to an element outside of preprocessHours (upper limit) in "
 "the parameters object."
@@ -1225,14 +1101,14 @@ msgstr ""
 "supérieure) dans l'objet des paramètres."
 
 #: src/app_optimizer/core/asParametersOptimization.cpp:720
-#, fuzzy, c-format
+#, c-format
 msgid "The %s preprocessing method is not handled in the optimizer."
 msgstr ""
 "La méthode de prétraitement %s n'est pas prise en compte par l'optimiseur."
 
 #: src/app_optimizer/core/asParametersOptimization.cpp:871
 #: src/app_optimizer/core/asParametersOptimization.cpp:995
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "asParametersOptimization::CheckRange is not ready to use on unregular grids "
 "(PredictorGridType = %s)"
@@ -1241,7 +1117,7 @@ msgstr ""
 "grilles non régulières (PredictorGridType = %s)"
 
 #: src/app_optimizer/core/asParametersOptimization.cpp:1101
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The sum of the locked weights of the analogy level number %d is higher than "
 "1 (%f). They were forced as unlocked."
@@ -1250,94 +1126,84 @@ msgstr ""
 "à 1 (%f). Ils ont été forcés à être déverrouillés."
 
 #: src/app_optimizer/core/asParametersOptimizationGAs.cpp:391
-#, fuzzy
 msgid "We should never reach that point..."
 msgstr "Nous ne devrions jamais en arriver là..."
 
 #: src/app_optimizer/core/asParametersScoring.cpp:57
-#, fuzzy
 msgid "Generating parameters file."
 msgstr "Génération d'un fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersScoring.cpp:232
-#, fuzzy
 msgid "Parameters file generated."
 msgstr "Fichier de paramètres généré."
 
 #: src/app_optimizer/core/asParametersScoring.cpp:247
-#, fuzzy
 msgid "The preprocess dataId must be unique with the preload option."
 msgstr ""
 "L'identifiant de données de prétraitement doit être unique avec l'option "
 "preload."
 
 #: src/app_optimizer/core/asParametersScoring.cpp:313
-#, fuzzy, c-format
+#, c-format
 msgid "The current score (%s) doesn't correspond to the previous one (%s)."
 msgstr "Le score actuel (%s) ne correspond pas au score précédent (%s)."
 
 #: src/app_optimizer/core/asParametersScoring.cpp:314
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Error: The current score (%s) doesn't correspond to the previous one (%s).\n"
 msgstr ""
 "Erreur : Le score actuel (%s) ne correspond pas au score précédent (%s).\n"
 
 #: src/app_optimizer/core/asProcessorScore.cpp:64
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The given analogs number for the score (%d) processing is superior to the "
 "analogs dates number (%d)."
 msgstr ""
-"Le numéro d'analogues donné pour le traitement du score (%d) est supérieur "
-"au numéro de dates d'analogues (%d)."
+"Le nombre d'analogues donné pour le traitement du score (%d) est supérieur "
+"au nombre de dates analogues (%d)."
 
 #: src/app_optimizer/core/asProcessorScore.cpp:110
-#, fuzzy
 msgid "The processing of multivariate complex scores is not implemented yet."
 msgstr ""
 "Le traitement des scores complexes multivariés n'est pas encore implémenté."
 
 #: src/app_optimizer/core/asResultsParametersArray.cpp:155
-#, fuzzy, c-format
+#, c-format
 msgid "Optimization processed %s\n"
 msgstr "Optimisation traitée %s\n"
 
 #: src/app_optimizer/core/asResultsScores.cpp:64
-#, fuzzy, c-format
+#, c-format
 msgid "Saving intermediate file: %s"
 msgstr "Enregistrement du fichier intermédiaire : %s"
 
 #: src/app_optimizer/core/asResultsScoresMap.cpp:75
-#, fuzzy
 msgid "asResultsScoresMap::Add is not ready to use on unregular grids"
 msgstr ""
 "asResultsScoresMap::Add n'est pas prêt à être utilisé sur des grilles non "
 "régulières"
 
 #: src/app_optimizer/core/asScore.cpp:194
-#, fuzzy
 msgid "The score was not correctly set (undefined)."
 msgstr "Le score n'a pas été correctement défini (indéfini)."
 
 #: src/app_optimizer/core/asScore.cpp:295
-#, fuzzy, c-format
+#, c-format
 msgid "The score was not correctly set (cannot use %s)."
 msgstr "Le score n'a pas été correctement défini (on ne peut pas utiliser %s)."
 
 #: src/app_optimizer/core/asScore.cpp:302
-#, fuzzy
 msgid "This asScore class has no AssessOnArrays method implemented !"
 msgstr "Cette classe asScore n'a pas de méthode AssessOnArrays implémentée !"
 
 #: src/app_optimizer/core/asScore.cpp:310
-#, fuzzy
 msgid "The observed value is a NaN for the score calculation."
 msgstr "La valeur observée est un NaN pour le calcul du score."
 
 #: src/app_optimizer/core/asScore.cpp:320
 #: src/app_optimizer/core/asScore.cpp:323
-#, fuzzy
 msgid ""
 "The required elements number is above the vector length in the score "
 "calculation."
@@ -1346,14 +1212,12 @@ msgstr ""
 "calcul du score."
 
 #: src/app_optimizer/core/asScore.cpp:344
-#, fuzzy
 msgid "Not enough data to perform the score calculation."
 msgstr "Pas assez de données pour effectuer le calcul du score."
 
 #: src/app_optimizer/core/asScoreBS.cpp:32
-#, fuzzy
 msgid "Brier score"
-msgstr "Score du Brier"
+msgstr "Brier score"
 
 #: src/app_optimizer/core/asScoreBS.cpp:44
 #: src/app_optimizer/core/asScoreBSS.cpp:46
@@ -1370,139 +1234,110 @@ msgstr "Score du Brier"
 #: src/app_optimizer/core/asScoreMSE.cpp:44
 #: src/app_optimizer/core/asScoreRankHistogram.cpp:45
 #: src/app_optimizer/core/asScoreSEEPS.cpp:53
-#, fuzzy
 msgid "Problems in a vector length."
 msgstr "Problèmes liés à la longueur d'un vecteur."
 
 #: src/app_optimizer/core/asScoreBS.cpp:54
-#, fuzzy
 msgid "Only NaNs as inputs in the Brier score processing function."
 msgstr ""
-"Uniquement des NaN en entrée de la fonction de traitement du score de Brier."
+"Uniquement des NaNs en entrée de la fonction de traitement du score de Brier."
 
 #: src/app_optimizer/core/asScoreBS.cpp:57
-#, fuzzy
 msgid "Not enough elements to process the Brier score."
-msgstr "Pas assez d'éléments pour traiter le score du Brier."
+msgstr "Pas assez d'éléments pour traiter le score de Brier."
 
 #: src/app_optimizer/core/asScoreBS.cpp:76
-#, fuzzy
 msgid "Error processing BS score."
 msgstr "Erreur de traitement du score BS."
 
 #: src/app_optimizer/core/asScoreBSS.cpp:34
-#, fuzzy
 msgid "BS Skill Score"
 msgstr "Score de compétence BS"
 
 #: src/app_optimizer/core/asScoreBSS.cpp:86
 #: src/app_optimizer/core/asScoreCRPSS.cpp:87
-#, fuzzy, c-format
+#, c-format
 msgid "Score of the climatology: %g."
 msgstr "Score de la climatologie : %g."
 
 #: src/app_optimizer/core/asScoreContingencyTable.cpp:32
-#, fuzzy
 msgid "Contingency table"
 msgstr "Tableau de contingence"
 
 #: src/app_optimizer/core/asScoreContingencyTable.cpp:54
-#, fuzzy
 msgid "Only NaNs as inputs in the Contingency table processing function."
 msgstr ""
-"Uniquement des NaN comme entrées dans la fonction de traitement des tableaux "
-"de contingence."
+"Uniquement des NaNs comme entrées dans la fonction de traitement des "
+"tableaux de contingence."
 
 #: src/app_optimizer/core/asScoreContingencyTable.cpp:57
-#, fuzzy
 msgid "Not enough elements to process the Contingency table."
 msgstr ""
 "Il n'y a pas assez d'éléments pour traiter le tableau des contingences."
 
 #: src/app_optimizer/core/asScoreCRPSaccurAR.cpp:35
 #: src/app_optimizer/core/asScoreCRPSsharpAR.cpp:34
-#, fuzzy
 msgid "CRPS Accuracy Approx Rectangle"
-msgstr "Précision du CRPS Rectangle approximatif"
+msgstr "CRPS Accuracy Approx Rectangle"
 
 #: src/app_optimizer/core/asScoreCRPSaccurAR.cpp:36
 #: src/app_optimizer/core/asScoreCRPSsharpAR.cpp:35
-#, fuzzy
 msgid ""
 "Continuous Ranked Probability Score Accuracy approximation with the "
 "rectangle method"
 msgstr ""
-"Score de probabilité classée continue Approximation de la précision avec la "
-"méthode des rectangles"
+"Continuous Ranked Probability Score Accuracy avec la méthode des rectangles"
 
 #: src/app_optimizer/core/asScoreCRPSaccurEP.cpp:35
-#, fuzzy
 msgid "CRPS Accuracy Exact Primitive"
-msgstr "CRPS Précision Exact Primitif"
+msgstr "CRPS Accuracy Exact Primitive"
 
 #: src/app_optimizer/core/asScoreCRPSaccurEP.cpp:36
-#, fuzzy
 msgid "Continuous Ranked Probability Score Accuracy exact solution"
-msgstr "Continu Classé Probabilité Score Précision solution exacte"
+msgstr "Continuous Ranked Probability Score Accuracy solution exacte"
 
 #: src/app_optimizer/core/asScoreCRPSAR.cpp:33
-#, fuzzy
 msgid "CRPS Approx Rectangle"
 msgstr "CRPS Approx Rectangle"
 
 #: src/app_optimizer/core/asScoreCRPSAR.cpp:34
-#, fuzzy
 msgid ""
 "Continuous Ranked Probability Score approximation with the rectangle method"
-msgstr ""
-"Approximation du score de probabilité classée continue avec la méthode des "
-"rectangles"
+msgstr "Continuous Ranked Probability Score avec la méthode des rectangles"
 
 #: src/app_optimizer/core/asScoreCRPSAR.cpp:56
 #: src/app_optimizer/core/asScoreMAE.cpp:53
 #: src/app_optimizer/core/asScoreSEEPS.cpp:63
-#, fuzzy
 msgid "Only NaNs as inputs in the CRPS processing function."
-msgstr ""
-"Uniquement des NaN comme entrées dans la fonction de traitement du CRPS."
+msgstr "Uniquement des NaNs comme entrées dans la fonction du CRPS."
 
 #: src/app_optimizer/core/asScoreCRPSAR.cpp:59
-#, fuzzy
 msgid "Not enough elements to process the CRPS."
-msgstr "Il n'y a pas assez d'éléments pour traiter le CRPS."
+msgstr "Il n'y a pas assez d'éléments pour calculer le CRPS."
 
 #: src/app_optimizer/core/asScoreCRPSEP.cpp:32
-#, fuzzy
 msgid "CRPS Exact Primitive"
-msgstr "CRPS Exact Primitif"
+msgstr "CRPS Exact Primitive"
 
 #: src/app_optimizer/core/asScoreCRPSEP.cpp:32
-#, fuzzy
 msgid "Continuous Ranked Probability Score exact solution"
-msgstr "Continu Probabilité classée Score solution exacte"
+msgstr "Continuous Ranked Probability Score solution exacte"
 
 #: src/app_optimizer/core/asScoreCRPSEP.cpp:57
-#, fuzzy
 msgid "Only NaNs as inputs in the CRPS processing function"
-msgstr ""
-"Uniquement des NaN comme entrées dans la fonction de traitement du CRPS"
+msgstr "Uniquement des NaNs comme entrées dans la fonction du CRPS"
 
 #: src/app_optimizer/core/asScoreCRPSHersbachDecomp.cpp:32
-#, fuzzy
 msgid "CRPS Hersbach decomposition"
 msgstr "CRPS Décomposition de Hersbach"
 
 #: src/app_optimizer/core/asScoreCRPSHersbachDecomp.cpp:33
-#, fuzzy
 msgid ""
 "Hersbach decomposition of the Continuous Ranked Probability Score (Hersbach, "
 "2000)"
-msgstr ""
-"Décomposition de Hersbach de la note de probabilité classée continue "
-"(Hersbach, 2000)"
+msgstr "Décomposition de Hersbach du CRPS (Hersbach, 2000)"
 
 #: src/app_optimizer/core/asScoreCRPSHersbachDecomp.cpp:39
-#, fuzzy
 msgid ""
 "The Hersbach decomposition of the CRPS cannot provide a single score value !"
 msgstr ""
@@ -1510,181 +1345,146 @@ msgstr ""
 "unique !"
 
 #: src/app_optimizer/core/asScoreCRPSHersbachDecomp.cpp:52
-#, fuzzy
 msgid ""
 "NaNs were found in the CRPS Hersbach decomposition processing function. "
 "Cannot continue."
 msgstr ""
-"Des NaN ont été trouvés dans la fonction de traitement de la décomposition "
-"de Hersbach du CRPS. Impossible de continuer."
+"Des NaNs ont été trouvés dans la décomposition de Hersbach du CRPS. "
+"Impossible de continuer."
 
 #: src/app_optimizer/core/asScoreCRPSS.cpp:34
-#, fuzzy
 msgid "CRPS Skill Score"
-msgstr "Score de compétence CRPS"
+msgstr "Score de compétence du CRPS"
 
 #: src/app_optimizer/core/asScoreCRPSS.cpp:35
-#, fuzzy
 msgid ""
 "Continuous Ranked Probability Score Skill Score based on the approximation "
 "with the rectangle method"
-msgstr ""
-"Score de probabilité classé continu Score de compétence basé sur "
-"l'approximation avec la méthode des rectangles"
+msgstr "CRPSS basé sur l'approximation avec la méthode des rectangles"
 
 #: src/app_optimizer/core/asScoreCRPSsharpEP.cpp:34
-#, fuzzy
 msgid "CRPS Sharpness Exact Primitive"
 msgstr "CRPS Sharpness Exact Primitive"
 
 #: src/app_optimizer/core/asScoreCRPSsharpEP.cpp:35
-#, fuzzy
 msgid "Continuous Ranked Probability Score Sharpness exact solution"
-msgstr "Continu Classé Probabilité Score Netteté solution exacte"
+msgstr "Continuous Ranked Probability Score Sharpness solution exacte"
 
 #: src/app_optimizer/core/asScoreDF0.cpp:32
-#, fuzzy
 msgid "Difference of F(0)"
 msgstr "Différence de F(0)"
 
 #: src/app_optimizer/core/asScoreDF0.cpp:32
-#, fuzzy
 msgid "Absolute difference of the frequency of null precipitations."
 msgstr "Différence absolue de la fréquence des précipitations nulles."
 
 #: src/app_optimizer/core/asScoreDF0.cpp:55
-#, fuzzy
 msgid "Only NaNs as inputs in the DF0 processing function."
-msgstr "Uniquement des NaN comme entrées dans la fonction de traitement DF0."
+msgstr "Uniquement des NaNs comme entrées dans la fonction du DF0."
 
 #: src/app_optimizer/core/asScoreDF0.cpp:58
-#, fuzzy
 msgid "Not enough elements to process the DF0."
 msgstr "Pas assez d'éléments pour traiter le DF0."
 
 #: src/app_optimizer/core/asScoreDF0.cpp:86
-#, fuzzy
 msgid "Error processing DF0 score."
 msgstr "Erreur de traitement du score DF0."
 
 #: src/app_optimizer/core/asScoreMAE.cpp:32
-#, fuzzy
 msgid "Mean absolute error"
 msgstr "Erreur absolue moyenne"
 
 #: src/app_optimizer/core/asScoreMAE.cpp:56
-#, fuzzy
 msgid "Not enough elements to process the MAE."
-msgstr "Il n'y a pas assez d'éléments pour traiter le MAE."
+msgstr "Il n'y a pas assez d'éléments pour calculer le MAE."
 
 #: src/app_optimizer/core/asScoreMSE.cpp:33
-#, fuzzy
 msgid "Mean square error"
 msgstr "Erreur quadratique moyenne"
 
 #: src/app_optimizer/core/asScoreMSE.cpp:54
-#, fuzzy
 msgid "Only NaNs as inputs in the MSE processing function."
-msgstr ""
-"Uniquement des NaN comme entrées dans la fonction de traitement de l'EQM."
+msgstr "Uniquement des NaNs comme entrées dans la fonction du MSE."
 
 #: src/app_optimizer/core/asScoreMSE.cpp:57
-#, fuzzy
 msgid "Not enough elements to process the MSE."
-msgstr "Pas assez d'éléments pour traiter l'EMS."
+msgstr "Pas assez d'éléments pour calculer le MSE."
 
 #: src/app_optimizer/core/asScoreRankHistogram.cpp:31
-#, fuzzy
 msgid "Rank Histogram"
 msgstr "Histogramme des rangs"
 
 #: src/app_optimizer/core/asScoreRankHistogram.cpp:31
-#, fuzzy
 msgid "Verification Rank Histogram (Talagrand Diagram)"
-msgstr "Histogramme des rangs de vérification (diagramme de Talagrand)"
+msgstr "Verification Rank Histogram (diagramme de Talagrand)"
 
 #: src/app_optimizer/core/asScoreRankHistogram.cpp:54
-#, fuzzy
 msgid ""
 "NaNs were found in the Rank Histogram processing function. Cannot continue."
 msgstr ""
-"Des NaN ont été trouvés dans la fonction de traitement de l'histogramme des "
-"rangs. Impossible de continuer."
+"Des NaN ont été trouvés dans la fonction de l'histogramme des rangs. "
+"Impossible de continuer."
 
 #: src/app_optimizer/core/asScoreSEEPS.cpp:32
 #: src/app_optimizer/core/asScoreSEEPS.cpp:33
-#, fuzzy
 msgid "Stable equitable error in probability space"
-msgstr "Erreur équitable stable dans un espace de probabilité"
+msgstr "Erreur équitable stable dans l'espace de probabilité"
 
 #: src/app_optimizer/core/asScoreSEEPS.cpp:66
-#, fuzzy
 msgid "Not enough elements to process SEEPS."
-msgstr "Pas assez d'éléments pour traiter SEEPS."
+msgstr "Pas assez d'éléments pour calculer SEEPS."
 
 #: src/app_optimizer/core/asScoreSEEPS.cpp:135
-#, fuzzy
 msgid "Error processing the SEEPS climatology score."
 msgstr "Erreur dans le traitement du score climatologique de SEEPS."
 
 #: src/app_optimizer/core/asThreadGAs.cpp:71
 #: src/app_optimizer/core/asThreadMC.cpp:61
-#, fuzzy
 msgid "Failed processing the analogs dates"
 msgstr "Échec du traitement des dates analogues"
 
 #: src/app_optimizer/core/asThreadGAs.cpp:77
 #: src/app_optimizer/core/asThreadMC.cpp:67
-#, fuzzy
 msgid "Failed processing the analogs sub dates"
-msgstr "Échec du traitement des sous-dates analogiques"
+msgstr "Échec du traitement des sous-échantillon des analogues"
 
 #: src/app_optimizer/core/asThreadGAs.cpp:88
-#, fuzzy
 msgid "The asResultsDates object is empty in asThreadGAs."
 msgstr "L'objet asResultsDates est vide dans asThreadGAs."
 
 #: src/app_optimizer/core/asThreadGAs.cpp:93
 #: src/app_optimizer/core/asThreadMC.cpp:78
-#, fuzzy
 msgid "Failed processing the analogs values"
-msgstr "Échec du traitement des valeurs analogiques"
+msgstr "Échec du traitement des valeurs analogues"
 
 #: src/app_optimizer/core/asThreadGAs.cpp:97
 #: src/app_optimizer/core/asThreadMC.cpp:82
-#, fuzzy
 msgid "Failed processing the scores"
-msgstr "Échec du traitement des notes"
+msgstr "Échec du traitement des scores"
 
 #: src/app_optimizer/core/asThreadGAs.cpp:101
 #: src/app_optimizer/core/asThreadMC.cpp:86
-#, fuzzy
 msgid "Failed processing the total score"
-msgstr "Échec du traitement de la note totale"
+msgstr "Échec du traitement du score total"
 
 #: src/app_optimizer/core/asThreadMC.cpp:51
-#, fuzzy
 msgid "Process score of the climatology"
-msgstr "Score de processus de la climatologie"
+msgstr "Calcul du score de la climatologie"
 
 #: src/app_optimizer/core/asTotalScore.cpp:66
-#, fuzzy
 msgid "The total score period was not correctly set."
-msgstr "La période de score total n'a pas été correctement définie."
+msgstr "La période pour le score total n'a pas été correctement définie."
 
 #: src/app_optimizer/core/asTotalScore.cpp:166
-#, fuzzy
 msgid "The total score was not correctly set."
 msgstr "Le score total n'a pas été correctement défini."
 
 #: src/app_optimizer/core/asTotalScore.cpp:175
-#, fuzzy
 msgid "This asTotalScore class has no AssessOnArray method implemented !"
 msgstr ""
 "Cette classe asTotalScore n'a pas de méthode AssessOnArray implémentée !"
 
 #: src/app_optimizer/core/asTotalScore.cpp:180
-#, fuzzy
 msgid ""
 "This asTotalScore class has no Assess method implemented with a 2D array as "
 "argument !"
@@ -1693,176 +1493,154 @@ msgstr ""
 "tableau 2D comme argument !"
 
 #: src/app_optimizer/core/asTotalScoreB.cpp:53
-#, fuzzy, c-format
+#, c-format
 msgid "The B score (%f) is not an authorized value."
-msgstr "La note B (%f) n'est pas une valeur autorisée."
+msgstr "Le score B (%f) n'est pas une valeur autorisée."
 
 #: src/app_optimizer/core/asTotalScoreB.cpp:61
-#, fuzzy
 msgid "Period not yet implemented in asTotalScoreB."
-msgstr "Période non encore implémentée dans asTotalScoreB."
+msgstr "Période non implémentée dans asTotalScoreB."
 
 #: src/app_optimizer/core/asTotalScoreF.cpp:53
-#, fuzzy, c-format
+#, c-format
 msgid "The F score (%f) is not an authorized value."
 msgstr "Le score F (%f) n'est pas une valeur autorisée."
 
 #: src/app_optimizer/core/asTotalScoreF.cpp:61
-#, fuzzy
 msgid "Period not yet implemented in asTotalScoreF."
-msgstr "Période non encore implémentée dans asTotalScoreF."
+msgstr "Période non implémentée dans asTotalScoreF."
 
 #: src/app_optimizer/core/asTotalScoreFAR.cpp:53
-#, fuzzy, c-format
+#, c-format
 msgid "The FAR score (%f) is not an authorized value."
 msgstr "Le score FAR (%f) n'est pas une valeur autorisée."
 
 #: src/app_optimizer/core/asTotalScoreFAR.cpp:61
-#, fuzzy
 msgid "Period not yet implemented in asTotalScoreFAR."
-msgstr "Période non encore implémentée dans asTotalScoreFAR."
+msgstr "Période non implémentée dans asTotalScoreFAR."
 
 #: src/app_optimizer/core/asTotalScoreGSS.cpp:53
-#, fuzzy, c-format
+#, c-format
 msgid "The GSS score (%f) is not an authorized value."
-msgstr "Le score de l'ESG (%f) n'est pas une valeur autorisée."
+msgstr "Le score GSS (%f) n'est pas une valeur autorisée."
 
 #: src/app_optimizer/core/asTotalScoreGSS.cpp:61
-#, fuzzy
 msgid "Period not yet implemented in asTotalScoreGSS."
-msgstr "Période non encore implémentée dans asTotalScoreGSS."
+msgstr "Période non implémentée dans asTotalScoreGSS."
 
 #: src/app_optimizer/core/asTotalScoreH.cpp:53
-#, fuzzy, c-format
+#, c-format
 msgid "The H score (%f) is not an authorized value."
 msgstr "Le score H (%f) n'est pas une valeur autorisée."
 
 #: src/app_optimizer/core/asTotalScoreH.cpp:61
-#, fuzzy
 msgid "Period not yet implemented in asTotalScoreH."
-msgstr "Période non encore implémentée dans asTotalScoreH."
+msgstr "Période non implémentée dans asTotalScoreH."
 
 #: src/app_optimizer/core/asTotalScoreHSS.cpp:53
-#, fuzzy, c-format
+#, c-format
 msgid "The HSS score (%f) is not an authorized value."
 msgstr "Le score HSS (%f) n'est pas une valeur autorisée."
 
 #: src/app_optimizer/core/asTotalScoreHSS.cpp:61
-#, fuzzy
 msgid "Period not yet implemented in asTotalScoreHSS."
-msgstr "Période non encore implémentée dans asTotalScoreHSS."
+msgstr "Période non implémentée dans asTotalScoreHSS."
 
 #: src/app_optimizer/core/asTotalScoreMean.cpp:71
-#, fuzzy
 msgid "Error processing the final mean score."
-msgstr "Traitement de l'erreur sur la note moyenne finale."
+msgstr "Traitement de l'erreur sur le score moyen finale."
 
 #: src/app_optimizer/core/asTotalScoreMean.cpp:87
-#, fuzzy
 msgid "Period not yet implemented in asTotalScoreMean."
-msgstr "Période non encore implémentée dans asTotalScoreMean."
+msgstr "Période non implémentée dans asTotalScoreMean."
 
 #: src/app_optimizer/core/asTotalScoreMeanWithClim.cpp:55
-#, fuzzy
 msgid "You cannot process a score using the climatology on a binned period."
 msgstr ""
-"Il n'est pas possible de traiter un score en utilisant la climatologie sur "
+"Il n'est pas possible de calculer un score en utilisant la climatologie sur "
 "une période binnée."
 
 #: src/app_optimizer/core/asTotalScoreMeanWithClim.cpp:59
-#, fuzzy
 msgid "Period not yet implemented in asTotalScoreMeanWithClim."
-msgstr "Période non encore implémentée dans asTotalScoreMeanWithClim."
+msgstr "Période non implémentée dans asTotalScoreMeanWithClim."
 
 #: src/app_optimizer/core/asTotalScoreMSE.cpp:70
-#, fuzzy
 msgid "Error processing the final MSE score."
 msgstr "Traitement de l'erreur dans le score final de l'EQM."
 
 #: src/app_optimizer/core/asTotalScoreMSE.cpp:86
-#, fuzzy
 msgid "Period not yet implemented in asTotalScoreMSE."
-msgstr "Période non encore implémentée dans asTotalScoreMSE."
+msgstr "Période non implémentée dans asTotalScoreMSE."
 
 #: src/app_optimizer/core/asTotalScorePC.cpp:53
-#, fuzzy, c-format
+#, c-format
 msgid "The PC score (%f) is not an authorized value."
 msgstr "Le score PC (%f) n'est pas une valeur autorisée."
 
 #: src/app_optimizer/core/asTotalScorePC.cpp:61
-#, fuzzy
 msgid "Period not yet implemented in asTotalScorePC."
-msgstr "Période non encore implémentée dans asTotalScorePC."
+msgstr "Période non implémentée dans asTotalScorePC."
 
 #: src/app_optimizer/core/asTotalScorePSS.cpp:53
-#, fuzzy, c-format
+#, c-format
 msgid "The PSS score (%f) is not an authorized value."
 msgstr "Le score PSS (%f) n'est pas une valeur autorisée."
 
 #: src/app_optimizer/core/asTotalScorePSS.cpp:61
-#, fuzzy
 msgid "Period not yet implemented in asTotalScorePSS."
-msgstr "Période non encore implémentée dans asTotalScorePSS."
+msgstr "Période non implémentée dans asTotalScorePSS."
 
 #: src/app_optimizer/core/asTotalScoreRankHistogram.cpp:36
-#, fuzzy
 msgid "The rank histogram cannot provide a single score value !"
 msgstr ""
 "L'histogramme des rangs ne peut pas fournir une seule valeur de score !"
 
 #: src/app_optimizer/core/asTotalScoreRankHistogram.cpp:62
-#, fuzzy
 msgid "Period not yet implemented in asTotalScoreRankHistogram."
-msgstr "Période non encore implémentée dans asTotalScoreRankHistogram."
+msgstr "Période non implémentée dans asTotalScoreRankHistogram."
 
 #: src/app_optimizer/core/asTotalScoreRankHistogram.cpp:70
-#, fuzzy
 msgid "Error processing the final rank histogram."
 msgstr "Erreur dans le traitement de l'histogramme de rang final."
 
 #: src/app_optimizer/core/asTotalScoreRankHistogramReliability.cpp:35
-#, fuzzy
 msgid ""
 "Calling asTotalScoreRankHistogramReliability::Assess means it doesn't do "
 "bootstraping."
 msgstr ""
-"L'appel de asTotalScoreRankHistogramReliability::Assess signifie qu'il ne "
-"fait pas de bootstrap."
+"L'appel de asTotalScoreRankHistogramReliability::Assess signifie qu'il n'y a "
+"pas de bootstrap."
 
 #: src/app_optimizer/core/asTotalScoreRankHistogramReliability.cpp:54
-#, fuzzy
 msgid "Period not yet implemented in asTotalScoreRankHistogramReliability."
-msgstr ""
-"Période non encore implémentée dans asTotalScoreRankHistogramReliability."
+msgstr "Période non implémentée dans asTotalScoreRankHistogramReliability."
 
 #: src/app_optimizer/core/asTotalScoreTS.cpp:53
-#, fuzzy, c-format
+#, c-format
 msgid "The TS score (%f) is not an authorized value."
-msgstr "La note TS (%f) n'est pas une valeur autorisée."
+msgstr "Le score TS (%f) n'est pas une valeur autorisée."
 
 #: src/app_optimizer/core/asTotalScoreTS.cpp:61
-#, fuzzy
 msgid "Period not yet implemented in asTotalScoreTS."
-msgstr "Période non encore implémentée dans asTotalScoreTS."
+msgstr "Période non implémentée dans asTotalScoreTS."
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:204
-#, fuzzy
 msgid "Program already running, aborting."
 msgstr "Programme déjà en cours d'exécution, interruption."
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:292
-#, fuzzy, c-format
+#, c-format
 msgid "An existing directory was found for the run number %d"
-msgstr "Un répertoire existant a été trouvé pour le numéro d'exécution %d"
+msgstr "Un répertoire existant a été trouvé pour le numéro de run %d"
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:334
-#, fuzzy, c-format
+#, c-format
 msgid "The number of groups (%d) differ from the previous config file (%d)."
 msgstr ""
 "Le nombre de groupes (%d) diffère du fichier de configuration précédent (%d)."
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:361
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The option %s (under Optimizer/%s) differ from the previous config file (%s !"
 "= %s)."
@@ -1871,86 +1649,75 @@ msgstr ""
 "précédent (%s !=%s)."
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:481
-#, fuzzy
 msgid "The value provided for 'log-level' could not be interpreted.\n"
 msgstr "La valeur fournie pour \"log-level\" n'a pas pu être interprétée.\n"
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:514
-#, fuzzy, c-format
+#, c-format
 msgid "The given calibration file (%s) couldn't be found."
-msgstr "Le fichier d'étalonnage donné (%s) n'a pas été trouvé."
+msgstr "Le fichier de calage donné (%s) n'a pas été trouvé."
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:526
-#, fuzzy, c-format
+#, c-format
 msgid "The given predictand DB (%s) couldn't be found."
-msgstr "Le prédicat DB (%s) n'a pas été trouvé."
+msgstr "La base de données des prédictands (%s) n'a pas été trouvée."
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:538
-#, fuzzy, c-format
+#, c-format
 msgid "The given predictors directory (%s) couldn't be found."
-msgstr "Le répertoire de prédicteurs donné (%s) n'a pas pu être trouvé."
+msgstr "Le répertoire des prédicteurs donné (%s) n'a pas pu être trouvé."
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:617
-#, fuzzy
 msgid "The value provided for 'ga-config' could not be interpreted.\n"
 msgstr "La valeur fournie pour 'ga-config' n'a pas pu être interprétée.\n"
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:657
-#, fuzzy
 msgid "The value provided for 'ga-config' does not match any option.\n"
 msgstr "La valeur fournie pour 'ga-config' ne correspond à aucune option.\n"
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:813
-#, fuzzy
 msgid "Initialization for command-line interface failed."
 msgstr "L'initialisation de l'interface de ligne de commande a échoué."
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:817
-#, fuzzy, c-format
+#, c-format
 msgid "Given calibration method: %s"
-msgstr "Méthode d'étalonnage donnée : %s"
+msgstr "Méthode de calage donnée : %s"
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:842
-#, fuzzy
 msgid "The parameters file is not given."
 msgstr "Le fichier de paramètres n'est pas fourni."
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:847
-#, fuzzy
 msgid "The predictand DB is not given."
-msgstr "Le prédicat DB n'est pas donné."
+msgstr "La base de données des prédictands n'a pas été fournie."
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:852
-#, fuzzy
 msgid "The predictors directory is not given."
-msgstr "Le répertoire des prédicteurs n'est pas indiqué."
+msgstr "Le répertoire des prédicteurs n'est pas fourni."
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:925
-#, fuzzy, c-format
+#, c-format
 msgid "Bad allocation caught: %s"
 msgstr "Mauvaise allocation détectée : %s"
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:929
-#, fuzzy, c-format
+#, c-format
 msgid "Exception caught: %s"
 msgstr "Une exception a été détectée : %s"
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:934
-#, fuzzy
 msgid "Calibration over.\n"
-msgstr "L'étalonnage est terminé.\n"
+msgstr "Le calage est terminé.\n"
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:968
-#, fuzzy
 msgid "An exception occured in the main loop"
 msgstr "Une exception s'est produite dans la boucle principale"
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:973
-#, fuzzy
 msgid "An fatal exception occured"
 msgstr "Une exception fatale s'est produite"
 
 #: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:977
-#, fuzzy
 msgid "An unhandled exception occured"
 msgstr "Une exception non gérée s'est produite"

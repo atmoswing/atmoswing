@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-06 20:07+0200\n"
-"PO-Revision-Date: 2023-04-06 20:30+0200\n"
+"PO-Revision-Date: 2023-04-09 15:27+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -19,156 +19,129 @@ msgstr ""
 "X-Generator: Poedit 3.2.2\n"
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:50
-#, fuzzy
 msgid "Run optimizer"
 msgstr "Lancer l'optimiseur"
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:51
-#, fuzzy
 msgid "Run optimizer now"
 msgstr "Lancer l'optimiseur maintenant"
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:52
-#, fuzzy
 msgid "Cancel optimization"
 msgstr "Annuler l'optimisation"
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:53
-#, fuzzy
 msgid "Cancel current optimization"
 msgstr "Annuler l'optimisation en cours"
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:55
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:600
-#, fuzzy
 msgid "Preferences"
 msgstr "Préférences"
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:394
-#, fuzzy
 msgid "Wrong method selection."
 msgstr "Mauvaise sélection de la méthode."
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:443
-#, fuzzy
 msgid "Chosen method not defined yet."
 msgstr "La méthode choisie n'est pas encore définie."
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:454
-#, fuzzy, c-format
+#, c-format
 msgid "Bad allocation caught: %s"
 msgstr "Mauvaise allocation détectée : %s"
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:455
-#, fuzzy
 msgid "Failed to process the calibration."
-msgstr "Échec du traitement de l'étalonnage."
+msgstr "Échec du calage."
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:458
-#, fuzzy, c-format
+#, c-format
 msgid "Exception caught: %s"
 msgstr "Une exception a été détectée : %s"
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:459
-#, fuzzy
 msgid "Failed to process the optimization."
 msgstr "Le traitement de l'optimisation a échoué."
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:464
-#, fuzzy
 msgid "Optimizer over."
-msgstr "Optimizer over."
+msgstr "L'optimization est terminée."
 
 #: src/app_optimizer/gui/AtmoswingMainOptimizer.cpp:42
-#, fuzzy, c-format
+#, c-format
 msgid "Welcome to AtmoSwing %s."
-msgstr "Bienvenue sur AtmoSwing %s."
+msgstr "Bienvenue dans AtmoSwing %s."
 
 #: src/app_optimizer/gui/AtmoswingMainOptimizer.cpp:53
-#, fuzzy
 msgid "AtmoSwing log window"
-msgstr "Fenêtre d'enregistrement AtmoSwing"
+msgstr "Fenêtre du journal AtmoSwing"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:38
-#, fuzzy
 msgid "Select the calibration method"
-msgstr "Sélectionner la méthode d'étalonnage"
+msgstr "Sélectionner la méthode de calage"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
-#, fuzzy
 msgid "Single assessment"
 msgstr "Évaluation unique"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:109
-#, fuzzy
 msgid "Classic calibration"
-msgstr "Calibrage classique"
+msgstr "Calibration classique"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
-#, fuzzy
 msgid "Classic+ calibration"
-msgstr "Étalonnage classique+"
+msgstr "Calibration classique+"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
-#, fuzzy
 msgid "Variables exploration Classic+"
-msgstr "Exploration des variables Classic+"
+msgstr "Exploration des variables Classique+"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:156
-#, fuzzy
 msgid "Monte-Carlo"
 msgstr "Monte-Carlo"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
-#, fuzzy
 msgid "Genetic algorithms"
 msgstr "Algorithmes génétiques"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
-#, fuzzy
 msgid "Evaluate all scores"
-msgstr "Évaluer toutes les notes"
+msgstr "Évaluer touts les scores"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
-#, fuzzy
 msgid "Only predictand values"
-msgstr "Seules les valeurs des prédicats"
+msgstr "Uniquement les valeurs du prédictand"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
-#, fuzzy
 msgid "Only analog dates (and criteria)"
-msgstr "Uniquement les dates analogiques (et les critères)"
+msgstr "Uniquement les dates analogues (et les critères)"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:48
-#, fuzzy
 msgid "Select the parameters file for the calibration"
-msgstr "Sélectionner le fichier de paramètres pour l'étalonnage"
+msgstr "Sélectionner le fichier de paramètres pour le calage"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:52
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:59
-#, fuzzy
 msgid "Select a file"
 msgstr "Séléctionner un fichier"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:52
-#, fuzzy
 msgid "*.xml"
 msgstr "*.xml"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:55
-#, fuzzy
 msgid "Select the predictand DB file"
-msgstr "Sélectionner le fichier DB predictand"
+msgstr "Sélectionner le fichier BD predictand"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:59
-#, fuzzy
 msgid "*.nc"
 msgstr "*.nc"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:62
-#, fuzzy
 msgid "Select the predictors directory"
 msgstr "Sélectionner le répertoire des prédicteurs"
 
@@ -177,620 +150,498 @@ msgstr "Sélectionner le répertoire des prédicteurs"
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:736
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:743
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:842
-#, fuzzy
 msgid "Select a folder"
 msgstr "Sélectionner un dossier"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:69
-#, fuzzy
 msgid "Directory to save calibration outputs"
-msgstr "Répertoire d'enregistrement des résultats de l'étalonnage"
+msgstr "Répertoire d'enregistrement des résultats du calage"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:79
-#, fuzzy
 msgid "Calibration state: "
-msgstr "État d'étalonnage :"
+msgstr "État du calage : "
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:85
-#, fuzzy
 msgid "Not running."
-msgstr "Pas de course."
+msgstr "Pas de calculs en cours."
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:98
-#, fuzzy
 msgid "Controls"
 msgstr "Contrôles"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:116
-#, fuzzy
 msgid "Multiple of the steps in lon for pertinence map"
-msgstr "Plusieurs des étapes de la carte lon pour la pertinence"
+msgstr "Multiple des pas en longitudes de la carte de pertinence"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:123
-#, fuzzy
 msgid "Multiple of the steps in lat for pertinence map"
-msgstr "Plusieurs des étapes de lat pour la carte de pertinence"
+msgstr "Multiple des pas en latitudes de la carte de pertinence"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:130
-#, fuzzy
 msgid "Iterations in final resizing attempts"
 msgstr "Itérations dans les tentatives finales de redimensionnement"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:137
-#, fuzzy
 msgid "Proceed sequentially (standard)"
 msgstr "Procéder de manière séquentielle (standard)"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:144
-#, fuzzy
 msgid "Resize the spatial windows separately"
 msgstr "Redimensionner les fenêtres spatiales séparément"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:158
-#, fuzzy
 msgid "Number of random param. sets"
 msgstr "Nombre de jeux de paramètres aléatoires"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:169
-#, fuzzy
 msgid "Variables exploration"
 msgstr "Exploration des variables"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:171
-#, fuzzy
 msgid "Step to explore (0-based)"
-msgstr "Étape à explorer (basée sur 0)"
+msgstr "Étape à explorer (base 0)"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:185
-#, fuzzy
 msgid "Calibration"
-msgstr "Étalonnage"
+msgstr "Calage"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:194
-#, fuzzy
 msgid "Operators"
 msgstr "Opérateurs"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:201
-#, fuzzy
 msgid "Natural selection"
-msgstr "La sélection naturelle"
+msgstr "Sélection naturelle"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:205
-#, fuzzy
 msgid "Ratio elitism"
 msgstr "Ratio d'élitisme"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:205
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:215
-#, fuzzy
 msgid "Tournament"
 msgstr "Tournois"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:211
-#, fuzzy
 msgid "Couples selection"
 msgstr "Sélection des couples"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:215
-#, fuzzy
 msgid "Rank pairing"
-msgstr "Appariement des rangs"
+msgstr "Appariement par rangs"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:215
-#, fuzzy
 msgid "Randomly"
 msgstr "Aléatoirement"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:215
-#, fuzzy
 msgid "Roulette wheel on rank"
-msgstr "Roulette sur le rang"
+msgstr "Roulette sur la base des rangs"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:215
-#, fuzzy
 msgid "Roulette wheel on score"
-msgstr "Roulette sur le score"
+msgstr "Roulette sur la base des scores"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:221
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:418
-#, fuzzy
 msgid "Crossover"
-msgstr "Crossover"
+msgstr "Croisement"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
-#, fuzzy
 msgid "Single point crossover"
 msgstr "Croisement à point unique"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
-#, fuzzy
 msgid "Double points crossover"
-msgstr "Double point crossover"
+msgstr "Croisement à double point"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
-#, fuzzy
 msgid "Multiple points crossover"
-msgstr "Croisement de plusieurs points"
+msgstr "Croisement à plusieurs points"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
-#, fuzzy
 msgid "Uniform crossover"
 msgstr "Croisement uniforme"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
-#, fuzzy
 msgid "Limited blending"
 msgstr "Mélange limité"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
-#, fuzzy
 msgid "Linear crossover"
-msgstr "Filtre linéaire"
+msgstr "Croisement linéaire"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
-#, fuzzy
 msgid "Heuristic crossover"
 msgstr "Croisement heuristique"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
-#, fuzzy
 msgid "Binary-like crossover"
 msgstr "Croisement de type binaire"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
-#, fuzzy
 msgid "Linear interpolation"
 msgstr "Interpolation linéaire"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
-#, fuzzy
 msgid "Free interpolation"
 msgstr "Interpolation libre"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:231
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:555
-#, fuzzy
 msgid "Mutation"
 msgstr "Mutation"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
-#, fuzzy
 msgid "Uniform constant"
 msgstr "Constante uniforme"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
-#, fuzzy
 msgid "Uniform variable"
 msgstr "Variable uniforme"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
-#, fuzzy
 msgid "Normal constant"
 msgstr "Constante normale"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
-#, fuzzy
 msgid "Normal variable"
 msgstr "Variable normale"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
-#, fuzzy
 msgid "Non-uniform"
 msgstr "Non-uniforme"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
-#, fuzzy
 msgid "Self adaptation rate"
 msgstr "Taux d'auto-adaptation"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
-#, fuzzy
 msgid "Self adaptation radius"
 msgstr "Rayon d'auto-adaptation"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
-#, fuzzy
 msgid "Self adaptation rate chromosome"
-msgstr "Taux d'auto-adaptation chromosome"
+msgstr "Chromosome de taux d'auto-adaptation"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
-#, fuzzy
 msgid "Self adaptation radius chromosome"
-msgstr "Chromosome à rayon d'auto-adaptation"
+msgstr "Chromosome de rayons d'auto-adaptation"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
-#, fuzzy
 msgid "Multi scale"
-msgstr "Multi échelle"
+msgstr "Multi-échelle"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:248
-#, fuzzy
 msgid "General options"
 msgstr "Options générales"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:255
-#, fuzzy
 msgid "Runs number"
-msgstr "Nombre de tirages"
+msgstr "Nombre de runs"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:262
-#, fuzzy
 msgid "Population's size"
 msgstr "Taille de la population"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:269
-#, fuzzy
 msgid "Convergence after"
 msgstr "Convergence après"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:276
-#, fuzzy
 msgid "Ratio interm. gen."
 msgstr "Ratio interm. gen."
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:286
-#, fuzzy
 msgid "Allow elitism for the best"
-msgstr "Permettre l'élitisme pour les meilleurs"
+msgstr "Permettre l'élitisme pour le meilleur"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:308
-#, fuzzy
 msgid "Natural slct tournament: prob"
 msgstr "Tournoi de slct naturel : prob"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:323
-#, fuzzy
 msgid "Couples slct tournament: nb ind."
-msgstr "Tournoi de slct en couples : nb ind."
+msgstr "Tournoi de slct des couples : nb ind."
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:337
-#, fuzzy
 msgid "Natural and couple selections"
-msgstr "Sélections naturelles et de couples"
+msgstr "Sélections naturelle et des couples"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:347
-#, fuzzy
 msgid "Multiple crossover: nb points"
 msgstr "Croisement multiple : nb points"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:354
-#, fuzzy
 msgid "Blending crossover: nb points"
-msgstr "Croisement des mélanges : nb points"
+msgstr "Croisement par mélange : nb points"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:361
-#, fuzzy
 msgid "Blending crossover: share beta"
-msgstr "Mélange croisé : bêta de l'action"
+msgstr "Croisement par mélange : partage de bêta"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:368
-#, fuzzy
 msgid "Linear crossover: nb points"
 msgstr "Croisement linéaire : nb points"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:383
-#, fuzzy
 msgid "Heuristic crossover: nb points"
 msgstr "Croisement heuristique : nb points"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:390
-#, fuzzy
 msgid "Heuristic crossover: share beta"
-msgstr "Croisement heuristique : bêta des actions"
+msgstr "Croisement heuristique : partage de bêta"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:397
-#, fuzzy
 msgid "Binary-like crossover: nb points"
 msgstr "Croisement de type binaire : nb points"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:404
-#, fuzzy
 msgid "Binary-like crossover: share beta"
-msgstr "Croisement de type binaire : bêta de l'action"
+msgstr "Croisement de type binaire : partage de bêta"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:428
-#, fuzzy
 msgid "Uniform constant: probability"
 msgstr "Constante uniforme : probabilité"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:435
-#, fuzzy
 msgid "Normal constant: probability"
 msgstr "Constante normale : probabilité"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:442
-#, fuzzy
 msgid "Normal constant: std dev"
 msgstr "Constante normale : écart-type"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:449
-#, fuzzy
 msgid "Uniform variable: on # generations"
 msgstr "Variable uniforme : sur # générations"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:456
-#, fuzzy
 msgid "Uniform variable: starting probability"
 msgstr "Variable uniforme : probabilité de départ"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:463
-#, fuzzy
 msgid "Uniform variable: ending probability"
 msgstr "Variable uniforme : probabilité de fin"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:470
-#, fuzzy
 msgid "Multi-scale: probability"
 msgstr "Multi-échelle : probabilité"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:485
-#, fuzzy
 msgid "Normal variable: prob on # generations"
-msgstr "Variable normale : probabilité sur le nombre de générations"
+msgstr "Variable normale : probabilité sur # de générations"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:492
-#, fuzzy
 msgid "Normal variable: std dev on # generations"
-msgstr "Variable normale : écart-type sur le nombre de générations"
+msgstr "Variable normale : écart-type sur # de générations"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:499
-#, fuzzy
 msgid "Normal variable: starting probability"
 msgstr "Variable normale : probabilité de départ"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:506
-#, fuzzy
 msgid "Normal variable: ending probability"
 msgstr "Variable normale : probabilité de fin"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:513
-#, fuzzy
 msgid "Normal variable: starting std dev"
 msgstr "Variable normale : écart-type de départ"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:520
-#, fuzzy
 msgid "Normal variable: ending std dev"
-msgstr "Variable normale : fin écart-type"
+msgstr "Variable normale : écart-type de fin"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:527
-#, fuzzy
 msgid "Non-uniform: probability"
 msgstr "Non-uniforme : probabilité"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:534
-#, fuzzy
 msgid "Non-uniform: on # generations"
 msgstr "Non-uniforme : sur # générations"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:541
-#, fuzzy
 msgid "Non-uniform: minimum rate"
 msgstr "Non-uniforme : taux minimum"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:566
-#, fuzzy
 msgid "Genetic algoritms"
 msgstr "Algorithmes génétiques"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:574
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:603
-#, fuzzy
 msgid "Options"
 msgstr "Options"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:581
-#, fuzzy
 msgid "Save as default"
 msgstr "Enregistrer par défaut"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:607
-#, fuzzy
 msgid "Build predictand DB"
-msgstr "Construire une base de données prédictive"
+msgstr "Construire la base de données des prédictands"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:610
-#, fuzzy
 msgid "Tools"
 msgstr "Outils"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:614
-#, fuzzy
 msgid "Show Log Window"
 msgstr "Afficher la fenêtre du journal des évènements"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:618
-#, fuzzy
 msgid "Log level"
 msgstr "Niveau de journal"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:620
-#, fuzzy
 msgid "Only errors"
 msgstr "Erreurs seulement"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:624
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:698
-#, fuzzy
 msgid "Errors and warnings"
 msgstr "Erreurs et avertissements"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:628
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:701
-#, fuzzy
 msgid "Verbose"
 msgstr "Verbeux"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:633
-#, fuzzy
 msgid "Log"
 msgstr "Journal"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:637
-#, fuzzy
 msgid "About"
 msgstr "À propos"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:640
-#, fuzzy
 msgid "Help"
 msgstr "Aide"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:687
-#, fuzzy
 msgid "Logs"
 msgstr "Journaux"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:695
-#, fuzzy
 msgid "Errors only (recommanded)"
 msgstr "Erreurs uniquement (recommandé)"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:710
-#, fuzzy
 msgid "Display window"
 msgstr "Fenêtre d'affichage"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:714
-#, fuzzy
 msgid "Save to a file"
 msgstr "Enregistrer dans un fichier"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:730
-#, fuzzy
 msgid "Directories"
 msgstr "Répertoires"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:732
-#, fuzzy
 msgid "Directory containing archive predictors"
-msgstr "Répertoire contenant les prédicteurs d'archives"
+msgstr "Répertoire contenant les archives de prédicteurs"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:739
-#, fuzzy
 msgid "Default predictand DB directory"
-msgstr "Répertoire par défaut de la base de données predictand"
+msgstr "Répertoire contenant la base de données des prédictands"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:753
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:777
-#, fuzzy
 msgid "General"
 msgstr "Général"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:763
-#, fuzzy
 msgid "Silent (no progressbar, much faster)"
 msgstr "Silencieux (pas de barre de progression, beaucoup plus rapide)"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:763
-#, fuzzy
 msgid "Standard (recommanded)"
 msgstr "Standard (recommandé)"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:763
-#, fuzzy
 msgid "Verbose (not much used)"
 msgstr "Verbeux (peu utilisé)"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:765
-#, fuzzy
 msgid "GUI options"
 msgstr "Options de l'interface graphique"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:769
-#, fuzzy
 msgid "Let the software be responsive while processing (recommended)."
-msgstr "Laisser le logiciel réagir pendant le traitement (recommandé)."
+msgstr "Laisser le logiciel réactif pendant le traitement (recommandé)."
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:783
-#, fuzzy
 msgid "Multithreading"
 msgstr "Multithreading"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:785
-#, fuzzy
 msgid "Allow multithreading"
 msgstr "Permettre le multithreading"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:792
-#, fuzzy
 msgid "Max nb of threads"
-msgstr "Nb max de fils"
+msgstr "Nb max de threads"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:805
-#, fuzzy
 msgid "Threads priority"
-msgstr "Priorité aux fils"
+msgstr "Priorité des threads"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:818
-#, fuzzy
 msgid "Multithreaded (only if allowed hereabove)"
 msgstr "Multithreading (seulement si autorisé ci-dessus)"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:818
-#, fuzzy
 msgid "Standard (slower)"
 msgstr "Standard (plus lent)"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:820
-#, fuzzy
 msgid "Processing options"
 msgstr "Options de calculs"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:822
-#, fuzzy
 msgid "These options don't affect the results, only the processor efficiency."
 msgstr "Ces options n'affectent pas les résultats, mais seulement l'efficacité du processeur."
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:830
-#, fuzzy
 msgid "Processing"
-msgstr "En cours"
+msgstr "En cours de traitement"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:836
-#, fuzzy
 msgid "Working directories"
 msgstr "Répertoires de travail"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:838
-#, fuzzy
 msgid "Directory to save intermediate temporary results"
 msgstr "Répertoire pour l'enregistrement des résultats intermédiaires temporaires"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:849
-#, fuzzy
 msgid "User specific paths"
 msgstr "Chemins d'accès spécifiques à l'utilisateur"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:856
-#, fuzzy
 msgid "User working directory:"
 msgstr "Répertoire de travail de l'utilisateur :"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:860
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:868
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:876
-#, fuzzy
 msgid "..."
 msgstr "..."
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:864
-#, fuzzy
 msgid "Log file:"
 msgstr "Fichier journal :"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:872
-#, fuzzy
 msgid "Preferences file:"
 msgstr "Fichier de préférences :"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:890
-#, fuzzy
 msgid "User paths"
-msgstr "Chemins d'utilisateurs"
+msgstr "Chemins de l'utilisateur"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:898
-#, fuzzy
 msgid "Advanced"
 msgstr "Avancé"
