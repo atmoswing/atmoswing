@@ -595,7 +595,7 @@ void asFramePredictors::OnCloseLayer(wxCommandEvent& event) {
 
     wxArrayInt layerToRemoveIndex = choiceDlg.GetSelections();
     if (layerToRemoveIndex.IsEmpty()) {
-        wxLogWarning("Nothing selected, no layer will be closed.");
+        wxLogWarning(_("Nothing selected, no layer will be closed."));
 #if defined(__WIN32__)
         m_critSectionViewerLayerManager.Leave();
 #endif

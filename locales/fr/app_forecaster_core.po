@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 20:06+0200\n"
-"PO-Revision-Date: 2023-04-07 12:03+0200\n"
+"POT-Creation-Date: 2023-04-11 00:01+0200\n"
+"PO-Revision-Date: 2023-04-11 00:04+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -35,6 +35,16 @@ msgstr "Le fichier %s n'est pas un fichier de paramètres pour le Forecaster."
 #: src/app_forecaster/core/asMethodForecasting.cpp:68
 msgid "The date of the forecast has not been defined."
 msgstr "La date des prévisions n'a pas été définie."
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:100
+#, c-format
+msgid "Processing %s... "
+msgstr "Traitement %s... "
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:101
+#, c-format
+msgid "Processing %s"
+msgstr "Traitement %s"
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:121
 msgid "FAILED!\n"
@@ -507,6 +517,12 @@ msgstr "L'agrégation spatiale n'a pas pu être convertie."
 #, c-format
 msgid "The forecasts \"%s\" and \"%s\" are not compatible"
 msgstr "Les prévisions \"%s\" et \"%s\" ne sont pas compatibles"
+
+#: src/app_forecaster/core/asResultsForecast.cpp:927
+#, c-format
+msgid "The station ID %d was not found in the forecast results."
+msgstr ""
+"L'ID de la station %d n'a pas été trouvé dans les résultats de la prévision."
 
 #: src/app_forecaster/core/asResultsForecastAggregator.cpp:67
 msgid "This forecast has already been loaded."

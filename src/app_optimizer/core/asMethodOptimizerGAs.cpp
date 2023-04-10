@@ -808,7 +808,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
         wxDir parentDir(parentDirStr);
         wxString logFilePattern = asStrF("*.log");
         if (!parentDir.HasFiles(logFilePattern)) {
-            wxLogError("No log file found to restore the number of epochs (directory: %s)", parentDir.GetName());
+            wxLogError(_("No log file found to restore the number of epochs (directory: %s)"), parentDir.GetName());
             return false;
         }
 

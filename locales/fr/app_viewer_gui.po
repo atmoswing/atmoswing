@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 20:05+0200\n"
-"PO-Revision-Date: 2023-04-10 11:00+0200\n"
+"POT-Creation-Date: 2023-04-11 00:01+0200\n"
+"PO-Revision-Date: 2023-04-11 00:09+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -164,8 +164,7 @@ msgstr "Distribution du critère"
 #: src/app_viewer/gui/asFramePlotDistributions.cpp:283
 #: src/app_viewer/gui/asFramePlotTimeSeries.cpp:356
 msgid "The forecast contains NaNs. Plotting has been canceled."
-msgstr ""
-"La prévision contient des NaN. La creation du graphique a été annulée."
+msgstr "La prévision contient des NaN. La creation du graphique a été annulée."
 
 #: src/app_viewer/gui/asFramePlotDistributions.cpp:344
 #: src/app_viewer/gui/asFramePlotTimeSeries.cpp:421
@@ -343,6 +342,11 @@ msgstr "La couche n'a pas pu être ouverte."
 msgid "Select GIS layers"
 msgstr "Sélectionner les couches SIG"
 
+#: src/app_viewer/gui/asFramePredictors.cpp:598
+#: src/app_viewer/gui/asFrameViewer.cpp:948
+msgid "Nothing selected, no layer will be closed."
+msgstr "Rien n'est sélectionné, aucune couche ne sera fermée."
+
 #: src/app_viewer/gui/asFramePredictors.cpp:890
 msgid "Only forecasts of AtmoSwing 3+ can be visualized here."
 msgstr "Seules les prévisions d'AtmoSwing 3+ peuvent être visualisées ici."
@@ -454,10 +458,6 @@ msgstr "Sélectionnez le(s) couche(s) à fermer."
 msgid "Close layer(s)"
 msgstr "Fermer la (les) couche(s)"
 
-#: src/app_viewer/gui/asFrameViewer.cpp:948
-msgid "Nothing selected, no layer will be closed."
-msgstr "Rien n'est sélectionné, aucune couche ne sera fermée."
-
 #: src/app_viewer/gui/asFrameViewer.cpp:978
 msgid "Select a forecast file"
 msgstr "Sélectionner un fichier de prévisions"
@@ -465,6 +465,14 @@ msgstr "Sélectionner un fichier de prévisions"
 #: src/app_viewer/gui/asFrameViewer.cpp:1001
 msgid "List of the forecasts not found."
 msgstr "Liste des prévisions non trouvée."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1022
+msgid "The directory containing the forecasts was not provided."
+msgstr "Le répertoire contenant les prévisions n'a pas été fourni."
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1027
+msgid "The directory that is supposed to contain the forecasts does not exist."
+msgstr "Le répertoire censé contenir les prévisions n'existe pas."
 
 #: src/app_viewer/gui/asFrameViewer.cpp:1053
 #, c-format
@@ -510,8 +518,7 @@ msgstr "La couche de prévisions n'a pas été trouvée."
 
 #: src/app_viewer/gui/asFrameViewer.cpp:1404
 msgid "Moving layer not possible with less than 2 layers"
-msgstr ""
-"Le déplacement d'une couche n'est pas possible avec moins de 2 couches"
+msgstr "Le déplacement d'une couche n'est pas possible avec moins de 2 couches"
 
 #: src/app_viewer/gui/asFrameViewer.cpp:1411
 msgid "No layer selected, select a layer first"
@@ -958,8 +965,7 @@ msgstr "Répertoire contenant les prévisions"
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:1085
 msgid "Set the maximum rainfall value for the colorbar"
-msgstr ""
-"Définir la valeur maximale de la pluviométrie pour la barre de couleur"
+msgstr "Définir la valeur maximale de la pluviométrie pour la barre de couleur"
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:1092
 msgid "mm/d"
@@ -1192,5 +1198,4 @@ msgstr "Le fichier de palette des couleurs %s n'a pas pu être ouvert..."
 #, c-format
 msgid "Color table format not supported (file %s)..."
 msgstr ""
-"Le format de la palette des couleurs n'est pas pris en charge (fichier "
-"%s)..."
+"Le format de la palette des couleurs n'est pas pris en charge (fichier %s)..."

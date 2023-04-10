@@ -924,6 +924,6 @@ int asResultsForecast::GetStationRowFromId(int stationId) const {
     }
 
     wxFAIL;
-    wxLogError("The station ID %d was not found in the forecast results.", stationId);
+    wxLogError(_("The station ID %d was not found in the forecast results."), stationId);
     return -1;
 }

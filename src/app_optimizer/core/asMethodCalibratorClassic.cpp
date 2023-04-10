@@ -209,7 +209,7 @@ void asMethodCalibratorClassic::GetPlusOptions() {
 
 bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration& params) {
     try {
-        wxLogMessage("Preloading data (if required).");
+        wxLogMessage(_("Preloading data (if required)."));
         if (!PreloadArchiveData(&params)) {
             wxLogError(_("Could not preload the data."));
             return false;
@@ -225,7 +225,7 @@ bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration& params) {
         DeletePreloadedArchiveData();
         return false;
     }
-    wxLogMessage("Data preloading is over.");
+    wxLogMessage(_("Data preloading is over."));
     return true;
 }
 
@@ -747,7 +747,7 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
 
             // If better, keep it and start again
             if (KeepIfBetter(params, anaScoreFinal)) {
-                wxLogMessage("Improved spatial window size and position (move %d, factor %d)", iResizing,
+                wxLogMessage(_("Improved spatial window size and position (move %d, factor %d)"), iResizing,
                              multipleFactor);
                 iResizing = 0;
                 multipleFactor = 1;

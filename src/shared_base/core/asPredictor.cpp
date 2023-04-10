@@ -1263,7 +1263,7 @@ bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) 
                                           asHIDE_WARNINGS);
         }
         if (m_fInd.area.lonStart < 0) {
-            wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin, m_fStr.lons[0],
+            wxLogError(_("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f)"), lonMin, m_fStr.lons[0],
                        (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1]);
             return false;
         }

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 20:07+0200\n"
-"PO-Revision-Date: 2023-04-07 11:33+0200\n"
+"POT-Creation-Date: 2023-04-11 00:01+0200\n"
+"PO-Revision-Date: 2023-04-11 00:12+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -102,7 +102,7 @@ msgid "Teweles-Wobus on gradients"
 msgstr "Teweles-Wobus sur les gradients"
 
 #: src/shared_processing/core/asCriteriaS1obs.cpp:31
-msgid "S01 with division by actual value"
+msgid "S1 with division by actual value"
 msgstr "S1 avec division par la valeur réelle"
 
 #: src/shared_processing/core/asCriteriaS2.cpp:31

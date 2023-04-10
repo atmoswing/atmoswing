@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 20:05+0200\n"
+"POT-Creation-Date: 2023-04-11 00:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -337,6 +337,11 @@ msgstr ""
 msgid "Select GIS layers"
 msgstr ""
 
+#: src/app_viewer/gui/asFramePredictors.cpp:598
+#: src/app_viewer/gui/asFrameViewer.cpp:948
+msgid "Nothing selected, no layer will be closed."
+msgstr ""
+
 #: src/app_viewer/gui/asFramePredictors.cpp:890
 msgid "Only forecasts of AtmoSwing 3+ can be visualized here."
 msgstr ""
@@ -448,16 +453,20 @@ msgstr ""
 msgid "Close layer(s)"
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:948
-msgid "Nothing selected, no layer will be closed."
-msgstr ""
-
 #: src/app_viewer/gui/asFrameViewer.cpp:978
 msgid "Select a forecast file"
 msgstr ""
 
 #: src/app_viewer/gui/asFrameViewer.cpp:1001
 msgid "List of the forecasts not found."
+msgstr ""
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1022
+msgid "The directory containing the forecasts was not provided."
+msgstr ""
+
+#: src/app_viewer/gui/asFrameViewer.cpp:1027
+msgid "The directory that is supposed to contain the forecasts does not exist."
 msgstr ""
 
 #: src/app_viewer/gui/asFrameViewer.cpp:1053

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 20:06+0200\n"
+"POT-Creation-Date: 2023-04-11 00:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -182,6 +182,11 @@ msgstr ""
 msgid "The dates selection contains NaNs"
 msgstr ""
 
+#: src/app_optimizer/core/asMethodCalibrator.cpp:883
+#: src/app_optimizer/core/asMethodOptimizer.cpp:79
+msgid "The parameters have no validation period !"
+msgstr ""
+
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:52
 msgid "You need to preload the data for the classic calibration."
 msgstr ""
@@ -221,6 +226,10 @@ msgstr ""
 msgid "Find the analogs number for every step."
 msgstr ""
 
+#: src/app_optimizer/core/asMethodCalibratorClassic.cpp:212
+msgid "Preloading data (if required)."
+msgstr ""
+
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:214
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:200
 #: src/app_optimizer/core/asMethodOptimizerMC.cpp:70
@@ -235,6 +244,10 @@ msgstr ""
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:224
 #, c-format
 msgid "Exception caught during data preloading: %s"
+msgstr ""
+
+#: src/app_optimizer/core/asMethodCalibratorClassic.cpp:228
+msgid "Data preloading is over."
 msgstr ""
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:387
@@ -266,6 +279,11 @@ msgstr ""
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:543
 msgid ""
 "Reshape again (calibration plus) the spatial domain for every predictor."
+msgstr ""
+
+#: src/app_optimizer/core/asMethodCalibratorClassic.cpp:750
+#, c-format
+msgid "Improved spatial window size and position (move %d, factor %d)"
 msgstr ""
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:758
@@ -524,6 +542,11 @@ msgstr ""
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:783
 #, c-format
 msgid "%d generation bests have been reloaded.\n"
+msgstr ""
+
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:811
+#, c-format
+msgid "No log file found to restore the number of epochs (directory: %s)"
 msgstr ""
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:847

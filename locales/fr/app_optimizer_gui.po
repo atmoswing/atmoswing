@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 20:07+0200\n"
-"PO-Revision-Date: 2023-04-09 15:27+0200\n"
+"POT-Creation-Date: 2023-04-11 00:01+0200\n"
+"PO-Revision-Date: 2023-04-11 00:07+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -602,7 +602,9 @@ msgstr "Options de calculs"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:822
 msgid "These options don't affect the results, only the processor efficiency."
-msgstr "Ces options n'affectent pas les résultats, mais seulement l'efficacité du processeur."
+msgstr ""
+"Ces options n'affectent pas les résultats, mais seulement l'efficacité du "
+"processeur."
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:830
 msgid "Processing"
@@ -614,7 +616,8 @@ msgstr "Répertoires de travail"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:838
 msgid "Directory to save intermediate temporary results"
-msgstr "Répertoire pour l'enregistrement des résultats intermédiaires temporaires"
+msgstr ""
+"Répertoire pour l'enregistrement des résultats intermédiaires temporaires"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:849
 msgid "User specific paths"

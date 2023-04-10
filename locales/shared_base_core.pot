@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 20:07+0200\n"
+"POT-Creation-Date: 2023-04-11 00:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -372,14 +372,14 @@ msgstr ""
 #: src/shared_base/core/asFileParameters.cpp:390
 #: src/shared_base/core/asFileParameters.cpp:396
 #: src/shared_base/core/asFileParameters.cpp:402
-#: src/shared_base/core/asFileXml.cpp:177
-#: src/shared_base/core/asFileXml.cpp:195
-#: src/shared_base/core/asFileXml.cpp:212
-#: src/shared_base/core/asFileXml.cpp:229
-#: src/shared_base/core/asFileXml.cpp:271
-#: src/shared_base/core/asFileXml.cpp:288
-#: src/shared_base/core/asFileXml.cpp:303
-#: src/shared_base/core/asFileXml.cpp:318
+#: src/shared_base/core/asFileXml.cpp:183
+#: src/shared_base/core/asFileXml.cpp:201
+#: src/shared_base/core/asFileXml.cpp:218
+#: src/shared_base/core/asFileXml.cpp:235
+#: src/shared_base/core/asFileXml.cpp:277
+#: src/shared_base/core/asFileXml.cpp:294
+#: src/shared_base/core/asFileXml.cpp:309
+#: src/shared_base/core/asFileXml.cpp:324
 #, c-format
 msgid "Failed at converting the value of the element %s (XML file)."
 msgstr ""
@@ -454,28 +454,28 @@ msgstr ""
 msgid "The file %s is not an AtmoSwing file (root: %s)."
 msgstr ""
 
-#: src/shared_base/core/asFileXml.cpp:137
+#: src/shared_base/core/asFileXml.cpp:142
 #, c-format
 msgid "The file version of %s is no longer supported."
 msgstr ""
 
-#: src/shared_base/core/asFileXml.cpp:144
+#: src/shared_base/core/asFileXml.cpp:150
 #, c-format
 msgid "An unknown element was found in the file: %s"
 msgstr ""
 
-#: src/shared_base/core/asFileXml.cpp:149
-#: src/shared_base/core/asFileXml.cpp:185
-#: src/shared_base/core/asFileXml.cpp:202
-#: src/shared_base/core/asFileXml.cpp:219
-#: src/shared_base/core/asFileXml.cpp:236
+#: src/shared_base/core/asFileXml.cpp:155
+#: src/shared_base/core/asFileXml.cpp:191
+#: src/shared_base/core/asFileXml.cpp:208
+#: src/shared_base/core/asFileXml.cpp:225
+#: src/shared_base/core/asFileXml.cpp:242
 msgid "The node is empty in the xml file."
 msgstr ""
 
-#: src/shared_base/core/asFileXml.cpp:282
-#: src/shared_base/core/asFileXml.cpp:297
-#: src/shared_base/core/asFileXml.cpp:312
-#: src/shared_base/core/asFileXml.cpp:327
+#: src/shared_base/core/asFileXml.cpp:288
+#: src/shared_base/core/asFileXml.cpp:303
+#: src/shared_base/core/asFileXml.cpp:318
+#: src/shared_base/core/asFileXml.cpp:333
 #, c-format
 msgid "Empty %s attribute of the element %s (XML file)."
 msgstr ""
@@ -1138,6 +1138,11 @@ msgstr ""
 msgid "Failed at initializing the axes."
 msgstr ""
 
+#: src/shared_base/core/asPredictor.cpp:1266
+#, c-format
+msgid "Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f)"
+msgstr ""
+
 #: src/shared_base/core/asPredictor.cpp:1292
 #: src/shared_base/core/asPredictor.cpp:1299
 #, c-format
@@ -1413,6 +1418,10 @@ msgstr ""
 #: src/shared_base/core/asThreadsManager.cpp:183
 #, c-format
 msgid "A new thread was created (id=%d)."
+msgstr ""
+
+#: src/shared_base/core/asThreadsManager.cpp:188
+msgid "Can't run the thread!"
 msgstr ""
 
 #: src/shared_base/core/asThreadsManager.cpp:214

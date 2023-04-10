@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 20:06+0200\n"
-"PO-Revision-Date: 2023-04-09 14:36+0200\n"
+"POT-Creation-Date: 2023-04-11 00:01+0200\n"
+"PO-Revision-Date: 2023-04-11 00:06+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -195,6 +195,11 @@ msgstr "Erreur d'évaluation du nombre d'analogues."
 msgid "The dates selection contains NaNs"
 msgstr "La sélection des dates contient des NaNs"
 
+#: src/app_optimizer/core/asMethodCalibrator.cpp:883
+#: src/app_optimizer/core/asMethodOptimizer.cpp:79
+msgid "The parameters have no validation period !"
+msgstr "Les paramètres n'ont pas de période de validation !"
+
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:52
 msgid "You need to preload the data for the classic calibration."
 msgstr "Vous devez précharger les données pour la calibration classique."
@@ -234,6 +239,10 @@ msgstr "Meilleur point sur la carte de pertinence : %.2f lat, %.2f lon"
 msgid "Find the analogs number for every step."
 msgstr "Identification du nombre d'analogues pour chaque étape."
 
+#: src/app_optimizer/core/asMethodCalibratorClassic.cpp:212
+msgid "Preloading data (if required)."
+msgstr "Préchargement des données (si nécessaire)."
+
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:214
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:200
 #: src/app_optimizer/core/asMethodOptimizerMC.cpp:70
@@ -249,6 +258,10 @@ msgstr "Mauvaise allocation détectée lors du préchargement des données : %s"
 #, c-format
 msgid "Exception caught during data preloading: %s"
 msgstr "Exception levée lors du préchargement des données : %s"
+
+#: src/app_optimizer/core/asMethodCalibratorClassic.cpp:228
+msgid "Data preloading is over."
+msgstr "Le préchargement des données est terminé."
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:387
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:499
@@ -283,6 +296,13 @@ msgid ""
 msgstr ""
 "Changer à nouveau (calibration plus) le domaine spatial pour chaque "
 "prédicteur."
+
+#: src/app_optimizer/core/asMethodCalibratorClassic.cpp:750
+#, c-format
+msgid "Improved spatial window size and position (move %d, factor %d)"
+msgstr ""
+"Amélioration de la taille et de la position de la fenêtre spatiale "
+"(déplacement %d, facteur %d)"
 
 #: src/app_optimizer/core/asMethodCalibratorClassic.cpp:758
 #, c-format
@@ -562,6 +582,13 @@ msgstr "%d meilleurs individus ont été rechargés."
 #, c-format
 msgid "%d generation bests have been reloaded.\n"
 msgstr "%d meilleurs individus ont été rechargés.\n"
+
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:811
+#, c-format
+msgid "No log file found to restore the number of epochs (directory: %s)"
+msgstr ""
+"Aucun fichier journal n'a été trouvé pour restaurer le nombre d'époques "
+"(répertoire : %s)"
 
 #: src/app_optimizer/core/asMethodOptimizerGAs.cpp:847
 #, c-format

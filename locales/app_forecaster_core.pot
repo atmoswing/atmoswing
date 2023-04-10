@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 20:06+0200\n"
+"POT-Creation-Date: 2023-04-11 00:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,6 +33,16 @@ msgstr ""
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:68
 msgid "The date of the forecast has not been defined."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:100
+#, c-format
+msgid "Processing %s... "
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:101
+#, c-format
+msgid "Processing %s"
 msgstr ""
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:121
@@ -446,6 +456,11 @@ msgstr ""
 #: src/app_forecaster/core/asResultsForecast.cpp:858
 #, c-format
 msgid "The forecasts \"%s\" and \"%s\" are not compatible"
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecast.cpp:927
+#, c-format
+msgid "The station ID %d was not found in the forecast results."
 msgstr ""
 
 #: src/app_forecaster/core/asResultsForecastAggregator.cpp:67

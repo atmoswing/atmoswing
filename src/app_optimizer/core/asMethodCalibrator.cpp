@@ -880,7 +880,7 @@ bool asMethodCalibrator::Validate(asParametersCalibration* params) {
     }
 
     if (!params->HasValidationPeriod()) {
-        wxLogWarning("The parameters have no validation period !");
+        wxLogWarning(_("The parameters have no validation period !"));
         return true;
     }
 
