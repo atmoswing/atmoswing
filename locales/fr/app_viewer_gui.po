@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-06 20:05+0200\n"
-"PO-Revision-Date: 2023-04-06 23:08+0200\n"
+"PO-Revision-Date: 2023-04-10 11:00+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -181,7 +181,7 @@ msgstr ""
 #: src/app_viewer/gui/asFramePlotDistributions.cpp:471
 #: src/app_viewer/gui/asFramePlotTimeSeries.cpp:502
 msgid "The return periods couldn't be added to the plot"
-msgstr "Les périodes de retour n'ont pas pu être ajoutées au graphique\v"
+msgstr "Les périodes de retour n'ont pas pu être ajoutées au graphique"
 
 #: src/app_viewer/gui/asFramePlotDistributions.cpp:504
 #: src/app_viewer/gui/asFramePlotTimeSeries.cpp:535

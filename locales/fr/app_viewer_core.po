@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-06 20:04+0200\n"
-"PO-Revision-Date: 2023-04-06 23:10+0200\n"
+"PO-Revision-Date: 2023-04-10 11:00+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -60,6 +60,5 @@ msgid "The number of elements in the layers is not consistent in the workspace f
 msgstr "Le nombre d'éléments dans les couches n'est pas cohérent dans le fichier de l'espace de travail."
 
 #: src/app_viewer/core/AtmoswingAppViewer.cpp:90
-#, fuzzy
 msgid "Program already running, aborting."
 msgstr "Programme déjà en cours d'exécution, interruption."

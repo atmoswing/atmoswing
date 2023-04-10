@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-06 20:05+0200\n"
-"PO-Revision-Date: 2023-04-06 20:24+0200\n"
+"PO-Revision-Date: 2023-04-10 10:59+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -19,107 +19,89 @@ msgstr ""
 "X-Generator: Poedit 3.2.2\n"
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:42
-#, fuzzy
 msgid "Run downscaler"
-msgstr "Exécuter le détartreur"
+msgstr "Exécuter le Downscaler"
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:43
-#, fuzzy
 msgid "Run downscaler now"
 msgstr "Lancer le downscaler maintenant"
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:44
-#, fuzzy
 msgid "Cancel downscaling"
-msgstr "Annuler la réduction d'échelle"
+msgstr "Annuler la descente d'échelle"
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:45
-#, fuzzy
 msgid "Cancel current downscaling"
-msgstr "Annuler la réduction d'échelle actuelle"
+msgstr "Annuler la descente d'échelle actuelle"
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:47
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:134
-#, fuzzy
 msgid "Preferences"
 msgstr "Préférences"
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:245
-#, fuzzy
 msgid "Wrong method selection."
 msgstr "Mauvaise sélection de la méthode."
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:250
-#, fuzzy
 msgid "Proceeding to classic downscaling."
-msgstr "Procéder à une réduction d'échelle classique."
+msgstr "Procéder à une descente d'échelle classique."
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:255
-#, fuzzy
 msgid "Chosen method not defined yet."
 msgstr "La méthode choisie n'est pas encore définie."
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:267
-#, fuzzy, c-format
+#, c-format
 msgid "Bad allocation caught: %s"
 msgstr "Mauvaise allocation détectée : %s"
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:268
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:272
-#, fuzzy
 msgid "Failed to process the downscaling."
-msgstr "Échec du traitement de la réduction d'échelle."
+msgstr "Échec du traitement de la descente d'échelle."
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:271
-#, fuzzy, c-format
+#, c-format
 msgid "Exception caught: %s"
 msgstr "Une exception a été détectée : %s"
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:277
-#, fuzzy
 msgid "Downscaler over."
-msgstr "L'échelle inférieure est terminée."
+msgstr "La descente d'échelle est terminée."
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:37
-#, fuzzy
 msgid "Select the downscaling method"
-msgstr "Sélectionner la méthode de réduction d'échelle"
+msgstr "Sélectionner la méthode de descente d'échelle"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:43
-#, fuzzy
 msgid "Classic downscaling"
-msgstr "Réduction d'échelle classique"
+msgstr "Descente d'échelle classique"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:51
-#, fuzzy
 msgid "Select the parameters file for the downscaling"
-msgstr "Sélectionner le fichier de paramètres pour la réduction d'échelle"
+msgstr "Sélectionner le fichier de paramètres pour la descente d'échelle"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:55
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:62
-#, fuzzy
 msgid "Select a file"
 msgstr "Séléctionner un fichier"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:55
-#, fuzzy
 msgid "*.xml"
 msgstr "*.xml"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:58
-#, fuzzy
 msgid "Select the predictand DB file"
-msgstr "Sélectionner le fichier DB predictand"
+msgstr "Sélectionner le fichier BD predictands"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:62
-#, fuzzy
 msgid "*.nc"
 msgstr "*.nc"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:65
-#, fuzzy
 msgid "Select the archive predictors directory"
-msgstr "Sélectionner le répertoire des prédicteurs de l'archive"
+msgstr "Répertoire contenant les archives de prédicteurs"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:69
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:76
@@ -128,23 +110,18 @@ msgstr "Sélectionner le répertoire des prédicteurs de l'archive"
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:277
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:284
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:383
-#, fuzzy
 msgid "Select a folder"
 msgstr "Sélectionner un dossier"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:72
-#, fuzzy
 msgid "Select the predictors directory for the target period"
-msgstr ""
-"Sélectionner le répertoire des variables prédictives pour la période cible"
+msgstr "Sélectionner le répertoire des prédicteurs pour la période cible"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:79
-#, fuzzy
 msgid "Directory to save downscaling outputs"
-msgstr "Répertoire pour enregistrer les résultats de la réduction d'échelle"
+msgstr "Répertoire pour enregistrer les résultats de la descente d'échelle"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:86
-#, fuzzy
 msgid ""
 "Parallel evaluations when possible (competes with multithreading in the "
 "processor)"
@@ -153,249 +130,202 @@ msgstr ""
 "dans le processeur)"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:92
-#, fuzzy
 msgid "Downscaling state: "
-msgstr "État de réduction d'échelle :"
+msgstr "État de descente d'échelle : "
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:98
-#, fuzzy
 msgid "Not running."
-msgstr "Pas de course."
+msgstr "Pas de calculs en cours."
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:116
-#, fuzzy
 msgid "Save as default"
 msgstr "Enregistrer par défaut"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:137
-#, fuzzy
 msgid "Options"
 msgstr "Options"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:141
-#, fuzzy
 msgid "Build predictand DB"
-msgstr "Construire une base de données prédictive"
+msgstr "Construire la base de données des prédictands"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:144
-#, fuzzy
 msgid "Tools"
 msgstr "Outils"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:148
-#, fuzzy
 msgid "Show Log Window"
 msgstr "Afficher la fenêtre du journal des évènements"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:152
-#, fuzzy
 msgid "Log level"
 msgstr "Niveau de journal"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:154
-#, fuzzy
 msgid "Only errors"
 msgstr "Erreurs seulement"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:158
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:232
-#, fuzzy
 msgid "Errors and warnings"
 msgstr "Erreurs et avertissements"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:162
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:235
-#, fuzzy
 msgid "Verbose"
 msgstr "Verbeux"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:167
-#, fuzzy
 msgid "Log"
 msgstr "Journal"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:171
-#, fuzzy
 msgid "About"
 msgstr "À propos"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:174
-#, fuzzy
 msgid "Help"
 msgstr "Aide"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:221
-#, fuzzy
 msgid "Logs"
 msgstr "Journaux"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:229
-#, fuzzy
 msgid "Errors only (recommanded)"
 msgstr "Erreurs uniquement (recommandé)"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:244
-#, fuzzy
 msgid "Display window"
-msgstr "Fenêtre d'affichage"
+msgstr "Afficher fenêtre"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:248
-#, fuzzy
 msgid "Save to a file"
 msgstr "Enregistrer dans un fichier"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:264
-#, fuzzy
 msgid "Directories"
 msgstr "Répertoires"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:266
-#, fuzzy
 msgid "Directory containing archive predictors"
-msgstr "Répertoire contenant les prédicteurs d'archives"
+msgstr "Répertoire contenant les archives de prédicteurs"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:273
-#, fuzzy
 msgid "Directory containing scenario predictors"
-msgstr "Répertoire contenant les prédicteurs de scénarios"
+msgstr "Répertoire contenant les prédicteurs prévus"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:280
-#, fuzzy
 msgid "Default predictand DB directory"
-msgstr "Répertoire par défaut de la base de données predictand"
+msgstr "Répertoire contenant la base de données des prédictands"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:294
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:318
-#, fuzzy
 msgid "General"
 msgstr "Général"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:304
-#, fuzzy
 msgid "Silent (no progressbar, much faster)"
 msgstr "Silencieux (pas de barre de progression, beaucoup plus rapide)"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:304
-#, fuzzy
 msgid "Standard (recommanded)"
 msgstr "Standard (recommandé)"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:304
-#, fuzzy
 msgid "Verbose (not much used)"
 msgstr "Verbeux (peu utilisé)"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:306
-#, fuzzy
 msgid "GUI options"
 msgstr "Options de l'interface graphique"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:310
-#, fuzzy
 msgid "Let the software be responsive while processing (recommended)."
-msgstr "Laisser le logiciel réagir pendant le traitement (recommandé)."
+msgstr "Laisser le logiciel réactif pendant le traitement (recommandé)."
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:324
-#, fuzzy
 msgid "Multithreading"
 msgstr "Multithreading"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:326
-#, fuzzy
 msgid "Allow multithreading"
 msgstr "Permettre le multithreading"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:333
-#, fuzzy
 msgid "Max nb of threads"
-msgstr "Nb max de fils"
+msgstr "Nb max de threads"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:346
-#, fuzzy
 msgid "Threads priority"
-msgstr "Priorité aux fils"
+msgstr "Priorité des threads"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:359
-#, fuzzy
 msgid "Multithreaded (only if allowed hereabove)"
 msgstr "Multithreading (seulement si autorisé ci-dessus)"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:359
-#, fuzzy
 msgid "Standard (slower)"
 msgstr "Standard (plus lent)"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:361
-#, fuzzy
 msgid "Processing options"
 msgstr "Options de calculs"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:363
-#, fuzzy
 msgid "These options don't affect the results, only the processor efficiency."
 msgstr ""
 "Ces options n'affectent pas les résultats, mais seulement l'efficacité du "
 "processeur."
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:371
-#, fuzzy
 msgid "Processing"
 msgstr "En cours"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:377
-#, fuzzy
 msgid "Working directories"
 msgstr "Répertoires de travail"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:379
-#, fuzzy
 msgid "Directory to save intermediate temporary results"
 msgstr ""
 "Répertoire pour l'enregistrement des résultats intermédiaires temporaires"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:390
-#, fuzzy
 msgid "User specific paths"
 msgstr "Chemins d'accès spécifiques à l'utilisateur"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:397
-#, fuzzy
 msgid "User working directory:"
 msgstr "Répertoire de travail de l'utilisateur :"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:401
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:409
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:417
-#, fuzzy
 msgid "..."
 msgstr "..."
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:405
-#, fuzzy
 msgid "Log file:"
 msgstr "Fichier journal :"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:413
-#, fuzzy
 msgid "Preferences file:"
 msgstr "Fichier de préférences :"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:431
-#, fuzzy
 msgid "User paths"
-msgstr "Chemins d'utilisateurs"
+msgstr "Chemins de l'utilisateur"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:439
-#, fuzzy
 msgid "Advanced"
 msgstr "Avancé"
 
 #: src/app_downscaler/gui/AtmoswingMainDownscaler.cpp:41
-#, fuzzy, c-format
+#, c-format
 msgid "Welcome to AtmoSwing %s."
-msgstr "Bienvenue sur AtmoSwing %s."
+msgstr "Bienvenue dans AtmoSwing %s."
 
 #: src/app_downscaler/gui/AtmoswingMainDownscaler.cpp:52
-#, fuzzy
 msgid "AtmoSwing log window"
-msgstr "Fenêtre d'enregistrement AtmoSwing"
+msgstr "Fenêtre du journal AtmoSwing"
