@@ -50,6 +50,20 @@ bool asForecastManager::HasForecasts() const {
     return (m_aggregator->GetMethodsNb() > 0);
 }
 
+bool asForecastManager::HasSubDailyForecasts() const {
+    wxASSERT(m_aggregator);
+
+    for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
+        for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
+            if (m_aggregator->GetForecast(i, j)->GetForecastTimeStepHours() < 24) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 void asForecastManager::AddDirectoryPastForecasts(const wxString& dir) {
     m_directoriesPastForecasts.Add(dir);
 }

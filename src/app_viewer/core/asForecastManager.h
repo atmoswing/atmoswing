@@ -43,6 +43,8 @@ class asForecastManager {
 
     bool HasForecasts() const;
 
+    bool HasSubDailyForecasts() const;
+
     void ClearArrays();
 
     void ClearForecasts();

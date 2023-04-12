@@ -58,6 +58,7 @@ class asLeadTimeSwitcher : public wxPanel {
     wxGraphicsContext* m_gdc;
     wxOverlay m_overlay;
     int m_cellWidth;
+    int m_cellHeight;
     int m_leadTime;
 
     void OnLeadTimeSlctChange(wxMouseEvent& event);

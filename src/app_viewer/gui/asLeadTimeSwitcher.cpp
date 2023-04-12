@@ -40,13 +40,24 @@ asLeadTimeSwitcher::asLeadTimeSwitcher(wxWindow* parent, asWorkspace* workspace,
       m_bmp(nullptr),
       m_gdc(nullptr),
       m_cellWidth(int(40 * g_ppiScaleDc)),
+      m_cellHeight(int(40 * g_ppiScaleDc)),
       m_leadTime(0) {
+
+    if (m_forecastManager->HasSubDailyForecasts()) {
+        m_cellWidth = int(50 * g_ppiScaleDc);
+    }
+
+    // Required size
+    int margin = 5 * g_ppiScaleDc;
+    int width = (m_forecastManager->GetFullTargetDates().size() + 1) * m_cellWidth * g_ppiScaleDc;
+    int height = m_cellHeight * g_ppiScaleDc + margin;
+
+    SetSize(wxSize(width, height));
+
     Connect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), nullptr, this);
     Connect(wxEVT_LEFT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
     Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
     Connect(wxEVT_MIDDLE_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
-
-    Layout();
 }
 
 asLeadTimeSwitcher::~asLeadTimeSwitcher() {
@@ -76,7 +87,7 @@ void asLeadTimeSwitcher::Draw(a1f& dates) {
     // Required size
     int margin = 5 * g_ppiScaleDc;
     int width = (dates.size() + 1) * m_cellWidth;
-    int height = m_cellWidth + margin;
+    int height = m_cellHeight + margin;
 
     // Get color values
     int returnPeriodRef = m_workspace->GetAlarmsPanelReturnPeriod();
@@ -106,7 +117,7 @@ void asLeadTimeSwitcher::Draw(a1f& dates) {
         wxFont datesFont(fontSize, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
         gc->SetFont(datesFont, *wxBLACK);
 
-        wxPoint startText(margin, m_cellWidth / 2 - fontSize);
+        wxPoint startText(margin + (m_cellWidth - 40) / 2, m_cellHeight / 2.5 - fontSize);
 
         // For every lead time
         for (int iLead = 0; iLead < dates.size(); iLead++) {
@@ -127,7 +138,7 @@ void asLeadTimeSwitcher::Draw(a1f& dates) {
 
         int segmentsTot = 7;
         const double scale = 0.16;
-        wxPoint center(width - m_cellWidth / 2, m_cellWidth / 2);
+        wxPoint center(width - m_cellWidth / 2, m_cellHeight / 2);
 
         for (int i = 0; i < segmentsTot; i++) {
             CreatePathRing(path, center, scale, segmentsTot, i);
@@ -199,8 +210,8 @@ void asLeadTimeSwitcher::CreatePath(wxGraphicsPath& path, int iCol) {
     path.MoveToPoint(startPointX, startPointY);
 
     path.AddLineToPoint(startPointX + m_cellWidth, startPointY);
-    path.AddLineToPoint(startPointX + m_cellWidth, startPointY + m_cellWidth - 1);
-    path.AddLineToPoint(startPointX, startPointY + m_cellWidth - 1);
+    path.AddLineToPoint(startPointX + m_cellWidth, startPointY + m_cellHeight - 1);
+    path.AddLineToPoint(startPointX, startPointY + m_cellHeight - 1);
     path.AddLineToPoint(startPointX, startPointY);
 
     path.CloseSubpath();
@@ -278,16 +289,16 @@ void asLeadTimeSwitcher::CreateDatesText(wxGraphicsContext* gc, const wxPoint& s
 void asLeadTimeSwitcher::CreatePathMarker(wxGraphicsPath& path, int iCol) {
     int outlier = g_ppiScaleDc * 5;
     int markerHeight = g_ppiScaleDc * 13;
-    wxPoint start(m_cellWidth / 2, m_cellWidth - markerHeight);
+    wxPoint start(m_cellWidth / 2, m_cellHeight - markerHeight);
 
     double startPointX = (double)start.x + iCol * m_cellWidth;
     auto startPointY = (double)start.y;
 
     path.MoveToPoint(startPointX, startPointY);
 
-    path.AddLineToPoint(startPointX - m_cellWidth / (g_ppiScaleDc * 5),
+    path.AddLineToPoint(startPointX - m_cellWidth / (g_ppiScaleDc * 4),
                         startPointY + markerHeight + outlier - g_ppiScaleDc * 1);
-    path.AddLineToPoint(startPointX + m_cellWidth / (g_ppiScaleDc * 5),
+    path.AddLineToPoint(startPointX + m_cellWidth / (g_ppiScaleDc * 4),
                         startPointY + markerHeight + outlier - g_ppiScaleDc * 1);
     path.AddLineToPoint(startPointX, startPointY);
 

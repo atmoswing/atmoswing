@@ -695,19 +695,13 @@ void asFrameViewer::OnQuit(wxCommandEvent& event) {
 }
 
 void asFrameViewer::UpdateLeadTimeSwitch() {
-    // Required size
-    int margin = 5 * g_ppiScaleDc;
-    int squareSize = 40 * g_ppiScaleDc;
-    int width = (m_forecastManager->GetFullTargetDates().size() + 1) * squareSize;
-    int height = squareSize + margin;
-
     // Delete and recreate the panel. Cannot get it work with a resize...
     wxDELETE(m_leadTimeSwitcher);
     m_leadTimeSwitcher = new asLeadTimeSwitcher(m_panelTop, &m_workspace, m_forecastManager, wxID_ANY,
-                                                wxDefaultPosition, wxSize(width, height), wxTAB_TRAVERSAL);
+                                                wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     m_leadTimeSwitcher->SetBackgroundColour(wxColour(77, 77, 77));
-    m_leadTimeSwitcher->SetMinSize(wxSize(width, height));
     m_leadTimeSwitcher->Layout();
+    m_leadTimeSwitcher->SetMinSize(m_leadTimeSwitcher->GetSize());
     a1f dates = m_forecastManager->GetFullTargetDates();
     m_leadTimeSwitcher->Draw(dates);
 
