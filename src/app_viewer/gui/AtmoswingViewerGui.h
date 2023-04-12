@@ -426,6 +426,8 @@ class asFramePreferencesViewerVirtual : public wxFrame
 		wxStaticText* m_staticText58;
 		wxFilePickerCtrl* m_filePickerColorSh;
 		wxPanel* m_panelGeneralCommon;
+		wxChoice* m_choiceLocale;
+		wxStaticText* m_staticText53;
 		wxRadioButton* m_radioBtnLogLevel1;
 		wxRadioButton* m_radioBtnLogLevel2;
 		wxRadioButton* m_radioBtnLogLevel3;

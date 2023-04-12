@@ -192,6 +192,8 @@ class asFramePreferencesOptimizerVirtual : public wxFrame
 		wxPanel* m_panelBase;
 		wxNotebook* m_notebookBase;
 		wxPanel* m_panelGeneralCommon;
+		wxChoice* m_choiceLocale;
+		wxStaticText* m_staticText59;
 		wxRadioButton* m_radioBtnLogLevel1;
 		wxRadioButton* m_radioBtnLogLevel2;
 		wxRadioButton* m_radioBtnLogLevel3;

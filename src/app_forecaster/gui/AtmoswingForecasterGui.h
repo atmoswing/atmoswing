@@ -33,9 +33,9 @@
 #include <wx/frame.h>
 #include <wx/filepicker.h>
 #include <wx/choice.h>
+#include <wx/statbox.h>
 #include <wx/radiobut.h>
 #include <wx/checkbox.h>
-#include <wx/statbox.h>
 #include <wx/radiobox.h>
 #include <wx/slider.h>
 #include <wx/notebook.h>
@@ -157,6 +157,8 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 		wxStaticText* m_staticTextExport;
 		wxChoice* m_choiceExports;
 		wxPanel* m_panelGeneralCommon;
+		wxChoice* m_choiceLocale;
+		wxStaticText* m_staticText34;
 		wxRadioButton* m_radioBtnLogLevel1;
 		wxRadioButton* m_radioBtnLogLevel2;
 		wxRadioButton* m_radioBtnLogLevel3;
