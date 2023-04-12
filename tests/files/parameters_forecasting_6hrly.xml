@@ -48,7 +48,7 @@
       <realtime_standardize>1</realtime_standardize>
       <realtime_standardize_mean>0.00043102220253530437</realtime_standardize_mean>
       <realtime_standardize_sd>0.0014176902243256072</realtime_standardize_sd>
-      <realtime_dataset_id>Custom_MeteoFVG_Forecast</realtime_dataset_id>
+      <realtime_dataset_id>Custom_MeteoFVG</realtime_dataset_id>
       <realtime_data_id>cp_sfc</realtime_data_id>
       <archive_dataset_id>Generic</archive_dataset_id>
       <archive_data_id>cp_sfc</archive_data_id>
@@ -73,7 +73,7 @@
       <realtime_standardize>1</realtime_standardize>
       <realtime_standardize_mean>4.858158690266188</realtime_standardize_mean>
       <realtime_standardize_sd>7.742704912270005</realtime_standardize_sd>
-      <realtime_dataset_id>Custom_MeteoFVG_Forecast</realtime_dataset_id>
+      <realtime_dataset_id>Custom_MeteoFVG</realtime_dataset_id>
       <realtime_data_id>MB500925</realtime_data_id>
       <archive_dataset_id>Generic</archive_dataset_id>
       <archive_data_id>MB500925</archive_data_id>
@@ -95,7 +95,7 @@
       <realtime_standardize>1</realtime_standardize>
       <realtime_standardize_mean>0.36561869859522483</realtime_standardize_mean>
       <realtime_standardize_sd>2.4421665133229036</realtime_standardize_sd>
-      <realtime_dataset_id>Custom_MeteoFVG_Forecast</realtime_dataset_id>
+      <realtime_dataset_id>Custom_MeteoFVG</realtime_dataset_id>
       <realtime_data_id>10u_sfc</realtime_data_id>
       <archive_dataset_id>Generic</archive_dataset_id>
       <archive_data_id>10u_sfc</archive_data_id>
