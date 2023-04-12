@@ -647,10 +647,9 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
 
         // Method description
         auto nodeMethod = new wxXmlNode(wxXML_ELEMENT_NODE, "method");
-        nodeMethod->AddChild(fileExport.CreateNodeWithValue("id", m_forecasts[methodRow][0]->GetMethodId()));
-        nodeMethod->AddChild(fileExport.CreateNodeWithValue("name", m_forecasts[methodRow][0]->GetMethodIdDisplay()));
-        nodeMethod->AddChild(
-            fileExport.CreateNodeWithValue("description", m_forecasts[methodRow][0]->GetDescription()));
+        nodeMethod->AddChild(fileExport.CreateNode("id", m_forecasts[methodRow][0]->GetMethodId()));
+        nodeMethod->AddChild(fileExport.CreateNode("name", m_forecasts[methodRow][0]->GetMethodIdDisplay()));
+        nodeMethod->AddChild(fileExport.CreateNode("description", m_forecasts[methodRow][0]->GetDescription()));
         fileExport.AddChild(nodeMethod);
 
         // Reference axis
@@ -658,7 +657,7 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
             a1f refAxis = m_forecasts[methodRow][0]->GetReferenceAxis();
             auto nodeReferenceAxis = new wxXmlNode(wxXML_ELEMENT_NODE, "reference_axis");
             for (float axis : refAxis) {
-                nodeReferenceAxis->AddChild(fileExport.CreateNodeWithValue("reference", asStrF("%.2f", axis)));
+                nodeReferenceAxis->AddChild(fileExport.CreateNode("reference", asStrF("%.2f", axis)));
             }
             fileExport.AddChild(nodeReferenceAxis);
         }
@@ -669,9 +668,9 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
         for (int i = 0; i < targetDates.size(); i++) {
             auto nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
             nodeTargetDate->AddChild(
-                fileExport.CreateNodeWithValue("date", asTime::GetStringTime(targetDates[i], "DD.MM.YYYY HH")));
+                fileExport.CreateNode("date", asTime::GetStringTime(targetDates[i], "DD.MM.YYYY HH")));
             nodeTargetDate->AddChild(
-                fileExport.CreateNodeWithValue("analogs_nb", m_forecasts[methodRow][0]->GetAnalogsNumber(i)));
+                fileExport.CreateNode("analogs_nb", m_forecasts[methodRow][0]->GetAnalogsNumber(i)));
             nodeTargetDates->AddChild(nodeTargetDate);
         }
         fileExport.AddChild(nodeTargetDates);
@@ -679,7 +678,7 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
         // Quantiles
         auto nodeQuantiles = new wxXmlNode(wxXML_ELEMENT_NODE, "quantile_names");
         for (float quantile : quantiles) {
-            nodeQuantiles->AddChild(fileExport.CreateNodeWithValue("quantile", asStrF("%d", (int)quantile)));
+            nodeQuantiles->AddChild(fileExport.CreateNode("quantile", asStrF("%d", (int)quantile)));
         }
         fileExport.AddChild(nodeQuantiles);
 
@@ -698,21 +697,20 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
 
             // Set station properties
             auto nodeStation = new wxXmlNode(wxXML_ELEMENT_NODE, "station");
-            nodeStation->AddChild(fileExport.CreateNodeWithValue("id", stationIds[i]));
-            nodeStation->AddChild(fileExport.CreateNodeWithValue("official_id", forecast->GetStationOfficialId(i)));
-            nodeStation->AddChild(fileExport.CreateNodeWithValue("name", forecast->GetStationName(i)));
-            nodeStation->AddChild(fileExport.CreateNodeWithValue("x", forecast->GetStationXCoord(i)));
-            nodeStation->AddChild(fileExport.CreateNodeWithValue("y", forecast->GetStationYCoord(i)));
-            nodeStation->AddChild(fileExport.CreateNodeWithValue("height", forecast->GetStationHeight(i)));
-            nodeStation->AddChild(
-                fileExport.CreateNodeWithValue("specific_parameters", forecast->GetSpecificTagDisplay()));
+            nodeStation->AddChild(fileExport.CreateNode("id", stationIds[i]));
+            nodeStation->AddChild(fileExport.CreateNode("official_id", forecast->GetStationOfficialId(i)));
+            nodeStation->AddChild(fileExport.CreateNode("name", forecast->GetStationName(i)));
+            nodeStation->AddChild(fileExport.CreateNode("x", forecast->GetStationXCoord(i)));
+            nodeStation->AddChild(fileExport.CreateNode("y", forecast->GetStationYCoord(i)));
+            nodeStation->AddChild(fileExport.CreateNode("height", forecast->GetStationHeight(i)));
+            nodeStation->AddChild(fileExport.CreateNode("specific_parameters", forecast->GetSpecificTagDisplay()));
 
             // Set reference values
             if (forecast->HasReferenceValues()) {
                 auto nodeReferenceValues = new wxXmlNode(wxXML_ELEMENT_NODE, "reference_values");
                 for (int j = 0; j < referenceValues.cols(); j++) {
                     nodeReferenceValues->AddChild(
-                        fileExport.CreateNodeWithValue("value", asStrF("%.2f", referenceValues(i, j))));
+                        fileExport.CreateNode("value", asStrF("%.2f", referenceValues(i, j))));
                 }
                 nodeStation->AddChild(nodeReferenceValues);
             }
@@ -730,9 +728,9 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
                 for (int k = 0; k < wxMin(10, analogValues.size()); k++) {
                     auto nodeAnalog = new wxXmlNode(wxXML_ELEMENT_NODE, "analog");
                     nodeAnalog->AddChild(
-                        fileExport.CreateNodeWithValue("date", asTime::GetStringTime(analogDates[k], "DD.MM.YYYY HH")));
-                    nodeAnalog->AddChild(fileExport.CreateNodeWithValue("value", asStrF("%.1f", analogValues[k])));
-                    nodeAnalog->AddChild(fileExport.CreateNodeWithValue("criteria", asStrF("%.1f", analogCriteria[k])));
+                        fileExport.CreateNode("date", asTime::GetStringTime(analogDates[k], "DD.MM.YYYY HH")));
+                    nodeAnalog->AddChild(fileExport.CreateNode("value", asStrF("%.1f", analogValues[k])));
+                    nodeAnalog->AddChild(fileExport.CreateNode("criteria", asStrF("%.1f", analogCriteria[k])));
 
                     nodeTargetDate->AddChild(nodeAnalog);
                 }
@@ -741,26 +739,26 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
             nodeStation->AddChild(nodeBestAnalogs);
 
             // Set quantiles
-            wxXmlNode* nodeAnalogsQuantiles = new wxXmlNode(wxXML_ELEMENT_NODE, "analogs_quantiles");
+            auto nodeAnalogsQuantiles = new wxXmlNode(wxXML_ELEMENT_NODE, "analogs_quantiles");
             for (int j = 0; j < targetDates.size(); j++) {
                 a1f analogValues = forecast->GetAnalogsValuesRaw(j, i);
 
-                wxXmlNode* nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
+                auto nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
                 for (int k = 0; k < wxMin(10, quantiles.size()); k++) {
                     float pcVal = asGetValueForQuantile(analogValues, quantiles[k] / 100);
-                    nodeTargetDate->AddChild(fileExport.CreateNodeWithValue("quantile", asStrF("%.1f", pcVal)));
+                    nodeTargetDate->AddChild(fileExport.CreateNode("quantile", asStrF("%.1f", pcVal)));
                 }
                 nodeAnalogsQuantiles->AddChild(nodeTargetDate);
             }
             nodeStation->AddChild(nodeAnalogsQuantiles);
 
             // Set mean
-            wxXmlNode* nodeAnalogsMean = new wxXmlNode(wxXML_ELEMENT_NODE, "analogs_mean");
+            auto nodeAnalogsMean = new wxXmlNode(wxXML_ELEMENT_NODE, "analogs_mean");
             for (int j = 0; j < targetDates.size(); j++) {
                 a1f analogValues = forecast->GetAnalogsValuesRaw(j, i);
-                wxXmlNode* nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
+                auto nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
                 float mean = analogValues.mean();
-                nodeTargetDate->AddChild(fileExport.CreateNodeWithValue("mean", asStrF("%.1f", mean)));
+                nodeTargetDate->AddChild(fileExport.CreateNode("mean", asStrF("%.1f", mean)));
                 nodeAnalogsMean->AddChild(nodeTargetDate);
             }
             nodeStation->AddChild(nodeAnalogsMean);

@@ -108,9 +108,9 @@ TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle) {
     wxXmlNode* nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE, "building");
     nodeBuilding->AddAttribute("id", wxString(L"R\u00F4tillon", wxConvUTF8));
 
-    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_type", stringHopital));
-    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_location", wxString(L"Z\u00FCrich", wxConvUTF8)));
-    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_height", 40));
+    nodeBuilding->AddChild(fileXml.CreateNode("building_type", stringHopital));
+    nodeBuilding->AddChild(fileXml.CreateNode("building_location", wxString(L"Z\u00FCrich", wxConvUTF8)));
+    nodeBuilding->AddChild(fileXml.CreateNode("building_height", 40));
 
     fileXml.AddChild(nodeBuilding);
 

@@ -168,19 +168,19 @@ bool asWorkspace::Save() const {
     if (!file.EditRootElement()) return false;
 
     // General data
-    file.AddChild(file.CreateNodeWithValue("coordinate_system", m_coordinateSys));
-    file.AddChild(file.CreateNodeWithValue("forecast_directory", m_forecastsDirectory));
-    file.AddChild(file.CreateNodeWithValue("colorbar_max_value", m_colorbarMaxValue));
-    file.AddChild(file.CreateNodeWithValue("plot_time_series_past_days_nb", m_timeSeriesPlotPastDaysNb));
-    file.AddChild(file.CreateNodeWithValue("panel_alarms_return_period", m_alarmsPanelReturnPeriod));
-    file.AddChild(file.CreateNodeWithValue("panel_alarms_quantile", m_alarmsPanelQuantile));
+    file.AddChild(file.CreateNode("coordinate_system", m_coordinateSys));
+    file.AddChild(file.CreateNode("forecast_directory", m_forecastsDirectory));
+    file.AddChild(file.CreateNode("colorbar_max_value", m_colorbarMaxValue));
+    file.AddChild(file.CreateNode("plot_time_series_past_days_nb", m_timeSeriesPlotPastDaysNb));
+    file.AddChild(file.CreateNode("panel_alarms_return_period", m_alarmsPanelReturnPeriod));
+    file.AddChild(file.CreateNode("panel_alarms_quantile", m_alarmsPanelQuantile));
 
     // Predictors
     wxXmlNode* nodePredictors = new wxXmlNode(wxXML_ELEMENT_NODE, "predictors");
     for (int iPtor = 0; iPtor < m_predictorIds.size(); iPtor++) {
         wxXmlNode* nodePredictor = new wxXmlNode(wxXML_ELEMENT_NODE, "predictor");
-        nodePredictor->AddChild(file.CreateNodeWithValue("dir", m_predictorDirs[iPtor]));
-        nodePredictor->AddChild(file.CreateNodeWithValue("id", m_predictorIds[iPtor]));
+        nodePredictor->AddChild(file.CreateNode("dir", m_predictorDirs[iPtor]));
+        nodePredictor->AddChild(file.CreateNode("id", m_predictorIds[iPtor]));
         nodePredictors->AddChild(nodePredictor);
     }
     file.AddChild(nodePredictors);
@@ -197,17 +197,17 @@ bool asWorkspace::Save() const {
             path = relativePath.GetFullPath();
         }
 
-        nodeLayer->AddChild(file.CreateNodeWithValue("path", path));
-        nodeLayer->AddChild(file.CreateNodeWithValue("type", m_layerTypes[iLayer]));
-        nodeLayer->AddChild(file.CreateNodeWithValue("transparency", m_layerTransparencies[iLayer]));
-        nodeLayer->AddChild(file.CreateNodeWithValue("visibility", m_layerVisibilities[iLayer]));
-        nodeLayer->AddChild(file.CreateNodeWithValue("line_width", m_layerLineWidths[iLayer]));
+        nodeLayer->AddChild(file.CreateNode("path", path));
+        nodeLayer->AddChild(file.CreateNode("type", m_layerTypes[iLayer]));
+        nodeLayer->AddChild(file.CreateNode("transparency", m_layerTransparencies[iLayer]));
+        nodeLayer->AddChild(file.CreateNode("visibility", m_layerVisibilities[iLayer]));
+        nodeLayer->AddChild(file.CreateNode("line_width", m_layerLineWidths[iLayer]));
 #if USE_GUI
-        nodeLayer->AddChild(file.CreateNodeWithValue("line_color", wxToString(m_layerLineColors[iLayer])));
-        nodeLayer->AddChild(file.CreateNodeWithValue("fill_color", wxToString(m_layerFillColors[iLayer])));
+        nodeLayer->AddChild(file.CreateNode("line_color", wxToString(m_layerLineColors[iLayer])));
+        nodeLayer->AddChild(file.CreateNode("fill_color", wxToString(m_layerFillColors[iLayer])));
         wxString strBrush;
         strBrush << m_layerBrushStyles[iLayer];
-        nodeLayer->AddChild(file.CreateNodeWithValue("brush_style", strBrush));
+        nodeLayer->AddChild(file.CreateNode("brush_style", strBrush));
 #endif
 
         nodeLayers->AddChild(nodeLayer);
