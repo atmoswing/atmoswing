@@ -30,28 +30,28 @@
 
 asScoreSEEPS::asScoreSEEPS()
     : asScore(asScore::SEEPS, _("Stable equitable error in probability space"),
-              _("Stable equitable error in probability space"), Asc, NaNf, NaNf, true),
-      m_p1(NaNf),
-      m_p3(NaNf),
+              _("Stable equitable error in probability space"), Asc, NAN, NAN, true),
+      m_p1(NAN),
+      m_p3(NAN),
       m_thresNull(0.2f),
-      m_thresHigh(NaNf) {}
+      m_thresHigh(NAN) {}
 
 asScoreSEEPS::~asScoreSEEPS() {}
 
 float asScoreSEEPS::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(!asIsNaN(m_p1));
-    wxASSERT(!asIsNaN(m_p3));
-    wxASSERT(!asIsNaN(m_thresHigh));
+    wxASSERT(!isnan(m_p1));
+    wxASSERT(!isnan(m_p3));
+    wxASSERT(!isnan(m_thresHigh));
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
-        return NaNf;
+        return NAN;
     }
     if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
+        return NAN;
     }
 
     // Create the container to sort the data
@@ -61,10 +61,10 @@ float asScoreSEEPS::Assess(float obs, const a1f& values, int nbElements) const {
     int nbPredict = CleanNans(values, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
-        return NaNf;
+        return NAN;
     } else if (nbPredict <= 2) {
         wxLogWarning(_("Not enough elements to process SEEPS."));
-        return NaNf;
+        return NAN;
     }
 
     a1f cleanValues = x.head(nbPredict);
@@ -74,7 +74,7 @@ float asScoreSEEPS::Assess(float obs, const a1f& values, int nbElements) const {
         value = cleanValues.mean();
     } else {
         // Get value for quantile
-        wxASSERT(!asIsNaN(m_quantile));
+        wxASSERT(!isnan(m_quantile));
         wxASSERT(m_quantile > 0);
         wxASSERT(m_quantile < 1);
         value = asGetValueForQuantile(cleanValues, m_quantile);

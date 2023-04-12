@@ -99,6 +99,7 @@
 
 using std::runtime_error;
 
+
 //---------------------------------
 // Automatic leak detection with Microsoft VisualC++
 // http://msdn.microsoft.com/en-us/library/e5ewb1h3(v=VS.90).aspx

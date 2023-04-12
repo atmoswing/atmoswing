@@ -33,7 +33,7 @@
 asScoreCRPSS::asScoreCRPSS()
     : asScore(asScore::CRPSS, _("CRPS Skill Score"),
               _("Continuous Ranked Probability Score Skill Score based on the approximation with the rectangle method"),
-              Desc, 1, NaNf, true) {}
+              Desc, 1, NAN, true) {}
 
 asScoreCRPSS::~asScoreCRPSS() {}
 
@@ -44,11 +44,11 @@ float asScoreCRPSS::Assess(float obs, const a1f& values, int nbElements) const {
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
-        return NaNf;
+        return NAN;
     }
     if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
+        return NAN;
     }
 
     // First process the CRPS and then the skill score
@@ -73,10 +73,10 @@ bool asScoreCRPSS::ProcessScoreClimatology(const a1f& refVals, const a1f& climat
     score->SetOnMean(GetOnMean());
 
     for (int iReftime = 0; iReftime < refVals.size(); iReftime++) {
-        if (!asIsNaN(refVals(iReftime))) {
+        if (!isnan(refVals(iReftime))) {
             scoresClimatology(iReftime) = score->Assess(refVals(iReftime), climatologyData, climatologyData.size());
         } else {
-            scoresClimatology(iReftime) = NaNf;
+            scoresClimatology(iReftime) = NAN;
         }
     }
 

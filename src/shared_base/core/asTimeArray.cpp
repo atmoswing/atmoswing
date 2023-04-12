@@ -611,7 +611,7 @@ int asTimeArray::GetClosestIndex(double date) const {
 
     if (date - 0.00001 > m_end || date + 0.00001 < m_start) {  // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
-        return NaNi;
+        return 0;
     }
 
     int index = asFindClosest(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);

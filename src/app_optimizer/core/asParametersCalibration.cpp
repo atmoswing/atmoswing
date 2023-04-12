@@ -524,22 +524,22 @@ void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPto
 
 bool asParametersCalibration::InputsOK() const {
     // Time properties
-    if (asIsNaN(GetArchiveStart())) {
+    if (isnan(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetArchiveEnd())) {
+    if (isnan(GetArchiveEnd())) {
         wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetCalibrationStart())) {
+    if (isnan(GetCalibrationStart())) {
         wxLogError(_("The beginning of the calibration period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetCalibrationEnd())) {
+    if (isnan(GetCalibrationEnd())) {
         wxLogError(_("The end of the calibration period was not provided in the parameters file."));
         return false;
     }
@@ -783,7 +783,7 @@ bool asParametersCalibration::SetPredictandStationIdsVector(vvi val) {
 
         for (int i = 0; i < (int)val.size(); i++) {
             for (int j = 0; j < (int)val[i].size(); j++) {
-                if (asIsNaN(val[i][j])) {
+                if (isnan(val[i][j])) {
                     wxLogError(_("There are NaN values in the provided predictand ID vector."));
                     return false;
                 }
@@ -835,7 +835,7 @@ double asParametersCalibration::GetPreprocessHoursLowerLimit(int iStep, int iPto
     } else {
         wxLogError(
             _("Trying to access to an element outside of preprocessHours (lower limit) in the parameters object."));
-        return NaNd;
+        return NAN;
     }
 }
 
@@ -895,7 +895,7 @@ double asParametersCalibration::GetPreprocessHoursUpperLimit(int iStep, int iPto
     } else {
         wxLogError(
             _("Trying to access to an element outside of preprocessHours (upper limit) in the parameters object."));
-        return NaNd;
+        return NAN;
     }
 }
 

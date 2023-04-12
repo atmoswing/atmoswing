@@ -138,7 +138,7 @@ bool asMethodOptimizerMC::Manager() {
 
     // Check results
     for (int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
-        if (asIsNaN(m_scoresCalib[iCheck])) {
+        if (isnan(m_scoresCalib[iCheck])) {
             wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int)iCheck + 1,
                        (int)m_scoresCalib.size());
             return false;

@@ -142,7 +142,7 @@ class asPredictor : public wxObject {
 
     bool ClipToArea(asAreaGrid* desiredArea);
 
-    bool StandardizeData(double mean = NaNd, double sd = NaNd);
+    bool StandardizeData(double mean = NAN, double sd = NAN);
 
     bool Inline();
 
@@ -478,7 +478,7 @@ class asPredictor : public wxObject {
 
     bool ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeArray);
 
-    virtual void ConvertToMjd(a1d& time, double refValue = NaNd) const;
+    virtual void ConvertToMjd(a1d& time, double refValue = NAN) const;
 
     virtual double FixTimeValue(double time) const;
 

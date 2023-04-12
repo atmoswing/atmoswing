@@ -844,7 +844,7 @@ bool asPredictor::FillWithNaNs() {
     // Fill with NaNs
     va2f memLatLonData;
     for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
-        a2f latLonData = NaNf * a2f::Ones(m_data[0][iMem].rows(), m_data[0][iMem].cols());
+        a2f latLonData = NAN * a2f::Ones(m_data[0][iMem].rows(), m_data[0][iMem].cols());
         memLatLonData.push_back(latLonData);
     }
     m_data.push_back(memLatLonData);
@@ -886,7 +886,7 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf& ncFile) {
             return false;
     }
 
-    double refValue = NaNd;
+    double refValue = NAN;
     if (m_parseTimeReference) {
         wxString refValueStr = ncFile.GetAttString("units", m_fStr.dimTimeName);
         int start = refValueStr.Find("since");
@@ -1479,7 +1479,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf& ncFile) {
 
     // Fill with NaN if data are missing before the file starts
     while (m_fInd.timeStartStorage > m_data.size()) {
-        va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+        va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NAN);
         m_data.push_back(memLatLonData);
     }
 
@@ -1492,13 +1492,13 @@ bool asPredictor::GetDataFromFile(asFileNetcdf& ncFile) {
         if (!m_fInd.timeConsistent) {
             if (iTimeFile > m_fInd.timeStartFile + m_fInd.timeCountFile - 1) {
                 // Fill with NaN if data are missing after the data
-                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NAN);
                 m_data.push_back(memLatLonData);
                 iTimeStorage++;
                 continue;
             } else if (m_time[iTimeStorage] < m_fStr.time[iTimeFile]) {
                 // Fill in missing data
-                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NAN);
                 m_data.push_back(memLatLonData);
                 iTimeStorage++;
                 continue;
@@ -1536,7 +1536,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf& ncFile) {
                         }
                     }
                     if (!notNan) {
-                        latLonData(iLat, iLon) = NaNf;
+                        latLonData(iLat, iLon) = NAN;
                     }
                 }
             }
@@ -1590,7 +1590,7 @@ bool asPredictor::GetDataFromFile(asFileGrib& gbFile) {
 
     // Fill with NaN if data are missing before the file starts
     while (m_fInd.timeStartStorage > m_data.size()) {
-        va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+        va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NAN);
         m_data.push_back(memLatLonData);
     }
 
@@ -1603,13 +1603,13 @@ bool asPredictor::GetDataFromFile(asFileGrib& gbFile) {
         if (!m_fInd.timeConsistent) {
             if (iTimeFile > m_fInd.timeStartFile + m_fInd.timeCountFile - 1) {
                 // Fill with NaN if data are missing after the data
-                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NAN);
                 m_data.push_back(memLatLonData);
                 iTimeStorage++;
                 continue;
             } else if (m_time[iTimeStorage] < m_fStr.time[iTimeFile]) {
                 // Fill in missing data
-                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NAN);
                 m_data.push_back(memLatLonData);
                 iTimeStorage++;
                 continue;
@@ -1643,7 +1643,7 @@ bool asPredictor::GetDataFromFile(asFileGrib& gbFile) {
                         }
                     }
                     if (!notNan) {
-                        latLonData(iLat, iLon) = NaNf;
+                        latLonData(iLat, iLon) = NAN;
                     }
                 }
             }
@@ -1694,7 +1694,7 @@ bool asPredictor::StandardizeData(double mean, double sd) {
         return false;
     }
 
-    if (asIsNaN(mean) || asIsNaN(sd)) {
+    if (isnan(mean) || isnan(sd)) {
         // Get the mean
         double sum = 0;
         int count = 0;
@@ -1815,13 +1815,13 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
                 // Clear axes
                 a1d newAxisLon(xLength);
                 for (int i = 0; i < xLength; i++) {
-                    newAxisLon[i] = NaNd;
+                    newAxisLon[i] = NAN;
                 }
                 m_axisLon = newAxisLon;
 
                 a1d newAxisLat(2 * yLength);
                 for (int i = 0; i < 2 * yLength; i++) {
-                    newAxisLat[i] = NaNd;
+                    newAxisLat[i] = NAN;
                 }
                 m_axisLat = newAxisLat;
 
@@ -1886,13 +1886,13 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
 
                 a1d newAxisLon(xLength);
                 for (int i = 0; i < xLength; i++) {
-                    newAxisLon[i] = NaNd;
+                    newAxisLon[i] = NAN;
                 }
                 m_axisLon = newAxisLon;
 
                 a1d newAxisLat(2 * yLength);
                 for (int i = 0; i < 2 * yLength; i++) {
-                    newAxisLat[i] = NaNd;
+                    newAxisLat[i] = NAN;
                 }
                 m_axisLat = newAxisLat;
 
@@ -1929,13 +1929,13 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
 
                 a1d newAxisLon(xLength);
                 for (int i = 0; i < xLength; i++) {
-                    newAxisLon[i] = NaNd;
+                    newAxisLon[i] = NAN;
                 }
                 m_axisLon = newAxisLon;
 
                 a1d newAxisLat(2 * yLength);
                 for (int i = 0; i < 2 * yLength; i++) {
-                    newAxisLat[i] = NaNd;
+                    newAxisLat[i] = NAN;
                 }
                 m_axisLat = newAxisLat;
 
@@ -1967,13 +1967,13 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
 
                 a1d newAxisLon(xLength);
                 for (int i = 0; i < xLength; i++) {
-                    newAxisLon[i] = NaNd;
+                    newAxisLon[i] = NAN;
                 }
                 m_axisLon = newAxisLon;
 
                 a1d newAxisLat(2 * yLength);
                 for (int i = 0; i < 2 * yLength; i++) {
-                    newAxisLat[i] = NaNd;
+                    newAxisLat[i] = NAN;
                 }
                 m_axisLat = newAxisLat;
 
@@ -2047,7 +2047,7 @@ bool asPredictor::Inline() {
     m_latPtsnb = (int)m_data[0][0].rows();
     m_lonPtsnb = (int)m_data[0][0].cols();
     a1d emptyAxis(1);
-    emptyAxis[0] = NaNd;
+    emptyAxis[0] = NAN;
     m_axisLat = emptyAxis;
     m_axisLon = emptyAxis;
 

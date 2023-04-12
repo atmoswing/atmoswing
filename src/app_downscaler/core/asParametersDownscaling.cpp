@@ -32,8 +32,8 @@
 
 asParametersDownscaling::asParametersDownscaling()
     : asParameters(),
-      m_downscalingStart(NaNd),
-      m_downscalingEnd(NaNd) {}
+      m_downscalingStart(nan),
+      m_downscalingEnd(nan) {}
 
 asParametersDownscaling::~asParametersDownscaling() {}
 
@@ -352,22 +352,22 @@ bool asParametersDownscaling::ParseAnalogValuesParams(asFileParametersDownscalin
 
 bool asParametersDownscaling::InputsOK() const {
     // Time properties
-    if (asIsNaN(GetArchiveStart())) {
+    if (isnan(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetArchiveEnd())) {
+    if (isnan(GetArchiveEnd())) {
         wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetDownscalingStart())) {
+    if (isnan(GetDownscalingStart())) {
         wxLogError(_("The beginning of the downscaling period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetDownscalingEnd())) {
+    if (isnan(GetDownscalingEnd())) {
         wxLogError(_("The end of the downscaling period was not provided in the parameters file."));
         return false;
     }
@@ -545,7 +545,7 @@ bool asParametersDownscaling::SetPredictandStationIdsVector(vvi val) {
 
         for (auto& i : val) {
             for (int j : i) {
-                if (asIsNaN(j)) {
+                if (isnan(j)) {
                     wxLogError(_("There are NaN values in the provided predictand ID vector."));
                     return false;
                 }

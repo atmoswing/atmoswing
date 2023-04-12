@@ -34,13 +34,13 @@
 asResultsTotalScore::asResultsTotalScore()
     : asResults(),
       m_hasSingleValue(true),
-      m_score(NaNf) {}
+      m_score(NAN) {}
 
 asResultsTotalScore::~asResultsTotalScore() {}
 
 void asResultsTotalScore::Init() {
     // Set to nan to avoid keeping old results
-    m_score = NaNf;
+    m_score = NAN;
     m_scoreArray.resize(0);
 }
 

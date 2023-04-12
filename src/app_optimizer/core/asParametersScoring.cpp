@@ -32,8 +32,8 @@
 
 asParametersScoring::asParametersScoring()
     : asParameters(),
-      m_calibrationStart(NaNd),
-      m_calibrationEnd(NaNd) {}
+      m_calibrationStart(nan),
+      m_calibrationEnd(nan) {}
 
 asParametersScoring::~asParametersScoring() {}
 
@@ -213,12 +213,12 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString& filePath)
     nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("score", GetScoreName()));
 
     float fsThreshold = GetScoreThreshold();
-    if (!asIsNaN(fsThreshold)) {
+    if (!isnan(fsThreshold)) {
         nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("threshold", fsThreshold));
     }
 
     float fsQuantile = GetScoreQuantile();
-    if (!asIsNaN(fsQuantile)) {
+    if (!isnan(fsQuantile)) {
         nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("quantile", fsQuantile));
     }
 
@@ -290,10 +290,10 @@ wxString asParametersScoring::Print() const {
     wxString content = asParameters::Print();
 
     content.Append(asStrF("|||| Score\t%s\t", GetScoreName()));
-    if (!asIsNaN(GetScoreQuantile())) {
+    if (!isnan(GetScoreQuantile())) {
         content.Append(asStrF("quantile\t%f\t", GetScoreQuantile()));
     }
-    if (!asIsNaN(GetScoreThreshold())) {
+    if (!isnan(GetScoreThreshold())) {
         content.Append(asStrF("threshold\t%f\t", GetScoreThreshold()));
     }
     content.Append(asStrF("TimeArray\t%s\t", GetScoreTimeArrayMode()));

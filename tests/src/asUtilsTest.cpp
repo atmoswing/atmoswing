@@ -142,58 +142,8 @@ TEST(Utils, RoundSmallNegativeDoubleUp) {
     EXPECT_EQ(0, result);
 }
 
-TEST(Utils, IsNaNOne) {
-    int value = 1;
-    EXPECT_FALSE(asIsNaN((float)value));
-}
-
-TEST(Utils, IsNaNZero) {
-    int value = 0;
-    EXPECT_FALSE(asIsNaN((float)value));
-}
-
-TEST(Utils, IsNaNFloatTrue) {
-    float value = NaNf;
-    EXPECT_TRUE(asIsNaN(value));
-}
-
-TEST(Utils, IsNaNDoubleTrue) {
-    double value = NaNd;
-    EXPECT_TRUE(asIsNaN(value));
-}
-
-TEST(Utils, IsInfFloatFalse) {
-    float value = -2151;
-    EXPECT_FALSE(asIsInf(value));
-}
-
-TEST(Utils, IsInfDoubleFalse) {
-    double value = -2151;
-    EXPECT_FALSE(asIsInf(value));
-}
-
-TEST(Utils, IsInfLongDoubleFalse) {
-    long double value = -2151;
-    EXPECT_FALSE(asIsInf(value));
-}
-
-TEST(Utils, IsInfFloatTrue) {
-    float value = Inff;
-    EXPECT_TRUE(asIsInf(value));
-}
-
-TEST(Utils, IsInfDoubleTrue) {
-    double value = Infd;
-    EXPECT_TRUE(asIsInf(value));
-}
-
-TEST(Utils, IsInfLongDoubleTrue) {
-    long double value = Infld;
-    EXPECT_TRUE(asIsInf(value));
-}
-
 TEST(Utils, CountNotNaNFloat) {
-    float array[] = {0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.0f, NaNf};
+    float array[] = {0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, nanf, 8.34f, 9.75f, 10.0f, nanf};
     float* pVectStart = &array[0];
     float* pVectEnd = &array[9];
     int result = asCountNotNaN(pVectStart, pVectEnd);
@@ -201,7 +151,7 @@ TEST(Utils, CountNotNaNFloat) {
 }
 
 TEST(Utils, CountNotNaNDouble) {
-    double array[] = {0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10, NaNd};
+    double array[] = {0.3465, 1.345, 2.76, 3.69, 5.58, nan, 8.34, 9.75, 10, nan};
     double* pVectStart = &array[0];
     double* pVectEnd = &array[9];
     int result = asCountNotNaN(pVectStart, pVectEnd);
@@ -215,13 +165,13 @@ TEST(Utils, FindMinInt) {
 }
 
 TEST(Utils, FindMinFloat) {
-    float array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.0f, NaNf};
+    float array[] = {nanf, nanf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, nanf, 8.34f, 9.75f, 10.0f, nanf};
     float result = asMinArray(&array[0], &array[11]);
     EXPECT_FLOAT_EQ(0.3465f, result);
 }
 
 TEST(Utils, FindMinDouble) {
-    double array[] = {NaNd, NaNd, 0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10, NaNd};
+    double array[] = {nan, nan, 0.3465, 1.345, 2.76, 3.69, 5.58, nan, 8.34, 9.75, 10, nan};
     double result = asMinArray(&array[0], &array[11]);
     EXPECT_DOUBLE_EQ(0.3465, result);
 }
@@ -233,13 +183,13 @@ TEST(Utils, FindMaxInt) {
 }
 
 TEST(Utils, FindMaxFloat) {
-    float array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.12f, NaNf};
+    float array[] = {nanf, nanf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, nanf, 8.34f, 9.75f, 10.12f, nanf};
     float result = asMaxArray(&array[0], &array[11]);
     EXPECT_FLOAT_EQ(10.12f, result);
 }
 
 TEST(Utils, FindMaxDouble) {
-    double array[] = {NaNd, NaNd, 0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10.12, NaNd};
+    double array[] = {nan, nan, 0.3465, 1.345, 2.76, 3.69, 5.58, nan, 8.34, 9.75, 10.12, nan};
     double result = asMaxArray(&array[0], &array[11]);
     EXPECT_DOUBLE_EQ(10.12, result);
 }
@@ -251,13 +201,13 @@ TEST(Utils, FindMinStepInt) {
 }
 
 TEST(Utils, FindMinStepFloat) {
-    float array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f, NaNf};
+    float array[] = {nanf, 10.12f, nanf, 1.345f, 1.345f, 3.69f, 5.58f, nanf, 8.34f, 2.76f, 9.75f, 0.3465f, nanf};
     float result = asMinArrayStep(&array[0], &array[11], 0.0001f);
     EXPECT_FLOAT_EQ(0.37f, result);
 }
 
 TEST(Utils, FindMinStepDouble) {
-    double array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465, NaNd};
+    double array[] = {nan, 10.12, nan, 1.345, 1.345, 3.69, 5.58, nan, 8.34, 2.76, 9.75, 0.3465, nan};
     double result = asMinArrayStep(&array[0], &array[11]);
     EXPECT_FLOAT_EQ(0.37f, result);
 }
@@ -277,7 +227,7 @@ TEST(Utils, ExtractUniqueValuesInt) {
 }
 
 TEST(Utils, ExtractUniqueValuesFloat) {
-    float array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f, NaNf};
+    float array[] = {nanf, 10.12f, nanf, 1.345f, 1.345f, 3.69f, 5.58f, nanf, 8.34f, 2.76f, 9.75f, 0.3465f, nanf};
     a1f result(asExtractUniqueValues(&array[0], &array[11], 0.0001f));
     EXPECT_FLOAT_EQ(0.3465f, result[0]);
     EXPECT_FLOAT_EQ(1.345f, result[1]);
@@ -290,7 +240,7 @@ TEST(Utils, ExtractUniqueValuesFloat) {
 }
 
 TEST(Utils, ExtractUniqueValuesDouble) {
-    double array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465, NaNd};
+    double array[] = {nan, 10.12, nan, 1.345, 1.345, 3.69, 5.58, nan, 8.34, 2.76, 9.75, 0.3465, nan};
     a1d result(asExtractUniqueValues(&array[0], &array[11]));
     EXPECT_DOUBLE_EQ(0.3465, result[0]);
     EXPECT_DOUBLE_EQ(1.345, result[1]);

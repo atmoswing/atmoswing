@@ -50,7 +50,7 @@ wxThread::ExitCode asThreadGAs::Entry() {
     asResultsScores anaScores;
     asResultsTotalScore anaScoreFinal;
 
-    *m_finalScoreCalib = NaNf;
+    *m_finalScoreCalib = NAN;
 
     // Set the climatology score value
     if (!m_scoreClimatology->empty()) {

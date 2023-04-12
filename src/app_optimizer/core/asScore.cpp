@@ -48,14 +48,14 @@
 asScore::asScore()
     : m_score(Undefined),
       m_order(Asc),
-      m_scaleBest(NaNf),
-      m_scaleWorst(NaNf),
+      m_scaleBest(NAN),
+      m_scaleWorst(NAN),
       m_usesClimatology(false),
       m_singleValue(true),
       m_onMean(false),
       m_scoreClimatology(0),
-      m_threshold(NaNf),
-      m_quantile(NaNf) {}
+      m_threshold(NAN),
+      m_quantile(NAN) {}
 
 asScore::asScore(Score score, const wxString& name, const wxString& fullname, Order order, float scaleBest,
                  float scaleWorst, bool usesClimatology, bool singleValue)
@@ -69,8 +69,8 @@ asScore::asScore(Score score, const wxString& name, const wxString& fullname, Or
       m_singleValue(singleValue),
       m_onMean(false),
       m_scoreClimatology(0),
-      m_threshold(NaNf),
-      m_quantile(NaNf) {}
+      m_threshold(NAN),
+      m_quantile(NAN) {}
 
 asScore* asScore::GetInstance(Score scoreEnum) {
     switch (scoreEnum) {
@@ -306,7 +306,7 @@ a1f asScore::AssessOnArray(float obs, const a1f& values, int nbElements) const {
 
 bool asScore::CheckObservedValue(float obs) const {
     // Check that the observed value is not a NaN
-    if (asIsNaN(obs)) {
+    if (isnan(obs)) {
         wxLogVerbose(_("The observed value is a NaN for the score calculation."));
         return false;
     }
@@ -331,7 +331,7 @@ int asScore::CleanNans(const a1f& valuesIn, a1f& valuesOut, int nbElements) cons
     // Remove the NaNs and copy content
     int nbPredict = 0, nbNans = 0, iVal = 0;
     while (iVal < nbElements) {
-        if (!asIsNaN(valuesIn[iVal])) {
+        if (!isnan(valuesIn[iVal])) {
             valuesOut(nbPredict) = valuesIn[iVal];
             nbPredict++;
         } else {

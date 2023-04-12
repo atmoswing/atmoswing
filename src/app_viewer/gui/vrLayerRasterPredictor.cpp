@@ -184,7 +184,7 @@ bool vrLayerRasterPredictor::_GetRasterData(unsigned char** imgData, const wxSiz
         double pxVal = _ReadGDALValueToDouble(rasterData, GDT_Float32, i / 3);
 
         // Hande nodata
-        if (asIsNaN(pxVal)) {
+        if (isnan(pxVal)) {
             *(*imgData + i) = 255;
             *(*imgData + i + 1) = 255;
             *(*imgData + i + 2) = 255;

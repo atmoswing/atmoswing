@@ -51,7 +51,7 @@ float asTotalScoreFAR::Assess(const a1f& targetDates, const a1f& scores, const a
                     //
                 } else {
                     wxLogError(_("The FAR score (%f) is not an authorized value."), scores[i]);
-                    return NaNf;
+                    return NAN;
                 }
             }
             break;
@@ -71,7 +71,7 @@ float asTotalScoreFAR::Assess(const a1f& targetDates, const a1f& scores, const a
             score = 0;
         }
     } else {
-        score = NaNf;
+        score = NAN;
     }
 
     return score;

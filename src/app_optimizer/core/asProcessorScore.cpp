@@ -75,7 +75,7 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues& anaValues, asScore* sco
             }
 
             for (int iTargetTime = 0; iTargetTime < timeTargetSelectionLength; iTargetTime++) {
-                if (!asIsNaN(targetValues[iStat](iTargetTime))) {
+                if (!isnan(targetValues[iStat](iTargetTime))) {
                     if (params->ScoreNeedsPostprocessing()) {
                         // a2f analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime),
                         // analogsCriteria.row(iTargetTime), params)); totalScores(iTargetTime) =
@@ -87,7 +87,7 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues& anaValues, asScore* sco
                                                                        params->GetScoreAnalogsNumber());
                     }
                 } else {
-                    vectScores[iStat](iTargetTime) = NaNf;
+                    vectScores[iStat](iTargetTime) = NAN;
                 }
             }
         }
@@ -119,7 +119,7 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues& anaValues, asScore* sco
         a2f scores(timeTargetSelectionLength, 3 * (params->GetScoreAnalogsNumber() + 1));
 
         for (int iTargetTime = 0; iTargetTime < timeTargetSelectionLength; iTargetTime++) {
-            if (!asIsNaN(targetValues[0](iTargetTime))) {
+            if (!isnan(targetValues[0](iTargetTime))) {
                 if (params->ScoreNeedsPostprocessing()) {
                     // a2f analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime),
                     // analogsCriteria.row(iTargetTime), params)); finalScores(iTargetTime) =
@@ -131,7 +131,7 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues& anaValues, asScore* sco
                                                                    params->GetScoreAnalogsNumber());
                 }
             } else {
-                scores.row(iTargetTime) = a1f::Ones(3 * (params->GetScoreAnalogsNumber() + 1)) * NaNf;
+                scores.row(iTargetTime) = a1f::Ones(3 * (params->GetScoreAnalogsNumber() + 1)) * NAN;
             }
         }
 

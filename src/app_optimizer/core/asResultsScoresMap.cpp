@@ -93,7 +93,7 @@ bool asResultsScoresMap::MakeMap() {
     m_mapLon = lons;
     m_mapLat = lats;
 
-    a2f tmpLatLon = a2f::Constant(m_mapLat.size(), m_mapLon.size(), NaNf);
+    a2f tmpLatLon = a2f::Constant(m_mapLat.size(), m_mapLon.size(), NAN);
 
     for (int iLevel = 0; iLevel <= m_mapLevel.size(); iLevel++) {
         m_mapScores.push_back(tmpLatLon);

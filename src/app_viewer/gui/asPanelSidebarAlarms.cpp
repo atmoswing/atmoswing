@@ -74,7 +74,7 @@ void asPanelSidebarAlarms::Update() {
             if (quantileThreshold > 1) quantileThreshold = (float)0.9;
 
             a2f values = a2f::Ones(m_forecastManager->GetMethodsNb(), dates.size());
-            values *= NaNf;
+            values *= NAN;
 
             for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++) {
                 a1f methodMaxValues = m_forecastManager->GetAggregator()->GetMethodMaxValues(
@@ -249,7 +249,7 @@ void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext* gc, wxGraphicsPath
 
     switch (m_parent->GetMode()) {
         case (1): {
-            if (asIsNaN(value))  // NaN -> gray
+            if (isnan(value))  // NaN -> gray
             {
                 colour.Set(150, 150, 150);
             } else if (value == 0)  // No rain -> white

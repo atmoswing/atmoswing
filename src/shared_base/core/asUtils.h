@@ -97,24 +97,6 @@ a1f asGetCumulativeFrequency(int size);
 
 float asGetValueForQuantile(const a1f& values, float quantile);
 
-bool asIsNaN(int value);
-
-/** Check if the value is a NaN
- * \link http://www.parashift.com/c++-faq-lite/newbie.html
- */
-bool asIsNaN(float value);
-
-/** Check if the value is a NaN
- * \link http://www.parashift.com/c++-faq-lite/newbie.html
- */
-bool asIsNaN(double value);
-
-bool asIsInf(float value);
-
-bool asIsInf(double value);
-
-bool asIsInf(long double value);
-
 int asCountNotNaN(const float* pArrStart, const float* pArrEnd);
 
 int asCountNotNaN(const double* pArrStart, const double* pArrEnd);

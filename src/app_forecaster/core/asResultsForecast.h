@@ -218,7 +218,7 @@ class asResultsForecast : public asResults {
     float GetReferenceValue(int iStat, int iRef) const {
         if (!m_hasReferenceValues) {
             wxLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
-            return NaNf;
+            return NAN;
         }
 
         wxASSERT(iStat >= 0);

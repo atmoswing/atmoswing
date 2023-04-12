@@ -90,7 +90,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetTimeArrayAnalogsIntervalDaysIteration(int val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_timeArrayAnalogsIntervalDaysIteration = val;
     }
 
@@ -99,7 +99,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetAnalogsNumberIteration(int iStep, int val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsIteration[iStep].analogsNumber = val;
     }
 
@@ -109,7 +109,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPreprocessHoursIteration(int iStep, int iPtor, int iPre, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         if (m_stepsIteration[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
             m_stepsIteration[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
@@ -123,7 +123,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorHoursIteration(int iStep, int iPtor, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsIteration[iStep].predictors[iPtor].hour = val;
     }
 
@@ -132,7 +132,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorXminIteration(int iStep, int iPtor, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsIteration[iStep].predictors[iPtor].xMin = val;
     }
 
@@ -141,7 +141,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorXptsnbIteration(int iStep, int iPtor, int val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsIteration[iStep].predictors[iPtor].xPtsNb = val;
     }
 
@@ -150,7 +150,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorYminIteration(int iStep, int iPtor, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsIteration[iStep].predictors[iPtor].yMin = val;
     }
 
@@ -159,7 +159,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorYptsnbIteration(int iStep, int iPtor, int val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsIteration[iStep].predictors[iPtor].yPtsNb = val;
     }
 
@@ -168,7 +168,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorWeightIteration(int iStep, int iPtor, float val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsIteration[iStep].predictors[iPtor].weight = val;
     }
 
@@ -177,7 +177,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetTimeArrayAnalogsIntervalDaysUpperLimit(int val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_timeArrayAnalogsIntervalDaysUpperLimit = val;
     }
 
@@ -186,7 +186,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetAnalogsNumberUpperLimit(int iStep, int val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsUpperLimit[iStep].analogsNumber = val;
     }
 
@@ -196,7 +196,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPreprocessHoursUpperLimit(int iStep, int iPtor, int iPre, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         if (m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
             m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
@@ -210,7 +210,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorHoursUpperLimit(int iStep, int iPtor, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsUpperLimit[iStep].predictors[iPtor].hour = val;
     }
 
@@ -219,7 +219,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorXminUpperLimit(int iStep, int iPtor, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsUpperLimit[iStep].predictors[iPtor].xMin = val;
     }
 
@@ -228,7 +228,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorXptsnbUpperLimit(int iStep, int iPtor, int val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsUpperLimit[iStep].predictors[iPtor].xPtsNb = val;
     }
 
@@ -237,7 +237,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorYminUpperLimit(int iStep, int iPtor, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsUpperLimit[iStep].predictors[iPtor].yMin = val;
     }
 
@@ -246,7 +246,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorYptsnbUpperLimit(int iStep, int iPtor, int val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsUpperLimit[iStep].predictors[iPtor].yPtsNb = val;
     }
 
@@ -255,7 +255,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorWeightUpperLimit(int iStep, int iPtor, float val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsUpperLimit[iStep].predictors[iPtor].weight = val;
     }
 
@@ -264,7 +264,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetTimeArrayAnalogsIntervalDaysLowerLimit(int val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_timeArrayAnalogsIntervalDaysLowerLimit = val;
     }
 
@@ -273,7 +273,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetAnalogsNumberLowerLimit(int iStep, int val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsLowerLimit[iStep].analogsNumber = val;
     }
 
@@ -283,7 +283,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPreprocessHoursLowerLimit(int iStep, int iPtor, int iPre, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         if (m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
             m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
@@ -297,7 +297,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorHoursLowerLimit(int iStep, int iPtor, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsLowerLimit[iStep].predictors[iPtor].hour = val;
     }
 
@@ -306,7 +306,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorXminLowerLimit(int iStep, int iPtor, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsLowerLimit[iStep].predictors[iPtor].xMin = val;
     }
 
@@ -315,7 +315,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorXptsnbLowerLimit(int iStep, int iPtor, int val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsLowerLimit[iStep].predictors[iPtor].xPtsNb = val;
     }
 
@@ -324,7 +324,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorYminLowerLimit(int iStep, int iPtor, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsLowerLimit[iStep].predictors[iPtor].yMin = val;
     }
 
@@ -333,7 +333,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorYptsnbLowerLimit(int iStep, int iPtor, double val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsLowerLimit[iStep].predictors[iPtor].yPtsNb = (int)val;
     }
 
@@ -342,7 +342,7 @@ class asParametersOptimization : public asParametersScoring {
     }
 
     void SetPredictorWeightLowerLimit(int iStep, int iPtor, float val) {
-        wxASSERT(!asIsNaN(val));
+        wxASSERT(!isnan(val));
         m_stepsLowerLimit[iStep].predictors[iPtor].weight = val;
     }
 

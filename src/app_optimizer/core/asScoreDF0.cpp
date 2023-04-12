@@ -30,7 +30,7 @@
 
 asScoreDF0::asScoreDF0()
     : asScore(asScore::DF0, _("Difference of F(0)"), _("Absolute difference of the frequency of null precipitations."),
-              Asc, 0, NaNf) {}
+              Asc, 0, NAN) {}
 
 float asScoreDF0::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
@@ -38,11 +38,11 @@ float asScoreDF0::Assess(float obs, const a1f& values, int nbElements) const {
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
-        return NaNf;
+        return NAN;
     }
     if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
+        return NAN;
     }
 
     // Create the container to sort the data
@@ -53,10 +53,10 @@ float asScoreDF0::Assess(float obs, const a1f& values, int nbElements) const {
     int nbPredict = CleanNans(values, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the DF0 processing function."));
-        return NaNf;
+        return NAN;
     } else if (nbPredict <= 2) {
         wxLogWarning(_("Not enough elements to process the DF0."));
-        return NaNf;
+        return NAN;
     }
 
     // Sort the forcast array
@@ -84,7 +84,7 @@ float asScoreDF0::Assess(float obs, const a1f& values, int nbElements) const {
 
     if (indexLastZero < 0) {
         wxLogError(_("Error processing DF0 score."));
-        return NaNf;
+        return NAN;
     }
 
     return std::abs((1.0f - F(indexLastZero)) - FxObs);

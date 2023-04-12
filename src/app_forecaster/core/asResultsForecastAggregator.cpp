@@ -521,7 +521,7 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
     wxASSERT((int)m_forecasts.size() > methodRow);
 
     a1f maxValues = a1f::Ones(dates.size());
-    maxValues *= NaNf;
+    maxValues *= NAN;
 
     bool singleMethod = (GetForecastsNb(methodRow) == 1);
 
@@ -576,7 +576,7 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
             }
 
             for (int iLead = leadtimeMin; iLead <= leadtimeMax; iLead++) {
-                if (asIsNaN(maxValues[iLead])) {
+                if (isnan(maxValues[iLead])) {
                     maxValues[iLead] = -999999;
                 }
 
@@ -587,7 +587,7 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
 
                 // Process quantiles
                 if (asHasNaN(&theseVals[0], &theseVals[theseVals.size() - 1])) {
-                    thisVal = NaNf;
+                    thisVal = NAN;
                 } else {
                     float forecastVal = asGetValueForQuantile(theseVals, quantileThreshold);
                     forecastVal *= factor;
@@ -906,7 +906,7 @@ bool asResultsForecastAggregator::ExportSyntheticCustomCsvFVG(const wxString& di
                 wxString valuesQuantiles;
                 for (int k = 0; k < quantiles.size(); k++) {
                     float pcValNorm = asGetValueForQuantile(analogValuesNorm, quantiles[k] / 100);
-                    if (asIsNaN(pcValNorm)) {
+                    if (isnan(pcValNorm)) {
                         valuesQuantiles.Append("-9999; ");
                         continue;
                     }
@@ -916,7 +916,7 @@ bool asResultsForecastAggregator::ExportSyntheticCustomCsvFVG(const wxString& di
                 int hourForecast = int(24 * (targetDates[j] - forecast->GetLeadTimeOrigin()));
                 float meanRaw = analogValuesRaw.mean();
                 float meanNorm = analogValuesNorm.mean();
-                if (asIsNaN(meanRaw) || asIsNaN(meanNorm)) {
+                if (isnan(meanRaw) || isnan(meanNorm)) {
                     fileExport.AddContent(asStrF("%d; %s; %02d; %d; -9999; -9999; %s\n", stationIds[i] - 2,
                                                  asTime::GetStringTime(targetDates[j], "YYYYMMDDHH"), hourForecast,
                                                  forecast->GetAnalogsNumber(j), valuesQuantiles));

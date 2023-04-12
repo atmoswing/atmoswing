@@ -374,7 +374,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
                 if (!GetAnalogsSubDates(anaDates, &param, anaDatesPrevious, iStep, containsNaNs)) return false;
             }
             if (containsNaNs) {
-                m_scoresCalibTemp.push_back(NaNf);
+                m_scoresCalibTemp.push_back(NAN);
                 continue;
             }
             if (!GetAnalogsValues(anaValues, &param, anaDates, iStep)) return false;
@@ -394,7 +394,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
                 }
                 if (containsNaNs) {
                     continueLoop = false;
-                    m_scoresCalibTemp.push_back(NaNf);
+                    m_scoresCalibTemp.push_back(NAN);
                     continue;
                 }
                 anaDatesPreviousSubRuns = anaDates;

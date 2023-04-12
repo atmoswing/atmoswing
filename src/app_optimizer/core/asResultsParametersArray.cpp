@@ -34,9 +34,9 @@
 asResultsParametersArray::asResultsParametersArray()
     : asResults(),
       m_analogsExcludeDays(0),
-      m_medianScore(NaNf) {
-    m_scores.quantile = NaNf;
-    m_scores.threshold = NaNf;
+      m_medianScore(NAN) {
+    m_scores.quantile = NAN;
+    m_scores.threshold = NAN;
 }
 
 asResultsParametersArray::~asResultsParametersArray() = default;
@@ -88,7 +88,7 @@ void asResultsParametersArray::BuildFileName(const wxString& fileTag) {
 void asResultsParametersArray::AddWithoutProcessingMedian(asParametersScoring& params, float scoreCalib) {
     StoreValues(params);
     m_scoresCalib.push_back(scoreCalib);
-    m_scoresValid.push_back(NaNf);
+    m_scoresValid.push_back(NAN);
 }
 
 void asResultsParametersArray::Add(asParametersScoring& params, float scoreCalib, float scoreValid) {
@@ -163,10 +163,10 @@ bool asResultsParametersArray::Print(int fromIndex) const {
         content.Append(PrintParams(iParam));
 
         content.Append(asStrF("|||| Score\t%s\t", m_scores.name));
-        if (!asIsNaN(m_scores.quantile)) {
+        if (!isnan(m_scores.quantile)) {
             content.Append(asStrF("quantile\t%f\t", m_scores.quantile));
         }
-        if (!asIsNaN(m_scores.threshold)) {
+        if (!isnan(m_scores.threshold)) {
             content.Append(asStrF("threshold\t%f\t", m_scores.threshold));
         }
         content.Append(asStrF("TimeArray\t%s\t", m_scores.timeArrayMode));

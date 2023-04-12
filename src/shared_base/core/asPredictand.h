@@ -113,17 +113,17 @@ class asPredictand : public wxObject {
 
     virtual a1f GetReferenceAxis() const {
         a1f nodata(1);
-        nodata << NaNf;
+        nodata[0] = NAN;
         return nodata;
     }
 
     virtual float GetReferenceValue(int iStat, double duration, float reference) const {
-        return NaNf;
+        return NAN;
     }
 
     virtual a2f GetReferenceValuesArray() const {
         a1f nodata(1);
-        nodata << NaNf;
+        nodata[0] = NAN;
         return nodata;
     }
 

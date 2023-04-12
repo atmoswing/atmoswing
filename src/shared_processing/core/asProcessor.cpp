@@ -364,12 +364,12 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive,
 
                     // Sort and store results
                     int resCounter = 0;
-                    scoreArrayOneDay.fill(NaNf);
-                    dateArrayOneDay.fill(NaNf);
+                    scoreArrayOneDay.fill(NAN);
+                    dateArrayOneDay.fill(NAN);
 
                     for (int iDateArch = 0; iDateArch < nbCandidates[streamId]; iDateArch++) {
 #ifdef _DEBUG
-                        if (asIsNaN(hRes[offset + iDateArch])) {
+                        if (isnan(hRes[offset + iDateArch])) {
                             containsNaNs = true;
                             wxLogWarning(_("NaNs were found in the criteria values."));
                             wxLogWarning(_("Target date: %s, archive date: %s."),
@@ -523,8 +523,8 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive,
                 // Counter representing the current index
                 int counter = 0;
 
-                scoreArrayOneDay.fill(NaNf);
-                dateArrayOneDay.fill(NaNf);
+                scoreArrayOneDay.fill(NAN);
+                dateArrayOneDay.fill(NAN);
 
                 // Loop over the members
                 for (int iMem = 0; iMem < membersNb; ++iMem) {
@@ -571,7 +571,7 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive,
                             // Weight and add the score
                             thisScore += tmpScore * params->GetPredictorWeight(step, iPtor);
 
-                            if (asIsNaN(tmpScore)) {
+                            if (isnan(tmpScore)) {
                                 containsNaNs = true;
                                 wxLogWarning(_("NaNs were found in the criteria values (%s/%s)."),
                                              predictorsArchive[iPtor]->GetProduct(),
@@ -582,7 +582,7 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive,
                             }
                         }
 
-                        if (asIsNaN(thisScore)) {
+                        if (isnan(thisScore)) {
                             continue;
                         }
 
@@ -1041,12 +1041,12 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive,
 
                     // Sort and store results
                     int resCounter = 0;
-                    scoreArrayOneDay.fill(NaNf);
-                    dateArrayOneDay.fill(NaNf);
+                    scoreArrayOneDay.fill(NAN);
+                    dateArrayOneDay.fill(NAN);
 
                     for (int iDateArch = 0; iDateArch < nbCandidates[streamId]; iDateArch++) {
 #ifdef _DEBUG
-                        if (asIsNaN(hRes[offset + iDateArch])) {
+                        if (isnan(hRes[offset + iDateArch])) {
                             containsNaNs = true;
                             wxLogWarning(_("NaNs were found in the criteria values."));
                             wxLogWarning(_("Target date: %s, archive date: %s."),
@@ -1172,8 +1172,8 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive,
                 // Counter representing the current index
                 int counter = 0;
 
-                scoreArrayOneDay.fill(NaNf);
-                dateArrayOneDay.fill(NaNf);
+                scoreArrayOneDay.fill(NAN);
+                dateArrayOneDay.fill(NAN);
 
                 // Loop over the members
                 for (int iMem = 0; iMem < membersNb; ++iMem) {
@@ -1218,7 +1218,7 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive,
                             // Weight and add the score
                             thisScore += tmpScore * params->GetPredictorWeight(step, iPtor);
 
-                            if (asIsNaN(tmpScore)) {
+                            if (isnan(tmpScore)) {
                                 containsNaNs = true;
                                 wxLogWarning(_("NaNs were found in the criteria values (%s/%s)."),
                                              predictorsArchive[iPtor]->GetProduct(),
@@ -1229,7 +1229,7 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive,
                             }
                         }
 
-                        if (asIsNaN(thisScore)) {
+                        if (isnan(thisScore)) {
                             continue;
                         }
 
@@ -1349,10 +1349,10 @@ bool asProcessor::GetAnalogsValues(asPredictand& predictand, asResultsDates& ana
     }
 
     for (int iStat = 0; iStat < (int)stations.size(); iStat++) {
-        while (asIsNaN(predictandDataNorm[iStat](indexPredictandTimeStart))) {
+        while (isnan(predictandDataNorm[iStat](indexPredictandTimeStart))) {
             indexPredictandTimeStart++;
         }
-        while (asIsNaN(predictandDataNorm[iStat](indexPredictandTimeEnd))) {
+        while (isnan(predictandDataNorm[iStat](indexPredictandTimeEnd))) {
             indexPredictandTimeEnd--;
         }
     }
@@ -1396,12 +1396,12 @@ bool asProcessor::GetAnalogsValues(asPredictand& predictand, asResultsDates& ana
     // Resize containers
     wxASSERT(targTimeLength > 0);
     wxASSERT(analogsNb > 0);
-    va2f finalAnalogValuesNorm(stationsNb, a2f::Ones(targTimeLength, analogsNb) * NaNf);
-    va2f finalAnalogValuesRaw(stationsNb, a2f::Ones(targTimeLength, analogsNb) * NaNf);
-    a2f finalAnalogCriteria = a2f::Ones(targTimeLength, analogsNb) * NaNf;
-    a1f finalTargetDates = a1f::Ones(targTimeLength) * NaNf;
-    va1f finalTargetValuesNorm(stationsNb, a1f::Ones(targTimeLength) * NaNf);
-    va1f finalTargetValuesRaw(stationsNb, a1f::Ones(targTimeLength) * NaNf);
+    va2f finalAnalogValuesNorm(stationsNb, a2f::Ones(targTimeLength, analogsNb) * NAN);
+    va2f finalAnalogValuesRaw(stationsNb, a2f::Ones(targTimeLength, analogsNb) * NAN);
+    a2f finalAnalogCriteria = a2f::Ones(targTimeLength, analogsNb) * NAN;
+    a1f finalTargetDates = a1f::Ones(targTimeLength) * NAN;
+    va1f finalTargetValuesNorm(stationsNb, a1f::Ones(targTimeLength) * NAN);
+    va1f finalTargetValuesRaw(stationsNb, a1f::Ones(targTimeLength) * NAN);
 
     // Get predictand values
     for (int iTargetDate = indexTargDatesStart; iTargetDate <= indexTargDatesEnd; iTargetDate++) {
@@ -1421,7 +1421,7 @@ bool asProcessor::GetAnalogsValues(asPredictand& predictand, asResultsDates& ana
         for (int iAnalogDate = 0; iAnalogDate < analogsNb; iAnalogDate++) {
             float currentAnalogDate = analogsDates(iTargetDate, iAnalogDate);
 
-            if (asIsNaN(currentAnalogDate)) {
+            if (isnan(currentAnalogDate)) {
                 continue;
             }
 

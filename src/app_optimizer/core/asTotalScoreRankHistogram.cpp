@@ -34,7 +34,7 @@ asTotalScoreRankHistogram::asTotalScoreRankHistogram(const wxString& periodStrin
 
 float asTotalScoreRankHistogram::Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const {
     wxLogError(_("The rank histogram cannot provide a single score value !"));
-    return NaNf;
+    return NAN;
 }
 
 a1f asTotalScoreRankHistogram::AssessOnArray(const a1f& targetDates, const a1f& scores,

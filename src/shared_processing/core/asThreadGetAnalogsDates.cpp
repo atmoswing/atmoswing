@@ -92,9 +92,9 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
 
     // Containers for daily results
     a1f scoreArrayOneDay(analogsNb);
-    scoreArrayOneDay.fill(NaNf);
+    scoreArrayOneDay.fill(NAN);
     a1f dateArrayOneDay(analogsNb);
-    dateArrayOneDay.fill(NaNf);
+    dateArrayOneDay.fill(NAN);
 
     // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks
     // the predictors we are interested in, but which didn't take place at the same time.
@@ -124,8 +124,8 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
             // Counter representing the current index
             int counter = 0;
 
-            scoreArrayOneDay.fill(NaNf);
-            dateArrayOneDay.fill(NaNf);
+            scoreArrayOneDay.fill(NAN);
+            dateArrayOneDay.fill(NAN);
 
             // Loop over the members
             for (int iMem = 0; iMem < membersNb; ++iMem) {
@@ -162,7 +162,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
                             // Weight and add the score
                             thisScore += tmpScore * m_params->GetPredictorWeight(m_step, iPtor);
                         }
-                        if (asIsNaN(thisScore)) {
+                        if (isnan(thisScore)) {
                             *m_pContainsNaNs = true;
                             continue;
                         }

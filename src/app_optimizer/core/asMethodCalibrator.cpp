@@ -37,7 +37,7 @@
 asMethodCalibrator::asMethodCalibrator()
     : asMethodStandard(),
       m_scoreOrder(Asc),
-      m_scoreValid(NaNf),
+      m_scoreValid(NAN),
       m_validationMode(false),
       m_useBatches(false),
       m_batchStart(0),
@@ -113,7 +113,7 @@ void asMethodCalibrator::ClearAll() {
     m_scoresCalibTemp.clear();
     m_parameters.clear();
     m_scoresCalib.clear();
-    m_scoreValid = NaNf;
+    m_scoreValid = NAN;
 }
 
 void asMethodCalibrator::ClearTemp() {
@@ -138,7 +138,7 @@ void asMethodCalibrator::RemoveNaNsInTemp() {
     vf copyScoresCalibTemp;
 
     for (int i = 0; i < m_scoresCalibTemp.size(); i++) {
-        if (!asIsNaN(m_scoresCalibTemp[i])) {
+        if (!isnan(m_scoresCalibTemp[i])) {
             copyScoresCalibTemp.push_back(m_scoresCalibTemp[i]);
             copyParametersTemp.push_back(m_parametersTemp[i]);
         }
@@ -364,10 +364,10 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring* params) {
     for (int iStat = 0; iStat < (int)stationIds.size(); iStat++) {
         a1f predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[iStat]);
 
-        while (asIsNaN(predictandDataNorm(indexPredictandTimeStart))) {
+        while (isnan(predictandDataNorm(indexPredictandTimeStart))) {
             indexPredictandTimeStart++;
         }
-        while (asIsNaN(predictandDataNorm(indexPredictandTimeEnd))) {
+        while (isnan(predictandDataNorm(indexPredictandTimeEnd))) {
             indexPredictandTimeEnd--;
             if (indexPredictandTimeEnd < 0) {
                 wxLogError(_("An unexpected error occurred."));

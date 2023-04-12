@@ -44,7 +44,7 @@ class asPredictorOperMfArpege : public asPredictorOper {
     wxString GetFileName(const double date, const int leadTime) override;
 
   protected:
-    void ConvertToMjd(a1d& time, double refValue = NaNd) const override;
+    void ConvertToMjd(a1d& time, double refValue = NAN) const override;
 
   private:
 };

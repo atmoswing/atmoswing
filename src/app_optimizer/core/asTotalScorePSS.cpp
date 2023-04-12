@@ -51,7 +51,7 @@ float asTotalScorePSS::Assess(const a1f& targetDates, const a1f& scores, const a
                     countD++;
                 } else {
                     wxLogError(_("The PSS score (%f) is not an authorized value."), scores[i]);
-                    return NaNf;
+                    return NAN;
                 }
             }
             break;
@@ -75,7 +75,7 @@ float asTotalScorePSS::Assess(const a1f& targetDates, const a1f& scores, const a
             score = 0;
         }
     } else {
-        score = NaNf;
+        score = NAN;
     }
 
     return score;

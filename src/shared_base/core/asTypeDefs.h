@@ -95,19 +95,4 @@ typedef vector<a2f*, Eigen::aligned_allocator<a2f*>> vpa2f;
 typedef vector<vector<a2f, Eigen::aligned_allocator<a2f>>> vva2f;
 typedef vector<vector<vector<a2f, Eigen::aligned_allocator<a2f>>>> vvva2f;
 
-//---------------------------------
-// NaN & Inf
-//---------------------------------
-
-/* NaN (http://www.cplusplus.com/reference/limits/numeric_limits/) */
-static const short NaNs = std::numeric_limits<short>::max();
-static const int NaNi = std::numeric_limits<int>::max();
-static const float NaNf = std::numeric_limits<float>::quiet_NaN();
-static const double NaNd = std::numeric_limits<double>::quiet_NaN();
-
-/* Inf (http://msdn.microsoft.com/en-us/library/6hthw3cb%28VS.80%29.aspx) */
-const float Inff = std::numeric_limits<float>::infinity();
-const double Infd = std::numeric_limits<double>::infinity();
-const long double Infld = std::numeric_limits<long double>::infinity();
-
 #endif

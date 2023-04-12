@@ -641,7 +641,7 @@ int asFileNetcdf::GetAttInt(const wxString& attName, const wxString& varName) {
     // Check if global attribute or variable attribute
     if (varName.IsEmpty()) {  // Global attribute
         int attId = GetAttId(attName);
-        if (attId == asNOT_FOUND) return NaNi;
+        if (attId == asNOT_FOUND) return 0;
         nc_type nctype = m_struct.atts[attId].type;
 
         // Check the given type
@@ -657,9 +657,9 @@ int asFileNetcdf::GetAttInt(const wxString& attName, const wxString& varName) {
 
     } else {  // Variable attribute
         int varId = GetVarId(varName);
-        if (varId == asNOT_FOUND) return NaNi;
+        if (varId == asNOT_FOUND) return 0;
         int attId = GetAttId(attName, varName);
-        if (attId == asNOT_FOUND) return NaNi;
+        if (attId == asNOT_FOUND) return 0;
         nc_type nctype = m_struct.vars[varId].atts[attId].type;
 
         // Check the given type
@@ -684,7 +684,7 @@ float asFileNetcdf::GetAttFloat(const wxString& attName, const wxString& varName
     // Check if global attribute or variable attribute
     if (varName.IsEmpty()) {  // Global attribute
         int attId = GetAttId(attName);
-        if (attId == asNOT_FOUND) return NaNf;
+        if (attId == asNOT_FOUND) return NAN;
         nc_type nctype = m_struct.atts[attId].type;
 
         // Check the given type
@@ -700,9 +700,9 @@ float asFileNetcdf::GetAttFloat(const wxString& attName, const wxString& varName
 
     } else {  // Variable attribute
         int varId = GetVarId(varName);
-        if (varId == asNOT_FOUND) return NaNf;
+        if (varId == asNOT_FOUND) return NAN;
         int attId = GetAttId(attName, varName);
-        if (attId == asNOT_FOUND) return NaNf;
+        if (attId == asNOT_FOUND) return NAN;
         nc_type nctype = m_struct.vars[varId].atts[attId].type;
 
         // Check the given type
@@ -727,7 +727,7 @@ double asFileNetcdf::GetAttDouble(const wxString& attName, const wxString& varNa
     // Check if global attribute or variable attribute
     if (varName.IsEmpty()) {  // Global attribute
         int attId = GetAttId(attName);
-        if (attId == asNOT_FOUND) return NaNd;
+        if (attId == asNOT_FOUND) return NAN;
         nc_type nctype = m_struct.atts[attId].type;
 
         // Check the given type
@@ -743,9 +743,9 @@ double asFileNetcdf::GetAttDouble(const wxString& attName, const wxString& varNa
 
     } else {  // Variable attribute
         int varId = GetVarId(varName);
-        if (varId == asNOT_FOUND) return NaNd;
+        if (varId == asNOT_FOUND) return NAN;
         int attId = GetAttId(attName, varName);
-        if (attId == asNOT_FOUND) return NaNd;
+        if (attId == asNOT_FOUND) return NAN;
         nc_type nctype = m_struct.vars[varId].atts[attId].type;
 
         // Check the given type

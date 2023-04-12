@@ -45,8 +45,7 @@ asPredictorOperEcmwfIfs::asPredictorOperEcmwfIfs(const wxString& dataId)
     m_fStr.dimLevelName = "level";
     m_fStr.hasLevelDim = false;
     m_fStr.singleTimeStep = true;
-    m_nanValues.push_back(NaNd);
-    m_nanValues.push_back(NaNf);
+    m_nanValues.push_back(NAN);
     m_parameter = ParameterUndefined;
     m_fileExtension = "grib";
     m_leadTimeStart = 0;

@@ -43,7 +43,7 @@
 
 asMethodOptimizerGAs::asMethodOptimizerGAs()
     : asMethodOptimizer(),
-      m_scoreCalibBest(NaNf),
+      m_scoreCalibBest(NAN),
       m_generationNb(0),
       m_assessmentCounter(0),
       m_popSize(0),
@@ -66,8 +66,8 @@ void asMethodOptimizerGAs::ClearAll() {
     m_parameters.clear();
     m_parametersBatchBests.clear();
     m_scoresCalib.clear();
-    m_scoreCalibBest = NaNf;
-    m_scoreValid = NaNf;
+    m_scoreCalibBest = NAN;
+    m_scoreValid = NAN;
     m_bestScores.clear();
     m_meanScores.clear();
 }
@@ -342,7 +342,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 
         // Check results
         for (int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
-            if (asIsNaN(m_scoresCalib[iCheck])) {
+            if (isnan(m_scoresCalib[iCheck])) {
                 wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int)iCheck + 1,
                            (int)m_scoresCalib.size());
                 wxString paramsContent = m_parameters[iCheck].Print();
@@ -397,7 +397,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 
         // Update best
         if (m_useBatches) {
-            if (asIsNaN(m_scoreCalibBest)) {
+            if (isnan(m_scoreCalibBest)) {
                 m_parameterBest = m_parameters[0];
                 m_scoreCalibBest = m_scoresCalib[0];
                 if (m_reassessBatchBests) {
@@ -444,7 +444,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 
                 // Clear previous results.
                 for (int i = 0; i < m_parameters.size(); i++) {
-                    m_scoresCalib[i] = NaNf;
+                    m_scoresCalib[i] = NAN;
                 }
 
                 // Reassess on the whole period.
@@ -468,7 +468,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             // Always reset the score values for the batch approach as the sample changes.
             if (m_useBatches) {
                 for (int i = 0; i < m_parameters.size(); i++) {
-                    m_scoresCalib[i] = NaNf;
+                    m_scoresCalib[i] = NAN;
                 }
             }
             if (!Optimize()) {
@@ -534,7 +534,7 @@ float asMethodOptimizerGAs::ComputeScoreFullPeriod(asParametersOptimizationGAs& 
     m_batchStart = 0;
     m_batchEnd = m_batchSizeMax - 1;
 
-    float scoreFullPeriod = NaNf;
+    float scoreFullPeriod = NAN;
     auto* thread = new asThreadGAs(this, &param, &scoreFullPeriod, &m_scoreClimatology);
 #ifdef USE_CUDA
     int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
@@ -1095,9 +1095,9 @@ void asMethodOptimizerGAs::InitParameters(asParametersOptimizationGAs& params) {
         }
 
         m_parameters[iVar] = paramsCopy;
-        m_scoresCalib[iVar] = NaNf;
+        m_scoresCalib[iVar] = NAN;
     }
-    m_scoreValid = NaNf;
+    m_scoreValid = NAN;
 }
 
 asParametersOptimizationGAs* asMethodOptimizerGAs::GetNextParameters() {
@@ -1105,7 +1105,7 @@ asParametersOptimizationGAs* asMethodOptimizerGAs::GetNextParameters() {
 
     while (m_iterator < m_paramsNb) {
         // Parameters did not change
-        if (!asIsNaN(m_scoresCalib[m_iterator])) {
+        if (!isnan(m_scoresCalib[m_iterator])) {
             m_iterator++;
             continue;
         }
@@ -1184,7 +1184,7 @@ bool asMethodOptimizerGAs::HasConverged() {
 bool asMethodOptimizerGAs::ElitismAfterMutation() {
     // Apply elitism: If the best has been degraded during previous mutations, replace a random individual by the
     // previous best.
-    if (m_allowElitismForTheBest && !asIsNaN(m_scoreCalibBest)) {
+    if (m_allowElitismForTheBest && !isnan(m_scoreCalibBest)) {
         float actualBest = m_scoresCalib[0];
         switch (m_scoreOrder) {
             case (Asc): {
@@ -1221,7 +1221,7 @@ bool asMethodOptimizerGAs::ElitismAfterMutation() {
 
 bool asMethodOptimizerGAs::ElitismAfterSelection() {
     // Apply elitism: If the best has not been selected, replace a random individual by the best.
-    if (m_allowElitismForTheBest && !asIsNaN(m_scoreCalibBest)) {
+    if (m_allowElitismForTheBest && !isnan(m_scoreCalibBest)) {
         SortScoresAndParameters();
         float actualBest = m_scoresCalib[0];
         switch (m_scoreOrder) {
@@ -1578,12 +1578,12 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Add the new parameters if ther is enough room
                 m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NaNf);
+                m_scoresCalib.push_back(NAN);
                 if (m_popSize - m_parameters.size() > 0) {
                     param2.CheckRange();
 
                     m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NaNf);
+                    m_scoresCalib.push_back(NAN);
                 }
 
                 break;
@@ -1633,12 +1633,12 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Add the new parameters if ther is enough room
                 m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NaNf);
+                m_scoresCalib.push_back(NAN);
                 if (m_popSize - m_parameters.size() > 0) {
                     param2.CheckRange();
 
                     m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NaNf);
+                    m_scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -1690,12 +1690,12 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Add the new parameters if ther is enough room
                 m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NaNf);
+                m_scoresCalib.push_back(NAN);
                 if (m_popSize - m_parameters.size() > 0) {
                     param2.CheckRange();
 
                     m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NaNf);
+                    m_scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -1745,12 +1745,12 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Add the new parameters if there is enough room
                 m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NaNf);
+                m_scoresCalib.push_back(NAN);
                 if (m_popSize - m_parameters.size() > 0) {
                     param2.CheckRange();
 
                     m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NaNf);
+                    m_scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -1806,12 +1806,12 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Add the new parameters if ther is enough room
                 m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NaNf);
+                m_scoresCalib.push_back(NAN);
                 if (m_popSize - m_parameters.size() > 0) {
                     param2.CheckRange();
 
                     m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NaNf);
+                    m_scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -1865,7 +1865,7 @@ bool asMethodOptimizerGAs::Mating() {
                     param1.CheckRange();
 
                     m_parameters.push_back(param1);
-                    m_scoresCalib.push_back(NaNf);
+                    m_scoresCalib.push_back(NAN);
                 }
 
                 // Add the other parameters if ther is enough room
@@ -1874,7 +1874,7 @@ bool asMethodOptimizerGAs::Mating() {
                         param2.CheckRange();
 
                         m_parameters.push_back(param2);
-                        m_scoresCalib.push_back(NaNf);
+                        m_scoresCalib.push_back(NAN);
                     }
                 }
                 if (m_popSize - m_parameters.size() > 0) {
@@ -1882,7 +1882,7 @@ bool asMethodOptimizerGAs::Mating() {
                         param3.CheckRange();
 
                         m_parameters.push_back(param3);
-                        m_scoresCalib.push_back(NaNf);
+                        m_scoresCalib.push_back(NAN);
                     }
                 }
 
@@ -1940,12 +1940,12 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Add the new parameters if ther is enough room
                 m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NaNf);
+                m_scoresCalib.push_back(NAN);
                 if (m_popSize - m_parameters.size() > 0) {
                     param2.CheckRange();
 
                     m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NaNf);
+                    m_scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -2001,12 +2001,12 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Add the new parameters if ther is enough room
                 m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NaNf);
+                m_scoresCalib.push_back(NAN);
                 if (m_popSize - m_parameters.size() > 0) {
                     param2.CheckRange();
 
                     m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NaNf);
+                    m_scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -2027,12 +2027,12 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Add the new parameters if ther is enough room
                 m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NaNf);
+                m_scoresCalib.push_back(NAN);
                 if (m_popSize - m_parameters.size() > 0) {
                     param2.CheckRange();
 
                     m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NaNf);
+                    m_scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -2053,12 +2053,12 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Add the new parameters if there is enough room
                 m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NaNf);
+                m_scoresCalib.push_back(NAN);
                 if (m_popSize - m_parameters.size() > 0) {
                     param2.CheckRange();
 
                     m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NaNf);
+                    m_scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -2098,7 +2098,7 @@ bool asMethodOptimizerGAs::Mutation() {
                 // Mutate
                 bool hasMutated = false;
                 m_parameters[iInd].MutateUniformDistribution(mutationsProbability, hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NaNf;
+                if (hasMutated) m_scoresCalib[iInd] = NAN;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -2124,7 +2124,7 @@ bool asMethodOptimizerGAs::Mutation() {
                 // Mutate
                 bool hasMutated = false;
                 m_parameters[iInd].MutateUniformDistribution(mutationsProbability, hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NaNf;
+                if (hasMutated) m_scoresCalib[iInd] = NAN;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -2146,7 +2146,7 @@ bool asMethodOptimizerGAs::Mutation() {
                 // Mutate
                 bool hasMutated = false;
                 m_parameters[iInd].MutateNormalDistribution(mutationsProbability, stdDevRatioRange, hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NaNf;
+                if (hasMutated) m_scoresCalib[iInd] = NAN;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -2179,7 +2179,7 @@ bool asMethodOptimizerGAs::Mutation() {
                 // Mutate
                 bool hasMutated = false;
                 m_parameters[iInd].MutateNormalDistribution(mutationsProbability, stdDevRatioRange, hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NaNf;
+                if (hasMutated) m_scoresCalib[iInd] = NAN;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -2203,7 +2203,7 @@ bool asMethodOptimizerGAs::Mutation() {
                 bool hasMutated = false;
                 m_parameters[iInd].MutateNonUniform(mutationsProbability, m_generationNb, nbGenMax, minRate,
                                                     hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NaNf;
+                if (hasMutated) m_scoresCalib[iInd] = NAN;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -2218,7 +2218,7 @@ bool asMethodOptimizerGAs::Mutation() {
                 // Mutate
                 bool hasMutated = false;
                 m_parameters[iInd].MutateSelfAdaptationRate(hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NaNf;
+                if (hasMutated) m_scoresCalib[iInd] = NAN;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -2233,7 +2233,7 @@ bool asMethodOptimizerGAs::Mutation() {
                 // Mutate
                 bool hasMutated = false;
                 m_parameters[iInd].MutateSelfAdaptationRadius(hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NaNf;
+                if (hasMutated) m_scoresCalib[iInd] = NAN;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -2248,7 +2248,7 @@ bool asMethodOptimizerGAs::Mutation() {
                 // Mutate
                 bool hasMutated = false;
                 m_parameters[iInd].MutateSelfAdaptationRateChromosome(hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NaNf;
+                if (hasMutated) m_scoresCalib[iInd] = NAN;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -2263,7 +2263,7 @@ bool asMethodOptimizerGAs::Mutation() {
                 // Mutate
                 bool hasMutated = false;
                 m_parameters[iInd].MutateSelfAdaptationRadiusChromosome(hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NaNf;
+                if (hasMutated) m_scoresCalib[iInd] = NAN;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -2283,7 +2283,7 @@ bool asMethodOptimizerGAs::Mutation() {
                 // Mutate
                 bool hasMutated = false;
                 m_parameters[iInd].MutateMultiScale(mutationsProbability, hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NaNf;
+                if (hasMutated) m_scoresCalib[iInd] = NAN;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();

@@ -407,9 +407,9 @@ bool asResultsForecast::Load() {
         // Get global attributes
         versionMajor = ncFile.GetAttInt("version_major");
         versionMinor = ncFile.GetAttInt("version_minor");
-        if (asIsNaN(versionMajor)) {
+        if (versionMajor == 0) {
             float version = ncFile.GetAttFloat("version");
-            if (asIsNaN(version)) {
+            if (isnan(version)) {
                 versionMajor = 1;
                 versionMinor = 0;
             } else {
@@ -687,7 +687,7 @@ bool asResultsForecast::Load() {
         // Create containers
         for (int iTime = 0; iTime < nLeadtime; iTime++) {
             a2f analogsValuesLeadTime(nStations, m_analogsNb[iTime]);
-            analogsValuesLeadTime.fill(NaNf);
+            analogsValuesLeadTime.fill(NAN);
             m_analogsValuesRaw.push_back(analogsValuesLeadTime);
             m_analogsValuesNorm.push_back(analogsValuesLeadTime);
         }
@@ -848,7 +848,7 @@ bool asResultsForecast::IsCompatibleWith(asResultsForecast* otherForecast) const
         compatible = false;
     } else {
         for (int i = 0; i < m_referenceAxis.size(); i++) {
-            if (!asIsNaN(m_referenceAxis[i]) && m_referenceAxis[i] != referenceAxis[i]) {
+            if (!isnan(m_referenceAxis[i]) && m_referenceAxis[i] != referenceAxis[i]) {
                 compatible = false;
             }
         }

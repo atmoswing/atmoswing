@@ -170,7 +170,7 @@ float asMean(const int* pArrStart, const int* pArrEnd) {
 float asMean(const float* pArrStart, const float* pArrEnd) {
     float sum = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             sum += *(pArrStart + i);
             nb++;
         }
@@ -181,7 +181,7 @@ float asMean(const float* pArrStart, const float* pArrEnd) {
 double asMean(const double* pArrStart, const double* pArrEnd) {
     double sum = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             sum += *(pArrStart + i);
             nb++;
         }
@@ -203,14 +203,14 @@ float asStDev(const int* pArrStart, const int* pArrEnd, const int sample) {
     } else if (sample == asENTIRE_POPULATION) {
         return std::sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
-        return NaNf;
+        return NAN;
     }
 }
 
 float asStDev(const float* pArrStart, const float* pArrEnd, const int sample) {
     float sum = 0, sumsquares = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             sum += *(pArrStart + i);
             sumsquares += (*(pArrStart + i)) * (*(pArrStart + i));
             nb++;
@@ -222,14 +222,14 @@ float asStDev(const float* pArrStart, const float* pArrEnd, const int sample) {
     } else if (sample == asENTIRE_POPULATION) {
         return std::sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
-        return NaNf;
+        return NAN;
     }
 }
 
 double asStDev(const double* pArrStart, const double* pArrEnd, const int sample) {
     double sum = 0, sumsquares = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             sum += *(pArrStart + i);
             sumsquares += (*(pArrStart + i)) * (*(pArrStart + i));
             nb++;
@@ -241,7 +241,7 @@ double asStDev(const double* pArrStart, const double* pArrEnd, const int sample)
     } else if (sample == asENTIRE_POPULATION) {
         return std::sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
-        return NaNd;
+        return NAN;
     }
 }
 
@@ -269,7 +269,7 @@ a1f asGetCumulativeFrequency(const int size) {
 }
 
 float asGetValueForQuantile(const a1f& values, const float quantile) {
-    float value = NaNf;
+    float value = NAN;
     int size = values.size();
 
     a1f valuesCopy = values;
@@ -293,7 +293,7 @@ float asGetValueForQuantile(const a1f& values, const float quantile) {
 
     if (indLeft < 0 || indRight < 0) {
         wxLogError(_("An unexpected error occurred."));
-        return NaNf;
+        return NAN;
     }
 
     if (indLeft == indRight) {
@@ -306,35 +306,11 @@ float asGetValueForQuantile(const a1f& values, const float quantile) {
     return value;
 }
 
-bool asIsNaN(const int value) {
-    return value == NaNi;
-}
-
-bool asIsNaN(const float value) {
-    return value != value;
-}
-
-bool asIsNaN(const double value) {
-    return value != value;
-}
-
-bool asIsInf(const float value) {
-    return value == Inff;
-}
-
-bool asIsInf(const double value) {
-    return value == Infd;
-}
-
-bool asIsInf(const long double value) {
-    return value == Infld;
-}
-
 int asCountNotNaN(const float* pArrStart, const float* pArrEnd) {
     int counter = 0;
 
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             counter++;
         }
     }
@@ -346,7 +322,7 @@ int asCountNotNaN(const double* pArrStart, const double* pArrEnd) {
     int counter = 0;
 
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             counter++;
         }
     }
@@ -360,7 +336,7 @@ bool asHasNaN(const a2f& data) {
 
 bool asHasNaN(const float* pArrStart, const float* pArrEnd) {
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (asIsNaN(*(pArrStart + i))) {
+        if (isnan(*(pArrStart + i))) {
             return true;
         }
     }
@@ -370,7 +346,7 @@ bool asHasNaN(const float* pArrStart, const float* pArrEnd) {
 
 bool asHasNaN(const double* pArrStart, const double* pArrEnd) {
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (asIsNaN(*(pArrStart + i))) {
+        if (isnan(*(pArrStart + i))) {
             return true;
         }
     }
@@ -397,13 +373,13 @@ float asMinArray(const float* pArrStart, const float* pArrEnd) {
     int i = 0;
 
     // Manage the case where the first elements are NaNs
-    while (asIsNaN(*(pArrStart + i))) {
+    while (isnan(*(pArrStart + i))) {
         i++;
     }
     min = *(pArrStart + i);
 
     for (; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             if (*(pArrStart + i) < min) {
                 min = *(pArrStart + i);
             }
@@ -418,13 +394,13 @@ double asMinArray(const double* pArrStart, const double* pArrEnd) {
     int i = 0;
 
     // Manage the case where the first elements are NaNs
-    while (asIsNaN(*(pArrStart + i))) {
+    while (isnan(*(pArrStart + i))) {
         i++;
     }
     min = *(pArrStart + i);
 
     for (; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             if (*(pArrStart + i) < min) {
                 min = *(pArrStart + i);
             }
@@ -508,13 +484,13 @@ float asMaxArray(const float* pArrStart, const float* pArrEnd) {
     int i = 0;
 
     // Manage the case where the first elements are NaNs
-    while (asIsNaN(*(pArrStart + i))) {
+    while (isnan(*(pArrStart + i))) {
         i++;
     }
     max = *(pArrStart + i);
 
     for (; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             if (*(pArrStart + i) > max) {
                 max = *(pArrStart + i);
             }
@@ -529,13 +505,13 @@ double asMaxArray(const double* pArrStart, const double* pArrEnd) {
     int i = 0;
 
     // Manage the case where the first elements are NaNs
-    while (asIsNaN(*(pArrStart + i))) {
+    while (isnan(*(pArrStart + i))) {
         i++;
     }
     max = *(pArrStart + i);
 
     for (; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             if (*(pArrStart + i) > max) {
                 max = *(pArrStart + i);
             }
@@ -641,7 +617,7 @@ float asMinArrayStep(const float* pArrStart, const float* pArrEnd, const float t
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             copyData[j] = *(pArrStart + i);
             j++;
         }
@@ -681,7 +657,7 @@ double asMinArrayStep(const double* pArrStart, const double* pArrEnd, const doub
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             copyData[j] = *(pArrStart + i);
             j++;
         }
@@ -757,7 +733,7 @@ a1f asExtractUniqueValues(const float* pArrStart, const float* pArrEnd, const fl
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             copyData[j] = *(pArrStart + i);
             j++;
         }
@@ -796,7 +772,7 @@ a1d asExtractUniqueValues(const double* pArrStart, const double* pArrEnd, const 
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asIsNaN(*(pArrStart + i))) {
+        if (!isnan(*(pArrStart + i))) {
             copyData[j] = *(pArrStart + i);
             j++;
         }

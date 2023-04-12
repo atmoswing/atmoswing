@@ -51,7 +51,7 @@ float asTotalScoreF::Assess(const a1f& targetDates, const a1f& scores, const asT
                     countD++;
                 } else {
                     wxLogError(_("The F score (%f) is not an authorized value."), scores[i]);
-                    return NaNf;
+                    return NAN;
                 }
             }
             break;
@@ -71,7 +71,7 @@ float asTotalScoreF::Assess(const a1f& targetDates, const a1f& scores, const asT
             score = 0;
         }
     } else {
-        score = NaNf;
+        score = NAN;
     }
 
     return score;

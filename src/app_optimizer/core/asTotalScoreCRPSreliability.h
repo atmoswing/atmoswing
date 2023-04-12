@@ -40,7 +40,7 @@ class asTotalScoreCRPSreliability : public asTotalScore {
 
     float Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const override {
         wxLogError(_("The CRPS reliability score needs a 2D array as input !"));
-        return NaNf;
+        return NAN;
     }
 
     float Assess(const a1f& targetDates, const a2f& scores, const asTimeArray& timeArray) const override;

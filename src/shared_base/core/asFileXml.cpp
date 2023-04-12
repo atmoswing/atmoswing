@@ -280,7 +280,7 @@ int asFileXml::GetAttributeInt(wxXmlNode* node, const wxString& attribute) {
 
     if (attrVal.IsEmpty()) {
         wxLogError(_("Empty %s attribute of the element %s (XML file)."), attribute, node->GetName());
-        return NaNi;
+        return 0;
     }
 
     long value;
@@ -295,7 +295,7 @@ float asFileXml::GetAttributeFloat(wxXmlNode* node, const wxString& attribute) {
 
     if (attrVal.IsEmpty()) {
         wxLogError(_("Empty %s attribute of the element %s (XML file)."), attribute, node->GetName());
-        return NaNf;
+        return NAN;
     }
 
     double value;
@@ -310,7 +310,7 @@ double asFileXml::GetAttributeDouble(wxXmlNode* node, const wxString& attribute)
 
     if (attrVal.IsEmpty()) {
         wxLogError(_("Empty %s attribute of the element %s (XML file)."), attribute, node->GetName());
-        return NaNd;
+        return NAN;
     }
 
     double value;

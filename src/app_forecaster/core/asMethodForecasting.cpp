@@ -44,7 +44,7 @@
 asMethodForecasting::asMethodForecasting(asBatchForecasts* batchForecasts, wxWindow* parent)
     : asMethodStandard(),
       m_batchForecasts(batchForecasts),
-      m_forecastDate(NaNd),
+      m_forecastDate(nan),
       m_parent(parent) {}
 
 asMethodForecasting::~asMethodForecasting() {
@@ -64,7 +64,7 @@ bool asMethodForecasting::Manager() {
 #endif
     m_cancel = false;
 
-    if (asIsNaN(m_forecastDate)) {
+    if (isnan(m_forecastDate)) {
         wxLogError(_("The date of the forecast has not been defined."));
         return false;
     }

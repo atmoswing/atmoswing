@@ -48,7 +48,7 @@ float asCriteriaSAD::Assess(const a2f& refData, const a2f& evalData, int rowsNb,
         int size = (!diff.isNaN()).count();
         if (size == 0) {
             wxLogVerbose(_("Only NaNs in the SAD criteria calculation."));
-            return NaNf;
+            return NAN;
         }
 
         return ((diff.isNaN()).select(0, diff)).abs().sum();

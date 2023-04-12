@@ -45,7 +45,7 @@ class asPredictorCustomUnilOisst2 : public asPredictor {
   protected:
     void ListFiles(asTimeArray& timeArray) override;
 
-    void ConvertToMjd(a1d& time, double refValue = NaNd) const override;
+    void ConvertToMjd(a1d& time, double refValue = NAN) const override;
 
   private:
 };

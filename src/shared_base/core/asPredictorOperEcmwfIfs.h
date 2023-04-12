@@ -43,7 +43,7 @@ class asPredictorOperEcmwfIfs : public asPredictorOper {
     bool Init() override;
 
   protected:
-    void ConvertToMjd(a1d& time, double refValue = NaNd) const override;
+    void ConvertToMjd(a1d& time, double refValue = NAN) const override;
 
   private:
 };

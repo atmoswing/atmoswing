@@ -363,7 +363,7 @@ void asForecastRenderer::Redraw() {
                 a1f values = forecast->GetAnalogsValuesRaw(iLead, iStat);
 
                 if (asHasNaN(&values[0], &values[values.size() - 1])) {
-                    data.Add(NaNd);
+                    data.Add(NAN);
                 } else {
                     if (quantile >= 0) {
                         double forecastVal = asGetValueForQuantile(values, quantile);
@@ -522,8 +522,8 @@ void asForecastRenderer::Redraw() {
             a1f values = forecast->GetAnalogsValuesRaw(m_leadTimeIndex, iStat);
 
             if (asHasNaN(&values[0], &values[values.size() - 1])) {
-                data.Add(NaNd);  // 1st real value
-                data.Add(NaNd);  // 2nd normalized
+                data.Add(NAN);  // 1st real value
+                data.Add(NAN);  // 2nd normalized
             } else {
                 if (quantile >= 0) {
                     double forecastVal = asGetValueForQuantile(values, quantile);

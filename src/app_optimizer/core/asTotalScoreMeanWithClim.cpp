@@ -42,7 +42,7 @@ float asTotalScoreMeanWithClim::Assess(const a1f& targetDates, const a1f& scores
             float score = 0, divisor = 0;
 
             for (int iTime = 0; iTime < targetDatesLength; iTime++) {
-                if (!asIsNaN(scores(iTime))) {
+                if (!isnan(scores(iTime))) {
                     score += scores(iTime);
                     divisor++;
                 }
