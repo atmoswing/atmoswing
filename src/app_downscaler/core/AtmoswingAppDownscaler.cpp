@@ -41,13 +41,13 @@
 
 #endif
 
+#include <wx/stdpaths.h>
+
 #include "asMethodDownscalerClassic.h"
 #include "asParameters.h"
+#include "asFileText.h"
 
 IMPLEMENT_APP(AtmoswingAppDownscaler)
-
-#include "asFileText.h"
-#include "asMethodDownscalerClassic.h"
 
 #if USE_GUI
 

@@ -42,18 +42,19 @@
 
 #endif
 
+#include <wx/stdpaths.h>
+
 #include "asMethodCalibratorClassic.h"
 #include "asMethodCalibratorClassicVarExplo.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
+#include "asMethodCalibratorSingle.h"
 #include "asMethodCalibratorSingleOnlyDates.h"
 #include "asMethodCalibratorSingleOnlyValues.h"
 #include "asMethodOptimizerGAs.h"
 #include "asMethodOptimizerMC.h"
+#include "asFileText.h"
 
 IMPLEMENT_APP(AtmoswingAppOptimizer)
-
-#include "asFileText.h"
-#include "asMethodCalibratorSingle.h"
 
 #if USE_GUI
 

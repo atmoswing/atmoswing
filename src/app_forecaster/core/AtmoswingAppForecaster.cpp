@@ -45,7 +45,8 @@
 
 IMPLEMENT_APP(AtmoswingAppForecaster)
 
-#include "asBatchForecasts.h"
+#include <wx/stdpaths.h>
+
 #include "asFileText.h"
 #include "asInternet.h"
 #include "asMethodForecasting.h"

@@ -127,8 +127,6 @@ asPanelSidebarAlarmsDrawing::asPanelSidebarAlarmsDrawing(wxWindow* parent, wxWin
     m_parent = nullptr;
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarmsDrawing::OnPaint), nullptr, this);
-
-    Layout();
 }
 
 asPanelSidebarAlarmsDrawing::~asPanelSidebarAlarmsDrawing() {
@@ -209,12 +207,9 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f& dates, const vwxs& names, a2f&
 void asPanelSidebarAlarmsDrawing::SetBitmapAlarms(wxBitmap* bmp) {
     wxDELETE(m_bmpAlarms);
     wxASSERT(!m_bmpAlarms);
-
-    if (bmp != nullptr) {
-        wxASSERT(bmp);
-        m_bmpAlarms = new wxBitmap(*bmp);
-        wxASSERT(m_bmpAlarms);
-    }
+    wxASSERT(bmp);
+    m_bmpAlarms = new wxBitmap(*bmp);
+    wxASSERT(m_bmpAlarms);
 }
 
 void asPanelSidebarAlarmsDrawing::OnPaint(wxPaintEvent& event) {
