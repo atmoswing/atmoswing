@@ -1277,6 +1277,22 @@ asFramePreferencesViewerVirtual::asFramePreferencesViewerVirtual( wxWindow* pare
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
 
+	wxStaticBoxSizer* sbSizer71;
+	sbSizer71 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneralCommon, wxID_ANY, _("Language") ), wxVERTICAL );
+
+	wxString m_choiceLocaleChoices[] = { _("English"), _("French") };
+	int m_choiceLocaleNChoices = sizeof( m_choiceLocaleChoices ) / sizeof( wxString );
+	m_choiceLocale = new wxChoice( sbSizer71->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceLocaleNChoices, m_choiceLocaleChoices, 0 );
+	m_choiceLocale->SetSelection( 0 );
+	sbSizer71->Add( m_choiceLocale, 0, wxALL, 5 );
+
+	m_staticText53 = new wxStaticText( sbSizer71->GetStaticBox(), wxID_ANY, _("Restart AtmoSwing for the change to take effect."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText53->Wrap( -1 );
+	sbSizer71->Add( m_staticText53, 0, wxALL, 5 );
+
+
+	bSizer16->Add( sbSizer71, 0, wxEXPAND|wxALL, 5 );
+
 	wxStaticBoxSizer* sbSizer7;
 	sbSizer7 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneralCommon, wxID_ANY, _("Logs") ), wxVERTICAL );
 

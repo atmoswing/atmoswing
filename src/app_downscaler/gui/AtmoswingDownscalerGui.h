@@ -29,8 +29,8 @@
 #include <wx/toolbar.h>
 #include <wx/statusbr.h>
 #include <wx/frame.h>
-#include <wx/radiobut.h>
 #include <wx/statbox.h>
+#include <wx/radiobut.h>
 #include <wx/radiobox.h>
 #include <wx/textctrl.h>
 #include <wx/slider.h>
@@ -104,6 +104,8 @@ class asFramePreferencesDownscalerVirtual : public wxFrame
 		wxPanel* m_panelBase;
 		wxNotebook* m_notebookBase;
 		wxPanel* m_panelGeneralCommon;
+		wxChoice* m_choiceLocale;
+		wxStaticText* m_staticText21;
 		wxRadioButton* m_radioBtnLogLevel1;
 		wxRadioButton* m_radioBtnLogLevel2;
 		wxRadioButton* m_radioBtnLogLevel3;

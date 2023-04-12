@@ -102,6 +102,18 @@ class AmtoSwing(ConanFile):
             self.copy("*", dst="bin/AtmoSwing.app/Contents/share/atmoswing",
                       src=os.path.join(_source_folder, "data"))
 
+        # Copy translation files
+        _source_folder = os.path.join(os.getcwd(), "..")
+        if self.settings.os == "Windows":
+            self.copy("*.mo", dst="bin/fr",
+                      src=os.path.join(_source_folder, "locales/fr"))
+        if self.settings.os == "Linux":
+            self.copy("*.mo", dst="/usr/share/locale/fr/LC_MESSAGES/",
+                      src=os.path.join(_source_folder, "locales/fr"))
+        if self.settings.os == "Macos":
+            self.copy("*.mo", dst="bin/AtmoSwing.app/Contents/Resources/fr.lproj",
+                      src=os.path.join(_source_folder, "locales/fr"))
+
     def build(self):
         cmake = CMake(self)
         cmake.definitions["BUILD_TESTS"] = self.options.enable_tests

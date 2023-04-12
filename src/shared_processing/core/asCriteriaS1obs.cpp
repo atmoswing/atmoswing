@@ -28,7 +28,7 @@
 #include "asCriteriaS1obs.h"
 
 asCriteriaS1obs::asCriteriaS1obs()
-    : asCriteria("S1obs", _("S01 with division by actual value"), Asc) {
+    : asCriteria("S1obs", _("S1 with division by actual value"), Asc) {
     m_minPointsNb = 2;
     m_scaleWorst = 200;
     m_canUseInline = false;

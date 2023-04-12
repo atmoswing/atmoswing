@@ -1,0 +1,650 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-11 00:01+0200\n"
+"PO-Revision-Date: 2023-04-11 00:07+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:50
+msgid "Run optimizer"
+msgstr "Lancer l'optimiseur"
+
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:51
+msgid "Run optimizer now"
+msgstr "Lancer l'optimiseur maintenant"
+
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:52
+msgid "Cancel optimization"
+msgstr "Annuler l'optimisation"
+
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:53
+msgid "Cancel current optimization"
+msgstr "Annuler l'optimisation en cours"
+
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:55
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:600
+msgid "Preferences"
+msgstr "Préférences"
+
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:394
+msgid "Wrong method selection."
+msgstr "Mauvaise sélection de la méthode."
+
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:443
+msgid "Chosen method not defined yet."
+msgstr "La méthode choisie n'est pas encore définie."
+
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:454
+#, c-format
+msgid "Bad allocation caught: %s"
+msgstr "Mauvaise allocation détectée : %s"
+
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:455
+msgid "Failed to process the calibration."
+msgstr "Échec du calage."
+
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:458
+#, c-format
+msgid "Exception caught: %s"
+msgstr "Une exception a été détectée : %s"
+
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:459
+msgid "Failed to process the optimization."
+msgstr "Le traitement de l'optimisation a échoué."
+
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:464
+msgid "Optimizer over."
+msgstr "L'optimization est terminée."
+
+#: src/app_optimizer/gui/AtmoswingMainOptimizer.cpp:42
+#, c-format
+msgid "Welcome to AtmoSwing %s."
+msgstr "Bienvenue dans AtmoSwing %s."
+
+#: src/app_optimizer/gui/AtmoswingMainOptimizer.cpp:53
+msgid "AtmoSwing log window"
+msgstr "Fenêtre du journal AtmoSwing"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:38
+msgid "Select the calibration method"
+msgstr "Sélectionner la méthode de calage"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
+msgid "Single assessment"
+msgstr "Évaluation unique"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:109
+msgid "Classic calibration"
+msgstr "Calibration classique"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
+msgid "Classic+ calibration"
+msgstr "Calibration classique+"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
+msgid "Variables exploration Classic+"
+msgstr "Exploration des variables Classique+"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:156
+msgid "Monte-Carlo"
+msgstr "Monte-Carlo"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
+msgid "Genetic algorithms"
+msgstr "Algorithmes génétiques"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
+msgid "Evaluate all scores"
+msgstr "Évaluer touts les scores"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
+msgid "Only predictand values"
+msgstr "Uniquement les valeurs du prédictand"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
+msgid "Only analog dates (and criteria)"
+msgstr "Uniquement les dates analogues (et les critères)"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:48
+msgid "Select the parameters file for the calibration"
+msgstr "Sélectionner le fichier de paramètres pour le calage"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:52
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:59
+msgid "Select a file"
+msgstr "Séléctionner un fichier"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:52
+msgid "*.xml"
+msgstr "*.xml"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:55
+msgid "Select the predictand DB file"
+msgstr "Sélectionner le fichier BD predictand"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:59
+msgid "*.nc"
+msgstr "*.nc"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:62
+msgid "Select the predictors directory"
+msgstr "Sélectionner le répertoire des prédicteurs"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:66
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:73
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:736
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:743
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:842
+msgid "Select a folder"
+msgstr "Sélectionner un dossier"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:69
+msgid "Directory to save calibration outputs"
+msgstr "Répertoire d'enregistrement des résultats du calage"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:79
+msgid "Calibration state: "
+msgstr "État du calage : "
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:85
+msgid "Not running."
+msgstr "Pas de calculs en cours."
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:98
+msgid "Controls"
+msgstr "Contrôles"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:116
+msgid "Multiple of the steps in lon for pertinence map"
+msgstr "Multiple des pas en longitudes de la carte de pertinence"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:123
+msgid "Multiple of the steps in lat for pertinence map"
+msgstr "Multiple des pas en latitudes de la carte de pertinence"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:130
+msgid "Iterations in final resizing attempts"
+msgstr "Itérations dans les tentatives finales de redimensionnement"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:137
+msgid "Proceed sequentially (standard)"
+msgstr "Procéder de manière séquentielle (standard)"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:144
+msgid "Resize the spatial windows separately"
+msgstr "Redimensionner les fenêtres spatiales séparément"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:158
+msgid "Number of random param. sets"
+msgstr "Nombre de jeux de paramètres aléatoires"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:169
+msgid "Variables exploration"
+msgstr "Exploration des variables"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:171
+msgid "Step to explore (0-based)"
+msgstr "Étape à explorer (base 0)"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:185
+msgid "Calibration"
+msgstr "Calage"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:194
+msgid "Operators"
+msgstr "Opérateurs"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:201
+msgid "Natural selection"
+msgstr "Sélection naturelle"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:205
+msgid "Ratio elitism"
+msgstr "Ratio d'élitisme"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:205
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:215
+msgid "Tournament"
+msgstr "Tournois"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:211
+msgid "Couples selection"
+msgstr "Sélection des couples"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:215
+msgid "Rank pairing"
+msgstr "Appariement par rangs"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:215
+msgid "Randomly"
+msgstr "Aléatoirement"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:215
+msgid "Roulette wheel on rank"
+msgstr "Roulette sur la base des rangs"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:215
+msgid "Roulette wheel on score"
+msgstr "Roulette sur la base des scores"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:221
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:418
+msgid "Crossover"
+msgstr "Croisement"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
+msgid "Single point crossover"
+msgstr "Croisement à point unique"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
+msgid "Double points crossover"
+msgstr "Croisement à double point"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
+msgid "Multiple points crossover"
+msgstr "Croisement à plusieurs points"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
+msgid "Uniform crossover"
+msgstr "Croisement uniforme"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
+msgid "Limited blending"
+msgstr "Mélange limité"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
+msgid "Linear crossover"
+msgstr "Croisement linéaire"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
+msgid "Heuristic crossover"
+msgstr "Croisement heuristique"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
+msgid "Binary-like crossover"
+msgstr "Croisement de type binaire"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
+msgid "Linear interpolation"
+msgstr "Interpolation linéaire"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:225
+msgid "Free interpolation"
+msgstr "Interpolation libre"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:231
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:555
+msgid "Mutation"
+msgstr "Mutation"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
+msgid "Uniform constant"
+msgstr "Constante uniforme"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
+msgid "Uniform variable"
+msgstr "Variable uniforme"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
+msgid "Normal constant"
+msgstr "Constante normale"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
+msgid "Normal variable"
+msgstr "Variable normale"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
+msgid "Non-uniform"
+msgstr "Non-uniforme"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
+msgid "Self adaptation rate"
+msgstr "Taux d'auto-adaptation"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
+msgid "Self adaptation radius"
+msgstr "Rayon d'auto-adaptation"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
+msgid "Self adaptation rate chromosome"
+msgstr "Chromosome de taux d'auto-adaptation"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
+msgid "Self adaptation radius chromosome"
+msgstr "Chromosome de rayons d'auto-adaptation"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:235
+msgid "Multi scale"
+msgstr "Multi-échelle"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:248
+msgid "General options"
+msgstr "Options générales"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:255
+msgid "Runs number"
+msgstr "Nombre de runs"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:262
+msgid "Population's size"
+msgstr "Taille de la population"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:269
+msgid "Convergence after"
+msgstr "Convergence après"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:276
+msgid "Ratio interm. gen."
+msgstr "Ratio interm. gen."
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:286
+msgid "Allow elitism for the best"
+msgstr "Permettre l'élitisme pour le meilleur"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:308
+msgid "Natural slct tournament: prob"
+msgstr "Tournoi de slct naturel : prob"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:323
+msgid "Couples slct tournament: nb ind."
+msgstr "Tournoi de slct des couples : nb ind."
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:337
+msgid "Natural and couple selections"
+msgstr "Sélections naturelle et des couples"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:347
+msgid "Multiple crossover: nb points"
+msgstr "Croisement multiple : nb points"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:354
+msgid "Blending crossover: nb points"
+msgstr "Croisement par mélange : nb points"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:361
+msgid "Blending crossover: share beta"
+msgstr "Croisement par mélange : partage de bêta"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:368
+msgid "Linear crossover: nb points"
+msgstr "Croisement linéaire : nb points"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:383
+msgid "Heuristic crossover: nb points"
+msgstr "Croisement heuristique : nb points"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:390
+msgid "Heuristic crossover: share beta"
+msgstr "Croisement heuristique : partage de bêta"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:397
+msgid "Binary-like crossover: nb points"
+msgstr "Croisement de type binaire : nb points"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:404
+msgid "Binary-like crossover: share beta"
+msgstr "Croisement de type binaire : partage de bêta"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:428
+msgid "Uniform constant: probability"
+msgstr "Constante uniforme : probabilité"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:435
+msgid "Normal constant: probability"
+msgstr "Constante normale : probabilité"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:442
+msgid "Normal constant: std dev"
+msgstr "Constante normale : écart-type"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:449
+msgid "Uniform variable: on # generations"
+msgstr "Variable uniforme : sur # générations"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:456
+msgid "Uniform variable: starting probability"
+msgstr "Variable uniforme : probabilité de départ"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:463
+msgid "Uniform variable: ending probability"
+msgstr "Variable uniforme : probabilité de fin"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:470
+msgid "Multi-scale: probability"
+msgstr "Multi-échelle : probabilité"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:485
+msgid "Normal variable: prob on # generations"
+msgstr "Variable normale : probabilité sur # de générations"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:492
+msgid "Normal variable: std dev on # generations"
+msgstr "Variable normale : écart-type sur # de générations"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:499
+msgid "Normal variable: starting probability"
+msgstr "Variable normale : probabilité de départ"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:506
+msgid "Normal variable: ending probability"
+msgstr "Variable normale : probabilité de fin"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:513
+msgid "Normal variable: starting std dev"
+msgstr "Variable normale : écart-type de départ"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:520
+msgid "Normal variable: ending std dev"
+msgstr "Variable normale : écart-type de fin"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:527
+msgid "Non-uniform: probability"
+msgstr "Non-uniforme : probabilité"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:534
+msgid "Non-uniform: on # generations"
+msgstr "Non-uniforme : sur # générations"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:541
+msgid "Non-uniform: minimum rate"
+msgstr "Non-uniforme : taux minimum"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:566
+msgid "Genetic algoritms"
+msgstr "Algorithmes génétiques"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:574
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:603
+msgid "Options"
+msgstr "Options"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:581
+msgid "Save as default"
+msgstr "Enregistrer par défaut"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:607
+msgid "Build predictand DB"
+msgstr "Construire la base de données des prédictands"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:610
+msgid "Tools"
+msgstr "Outils"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:614
+msgid "Show Log Window"
+msgstr "Afficher la fenêtre du journal des évènements"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:618
+msgid "Log level"
+msgstr "Niveau de journal"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:620
+msgid "Only errors"
+msgstr "Erreurs seulement"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:624
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:698
+msgid "Errors and warnings"
+msgstr "Erreurs et avertissements"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:628
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:701
+msgid "Verbose"
+msgstr "Verbeux"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:633
+msgid "Log"
+msgstr "Journal"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:637
+msgid "About"
+msgstr "À propos"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:640
+msgid "Help"
+msgstr "Aide"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:687
+msgid "Logs"
+msgstr "Journaux"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:695
+msgid "Errors only (recommanded)"
+msgstr "Erreurs uniquement (recommandé)"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:710
+msgid "Display window"
+msgstr "Fenêtre d'affichage"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:714
+msgid "Save to a file"
+msgstr "Enregistrer dans un fichier"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:730
+msgid "Directories"
+msgstr "Répertoires"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:732
+msgid "Directory containing archive predictors"
+msgstr "Répertoire contenant les archives de prédicteurs"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:739
+msgid "Default predictand DB directory"
+msgstr "Répertoire contenant la base de données des prédictands"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:753
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:777
+msgid "General"
+msgstr "Général"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:763
+msgid "Silent (no progressbar, much faster)"
+msgstr "Silencieux (pas de barre de progression, beaucoup plus rapide)"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:763
+msgid "Standard (recommanded)"
+msgstr "Standard (recommandé)"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:763
+msgid "Verbose (not much used)"
+msgstr "Verbeux (peu utilisé)"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:765
+msgid "GUI options"
+msgstr "Options de l'interface graphique"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:769
+msgid "Let the software be responsive while processing (recommended)."
+msgstr "Laisser le logiciel réactif pendant le traitement (recommandé)."
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:783
+msgid "Multithreading"
+msgstr "Multithreading"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:785
+msgid "Allow multithreading"
+msgstr "Permettre le multithreading"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:792
+msgid "Max nb of threads"
+msgstr "Nb max de threads"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:805
+msgid "Threads priority"
+msgstr "Priorité des threads"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:818
+msgid "Multithreaded (only if allowed hereabove)"
+msgstr "Multithreading (seulement si autorisé ci-dessus)"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:818
+msgid "Standard (slower)"
+msgstr "Standard (plus lent)"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:820
+msgid "Processing options"
+msgstr "Options de calculs"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:822
+msgid "These options don't affect the results, only the processor efficiency."
+msgstr ""
+"Ces options n'affectent pas les résultats, mais seulement l'efficacité du "
+"processeur."
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:830
+msgid "Processing"
+msgstr "En cours de traitement"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:836
+msgid "Working directories"
+msgstr "Répertoires de travail"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:838
+msgid "Directory to save intermediate temporary results"
+msgstr ""
+"Répertoire pour l'enregistrement des résultats intermédiaires temporaires"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:849
+msgid "User specific paths"
+msgstr "Chemins d'accès spécifiques à l'utilisateur"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:856
+msgid "User working directory:"
+msgstr "Répertoire de travail de l'utilisateur :"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:860
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:868
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:876
+msgid "..."
+msgstr "..."
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:864
+msgid "Log file:"
+msgstr "Fichier journal :"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:872
+msgid "Preferences file:"
+msgstr "Fichier de préférences :"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:890
+msgid "User paths"
+msgstr "Chemins de l'utilisateur"
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:898
+msgid "Advanced"
+msgstr "Avancé"

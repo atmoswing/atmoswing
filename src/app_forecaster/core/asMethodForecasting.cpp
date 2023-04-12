@@ -97,8 +97,8 @@ bool asMethodForecasting::Manager() {
 
             if (g_responsive) wxTheApp->Yield();
 #endif
-            asLog::PrintToConsole(asStrF("Processing %s... ", m_batchForecasts->GetForecastFileName(i)));
-            wxLogMessage("Processing %s", m_batchForecasts->GetForecastFileName(i));
+            asLog::PrintToConsole(asStrF(_("Processing %s... "), m_batchForecasts->GetForecastFileName(i)));
+            wxLogMessage(_("Processing %s"), m_batchForecasts->GetForecastFileName(i));
             fflush(stdout);
 
             // Load parameters

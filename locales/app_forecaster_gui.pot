@@ -1,0 +1,461 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-11 00:01+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:61
+msgid "Run forecast"
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:62
+msgid "Run forecast now"
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:63
+msgid "Cancel forecast"
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:64
+msgid "Cancel current forecast"
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:66
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:193
+msgid "Preferences"
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:74
+msgid "Downloading predictors"
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:83
+msgid "Loading data"
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:92
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:636
+msgid "Processing"
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:101
+msgid "Saving results"
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:161
+#: src/app_forecaster/gui/asFrameForecaster.cpp:165
+#: src/app_forecaster/gui/asFrameForecaster.cpp:194
+#: src/app_forecaster/gui/asFrameForecaster.cpp:198
+msgid "Failed to open the batch file "
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:177
+msgid "Select a batch file"
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:208
+msgid "Select a path to save the batch file"
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:232
+msgid "Could not save the batch file."
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:416
+msgid "Event not identified."
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:453
+#, c-format
+msgid "Trying to run the forecast for the date %s"
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:456
+msgid "The forecaster is already processing."
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:464
+msgid "Failed processing the forecast."
+msgstr ""
+
+#: src/app_forecaster/gui/asFrameForecaster.cpp:476
+#, c-format
+msgid "Forecast processed for the date %s"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:33
+msgid "Start the forecast for a given date"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:51
+msgid "Hour (UTM)"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:67
+msgid "Set current date."
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:87
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:95
+msgid "0"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:91
+msgid "/"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:112
+msgid "Configure directories"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:146
+msgid "Add a parameters file."
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:174
+msgid "Open a batch file"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:178
+msgid "Save batch file"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:182
+msgid "Save batch file as"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:186
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:774
+msgid "Create a new batch file"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:189
+msgid "File"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:196
+msgid "Options"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:200
+msgid "Build predictand DB"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:203
+msgid "Tools"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:207
+msgid "Show Log Window"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:211
+msgid "Log level"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:213
+msgid "Only errors"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:217
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:403
+msgid "Errors and warnings"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:221
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:406
+msgid "Verbose"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:226
+msgid "Log"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:230
+msgid "About"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:233
+msgid "Help"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:280
+msgid "Enter the parameters file name..."
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:324
+msgid "Directory containing the parameters files"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:328
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:335
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:342
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:349
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:356
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:363
+msgid "Select a folder"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:331
+msgid "Directory containing the predictand DB"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:338
+msgid "Directory containing archive predictors"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:345
+msgid "Directory to save downloaded real-time predictors (GCM forecasts)"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:352
+msgid "Directory to save forecast outputs (netCDF)"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:359
+msgid "Directory to save forecast exports (xml)"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:369
+msgid "Export:"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:373
+msgid "None"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:373
+msgid "Full XML"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:373
+msgid "Small CSV"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:373
+msgid "Custom CSV for FVG"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:386
+msgid "Batch file properties"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:392
+msgid "Logs"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:400
+msgid "Errors only (recommanded)"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:415
+msgid "Display window"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:419
+msgid "Save to a file"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:435
+msgid "Proxy configuration"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:437
+msgid "Internet connection uses a proxy"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:443
+msgid "Proxy address"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:450
+msgid "Port"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:463
+msgid "Username"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:470
+msgid "Password"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:484
+msgid "Libraries"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:489
+msgid "ecCodes definitions"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:506
+msgid "General options"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:516
+msgid "Silent (no progressbar, much faster)"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:516
+msgid "Standard (recommanded)"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:516
+msgid "Verbose (not much used)"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:518
+msgid "GUI options"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:523
+msgid "Predictor download"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:530
+msgid "Maximum number of previous time steps if download fails"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:534
+msgid "5"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:545
+msgid "Maximum parallel requests number"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:549
+msgid "3"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:560
+msgid "Restrict downloads to needed lead times."
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:572
+msgid "Let the software be responsive while processing (recommended)."
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:576
+msgid "Allow multiple instances of the forecaster"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:583
+msgid "General"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:589
+msgid "Multithreading"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:591
+msgid "Allow multithreading"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:598
+msgid "Max nb of threads"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:611
+msgid "Threads priority"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:624
+msgid "Multithreaded (only if allowed hereabove)"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:624
+msgid "Standard (slower)"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:626
+msgid "Processing options"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:628
+msgid "These options don't affect the results, only the processor efficiency."
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:642
+msgid "User specific paths"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:649
+msgid "User working directory:"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:653
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:661
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:669
+msgid "..."
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:657
+msgid "Log file:"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:665
+msgid "Preferences file:"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:683
+msgid "User paths"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:691
+msgid "Advanced options"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:747
+msgid "Load / create a batch file"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:753
+msgid "Provide the path to an existing file"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:757
+msgid "Load existing batch file"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:760
+msgid "or continue to create a new batch file"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:780
+msgid "Path to save the new batch file"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:784
+msgid "Select a file"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:784
+msgid "*.xml"
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:787
+msgid "The preferences frame will open to configure the required directories."
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingMainForecaster.cpp:42
+#, c-format
+msgid "Welcome to AtmoSwing %s."
+msgstr ""
+
+#: src/app_forecaster/gui/AtmoswingMainForecaster.cpp:53
+msgid "AtmoSwing log window"
+msgstr ""

@@ -48,6 +48,8 @@ class AtmoswingAppViewer : public wxApp {
 
     bool OnCmdLineParsed(wxCmdLineParser& parser) override;
 
+    static void InitLanguageSupport();
+
   private:
     wxSingleInstanceChecker* m_singleInstanceChecker;
 };

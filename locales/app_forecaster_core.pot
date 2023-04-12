@@ -1,0 +1,633 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-11 00:01+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/app_forecaster/core/asBatchForecasts.cpp:51
+msgid "Cannot open the batch file."
+msgstr ""
+
+#: src/app_forecaster/core/asBatchForecasts.cpp:55
+msgid "Errors were found in the batch file."
+msgstr ""
+
+#: src/app_forecaster/core/asFileBatchForecasts.cpp:48
+#: src/app_forecaster/core/asFileParametersForecast.cpp:48
+#, c-format
+msgid "The file %s is not a parameters file for the Forecaster."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:68
+msgid "The date of the forecast has not been defined."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:100
+#, c-format
+msgid "Processing %s... "
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:101
+#, c-format
+msgid "Processing %s"
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:121
+msgid "FAILED!\n"
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:122
+msgid "The forecast could not be processed"
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:135
+#, c-format
+msgid "done in %.1f sec.\n"
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:136
+#, c-format
+msgid "Processing of the forecast \"%s\" - \"%s\" took %.1f sec to execute"
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:155
+msgid "The export of the synthetic xml failed."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:159
+#: src/app_forecaster/core/asMethodForecasting.cpp:163
+msgid "The export of the synthetic csv failed."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:180
+msgid "Forecasting over."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:206
+#: src/app_forecaster/core/asMethodForecasting.cpp:242
+#: src/app_forecaster/core/asMethodForecasting.cpp:457
+#: src/app_forecaster/core/asMethodForecasting.cpp:496
+#: src/app_forecaster/core/asMethodForecasting.cpp:538
+msgid "Forecast already exists."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:271
+msgid "Loading the Predictand DB."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:273
+msgid "Predictand DB loaded."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:338
+#: src/app_forecaster/core/asMethodForecasting.cpp:342
+#: src/app_forecaster/core/asResultsForecast.cpp:643
+#, c-format
+msgid "Exception caught: %s"
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:383
+msgid "Downloading data."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:434
+msgid "Data downloaded."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:506
+msgid "The maximum attempts is reached to download the real-time predictor."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:522
+#, c-format
+msgid "File not found: %s"
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:548
+msgid "The maximum attempts is reached to search for the real-time predictor."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:549
+#, c-format
+msgid "Directory: %s"
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:632
+#: src/app_forecaster/core/asMethodForecasting.cpp:1137
+#, c-format
+msgid ""
+"The time array is not consistent in asMethodForecasting::GetAnalogsDates: "
+"size=%d."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:636
+#: src/app_forecaster/core/asMethodForecasting.cpp:1141
+msgid "Date array created."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:655
+#: src/app_forecaster/core/asMethodForecasting.cpp:1160
+#, c-format
+msgid "Needed memory for data: %.2f Mb (cannot evaluate available memory)"
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:657
+#: src/app_forecaster/core/asMethodForecasting.cpp:1162
+#, c-format
+msgid "Needed memory for data: %.2f Mb (%.2f Mb available)"
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:659
+#: src/app_forecaster/core/asMethodForecasting.cpp:1164
+msgid "Data cannot fit into available memory."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:674
+#, c-format
+msgid "Loading data (step %d, predictor nb %d)."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:748
+#: src/app_forecaster/core/asMethodForecasting.cpp:903
+#: src/app_forecaster/core/asMethodForecasting.cpp:1249
+#: src/app_forecaster/core/asMethodForecasting.cpp:1385
+#, c-format
+msgid ""
+"The real-time predictor time array is not consistent (listTimeArray[%d](%f)!"
+"=timeArrayDataTarget[%d](%f))."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:751
+#: src/app_forecaster/core/asMethodForecasting.cpp:906
+#: src/app_forecaster/core/asMethodForecasting.cpp:1252
+#: src/app_forecaster/core/asMethodForecasting.cpp:1388
+msgid ""
+"It is likely that the lead times you defined go beyond the data availability."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:763
+msgid "Data standardization is not yet implemented in operational forecasting."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:771
+#: src/app_forecaster/core/asMethodForecasting.cpp:917
+msgid "Loading archive data."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:773
+#: src/app_forecaster/core/asMethodForecasting.cpp:920
+#: src/app_forecaster/core/asMethodForecasting.cpp:1264
+#: src/app_forecaster/core/asMethodForecasting.cpp:1401
+#, c-format
+msgid "Archive data (%s) could not be loaded."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:784
+#: src/app_forecaster/core/asMethodForecasting.cpp:808
+#: src/app_forecaster/core/asMethodForecasting.cpp:977
+#: src/app_forecaster/core/asMethodForecasting.cpp:986
+#: src/app_forecaster/core/asMethodForecasting.cpp:1275
+#: src/app_forecaster/core/asMethodForecasting.cpp:1297
+#: src/app_forecaster/core/asMethodForecasting.cpp:1466
+#: src/app_forecaster/core/asMethodForecasting.cpp:1475
+msgid "Data standardisation has failed."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:796
+msgid "Loading forecast data (predictorRealtime->Load)."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:798
+#: src/app_forecaster/core/asMethodForecasting.cpp:932
+#: src/app_forecaster/core/asMethodForecasting.cpp:1287
+#: src/app_forecaster/core/asMethodForecasting.cpp:1412
+#, c-format
+msgid "Real-time data (%s) could not be loaded."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:821
+#: src/app_forecaster/core/asMethodForecasting.cpp:1309
+#, c-format
+msgid "Preprocessing data (%d predictor(s)) while loading."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:824
+#: src/app_forecaster/core/asMethodForecasting.cpp:1312
+#, c-format
+msgid "Loading predictor %d."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:929
+msgid "Loading forecast data (predictorRealtimePreprocess->Load)."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:952
+#: src/app_forecaster/core/asMethodForecasting.cpp:967
+#: src/app_forecaster/core/asMethodForecasting.cpp:1441
+#: src/app_forecaster/core/asMethodForecasting.cpp:1456
+msgid "Data preprocessing failed."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:1001
+#: src/app_forecaster/core/asMethodForecasting.cpp:1489
+msgid "Data loaded"
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:1004
+#: src/app_forecaster/core/asMethodForecasting.cpp:1492
+msgid "Creating a criterion object."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:1007
+#: src/app_forecaster/core/asMethodForecasting.cpp:1495
+msgid "Criterion object created."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:1021
+#: src/app_forecaster/core/asMethodForecasting.cpp:1509
+msgid "Start processing the comparison."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:1044
+#: src/app_forecaster/core/asMethodForecasting.cpp:1547
+msgid "Failed processing the analogs dates."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:1074
+msgid "Creating a date arrays for the processor."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:1179
+msgid "Loading data."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:1659
+msgid "Start setting the predictand values to the corresponding analog dates."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:1698
+msgid "Failed setting the predictand values to the corresponding analog dates."
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:1722
+msgid "Predictands association over."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:50
+msgid "Loading parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:53
+msgid "The given path to the parameters file is empty."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:100
+msgid "Parameters file loaded."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:339
+msgid "The lead times were not provided in the parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:344
+msgid ""
+"The beginning of the archive period was not provided in the parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:349
+msgid "The end of the archive period was not provided in the parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:354
+#: src/app_forecaster/core/asParametersForecast.cpp:359
+msgid "The time step was not provided in the parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:367
+msgid ""
+"The interval days for the analogs preselection was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:373
+msgid ""
+"The number of days to exclude around the target date was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:382
+#, c-format
+msgid ""
+"The length of the analogs numbers (step %d) do not match the number of lead "
+"times."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:391
+#, c-format
+msgid ""
+"The preprocessing method (step %d, predictor %d) was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:399
+#, c-format
+msgid ""
+"The realtime dataset for preprocessing (step %d, predictor %d) was not "
+"provided in the parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:405
+#, c-format
+msgid ""
+"The realtime data for preprocessing (step %d, predictor %d) was not provided "
+"in the parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:411
+#, c-format
+msgid ""
+"The archive dataset for preprocessing (step %d, predictor %d) was not "
+"provided in the parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:417
+#, c-format
+msgid ""
+"The archive data for preprocessing (step %d, predictor %d) was not provided "
+"in the parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:425
+#, c-format
+msgid ""
+"The realtime dataset (step %d, predictor %d) was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:431
+#, c-format
+msgid ""
+"The realtime data (step %d, predictor %d) was not provided in the parameters "
+"file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:437
+#, c-format
+msgid ""
+"The archive dataset (step %d, predictor %d) was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:443
+#, c-format
+msgid ""
+"The archive data (step %d, predictor %d) was not provided in the parameters "
+"file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:451
+#, c-format
+msgid "The grid type (step %d, predictor %d) is empty in the parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:457
+#, c-format
+msgid ""
+"The X points nb value (step %d, predictor %d) was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:463
+#, c-format
+msgid ""
+"The Y points nb value (step %d, predictor %d) was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:469
+#, c-format
+msgid ""
+"The criteria (step %d, predictor %d) was not provided in the parameters file."
+msgstr ""
+
+#: src/app_forecaster/core/asParametersForecast.cpp:514
+msgid ""
+"The lengths of the lead time and the number of analogs arrays are not "
+"consistent."
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecast.cpp:102
+msgid "The provided ID or the tag is empty, which isn't allowed !"
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecast.cpp:152
+#, c-format
+msgid "Saving forecast file: %s"
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecast.cpp:424
+#, c-format
+msgid ""
+"The forecast file was made with more recent version of AtmoSwing (file "
+"version %d.%d). It cannot be opened here."
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecast.cpp:431
+msgid "The forecast file was made with an older version of AtmoSwing."
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecast.cpp:467
+msgid "The spatial aggregation could not be converted."
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecast.cpp:858
+#, c-format
+msgid "The forecasts \"%s\" and \"%s\" are not compatible"
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecast.cpp:927
+#, c-format
+msgid "The station ID %d was not found in the forecast results."
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecastAggregator.cpp:67
+msgid "This forecast has already been loaded."
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecastAggregator.cpp:77
+#, c-format
+msgid "The forecast \"%s\" (%s) is not fully compatible with \"%s\" (%s)"
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecastAggregator.cpp:118
+#, c-format
+msgid ""
+"The past forecast \"%s\" (%s) is not fully compatible with the current "
+"version of \"%s\" (%s)"
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecastAggregator.cpp:367
+#, c-format
+msgid "No specific forecast was found for station ID %d"
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecastAggregator.cpp:384
+#, c-format
+msgid "No specific forecast was found for station %d"
+msgstr ""
+
+#: src/app_forecaster/core/asResultsForecastAggregator.cpp:536
+msgid "The desired return period is not available in the forecast file."
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:124
+msgid "Program already running, aborting."
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:314
+msgid "The value provided for 'forecast-past' could not be interpreted.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:328
+msgid "Wrong date format.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:361
+msgid "An existing batch file was found and has been loaded.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:372
+msgid "Please provide a path to save the batch file.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:373
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:393
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:410
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:433
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:445
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:456
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:467
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:478
+msgid "Current value (enter to keep): "
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:374
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:394
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:434
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:446
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:457
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:468
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:479
+msgid "New value: "
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:384
+msgid "The batch file exists and will be loaded.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:387
+msgid "Failed opening the batch file.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:392
+msgid "Please provide a directory to save the forecasts.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:403
+msgid "Do you want to export synthetic xml files of the forecasts ?\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:413
+msgid "New value (Y/N): "
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:424
+msgid "The provided value is not allowed. Please enter Y or N.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:432
+msgid "Please provide a directory to save the exports.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:444
+msgid "Please provide the directory containing the parameters files.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:455
+msgid "Please provide the directory containing the archive predictors.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:466
+msgid "Please provide a directory to save the downloaded predictors.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:477
+msgid "Please provide the directory containing the predictand database.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:488
+msgid "Batch file created successfully.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:495
+msgid ""
+"Warning: there is no forecast listed in the batch file. Please create the "
+"batch file on a version with the graphical interface or edit the generated "
+"file manually.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:503
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:584
+#, c-format
+msgid "Forecast started for the %s UTC"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:514
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:563
+msgid "Failed to open the batch file "
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:515
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:564
+#, c-format
+msgid "Failed to open the batch file %s\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:519
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:568
+msgid "Please run 'atmoswing-forecaster -c' first in order to configure."
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:520
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:569
+msgid "Please run 'atmoswing-forecaster -c' first in order to configure.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:528
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:591
+msgid "Failed processing the forecast."
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:529
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:592
+msgid "Failed processing the forecast.\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:536
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:599
+#, c-format
+msgid "Forecast processed for the date %s UTC"
+msgstr ""

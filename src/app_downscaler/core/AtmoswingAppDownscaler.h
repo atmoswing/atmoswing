@@ -66,6 +66,8 @@ class AtmoswingAppDownscaler : public wxAppConsole
 
     virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
 
+    static void InitLanguageSupport();
+
     virtual bool OnExceptionInMainLoop();
 
     virtual void OnFatalException();

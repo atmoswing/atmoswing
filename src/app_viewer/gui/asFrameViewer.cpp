@@ -1019,12 +1019,12 @@ bool asFrameViewer::OpenRecentForecasts() {
     wxString forecastsDirectory = m_workspace.GetForecastsDirectory();
 
     if (forecastsDirectory.IsEmpty()) {
-        wxLogError("The directory containing the forecasts was not provided.");
+        wxLogError(_("The directory containing the forecasts was not provided."));
         return false;
     }
 
     if (!wxFileName::DirExists(forecastsDirectory)) {
-        wxLogError("The directory that is supposed to contain the forecasts does not exist.");
+        wxLogError(_("The directory that is supposed to contain the forecasts does not exist."));
         return false;
     }
 

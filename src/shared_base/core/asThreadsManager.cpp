@@ -185,7 +185,7 @@ bool asThreadsManager::AddThread(asThread* thread) {
 
     // Run
     if (thread->Run() != wxTHREAD_NO_ERROR) {
-        wxLogError("Can't run the thread!");
+        wxLogError(_("Can't run the thread!"));
         delete thread;
         return false;
     }
