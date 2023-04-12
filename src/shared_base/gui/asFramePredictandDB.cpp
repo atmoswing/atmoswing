@@ -228,7 +228,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
             case 0:  // Precipitation
             {
                 wxASSERT(m_panelProcessing);
-                auto* panel = dynamic_cast<asPanelProcessingPrecipitation*>(m_panelProcessing);
+                auto panel = dynamic_cast<asPanelProcessingPrecipitation*>(m_panelProcessing);
                 wxASSERT(panel->m_checkBoxReturnPeriod);
                 wxASSERT(panel->m_textCtrlReturnPeriod);
                 wxASSERT(panel->m_checkBoxSqrt);
@@ -261,7 +261,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
             case 2:  // Lightning
             {
                 wxASSERT(m_panelProcessing);
-                auto* panel = dynamic_cast<asPanelProcessingLightning*>(m_panelProcessing);
+                auto panel = dynamic_cast<asPanelProcessingLightning*>(m_panelProcessing);
                 wxASSERT(panel->m_checkBoxLog);
 
                 // Instantiate a predictand object

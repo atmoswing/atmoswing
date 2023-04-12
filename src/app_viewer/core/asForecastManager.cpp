@@ -137,7 +137,7 @@ bool asForecastManager::Open(const wxString& filePath, bool doRefresh) {
     }
 
     // Create and load the forecast
-    auto* forecast = new asResultsForecast;
+    auto forecast = new asResultsForecast;
 
     forecast->SetFilePath(filePath);
     if (!forecast->Load()) {
@@ -192,7 +192,7 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     }
 
     // Create and load the forecast
-    auto* forecast = new asResultsForecast;
+    auto forecast = new asResultsForecast;
 
     forecast->SetFilePath(filePath);
     if (!forecast->Load()) {

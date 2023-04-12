@@ -109,7 +109,7 @@ bool asMethodOptimizerMC::Manager() {
 
         if (nextParams) {
             // Add it to the threads
-            auto* thread = new asThreadMC(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+            auto thread = new asThreadMC(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
             ThreadsManager().AddThread(thread);
 
             // Wait until done to get the score of the climatology

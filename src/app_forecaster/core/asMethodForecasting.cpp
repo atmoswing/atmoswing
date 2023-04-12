@@ -206,7 +206,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
             wxLogVerbose(_("Forecast already exists."));
             m_resultsFilePaths.push_back(resultsCheck.GetFilePath());
             if (m_batchForecasts->HasExports()) {
-                auto* results = new asResultsForecast();
+                auto results = new asResultsForecast();
                 results->SetFilePath(resultsCheck.GetFilePath());
                 results->Load();
                 m_aggregator.Add(results);
@@ -242,7 +242,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
             wxLogVerbose(_("Forecast already exists."));
             m_resultsFilePaths.push_back(resultsCheck.GetFilePath());
             if (m_batchForecasts->HasExports()) {
-                auto* results = new asResultsForecast();
+                auto results = new asResultsForecast();
                 results->SetFilePath(resultsCheck.GetFilePath());
                 results->Load();
                 m_aggregator.Add(results);
@@ -278,8 +278,8 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
     if (m_cancel) return false;
 
     // Resulting object
-    auto* resultsPrevious = new asResultsForecast();
-    auto* results = new asResultsForecast();
+    auto resultsPrevious = new asResultsForecast();
+    auto results = new asResultsForecast();
     results->SetForecastsDirectory(m_batchForecasts->GetForecastsOutputDirectory());
 
     for (int iStep = 0; iStep < stepsNb; iStep++) {
@@ -942,7 +942,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             params.FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
             // Instantiate an archive predictor object
-            auto* predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
+            auto predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
             if (!predictorArchive) {
                 return false;
             }
@@ -955,7 +955,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             }
 
             // Instantiate an realtime predictor object
-            auto* predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
+            auto predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
             if (!predictorRealtime) {
                 wxDELETE(predictorArchive);
                 return false;
@@ -1431,7 +1431,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
             params.FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
             // Instantiate an archive predictor object
-            auto* predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
+            auto predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
             if (!predictorArchive) {
                 return false;
             }
@@ -1444,7 +1444,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
             }
 
             // Instantiate an realtime predictor object
-            auto* predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
+            auto predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
             if (!predictorRealtime) {
                 wxDELETE(predictorArchive);
                 return false;

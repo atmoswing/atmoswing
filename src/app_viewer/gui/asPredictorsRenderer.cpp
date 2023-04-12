@@ -124,7 +124,7 @@ vrLayerRasterPredictor* asPredictorsRenderer::RedrawRasterPredictor(const wxStri
     wxFileName memoryRaster("", name, "memory");
 
     // Create the layers
-    auto* layerRaster = new vrLayerRasterPredictor(predictorsManager, minVal, maxVal);
+    auto layerRaster = new vrLayerRasterPredictor(predictorsManager, minVal, maxVal);
 
     if (!layerRaster->CreateInMemory(memoryRaster)) {
         wxFAIL;
@@ -154,7 +154,7 @@ void asPredictorsRenderer::RedrawContourLines(const wxString& name, vrViewerLaye
     if (!layerRaster) return;
 
     // Create the layers
-    auto* layerVector = new vrLayerVectorContours();
+    auto layerVector = new vrLayerVectorContours();
 
     if (!layerVector->Create(memoryVector, wkbLineString)) {
         wxFAIL;
@@ -186,7 +186,7 @@ void asPredictorsRenderer::RedrawSpatialWindow(const wxString& name, vrViewerLay
     wxFileName memoryVector("", name, "memory");
 
     // Create the layers
-    auto* layerVector = new vrLayerVectorDomain();
+    auto layerVector = new vrLayerVectorDomain();
 
     if (!layerVector->Create(memoryVector, wkbPolygon)) {
         wxFAIL;

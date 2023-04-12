@@ -85,7 +85,7 @@ void asLeadTimeSwitcher::Draw(a1f& dates) {
     wxASSERT(values.size() == dates.size());
 
     // Create bitmap
-    auto* bmp = new wxBitmap(width, height);
+    auto bmp = new wxBitmap(width, height);
     wxASSERT(bmp);
 
     // Create device context

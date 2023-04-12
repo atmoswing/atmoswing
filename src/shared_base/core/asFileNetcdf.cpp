@@ -410,7 +410,7 @@ void asFileNetcdf::PutVarArray(const wxString& varName, const size_t* arrStart, 
 
     // From http://bytes.com/topic/c/answers/127614-best-way-copy-vector-string-char
     // Allocate memory for an array of character strings
-    auto** cstr = new char*[totSize];
+    auto* cstr = new char*[totSize];
 
     // For each string, allocate memory in the character array and copy
     for (long i = 0; i < totSize; i++) {
@@ -826,7 +826,7 @@ wxString asFileNetcdf::GetAttString(const wxString& attName, const wxString& var
 
         // Allocate
         len = m_struct.atts[attId].length;
-        auto* text = new char[len + 1]; /* + 1 for trailing null */
+        auto text = new char[len + 1]; /* + 1 for trailing null */
 
         // Check the given type
         nc_type nctype = m_struct.atts[attId].type;
@@ -857,7 +857,7 @@ wxString asFileNetcdf::GetAttString(const wxString& attName, const wxString& var
 
         // Allocate
         len = m_struct.vars[varId].atts[attId].length;
-        auto* text = new char[len + 1]; /* + 1 for trailing null */
+        auto text = new char[len + 1]; /* + 1 for trailing null */
 
         // Check the given type
         nc_type nctype = m_struct.vars[varId].atts[attId].type;

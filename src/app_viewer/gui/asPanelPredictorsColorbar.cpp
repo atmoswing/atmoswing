@@ -99,7 +99,7 @@ void asPanelPredictorsColorbarDrawing::DrawColorbar(double valMin, double valMax
 
     wxSize sizePanel = GetSize();
 
-    auto* bmp = new wxBitmap(sizePanel.x, sizePanel.y);
+    auto bmp = new wxBitmap(sizePanel.x, sizePanel.y);
     wxASSERT(bmp);
 
     // Create device context

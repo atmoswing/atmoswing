@@ -109,7 +109,7 @@ bool AtmoswingAppViewer::OnInit() {
         return false;
 
     // Create frame
-    auto* frame = new AtmoswingFrameViewer(0L);
+    auto frame = new AtmoswingFrameViewer(0L);
     frame->Init();
 
 #ifdef __WXMSW__

@@ -153,7 +153,7 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f& dates, const vwxs& names, a2f&
 
     // Create bitmap
     int totHeight = cellHeight * rows + cellHeight;
-    auto* bmp = new wxBitmap(width, totHeight);
+    auto bmp = new wxBitmap(width, totHeight);
     wxASSERT(bmp);
 
     // Create device context

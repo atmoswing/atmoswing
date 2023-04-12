@@ -436,7 +436,7 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive,
                 end = ceil(((float)(iThread + 1) * (float)(timeTargetSelectionSize - 1) / (float)threadsNb));
                 wxASSERT(end >= start);
 
-                auto* thread = new asThreadGetAnalogsDates(
+                auto thread = new asThreadGetAnalogsDates(
                     predictorsArchive, predictorsTarget, &timeArrayArchiveData, &timeArrayArchiveSelection,
                     &timeArrayTargetData, &timeArrayTargetSelection, criteria, params, step, vRowsNb, vColsNb, start,
                     end, &finalAnalogsCriteria, &finalAnalogsDates, flag, allowDuplicateDates, success);

@@ -279,7 +279,7 @@ void asFramePredictors::InitExtent() {
 void asFramePredictors::OpenFramePreferences(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePreferencesViewer(this, m_workspace, asWINDOW_PREFERENCES);
+    auto frame = new asFramePreferencesViewer(this, m_workspace, asWINDOW_PREFERENCES);
     frame->Fit();
     frame->Show();
 }

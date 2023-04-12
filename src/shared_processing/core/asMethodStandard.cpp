@@ -195,7 +195,7 @@ bool asMethodStandard::ProceedToArchiveDataPreloading(asParameters* params) {
                             continue;
                         }
                         if (parallelDataLoad) {
-                            auto* thread = new asThreadPreloadArchiveData(this, params, iStep, iPtor, i);
+                            auto thread = new asThreadPreloadArchiveData(this, params, iStep, iPtor, i);
                             if (!ThreadsManager().HasFreeThread(thread->GetType())) {
                                 ThreadsManager().WaitForFreeThread(thread->GetType());
                             }
@@ -735,7 +735,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters* params,
             }
 
             wxLogVerbose(_("Preprocessing data."));
-            auto* predictor = new asPredictor(*predictorsPreprocess[0]);
+            auto predictor = new asPredictor(*predictorsPreprocess[0]);
 
             try {
                 if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), predictor)) {
@@ -931,7 +931,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(vector<asPredictor*>& predict
 
     // Copy the data
     wxASSERT(m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
-    auto* desiredPredictor = new asPredictor(*m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
+    auto desiredPredictor = new asPredictor(*m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
 
     // Load dumped data
     if (m_dumpPredictorData) {
@@ -1014,7 +1014,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(vector<asPredictor*>& predict
         vector<asPredictor*> predictorsPreprocess;
         predictorsPreprocess.push_back(desiredPredictor);
 
-        auto* newPredictor = new asPredictor(*predictorsPreprocess[0]);
+        auto newPredictor = new asPredictor(*predictorsPreprocess[0]);
         if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), newPredictor)) {
             wxLogError(_("Data preprocessing failed."));
             Cleanup(predictorsPreprocess);
@@ -1087,7 +1087,7 @@ bool asMethodStandard::ExtractArchiveData(vector<asPredictor*>& predictors, asPa
         vector<asPredictor*> predictorsPreprocess;
         predictorsPreprocess.push_back(predictor);
 
-        auto* newPredictor = new asPredictor(*predictorsPreprocess[0]);
+        auto newPredictor = new asPredictor(*predictorsPreprocess[0]);
         if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), newPredictor)) {
             wxLogError(_("Data preprocessing failed."));
             Cleanup(predictorsPreprocess);

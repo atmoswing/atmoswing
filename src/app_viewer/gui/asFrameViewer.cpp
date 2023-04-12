@@ -631,7 +631,7 @@ bool asFrameViewer::OpenWorkspace(bool openRecentForecasts) {
                     wxColour fillColor = m_workspace.GetLayerFillColor(iLayer);
                     wxBrushStyle brushStyle = m_workspace.GetLayerBrushStyle(iLayer);
 
-                    auto* render = new vrRenderVector();
+                    auto render = new vrRenderVector();
                     render->SetTransparency(transparency);
                     render->SetSize(width);
                     render->SetColorPen(lineColor);
@@ -642,7 +642,7 @@ bool asFrameViewer::OpenWorkspace(bool openRecentForecasts) {
                     wxASSERT(layer);
                     m_viewerLayerManager->Add(-1, layer, render, nullptr, visibility);
                 } else if (type.IsSameAs("wms")) {
-                    auto* render = new vrRenderRaster();
+                    auto render = new vrRenderRaster();
                     render->SetTransparency(transparency);
 
                     vrLayer* layer = m_layerManager->GetLayer(wxFileName(path));
@@ -723,7 +723,7 @@ void asFrameViewer::OpenFramePlots(wxCommandEvent& event) {
     if (m_forecastManager->HasForecasts()) {
         wxBusyCursor wait;
 
-        auto* framePlot = new asFramePlotDistributions(this, m_forecastViewer->GetMethodSelection(),
+        auto framePlot = new asFramePlotDistributions(this, m_forecastViewer->GetMethodSelection(),
                                                        m_forecastViewer->GetForecastSelection(), m_forecastManager);
 
         if (g_ppiScaleDc > 1) {
@@ -744,7 +744,7 @@ void asFrameViewer::OpenFrameGrid(wxCommandEvent& event) {
     if (m_forecastManager->HasForecasts()) {
         wxBusyCursor wait;
 
-        auto* frameGrid = new asFrameGridAnalogsValues(this, m_forecastViewer->GetMethodSelection(),
+        auto frameGrid = new asFrameGridAnalogsValues(this, m_forecastViewer->GetMethodSelection(),
                                                        m_forecastViewer->GetForecastSelection(), m_forecastManager);
 
         if (g_ppiScaleDc > 1) {
@@ -764,7 +764,7 @@ void asFrameViewer::OpenFramePredictors(wxCommandEvent& event) {
     if (m_forecastManager->HasForecasts()) {
         wxBusyCursor wait;
 
-        auto* framePredictors = new asFramePredictors(this, m_forecastManager, &m_workspace,
+        auto framePredictors = new asFramePredictors(this, m_forecastManager, &m_workspace,
                                                       m_forecastViewer->GetMethodSelection(),
                                                       m_forecastViewer->GetForecastSelection());
 
@@ -784,7 +784,7 @@ void asFrameViewer::OpenFramePredictors(wxCommandEvent& event) {
 void asFrameViewer::OpenFramePredictandDB(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePredictandDB(this);
+    auto frame = new asFramePredictandDB(this);
     frame->Fit();
     frame->Show();
 }
@@ -792,7 +792,7 @@ void asFrameViewer::OpenFramePredictandDB(wxCommandEvent& event) {
 void asFrameViewer::OpenFramePreferences(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePreferencesViewer(this, &m_workspace, asWINDOW_PREFERENCES);
+    auto frame = new asFramePreferencesViewer(this, &m_workspace, asWINDOW_PREFERENCES);
     frame->Fit();
     frame->Show();
 }
@@ -800,7 +800,7 @@ void asFrameViewer::OpenFramePreferences(wxCommandEvent& event) {
 void asFrameViewer::OpenFrameAbout(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFrameAbout(this);
+    auto frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
@@ -1441,7 +1441,7 @@ void asFrameViewer::OnMoveLayer(wxCommandEvent& event) {
 
 void asFrameViewer::OnToolAction(wxCommandEvent& event) {
     // Get event
-    auto* msg = static_cast<vrDisplayToolMessage*>(event.GetClientData());
+    auto msg = static_cast<vrDisplayToolMessage*>(event.GetClientData());
     wxASSERT(msg);
 
     if (msg->m_evtType == vrEVT_TOOL_ZOOM) {
@@ -1659,7 +1659,7 @@ void asFrameViewer::OnForecastForecastSelectionChange(wxCommandEvent& event) {
 
     Freeze();
 
-    auto* message = (asMessageForecastChoice*)event.GetClientData();
+    auto message = (asMessageForecastChoice*)event.GetClientData();
 
     m_forecastViewer->SetForecast(message->GetMethodRow(), message->GetForecastRow());
 
@@ -1705,7 +1705,7 @@ void asFrameViewer::DrawPlotStation(int stationRow) {
         forecastRow = m_forecastManager->GetForecastRowSpecificForStationRow(methodRow, stationRow);
     }
 
-    auto* framePlotStation = new asFramePlotTimeSeries(this, methodRow, forecastRow, stationRow, m_forecastManager);
+    auto framePlotStation = new asFramePlotTimeSeries(this, methodRow, forecastRow, stationRow, m_forecastManager);
 
     if (g_ppiScaleDc > 1) {
         wxSize frameSize = framePlotStation->GetSize();

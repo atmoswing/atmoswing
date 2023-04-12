@@ -452,7 +452,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(vector<asPredict
     // Fix the criteria if S1
     params->FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
-    auto* predictor = new asPredictorProj(*predictorsPreprocess[0]);
+    auto predictor = new asPredictorProj(*predictorsPreprocess[0]);
     if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), predictor)) {
         wxLogError(_("Data preprocessing failed."));
         Cleanup(predictorsPreprocess);

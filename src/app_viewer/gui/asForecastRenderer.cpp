@@ -258,8 +258,8 @@ void asForecastRenderer::Redraw() {
     // Display according to the chosen display type
     if (m_leadTimeIndex == m_forecastManager->GetLeadTimeLengthMax()) {
         // Create the layers
-        auto* layerSpecific = new vrLayerVectorFcstRing();
-        auto* layerOther = new vrLayerVectorFcstRing();
+        auto layerSpecific = new vrLayerVectorFcstRing();
+        auto layerOther = new vrLayerVectorFcstRing();
         if (!layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)) {
             wxFAIL;
             m_viewerLayerManager->FreezeEnd();
@@ -404,7 +404,7 @@ void asForecastRenderer::Redraw() {
 
         if (layerOther->GetFeatureCount() > 0) {
             m_layerManager->Add(layerOther);
-            auto* renderOther = new vrRenderVector();
+            auto renderOther = new vrRenderVector();
             renderOther->SetSize(1);
             renderOther->SetColorPen(wxColor(150, 150, 150));
             m_viewerLayerManager->Add(-1, layerOther, renderOther);
@@ -413,7 +413,7 @@ void asForecastRenderer::Redraw() {
         }
 
         m_layerManager->Add(layerSpecific);
-        auto* renderSpecific = new vrRenderVector();
+        auto renderSpecific = new vrRenderVector();
         renderSpecific->SetSize(1);
         renderSpecific->SetColorPen(*wxBLACK);
         m_viewerLayerManager->Add(-1, layerSpecific, renderSpecific);
@@ -421,8 +421,8 @@ void asForecastRenderer::Redraw() {
 
     } else {
         // Create the layer
-        auto* layerSpecific = new vrLayerVectorFcstDots();
-        auto* layerOther = new vrLayerVectorFcstDots();
+        auto layerSpecific = new vrLayerVectorFcstDots();
+        auto layerOther = new vrLayerVectorFcstDots();
         if (!layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)) {
             wxFAIL;
             m_viewerLayerManager->FreezeEnd();
@@ -565,7 +565,7 @@ void asForecastRenderer::Redraw() {
 
         if (layerOther->GetFeatureCount() > 0) {
             m_layerManager->Add(layerOther);
-            auto* renderOther = new vrRenderVector();
+            auto renderOther = new vrRenderVector();
             renderOther->SetSize(1);
             renderOther->SetColorPen(wxColor(150, 150, 150));
             m_viewerLayerManager->Add(-1, layerOther, renderOther);
@@ -574,7 +574,7 @@ void asForecastRenderer::Redraw() {
         }
 
         m_layerManager->Add(layerSpecific);
-        auto* renderSpecific = new vrRenderVector();
+        auto renderSpecific = new vrRenderVector();
         renderSpecific->SetSize(1);
         renderSpecific->SetColorPen(*wxBLACK);
         m_viewerLayerManager->Add(-1, layerSpecific, renderSpecific);

@@ -267,7 +267,7 @@ bool asFrameForecaster::OpenBatchForecasts() {
 
     // Create the panels
     for (int i = 0; i < m_batchForecasts.GetForecastsNb(); i++) {
-        auto* panel = new asPanelForecast(m_scrolledWindowForecasts);
+        auto panel = new asPanelForecast(m_scrolledWindowForecasts);
         panel->SetParametersFileName(m_batchForecasts.GetForecastFileName(i));
         panel->Layout();
         m_sizerForecasts->Add(panel, 0, wxALL | wxEXPAND, 5);
@@ -290,7 +290,7 @@ void asFrameForecaster::Update() {
 void asFrameForecaster::OpenFramePredictandDB(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePredictandDB(this);
+    auto frame = new asFramePredictandDB(this);
     frame->Fit();
     frame->Show();
 }
@@ -298,7 +298,7 @@ void asFrameForecaster::OpenFramePredictandDB(wxCommandEvent& event) {
 void asFrameForecaster::OnConfigureDirectories(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
+    auto frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
@@ -306,7 +306,7 @@ void asFrameForecaster::OnConfigureDirectories(wxCommandEvent& event) {
 void asFrameForecaster::OpenFramePreferences(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
+    auto frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
@@ -314,7 +314,7 @@ void asFrameForecaster::OpenFramePreferences(wxCommandEvent& event) {
 void asFrameForecaster::OpenFrameAbout(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFrameAbout(this);
+    auto frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
@@ -486,7 +486,7 @@ void asFrameForecaster::CancelForecasting(wxCommandEvent& event) {
 
 void asFrameForecaster::AddForecast(wxCommandEvent& event) {
     Freeze();
-    auto* panel = new asPanelForecast(m_scrolledWindowForecasts);
+    auto panel = new asPanelForecast(m_scrolledWindowForecasts);
     panel->Layout();
     m_sizerForecasts->Add(panel, 0, wxALL | wxEXPAND, 5);
     Layout();  // For the scrollbar

@@ -64,7 +64,7 @@ asAreaGridRegular::asAreaGridRegular(double xMin, int xPtsNb, double yMin, int y
 bool asAreaGridRegular::GridsOverlay(asAreaGrid* otherArea) const {
     if (!otherArea->IsRegular()) return false;
 
-    auto* otherAreaRegular(dynamic_cast<asAreaGridRegular*>(otherArea));
+    auto otherAreaRegular(dynamic_cast<asAreaGridRegular*>(otherArea));
 
     if (!otherAreaRegular) return false;
 

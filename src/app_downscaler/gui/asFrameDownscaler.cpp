@@ -86,7 +86,7 @@ void asFrameDownscaler::Update() {
 void asFrameDownscaler::OpenFramePredictandDB(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePredictandDB(this);
+    auto frame = new asFramePredictandDB(this);
     frame->Fit();
     frame->Show();
 }
@@ -94,7 +94,7 @@ void asFrameDownscaler::OpenFramePredictandDB(wxCommandEvent& event) {
 void asFrameDownscaler::OpenFramePreferences(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePreferencesDownscaler(this);
+    auto frame = new asFramePreferencesDownscaler(this);
     frame->Fit();
     frame->Show();
 }
@@ -102,7 +102,7 @@ void asFrameDownscaler::OpenFramePreferences(wxCommandEvent& event) {
 void asFrameDownscaler::OpenFrameAbout(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFrameAbout(this);
+    auto frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }

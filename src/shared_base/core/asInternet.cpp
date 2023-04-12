@@ -41,7 +41,7 @@ void asInternet::Cleanup() {
 }
 
 size_t asInternet::WriteFile(void* buffer, size_t size, size_t nmemb, void* stream) {
-    auto* out = static_cast<struct HttpFile*>(stream);
+    auto out = static_cast<struct HttpFile*>(stream);
     if (!out->stream) {
         // Open file for writing
         out->stream = fopen(out->fileName, "wb");
@@ -83,7 +83,7 @@ int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString
             wxASSERT_MSG(end < fileNames.size(),
                          asStrF("Size of fileNames = %d, desired end = %d", (int)fileNames.size(), end));
 
-            auto* thread = new asThreadInternetDownload(urls, fileNames, destinationDir, usesProxy, proxyAddress,
+            auto thread = new asThreadInternetDownload(urls, fileNames, destinationDir, usesProxy, proxyAddress,
                                                         proxyPort, proxyUser, proxyPasswd, start, end);
             threadType = thread->GetType();
             ThreadsManager().AddThread(thread);
@@ -122,7 +122,7 @@ int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString
 #endif
 
             // Set a buffer for the error messages
-            auto* errorBfr = new char[CURL_ERROR_SIZE];
+            auto errorBfr = new char[CURL_ERROR_SIZE];
             curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBfr);
             // Some servers don't like requests that are made without a user-agent field, so we provide one
             curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");

@@ -276,7 +276,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     while (true) {
         // Reassess the best parameter if batch as the period has changed
         if (m_useBatches && !firstRun) {
-            auto* thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
+            auto thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
 #ifdef USE_CUDA
             if (method == asCUDA) {
                 device = ThreadsManager().GetFreeDevice(gpusNb);
@@ -308,7 +308,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 
             if (nextParams) {
                 // Add it to the threads
-                auto* thread = new asThreadGAs(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                auto thread = new asThreadGAs(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
 #ifdef USE_CUDA
                 if (method == asCUDA) {
                     thread->SetDevice(device);
@@ -535,7 +535,7 @@ float asMethodOptimizerGAs::ComputeScoreFullPeriod(asParametersOptimizationGAs& 
     m_batchEnd = m_batchSizeMax - 1;
 
     float scoreFullPeriod = NAN;
-    auto* thread = new asThreadGAs(this, &param, &scoreFullPeriod, &m_scoreClimatology);
+    auto thread = new asThreadGAs(this, &param, &scoreFullPeriod, &m_scoreClimatology);
 #ifdef USE_CUDA
     int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
     if (method == asCUDA) {
@@ -555,7 +555,7 @@ float asMethodOptimizerGAs::ComputeScoreFullPeriod(asParametersOptimizationGAs& 
 
 bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
     // Reassess the best parameter if batch as the period has changed
-    auto* thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
+    auto thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
 #ifdef USE_CUDA
     int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
     int device = 0;

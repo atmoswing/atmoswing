@@ -94,7 +94,7 @@ void asFrameOptimizer::Update() {
 void asFrameOptimizer::OpenFramePredictandDB(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePredictandDB(this);
+    auto frame = new asFramePredictandDB(this);
     frame->Fit();
     frame->Show();
 }
@@ -102,7 +102,7 @@ void asFrameOptimizer::OpenFramePredictandDB(wxCommandEvent& event) {
 void asFrameOptimizer::OpenFramePreferences(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePreferencesOptimizer(this);
+    auto frame = new asFramePreferencesOptimizer(this);
     frame->Fit();
     frame->Show();
 }
@@ -110,7 +110,7 @@ void asFrameOptimizer::OpenFramePreferences(wxCommandEvent& event) {
 void asFrameOptimizer::OpenFrameAbout(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFrameAbout(this);
+    auto frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
