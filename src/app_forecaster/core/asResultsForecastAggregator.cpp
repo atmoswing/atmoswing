@@ -520,7 +520,18 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
 
     wxASSERT((int)m_forecasts.size() > methodRow);
 
-    a1f maxValues = a1f::Ones(dates.size());
+    double timeStep = 1;
+    for (auto forecast : m_forecasts[methodRow]) {
+        timeStep = wxMin(timeStep, forecast->GetForecastTimeStepHours() / 24.0);
+    }
+
+    a1f datesForecast = dates;
+    if (timeStep < 1) {
+        int datesNb = dates.size() / timeStep;
+        datesForecast = a1f::LinSpaced(datesNb, dates[0], dates[0] + (datesNb - 1) * timeStep);
+    }
+
+    a1f maxValues = a1f::Ones(datesForecast.size());
     maxValues *= NAN;
 
     bool singleMethod = (GetForecastsNb(methodRow) == 1);
@@ -539,14 +550,14 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
 
         // Check lead times effectively available for the current forecast
         int leadtimeMin = 0;
-        int leadtimeMax = dates.size() - 1;
+        int leadtimeMax = datesForecast.size() - 1;
 
         a1f availableDates = forecast->GetTargetDates();
 
-        while (dates[leadtimeMin] < availableDates[0]) {
+        while (datesForecast[leadtimeMin] < availableDates[0]) {
             leadtimeMin++;
         }
-        while (dates[leadtimeMax] > availableDates[availableDates.size() - 1]) {
+        while (datesForecast[leadtimeMax] > availableDates[availableDates.size() - 1]) {
             leadtimeMax--;
         }
         wxASSERT(leadtimeMin < leadtimeMax);
