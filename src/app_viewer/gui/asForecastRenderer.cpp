@@ -206,8 +206,8 @@ void asForecastRenderer::Redraw() {
     }
 
     // Create a memory layer
-    wxFileName memoryLayerNameSpecific("", "Forecast - specific", "memory");
-    wxFileName memoryLayerNameOther("", "Forecast - other", "memory");
+    wxFileName memoryLayerNameSpecific("", _("Forecast - specific"), "memory");
+    wxFileName memoryLayerNameOther("", _("Forecast - other"), "memory");
 
     // Check if memory layer already added
     m_viewerLayerManager->FreezeBegin();

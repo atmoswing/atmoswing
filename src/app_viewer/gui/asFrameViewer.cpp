@@ -487,7 +487,7 @@ bool asFrameViewer::SaveWorkspace() {
         wxFileName fileName = m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName();
         wxString path = fileName.GetFullPath();
 
-        if (!path.IsSameAs("Forecast - specific.memory") && !path.IsSameAs("Forecast - other.memory")) {
+        if (!path.IsSameAs(_("Forecast - specific") + ".memory") && !path.IsSameAs(_("Forecast - other") + ".memory")) {
             counter++;
             m_workspace.AddLayer();
             m_workspace.SetLayerPath(counter, path);
@@ -1369,7 +1369,7 @@ void asFrameViewer::OnToolZoomToFit(wxCommandEvent& event) {
 void asFrameViewer::FitExtentToForecasts() {
     wxBusyCursor wait;
 
-    vrLayerVector* layer = (vrLayerVector*)m_layerManager->GetLayer(_("Forecast - specific.memory"));
+    vrLayerVector* layer = (vrLayerVector*)m_layerManager->GetLayer(_("Forecast - specific") + ".memory");
 
     if (layer != nullptr) {
         wxASSERT(layer);
@@ -1522,7 +1522,7 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
             polygon.addRing(&linRing);
 
             // Get layer
-            vrLayerVector* layer = (vrLayerVector*)m_layerManager->GetLayer(_("Forecast - specific.memory"));
+            vrLayerVector* layer = (vrLayerVector*)m_layerManager->GetLayer(_("Forecast - specific") + ".memory");
 
             if (layer != nullptr) {
                 // Search features
@@ -1543,7 +1543,7 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
                     DrawPlotStation(stationRow);
                 } else {
                     // Search on the other (not specific) forecast layer
-                    vrLayerVector* layerOther = (vrLayerVector*)m_layerManager->GetLayer(_("Forecast - other.memory"));
+                    vrLayerVector* layerOther = (vrLayerVector*)m_layerManager->GetLayer(_("Forecast - other") + ".memory");
                     if (layerOther != nullptr) {
                         // Search features
                         layerOther->SearchFeatures(&polygon, stationsClose);
@@ -1607,8 +1607,8 @@ void asFrameViewer::OnStationSelection(wxCommandEvent& event) {
     }
 
     // Display on the map when only the specific layer exists
-    vrLayerVector* layer = (vrLayerVector*)m_layerManager->GetLayer(_("Forecast - specific.memory"));
-    vrLayerVector* layerOther = (vrLayerVector*)m_layerManager->GetLayer(_("Forecast - other.memory"));
+    vrLayerVector* layer = (vrLayerVector*)m_layerManager->GetLayer(_("Forecast - specific") + ".memory");
+    vrLayerVector* layerOther = (vrLayerVector*)m_layerManager->GetLayer(_("Forecast - other") + ".memory");
     if (layer && !layerOther) {
         // Set selection
         wxArrayLong station;
