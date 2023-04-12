@@ -223,7 +223,7 @@ bool asMethodCalibrator::PushBackInTempIfBetter(asParametersCalibration& params,
             break;
 
         default:
-            throw exception(_("The score order is not correctly defined."));
+            throw runtime_error(_("The score order is not correctly defined."));
     }
 
     return false;
@@ -254,7 +254,7 @@ bool asMethodCalibrator::KeepIfBetter(asParametersCalibration& params, asResults
             break;
 
         default:
-            throw exception(_("The score order is not correctly defined."));
+            throw runtime_error(_("The score order is not correctly defined."));
     }
 
     return false;

@@ -164,7 +164,7 @@ bool asMethodForecasting::Manager() {
                 }
             }
         }
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         if (!msg.IsEmpty()) {
 #if USE_GUI
@@ -333,7 +333,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
 
             try {
                 results->Save();
-            } catch (std::exception& e) {
+            } catch (runtime_error& e) {
                 wxString msg(e.what(), wxConvUTF8);
                 wxLogError(_("Exception caught: %s"), msg);
 #if USE_GUI

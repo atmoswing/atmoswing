@@ -69,7 +69,7 @@ double asTime::NowMJD(int timezone) {
             todaytm = *localtime(&todayepoch);
             break;
         default:
-            throw exception(_("The timezone is not correctly set"));
+            throw runtime_error(_("The timezone is not correctly set"));
     }
 
     return TimeTmToMJD(todaytm);
@@ -89,7 +89,7 @@ Time asTime::NowTimeStruct(int timezone) {
             todaytm = *localtime(&todayepoch);
             break;
         default:
-            throw exception(_("The timezone is not correctly set"));
+            throw runtime_error(_("The timezone is not correctly set"));
     }
 
     return TimeTmToTimeStruct(todaytm);
@@ -234,253 +234,253 @@ double asTime::GetTimeFromString(const wxString& datestr, TimeFormat format) {
         case (ISOdate):
 
             if (datestr.Len() == 10) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(5, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day);
             }
 
-            throw exception(asStrF(errormsglength, (int)datestr.Len(), 14, 19));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 14, 19));
 
         case (ISOdateTime):
 
             if (datestr.Len() == 19) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(5, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(11, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(14, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(17, 2).ToLong(&sec)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(17, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min, sec);
             }
 
-            throw exception(asStrF(errormsglength, (int)datestr.Len(), 14, 19));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 14, 19));
 
         case (DD_MM_YYYY):
 
             if (datestr.Len() == 10) {
-                if (!datestr.Mid(0, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(3, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(3, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day);
             } else if (datestr.Len() == 8) {
-                if (!datestr.Mid(0, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(2, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(2, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day);
             }
 
-            throw exception(asStrF(errormsglength, (int)datestr.Len(), 8, 10));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 8, 10));
 
         case (YYYY_MM_DD):
         case (YYYYMMDD):
 
             if (datestr.Len() == 10) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(5, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day);
             } else if (datestr.Len() == 8) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day);
             }
 
-            throw exception(asStrF(errormsglength, (int)datestr.Len(), 8, 10));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 8, 10));
 
         case (YYYY_MM_DD_hh):
 
             if (datestr.Len() == 13) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(5, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(11, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour);
             } else if (datestr.Len() == 10) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour);
             }
 
-            throw exception(asStrF(errormsglength, (int)datestr.Len(), 10, 13));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 10, 13));
 
         case (DD_MM_YYYY_hh_mm):
 
             if (datestr.Len() == 16) {
-                if (!datestr.Mid(0, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(3, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(11, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(14, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(3, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min);
             } else if (datestr.Len() == 12) {
-                if (!datestr.Mid(0, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(2, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(10, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(2, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(10, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min);
             }
 
-            throw exception(asStrF(errormsglength, (int)datestr.Len(), 12, 16));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 12, 16));
 
         case (YYYY_MM_DD_hh_mm):
 
             if (datestr.Len() == 16) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(5, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(11, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(14, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min);
             } else if (datestr.Len() == 12) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(10, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(10, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min);
             }
 
-            throw exception(asStrF(errormsglength, (int)datestr.Len(), 12, 16));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 12, 16));
 
         case (DD_MM_YYYY_hh_mm_ss):
 
             if (datestr.Len() == 19) {
-                if (!datestr.Mid(0, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(3, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(11, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(14, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(17, 2).ToLong(&sec)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(3, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(17, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min, sec);
             } else if (datestr.Len() == 14) {
-                if (!datestr.Mid(0, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(2, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(10, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(12, 2).ToLong(&sec)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(2, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(10, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(12, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min, sec);
             }
 
-            throw exception(asStrF(errormsglength, (int)datestr.Len(), 14, 19));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 14, 19));
 
         case (YYYY_MM_DD_hh_mm_ss):
 
             if (datestr.Len() == 19) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(5, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(11, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(14, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(17, 2).ToLong(&sec)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(17, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min, sec);
             } else if (datestr.Len() == 14) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(10, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(12, 2).ToLong(&sec)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(10, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(12, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min, sec);
             }
 
-            throw exception(asStrF(errormsglength, (int)datestr.Len(), 14, 19));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 14, 19));
 
         case (hh_mm):
 
             if (datestr.Len() == 5) {
-                if (!datestr.Mid(0, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(3, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(3, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(0, 0, 0, hour, min);
             } else if (datestr.Len() == 4) {
-                if (!datestr.Mid(0, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                if (!datestr.Mid(2, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(2, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(0, 0, 0, hour, min);
             }
 
-            throw exception(asStrF(errormsglength, (int)datestr.Len(), 4, 5));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 4, 5));
 
         case (guess):
 
             if (datestr.Mid(0, 1) == "+") {
-                if (!datestr.Mid(1).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(1).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 date = NowMJD(asUTM);
                 date += (double)hour / 24;
                 return date;
             } else if (datestr.Mid(0, 1) == "-") {
-                if (!datestr.Mid(1).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(1).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 date = NowMJD(asUTM);
                 date -= (double)hour / 24;
                 return date;
             } else {
                 if (datestr.Len() == 10) {
                     if (datestr.Mid(0, 4).ToLong(&year)) {
-                        if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(5, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(8, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
                         return GetMJD(year, month, day);
                     } else if (datestr.Mid(0, 2).ToLong(&day)) {
-                        if (!datestr.Mid(0, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(3, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(6, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(3, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(6, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
                         return GetMJD(year, month, day);
                     }
 
-                    throw exception(asStrF(errormsgconversion, datestr));
+                    throw runtime_error(asStrF(errormsgconversion, datestr));
 
                 } else if (datestr.Len() == 16) {
                     if (datestr.Mid(0, 4).ToLong(&year)) {
-                        if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(5, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(8, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(11, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(14, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                         return GetMJD(year, month, day, hour, min);
                     } else if (datestr.Mid(0, 2).ToLong(&day)) {
-                        if (!datestr.Mid(0, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(3, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(6, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(11, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(14, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(3, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(6, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                         return GetMJD(year, month, day, hour, min);
                     }
-                    throw exception(asStrF(errormsgconversion, datestr));
+                    throw runtime_error(asStrF(errormsgconversion, datestr));
                 } else if (datestr.Len() == 19) {
                     if (datestr.Mid(0, 4).ToLong(&year)) {
-                        if (!datestr.Mid(0, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(5, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(8, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(11, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(14, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(17, 2).ToLong(&sec)) throw exception(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(17, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                         return GetMJD(year, month, day, hour, min, sec);
                     } else if (datestr.Mid(0, 2).ToLong(&day)) {
-                        if (!datestr.Mid(0, 2).ToLong(&day)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(3, 2).ToLong(&month)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(6, 4).ToLong(&year)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(11, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(14, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
-                        if (!datestr.Mid(17, 2).ToLong(&sec)) throw exception(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(3, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(6, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(17, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                         return GetMJD(year, month, day, hour, min, sec);
                     }
-                    throw exception(asStrF(errormsgconversion, datestr));
+                    throw runtime_error(asStrF(errormsgconversion, datestr));
                 } else if (datestr.Len() == 5) {
-                    if (!datestr.Mid(0, 2).ToLong(&hour)) throw exception(asStrF(errormsgconversion, datestr));
-                    if (!datestr.Mid(3, 2).ToLong(&min)) throw exception(asStrF(errormsgconversion, datestr));
+                    if (!datestr.Mid(0, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                    if (!datestr.Mid(3, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                     return GetMJD(0, 0, 0, hour, min);
                 }
 
-                throw exception(asStrF(errormsgconversion, datestr));
+                throw runtime_error(asStrF(errormsgconversion, datestr));
             }
 
             break;
         default:
-            throw exception(_("The date format is not correctly set"));
+            throw runtime_error(_("The date format is not correctly set"));
     }
 }
 

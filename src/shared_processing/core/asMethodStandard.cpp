@@ -538,7 +538,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters* para
                 wxDELETE(predictor);
                 return false;
 
-            } catch (std::exception& e) {
+            } catch (runtime_error& e) {
                 wxString msg(e.what(), wxConvUTF8);
                 wxLogError(_("Exception caught during data preloading: %s"), msg);
                 wxDELETE(area);
@@ -765,7 +765,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters* params,
                 Cleanup(predictorsPreprocess);
                 return false;
 
-            } catch (std::exception& e) {
+            } catch (runtime_error& e) {
                 wxString msg(e.what(), wxConvUTF8);
                 wxLogError(_("Exception caught during data preprocessing: %s"), msg);
                 wxDELETE(predictor);
@@ -817,7 +817,7 @@ bool asMethodStandard::LoadArchiveData(vector<asPredictor*>& predictors, asParam
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught during data loading: %s"), msg);
         return false;
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught during data loading: %s"), msg);
         return false;

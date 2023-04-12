@@ -638,7 +638,7 @@ bool asResultsForecast::Load() {
 
         ncFile.Close();
 
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
 

@@ -60,7 +60,7 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues& anaValues, asScore* sco
 
     // Check analogs number coherence
     if (params->GetScoreAnalogsNumber() > analogsNbDates)
-        throw exception(asStrF(
+        throw runtime_error(asStrF(
             _("The given analogs number for the score (%d) processing is superior to the analogs dates number (%d)."),
             params->GetScoreAnalogsNumber(), analogsNbDates));
 

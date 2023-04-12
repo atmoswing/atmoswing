@@ -58,7 +58,7 @@ float asTotalScoreFAR::Assess(const a1f& targetDates, const a1f& scores, const a
         }
 
         default: {
-            throw exception(_("Period not yet implemented in asTotalScoreFAR."));
+            throw runtime_error(_("Period not yet implemented in asTotalScoreFAR."));
         }
     }
 

@@ -125,7 +125,7 @@ bool asMethodOptimizerGAs::Manager() {
         wxLogError(_("Bad allocation caught in GAs: %s"), msg);
         DeletePreloadedArchiveData();
         return false;
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught in the GAs: %s"), msg);
         DeletePreloadedArchiveData();
@@ -206,7 +206,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
         wxLogError(_("Bad allocation caught during data preloading (in GAs): %s"), msg);
         DeletePreloadedArchiveData();
         return false;
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught during data preloading (in GAs): %s"), msg);
         DeletePreloadedArchiveData();

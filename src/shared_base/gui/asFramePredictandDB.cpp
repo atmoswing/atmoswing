@@ -278,7 +278,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
             default:
                 wxLogError(_("Wrong selection of the data parameter option."));
         }
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
     }

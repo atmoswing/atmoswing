@@ -97,7 +97,7 @@
 #include <exception>
 #include <vector>
 
-using std::exception;
+using std::runtime_error;
 
 //---------------------------------
 // Automatic leak detection with Microsoft VisualC++
