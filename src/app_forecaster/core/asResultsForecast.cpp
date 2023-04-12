@@ -736,7 +736,7 @@ wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArray() const {
     wxArrayString stationsNames;
     for (int i = 0; i < m_stationNames.size(); i++) {
         wxString label;
-        if (!asIsNaN(m_stationHeights[i]) && m_stationHeights[i] != 0) {
+        if (std::isfinite(m_stationHeights[i]) && m_stationHeights[i] != 0) {
             label = asStrF("%s (%4.0fm)", m_stationNames[i], m_stationHeights[i]);
         } else {
             label = asStrF("%s", m_stationNames[i]);
@@ -780,7 +780,7 @@ wxArrayString asResultsForecast::GetTargetDatesWxArray() const {
 
 wxString asResultsForecast::GetStationNameAndHeight(int iStat) const {
     wxString stationName;
-    if (!asIsNaN(m_stationHeights[iStat]) && m_stationHeights[iStat] != 0) {
+    if (std::isfinite(m_stationHeights[iStat]) && m_stationHeights[iStat] != 0) {
         stationName = asStrF("%s (%4.0fm)", m_stationNames[iStat], m_stationHeights[iStat]);
     } else {
         stationName = asStrF("%s", m_stationNames[iStat]);
