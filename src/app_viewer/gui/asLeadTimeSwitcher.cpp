@@ -85,11 +85,12 @@ void asLeadTimeSwitcher::Draw(a1f& dates) {
     wxASSERT(values.size() == dates.size());
 
     // Create bitmap
-    auto bmp = new wxBitmap(width, height);
-    wxASSERT(bmp);
+    wxDELETE(m_bmp);
+    m_bmp = new wxBitmap(width, height);
+    wxASSERT(m_bmp);
 
     // Create device context
-    wxMemoryDC dc(*bmp);
+    wxMemoryDC dc(*m_bmp);
     dc.SetBackground(wxBrush(GetBackgroundColour()));
     dc.Clear();
 
@@ -139,10 +140,6 @@ void asLeadTimeSwitcher::Draw(a1f& dates) {
 
     dc.SelectObject(wxNullBitmap);
 
-    this->SetBitmap(bmp);
-    wxDELETE(bmp);
-    wxASSERT(!bmp);
-
     Refresh();
 }
 
@@ -176,17 +173,6 @@ void asLeadTimeSwitcher::SetLeadTimeMarker(int leadTime) {
         gc->DrawPath(markerPath);
 
         wxDELETE(gc);
-    }
-}
-
-void asLeadTimeSwitcher::SetBitmap(wxBitmap* bmp) {
-    wxDELETE(m_bmp);
-    wxASSERT(!m_bmp);
-
-    if (bmp != nullptr) {
-        wxASSERT(bmp);
-        m_bmp = new wxBitmap(*bmp);
-        wxASSERT(m_bmp);
     }
 }
 

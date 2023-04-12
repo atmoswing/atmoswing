@@ -62,8 +62,6 @@ class asLeadTimeSwitcher : public wxPanel {
 
     void OnLeadTimeSlctChange(wxMouseEvent& event);
 
-    void SetBitmap(wxBitmap* bmp);
-
     void SetLeadTimeMarker(int leadTime);
 
     void CreatePath(wxGraphicsPath& path, int iCol);
