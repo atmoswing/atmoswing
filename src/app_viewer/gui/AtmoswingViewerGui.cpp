@@ -833,7 +833,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 
 	m_splitterToc = new wxSplitterWindow( m_panel15, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D );
 	m_splitterToc->Connect( wxEVT_IDLE, wxIdleEventHandler( asFramePredictorsVirtual::m_splitterTocOnIdle ), NULL, this );
-	m_splitterToc->SetMinimumPaneSize( 165 );
+	m_splitterToc->SetMinimumPaneSize( 200 );
 
 	m_scrolledWindowOptions = new wxScrolledWindow( m_splitterToc, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
 	m_scrolledWindowOptions->SetScrollRate( 5, 5 );
@@ -844,7 +844,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_sizerScrolledWindow->Add( m_staticTextChoiceMethod, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 
 	wxArrayString m_choiceMethodChoices;
-	m_choiceMethod = new wxChoice( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceMethodChoices, 0 );
+	m_choiceMethod = new wxChoice( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxSize( 220,-1 ), m_choiceMethodChoices, 0 );
 	m_choiceMethod->SetSelection( 0 );
 	m_sizerScrolledWindow->Add( m_choiceMethod, 0, wxEXPAND|wxBOTTOM, 5 );
 
@@ -853,7 +853,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_sizerScrolledWindow->Add( m_staticTextChoiceForecast, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 
 	wxArrayString m_choiceForecastChoices;
-	m_choiceForecast = new wxChoice( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceForecastChoices, 0 );
+	m_choiceForecast = new wxChoice( m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxSize( 220,-1 ), m_choiceForecastChoices, 0 );
 	m_choiceForecast->SetSelection( 0 );
 	m_sizerScrolledWindow->Add( m_choiceForecast, 0, wxEXPAND|wxBOTTOM, 5 );
 
@@ -993,7 +993,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_panelGIS->SetSizer( m_sizerGIS );
 	m_panelGIS->Layout();
 	m_sizerGIS->Fit( m_panelGIS );
-	m_splitterToc->SplitVertically( m_scrolledWindowOptions, m_panelGIS, 170 );
+	m_splitterToc->SplitVertically( m_scrolledWindowOptions, m_panelGIS, 220 );
 	bSizer26->Add( m_splitterToc, 1, wxEXPAND, 5 );
 
 

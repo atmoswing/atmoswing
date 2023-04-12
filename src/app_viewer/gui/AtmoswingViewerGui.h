@@ -369,7 +369,7 @@ class asFramePredictorsVirtual : public wxFrame
 
 		void m_splitterTocOnIdle( wxIdleEvent& )
 		{
-			m_splitterToc->SetSashPosition( 170 );
+			m_splitterToc->SetSashPosition( 220 );
 			m_splitterToc->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePredictorsVirtual::m_splitterTocOnIdle ), NULL, this );
 		}
 
