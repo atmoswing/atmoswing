@@ -156,6 +156,8 @@ bool asFrameGridAnalogsValues::UpdateGrid() {
     a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);
     a1f analogNb = a1f::LinSpaced(dates.size(), 1, dates.size());
 
+    wxString dateFormat = forecast->GetDateFormatting();
+
     m_grid->Hide();
 
     // m_grid->ClearGrid();
@@ -239,7 +241,7 @@ bool asFrameGridAnalogsValues::UpdateGrid() {
         buf.Printf("%d", (int)analogNb[i]);
         m_grid->SetCellValue(i, 0, buf);
 
-        buf.Printf("%s", asTime::GetStringTime(dates[i], "DD.MM.YYYY"));
+        buf.Printf("%s", asTime::GetStringTime(dates[i], dateFormat));
         m_grid->SetCellValue(i, 1, buf);
 
         buf.Printf("%g", values[i]);
