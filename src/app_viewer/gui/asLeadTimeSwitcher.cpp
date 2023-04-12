@@ -41,16 +41,17 @@ asLeadTimeSwitcher::asLeadTimeSwitcher(wxWindow* parent, asWorkspace* workspace,
       m_gdc(nullptr),
       m_cellWidth(int(40 * g_ppiScaleDc)),
       m_cellHeight(int(40 * g_ppiScaleDc)),
+      m_margin(5 * g_ppiScaleDc),
       m_leadTime(0) {
 
-    if (m_forecastManager->HasSubDailyForecasts()) {
+    m_hasSubDaily = m_forecastManager->HasSubDailyForecasts();
+    if (m_hasSubDaily) {
         m_cellWidth = int(50 * g_ppiScaleDc);
     }
 
     // Required size
-    int margin = 5 * g_ppiScaleDc;
     int width = (m_forecastManager->GetFullTargetDates().size() + 1) * m_cellWidth * g_ppiScaleDc;
-    int height = m_cellHeight * g_ppiScaleDc + margin;
+    int height = m_cellHeight * g_ppiScaleDc + m_margin;
 
     SetSize(wxSize(width, height));
 
@@ -69,10 +70,6 @@ asLeadTimeSwitcher::~asLeadTimeSwitcher() {
     wxDELETE(m_bmp);
 }
 
-void asLeadTimeSwitcher::SetParent(wxWindow* parent) {
-    m_parent = parent;
-}
-
 void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent& event) {
     wxBusyCursor wait;
 
@@ -85,9 +82,8 @@ void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent& event) {
 
 void asLeadTimeSwitcher::Draw(a1f& dates) {
     // Required size
-    int margin = 5 * g_ppiScaleDc;
     int width = (dates.size() + 1) * m_cellWidth;
-    int height = m_cellHeight + margin;
+    int height = m_cellHeight + m_margin;
 
     // Get color values
     int returnPeriodRef = m_workspace->GetAlarmsPanelReturnPeriod();
@@ -117,7 +113,7 @@ void asLeadTimeSwitcher::Draw(a1f& dates) {
         wxFont datesFont(fontSize, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
         gc->SetFont(datesFont, *wxBLACK);
 
-        wxPoint startText(margin + (m_cellWidth - 40) / 2, m_cellHeight / 2.5 - fontSize);
+        wxPoint startText(m_margin + (m_cellWidth - 40) / 2, m_cellHeight / 2.5 - fontSize);
 
         // For every lead time
         for (int iLead = 0; iLead < dates.size(); iLead++) {

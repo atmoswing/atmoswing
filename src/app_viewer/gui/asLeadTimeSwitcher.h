@@ -48,8 +48,6 @@ class asLeadTimeSwitcher : public wxPanel {
 
     void SetLeadTime(int leadTime);
 
-    void SetParent(wxWindow* parent);
-
   private:
     wxWindow* m_parent;
     asWorkspace* m_workspace;
@@ -57,8 +55,10 @@ class asLeadTimeSwitcher : public wxPanel {
     wxBitmap* m_bmp;
     wxGraphicsContext* m_gdc;
     wxOverlay m_overlay;
+    bool m_hasSubDaily;
     int m_cellWidth;
     int m_cellHeight;
+    int m_margin;
     int m_leadTime;
 
     void OnLeadTimeSlctChange(wxMouseEvent& event);
