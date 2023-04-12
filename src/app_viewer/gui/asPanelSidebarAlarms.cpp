@@ -198,6 +198,13 @@ void asPanelSidebarAlarmsDrawing::CreateGrid(a1f& dates, const vwxs& names) {
 
 void asPanelSidebarAlarmsDrawing::AddRow(a1f& dates, a1f& values, int row) {
 
+    // Handle sub-daily time steps
+    double fraction = double(dates.size()) / double(values.size());
+    if (fraction < 0.2) {
+        wxLogError(_("Too small time steps are not supported in the alarms panel."));
+        return;
+    }
+
     // Create device context
     wxMemoryDC dc(*m_bmpAlarms);
 
@@ -208,9 +215,6 @@ void asPanelSidebarAlarmsDrawing::AddRow(a1f& dates, a1f& values, int row) {
     wxPoint startGrid(12 * g_ppiScaleDc, 10 * g_ppiScaleDc);
     int cellWidth = (226 * g_ppiScaleDc) / dates.size();
     int cellHeight = 20 * g_ppiScaleDc;
-
-    // Handle sub-daily time steps
-    double fraction = double(dates.size()) / double(values.size());
 
     if (gc) {
         if (fraction < 1.0) {

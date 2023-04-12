@@ -617,11 +617,26 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
 }
 
 a1f asResultsForecastAggregator::GetOverallMaxValues(a1f& dates, int returnPeriodRef, float quantileThreshold) const {
-    a2f allMax(dates.size(), m_forecasts.size());
+    a2f allMax = a2f::Zero(dates.size(), m_forecasts.size());
 
-    for (int methodRow = 0; methodRow < (int)m_forecasts.size(); methodRow++) {
-        allMax.col(methodRow) = GetMethodMaxValues(dates, methodRow, returnPeriodRef, quantileThreshold);
+    for (int iMethod = 0; iMethod < (int)m_forecasts.size(); iMethod++) {
+        a1f values = GetMethodMaxValues(dates, iMethod, returnPeriodRef, quantileThreshold);
+        if (values.size() == dates.size()) {
+            allMax.col(iMethod) = values;
+        } else {
+            int subDailySteps = values.size() / dates.size();
+            for (int iDate = 0; iDate < dates.size(); ++iDate) {
+                float maxVal = 0;
+                for (int i = 0; i < subDailySteps; ++i) {
+                    maxVal = wxMax(maxVal, values(iDate * subDailySteps + i));
+                }
+                allMax(iDate, iMethod) = maxVal;
+            }
+        }
     }
+
+    // Remove NaNs
+    allMax = (allMax.isFinite()).select(allMax, 0);
 
     // Extract the highest values
     a1f values = allMax.rowwise().maxCoeff();
