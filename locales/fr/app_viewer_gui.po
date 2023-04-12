@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-11 00:01+0200\n"
-"PO-Revision-Date: 2023-04-11 00:09+0200\n"
+"PO-Revision-Date: 2023-04-12 14:24+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -636,7 +636,7 @@ msgstr "Prédicteur - cible"
 
 #: src/app_viewer/gui/asPredictorsRenderer.cpp:89
 msgid "Contours - target"
-msgstr "Isolignes - cible"
+msgstr "Isohypses - cible"
 
 #: src/app_viewer/gui/asPredictorsRenderer.cpp:90
 msgid "Spatial window target"
@@ -648,7 +648,7 @@ msgstr "Prédicteur - analogue"
 
 #: src/app_viewer/gui/asPredictorsRenderer.cpp:105
 msgid "Contours - analog"
-msgstr "Contours - analogue"
+msgstr "Isohypses - analogue"
 
 #: src/app_viewer/gui/asPredictorsRenderer.cpp:106
 msgid "Spatial window analog"

@@ -66,9 +66,7 @@ void asPanelSidebarAnalogDates::OnDateSelection(wxListEvent& event) {
 }
 
 void asPanelSidebarAnalogDates::SetChoices(a1f& arrayDate, a1f& arrayCriteria) {
-    // To speed up inserting we hide the control temporarily
     m_listCtrl->Freeze();
-
     m_listCtrl->DeleteAllItems();
 
     for (int i = 0; i < arrayDate.size(); i++) {

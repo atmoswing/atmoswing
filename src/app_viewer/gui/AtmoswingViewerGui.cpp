@@ -721,27 +721,27 @@ asFrameGridAnalogsValuesVirtual::asFrameGridAnalogsValuesVirtual( wxWindow* pare
 	fgSizer1->SetFlexibleDirection( wxBOTH );
 	fgSizer1->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
-	m_staticTextForecast = new wxStaticText( m_panelOptions, wxID_ANY, _("Select forecast"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextForecast = new wxStaticText( m_panelOptions, wxID_ANY, _("Forecast"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextForecast->Wrap( -1 );
-	fgSizer1->Add( m_staticTextForecast, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
+	fgSizer1->Add( m_staticTextForecast, 0, wxTOP|wxRIGHT|wxLEFT|wxALIGN_RIGHT, 5 );
 
 	wxArrayString m_choiceForecastChoices;
 	m_choiceForecast = new wxChoice( m_panelOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceForecastChoices, 0 );
 	m_choiceForecast->SetSelection( 0 );
 	fgSizer1->Add( m_choiceForecast, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_staticTextStation = new wxStaticText( m_panelOptions, wxID_ANY, _("Select station"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextStation = new wxStaticText( m_panelOptions, wxID_ANY, _("Station"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextStation->Wrap( -1 );
-	fgSizer1->Add( m_staticTextStation, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
+	fgSizer1->Add( m_staticTextStation, 0, wxTOP|wxRIGHT|wxLEFT|wxALIGN_RIGHT, 5 );
 
 	wxArrayString m_choiceStationChoices;
 	m_choiceStation = new wxChoice( m_panelOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceStationChoices, 0 );
 	m_choiceStation->SetSelection( 0 );
 	fgSizer1->Add( m_choiceStation, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_staticTextDate = new wxStaticText( m_panelOptions, wxID_ANY, _("Select date"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextDate = new wxStaticText( m_panelOptions, wxID_ANY, _("Lead time"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextDate->Wrap( -1 );
-	fgSizer1->Add( m_staticTextDate, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
+	fgSizer1->Add( m_staticTextDate, 0, wxTOP|wxRIGHT|wxLEFT|wxALIGN_RIGHT, 5 );
 
 	wxArrayString m_choiceDateChoices;
 	m_choiceDate = new wxChoice( m_panelOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceDateChoices, 0 );

@@ -299,7 +299,7 @@ class asFrameGridAnalogsValuesVirtual : public wxFrame
 
 	public:
 
-		asFrameGridAnalogsValuesVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analogs details"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 473,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameGridAnalogsValuesVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analogs details"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~asFrameGridAnalogsValuesVirtual();
 

@@ -128,7 +128,7 @@ void asFramePlotDistributions::RebuildChoiceForecast() {
             m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetStationId(m_selectedStation);
         int forecastRow = m_forecastManager->GetForecastRowSpecificForStationId(methodRow, stationId);
         int index = m_forecastManager->GetLinearIndex(methodRow, forecastRow);
-        wxString val = " --> " + m_choiceForecast->GetString(index) + " <-- ";
+        wxString val = "* " + m_choiceForecast->GetString(index) + " *";
         m_choiceForecast->SetString(index, val);
     }
 }
