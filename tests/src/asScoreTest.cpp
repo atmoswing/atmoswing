@@ -1143,7 +1143,7 @@ TEST(Score, ProcessPCwithConstantDistributionOnQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("PC", "Total");
@@ -1174,7 +1174,7 @@ TEST(Score, ProcessPConQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("PC", "Total");
@@ -1205,7 +1205,7 @@ TEST(Score, ProcessTSonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("TS", "Total");
@@ -1236,7 +1236,7 @@ TEST(Score, ProcessBIASonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("BIAS", "Total");
@@ -1267,7 +1267,7 @@ TEST(Score, ProcessFARAonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("FARA", "Total");
@@ -1298,7 +1298,7 @@ TEST(Score, ProcessHonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("H", "Total");
@@ -1329,7 +1329,7 @@ TEST(Score, ProcessFonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("F", "Total");
@@ -1360,7 +1360,7 @@ TEST(Score, ProcessHSSonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("HSS", "Total");
@@ -1391,7 +1391,7 @@ TEST(Score, ProcessPSSonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("PSS", "Total");
@@ -1422,7 +1422,7 @@ TEST(Score, ProcessGSSonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("GSS", "Total");
@@ -1490,7 +1490,7 @@ TEST(Score, ProcessMAEonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("MAE", "Total");
@@ -1558,7 +1558,7 @@ TEST(Score, ProcessMSEonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("MSE", "Total");
@@ -1626,7 +1626,7 @@ TEST(Score, ProcessMSEonMean) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("MSE", "Total");
@@ -1694,7 +1694,7 @@ TEST(Score, ProcessRMSEonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("RMSE", "Total");
@@ -1763,7 +1763,7 @@ TEST(Score, ProcessBSonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("BS", "Total");
@@ -1834,7 +1834,7 @@ TEST(Score, ProcessBSSonQuantile) {
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("BSS", "Total");
@@ -1911,7 +1911,7 @@ TEST(Score, ProcessRankHistogram) {
         pseudoDates[iTime] = iTime;
         float res = score->Assess(vecObs[iTime], vecForecast.row(iTime), nAnalogs);
         results[iTime] = res;
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     // Values processed on Excel
@@ -2026,7 +2026,7 @@ TEST(Score, ProcessRankHistogramReliability) {
         pseudoDates[iTime] = iTime;
         float res = score->Assess(vecObs[iTime], vecForecast.row(iTime), nAnalogs);
         results[iTime] = res;
-        EXPECT_TRUE(!asIsNaN(results[iTime]));
+        EXPECT_TRUE(!isnan(results[iTime]));
     }
 
     asTotalScore* finalScore = asTotalScore::GetInstance("RankHistogramReliability", "Total");

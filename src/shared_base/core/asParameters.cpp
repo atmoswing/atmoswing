@@ -1310,18 +1310,20 @@ bool asParameters::SetPreloadDataIds(int iStep, int iPtor, vwxs val) {
     if (val.empty()) {
         wxLogError(_("The provided preload data IDs vector is empty."));
         return false;
-    } else {
-        for (auto& v : val) {
-            if (v.IsEmpty()) {
-                wxLogError(_("There are empty values in the provided preload data IDs vector."));
-                return false;
-            }
+    }
+
+    for (auto& v : val) {
+        if (v.IsEmpty()) {
+            wxLogError(_("There are empty values in the provided preload data IDs vector."));
+            return false;
         }
     }
+
     m_steps[iStep].predictors[iPtor].preloadDataIds.clear();
     for (auto& v : val) {
         m_steps[iStep].predictors[iPtor].preloadDataIds.push_back(v.ToStdString());
     }
+
     return true;
 }
 
@@ -1335,14 +1337,15 @@ bool asParameters::SetPreloadHours(int iStep, int iPtor, vd val) {
     if (val.empty()) {
         wxLogError(_("The provided preload time (hours) vector is empty."));
         return false;
-    } else {
-        for (double v : val) {
-            if (isnan(v)) {
-                wxLogError(_("There are NaN values in the provided preload time (hours) vector."));
-                return false;
-            }
+    }
+
+    for (double v : val) {
+        if (isnan(v)) {
+            wxLogError(_("There are NaN values in the provided preload time (hours) vector."));
+            return false;
         }
     }
+
     m_steps[iStep].predictors[iPtor].preloadHours = val;
 
     return true;
@@ -1358,15 +1361,17 @@ bool asParameters::SetPreloadLevels(int iStep, int iPtor, vf val) {
     if (val.empty()) {
         wxLogError(_("The provided 'preload levels' vector is empty."));
         return false;
-    } else {
-        for (float v : val) {
-            if (isnan(v)) {
-                wxLogError(_("There are NaN values in the provided 'preload levels' vector."));
-                return false;
-            }
+    }
+
+    for (float v : val) {
+        if (isnan(v)) {
+            wxLogError(_("There are NaN values in the provided 'preload levels' vector."));
+            return false;
         }
     }
+
     m_steps[iStep].predictors[iPtor].preloadLevels = val;
+
     return true;
 }
 

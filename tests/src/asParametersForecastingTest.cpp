@@ -56,8 +56,8 @@ TEST(ParametersForecasting, ParametersLoadFromFile) {
     EXPECT_EQ(333.5554787289083, params.GetRealtimeStandardizeMean(0, 0));
     EXPECT_EQ(19.838536332114153, params.GetRealtimeStandardizeSd(0, 0));
     EXPECT_FALSE(params.GetArchiveStandardize(0, 0));
-    EXPECT_TRUE(asIsNaN(params.GetArchiveStandardizeMean(0, 0)));
-    EXPECT_TRUE(asIsNaN(params.GetArchiveStandardizeSd(0, 0)));
+    EXPECT_TRUE(isnan(params.GetArchiveStandardizeMean(0, 0)));
+    EXPECT_TRUE(isnan(params.GetArchiveStandardizeSd(0, 0)));
     EXPECT_TRUE(params.GetPredictorRealtimeDatasetId(0, 0).IsSameAs("Custom_MeteoFVG"));
     EXPECT_TRUE(params.GetPredictorRealtimeDataId(0, 0).IsSameAs("thetaES_925"));
     EXPECT_TRUE(params.GetPredictorArchiveDatasetId(0, 0).IsSameAs("Generic"));
@@ -79,8 +79,8 @@ TEST(ParametersForecasting, ParametersLoadFromFile) {
     EXPECT_EQ(0.00043102220253530437, params.GetRealtimeStandardizeMean(0, 1));
     EXPECT_EQ(0.0014176902243256072, params.GetRealtimeStandardizeSd(0, 1));
     EXPECT_FALSE(params.GetArchiveStandardize(0, 1));
-    EXPECT_TRUE(asIsNaN(params.GetArchiveStandardizeMean(0, 1)));
-    EXPECT_TRUE(asIsNaN(params.GetArchiveStandardizeSd(0, 1)));
+    EXPECT_TRUE(isnan(params.GetArchiveStandardizeMean(0, 1)));
+    EXPECT_TRUE(isnan(params.GetArchiveStandardizeSd(0, 1)));
     EXPECT_TRUE(params.GetPredictorRealtimeDatasetId(0, 1).IsSameAs("Custom_MeteoFVG"));
     EXPECT_TRUE(params.GetPredictorRealtimeDataId(0, 1).IsSameAs("cp_sfc"));
     EXPECT_TRUE(params.GetPredictorArchiveDatasetId(0, 1).IsSameAs("Generic"));
@@ -101,8 +101,8 @@ TEST(ParametersForecasting, ParametersLoadFromFile) {
     EXPECT_EQ(4.858158690266188, params.GetRealtimeStandardizeMean(1, 0));
     EXPECT_EQ(7.742704912270005, params.GetRealtimeStandardizeSd(1, 0));
     EXPECT_FALSE(params.GetArchiveStandardize(1, 0));
-    EXPECT_TRUE(asIsNaN(params.GetArchiveStandardizeMean(1, 0)));
-    EXPECT_TRUE(asIsNaN(params.GetArchiveStandardizeSd(1, 0)));
+    EXPECT_TRUE(isnan(params.GetArchiveStandardizeMean(1, 0)));
+    EXPECT_TRUE(isnan(params.GetArchiveStandardizeSd(1, 0)));
     EXPECT_TRUE(params.GetPredictorRealtimeDatasetId(1, 0).IsSameAs("Custom_MeteoFVG"));
     EXPECT_TRUE(params.GetPredictorRealtimeDataId(1, 0).IsSameAs("MB500925"));
     EXPECT_TRUE(params.GetPredictorArchiveDatasetId(1, 0).IsSameAs("Generic"));

@@ -772,21 +772,20 @@ void asParametersCalibration::InitValues() {
 }
 
 bool asParametersCalibration::SetPredictandStationIdsVector(vvi val) {
-    if (val.size() < 1) {
+    if (val.empty()) {
         wxLogError(_("The provided predictand ID vector is empty."));
         return false;
-    } else {
-        if (val[0].size() < 1) {
-            wxLogError(_("The provided predictand ID vector is empty."));
-            return false;
-        }
+    }
+    if (val[0].empty()) {
+        wxLogError(_("The provided predictand ID vector is empty."));
+        return false;
+    }
 
-        for (int i = 0; i < (int)val.size(); i++) {
-            for (int j = 0; j < (int)val[i].size(); j++) {
-                if (isnan(val[i][j])) {
-                    wxLogError(_("There are NaN values in the provided predictand ID vector."));
-                    return false;
-                }
+    for (auto& iVal : val) {
+        for (int v : iVal) {
+            if (v == 0) {
+                wxLogError(_("There are 0s in the provided predictand ID vector."));
+                return false;
             }
         }
     }
@@ -797,12 +796,12 @@ bool asParametersCalibration::SetPredictandStationIdsVector(vvi val) {
 }
 
 void asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(vi val) {
-    wxASSERT(val.size() > 0);
+    wxASSERT(!val.empty());
     m_timeArrayAnalogsIntervalDaysVect = val;
 }
 
 bool asParametersCalibration::SetScoreNameVector(vwxs val) {
-    wxASSERT(val.size() > 0);
+    wxASSERT(!val.empty());
     for (int i = 0; i < (int)val.size(); i++) {
         if (val[i].IsEmpty()) {
             wxLogError(_("There are NaN values in the provided scores vector."));

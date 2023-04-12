@@ -44,7 +44,7 @@
 asMethodForecasting::asMethodForecasting(asBatchForecasts* batchForecasts, wxWindow* parent)
     : asMethodStandard(),
       m_batchForecasts(batchForecasts),
-      m_forecastDate(nan),
+      m_forecastDate(NAN),
       m_parent(parent) {}
 
 asMethodForecasting::~asMethodForecasting() {

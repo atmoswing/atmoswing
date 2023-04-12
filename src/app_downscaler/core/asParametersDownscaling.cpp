@@ -32,8 +32,8 @@
 
 asParametersDownscaling::asParametersDownscaling()
     : asParameters(),
-      m_downscalingStart(nan),
-      m_downscalingEnd(nan) {}
+      m_downscalingStart(NAN),
+      m_downscalingEnd(NAN) {}
 
 asParametersDownscaling::~asParametersDownscaling() {}
 
@@ -537,18 +537,17 @@ bool asParametersDownscaling::SetPredictandStationIdsVector(vvi val) {
     if (val.empty()) {
         wxLogError(_("The provided predictand ID vector is empty."));
         return false;
-    } else {
-        if (val[0].empty()) {
-            wxLogError(_("The provided predictand ID vector is empty."));
-            return false;
-        }
+    }
+    if (val[0].empty()) {
+        wxLogError(_("The provided predictand ID vector is empty."));
+        return false;
+    }
 
-        for (auto& i : val) {
-            for (int j : i) {
-                if (isnan(j)) {
-                    wxLogError(_("There are NaN values in the provided predictand ID vector."));
-                    return false;
-                }
+    for (auto& iVal : val) {
+        for (int v : iVal) {
+            if (v == 0) {
+                wxLogError(_("There are 0s in the provided predictand ID vector."));
+                return false;
             }
         }
     }

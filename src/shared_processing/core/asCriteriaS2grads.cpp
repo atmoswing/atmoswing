@@ -30,7 +30,7 @@
 asCriteriaS2grads::asCriteriaS2grads()
     : asCriteriaS1grads() {
     m_minPointsNb = 3;
-    m_scaleWorst = inf;
+    m_scaleWorst = INFINITY;
 }
 
 asCriteriaS2grads::~asCriteriaS2grads() = default;
