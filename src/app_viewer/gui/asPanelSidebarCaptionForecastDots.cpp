@@ -38,7 +38,7 @@ asPanelSidebarCaptionForecastDots::asPanelSidebarCaptionForecastDots(wxWindow* p
     m_header->SetLabelText(_("Forecast caption"));
 
     m_panelDrawing = new asPanelSidebarCaptionForecastDotsDrawing(
-        this, wxID_ANY, wxDefaultPosition, wxSize(240 * g_ppiScaleDc, 50 * g_ppiScaleDc), wxTAB_TRAVERSAL);
+        this, wxID_ANY, wxDefaultPosition, wxSize(240 * g_ppiScaleDc, 70 * g_ppiScaleDc), wxTAB_TRAVERSAL);
     m_sizerContent->Add(m_panelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDots::OnPaint), nullptr, this);
@@ -84,7 +84,7 @@ asPanelSidebarCaptionForecastDotsDrawing::~asPanelSidebarCaptionForecastDotsDraw
 }
 
 void asPanelSidebarCaptionForecastDotsDrawing::DrawColorbar(double valmax) {
-    auto* bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(50 * g_ppiScaleDc));
+    auto* bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(70 * g_ppiScaleDc));
     wxASSERT(bmp);
 
     // Create device context
@@ -215,10 +215,10 @@ void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarOtherClasses(wxGrap
     // Get the path box
     wxDouble x, y, w, h;
     path.GetBox(&x, &y, &w, &h);
-    int dh1 = 20 * g_ppiScaleDc;
+    int dh1 = 22 * g_ppiScaleDc;
     int dh2 = 10 * g_ppiScaleDc;
+    int dh3 = 18 * g_ppiScaleDc;
     int dw = 10 * g_ppiScaleDc;
-    int halfWidth = w / 2;
 
     // Create first box
     wxGraphicsPath pathBox1 = gc->CreatePath();
@@ -236,10 +236,10 @@ void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarOtherClasses(wxGrap
 
     // Create second box
     wxGraphicsPath pathBox2 = gc->CreatePath();
-    pathBox2.MoveToPoint(x + halfWidth, y + h + dh1);
-    pathBox2.AddLineToPoint(x + halfWidth, y + h + dh1 + dh2);
-    pathBox2.AddLineToPoint(x + halfWidth + dw, y + h + dh1 + dh2);
-    pathBox2.AddLineToPoint(x + halfWidth + dw, y + h + dh1);
+    pathBox2.MoveToPoint(x, y + h + dh1 + dh3);
+    pathBox2.AddLineToPoint(x, y + h + dh1 + dh2 + dh3);
+    pathBox2.AddLineToPoint(x + dw, y + h + dh1 + dh2 + dh3);
+    pathBox2.AddLineToPoint(x + dw, y + h + dh1 + dh3);
     pathBox2.CloseSubpath();
 
     colour.Set(150, 150, 150);
@@ -254,5 +254,5 @@ void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarOtherClasses(wxGrap
     // Draw text
     int dwLabel = 14 * g_ppiScaleDc;
     gc->DrawText(label1, x + dwLabel, y + h + dh1 - 1);
-    gc->DrawText(label2, x + halfWidth + dwLabel, y + h + dh1 - 1);
+    gc->DrawText(label2, x + dwLabel, y + h + dh1 + dh3 - 1);
 }
