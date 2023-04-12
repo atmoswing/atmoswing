@@ -35,15 +35,19 @@
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_SELECT_FIRST, wxCommandEvent);
 
 asForecastRenderer::asForecastRenderer(asFrameViewer* parent, asForecastManager* forecastManager,
-                                   vrLayerManager* layerManager, vrViewerLayerManager* viewerLayerManager) {
-    m_parent = parent;
-    m_forecastManager = forecastManager;
-    m_layerManager = layerManager;
-    m_viewerLayerManager = viewerLayerManager;
-    m_leadTimeIndex = 0;
-    m_leadTimeDate = 0;
-    m_layerMaxValue = 1;
-
+                                       vrLayerManager* layerManager, vrViewerLayerManager* viewerLayerManager)
+    : m_parent(parent),
+      m_forecastManager(forecastManager),
+      m_layerManager(layerManager),
+      m_viewerLayerManager(viewerLayerManager),
+      m_leadTimeIndex(0),
+      m_leadTimeDate(0),
+      m_leadTimeStep(24),
+      m_layerMaxValue(1),
+      m_methodSelection(-1),
+      m_forecastSelection(-1),
+      m_opened(false)
+{
     m_displayForecast.Add(_("Value"));
     m_displayForecast.Add(_("Ratio P/P2"));
     m_displayForecast.Add(_("Ratio P/P5"));
@@ -76,9 +80,6 @@ asForecastRenderer::asForecastRenderer(asFrameViewer* parent, asForecastManager*
     m_quantiles.push_back(0.6f);
     m_quantiles.push_back(0.2f);
 
-    m_methodSelection = -1;
-    m_forecastSelection = -1;
-
     wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Read("/ForecastViewer/DisplaySelection", &m_forecastDisplaySelection, 3);
     pConfig->Read("/ForecastViewer/QuantileSelection", &m_quantileSelection, 0);
@@ -88,8 +89,6 @@ asForecastRenderer::asForecastRenderer(asFrameViewer* parent, asForecastManager*
     if (m_quantileSelection >= m_quantiles.size()) {
         m_quantileSelection = 0;
     }
-
-    m_opened = false;
 }
 
 asForecastRenderer::~asForecastRenderer() {
@@ -114,23 +113,35 @@ void asForecastRenderer::SetForecast(int methodRow, int forecastRow) {
     m_methodSelection = methodRow;
     m_forecastSelection = forecastRow;
 
+    AdaptLeadTimeIndex();
+
     Redraw();
 }
 
+void asForecastRenderer::AdaptLeadTimeIndex() {
+    if (m_methodSelection < 0) return;
+
+    int forecast = wxMax(m_forecastSelection, 0);
+    float timeStep = m_forecastManager->GetForecast(m_methodSelection, forecast)->GetForecastTimeStepHours();
+
+    if (m_leadTimeIndex == -1) {
+        m_leadTimeStep = timeStep;
+        return;
+    }
+
+    if (timeStep != m_leadTimeStep) {
+        m_leadTimeIndex = int(m_leadTimeIndex * float(m_leadTimeStep) / float(timeStep));
+        m_leadTimeStep = timeStep;
+    }
+}
+
 float asForecastRenderer::GetSelectedTargetDate() {
-    a1f targetDates;
-
-    if (m_methodSelection < 0) {
-        m_methodSelection = 0;
+    if (m_leadTimeIndex < 0) {
+        return 0;
     }
 
-    if (m_forecastSelection > 0) {
-        targetDates = m_forecastManager->GetTargetDates(m_methodSelection, m_forecastSelection);
-    } else {
-        targetDates = m_forecastManager->GetTargetDates(m_methodSelection);
-    }
+    a1f targetDates = m_forecastManager->GetTargetDates(wxMax(m_methodSelection, 0), wxMax(m_forecastSelection, 0));
 
-    wxASSERT(m_leadTimeIndex >= 0);
     if (m_leadTimeIndex >= targetDates.size()) {
         return 0;
     }
@@ -139,13 +150,7 @@ float asForecastRenderer::GetSelectedTargetDate() {
 
 void asForecastRenderer::SetLeadTimeDate(float date) {
     if (date > 0 && (m_methodSelection > 0)) {
-        a1f targetDates;
-
-        if (m_forecastSelection > 0) {
-            targetDates = m_forecastManager->GetTargetDates(m_methodSelection, m_forecastSelection);
-        } else {
-            targetDates = m_forecastManager->GetTargetDates(m_methodSelection);
-        }
+        a1f targetDates = m_forecastManager->GetTargetDates(m_methodSelection, wxMax(m_forecastSelection, 0));
 
         int index = asFindClosest(&targetDates[0], &targetDates[targetDates.size() - 1], date);
         if (index >= 0) {
@@ -253,10 +258,8 @@ void asForecastRenderer::Redraw() {
     // Get the maximum value
     double colorbarMaxValue = m_parent->GetWorkspace()->GetColorbarMaxValue();
 
-    wxASSERT(m_leadTimeIndex >= 0);
-
     // Display according to the chosen display type
-    if (m_leadTimeIndex == m_forecastManager->GetLeadTimeLengthMax()) {
+    if (m_leadTimeIndex == -1) {
         // Create the layers
         auto layerSpecific = new vrLayerVectorFcstRing();
         auto layerOther = new vrLayerVectorFcstRing();
@@ -587,8 +590,6 @@ void asForecastRenderer::ChangeLeadTime(int val) {
         return;
 
     m_leadTimeIndex = val;
-    wxASSERT(m_leadTimeIndex >= 0);
-
     m_leadTimeDate = GetSelectedTargetDate();
 
     Redraw();

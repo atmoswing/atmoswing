@@ -103,6 +103,7 @@ class asForecastRenderer {
   private:
     int m_leadTimeIndex;
     float m_leadTimeDate;
+    float m_leadTimeStep;
     float m_layerMaxValue;
     bool m_opened;
     asFrameViewer* m_parent;
@@ -117,6 +118,8 @@ class asForecastRenderer {
     int m_quantileSelection;
     int m_methodSelection;
     int m_forecastSelection;
+
+    void AdaptLeadTimeIndex();
 };
 
 #endif

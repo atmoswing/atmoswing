@@ -39,6 +39,8 @@ asLeadTimeSwitcher::asLeadTimeSwitcher(wxWindow* parent, asWorkspace* workspace,
       m_forecastManager(forecastManager),
       m_bmp(nullptr),
       m_gdc(nullptr),
+      m_subDailyMode(false),
+      m_subDailyFraction(1.0),
       m_cellWidth(int(40 * g_ppiScaleDc)),
       m_cellHeight(int(40 * g_ppiScaleDc)),
       m_margin(5 * g_ppiScaleDc),
@@ -52,7 +54,6 @@ asLeadTimeSwitcher::asLeadTimeSwitcher(wxWindow* parent, asWorkspace* workspace,
     // Required size
     int width = (m_forecastManager->GetFullTargetDates().size() + 1) * m_cellWidth * g_ppiScaleDc;
     int height = m_cellHeight * g_ppiScaleDc + m_margin;
-
     SetSize(wxSize(width, height));
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), nullptr, this);
@@ -70,11 +71,33 @@ asLeadTimeSwitcher::~asLeadTimeSwitcher() {
     wxDELETE(m_bmp);
 }
 
+void asLeadTimeSwitcher::SetForecastSelection(int iMethod, int iForecast) {
+    int i = wxMax(iMethod, 0);
+    int j = wxMax(iForecast, 0);
+
+    if (m_forecastManager->GetMethodsNb() < i) return;
+    if (m_forecastManager->GetForecastsNb(i) < j) return;
+
+    double timeStep = m_forecastManager->GetForecast(i, j)->GetForecastTimeStepHours();
+    m_subDailyMode = (timeStep < 24);
+}
+
 void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent& event) {
     wxBusyCursor wait;
 
     wxPoint position = event.GetPosition();
-    int val = floor(position.x / m_cellWidth);
+    int val = 0;
+
+    // Check if forecast ring display
+    if (position.x > GetSize().GetWidth() - m_cellWidth) {
+        val = -1;
+    } else {
+        val = floor(position.x / m_cellWidth);
+        if (m_subDailyMode) {
+            val = floor(position.x / (m_cellWidth * m_subDailyFraction));
+        }
+    }
+
     wxCommandEvent eventSlct(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED);
     eventSlct.SetInt(val);
     GetParent()->ProcessWindowEvent(eventSlct);
@@ -85,11 +108,41 @@ void asLeadTimeSwitcher::Draw(a1f& dates) {
     int width = (dates.size() + 1) * m_cellWidth;
     int height = m_cellHeight + m_margin;
 
-    // Get color values
+    // Get values at a daily time step
     int returnPeriodRef = m_workspace->GetAlarmsPanelReturnPeriod();
     float quantileThreshold = m_workspace->GetAlarmsPanelQuantile();
     a1f values = m_forecastManager->GetAggregator()->GetOverallMaxValues(dates, returnPeriodRef, quantileThreshold);
     wxASSERT(values.size() == dates.size());
+
+    // Get values at a sub-daily time step
+    a1f valuesSubDaily;
+    if (m_hasSubDaily) {
+        for (int iMethod = 0; iMethod < m_forecastManager->GetMethodsNb(); iMethod++) {
+            if (m_forecastManager->GetAggregator()->GetForecast(iMethod, 0)->GetForecastTimeStepHours() >= 24) {
+                continue;
+            }
+            a1f methodMaxValues = m_forecastManager->GetAggregator()->GetMethodMaxValues(
+                dates, iMethod, returnPeriodRef, quantileThreshold);
+            methodMaxValues = (methodMaxValues.isFinite()).select(methodMaxValues, 0);
+            if (valuesSubDaily.size() == 0) {
+                valuesSubDaily = methodMaxValues;
+                continue;
+            }
+            if (valuesSubDaily.size() != methodMaxValues.size()) {
+                wxLogError(_("Combination of sub-daily time steps not yet implemented."));
+                continue;
+            }
+            valuesSubDaily = valuesSubDaily.cwiseMax(methodMaxValues);
+        }
+        valuesSubDaily = (valuesSubDaily > 0).select(valuesSubDaily, NAN);
+    }
+
+    // Handle sub-daily time steps
+    m_subDailyFraction = double(dates.size()) / double(valuesSubDaily.size());
+    if (m_subDailyFraction < 0.2) {
+        wxLogError(_("Too small time steps are not supported in the lead time switcher."));
+        return;
+    }
 
     // Create bitmap
     wxDELETE(m_bmp);
@@ -126,6 +179,16 @@ void asLeadTimeSwitcher::Draw(a1f& dates) {
             wxString dateStr = asTime::GetStringTime(dates[iLead], "DD.MM");
             gc->SetFont(datesFont, *wxBLACK);
             CreateDatesText(gc, startText, iLead, dateStr);
+        }
+
+        if (m_hasSubDaily) {
+            for (int iLead = 0; iLead < valuesSubDaily.size(); iLead++) {
+                gc->SetPen(wxPen(GetBackgroundColour(), 1, wxPENSTYLE_SOLID));
+
+                wxGraphicsPath path = gc->CreatePath();
+                CreatePathSubDaily(path, iLead);
+                FillPath(gc, path, valuesSubDaily[iLead]);
+            }
         }
 
         // For the global view option
@@ -196,7 +259,7 @@ void asLeadTimeSwitcher::OnPaint(wxPaintEvent& event) {
     event.Skip();
 }
 
-void asLeadTimeSwitcher::CreatePath(wxGraphicsPath& path, int iCol) {
+void asLeadTimeSwitcher::CreatePath(wxGraphicsPath& path, int iCol) const {
     wxPoint start(0, 0);
 
     double startPointX = (double)start.x + iCol * m_cellWidth;
@@ -208,6 +271,28 @@ void asLeadTimeSwitcher::CreatePath(wxGraphicsPath& path, int iCol) {
     path.AddLineToPoint(startPointX + m_cellWidth, startPointY);
     path.AddLineToPoint(startPointX + m_cellWidth, startPointY + m_cellHeight - 1);
     path.AddLineToPoint(startPointX, startPointY + m_cellHeight - 1);
+    path.AddLineToPoint(startPointX, startPointY);
+
+    path.CloseSubpath();
+}
+
+void asLeadTimeSwitcher::CreatePathSubDaily(wxGraphicsPath& path, int iCol) const {
+    double heightFraction = 0.4;
+    wxPoint start(0, 0);
+    int fullDaysNb = floor(iCol * m_subDailyFraction);
+    int subDaysNb = iCol - fullDaysNb / m_subDailyFraction;
+
+    int smallCellWidth = (m_cellWidth - 2) * m_subDailyFraction;
+
+    double startPointX = (double)start.x + fullDaysNb * m_cellWidth + subDaysNb * smallCellWidth + 1;
+
+    auto startPointY = (double)start.y + (1 - heightFraction) * m_cellHeight;
+
+    path.MoveToPoint(startPointX, startPointY);
+
+    path.AddLineToPoint(startPointX + smallCellWidth, startPointY);
+    path.AddLineToPoint(startPointX + smallCellWidth, startPointY + m_cellHeight * heightFraction - 1);
+    path.AddLineToPoint(startPointX, startPointY + m_cellHeight * heightFraction - 1);
     path.AddLineToPoint(startPointX, startPointY);
 
     path.CloseSubpath();
@@ -285,17 +370,28 @@ void asLeadTimeSwitcher::CreateDatesText(wxGraphicsContext* gc, const wxPoint& s
 void asLeadTimeSwitcher::CreatePathMarker(wxGraphicsPath& path, int iCol) {
     int outlier = g_ppiScaleDc * 5;
     int markerHeight = g_ppiScaleDc * 13;
-    wxPoint start(m_cellWidth / 2, m_cellHeight - markerHeight);
+    int cellWidth = m_cellWidth;
 
-    double startPointX = (double)start.x + iCol * m_cellWidth;
-    auto startPointY = (double)start.y;
+    double startPointX = (double)cellWidth / 2 + iCol * cellWidth;
+    auto startPointY = (double)m_cellHeight - markerHeight;
+
+    if (m_subDailyMode) {
+        cellWidth = (m_cellWidth - 2) * m_subDailyFraction;
+        int fullDaysNb = floor(iCol * m_subDailyFraction);
+        int subDaysNb = iCol - fullDaysNb / m_subDailyFraction;
+
+        startPointX = fullDaysNb * m_cellWidth + subDaysNb * cellWidth + 1 + cellWidth / 2;
+    }
+
+    int halfWidth = cellWidth / (g_ppiScaleDc * 5);
+    if (m_subDailyMode) {
+        halfWidth = cellWidth / (g_ppiScaleDc * 2);
+    }
 
     path.MoveToPoint(startPointX, startPointY);
 
-    path.AddLineToPoint(startPointX - m_cellWidth / (g_ppiScaleDc * 4),
-                        startPointY + markerHeight + outlier - g_ppiScaleDc * 1);
-    path.AddLineToPoint(startPointX + m_cellWidth / (g_ppiScaleDc * 4),
-                        startPointY + markerHeight + outlier - g_ppiScaleDc * 1);
+    path.AddLineToPoint(startPointX - halfWidth, startPointY + markerHeight + outlier - g_ppiScaleDc * 1);
+    path.AddLineToPoint(startPointX + halfWidth, startPointY + markerHeight + outlier - g_ppiScaleDc * 1);
     path.AddLineToPoint(startPointX, startPointY);
 
     path.CloseSubpath();

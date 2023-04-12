@@ -75,10 +75,10 @@ void asPanelSidebarAlarms::Update() {
             if (quantileThreshold <= 0) quantileThreshold = (float)0.9;
             if (quantileThreshold > 1) quantileThreshold = (float)0.9;
 
-            for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++) {
+            for (int iMethod = 0; iMethod < m_forecastManager->GetMethodsNb(); iMethod++) {
                 a1f methodMaxValues = m_forecastManager->GetAggregator()->GetMethodMaxValues(
-                    dates, methodRow, returnPeriodRef, quantileThreshold);
-                AddRow(dates, methodMaxValues, methodRow);
+                    dates, iMethod, returnPeriodRef, quantileThreshold);
+                AddRow(dates, methodMaxValues, iMethod);
             }
 
             break;

@@ -699,6 +699,8 @@ void asFrameViewer::UpdateLeadTimeSwitch() {
     wxDELETE(m_leadTimeSwitcher);
     m_leadTimeSwitcher = new asLeadTimeSwitcher(m_panelTop, &m_workspace, m_forecastManager, wxID_ANY,
                                                 wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+    m_leadTimeSwitcher->SetForecastSelection(m_forecastViewer->GetMethodSelection(),
+                                             m_forecastViewer->GetForecastSelection());
     m_leadTimeSwitcher->SetBackgroundColour(wxColour(77, 77, 77));
     m_leadTimeSwitcher->Layout();
     m_leadTimeSwitcher->SetMinSize(m_leadTimeSwitcher->GetSize());
@@ -1296,6 +1298,8 @@ bool asFrameViewer::OpenForecast(const wxArrayString& names) {
     UpdateLeadTimeSwitch();
 
     m_leadTimeSwitcher->SetLeadTime(m_forecastViewer->GetLeadTimeIndex());
+    m_leadTimeSwitcher->SetForecastSelection(m_forecastViewer->GetMethodSelection(),
+                                             m_forecastViewer->GetForecastSelection());
 
     Thaw();
 
@@ -1393,7 +1397,7 @@ void asFrameViewer::FitExtentToForecasts() {
 void asFrameViewer::OnMoveLayer(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    // Check than more than 1 layer
+    // Check that more than 1 layer
     if (m_viewerLayerManager->GetCount() <= 1) {
         wxLogError(_("Moving layer not possible with less than 2 layers"));
         return;
@@ -1658,6 +1662,8 @@ void asFrameViewer::OnForecastForecastSelectionChange(wxCommandEvent& event) {
     m_forecastViewer->SetForecast(message->GetMethodRow(), message->GetForecastRow());
 
     if (m_leadTimeSwitcher) {
+        m_leadTimeSwitcher->SetForecastSelection(m_forecastViewer->GetMethodSelection(),
+                                                 m_forecastViewer->GetForecastSelection());
         m_leadTimeSwitcher->SetLeadTime(m_forecastViewer->GetLeadTimeIndex());
     }
 
