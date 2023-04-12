@@ -39,6 +39,8 @@
 
 IMPLEMENT_APP(AtmoswingAppViewer);
 
+#include <wx/stdpaths.h>
+
 #include "asInternet.h"
 #include "images.h"
 #include "vroomgis_bmp.h"
