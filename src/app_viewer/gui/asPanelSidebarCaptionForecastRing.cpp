@@ -92,11 +92,12 @@ asPanelSidebarCaptionForecastRingDrawing::~asPanelSidebarCaptionForecastRingDraw
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::DrawDates(a1f& dates) {
-    auto bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(200 * g_ppiScaleDc));
-    wxASSERT(bmp);
+    wxDELETE(m_bmpDates);
+    m_bmpDates = new wxBitmap(int(240 * g_ppiScaleDc), int(200 * g_ppiScaleDc));
+    wxASSERT(m_bmpDates);
 
     // Create device context
-    wxMemoryDC dc(*bmp);
+    wxMemoryDC dc(*m_bmpDates);
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
 
@@ -131,19 +132,16 @@ void asPanelSidebarCaptionForecastRingDrawing::DrawDates(a1f& dates) {
 
     dc.SelectObject(wxNullBitmap);
 
-    this->SetBitmapDates(bmp);
-    wxDELETE(bmp);
-    wxASSERT(!bmp);
-
     Refresh();
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::DrawColorbar(double valmax) {
-    auto bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(50 * g_ppiScaleDc));
-    wxASSERT(bmp);
+    wxDELETE(m_bmpColorbar);
+    m_bmpColorbar = new wxBitmap(int(240 * g_ppiScaleDc), int(70 * g_ppiScaleDc));
+    wxASSERT(m_bmpColorbar);
 
     // Create device context
-    wxMemoryDC dc(*bmp);
+    wxMemoryDC dc(*m_bmpColorbar);
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
 
@@ -166,33 +164,7 @@ void asPanelSidebarCaptionForecastRingDrawing::DrawColorbar(double valmax) {
 
     dc.SelectObject(wxNullBitmap);
 
-    this->SetBitmapColorbar(bmp);
-    wxDELETE(bmp);
-    wxASSERT(!bmp);
-
     Refresh();
-}
-
-void asPanelSidebarCaptionForecastRingDrawing::SetBitmapDates(wxBitmap* bmp) {
-    wxDELETE(m_bmpDates);
-    wxASSERT(!m_bmpDates);
-
-    if (bmp != nullptr) {
-        wxASSERT(bmp);
-        m_bmpDates = new wxBitmap(*bmp);
-        wxASSERT(m_bmpDates);
-    }
-}
-
-void asPanelSidebarCaptionForecastRingDrawing::SetBitmapColorbar(wxBitmap* bmp) {
-    wxDELETE(m_bmpColorbar);
-    wxASSERT(!m_bmpColorbar);
-
-    if (bmp != nullptr) {
-        wxASSERT(bmp);
-        m_bmpColorbar = new wxBitmap(*bmp);
-        wxASSERT(m_bmpColorbar);
-    }
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::OnPaint(wxPaintEvent& event) {

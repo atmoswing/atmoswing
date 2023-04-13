@@ -51,10 +51,6 @@ class asPanelSidebarCaptionForecastRingDrawing : public wxPanel {
     wxBitmap* m_bmpColorbar;
     wxGraphicsContext* m_gdc;
 
-    void SetBitmapDates(wxBitmap* bmp);
-
-    void SetBitmapColorbar(wxBitmap* bmp);
-
     void CreateDatesPath(wxGraphicsPath& path, const wxPoint& center, double scale, int segmentsTotNb, int segmentNb);
 
     void CreateDatesText(wxGraphicsContext* gc, const wxPoint& center, double scale, int segmentsTotNb, int segmentNb,
