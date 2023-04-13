@@ -116,8 +116,11 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
             gc->SetPen(selPen);
         }
 
+        // Get date
+        double date = feature->GetFieldAsDouble(3);
+
         // Get value to set color
-        double value = feature->GetFieldAsDouble(3);
+        double value = feature->GetFieldAsDouble(4);
         Paint(gc, path, value);
 
         // Draw next segments
@@ -126,20 +129,17 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
             path = gc->CreatePath();
             CreatePath(path, point, leadTimeSize, iLead);
 
+            // Get date
+            date = feature->GetFieldAsDouble(iLead * 2 + 3);
+
             // Get value to set color
-            value = feature->GetFieldAsDouble(iLead + 3);
+            value = feature->GetFieldAsDouble(iLead * 2 + 4);
             Paint(gc, path, value);
         }
 
         // Create a mark at the center
         path.AddCircle(point.x, point.y, 2);
 
-        /*      // Cross
-                path.MoveToPoint(point.x+2, point.y);
-                path.AddLineToPoint(point.x-2, point.y);
-                path.MoveToPoint(point.x, point.y+2);
-                path.AddLineToPoint(point.x, point.y-2);
-        */
         gc->StrokePath(path);
     } else {
         wxLogError(_("Drawing of the symbol failed."));

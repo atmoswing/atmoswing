@@ -1767,7 +1767,7 @@ void asFrameViewer::UpdateHeaderTexts() {
 }
 
 void asFrameViewer::UpdatePanelCaptionAll() {
-    if (m_forecastViewer->GetLeadTimeIndex() < m_forecastManager->GetLeadTimeLengthMax()) {
+    if (m_forecastViewer->GetLeadTimeIndex() >= 0) {
         m_panelSidebarCaptionForecastDots->Show();
         m_panelSidebarCaptionForecastRing->Hide();
 

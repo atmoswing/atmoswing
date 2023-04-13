@@ -294,21 +294,24 @@ void asForecastRenderer::Redraw() {
         int leadTimeSize = forecasts[0]->GetTargetDatesLength();
 
         // Adding fields
-        OGRFieldDefn fieldStationRow("stationrow", OFTReal);
+        OGRFieldDefn fieldStationRow("stationRow", OFTReal);
         layerSpecific->AddField(fieldStationRow);
         layerOther->AddField(fieldStationRow);
-        OGRFieldDefn fieldStationId("stationid", OFTReal);
+        OGRFieldDefn fieldStationId("stationId", OFTReal);
         layerSpecific->AddField(fieldStationId);
         layerOther->AddField(fieldStationId);
-        OGRFieldDefn fieldLeadTimeSize("leadtimesize", OFTReal);
+        OGRFieldDefn fieldLeadTimeSize("leadTimeSize", OFTReal);
         layerSpecific->AddField(fieldLeadTimeSize);
         layerOther->AddField(fieldLeadTimeSize);
 
         // Adding a field for every lead time
         for (int i = 0; i < leadTimeSize; i++) {
-            OGRFieldDefn fieldLeadTime(asStrF("leadtime%d", i), OFTReal);
-            layerSpecific->AddField(fieldLeadTime);
-            layerOther->AddField(fieldLeadTime);
+            OGRFieldDefn fieldLeadTimeDate(asStrF("leadTimeDate%d", i), OFTReal);
+            layerSpecific->AddField(fieldLeadTimeDate);
+            layerOther->AddField(fieldLeadTimeDate);
+            OGRFieldDefn fieldLeadTimeVal(asStrF("leadTimeVal%d", i), OFTReal);
+            layerSpecific->AddField(fieldLeadTimeVal);
+            layerOther->AddField(fieldLeadTimeVal);
         }
 
         // Adding features to the layer
@@ -362,7 +365,10 @@ void asForecastRenderer::Redraw() {
             }
 
             // Loop over the lead times
+            a1f dates = forecast->GetTargetDates();
             for (int iLead = 0; iLead < leadTimeSize; iLead++) {
+                data.Add(dates[iLead]);
+
                 a1f values = forecast->GetAnalogsValuesRaw(iLead, iStat);
 
                 if (asHasNaN(&values[0], &values[values.size() - 1])) {
@@ -454,10 +460,10 @@ void asForecastRenderer::Redraw() {
         }
 
         // Adding fields
-        OGRFieldDefn fieldStationRow("stationrow", OFTReal);
+        OGRFieldDefn fieldStationRow("stationRow", OFTReal);
         layerSpecific->AddField(fieldStationRow);
         layerOther->AddField(fieldStationRow);
-        OGRFieldDefn fieldStationId("stationid", OFTReal);
+        OGRFieldDefn fieldStationId("stationId", OFTReal);
         layerSpecific->AddField(fieldStationId);
         layerOther->AddField(fieldStationId);
         OGRFieldDefn fieldValueReal("valueReal", OFTReal);
