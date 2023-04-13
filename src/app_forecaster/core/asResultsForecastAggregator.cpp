@@ -473,6 +473,10 @@ vf asResultsForecastAggregator::GetMaxExtent() const {
     vf vecLatMin = m_forecasts[0][0]->GetPredictorLatMin();
     vf vecLatMax = m_forecasts[0][0]->GetPredictorLatMax();
 
+    if (vecLonMin.empty() || vecLonMax.empty() || vecLatMin.empty() || vecLatMax.empty()) {
+        return {0, 0, 0, 0};
+    }
+
     vf extent = {
         *std::min_element(vecLonMin.begin(), vecLonMin.end()),
         *std::max_element(vecLonMax.begin(), vecLonMax.end()),
