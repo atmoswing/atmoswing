@@ -399,6 +399,7 @@ class asFramePreferencesViewerVirtual : public wxFrame
 		wxStaticText* m_staticTextAlarmsQuantile;
 		wxTextCtrl* m_textCtrlAlarmsQuantile;
 		wxStaticText* m_staticTextAlarmsQuantileRange;
+		wxStaticText* m_staticText581;
 		wxStaticText* m_staticText541;
 		wxTextCtrl* m_textCtrlMaxLengthDaily;
 		wxStaticText* m_staticText56;

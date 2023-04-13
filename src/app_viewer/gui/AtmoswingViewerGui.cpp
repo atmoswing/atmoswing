@@ -1145,6 +1145,10 @@ asFramePreferencesViewerVirtual::asFramePreferencesViewerVirtual( wxWindow* pare
 	wxStaticBoxSizer* sbSizer8;
 	sbSizer8 = new wxStaticBoxSizer( new wxStaticBox( m_panelWorkspace, wxID_ANY, _("Maximum length of time series to display") ), wxVERTICAL );
 
+	m_staticText581 = new wxStaticText( sbSizer8->GetStaticBox(), wxID_ANY, _("Requires a restart or opening new forecasts."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText581->Wrap( -1 );
+	sbSizer8->Add( m_staticText581, 0, wxALL, 5 );
+
 	wxFlexGridSizer* fgSizer8;
 	fgSizer8 = new wxFlexGridSizer( 0, 3, 0, 0 );
 	fgSizer8->SetFlexibleDirection( wxBOTH );
