@@ -69,7 +69,8 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
     void _DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry, const wxRect2DDouble& coord,
                     const vrRender* render, vrLabel* label, double pxsize) override;
 
-    static void CreatePath(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb);
+    void CreatePath(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb,
+                    int segmentsCount = 1);
 
     void Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value) const;
 };

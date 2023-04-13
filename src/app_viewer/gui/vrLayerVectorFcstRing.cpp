@@ -97,9 +97,6 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
 
         // Set the default pen
         gc->SetPen(greyPen);
-        if (IsFeatureSelected(feature->GetFID())) {
-            gc->SetPen(selPen);
-        }
 
         // Draw segments
         wxGraphicsPath path;
@@ -119,15 +116,37 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
                 }
             }
 
-            // Get date
-            double date = feature->GetFieldAsDouble(iLead * 2 + 3);
-
             // Get value to set color
             double value = feature->GetFieldAsDouble(iLead * 2 + 4);
             Paint(gc, path, value);
         }
 
+        // Set the default pen
+        gc->SetPen(blackPen);
+        gc->SetBrush(*wxTRANSPARENT_BRUSH);
+        if (IsFeatureSelected(feature->GetFID())) {
+            gc->SetPen(selPen);
+        }
+
         // Draw daily boxes
+        int dayStartIndex = 0;
+        double prevLeadTimeDate = feature->GetFieldAsDouble(3);
+        for (int iLead = 0; iLead < leadTimeSize; iLead++) {
+            double date = feature->GetFieldAsDouble(iLead * 2 + 3);
+            if (floor(prevLeadTimeDate) == floor(date)) {
+                continue;
+            }
+
+            // Create shape
+            path = gc->CreatePath();
+            int segmentsCount = iLead - dayStartIndex;
+            CreatePath(path, point, leadTimeSize, dayStartIndex, segmentsCount);
+
+            dayStartIndex = iLead;
+            prevLeadTimeDate = date;
+
+            gc->DrawPath(path);
+        }
 
         // Create a mark at the center
         path.AddCircle(point.x, point.y, 2);
@@ -138,12 +157,13 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
     }
 }
 
-void vrLayerVectorFcstRing::CreatePath(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb) {
+void vrLayerVectorFcstRing::CreatePath(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb,
+                                       int segmentsCount) {
     const wxDouble radiusOut = 25 * g_ppiScaleDc;
     const wxDouble radiusIn = 10 * g_ppiScaleDc;
 
     wxDouble segmentStart = -0.5 * M_PI + ((double)segmentNb / (double)segmentsTotNb) * (1.5 * M_PI);
-    wxDouble segmentEnd = -0.5 * M_PI + ((double)(segmentNb + 1) / (double)segmentsTotNb) * (1.5 * M_PI);
+    wxDouble segmentEnd = -0.5 * M_PI + ((double)(segmentNb + segmentsCount) / (double)segmentsTotNb) * (1.5 * M_PI);
     wxDouble centerX = (wxDouble)center.x;
     wxDouble centerY = (wxDouble)center.y;
 
