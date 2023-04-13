@@ -1786,7 +1786,13 @@ void asFrameViewer::UpdatePanelCaptionAll() {
 
         asResultsForecast* forecast = m_forecastManager->GetForecast(methodRow, forecastRow);
         a1f dates = forecast->GetTargetDates();
-        m_panelSidebarCaptionForecastRing->SetDates(dates);
+        if (forecast->IsSubDaily()) {
+            a1f datesClipped = dates.head(dates.size() - 1);
+            m_panelSidebarCaptionForecastRing->SetDates(datesClipped);
+        } else {
+            m_panelSidebarCaptionForecastRing->SetDates(dates);
+        }
+
     }
 }
 

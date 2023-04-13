@@ -293,6 +293,13 @@ void asForecastRenderer::Redraw() {
         // Length of the lead time
         int leadTimeSize = forecasts[0]->GetTargetDatesLength();
 
+        // Check if a time shift
+        bool timeShiftEndAccumulation = false;
+        if (forecasts[0]->IsSubDaily()) {
+            timeShiftEndAccumulation = true;
+            leadTimeSize -=1;
+        }
+
         // Adding fields
         OGRFieldDefn fieldStationRow("stationRow", OFTReal);
         layerSpecific->AddField(fieldStationRow);
@@ -367,9 +374,13 @@ void asForecastRenderer::Redraw() {
             // Loop over the lead times
             a1f dates = forecast->GetTargetDates();
             for (int iLead = 0; iLead < leadTimeSize; iLead++) {
+                int idx = iLead;
+                if (timeShiftEndAccumulation) {
+                    idx += 1;
+                }
                 data.Add(dates[iLead]);
 
-                a1f values = forecast->GetAnalogsValuesRaw(iLead, iStat);
+                a1f values = forecast->GetAnalogsValuesRaw(idx, iStat);
 
                 if (asHasNaN(&values[0], &values[values.size() - 1])) {
                     data.Add(NAN);

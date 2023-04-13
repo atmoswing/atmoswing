@@ -78,8 +78,7 @@ void asLeadTimeSwitcher::SetForecastSelection(int iMethod, int iForecast) {
     if (m_forecastManager->GetMethodsNb() < i) return;
     if (m_forecastManager->GetForecastsNb(i) < j) return;
 
-    double timeStep = m_forecastManager->GetForecast(i, j)->GetForecastTimeStepHours();
-    m_subDailyMode = (timeStep < 24);
+    m_subDailyMode = m_forecastManager->GetForecast(i, j)->IsSubDaily();
 }
 
 void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent& event) {
@@ -118,7 +117,7 @@ void asLeadTimeSwitcher::Draw(a1f& dates) {
     a1f valuesSubDaily;
     if (m_hasSubDaily) {
         for (int iMethod = 0; iMethod < m_forecastManager->GetMethodsNb(); iMethod++) {
-            if (m_forecastManager->GetAggregator()->GetForecast(iMethod, 0)->GetForecastTimeStepHours() >= 24) {
+            if (!m_forecastManager->GetAggregator()->GetForecast(iMethod, 0)->IsSubDaily()) {
                 continue;
             }
             a1f methodMaxValues = m_forecastManager->GetAggregator()->GetMethodMaxValues(

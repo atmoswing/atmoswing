@@ -768,6 +768,10 @@ double asResultsForecast::GetForecastTimeStepHours() const {
     return 24;
 }
 
+bool asResultsForecast::IsSubDaily() const {
+    return GetForecastTimeStepHours() < 24;
+}
+
 wxArrayString asResultsForecast::GetTargetDatesWxArray() const {
     wxArrayString dates;
     wxString format = GetDateFormatting();

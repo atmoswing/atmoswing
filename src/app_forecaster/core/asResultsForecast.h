@@ -334,6 +334,8 @@ class asResultsForecast : public asResults {
 
     double GetForecastTimeStepHours() const;
 
+    bool IsSubDaily() const;
+
     wxArrayString GetTargetDatesWxArray() const;
 
     void SetTargetDates(const a1d& refDates) {

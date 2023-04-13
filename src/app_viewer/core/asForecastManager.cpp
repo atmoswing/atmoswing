@@ -55,7 +55,7 @@ bool asForecastManager::HasSubDailyForecasts() const {
 
     for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
         for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
-            if (m_aggregator->GetForecast(i, j)->GetForecastTimeStepHours() < 24) {
+            if (m_aggregator->GetForecast(i, j)->IsSubDaily()) {
                 return true;
             }
         }

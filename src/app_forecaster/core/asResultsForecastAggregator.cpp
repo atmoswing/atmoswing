@@ -512,7 +512,9 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
     }
 
     a1f datesForecast = dates;
+    bool timeShiftEndAccumulation = false;
     if (timeStep < 1) {
+        timeShiftEndAccumulation = true;
         int datesNb = dates.size() / timeStep;
         datesForecast = a1f::LinSpaced(datesNb, dates[0], dates[0] + (datesNb - 1) * timeStep);
     }
@@ -573,8 +575,15 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
             }
 
             for (int iLead = leadtimeMin; iLead <= leadtimeMax; iLead++) {
-                if (isnan(maxValues[iLead])) {
-                    maxValues[iLead] = -999999;
+                int idx = iLead;
+                if (timeShiftEndAccumulation) {
+                    if (iLead == 0) {
+                        continue;
+                    }
+                    idx -= 1;
+                }
+                if (isnan(maxValues[idx])) {
+                    maxValues[idx] = -999999;
                 }
 
                 float thisVal = 0;
@@ -592,8 +601,8 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
                 }
 
                 // Keep it if higher
-                if (thisVal > maxValues[iLead]) {
-                    maxValues[iLead] = thisVal;
+                if (thisVal > maxValues[idx]) {
+                    maxValues[idx] = thisVal;
                 }
             }
         }

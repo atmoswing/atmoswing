@@ -218,7 +218,7 @@ void asPanelSidebarAlarmsDrawing::AddRow(a1f& dates, a1f& values, int row) {
 
     if (gc) {
         if (fraction < 1.0) {
-            gc->SetPen(*wxGREY_PEN);
+            gc->SetPen(*wxLIGHT_GREY_PEN);
         } else {
             gc->SetPen(*wxBLACK);
         }
