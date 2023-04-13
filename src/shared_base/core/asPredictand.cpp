@@ -125,18 +125,6 @@ asPredictand::TemporalResolution asPredictand::StringToTemporalResolutionEnum(co
         return SixHourlyMTW;
     } else if (temporalResolution.CmpNoCase("TwelveHourlyMTW") == 0) {
         return TwelveHourlyMTW;
-    } else if (temporalResolution.CmpNoCase("TwoDays") == 0) {
-        return TwoDays;
-    } else if (temporalResolution.CmpNoCase("2 days") == 0) {
-        return TwoDays;
-    } else if (temporalResolution.CmpNoCase("ThreeDays") == 0) {
-        return ThreeDays;
-    } else if (temporalResolution.CmpNoCase("3 days") == 0) {
-        return ThreeDays;
-    } else if (temporalResolution.CmpNoCase("Weekly") == 0) {
-        return Weekly;
-    } else if (temporalResolution.CmpNoCase("1 week") == 0) {
-        return Weekly;
     } else {
         wxLogError(_("The temporalResolution enumeration (%s) entry doesn't exists"), temporalResolution);
     }
@@ -159,12 +147,6 @@ wxString asPredictand::TemporalResolutionEnumToString(asPredictand::TemporalReso
             return "SixHourlyMTW";
         case (TwelveHourlyMTW):
             return "TwelveHourlyMTW";
-        case (TwoDays):
-            return "TwoDays";
-        case (ThreeDays):
-            return "ThreeDays";
-        case (Weekly):
-            return "Weekly";
         default:
             wxLogError(_("The given data temporal resolution type in unknown."));
     }

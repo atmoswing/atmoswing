@@ -772,10 +772,7 @@ void asResultsForecast::LimitDataToNbTimeSteps(int length) {
 
 wxString asResultsForecast::GetDateFormatting() const {
     wxString format = "DD.MM.YYYY";
-    if (GetPredictandTemporalResolution() != asPredictand::Daily &&
-        GetPredictandTemporalResolution() != asPredictand::TwoDays &&
-        GetPredictandTemporalResolution() != asPredictand::ThreeDays &&
-        GetPredictandTemporalResolution() != asPredictand::Weekly) {
+    if (GetPredictandTemporalResolution() != asPredictand::Daily) {
         format = "DD.MM.YYYY hh";
     }
 
@@ -783,11 +780,9 @@ wxString asResultsForecast::GetDateFormatting() const {
 }
 
 double asResultsForecast::GetForecastTimeStepHours() const {
+    if (GetPredictandTemporalResolution() == asPredictand::Hourly) return 1;
     if (GetPredictandTemporalResolution() == asPredictand::SixHourly) return 6;
     if (GetPredictandTemporalResolution() == asPredictand::Daily) return 24;
-    if (GetPredictandTemporalResolution() == asPredictand::TwoDays) return 48;
-    if (GetPredictandTemporalResolution() == asPredictand::ThreeDays) return 3 * 24;
-    if (GetPredictandTemporalResolution() == asPredictand::Weekly) return 7 * 24;
 
     return 24;
 }

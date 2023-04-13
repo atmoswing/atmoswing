@@ -61,10 +61,7 @@ class asPredictand : public wxObject {
         OneHourlyMTW,
         ThreeHourlyMTW,
         SixHourlyMTW,
-        TwelveHourlyMTW,
-        TwoDays,
-        ThreeDays,
-        Weekly
+        TwelveHourlyMTW
     };
 
     enum SpatialAggregation {
