@@ -69,12 +69,6 @@ int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString
         return asFAILED;
     }
 
-#if USE_GUI
-    // The progress bar
-    wxString msg = _("Downloading predictors.\n");
-    asDialogProgressBar progressBar(msg, urls.size());
-#endif
-
     // Set a buffer for the error messages
     auto errorBfr = new char[CURL_ERROR_SIZE];
     curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBfr);
@@ -105,17 +99,6 @@ int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString
                 return asFAILED;
             }
         }
-
-#if USE_GUI
-        // Update the progress bar
-        wxString updateMsg = asStrF(_("Downloading file %s\n"), fileName) +
-                             asStrF(_("Downloading: %d / %d files"), iFile + 1, (int)urls.size());
-        if (!progressBar.Update(iFile, updateMsg)) {
-            wxLogVerbose(_("The download has been canceled by the user."));
-            wxDELETEA(errorBfr);
-            return asCANCELLED;
-        }
-#endif
 
         // Download only if not already done
         if (!wxFileName::FileExists(filePath)) {
@@ -168,10 +151,6 @@ int asInternet::Download(const vwxs& urls, const vwxs& fileNames, const wxString
             }
         }
     }
-
-#if USE_GUI
-    progressBar.Destroy();
-#endif
 
     // Always cleanup
     curl_easy_cleanup(curl);
