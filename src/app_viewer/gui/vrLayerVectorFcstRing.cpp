@@ -72,7 +72,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
                                        double pxsize) {
     // Set the defaut pen
     wxASSERT(render->GetType() == vrRENDER_VECTOR);
-    wxPen greyPen(*wxGREY_PEN);
+    wxPen greyPen(*wxLIGHT_GREY_PEN);
     wxPen blackPen(*wxBLACK_PEN);
     wxPen selPen(*wxGREEN, 3);
 
@@ -96,14 +96,14 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
         wxASSERT(leadTimeSize > 0);
 
         // Set the default pen
-        gc->SetPen(greyPen);
+        gc->SetPen(*wxTRANSPARENT_PEN);
 
-        // Draw segments
+        // Draw colored patches
         wxGraphicsPath path;
         for (int iLead = 0; iLead < leadTimeSize; iLead++) {
             // Create shape
             path = gc->CreatePath();
-            CreatePath(path, point, leadTimeSize, iLead);
+            CreatePathPatch(path, point, leadTimeSize, iLead);
 
             if (iLead == 0) {
                 // Ensure intersecting display
@@ -121,6 +121,25 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
             Paint(gc, path, value);
         }
 
+        // Draw ticks
+        gc->SetBrush(*wxTRANSPARENT_BRUSH);
+        double prevLeadTimeDate = feature->GetFieldAsDouble(3);
+        for (int iLead = 1; iLead < leadTimeSize; iLead++) {
+            double date = feature->GetFieldAsDouble(iLead * 2 + 3);
+            if (floor(prevLeadTimeDate) == floor(date)) {
+                gc->SetPen(greyPen);
+            } else {
+                gc->SetPen(blackPen);
+            }
+
+            prevLeadTimeDate = date;
+
+            // Create shape
+            path = gc->CreatePath();
+            CreatePathTick(path, point, leadTimeSize, iLead);
+            gc->DrawPath(path);
+        }
+
         // Set the default pen
         gc->SetPen(blackPen);
         gc->SetBrush(*wxTRANSPARENT_BRUSH);
@@ -128,25 +147,10 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
             gc->SetPen(selPen);
         }
 
-        // Draw daily boxes
-        int dayStartIndex = 0;
-        double prevLeadTimeDate = feature->GetFieldAsDouble(3);
-        for (int iLead = 0; iLead < leadTimeSize; iLead++) {
-            double date = feature->GetFieldAsDouble(iLead * 2 + 3);
-            if (floor(prevLeadTimeDate) == floor(date)) {
-                continue;
-            }
-
-            // Create shape
-            path = gc->CreatePath();
-            int segmentsCount = iLead - dayStartIndex;
-            CreatePath(path, point, leadTimeSize, dayStartIndex, segmentsCount);
-
-            dayStartIndex = iLead;
-            prevLeadTimeDate = date;
-
-            gc->DrawPath(path);
-        }
+        // Draw overall box
+        path = gc->CreatePath();
+        CreatePathAround(path, point);
+        gc->DrawPath(path);
 
         // Create a mark at the center
         path.AddCircle(point.x, point.y, 2);
@@ -157,13 +161,61 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
     }
 }
 
-void vrLayerVectorFcstRing::CreatePath(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb,
-                                       int segmentsCount) {
+void vrLayerVectorFcstRing::CreatePathPatch(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb) {
     const wxDouble radiusOut = 25 * g_ppiScaleDc;
     const wxDouble radiusIn = 10 * g_ppiScaleDc;
 
     wxDouble segmentStart = -0.5 * M_PI + ((double)segmentNb / (double)segmentsTotNb) * (1.5 * M_PI);
-    wxDouble segmentEnd = -0.5 * M_PI + ((double)(segmentNb + segmentsCount) / (double)segmentsTotNb) * (1.5 * M_PI);
+    wxDouble segmentEnd = -0.5 * M_PI + ((double)(segmentNb + 1) / (double)segmentsTotNb) * (1.5 * M_PI);
+    wxDouble centerX = (wxDouble)center.x;
+    wxDouble centerY = (wxDouble)center.y;
+
+    // Get starting point
+    double dX = cos(segmentStart) * radiusOut;
+    double dY = sin(segmentStart) * radiusOut;
+    wxDouble startPointX = centerX + dX;
+    wxDouble startPointY = centerY + dY;
+
+    path.MoveToPoint(startPointX, startPointY);
+
+    path.AddArc(centerX, centerY, radiusOut, segmentStart, segmentEnd, true);
+
+    const wxDouble radiusRatio = ((radiusOut - radiusIn) / radiusOut);
+    wxPoint2DDouble currentPoint = path.GetCurrentPoint();
+    wxDouble newPointX = currentPoint.m_x - (currentPoint.m_x - centerX) * radiusRatio;
+    wxDouble newPointY = currentPoint.m_y - (currentPoint.m_y - centerY) * radiusRatio;
+
+    path.AddLineToPoint(newPointX, newPointY);
+
+    path.AddArc(centerX, centerY, radiusIn, segmentEnd, segmentStart, false);
+
+    path.CloseSubpath();
+}
+
+void vrLayerVectorFcstRing::CreatePathTick(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb) {
+    const wxDouble radiusOut = 25 * g_ppiScaleDc;
+    const wxDouble radiusIn = 10 * g_ppiScaleDc;
+
+    wxDouble segmentStart = -0.5 * M_PI + ((double)segmentNb / (double)segmentsTotNb) * (1.5 * M_PI);
+    wxDouble centerX = (wxDouble)center.x;
+    wxDouble centerY = (wxDouble)center.y;
+
+    // Get starting point
+    double dXin = cos(segmentStart) * radiusIn;
+    double dXout = cos(segmentStart) * radiusOut;
+    double dYin = sin(segmentStart) * radiusIn;
+    double dYout = sin(segmentStart) * radiusOut;
+
+    path.MoveToPoint(centerX + dXin, centerY + dYin);
+    path.AddLineToPoint(centerX + dXout, centerY + dYout);
+}
+
+void vrLayerVectorFcstRing::CreatePathAround(wxGraphicsPath& path, const wxPoint& center) {
+    const wxDouble radiusOut = 25 * g_ppiScaleDc;
+    const wxDouble radiusIn = 10 * g_ppiScaleDc;
+
+    wxDouble segmentStart = -0.5 * M_PI;
+    wxDouble segmentEnd = M_PI;
     wxDouble centerX = (wxDouble)center.x;
     wxDouble centerY = (wxDouble)center.y;
 
