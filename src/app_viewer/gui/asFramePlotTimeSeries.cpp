@@ -144,7 +144,7 @@ void asFramePlotTimeSeries::InitPlotCtrl() {
     plotctrl->SetPlotTitleFont(titleFont);
 
     // Set the grid color
-    wxColour gridColor(240, 240, 240);
+    wxColour gridColor(200, 200, 200);
     plotctrl->SetGridColour(gridColor);
 
     // Set the x axis
