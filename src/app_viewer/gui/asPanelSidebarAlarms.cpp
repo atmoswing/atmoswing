@@ -213,7 +213,7 @@ void asPanelSidebarAlarmsDrawing::AddRow(a1f& dates, a1f& values, int row) {
 
     // Sizes
     wxPoint startGrid(12 * g_ppiScaleDc, 10 * g_ppiScaleDc);
-    int cellWidth = (226 * g_ppiScaleDc) / dates.size();
+    float cellWidth = float(226 * g_ppiScaleDc) / float(dates.size());
     int cellHeight = 20 * g_ppiScaleDc;
 
     if (gc) {
@@ -225,7 +225,7 @@ void asPanelSidebarAlarmsDrawing::AddRow(a1f& dates, a1f& values, int row) {
 
         for (int iLead = 0; iLead < values.size(); iLead++) {
             wxGraphicsPath path = gc->CreatePath();
-            CreatePath(path, startGrid, int(cellWidth * fraction), cellHeight, iLead, row);
+            CreatePath(path, startGrid, cellWidth * fraction, cellHeight, iLead, row);
             float value = values(iLead);
             FillPath(gc, path, value);
         }
@@ -258,7 +258,7 @@ void asPanelSidebarAlarmsDrawing::OnPaint(wxPaintEvent& event) {
     event.Skip();
 }
 
-void asPanelSidebarAlarmsDrawing::CreatePath(wxGraphicsPath& path, const wxPoint& start, int cellWidth, int cellHeight,
+void asPanelSidebarAlarmsDrawing::CreatePath(wxGraphicsPath& path, const wxPoint& start, float cellWidth, int cellHeight,
                                              int iCol, int iRow) {
     double startPointX = (double)start.x + iCol * cellWidth;
     double startPointY = (double)start.y + iRow * cellHeight;

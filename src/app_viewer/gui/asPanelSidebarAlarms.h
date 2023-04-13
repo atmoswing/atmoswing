@@ -56,7 +56,7 @@ class asPanelSidebarAlarmsDrawing : public wxPanel {
     wxGraphicsContext* m_gdc;
     asPanelSidebarAlarms* m_parent;
 
-    void CreatePath(wxGraphicsPath& path, const wxPoint& start, int cellWidth, int height, int iCol, int iRow);
+    void CreatePath(wxGraphicsPath& path, const wxPoint& start, float cellWidth, int height, int iCol, int iRow);
 
     void FillPath(wxGraphicsContext* gc, wxGraphicsPath& path, float value);
 
