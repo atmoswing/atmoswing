@@ -634,31 +634,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
         return false;
     }
     wxLogVerbose(_("Date array created."));
-
-    // Calculate needed memory
-    wxLongLong neededMem = 0;
-    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-        neededMem += (params.GetPredictorXptsnb(iStep, iPtor)) * (params.GetPredictorYptsnb(iStep, iPtor));
-    }
-    neededMem *= timeArrayArchive.GetSize();  // time dimension
-    neededMem *= 4;                           // to bytes (for floats)
-    double neededMemMb = neededMem.ToDouble();
-    neededMemMb /= 1048576.0;  // to Mb
-
-    // Get available memory
-    wxMemorySize freeMemSize = wxGetFreeMemory();
-    wxLongLong freeMem = freeMemSize;
-    double freeMemMb = freeMem.ToDouble();
-    freeMemMb /= 1048576.0;  // To Mb
-
-    if (freeMemSize < 0) {
-        wxLogVerbose(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb);
-    } else {
-        wxLogVerbose(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb);
-        if (neededMemMb > freeMemMb) {
-            wxLogError(_("Data cannot fit into available memory."));
-            return false;
-        }
+    if (!HasEnoughMemory(params, iStep, timeArrayArchive)) {
+        return false;
     }
 
 #if USE_GUI
@@ -1140,30 +1117,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
     }
     wxLogVerbose(_("Date array created."));
 
-    // Calculate needed memory
-    wxLongLong neededMem = 0;
-    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-        neededMem += (params.GetPredictorXptsnb(iStep, iPtor)) * (params.GetPredictorYptsnb(iStep, iPtor));
-    }
-    neededMem *= timeArrayArchive.GetSize();  // time dimension
-    neededMem *= 4;                           // to bytes (for floats)
-    double neededMemMb = neededMem.ToDouble();
-    neededMemMb /= 1048576.0;  // to Mb
-
-    // Get available memory
-    wxMemorySize freeMemSize = wxGetFreeMemory();
-    wxLongLong freeMem = freeMemSize;
-    double freeMemMb = freeMem.ToDouble();
-    freeMemMb /= 1048576.0;  // To Mb
-
-    if (freeMemSize < 0) {
-        wxLogVerbose(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb);
-    } else {
-        wxLogVerbose(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb);
-        if (neededMemMb > freeMemMb) {
-            wxLogError(_("Data cannot fit into available memory."));
-            return false;
-        }
+    if (!HasEnoughMemory(params, iStep, timeArrayArchive)) {
+        return false;
     }
 
 #if USE_GUI
@@ -1757,6 +1712,36 @@ void asMethodForecasting::Cleanup() {
     }
 
     // Do not delete preloaded data here !
+}
+
+bool asMethodForecasting::HasEnoughMemory(const asParametersForecast& params, int iStep,
+                                          const asTimeArray& timeArrayArchive) const {
+    wxLongLong neededMem = 0;
+    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+        neededMem += (params.GetPredictorXptsnb(iStep, iPtor)) * (params.GetPredictorYptsnb(iStep, iPtor));
+    }
+    neededMem *= timeArrayArchive.GetSize();  // time dimension
+    neededMem *= 4;                           // to bytes (for floats)
+    double neededMemMb = neededMem.ToDouble();
+    neededMemMb /= 1048576.0;  // to Mb
+
+    // Get available memory
+    wxMemorySize freeMemSize = wxGetFreeMemory();
+    wxLongLong freeMem = freeMemSize;
+    double freeMemMb = freeMem.ToDouble();
+    freeMemMb /= 1048576.0;  // To Mb
+
+    if (freeMemSize < 0) {
+        wxLogVerbose(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb);
+    } else {
+        wxLogVerbose(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb);
+        if (neededMemMb > freeMemMb) {
+            wxLogError(_("Data cannot fit into available memory."));
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void asMethodForecasting::DeletePreprocessData() {

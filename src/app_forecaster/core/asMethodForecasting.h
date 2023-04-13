@@ -101,6 +101,8 @@ class asMethodForecasting : public asMethodStandard {
     vector<asPredictor*> m_storagePredictorsArchive;
     vector<asPredictor*> m_storagePredictorsRealtime;
     vector<asCriteria*> m_storageCriteria;
+
+    bool HasEnoughMemory(const asParametersForecast& params, int iStep, const asTimeArray& timeArrayArchive) const;
 };
 
 #endif
