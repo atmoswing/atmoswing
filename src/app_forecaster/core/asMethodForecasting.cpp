@@ -614,8 +614,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
     for (double i : leadTime) {
         if (i > lastLeadTime) break;
 
-        double tmpDate = floor(m_forecastDate) + i;
-        tmpTimeArray.push_back(tmpDate);
+        if (params.GetTargetTimeStepHours() >= 24) {
+            tmpTimeArray.push_back(floor(m_forecastDate) + i);
+        } else {
+            tmpTimeArray.push_back(m_forecastDate + i);
+        }
     }
     wxASSERT(!tmpTimeArray.empty());
     double timeStartTarget = tmpTimeArray[0];
@@ -1082,8 +1085,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
     for (double time : leadTime) {
         if (time > lastLeadTime) break;
 
-        double tmpDate = floor(m_forecastDate) + time;
-        tmpTimeArray.push_back(tmpDate);
+        if (params.GetTargetTimeStepHours() >= 24) {
+            tmpTimeArray.push_back(floor(m_forecastDate) + time);
+        } else {
+            tmpTimeArray.push_back(m_forecastDate + time);
+        }
     }
     wxASSERT(!tmpTimeArray.empty());
     double timeStartTarget = tmpTimeArray[0];

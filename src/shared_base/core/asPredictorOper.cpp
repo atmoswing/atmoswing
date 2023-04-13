@@ -187,7 +187,12 @@ double asPredictorOper::DecrementRunDateInUse() {
 void asPredictorOper::RestrictTimeArray(double restrictHours, double forecastTimeStepHours, int leadTimeNb) {
     m_restrictHours = (int)restrictHours;
     m_restrictTimeStepHours = (int)forecastTimeStepHours;
-    m_leadTimeEnd = (int)forecastTimeStepHours * (leadTimeNb + floor(restrictHours / forecastTimeStepHours));
+    if (m_restrictTimeStepHours >= 24) {
+        m_leadTimeEnd = (int)forecastTimeStepHours * (leadTimeNb + floor(restrictHours / forecastTimeStepHours));
+    } else {
+        m_leadTimeStart = 24 * (m_runDateInUse - floor(m_runDateInUse)) + restrictHours;
+        m_leadTimeEnd = m_leadTimeStart + (leadTimeNb - 1) * forecastTimeStepHours;
+    }
     wxASSERT(m_restrictTimeStepHours > 0);
     wxASSERT(m_restrictHours > -100);
     wxASSERT(m_restrictHours < 100);
@@ -222,7 +227,7 @@ bool asPredictorOper::BuildFilenamesUrls() {
     }
 
     // Restrict the downloads to used data
-    if (m_restrictDownloads) {
+    if (m_restrictDownloads && m_restrictTimeStepHours >= 24) {
         // Get the real lead time
         double dayRun = floor(m_runDateInUse);
         double desiredTime = dayRun + m_restrictHours / 24.0;
@@ -267,6 +272,9 @@ bool asPredictorOper::BuildFilenamesUrls() {
         wxString filePath = GetDirStructure(runDateInUse) + DS + GetFileName(runDateInUse, leadTime);
 
         double dataDate = runDateInUse + currentLeadtime / 24.0;
+        if (m_restrictTimeStepHours < 24) {
+            dataDate = floor(runDateInUse) + currentLeadtime / 24.0;
+        }
 
         // Save resulting strings
         m_urls.push_back(thisCommandLeadTime);
