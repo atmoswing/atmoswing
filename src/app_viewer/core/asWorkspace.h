@@ -180,6 +180,22 @@ class asWorkspace : public wxObject {
         m_timeSeriesPlotPastDaysNb = val;
     }
 
+    int GetTimeSeriesMaxLengthDaily() const {
+        return m_timeSeriesMaxLengthDaily;
+    }
+
+    void SetTimeSeriesMaxLengthDaily(int val) {
+        m_timeSeriesMaxLengthDaily = val;
+    }
+
+    int GetTimeSeriesMaxLengthSubDaily() const {
+        return m_timeSeriesMaxLengthSubDaily;
+    }
+
+    void SetTimeSeriesMaxLengthSubDaily(int val) {
+        m_timeSeriesMaxLengthSubDaily = val;
+    }
+
     int GetAlarmsPanelReturnPeriod() const {
         return m_alarmsPanelReturnPeriod;
     }
@@ -222,6 +238,8 @@ class asWorkspace : public wxObject {
 #endif
     double m_colorbarMaxValue;
     int m_timeSeriesPlotPastDaysNb;
+    int m_timeSeriesMaxLengthDaily;
+    int m_timeSeriesMaxLengthSubDaily;
     int m_alarmsPanelReturnPeriod;
     float m_alarmsPanelQuantile;
     vwxs m_predictorIds;

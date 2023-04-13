@@ -35,6 +35,8 @@ asWorkspace::asWorkspace()
       m_forecastsDirectory(asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts"),
       m_colorbarMaxValue(50.0),
       m_timeSeriesPlotPastDaysNb(3),
+      m_timeSeriesMaxLengthDaily(-1),
+      m_timeSeriesMaxLengthSubDaily(-1),
       m_alarmsPanelReturnPeriod(10),
       m_alarmsPanelQuantile(0.9f) {}
 
@@ -64,6 +66,10 @@ bool asWorkspace::Load(const wxString& filePath) {
             m_colorbarMaxValue = asFileWorkspace::GetDouble(node);
         } else if (node->GetName() == "plot_time_series_past_days_nb") {
             m_timeSeriesPlotPastDaysNb = asFileWorkspace::GetInt(node);
+        } else if (node->GetName() == "time_series_max_length_daily") {
+            m_timeSeriesMaxLengthDaily = asFileWorkspace::GetInt(node);
+        } else if (node->GetName() == "time_series_max_length_sub_daily") {
+            m_timeSeriesMaxLengthSubDaily = asFileWorkspace::GetInt(node);
         } else if (node->GetName() == "panel_alarms_return_period") {
             m_alarmsPanelReturnPeriod = asFileWorkspace::GetInt(node);
         } else if (node->GetName() == "panel_alarms_quantile") {
@@ -172,6 +178,8 @@ bool asWorkspace::Save() const {
     file.AddChild(file.CreateNode("forecast_directory", m_forecastsDirectory));
     file.AddChild(file.CreateNode("colorbar_max_value", m_colorbarMaxValue));
     file.AddChild(file.CreateNode("plot_time_series_past_days_nb", m_timeSeriesPlotPastDaysNb));
+    file.AddChild(file.CreateNode("time_series_max_length_daily", m_timeSeriesMaxLengthDaily));
+    file.AddChild(file.CreateNode("time_series_max_length_sub_daily", m_timeSeriesMaxLengthSubDaily));
     file.AddChild(file.CreateNode("panel_alarms_return_period", m_alarmsPanelReturnPeriod));
     file.AddChild(file.CreateNode("panel_alarms_quantile", m_alarmsPanelQuantile));
 

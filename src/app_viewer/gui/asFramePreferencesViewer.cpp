@@ -98,6 +98,21 @@ void asFramePreferencesViewer::LoadPreferences() {
     wxString alarmsQuantile = asStrF("%g", m_workspace->GetAlarmsPanelQuantile());
     m_textCtrlAlarmsQuantile->SetValue(alarmsQuantile);
 
+    // Max length
+    int maxLengthDailyVal = m_workspace->GetTimeSeriesMaxLengthDaily();
+    wxString maxLengthDaily = wxEmptyString;
+    if (maxLengthDailyVal > 0) {
+        maxLengthDaily = asStrF("%d", maxLengthDailyVal);
+    }
+    m_textCtrlMaxLengthDaily->SetValue(maxLengthDaily);
+
+    int maxLengthSubDailyVal = m_workspace->GetTimeSeriesMaxLengthSubDaily();
+    wxString maxLengthSubDaily = wxEmptyString;
+    if (maxLengthSubDailyVal > 0) {
+        maxLengthSubDaily = asStrF("%d", maxLengthSubDailyVal);
+    }
+    m_textCtrlMaxLengthSubDaily->SetValue(maxLengthSubDaily);
+
     /*
      * Paths
      */
@@ -244,6 +259,23 @@ void asFramePreferencesViewer::SavePreferences() {
     if (alarmsQuantileVal > 1) alarmsQuantileVal = 0.9;
     if (alarmsQuantileVal < 0) alarmsQuantileVal = 0.9;
     m_workspace->SetAlarmsPanelQuantile(alarmsQuantileVal);
+
+    // Max length
+    wxString maxLengthDaily = m_textCtrlMaxLengthDaily->GetValue();
+    long maxLengthDailyLong;
+    if (!maxLengthDaily.IsEmpty() && maxLengthDaily.ToLong(&maxLengthDailyLong)) {
+        m_workspace->SetTimeSeriesMaxLengthDaily(int(maxLengthDailyLong));
+    } else {
+        m_workspace->SetTimeSeriesMaxLengthDaily(-1);
+    }
+
+    wxString maxLengthSubDaily = m_textCtrlMaxLengthSubDaily->GetValue();
+    long maxLengthSubDailyLong;
+    if (!maxLengthSubDaily.IsEmpty() && maxLengthSubDaily.ToLong(&maxLengthSubDailyLong)) {
+        m_workspace->SetTimeSeriesMaxLengthSubDaily(int(maxLengthSubDailyLong));
+    } else {
+        m_workspace->SetTimeSeriesMaxLengthSubDaily(-1);
+    }
 
     /*
      * Paths

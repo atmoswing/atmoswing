@@ -1142,6 +1142,42 @@ asFramePreferencesViewerVirtual::asFramePreferencesViewerVirtual( wxWindow* pare
 
 	bSizer55->Add( sbSizer191, 0, wxALL|wxEXPAND, 5 );
 
+	wxStaticBoxSizer* sbSizer8;
+	sbSizer8 = new wxStaticBoxSizer( new wxStaticBox( m_panelWorkspace, wxID_ANY, _("Maximum length of time series to display") ), wxVERTICAL );
+
+	wxFlexGridSizer* fgSizer8;
+	fgSizer8 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer8->SetFlexibleDirection( wxBOTH );
+	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	m_staticText541 = new wxStaticText( sbSizer8->GetStaticBox(), wxID_ANY, _("Daily forecasts"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText541->Wrap( -1 );
+	fgSizer8->Add( m_staticText541, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_textCtrlMaxLengthDaily = new wxTextCtrl( sbSizer8->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer8->Add( m_textCtrlMaxLengthDaily, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_staticText56 = new wxStaticText( sbSizer8->GetStaticBox(), wxID_ANY, _("days"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText56->Wrap( -1 );
+	fgSizer8->Add( m_staticText56, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_staticText55 = new wxStaticText( sbSizer8->GetStaticBox(), wxID_ANY, _("Sub-daily forecasts"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText55->Wrap( -1 );
+	fgSizer8->Add( m_staticText55, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_textCtrlMaxLengthSubDaily = new wxTextCtrl( sbSizer8->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer8->Add( m_textCtrlMaxLengthSubDaily, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_staticText571 = new wxStaticText( sbSizer8->GetStaticBox(), wxID_ANY, _("hours"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText571->Wrap( -1 );
+	fgSizer8->Add( m_staticText571, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+
+	sbSizer8->Add( fgSizer8, 1, wxEXPAND, 5 );
+
+
+	bSizer55->Add( sbSizer8, 0, wxEXPAND|wxALL, 5 );
+
 
 	m_panelWorkspace->SetSizer( bSizer55 );
 	m_panelWorkspace->Layout();
