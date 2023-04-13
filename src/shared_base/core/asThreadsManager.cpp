@@ -136,7 +136,6 @@ int asThreadsManager::GetAvailableThreadsNb() {
 
     // Maximum threads nb
     int runningThreads = GetRunningThreadsNb();
-    wxLogVerbose(_("%d running threads (checking available threads)."), runningThreads);
     m_critSectionManager.Enter();
     int nb = m_maxThreadsNb - runningThreads;
     m_critSectionManager.Leave();
@@ -152,7 +151,6 @@ int asThreadsManager::GetAvailableThreadsNb() {
 bool asThreadsManager::AddThread(asThread* thread) {
     // Check if needs to cleanup the threads array. Critical section locked within
     int runningThreads = GetRunningThreadsNb();
-    wxLogVerbose(_("%d running threads before addition of a new thread."), runningThreads);
     if (runningThreads == 0) {
         CleanArray();
     }
@@ -180,7 +178,6 @@ bool asThreadsManager::AddThread(asThread* thread) {
     m_critSectionManager.Enter();
     m_threads.push_back(thread);
     wxASSERT(thread->GetId() >= 1);
-    wxLogVerbose(_("A new thread was created (id=%d)."), (int)thread->GetId());
     m_critSectionManager.Leave();
 
     // Run
@@ -231,8 +228,6 @@ bool asThreadsManager::CleanArray() {
         // If nothing is running, clear array.
         m_threads.clear();
         m_idCounter = 0;
-
-        wxLogVerbose(_("Thread array cleared."));
     }
 
     m_critSectionManager.Leave();
@@ -244,8 +239,6 @@ void asThreadsManager::Wait(int type) {
     while (GetRunningThreadsNb(type) > 0) {
         wxMilliSleep(10);
     }
-
-    wxLogVerbose(_("All threads have done."));
 }
 
 bool asThreadsManager::HasFreeThread(int type) {
@@ -260,8 +253,6 @@ void asThreadsManager::WaitForFreeThread(int type) {
     while (m_maxThreadsNb - GetRunningThreadsNb(type) <= 0) {
         wxMilliSleep(10);
     }
-
-    wxLogVerbose(_("A thread is available."));
 }
 
 void asThreadsManager::PauseAll() {

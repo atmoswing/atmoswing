@@ -81,9 +81,7 @@ bool asMethodOptimizerMC::Manager() {
     SetScoreOrder(scoreOrder);
 
     // Load the Predictand DB
-    wxLogVerbose(_("Loading the Predictand DB."));
     if (!LoadPredictandDB(m_predictandDBFilePath)) return false;
-    wxLogVerbose(_("Predictand DB loaded."));
 
     // Watch
     wxStopWatch sw;

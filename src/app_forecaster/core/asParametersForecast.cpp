@@ -47,8 +47,6 @@ void asParametersForecast::AddPredictorForecast(ParamsStepForecast& step) {
 }
 
 bool asParametersForecast::LoadFromFile(const wxString& filePath) {
-    wxLogVerbose(_("Loading parameters file."));
-
     if (filePath.IsEmpty()) {
         wxLogError(_("The given path to the parameters file is empty."));
         return false;
@@ -96,8 +94,6 @@ bool asParametersForecast::LoadFromFile(const wxString& filePath) {
     FixTimeLimits();
     FixWeights();
     FixCoordinates();
-
-    wxLogVerbose(_("Parameters file loaded."));
 
     return true;
 }

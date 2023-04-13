@@ -149,8 +149,6 @@ bool asResultsForecast::Save() {
         wxASSERT(m_referenceValues.rows() > 0);
     }
 
-    wxLogVerbose(_("Saving forecast file: %s"), m_filePath);
-
     // Get the elements size
     size_t nLeadtime = m_targetDates.size();
     size_t nAnalogsTot = m_analogsNb.sum();

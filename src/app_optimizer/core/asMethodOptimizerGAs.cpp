@@ -236,9 +236,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     SetScoreOrder(scoreOrder);
 
     // Load the Predictand DB
-    wxLogVerbose(_("Loading the Predictand DB."));
     if (!LoadPredictandDB(m_predictandDBFilePath)) return false;
-    wxLogVerbose(_("Predictand DB loaded."));
 
     // Define time range if using batches
     if (m_useBatches) {
@@ -1524,8 +1522,6 @@ bool asMethodOptimizerGAs::Mating() {
                 wxLogError(_("The desired couples selection method is not yet implemented."));
             }
         }
-
-        wxLogVerbose("partner1 = %d, partner2 = %d", partner1, partner2);
 
         // Check that we don't have the same individual
         if (partner1 == partner2) {

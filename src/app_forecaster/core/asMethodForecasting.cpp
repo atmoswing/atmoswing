@@ -267,10 +267,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
 #endif
     if (m_cancel) return false;
 
-    // Load the Predictand DB
-    wxLogVerbose(_("Loading the Predictand DB."));
     if (!LoadPredictandDB(m_predictandDBFilePath)) return false;
-    wxLogVerbose(_("Predictand DB loaded."));
 
 #if USE_GUI
     if (g_responsive) wxTheApp->Yield();
@@ -627,13 +624,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
     asTimeArray timeArrayTarget = asTimeArray(tmpTimeArray);
     timeArrayTarget.Init();
 
-    // Check archive time array length
-    if (timeArrayArchive.GetSize() < 100) {
-        wxLogError(_("The time array is not consistent in asMethodForecasting::GetAnalogsDates: size=%d."),
-                   timeArrayArchive.GetSize());
-        return false;
-    }
-    wxLogVerbose(_("Date array created."));
+    wxASSERT(timeArrayArchive.GetSize() > 100);
     if (!HasEnoughMemory(params, iStep, timeArrayArchive)) {
         return false;
     }
@@ -978,10 +969,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
         wxLogVerbose(_("Data loaded"));
 
         // Instantiate a score object
-        wxLogVerbose(_("Creating a criterion object."));
         asCriteria* criterion = asCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor));
         m_storageCriteria.push_back(criterion);
-        wxLogVerbose(_("Criterion object created."));
     }
 
 #if USE_GUI
@@ -993,9 +982,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
         m_parent->ProcessWindowEvent(eventProcessing);
     }
 #endif
-
-    // Send data and criteria to processor
-    wxLogVerbose(_("Start processing the comparison."));
 
     a1d timeArrayTargetVect = timeArrayTarget.GetTimeArray();
     a1d timeArrayTargetVectUnique(1);
@@ -1046,9 +1032,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
     results.SetForecastsDirectory(m_batchForecasts->GetForecastsOutputDirectory());
     results.SetCurrentStep(iStep);
     results.Init(params, m_forecastDate);
-
-    // Date array object instantiation for the processor
-    wxLogVerbose(_("Creating a date arrays for the processor."));
 
     // Archive time array
     double timeStartArchive = params.GetArchiveStart();
@@ -1115,7 +1098,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                    timeArrayArchive.GetSize());
         return false;
     }
-    wxLogVerbose(_("Date array created."));
 
     if (!HasEnoughMemory(params, iStep, timeArrayArchive)) {
         return false;
@@ -1460,9 +1442,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
     }
 #endif
 
-    // Send data and criteria to processor
-    wxLogVerbose(_("Start processing the comparison."));
-
     a1f leadTimes = resultsPrev.GetTargetDates();
 
     // Loop over the lead times
@@ -1611,8 +1590,6 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast& results, asParamet
 
     a1f leadTimes = results.GetTargetDates();
 
-    wxLogVerbose(_("Start setting the predictand values to the corresponding analog dates."));
-
     // Loop over the lead times
     for (int iLead = 0; iLead < leadTimes.size(); iLead++) {
         // Set the corresponding analogs number
@@ -1673,8 +1650,6 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast& results, asParamet
         m_parent->ProcessWindowEvent(eventProcessed);
     }
 #endif
-
-    wxLogVerbose(_("Predictands association over."));
 
     return true;
 }

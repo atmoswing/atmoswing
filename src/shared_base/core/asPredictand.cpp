@@ -240,8 +240,6 @@ asPredictand* asPredictand::GetInstance(const wxString& filePath) {
     if (!ncFile.Open()) {
         wxLogError(_("Couldn't open file %s"), filePath);
         return nullptr;
-    } else {
-        wxLogVerbose(_("File successfully opened"));
     }
 
     // Check version

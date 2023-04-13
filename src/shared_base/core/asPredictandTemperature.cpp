@@ -50,8 +50,6 @@ bool asPredictandTemperature::Load(const wxString& filePath) {
     if (!ncFile.Open()) {
         wxLogError(_("Couldn't open file %s"), filePath);
         return false;
-    } else {
-        wxLogVerbose(_("File successfully opened"));
     }
 
     // Load common data

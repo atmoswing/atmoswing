@@ -54,8 +54,6 @@ void asParametersScoring::AddPredictorVect(ParamsStepVect& step) {
 }
 
 bool asParametersScoring::GenerateSimpleParametersFile(const wxString& filePath) const {
-    wxLogVerbose(_("Generating parameters file."));
-
     if (filePath.IsEmpty()) {
         wxLogError(_("The given path to the parameters file is empty."));
         return false;
@@ -226,8 +224,6 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString& filePath)
 
     if (!fileParams.Save()) return false;
     if (!fileParams.Close()) return false;
-
-    wxLogVerbose(_("Parameters file generated."));
 
     return true;
 }

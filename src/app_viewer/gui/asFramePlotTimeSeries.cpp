@@ -290,9 +290,6 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
     float leadTimeStart = oldestForecast->GetTargetDates()[0];
     float leadTimeEnd = forecast->GetTargetDates()[forecast->GetTargetDatesLength() - 1];
 
-    wxLogVerbose(asTime::GetStringTime(leadTimeStart));
-    wxLogVerbose(asTime::GetStringTime(leadTimeEnd));
-
     a1f leadTimes = a1f::LinSpaced(leadTimeEnd - leadTimeStart + 1, leadTimeStart, leadTimeEnd);
 
     wxString allLeadtimesStr = ";";

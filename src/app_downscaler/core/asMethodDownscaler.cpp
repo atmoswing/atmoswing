@@ -196,9 +196,6 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates& results, asParametersDo
         }
     }
 
-    // Send data and criteria to processor
-    wxLogVerbose(_("Start processing the comparison."));
-
     if (!asProcessor::GetAnalogsDates(predictorsArch, predictorsProj, timeArrayArchive, timeArrayArchive,
                                       timeArrayTarget, timeArrayTarget, criteria, params, iStep, results,
                                       containsNaNs)) {
@@ -208,7 +205,6 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates& results, asParametersDo
         Cleanup(criteria);
         return false;
     }
-    wxLogVerbose(_("The processing is over."));
 
     Cleanup(predictorsArch);
     Cleanup(predictorsProj);
@@ -224,12 +220,10 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates& results, asParameter
     results.Init(params);
 
     // Date array object instantiation for the processor
-    wxLogVerbose(_("Creating a date arrays for the processor."));
     double timeStart = params->GetArchiveStart();
     double timeEnd = params->GetArchiveEnd() - params->GetTimeSpanDays();
     asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetAnalogsTimeStepHours(), asTimeArray::Simple);
     timeArrayArchive.Init();
-    wxLogVerbose(_("Date arrays created."));
 
     // Load the predictor data
     vector<asPredictor*> predictors;
@@ -242,10 +236,8 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates& results, asParameter
     // Create the score objects
     vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
-        wxLogVerbose(_("Creating a criterion object."));
         asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
         criteria.push_back(criterion);
-        wxLogVerbose(_("Criterion object created."));
     }
 
     // Inline the data when possible
@@ -256,7 +248,6 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates& results, asParameter
     }
 
     // Send data and criteria to processor
-    wxLogVerbose(_("Start processing the comparison."));
     if (!asProcessor::GetAnalogsSubDates(predictors, predictors, timeArrayArchive, timeArrayArchive, anaDates, criteria,
                                          params, iStep, results, containsNaNs)) {
         wxLogError(_("Failed processing the analogs dates."));
@@ -264,7 +255,6 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates& results, asParameter
         Cleanup(criteria);
         return false;
     }
-    wxLogVerbose(_("The processing is over."));
 
     Cleanup(predictors);
     Cleanup(criteria);
@@ -280,12 +270,10 @@ bool asMethodDownscaler::GetAnalogsValues(asResultsValues& results, asParameters
 
     // Set the predictand values to the corresponding analog dates
     wxASSERT(m_predictandDB);
-    wxLogVerbose(_("Start setting the predictand values to the corresponding analog dates."));
     if (!asProcessor::GetAnalogsValues(*m_predictandDB, anaDates, params, results)) {
         wxLogError(_("Failed setting the predictand values to the corresponding analog dates."));
         return false;
     }
-    wxLogVerbose(_("Predictand association over."));
 
     return true;
 }
