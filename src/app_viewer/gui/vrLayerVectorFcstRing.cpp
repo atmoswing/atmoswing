@@ -72,8 +72,8 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
                                        double pxsize) {
     // Set the defaut pen
     wxASSERT(render->GetType() == vrRENDER_VECTOR);
-    auto renderVector = const_cast<vrRenderVector*>(dynamic_cast<const vrRenderVector*>(render));
-    wxPen defaultPen(renderVector->GetColorPen(), renderVector->GetSize());
+    wxPen greyPen(*wxGREY_PEN);
+    wxPen blackPen(*wxBLACK_PEN);
     wxPen selPen(*wxGREEN, 3);
 
     // Get graphics context
@@ -95,47 +95,39 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
         int leadTimeSize = (int)feature->GetFieldAsDouble(2);
         wxASSERT(leadTimeSize > 0);
 
-        // Create graphics path
-        wxGraphicsPath path = gc->CreatePath();
-
-        // Create first segment
-        CreatePath(path, point, leadTimeSize, 0);
-
-        // Ensure intersecting display
-        wxRect2DDouble pathRect = path.GetBox();
-        if (!pathRect.Intersects(extWndRect)) {
-            return;
-        }
-        if (pathRect.GetSize().x < 1 && pathRect.GetSize().y < 1) {
-            return;
-        }
-
         // Set the default pen
-        gc->SetPen(defaultPen);
+        gc->SetPen(greyPen);
         if (IsFeatureSelected(feature->GetFID())) {
             gc->SetPen(selPen);
         }
 
-        // Get date
-        double date = feature->GetFieldAsDouble(3);
-
-        // Get value to set color
-        double value = feature->GetFieldAsDouble(4);
-        Paint(gc, path, value);
-
-        // Draw next segments
-        for (int iLead = 1; iLead < leadTimeSize; iLead++) {
+        // Draw segments
+        wxGraphicsPath path;
+        for (int iLead = 0; iLead < leadTimeSize; iLead++) {
             // Create shape
             path = gc->CreatePath();
             CreatePath(path, point, leadTimeSize, iLead);
 
+            if (iLead == 0) {
+                // Ensure intersecting display
+                wxRect2DDouble pathRect = path.GetBox();
+                if (!pathRect.Intersects(extWndRect)) {
+                    return;
+                }
+                if (pathRect.GetSize().x < 1 && pathRect.GetSize().y < 1) {
+                    return;
+                }
+            }
+
             // Get date
-            date = feature->GetFieldAsDouble(iLead * 2 + 3);
+            double date = feature->GetFieldAsDouble(iLead * 2 + 3);
 
             // Get value to set color
-            value = feature->GetFieldAsDouble(iLead * 2 + 4);
+            double value = feature->GetFieldAsDouble(iLead * 2 + 4);
             Paint(gc, path, value);
         }
+
+        // Draw daily boxes
 
         // Create a mark at the center
         path.AddCircle(point.x, point.y, 2);
