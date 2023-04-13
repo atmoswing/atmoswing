@@ -746,6 +746,32 @@ wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArray() const {
     return stationsNames;
 }
 
+void asResultsForecast::LimitDataToHours(int hours) {
+    LimitDataToNbTimeSteps(1 + int(hours / GetForecastTimeStepHours()));
+}
+
+void asResultsForecast::LimitDataToDays(int days) {
+    LimitDataToNbTimeSteps(days);
+}
+
+void asResultsForecast::LimitDataToNbTimeSteps(int length) {
+    if (length >= m_targetDates.size()) return;
+
+    a1f targetDates = m_targetDates.head(length);
+    m_targetDates = targetDates;
+    a1i analogsNb = m_analogsNb.head(length);
+    m_analogsNb = analogsNb;
+
+    va1f analogsDates(m_analogsDates.begin(), m_analogsDates.begin() + length);
+    m_analogsDates = analogsDates;
+    va1f analogsCriteria(m_analogsCriteria.begin(), m_analogsCriteria.begin() + length);
+    m_analogsCriteria = analogsCriteria;
+    va2f analogsValuesRaw(m_analogsValuesRaw.begin(), m_analogsValuesRaw.begin() + length);
+    m_analogsValuesRaw = analogsValuesRaw;
+    va2f analogsValuesNorm(m_analogsValuesNorm.begin(), m_analogsValuesNorm.begin() + length);
+    m_analogsValuesNorm = analogsValuesNorm;
+}
+
 wxString asResultsForecast::GetDateFormatting() const {
     wxString format = "DD.MM.YYYY";
     if (GetPredictandTemporalResolution() != asPredictand::Daily &&

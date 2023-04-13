@@ -330,6 +330,12 @@ class asResultsForecast : public asResults {
         return m_targetDates;
     }
 
+    void LimitDataToHours(int hours);
+
+    void LimitDataToDays(int days);
+
+    void LimitDataToNbTimeSteps(int length);
+
     wxString GetDateFormatting() const;
 
     double GetForecastTimeStepHours() const;

@@ -166,6 +166,13 @@ bool asForecastManager::Open(const wxString& filePath, bool doRefresh) {
     }
     m_leadTimeOrigin = forecast->GetLeadTimeOrigin();
 
+    // Limit length
+    if (forecast->IsSubDaily() && m_workspace->GetTimeSeriesMaxLengthSubDaily() > 0) {
+        forecast->LimitDataToHours(m_workspace->GetTimeSeriesMaxLengthSubDaily());
+    } else if (!forecast->IsSubDaily() && m_workspace->GetTimeSeriesMaxLengthDaily() > 0) {
+        forecast->LimitDataToDays(m_workspace->GetTimeSeriesMaxLengthDaily());
+    }
+
     if (m_aggregator->Add(forecast)) {
 #if USE_GUI
         // Send event
@@ -219,6 +226,14 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
         wxDELETE(forecast);
         return false;
     }
+
+    // Limit length
+    if (forecast->IsSubDaily() && m_workspace->GetTimeSeriesMaxLengthSubDaily() > 0) {
+        forecast->LimitDataToHours(m_workspace->GetTimeSeriesMaxLengthSubDaily());
+    } else if (!forecast->IsSubDaily() && m_workspace->GetTimeSeriesMaxLengthDaily() > 0) {
+        forecast->LimitDataToDays(m_workspace->GetTimeSeriesMaxLengthDaily());
+    }
+
     m_aggregator->AddPastForecast(methodRow, forecastRow, forecast);
 
     wxLogVerbose("Past forecast of %s - %s of the %s loaded", forecast->GetMethodId(), forecast->GetSpecificTag(),
