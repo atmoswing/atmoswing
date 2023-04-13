@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 00:00+0200\n"
+"POT-Creation-Date: 2023-04-13 22:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,14 +22,14 @@ msgstr ""
 msgid "The file %s is not a parameters file for the Viewer."
 msgstr ""
 
-#: src/app_viewer/core/asForecastManager.cpp:127
-#: src/app_viewer/core/asForecastManager.cpp:182
+#: src/app_viewer/core/asForecastManager.cpp:141
+#: src/app_viewer/core/asForecastManager.cpp:203
 #, c-format
 msgid "The file %s could not be found."
 msgstr ""
 
-#: src/app_viewer/core/asForecastManager.cpp:135
-#: src/app_viewer/core/asForecastManager.cpp:190
+#: src/app_viewer/core/asForecastManager.cpp:149
+#: src/app_viewer/core/asForecastManager.cpp:211
 #, c-format
 msgid "The file extension (%s) is not correct."
 msgstr ""
@@ -46,19 +46,19 @@ msgstr ""
 msgid "The variable %s from %s could not be loaded."
 msgstr ""
 
-#: src/app_viewer/core/asWorkspace.cpp:48
+#: src/app_viewer/core/asWorkspace.cpp:50
 msgid "Cannot open the workspace file."
 msgstr ""
 
-#: src/app_viewer/core/asWorkspace.cpp:52
+#: src/app_viewer/core/asWorkspace.cpp:54
 msgid "Errors were found in the workspace file."
 msgstr ""
 
-#: src/app_viewer/core/asWorkspace.cpp:149
+#: src/app_viewer/core/asWorkspace.cpp:155
 msgid ""
 "The number of elements in the layers is not consistent in the workspace file."
 msgstr ""
 
-#: src/app_viewer/core/AtmoswingAppViewer.cpp:92
+#: src/app_viewer/core/AtmoswingAppViewer.cpp:95
 msgid "Program already running, aborting."
 msgstr ""

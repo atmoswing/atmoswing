@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 00:01+0200\n"
-"PO-Revision-Date: 2023-04-11 00:11+0200\n"
+"POT-Creation-Date: 2023-04-13 22:16+0200\n"
+"PO-Revision-Date: 2023-04-13 22:27+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -404,14 +404,14 @@ msgstr ""
 #: src/shared_base/core/asFileParameters.cpp:390
 #: src/shared_base/core/asFileParameters.cpp:396
 #: src/shared_base/core/asFileParameters.cpp:402
-#: src/shared_base/core/asFileXml.cpp:183
-#: src/shared_base/core/asFileXml.cpp:201
-#: src/shared_base/core/asFileXml.cpp:218
-#: src/shared_base/core/asFileXml.cpp:235
-#: src/shared_base/core/asFileXml.cpp:277
-#: src/shared_base/core/asFileXml.cpp:294
-#: src/shared_base/core/asFileXml.cpp:309
-#: src/shared_base/core/asFileXml.cpp:324
+#: src/shared_base/core/asFileXml.cpp:177
+#: src/shared_base/core/asFileXml.cpp:195
+#: src/shared_base/core/asFileXml.cpp:212
+#: src/shared_base/core/asFileXml.cpp:229
+#: src/shared_base/core/asFileXml.cpp:271
+#: src/shared_base/core/asFileXml.cpp:288
+#: src/shared_base/core/asFileXml.cpp:303
+#: src/shared_base/core/asFileXml.cpp:318
 #, c-format
 msgid "Failed at converting the value of the element %s (XML file)."
 msgstr "Échec de la conversion de la valeur de l'élément %s (fichier XML)."
@@ -497,28 +497,28 @@ msgstr ""
 msgid "The file %s is not an AtmoSwing file (root: %s)."
 msgstr "Le fichier %s n'est pas un fichier AtmoSwing (racine : %s)."
 
-#: src/shared_base/core/asFileXml.cpp:142
+#: src/shared_base/core/asFileXml.cpp:137
 #, c-format
 msgid "The file version of %s is no longer supported."
 msgstr "La version du fichier %s n'est plus prise en charge."
 
-#: src/shared_base/core/asFileXml.cpp:150
+#: src/shared_base/core/asFileXml.cpp:144
 #, c-format
 msgid "An unknown element was found in the file: %s"
 msgstr "Un élément inconnu a été trouvé dans le fichier : %s"
 
-#: src/shared_base/core/asFileXml.cpp:155
-#: src/shared_base/core/asFileXml.cpp:191
-#: src/shared_base/core/asFileXml.cpp:208
-#: src/shared_base/core/asFileXml.cpp:225
-#: src/shared_base/core/asFileXml.cpp:242
+#: src/shared_base/core/asFileXml.cpp:149
+#: src/shared_base/core/asFileXml.cpp:185
+#: src/shared_base/core/asFileXml.cpp:202
+#: src/shared_base/core/asFileXml.cpp:219
+#: src/shared_base/core/asFileXml.cpp:236
 msgid "The node is empty in the xml file."
 msgstr "Le nœud est vide dans le fichier xml."
 
-#: src/shared_base/core/asFileXml.cpp:288
-#: src/shared_base/core/asFileXml.cpp:303
-#: src/shared_base/core/asFileXml.cpp:318
-#: src/shared_base/core/asFileXml.cpp:333
+#: src/shared_base/core/asFileXml.cpp:282
+#: src/shared_base/core/asFileXml.cpp:297
+#: src/shared_base/core/asFileXml.cpp:312
+#: src/shared_base/core/asFileXml.cpp:327
 #, c-format
 msgid "Empty %s attribute of the element %s (XML file)."
 msgstr "Attribut vide %s de l'élément %s (fichier XML)."
@@ -744,7 +744,7 @@ msgid "AtmoSwing current parameters\n"
 msgstr "Paramètres actuels d'AtmoSwing\n"
 
 #: src/shared_base/core/asParameters.cpp:1122
-#: src/shared_base/core/asUtils.cpp:1665
+#: src/shared_base/core/asUtils.cpp:1641
 msgid "Error when parsing the parameters file"
 msgstr "Erreur lors de l'analyse du fichier de paramètres"
 
@@ -752,31 +752,31 @@ msgstr "Erreur lors de l'analyse du fichier de paramètres"
 msgid "The provided preload data IDs vector is empty."
 msgstr "Le vecteur d'ID de données de préchargement fourni est vide."
 
-#: src/shared_base/core/asParameters.cpp:1316
+#: src/shared_base/core/asParameters.cpp:1317
 msgid "There are empty values in the provided preload data IDs vector."
 msgstr ""
 "Le vecteur d'ID de données de préchargement fourni contient des valeurs "
 "vides."
 
-#: src/shared_base/core/asParameters.cpp:1336
+#: src/shared_base/core/asParameters.cpp:1338
 msgid "The provided preload time (hours) vector is empty."
 msgstr "Le vecteur de temps de préchargement (heures) fourni est vide."
 
-#: src/shared_base/core/asParameters.cpp:1341
+#: src/shared_base/core/asParameters.cpp:1344
 msgid "There are NaN values in the provided preload time (hours) vector."
 msgstr ""
 "Il y a des valeurs NaN dans le vecteur de temps de préchargement (heures) "
 "fourni."
 
-#: src/shared_base/core/asParameters.cpp:1359
+#: src/shared_base/core/asParameters.cpp:1362
 msgid "The provided 'preload levels' vector is empty."
 msgstr "Le vecteur 'preload levels' fourni est vide."
 
-#: src/shared_base/core/asParameters.cpp:1364
+#: src/shared_base/core/asParameters.cpp:1368
 msgid "There are NaN values in the provided 'preload levels' vector."
 msgstr "Le vecteur 'preload levels' fourni contient des valeurs NaN."
 
-#: src/shared_base/core/asParameters.cpp:1513
+#: src/shared_base/core/asParameters.cpp:1518
 msgid ""
 "Trying to access to an element outside of preprocessLevels in the parameters "
 "object."
@@ -1369,7 +1369,7 @@ msgstr ""
 #: src/shared_base/core/asPredictorCustomMFvgSynop.cpp:140
 #: src/shared_base/core/asPredictorCustomUnilNR1.cpp:110
 #: src/shared_base/core/asPredictorCustomUnilOisst2.cpp:66
-#: src/shared_base/core/asPredictorEcmwfIfs.cpp:110
+#: src/shared_base/core/asPredictorEcmwfIfs.cpp:109
 #: src/shared_base/core/asPredictorJmaJra55CSubset.cpp:82
 #: src/shared_base/core/asPredictorJmaJra55CSubset.cpp:102
 #: src/shared_base/core/asPredictorJmaJra55CSubset.cpp:122
@@ -1393,9 +1393,9 @@ msgstr ""
 #: src/shared_base/core/asPredictorNcepR2.cpp:305
 #: src/shared_base/core/asPredictorNoaa20Cr2c.cpp:112
 #: src/shared_base/core/asPredictorNoaa20Cr2c.cpp:126
-#: src/shared_base/core/asPredictorOperEcmwfIfs.cpp:107
-#: src/shared_base/core/asPredictorOperMfArpege.cpp:94
-#: src/shared_base/core/asPredictorOperNwsGfs.cpp:110
+#: src/shared_base/core/asPredictorOperEcmwfIfs.cpp:106
+#: src/shared_base/core/asPredictorOperMfArpege.cpp:93
+#: src/shared_base/core/asPredictorOperNwsGfs.cpp:109
 #, c-format
 msgid "No '%s' parameter identified for the provided level type (%s)."
 msgstr ""
@@ -1720,35 +1720,35 @@ msgstr "L'année à supprimer se situe en dehors du tableau des dates."
 msgid "An unexpected error occurred."
 msgstr "Une erreur inattendue s’est produite."
 
-#: src/shared_base/core/asUtils.cpp:889 src/shared_base/core/asUtils.cpp:905
-#: src/shared_base/core/asUtils.cpp:947 src/shared_base/core/asUtils.cpp:963
-#: src/shared_base/core/asUtils.cpp:1019 src/shared_base/core/asUtils.cpp:1057
-#: src/shared_base/core/asUtils.cpp:1143 src/shared_base/core/asUtils.cpp:1175
-#: src/shared_base/core/asUtils.cpp:1255 src/shared_base/core/asUtils.cpp:1287
+#: src/shared_base/core/asUtils.cpp:865 src/shared_base/core/asUtils.cpp:881
+#: src/shared_base/core/asUtils.cpp:923 src/shared_base/core/asUtils.cpp:939
+#: src/shared_base/core/asUtils.cpp:995 src/shared_base/core/asUtils.cpp:1033
+#: src/shared_base/core/asUtils.cpp:1119 src/shared_base/core/asUtils.cpp:1151
+#: src/shared_base/core/asUtils.cpp:1231 src/shared_base/core/asUtils.cpp:1263
 #, c-format
 msgid "The value (%f) is out of the array range."
 msgstr "La valeur (%f) est en dehors de la plage du tableau."
 
-#: src/shared_base/core/asUtils.cpp:894 src/shared_base/core/asUtils.cpp:910
-#: src/shared_base/core/asUtils.cpp:952 src/shared_base/core/asUtils.cpp:968
+#: src/shared_base/core/asUtils.cpp:870 src/shared_base/core/asUtils.cpp:886
+#: src/shared_base/core/asUtils.cpp:928 src/shared_base/core/asUtils.cpp:944
 msgid "The value was not found in the array."
 msgstr "La valeur n'a pas été trouvée dans le tableau."
 
-#: src/shared_base/core/asUtils.cpp:1372 src/shared_base/core/asUtils.cpp:1447
-#: src/shared_base/core/asUtils.cpp:1561 src/shared_base/core/asUtils.cpp:1605
+#: src/shared_base/core/asUtils.cpp:1348 src/shared_base/core/asUtils.cpp:1423
+#: src/shared_base/core/asUtils.cpp:1537 src/shared_base/core/asUtils.cpp:1581
 msgid "Incorrect value of the order enumeration."
 msgstr "Valeur incorrecte de l'énumération de l'ordre."
 
-#: src/shared_base/core/asUtils.cpp:1417 src/shared_base/core/asUtils.cpp:1526
+#: src/shared_base/core/asUtils.cpp:1393 src/shared_base/core/asUtils.cpp:1502
 msgid "The dimension of the two arrays are not equal."
 msgstr "Les dimensions des deux tableaux ne sont pas égales."
 
-#: src/shared_base/core/asUtils.cpp:1420 src/shared_base/core/asUtils.cpp:1490
-#: src/shared_base/core/asUtils.cpp:1529
+#: src/shared_base/core/asUtils.cpp:1396 src/shared_base/core/asUtils.cpp:1466
+#: src/shared_base/core/asUtils.cpp:1505
 msgid "The array has an unique value."
 msgstr "Le tableau a une valeur unique."
 
-#: src/shared_base/core/asUtils.cpp:1423 src/shared_base/core/asUtils.cpp:1493
-#: src/shared_base/core/asUtils.cpp:1532
+#: src/shared_base/core/asUtils.cpp:1399 src/shared_base/core/asUtils.cpp:1469
+#: src/shared_base/core/asUtils.cpp:1508
 msgid "The array has a negative size..."
 msgstr "Le tableau a une taille négative..."

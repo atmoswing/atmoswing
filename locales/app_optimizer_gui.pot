@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 00:01+0200\n"
+"POT-Creation-Date: 2023-04-13 22:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -146,9 +146,9 @@ msgstr ""
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:66
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:73
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:736
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:743
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:842
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:752
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:759
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:858
 msgid "Select a folder"
 msgstr ""
 
@@ -497,12 +497,12 @@ msgid "Only errors"
 msgstr ""
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:624
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:698
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:714
 msgid "Errors and warnings"
 msgstr ""
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:628
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:701
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:717
 msgid "Verbose"
 msgstr ""
 
@@ -519,128 +519,144 @@ msgid "Help"
 msgstr ""
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:687
-msgid "Logs"
+msgid "Language"
+msgstr ""
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:689
+msgid "English"
+msgstr ""
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:689
+msgid "French"
 msgstr ""
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:695
+msgid "Restart AtmoSwing for the change to take effect."
+msgstr ""
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:703
+msgid "Logs"
+msgstr ""
+
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:711
 msgid "Errors only (recommanded)"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:710
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:726
 msgid "Display window"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:714
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:730
 msgid "Save to a file"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:730
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:746
 msgid "Directories"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:732
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:748
 msgid "Directory containing archive predictors"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:739
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:755
 msgid "Default predictand DB directory"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:753
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:777
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:769
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:793
 msgid "General"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:763
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:779
 msgid "Silent (no progressbar, much faster)"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:763
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:779
 msgid "Standard (recommanded)"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:763
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:779
 msgid "Verbose (not much used)"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:765
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:781
 msgid "GUI options"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:769
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:785
 msgid "Let the software be responsive while processing (recommended)."
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:783
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:799
 msgid "Multithreading"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:785
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:801
 msgid "Allow multithreading"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:792
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:808
 msgid "Max nb of threads"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:805
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:821
 msgid "Threads priority"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:818
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:834
 msgid "Multithreaded (only if allowed hereabove)"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:818
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:834
 msgid "Standard (slower)"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:820
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:836
 msgid "Processing options"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:822
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:838
 msgid "These options don't affect the results, only the processor efficiency."
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:830
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:846
 msgid "Processing"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:836
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:852
 msgid "Working directories"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:838
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:854
 msgid "Directory to save intermediate temporary results"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:849
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:865
 msgid "User specific paths"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:856
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:872
 msgid "User working directory:"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:860
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:868
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:876
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:884
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:892
 msgid "..."
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:864
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:880
 msgid "Log file:"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:872
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:888
 msgid "Preferences file:"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:890
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:906
 msgid "User paths"
 msgstr ""
 
-#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:898
+#: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:914
 msgid "Advanced"
 msgstr ""

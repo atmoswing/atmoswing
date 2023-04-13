@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 00:01+0200\n"
-"PO-Revision-Date: 2023-04-11 00:05+0200\n"
+"POT-Creation-Date: 2023-04-13 22:16+0200\n"
+"PO-Revision-Date: 2023-04-13 22:20+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -48,7 +48,7 @@ msgid "Loading data"
 msgstr "Chargement des données"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:92
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:636
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:652
 msgid "Processing"
 msgstr "En cours"
 
@@ -139,7 +139,7 @@ msgid "Save batch file as"
 msgstr "Enregistrer le fichier batch sous"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:186
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:774
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:790
 msgid "Create a new batch file"
 msgstr "Créer un nouveau fichier batch"
 
@@ -172,12 +172,12 @@ msgid "Only errors"
 msgstr "Erreurs seulement"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:217
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:403
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:419
 msgid "Errors and warnings"
 msgstr "Erreurs et avertissements"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:221
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:406
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:422
 msgid "Verbose"
 msgstr "Verbeux"
 
@@ -255,203 +255,219 @@ msgid "Batch file properties"
 msgstr "Propriétés du fichier batch"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:392
+msgid "Language"
+msgstr "Langue"
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:394
+msgid "English"
+msgstr "Anglais"
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:394
+msgid "French"
+msgstr "Français"
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:400
+msgid "Restart AtmoSwing for the change to take effect."
+msgstr "Redémarrez AtmoSwing pour que la modification prenne effet."
+
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:408
 msgid "Logs"
 msgstr "Journaux"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:400
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:416
 msgid "Errors only (recommanded)"
 msgstr "Erreurs uniquement (recommandé)"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:415
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:431
 msgid "Display window"
 msgstr "Fenêtre d'affichage"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:419
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:435
 msgid "Save to a file"
 msgstr "Enregistrer dans un fichier"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:435
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:451
 msgid "Proxy configuration"
 msgstr "Configuration du proxy"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:437
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:453
 msgid "Internet connection uses a proxy"
 msgstr "La connexion Internet utilise un proxy"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:443
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:459
 msgid "Proxy address"
 msgstr "Adresse du proxy"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:450
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:466
 msgid "Port"
 msgstr "Port"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:463
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:479
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:470
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:486
 msgid "Password"
 msgstr "Mot de passe"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:484
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:500
 msgid "Libraries"
 msgstr "Bibliothèques"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:489
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:505
 msgid "ecCodes definitions"
 msgstr "définitions ecCodes"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:506
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:522
 msgid "General options"
 msgstr "Options générales"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:516
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:532
 msgid "Silent (no progressbar, much faster)"
 msgstr "Silencieux (pas de barre de progression, beaucoup plus rapide)"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:516
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:532
 msgid "Standard (recommanded)"
 msgstr "Standard (recommandé)"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:516
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:532
 msgid "Verbose (not much used)"
 msgstr "Verbeux (peu utilisé)"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:518
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:534
 msgid "GUI options"
 msgstr "Options de l'interface graphique"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:523
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:539
 msgid "Predictor download"
 msgstr "Téléchargement des prédicteurs"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:530
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:546
 msgid "Maximum number of previous time steps if download fails"
 msgstr ""
 "Nombre maximal de pas de temps précédents en cas d'échec du téléchargement"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:534
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:550
 msgid "5"
 msgstr "5"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:545
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:561
 msgid "Maximum parallel requests number"
 msgstr "Nombre maximum de requêtes parallèles"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:549
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:565
 msgid "3"
 msgstr "3"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:560
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:576
 msgid "Restrict downloads to needed lead times."
 msgstr "Limiter les téléchargements aux échéances nécessaires."
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:572
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:588
 msgid "Let the software be responsive while processing (recommended)."
 msgstr "Laisser le logiciel réactif pendant le traitement (recommandé)."
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:576
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:592
 msgid "Allow multiple instances of the forecaster"
 msgstr "Autoriser les instances multiples du Forecaster"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:583
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:599
 msgid "General"
 msgstr "Général"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:589
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:605
 msgid "Multithreading"
 msgstr "Multithreading"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:591
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:607
 msgid "Allow multithreading"
 msgstr "Permettre le multithreading"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:598
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:614
 msgid "Max nb of threads"
 msgstr "Nb max de threads"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:611
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:627
 msgid "Threads priority"
 msgstr "Priorité des threads"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:624
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:640
 msgid "Multithreaded (only if allowed hereabove)"
 msgstr "Multithreading (seulement si autorisé ci-dessus)"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:624
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:640
 msgid "Standard (slower)"
 msgstr "Standard (plus lent)"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:626
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:642
 msgid "Processing options"
 msgstr "Options de calculs"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:628
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:644
 msgid "These options don't affect the results, only the processor efficiency."
 msgstr ""
 "Ces options n'affectent pas les résultats, mais seulement l'efficacité du "
 "processeur."
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:642
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:658
 msgid "User specific paths"
 msgstr "Chemins d'accès spécifiques à l'utilisateur"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:649
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:665
 msgid "User working directory:"
 msgstr "Répertoire de travail de l'utilisateur :"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:653
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:661
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:669
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:677
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:685
 msgid "..."
 msgstr "..."
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:657
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:673
 msgid "Log file:"
 msgstr "Fichier journal :"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:665
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:681
 msgid "Preferences file:"
 msgstr "Fichier de préférences :"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:683
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:699
 msgid "User paths"
 msgstr "Chemins de l'utilisateur"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:691
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:707
 msgid "Advanced options"
 msgstr "Options avancées"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:747
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:763
 msgid "Load / create a batch file"
 msgstr "Charger / créer un fichier batch"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:753
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:769
 msgid "Provide the path to an existing file"
 msgstr "Fournir le chemin d'accès à un fichier existant"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:757
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:773
 msgid "Load existing batch file"
 msgstr "Charger un fichier batch existant"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:760
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:776
 msgid "or continue to create a new batch file"
 msgstr "ou continuer à créer un nouveau fichier batch"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:780
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:796
 msgid "Path to save the new batch file"
 msgstr "Chemin d'enregistrement du nouveau fichier batch"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:784
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:800
 msgid "Select a file"
 msgstr "Séléctionner un fichier"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:784
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:800
 msgid "*.xml"
 msgstr "*.xml"
 
-#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:787
+#: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:803
 msgid "The preferences frame will open to configure the required directories."
 msgstr ""
 "La fenêtre des préférences va s'ouvrir pour configurer les répertoires "

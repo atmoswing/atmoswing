@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 00:01+0200\n"
+"POT-Creation-Date: 2023-04-13 22:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,80 +17,95 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:47
+#: src/app_viewer/gui/asForecastRenderer.cpp:51
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:778
 msgid "Value"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:48
+#: src/app_viewer/gui/asForecastRenderer.cpp:52
 msgid "Ratio P/P2"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:49
+#: src/app_viewer/gui/asForecastRenderer.cpp:53
 msgid "Ratio P/P5"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:50
+#: src/app_viewer/gui/asForecastRenderer.cpp:54
 msgid "Ratio P/P10"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:51
+#: src/app_viewer/gui/asForecastRenderer.cpp:55
 msgid "Ratio P/P20"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:52
+#: src/app_viewer/gui/asForecastRenderer.cpp:56
 msgid "Ratio P/P50"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:53
+#: src/app_viewer/gui/asForecastRenderer.cpp:57
 msgid "Ratio P/P100"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:54
+#: src/app_viewer/gui/asForecastRenderer.cpp:58
 msgid "Ratio P/P200"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:55
+#: src/app_viewer/gui/asForecastRenderer.cpp:59
 msgid "Ratio P/P300"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:56
+#: src/app_viewer/gui/asForecastRenderer.cpp:60
 msgid "Ratio P/P500"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:70
+#: src/app_viewer/gui/asForecastRenderer.cpp:74
 msgid "q90"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:71
+#: src/app_viewer/gui/asForecastRenderer.cpp:75
 msgid "q60"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:72
+#: src/app_viewer/gui/asForecastRenderer.cpp:76
 msgid "q20"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:161
+#: src/app_viewer/gui/asForecastRenderer.cpp:166
 #, c-format
 msgid "Selected display : %s."
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:170
+#: src/app_viewer/gui/asForecastRenderer.cpp:175
 #, c-format
 msgid "Selected quantile : %s."
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:247
+#: src/app_viewer/gui/asForecastRenderer.cpp:214
+#: src/app_viewer/gui/asFrameViewer.cpp:490
+#: src/app_viewer/gui/asFrameViewer.cpp:1370
+#: src/app_viewer/gui/asFrameViewer.cpp:1523
+#: src/app_viewer/gui/asFrameViewer.cpp:1608
+msgid "Forecast - specific"
+msgstr ""
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:215
+#: src/app_viewer/gui/asFrameViewer.cpp:490
+#: src/app_viewer/gui/asFrameViewer.cpp:1544
+#: src/app_viewer/gui/asFrameViewer.cpp:1609
+msgid "Forecast - other"
+msgstr ""
+
+#: src/app_viewer/gui/asForecastRenderer.cpp:252
 msgid "The desired reference value is not available in the forecast file."
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:337
-#: src/app_viewer/gui/asForecastRenderer.cpp:493
+#: src/app_viewer/gui/asForecastRenderer.cpp:350
+#: src/app_viewer/gui/asForecastRenderer.cpp:513
 #, c-format
 msgid "%s is not associated to any forecast"
 msgstr ""
 
-#: src/app_viewer/gui/asForecastRenderer.cpp:518
+#: src/app_viewer/gui/asForecastRenderer.cpp:538
 msgid "Lead time not available for this forecast."
 msgstr ""
 
@@ -159,12 +174,12 @@ msgid "Criteria distribution"
 msgstr ""
 
 #: src/app_viewer/gui/asFramePlotDistributions.cpp:283
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:356
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:365
 msgid "The forecast contains NaNs. Plotting has been canceled."
 msgstr ""
 
 #: src/app_viewer/gui/asFramePlotDistributions.cpp:344
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:421
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:430
 msgid "The option was not found."
 msgstr ""
 
@@ -173,12 +188,12 @@ msgid "The forecast criteria contains NaNs. Plotting has been canceled."
 msgstr ""
 
 #: src/app_viewer/gui/asFramePlotDistributions.cpp:471
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:502
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:511
 msgid "The return periods couldn't be added to the plot"
 msgstr ""
 
 #: src/app_viewer/gui/asFramePlotDistributions.cpp:504
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:535
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:544
 msgid "The 10 year return period was not found in the data."
 msgstr ""
 
@@ -187,8 +202,8 @@ msgstr ""
 #: src/app_viewer/gui/asFramePlotDistributions.cpp:652
 #: src/app_viewer/gui/asFramePlotDistributions.cpp:713
 #: src/app_viewer/gui/asFramePlotDistributions.cpp:800
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:588
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:645
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:597
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:654
 msgid "The analogs data couldn't be added to the plot"
 msgstr ""
 
@@ -206,10 +221,10 @@ msgid "10 first analogs"
 msgstr ""
 
 #: src/app_viewer/gui/asFramePlotDistributions.cpp:760
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:702
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:768
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:845
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:881
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:711
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:777
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:854
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:890
 msgid "The quantiles couldn't be added to the plot"
 msgstr ""
 
@@ -237,7 +252,7 @@ msgstr ""
 msgid "Forecasted time series"
 msgstr ""
 
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:940
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:949
 msgid "The interpretation curve couldn't be added to the plot"
 msgstr ""
 
@@ -328,17 +343,17 @@ msgid "The Countries layer file %s cound not be found."
 msgstr ""
 
 #: src/app_viewer/gui/asFramePredictors.cpp:525
-#: src/app_viewer/gui/asFrameViewer.cpp:868
+#: src/app_viewer/gui/asFrameViewer.cpp:864
 msgid "The layer could not be opened."
 msgstr ""
 
 #: src/app_viewer/gui/asFramePredictors.cpp:554
-#: src/app_viewer/gui/asFrameViewer.cpp:897
+#: src/app_viewer/gui/asFrameViewer.cpp:893
 msgid "Select GIS layers"
 msgstr ""
 
 #: src/app_viewer/gui/asFramePredictors.cpp:598
-#: src/app_viewer/gui/asFrameViewer.cpp:948
+#: src/app_viewer/gui/asFrameViewer.cpp:944
 msgid "Nothing selected, no layer will be closed."
 msgstr ""
 
@@ -441,103 +456,100 @@ msgstr ""
 msgid "The file %s cound not be found."
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:927
+#: src/app_viewer/gui/asFrameViewer.cpp:923
 msgid "No layer opened, nothing to close."
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:935
+#: src/app_viewer/gui/asFrameViewer.cpp:931
 msgid "Select Layer(s) to close."
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:935
+#: src/app_viewer/gui/asFrameViewer.cpp:931
 msgid "Close layer(s)"
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:978
+#: src/app_viewer/gui/asFrameViewer.cpp:974
 msgid "Select a forecast file"
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1001
+#: src/app_viewer/gui/asFrameViewer.cpp:997
 msgid "List of the forecasts not found."
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1022
+#: src/app_viewer/gui/asFrameViewer.cpp:1018
 msgid "The directory containing the forecasts was not provided."
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1027
+#: src/app_viewer/gui/asFrameViewer.cpp:1023
 msgid "The directory that is supposed to contain the forecasts does not exist."
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1053
+#: src/app_viewer/gui/asFrameViewer.cpp:1049
 #, c-format
 msgid "No recent forecast was found under %s"
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1069
+#: src/app_viewer/gui/asFrameViewer.cpp:1065
 msgid ""
 "A file with an unconventional name was found in the forecasts directory."
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1077
+#: src/app_viewer/gui/asFrameViewer.cpp:1073
 #, c-format
 msgid "Error when parsing the date: %s"
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1098
-#: src/app_viewer/gui/asFrameViewer.cpp:1216
+#: src/app_viewer/gui/asFrameViewer.cpp:1094
+#: src/app_viewer/gui/asFrameViewer.cpp:1212
 msgid "Failed to open the forecasts."
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1194
+#: src/app_viewer/gui/asFrameViewer.cpp:1190
 #, c-format
 msgid "No previous/next forecast was found under %s"
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1289
+#: src/app_viewer/gui/asFrameViewer.cpp:1285
 #, c-format
 msgid "A forecast file could not be opened (%s)."
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1372
-#: src/app_viewer/gui/asFrameViewer.cpp:1525
-#: src/app_viewer/gui/asFrameViewer.cpp:1610
-msgid "Forecast - specific.memory"
-msgstr ""
-
-#: src/app_viewer/gui/asFrameViewer.cpp:1393
+#: src/app_viewer/gui/asFrameViewer.cpp:1391
 msgid "The forecasts layer was not found."
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1404
+#: src/app_viewer/gui/asFrameViewer.cpp:1402
 msgid "Moving layer not possible with less than 2 layers"
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1411
+#: src/app_viewer/gui/asFrameViewer.cpp:1409
 msgid "No layer selected, select a layer first"
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1417
+#: src/app_viewer/gui/asFrameViewer.cpp:1415
 msgid "Move layer to following position"
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1546
-#: src/app_viewer/gui/asFrameViewer.cpp:1611
-msgid "Forecast - other.memory"
-msgstr ""
-
-#: src/app_viewer/gui/asFrameViewer.cpp:1568
+#: src/app_viewer/gui/asFrameViewer.cpp:1566
 msgid "The desired layer was not found."
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1582
+#: src/app_viewer/gui/asFrameViewer.cpp:1580
 #, c-format
 msgid "Error converting point : %d, %d to real coordinate"
 msgstr ""
 
-#: src/app_viewer/gui/asFrameViewer.cpp:1753
+#: src/app_viewer/gui/asFrameViewer.cpp:1752
 #, c-format
 msgid "Forecast of the %sh"
+msgstr ""
+
+#: src/app_viewer/gui/asLeadTimeSwitcher.cpp:131
+msgid "Combination of sub-daily time steps not yet implemented."
+msgstr ""
+
+#: src/app_viewer/gui/asLeadTimeSwitcher.cpp:142
+msgid "Too small time steps are not supported in the lead time switcher."
 msgstr ""
 
 #: src/app_viewer/gui/asListBoxForecasts.cpp:83
@@ -569,7 +581,11 @@ msgstr ""
 msgid "Alarms (T=%d, q=%g)"
 msgstr ""
 
-#: src/app_viewer/gui/asPanelSidebarAlarms.cpp:290
+#: src/app_viewer/gui/asPanelSidebarAlarms.cpp:204
+msgid "Too small time steps are not supported in the alarms panel."
+msgstr ""
+
+#: src/app_viewer/gui/asPanelSidebarAlarms.cpp:319
 msgid "Incorrect mode for the alarm panel."
 msgstr ""
 
@@ -601,13 +617,13 @@ msgstr ""
 msgid "Forecast caption"
 msgstr ""
 
-#: src/app_viewer/gui/asPanelSidebarCaptionForecastDots.cpp:251
-#: src/app_viewer/gui/asPanelSidebarCaptionForecastRing.cpp:376
+#: src/app_viewer/gui/asPanelSidebarCaptionForecastDots.cpp:237
+#: src/app_viewer/gui/asPanelSidebarCaptionForecastRing.cpp:417
 msgid "No rainfall"
 msgstr ""
 
-#: src/app_viewer/gui/asPanelSidebarCaptionForecastDots.cpp:252
-#: src/app_viewer/gui/asPanelSidebarCaptionForecastRing.cpp:377
+#: src/app_viewer/gui/asPanelSidebarCaptionForecastDots.cpp:238
+#: src/app_viewer/gui/asPanelSidebarCaptionForecastRing.cpp:418
 msgid "Missing data"
 msgstr ""
 
@@ -758,12 +774,12 @@ msgid "Only errors"
 msgstr ""
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:224
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1292
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1348
 msgid "Errors and warnings"
 msgstr ""
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:228
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1295
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1351
 msgid "Verbose"
 msgstr ""
 
@@ -800,10 +816,10 @@ msgid "Path to save the new file"
 msgstr ""
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:333
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1241
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1248
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1255
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1262
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1281
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1288
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1295
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1302
 msgid "Select a file"
 msgstr ""
 
@@ -821,13 +837,13 @@ msgstr ""
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:356
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:1077
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1174
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1180
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1186
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1192
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1198
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1204
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1210
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1214
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1220
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1226
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1232
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1238
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1244
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1250
 msgid "Select a folder"
 msgstr ""
 
@@ -878,9 +894,9 @@ msgid ""
 msgstr ""
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:437
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1396
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1404
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1412
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1452
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1460
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1468
 msgid "..."
 msgstr ""
 
@@ -901,17 +917,14 @@ msgid "Print"
 msgstr ""
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:597
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:724
 msgid "Select forecast"
 msgstr ""
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:601
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:733
 msgid "Select station"
 msgstr ""
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:605
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:742
 msgid "Select date"
 msgstr ""
 
@@ -919,13 +932,22 @@ msgstr ""
 msgid "Predictands distribution"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:842
-msgid "Method"
-msgstr ""
-
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:724
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:851
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:889
 msgid "Forecast"
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:733
+msgid "Station"
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:742
+msgid "Lead time"
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:842
+msgid "Method"
 msgstr ""
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:860
@@ -1008,122 +1030,162 @@ msgstr ""
 msgid "(in between 0 - 1)"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1149
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1146
+msgid "Maximum length of time series to display"
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1148
+msgid "Requires a restart or opening new forecasts."
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1157
+msgid "Daily forecasts"
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1164
+msgid "days"
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1168
+msgid "Sub-daily forecasts"
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1175
+msgid "hours"
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1189
 msgid "Workspace"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1155
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1195
 msgid "Path to the predictor datasets"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1163
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1203
 msgid "Dataset ID"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1167
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1207
 msgid "Path to the directory"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1223
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1263
 msgid "Paths"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1229
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1269
 msgid "Paths to the color tables"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1237
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1277
 msgid "Geopotential height"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1241
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1248
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1255
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1262
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1281
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1288
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1295
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1302
 msgid "*.*"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1244
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1284
 msgid "Precipitable water"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1251
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1291
 msgid "Relative humidity"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1258
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1298
 msgid "Specific humidity"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1275
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1315
 msgid "Colors"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1281
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1321
+msgid "Language"
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1323
+msgid "English"
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1323
+msgid "French"
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1329
+msgid "Restart AtmoSwing for the change to take effect."
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1337
 msgid "Logs"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1289
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1345
 msgid "Errors only (recommanded)"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1304
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1360
 msgid "Display window"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1308
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1364
 msgid "Save to a file"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1324
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1380
 msgid "Proxy configuration"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1326
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1382
 msgid "Internet connection uses a proxy"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1332
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1388
 msgid "Proxy address"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1339
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1395
 msgid "Port"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1352
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1408
 msgid "Username"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1359
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1415
 msgid "Password"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1376
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1432
 msgid "General"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1381
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1437
 msgid "Allow multiple instances of the viewer"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1385
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1441
 msgid "User specific paths"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1392
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1448
 msgid "User working directory:"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1400
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1456
 msgid "Log file:"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1408
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1464
 msgid "Preferences file:"
 msgstr ""
 
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1426
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:1482
 msgid "Advanced"
 msgstr ""
 
@@ -1166,7 +1228,7 @@ msgid "Error creating feature"
 msgstr ""
 
 #: src/app_viewer/gui/vrLayerVectorFcstDots.cpp:125
-#: src/app_viewer/gui/vrLayerVectorFcstRing.cpp:145
+#: src/app_viewer/gui/vrLayerVectorFcstRing.cpp:160
 msgid "Drawing of the symbol failed."
 msgstr ""
 

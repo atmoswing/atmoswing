@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 00:01+0200\n"
+"POT-Creation-Date: 2023-04-13 22:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgid "The whole processing took %.3f min to execute"
 msgstr ""
 
 #: src/app_downscaler/core/asMethodDownscaler.cpp:87
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:482
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:533
 msgid "Downscaling over."
 msgstr ""
 
@@ -298,11 +298,11 @@ msgid "The provided predictand ID vector is empty."
 msgstr ""
 
 #: src/app_downscaler/core/asParametersDownscaling.cpp:549
-msgid "There are NaN values in the provided predictand ID vector."
+msgid "There are 0s in the provided predictand ID vector."
 msgstr ""
 
-#: src/app_downscaler/core/asParametersDownscaling.cpp:575
-#: src/app_downscaler/core/asParametersDownscaling.cpp:593
+#: src/app_downscaler/core/asParametersDownscaling.cpp:574
+#: src/app_downscaler/core/asParametersDownscaling.cpp:592
 msgid ""
 "Trying to access to an element outside of preprocessDatasetIds in the "
 "parameters object."
@@ -351,73 +351,73 @@ msgstr ""
 msgid "A directory with the same name already exists."
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:338
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:341
 msgid "The value provided for 'log-level' could not be interpreted.\n"
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:365
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:368
 #, c-format
 msgid "The given downscaling file (%s) couldn't be found."
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:377
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:380
 #, c-format
 msgid "The given predictand DB (%s) couldn't be found."
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:389
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:392
 #, c-format
 msgid "The given archive predictors directory (%s) couldn't be found."
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:401
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:404
 #, c-format
 msgid "The given scenario predictors directory (%s) couldn't be found."
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:419
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:422
 msgid "Initialization for command-line interface failed."
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:423
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:426
 #, c-format
 msgid "Given downscaling method: %s"
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:447
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:498
 msgid "The parameters file is not given."
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:452
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:503
 msgid "The predictand DB is not given."
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:457
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:508
 msgid "The predictors directory is not given."
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:474
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:525
 #, c-format
 msgid "Bad allocation caught: %s"
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:478
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:529
 #, c-format
 msgid "Exception caught: %s"
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:483
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:534
 msgid "Downscaling over.\n"
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:517
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:568
 msgid "An exception occured in the main loop"
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:522
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:573
 msgid "An fatal exception occured"
 msgstr ""
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:526
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:577
 msgid "An unhandled exception occured"
 msgstr ""
