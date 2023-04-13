@@ -84,11 +84,12 @@ asPanelSidebarCaptionForecastDotsDrawing::~asPanelSidebarCaptionForecastDotsDraw
 }
 
 void asPanelSidebarCaptionForecastDotsDrawing::DrawColorbar(double valmax) {
-    auto bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(70 * g_ppiScaleDc));
-    wxASSERT(bmp);
+    wxDELETE(m_bmpColorbar);
+    m_bmpColorbar = new wxBitmap(int(240 * g_ppiScaleDc), int(70 * g_ppiScaleDc));
+    wxASSERT(m_bmpColorbar);
 
     // Create device context
-    wxMemoryDC dc(*bmp);
+    wxMemoryDC dc(*m_bmpColorbar);
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
 
@@ -111,22 +112,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::DrawColorbar(double valmax) {
 
     dc.SelectObject(wxNullBitmap);
 
-    this->SetBitmapColorbar(bmp);
-    wxDELETE(bmp);
-    wxASSERT(!bmp);
-
     Refresh();
-}
-
-void asPanelSidebarCaptionForecastDotsDrawing::SetBitmapColorbar(wxBitmap* bmp) {
-    wxDELETE(m_bmpColorbar);
-    wxASSERT(!m_bmpColorbar);
-
-    if (bmp != nullptr) {
-        wxASSERT(bmp);
-        m_bmpColorbar = new wxBitmap(*bmp);
-        wxASSERT(m_bmpColorbar);
-    }
 }
 
 void asPanelSidebarCaptionForecastDotsDrawing::OnPaint(wxPaintEvent& event) {

@@ -48,8 +48,6 @@ class asPanelSidebarCaptionForecastDotsDrawing : public wxPanel {
     wxBitmap* m_bmpColorbar;
     wxGraphicsContext* m_gdc;
 
-    void SetBitmapColorbar(wxBitmap* bmp);
-
     void CreateColorbarPath(wxGraphicsPath& path);
 
     void CreateColorbarText(wxGraphicsContext* gc, wxGraphicsPath& path, double valmax);

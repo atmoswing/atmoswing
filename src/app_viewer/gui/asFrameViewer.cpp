@@ -1792,7 +1792,6 @@ void asFrameViewer::UpdatePanelCaptionAll() {
         } else {
             m_panelSidebarCaptionForecastRing->SetDates(dates);
         }
-
     }
 }
 

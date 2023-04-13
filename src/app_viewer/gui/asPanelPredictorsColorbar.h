@@ -50,8 +50,6 @@ class asPanelPredictorsColorbarDrawing : public wxPanel {
     wxGraphicsContext* m_gdc;
     vrRenderRasterPredictor* m_render;
 
-    void SetBitmapColorbar(wxBitmap* bmp);
-
     void CreateColorbarPath(wxGraphicsPath& path);
 
     void CreateColorbarText(wxGraphicsContext* gc, wxGraphicsPath& path, double valMin, double valMax, double step);

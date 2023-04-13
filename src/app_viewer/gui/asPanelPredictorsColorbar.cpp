@@ -99,11 +99,12 @@ void asPanelPredictorsColorbarDrawing::DrawColorbar(double valMin, double valMax
 
     wxSize sizePanel = GetSize();
 
-    auto bmp = new wxBitmap(sizePanel.x, sizePanel.y);
-    wxASSERT(bmp);
+    wxDELETE(m_bmpColorbar);
+    m_bmpColorbar = new wxBitmap(sizePanel.x, sizePanel.y);
+    wxASSERT(m_bmpColorbar);
 
     // Create device context
-    wxMemoryDC dc(*bmp);
+    wxMemoryDC dc(*m_bmpColorbar);
     wxColor bg = GetBackgroundColour();
     dc.SetBackground(bg);
     dc.Clear();
@@ -126,20 +127,7 @@ void asPanelPredictorsColorbarDrawing::DrawColorbar(double valMin, double valMax
 
     dc.SelectObject(wxNullBitmap);
 
-    this->SetBitmapColorbar(bmp);
-    wxDELETE(bmp);
-    wxASSERT(!bmp);
-
     Refresh();
-}
-
-void asPanelPredictorsColorbarDrawing::SetBitmapColorbar(wxBitmap* bmp) {
-    wxDELETE(m_bmpColorbar);
-    wxASSERT(!m_bmpColorbar);
-
-    wxASSERT(bmp);
-    m_bmpColorbar = new wxBitmap(*bmp);
-    wxASSERT(m_bmpColorbar);
 }
 
 void asPanelPredictorsColorbarDrawing::OnPaint(wxPaintEvent& event) {
