@@ -451,20 +451,6 @@ int asResultsForecastAggregator::GetLeadTimeLength(int methodRow, int forecastRo
     return length;
 }
 
-int asResultsForecastAggregator::GetLeadTimeLengthMax() const {
-    if (m_forecasts.empty()) return 0;
-
-    int length = 0;
-
-    for (const auto& forecastGroup : m_forecasts) {
-        for (auto forecast : forecastGroup) {
-            length = wxMax(length, forecast->GetTargetDatesLength());
-        }
-    }
-
-    return length;
-}
-
 wxArrayString asResultsForecastAggregator::GetTargetDatesWxArray(int methodRow, int forecastRow) const {
     wxArrayString leadTimes;
 

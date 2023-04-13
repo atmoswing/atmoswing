@@ -1797,8 +1797,7 @@ void asFrameViewer::UpdatePanelCaptionColorbar() {
 }
 
 void asFrameViewer::UpdatePanelAnalogDates() {
-    if (m_forecastViewer->GetLeadTimeIndex() >= m_forecastManager->GetLeadTimeLengthMax() ||
-        m_forecastViewer->GetForecastSelection() < 0) {
+    if (m_forecastViewer->GetLeadTimeIndex() < 0 || m_forecastViewer->GetForecastSelection() < 0) {
         m_panelSidebarAnalogDates->Hide();
         return;
     }
@@ -1809,7 +1808,7 @@ void asFrameViewer::UpdatePanelAnalogDates() {
                                                                  m_forecastViewer->GetForecastSelection());
     a1f arrayDate = forecast->GetAnalogsDates(m_forecastViewer->GetLeadTimeIndex());
     a1f arrayCriteria = forecast->GetAnalogsCriteria(m_forecastViewer->GetLeadTimeIndex());
-    m_panelSidebarAnalogDates->SetChoices(arrayDate, arrayCriteria);
+    m_panelSidebarAnalogDates->SetChoices(arrayDate, arrayCriteria, forecast->GetDateFormatting());
 }
 
 void asFrameViewer::UpdatePanelStationsList() {

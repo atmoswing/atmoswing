@@ -169,10 +169,6 @@ class asForecastManager {
         return m_aggregator->GetStationNameWithHeight(methodRow, forecastRow, stationRow);
     }
 
-    int GetLeadTimeLengthMax() const {
-        return m_aggregator->GetLeadTimeLengthMax();
-    }
-
     wxArrayString GetTargetDatesWxArray(int methodRow, int forecastRow) const {
         return m_aggregator->GetTargetDatesWxArray(methodRow, forecastRow);
     }

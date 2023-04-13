@@ -65,7 +65,7 @@ void asPanelSidebarAnalogDates::OnDateSelection(wxListEvent& event) {
     GetParent()->ProcessWindowEvent(eventParent);
 }
 
-void asPanelSidebarAnalogDates::SetChoices(a1f& arrayDate, a1f& arrayCriteria) {
+void asPanelSidebarAnalogDates::SetChoices(a1f& arrayDate, a1f& arrayCriteria, const wxString& dateFormat) {
     m_listCtrl->Freeze();
     m_listCtrl->DeleteAllItems();
 
@@ -75,7 +75,7 @@ void asPanelSidebarAnalogDates::SetChoices(a1f& arrayDate, a1f& arrayCriteria) {
         long tmp = m_listCtrl->InsertItem(i, buf, 0);
         m_listCtrl->SetItemData(tmp, i);
 
-        buf.Printf("%s", asTime::GetStringTime(arrayDate[i], "DD.MM.YYYY"));
+        buf.Printf("%s", asTime::GetStringTime(arrayDate[i], dateFormat));
         m_listCtrl->SetItem(tmp, 1, buf);
 
         buf.Printf("%g", arrayCriteria[i]);
