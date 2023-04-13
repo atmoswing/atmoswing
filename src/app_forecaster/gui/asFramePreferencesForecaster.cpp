@@ -156,7 +156,6 @@ void asFramePreferencesForecaster::LoadPreferences() {
 
     // Downloads
     m_textCtrlMaxPrevStepsNb->SetValue(pConfig->Read("/Internet/MaxPreviousStepsNb", "5"));
-    m_textCtrlMaxRequestsNb->SetValue(pConfig->Read("/Internet/ParallelRequestsNb", "5"));
     m_checkBoxRestrictDownloads->SetValue(pConfig->ReadBool("/Internet/RestrictDownloads", true));
 
     // Advanced options
@@ -295,9 +294,6 @@ void asFramePreferencesForecaster::SavePreferences() {
     wxString internetMaxPrevStepsNb = m_textCtrlMaxPrevStepsNb->GetValue();
     if (!internetMaxPrevStepsNb.IsNumber()) internetMaxPrevStepsNb = "5";
     pConfig->Write("/Internet/MaxPreviousStepsNb", internetMaxPrevStepsNb);
-    wxString internetParallelRequestsNb = m_textCtrlMaxRequestsNb->GetValue();
-    if (!internetParallelRequestsNb.IsNumber()) internetParallelRequestsNb = "5";
-    pConfig->Write("/Internet/ParallelRequestsNb", internetParallelRequestsNb);
     bool restrictDownloads = m_checkBoxRestrictDownloads->GetValue();
     pConfig->Write("/Internet/RestrictDownloads", restrictDownloads);
 

@@ -383,7 +383,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_panelPathsCommon->SetSizer( m_sizerPanelPaths );
 	m_panelPathsCommon->Layout();
 	m_sizerPanelPaths->Fit( m_panelPathsCommon );
-	m_notebookBase->AddPage( m_panelPathsCommon, _("Batch file properties"), false );
+	m_notebookBase->AddPage( m_panelPathsCommon, _("Batch file properties"), true );
 	m_panelGeneralCommon = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
@@ -519,7 +519,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_panelGeneralCommon->SetSizer( bSizer16 );
 	m_panelGeneralCommon->Layout();
 	bSizer16->Fit( m_panelGeneralCommon );
-	m_notebookBase->AddPage( m_panelGeneralCommon, _("General options"), true );
+	m_notebookBase->AddPage( m_panelGeneralCommon, _("General options"), false );
 	m_panelAdvanced = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );
@@ -558,24 +558,10 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	#endif
 	fgSizer2->Add( m_textCtrlMaxPrevStepsNb, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_staticTextMaxRequestsNb = new wxStaticText( sbSizer11->GetStaticBox(), wxID_ANY, _("Maximum parallel requests number"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticTextMaxRequestsNb->Wrap( -1 );
-	fgSizer2->Add( m_staticTextMaxRequestsNb, 0, wxALL, 5 );
-
-	m_textCtrlMaxRequestsNb = new wxTextCtrl( sbSizer11->GetStaticBox(), wxID_ANY, _("3"), wxDefaultPosition, wxSize( 30,-1 ), 0 );
-	#ifdef __WXGTK__
-	if ( !m_textCtrlMaxRequestsNb->HasFlag( wxTE_MULTILINE ) )
-	{
-	m_textCtrlMaxRequestsNb->SetMaxLength( 1 );
-	}
-	#else
-	m_textCtrlMaxRequestsNb->SetMaxLength( 1 );
-	#endif
-	fgSizer2->Add( m_textCtrlMaxRequestsNb, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-
 	m_checkBoxRestrictDownloads = new wxCheckBox( sbSizer11->GetStaticBox(), wxID_ANY, _("Restrict downloads to needed lead times."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxRestrictDownloads->SetValue(true);
 	m_checkBoxRestrictDownloads->Enable( false );
+	m_checkBoxRestrictDownloads->Hide();
 
 	fgSizer2->Add( m_checkBoxRestrictDownloads, 0, wxALL, 5 );
 

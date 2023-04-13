@@ -98,7 +98,6 @@ void AtmoswingFrameForecaster::SetDefaultOptions() {
 
     // Internet
     pConfig->Write("/Internet/MaxPreviousStepsNb", pConfig->Read("/Internet/MaxPreviousStepsNb", "5"));
-    pConfig->Write("/Internet/ParallelRequestsNb", pConfig->Read("/Internet/ParallelRequestsNb", "5"));
     pConfig->Write("/Internet/RestrictDownloads", pConfig->ReadBool("/Internet/RestrictDownloads", true));
     pConfig->Write("/Internet/UsesProxy", pConfig->ReadBool("/Internet/UsesProxy", false));
 

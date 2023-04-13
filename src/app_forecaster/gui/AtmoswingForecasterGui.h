@@ -181,8 +181,6 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 		wxRadioBox* m_radioBoxGui;
 		wxStaticText* m_staticTextNumberFails;
 		wxTextCtrl* m_textCtrlMaxPrevStepsNb;
-		wxStaticText* m_staticTextMaxRequestsNb;
-		wxTextCtrl* m_textCtrlMaxRequestsNb;
 		wxCheckBox* m_checkBoxRestrictDownloads;
 		wxCheckBox* m_checkBoxResponsiveness;
 		wxCheckBox* m_checkBoxMultiInstancesForecaster;
