@@ -274,7 +274,9 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow) {
             wxString filenameV1 = asStrF("%s.%s.fcst", nowstrV1, forecastname);
             wxString fullPathV1 = currentDirPath + filenameV1;
 
-            if (wxFileName::FileExists(fullPathV3)) {
+            if (wxFileName::FileExists(fullPathV4)) {
+                OpenPastForecast(methodRow, forecastRow, fullPathV4);
+            } else if (wxFileName::FileExists(fullPathV3)) {
                 OpenPastForecast(methodRow, forecastRow, fullPathV3);
             } else if (wxFileName::FileExists(fullPathV2)) {
                 OpenPastForecast(methodRow, forecastRow, fullPathV2);

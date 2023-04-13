@@ -1625,7 +1625,6 @@ void asFrameViewer::OnChangeLeadTime(wxCommandEvent& event) {
     Freeze();
 
     m_forecastViewer->ChangeLeadTime(event.GetInt());
-
     m_leadTimeSwitcher->SetLeadTime(m_forecastViewer->GetLeadTimeIndex());
 
     UpdatePanelAnalogDates();
