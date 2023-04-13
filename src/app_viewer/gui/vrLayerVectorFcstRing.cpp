@@ -70,7 +70,7 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
 void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry,
                                        const wxRect2DDouble& coord, const vrRender* render, vrLabel* label,
                                        double pxsize) {
-    // Set the defaut pen
+    // Set the default pen
     wxASSERT(render->GetType() == vrRENDER_VECTOR);
     wxPen greyPen(*wxLIGHT_GREY_PEN);
     wxPen blackPen(*wxBLACK_PEN);
@@ -140,7 +140,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
             gc->DrawPath(path);
         }
 
-        // Set the default pen
+        // Set the pen
         gc->SetPen(blackPen);
         gc->SetBrush(*wxTRANSPARENT_BRUSH);
         if (IsFeatureSelected(feature->GetFID())) {

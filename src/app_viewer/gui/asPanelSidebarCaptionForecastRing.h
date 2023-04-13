@@ -51,10 +51,12 @@ class asPanelSidebarCaptionForecastRingDrawing : public wxPanel {
     wxBitmap* m_bmpColorbar;
     wxGraphicsContext* m_gdc;
 
-    void CreateDatesPath(wxGraphicsPath& path, const wxPoint& center, double scale, int segmentsTotNb, int segmentNb);
+    void CreatePathTick(wxGraphicsPath& path, const wxPoint& center, double scale, int segmentsTotNb, int segmentNb);
+
+    void CreatePathAround(wxGraphicsPath& path, const wxPoint& center, double scale);
 
     void CreateDatesText(wxGraphicsContext* gc, const wxPoint& center, double scale, int segmentsTotNb, int segmentNb,
-                         const wxString& label);
+                         int count, const wxString& label);
 
     void CreateColorbarPath(wxGraphicsPath& path);
 

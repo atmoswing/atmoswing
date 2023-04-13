@@ -96,6 +96,10 @@ void asPanelSidebarCaptionForecastRingDrawing::DrawDates(a1f& dates) {
     m_bmpDates = new wxBitmap(int(240 * g_ppiScaleDc), int(200 * g_ppiScaleDc));
     wxASSERT(m_bmpDates);
 
+    // Set the default pens
+    wxPen greyPen(*wxLIGHT_GREY_PEN);
+    wxPen blackPen(*wxBLACK_PEN);
+
     // Create device context
     wxMemoryDC dc(*m_bmpDates);
     dc.SetBackground(*wxWHITE_BRUSH);
@@ -112,18 +116,65 @@ void asPanelSidebarCaptionForecastRingDrawing::DrawDates(a1f& dates) {
 
         wxPoint center(120 * g_ppiScaleDc, 91 * g_ppiScaleDc);  // Looks better than 105
 
-        int segmentsTot = dates.size();
+        int leadTimeSize = dates.size();
+
+        if (leadTimeSize == 0) {
+            dc.SelectObject(wxNullBitmap);
+            Refresh();
+            return;
+        }
+
         const double scale = 0.9 * g_ppiScaleDc;
 
-        if (segmentsTot == 0) {
-            CreateDatesPath(path, center, scale, 1, 0);
-        } else {
-            for (int iLead = 0; iLead < segmentsTot; iLead++) {
-                CreateDatesPath(path, center, scale, segmentsTot, iLead);
-                wxString dateStr = asTime::GetStringTime(dates[iLead], "DD.MM");
-                CreateDatesText(gc, center, scale, segmentsTot, iLead, dateStr);
+        // Draw ticks
+        gc->SetBrush(*wxTRANSPARENT_BRUSH);
+        double prevLeadTimeDate = dates[0];
+        for (int iLead = 1; iLead < leadTimeSize; iLead++) {
+            double date = dates[iLead];
+            if (floor(prevLeadTimeDate) == floor(date)) {
+                gc->SetPen(greyPen);
+            } else {
+                gc->SetPen(blackPen);
             }
+
+            prevLeadTimeDate = date;
+
+            // Create shape
+            path = gc->CreatePath();
+            CreatePathTick(path, center, scale, leadTimeSize, iLead);
+            gc->DrawPath(path);
         }
+
+        // Write dates
+        gc->SetPen(blackPen);
+        prevLeadTimeDate = dates[0];
+        int prevIdx = 0;
+        for (int iLead = 0; iLead <= leadTimeSize; iLead++) {
+            double date = 0;
+            if (iLead < leadTimeSize) {
+                date = dates[iLead];
+                if (floor(prevLeadTimeDate) == floor(date)) {
+                    continue;
+                }
+            }
+
+            // Write date
+            int count = iLead - prevIdx;
+            wxString dateStr = asTime::GetStringTime(prevLeadTimeDate, "DD.MM");
+            CreateDatesText(gc, center, scale, leadTimeSize, prevIdx, count, dateStr);
+
+            prevLeadTimeDate = date;
+            prevIdx = iLead;
+        }
+
+        // Set the pen
+        gc->SetPen(blackPen);
+        gc->SetBrush(*wxTRANSPARENT_BRUSH);
+
+        // Draw overall box
+        path = gc->CreatePath();
+        CreatePathAround(path, center, scale);
+        gc->DrawPath(path);
 
         gc->StrokePath(path);
 
@@ -183,15 +234,33 @@ void asPanelSidebarCaptionForecastRingDrawing::OnPaint(wxPaintEvent& event) {
     event.Skip();
 }
 
-void asPanelSidebarCaptionForecastRingDrawing::CreateDatesPath(wxGraphicsPath& path, const wxPoint& center,
-                                                               double scale, int segmentsTotNb, int segmentNb) {
+void asPanelSidebarCaptionForecastRingDrawing::CreatePathTick(wxGraphicsPath& path, const wxPoint& center, double scale,
+                                                              int segmentsTotNb, int segmentNb) {
     const wxDouble radiusOut = 100 * scale;
     const wxDouble radiusIn = 40 * scale;
 
     wxDouble segmentStart = -0.5 * M_PI + ((double)segmentNb / (double)segmentsTotNb) * (1.5 * M_PI);
-    wxDouble segmentEnd = -0.5 * M_PI + ((double)(segmentNb + 1) / (double)segmentsTotNb) * (1.5 * M_PI);
-    auto centerX = (wxDouble)center.x;
-    auto centerY = (wxDouble)center.y;
+    wxDouble centerX = (wxDouble)center.x;
+    wxDouble centerY = (wxDouble)center.y;
+
+    // Get starting point
+    double dXin = cos(segmentStart) * radiusIn;
+    double dXout = cos(segmentStart) * radiusOut;
+    double dYin = sin(segmentStart) * radiusIn;
+    double dYout = sin(segmentStart) * radiusOut;
+
+    path.MoveToPoint(centerX + dXin, centerY + dYin);
+    path.AddLineToPoint(centerX + dXout, centerY + dYout);
+}
+
+void asPanelSidebarCaptionForecastRingDrawing::CreatePathAround(wxGraphicsPath& path, const wxPoint& center, double scale) {
+    const wxDouble radiusOut = 100 * scale;
+    const wxDouble radiusIn = 40 * scale;
+
+    wxDouble segmentStart = -0.5 * M_PI;
+    wxDouble segmentEnd = M_PI;
+    wxDouble centerX = (wxDouble)center.x;
+    wxDouble centerY = (wxDouble)center.y;
 
     // Get starting point
     double dX = cos(segmentStart) * radiusOut;
@@ -217,10 +286,10 @@ void asPanelSidebarCaptionForecastRingDrawing::CreateDatesPath(wxGraphicsPath& p
 
 void asPanelSidebarCaptionForecastRingDrawing::CreateDatesText(wxGraphicsContext* gc, const wxPoint& center,
                                                                double scale, int segmentsTotNb, int segmentNb,
-                                                               const wxString& label) {
+                                                               int count, const wxString& label) {
     // Get geometric elements
     const wxDouble radiusMean = 70 * scale;
-    wxDouble segmentMean = -0.5 * M_PI + ((segmentNb + 0.5) / segmentsTotNb) * (1.5 * M_PI);
+    wxDouble segmentMean = -0.5 * M_PI + ((segmentNb + double(count) / 2.0) / segmentsTotNb) * (1.5 * M_PI);
     auto centerX = (wxDouble)center.x;
     auto centerY = (wxDouble)center.y;
 
