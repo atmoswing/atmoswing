@@ -94,6 +94,10 @@ void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent& event) {
         val = floor(position.x / m_cellWidth);
         if (m_subDailyMode) {
             val = floor(position.x / (m_cellWidth * m_subDailyFraction));
+            val -= GetSubDailyLeadTimeStartShift();
+            if (val < 0) {
+                return;
+            }
         }
     }
 
@@ -375,6 +379,7 @@ void asLeadTimeSwitcher::CreatePathMarker(wxGraphicsPath& path, int iCol) {
     auto startPointY = (double)m_cellHeight - markerHeight;
 
     if (m_subDailyMode) {
+        iCol += GetSubDailyLeadTimeStartShift();
         cellWidth = (m_cellWidth - 2) * m_subDailyFraction;
         int fullDaysNb = floor(iCol * m_subDailyFraction);
         int subDaysNb = iCol - fullDaysNb / m_subDailyFraction;
@@ -394,4 +399,11 @@ void asLeadTimeSwitcher::CreatePathMarker(wxGraphicsPath& path, int iCol) {
     path.AddLineToPoint(startPointX, startPointY);
 
     path.CloseSubpath();
+}
+
+int asLeadTimeSwitcher::GetSubDailyLeadTimeStartShift() const {
+    double leadTimeOrigin = m_forecastManager->GetLeadTimeOrigin();
+    leadTimeOrigin -= int(leadTimeOrigin);
+
+    return leadTimeOrigin / m_subDailyFraction - 1;
 }

@@ -82,6 +82,8 @@ class asLeadTimeSwitcher : public wxPanel {
     void CreatePathMarker(wxGraphicsPath& path, int iCol);
 
     void OnPaint(wxPaintEvent& event);
+
+    int GetSubDailyLeadTimeStartShift() const;
 };
 
 #endif
