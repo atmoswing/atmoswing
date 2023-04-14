@@ -203,29 +203,6 @@ bool asPredictorOper::BuildFilenamesUrls() {
     m_fileNames.clear();
     m_urls.clear();
 
-    wxString thisCommand = m_commandDownload;
-
-    // Replace time in the command
-    while (thisCommand.Find("CURRENTDATE") != wxNOT_FOUND) {
-        int posStart = thisCommand.Find("CURRENTDATE");
-        if (posStart == wxNOT_FOUND) {
-            break;
-        }
-        posStart--;
-        auto posStartSt = (size_t)posStart;
-        thisCommand.Remove(posStartSt, 13);  // Removes '[CURRENTDATE-'
-        // Find end
-        int posEnd = thisCommand.find("]", posStartSt);
-
-        if (posEnd != wxNOT_FOUND && posEnd > posStartSt) {
-            auto posEndSt = (size_t)posEnd;
-            thisCommand.Remove(posEndSt, 1);  // Removes ']'
-            wxString dateFormat = thisCommand.SubString(posStartSt, posEndSt);
-            wxString date = asTime::GetStringTime(m_runDateInUse, dateFormat);
-            thisCommand.replace(posStartSt, date.Length(), date);
-        }
-    }
-
     // Restrict the downloads to used data
     if (m_restrictDownloads && m_restrictTimeStepHours >= 24) {
         // Get the real lead time
@@ -252,29 +229,50 @@ bool asPredictorOper::BuildFilenamesUrls() {
             runDateInUse -= m_runUpdate / 24.0;
         }
 
-        wxString thisCommandLeadTime = thisCommand;
+        wxString thisCommand = m_commandDownload;
+
+        // Replace time in the command
+        while (thisCommand.Find("CURRENTDATE") != wxNOT_FOUND) {
+            int posStart = thisCommand.Find("CURRENTDATE");
+            if (posStart == wxNOT_FOUND) {
+                break;
+            }
+            posStart--;
+            auto posStartSt = (size_t)posStart;
+            thisCommand.Remove(posStartSt, 13);  // Removes '[CURRENTDATE-'
+            // Find end
+            int posEnd = thisCommand.find("]", posStartSt);
+
+            if (posEnd != wxNOT_FOUND && posEnd > posStartSt) {
+                auto posEndSt = (size_t)posEnd;
+                thisCommand.Remove(posEndSt, 1);  // Removes ']'
+                wxString dateFormat = thisCommand.SubString(posStartSt, posEndSt);
+                wxString date = asTime::GetStringTime(runDateInUse, dateFormat);
+                thisCommand.replace(posStartSt, date.Length(), date);
+            }
+        }
 
         wxString timeStr = asStrF("%d", currentLeadtime);
 
-        thisCommandLeadTime.Replace("[LEADTIME-H]", timeStr);
-        thisCommandLeadTime.Replace("[LEADTIME-h]", timeStr);
+        thisCommand.Replace("[LEADTIME-H]", timeStr);
+        thisCommand.Replace("[LEADTIME-h]", timeStr);
         if (timeStr.Length() < 2) timeStr = "0" + timeStr;
-        thisCommandLeadTime.Replace("[LEADTIME-HH]", timeStr);
-        thisCommandLeadTime.Replace("[LEADTIME-hh]", timeStr);
+        thisCommand.Replace("[LEADTIME-HH]", timeStr);
+        thisCommand.Replace("[LEADTIME-hh]", timeStr);
         if (timeStr.Length() < 3) timeStr = "0" + timeStr;
-        thisCommandLeadTime.Replace("[LEADTIME-HHH]", timeStr);
-        thisCommandLeadTime.Replace("[LEADTIME-hhh]", timeStr);
+        thisCommand.Replace("[LEADTIME-HHH]", timeStr);
+        thisCommand.Replace("[LEADTIME-hhh]", timeStr);
         if (timeStr.Length() < 4) timeStr = "0" + timeStr;
-        thisCommandLeadTime.Replace("[LEADTIME-HHHH]", timeStr);
-        thisCommandLeadTime.Replace("[LEADTIME-hhhh]", timeStr);
+        thisCommand.Replace("[LEADTIME-HHHH]", timeStr);
+        thisCommand.Replace("[LEADTIME-hhhh]", timeStr);
 
         // Filename
-        wxString filePath = GetDirStructure(runDateInUse) + DS + GetFileName(runDateInUse, leadTime);
+        wxString filePath = GetDirStructure(runDateInUse) + DS + GetFileName(runDateInUse, currentLeadtime);
 
         double dataDate = runDateInUse + currentLeadtime / 24.0;
 
         // Save resulting strings
-        m_urls.push_back(thisCommandLeadTime);
+        m_urls.push_back(thisCommand);
         m_fileNames.push_back(filePath);
         m_dataDates.push_back(dataDate);
     }
