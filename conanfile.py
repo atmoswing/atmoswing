@@ -48,7 +48,7 @@ class AmtoSwing(ConanFile):
             self.requires("gtest/1.13.0")
         if self.options.enable_benchmark:
             self.requires("benchmark/1.7.1")
-            self.requires("gtest/1.13.0")
+            self.requires("gtest/1.11.0")
         if self.options.with_gui:
             self.requires("wxwidgets/3.2.2.1@terranum-conan+wxwidgets/stable")
         else:
