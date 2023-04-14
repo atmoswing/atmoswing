@@ -353,7 +353,7 @@ TEST(PredictorOperMeteoFranceArpege, CanFindFiles) {
     predictor->SetPredictorsRealtimeDirectory(wxFileName::GetCwd() + "/files/data-meteofrance-arpege");
     predictor->SetRunDateInUse(asTime::GetTimeFromString("2023-02-02"));
     predictor->SetLevel(500);
-    predictor->RestrictTimeArray(0, 6, 17);
+    predictor->RestrictTimeArray(0, 6, 18);
 
     // Build file names
     ASSERT_TRUE(predictor->BuildFilenamesUrls());
