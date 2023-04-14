@@ -578,8 +578,10 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
                 wxASSERT(factor > 0);
             }
 
+            int iData = -1;
             for (int iLead = leadtimeMin; iLead <= leadtimeMax; iLead++) {
                 int idx = iLead;
+                iData++;
                 if (timeShiftEndAccumulation) {
                     if (iLead == 0) {
                         continue;
@@ -593,7 +595,7 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
                 float thisVal = 0;
 
                 // Get values
-                a1f theseVals = forecast->GetAnalogsValuesRaw(iLead, indexStation);
+                a1f theseVals = forecast->GetAnalogsValuesRaw(iData, indexStation);
 
                 // Process quantiles
                 if (asHasNaN(&theseVals[0], &theseVals[theseVals.size() - 1])) {
