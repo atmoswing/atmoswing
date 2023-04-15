@@ -217,6 +217,7 @@ void AtmoswingAppViewer::InitLanguageSupport() {
 
     // Set decimal separator to points
     std::setlocale(LC_NUMERIC, "C");
+#if USE_GUI
 #ifdef __WXMSW__
     const wxLanguageInfo *info = wxLocale::GetLanguageInfo(language);
     wxUint32 lcid = MAKELCID(MAKELANGID(info->WinLang, info->WinSublang), SORT_DEFAULT);
@@ -224,6 +225,7 @@ void AtmoswingAppViewer::InitLanguageSupport() {
     buffer[0] = '.';
     buffer[1] = '\0';
     SetLocaleInfo(lcid, LOCALE_SDECIMAL, buffer);
+#endif
 #endif
 }
 
