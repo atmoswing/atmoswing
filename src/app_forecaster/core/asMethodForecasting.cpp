@@ -517,7 +517,7 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
             for (const auto& fileName : fileNames) {
                 wxString filePath = m_batchForecasts->GetPredictorsRealtimeDirectory() + DS + fileName;
                 if (!wxFileName::FileExists(filePath)) {
-                    wxLogWarning(_("File not found: %s"), filePath);
+                    wxLogError(_("File not found: %s"), filePath);
                     countMissing++;
                 }
             }
@@ -526,27 +526,8 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
                 break;
             }
 
-            if (counterFails < maxPrevStepsNb) {
-                // Try to download older data
-                m_forecastDate = predictorRealtime->DecrementRunDateInUse();
-                // Check if result already exists
-                resultsCheck.SetCurrentStep(params.GetStepsNb() - 1);
-                resultsCheck.Init(params, m_forecastDate);
-                if (resultsCheck.Exists()) {
-                    wxLogVerbose(_("Forecast already exists."));
-#if USE_GUI
-                    if (g_responsive) wxTheApp->Yield();
-#endif
-                    return true;
-                }
-                forecastDateChanged = true;
-                predictorRealtime->BuildFilenamesAndUrls(hour, params.GetTargetTimeStepHours(), params.GetLeadTimeNb());
-                counterFails++;
-            } else {
-                wxLogError(_("The maximum attempts is reached to search for the real-time predictor."));
-                wxLogError(_("Directory: %s"), m_batchForecasts->GetPredictorsRealtimeDirectory());
-                return false;
-            }
+            wxLogError(_("Directory: %s"), m_batchForecasts->GetPredictorsRealtimeDirectory());
+            return false;
         }
     }
     m_forecastDate = predictorRealtime->GetRunDateInUse();
