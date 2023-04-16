@@ -90,17 +90,24 @@ asTimeArray::asTimeArray(vd& timeArray)
     : asTime(),
       m_initialized(false),
       m_mode(Custom) {
-    wxASSERT(timeArray.size() > 1);
-    wxASSERT(timeArray[timeArray.size() - 1] > timeArray[0]);
+    if (timeArray.size() == 1) {
+        m_initialized = false;
+        m_mode = SingleDay;
+        m_start = timeArray[0];
+        m_end = timeArray[0];
+        m_timeStepDays = 0;
+    } else {
+        wxASSERT(timeArray.size() > 1);
+        wxASSERT(timeArray[timeArray.size() - 1] > timeArray[0]);
 
-    // Get values
-    m_timeStepDays = timeArray[1] - timeArray[0];
-    m_start = timeArray[0];
-    m_end = timeArray[timeArray.size() - 1];
-    m_timeArray.resize(timeArray.size());
+        m_timeStepDays = timeArray[1] - timeArray[0];
+        m_start = timeArray[0];
+        m_end = timeArray[timeArray.size() - 1];
+        m_timeArray.resize(timeArray.size());
 
-    for (int i = 0; i < timeArray.size(); i++) {
-        m_timeArray[i] = timeArray[i];
+        for (int i = 0; i < timeArray.size(); i++) {
+            m_timeArray[i] = timeArray[i];
+        }
     }
 }
 

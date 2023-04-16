@@ -393,6 +393,8 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast& param
                 return false;
             }
 
+            predictorRealtime->SetLevel(params.GetPredictorLevel(iStep, iPtor));
+
             if (!GetFiles(params, predictorRealtime, forecastDateChanged, params.GetPredictorHour(iStep, iPtor))) {
                 wxDELETE(predictorRealtime);
                 return false;
@@ -417,6 +419,8 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast& param
                     wxDELETE(predictorRealtimePreprocess);
                     return false;
                 }
+
+                predictorRealtimePreprocess->SetLevel(params.GetPreprocessLevel(iStep, iPtor, iPre));
 
                 if (!GetFiles(params, predictorRealtimePreprocess, forecastDateChanged,
                               params.GetPreprocessHour(iStep, iPtor, iPre))) {
