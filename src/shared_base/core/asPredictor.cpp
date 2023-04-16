@@ -1535,6 +1535,9 @@ bool asPredictor::GetDataFromFile(asFileNetcdf& ncFile) {
                             notNan = false;
                         }
                     }
+                    if (isnan(dataF[ind]) || isnan(latLonData(iLat, iLon))) {
+                        notNan = false;
+                    }
                     if (!notNan) {
                         latLonData(iLat, iLon) = NAN;
                     }
@@ -1641,6 +1644,9 @@ bool asPredictor::GetDataFromFile(asFileGrib& gbFile) {
                         if (dataF[ind] == nanValue || latLonData(iLat, iLon) == nanValue) {
                             notNan = false;
                         }
+                    }
+                    if (isnan(dataF[ind]) || isnan(latLonData(iLat, iLon))) {
+                        notNan = false;
                     }
                     if (!notNan) {
                         latLonData(iLat, iLon) = NAN;

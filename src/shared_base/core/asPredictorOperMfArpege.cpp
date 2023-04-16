@@ -45,7 +45,6 @@ asPredictorOperMfArpege::asPredictorOperMfArpege(const wxString& dataId)
     m_fStr.dimLevelName = "isobaric";
     m_fStr.hasLevelDim = false;
     m_fStr.singleTimeStep = true;
-    m_nanValues.push_back(NAN);
     m_parameter = ParameterUndefined;
     m_fileExtension = "grb";
     m_leadTimeStart = 0;

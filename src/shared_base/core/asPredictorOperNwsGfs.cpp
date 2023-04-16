@@ -45,7 +45,6 @@ asPredictorOperNwsGfs::asPredictorOperNwsGfs(const wxString& dataId)
     m_runHourStart = 0;
     m_runUpdate = 6;
     m_strideAllowed = false;
-    m_nanValues.push_back(NAN);
     m_shouldDownload = true;
     m_restrictHours = 0;
     m_restrictTimeStepHours = 24;
