@@ -48,12 +48,9 @@ asPredictorOperMfArpege::asPredictorOperMfArpege(const wxString& dataId)
     m_parameter = ParameterUndefined;
     m_fileExtension = "grb";
     m_leadTimeStart = 0;
-    m_leadTimeEnd = 240;
     m_leadTimeStep = 6;
     m_runHourStart = 0;
     m_runUpdate = 6;
-    m_restrictHours = 0;
-    m_restrictTimeStepHours = 24;
 }
 
 bool asPredictorOperMfArpege::Init() {

@@ -356,7 +356,7 @@ TEST(PredictorOperMeteoFranceArpege, CanFindFiles) {
     predictor->RestrictTimeArray(0, 6, 18);
 
     // Build file names
-    ASSERT_TRUE(predictor->BuildFilenamesUrls());
+    ASSERT_TRUE(predictor->BuildFilenamesAndUrls(26));
 
     // Load
     ASSERT_TRUE(predictor->Load(area, dates, level));

@@ -406,7 +406,7 @@ TEST(PredictorOperCustomVigicruesIfs, CanFindFiles) {
     predictor->RestrictTimeArray(0, 6, 17);
 
     // Build file names
-    ASSERT_TRUE(predictor->BuildFilenamesUrls());
+    ASSERT_TRUE(predictor->BuildFilenamesAndUrls(66));
 
     // Load
     ASSERT_TRUE(predictor->Load(area, dates, level));

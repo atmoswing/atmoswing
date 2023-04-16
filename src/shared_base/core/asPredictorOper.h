@@ -50,13 +50,7 @@ class asPredictorOper : public asPredictor {
 
     double DecrementRunDateInUse();
 
-    bool BuildFilenamesUrls();
-
-    void RestrictTimeArray(double restrictHours, double forecastTimeStepHours, int leadTimeNb);
-
-    double GetForecastLeadTimeEnd() const {
-        return m_leadTimeEnd;
-    }
+    bool BuildFilenamesAndUrls(double predictorHour, double forecastTimeStepHours, int leadTimeNb);
 
     double GetRunDateInUse() const {
         return m_runDateInUse;
@@ -97,15 +91,12 @@ class asPredictorOper : public asPredictor {
   protected:
     wxString m_predictorsRealtimeDir;
     int m_leadTimeStart;
-    int m_leadTimeEnd;
     int m_leadTimeStep;
     int m_runHourStart;
     int m_runUpdate;
     double m_runDateInUse;
     wxString m_commandDownload;
     bool m_shouldDownload;
-    int m_restrictHours;
-    int m_restrictTimeStepHours;
     vwxs m_fileNames;
     vwxs m_urls;
     vd m_dataDates;

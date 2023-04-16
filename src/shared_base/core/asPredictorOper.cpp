@@ -41,15 +41,12 @@
 asPredictorOper::asPredictorOper(const wxString& dataId)
     : asPredictor(dataId),
       m_leadTimeStart(0),
-      m_leadTimeEnd(0),
       m_leadTimeStep(0),
       m_runHourStart(0),
       m_runUpdate(0),
       m_runDateInUse(0.0),
       m_commandDownload(),
-      m_shouldDownload(false),
-      m_restrictHours(0),
-      m_restrictTimeStepHours(0) {}
+      m_shouldDownload(false) {}
 
 void asPredictorOper::SetDefaultPredictorsUrls() {
     wxConfigBase* pConfig = wxFileConfig::Get();
@@ -183,43 +180,28 @@ double asPredictorOper::DecrementRunDateInUse() {
     return m_runDateInUse;
 }
 
-void asPredictorOper::RestrictTimeArray(double restrictHours, double forecastTimeStepHours, int leadTimeNb) {
-    m_restrictHours = (int)restrictHours;
-    m_restrictTimeStepHours = (int)forecastTimeStepHours;
-    if (m_restrictTimeStepHours >= 24) {
-        m_leadTimeEnd = (int)forecastTimeStepHours * ((leadTimeNb - 1) + ceil(restrictHours / forecastTimeStepHours));
-    } else {
-        m_leadTimeStart = (int)restrictHours;;
-        m_leadTimeEnd = m_leadTimeStart + (leadTimeNb - 1) * forecastTimeStepHours;
-    }
-    wxASSERT(m_restrictTimeStepHours > 0);
-    wxASSERT(m_restrictHours > -100);
-    wxASSERT(m_restrictHours < 100);
-}
-
-bool asPredictorOper::BuildFilenamesUrls() {
+bool asPredictorOper::BuildFilenamesAndUrls(double predictorHour, double forecastTimeStepHours, int leadTimeNb) {
     m_dataDates.clear();
     m_fileNames.clear();
     m_urls.clear();
 
     // Restrict to used data
-    if (m_restrictTimeStepHours >= 24) {
+    if (forecastTimeStepHours >= 24) {
         // Get the real lead time
         double dayRun = floor(m_runDateInUse);
-        double desiredTime = dayRun + m_restrictHours / 24.0;
+        double desiredTime = dayRun + predictorHour / 24.0;
         double diff = desiredTime - m_runDateInUse;
         m_leadTimeStart = (int)(diff * 24.0);
-        m_leadTimeStep = m_restrictTimeStepHours;
-        m_leadTimeEnd = (int)floor((m_leadTimeEnd - m_leadTimeStart) / m_leadTimeStep) * m_leadTimeStep +
-                        m_leadTimeStart;
+        m_leadTimeStep = forecastTimeStepHours;
+    } else {
+        m_leadTimeStart = (int)predictorHour;
     }
 
     wxASSERT(m_leadTimeStep > 0);
-    wxASSERT(m_leadTimeEnd >= m_leadTimeStart);
 
     // Change the lead times
-    for (int leadTime = m_leadTimeStart; leadTime <= m_leadTimeEnd; leadTime += m_leadTimeStep) {
-        int currentLeadtime = leadTime;
+    for (int iLeadTime = 0; iLeadTime < leadTimeNb; iLeadTime++) {
+        int currentLeadtime = m_leadTimeStart + iLeadTime * m_leadTimeStep;
         double runDateInUse = m_runDateInUse;
 
         // Manage if lead time if negative -> get previous download

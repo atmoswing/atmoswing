@@ -40,14 +40,11 @@ asPredictorOperNwsGfs::asPredictorOperNwsGfs(const wxString& dataId)
     m_datasetName = "Global Forecast System";
     m_fileType = asFile::Grib;
     m_leadTimeStart = 0;
-    m_leadTimeEnd = 240;  // After 240h, available in another temporal resolution
     m_leadTimeStep = 6;
     m_runHourStart = 0;
     m_runUpdate = 6;
     m_strideAllowed = false;
     m_shouldDownload = true;
-    m_restrictHours = 0;
-    m_restrictTimeStepHours = 24;
     m_fileExtension = "grib2";
     m_fStr.hasLevelDim = false;
     m_fStr.singleTimeStep = true;

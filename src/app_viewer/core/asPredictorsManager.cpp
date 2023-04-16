@@ -67,9 +67,8 @@ bool asPredictorsManager::LoadData() {
         }
         predictor->SetPredictorsRealtimeDirectory(directory);
         predictor->SetRunDateInUse(m_forecastDate);
-        predictor->RestrictTimeArray(m_hours[selection], m_forecastTimeStepHours, m_leadTimeNb);
 
-        if (!predictor->BuildFilenamesUrls()) {
+        if (!predictor->BuildFilenamesAndUrls(m_hours[selection], m_forecastTimeStepHours, m_leadTimeNb)) {
             return false;
         }
 

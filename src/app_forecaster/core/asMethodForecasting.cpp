@@ -462,12 +462,8 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
         return true;
     }
 
-    // Restriction needed
-    wxASSERT(params.GetTargetTimeStepHours() > 0);
-    predictorRealtime->RestrictTimeArray(hour, params.GetTargetTimeStepHours(), params.GetLeadTimeNb());
-
     // Update forecasting date
-    if (!predictorRealtime->BuildFilenamesUrls()) {
+    if (!predictorRealtime->BuildFilenamesAndUrls(hour, params.GetTargetTimeStepHours(), params.GetLeadTimeNb())) {
         return false;
     }
 
@@ -501,7 +497,8 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
                         return true;
                     }
                     forecastDateChanged = true;
-                    predictorRealtime->BuildFilenamesUrls();
+                    predictorRealtime->BuildFilenamesAndUrls(hour, params.GetTargetTimeStepHours(),
+                                                             params.GetLeadTimeNb());
                     counterFails++;
                 } else {
                     wxLogError(_("The maximum attempts is reached to download the real-time predictor."));
@@ -543,7 +540,7 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
                     return true;
                 }
                 forecastDateChanged = true;
-                predictorRealtime->BuildFilenamesUrls();
+                predictorRealtime->BuildFilenamesAndUrls(hour, params.GetTargetTimeStepHours(), params.GetLeadTimeNb());
                 counterFails++;
             } else {
                 wxLogError(_("The maximum attempts is reached to search for the real-time predictor."));
@@ -577,47 +574,10 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                                  params.GetTimeArrayAnalogsMode());
     timeArrayArchive.Init();
 
-    // Get last lead time of the data
-    double lastLeadTime = 9999;
-    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-        if (!params.NeedsPreprocessing(iStep, iPtor)) {
-            // Instantiate a predictor object
-            asPredictorOper* predictorRealtime = asPredictorOper::GetInstance(
-                params.GetPredictorRealtimeDatasetId(iStep, iPtor), params.GetPredictorRealtimeDataId(iStep, iPtor));
-            if (!predictorRealtime) {
-                return false;
-            }
-
-            predictorRealtime->SetRunDateInUse(m_forecastDate);
-            lastLeadTime = wxMin(lastLeadTime,
-                                 predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
-
-            wxDELETE(predictorRealtime);
-        } else {
-            for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
-                // Instantiate a predictor object
-                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
-                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
-                if (!predictorRealtimePreprocess) {
-                    return false;
-                }
-
-                predictorRealtimePreprocess->SetRunDateInUse(m_forecastDate);
-                lastLeadTime = wxMin(lastLeadTime, predictorRealtimePreprocess->GetForecastLeadTimeEnd() / 24.0 -
-                                                       params.GetTimeSpanDays());
-
-                wxDELETE(predictorRealtimePreprocess);
-            }
-        }
-    }
-
     // Target time array
     vd leadTime = params.GetLeadTimeDaysVector();
     vd tmpTimeArray;
     for (double i : leadTime) {
-        if (i > lastLeadTime) break;
-
         if (params.GetTargetTimeStepHours() >= 24) {
             tmpTimeArray.push_back(floor(m_forecastDate) + i);
         } else {
@@ -701,13 +661,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 predictorRealtime->SelectMembers(params.GetPredictorRealtimeMembersNb(iStep, iPtor));
             }
 
-            // Restriction needed
-            wxASSERT(params.GetTargetTimeStepHours() > 0);
-            predictorRealtime->RestrictTimeArray(params.GetPredictorHour(iStep, iPtor), params.GetTargetTimeStepHours(),
-                                                 params.GetLeadTimeNb());
-
             // Update
-            if (!predictorRealtime->BuildFilenamesUrls()) {
+            if (!predictorRealtime->BuildFilenamesAndUrls(params.GetPredictorHour(iStep, iPtor),
+                                                          params.GetTargetTimeStepHours(), params.GetLeadTimeNb())) {
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
                 return false;
@@ -855,13 +811,10 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                         params.GetPreprocessRealtimeMembersNb(iStep, iPtor, iPre));
                 }
 
-                // Restriction needed
-                wxASSERT(params.GetTargetTimeStepHours() > 0);
-                predictorRealtimePreprocess->RestrictTimeArray(params.GetPreprocessHour(iStep, iPtor, iPre),
-                                                               params.GetTargetTimeStepHours(), params.GetLeadTimeNb());
-
                 // Update
-                if (!predictorRealtimePreprocess->BuildFilenamesUrls()) {
+                if (!predictorRealtimePreprocess->BuildFilenamesAndUrls(params.GetPreprocessHour(iStep, iPtor, iPre),
+                                                                        params.GetTargetTimeStepHours(),
+                                                                        params.GetLeadTimeNb())) {
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
                     return false;
@@ -1047,48 +1000,10 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                                  params.GetTimeArrayAnalogsMode());
     timeArrayArchive.Init();
 
-    // Get last lead time of the data
-    double lastLeadTime = 9999;
-    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-        if (!params.NeedsPreprocessing(iStep, iPtor)) {
-            // Instantiate a predictor object
-            asPredictorOper* predictorRealtime = asPredictorOper::GetInstance(
-                params.GetPredictorRealtimeDatasetId(iStep, iPtor), params.GetPredictorRealtimeDataId(iStep, iPtor));
-            if (!predictorRealtime) {
-                return false;
-            }
-            predictorRealtime->SetPredictorsRealtimeDirectory(m_batchForecasts->GetPredictorsRealtimeDirectory());
-            predictorRealtime->SetRunDateInUse(m_forecastDate);
-            lastLeadTime = wxMin(lastLeadTime,
-                                 predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
-
-            wxDELETE(predictorRealtime);
-        } else {
-            for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
-                // Instantiate a predictor object
-                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
-                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
-                if (!predictorRealtimePreprocess) {
-                    return false;
-                }
-                predictorRealtimePreprocess->SetPredictorsRealtimeDirectory(
-                    m_batchForecasts->GetPredictorsRealtimeDirectory());
-                predictorRealtimePreprocess->SetRunDateInUse(m_forecastDate);
-                lastLeadTime = wxMin(lastLeadTime, predictorRealtimePreprocess->GetForecastLeadTimeEnd() / 24.0 -
-                                                       params.GetTimeSpanDays());
-
-                wxDELETE(predictorRealtimePreprocess);
-            }
-        }
-    }
-
     // Target time array
     vd leadTime = params.GetLeadTimeDaysVector();
     vd tmpTimeArray;
     for (double time : leadTime) {
-        if (time > lastLeadTime) break;
-
         if (params.GetTargetTimeStepHours() >= 24) {
             tmpTimeArray.push_back(floor(m_forecastDate) + time);
         } else {
@@ -1174,13 +1089,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                 predictorRealtime->SelectMembers(params.GetPredictorRealtimeMembersNb(iStep, iPtor));
             }
 
-            // Restriction needed
-            wxASSERT(params.GetTargetTimeStepHours() > 0);
-            predictorRealtime->RestrictTimeArray(params.GetPredictorHour(iStep, iPtor), params.GetTargetTimeStepHours(),
-                                                 params.GetLeadTimeNb());
-
             // Update
-            if (!predictorRealtime->BuildFilenamesUrls()) {
+            if (!predictorRealtime->BuildFilenamesAndUrls(params.GetPredictorHour(iStep, iPtor),
+                                                          params.GetTargetTimeStepHours(), params.GetLeadTimeNb())) {
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
                 return false;
@@ -1310,13 +1221,10 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                         params.GetPreprocessRealtimeMembersNb(iStep, iPtor, iPre));
                 }
 
-                // Restriction needed
-                wxASSERT(params.GetTargetTimeStepHours() > 0);
-                predictorRealtimePreprocess->RestrictTimeArray(params.GetPreprocessHour(iStep, iPtor, iPre),
-                                                               params.GetTargetTimeStepHours(), params.GetLeadTimeNb());
-
                 // Update
-                if (!predictorRealtimePreprocess->BuildFilenamesUrls()) {
+                if (!predictorRealtimePreprocess->BuildFilenamesAndUrls(params.GetPreprocessHour(iStep, iPtor, iPre),
+                                                                        params.GetTargetTimeStepHours(),
+                                                                        params.GetLeadTimeNb())) {
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
                     return false;
