@@ -187,7 +187,7 @@ void asPredictorOper::RestrictTimeArray(double restrictHours, double forecastTim
     m_restrictHours = (int)restrictHours;
     m_restrictTimeStepHours = (int)forecastTimeStepHours;
     if (m_restrictTimeStepHours >= 24) {
-        m_leadTimeEnd = (int)forecastTimeStepHours * (leadTimeNb + floor(restrictHours / forecastTimeStepHours));
+        m_leadTimeEnd = (int)forecastTimeStepHours * ((leadTimeNb - 1) + ceil(restrictHours / forecastTimeStepHours));
     } else {
         m_leadTimeStart = (int)restrictHours;;
         m_leadTimeEnd = m_leadTimeStart + (leadTimeNb - 1) * forecastTimeStepHours;
@@ -296,6 +296,51 @@ void asPredictorOper::ListFiles(asTimeArray& timeArray) {
 
         m_files.push_back(filePath);
     }
+}
+
+bool asPredictorOper::ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeArray) {
+    wxASSERT(m_files.size() == timeArray.GetSize());
+
+    int idx = 0;
+    while (true) {
+        wxString fileName;
+        vd dates;
+        for (int i = idx; i < m_files.size(); i++) {
+            if (!fileName.IsEmpty() && !fileName.IsSameAs(m_files[i])) {
+                break;
+            }
+            fileName = m_files[i];
+            dates.push_back(timeArray[i]);
+            idx++;
+        }
+        asTimeArray newTimeArray(dates);
+        newTimeArray.Init();
+
+        switch (m_fileType) {
+            case (asFile::Netcdf): {
+                if (!ExtractFromNetcdfFile(fileName, dataArea, newTimeArray)) {
+                    return false;
+                }
+                break;
+            }
+            case (asFile::Grib): {
+                if (!ExtractFromGribFile(fileName, dataArea, newTimeArray)) {
+                    return false;
+                }
+                break;
+            }
+            default: {
+                wxLogError(_("Predictor file type not correctly defined."));
+                return false;
+            }
+        }
+
+        if (idx >= m_files.size() - 1) {
+            return true;
+        }
+    }
+
+    return true;
 }
 
 wxString asPredictorOper::GetDirStructure(const double date) {

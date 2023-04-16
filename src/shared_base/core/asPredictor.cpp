@@ -472,7 +472,7 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
             m_fInd.timeStep = wxMax(timeArray.GetTimeStepHours() / m_fStr.timeStep, 1);
         }
 
-        // Extract composite data from files
+        // Extract data from files
         wxLogVerbose(_("Extracting from files."));
         if (!ExtractFromFiles(dataArea, timeArray)) {
             if (m_warnMissingFiles && m_warnMissingLevels) {

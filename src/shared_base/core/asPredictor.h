@@ -476,7 +476,7 @@ class asPredictor : public wxObject {
 
     bool EnquireFileStructure(asTimeArray& timeArray);
 
-    bool ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeArray);
+    virtual bool ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeArray);
 
     virtual void ConvertToMjd(a1d& time, double refValue = NAN) const;
 

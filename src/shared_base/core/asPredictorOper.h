@@ -112,6 +112,8 @@ class asPredictorOper : public asPredictor {
 
     void ListFiles(asTimeArray& timeArray) override;
 
+    bool ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeArray) override;
+
     bool CheckTimeArray(asTimeArray& timeArray) override;
 };
 
