@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-13 22:16+0200\n"
-"PO-Revision-Date: 2023-04-13 22:20+0200\n"
+"PO-Revision-Date: 2023-04-16 12:03+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -50,7 +50,7 @@ msgstr "Chargement des données"
 #: src/app_forecaster/gui/asFrameForecaster.cpp:92
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:652
 msgid "Processing"
-msgstr "En cours"
+msgstr "En cours de traitement"
 
 #: src/app_forecaster/gui/asFrameForecaster.cpp:101
 msgid "Saving results"
