@@ -643,6 +643,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             }
 
             // Update
+            predictorRealtime->SetLevel(params.GetPredictorLevel(iStep, iPtor));
             if (!predictorRealtime->BuildFilenamesAndUrls(params.GetPredictorHour(iStep, iPtor),
                                                           params.GetTargetTimeStepHours(), params.GetLeadTimeNb())) {
                 wxDELETE(predictorArchive);
@@ -793,6 +794,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 }
 
                 // Update
+                predictorRealtimePreprocess->SetLevel(params.GetPreprocessLevel(iStep, iPtor, iPre));
                 if (!predictorRealtimePreprocess->BuildFilenamesAndUrls(params.GetPreprocessHour(iStep, iPtor, iPre),
                                                                         params.GetTargetTimeStepHours(),
                                                                         params.GetLeadTimeNb())) {
@@ -1071,6 +1073,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
             }
 
             // Update
+            predictorRealtime->SetLevel(params.GetPredictorLevel(iStep, iPtor));
             if (!predictorRealtime->BuildFilenamesAndUrls(params.GetPredictorHour(iStep, iPtor),
                                                           params.GetTargetTimeStepHours(), params.GetLeadTimeNb())) {
                 wxDELETE(predictorArchive);
@@ -1203,6 +1206,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                 }
 
                 // Update
+                predictorRealtimePreprocess->SetLevel(params.GetPreprocessLevel(iStep, iPtor, iPre));
                 if (!predictorRealtimePreprocess->BuildFilenamesAndUrls(params.GetPreprocessHour(iStep, iPtor, iPre),
                                                                         params.GetTargetTimeStepHours(),
                                                                         params.GetLeadTimeNb())) {

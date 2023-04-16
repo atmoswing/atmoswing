@@ -317,7 +317,7 @@ bool asPredictorOper::ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeA
             }
         }
 
-        if (idx >= m_files.size() - 1) {
+        if (idx >= m_files.size()) {
             return true;
         }
     }
