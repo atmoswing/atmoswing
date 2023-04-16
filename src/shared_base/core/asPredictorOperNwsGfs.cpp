@@ -47,7 +47,6 @@ asPredictorOperNwsGfs::asPredictorOperNwsGfs(const wxString& dataId)
     m_strideAllowed = false;
     m_nanValues.push_back(NAN);
     m_shouldDownload = true;
-    m_restrictDownloads = true;
     m_restrictHours = 0;
     m_restrictTimeStepHours = 24;
     m_fileExtension = "grib2";

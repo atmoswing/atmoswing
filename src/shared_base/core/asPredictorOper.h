@@ -104,7 +104,6 @@ class asPredictorOper : public asPredictor {
     double m_runDateInUse;
     wxString m_commandDownload;
     bool m_shouldDownload;
-    bool m_restrictDownloads;
     int m_restrictHours;
     int m_restrictTimeStepHours;
     vwxs m_fileNames;

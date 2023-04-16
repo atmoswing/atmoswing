@@ -36,10 +36,9 @@ asPredictorOperCustomVigicruesIfs::asPredictorOperCustomVigicruesIfs(const wxStr
     m_datasetId = "Custom_Vigicrues_IFS";
     m_datasetName = "Integrated Forecasting System (IFS) grib files for the Vigicrues network";
     m_fStr.hasLevelDim = true;
-    m_leadTimeStart = 6;
-    m_restrictDownloads = false;
+    m_leadTimeStep = 6;
     m_runHourStart = 0;
-    m_runUpdate = 24;
+    m_runUpdate = 12;
     m_percentMissingAllowed = 70;
     m_fileExtension = "grb";
 }

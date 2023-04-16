@@ -48,7 +48,6 @@ asPredictorOper::asPredictorOper(const wxString& dataId)
       m_runDateInUse(0.0),
       m_commandDownload(),
       m_shouldDownload(false),
-      m_restrictDownloads(false),
       m_restrictHours(0),
       m_restrictTimeStepHours(0) {}
 
@@ -203,8 +202,8 @@ bool asPredictorOper::BuildFilenamesUrls() {
     m_fileNames.clear();
     m_urls.clear();
 
-    // Restrict the downloads to used data
-    if (m_restrictDownloads && m_restrictTimeStepHours >= 24) {
+    // Restrict to used data
+    if (m_restrictTimeStepHours >= 24) {
         // Get the real lead time
         double dayRun = floor(m_runDateInUse);
         double desiredTime = dayRun + m_restrictHours / 24.0;

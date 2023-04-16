@@ -37,7 +37,6 @@ asPredictorOperCustomFvg::asPredictorOperCustomFvg(const wxString& dataId)
     m_datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
     m_fStr.hasLevelDim = true;
     m_leadTimeStart = 6;
-    m_restrictDownloads = false;
     m_runHourStart = 0;
     m_runUpdate = 24;
     m_percentMissingAllowed = 70;
