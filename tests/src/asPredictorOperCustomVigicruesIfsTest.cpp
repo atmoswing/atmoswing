@@ -146,7 +146,9 @@ TEST(PredictorOperCustomVigicruesIfs, LoadThirdTimeStep) {
 
 TEST(PredictorOperCustomVigicruesIfs, LoadFullTimeArray) {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-vigicrues-ifs/2023/02/02/CEP_Z_202302020000.grb");
+    for (int i = 0; i < 41; ++i) {
+        filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-vigicrues-ifs/2023/02/02/CEP_Z_202302020000.grb");
+    }
 
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 12, 00), 6, "Simple");
     dates.Init();
@@ -232,7 +234,9 @@ TEST(PredictorOperCustomVigicruesIfs, LoadFullTimeArray) {
 
 TEST(PredictorOperCustomVigicruesIfs, LoadTotalColumnWaterVapor) {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-vigicrues-ifs/2023/02/02/CEP_TCWV_202302020000.grb");
+    for (int i = 0; i < 41; ++i) {
+        filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-vigicrues-ifs/2023/02/02/CEP_TCWV_202302020000.grb");
+    }
 
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 12, 00), 6, "Simple");
     dates.Init();
@@ -317,7 +321,9 @@ TEST(PredictorOperCustomVigicruesIfs, LoadTotalColumnWaterVapor) {
 
 TEST(PredictorOperCustomVigicruesIfs, LoadRelativeHumidity) {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-vigicrues-ifs/2023/02/02/CEP_R_202302020000.grb");
+    for (int i = 0; i < 41; ++i) {
+        filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-vigicrues-ifs/2023/02/02/CEP_R_202302020000.grb");
+    }
 
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 12, 00), 6, "Simple");
     dates.Init();
@@ -403,10 +409,9 @@ TEST(PredictorOperCustomVigicruesIfs, CanFindFiles) {
     predictor->SetPredictorsRealtimeDirectory(wxFileName::GetCwd() + "/files/data-custom-vigicrues-ifs");
     predictor->SetRunDateInUse(asTime::GetTimeFromString("2023-02-02"));
     predictor->SetLevel(500);
-    predictor->RestrictTimeArray(0, 6, 17);
 
     // Build file names
-    ASSERT_TRUE(predictor->BuildFilenamesAndUrls(66));
+    ASSERT_TRUE(predictor->BuildFilenamesAndUrls(0, 6, 41));
 
     // Load
     ASSERT_TRUE(predictor->Load(area, dates, level));

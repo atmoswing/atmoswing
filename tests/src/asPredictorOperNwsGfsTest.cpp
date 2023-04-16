@@ -854,7 +854,7 @@ TEST(PredictorOperNwsGfs, LoadWithNegativeValuesStep25LonLatIrregularStartAndEnd
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadVersion2017) {
+TEST(PredictorOperNwsGfs, LoadVersion2017) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2017/2017121312.NWS_GFS.hgt.012.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2017/2017121312.NWS_GFS.hgt.024.grib2");

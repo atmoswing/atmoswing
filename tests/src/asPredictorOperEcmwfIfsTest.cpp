@@ -220,7 +220,9 @@ TEST(PredictorOperEcmwfIfs, LoadLastTimeStep) {
 
 TEST(PredictorOperEcmwfIfs, LoadFullTimeArray) {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-ecmwf-ifs-grib/2019-02-01_z.grib");
+    for (int i = 0; i < 8; ++i) {
+        filepaths.push_back(wxFileName::GetCwd() + "/files/data-ecmwf-ifs-grib/2019-02-01_z.grib");
+    }
 
     asTimeArray dates(asTime::GetMJD(2019, 2, 1, 00), asTime::GetMJD(2019, 2, 2, 18), 6, "Simple");
     dates.Init();
@@ -306,7 +308,9 @@ TEST(PredictorOperEcmwfIfs, LoadFullTimeArray) {
 
 TEST(PredictorOperEcmwfIfs, LoadTimeArrayWithoutFirst) {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-ecmwf-ifs-grib/2019-02-01_z.grib");
+    for (int i = 0; i < 7; ++i) {
+        filepaths.push_back(wxFileName::GetCwd() + "/files/data-ecmwf-ifs-grib/2019-02-01_z.grib");
+    }
 
     asTimeArray dates(asTime::GetMJD(2019, 2, 1, 06), asTime::GetMJD(2019, 2, 2, 18), 6, "Simple");
     dates.Init();
