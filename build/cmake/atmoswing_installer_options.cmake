@@ -9,6 +9,10 @@ if (WIN32)
             FILES_MATCHING
             PATTERN "*.dll"
     )
+    install(
+            DIRECTORY ${CMAKE_BINARY_DIR}/bin/fr
+            DESTINATION .
+    )
 endif()
 
 # COMMON PROPERTIES
