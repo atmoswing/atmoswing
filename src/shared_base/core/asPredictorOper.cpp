@@ -281,21 +281,14 @@ void asPredictorOper::ListFiles(asTimeArray& timeArray) {
 }
 
 bool asPredictorOper::ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeArray) {
-    wxASSERT(m_files.size() == timeArray.GetSize());
+    if (m_files.size() != timeArray.GetSize()) {
+        wxLogError(_("Issue extracting operational predictor data: number of files and time steps do not match."));
+        return false;
+    }
 
-    int idx = 0;
-    while (true) {
-        wxString fileName;
-        vd dates;
-        for (int i = idx; i < m_files.size(); i++) {
-            if (!fileName.IsEmpty() && !fileName.IsSameAs(m_files[i])) {
-                break;
-            }
-            fileName = m_files[i];
-            dates.push_back(timeArray[i]);
-            idx++;
-        }
-        asTimeArray newTimeArray(dates);
+    for (int i = 0; i < m_files.size(); ++i) {
+        wxString fileName = m_files[i];
+        asTimeArray newTimeArray(timeArray[i]);
         newTimeArray.Init();
 
         switch (m_fileType) {
@@ -315,10 +308,6 @@ bool asPredictorOper::ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeA
                 wxLogError(_("Predictor file type not correctly defined."));
                 return false;
             }
-        }
-
-        if (idx >= m_files.size()) {
-            return true;
         }
     }
 
