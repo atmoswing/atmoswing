@@ -1,6 +1,13 @@
 # Changelog AtmoSwing
 
 
+## v3.0.1 - 17 Apr 2023
+
+### Fixed
+
+*   Fixing issue with the predictors mapping.
+
+
 ## v3.0.0 - 17 Apr 2023
 
 ### Added
