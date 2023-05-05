@@ -68,7 +68,13 @@ bool asPredictorsManager::LoadData() {
         predictor->SetPredictorsRealtimeDirectory(directory);
         predictor->SetRunDateInUse(m_forecastDate);
 
-        double dataHour = (m_date - m_forecastDate) * 24 + m_hours[selection];
+        double dataHour = 0;
+        if (m_forecastTimeStepHours >= 24) {
+            dataHour = (m_date - floor(m_forecastDate)) * 24 + m_hours[selection];
+        } else {
+            dataHour = (m_date - m_forecastDate) * 24 + m_hours[selection];
+        }
+
         if (!predictor->BuildFilenamesAndUrls(dataHour, m_forecastTimeStepHours, 1)) {
             return false;
         }
