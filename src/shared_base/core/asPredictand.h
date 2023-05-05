@@ -129,6 +129,10 @@ class asPredictand : public wxObject {
         return m_datasetId;
     }
 
+    wxString GetCoordSys() const {
+        return m_coordSys;
+    }
+
     Parameter GetDataParameter() const {
         return m_parameter;
     }
@@ -205,6 +209,7 @@ class asPredictand : public wxObject {
     TemporalResolution m_temporalResolution;
     SpatialAggregation m_spatialAggregation;
     wxString m_datasetId;
+    wxString m_coordSys;
     double m_timeStepDays;
     int m_timeLength;
     int m_stationsNb;

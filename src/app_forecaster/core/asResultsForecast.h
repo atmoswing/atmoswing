@@ -206,6 +206,14 @@ class asResultsForecast : public asResults {
         m_stationYCoords = stationsYCoords;
     }
 
+    wxString GetCoordinateSystem() const {
+        return m_coordinateSystem;
+    }
+
+    void SetCoordinateSystem(const wxString& val) {
+        m_coordinateSystem = val;
+    }
+
     a1f GetReferenceAxis() const {
         return m_referenceAxis;
     }
@@ -470,6 +478,7 @@ class asResultsForecast : public asResults {
     asPredictand::SpatialAggregation m_predictandSpatialAggregation;
     wxString m_predictandDatasetId;
     wxString m_predictandDatabase;
+    wxString m_coordinateSystem;
     vi m_predictandStationIds;
     wxString m_forecastsDir;
     bool m_hasReferenceValues;

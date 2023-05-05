@@ -1411,6 +1411,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast& results, asParamet
     results.SetPredictandParameter(m_predictandDB->GetDataParameter());
     results.SetPredictandTemporalResolution(m_predictandDB->GetDataTemporalResolution());
     results.SetPredictandSpatialAggregation(m_predictandDB->GetDataSpatialAggregation());
+    results.SetCoordinateSystem(m_predictandDB->GetCoordSys());
 
     // Set the predictands values to the corresponding analog dates
     wxASSERT(m_predictandDB);

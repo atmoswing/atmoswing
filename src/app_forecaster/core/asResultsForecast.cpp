@@ -34,17 +34,9 @@
 
 asResultsForecast::asResultsForecast()
     : asResults(),
-      m_methodId(wxEmptyString),
-      m_methodIdDisplay(wxEmptyString),
-      m_specificTag(wxEmptyString),
-      m_specificTagDisplay(wxEmptyString),
-      m_description(wxEmptyString),
       m_predictandParameter(asPredictand::Precipitation),
       m_predictandTemporalResolution(asPredictand::Daily),
       m_predictandSpatialAggregation(asPredictand::Station),
-      m_predictandDatasetId(wxEmptyString),
-      m_predictandDatabase(wxEmptyString),
-      m_forecastsDir(wxEmptyString),
       m_hasReferenceValues(false),
       m_leadTimeOrigin(0.0) {}
 
@@ -183,6 +175,7 @@ bool asResultsForecast::Save() {
     ncFile.PutAtt("description", m_description);
     ncFile.PutAtt("date_processed", &m_dateProcessed);
     ncFile.PutAtt("lead_time_origin", &m_leadTimeOrigin);
+    ncFile.PutAtt("coordinate_system", m_coordinateSystem);
     short hasReferenceValues = 0;
     if (m_hasReferenceValues) {
         hasReferenceValues = 1;
@@ -486,6 +479,10 @@ bool asResultsForecast::Load() {
             m_hasReferenceValues = false;
             if (ncFile.GetAttShort("has_reference_values") == 1) {
                 m_hasReferenceValues = true;
+            }
+
+            if (ncFile.HasAttribute("coordinate_system")) {
+                m_coordinateSystem = ncFile.GetAttString("coordinate_system");
             }
         }
 

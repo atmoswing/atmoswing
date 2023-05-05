@@ -332,6 +332,9 @@ bool asPredictand::LoadCommonData(asFileNetcdf& ncFile) {
     m_datasetId = ncFile.GetAttString("dataset_id");
     m_hasNormalizedData = ncFile.HasVariable("data_normalized");
     m_hasReferenceValues = m_hasNormalizedData;
+    if (ncFile.HasAttribute("coordinate_system")) {
+        m_coordSys = ncFile.GetAttString("coordinate_system");
+    }
 
     // Get time
     m_timeLength = ncFile.GetDimLength("time");
@@ -414,6 +417,7 @@ void asPredictand::SetCommonDefinitions(asFileNetcdf& ncFile) const {
     auto dataSpatialAggregation = (int)m_spatialAggregation;
     ncFile.PutAtt("data_spatial_aggregation", &dataSpatialAggregation);
     ncFile.PutAtt("dataset_id", m_datasetId);
+    ncFile.PutAtt("coordinate_system", m_coordSys);
 
     // Define variables: the scores and the corresponding dates
     ncFile.DefVar("time", NC_DOUBLE, 1, dimNameTime);
