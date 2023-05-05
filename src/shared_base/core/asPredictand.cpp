@@ -588,152 +588,33 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, size_t stat
         wxString lineContent = datFile.GetNextLine();
 
         // Check the line width
-        if (lineContent.Len() >= maxCharWidth) {
-            // Check the size of the array
-            if (timeIndex >= m_timeLength) {
-                wxLogError(_("The time index is larger than the matrix (timeIndex = %d, m_timeLength = %d)."),
-                           timeIndex, m_timeLength);
-                return false;
-            }
-
-            switch (filePattern.structType) {
-                case (asFileDat::ConstantWidth): {
-                    if (filePattern.parseTime) {
-                        // Containers. Must be a double to use wxString::ToDouble
-                        double valTimeYear = 0, valTimeMonth = 0, valTimeDay = 0, valTimeHour = 0, valTimeMinute = 0;
-
-                        // Get time value
-                        if (filePattern.timeYearBegin != 0 && filePattern.timeYearEnd != 0 &&
-                            filePattern.timeMonthBegin != 0 && filePattern.timeMonthEnd != 0 &&
-                            filePattern.timeDayBegin != 0 && filePattern.timeDayEnd != 0) {
-                            lineContent
-                                .Mid(filePattern.timeYearBegin - 1,
-                                     filePattern.timeYearEnd - filePattern.timeYearBegin + 1)
-                                .ToDouble(&valTimeYear);
-                            lineContent
-                                .Mid(filePattern.timeMonthBegin - 1,
-                                     filePattern.timeMonthEnd - filePattern.timeMonthBegin + 1)
-                                .ToDouble(&valTimeMonth);
-                            lineContent
-                                .Mid(filePattern.timeDayBegin - 1,
-                                     filePattern.timeDayEnd - filePattern.timeDayBegin + 1)
-                                .ToDouble(&valTimeDay);
-                        } else {
-                            wxLogError(_("The data file pattern is not correctly defined."));
-                            return false;
-                        }
-
-                        if (filePattern.timeHourBegin != 0 && filePattern.timeHourEnd != 0) {
-                            lineContent
-                                .Mid(filePattern.timeHourBegin - 1,
-                                     filePattern.timeHourEnd - filePattern.timeHourBegin + 1)
-                                .ToDouble(&valTimeHour);
-                        }
-                        if (filePattern.timeMinuteBegin != 0 && filePattern.timeMinuteEnd != 0) {
-                            lineContent
-                                .Mid(filePattern.timeMinuteBegin - 1,
-                                     filePattern.timeMinuteEnd - filePattern.timeMinuteBegin + 1)
-                                .ToDouble(&valTimeMinute);
-                        }
-
-                        double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour,
-                                                         valTimeMinute, 0);
-
-                        // Find matching date
-                        while (dateData - m_time(timeIndex) > 0.0001) {
-                            timeIndex++;
-                        }
-                    }
-
-                    // Get predictand value
-                    wxString dataStr = lineContent.Mid(filePattern.dataBegin - 1,
-                                                       filePattern.dataEnd - filePattern.dataBegin + 1);
-
-                    // Put value in the matrix
-                    m_dataRaw(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
-
-                    timeIndex++;
-                    break;
-                }
-
-                case (asFileDat::TabsDelimited): {
-                    // Parse into a vector
-                    vwxs vColumns;
-                    wxString tmpLineContent = lineContent;
-                    while (tmpLineContent.Find("\t") != wxNOT_FOUND) {
-                        int foundCol = tmpLineContent.Find("\t");
-                        vColumns.push_back(tmpLineContent.Mid(0, foundCol));
-                        tmpLineContent = tmpLineContent.Mid(foundCol + 1);
-                    }
-                    if (!tmpLineContent.IsEmpty()) {
-                        vColumns.push_back(tmpLineContent);
-                    }
-
-                    if (filePattern.parseTime) {
-                        // Containers. Must be a double to use wxString::ToDouble
-                        double valTimeYear = 0, valTimeMonth = 0, valTimeDay = 0, valTimeHour = 0, valTimeMinute = 0;
-
-                        // Get time value
-                        if (filePattern.timeYearBegin != 0 && filePattern.timeMonthBegin != 0 &&
-                            filePattern.timeDayBegin != 0) {
-                            if (filePattern.timeYearBegin > vColumns.size() ||
-                                filePattern.timeMonthBegin > vColumns.size() ||
-                                filePattern.timeDayBegin > vColumns.size()) {
-                                wxLogError(
-                                    _("The data file pattern is not correctly defined. Trying to access an element "
-                                      "(date) after the line width."));
-                                return false;
-                            }
-                            vColumns[filePattern.timeYearBegin - 1].ToDouble(&valTimeYear);
-                            vColumns[filePattern.timeMonthBegin - 1].ToDouble(&valTimeMonth);
-                            vColumns[filePattern.timeDayBegin - 1].ToDouble(&valTimeDay);
-                        } else {
-                            wxLogError(_("The data file pattern is not correctly defined."));
-                            return false;
-                        }
-
-                        if (filePattern.timeHourBegin != 0) {
-                            if (filePattern.timeHourBegin > vColumns.size()) {
-                                wxLogError(
-                                    _("The data file pattern is not correctly defined. Trying to access an element "
-                                      "(hour) after the line width."));
-                                return false;
-                            }
-                            vColumns[filePattern.timeHourBegin - 1].ToDouble(&valTimeHour);
-                        }
-                        if (filePattern.timeMinuteBegin != 0) {
-                            if (filePattern.timeMinuteBegin > vColumns.size()) {
-                                wxLogError(
-                                    _("The data file pattern is not correctly defined. Trying to access an element "
-                                      "(minute) after the line width."));
-                                return false;
-                            }
-                            vColumns[filePattern.timeMinuteBegin - 1].ToDouble(&valTimeMinute);
-                        }
-
-                        double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour,
-                                                         valTimeMinute, 0);
-
-                        // Find matching date
-                        while (dateData - m_time(timeIndex) > 0.0001) {
-                            timeIndex++;
-                        }
-                    }
-
-                    // Get Precipitation value
-                    wxString dataStr = vColumns[filePattern.dataBegin - 1];
-
-                    // Put value in the matrix
-                    m_dataRaw(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
-
-                    timeIndex++;
-                    break;
-                }
-            }
-        } else {
+        if (lineContent.Len() < maxCharWidth) {
             if (lineContent.Len() > 1) {
                 wxLogError(_("The line length doesn't match."));
                 return false;
+            }
+            continue;
+        }
+
+        // Check the size of the array
+        if (timeIndex >= m_timeLength) {
+            wxLogError(_("The time index is larger than the matrix (timeIndex = %d, m_timeLength = %d)."),
+                       timeIndex, m_timeLength);
+            return false;
+        }
+
+        switch (filePattern.structType) {
+            case (asFileDat::ConstantWidth): {
+                if (!ParseConstantWidthContent(stationIndex, filePattern, lineContent, currentData, timeIndex)) {
+                    return false;
+                }
+                break;
+            }
+
+            case (asFileDat::TabsDelimited): {
+                ParseTabsDelimitedContent(stationIndex, filePattern, lineContent, currentData, timeIndex);
+
+                break;
             }
         }
     }
@@ -754,6 +635,126 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, size_t stat
         wxLogError(messageTime);
         return false;
     }
+
+    return true;
+}
+
+bool asPredictand::ParseTabsDelimitedContent(size_t stationIndex, const asFileDat::Pattern& pattern,
+                                             const wxString& lineContent, asCatalogPredictands& currentData,
+                                             int& timeIndex) {
+    // Parse into a vector
+    vwxs vColumns;
+    wxString tmpLineContent = lineContent;
+    while (tmpLineContent.Find("\t") != wxNOT_FOUND) {
+        int foundCol = tmpLineContent.Find("\t");
+        vColumns.push_back(tmpLineContent.Mid(0, foundCol));
+        tmpLineContent = tmpLineContent.Mid(foundCol + 1);
+    }
+    if (!tmpLineContent.IsEmpty()) {
+        vColumns.push_back(tmpLineContent);
+    }
+
+    if (pattern.parseTime) {
+        // Containers. Must be a double to use wxString::ToDouble
+        int valTimeYear = 0, valTimeMonth = 0, valTimeDay = 0, valTimeHour = 0, valTimeMinute = 0;
+
+        // Get time value
+        if (pattern.timeYearBegin != 0 && pattern.timeMonthBegin != 0 && pattern.timeDayBegin != 0) {
+            if (pattern.timeYearBegin > vColumns.size() || pattern.timeMonthBegin > vColumns.size() ||
+                pattern.timeDayBegin > vColumns.size()) {
+                wxLogError(_("The data file pattern is not correctly defined. "
+                           "Trying to access an element (date) after the line width."));
+                return false;
+            }
+            vColumns[pattern.timeYearBegin - 1].ToInt(&valTimeYear);
+            vColumns[pattern.timeMonthBegin - 1].ToInt(&valTimeMonth);
+            vColumns[pattern.timeDayBegin - 1].ToInt(&valTimeDay);
+        } else {
+            wxLogError(_("The data file pattern is not correctly defined."));
+            return false;
+        }
+
+        if (pattern.timeHourBegin != 0) {
+            if (pattern.timeHourBegin > vColumns.size()) {
+                wxLogError(_("The data file pattern is not correctly defined."
+                           "Trying to access an element (hour) after the line width."));
+                return false;
+            }
+            vColumns[pattern.timeHourBegin - 1].ToInt(&valTimeHour);
+        }
+        if (pattern.timeMinuteBegin != 0) {
+            if (pattern.timeMinuteBegin > vColumns.size()) {
+                wxLogError(_("The data file pattern is not correctly defined."
+                           "Trying to access an element (minute) after the line width."));
+                return false;
+            }
+            vColumns[pattern.timeMinuteBegin - 1].ToInt(&valTimeMinute);
+        }
+
+        double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour, valTimeMinute, 0);
+
+        // Find matching date
+        while (dateData - m_time(timeIndex) > 0.0001) {
+            timeIndex++;
+        }
+    }
+
+    // Get Precipitation value
+    wxString dataStr = vColumns[pattern.dataBegin - 1];
+
+    // Put value in the matrix
+    m_dataRaw(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
+
+    timeIndex++;
+
+    return true;
+}
+
+bool asPredictand::ParseConstantWidthContent(size_t stationIndex, const asFileDat::Pattern& pattern,
+                                             const wxString& lineContent, asCatalogPredictands& currentData,
+                                             int& timeIndex) {
+    if (pattern.parseTime) {
+        // Containers. Must be a double to use wxString::ToDouble
+        int valTimeYear = 0, valTimeMonth = 0, valTimeDay = 0, valTimeHour = 0, valTimeMinute = 0;
+
+        // Get time value
+        if (pattern.timeYearBegin == 0 || pattern.timeYearEnd == 0 || pattern.timeMonthBegin == 0 ||
+            pattern.timeMonthEnd == 0 || pattern.timeDayBegin == 0 || pattern.timeDayEnd == 0) {
+            wxLogError(_("The data file pattern is not correctly defined."));
+            return false;
+        }
+
+        lineContent.Mid(pattern.timeYearBegin - 1, pattern.timeYearEnd - pattern.timeYearBegin + 1)
+            .ToInt(&valTimeYear);
+        lineContent.Mid(pattern.timeMonthBegin - 1, pattern.timeMonthEnd - pattern.timeMonthBegin + 1)
+            .ToInt(&valTimeMonth);
+        lineContent.Mid(pattern.timeDayBegin - 1, pattern.timeDayEnd - pattern.timeDayBegin + 1)
+            .ToInt(&valTimeDay);
+
+        if (pattern.timeHourBegin != 0 && pattern.timeHourEnd != 0) {
+            lineContent.Mid(pattern.timeHourBegin - 1, pattern.timeHourEnd - pattern.timeHourBegin + 1)
+                .ToInt(&valTimeHour);
+        }
+        if (pattern.timeMinuteBegin != 0 && pattern.timeMinuteEnd != 0) {
+            lineContent.Mid(pattern.timeMinuteBegin - 1, pattern.timeMinuteEnd - pattern.timeMinuteBegin + 1)
+                .ToInt(&valTimeMinute);
+        }
+
+        double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour, valTimeMinute, 0);
+
+        // Find matching date
+        while (dateData - m_time(timeIndex) > 0.0001) {
+            timeIndex++;
+        }
+    }
+
+    // Get predictand value
+    wxString dataStr = lineContent.Mid(pattern.dataBegin - 1, pattern.dataEnd - pattern.dataBegin + 1);
+
+    // Put value in the matrix
+    m_dataRaw(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
+
+    timeIndex++;
 
     return true;
 }

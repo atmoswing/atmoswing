@@ -29,6 +29,7 @@
 #ifndef AS_PREDICTAND_H
 #define AS_PREDICTAND_H
 
+#include "asFileDat.h"
 #include "asIncludes.h"
 
 class asCatalogPredictands;
@@ -251,6 +252,12 @@ class asPredictand : public wxObject {
 
   private:
     float ParseAndCheckDataValue(asCatalogPredictands& currentData, wxString& dataStr) const;
+
+    bool ParseConstantWidthContent(size_t stationIndex, const asFileDat::Pattern& pattern,
+                                   const wxString& lineContent, asCatalogPredictands& currentData, int& timeIndex);
+
+    bool ParseTabsDelimitedContent(size_t stationIndex, const asFileDat::Pattern& pattern,
+                                   const wxString& lineContent, asCatalogPredictands& currentData, int& timeIndex);
 };
 
 #endif
