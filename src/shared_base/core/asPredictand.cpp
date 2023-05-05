@@ -247,11 +247,10 @@ asPredictand* asPredictand::GetInstance(const wxString& filePath) {
 }
 
 wxString asPredictand::GetDBFilePathSaving(const wxString& destinationDir) const {
-    wxString dataParameterStr = ParameterEnumToString(m_parameter);
-    wxString dataTemporalResolutionStr = asPredictand::TemporalResolutionEnumToString(m_temporalResolution);
-    wxString dataSpatialAggregationStr = asPredictand::SpatialAggregationEnumToString(m_spatialAggregation);
-    wxString fileName = dataParameterStr + "-" + dataTemporalResolutionStr + "-" + dataSpatialAggregationStr + "-" +
-                        m_datasetId;
+    wxString parameter = ParameterEnumToString(m_parameter);
+    wxString temporalResolution = asPredictand::TemporalResolutionEnumToString(m_temporalResolution);
+    wxString spatialAggregation = asPredictand::SpatialAggregationEnumToString(m_spatialAggregation);
+    wxString fileName = parameter + "-" + temporalResolution + "-" + spatialAggregation + "-" + m_datasetId;
 
     wxString predictandDBFilePath = destinationDir + DS + fileName + ".nc";
 
@@ -271,13 +270,10 @@ bool asPredictand::InitMembers(const wxString& catalogFilePath) {
     if (catalog.GetStart() < m_dateStart) m_dateStart = catalog.GetStart();
     if (catalog.GetEnd() > m_dateEnd) m_dateEnd = catalog.GetEnd();
 
-    // Get dataset ID
+    // Get other catalog data
     m_datasetId = catalog.GetSetId();
-
-    // Get the number of stations
+    m_coordSys = catalog.GetCoordSys();
     m_stationsNb = catalog.GetStationsNb();
-
-    // Get the timestep
     m_timeStepDays = catalog.GetTimeStepDays();
 
     // Get the time length
@@ -552,7 +548,7 @@ bool asPredictand::ParseData(const wxString& catalogFile, const wxString& direct
     return true;
 }
 
-bool asPredictand::GetFileContent(asCatalogPredictands& currentData, size_t stationIndex, const wxString& directory,
+bool asPredictand::GetFileContent(asCatalogPredictands& currentData, int stationIndex, const wxString& directory,
                                   const wxString& patternDir) {
     // Load file
     wxString fileFullPath;
@@ -639,7 +635,7 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, size_t stat
     return true;
 }
 
-bool asPredictand::ParseTabsDelimitedContent(size_t stationIndex, const asFileDat::Pattern& pattern,
+bool asPredictand::ParseTabsDelimitedContent(int stationIndex, const asFileDat::Pattern& pattern,
                                              const wxString& lineContent, asCatalogPredictands& currentData,
                                              int& timeIndex) {
     // Parse into a vector
@@ -710,7 +706,7 @@ bool asPredictand::ParseTabsDelimitedContent(size_t stationIndex, const asFileDa
     return true;
 }
 
-bool asPredictand::ParseConstantWidthContent(size_t stationIndex, const asFileDat::Pattern& pattern,
+bool asPredictand::ParseConstantWidthContent(int stationIndex, const asFileDat::Pattern& pattern,
                                              const wxString& lineContent, asCatalogPredictands& currentData,
                                              int& timeIndex) {
     if (pattern.parseTime) {

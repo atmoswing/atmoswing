@@ -247,16 +247,16 @@ class asPredictand : public wxObject {
 
     bool SetStationProperties(asCatalogPredictands& currentData, size_t stationIndex);
 
-    bool GetFileContent(asCatalogPredictands& currentData, size_t stationIndex,
+    bool GetFileContent(asCatalogPredictands& currentData, int stationIndex,
                         const wxString& directory = wxEmptyString, const wxString& patternDir = wxEmptyString);
 
   private:
     float ParseAndCheckDataValue(asCatalogPredictands& currentData, wxString& dataStr) const;
 
-    bool ParseConstantWidthContent(size_t stationIndex, const asFileDat::Pattern& pattern,
+    bool ParseConstantWidthContent(int stationIndex, const asFileDat::Pattern& pattern,
                                    const wxString& lineContent, asCatalogPredictands& currentData, int& timeIndex);
 
-    bool ParseTabsDelimitedContent(size_t stationIndex, const asFileDat::Pattern& pattern,
+    bool ParseTabsDelimitedContent(int stationIndex, const asFileDat::Pattern& pattern,
                                    const wxString& lineContent, asCatalogPredictands& currentData, int& timeIndex);
 };
 
