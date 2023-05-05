@@ -58,8 +58,18 @@ void asPredictorsRenderer::LinkToColorbars(asPanelPredictorsColorbar* colorbarTa
 }
 
 void asPredictorsRenderer::Redraw(vf &domain) {
-    bool targetDataLoaded = m_predictorsManagerTarget->LoadData();
-    bool analogDataLoaded = m_predictorsManagerAnalog->LoadData();
+    bool targetDataLoaded = false;
+    bool analogDataLoaded = false;
+    try {
+        targetDataLoaded = m_predictorsManagerTarget->LoadData();
+        analogDataLoaded = m_predictorsManagerAnalog->LoadData();
+    } catch (std::bad_alloc& ba) {
+        wxString msg(ba.what(), wxConvUTF8);
+        wxLogError(_("Bad allocation caught during data loading: %s"), msg);
+    } catch (runtime_error& e) {
+        wxString msg(e.what(), wxConvUTF8);
+        wxLogError(_("Exception caught during data loading: %s"), msg);
+    }
 
     double minVal = 99999999999;
     double maxVal = -99999999999;
