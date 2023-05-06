@@ -464,6 +464,8 @@ class asResultsForecast : public asResults {
 
     wxString GetPredictandStationIdsString() const;
 
+    Coo GetStationsMeanCoordinates();
+
   protected:
     void BuildFileName();
 

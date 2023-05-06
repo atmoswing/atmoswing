@@ -28,6 +28,8 @@
 
 #include "asResultsForecast.h"
 
+#include <vector>
+#include <numeric>
 #include <wx/tokenzr.h>
 
 #include "asFileNetcdf.h"
@@ -946,4 +948,15 @@ int asResultsForecast::GetStationRowFromId(int stationId) const {
     wxFAIL;
     wxLogError(_("The station ID %d was not found in the forecast results."), stationId);
     return -1;
+}
+
+Coo asResultsForecast::GetStationsMeanCoordinates() {
+    vd xs, ys;
+    for (int id : m_predictandStationIds) {
+        int i = GetStationRowFromId(id);
+        xs.push_back(m_stationXCoords[i]);
+        ys.push_back(m_stationYCoords[i]);
+    }
+
+    return {std::reduce(xs.begin(), xs.end()) / xs.size(), std::reduce(ys.begin(), ys.end()) / ys.size()};
 }

@@ -152,6 +152,8 @@ class asFramePredictors : public asFramePredictorsVirtual {
 
     void UpdateLayers();
 
+    Coo GetStationsMeanCoordinatesWgs84(asResultsForecast* forecast);
+
     void ReloadViewerLayerManagerLeft();
 
     void ReloadViewerLayerManagerRight();

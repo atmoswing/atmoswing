@@ -49,7 +49,7 @@ class asPredictorsRenderer {
 
     void LinkToColorbars(asPanelPredictorsColorbar* colorbarTarget, asPanelPredictorsColorbar* colorbarAnalog);
 
-    void Redraw(vf& domain);
+    void Redraw(vf& domain, Coo& location);
 
     vrLayerRasterPredictor* RedrawRasterPredictor(const wxString& name, vrViewerLayerManager* viewerLayerManager,
                                                   asPredictorsManager* predictorsManager, double minVal, double maxVal);
@@ -58,6 +58,8 @@ class asPredictorsRenderer {
                             vrLayerRasterPredictor* layerRaster, double step);
 
     void RedrawSpatialWindow(const wxString& name, vrViewerLayerManager* viewerLayerManager, vf &domain);
+
+    void RedrawLocation(const wxString& name, vrViewerLayerManager* viewerLayerManager, Coo& location);
 
   protected:
   private:

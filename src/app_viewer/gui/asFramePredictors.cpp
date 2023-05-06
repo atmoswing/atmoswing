@@ -34,6 +34,8 @@
 #include "asThreadViewerLayerManagerZoomOut.h"
 #include "asThreadsManager.h"
 #endif
+
+#include <proj.h>
 #include <wx/colour.h>
 
 #include "asPredictorsManager.h"
@@ -896,9 +898,42 @@ void asFramePredictors::UpdateLayers() {
     domain.push_back(forecast->GetPredictorLatMin()[m_selectedPredictor]);
     domain.push_back(forecast->GetPredictorLatMax()[m_selectedPredictor]);
 
+    Coo location = GetStationsMeanCoordinatesWgs84(forecast);
+
     m_predictorsManagerTarget->SetDate(targetDate);
     m_predictorsManagerAnalog->SetDate(analogDate);
-    m_predictorsRenderer->Redraw(domain);
+    m_predictorsRenderer->Redraw(domain, location);
+}
+
+Coo asFramePredictors::GetStationsMeanCoordinatesWgs84(asResultsForecast* forecast) {
+    Coo location = {0, 0};
+    wxString coordSys = forecast->GetCoordinateSystem();
+    if (!coordSys.IsEmpty()) {
+        location = forecast->GetStationsMeanCoordinates();
+
+        // Define coordinate reference systems
+        const char* epsgOrig = coordSys;
+        const char* epsgWgs84 = "EPSG:4326";
+
+        // Create Proj projections for the coordinate systems
+        PJ* pj = proj_create_crs_to_crs(PJ_DEFAULT_CTX, epsgOrig, epsgWgs84, nullptr);
+
+        // Check if the coordinate reference systems were created successfully
+        if (pj == nullptr) {
+            wxLogError(_("Failed to create transformation object (from %s)."), coordSys);
+            return {0, 0};
+        }
+
+        // Convert the coordinates
+        PJ_COORD a = proj_coord(location.x, location.y, 0, 0);
+        PJ_COORD b = proj_trans(pj, PJ_FWD, a);
+        location.x = b.v[1];
+        location.y = b.v[0];
+
+        proj_destroy(pj);
+    }
+
+    return location;
 }
 
 void asFramePredictors::ReloadViewerLayerManagerLeft() {

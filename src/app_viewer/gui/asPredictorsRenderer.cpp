@@ -34,6 +34,7 @@
 #include "vrRenderRasterPredictor.h"
 #include "vrLayerVectorContours.h"
 #include "vrLayerVectorDomain.h"
+#include "vrLayerVectorLocation.h"
 #include "vrlayerraster.h"
 #include "vrrender.h"
 
@@ -57,7 +58,7 @@ void asPredictorsRenderer::LinkToColorbars(asPanelPredictorsColorbar* colorbarTa
     m_colorbarAnalog = colorbarAnalog;
 }
 
-void asPredictorsRenderer::Redraw(vf &domain) {
+void asPredictorsRenderer::Redraw(vf& domain, Coo& location) {
     bool targetDataLoaded = false;
     bool analogDataLoaded = false;
     try {
@@ -97,14 +98,17 @@ void asPredictorsRenderer::Redraw(vf &domain) {
         m_viewerLayerManagerTarget->FreezeBegin();
         wxString rasterPredictorName = _("Predictor - target");
         wxString contoursName = _("Contours - target");
-        wxString spatialWindowName = _("Spatial window target");
+        wxString spatialWindowName = _("Spatial window (left)");
+        wxString locationName = _("Location (left)");
         CloseLayerIfPresent(m_viewerLayerManagerTarget, wxFileName("", rasterPredictorName, "memory"));
         CloseLayerIfPresent(m_viewerLayerManagerTarget, wxFileName("", contoursName, "memory"));
         CloseLayerIfPresent(m_viewerLayerManagerTarget, wxFileName("", spatialWindowName, "memory"));
+        CloseLayerIfPresent(m_viewerLayerManagerTarget, wxFileName("", locationName, "memory"));
         vrLayerRasterPredictor* layerTarget = RedrawRasterPredictor(rasterPredictorName, m_viewerLayerManagerTarget,
                                                                     m_predictorsManagerTarget, minVal, maxVal);
         RedrawContourLines(contoursName, m_viewerLayerManagerTarget, layerTarget, step);
         RedrawSpatialWindow(spatialWindowName, m_viewerLayerManagerTarget, domain);
+        RedrawLocation(locationName, m_viewerLayerManagerTarget, location);
         m_viewerLayerManagerTarget->FreezeEnd();
         m_colorbarTarget->Refresh();
     }
@@ -113,14 +117,17 @@ void asPredictorsRenderer::Redraw(vf &domain) {
         m_viewerLayerManagerAnalog->FreezeBegin();
         wxString rasterPredictorName = _("Predictor - analog");
         wxString contoursName = _("Contours - analog");
-        wxString spatialWindowName = _("Spatial window analog");
+        wxString spatialWindowName = _("Spatial window (right)");
+        wxString locationName = _("Location (right)");
         CloseLayerIfPresent(m_viewerLayerManagerAnalog, wxFileName("", rasterPredictorName, "memory"));
         CloseLayerIfPresent(m_viewerLayerManagerAnalog, wxFileName("", contoursName, "memory"));
         CloseLayerIfPresent(m_viewerLayerManagerAnalog, wxFileName("", spatialWindowName, "memory"));
+        CloseLayerIfPresent(m_viewerLayerManagerAnalog, wxFileName("", locationName, "memory"));
         vrLayerRasterPredictor* layerAnalog = RedrawRasterPredictor(rasterPredictorName, m_viewerLayerManagerAnalog,
                                                                     m_predictorsManagerAnalog, minVal, maxVal);
         RedrawContourLines(contoursName, m_viewerLayerManagerAnalog, layerAnalog, step);
         RedrawSpatialWindow(spatialWindowName, m_viewerLayerManagerAnalog, domain);
+        RedrawLocation(locationName, m_viewerLayerManagerAnalog, location);
         m_viewerLayerManagerAnalog->FreezeEnd();
         m_colorbarAnalog->Refresh();
     }
@@ -225,6 +232,34 @@ void asPredictorsRenderer::RedrawSpatialWindow(const wxString& name, vrViewerLay
     // Create render and add to the layer managers
     auto render = new vrRenderVector();
     render->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
+    render->SetTransparency(0);
+    render->SetSize(2);
+    viewerLayerManager->Add(-1, layerVector, render, nullptr, true);
+}
+
+void asPredictorsRenderer::RedrawLocation(const wxString& name, vrViewerLayerManager* viewerLayerManager,
+                                          Coo& location) {
+    // Create a memory layer
+    wxFileName memoryVector("", name, "memory");
+
+    // Create the layers
+    auto layerVector = new vrLayerVectorLocation();
+
+    if (!layerVector->Create(memoryVector, wkbPoint)) {
+        wxFAIL;
+        wxDELETE(layerVector);
+        return;
+    }
+
+    // Plot the domains
+    OGRPoint* point = new OGRPoint(location.x, location.y);
+    layerVector->AddFeature(point, nullptr);
+
+    // Add layers to the layer manager
+    m_layerManager->Add(layerVector);
+
+    // Create render and add to the layer managers
+    auto render = new vrRenderVector();
     render->SetTransparency(0);
     render->SetSize(2);
     viewerLayerManager->Add(-1, layerVector, render, nullptr, true);
