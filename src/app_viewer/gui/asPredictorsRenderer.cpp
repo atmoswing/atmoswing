@@ -239,6 +239,10 @@ void asPredictorsRenderer::RedrawSpatialWindow(const wxString& name, vrViewerLay
 
 void asPredictorsRenderer::RedrawLocation(const wxString& name, vrViewerLayerManager* viewerLayerManager,
                                           Coo& location) {
+    if (location.x == 0 && location.y == 0) {
+        return;
+    }
+
     // Create a memory layer
     wxFileName memoryVector("", name, "memory");
 
