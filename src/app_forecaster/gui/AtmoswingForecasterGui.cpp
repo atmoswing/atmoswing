@@ -121,6 +121,20 @@ asFrameForecasterVirtual::asFrameForecasterVirtual( wxWindow* parent, wxWindowID
 
 	bSizer18->Add( bSizer19, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
+	wxBoxSizer* bSizer352;
+	bSizer352 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_staticText34 = new wxStaticText( m_panelMain, wxID_ANY, _("Opened batch file:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText34->Wrap( -1 );
+	bSizer352->Add( m_staticText34, 0, wxALL, 5 );
+
+	m_staticTextbatchFile = new wxStaticText( m_panelMain, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextbatchFile->Wrap( -1 );
+	bSizer352->Add( m_staticTextbatchFile, 0, wxALL, 5 );
+
+
+	bSizer18->Add( bSizer352, 0, wxEXPAND, 5 );
+
 	wxBoxSizer* bSizer22;
 	bSizer22 = new wxBoxSizer( wxVERTICAL );
 

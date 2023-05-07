@@ -66,6 +66,8 @@ class asFrameForecasterVirtual : public wxFrame
 		wxStaticText* m_staticTextProgressTot;
 		wxFlexGridSizer* m_sizerLeds;
 		wxButton* m_button2;
+		wxStaticText* m_staticText34;
+		wxStaticText* m_staticTextbatchFile;
 		wxScrolledWindow* m_scrolledWindowForecasts;
 		wxBoxSizer* m_sizerForecasts;
 		wxBitmapButton* m_bpButtonAdd;

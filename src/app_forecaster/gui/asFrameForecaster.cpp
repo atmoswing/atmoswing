@@ -262,6 +262,9 @@ bool asFrameForecaster::OpenBatchForecasts() {
 
     Freeze();
 
+    wxFileName batchFileName = wxFileName(m_batchForecasts.GetFilePath());
+    m_staticTextbatchFile->SetLabel(batchFileName.GetFullName());
+
     // Cleanup the actual panels
     m_panelsManager->Clear();
 
