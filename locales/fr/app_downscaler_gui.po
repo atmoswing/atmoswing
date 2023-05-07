@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-13 22:16+0200\n"
-"PO-Revision-Date: 2023-04-13 22:19+0200\n"
+"POT-Creation-Date: 2023-05-07 10:51+0200\n"
+"PO-Revision-Date: 2023-05-07 10:52+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -35,6 +35,7 @@ msgid "Cancel current downscaling"
 msgstr "Annuler la descente d'échelle actuelle"
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:47
+#: src/app_downscaler/gui/asFramePreferencesDownscaler.cpp:32
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:134
 msgid "Preferences"
 msgstr "Préférences"

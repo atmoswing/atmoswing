@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-13 22:16+0200\n"
+"POT-Creation-Date: 2023-05-07 10:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,13 +35,13 @@ msgid "The file extension (%s) is not correct."
 msgstr ""
 
 #: src/app_viewer/core/asPredictorsManager.cpp:65
-#: src/app_viewer/core/asPredictorsManager.cpp:88
+#: src/app_viewer/core/asPredictorsManager.cpp:94
 #, c-format
 msgid "Failed to get an instance of %s from %s."
 msgstr ""
 
-#: src/app_viewer/core/asPredictorsManager.cpp:77
-#: src/app_viewer/core/asPredictorsManager.cpp:93
+#: src/app_viewer/core/asPredictorsManager.cpp:83
+#: src/app_viewer/core/asPredictorsManager.cpp:99
 #, c-format
 msgid "The variable %s from %s could not be loaded."
 msgstr ""

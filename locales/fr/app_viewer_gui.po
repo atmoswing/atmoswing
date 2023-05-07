@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-13 22:16+0200\n"
-"PO-Revision-Date: 2023-04-13 22:26+0200\n"
+"POT-Creation-Date: 2023-05-07 10:51+0200\n"
+"PO-Revision-Date: 2023-05-07 10:58+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -112,259 +112,281 @@ msgstr "%s n'est associé à aucune prévision"
 msgid "Lead time not available for this forecast."
 msgstr "L'échéance n'est pas disponible pour cette prévision."
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:177
+#: src/app_viewer/gui/asFrameGridAnalogsValues.cpp:43
+msgid "Analogs details"
+msgstr "Détails des analogues"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:46
+msgid "Distribution plots"
+msgstr "Graphiques des distributions"
+
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:179
 msgid "Quantiles 90%, 60%, 20%"
 msgstr "Quantiles 90%, 60%, 20%"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:178
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:180
 msgid "All analogs (points)"
 msgstr "Tous les analogues (points)"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:179
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:181
 msgid "All analogs (curve)"
 msgstr "Tous les analogues (courbe)"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:180
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:182
 msgid "10 best analogs (points)"
 msgstr "10 meilleures analogues (points)"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:181
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:183
 msgid "10 best analogs (curve)"
 msgstr "10 meilleures analogues (courbe)"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:182
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:184
 msgid "5 best analogs (points)"
 msgstr "5 meilleures analogues (points)"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:183
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:185
 msgid "5 best analogs (curve)"
 msgstr "5 meilleures analogues (courbe)"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:184
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:107
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:186
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:109
 msgid "10 year return period"
 msgstr "Période de retour de 10 ans"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:185
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:108
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:187
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:110
 msgid "All return periods"
 msgstr "Toutes les périodes de retour"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:197
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:133
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:199
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:135
 msgid "Precipitation [mm]"
 msgstr "Précipitations [mm]"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:198
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:200
 msgid "Cumulative frequency"
 msgstr "Fréquence cumulée"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:206
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:208
 msgid "Analogs precipitation distribution"
 msgstr "Distribution des precipitations analogues"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:244
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:246
 msgid "Analogues"
 msgstr "Analogues"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:245
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:247
 msgid "Criteria of analogy"
 msgstr "Critère d'analogie"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:250
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:252
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:681
 msgid "Criteria distribution"
 msgstr "Distribution du critère"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:283
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:365
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:285
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:364
 msgid "The forecast contains NaNs. Plotting has been canceled."
 msgstr "La prévision contient des NaN. La creation du graphique a été annulée."
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:344
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:430
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:346
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:429
 msgid "The option was not found."
 msgstr "L'option n'a pas été trouvée."
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:383
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:385
 msgid "The forecast criteria contains NaNs. Plotting has been canceled."
 msgstr ""
 "Le critère de prévision contient des NaNs. La creation du graphique a été "
 "annulée."
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:471
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:511
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:473
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:510
 msgid "The return periods couldn't be added to the plot"
 msgstr "Les périodes de retour n'ont pas pu être ajoutées au graphique"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:504
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:544
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:506
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:543
 msgid "The 10 year return period was not found in the data."
 msgstr "La période de retour de 10 ans n'a pas été trouvée dans les données."
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:553
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:602
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:652
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:713
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:800
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:597
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:654
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:555
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:604
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:654
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:715
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:802
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:596
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:653
 msgid "The analogs data couldn't be added to the plot"
 msgstr "Les données analogues n'ont pas pu être ajoutées au graphique"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:595
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:104
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:597
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:106
 msgid "All analogs"
 msgstr "Tous les analogues"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:696
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:698
 msgid "5 first analogs"
 msgstr "5 premières analogues"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:699
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:701
 msgid "10 first analogs"
 msgstr "10 premières analogues"
 
-#: src/app_viewer/gui/asFramePlotDistributions.cpp:760
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:711
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:777
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:854
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:890
+#: src/app_viewer/gui/asFramePlotDistributions.cpp:762
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:710
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:776
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:853
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:889
 msgid "The quantiles couldn't be added to the plot"
 msgstr "Les quantiles n'ont pas pu être ajoutés au graphique"
 
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:102
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:46
+msgid "Forecast plots"
+msgstr "Graphiques des prévisions"
+
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:104
 msgid "3 quantiles"
 msgstr "3 quantiles"
 
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:103
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:105
 msgid "All quantiles"
 msgstr "Tous les quantiles"
 
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:105
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:107
 msgid "10 best analogs"
 msgstr "10 meilleures analogues"
 
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:106
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:108
 msgid "5 best analogs"
 msgstr "5 meilleures analogues"
 
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:109
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:111
 msgid "Previous forecasts"
 msgstr "Prévisions précédentes"
 
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:141
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:143
 msgid "Forecasted time series"
 msgstr "Série temporelle prévue"
 
-#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:949
+#: src/app_viewer/gui/asFramePlotTimeSeries.cpp:948
 msgid "The interpretation curve couldn't be added to the plot"
 msgstr "La courbe d'interprétation n'a pas pu être ajoutée au graphique"
 
-#: src/app_viewer/gui/asFramePredictors.cpp:91
-#: src/app_viewer/gui/asFramePredictors.cpp:92
+#: src/app_viewer/gui/asFramePredictors.cpp:90
+msgid "Predictors overview"
+msgstr "Aperçu des prédicteurs"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:95
+#: src/app_viewer/gui/asFramePredictors.cpp:96
 #: src/app_viewer/gui/asFrameViewer.cpp:121
 #: src/app_viewer/gui/asFrameViewer.cpp:122
 msgid "Zoom in"
 msgstr "Agrandir"
 
-#: src/app_viewer/gui/asFramePredictors.cpp:94
+#: src/app_viewer/gui/asFramePredictors.cpp:98
 #: src/app_viewer/gui/asFrameViewer.cpp:124
 msgid "Zoom out"
 msgstr "Réduire"
 
-#: src/app_viewer/gui/asFramePredictors.cpp:95
+#: src/app_viewer/gui/asFramePredictors.cpp:99
 #: src/app_viewer/gui/asFrameViewer.cpp:125
 msgid "Pan the map"
 msgstr "Déplacer la carte"
 
-#: src/app_viewer/gui/asFramePredictors.cpp:96
+#: src/app_viewer/gui/asFramePredictors.cpp:100
 #: src/app_viewer/gui/asFrameViewer.cpp:126
 msgid "Move the map by panning"
 msgstr "Déplacer la carte"
 
-#: src/app_viewer/gui/asFramePredictors.cpp:98
+#: src/app_viewer/gui/asFramePredictors.cpp:102
 #: src/app_viewer/gui/asFrameViewer.cpp:128
 msgid "Zoom to visible layers"
 msgstr "Zoom sur les couches visibles"
 
-#: src/app_viewer/gui/asFramePredictors.cpp:98
+#: src/app_viewer/gui/asFramePredictors.cpp:102
 #: src/app_viewer/gui/asFrameViewer.cpp:128
 msgid "Zoom view to the full extent of all visible layers"
 msgstr "Zoom sur l'ensemble des couches visibles"
 
-#: src/app_viewer/gui/asFramePredictors.cpp:100
+#: src/app_viewer/gui/asFramePredictors.cpp:104
 msgid "Display a cross marker overlay"
 msgstr "Afficher un marqueur en surimpression"
 
-#: src/app_viewer/gui/asFramePredictors.cpp:100
+#: src/app_viewer/gui/asFramePredictors.cpp:104
 msgid "Display a cross marker overlay on both frames"
 msgstr "Affichage d'un marqueur en surimpression sur les deux fenêtres"
 
-#: src/app_viewer/gui/asFramePredictors.cpp:103
+#: src/app_viewer/gui/asFramePredictors.cpp:107
+#: src/app_viewer/gui/asFramePreferencesViewer.cpp:34
 #: src/app_viewer/gui/asFrameViewer.cpp:137
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:200
 msgid "Preferences"
 msgstr "Préférences"
 
-#: src/app_viewer/gui/asFramePredictors.cpp:415
+#: src/app_viewer/gui/asFramePredictors.cpp:419
 #, c-format
 msgid "The Continents layer file %s cound not be opened."
 msgstr "Le fichier de la couche Continents %s ne peut pas être ouvert."
 
-#: src/app_viewer/gui/asFramePredictors.cpp:418
+#: src/app_viewer/gui/asFramePredictors.cpp:422
 #, c-format
 msgid "The Continents layer file %s cound not be found."
 msgstr "Le fichier de la couche Continents %s est introuvable."
 
-#: src/app_viewer/gui/asFramePredictors.cpp:447
+#: src/app_viewer/gui/asFramePredictors.cpp:451
 #, c-format
 msgid "The LatLong layer file %s cound not be opened."
 msgstr "Le fichier de couche LatLong %s ne peut pas être ouvert."
 
-#: src/app_viewer/gui/asFramePredictors.cpp:450
+#: src/app_viewer/gui/asFramePredictors.cpp:454
 #, c-format
 msgid "The LatLong layer file %s cound not be found."
 msgstr "Le fichier de couche LatLong %s est introuvable."
 
-#: src/app_viewer/gui/asFramePredictors.cpp:479
+#: src/app_viewer/gui/asFramePredictors.cpp:483
 #, c-format
 msgid "The Geogrid layer file %s cound not be opened."
 msgstr "Le fichier de couche Geogrid %s ne peut pas être ouvert."
 
-#: src/app_viewer/gui/asFramePredictors.cpp:482
+#: src/app_viewer/gui/asFramePredictors.cpp:486
 #, c-format
 msgid "The Geogrid layer file %s cound not be found."
 msgstr "Le fichier de couche Geogrid %s est introuvable."
 
-#: src/app_viewer/gui/asFramePredictors.cpp:511
+#: src/app_viewer/gui/asFramePredictors.cpp:515
 #, c-format
 msgid "The Countries layer file %s cound not be opened."
 msgstr "Le fichier de la couche Countries %s ne peut pas être ouvert."
 
-#: src/app_viewer/gui/asFramePredictors.cpp:514
+#: src/app_viewer/gui/asFramePredictors.cpp:518
 #, c-format
 msgid "The Countries layer file %s cound not be found."
 msgstr "Le fichier de la couche Countries %s est introuvable."
 
-#: src/app_viewer/gui/asFramePredictors.cpp:525
+#: src/app_viewer/gui/asFramePredictors.cpp:529
 #: src/app_viewer/gui/asFrameViewer.cpp:864
 msgid "The layer could not be opened."
 msgstr "La couche n'a pas pu être ouverte."
 
-#: src/app_viewer/gui/asFramePredictors.cpp:554
+#: src/app_viewer/gui/asFramePredictors.cpp:558
 #: src/app_viewer/gui/asFrameViewer.cpp:893
 msgid "Select GIS layers"
 msgstr "Sélectionner les couches SIG"
 
-#: src/app_viewer/gui/asFramePredictors.cpp:598
+#: src/app_viewer/gui/asFramePredictors.cpp:602
 #: src/app_viewer/gui/asFrameViewer.cpp:944
 msgid "Nothing selected, no layer will be closed."
 msgstr "Rien n'est sélectionné, aucune couche ne sera fermée."
 
-#: src/app_viewer/gui/asFramePredictors.cpp:890
+#: src/app_viewer/gui/asFramePredictors.cpp:894
 msgid "Only forecasts of AtmoSwing 3+ can be visualized here."
 msgstr "Seules les prévisions d'AtmoSwing 3+ peuvent être visualisées ici."
+
+#: src/app_viewer/gui/asFramePredictors.cpp:925
+#, c-format
+msgid "Failed to create transformation object (from %s)."
+msgstr "Échec de la création d'un objet de transformation (à partir de %s)."
 
 #: src/app_viewer/gui/asFrameViewer.cpp:117
 msgid "Open forecast"
@@ -551,13 +573,13 @@ msgstr "Erreur de conversion du point : %d, %d en coordonnées réelles"
 msgid "Forecast of the %sh"
 msgstr "Prévision du %sh"
 
-#: src/app_viewer/gui/asLeadTimeSwitcher.cpp:131
+#: src/app_viewer/gui/asLeadTimeSwitcher.cpp:135
 msgid "Combination of sub-daily time steps not yet implemented."
 msgstr ""
 "La combinaison de pas de temps infra-quotidiens n'a pas encore été mise en "
 "œuvre."
 
-#: src/app_viewer/gui/asLeadTimeSwitcher.cpp:142
+#: src/app_viewer/gui/asLeadTimeSwitcher.cpp:146
 msgid "Too small time steps are not supported in the lead time switcher."
 msgstr "Les pas de temps trop petits ne sont pas pris en charge actuellement."
 
@@ -650,35 +672,57 @@ msgstr "Couches SIG"
 msgid "Station selection"
 msgstr "Sélection d'une station"
 
-#: src/app_viewer/gui/asPredictorsRenderer.cpp:88
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:69
+#, c-format
+msgid "Bad allocation caught during data loading: %s"
+msgstr "Mauvaise allocation détectée lors du chargement des données : %s"
+
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:72
+#, c-format
+msgid "Exception caught during data loading: %s"
+msgstr "Exception lors du chargement des données : %s"
+
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:99
 msgid "Predictor - target"
 msgstr "Prédicteur - cible"
 
-#: src/app_viewer/gui/asPredictorsRenderer.cpp:89
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:100
 msgid "Contours - target"
 msgstr "Isohypses - cible"
 
-#: src/app_viewer/gui/asPredictorsRenderer.cpp:90
-msgid "Spatial window target"
-msgstr "Fenêtre spatiale cible"
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:101
+msgid "Spatial window (left)"
+msgstr "Fenêtre spatiale (gauche)\v"
 
-#: src/app_viewer/gui/asPredictorsRenderer.cpp:104
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:102
+msgid "Location (left)"
+msgstr "Localisation (gauche)"
+
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:118
 msgid "Predictor - analog"
 msgstr "Prédicteur - analogue"
 
-#: src/app_viewer/gui/asPredictorsRenderer.cpp:105
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:119
 msgid "Contours - analog"
 msgstr "Isohypses - analogue"
 
-#: src/app_viewer/gui/asPredictorsRenderer.cpp:106
-msgid "Spatial window analog"
-msgstr "Fenêtre spatiale analogue"
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:120
+msgid "Spatial window (right)"
+msgstr "Fenêtre spatiale (droite)\v"
 
-#: src/app_viewer/gui/asWizardWorkspace.cpp:77
+#: src/app_viewer/gui/asPredictorsRenderer.cpp:121
+msgid "Location (right)"
+msgstr "Localisation (droite)"
+
+#: src/app_viewer/gui/asWizardWorkspace.cpp:36
+msgid "Workspace creation wizard"
+msgstr "Assistant de création d'espace de travail"
+
+#: src/app_viewer/gui/asWizardWorkspace.cpp:79
 msgid "Incorrect base map selection."
 msgstr "Sélection incorrecte de la carte de base."
 
-#: src/app_viewer/gui/asWizardWorkspace.cpp:89
+#: src/app_viewer/gui/asWizardWorkspace.cpp:91
 #, c-format
 msgid "Cannot find file %s"
 msgstr "Impossible de trouver le fichier %s"
@@ -1239,11 +1283,13 @@ msgstr "Erreur dans l'obtention des données raster du prédicteur."
 
 #: src/app_viewer/gui/vrLayerVectorFcstDots.cpp:59
 #: src/app_viewer/gui/vrLayerVectorFcstRing.cpp:59
+#: src/app_viewer/gui/vrLayerVectorLocation.cpp:48
 msgid "Error creating feature"
 msgstr "Erreur lors de la création des features"
 
 #: src/app_viewer/gui/vrLayerVectorFcstDots.cpp:125
 #: src/app_viewer/gui/vrLayerVectorFcstRing.cpp:160
+#: src/app_viewer/gui/vrLayerVectorLocation.cpp:105
 msgid "Drawing of the symbol failed."
 msgstr "Le dessin du symbole a échoué."
 
@@ -1265,3 +1311,6 @@ msgstr "Le fichier de palette des couleurs %s n'a pas pu être ouvert..."
 msgid "Color table format not supported (file %s)..."
 msgstr ""
 "Le format de la palette des couleurs n'est pas pris en charge (fichier %s)..."
+
+#~ msgid "Spatial window analog"
+#~ msgstr "Fenêtre spatiale analogue"
