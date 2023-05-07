@@ -32,6 +32,8 @@
 
 asFrameAbout::asFrameAbout(wxWindow* parent)
     : asFrameAboutVirtual(parent) {
+    SetLabel(_("About"));
+
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));

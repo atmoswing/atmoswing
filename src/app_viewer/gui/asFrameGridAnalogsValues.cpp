@@ -40,6 +40,8 @@ asFrameGridAnalogsValues::asFrameGridAnalogsValues(wxWindow* parent, int methodR
       m_selectedDate(0),
       m_sortAfterCol(0),
       m_sortOrder(Asc) {
+    SetLabel(_("Analogs details"));
+
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));

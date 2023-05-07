@@ -30,6 +30,8 @@
 
 asFramePreferencesOptimizer::asFramePreferencesOptimizer(wxWindow* parent, wxWindowID id)
     : asFramePreferencesOptimizerVirtual(parent, id) {
+    SetLabel(_("Preferences"));
+
     LoadPreferences();
     Fit();
 

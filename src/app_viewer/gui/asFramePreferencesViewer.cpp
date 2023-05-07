@@ -31,6 +31,8 @@
 asFramePreferencesViewer::asFramePreferencesViewer(wxWindow* parent, asWorkspace* workspace, wxWindowID id)
     : asFramePreferencesViewerVirtual(parent, id),
       m_workspace(workspace) {
+    SetLabel(_("Preferences"));
+
     LoadPreferences();
     Fit();
 

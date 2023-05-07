@@ -43,6 +43,8 @@ asFramePlotDistributions::asFramePlotDistributions(wxWindow* parent, int methodR
       m_selectedStation(0),
       m_selectedDate(0),
       m_xmaxPredictands(0) {
+    SetLabel(_("Distribution plots"));
+
     forecastRow = wxMax(forecastRow, 0);
 
     m_panelPlotPredictands = new asPanelPlot(m_panelPredictandsRight);

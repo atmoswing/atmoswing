@@ -87,6 +87,8 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
       m_selectedAnalogDate(-1),
       m_selectedPredictor(-1)
 {
+    SetLabel(_("Predictors overview"));
+
     m_selectedForecast = wxMax(m_selectedForecast, 0);
 
     // Toolbar

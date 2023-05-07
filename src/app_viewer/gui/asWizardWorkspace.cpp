@@ -32,7 +32,9 @@
 wxDEFINE_EVENT(asEVT_ACTION_OPEN_WORKSPACE, wxCommandEvent);
 
 asWizardWorkspace::asWizardWorkspace(wxWindow* parent, wxWindowID id)
-    : asWizardWorkspaceVirtual(parent, id) {}
+    : asWizardWorkspaceVirtual(parent, id) {
+    SetLabel(_("Workspace creation wizard"));
+}
 
 asWizardWorkspace::~asWizardWorkspace() {}
 

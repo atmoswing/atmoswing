@@ -33,6 +33,8 @@
 
 asFramePredictandDB::asFramePredictandDB(wxWindow* parent, wxWindowID id)
     : asFramePredictandDBVirtual(parent, id) {
+    SetLabel(_("Predictand database generator"));
+
     // Set the defaults
     wxConfigBase* pConfig = wxFileConfig::Get();
     m_choiceDataParam->SetSelection((int)0);

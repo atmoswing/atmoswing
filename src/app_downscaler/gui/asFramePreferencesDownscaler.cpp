@@ -29,6 +29,7 @@
 
 asFramePreferencesDownscaler::asFramePreferencesDownscaler(wxWindow* parent, wxWindowID id)
     : asFramePreferencesDownscalerVirtual(parent, id) {
+    SetLabel(_("Preferences"));
     LoadPreferences();
     Fit();
 

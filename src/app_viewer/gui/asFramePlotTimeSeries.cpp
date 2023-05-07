@@ -43,6 +43,8 @@ asFramePlotTimeSeries::asFramePlotTimeSeries(wxWindow* parent, int selectedMetho
       m_selectedMethod(selectedMethod),
       m_selectedForecast(selectedForecast),
       m_maxVal(100) {
+    SetLabel(_("Forecast plots"));
+
     auto paneMinSize = (int)(m_splitter->GetMinimumPaneSize() * g_ppiScaleDc);
     m_splitter->SetMinimumPaneSize(paneMinSize);
 
