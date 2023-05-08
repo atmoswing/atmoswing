@@ -83,7 +83,7 @@ class WXDLLIMPEXP_THINGS wxRangeInt {
 
     // Swap the min and max values
     inline void SwapMinMax() {
-        register int temp = m_min;
+        int temp = m_min;
         m_min = m_max;
         m_max = temp;
     }
@@ -339,7 +339,7 @@ class WXDLLIMPEXP_THINGS wxRangeDouble {
 
     // Swap the min and max values
     inline void SwapMinMax() {
-        register wxDouble temp = m_min;
+        wxDouble temp = m_min;
         m_min = m_max;
         m_max = temp;
     }
