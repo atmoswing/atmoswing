@@ -1,6 +1,13 @@
 # Changelog AtmoSwing
 
 
+## v3.0.4 - 09 May 2023
+
+### Fixed
+
+*   Addition of missing translations related to vroomgis.
+
+
 ## v3.0.3 - 08 May 2023
 
 ### Added
