@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-07 10:51+0200\n"
-"PO-Revision-Date: 2023-05-07 10:58+0200\n"
+"POT-Creation-Date: 2023-05-08 23:53+0200\n"
+"PO-Revision-Date: 2023-05-08 23:54+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -324,6 +324,14 @@ msgstr "Affichage d'un marqueur en surimpression sur les deux fenêtres"
 msgid "Preferences"
 msgstr "Préférences"
 
+#: src/app_viewer/gui/asFramePredictors.cpp:148
+msgid "Synchronize tools"
+msgstr "Synchroniser les outils"
+
+#: src/app_viewer/gui/asFramePredictors.cpp:149
+msgid "When set to true, browsing is synchronized on all display"
+msgstr "Lorsque activé, la navigation est synchronisée sur tous les panneaux"
+
 #: src/app_viewer/gui/asFramePredictors.cpp:419
 #, c-format
 msgid "The Continents layer file %s cound not be opened."
@@ -390,7 +398,7 @@ msgstr "Échec de la création d'un objet de transformation (à partir de %s)."
 
 #: src/app_viewer/gui/asFrameViewer.cpp:117
 msgid "Open forecast"
-msgstr "Prévisions ouvertes"
+msgstr "Ouvrir une prévision"
 
 #: src/app_viewer/gui/asFrameViewer.cpp:118
 msgid "Open a forecast"
@@ -692,7 +700,7 @@ msgstr "Isohypses - cible"
 
 #: src/app_viewer/gui/asPredictorsRenderer.cpp:101
 msgid "Spatial window (left)"
-msgstr "Fenêtre spatiale (gauche)\v"
+msgstr "Fenêtre spatiale (gauche)"
 
 #: src/app_viewer/gui/asPredictorsRenderer.cpp:102
 msgid "Location (left)"
@@ -708,7 +716,7 @@ msgstr "Isohypses - analogue"
 
 #: src/app_viewer/gui/asPredictorsRenderer.cpp:120
 msgid "Spatial window (right)"
-msgstr "Fenêtre spatiale (droite)\v"
+msgstr "Fenêtre spatiale (droite)"
 
 #: src/app_viewer/gui/asPredictorsRenderer.cpp:121
 msgid "Location (right)"
@@ -992,7 +1000,6 @@ msgid "Predictands distribution"
 msgstr "Distribution des prédictands"
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:724
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:851
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:889
 msgid "Forecast"
 msgstr "Prévision"
@@ -1008,6 +1015,10 @@ msgstr "Échéance"
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:842
 msgid "Method"
 msgstr "Méthode"
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:851
+msgid "Configuration"
+msgstr "Configuration"
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:860
 msgid "Possible predictors"

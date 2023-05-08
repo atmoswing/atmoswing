@@ -14,3 +14,4 @@ Use Poedit for translations.
    &"C:\Program Files (x86)\Poedit\GettextTools\bin\xgettext.exe" src/shared_base/core/*.cpp --keyword="_" --output="locales/shared_base_core.pot" --c++
    &"C:\Program Files (x86)\Poedit\GettextTools\bin\xgettext.exe" src/shared_base/gui/*.cpp --keyword="_" --output="locales/shared_base_gui.pot" --c++
    &"C:\Program Files (x86)\Poedit\GettextTools\bin\xgettext.exe" src/shared_processing/core/*.cpp --keyword="_" --output="locales/shared_processing_core.pot" --c++
+   &"C:\Program Files (x86)\Poedit\GettextTools\bin\xgettext.exe" cmake-build-debug/_deps/vroomgis-src/vroomgis/src/*.cpp --keyword="_" --output="locales/lib_vroomgis.pot" --c++

@@ -145,8 +145,8 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     m_predictorsRenderer->LinkToColorbars(m_panelPredictorsColorbarLeft, m_panelPredictorsColorbarRight);
 
     // Menus
-    m_menuTools->AppendCheckItem(asID_SET_SYNCRO_MODE, "Synchronize tools",
-                                 "When set to true, browsing is synchronized on all display");
+    m_menuTools->AppendCheckItem(asID_SET_SYNCRO_MODE, _("Synchronize tools"),
+                                 _("When set to true, browsing is synchronized on all display"));
     m_menuTools->Check(asID_SET_SYNCRO_MODE, m_syncroTool);
 
     // Connect Events

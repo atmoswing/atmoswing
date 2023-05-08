@@ -25,7 +25,7 @@ include(FetchContent)
 FetchContent_Declare(
         vroomgis
         GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
-        GIT_TAG 59e92e6c814ed89b26aa4dc964c8abed25eb1480
+        GIT_TAG 780cc0f52979a221ba1f96e42b8ab3cef48eca60
         SOURCE_SUBDIR vroomgis)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -39,7 +39,7 @@ include_directories(${CONAN_INCLUDE_DIRS})
 # Version number
 set(VERSION_MAJOR "3")
 set(VERSION_MINOR "0")
-set(VERSION_PATCH "3")
+set(VERSION_PATCH "4")
 add_definitions(-DATMOSWING_MAJOR_VERSION=${VERSION_MAJOR})
 add_definitions(-DATMOSWING_MINOR_VERSION=${VERSION_MINOR})
 add_definitions(-DATMOSWING_PATCH_VERSION=${VERSION_PATCH})

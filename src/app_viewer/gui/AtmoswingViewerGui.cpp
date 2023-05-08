@@ -848,7 +848,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_choiceMethod->SetSelection( 0 );
 	m_sizerScrolledWindow->Add( m_choiceMethod, 0, wxEXPAND|wxBOTTOM, 5 );
 
-	m_staticTextChoiceForecast = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Forecast"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextChoiceForecast = new wxStaticText( m_scrolledWindowOptions, wxID_ANY, _("Configuration"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextChoiceForecast->Wrap( -1 );
 	m_sizerScrolledWindow->Add( m_staticTextChoiceForecast, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 

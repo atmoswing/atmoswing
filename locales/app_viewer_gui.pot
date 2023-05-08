@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-07 10:51+0200\n"
+"POT-Creation-Date: 2023-05-08 23:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -317,6 +317,14 @@ msgstr ""
 #: src/app_viewer/gui/asFrameViewer.cpp:137
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:200
 msgid "Preferences"
+msgstr ""
+
+#: src/app_viewer/gui/asFramePredictors.cpp:148
+msgid "Synchronize tools"
+msgstr ""
+
+#: src/app_viewer/gui/asFramePredictors.cpp:149
+msgid "When set to true, browsing is synchronized on all display"
 msgstr ""
 
 #: src/app_viewer/gui/asFramePredictors.cpp:419
@@ -977,7 +985,6 @@ msgid "Predictands distribution"
 msgstr ""
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:724
-#: src/app_viewer/gui/AtmoswingViewerGui.cpp:851
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:889
 msgid "Forecast"
 msgstr ""
@@ -992,6 +999,10 @@ msgstr ""
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:842
 msgid "Method"
+msgstr ""
+
+#: src/app_viewer/gui/AtmoswingViewerGui.cpp:851
+msgid "Configuration"
 msgstr ""
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:860

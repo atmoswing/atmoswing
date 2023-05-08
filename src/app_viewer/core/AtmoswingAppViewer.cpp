@@ -202,6 +202,7 @@ void AtmoswingAppViewer::InitLanguageSupport() {
         locale->AddCatalog("shared_base_core");
         locale->AddCatalog("shared_base_gui");
         locale->AddCatalog("shared_processing_core");
+        locale->AddCatalog("lib_vroomgis");
 
         if (!locale->IsOk()) {
             wxLogError("Selected language is wrong");
