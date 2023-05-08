@@ -1,6 +1,19 @@
 # Changelog AtmoSwing
 
 
+## v3.0.3 - 08 May 2023
+
+### Added
+
+*   Adding the location of the target in the predictors mapping.
+*   Adding the batch file name in the Forecaster frame.
+
+### Fixed
+
+*   Fixing date issue in the predictors mapping.
+*   Translating the frame labels.
+
+
 ## v3.0.2 - 18 Apr 2023
 
 ### Fixed
