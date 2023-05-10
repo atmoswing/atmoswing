@@ -158,7 +158,7 @@ asPredictand::SpatialAggregation asPredictand::StringToSpatialAggregationEnum(co
         return Station;
     } else if (spatialAggregation.CmpNoCase("Groupment") == 0) {
         return Groupment;
-    } else if (spatialAggregation.CmpNoCase("Catchment") == 0) {
+    } else if (spatialAggregation.CmpNoCase("Catchment") == 0 || spatialAggregation.CmpNoCase("Basin") == 0) {
         return Catchment;
     } else if (spatialAggregation.CmpNoCase("Region") == 0) {
         return Region;
