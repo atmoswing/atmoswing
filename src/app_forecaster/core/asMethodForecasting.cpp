@@ -63,6 +63,7 @@ bool asMethodForecasting::Manager() {
     if (g_responsive) wxTheApp->Yield();
 #endif
     m_cancel = false;
+    bool hasErrors = false;
 
     if (isnan(m_forecastDate)) {
         wxLogError(_("The date of the forecast has not been defined."));
@@ -118,6 +119,7 @@ bool asMethodForecasting::Manager() {
 
             // Forecast
             if (!Forecast(params)) {
+                hasErrors = true;
                 asLog::PrintToConsole(_("FAILED!\n"));
                 wxLogError(_("The forecast could not be processed"));
 
@@ -182,7 +184,7 @@ bool asMethodForecasting::Manager() {
 #endif
     Cleanup();
 
-    return true;
+    return !hasErrors;
 }
 
 bool asMethodForecasting::Forecast(asParametersForecast& params) {

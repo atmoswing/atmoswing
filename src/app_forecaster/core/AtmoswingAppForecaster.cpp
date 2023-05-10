@@ -92,7 +92,7 @@ bool AtmoswingAppForecaster::OnInit() {
 #endif
 
     // Set application name and create user directory
-    wxString appName = "AtmoSwing forecaster";
+    wxString appName = "AtmoSwing Forecaster";
     wxApp::SetAppName(appName);
     wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir());
     userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
