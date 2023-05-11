@@ -39,6 +39,8 @@
 
 IMPLEMENT_APP(AtmoswingAppViewer);
 
+#include <wx/stdpaths.h>
+
 #include "asInternet.h"
 #include "images.h"
 #include "vroomgis_bmp.h"
@@ -68,7 +70,7 @@ bool AtmoswingAppViewer::OnInit() {
     g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
 
     // Set application name and create user directory
-    wxString appName = "AtmoSwing viewer";
+    wxString appName = "AtmoSwing Viewer";
     wxApp::SetAppName(appName);
     wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir());
     userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
@@ -78,6 +80,9 @@ bool AtmoswingAppViewer::OnInit() {
         "AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingViewer.ini",
         asConfig::GetUserDataDir() + "AtmoSwingViewer.ini", wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
+
+    // Set locale
+    InitLanguageSupport();
 
     // Check that it is the unique instance
     m_singleInstanceChecker = nullptr;
@@ -106,7 +111,7 @@ bool AtmoswingAppViewer::OnInit() {
         return false;
 
     // Create frame
-    auto* frame = new AtmoswingFrameViewer(0L);
+    auto frame = new AtmoswingFrameViewer(0L);
     frame->Init();
 
 #ifdef __WXMSW__
@@ -172,6 +177,57 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser) {
     }
 
     return true;
+}
+
+void AtmoswingAppViewer::InitLanguageSupport() {
+    wxLocale* locale;
+
+    wxConfigBase* pConfig = wxFileConfig::Get();
+    long language = pConfig->ReadLong("/General/Locale", wxLANGUAGE_DEFAULT);
+
+    if (wxLocale::IsAvailable(language)) {
+        locale = new wxLocale(language);
+
+#ifdef __WXGTK__
+        // add locale search paths
+        locale->AddCatalogLookupPathPrefix("/usr");
+        locale->AddCatalogLookupPathPrefix("/usr/local");
+        wxStandardPaths* paths = (wxStandardPaths*)&wxStandardPaths::Get();
+        wxString prefix = paths->GetInstallPrefix();
+        locale->AddCatalogLookupPathPrefix(prefix);
+#endif
+
+        locale->AddCatalog("app_viewer_core");
+        locale->AddCatalog("app_viewer_gui");
+        locale->AddCatalog("shared_base_core");
+        locale->AddCatalog("shared_base_gui");
+        locale->AddCatalog("shared_processing_core");
+        locale->AddCatalog("lib_vroomgis");
+
+        if (!locale->IsOk()) {
+            wxLogError("Selected language is wrong");
+            delete locale;
+            locale = new wxLocale(wxLANGUAGE_ENGLISH);
+            language = wxLANGUAGE_ENGLISH;
+        }
+    } else {
+        wxLogError("The selected language is not supported by your system. Try installing support for this language.");
+        locale = new wxLocale(wxLANGUAGE_ENGLISH);
+        language = wxLANGUAGE_ENGLISH;
+    }
+
+    // Set decimal separator to points
+    std::setlocale(LC_NUMERIC, "C");
+#if USE_GUI
+#ifdef __WXMSW__
+    const wxLanguageInfo *info = wxLocale::GetLanguageInfo(language);
+    wxUint32 lcid = MAKELCID(MAKELANGID(info->WinLang, info->WinSublang), SORT_DEFAULT);
+    wxChar buffer[2];
+    buffer[0] = '.';
+    buffer[1] = '\0';
+    SetLocaleInfo(lcid, LOCALE_SDECIMAL, buffer);
+#endif
+#endif
 }
 
 int AtmoswingAppViewer::OnExit() {

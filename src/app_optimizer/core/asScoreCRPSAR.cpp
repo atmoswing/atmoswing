@@ -31,7 +31,7 @@
 
 asScoreCRPSAR::asScoreCRPSAR()
     : asScore(asScore::CRPSAR, _("CRPS Approx Rectangle"),
-              _("Continuous Ranked Probability Score approximation with the rectangle method"), Asc, 0, NaNf) {}
+              _("Continuous Ranked Probability Score approximation with the rectangle method"), Asc, 0, NAN) {}
 
 float asScoreCRPSAR::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
@@ -39,11 +39,11 @@ float asScoreCRPSAR::Assess(float obs, const a1f& values, int nbElements) const 
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
-        return NaNf;
+        return NAN;
     }
     if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
+        return NAN;
     }
 
     // Create the container to sort the data
@@ -54,10 +54,10 @@ float asScoreCRPSAR::Assess(float obs, const a1f& values, int nbElements) const 
     int n = CleanNans(values, x, nbElements);
     if (n == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
-        return NaNf;
+        return NAN;
     } else if (n <= 2) {
         wxLogWarning(_("Not enough elements to process the CRPS."));
-        return NaNf;
+        return NAN;
     }
 
     // Sort the forcast array

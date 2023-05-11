@@ -38,7 +38,7 @@ vrLayerVectorFcstRing::vrLayerVectorFcstRing() {
     m_valueMax = 1;
 }
 
-vrLayerVectorFcstRing::~vrLayerVectorFcstRing() {}
+vrLayerVectorFcstRing::~vrLayerVectorFcstRing() = default;
 
 long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
     wxASSERT(m_layer);
@@ -47,7 +47,7 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
     feature->SetGeometry(geometry);
 
     if (data != nullptr) {
-        wxArrayDouble* dataArray = static_cast<wxArrayDouble*>(data);
+        auto dataArray = static_cast<wxArrayDouble*>(data);
         wxASSERT(dataArray->GetCount() >= 3);
 
         for (int iDat = 0; iDat < dataArray->size(); iDat++) {
@@ -68,11 +68,12 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
 }
 
 void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry,
-                                       const wxRect2DDouble& coord, vrRenderVector* render, vrLabel* label,
+                                       const wxRect2DDouble& coord, const vrRender* render, vrLabel* label,
                                        double pxsize) {
-    // Set the defaut pen
+    // Set the default pen
     wxASSERT(render->GetType() == vrRENDER_VECTOR);
-    wxPen defaultPen(render->GetColorPen(), render->GetSize());
+    wxPen greyPen(*wxLIGHT_GREY_PEN);
+    wxPen blackPen(*wxBLACK_PEN);
     wxPen selPen(*wxGREEN, 3);
 
     // Get graphics context
@@ -86,7 +87,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
         wxRect2DDouble extWndRect(0, 0, extWidth, extHeight);
 
         // Get geometries
-        OGRPoint* geom = dynamic_cast<OGRPoint*>(geometry);
+        auto geom = dynamic_cast<OGRPoint*>(geometry);
 
         wxPoint point = _GetPointFromReal(wxPoint2DDouble(geom->getX(), geom->getY()), coord.GetLeftTop(), pxsize);
 
@@ -94,58 +95,73 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
         int leadTimeSize = (int)feature->GetFieldAsDouble(2);
         wxASSERT(leadTimeSize > 0);
 
-        // Create graphics path
-        wxGraphicsPath path = gc->CreatePath();
+        // Set the default pen
+        gc->SetPen(*wxTRANSPARENT_PEN);
 
-        // Create first segment
-        _CreatePath(path, point, leadTimeSize, 0);
+        // Draw colored patches
+        wxGraphicsPath path;
+        for (int iLead = 0; iLead < leadTimeSize; iLead++) {
+            // Create shape
+            path = gc->CreatePath();
+            CreatePathPatch(path, point, leadTimeSize, iLead);
 
-        // Ensure intersecting display
-        wxRect2DDouble pathRect = path.GetBox();
-        if (!pathRect.Intersects(extWndRect)) {
-            return;
+            if (iLead == 0) {
+                // Ensure intersecting display
+                wxRect2DDouble pathRect = path.GetBox();
+                if (!pathRect.Intersects(extWndRect)) {
+                    return;
+                }
+                if (pathRect.GetSize().x < 1 && pathRect.GetSize().y < 1) {
+                    return;
+                }
+            }
+
+            // Get value to set color
+            double value = feature->GetFieldAsDouble(iLead * 2 + 4);
+            Paint(gc, path, value);
         }
-        if (pathRect.GetSize().x < 1 && pathRect.GetSize().y < 1) {
-            return;
+
+        // Draw ticks
+        gc->SetBrush(*wxTRANSPARENT_BRUSH);
+        double prevLeadTimeDate = feature->GetFieldAsDouble(3);
+        for (int iLead = 1; iLead < leadTimeSize; iLead++) {
+            double date = feature->GetFieldAsDouble(iLead * 2 + 3);
+            if (floor(prevLeadTimeDate) == floor(date)) {
+                gc->SetPen(greyPen);
+            } else {
+                gc->SetPen(blackPen);
+            }
+
+            prevLeadTimeDate = date;
+
+            // Create shape
+            path = gc->CreatePath();
+            CreatePathTick(path, point, leadTimeSize, iLead);
+            gc->DrawPath(path);
         }
 
-        // Set the defaut pen
-        gc->SetPen(defaultPen);
+        // Set the pen
+        gc->SetPen(blackPen);
+        gc->SetBrush(*wxTRANSPARENT_BRUSH);
         if (IsFeatureSelected(feature->GetFID())) {
             gc->SetPen(selPen);
         }
 
-        // Get value to set color
-        double value = feature->GetFieldAsDouble(3);
-        _Paint(gc, path, value);
-
-        // Draw next segments
-        for (int iLead = 1; iLead < leadTimeSize; iLead++) {
-            // Create shape
-            path = gc->CreatePath();
-            _CreatePath(path, point, leadTimeSize, iLead);
-
-            // Get value to set color
-            value = feature->GetFieldAsDouble(iLead + 3);
-            _Paint(gc, path, value);
-        }
+        // Draw overall box
+        path = gc->CreatePath();
+        CreatePathAround(path, point);
+        gc->DrawPath(path);
 
         // Create a mark at the center
         path.AddCircle(point.x, point.y, 2);
 
-        /*      // Cross
-                path.MoveToPoint(point.x+2, point.y);
-                path.AddLineToPoint(point.x-2, point.y);
-                path.MoveToPoint(point.x, point.y+2);
-                path.AddLineToPoint(point.x, point.y-2);
-        */
         gc->StrokePath(path);
     } else {
         wxLogError(_("Drawing of the symbol failed."));
     }
 }
 
-void vrLayerVectorFcstRing::_CreatePath(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb) {
+void vrLayerVectorFcstRing::CreatePathPatch(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb) {
     const wxDouble radiusOut = 25 * g_ppiScaleDc;
     const wxDouble radiusIn = 10 * g_ppiScaleDc;
 
@@ -176,14 +192,63 @@ void vrLayerVectorFcstRing::_CreatePath(wxGraphicsPath& path, const wxPoint& cen
     path.CloseSubpath();
 }
 
-void vrLayerVectorFcstRing::_Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value) {
+void vrLayerVectorFcstRing::CreatePathTick(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb) {
+    const wxDouble radiusOut = 25 * g_ppiScaleDc;
+    const wxDouble radiusIn = 10 * g_ppiScaleDc;
+
+    wxDouble segmentStart = -0.5 * M_PI + ((double)segmentNb / (double)segmentsTotNb) * (1.5 * M_PI);
+    wxDouble centerX = (wxDouble)center.x;
+    wxDouble centerY = (wxDouble)center.y;
+
+    // Get starting point
+    double dXin = cos(segmentStart) * radiusIn;
+    double dXout = cos(segmentStart) * radiusOut;
+    double dYin = sin(segmentStart) * radiusIn;
+    double dYout = sin(segmentStart) * radiusOut;
+
+    path.MoveToPoint(centerX + dXin, centerY + dYin);
+    path.AddLineToPoint(centerX + dXout, centerY + dYout);
+}
+
+void vrLayerVectorFcstRing::CreatePathAround(wxGraphicsPath& path, const wxPoint& center) {
+    const wxDouble radiusOut = 25 * g_ppiScaleDc;
+    const wxDouble radiusIn = 10 * g_ppiScaleDc;
+
+    wxDouble segmentStart = -0.5 * M_PI;
+    wxDouble segmentEnd = M_PI;
+    wxDouble centerX = (wxDouble)center.x;
+    wxDouble centerY = (wxDouble)center.y;
+
+    // Get starting point
+    double dX = cos(segmentStart) * radiusOut;
+    double dY = sin(segmentStart) * radiusOut;
+    wxDouble startPointX = centerX + dX;
+    wxDouble startPointY = centerY + dY;
+
+    path.MoveToPoint(startPointX, startPointY);
+
+    path.AddArc(centerX, centerY, radiusOut, segmentStart, segmentEnd, true);
+
+    const wxDouble radiusRatio = ((radiusOut - radiusIn) / radiusOut);
+    wxPoint2DDouble currentPoint = path.GetCurrentPoint();
+    wxDouble newPointX = currentPoint.m_x - (currentPoint.m_x - centerX) * radiusRatio;
+    wxDouble newPointY = currentPoint.m_y - (currentPoint.m_y - centerY) * radiusRatio;
+
+    path.AddLineToPoint(newPointX, newPointY);
+
+    path.AddArc(centerX, centerY, radiusIn, segmentEnd, segmentStart, false);
+
+    path.CloseSubpath();
+}
+
+void vrLayerVectorFcstRing::Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value) const {
     // wxColour colour(255,0,0); -> red
     // wxColour colour(0,0,255); -> blue
     // wxColour colour(0,255,0); -> green
 
     wxColour colour;
 
-    if (asIsNaN(value))  // NaN -> gray
+    if (isnan(value))  // NaN -> gray
     {
         colour.Set(150, 150, 150);
     } else if (value == 0)  // No rain -> white

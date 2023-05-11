@@ -81,9 +81,7 @@ bool asMethodOptimizerMC::Manager() {
     SetScoreOrder(scoreOrder);
 
     // Load the Predictand DB
-    wxLogVerbose(_("Loading the Predictand DB."));
     if (!LoadPredictandDB(m_predictandDBFilePath)) return false;
-    wxLogVerbose(_("Predictand DB loaded."));
 
     // Watch
     wxStopWatch sw;
@@ -109,7 +107,7 @@ bool asMethodOptimizerMC::Manager() {
 
         if (nextParams) {
             // Add it to the threads
-            auto* thread = new asThreadMC(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+            auto thread = new asThreadMC(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
             ThreadsManager().AddThread(thread);
 
             // Wait until done to get the score of the climatology
@@ -138,7 +136,7 @@ bool asMethodOptimizerMC::Manager() {
 
     // Check results
     for (int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
-        if (asIsNaN(m_scoresCalib[iCheck])) {
+        if (isnan(m_scoresCalib[iCheck])) {
             wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int)iCheck + 1,
                        (int)m_scoresCalib.size());
             return false;

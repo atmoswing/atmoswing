@@ -37,6 +37,7 @@ WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 #include <wx/checklst.h>
 #include <wx/notebook.h>
 #include <wx/grid.h>
+#include <wx/listbox.h>
 #include <wx/bmpbuttn.h>
 #include <wx/textctrl.h>
 #include <wx/statbox.h>
@@ -47,9 +48,9 @@ WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asFrameForecastVirtual
+/// Class asFrameViewerVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFrameForecastVirtual : public wxFrame
+class asFrameViewerVirtual : public wxFrame
 {
 	private:
 
@@ -108,14 +109,14 @@ class asFrameForecastVirtual : public wxFrame
 
 	public:
 
-		asFrameForecastVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Viewer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameViewerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Viewer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
-		~asFrameForecastVirtual();
+		~asFrameViewerVirtual();
 
 		void m_splitterGISOnIdle( wxIdleEvent& )
 		{
 			m_splitterGIS->SetSashPosition( 270 );
-			m_splitterGIS->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFrameForecastVirtual::m_splitterGISOnIdle ), NULL, this );
+			m_splitterGIS->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFrameViewerVirtual::m_splitterGISOnIdle ), NULL, this );
 		}
 
 };
@@ -298,7 +299,7 @@ class asFrameGridAnalogsValuesVirtual : public wxFrame
 
 	public:
 
-		asFrameGridAnalogsValuesVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analogs details"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 473,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameGridAnalogsValuesVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analogs details"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~asFrameGridAnalogsValuesVirtual();
 
@@ -316,10 +317,12 @@ class asFramePredictorsVirtual : public wxFrame
 		wxSplitterWindow* m_splitterToc;
 		wxScrolledWindow* m_scrolledWindowOptions;
 		wxBoxSizer* m_sizerScrolledWindow;
+		wxStaticText* m_staticTextChoiceMethod;
+		wxChoice* m_choiceMethod;
 		wxStaticText* m_staticTextChoiceForecast;
 		wxChoice* m_choiceForecast;
 		wxStaticText* m_staticTextCheckListPredictors;
-		wxCheckListBox* m_checkListPredictors;
+		wxListBox* m_listPredictors;
 		wxStaticText* m_staticTextTocLeft;
 		wxStaticText* m_staticTextTocRight;
 		wxPanel* m_panelGIS;
@@ -329,6 +332,8 @@ class asFramePredictorsVirtual : public wxFrame
 		wxChoice* m_choiceTargetDates;
 		wxPanel* m_panelGISLeft;
 		wxBoxSizer* m_sizerGISLeft;
+		wxPanel* m_panelColorbarLeft;
+		wxBoxSizer* m_sizerColorbarLeft;
 		wxPanel* m_panelSwitch;
 		wxBitmapButton* m_bpButtonSwitchRight;
 		wxBitmapButton* m_bpButtonSwitchLeft;
@@ -337,12 +342,15 @@ class asFramePredictorsVirtual : public wxFrame
 		wxChoice* m_choiceAnalogDates;
 		wxPanel* m_panelGISRight;
 		wxBoxSizer* m_sizerGISRight;
+		wxPanel* m_panelColorbarRight;
+		wxBoxSizer* m_sizerColorbarRight;
 		wxMenuBar* m_menubar;
 		wxMenu* m_menuFile;
 		wxMenu* m_menuTools;
 		wxToolBar* m_toolBar;
 
 		// Virtual event handlers, override them in your derived class
+		virtual void OnMethodChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnForecastChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPredictorSelectionChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTargetDateChange( wxCommandEvent& event ) { event.Skip(); }
@@ -350,17 +358,18 @@ class asFramePredictorsVirtual : public wxFrame
 		virtual void OnSwitchLeft( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAnalogDateChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpenLayer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCloseLayer( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
 
-		asFramePredictorsVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Predictors overview"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 800,600 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFramePredictorsVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Predictors overview"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~asFramePredictorsVirtual();
 
 		void m_splitterTocOnIdle( wxIdleEvent& )
 		{
-			m_splitterToc->SetSashPosition( 170 );
+			m_splitterToc->SetSashPosition( 220 );
 			m_splitterToc->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePredictorsVirtual::m_splitterTocOnIdle ), NULL, this );
 		}
 
@@ -390,7 +399,42 @@ class asFramePreferencesViewerVirtual : public wxFrame
 		wxStaticText* m_staticTextAlarmsQuantile;
 		wxTextCtrl* m_textCtrlAlarmsQuantile;
 		wxStaticText* m_staticTextAlarmsQuantileRange;
+		wxStaticText* m_staticText581;
+		wxStaticText* m_staticText541;
+		wxTextCtrl* m_textCtrlMaxLengthDaily;
+		wxStaticText* m_staticText56;
+		wxStaticText* m_staticText55;
+		wxTextCtrl* m_textCtrlMaxLengthSubDaily;
+		wxStaticText* m_staticText571;
+		wxPanel* m_panelPaths;
+		wxStaticText* m_staticPredictorID;
+		wxStaticText* m_staticPredictorPaths;
+		wxTextCtrl* m_textCtrlDatasetId1;
+		wxDirPickerCtrl* m_dirPickerDataset1;
+		wxTextCtrl* m_textCtrlDatasetId2;
+		wxDirPickerCtrl* m_dirPickerDataset2;
+		wxTextCtrl* m_textCtrlDatasetId3;
+		wxDirPickerCtrl* m_dirPickerDataset3;
+		wxTextCtrl* m_textCtrlDatasetId4;
+		wxDirPickerCtrl* m_dirPickerDataset4;
+		wxTextCtrl* m_textCtrlDatasetId5;
+		wxDirPickerCtrl* m_dirPickerDataset5;
+		wxTextCtrl* m_textCtrlDatasetId6;
+		wxDirPickerCtrl* m_dirPickerDataset6;
+		wxTextCtrl* m_textCtrlDatasetId7;
+		wxDirPickerCtrl* m_dirPickerDataset7;
+		wxPanel* m_panelColors;
+		wxStaticText* m_staticText54;
+		wxFilePickerCtrl* m_filePickerColorZ;
+		wxStaticText* RelativeHumidity;
+		wxFilePickerCtrl* m_filePickerColorPwat;
+		wxStaticText* m_staticText57;
+		wxFilePickerCtrl* m_filePickerColorRh;
+		wxStaticText* m_staticText58;
+		wxFilePickerCtrl* m_filePickerColorSh;
 		wxPanel* m_panelGeneralCommon;
+		wxChoice* m_choiceLocale;
+		wxStaticText* m_staticText53;
 		wxRadioButton* m_radioBtnLogLevel1;
 		wxRadioButton* m_radioBtnLogLevel2;
 		wxRadioButton* m_radioBtnLogLevel3;

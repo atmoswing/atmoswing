@@ -72,7 +72,7 @@ void asResultsScoresMap::BuildFileName() {
 
 bool asResultsScoresMap::Add(asParametersScoring& params, float score) {
     if (!params.GetPredictorGridType(0, 0).IsSameAs("Regular", false))
-        asThrow(_("asResultsScoresMap::Add is not ready to use on unregular grids"));
+        throw runtime_error(_("asResultsScoresMap::Add is not ready to use on unregular grids"));
 
     m_scores.push_back(score);
     m_lon.push_back(
@@ -93,7 +93,7 @@ bool asResultsScoresMap::MakeMap() {
     m_mapLon = lons;
     m_mapLat = lats;
 
-    a2f tmpLatLon = a2f::Constant(m_mapLat.size(), m_mapLon.size(), NaNf);
+    a2f tmpLatLon = a2f::Constant(m_mapLat.size(), m_mapLon.size(), NAN);
 
     for (int iLevel = 0; iLevel <= m_mapLevel.size(); iLevel++) {
         m_mapScores.push_back(tmpLatLon);

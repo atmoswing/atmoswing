@@ -35,23 +35,23 @@
 TEST(PredictorOperMeteoFranceArpege, GetCorrectPredictors) {
     asPredictorOper* predictor;
 
-    predictor = asPredictorOper::GetInstance("MF_ARPEGE_Forecast", "z");
+    predictor = asPredictorOper::GetInstance("MF_ARPEGE", "z");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("MF_ARPEGE_Forecast", "rh");
+    predictor = asPredictorOper::GetInstance("MF_ARPEGE", "rh");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("MF_ARPEGE_Forecast", "tcwv");
+    predictor = asPredictorOper::GetInstance("MF_ARPEGE", "tcwv");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("MF_ARPEGE_Forecast", "t");
+    predictor = asPredictorOper::GetInstance("MF_ARPEGE", "t");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("MF_ARPEGE_Forecast", "vv");
+    predictor = asPredictorOper::GetInstance("MF_ARPEGE", "vv");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
     wxDELETE(predictor);
 }
@@ -72,7 +72,7 @@ TEST(PredictorOperMeteoFranceArpege, LoadSingleDay) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("MF_ARPEGE_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("MF_ARPEGE", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -128,7 +128,7 @@ TEST(PredictorOperMeteoFranceArpege, LoadThirdTimeStep) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("MF_ARPEGE_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("MF_ARPEGE", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -189,7 +189,7 @@ TEST(PredictorOperMeteoFranceArpege, LoadFullTimeArray) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("MF_ARPEGE_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("MF_ARPEGE", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -293,7 +293,7 @@ TEST(PredictorOperMeteoFranceArpege, LoadRelativeHumidity) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("MF_ARPEGE_Forecast", "r");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("MF_ARPEGE", "r");
     wxASSERT(predictor);
 
     // Create file names
@@ -347,16 +347,15 @@ TEST(PredictorOperMeteoFranceArpege, CanFindFiles) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("MF_ARPEGE_Forecast", "z");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("MF_ARPEGE", "z");
     wxASSERT(predictor);
 
     predictor->SetPredictorsRealtimeDirectory(wxFileName::GetCwd() + "/files/data-meteofrance-arpege");
     predictor->SetRunDateInUse(asTime::GetTimeFromString("2023-02-02"));
     predictor->SetLevel(500);
-    predictor->RestrictTimeArray(0, 6, 17);
 
     // Build file names
-    ASSERT_TRUE(predictor->BuildFilenamesUrls());
+    ASSERT_TRUE(predictor->BuildFilenamesAndUrls(0, 6, 18));
 
     // Load
     ASSERT_TRUE(predictor->Load(area, dates, level));

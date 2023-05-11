@@ -47,7 +47,7 @@ class asResultsParametersArray : public asResults {
 
     void AddWithoutProcessingMedian(asParametersScoring& params, float scoreCalib);
 
-    void Add(asParametersScoring& params, float scoreCalib, float scoreValid = NaNf);
+    void Add(asParametersScoring& params, float scoreCalib, float scoreValid = NAN);
 
     void Add(asParametersScoring& params, const a1f& scoreCalib, const a1f& scoreValid);
 

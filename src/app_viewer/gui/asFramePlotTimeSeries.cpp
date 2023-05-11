@@ -43,6 +43,8 @@ asFramePlotTimeSeries::asFramePlotTimeSeries(wxWindow* parent, int selectedMetho
       m_selectedMethod(selectedMethod),
       m_selectedForecast(selectedForecast),
       m_maxVal(100) {
+    SetLabel(_("Forecast plots"));
+
     auto paneMinSize = (int)(m_splitter->GetMinimumPaneSize() * g_ppiScaleDc);
     m_splitter->SetMinimumPaneSize(paneMinSize);
 
@@ -144,7 +146,7 @@ void asFramePlotTimeSeries::InitPlotCtrl() {
     plotctrl->SetPlotTitleFont(titleFont);
 
     // Set the grid color
-    wxColour gridColor(240, 240, 240);
+    wxColour gridColor(200, 200, 200);
     plotctrl->SetGridColour(gridColor);
 
     // Set the x axis
@@ -189,145 +191,151 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
     wxString stationName = m_forecastManager->GetStationName(m_selectedMethod, m_selectedForecast, m_selectedStation);
     wxString forecastName = m_forecastManager->GetForecastName(m_selectedMethod, m_selectedForecast);
     wxString date = asTime::GetStringTime(m_forecastManager->GetLeadTimeOrigin(), "YYYY.MM.DD hh");
-    wxString filename = asStrF("%sh - %s - %s", date, forecastName, stationName);
+    wxString filename = asStrF("%sh - %s - %s.txt", date, forecastName, stationName);
 
     wxFileDialog dialog(this, wxT("Save file as"), wxEmptyString, filename, wxT("Text files (*.txt)|*.txt"),
                         wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
-    if (dialog.ShowModal() == wxID_OK) {
-        asFileText file(dialog.GetPath(), asFile::Write);
-        file.Open();
+    if (dialog.ShowModal() != wxID_OK) {
+        return;
+    }
 
-        // Add header
-        file.AddContent(asStrF("Forecast of the %sh\n",
-                               asTime::GetStringTime(m_forecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY hh")));
-        file.AddContent(asStrF("Forecast: %s\n", forecastName));
-        file.AddContent(asStrF("Station: %s\n", stationName));
+    asFileText file(dialog.GetPath(), asFile::Write);
+    file.Open();
+
+    // Add header
+    file.AddContent(asStrF("Forecast of the %sh\n",
+                           asTime::GetStringTime(m_forecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY hh")));
+    file.AddContent(asStrF("Forecast: %s\n", forecastName));
+    file.AddContent(asStrF("Station: %s\n", stationName));
+    file.AddContent("\n");
+
+    // Quantiles
+    a1f pc(11);
+    pc << 1, 0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f, 0;
+
+    // Get forecast
+    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+
+    // Set lead times
+    file.AddContent("Quantiles:\n");
+    wxString dateFormat = forecast->GetDateFormatting();
+    wxString leadTimesRow = ";";
+    for (double leadTime : m_leadTimes) {
+        leadTimesRow.Append(asStrF("%s;", asTime::GetStringTime(leadTime, dateFormat)));
+    }
+    file.AddContent(leadTimesRow + "\n");
+
+    // Loop over the quantiles to display as polygons
+    for (int iPc = 0; iPc < pc.size(); iPc++) {
+        float thisQuantile = pc[iPc];
+
+        wxString quantilesStr = asStrF("%.2f;", thisQuantile);
+
+        for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+            a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
+            float pcVal = asGetValueForQuantile(analogs, thisQuantile);
+
+            quantilesStr.Append(asStrF("%.2f;", pcVal));
+        }
+
+        file.AddContent(quantilesStr + "\n");
+    }
+    file.AddContent("\n");
+
+    // Set best analogs values
+    file.AddContent("Best analogs values:\n");
+    file.AddContent(leadTimesRow + "\n");
+
+    // Loop over the quantiles to display as polygons
+    for (int rk = 0; rk < 10; rk++) {
+        wxString rankStr = asStrF("%d;", rk + 1);
+
+        for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+            a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
+            rankStr.Append(asStrF("%.2f;", analogs[rk]));
+        }
+
+        file.AddContent(rankStr + "\n");
+    }
+    file.AddContent("\n");
+
+    // Set best analogs values
+    file.AddContent("Best analogs dates:\n");
+    file.AddContent(leadTimesRow + "\n");
+
+    // Loop over the ranks
+    for (int rk = 0; rk < 10; rk++) {
+        wxString rankStr = asStrF("%d;", rk + 1);
+
+        for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+            a1f dates = forecast->GetAnalogsDates(iLead);
+            rankStr.Append(asTime::GetStringTime(dates[rk], dateFormat) + ";");
+        }
+
+        file.AddContent(rankStr + "\n");
+    }
+    file.AddContent("\n");
+
+    // All traces
+    if (m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast) == 0){
+        file.Close();
+        return;
+    }
+
+    file.AddContent("All traces:\n");
+
+    asResultsForecast* oldestForecast = m_forecastManager->GetPastForecast(
+        m_selectedMethod, m_selectedForecast,
+        m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast) - 1);
+
+    float leadTimeStart = oldestForecast->GetTargetDates()[0];
+    float leadTimeEnd = forecast->GetTargetDates()[forecast->GetTargetDatesLength() - 1];
+
+    a1f leadTimes = a1f::LinSpaced(leadTimeEnd - leadTimeStart + 1, leadTimeStart, leadTimeEnd);
+
+    wxString allLeadtimesStr = ";";
+    for (float leadTime : leadTimes) {
+        allLeadtimesStr.Append(asStrF("%s;", asTime::GetStringTime(leadTime, dateFormat)));
+    }
+
+    a1f qtAll(4);
+    qtAll << 0.9f, 0.6f, 0.5f, 0.2f;
+
+    for (float qt : qtAll) {
         file.AddContent("\n");
+        file.AddContent(asStrF("Quantile %.2f:\n", qt));
+        file.AddContent(allLeadtimesStr + "\n");
 
-        // Quantiles
-        a1f pc(11);
-        pc << 1, 0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f, 0;
+        for (int past = 0; past < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast);
+             past++) {
+            asResultsForecast* pastForecast = m_forecastManager->GetPastForecast(m_selectedMethod,
+                                                                                 m_selectedForecast, past);
+            a1f dates = pastForecast->GetTargetDates();
+            wxString currentLine = asTime::GetStringTime(pastForecast->GetLeadTimeOrigin(), dateFormat) + ";";
 
-        // Get forecast
-        asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+            for (int iLead = 0; iLead < pastForecast->GetTargetDatesLength(); iLead++) {
+                a1f analogs = pastForecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
+                float pcVal = asGetValueForQuantile(analogs, qt);
 
-        // Set lead times
-        file.AddContent("Quantiles:\n");
-        wxString leadTimes = "\t";
-        for (double leadTime : m_leadTimes) {
-            leadTimes.Append(asStrF("%s\t", asTime::GetStringTime(leadTime, "DD.MM")));
-        }
-        file.AddContent(leadTimes + "\n");
+                if (iLead == 0) {
+                    int index = asFind(&leadTimes[0], &leadTimes[leadTimes.size() - 1], dates[iLead]);
 
-        // Loop over the quantiles to display as polygons
-        for (int iPc = 0; iPc < pc.size(); iPc++) {
-            float thisQuantile = pc[iPc];
-
-            wxString quantilesStr = asStrF("%f\t", thisQuantile);
-
-            for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
-                a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-                float pcVal = asGetValueForQuantile(analogs, thisQuantile);
-
-                quantilesStr.Append(asStrF("%f\t", pcVal));
-            }
-
-            file.AddContent(quantilesStr + "\n");
-        }
-        file.AddContent("\n");
-
-        // Set best analogs values
-        file.AddContent("Best analogs values:\n");
-        file.AddContent(leadTimes + "\n");
-
-        // Loop over the quantiles to display as polygons
-        for (int rk = 0; rk < 10; rk++) {
-            wxString rankStr = asStrF("%d\t", rk + 1);
-
-            for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
-                a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-                rankStr.Append(asStrF("%f\t", analogs[rk]));
-            }
-
-            file.AddContent(rankStr + "\n");
-        }
-        file.AddContent("\n");
-
-        // Set best analogs values
-        file.AddContent("Best analogs dates:\n");
-        file.AddContent(leadTimes + "\n");
-
-        // Loop over the quantiles to display as polygons
-        for (int rk = 0; rk < 10; rk++) {
-            wxString rankStr = asStrF("%d\t", rk + 1);
-
-            for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
-                a1f dates = forecast->GetAnalogsDates(iLead);
-                rankStr.Append(asTime::GetStringTime(dates[rk], "DD.MM.YYYY") + "\t");
-            }
-
-            file.AddContent(rankStr + "\n");
-        }
-        file.AddContent("\n");
-
-        // All traces
-        file.AddContent("All traces:\n");
-
-        asResultsForecast* oldestForecast = m_forecastManager->GetPastForecast(
-            m_selectedMethod, m_selectedForecast,
-            m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast) - 1);
-        float leadtimeStart = oldestForecast->GetTargetDates()[0];
-        float leadtimeEnd = forecast->GetTargetDates()[forecast->GetTargetDatesLength() - 1];
-
-        wxLogVerbose(asTime::GetStringTime(leadtimeStart));
-        wxLogVerbose(asTime::GetStringTime(leadtimeEnd));
-
-        a1f leadtimes = a1f::LinSpaced(leadtimeEnd - leadtimeStart + 1, leadtimeStart, leadtimeEnd);
-
-        wxString allLeadtimesStr = "\t";
-        for (int iLead = 0; iLead < leadtimes.size(); iLead++) {
-            allLeadtimesStr.Append(asStrF("%s\t", asTime::GetStringTime(leadtimes[iLead], "DD.MM")));
-        }
-
-        a1f pcAll(4);
-        pcAll << 0.9f, 0.6f, 0.5f, 0.2f;
-
-        for (int iPc = 0; iPc < pcAll.size(); iPc++) {
-            file.AddContent("\n");
-            file.AddContent(asStrF("Quantile %f:\n", pcAll[iPc]));
-            file.AddContent(allLeadtimesStr + "\n");
-
-            for (int past = 0; past < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast);
-                 past++) {
-                asResultsForecast* pastForecast = m_forecastManager->GetPastForecast(m_selectedMethod,
-                                                                                     m_selectedForecast, past);
-                a1f dates = pastForecast->GetTargetDates();
-                wxString currentLine = asTime::GetStringTime(pastForecast->GetLeadTimeOrigin(), "DD.MM") + "\t";
-
-                for (int iLead = 0; iLead < pastForecast->GetTargetDatesLength(); iLead++) {
-                    a1f analogs = pastForecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-                    float pcVal = asGetValueForQuantile(analogs, pcAll[iPc]);
-
-                    if (iLead == 0) {
-                        int index = asFind(&leadtimes[0], &leadtimes[leadtimes.size() - 1], dates[iLead]);
-
-                        if (index > 0) {
-                            for (int i = 0; i < index; i++) {
-                                currentLine.Append("\t");
-                            }
+                    if (index > 0) {
+                        for (int i = 0; i < index; i++) {
+                            currentLine.Append(";");
                         }
                     }
-
-                    currentLine.Append(asStrF("%f\t", pcVal));
                 }
 
-                file.AddContent(currentLine + "\n");
+                currentLine.Append(asStrF("%.2f;", pcVal));
             }
-        }
 
-        file.Close();
+            file.AddContent(currentLine + "\n");
+        }
     }
+
+    file.Close();
 }
 
 void asFramePlotTimeSeries::OnExportSVG(wxCommandEvent& event) {

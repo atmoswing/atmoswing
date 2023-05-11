@@ -142,7 +142,7 @@ class asPredictor : public wxObject {
 
     bool ClipToArea(asAreaGrid* desiredArea);
 
-    bool StandardizeData(double mean = NaNd, double sd = NaNd);
+    bool StandardizeData(double mean = NAN, double sd = NAN);
 
     bool Inline();
 
@@ -172,8 +172,26 @@ class asPredictor : public wxObject {
         return m_data;
     }
 
+    a2f* GetData(int iTime, int iMem) {
+        wxASSERT((int)m_data.size() >= (int)m_time.size());
+        wxASSERT(m_data.size() >= iTime);
+        wxASSERT(m_data[iTime].size() >= iMem);
+        wxASSERT(m_data[iTime][iMem].cols() > 0);
+        wxASSERT(m_data[iTime][iMem].rows() > 0);
+
+        return &m_data[iTime][iMem];
+    }
+
+    bool HasSingleArray() {
+        return (m_data.size() == 1) && (m_data[0].size() == 1);
+    }
+
     wxString GetDataId() const {
         return m_dataId;
+    }
+
+    void SetDatasetId(const wxString &datasetId) {
+        m_datasetId = datasetId;
     }
 
     wxString GetProduct() const {
@@ -277,7 +295,7 @@ class asPredictor : public wxObject {
 
     void SelectFirstMember() {
         if (!m_isEnsemble) {
-            asThrow(_("Dataset is not an ensemble, you cannot select a member."));
+            throw runtime_error(_("Dataset is not an ensemble, you cannot select a member."));
         }
 
         m_fInd.memberStart = 0;
@@ -287,7 +305,7 @@ class asPredictor : public wxObject {
 
     void SelectMember(int memberNum) {
         if (!m_isEnsemble) {
-            asThrow(_("Dataset is not an ensemble, you cannot select a member."));
+            throw runtime_error(_("Dataset is not an ensemble, you cannot select a member."));
         }
 
         // memberNum is 1-based, netcdf index is 0-based
@@ -298,7 +316,7 @@ class asPredictor : public wxObject {
 
     void SelectMembers(int memberNb) {
         if (!m_isEnsemble) {
-            asThrow(_("Dataset is not an ensemble, you cannot select a member."));
+            throw runtime_error(_("Dataset is not an ensemble, you cannot select a member."));
         }
 
         // memberNum is 1-based, netcdf index is 0-based
@@ -317,6 +335,14 @@ class asPredictor : public wxObject {
 
     a1d GetLonAxis() const {
         return m_axisLon;
+    }
+
+    a1d* GetLatAxisPt() {
+        return &m_axisLat;
+    }
+
+    a1d* GetLonAxisPt() {
+        return &m_axisLon;
     }
 
     double GetXmin() const {
@@ -450,9 +476,9 @@ class asPredictor : public wxObject {
 
     bool EnquireFileStructure(asTimeArray& timeArray);
 
-    bool ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeArray);
+    virtual bool ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeArray);
 
-    virtual void ConvertToMjd(a1d& time, double refValue = NaNd) const;
+    virtual void ConvertToMjd(a1d& time, double refValue = NAN) const;
 
     virtual double FixTimeValue(double time) const;
 

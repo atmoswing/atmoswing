@@ -33,7 +33,7 @@
 asPredictorEcmwfIfs::asPredictorEcmwfIfs(const wxString& dataId)
     : asPredictor(dataId) {
     // Set the basic properties.
-    m_datasetId = "ECMWF_IFS_GRIB";
+    m_datasetId = "ECMWF_IFS";
     m_provider = "ECMWF";
     m_datasetName = "Integrated Forecasting System (IFS) grib files";
     m_fileType = asFile::Grib;
@@ -41,8 +41,6 @@ asPredictorEcmwfIfs::asPredictorEcmwfIfs(const wxString& dataId)
     m_strideAllowed = false;
     m_fStr.hasLevelDim = false;
     m_fStr.singleTimeStep = true;
-    m_nanValues.push_back(NaNd);
-    m_nanValues.push_back(NaNf);
     m_parameter = ParameterUndefined;
 }
 

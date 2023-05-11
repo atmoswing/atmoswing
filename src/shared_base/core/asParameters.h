@@ -43,8 +43,8 @@ class asParameters : public wxObject {
     typedef struct ParamsPredictor {
         bool preload = false;
         bool standardize = false;
-        double standardizeMean = NaNd;
-        double standardizeSd = NaNd;
+        double standardizeMean = NAN;
+        double standardizeSd = NAN;
         bool preprocess = false;
         std::string datasetId;
         std::string dataId;

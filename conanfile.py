@@ -1,4 +1,5 @@
 from conans import ConanFile, CMake
+import os
 
 
 class AmtoSwing(ConanFile):
@@ -44,12 +45,12 @@ class AmtoSwing(ConanFile):
         self.requires("libpng/1.6.38")
         self.requires("eccodes/2.27.0@terranum-conan+eccodes/stable")
         if self.options.enable_tests or self.options.code_coverage:
-            self.requires("gtest/1.11.0")
+            self.requires("gtest/1.13.0")
         if self.options.enable_benchmark:
-            self.requires("benchmark/1.6.2")
-            self.requires("gtest/1.11.0")
+            self.requires("benchmark/1.7.1")
+            self.requires("gtest/1.13.0")
         if self.options.with_gui:
-            self.requires("wxwidgets/3.2.1@terranum-conan+wxwidgets/stable")
+            self.requires("wxwidgets/3.2.2.1@terranum-conan+wxwidgets/stable")
         else:
             self.requires("wxbase/3.2.1@terranum-conan+wxbase/stable")
         if self.options.build_viewer:
@@ -77,17 +78,41 @@ class AmtoSwing(ConanFile):
         if self.settings.os == "Windows" or self.settings.os == "Linux":
             self.copy("*", dst="share/proj", src="res", root_package="proj")
         if self.settings.os == "Macos":
-            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/proj", src="res", root_package="proj")
+            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/proj", src="res",
+                      root_package="proj")
             if self.options.enable_tests:
                 self.copy("*", dst="bin", src="res", root_package="proj")
 
         # Copy eccodes library data
         if self.settings.os == "Windows" or self.settings.os == "Linux":
-            self.copy("*", dst="share/eccodes", src="share/eccodes", root_package="eccodes")
+            self.copy("*", dst="share/eccodes", src="share/eccodes",
+                      root_package="eccodes")
         if self.settings.os == "Macos":
-            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/eccodes", src="share/eccodes", root_package="eccodes")
+            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/eccodes",
+                      src="share/eccodes", root_package="eccodes")
             if self.options.enable_tests:
                 self.copy("*", dst="bin", src="share/eccodes", root_package="eccodes")
+
+        # Copy data files
+        _source_folder = os.path.join(os.getcwd(), "..")
+        if self.settings.os == "Windows" or self.settings.os == "Linux":
+            self.copy("*", dst="share/atmoswing",
+                      src=os.path.join(_source_folder, "data"))
+        if self.settings.os == "Macos":
+            self.copy("*", dst="bin/AtmoSwing.app/Contents/share/atmoswing",
+                      src=os.path.join(_source_folder, "data"))
+
+        # Copy translation files
+        _source_folder = os.path.join(os.getcwd(), "..")
+        if self.settings.os == "Windows":
+            self.copy("*.mo", dst="bin/fr",
+                      src=os.path.join(_source_folder, "locales/fr"))
+        if self.settings.os == "Linux":
+            self.copy("*.mo", dst="/usr/share/locale/fr/LC_MESSAGES/",
+                      src=os.path.join(_source_folder, "locales/fr"))
+        if self.settings.os == "Macos":
+            self.copy("*.mo", dst="bin/AtmoSwing.app/Contents/Resources/fr.lproj",
+                      src=os.path.join(_source_folder, "locales/fr"))
 
     def build(self):
         cmake = CMake(self)

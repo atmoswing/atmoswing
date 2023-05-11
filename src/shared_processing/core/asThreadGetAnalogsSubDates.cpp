@@ -93,9 +93,9 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
     // Containers for daily results
     a1f currentAnalogsDates(analogsNbPrevious);
     a1f scoreArrayOneDay(analogsNb);
-    scoreArrayOneDay.fill(NaNf);
+    scoreArrayOneDay.fill(NAN);
     a1f dateArrayOneDay(analogsNb);
-    dateArrayOneDay.fill(NaNf);
+    dateArrayOneDay.fill(NAN);
 
     // Loop through every timestep as target data
     // Former, but disabled: for (int iDateTarg=m_start; !ThreadsManager().Cancelled() && (iDateTarg<=m_end);
@@ -117,8 +117,8 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
         // Counter representing the current index
         int counter = 0;
 
-        scoreArrayOneDay.fill(NaNf);
-        dateArrayOneDay.fill(NaNf);
+        scoreArrayOneDay.fill(NAN);
+        dateArrayOneDay.fill(NAN);
 
         // Loop over the members
         for (int iMem = 0; iMem < membersNb; ++iMem) {
@@ -129,7 +129,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
 
             // Loop through the previous analogs for candidate data
             for (int iPrevAnalog = 0; iPrevAnalog < analogsNbPrevious; iPrevAnalog++) {
-                if (asIsNaN(currentAnalogsDates[iPrevAnalog])) {
+                if (isnan(currentAnalogsDates[iPrevAnalog])) {
                     *m_pContainsNaNs = true;
                     continue;
                 }
@@ -160,7 +160,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
                         // Weight and add the score
                         thisscore += tmpscore * m_params->GetPredictorWeight(m_step, iPtor);
                     }
-                    if (asIsNaN(thisscore)) {
+                    if (isnan(thisscore)) {
                         *m_pContainsNaNs = true;
                         continue;
                     }

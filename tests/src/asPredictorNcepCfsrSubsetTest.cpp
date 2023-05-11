@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaRegGrid.h"
+#include "asAreaGridRegular.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
@@ -207,7 +207,7 @@ TEST(PredictorNcepCfsrSubset, LoadEasy) {
     double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -287,7 +287,7 @@ TEST(PredictorNcepCfsrSubset, LoadWithNegativeValues) {
     double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -351,7 +351,7 @@ TEST(PredictorNcepCfsrSubset, LoadBorderLeft) {
     double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -411,7 +411,7 @@ TEST(PredictorNcepCfsrSubset, LoadBorderLeftOn720) {
     double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -471,7 +471,7 @@ TEST(PredictorNcepCfsrSubset, LoadBorderRight) {
     double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);

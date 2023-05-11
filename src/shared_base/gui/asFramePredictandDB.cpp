@@ -33,6 +33,8 @@
 
 asFramePredictandDB::asFramePredictandDB(wxWindow* parent, wxWindowID id)
     : asFramePredictandDBVirtual(parent, id) {
+    SetLabel(_("Predictand database generator"));
+
     // Set the defaults
     wxConfigBase* pConfig = wxFileConfig::Get();
     m_choiceDataParam->SetSelection((int)0);
@@ -228,7 +230,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
             case 0:  // Precipitation
             {
                 wxASSERT(m_panelProcessing);
-                auto* panel = dynamic_cast<asPanelProcessingPrecipitation*>(m_panelProcessing);
+                auto panel = dynamic_cast<asPanelProcessingPrecipitation*>(m_panelProcessing);
                 wxASSERT(panel->m_checkBoxReturnPeriod);
                 wxASSERT(panel->m_textCtrlReturnPeriod);
                 wxASSERT(panel->m_checkBoxSqrt);
@@ -261,7 +263,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
             case 2:  // Lightning
             {
                 wxASSERT(m_panelProcessing);
-                auto* panel = dynamic_cast<asPanelProcessingLightning*>(m_panelProcessing);
+                auto panel = dynamic_cast<asPanelProcessingLightning*>(m_panelProcessing);
                 wxASSERT(panel->m_checkBoxLog);
 
                 // Instantiate a predictand object
@@ -278,7 +280,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
             default:
                 wxLogError(_("Wrong selection of the data parameter option."));
         }
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
     }

@@ -106,8 +106,6 @@ void asParametersOptimization::AddPredictorLocks(ParamsStepBool& step) {
 }
 
 bool asParametersOptimization::LoadFromFile(const wxString& filePath) {
-    wxLogVerbose(_("Loading parameters file."));
-
     if (filePath.IsEmpty()) {
         wxLogError(_("The given path to the parameters file is empty."));
         return false;
@@ -159,8 +157,6 @@ bool asParametersOptimization::LoadFromFile(const wxString& filePath) {
     FixTimeLimits();
     FixWeights();
     FixCoordinates();
-
-    wxLogVerbose(_("Parameters file loaded."));
 
     return true;
 }
@@ -868,7 +864,7 @@ void asParametersOptimization::CheckRange() {
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (!GetPredictorGridType(i, j).IsSameAs("Regular", false))
-                asThrow(asStrF(_("asParametersOptimization::CheckRange is not ready to use on "
+                throw runtime_error(asStrF(_("asParametersOptimization::CheckRange is not ready to use on "
                                  "unregular grids (PredictorGridType = %s)"),
                                GetPredictorGridType(i, j)));
 
@@ -992,7 +988,7 @@ bool asParametersOptimization::IsInRange() {
             }
 
             if (!GetPredictorGridType(i, j).IsSameAs("Regular", false))
-                asThrow(asStrF(_("asParametersOptimization::CheckRange is not ready to use on "
+                throw runtime_error(asStrF(_("asParametersOptimization::CheckRange is not ready to use on "
                                  "unregular grids (PredictorGridType = %s)"),
                                GetPredictorGridType(i, j)));
 

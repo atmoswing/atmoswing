@@ -65,6 +65,8 @@ class AtmoswingAppOptimizer : public wxAppConsole
 
     bool InitForCmdLineOnly();
 
+    static void InitLanguageSupport();
+
     virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
 
     virtual bool OnExceptionInMainLoop();

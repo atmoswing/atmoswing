@@ -41,13 +41,13 @@
 
 #endif
 
+#include <wx/stdpaths.h>
+
 #include "asMethodDownscalerClassic.h"
 #include "asParameters.h"
+#include "asFileText.h"
 
 IMPLEMENT_APP(AtmoswingAppDownscaler)
-
-#include "asFileText.h"
-#include "asMethodDownscalerClassic.h"
 
 #if USE_GUI
 
@@ -312,6 +312,9 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
         wxFileConfig::Set(pConfig);
     }
 
+    // Set locale
+    InitLanguageSupport();
+
     // Initialize log
     InitLog();
 
@@ -434,6 +437,56 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
     return true;
 }
 
+void AtmoswingAppDownscaler::InitLanguageSupport() {
+    wxLocale* locale;
+
+    wxConfigBase* pConfig = wxFileConfig::Get();
+    long language = pConfig->ReadLong("/General/Locale", wxLANGUAGE_DEFAULT);
+
+    if (wxLocale::IsAvailable(language)) {
+        locale = new wxLocale(language);
+
+#ifdef __WXGTK__
+        // add locale search paths
+        locale->AddCatalogLookupPathPrefix("/usr");
+        locale->AddCatalogLookupPathPrefix("/usr/local");
+        wxStandardPaths* paths = (wxStandardPaths*)&wxStandardPaths::Get();
+        wxString prefix = paths->GetInstallPrefix();
+        locale->AddCatalogLookupPathPrefix(prefix);
+#endif
+
+        locale->AddCatalog("app_downscaler_core");
+        locale->AddCatalog("app_downscaler_gui");
+        locale->AddCatalog("shared_base_core");
+        locale->AddCatalog("shared_base_gui");
+        locale->AddCatalog("shared_processing_core");
+
+        if (!locale->IsOk()) {
+            wxLogError("Selected language is wrong");
+            delete locale;
+            locale = new wxLocale(wxLANGUAGE_ENGLISH);
+            language = wxLANGUAGE_ENGLISH;
+        }
+    } else {
+        wxLogError("The selected language is not supported by your system. Try installing support for this language.");
+        locale = new wxLocale(wxLANGUAGE_ENGLISH);
+        language = wxLANGUAGE_ENGLISH;
+    }
+
+    // Set decimal separator to points
+    std::setlocale(LC_NUMERIC, "C");
+#if USE_GUI
+#ifdef __WXMSW__
+    const wxLanguageInfo *info = wxLocale::GetLanguageInfo(language);
+    wxUint32 lcid = MAKELCID(MAKELANGID(info->WinLang, info->WinSublang), SORT_DEFAULT);
+    wxChar buffer[2];
+    buffer[0] = '.';
+    buffer[1] = '\0';
+    SetLocaleInfo(lcid, LOCALE_SDECIMAL, buffer);
+#endif
+#endif
+}
+
 int AtmoswingAppDownscaler::OnRun() {
     if (g_guiMode) {
         return wxApp::OnRun();
@@ -473,7 +526,7 @@ int AtmoswingAppDownscaler::OnRun() {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught: %s"), msg);
         return 1;
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         return 1;

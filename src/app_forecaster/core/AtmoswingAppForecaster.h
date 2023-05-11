@@ -59,6 +59,8 @@ class AtmoswingAppForecaster : public wxAppConsole
 
     bool OnCmdLineParsed(wxCmdLineParser& parser) override;
 
+    static void InitLanguageSupport();
+
   private:
     bool m_doConfig;
     bool m_doForecast;

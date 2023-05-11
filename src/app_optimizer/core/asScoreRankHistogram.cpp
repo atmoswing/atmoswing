@@ -29,7 +29,7 @@
 
 asScoreRankHistogram::asScoreRankHistogram()
     : asScore(asScore::RankHistogram, _("Rank Histogram"), _("Verification Rank Histogram (Talagrand Diagram)"), Asc,
-              NaNf, NaNf) {}
+              NAN, NAN) {}
 
 asScoreRankHistogram::~asScoreRankHistogram() {}
 
@@ -39,20 +39,20 @@ float asScoreRankHistogram::Assess(float obs, const a1f& values, int nbElements)
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
-        return NaNf;
+        return NAN;
     }
     if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
+        return NAN;
     }
 
     // Create the container to sort the data
     a1f x = values;
 
     // NaNs are not allowed as it messes up the ranks
-    if (asHasNaN(&x[0], &x[nbElements - 1]) || asIsNaN(obs)) {
+    if (asHasNaN(&x[0], &x[nbElements - 1]) || isnan(obs)) {
         wxLogError(_("NaNs were found in the Rank Histogram processing function. Cannot continue."));
-        return NaNf;
+        return NAN;
     }
 
     // Sort the forcast array

@@ -88,7 +88,7 @@ bool asPredictorCustomMFvgMeso::Init() {
 void asPredictorCustomMFvgMeso::ListFiles(asTimeArray& timeArray) {
     // Check product directory
     if (!wxDirExists(GetFullDirectoryPath())) {
-        asThrow(asStrF(_("Cannot find predictor directory for FVG data (%s)."), GetFullDirectoryPath()));
+        throw runtime_error(asStrF(_("Cannot find predictor directory for FVG data (%s)."), GetFullDirectoryPath()));
     }
 
     // Check directory structure
@@ -98,7 +98,7 @@ void asPredictorCustomMFvgMeso::ListFiles(asTimeArray& timeArray) {
         if (wxDirExists(GetFullDirectoryPath() + asStrF("%4d", t0.year))) {
             skipMonthDayInPath = true;
         } else {
-            asThrow(_("Cannot find coherent predictor directory structure for FVG data."));
+            throw runtime_error(_("Cannot find coherent predictor directory structure for FVG data."));
         }
     }
 

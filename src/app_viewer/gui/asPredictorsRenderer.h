@@ -1,0 +1,80 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
+ *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ *
+ * The Original Software is AtmoSwing.
+ * The Original Software was developed at the University of Lausanne.
+ * All Rights Reserved.
+ *
+ */
+
+/*
+ * Portions Copyright 2022-2023 Pascal Horton, Terranum.
+ */
+
+#ifndef AS_PREDICTORS_VIEWER_H
+#define AS_PREDICTORS_VIEWER_H
+
+#include "asIncludes.h"
+#include "vroomgis.h"
+#include "asPanelPredictorsColorbar.h"
+
+
+class asPredictorsManager;
+
+class vrLayerRasterPredictor;
+
+class asPredictorsRenderer {
+  public:
+    asPredictorsRenderer(wxWindow* parent, vrLayerManager* layerManager,
+                         asPredictorsManager* predictorsManagerTarget,
+                         asPredictorsManager* predictorsManagerAnalog,
+                         vrViewerLayerManager* viewerLayerManagerTarget,
+                         vrViewerLayerManager* viewerLayerManagerAnalog);
+
+    virtual ~asPredictorsRenderer();
+
+    void LinkToColorbars(asPanelPredictorsColorbar* colorbarTarget, asPanelPredictorsColorbar* colorbarAnalog);
+
+    void Redraw(vf& domain, Coo& location);
+
+    vrLayerRasterPredictor* RedrawRasterPredictor(const wxString& name, vrViewerLayerManager* viewerLayerManager,
+                                                  asPredictorsManager* predictorsManager, double minVal, double maxVal);
+
+    void RedrawContourLines(const wxString& name, vrViewerLayerManager* viewerLayerManager,
+                            vrLayerRasterPredictor* layerRaster, double step);
+
+    void RedrawSpatialWindow(const wxString& name, vrViewerLayerManager* viewerLayerManager, vf &domain);
+
+    void RedrawLocation(const wxString& name, vrViewerLayerManager* viewerLayerManager, Coo& location);
+
+  protected:
+  private:
+    wxWindow* m_parent;
+    vrLayerManager* m_layerManager;
+    asPredictorsManager* m_predictorsManagerTarget;
+    asPredictorsManager* m_predictorsManagerAnalog;
+    vrViewerLayerManager* m_viewerLayerManagerTarget;
+    vrViewerLayerManager* m_viewerLayerManagerAnalog;
+    asPanelPredictorsColorbar* m_colorbarTarget;
+    asPanelPredictorsColorbar* m_colorbarAnalog;
+
+    void CloseLayerIfPresent(vrViewerLayerManager* viewerLayerManager, const wxFileName& memoryVector);
+
+    double ComputeStep(double minVal, double maxVal) const;
+};
+
+#endif

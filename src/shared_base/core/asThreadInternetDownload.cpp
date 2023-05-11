@@ -57,7 +57,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
     // Do the job
     if (curl) {
         // Set a buffer for the error messages
-        auto* errorbuffer = new char[CURL_ERROR_SIZE];
+        auto errorbuffer = new char[CURL_ERROR_SIZE];
         curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorbuffer);
         // Some servers don't like requests that are made without a user-agent field, so we provide one
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");

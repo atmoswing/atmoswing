@@ -683,6 +683,22 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
 
+	wxStaticBoxSizer* sbSizer11;
+	sbSizer11 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneralCommon, wxID_ANY, _("Language") ), wxVERTICAL );
+
+	wxString m_choiceLocaleChoices[] = { _("English"), _("French") };
+	int m_choiceLocaleNChoices = sizeof( m_choiceLocaleChoices ) / sizeof( wxString );
+	m_choiceLocale = new wxChoice( sbSizer11->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceLocaleNChoices, m_choiceLocaleChoices, 0 );
+	m_choiceLocale->SetSelection( 0 );
+	sbSizer11->Add( m_choiceLocale, 0, wxALL, 5 );
+
+	m_staticText59 = new wxStaticText( sbSizer11->GetStaticBox(), wxID_ANY, _("Restart AtmoSwing for the change to take effect."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText59->Wrap( -1 );
+	sbSizer11->Add( m_staticText59, 0, wxALL, 5 );
+
+
+	bSizer16->Add( sbSizer11, 0, wxEXPAND|wxALL, 5 );
+
 	wxStaticBoxSizer* sbSizer7;
 	sbSizer7 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneralCommon, wxID_ANY, _("Logs") ), wxVERTICAL );
 
@@ -750,7 +766,7 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	m_panelGeneralCommon->SetSizer( bSizer16 );
 	m_panelGeneralCommon->Layout();
 	bSizer16->Fit( m_panelGeneralCommon );
-	m_notebookBase->AddPage( m_panelGeneralCommon, _("General"), false );
+	m_notebookBase->AddPage( m_panelGeneralCommon, _("General"), true );
 	m_panelAdvanced = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );
@@ -895,7 +911,7 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	m_panelAdvanced->SetSizer( bSizer26 );
 	m_panelAdvanced->Layout();
 	bSizer26->Fit( m_panelAdvanced );
-	m_notebookBase->AddPage( m_panelAdvanced, _("Advanced"), true );
+	m_notebookBase->AddPage( m_panelAdvanced, _("Advanced"), false );
 
 	bSizer15->Add( m_notebookBase, 1, wxEXPAND | wxALL, 5 );
 

@@ -44,8 +44,6 @@ void asParametersCalibration::AddStep() {
 }
 
 bool asParametersCalibration::LoadFromFile(const wxString& filePath) {
-    wxLogVerbose(_("Loading parameters file."));
-
     if (filePath.IsEmpty()) {
         wxLogError(_("The given path to the parameters file is empty."));
         return false;
@@ -97,8 +95,6 @@ bool asParametersCalibration::LoadFromFile(const wxString& filePath) {
     FixTimeLimits();
     FixWeights();
     FixCoordinates();
-
-    wxLogVerbose(_("Parameters file loaded."));
 
     return true;
 }
@@ -524,22 +520,22 @@ void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPto
 
 bool asParametersCalibration::InputsOK() const {
     // Time properties
-    if (asIsNaN(GetArchiveStart())) {
+    if (isnan(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetArchiveEnd())) {
+    if (isnan(GetArchiveEnd())) {
         wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetCalibrationStart())) {
+    if (isnan(GetCalibrationStart())) {
         wxLogError(_("The beginning of the calibration period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetCalibrationEnd())) {
+    if (isnan(GetCalibrationEnd())) {
         wxLogError(_("The end of the calibration period was not provided in the parameters file."));
         return false;
     }
@@ -772,21 +768,20 @@ void asParametersCalibration::InitValues() {
 }
 
 bool asParametersCalibration::SetPredictandStationIdsVector(vvi val) {
-    if (val.size() < 1) {
+    if (val.empty()) {
         wxLogError(_("The provided predictand ID vector is empty."));
         return false;
-    } else {
-        if (val[0].size() < 1) {
-            wxLogError(_("The provided predictand ID vector is empty."));
-            return false;
-        }
+    }
+    if (val[0].empty()) {
+        wxLogError(_("The provided predictand ID vector is empty."));
+        return false;
+    }
 
-        for (int i = 0; i < (int)val.size(); i++) {
-            for (int j = 0; j < (int)val[i].size(); j++) {
-                if (asIsNaN(val[i][j])) {
-                    wxLogError(_("There are NaN values in the provided predictand ID vector."));
-                    return false;
-                }
+    for (auto& iVal : val) {
+        for (int v : iVal) {
+            if (v == 0) {
+                wxLogError(_("There are 0s in the provided predictand ID vector."));
+                return false;
             }
         }
     }
@@ -797,12 +792,12 @@ bool asParametersCalibration::SetPredictandStationIdsVector(vvi val) {
 }
 
 void asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(vi val) {
-    wxASSERT(val.size() > 0);
+    wxASSERT(!val.empty());
     m_timeArrayAnalogsIntervalDaysVect = val;
 }
 
 bool asParametersCalibration::SetScoreNameVector(vwxs val) {
-    wxASSERT(val.size() > 0);
+    wxASSERT(!val.empty());
     for (int i = 0; i < (int)val.size(); i++) {
         if (val[i].IsEmpty()) {
             wxLogError(_("There are NaN values in the provided scores vector."));
@@ -835,7 +830,7 @@ double asParametersCalibration::GetPreprocessHoursLowerLimit(int iStep, int iPto
     } else {
         wxLogError(
             _("Trying to access to an element outside of preprocessHours (lower limit) in the parameters object."));
-        return NaNd;
+        return NAN;
     }
 }
 
@@ -895,7 +890,7 @@ double asParametersCalibration::GetPreprocessHoursUpperLimit(int iStep, int iPto
     } else {
         wxLogError(
             _("Trying to access to an element outside of preprocessHours (upper limit) in the parameters object."));
-        return NaNd;
+        return NAN;
     }
 }
 

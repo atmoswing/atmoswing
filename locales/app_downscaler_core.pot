@@ -1,0 +1,381 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-07 10:51+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/app_downscaler/core/asFileParametersDownscaling.cpp:47
+#, c-format
+msgid "The file %s is not a parameters file for the Downscaler."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:85
+#, c-format
+msgid "The whole processing took %.3f min to execute"
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:87
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:535
+msgid "Downscaling over."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:90
+msgid "The series could not be downscaled"
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:129
+msgid "The time array mode for the archive dates is not correctly defined."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:135
+#, c-format
+msgid ""
+"The time array is not consistent in asMethodDownscaler::GetAnalogsDates: "
+"size=%d."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:144
+msgid "The time array mode for the target dates is not correctly defined."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:151
+#: src/app_downscaler/core/asMethodDownscaler.cpp:160
+#: src/app_downscaler/core/asMethodDownscaler.cpp:231
+msgid "Failed loading predictor data."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:202
+#: src/app_downscaler/core/asMethodDownscaler.cpp:253
+msgid "Failed processing the analogs dates."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:274
+msgid "Failed setting the predictand values to the corresponding analog dates."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:297
+#: src/app_downscaler/core/asMethodDownscalerClassic.cpp:66
+msgid "The dates selection contains NaNs"
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:316
+msgid "Loading model scenario."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:330
+msgid "Projection data loaded."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:334
+#, c-format
+msgid "Bad allocation during scenario data loading: %s"
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:338
+#, c-format
+msgid "Exception during scenario data loading: %s"
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:374
+#: src/app_downscaler/core/asMethodDownscaler.cpp:430
+msgid "The data could not be loaded."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:384
+#: src/app_downscaler/core/asMethodDownscaler.cpp:454
+msgid "Data standardisation has failed."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:401
+#, c-format
+msgid "Preprocessing data (%d predictor(s)) while loading."
+msgstr ""
+
+#: src/app_downscaler/core/asMethodDownscaler.cpp:445
+msgid "Data preprocessing failed."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:54
+msgid "The given path to the parameters file is empty."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:353
+msgid ""
+"The beginning of the archive period was not provided in the parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:358
+msgid "The end of the archive period was not provided in the parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:363
+msgid ""
+"The beginning of the downscaling period was not provided in the parameters "
+"file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:368
+msgid ""
+"The end of the downscaling period was not provided in the parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:373
+#: src/app_downscaler/core/asParametersDownscaling.cpp:378
+msgid "The time step was not provided in the parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:385
+msgid ""
+"The interval days for the analogs preselection was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:390
+msgid ""
+"The number of days to exclude around the target date was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:398
+#, c-format
+msgid ""
+"The number of analogs (step %d) was not provided in the parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:406
+#, c-format
+msgid ""
+"The preprocessing method (step %d, predictor %d) was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:413
+#, c-format
+msgid ""
+"The projection dataset for preprocessing (step %d, predictor %d) was not "
+"provided in the parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:419
+#: src/app_downscaler/core/asParametersDownscaling.cpp:425
+#, c-format
+msgid ""
+"The projection data for preprocessing (step %d, predictor %d) was not "
+"provided in the parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:431
+#, c-format
+msgid ""
+"The archive dataset for preprocessing (step %d, predictor %d) was not "
+"provided in the parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:437
+#, c-format
+msgid ""
+"The archive data for preprocessing (step %d, predictor %d) was not provided "
+"in the parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:446
+#, c-format
+msgid ""
+"The projection dataset (step %d, predictor %d) was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:452
+#, c-format
+msgid ""
+"The projection data (step %d, predictor %d) was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:458
+#, c-format
+msgid ""
+"The archive dataset (step %d, predictor %d) was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:463
+#, c-format
+msgid ""
+"The archive data (step %d, predictor %d) was not provided in the parameters "
+"file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:470
+#, c-format
+msgid "The grid type (step %d, predictor %d) is empty in the parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:474
+#, c-format
+msgid ""
+"The X points nb value (step %d, predictor %d) was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:479
+#, c-format
+msgid ""
+"The Y points nb value (step %d, predictor %d) was not provided in the "
+"parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:484
+#, c-format
+msgid ""
+"The criteria (step %d, predictor %d) was not provided in the parameters file."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:492
+msgid ""
+"The station ID was not provided in the parameters file (it can be on "
+"purpose)."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:535
+#: src/app_downscaler/core/asParametersDownscaling.cpp:539
+msgid "The provided predictand ID vector is empty."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:546
+msgid "There are 0s in the provided predictand ID vector."
+msgstr ""
+
+#: src/app_downscaler/core/asParametersDownscaling.cpp:571
+#: src/app_downscaler/core/asParametersDownscaling.cpp:589
+msgid ""
+"Trying to access to an element outside of preprocessDatasetIds in the "
+"parameters object."
+msgstr ""
+
+#: src/app_downscaler/core/asPredictorProj.cpp:50
+msgid "The requested dataset does not exist. Please correct the dataset Id."
+msgstr ""
+
+#: src/app_downscaler/core/asPredictorProj.cpp:59
+msgid "The predictor did not initialize correctly."
+msgstr ""
+
+#: src/app_downscaler/core/asPredictorProjCmip5.cpp:157
+#: src/app_downscaler/core/asPredictorProjCordex.cpp:173
+#, c-format
+msgid ""
+"The path to the directory has not been set for the data %s from the dataset "
+"%s."
+msgstr ""
+
+#: src/app_downscaler/core/asPredictorProjCmip5.cpp:188
+#, c-format
+msgid "The dates sequence was not found in the CMIP5 file name : %s."
+msgstr ""
+
+#: src/app_downscaler/core/asPredictorProjCordex.cpp:189
+#, c-format
+msgid "No CORDEX file found for this pattern : %s."
+msgstr ""
+
+#: src/app_downscaler/core/asPredictorProjCordex.cpp:202
+#, c-format
+msgid "The dates sequence was not found in the CORDEX file name : %s."
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:139
+msgid "Program already running, aborting."
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:286
+msgid "A directory with the same name already exists.\n"
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:287
+msgid "A directory with the same name already exists."
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:341
+msgid "The value provided for 'log-level' could not be interpreted.\n"
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:368
+#, c-format
+msgid "The given downscaling file (%s) couldn't be found."
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:380
+#, c-format
+msgid "The given predictand DB (%s) couldn't be found."
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:392
+#, c-format
+msgid "The given archive predictors directory (%s) couldn't be found."
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:404
+#, c-format
+msgid "The given scenario predictors directory (%s) couldn't be found."
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:422
+msgid "Initialization for command-line interface failed."
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:426
+#, c-format
+msgid "Given downscaling method: %s"
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:500
+msgid "The parameters file is not given."
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:505
+msgid "The predictand DB is not given."
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:510
+msgid "The predictors directory is not given."
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:527
+#, c-format
+msgid "Bad allocation caught: %s"
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:531
+#, c-format
+msgid "Exception caught: %s"
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:536
+msgid "Downscaling over.\n"
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:570
+msgid "An exception occured in the main loop"
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:575
+msgid "An fatal exception occured"
+msgstr ""
+
+#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:579
+msgid "An unhandled exception occured"
+msgstr ""

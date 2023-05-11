@@ -34,6 +34,8 @@ asFramePreferencesForecaster::asFramePreferencesForecaster(wxWindow* parent, asB
                                                            wxWindowID id)
     : asFramePreferencesForecasterVirtual(parent, id),
       m_batchForecasts(batchForecasts) {
+    SetLabel(_("Preferences"));
+
     LoadPreferences();
     Fit();
 
@@ -101,6 +103,19 @@ void asFramePreferencesForecaster::LoadPreferences() {
      * General
      */
 
+    // Locale
+    long locale = pConfig->ReadLong("/General/Locale", (long)wxLANGUAGE_ENGLISH);
+    switch (locale) {
+        case (long)wxLANGUAGE_ENGLISH:
+            m_choiceLocale->SetSelection(0);
+            break;
+        case (long)wxLANGUAGE_FRENCH:
+            m_choiceLocale->SetSelection(1);
+            break;
+        default:
+            m_choiceLocale->SetSelection(0);
+    }
+
     // Log
     long logLevelForecaster = pConfig->ReadLong("/General/LogLevel", 1);
     if (logLevelForecaster == 1) {
@@ -143,7 +158,6 @@ void asFramePreferencesForecaster::LoadPreferences() {
 
     // Downloads
     m_textCtrlMaxPrevStepsNb->SetValue(pConfig->Read("/Internet/MaxPreviousStepsNb", "5"));
-    m_textCtrlMaxRequestsNb->SetValue(pConfig->Read("/Internet/ParallelRequestsNb", "5"));
     m_checkBoxRestrictDownloads->SetValue(pConfig->ReadBool("/Internet/RestrictDownloads", true));
 
     // Advanced options
@@ -220,6 +234,18 @@ void asFramePreferencesForecaster::SavePreferences() {
      * General
      */
 
+    // Locale
+    switch (m_choiceLocale->GetSelection()) {
+        case 0:
+            pConfig->Write("/General/Locale", (long)wxLANGUAGE_ENGLISH);
+            break;
+        case 1:
+            pConfig->Write("/General/Locale", (long)wxLANGUAGE_FRENCH);
+            break;
+        default:
+            pConfig->Write("/General/Locale", (long)wxLANGUAGE_ENGLISH);
+    }
+
     // Log
     long logLevelForecaster = 1;
     if (m_radioBtnLogLevel1->GetValue()) {
@@ -270,9 +296,6 @@ void asFramePreferencesForecaster::SavePreferences() {
     wxString internetMaxPrevStepsNb = m_textCtrlMaxPrevStepsNb->GetValue();
     if (!internetMaxPrevStepsNb.IsNumber()) internetMaxPrevStepsNb = "5";
     pConfig->Write("/Internet/MaxPreviousStepsNb", internetMaxPrevStepsNb);
-    wxString internetParallelRequestsNb = m_textCtrlMaxRequestsNb->GetValue();
-    if (!internetParallelRequestsNb.IsNumber()) internetParallelRequestsNb = "5";
-    pConfig->Write("/Internet/ParallelRequestsNb", internetParallelRequestsNb);
     bool restrictDownloads = m_checkBoxRestrictDownloads->GetValue();
     pConfig->Write("/Internet/RestrictDownloads", restrictDownloads);
 

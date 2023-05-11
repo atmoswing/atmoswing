@@ -33,9 +33,9 @@
 #include <wx/frame.h>
 #include <wx/filepicker.h>
 #include <wx/choice.h>
+#include <wx/statbox.h>
 #include <wx/radiobut.h>
 #include <wx/checkbox.h>
-#include <wx/statbox.h>
 #include <wx/radiobox.h>
 #include <wx/slider.h>
 #include <wx/notebook.h>
@@ -47,9 +47,9 @@ WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asFrameMainVirtual
+/// Class asFrameForecasterVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFrameMainVirtual : public wxFrame
+class asFrameForecasterVirtual : public wxFrame
 {
 	private:
 
@@ -66,6 +66,8 @@ class asFrameMainVirtual : public wxFrame
 		wxStaticText* m_staticTextProgressTot;
 		wxFlexGridSizer* m_sizerLeds;
 		wxButton* m_button2;
+		wxStaticText* m_staticText34;
+		wxStaticText* m_staticTextbatchFile;
 		wxScrolledWindow* m_scrolledWindowForecasts;
 		wxBoxSizer* m_sizerForecasts;
 		wxBitmapButton* m_bpButtonAdd;
@@ -98,9 +100,9 @@ class asFrameMainVirtual : public wxFrame
 
 	public:
 
-		asFrameMainVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Forecaster"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 600,700 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameForecasterVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Forecaster"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 600,700 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
-		~asFrameMainVirtual();
+		~asFrameForecasterVirtual();
 
 };
 
@@ -157,6 +159,8 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 		wxStaticText* m_staticTextExport;
 		wxChoice* m_choiceExports;
 		wxPanel* m_panelGeneralCommon;
+		wxChoice* m_choiceLocale;
+		wxStaticText* m_staticText34;
 		wxRadioButton* m_radioBtnLogLevel1;
 		wxRadioButton* m_radioBtnLogLevel2;
 		wxRadioButton* m_radioBtnLogLevel3;
@@ -179,8 +183,6 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 		wxRadioBox* m_radioBoxGui;
 		wxStaticText* m_staticTextNumberFails;
 		wxTextCtrl* m_textCtrlMaxPrevStepsNb;
-		wxStaticText* m_staticTextMaxRequestsNb;
-		wxTextCtrl* m_textCtrlMaxRequestsNb;
 		wxCheckBox* m_checkBoxRestrictDownloads;
 		wxCheckBox* m_checkBoxResponsiveness;
 		wxCheckBox* m_checkBoxMultiInstancesForecaster;

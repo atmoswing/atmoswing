@@ -53,7 +53,7 @@ float asCriteriaDSD::Assess(const a2f& refData, const a2f& evalData, int rowsNb,
         int size = (!evalData.isNaN() && !refData.isNaN()).count();
         if (size <= 1) {
             wxLogVerbose(_("Not enough data to process the DSD score."));
-            return NaNf;
+            return NAN;
         }
 
         float refMean = ((!evalData.isNaN() && !refData.isNaN()).select(refData, 0)).sum() / float(size);

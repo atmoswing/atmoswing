@@ -29,6 +29,7 @@
 #ifndef AS_PREDICTAND_H
 #define AS_PREDICTAND_H
 
+#include "asFileDat.h"
 #include "asIncludes.h"
 
 class asCatalogPredictands;
@@ -61,10 +62,7 @@ class asPredictand : public wxObject {
         OneHourlyMTW,
         ThreeHourlyMTW,
         SixHourlyMTW,
-        TwelveHourlyMTW,
-        TwoDays,
-        ThreeDays,
-        Weekly
+        TwelveHourlyMTW
     };
 
     enum SpatialAggregation {
@@ -113,22 +111,26 @@ class asPredictand : public wxObject {
 
     virtual a1f GetReferenceAxis() const {
         a1f nodata(1);
-        nodata << NaNf;
+        nodata[0] = NAN;
         return nodata;
     }
 
     virtual float GetReferenceValue(int iStat, double duration, float reference) const {
-        return NaNf;
+        return NAN;
     }
 
     virtual a2f GetReferenceValuesArray() const {
         a1f nodata(1);
-        nodata << NaNf;
+        nodata[0] = NAN;
         return nodata;
     }
 
     wxString GetDatasetId() const {
         return m_datasetId;
+    }
+
+    wxString GetCoordSys() const {
+        return m_coordSys;
     }
 
     Parameter GetDataParameter() const {
@@ -207,6 +209,7 @@ class asPredictand : public wxObject {
     TemporalResolution m_temporalResolution;
     SpatialAggregation m_spatialAggregation;
     wxString m_datasetId;
+    wxString m_coordSys;
     double m_timeStepDays;
     int m_timeLength;
     int m_stationsNb;
@@ -249,11 +252,17 @@ class asPredictand : public wxObject {
 
     bool SetStationProperties(asCatalogPredictands& currentData, size_t stationIndex);
 
-    bool GetFileContent(asCatalogPredictands& currentData, size_t stationIndex,
+    bool GetFileContent(asCatalogPredictands& currentData, int stationIndex,
                         const wxString& directory = wxEmptyString, const wxString& patternDir = wxEmptyString);
 
   private:
     float ParseAndCheckDataValue(asCatalogPredictands& currentData, wxString& dataStr) const;
+
+    bool ParseConstantWidthContent(int stationIndex, const asFileDat::Pattern& pattern,
+                                   const wxString& lineContent, asCatalogPredictands& currentData, int& timeIndex);
+
+    bool ParseTabsDelimitedContent(int stationIndex, const asFileDat::Pattern& pattern,
+                                   const wxString& lineContent, asCatalogPredictands& currentData, int& timeIndex);
 };
 
 #endif

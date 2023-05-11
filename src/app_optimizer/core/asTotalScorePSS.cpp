@@ -51,14 +51,14 @@ float asTotalScorePSS::Assess(const a1f& targetDates, const a1f& scores, const a
                     countD++;
                 } else {
                     wxLogError(_("The PSS score (%f) is not an authorized value."), scores[i]);
-                    return NaNf;
+                    return NAN;
                 }
             }
             break;
         }
 
         default: {
-            asThrow(_("Period not yet implemented in asTotalScorePSS."));
+            throw runtime_error(_("Period not yet implemented in asTotalScorePSS."));
         }
     }
 
@@ -75,7 +75,7 @@ float asTotalScorePSS::Assess(const a1f& targetDates, const a1f& scores, const a
             score = 0;
         }
     } else {
-        score = NaNf;
+        score = NAN;
     }
 
     return score;

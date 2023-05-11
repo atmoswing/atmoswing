@@ -50,6 +50,20 @@ bool asForecastManager::HasForecasts() const {
     return (m_aggregator->GetMethodsNb() > 0);
 }
 
+bool asForecastManager::HasSubDailyForecasts() const {
+    wxASSERT(m_aggregator);
+
+    for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
+        for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
+            if (m_aggregator->GetForecast(i, j)->IsSubDaily()) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 void asForecastManager::AddDirectoryPastForecasts(const wxString& dir) {
     m_directoriesPastForecasts.Add(dir);
 }
@@ -137,7 +151,7 @@ bool asForecastManager::Open(const wxString& filePath, bool doRefresh) {
     }
 
     // Create and load the forecast
-    auto* forecast = new asResultsForecast;
+    auto forecast = new asResultsForecast;
 
     forecast->SetFilePath(filePath);
     if (!forecast->Load()) {
@@ -151,6 +165,13 @@ bool asForecastManager::Open(const wxString& filePath, bool doRefresh) {
         ClearForecasts();
     }
     m_leadTimeOrigin = forecast->GetLeadTimeOrigin();
+
+    // Limit length
+    if (forecast->IsSubDaily() && m_workspace->GetTimeSeriesMaxLengthSubDaily() > 0) {
+        forecast->LimitDataToHours(m_workspace->GetTimeSeriesMaxLengthSubDaily());
+    } else if (!forecast->IsSubDaily() && m_workspace->GetTimeSeriesMaxLengthDaily() > 0) {
+        forecast->LimitDataToDays(m_workspace->GetTimeSeriesMaxLengthDaily());
+    }
 
     if (m_aggregator->Add(forecast)) {
 #if USE_GUI
@@ -192,7 +213,7 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     }
 
     // Create and load the forecast
-    auto* forecast = new asResultsForecast;
+    auto forecast = new asResultsForecast;
 
     forecast->SetFilePath(filePath);
     if (!forecast->Load()) {
@@ -205,6 +226,14 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
         wxDELETE(forecast);
         return false;
     }
+
+    // Limit length
+    if (forecast->IsSubDaily() && m_workspace->GetTimeSeriesMaxLengthSubDaily() > 0) {
+        forecast->LimitDataToHours(m_workspace->GetTimeSeriesMaxLengthSubDaily());
+    } else if (!forecast->IsSubDaily() && m_workspace->GetTimeSeriesMaxLengthDaily() > 0) {
+        forecast->LimitDataToDays(m_workspace->GetTimeSeriesMaxLengthDaily());
+    }
+
     m_aggregator->AddPastForecast(methodRow, forecastRow, forecast);
 
     wxLogVerbose("Past forecast of %s - %s of the %s loaded", forecast->GetMethodId(), forecast->GetSpecificTag(),
@@ -260,7 +289,9 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow) {
             wxString filenameV1 = asStrF("%s.%s.fcst", nowstrV1, forecastname);
             wxString fullPathV1 = currentDirPath + filenameV1;
 
-            if (wxFileName::FileExists(fullPathV3)) {
+            if (wxFileName::FileExists(fullPathV4)) {
+                OpenPastForecast(methodRow, forecastRow, fullPathV4);
+            } else if (wxFileName::FileExists(fullPathV3)) {
                 OpenPastForecast(methodRow, forecastRow, fullPathV3);
             } else if (wxFileName::FileExists(fullPathV2)) {
                 OpenPastForecast(methodRow, forecastRow, fullPathV2);

@@ -44,11 +44,11 @@ class asLeadTimeSwitcher : public wxPanel {
 
     ~asLeadTimeSwitcher() override;
 
+    void SetForecastSelection(int iMethod, int iForecast);
+
     void Draw(a1f& dates);
 
     void SetLeadTime(int leadTime);
-
-    void SetParent(wxWindow* parent);
 
   private:
     wxWindow* m_parent;
@@ -57,16 +57,21 @@ class asLeadTimeSwitcher : public wxPanel {
     wxBitmap* m_bmp;
     wxGraphicsContext* m_gdc;
     wxOverlay m_overlay;
+    bool m_hasSubDaily;
+    bool m_subDailyMode;
+    double m_subDailyFraction;
     int m_cellWidth;
+    int m_cellHeight;
+    int m_margin;
     int m_leadTime;
 
     void OnLeadTimeSlctChange(wxMouseEvent& event);
 
-    void SetBitmap(wxBitmap* bmp);
-
     void SetLeadTimeMarker(int leadTime);
 
-    void CreatePath(wxGraphicsPath& path, int iCol);
+    void CreatePath(wxGraphicsPath& path, int iCol) const;
+
+    void CreatePathSubDaily(wxGraphicsPath& path, int iCol) const;
 
     void CreatePathRing(wxGraphicsPath& path, const wxPoint& center, double scale, int segmentsTotNb, int segmentNb);
 
@@ -77,6 +82,8 @@ class asLeadTimeSwitcher : public wxPanel {
     void CreatePathMarker(wxGraphicsPath& path, int iCol);
 
     void OnPaint(wxPaintEvent& event);
+
+    int GetSubDailyLeadTimeStartShift() const;
 };
 
 #endif

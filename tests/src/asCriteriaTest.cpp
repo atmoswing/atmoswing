@@ -28,7 +28,7 @@
 
 #include <gtest/gtest.h>
 
-#include "asAreaRegGrid.h"
+#include "asAreaGridRegular.h"
 #include "asCriteria.h"
 #include "asFileText.h"
 #include "asPredictor.h"
@@ -166,7 +166,7 @@ TEST(Criteria, S1preprocessed) {
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -237,7 +237,7 @@ TEST(Criteria, S2preprocessed) {
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -651,10 +651,10 @@ TEST(Criteria, RMSEwithNaNs) {
     int lats = 4;
     a2f refData(lats, lons), candData(lats, lons);
 
-    refData << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NaNf, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f, 0.4553f,
+    refData << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NAN, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f, 0.4553f,
         0.2353f, 0.5602f, 0.2524f, 0.8011f;
     candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
-        0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
+        0.9309f, 0.3185f, 0.2835f, 0.5472f, NAN;
 
     asCriteria* criteria = asCriteria::GetInstance("RMSE");
 
@@ -843,10 +843,10 @@ TEST(Criteria, DMV) {
     candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
         0.9309f, 0.3185f, 0.2835f, 0.5472f, 0.7519f;
 
-    refDataNaN << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NaNf, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f, 0.4553f,
+    refDataNaN << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NAN, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f, 0.4553f,
         0.2353f, 0.5602f, 0.2524f, 0.8011f;
     candDataNaN << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
-        0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
+        0.9309f, 0.3185f, 0.2835f, 0.5472f, NAN;
 
     asCriteria* criteria = asCriteria::GetInstance("DMV");
 
@@ -871,10 +871,10 @@ TEST(Criteria, DSD) {
     candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
         0.9309f, 0.3185f, 0.2835f, 0.5472f, 0.7519f;
 
-    refDataNaN << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NaNf, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f, 0.4553f,
+    refDataNaN << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NAN, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f, 0.4553f,
         0.2353f, 0.5602f, 0.2524f, 0.8011f;
     candDataNaN << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
-        0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
+        0.9309f, 0.3185f, 0.2835f, 0.5472f, NAN;
 
     asCriteria* criteria = asCriteria::GetInstance("DSD");
 

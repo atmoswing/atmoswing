@@ -1,22 +1,75 @@
 # Changelog AtmoSwing
 
-## not released
+
+## v3.0.4 - 09 May 2023
 
 ### Fixed
 
-*   Time units were missing in the predictand db.
+*   Addition of missing translations related to vroomgis.
 
 
-## v2.1.7 - NOT RELEASED
+## v3.0.3 - 08 May 2023
 
 ### Added
 
+*   Adding the location of the target in the predictors mapping.
+*   Adding the batch file name in the Forecaster frame.
+
+### Fixed
+
+*   Fixing date issue in the predictors mapping.
+*   Translating the frame labels.
+
+
+## v3.0.2 - 18 Apr 2023
+
+### Fixed
+
+*   Fixing issue with the predictors mapping.
+
+
+## v3.0.1 - 17 Apr 2023
+
+### Fixed
+
+*   Fixing issue with the predictors mapping.
+
+
+## v3.0.0 - 17 Apr 2023
+
+### Added
+
+*   A new frame has been added to visualize the predictor fields (from NWP models and reanalyses). 
+    It allows comparing the predicted situation with the analog situations.
+*   Real support of the 6-hourly forecasts in the Viewer.
+*   Translation of all modules in French.
 *   Adding path to ecCodes definitions in the preferences.
+*   Docker: adding ecCodes definitions path to the environment variables.
+*   Adding column water vapor variable.
+*   Adding support and tests for the ARPEGE model outputs.
+*   Adding options in the workspace to limit the time series length to be displayed.
+
+### Changed
+
+*   Removing inefficient mini-batch assessment on full period.
+*   Improving mini-batches optimisation end.
+*   Changing Forecaster batch file extension to xml.
+*   Viewer workspaces now support relative paths for GIS layers.
+*   Using std::runtime_error instead of custom exception macro.
+*   Addition of predictor properties in the forecast result files.
+*   Renaming the operational predictor dataset IDs.
+*   Removing custom NaN management approach for C++ built-in approach.
+*   Removing parallel download as it is disliked by data providers.
 
 ### Fixed
 
 *   Fixing CUDA options issues.
-*   Docker: adding ecCodes definitions path to the environment variables.
+*   Time units were missing in the predictand db.
+*   Fixing issue with the epoch number after restoration.
+*   Improving code based on Codacy analysis.
+*   Fixing a potential crash in the Optimizer (when the predictor levels and times vary).
+*   Fixing results csv export from plot.
+*   Fixing issues with 6-hourly forecasts.
 
 
 ## v2.1.6 - 22 Nov 2022

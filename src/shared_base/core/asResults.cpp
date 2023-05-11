@@ -31,8 +31,8 @@
 #include "asFileNetcdf.h"
 
 asResults::asResults()
-    : m_fileVersionMajor(2),
-      m_fileVersionMinor(1),
+    : m_fileVersionMajor(3),
+      m_fileVersionMinor(0),
       m_currentStep(0),
       m_dateProcessed(0),
       m_subFolder(wxEmptyString),

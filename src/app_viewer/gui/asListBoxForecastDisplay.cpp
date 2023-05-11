@@ -27,7 +27,7 @@
 
 #include "asListBoxForecastDisplay.h"
 
-#include "asForecastViewer.h"
+#include "asForecastRenderer.h"
 #include "asIncludes.h"
 
 BEGIN_EVENT_TABLE(asListBoxForecastDisplay, wxListBox)

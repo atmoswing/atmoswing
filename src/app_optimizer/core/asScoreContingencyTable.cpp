@@ -29,20 +29,20 @@
 #include "asScoreContingencyTable.h"
 
 asScoreContingencyTable::asScoreContingencyTable()
-    : asScore(asScore::ContingencyTable, _("Contingency table"), _("Contingency table"), Asc, NaNf, NaNf) {}
+    : asScore(asScore::ContingencyTable, _("Contingency table"), _("Contingency table"), Asc, NAN, NAN) {}
 
 float asScoreContingencyTable::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(!asIsNaN(m_threshold));
+    wxASSERT(!isnan(m_threshold));
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
-        return NaNf;
+        return NAN;
     }
     if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
+        return NAN;
     }
 
     // Create the container to sort the data
@@ -52,21 +52,21 @@ float asScoreContingencyTable::Assess(float obs, const a1f& values, int nbElemen
     int nbPredict = CleanNans(values, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the Contingency table processing function."));
-        return NaNf;
+        return NAN;
     } else if (nbPredict <= 2) {
         wxLogWarning(_("Not enough elements to process the Contingency table."));
-        return NaNf;
+        return NAN;
     }
 
     a1f cleanValues = x.head(nbPredict);
-    float score = NaNf;
+    float score = NAN;
     float value = 0;
 
     if (m_onMean) {
         value = cleanValues.mean();
     } else {
         // Get value for quantile
-        wxASSERT(!asIsNaN(m_quantile));
+        wxASSERT(!isnan(m_quantile));
         wxASSERT(m_quantile > 0);
         wxASSERT(m_quantile < 1);
         value = asGetValueForQuantile(cleanValues, m_quantile);

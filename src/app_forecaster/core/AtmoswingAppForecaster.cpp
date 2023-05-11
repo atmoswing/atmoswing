@@ -45,7 +45,8 @@
 
 IMPLEMENT_APP(AtmoswingAppForecaster)
 
-#include "asBatchForecasts.h"
+#include <wx/stdpaths.h>
+
 #include "asFileText.h"
 #include "asInternet.h"
 #include "asMethodForecasting.h"
@@ -91,7 +92,7 @@ bool AtmoswingAppForecaster::OnInit() {
 #endif
 
     // Set application name and create user directory
-    wxString appName = "AtmoSwing forecaster";
+    wxString appName = "AtmoSwing Forecaster";
     wxApp::SetAppName(appName);
     wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir());
     userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
@@ -107,6 +108,9 @@ bool AtmoswingAppForecaster::OnInit() {
         "AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingForecaster.ini",
         asConfig::GetUserDataDir() + "AtmoSwingForecaster.ini", wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
+
+    // Set locale
+    InitLanguageSupport();
 
 #if USE_GUI
     g_guiMode = true;
@@ -342,6 +346,56 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
     }
 
     return true;
+}
+
+void AtmoswingAppForecaster::InitLanguageSupport() {
+    wxLocale* locale;
+
+    wxConfigBase* pConfig = wxFileConfig::Get();
+    long language = pConfig->ReadLong("/General/Locale", wxLANGUAGE_DEFAULT);
+
+    if (wxLocale::IsAvailable(language)) {
+        locale = new wxLocale(language);
+
+#ifdef __WXGTK__
+        // add locale search paths
+        locale->AddCatalogLookupPathPrefix("/usr");
+        locale->AddCatalogLookupPathPrefix("/usr/local");
+        wxStandardPaths* paths = (wxStandardPaths*)&wxStandardPaths::Get();
+        wxString prefix = paths->GetInstallPrefix();
+        locale->AddCatalogLookupPathPrefix(prefix);
+#endif
+
+        locale->AddCatalog("app_forecaster_core");
+        locale->AddCatalog("app_forecaster_gui");
+        locale->AddCatalog("shared_base_core");
+        locale->AddCatalog("shared_base_gui");
+        locale->AddCatalog("shared_processing_core");
+
+        if (!locale->IsOk()) {
+            wxLogError("Selected language is wrong");
+            delete locale;
+            locale = new wxLocale(wxLANGUAGE_ENGLISH);
+            language = wxLANGUAGE_ENGLISH;
+        }
+    } else {
+        wxLogError("The selected language is not supported by your system. Try installing support for this language.");
+        locale = new wxLocale(wxLANGUAGE_ENGLISH);
+        language = wxLANGUAGE_ENGLISH;
+    }
+
+    // Set decimal separator to points
+    std::setlocale(LC_NUMERIC, "C");
+#if USE_GUI
+#ifdef __WXMSW__
+    const wxLanguageInfo *info = wxLocale::GetLanguageInfo(language);
+    wxUint32 lcid = MAKELCID(MAKELANGID(info->WinLang, info->WinSublang), SORT_DEFAULT);
+    wxChar buffer[2];
+    buffer[0] = '.';
+    buffer[1] = '\0';
+    SetLocaleInfo(lcid, LOCALE_SDECIMAL, buffer);
+#endif
+#endif
 }
 
 int AtmoswingAppForecaster::OnRun() {

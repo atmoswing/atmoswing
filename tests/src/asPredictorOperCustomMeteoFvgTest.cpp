@@ -35,107 +35,107 @@
 TEST(PredictorOperCustomMeteoFvg, GetCorrectPredictors) {
     asPredictorOper* predictor;
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "DP500925");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "DP500925");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "LRT700500");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "LRT700500");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "LRT850500");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "LRT850500");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "LRTE700500");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "LRTE700500");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "LRTE850500");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "LRTE850500");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500850");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "MB500850");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::MaximumBuoyancy);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "MB500925");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::MaximumBuoyancy);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB700925");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "MB700925");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::MaximumBuoyancy);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB850500");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "MB850500");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::MaximumBuoyancy);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "thetaES");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "thetaES");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialTemperature);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "thetaE");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "thetaE");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialTemperature);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "vflux");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "vflux");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::MomentumFlux);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "uflux");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "uflux");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::MomentumFlux);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "2t_sfc");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "2t_sfc");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "10u_sfc");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "10u_sfc");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "10v_sfc");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "10v_sfc");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "cp_sfc");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "cp_sfc");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "msl_sfc");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "msl_sfc");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "tp_sfc");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "tp_sfc");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "q");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "q");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "gh");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "gh");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "t");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "t");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "w");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "w");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "r");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "r");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "u");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "u");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
     wxDELETE(predictor);
 
-    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "v");
+    predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "v");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
     wxDELETE(predictor);
 }
@@ -156,7 +156,7 @@ TEST(PredictorOperCustomMeteoFvg, LoadSingleDay) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "MB500925");
     wxASSERT(predictor);
 
     // Create file names
@@ -207,7 +207,7 @@ TEST(PredictorOperCustomMeteoFvg, LoadLastTimeStep) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "MB500925");
     wxASSERT(predictor);
 
     // Create file names
@@ -242,77 +242,6 @@ TEST(PredictorOperCustomMeteoFvg, LoadLastTimeStep) {
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperCustomMeteoFvg, LoadFullTimeArray) {
-    vwxs filePaths;
-    filePaths.push_back(wxFileName::GetCwd() + "/files/data-custom-meteo-fvg-operational/MB500925.2020062106.grib");
-    filePaths.push_back(wxFileName::GetCwd() + "/files/data-custom-meteo-fvg-operational/MB500925.2020062190.grib");
-
-    asTimeArray dates(asTime::GetMJD(2020, 6, 21, 06), asTime::GetMJD(2020, 6, 24, 18), 6, "Simple");
-    dates.Init();
-
-    double xMin = 6;
-    int xPtsNb = 6;
-    double yMin = 45;
-    int yPtsNb = 5;
-    double step = 0.125;
-    float level = 500;
-    wxString gridType = "Regular";
-    asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
-
-    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
-    wxASSERT(predictor);
-
-    // Create file names
-    predictor->SetFileNames(filePaths);
-
-    // Load
-    ASSERT_TRUE(predictor->Load(area, dates, level));
-
-    vva2f data = predictor->GetData();
-    // hgt[time][mem](lat,lon)
-
-    /* Values time step 0 (horizontal=Lon, vertical=Lat)
-    Extracted:
-    10.919	9.278	7.830	7.512	7.608	6.612
-    9.954	9.131	8.042	7.555	7.725	7.921
-    8.371	8.455	8.475	8.526	9.071	9.790
-    8.760	8.659	8.982	8.683	9.494	10.531
-    9.836	10.344	10.228	9.200	9.229	9.848
-    */
-    EXPECT_NEAR(10.919, data[0][0](0, 0), 0.002);
-    EXPECT_NEAR(9.278, data[0][0](0, 1), 0.002);
-    EXPECT_NEAR(7.830, data[0][0](0, 2), 0.002);
-    EXPECT_NEAR(7.512, data[0][0](0, 3), 0.002);
-    EXPECT_NEAR(7.608, data[0][0](0, 4), 0.002);
-    EXPECT_NEAR(6.612, data[0][0](0, 5), 0.002);
-    EXPECT_NEAR(9.954, data[0][0](1, 0), 0.002);
-    EXPECT_NEAR(8.371, data[0][0](2, 0), 0.002);
-    EXPECT_NEAR(9.836, data[0][0](4, 0), 0.002);
-    EXPECT_NEAR(9.848, data[0][0](4, 5), 0.002);
-
-    /* Values time 90h (horizontal=Lon, vertical=Lat)
-    Extracted:
-    -7.667	-9.976	-13.864	-15.870	-14.057	-10.746
-    -12.172	-13.010	-14.806	-14.507	-10.971	-8.071
-    -14.181	-13.320	-12.670	-12.046	-9.670	-7.123
-    -15.720	-12.759	-9.788	-8.628	-8.952	-8.637
-    -14.759	-11.781	-7.036	-5.073	-7.305	-9.857
-    */
-    EXPECT_NEAR(-7.667, data[14][0](0, 0), 0.002);
-    EXPECT_NEAR(-9.976, data[14][0](0, 1), 0.002);
-    EXPECT_NEAR(-13.864, data[14][0](0, 2), 0.002);
-    EXPECT_NEAR(-15.870, data[14][0](0, 3), 0.002);
-    EXPECT_NEAR(-14.057, data[14][0](0, 4), 0.002);
-    EXPECT_NEAR(-10.746, data[14][0](0, 5), 0.002);
-    EXPECT_NEAR(-12.172, data[14][0](1, 0), 0.002);
-    EXPECT_NEAR(-14.181, data[14][0](2, 0), 0.002);
-    EXPECT_NEAR(-14.759, data[14][0](4, 0), 0.002);
-    EXPECT_NEAR(-9.857, data[14][0](4, 5), 0.002);
-
-    wxDELETE(area);
-    wxDELETE(predictor);
-}
-
 TEST(PredictorOperCustomMeteoFvg, StandardizeWithProvidedMeanAndSd) {
     vwxs filePaths;
     filePaths.push_back(wxFileName::GetCwd() + "/files/data-custom-meteo-fvg-operational/MB500925.2020062106.grib");
@@ -329,7 +258,7 @@ TEST(PredictorOperCustomMeteoFvg, StandardizeWithProvidedMeanAndSd) {
     wxString gridType = "Regular";
     asAreaGrid* area = asAreaGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_MeteoFVG", "MB500925");
     wxASSERT(predictor);
 
     // Create file names

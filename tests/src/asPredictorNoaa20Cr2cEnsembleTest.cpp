@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include "asAreaRegGrid.h"
+#include "asAreaGridRegular.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
@@ -94,7 +94,7 @@ TEST(PredictorNoaa20Cr2cEnsemble, Load1stMember) {
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -151,7 +151,7 @@ TEST(PredictorNoaa20Cr2cEnsemble, Load3rdMember) {
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -208,7 +208,7 @@ TEST(PredictorNoaa20Cr2cEnsemble, LoadBorderLeft) {
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);

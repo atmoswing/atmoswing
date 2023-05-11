@@ -55,15 +55,15 @@ class asFileXml : public asFile {
 
     virtual bool CheckRootElement() const;
 
-    wxXmlNode* CreateNodeWithValue(const wxString& name, const bool& content);
+    wxXmlNode* CreateNode(const wxString& name, const bool& content);
 
-    wxXmlNode* CreateNodeWithValue(const wxString& name, const int& content);
+    wxXmlNode* CreateNode(const wxString& name, const int& content);
 
-    wxXmlNode* CreateNodeWithValue(const wxString& name, const float& content);
+    wxXmlNode* CreateNode(const wxString& name, const float& content);
 
-    wxXmlNode* CreateNodeWithValue(const wxString& name, const double& content);
+    wxXmlNode* CreateNode(const wxString& name, const double& content);
 
-    wxXmlNode* CreateNodeWithValue(const wxString& name, const wxString& content);
+    wxXmlNode* CreateNode(const wxString& name, const wxString& content);
 
     bool IsAnAtmoSwingFile() const;
 

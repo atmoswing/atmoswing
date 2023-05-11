@@ -30,7 +30,7 @@
 
 #include <wx/listbox.h>
 
-class asForecastViewer;
+class asForecastRenderer;
 
 class asListBoxForecastDisplay : public wxListBox {
   public:

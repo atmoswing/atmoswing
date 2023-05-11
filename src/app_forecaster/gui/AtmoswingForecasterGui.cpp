@@ -19,7 +19,7 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+asFrameForecasterVirtual::asFrameForecasterVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 600,700 ), wxDefaultSize );
 
@@ -120,6 +120,20 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 
 
 	bSizer18->Add( bSizer19, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+	wxBoxSizer* bSizer352;
+	bSizer352 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_staticText34 = new wxStaticText( m_panelMain, wxID_ANY, _("Opened batch file:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText34->Wrap( -1 );
+	bSizer352->Add( m_staticText34, 0, wxALL, 5 );
+
+	m_staticTextbatchFile = new wxStaticText( m_panelMain, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextbatchFile->Wrap( -1 );
+	bSizer352->Add( m_staticTextbatchFile, 0, wxALL, 5 );
+
+
+	bSizer18->Add( bSizer352, 0, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer22;
 	bSizer22 = new wxBoxSizer( wxVERTICAL );
@@ -243,28 +257,28 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	this->Centre( wxBOTH );
 
 	// Connect Events
-	m_bpButtonNow->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::OnSetPresentDate ), NULL, this );
-	m_button2->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::OnConfigureDirectories ), NULL, this );
-	m_bpButtonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::AddForecast ), NULL, this );
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnOpenBatchForecasts ), this, m_menuItemOpenBatchFile->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecasts ), this, m_menuItemSaveBatchFile->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecastsAs ), this, m_menuItemSaveBatchFileAs->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnNewBatchForecasts ), this, m_menuItemNewBatchFile->GetId());
-	m_menuOptions->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFramePreferences ), this, m_menuItemPreferences->GetId());
-	m_menuTools->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFramePredictandDB ), this, m_menuItemBuildPredictandDB->GetId());
-	m_menuLog->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnShowLog ), this, m_menuItemShowLog->GetId());
-	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnLogLevel1 ), this, m_MenuItemLogLevel1->GetId());
-	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnLogLevel2 ), this, m_MenuItemLogLevel2->GetId());
-	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnLogLevel3 ), this, m_MenuItemLogLevel3->GetId());
-	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFrameAbout ), this, m_menuItemAbout->GetId());
+	m_bpButtonNow->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecasterVirtual::OnSetPresentDate ), NULL, this );
+	m_button2->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecasterVirtual::OnConfigureDirectories ), NULL, this );
+	m_bpButtonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecasterVirtual::AddForecast ), NULL, this );
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecasterVirtual::OnOpenBatchForecasts ), this, m_menuItemOpenBatchFile->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecasterVirtual::OnSaveBatchForecasts ), this, m_menuItemSaveBatchFile->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecasterVirtual::OnSaveBatchForecastsAs ), this, m_menuItemSaveBatchFileAs->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecasterVirtual::OnNewBatchForecasts ), this, m_menuItemNewBatchFile->GetId());
+	m_menuOptions->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecasterVirtual::OpenFramePreferences ), this, m_menuItemPreferences->GetId());
+	m_menuTools->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecasterVirtual::OpenFramePredictandDB ), this, m_menuItemBuildPredictandDB->GetId());
+	m_menuLog->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecasterVirtual::OnShowLog ), this, m_menuItemShowLog->GetId());
+	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecasterVirtual::OnLogLevel1 ), this, m_MenuItemLogLevel1->GetId());
+	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecasterVirtual::OnLogLevel2 ), this, m_MenuItemLogLevel2->GetId());
+	m_menuLogLevel->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecasterVirtual::OnLogLevel3 ), this, m_MenuItemLogLevel3->GetId());
+	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecasterVirtual::OpenFrameAbout ), this, m_menuItemAbout->GetId());
 }
 
-asFrameMainVirtual::~asFrameMainVirtual()
+asFrameForecasterVirtual::~asFrameForecasterVirtual()
 {
 	// Disconnect Events
-	m_bpButtonNow->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::OnSetPresentDate ), NULL, this );
-	m_button2->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::OnConfigureDirectories ), NULL, this );
-	m_bpButtonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::AddForecast ), NULL, this );
+	m_bpButtonNow->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecasterVirtual::OnSetPresentDate ), NULL, this );
+	m_button2->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecasterVirtual::OnConfigureDirectories ), NULL, this );
+	m_bpButtonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecasterVirtual::AddForecast ), NULL, this );
 
 }
 
@@ -383,10 +397,26 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_panelPathsCommon->SetSizer( m_sizerPanelPaths );
 	m_panelPathsCommon->Layout();
 	m_sizerPanelPaths->Fit( m_panelPathsCommon );
-	m_notebookBase->AddPage( m_panelPathsCommon, _("Batch file properties"), false );
+	m_notebookBase->AddPage( m_panelPathsCommon, _("Batch file properties"), true );
 	m_panelGeneralCommon = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
+
+	wxStaticBoxSizer* sbSizer71;
+	sbSizer71 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneralCommon, wxID_ANY, _("Language") ), wxVERTICAL );
+
+	wxString m_choiceLocaleChoices[] = { _("English"), _("French") };
+	int m_choiceLocaleNChoices = sizeof( m_choiceLocaleChoices ) / sizeof( wxString );
+	m_choiceLocale = new wxChoice( sbSizer71->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceLocaleNChoices, m_choiceLocaleChoices, 0 );
+	m_choiceLocale->SetSelection( 0 );
+	sbSizer71->Add( m_choiceLocale, 0, wxALL, 5 );
+
+	m_staticText34 = new wxStaticText( sbSizer71->GetStaticBox(), wxID_ANY, _("Restart AtmoSwing for the change to take effect."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText34->Wrap( -1 );
+	sbSizer71->Add( m_staticText34, 0, wxALL, 5 );
+
+
+	bSizer16->Add( sbSizer71, 0, wxALL|wxEXPAND, 5 );
 
 	wxStaticBoxSizer* sbSizer7;
 	sbSizer7 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneralCommon, wxID_ANY, _("Logs") ), wxVERTICAL );
@@ -503,7 +533,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_panelGeneralCommon->SetSizer( bSizer16 );
 	m_panelGeneralCommon->Layout();
 	bSizer16->Fit( m_panelGeneralCommon );
-	m_notebookBase->AddPage( m_panelGeneralCommon, _("General options"), true );
+	m_notebookBase->AddPage( m_panelGeneralCommon, _("General options"), false );
 	m_panelAdvanced = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );
@@ -542,24 +572,10 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	#endif
 	fgSizer2->Add( m_textCtrlMaxPrevStepsNb, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_staticTextMaxRequestsNb = new wxStaticText( sbSizer11->GetStaticBox(), wxID_ANY, _("Maximum parallel requests number"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticTextMaxRequestsNb->Wrap( -1 );
-	fgSizer2->Add( m_staticTextMaxRequestsNb, 0, wxALL, 5 );
-
-	m_textCtrlMaxRequestsNb = new wxTextCtrl( sbSizer11->GetStaticBox(), wxID_ANY, _("3"), wxDefaultPosition, wxSize( 30,-1 ), 0 );
-	#ifdef __WXGTK__
-	if ( !m_textCtrlMaxRequestsNb->HasFlag( wxTE_MULTILINE ) )
-	{
-	m_textCtrlMaxRequestsNb->SetMaxLength( 1 );
-	}
-	#else
-	m_textCtrlMaxRequestsNb->SetMaxLength( 1 );
-	#endif
-	fgSizer2->Add( m_textCtrlMaxRequestsNb, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-
 	m_checkBoxRestrictDownloads = new wxCheckBox( sbSizer11->GetStaticBox(), wxID_ANY, _("Restrict downloads to needed lead times."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxRestrictDownloads->SetValue(true);
 	m_checkBoxRestrictDownloads->Enable( false );
+	m_checkBoxRestrictDownloads->Hide();
 
 	fgSizer2->Add( m_checkBoxRestrictDownloads, 0, wxALL, 5 );
 

@@ -49,11 +49,10 @@ bool asFileParameters::CheckRootElement() const {
 
 vi asFileParameters::BuildVectorInt(int min, int max, int step) {
     if (min > max) {
-        asThrow(asStrF(_("Error when building a vector from the parameters file: min=%d > max=%d."), min, max));
+        throw runtime_error(asStrF(_("Error when building a vector from the parameters file: min=%d > max=%d."), min, max));
     }
     if (step == 0) {
-        asThrow(_("Error when building a vector from the parameters file: step=0."));
-        return vi(0);
+        throw runtime_error(_("Error when building a vector from the parameters file: step=0."));
     }
 
     int stepsnb = 1 + (max - min) / step;
@@ -88,10 +87,10 @@ vi asFileParameters::BuildVectorInt(wxString str) {
 
 vf asFileParameters::BuildVectorFloat(float min, float max, float step) {
     if (min > max) {
-        asThrow(asStrF(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
+        throw runtime_error(asStrF(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
     }
     if (step == 0) {
-        asThrow(_("Error when building a vector from the parameters file: step=0."));
+        throw runtime_error(_("Error when building a vector from the parameters file: step=0."));
     }
 
     auto stepsnb = (int)(1 + (max - min) / step);
@@ -126,10 +125,10 @@ vf asFileParameters::BuildVectorFloat(wxString str) {
 
 vd asFileParameters::BuildVectorDouble(double min, double max, double step) {
     if (min > max) {
-        asThrow(asStrF(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
+        throw runtime_error(asStrF(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
     }
     if (step == 0) {
-        asThrow(_("Error when building a vector from the parameters file: step=0."));
+        throw runtime_error(_("Error when building a vector from the parameters file: step=0."));
     }
 
     auto stepsnb = (int)(1 + (max - min) / step);

@@ -30,10 +30,10 @@
 #define AS_MAIN_VIEWER_H
 
 #include "AtmoswingAppViewer.h"
-#include "asFrameForecast.h"
+#include "asFrameViewer.h"
 #include "asIncludes.h"
 
-class AtmoswingFrameViewer : public asFrameForecast {
+class AtmoswingFrameViewer : public asFrameViewer {
   public:
     explicit AtmoswingFrameViewer(wxFrame* frame);
 

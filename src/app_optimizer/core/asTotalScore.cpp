@@ -178,5 +178,5 @@ a1f asTotalScore::AssessOnArray(const a1f& targetDates, const a1f& scores, const
 
 float asTotalScore::Assess(const a1f& targetDates, const a2f& scores, const asTimeArray& timeArray) const {
     wxLogError(_("This asTotalScore class has no Assess method implemented with a 2D array as argument !"));
-    return NaNf;
+    return NAN;
 }

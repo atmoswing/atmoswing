@@ -188,15 +188,6 @@ bool asCatalogPredictands::Load() {
         case (asPredictand::TwelveHourlyMTW):
             m_timeStepHours = 12.0;
             break;
-        case (asPredictand::TwoDays):
-            m_timeStepHours = 48.0;
-            break;
-        case (asPredictand::ThreeDays):
-            m_timeStepHours = 72.0;
-            break;
-        case (asPredictand::Weekly):
-            m_timeStepHours = 168.0;
-            break;
         default:
             wxFAIL;
             m_timeStepHours = 0;

@@ -32,8 +32,8 @@
 
 asParametersDownscaling::asParametersDownscaling()
     : asParameters(),
-      m_downscalingStart(NaNd),
-      m_downscalingEnd(NaNd) {}
+      m_downscalingStart(NAN),
+      m_downscalingEnd(NAN) {}
 
 asParametersDownscaling::~asParametersDownscaling() {}
 
@@ -49,7 +49,6 @@ void asParametersDownscaling::AddPredictorProj(ParamsStepProj& step) {
 }
 
 bool asParametersDownscaling::LoadFromFile(const wxString& filePath) {
-    wxLogVerbose(_("Loading parameters file."));
 
     if (filePath.IsEmpty()) {
         wxLogError(_("The given path to the parameters file is empty."));
@@ -98,8 +97,6 @@ bool asParametersDownscaling::LoadFromFile(const wxString& filePath) {
     FixTimeLimits();
     FixWeights();
     FixCoordinates();
-
-    wxLogVerbose(_("Parameters file loaded."));
 
     return true;
 }
@@ -352,22 +349,22 @@ bool asParametersDownscaling::ParseAnalogValuesParams(asFileParametersDownscalin
 
 bool asParametersDownscaling::InputsOK() const {
     // Time properties
-    if (asIsNaN(GetArchiveStart())) {
+    if (isnan(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetArchiveEnd())) {
+    if (isnan(GetArchiveEnd())) {
         wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetDownscalingStart())) {
+    if (isnan(GetDownscalingStart())) {
         wxLogError(_("The beginning of the downscaling period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetDownscalingEnd())) {
+    if (isnan(GetDownscalingEnd())) {
         wxLogError(_("The end of the downscaling period was not provided in the parameters file."));
         return false;
     }
@@ -537,18 +534,17 @@ bool asParametersDownscaling::SetPredictandStationIdsVector(vvi val) {
     if (val.empty()) {
         wxLogError(_("The provided predictand ID vector is empty."));
         return false;
-    } else {
-        if (val[0].empty()) {
-            wxLogError(_("The provided predictand ID vector is empty."));
-            return false;
-        }
+    }
+    if (val[0].empty()) {
+        wxLogError(_("The provided predictand ID vector is empty."));
+        return false;
+    }
 
-        for (auto& i : val) {
-            for (int j : i) {
-                if (asIsNaN(j)) {
-                    wxLogError(_("There are NaN values in the provided predictand ID vector."));
-                    return false;
-                }
+    for (auto& iVal : val) {
+        for (int v : iVal) {
+            if (v == 0) {
+                wxLogError(_("There are 0s in the provided predictand ID vector."));
+                return false;
             }
         }
     }

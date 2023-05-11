@@ -29,6 +29,8 @@
 
 asDialogFileSaver::asDialogFileSaver(wxWindow* parent, const wxString& description)
     : asDialogFileSaverVirtual(parent) {
+    SetLabel(_("Save to a file"));
+
     if (!description.IsEmpty()) {
         m_staticTextDescription->SetLabelText(description);
     }

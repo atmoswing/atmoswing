@@ -94,7 +94,7 @@ void asFrameOptimizer::Update() {
 void asFrameOptimizer::OpenFramePredictandDB(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePredictandDB(this);
+    auto frame = new asFramePredictandDB(this);
     frame->Fit();
     frame->Show();
 }
@@ -102,7 +102,7 @@ void asFrameOptimizer::OpenFramePredictandDB(wxCommandEvent& event) {
 void asFrameOptimizer::OpenFramePreferences(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePreferencesOptimizer(this);
+    auto frame = new asFramePreferencesOptimizer(this);
     frame->Fit();
     frame->Show();
 }
@@ -110,7 +110,7 @@ void asFrameOptimizer::OpenFramePreferences(wxCommandEvent& event) {
 void asFrameOptimizer::OpenFrameAbout(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFrameAbout(this);
+    auto frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
@@ -453,7 +453,7 @@ void asFrameOptimizer::Launch(wxCommandEvent& event) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught: %s"), msg);
         wxLogError(_("Failed to process the calibration."));
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         wxLogError(_("Failed to process the optimization."));

@@ -45,8 +45,8 @@ class asParametersScoring : public asParameters {
         float postprocessDupliExp = 0;
         wxString postprocessMethod;
         bool onMean = false;
-        float threshold = NaNf;
-        float quantile = NaNf;
+        float threshold = NAN;
+        float quantile = NAN;
     } ParamsScore;
 
     /** Vectors */

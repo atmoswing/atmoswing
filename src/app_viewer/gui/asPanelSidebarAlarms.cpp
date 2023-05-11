@@ -64,6 +64,8 @@ void asPanelSidebarAlarms::Update() {
 
     a1f dates = m_forecastManager->GetFullTargetDates();
 
+    CreateGrid(dates);
+
     switch (m_mode) {
         case (1): {
             wxASSERT(returnPeriodRef >= 2);
@@ -73,16 +75,12 @@ void asPanelSidebarAlarms::Update() {
             if (quantileThreshold <= 0) quantileThreshold = (float)0.9;
             if (quantileThreshold > 1) quantileThreshold = (float)0.9;
 
-            a2f values = a2f::Ones(m_forecastManager->GetMethodsNb(), dates.size());
-            values *= NaNf;
-
-            for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++) {
+            for (int iMethod = 0; iMethod < m_forecastManager->GetMethodsNb(); iMethod++) {
                 a1f methodMaxValues = m_forecastManager->GetAggregator()->GetMethodMaxValues(
-                    dates, methodRow, returnPeriodRef, quantileThreshold);
-                values.row(methodRow) = methodMaxValues;
+                    dates, iMethod, returnPeriodRef, quantileThreshold);
+                AddRow(dates, methodMaxValues, iMethod);
             }
 
-            SetData(dates, values);
             break;
         }
 
@@ -90,29 +88,36 @@ void asPanelSidebarAlarms::Update() {
             // Not yet implemented
         }
     }
+
+    m_panelDrawing->Refresh();
 }
 
-void asPanelSidebarAlarms::SetData(a1f& dates, a2f& values) {
-    vwxs names = m_forecastManager->GetAllMethodNames();
+void asPanelSidebarAlarms::CreateGrid(a1f& dates) {
+    vwxs names = m_forecastManager->GetMethodNames();
 
     // Required size
-    int rows = values.rows();
+    int rows = names.size();
     int cellHeight = 20 * g_ppiScaleDc;
     int totHeight = cellHeight * rows + cellHeight;
     int width = 240 * g_ppiScaleDc;
 
-    // Delete and recreate the panel. Cannot get it work with a resize...
+    // Delete and recreate the panel.
     wxDELETE(m_panelDrawing);
     m_panelDrawing = new asPanelSidebarAlarmsDrawing(this, wxID_ANY, wxDefaultPosition, wxSize(width, totHeight),
                                                      wxTAB_TRAVERSAL);
     m_panelDrawing->SetParent(this);
     m_panelDrawing->Layout();
-    m_panelDrawing->DrawAlarms(dates, names, values);
+
+    m_panelDrawing->CreateGrid(dates, names);
 
     m_sizerContent->Add(m_panelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
     m_sizerContent->Fit(this);
 
     GetParent()->FitInside();
+}
+
+void asPanelSidebarAlarms::AddRow(a1f& dates, a1f& values, int row) {
+    m_panelDrawing->AddRow(dates, values, row);
 }
 
 /*
@@ -127,8 +132,6 @@ asPanelSidebarAlarmsDrawing::asPanelSidebarAlarmsDrawing(wxWindow* parent, wxWin
     m_parent = nullptr;
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarmsDrawing::OnPaint), nullptr, this);
-
-    Layout();
 }
 
 asPanelSidebarAlarmsDrawing::~asPanelSidebarAlarmsDrawing() {
@@ -140,24 +143,23 @@ void asPanelSidebarAlarmsDrawing::SetParent(asPanelSidebarAlarms* parent) {
     m_parent = parent;
 }
 
-void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f& dates, const vwxs& names, a2f& values) {
+void asPanelSidebarAlarmsDrawing::CreateGrid(a1f& dates, const vwxs& names) {
     // Get sizes
     int cols = dates.size();
     int rows = names.size();
-    wxASSERT_MSG((values.cols() == cols), asStrF("values.cols()=%d, cols=%d", (int)values.cols(), cols));
-    wxASSERT_MSG((values.rows() == rows), asStrF("values.rows()=%d, rows=%d", (int)values.rows(), rows));
 
     // Height of a grid row
     int cellHeight = 20 * g_ppiScaleDc;
     int width = 240 * g_ppiScaleDc;
 
     // Create bitmap
+    wxDELETE(m_bmpAlarms);
     int totHeight = cellHeight * rows + cellHeight;
-    auto* bmp = new wxBitmap(width, totHeight);
-    wxASSERT(bmp);
+    m_bmpAlarms = new wxBitmap(width, totHeight);
+    wxASSERT(m_bmpAlarms);
 
     // Create device context
-    wxMemoryDC dc(*bmp);
+    wxMemoryDC dc(*m_bmpAlarms);
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
 
@@ -172,13 +174,12 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f& dates, const vwxs& names, a2f&
 
         wxPoint startText(17 * g_ppiScaleDc, 0);
         wxPoint startNb(0, 14 * g_ppiScaleDc);
-        wxPoint startGrid(12 * g_ppiScaleDc, 10 * g_ppiScaleDc);
-        int cellWitdh = (226 * g_ppiScaleDc) / dates.size();
+        int cellWidth = (226 * g_ppiScaleDc) / dates.size();
 
         for (int iLead = 0; iLead < dates.size(); iLead++) {
             wxString dateStr = asTime::GetStringTime(dates[iLead], "DD.MM");
             gc->SetFont(datesFont, *wxBLACK);
-            CreateDatesText(gc, startText, cellWitdh, iLead, dateStr);
+            CreateDatesText(gc, startText, cellWidth, iLead, dateStr);
 
             for (int iFcst = 0; iFcst < names.size(); iFcst++) {
                 if (iLead == 0) {
@@ -186,11 +187,6 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f& dates, const vwxs& names, a2f&
                     gc->SetFont(numFont, *wxBLACK);
                     CreateNbText(gc, startNb, cellHeight, iFcst, forecastStr);
                 }
-
-                wxGraphicsPath path = gc->CreatePath();
-                CreatePath(path, startGrid, cellWitdh, cellHeight, iLead, iFcst);
-                float value = values(iFcst, iLead);
-                FillPath(gc, path, value);
             }
         }
 
@@ -198,23 +194,57 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f& dates, const vwxs& names, a2f&
     }
 
     dc.SelectObject(wxNullBitmap);
-
-    this->SetBitmapAlarms(bmp);
-    wxDELETE(bmp);
-    wxASSERT(!bmp);
-
-    Refresh();
 }
 
-void asPanelSidebarAlarmsDrawing::SetBitmapAlarms(wxBitmap* bmp) {
-    wxDELETE(m_bmpAlarms);
-    wxASSERT(!m_bmpAlarms);
+void asPanelSidebarAlarmsDrawing::AddRow(a1f& dates, a1f& values, int row) {
 
-    if (bmp != nullptr) {
-        wxASSERT(bmp);
-        m_bmpAlarms = new wxBitmap(*bmp);
-        wxASSERT(m_bmpAlarms);
+    // Handle sub-daily time steps
+    double fraction = double(dates.size()) / double(values.size());
+    if (fraction < 0.2) {
+        wxLogError(_("Too small time steps are not supported in the alarms panel."));
+        return;
     }
+
+    // Create device context
+    wxMemoryDC dc(*m_bmpAlarms);
+
+    // Create graphics context
+    wxGraphicsContext* gc = wxGraphicsContext::Create(dc);
+
+    // Sizes
+    wxPoint startGrid(12 * g_ppiScaleDc, 10 * g_ppiScaleDc);
+    float cellWidth = float(226 * g_ppiScaleDc) / float(dates.size());
+    int cellHeight = 20 * g_ppiScaleDc;
+
+    if (gc) {
+        if (fraction < 1.0) {
+            gc->SetPen(*wxLIGHT_GREY_PEN);
+        } else {
+            gc->SetPen(*wxBLACK);
+        }
+
+        for (int iLead = 0; iLead < values.size(); iLead++) {
+            wxGraphicsPath path = gc->CreatePath();
+            CreatePath(path, startGrid, cellWidth * fraction, cellHeight, iLead, row);
+            float value = values(iLead);
+            FillPath(gc, path, value);
+        }
+
+        if (fraction < 1.0) {
+            // Draw daily box
+            gc->SetPen(*wxBLACK);
+            for (int iLead = 0; iLead < dates.size(); iLead++) {
+                wxGraphicsPath path = gc->CreatePath();
+                CreatePath(path, startGrid, cellWidth, cellHeight, iLead, row);
+                gc->SetBrush(*wxTRANSPARENT_BRUSH);
+                gc->DrawPath(path);
+            }
+        }
+
+        wxDELETE(gc);
+    }
+
+    dc.SelectObject(wxNullBitmap);
 }
 
 void asPanelSidebarAlarmsDrawing::OnPaint(wxPaintEvent& event) {
@@ -228,16 +258,15 @@ void asPanelSidebarAlarmsDrawing::OnPaint(wxPaintEvent& event) {
     event.Skip();
 }
 
-void asPanelSidebarAlarmsDrawing::CreatePath(wxGraphicsPath& path, const wxPoint& start, int cellWitdh, int cellHeight,
+void asPanelSidebarAlarmsDrawing::CreatePath(wxGraphicsPath& path, const wxPoint& start, float cellWidth, int cellHeight,
                                              int iCol, int iRow) {
-    double startPointX = (double)start.x + iCol * cellWitdh;
-
+    double startPointX = (double)start.x + iCol * cellWidth;
     double startPointY = (double)start.y + iRow * cellHeight;
 
     path.MoveToPoint(startPointX, startPointY);
 
-    path.AddLineToPoint(startPointX + cellWitdh, startPointY);
-    path.AddLineToPoint(startPointX + cellWitdh, startPointY + cellHeight);
+    path.AddLineToPoint(startPointX + cellWidth, startPointY);
+    path.AddLineToPoint(startPointX + cellWidth, startPointY + cellHeight);
     path.AddLineToPoint(startPointX, startPointY + cellHeight);
     path.AddLineToPoint(startPointX, startPointY);
 
@@ -249,7 +278,7 @@ void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext* gc, wxGraphicsPath
 
     switch (m_parent->GetMode()) {
         case (1): {
-            if (asIsNaN(value))  // NaN -> gray
+            if (isnan(value))  // NaN -> gray
             {
                 colour.Set(150, 150, 150);
             } else if (value == 0)  // No rain -> white

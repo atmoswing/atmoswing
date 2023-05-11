@@ -35,6 +35,8 @@ asWorkspace::asWorkspace()
       m_forecastsDirectory(asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts"),
       m_colorbarMaxValue(50.0),
       m_timeSeriesPlotPastDaysNb(3),
+      m_timeSeriesMaxLengthDaily(-1),
+      m_timeSeriesMaxLengthSubDaily(-1),
       m_alarmsPanelReturnPeriod(10),
       m_alarmsPanelQuantile(0.9f) {}
 
@@ -43,18 +45,18 @@ bool asWorkspace::Load(const wxString& filePath) {
 
     // Open the file
     m_filePath = filePath;
-    asFileWorkspace fileWorkspace(filePath, asFile::ReadOnly);
-    if (!fileWorkspace.Open()) {
+    asFileWorkspace file(filePath, asFile::ReadOnly);
+    if (!file.Open()) {
         wxLogError(_("Cannot open the workspace file."));
         return false;
     }
-    if (!fileWorkspace.CheckRootElement()) {
+    if (!file.CheckRootElement()) {
         wxLogError(_("Errors were found in the workspace file."));
         return false;
     }
 
     // Get data
-    wxXmlNode* node = fileWorkspace.GetRoot()->GetChildren();
+    wxXmlNode* node = file.GetRoot()->GetChildren();
     while (node) {
         if (node->GetName() == "coordinate_system") {
             m_coordinateSys = asFileWorkspace::GetString(node);
@@ -64,10 +66,36 @@ bool asWorkspace::Load(const wxString& filePath) {
             m_colorbarMaxValue = asFileWorkspace::GetDouble(node);
         } else if (node->GetName() == "plot_time_series_past_days_nb") {
             m_timeSeriesPlotPastDaysNb = asFileWorkspace::GetInt(node);
+        } else if (node->GetName() == "time_series_max_length_daily") {
+            m_timeSeriesMaxLengthDaily = asFileWorkspace::GetInt(node);
+        } else if (node->GetName() == "time_series_max_length_sub_daily") {
+            m_timeSeriesMaxLengthSubDaily = asFileWorkspace::GetInt(node);
         } else if (node->GetName() == "panel_alarms_return_period") {
             m_alarmsPanelReturnPeriod = asFileWorkspace::GetInt(node);
         } else if (node->GetName() == "panel_alarms_quantile") {
             m_alarmsPanelQuantile = asFileWorkspace::GetFloat(node);
+        } else if (node->GetName() == "predictors") {
+            wxXmlNode* nodePredictor = node->GetChildren();
+            while (nodePredictor) {
+                if (nodePredictor->GetName() == "predictor") {
+                    wxXmlNode* nodePredictorData = nodePredictor->GetChildren();
+                    while (nodePredictorData) {
+                        if (nodePredictorData->GetName() == "dir") {
+                            m_predictorDirs.push_back(asFileWorkspace::GetString(nodePredictorData));
+                        } else if (nodePredictorData->GetName() == "id") {
+                            m_predictorIds.push_back(asFileWorkspace::GetString(nodePredictorData));
+                        } else {
+                            file.UnknownNode(nodePredictorData);
+                        }
+
+                        nodePredictorData = nodePredictorData->GetNext();
+                    }
+                } else {
+                    file.UnknownNode(nodePredictor);
+                }
+
+                nodePredictor = nodePredictor->GetNext();
+            }
         } else if (node->GetName() == "layers") {
             wxXmlNode* nodeLayer = node->GetChildren();
             while (nodeLayer) {
@@ -105,13 +133,13 @@ bool asWorkspace::Load(const wxString& filePath) {
                             m_layerBrushStyles.push_back(brushStyle);
 #endif
                         } else {
-                            fileWorkspace.UnknownNode(nodeLayerData);
+                            file.UnknownNode(nodeLayerData);
                         }
 
                         nodeLayerData = nodeLayerData->GetNext();
                     }
                 } else {
-                    fileWorkspace.UnknownNode(nodeLayer);
+                    file.UnknownNode(nodeLayer);
                 }
 
                 nodeLayer = nodeLayer->GetNext();
@@ -129,7 +157,7 @@ bool asWorkspace::Load(const wxString& filePath) {
             }
 
         } else {
-            fileWorkspace.UnknownNode(node);
+            file.UnknownNode(node);
         }
 
         node = node->GetNext();
@@ -140,19 +168,30 @@ bool asWorkspace::Load(const wxString& filePath) {
 
 bool asWorkspace::Save() const {
     // Open the file
-    asFileWorkspace fileWorkspace(m_filePath, asFile::Replace);
-    if (!fileWorkspace.Open()) return false;
+    asFileWorkspace file(m_filePath, asFile::Replace);
+    if (!file.Open()) return false;
 
-    if (!fileWorkspace.EditRootElement()) return false;
+    if (!file.EditRootElement()) return false;
 
     // General data
-    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("coordinate_system", m_coordinateSys));
-    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("forecast_directory", m_forecastsDirectory));
-    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("colorbar_max_value", m_colorbarMaxValue));
-    fileWorkspace.AddChild(
-        fileWorkspace.CreateNodeWithValue("plot_time_series_past_days_nb", m_timeSeriesPlotPastDaysNb));
-    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("panel_alarms_return_period", m_alarmsPanelReturnPeriod));
-    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("panel_alarms_quantile", m_alarmsPanelQuantile));
+    file.AddChild(file.CreateNode("coordinate_system", m_coordinateSys));
+    file.AddChild(file.CreateNode("forecast_directory", m_forecastsDirectory));
+    file.AddChild(file.CreateNode("colorbar_max_value", m_colorbarMaxValue));
+    file.AddChild(file.CreateNode("plot_time_series_past_days_nb", m_timeSeriesPlotPastDaysNb));
+    file.AddChild(file.CreateNode("time_series_max_length_daily", m_timeSeriesMaxLengthDaily));
+    file.AddChild(file.CreateNode("time_series_max_length_sub_daily", m_timeSeriesMaxLengthSubDaily));
+    file.AddChild(file.CreateNode("panel_alarms_return_period", m_alarmsPanelReturnPeriod));
+    file.AddChild(file.CreateNode("panel_alarms_quantile", m_alarmsPanelQuantile));
+
+    // Predictors
+    wxXmlNode* nodePredictors = new wxXmlNode(wxXML_ELEMENT_NODE, "predictors");
+    for (int iPtor = 0; iPtor < m_predictorIds.size(); iPtor++) {
+        wxXmlNode* nodePredictor = new wxXmlNode(wxXML_ELEMENT_NODE, "predictor");
+        nodePredictor->AddChild(file.CreateNode("dir", m_predictorDirs[iPtor]));
+        nodePredictor->AddChild(file.CreateNode("id", m_predictorIds[iPtor]));
+        nodePredictors->AddChild(nodePredictor);
+    }
+    file.AddChild(nodePredictors);
 
     // GIS layers
     wxXmlNode* nodeLayers = new wxXmlNode(wxXML_ELEMENT_NODE, "layers");
@@ -166,24 +205,24 @@ bool asWorkspace::Save() const {
             path = relativePath.GetFullPath();
         }
 
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("path", path));
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("type", m_layerTypes[iLayer]));
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("transparency", m_layerTransparencies[iLayer]));
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("visibility", m_layerVisibilities[iLayer]));
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("line_width", m_layerLineWidths[iLayer]));
+        nodeLayer->AddChild(file.CreateNode("path", path));
+        nodeLayer->AddChild(file.CreateNode("type", m_layerTypes[iLayer]));
+        nodeLayer->AddChild(file.CreateNode("transparency", m_layerTransparencies[iLayer]));
+        nodeLayer->AddChild(file.CreateNode("visibility", m_layerVisibilities[iLayer]));
+        nodeLayer->AddChild(file.CreateNode("line_width", m_layerLineWidths[iLayer]));
 #if USE_GUI
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("line_color", wxToString(m_layerLineColors[iLayer])));
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("fill_color", wxToString(m_layerFillColors[iLayer])));
+        nodeLayer->AddChild(file.CreateNode("line_color", wxToString(m_layerLineColors[iLayer])));
+        nodeLayer->AddChild(file.CreateNode("fill_color", wxToString(m_layerFillColors[iLayer])));
         wxString strBrush;
         strBrush << m_layerBrushStyles[iLayer];
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("brush_style", strBrush));
+        nodeLayer->AddChild(file.CreateNode("brush_style", strBrush));
 #endif
 
         nodeLayers->AddChild(nodeLayer);
     }
-    fileWorkspace.AddChild(nodeLayers);
+    file.AddChild(nodeLayers);
 
-    fileWorkspace.Save();
+    file.Save();
 
     return true;
 }
@@ -218,4 +257,39 @@ void asWorkspace::AddLayer() {
     m_layerFillColors.resize(nb);
     m_layerBrushStyles.resize(nb);
 #endif
+}
+
+void asWorkspace::ClearPredictorDirs() {
+    m_predictorIds.clear();
+    m_predictorDirs.clear();
+}
+
+void asWorkspace::AddPredictorDir(const wxString &id, const wxString &dir) {
+    m_predictorIds.push_back(id);
+    m_predictorDirs.push_back(dir);
+}
+
+wxString asWorkspace::GetPredictorId(int i, const wxString &defVal) {
+    if (m_predictorIds.size() < i) {
+        return defVal;
+    }
+    return m_predictorIds[i - 1];
+}
+
+wxString asWorkspace::GetPredictorDir(int i) {
+    if (m_predictorDirs.size() < i) {
+        return wxEmptyString;
+    }
+    return m_predictorDirs[i - 1];
+}
+
+wxString asWorkspace::GetPredictorDir(wxString& datasetId) {
+    for (int i = 0; i < m_predictorIds.size(); i++) {
+        wxString id = m_predictorIds[i];
+        if (datasetId.IsSameAs(id, false)) {
+            return m_predictorDirs[i];
+        }
+    }
+
+    return wxEmptyString;
 }

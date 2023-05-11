@@ -73,7 +73,7 @@ class asResultsForecast : public asResults {
         m_predictandStationIds = val;
     }
 
-    void SetPredictandStationIds(wxString val);
+    void SetPredictandStationIds(const wxString& val);
 
     asPredictand::Parameter GetPredictandParameter() const {
         return m_predictandParameter;
@@ -152,9 +152,9 @@ class asResultsForecast : public asResults {
         return m_stationNames[i];
     }
 
-    wxArrayString GetStationNamesWxArrayString() const;
+    wxArrayString GetStationNamesWxArray() const;
 
-    wxArrayString GetStationNamesAndHeightsWxArrayString() const;
+    wxArrayString GetStationNamesAndHeightsWxArray() const;
 
     wxString GetStationNameAndHeight(int iStat) const;
 
@@ -206,6 +206,14 @@ class asResultsForecast : public asResults {
         m_stationYCoords = stationsYCoords;
     }
 
+    wxString GetCoordinateSystem() const {
+        return m_coordinateSystem;
+    }
+
+    void SetCoordinateSystem(const wxString& val) {
+        m_coordinateSystem = val;
+    }
+
     a1f GetReferenceAxis() const {
         return m_referenceAxis;
     }
@@ -218,7 +226,7 @@ class asResultsForecast : public asResults {
     float GetReferenceValue(int iStat, int iRef) const {
         if (!m_hasReferenceValues) {
             wxLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
-            return NaNf;
+            return NAN;
         }
 
         wxASSERT(iStat >= 0);
@@ -242,6 +250,86 @@ class asResultsForecast : public asResults {
         m_referenceValues = referenceValues;
     }
 
+    void SetPredictorDatasetIdsOper(const vwxs& predictorDatasetIdsOper) {
+        m_predictorDatasetIdsOper = predictorDatasetIdsOper;
+    }
+
+    vwxs GetPredictorDatasetIdsOper() {
+        return m_predictorDatasetIdsOper;
+    }
+
+    void SetPredictorDatasetIdsArchive(const vwxs& predictorDatasetIdsArchive) {
+        m_predictorDatasetIdsArchive = predictorDatasetIdsArchive;
+    }
+
+    vwxs GetPredictorDatasetIdsArchive() {
+        return m_predictorDatasetIdsArchive;
+    }
+
+    void SetPredictorDataIdsOper(const vwxs& predictorDataIdsOper) {
+        m_predictorDataIdsOper = predictorDataIdsOper;
+    }
+
+    vwxs GetPredictorDataIdsOper() {
+        return m_predictorDataIdsOper;
+    }
+
+    void SetPredictorDataIdsArchive(const vwxs& predictorDataIdsArchive) {
+        m_predictorDataIdsArchive = predictorDataIdsArchive;
+    }
+
+    vwxs GetPredictorDataIdsArchive() {
+        return m_predictorDataIdsArchive;
+    }
+
+    void SetPredictorLevels(const vf& predictorLevels) {
+        m_predictorLevels = predictorLevels;
+    }
+
+    vf GetPredictorLevels() {
+        return m_predictorLevels;
+    }
+
+    void SetPredictorHours(const vf& predictorHours) {
+        m_predictorHours = predictorHours;
+    }
+
+    vf GetPredictorHours() {
+        return m_predictorHours;
+    }
+
+    void SetPredictorLonMin(const vf& predictorLonMin) {
+        m_predictorLonMin = predictorLonMin;
+    }
+
+    vf GetPredictorLonMin() {
+        return m_predictorLonMin;
+    }
+
+    void SetPredictorLonMax(const vf& predictorLonMax) {
+        m_predictorLonMax = predictorLonMax;
+    }
+
+    vf GetPredictorLonMax() {
+        return m_predictorLonMax;
+    }
+
+    void SetPredictorLatMin(const vf& predictorLatMin) {
+        m_predictorLatMin = predictorLatMin;
+    }
+
+    vf GetPredictorLatMin() {
+        return m_predictorLatMin;
+    }
+
+    void SetPredictorLatMax(const vf& predictorLatMax) {
+        m_predictorLatMax = predictorLatMax;
+    }
+
+    vf GetPredictorLatMax() {
+        return m_predictorLatMax;
+    }
+
     int GetTargetDatesLength() const {
         return (int)m_targetDates.size();
     }
@@ -250,11 +338,25 @@ class asResultsForecast : public asResults {
         return m_targetDates;
     }
 
+    void LimitDataToHours(int hours);
+
+    void LimitDataToDays(int days);
+
+    void LimitDataToNbTimeSteps(int length);
+
+    wxString GetDateFormatting() const;
+
+    double GetForecastTimeStepHours() const;
+
+    bool IsSubDaily() const;
+
+    wxArrayString GetTargetDatesWxArray() const;
+
     void SetTargetDates(const a1d& refDates) {
         m_targetDates.resize(refDates.rows());
         for (int i = 0; i < refDates.size(); i++) {
             m_targetDates[i] = (float)refDates[i];
-            wxASSERT_MSG(m_targetDates[i] > 1, _("The target time array has unconsistent values"));
+            wxASSERT_MSG(m_targetDates[i] > 1, _("The target time array has inconsistent values"));
         }
     }
 
@@ -274,7 +376,7 @@ class asResultsForecast : public asResults {
         } else if (m_analogsCriteria.size() == i) {
             m_analogsCriteria.push_back(analogsCriteria);
         } else {
-            asThrow(_("The size of the criteria array does not fit with the required index."));
+            throw runtime_error(_("The size of the criteria array does not fit with the required index."));
         }
     }
 
@@ -303,7 +405,7 @@ class asResultsForecast : public asResults {
             wxASSERT(m_analogsValuesRaw[iLead].cols() == analogsValuesRaw.size());
             m_analogsValuesRaw[iLead].row(iStat) = analogsValuesRaw;
         } else {
-            asThrow(_("The size of the values array does not fit with the required index."));
+            throw runtime_error(_("The size of the values array does not fit with the required index."));
         }
     }
 
@@ -332,7 +434,7 @@ class asResultsForecast : public asResults {
             wxASSERT(m_analogsValuesNorm[iLead].cols() == analogsValuesNorm.size());
             m_analogsValuesNorm[iLead].row(iStat) = analogsValuesNorm;
         } else {
-            asThrow(_("The size of the values array does not fit with the required index."));
+            throw runtime_error(_("The size of the values array does not fit with the required index."));
         }
     }
 
@@ -352,7 +454,7 @@ class asResultsForecast : public asResults {
         } else if (m_analogsDates.size() == i) {
             m_analogsDates.push_back(analogsDates);
         } else {
-            asThrow(_("The size of the dates array does not fit with the required index."));
+            throw runtime_error(_("The size of the dates array does not fit with the required index."));
         }
     }
 
@@ -361,6 +463,8 @@ class asResultsForecast : public asResults {
     bool Load() override;
 
     wxString GetPredictandStationIdsString() const;
+
+    Coo GetStationsMeanCoordinates();
 
   protected:
     void BuildFileName();
@@ -376,6 +480,7 @@ class asResultsForecast : public asResults {
     asPredictand::SpatialAggregation m_predictandSpatialAggregation;
     wxString m_predictandDatasetId;
     wxString m_predictandDatabase;
+    wxString m_coordinateSystem;
     vi m_predictandStationIds;
     wxString m_forecastsDir;
     bool m_hasReferenceValues;
@@ -390,6 +495,16 @@ class asResultsForecast : public asResults {
     a1d m_stationYCoords;
     a1f m_referenceAxis;
     a2f m_referenceValues;
+    vwxs m_predictorDatasetIdsOper;
+    vwxs m_predictorDatasetIdsArchive;
+    vwxs m_predictorDataIdsOper;
+    vwxs m_predictorDataIdsArchive;
+    vf m_predictorLevels;
+    vf m_predictorHours;
+    vf m_predictorLonMin;
+    vf m_predictorLonMax;
+    vf m_predictorLatMin;
+    vf m_predictorLatMax;
     va1f m_analogsCriteria;
     va2f m_analogsValuesRaw;
     va2f m_analogsValuesNorm;

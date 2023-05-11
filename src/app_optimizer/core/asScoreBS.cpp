@@ -29,20 +29,20 @@
 #include "asScoreBS.h"
 
 asScoreBS::asScoreBS()
-    : asScore(asScore::BS, _("Brier score"), _("Brier score"), Asc, 0, NaNf) {}
+    : asScore(asScore::BS, _("Brier score"), _("Brier score"), Asc, 0, NAN) {}
 
 float asScoreBS::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(!asIsNaN(m_threshold));
+    wxASSERT(!isnan(m_threshold));
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
-        return NaNf;
+        return NAN;
     }
     if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
+        return NAN;
     }
 
     // Create the container to sort the data
@@ -52,10 +52,10 @@ float asScoreBS::Assess(float obs, const a1f& values, int nbElements) const {
     int nbPredict = CleanNans(values, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the Brier score processing function."));
-        return NaNf;
+        return NAN;
     } else if (nbPredict <= 2) {
         wxLogWarning(_("Not enough elements to process the Brier score."));
-        return NaNf;
+        return NAN;
     }
 
     // Sort the forcast array
@@ -74,7 +74,7 @@ float asScoreBS::Assess(float obs, const a1f& values, int nbElements) const {
         int ind = asFindFloor(&x[0], &x[nbPredict - 1], m_threshold);
         if (ind < 0) {
             wxLogError(_("Error processing BS score."));
-            return NaNf;
+            return NAN;
         }
         while (x[ind] <= m_threshold) {
             ind++;

@@ -30,7 +30,7 @@
 #include <wx/filename.h>
 
 #include "asAreaGrid.h"
-#include "asAreaRegGrid.h"
+#include "asAreaGridRegular.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
@@ -355,7 +355,7 @@ TEST(PredictorNcepR1, RegularLoadEasy) {
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -439,7 +439,7 @@ TEST(PredictorNcepR1, RegularGetMinMaxValues) {
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaGridRegular area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);

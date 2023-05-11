@@ -209,7 +209,7 @@ void asMethodCalibratorClassic::GetPlusOptions() {
 
 bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration& params) {
     try {
-        wxLogMessage("Preloading data (if required).");
+        wxLogMessage(_("Preloading data (if required)."));
         if (!PreloadArchiveData(&params)) {
             wxLogError(_("Could not preload the data."));
             return false;
@@ -219,13 +219,13 @@ bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration& params) {
         wxLogError(_("Bad allocation caught during data preloading: %s"), msg);
         DeletePreloadedArchiveData();
         return false;
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught during data preloading: %s"), msg);
         DeletePreloadedArchiveData();
         return false;
     }
-    wxLogMessage("Data preloading is over.");
+    wxLogMessage(_("Data preloading is over."));
     return true;
 }
 
@@ -374,7 +374,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
                 if (!GetAnalogsSubDates(anaDates, &param, anaDatesPrevious, iStep, containsNaNs)) return false;
             }
             if (containsNaNs) {
-                m_scoresCalibTemp.push_back(NaNf);
+                m_scoresCalibTemp.push_back(NAN);
                 continue;
             }
             if (!GetAnalogsValues(anaValues, &param, anaDates, iStep)) return false;
@@ -394,7 +394,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
                 }
                 if (containsNaNs) {
                     continueLoop = false;
-                    m_scoresCalibTemp.push_back(NaNf);
+                    m_scoresCalibTemp.push_back(NAN);
                     continue;
                 }
                 anaDatesPreviousSubRuns = anaDates;
@@ -747,7 +747,7 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
 
             // If better, keep it and start again
             if (KeepIfBetter(params, anaScoreFinal)) {
-                wxLogMessage("Improved spatial window size and position (move %d, factor %d)", iResizing,
+                wxLogMessage(_("Improved spatial window size and position (move %d, factor %d)"), iResizing,
                              multipleFactor);
                 iResizing = 0;
                 multipleFactor = 1;

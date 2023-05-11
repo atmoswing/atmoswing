@@ -54,7 +54,7 @@ float asCriteriaRMSE::Assess(const a2f& refData, const a2f& evalData, int rowsNb
         int size = (!diff.isNaN()).count();
         if (size == 0) {
             wxLogVerbose(_("Only NaNs in the RMSE criteria calculation."));
-            return NaNf;
+            return NAN;
         }
 
         mse = ((diff.isNaN()).select(0, diff)).pow(2).sum() / (float)size;

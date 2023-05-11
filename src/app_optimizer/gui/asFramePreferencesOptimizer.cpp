@@ -30,6 +30,8 @@
 
 asFramePreferencesOptimizer::asFramePreferencesOptimizer(wxWindow* parent, wxWindowID id)
     : asFramePreferencesOptimizerVirtual(parent, id) {
+    SetLabel(_("Preferences"));
+
     LoadPreferences();
     Fit();
 
@@ -62,6 +64,19 @@ void asFramePreferencesOptimizer::LoadPreferences() {
     /*
      * General
      */
+
+    // Locale
+    long locale = pConfig->ReadLong("/General/Locale", (long)wxLANGUAGE_ENGLISH);
+    switch (locale) {
+        case (long)wxLANGUAGE_ENGLISH:
+            m_choiceLocale->SetSelection(0);
+            break;
+        case (long)wxLANGUAGE_FRENCH:
+            m_choiceLocale->SetSelection(1);
+            break;
+        default:
+            m_choiceLocale->SetSelection(0);
+    }
 
     // Log
     long logLevel = pConfig->ReadLong("/General/LogLevel", 1);
@@ -141,6 +156,18 @@ void asFramePreferencesOptimizer::SavePreferences() const {
     /*
      * General
      */
+
+    // Locale
+    switch (m_choiceLocale->GetSelection()) {
+        case 0:
+            pConfig->Write("/General/Locale", (long)wxLANGUAGE_ENGLISH);
+            break;
+        case 1:
+            pConfig->Write("/General/Locale", (long)wxLANGUAGE_FRENCH);
+            break;
+        default:
+            pConfig->Write("/General/Locale", (long)wxLANGUAGE_ENGLISH);
+    }
 
     // Log
     long logLevel = 1;
