@@ -50,7 +50,7 @@ asPredictorOperMfArpege::asPredictorOperMfArpege(const wxString& dataId)
     m_leadTimeStart = 0;
     m_leadTimeStep = 6;
     m_runHourStart = 0;
-    m_runUpdate = 6;
+    m_runUpdate = 12;
 }
 
 bool asPredictorOperMfArpege::Init() {
