@@ -1,6 +1,14 @@
 # Changelog AtmoSwing
 
 
+## v3.0.5 - 12 May 2023
+
+### Fixed
+
+*   The Forecaster returns a non 0 code when at least one forecast failed.
+*   Fixing run time step of Arpege.
+
+
 ## v3.0.4 - 09 May 2023
 
 ### Fixed
