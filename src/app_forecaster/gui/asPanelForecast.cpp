@@ -29,7 +29,9 @@
 #include "asPanelForecast.h"
 
 #include "asBatchForecasts.h"
+#include "asFrameStyledTextCtrl.h"
 #include "asPanelsManagerForecasts.h"
+#include "asParametersForecast.h"
 
 asPanelForecast::asPanelForecast(wxWindow* parent, asBatchForecasts* batch)
     : asPanelForecastVirtual(parent),
@@ -62,10 +64,20 @@ void asPanelForecast::CheckFileExists() {
     wxString dirPath = m_batchForecasts->GetParametersFileDirectory();
     if (wxFileExists(dirPath + DS + fileName)) {
         m_bpButtonWarning->Hide();
+        SetTooTipContent(dirPath + DS + fileName);
     } else {
         m_bpButtonWarning->Show();
         Layout();
         Refresh();
+        m_bpButtonInfo->SetToolTip(wxEmptyString);
+    }
+}
+
+void asPanelForecast::SetTooTipContent(const wxString &filePath) {
+    asParametersForecast param;
+    if (param.LoadFromFile(filePath)) {
+        wxString description = param.GetDescription();
+        m_bpButtonInfo->SetToolTip(description);
     }
 }
 
@@ -88,12 +100,19 @@ void asPanelForecast::OnEditForecastFile(wxCommandEvent& event) {
     panel->SetParametersFileName(filename);
 }
 
-void asPanelForecast::OnInfoForecastFile(wxCommandEvent& event) {
-
-}
-
 void asPanelForecast::OnDetailsForecastFile(wxCommandEvent& event) {
-
+    wxASSERT(m_batchForecasts);
+    wxString fileName = GetParametersFileName();
+    wxString dirPath = m_batchForecasts->GetParametersFileDirectory();
+    if (wxFileExists(dirPath + DS + fileName)) {
+        asFileText file(dirPath + DS + fileName);
+        file.Open();
+        wxString fileContent = file.GetContent();
+        asFrameStyledTextCtrl* frameText = new asFrameStyledTextCtrl(this);
+        frameText->SetTitle(fileName);
+        frameText->SetContent(fileContent);
+        frameText->Show();
+    }
 }
 
 bool asPanelForecast::Layout() {

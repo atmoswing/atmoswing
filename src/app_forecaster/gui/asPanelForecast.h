@@ -45,6 +45,8 @@ class asPanelForecast : public asPanelForecastVirtual {
 
     void CheckFileExists();
 
+    void SetTooTipContent(const wxString &filePath);
+
     awxLed* GetLed() const {
         return m_led;
     }
@@ -70,8 +72,6 @@ class asPanelForecast : public asPanelForecastVirtual {
     void ClosePanel(wxCommandEvent& event) override;
 
     void OnEditForecastFile(wxCommandEvent& event) override;
-
-    void OnInfoForecastFile(wxCommandEvent& event) override;
 
     void OnDetailsForecastFile(wxCommandEvent& event) override;
 

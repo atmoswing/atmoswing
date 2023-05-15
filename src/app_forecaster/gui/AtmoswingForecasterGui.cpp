@@ -325,7 +325,6 @@ asPanelForecastVirtual::asPanelForecastVirtual( wxWindow* parent, wxWindowID id,
 
 	// Connect Events
 	m_bpButtonEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::OnEditForecastFile ), NULL, this );
-	m_bpButtonInfo->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::OnInfoForecastFile ), NULL, this );
 	m_bpButtonDetails->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::OnDetailsForecastFile ), NULL, this );
 	m_bpButtonClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::ClosePanel ), NULL, this );
 }
@@ -334,7 +333,6 @@ asPanelForecastVirtual::~asPanelForecastVirtual()
 {
 	// Disconnect Events
 	m_bpButtonEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::OnEditForecastFile ), NULL, this );
-	m_bpButtonInfo->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::OnInfoForecastFile ), NULL, this );
 	m_bpButtonDetails->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::OnDetailsForecastFile ), NULL, this );
 	m_bpButtonClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::ClosePanel ), NULL, this );
 
@@ -849,4 +847,60 @@ asWizardBatchForecastsVirtual::~asWizardBatchForecastsVirtual()
 	m_button4->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asWizardBatchForecastsVirtual::OnLoadExistingBatchForecasts ), NULL, this );
 
 	m_pages.Clear();
+}
+
+asFrameStyledTextCtrlVirtual::asFrameStyledTextCtrlVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* bSizer37;
+	bSizer37 = new wxBoxSizer( wxVERTICAL );
+
+	m_scintilla = new wxStyledTextCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, wxEmptyString );
+	m_scintilla->SetUseTabs( false );
+	m_scintilla->SetTabWidth( 4 );
+	m_scintilla->SetIndent( 4 );
+	m_scintilla->SetTabIndents( true );
+	m_scintilla->SetBackSpaceUnIndents( true );
+	m_scintilla->SetViewEOL( false );
+	m_scintilla->SetViewWhiteSpace( false );
+	m_scintilla->SetMarginWidth( 2, 0 );
+	m_scintilla->SetIndentationGuides( true );
+	m_scintilla->SetReadOnly( false );
+	m_scintilla->SetMarginType( 1, wxSTC_MARGIN_SYMBOL );
+	m_scintilla->SetMarginMask( 1, wxSTC_MASK_FOLDERS );
+	m_scintilla->SetMarginWidth( 1, 16);
+	m_scintilla->SetMarginSensitive( 1, true );
+	m_scintilla->SetProperty( wxT("fold"), wxT("1") );
+	m_scintilla->SetFoldFlags( wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED );
+	m_scintilla->SetMarginType( 0, wxSTC_MARGIN_NUMBER );
+	m_scintilla->SetMarginWidth( 0, m_scintilla->TextWidth( wxSTC_STYLE_LINENUMBER, wxT("_99999") ) );
+	m_scintilla->MarkerDefine( wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS );
+	m_scintilla->MarkerSetBackground( wxSTC_MARKNUM_FOLDER, wxColour( wxT("BLACK") ) );
+	m_scintilla->MarkerSetForeground( wxSTC_MARKNUM_FOLDER, wxColour( wxT("WHITE") ) );
+	m_scintilla->MarkerDefine( wxSTC_MARKNUM_FOLDEROPEN, wxSTC_MARK_BOXMINUS );
+	m_scintilla->MarkerSetBackground( wxSTC_MARKNUM_FOLDEROPEN, wxColour( wxT("BLACK") ) );
+	m_scintilla->MarkerSetForeground( wxSTC_MARKNUM_FOLDEROPEN, wxColour( wxT("WHITE") ) );
+	m_scintilla->MarkerDefine( wxSTC_MARKNUM_FOLDERSUB, wxSTC_MARK_EMPTY );
+	m_scintilla->MarkerDefine( wxSTC_MARKNUM_FOLDEREND, wxSTC_MARK_BOXPLUS );
+	m_scintilla->MarkerSetBackground( wxSTC_MARKNUM_FOLDEREND, wxColour( wxT("BLACK") ) );
+	m_scintilla->MarkerSetForeground( wxSTC_MARKNUM_FOLDEREND, wxColour( wxT("WHITE") ) );
+	m_scintilla->MarkerDefine( wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_BOXMINUS );
+	m_scintilla->MarkerSetBackground( wxSTC_MARKNUM_FOLDEROPENMID, wxColour( wxT("BLACK") ) );
+	m_scintilla->MarkerSetForeground( wxSTC_MARKNUM_FOLDEROPENMID, wxColour( wxT("WHITE") ) );
+	m_scintilla->MarkerDefine( wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_EMPTY );
+	m_scintilla->MarkerDefine( wxSTC_MARKNUM_FOLDERTAIL, wxSTC_MARK_EMPTY );
+	m_scintilla->SetSelBackground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHT ) );
+	m_scintilla->SetSelForeground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHTTEXT ) );
+	bSizer37->Add( m_scintilla, 1, wxEXPAND, 5 );
+
+
+	this->SetSizer( bSizer37 );
+	this->Layout();
+
+	this->Centre( wxBOTH );
+}
+
+asFrameStyledTextCtrlVirtual::~asFrameStyledTextCtrlVirtual()
+{
 }
