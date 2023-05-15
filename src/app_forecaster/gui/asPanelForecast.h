@@ -32,7 +32,7 @@
 #include <wx/awx/led.h>
 
 #include "AtmoswingForecasterGui.h"
-#include "images.h"
+#include "asBitmaps.h"
 
 class asPanelsManagerForecasts;
 

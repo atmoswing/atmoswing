@@ -32,7 +32,6 @@
 #include "asFramePredictandDB.h"
 #include "asFramePreferencesDownscaler.h"
 #include "asMethodDownscalerClassic.h"
-#include "images.h"
 #include "wx/fileconf.h"
 
 asFrameDownscaler::asFrameDownscaler(wxWindow* parent)

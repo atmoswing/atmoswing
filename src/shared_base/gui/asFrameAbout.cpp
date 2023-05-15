@@ -40,7 +40,7 @@ asFrameAbout::asFrameAbout(wxWindow* parent)
 #endif
 
     // Set logo
-    m_logo->SetBitmap(asBitmaps::GetLogo());
+    m_logo->SetBitmap(asBitmaps::GetLogo(wxSize(128, 128)));
 
     // Set AtmoSwing version
     m_staticTextVersion->SetLabel(asVersion::GetFullString());

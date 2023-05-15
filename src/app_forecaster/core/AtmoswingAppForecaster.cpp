@@ -53,7 +53,7 @@ IMPLEMENT_APP(AtmoswingAppForecaster)
 
 #if USE_GUI
 
-#include "images.h"
+#include "asBitmaps.h"
 
 #endif
 
@@ -159,9 +159,6 @@ bool AtmoswingAppForecaster::OnInit() {
 #if USE_GUI
     // Following for GUI only
     wxInitAllImageHandlers();
-
-    // Initialize images
-    initialize_images(g_ppiScaleDc);
 
     // Create frame
     AtmoswingFrameForecaster* frame = new AtmoswingFrameForecaster(0L);
@@ -665,9 +662,6 @@ int AtmoswingAppForecaster::OnExit() {
 #if USE_GUI
     // Instance checker
     delete m_singleInstanceChecker;
-
-    // Delete images
-    cleanup_images();
 #endif
 
     // Config file (from wxWidgets samples)

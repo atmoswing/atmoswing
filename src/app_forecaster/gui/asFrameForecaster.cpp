@@ -73,8 +73,8 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     m_ledDownloading->SetState(awxLED_OFF);
     m_sizerLeds->Add(m_ledDownloading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxStaticText* textDownloading = new wxStaticText(m_panelMain, wxID_ANY, _("Downloading predictors"),
-                                                     wxDefaultPosition, wxDefaultSize, 0);
+    auto textDownloading = new wxStaticText(m_panelMain, wxID_ANY, _("Downloading predictors"), wxDefaultPosition,
+                                            wxDefaultSize, 0);
     textDownloading->Wrap(-1);
     m_sizerLeds->Add(textDownloading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
@@ -82,8 +82,7 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     m_ledLoading->SetState(awxLED_OFF);
     m_sizerLeds->Add(m_ledLoading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxStaticText* textLoading = new wxStaticText(m_panelMain, wxID_ANY, _("Loading data"), wxDefaultPosition,
-                                                 wxDefaultSize, 0);
+    auto textLoading = new wxStaticText(m_panelMain, wxID_ANY, _("Loading data"), wxDefaultPosition, wxDefaultSize, 0);
     textLoading->Wrap(-1);
     m_sizerLeds->Add(textLoading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
@@ -91,8 +90,7 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     m_ledProcessing->SetState(awxLED_OFF);
     m_sizerLeds->Add(m_ledProcessing, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxStaticText* textProcessing = new wxStaticText(m_panelMain, wxID_ANY, _("Processing"), wxDefaultPosition,
-                                                    wxDefaultSize, 0);
+    auto textProcessing = new wxStaticText(m_panelMain, wxID_ANY, _("Processing"), wxDefaultPosition, wxDefaultSize, 0);
     textProcessing->Wrap(-1);
     m_sizerLeds->Add(textProcessing, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
@@ -100,14 +98,13 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     m_ledSaving->SetState(awxLED_OFF);
     m_sizerLeds->Add(m_ledSaving, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxStaticText* textSaving = new wxStaticText(m_panelMain, wxID_ANY, _("Saving results"), wxDefaultPosition,
-                                                wxDefaultSize, 0);
+    auto textSaving = new wxStaticText(m_panelMain, wxID_ANY, _("Saving results"), wxDefaultPosition, wxDefaultSize, 0);
     textSaving->Wrap(-1);
     m_sizerLeds->Add(textSaving, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
     // Buttons
-    m_bpButtonNow->SetBitmapLabel(*_img_update);
-    m_bpButtonAdd->SetBitmapLabel(*_img_plus);
+    m_bpButtonNow->SetBitmapLabel(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::UPDATE));
+    m_bpButtonAdd->SetBitmapLabel(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::PLUS));
 
     // Create panels manager
     m_panelsManager = new asPanelsManagerForecasts();

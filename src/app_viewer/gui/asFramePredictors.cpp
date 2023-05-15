@@ -27,6 +27,7 @@
 
 #include "asFramePredictors.h"
 
+#include "asBitmaps.h"
 #include "asFramePreferencesViewer.h"
 #if defined(__WIN32__)
 #include "asThreadViewerLayerManagerReload.h"
@@ -39,8 +40,6 @@
 #include <wx/colour.h>
 
 #include "asPredictorsManager.h"
-#include "img_misc.h"
-#include "img_toolbar.h"
 
 BEGIN_EVENT_TABLE(asFramePredictors, wxFrame)
 EVT_MENU(wxID_OPEN, asFramePredictors::OnOpenLayer)
@@ -92,18 +91,21 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     m_selectedForecast = wxMax(m_selectedForecast, 0);
 
     // Toolbar
-    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), *_img_map_zoom_in, *_img_map_zoom_in, wxITEM_NORMAL, _("Zoom in"),
-                       _("Zoom in"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), *_img_map_zoom_out, *_img_map_zoom_out, wxITEM_NORMAL,
-                       _("Zoom out"), _("Zoom out"), nullptr);
-    m_toolBar->AddTool(asID_PAN, wxT("Pan"), *_img_map_move, *_img_map_move, wxITEM_NORMAL, _("Pan the map"),
-                       _("Move the map by panning"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), *_img_map_fit, *_img_map_fit, wxITEM_NORMAL,
-                       _("Zoom to visible layers"), _("Zoom view to the full extent of all visible layers"), nullptr);
-    m_toolBar->AddTool(asID_CROSS_MARKER, wxT("Marker overlay"), *_img_map_cross, *_img_map_cross, wxITEM_NORMAL,
+    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN),
+                       wxNullBitmap, wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT),
+                       wxNullBitmap, wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), nullptr);
+    m_toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_MOVE),
+                       wxNullBitmap, wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_FIT),
+                       wxNullBitmap, wxITEM_NORMAL, _("Zoom to visible layers"),
+                       _("Zoom view to the full extent of all visible layers"), nullptr);
+    m_toolBar->AddTool(asID_CROSS_MARKER, wxT("Marker overlay"),
+                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_CROSS), wxNullBitmap, wxITEM_NORMAL,
                        _("Display a cross marker overlay"), _("Display a cross marker overlay on both frames"),
                        nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"),
+                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::PREFERENCES), wxNullBitmap, wxITEM_NORMAL,
                        _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
@@ -160,8 +162,8 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     m_scrolledWindowOptions->SetDropTarget(new vroomDropFilesPredictors(this));
 
     // Bitmap
-    m_bpButtonSwitchRight->SetBitmapLabel(*_img_arrow_right);
-    m_bpButtonSwitchLeft->SetBitmapLabel(*_img_arrow_left);
+    m_bpButtonSwitchRight->SetBitmapLabel(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::ARROW_RIGHT, wxSize(10, 20)));
+    m_bpButtonSwitchLeft->SetBitmapLabel(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::ARROW_LEFT, wxSize(10, 20)));
 
     // Icon
 #ifdef __WXMSW__

@@ -39,7 +39,6 @@
 #include "asLogWindow.h"
 #include "asPanelSidebarAlarms.h"
 #include "asPanelSidebarAnalogDates.h"
-#include "asPanelSidebarCalendar.h"
 #include "asPanelSidebarCaptionForecastDots.h"
 #include "asPanelSidebarCaptionForecastRing.h"
 #include "asPanelSidebarForecasts.h"

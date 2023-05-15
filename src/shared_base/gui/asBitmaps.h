@@ -90,13 +90,13 @@ class asBitmaps {
 
     static wxBitmap GetToolbarBitmap(asBitmaps::ID_TOOLBAR id, const wxSize& size = wxSize(32, 32));
 
-    static wxBitmap GetBulletBitmap(asBitmaps::ID_BULLETS id, const wxSize& size = wxSize(32, 32));
+    static wxBitmap GetBulletBitmap(asBitmaps::ID_BULLETS id, const wxSize& size = wxSize(16, 16));
 
-    static wxBitmap GetMiscBitmap(asBitmaps::ID_MISC id, const wxSize& size = wxSize(32, 32));
+    static wxBitmap GetMiscBitmap(asBitmaps::ID_MISC id, const wxSize& size = wxSize(16, 16));
 
     static wxBitmap GetTreeCtrlBitmap(asBitmaps::ID_TREECTRL id, const wxSize& size = wxSize(16, 16));
 
-    static wxBitmap GetLogo(const wxSize& size = wxSize(32, 32));
+    static wxBitmap GetLogo(const wxSize& size = wxSize(128, 128));
 };
 
 #endif

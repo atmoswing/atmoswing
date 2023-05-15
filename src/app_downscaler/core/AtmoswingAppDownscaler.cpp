@@ -52,7 +52,6 @@ IMPLEMENT_APP(AtmoswingAppDownscaler)
 #if USE_GUI
 
 #include "asParameters.h"
-#include "images.h"
 
 #endif
 
@@ -143,9 +142,6 @@ bool AtmoswingAppDownscaler::OnInit() {
 
     // Following for GUI only
     wxInitAllImageHandlers();
-
-    // Initialize images
-    initialize_images(g_ppiScaleDc);
 
     // Create frame
     AtmoswingFrameDownscaler* frame = new AtmoswingFrameDownscaler(0L);
@@ -556,11 +552,6 @@ void AtmoswingAppDownscaler::CleanUp() {
     // Delete threads manager and log
     DeleteThreadsManager();
     DeleteLog();
-
-#if USE_GUI
-    // Delete images
-    cleanup_images();
-#endif
 
     // CleanUp
     wxApp::CleanUp();

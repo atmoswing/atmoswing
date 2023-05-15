@@ -32,7 +32,7 @@
 
 asPanelSidebar::asPanelSidebar(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
     : asPanelSidebarVirtual(parent, id, pos, size, style) {
-    m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::SHOWN));
+    m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::SHOWN, wxSize(16, 16)));
 }
 
 void asPanelSidebar::OnReducePanel(wxMouseEvent& event) {
@@ -40,10 +40,10 @@ void asPanelSidebar::OnReducePanel(wxMouseEvent& event) {
 
     if (m_sizerMain->IsShown(m_sizerContent)) {
         m_sizerMain->Hide(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::HIDDEN));
+        m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::HIDDEN, wxSize(16, 16)));
     } else {
         m_sizerMain->Show(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::SHOWN));
+        m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::SHOWN, wxSize(16, 16)));
     }
 
     // Refresh elements
@@ -58,10 +58,10 @@ void asPanelSidebar::OnReducePanel(wxMouseEvent& event) {
 void asPanelSidebar::ReducePanel() {
     if (m_sizerMain->IsShown(m_sizerContent)) {
         m_sizerMain->Hide(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::HIDDEN));
+        m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::HIDDEN, wxSize(16, 16)));
     } else {
         m_sizerMain->Show(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::SHOWN));
+        m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::SHOWN, wxSize(16, 16)));
     }
 }
 
