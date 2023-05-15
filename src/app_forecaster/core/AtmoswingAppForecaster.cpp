@@ -257,8 +257,13 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
         wxConfigBase* pConfig = wxFileConfig::Get();
         pConfig->Write("/Internet/UsesProxy", true);
 
-        wxString proxyAddress = proxy.BeforeFirst(':');
-        wxString proxyPort = proxy.AfterFirst(':');
+        wxString proxyAddress = proxy.BeforeLast(':');
+        wxString proxyPort = proxy.AfterLast(':');
+
+        if (proxyAddress.IsSameAs("http", false) || proxyAddress.IsSameAs("https", false)) {
+            proxyAddress = proxy;
+            proxyPort = "";
+        }
 
         pConfig->Write("/Internet/ProxyAddress", proxyAddress);
         pConfig->Write("/Internet/ProxyPort", proxyPort);
