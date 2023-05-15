@@ -34,7 +34,7 @@
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
      inkscape:cy="97.227183"
-     inkscape:cx="57.629203"
+     inkscape:cx="196.39891"
      inkscape:zoom="2.8284271"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -249,7 +249,8 @@
     <g
        id="g5044"
        inkscape:export-xdpi="192"
-       inkscape:export-ydpi="192">
+       inkscape:export-ydpi="192"
+       inkscape:export-filename="g5044.svg">
       <path
          inkscape:connector-curvature="0"
          id="path4328"
@@ -269,7 +270,7 @@
        id="g5048"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"
-       inkscape:export-filename="D:\Development\AtmoSwing-64b\art\toolbar\small\map_zoom_in.png">
+       inkscape:export-filename="map_zoom_in.svg">
       <path
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
@@ -311,7 +312,7 @@
        id="g5056"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"
-       inkscape:export-filename="D:\Development\AtmoSwing-64b\art\toolbar\small\map_zoom_out.png">
+       inkscape:export-filename="map_zoom_out.svg">
       <path
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
@@ -342,7 +343,8 @@
     <g
        id="g5062"
        inkscape:export-xdpi="192"
-       inkscape:export-ydpi="192">
+       inkscape:export-ydpi="192"
+       inkscape:export-filename="g5062.svg">
       <path
          inkscape:connector-curvature="0"
          id="path4379"
@@ -386,7 +388,8 @@
     <g
        id="g5071"
        inkscape:export-xdpi="192"
-       inkscape:export-ydpi="192">
+       inkscape:export-ydpi="192"
+       inkscape:export-filename="map_fit.svg">
       <path
          inkscape:connector-curvature="0"
          id="path4393"
@@ -488,7 +491,7 @@
        rx="2" />
     <g
        id="g710"
-       inkscape:export-filename="small\map_cross.png"
+       inkscape:export-filename="map_cross.svg"
        inkscape:export-xdpi="95.988647"
        inkscape:export-ydpi="95.988647">
       <path
@@ -523,7 +526,8 @@
     <g
        id="g5082"
        inkscape:export-xdpi="192"
-       inkscape:export-ydpi="192">
+       inkscape:export-ydpi="192"
+       inkscape:export-filename="g5082.svg">
       <rect
          ry="2"
          y="67.362206"
@@ -606,7 +610,8 @@
     <g
        id="g5098"
        inkscape:export-xdpi="192"
-       inkscape:export-ydpi="192">
+       inkscape:export-ydpi="192"
+       inkscape:export-filename="frame_analogs2.svg">
       <rect
          ry="2"
          y="67.362206"
@@ -860,7 +865,7 @@
     </g>
     <g
        id="g2089"
-       inkscape:export-filename="small\frame_predictors.png"
+       inkscape:export-filename="frame_predictors.svg"
        inkscape:export-xdpi="95.977531"
        inkscape:export-ydpi="95.977531">
       <rect
