@@ -2,19 +2,19 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="744.09448819"
    height="1052.3622047"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="treectrl_icons.svg">
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="_treectrl_icons.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6568545"
-     inkscape:cx="56.187144"
-     inkscape:cy="1030.3774"
+     inkscape:zoom="8.0000004"
+     inkscape:cx="80.312496"
+     inkscape:cy="27.687499"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -35,9 +35,12 @@
      inkscape:guide-bbox="true"
      inkscape:window-width="1280"
      inkscape:window-height="706"
-     inkscape:window-x="7"
-     inkscape:window-y="17"
-     inkscape:window-maximized="0">
+     inkscape:window-x="1984"
+     inkscape:window-y="94"
+     inkscape:window-maximized="0"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid2985"
@@ -48,35 +51,43 @@
     <sodipodi:guide
        orientation="0,1"
        position="70,1040"
-       id="guide2989" />
+       id="guide2989"
+       inkscape:locked="false" />
     <sodipodi:guide
        orientation="0,1"
        position="85,1020"
-       id="guide2991" />
+       id="guide2991"
+       inkscape:locked="false" />
     <sodipodi:guide
        orientation="1,0"
        position="10,1035"
-       id="guide2993" />
+       id="guide2993"
+       inkscape:locked="false" />
     <sodipodi:guide
        orientation="1,0"
        position="30,1030"
-       id="guide2995" />
+       id="guide2995"
+       inkscape:locked="false" />
     <sodipodi:guide
        orientation="1,0"
        position="50,1050"
-       id="guide3790" />
+       id="guide3790"
+       inkscape:locked="false" />
     <sodipodi:guide
        orientation="1,0"
        position="70,1035"
-       id="guide3837" />
+       id="guide3837"
+       inkscape:locked="false" />
     <sodipodi:guide
        orientation="1,0"
        position="90,1025"
-       id="guide3940" />
+       id="guide3940"
+       inkscape:locked="false" />
     <sodipodi:guide
        orientation="1,0"
        position="110,1035"
-       id="guide3948" />
+       id="guide3948"
+       inkscape:locked="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -86,7 +97,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -102,18 +112,18 @@
        sodipodi:nodetypes="sssscss"
        inkscape:export-xdpi="150.49475"
        inkscape:export-ydpi="150.49475"
-       inkscape:export-filename="C:\Users\phorton\Desktop\icons\icon_precip.png" />
+       inkscape:export-filename="icon_precip.svg" />
     <path
        style="fill:#ffff7d;fill-opacity:1;stroke:#ffcc00;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 38.391636,13.428779 5.617275,0 -3.321141,4.712635 2.905997,0 -2.752242,4.930973 2.478556,0 -5.692066,8.610365 0.870262,-6.400251 -1.857069,0 1.913513,-4.723982 -2.381018,0 z"
        id="path3803"
        inkscape:connector-curvature="0"
-       inkscape:export-filename="C:\Users\phorton\Desktop\icons\icon_lightning.png"
+       inkscape:export-filename="icon_lightning.svg"
        inkscape:export-xdpi="151.92375"
        inkscape:export-ydpi="151.92375" />
     <g
        id="g3980"
-       inkscape:export-filename="C:\Users\phorton\Desktop\icons\icon_temp.png"
+       inkscape:export-filename="icon_temp.svg"
        inkscape:export-xdpi="149.78088"
        inkscape:export-ydpi="149.78088">
       <path
@@ -186,7 +196,7 @@
     <g
        id="g3942"
        transform="matrix(0.13176879,0,0,0.13176879,59.150891,8.6806749)"
-       inkscape:export-filename="C:\Users\Pascal\Desktop\icons\icon_wind.png"
+       inkscape:export-filename="icon_wind.svg"
        inkscape:export-xdpi="301.17819"
        inkscape:export-ydpi="301.17819">
       <path
@@ -224,16 +234,15 @@
        sodipodi:ry="8"
        d="m 109,22.85976 a 8,8 0 1 1 -16,0 8,8 0 1 1 16,0 z"
        transform="matrix(1.0621972,0,0,1.0621972,-7.1593436,-1.9194132)"
-       inkscape:export-filename="C:\Users\phorton\Desktop\icons\icon_other.png"
+       inkscape:export-filename="icon_other.svg"
        inkscape:export-xdpi="159.49379"
        inkscape:export-ydpi="159.49379" />
     <text
        xml:space="preserve"
-       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#5c5c5c;fill-opacity:1;stroke:none;font-family:Palatino Linotype;-inkscape-font-specification:Palatino Linotype;"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Palatino Linotype';-inkscape-font-specification:'Palatino Linotype';letter-spacing:0px;word-spacing:0px;fill:#5c5c5c;fill-opacity:1;stroke:none"
        x="96.125"
        y="27.36216"
        id="text3952"
-       sodipodi:linespacing="125%"
        inkscape:export-filename="C:\Users\phorton\Desktop\icons\icon_other.png"
        inkscape:export-xdpi="159.49379"
        inkscape:export-ydpi="159.49379"><tspan
@@ -241,7 +250,7 @@
          id="tspan3954"
          x="96.125"
          y="27.36216"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#5c5c5c;fill-opacity:1;font-family:Arial;-inkscape-font-specification:Arial;">?</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;fill:#5c5c5c;fill-opacity:1">?</tspan></text>
     <g
        id="g3942-1"
        transform="matrix(0.13176879,0,0,0.13176879,59.150891,28.680714)"

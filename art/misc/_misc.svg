@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="204.30335"
-     inkscape:cy="90.913728"
+     inkscape:cx="244.70945"
+     inkscape:cy="131.31983"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -62,7 +62,7 @@
      id="layer1">
     <g
        id="g4408"
-       inkscape:export-filename="D:\Development\AtmoSwing-64b\art\misc\large\bullet_green.png"
+       inkscape:export-filename="bullet_green.svg"
        inkscape:export-xdpi="144"
        inkscape:export-ydpi="144">
       <rect
@@ -83,7 +83,7 @@
     </g>
     <g
        id="g4412"
-       inkscape:export-filename="D:\Development\AtmoSwing-64b\art\misc\large\bullet_red.png"
+       inkscape:export-filename="bullet_red.svg"
        inkscape:export-xdpi="144"
        inkscape:export-ydpi="144">
       <rect
@@ -104,7 +104,7 @@
     </g>
     <g
        id="g4416"
-       inkscape:export-filename="D:\Development\AtmoSwing-64b\art\misc\large\bullet_white.png"
+       inkscape:export-filename="bullet_white.svg"
        inkscape:export-xdpi="144"
        inkscape:export-ydpi="144">
       <rect
@@ -125,7 +125,7 @@
     </g>
     <g
        id="g4420"
-       inkscape:export-filename="D:\Development\AtmoSwing-64b\art\misc\large\bullet_yellow.png"
+       inkscape:export-filename="bullet_yellow.svg"
        inkscape:export-xdpi="144"
        inkscape:export-ydpi="144">
       <rect
@@ -146,7 +146,7 @@
     </g>
     <g
        id="g4424"
-       inkscape:export-filename="D:\Development\AtmoSwing-64b\art\misc\large\close.png"
+       inkscape:export-filename="close.svg"
        inkscape:export-xdpi="108"
        inkscape:export-ydpi="108">
       <rect
@@ -176,7 +176,7 @@
     </g>
     <g
        id="g4430"
-       inkscape:export-filename="D:\Development\AtmoSwing-64b\art\misc\large\shown.png"
+       inkscape:export-filename="shown.svg"
        inkscape:export-xdpi="108"
        inkscape:export-ydpi="108">
       <rect
@@ -196,7 +196,7 @@
     </g>
     <g
        id="g4434"
-       inkscape:export-filename="D:\Development\AtmoSwing-64b\art\misc\large\hidden.png"
+       inkscape:export-filename="hidden.svg"
        inkscape:export-xdpi="108"
        inkscape:export-ydpi="108">
       <rect
@@ -216,7 +216,7 @@
     </g>
     <g
        id="g4438"
-       inkscape:export-filename="D:\Development\AtmoSwing-64b\art\misc\large\plus.png"
+       inkscape:export-filename="plus.svg"
        inkscape:export-xdpi="144"
        inkscape:export-ydpi="144">
       <rect
@@ -241,7 +241,7 @@
     </g>
     <g
        id="g4443"
-       inkscape:export-filename="D:\Development\AtmoSwing-64b\art\misc\small\update.png"
+       inkscape:export-filename="update.svg"
        inkscape:export-xdpi="72"
        inkscape:export-ydpi="72">
       <rect
@@ -272,7 +272,7 @@
     </g>
     <g
        id="g4434-5"
-       inkscape:export-filename="small\arrow_right.png"
+       inkscape:export-filename="arrow_right.svg"
        inkscape:export-xdpi="88.789795"
        inkscape:export-ydpi="88.789795"
        transform="translate(-238.125,37.5)">
@@ -285,7 +285,7 @@
     </g>
     <g
        id="g4434-5-3"
-       inkscape:export-filename="small\arrow_left.png"
+       inkscape:export-filename="arrow_left.svg"
        inkscape:export-xdpi="88.789795"
        inkscape:export-ydpi="88.789795"
        transform="matrix(-1,0,0,1,339.37798,37.5)">
