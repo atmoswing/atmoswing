@@ -112,15 +112,19 @@ class asFrameForecasterVirtual : public wxFrame
 class asPanelForecastVirtual : public wxPanel
 {
 	private:
-		wxBoxSizer* m_sizerFilename;
 
 	protected:
 		wxBoxSizer* m_sizerPanel;
 		wxBoxSizer* m_sizerHeader;
-		wxTextCtrl* m_textCtrlParametersFileName;
+		wxStaticText* m_textParametersFileName;
+		wxBitmapButton* m_bpButtonWarning;
+		wxBitmapButton* m_bpButtonEdit;
+		wxBitmapButton* m_bpButtonInfo;
 		wxBitmapButton* m_bpButtonClose;
 
 		// Virtual event handlers, override them in your derived class
+		virtual void OnEditForecastFile( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnInfoForecastFile( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ClosePanel( wxCommandEvent& event ) { event.Skip(); }
 
 
