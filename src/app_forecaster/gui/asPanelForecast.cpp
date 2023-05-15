@@ -40,7 +40,7 @@ asPanelForecast::asPanelForecast(wxWindow* parent)
     m_sizerHeader->Insert(0, m_led, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
     // Set the buttons bitmaps
-    m_bpButtonClose->SetBitmapLabel(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::CLOSE));
+    m_bpButtonClose->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::CLOSE));
 
     // Fix the color of the file/dir pickers
     wxColour col = parent->GetParent()->GetBackgroundColour();

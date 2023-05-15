@@ -67,11 +67,11 @@ void asListBoxForecasts::CreateImageList() {
     auto images = new wxImageList(size, size, true);
 
     // Images must match the enum
-    images->Add(asBitmaps::GetTreeCtrlBitmap(asBitmaps::ICON_PRECIP));
-    images->Add(asBitmaps::GetTreeCtrlBitmap(asBitmaps::ICON_TEMP));
-    images->Add(asBitmaps::GetTreeCtrlBitmap(asBitmaps::ICON_LIGHTNING));
-    images->Add(asBitmaps::GetTreeCtrlBitmap(asBitmaps::ICON_WIND));
-    images->Add(asBitmaps::GetTreeCtrlBitmap(asBitmaps::ICON_OTHER));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_PRECIP));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_TEMP));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_LIGHTNING));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_WIND));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_OTHER));
 
     AssignImageList(images);
 }

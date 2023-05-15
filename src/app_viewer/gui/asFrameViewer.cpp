@@ -114,32 +114,30 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
     m_splitterGIS->SetMinimumPaneSize(sashMinSize);
 
     // Toolbar
-    m_toolBar->AddTool(asID_OPEN, wxT("Open"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::OPEN), wxNullBitmap,
+    m_toolBar->AddTool(asID_OPEN, wxT("Open"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::OPEN), wxNullBitmap,
                        wxITEM_NORMAL, _("Open forecast"), _("Open a forecast"), nullptr);
-    m_toolBar->AddTool(asID_SELECT, wxT("Select"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_SELECT),
+    m_toolBar->AddTool(asID_SELECT, wxT("Select"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_SELECT),
                        wxNullBitmap, wxITEM_NORMAL, _("Select"), _("Select data on the map"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN),
+    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN),
                        wxNullBitmap, wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT),
+    m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT),
                        wxNullBitmap, wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), nullptr);
-    m_toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_MOVE),
+    m_toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_MOVE),
                        wxNullBitmap, wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_FIT),
+    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_FIT),
                        wxNullBitmap, wxITEM_NORMAL, _("Zoom to visible layers"),
                        _("Zoom view to the full extent of all visible layers"), nullptr);
     m_toolBar->AddTool(asID_FRAME_PLOTS, wxT("Open distributions plots"),
-                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::FRAME_DISTRIBUTIONS),
+                       asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_DISTRIBUTIONS),
                        wxNullBitmap, wxITEM_NORMAL, _("Open distributions plots"),
                        _("Open distributions plots"), nullptr);
-    m_toolBar->AddTool(asID_FRAME_GRID, wxT("Open analogs list"),
-                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::FRAME_ANALOGS), wxNullBitmap,
-                       wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), nullptr);
+    m_toolBar->AddTool(asID_FRAME_GRID, wxT("Open analogs list"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_ANALOGS),
+                       wxNullBitmap, wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), nullptr);
     m_toolBar->AddTool(asID_FRAME_PREDICTORS, wxT("Open predictor maps"),
-                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::FRAME_PREDICTORS), wxNullBitmap,
+                       asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_PREDICTORS), wxNullBitmap,
                        wxITEM_NORMAL, _("Open predictor maps"), _("Open predictor maps"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"),
-                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::PREFERENCES), wxNullBitmap, wxITEM_NORMAL,
-                       _("Preferences"), _("Preferences"), nullptr);
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
+                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
     // VroomGIS controls

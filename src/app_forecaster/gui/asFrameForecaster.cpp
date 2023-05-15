@@ -59,13 +59,12 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     // m_panelMain->SetBackgroundColour(asConfig::GetFrameBgColour());
 
     // Toolbar
-    m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap,
+    m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap,
                        wxITEM_NORMAL, _("Run forecast"), _("Run forecast now"), nullptr);
-    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::STOP),
+    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::STOP),
                        wxNullBitmap, wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"),
-                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::PREFERENCES), wxNullBitmap, wxITEM_NORMAL,
-                       _("Preferences"), _("Preferences"), nullptr);
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
+                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
     // Leds
@@ -103,8 +102,8 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     m_sizerLeds->Add(textSaving, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
     // Buttons
-    m_bpButtonNow->SetBitmapLabel(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::UPDATE));
-    m_bpButtonAdd->SetBitmapLabel(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::PLUS));
+    m_bpButtonNow->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::UPDATE));
+    m_bpButtonAdd->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::PLUS));
 
     // Create panels manager
     m_panelsManager = new asPanelsManagerForecasts();

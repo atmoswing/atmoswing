@@ -113,22 +113,21 @@ wxString asBitmaps::GetColor() {
     return asBitmaps::ColorBlack;
 };
 
-wxBitmap asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR id, const wxSize& size) {
+wxBitmap asBitmaps::Get(asBitmaps::ID_TOOLBAR id, const wxSize& size) {
     wxString bmp = wxString::Format(asBitmaps::SvgToolbar[id], GetColor());
-    wxSize sizeScaled = size * g_ppiScaleDc;
     return wxBitmapBundle::FromSVG(bmp, size).GetBitmap(size);
 }
 
-wxBitmap asBitmaps::GetBulletBitmap(asBitmaps::ID_BULLETS id, const wxSize& size) {
+wxBitmap asBitmaps::Get(asBitmaps::ID_BULLETS id, const wxSize& size) {
     return wxBitmapBundle::FromSVG(asBitmaps::SvgBullets[id], size).GetBitmap(size);
 }
 
-wxBitmap asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC id, const wxSize& size) {
+wxBitmap asBitmaps::Get(asBitmaps::ID_MISC id, const wxSize& size) {
     wxString bmp = wxString::Format(asBitmaps::SvgMisc[id], GetColor());
     return wxBitmapBundle::FromSVG(bmp, size).GetBitmap(size);
 }
 
-wxBitmap asBitmaps::GetTreeCtrlBitmap(asBitmaps::ID_TREECTRL id, const wxSize& size) {
+wxBitmap asBitmaps::Get(asBitmaps::ID_TREECTRL id, const wxSize& size) {
     return wxBitmapBundle::FromSVG(asBitmaps::SvgTreeCtrl[id], size).GetBitmap(size);
 }
 
