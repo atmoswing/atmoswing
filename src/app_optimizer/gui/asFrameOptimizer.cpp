@@ -28,6 +28,7 @@
 
 #include "asFrameOptimizer.h"
 
+#include "asBitmaps.h"
 #include "asFrameAbout.h"
 #include "asFramePredictandDB.h"
 #include "asFramePreferencesOptimizer.h"
@@ -39,7 +40,6 @@
 #include "asMethodCalibratorSingleOnlyValues.h"
 #include "asMethodOptimizerGAs.h"
 #include "asMethodOptimizerMC.h"
-#include "images.h"
 #include "wx/fileconf.h"
 
 asFrameOptimizer::asFrameOptimizer(wxWindow* parent)
@@ -47,11 +47,13 @@ asFrameOptimizer::asFrameOptimizer(wxWindow* parent)
       m_logWindow(nullptr),
       m_methodCalibrator(nullptr) {
     // Toolbar
-    m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run optimizer"),
-                       _("Run optimizer now"), nullptr);
-    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel optimization"),
+    m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap,
+                       wxITEM_NORMAL, _("Run optimizer"), _("Run optimizer now"), nullptr);
+    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::STOP),
+                       wxNullBitmap, wxITEM_NORMAL, _("Cancel optimization"),
                        _("Cancel current optimization"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"),
+                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::PREFERENCES), wxNullBitmap, wxITEM_NORMAL,
                        _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 

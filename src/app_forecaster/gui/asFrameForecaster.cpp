@@ -26,6 +26,7 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
+#include "asBitmaps.h"
 #include "asFrameAbout.h"
 #include "asFrameForecaster.h"
 #include "asFramePredictandDB.h"
@@ -58,11 +59,12 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     // m_panelMain->SetBackgroundColour(asConfig::GetFrameBgColour());
 
     // Toolbar
-    m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run forecast"),
-                       _("Run forecast now"), nullptr);
-    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel forecast"),
-                       _("Cancel current forecast"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
+    m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap,
+                       wxITEM_NORMAL, _("Run forecast"), _("Run forecast now"), nullptr);
+    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::STOP),
+                       wxNullBitmap, wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), nullptr);
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"),
+                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::PREFERENCES), wxNullBitmap, wxITEM_NORMAL,
                        _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 

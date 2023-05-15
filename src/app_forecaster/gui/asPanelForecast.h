@@ -51,11 +51,11 @@ class asPanelForecast : public asPanelForecastVirtual {
     }
 
     wxString GetParametersFileName() const {
-        return m_textCtrlParametersFileName->GetValue();
+        return m_textParametersFileName->GetLabel();
     }
 
     void SetParametersFileName(const wxString& val) {
-        m_textCtrlParametersFileName->SetValue(val);
+        m_textParametersFileName->SetLabel(val);
     }
 
   protected:

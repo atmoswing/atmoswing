@@ -27,6 +27,7 @@
 
 #include "asFrameDownscaler.h"
 
+#include "asBitmaps.h"
 #include "asFrameAbout.h"
 #include "asFramePredictandDB.h"
 #include "asFramePreferencesDownscaler.h"
@@ -39,11 +40,12 @@ asFrameDownscaler::asFrameDownscaler(wxWindow* parent)
       m_logWindow(nullptr),
       m_methodDownscaler(nullptr) {
     // Toolbar
-    m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run downscaler"),
-                       _("Run downscaler now"), nullptr);
-    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel downscaling"),
-                       _("Cancel current downscaling"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
+    m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap,
+                       wxITEM_NORMAL, _("Run downscaler"), _("Run downscaler now"), nullptr);
+    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::STOP),
+                       wxNullBitmap, wxITEM_NORMAL, _("Cancel downscaling"), _("Cancel current downscaling"), nullptr);
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"),
+                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::PREFERENCES), wxNullBitmap, wxITEM_NORMAL,
                        _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 

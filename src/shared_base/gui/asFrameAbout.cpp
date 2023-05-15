@@ -28,7 +28,7 @@
 #include "asFrameAbout.h"
 
 #include "asIncludes.h"
-#include "images.h"
+#include "asBitmaps.h"
 
 asFrameAbout::asFrameAbout(wxWindow* parent)
     : asFrameAboutVirtual(parent) {
@@ -40,7 +40,7 @@ asFrameAbout::asFrameAbout(wxWindow* parent)
 #endif
 
     // Set logo
-    m_logo->SetBitmap(*_img_logo);
+    m_logo->SetBitmap(asBitmaps::GetLogo());
 
     // Set AtmoSwing version
     m_staticTextVersion->SetLabel(asVersion::GetFullString());

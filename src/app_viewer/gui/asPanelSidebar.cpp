@@ -28,11 +28,11 @@
 
 #include "asPanelSidebar.h"
 
-#include "images.h"
+#include "asBitmaps.h"
 
 asPanelSidebar::asPanelSidebar(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
     : asPanelSidebarVirtual(parent, id, pos, size, style) {
-    m_bitmapCaret->SetBitmap(*_img_shown);
+    m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::SHOWN));
 }
 
 void asPanelSidebar::OnReducePanel(wxMouseEvent& event) {
@@ -40,10 +40,10 @@ void asPanelSidebar::OnReducePanel(wxMouseEvent& event) {
 
     if (m_sizerMain->IsShown(m_sizerContent)) {
         m_sizerMain->Hide(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(*_img_hidden);
+        m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::HIDDEN));
     } else {
         m_sizerMain->Show(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(*_img_shown);
+        m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::SHOWN));
     }
 
     // Refresh elements
@@ -58,10 +58,10 @@ void asPanelSidebar::OnReducePanel(wxMouseEvent& event) {
 void asPanelSidebar::ReducePanel() {
     if (m_sizerMain->IsShown(m_sizerContent)) {
         m_sizerMain->Hide(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(*_img_hidden);
+        m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::HIDDEN));
     } else {
         m_sizerMain->Show(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(*_img_shown);
+        m_bitmapCaret->SetBitmap(asBitmaps::GetMiscBitmap(asBitmaps::ID_MISC::SHOWN));
     }
 }
 

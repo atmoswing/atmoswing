@@ -39,6 +39,7 @@
 
 #include <wx/dir.h>
 
+#include "asBitmaps.h"
 #include "asFileText.h"
 #include "asFrameAbout.h"
 #include "asFrameGridAnalogsValues.h"
@@ -47,7 +48,6 @@
 #include "asFramePlotTimeSeries.h"
 #include "asFramePreferencesViewer.h"
 #include "asWizardWorkspace.h"
-#include "images.h"
 #include "vrlayervector.h"
 
 BEGIN_EVENT_TABLE(asFrameViewer, wxFrame)
@@ -114,26 +114,31 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
     m_splitterGIS->SetMinimumPaneSize(sashMinSize);
 
     // Toolbar
-    m_toolBar->AddTool(asID_OPEN, wxT("Open"), *_img_open, *_img_open, wxITEM_NORMAL, _("Open forecast"),
-                       _("Open a forecast"), nullptr);
-    m_toolBar->AddTool(asID_SELECT, wxT("Select"), *_img_map_select, *_img_map_select, wxITEM_NORMAL, _("Select"),
-                       _("Select data on the map"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), *_img_map_zoom_in, *_img_map_zoom_in, wxITEM_NORMAL, _("Zoom in"),
-                       _("Zoom in"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), *_img_map_zoom_out, *_img_map_zoom_out, wxITEM_NORMAL,
-                       _("Zoom out"), _("Zoom out"), nullptr);
-    m_toolBar->AddTool(asID_PAN, wxT("Pan"), *_img_map_move, *_img_map_move, wxITEM_NORMAL, _("Pan the map"),
-                       _("Move the map by panning"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), *_img_map_fit, *_img_map_fit, wxITEM_NORMAL,
-                       _("Zoom to visible layers"), _("Zoom view to the full extent of all visible layers"), nullptr);
-    m_toolBar->AddTool(asID_FRAME_PLOTS, wxT("Open distributions plots"), *_img_frame_distributions,
-                       *_img_frame_distributions, wxITEM_NORMAL, _("Open distributions plots"),
+    m_toolBar->AddTool(asID_OPEN, wxT("Open"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::OPEN), wxNullBitmap,
+                       wxITEM_NORMAL, _("Open forecast"), _("Open a forecast"), nullptr);
+    m_toolBar->AddTool(asID_SELECT, wxT("Select"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_SELECT),
+                       wxNullBitmap, wxITEM_NORMAL, _("Select"), _("Select data on the map"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN),
+                       wxNullBitmap, wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT),
+                       wxNullBitmap, wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), nullptr);
+    m_toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_MOVE),
+                       wxNullBitmap, wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::MAP_FIT),
+                       wxNullBitmap, wxITEM_NORMAL, _("Zoom to visible layers"),
+                       _("Zoom view to the full extent of all visible layers"), nullptr);
+    m_toolBar->AddTool(asID_FRAME_PLOTS, wxT("Open distributions plots"),
+                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::FRAME_DISTRIBUTIONS),
+                       wxNullBitmap, wxITEM_NORMAL, _("Open distributions plots"),
                        _("Open distributions plots"), nullptr);
-    m_toolBar->AddTool(asID_FRAME_GRID, wxT("Open analogs list"), *_img_frame_analogs, *_img_frame_analogs,
+    m_toolBar->AddTool(asID_FRAME_GRID, wxT("Open analogs list"),
+                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::FRAME_ANALOGS), wxNullBitmap,
                        wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), nullptr);
-    m_toolBar->AddTool(asID_FRAME_PREDICTORS, wxT("Open predictor maps"), *_img_frame_predictors, *_img_frame_predictors,
+    m_toolBar->AddTool(asID_FRAME_PREDICTORS, wxT("Open predictor maps"),
+                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::FRAME_PREDICTORS), wxNullBitmap,
                        wxITEM_NORMAL, _("Open predictor maps"), _("Open predictor maps"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"),
+                       asBitmaps::GetToolbarBitmap(asBitmaps::ID_TOOLBAR::PREFERENCES), wxNullBitmap, wxITEM_NORMAL,
                        _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
@@ -556,7 +561,7 @@ bool asFrameViewer::SaveWorkspace() {
     }
 
     if (!m_workspace.Save()) {
-        wxLogError(_("Could not save the worspace."));
+        wxLogError(_("Could not save the workspace."));
         return false;
     }
 

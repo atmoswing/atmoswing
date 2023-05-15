@@ -11,7 +11,7 @@
 #include <wx/wxprec.h>
 
 #include "asIncludes.h"
-#include "images.h"
+#include "asBitmaps.h"
 
 BEGIN_EVENT_TABLE(awxLed, wxWindow)
 EVT_ERASE_BACKGROUND(awxLed::OnErase)
@@ -31,8 +31,8 @@ awxLed::awxLed(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize
       m_on(false) {
     int imgSize = 16 * g_ppiScaleDc;
     m_timer = new BlinkTimer(this);
-    m_icons[awxLED_OFF] = *_img_bullet_white;
-    m_icons[awxLED_ON] = *_img_bullet_white;
+    m_icons[awxLED_OFF] = asBitmaps::GetBulletBitmap(asBitmaps::ID_BULLETS::BULLET_WHITE);
+    m_icons[awxLED_ON] = asBitmaps::GetBulletBitmap(asBitmaps::ID_BULLETS::BULLET_WHITE);
     SetInitialSize(wxSize(imgSize, imgSize));
     SetMinSize(wxSize(imgSize, imgSize));
     SetColour(color);
@@ -76,16 +76,16 @@ void awxLed::SetColour(awxLedColour colour) {
     // if(m_icons[awxLED_ON]) delete m_icons[awxLED_ON];
     switch (colour) {
         case awxLED_LUCID:
-            m_icons[awxLED_ON] = *_img_bullet_white;
+            m_icons[awxLED_ON] = asBitmaps::GetBulletBitmap(asBitmaps::ID_BULLETS::BULLET_WHITE);
             break;
         case awxLED_GREEN:
-            m_icons[awxLED_ON] = *_img_bullet_green;
+            m_icons[awxLED_ON] = asBitmaps::GetBulletBitmap(asBitmaps::ID_BULLETS::BULLET_GREEN);
             break;
         case awxLED_YELLOW:
-            m_icons[awxLED_ON] = *_img_bullet_yellow;
+            m_icons[awxLED_ON] = asBitmaps::GetBulletBitmap(asBitmaps::ID_BULLETS::BULLET_YELLOW);
             break;
         default:
-            m_icons[awxLED_ON] = *_img_bullet_red;
+            m_icons[awxLED_ON] = asBitmaps::GetBulletBitmap(asBitmaps::ID_BULLETS::BULLET_RED);
     }
 }
 
