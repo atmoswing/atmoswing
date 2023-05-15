@@ -35,12 +35,15 @@
 #include "asBitmaps.h"
 
 class asPanelsManagerForecasts;
+class asBatchForecasts;
 
 class asPanelForecast : public asPanelForecastVirtual {
   public:
-    explicit asPanelForecast(wxWindow* parent);
+    explicit asPanelForecast(wxWindow* parent, asBatchForecasts* batch);
 
     bool Layout() override;
+
+    void CheckFileExists();
 
     awxLed* GetLed() const {
         return m_led;
@@ -56,15 +59,21 @@ class asPanelForecast : public asPanelForecastVirtual {
 
     void SetParametersFileName(const wxString& val) {
         m_textParametersFileName->SetLabel(val);
+        CheckFileExists();
     }
 
   protected:
     wxWindow* m_parentFrame;
     awxLed* m_led;
+    asBatchForecasts* m_batchForecasts;
 
     void ClosePanel(wxCommandEvent& event) override;
 
-    void ChangeForecastName(wxCommandEvent& event);
+    void OnEditForecastFile(wxCommandEvent& event) override;
+
+    void OnInfoForecastFile(wxCommandEvent& event) override;
+
+    void OnDetailsForecastFile(wxCommandEvent& event) override;
 
   private:
     asPanelsManagerForecasts* m_panelsManager;

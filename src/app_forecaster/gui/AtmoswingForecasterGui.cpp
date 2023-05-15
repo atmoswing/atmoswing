@@ -293,15 +293,26 @@ asPanelForecastVirtual::asPanelForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_sizerHeader->Add( m_textParametersFileName, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	m_bpButtonWarning = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0|wxBORDER_NONE );
+	m_bpButtonWarning->SetToolTip( _("File not found") );
+
 	m_sizerHeader->Add( m_bpButtonWarning, 0, wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
 
 	m_bpButtonEdit = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0|wxBORDER_NONE );
+	m_bpButtonEdit->SetToolTip( _("Edit path") );
+
 	m_sizerHeader->Add( m_bpButtonEdit, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT|wxLEFT, 5 );
 
 	m_bpButtonInfo = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0|wxBORDER_NONE );
 	m_sizerHeader->Add( m_bpButtonInfo, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT|wxLEFT, 5 );
 
+	m_bpButtonDetails = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0|wxBORDER_NONE );
+	m_bpButtonDetails->SetToolTip( _("See details") );
+
+	m_sizerHeader->Add( m_bpButtonDetails, 0, wxALL, 5 );
+
 	m_bpButtonClose = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( -1,-1 ), wxBU_AUTODRAW|0|wxBORDER_NONE );
+	m_bpButtonClose->SetToolTip( _("Close") );
+
 	m_sizerHeader->Add( m_bpButtonClose, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT|wxLEFT, 5 );
 
 
@@ -315,6 +326,7 @@ asPanelForecastVirtual::asPanelForecastVirtual( wxWindow* parent, wxWindowID id,
 	// Connect Events
 	m_bpButtonEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::OnEditForecastFile ), NULL, this );
 	m_bpButtonInfo->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::OnInfoForecastFile ), NULL, this );
+	m_bpButtonDetails->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::OnDetailsForecastFile ), NULL, this );
 	m_bpButtonClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::ClosePanel ), NULL, this );
 }
 
@@ -323,6 +335,7 @@ asPanelForecastVirtual::~asPanelForecastVirtual()
 	// Disconnect Events
 	m_bpButtonEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::OnEditForecastFile ), NULL, this );
 	m_bpButtonInfo->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::OnInfoForecastFile ), NULL, this );
+	m_bpButtonDetails->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::OnDetailsForecastFile ), NULL, this );
 	m_bpButtonClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::ClosePanel ), NULL, this );
 
 }

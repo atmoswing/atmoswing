@@ -102,6 +102,7 @@ bool AtmoswingAppForecaster::OnInit() {
     m_doForecastPast = false;
     m_forecastDate = 0.0;
     m_forecastPastDays = 0;
+    m_singleInstanceChecker = nullptr;
 
     // Set the local config object
     wxFileConfig* pConfig = new wxFileConfig(
@@ -260,7 +261,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
         wxString proxyAddress = proxy.BeforeLast(':');
         wxString proxyPort = proxy.AfterLast(':');
 
-        if (proxyAddress.IsSameAs("http", false) || proxyAddress.IsSameAs("https", false)) {
+        if (proxyAddress.IsSameAs("http", false) || proxyAddress.IsSameAs("https", false) || proxyAddress.Len() < 5) {
             proxyAddress = proxy;
             proxyPort = "";
         }
@@ -666,7 +667,7 @@ int AtmoswingAppForecaster::OnRun() {
 int AtmoswingAppForecaster::OnExit() {
 #if USE_GUI
     // Instance checker
-    delete m_singleInstanceChecker;
+    wxDELETE(m_singleInstanceChecker);
 #endif
 
     // Config file (from wxWidgets samples)

@@ -28,12 +28,14 @@
 
 #include "asPanelForecast.h"
 
+#include "asBatchForecasts.h"
 #include "asPanelsManagerForecasts.h"
 
-asPanelForecast::asPanelForecast(wxWindow* parent)
+asPanelForecast::asPanelForecast(wxWindow* parent, asBatchForecasts* batch)
     : asPanelForecastVirtual(parent),
       m_parentFrame(nullptr),
-      m_panelsManager(nullptr) {
+      m_panelsManager(nullptr),
+      m_batchForecasts(batch) {
     // Led
     m_led = new awxLed(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0);
     m_led->SetState(awxLED_OFF);
@@ -41,6 +43,11 @@ asPanelForecast::asPanelForecast(wxWindow* parent)
 
     // Set the buttons bitmaps
     m_bpButtonClose->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::CLOSE));
+    m_bpButtonInfo->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::INFO));
+    m_bpButtonDetails->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::DETAILS));
+    m_bpButtonEdit->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::EDIT));
+    m_bpButtonWarning->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::WARNING));
+    m_bpButtonWarning->Hide();
 
     // Fix the color of the file/dir pickers
     wxColour col = parent->GetParent()->GetBackgroundColour();
@@ -49,15 +56,47 @@ asPanelForecast::asPanelForecast(wxWindow* parent)
     }
 }
 
+void asPanelForecast::CheckFileExists() {
+    wxASSERT(m_batchForecasts);
+    wxString fileName = GetParametersFileName();
+    wxString dirPath = m_batchForecasts->GetParametersFileDirectory();
+    if (wxFileExists(dirPath + DS + fileName)) {
+        m_bpButtonWarning->Hide();
+    } else {
+        m_bpButtonWarning->Show();
+        Layout();
+        Refresh();
+    }
+}
+
 void asPanelForecast::ClosePanel(wxCommandEvent& event) {
     m_panelsManager->RemovePanel(this);
+}
+
+void asPanelForecast::OnEditForecastFile(wxCommandEvent& event) {
+    auto button = dynamic_cast<wxWindow*>(event.GetEventObject());
+    wxASSERT(button);
+    auto panel = dynamic_cast<asPanelForecast*>(button->GetParent());
+    wxASSERT(panel);
+    wxString value = panel->GetParametersFileName();
+
+    wxTextEntryDialog dialog(this, _("Enter the file name (without the path)"), _("Parameters file name"), value);
+
+    if (dialog.ShowModal() == wxID_CANCEL) return;
+
+    wxString filename = dialog.GetValue();
+    panel->SetParametersFileName(filename);
+}
+
+void asPanelForecast::OnInfoForecastFile(wxCommandEvent& event) {
+
+}
+
+void asPanelForecast::OnDetailsForecastFile(wxCommandEvent& event) {
+
 }
 
 bool asPanelForecast::Layout() {
     asPanelForecastVirtual::Layout();
     return true;
-}
-
-void asPanelForecast::ChangeForecastName(wxCommandEvent& event) {
-    //
 }

@@ -75,7 +75,11 @@ class asBitmaps {
         SHOWN,
         UPDATE,
         ARROW_LEFT,
-        ARROW_RIGHT
+        ARROW_RIGHT,
+        DETAILS,
+        INFO,
+        EDIT,
+        WARNING
     };
 
     enum ID_TREECTRL {

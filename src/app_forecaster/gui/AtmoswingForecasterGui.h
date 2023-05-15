@@ -120,11 +120,13 @@ class asPanelForecastVirtual : public wxPanel
 		wxBitmapButton* m_bpButtonWarning;
 		wxBitmapButton* m_bpButtonEdit;
 		wxBitmapButton* m_bpButtonInfo;
+		wxBitmapButton* m_bpButtonDetails;
 		wxBitmapButton* m_bpButtonClose;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnEditForecastFile( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnInfoForecastFile( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDetailsForecastFile( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ClosePanel( wxCommandEvent& event ) { event.Skip(); }
 
 

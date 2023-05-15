@@ -268,7 +268,7 @@ bool asFrameForecaster::OpenBatchForecasts() {
 
     // Create the panels
     for (int i = 0; i < m_batchForecasts.GetForecastsNb(); i++) {
-        auto panel = new asPanelForecast(m_scrolledWindowForecasts);
+        auto panel = new asPanelForecast(m_scrolledWindowForecasts, &m_batchForecasts);
         panel->SetParametersFileName(m_batchForecasts.GetForecastFileName(i));
         panel->Layout();
         m_sizerForecasts->Add(panel, 0, wxALL | wxEXPAND, 5);
@@ -487,7 +487,7 @@ void asFrameForecaster::CancelForecasting(wxCommandEvent& event) {
 
 void asFrameForecaster::AddForecast(wxCommandEvent& event) {
     Freeze();
-    auto panel = new asPanelForecast(m_scrolledWindowForecasts);
+    auto panel = new asPanelForecast(m_scrolledWindowForecasts, &m_batchForecasts);
     panel->Layout();
     m_sizerForecasts->Add(panel, 0, wxALL | wxEXPAND, 5);
     Layout();  // For the scrollbar
