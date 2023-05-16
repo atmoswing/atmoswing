@@ -58,13 +58,25 @@ EVT_COMMAND(wxID_ANY, vrEVT_TOOL_SIGHT, asFramePredictors::OnToolAction)
 
 END_EVENT_TABLE()
 
-/* vroomDropFilesPredictors */
-
+/**
+ * A class to handle the drop of files on the frame.
+ *
+ * @param parent The parent window.
+ */
 vroomDropFilesPredictors::vroomDropFilesPredictors(asFramePredictors* parent) {
     wxASSERT(parent);
     m_LoaderFrame = parent;
 }
 
+/**
+ * Handle the drop of files on the frame.
+ *
+ * @param x The x coordinate of the drop.
+ * @param y The y coordinate of the drop.
+ * @param filenames The list of files dropped.
+ *
+ * @return True if the drop was handled.
+ */
 bool vroomDropFilesPredictors::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames) {
     if (filenames.GetCount() == 0) return false;
 
@@ -72,6 +84,16 @@ bool vroomDropFilesPredictors::OnDropFiles(wxCoord x, wxCoord y, const wxArraySt
     return true;
 }
 
+/**
+ * Constructor of the frame to plot predictors.
+ *
+ * @param parent The parent window.
+ * @param forecastManager The forecast manager.
+ * @param workspace The workspace.
+ * @param methodRow The selected method.
+ * @param forecastRow The selected forecast.
+ * @param id The window identifier.
+ */
 asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* forecastManager, asWorkspace* workspace,
                                      int methodRow, int forecastRow, wxWindowID id)
     : asFramePredictorsVirtual(parent, id),
@@ -86,7 +108,7 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
       m_selectedAnalogDate(-1),
       m_selectedPredictor(-1)
 {
-    SetLabel(_("Predictors overview"));
+    this->SetLabel(_("Predictors overview"));
 
     m_selectedForecast = wxMax(m_selectedForecast, 0);
 
@@ -168,6 +190,9 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
 #endif
 }
 
+/**
+ * The destructor.
+ */
 asFramePredictors::~asFramePredictors() {
     // Disconnect Events
     m_displayCtrlLeft->Disconnect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFramePredictors::OnRightClick), nullptr, this);
@@ -178,6 +203,9 @@ asFramePredictors::~asFramePredictors() {
     wxDELETE(m_layerManager);
 }
 
+/**
+ * Initializes the frame.
+ */
 void asFramePredictors::Init() {
     if (m_forecastManager->GetMethodsNb() > 0) {
         m_selectedTargetDate = 0;
@@ -190,6 +218,9 @@ void asFramePredictors::Init() {
     OpenDefaultLayers();
 }
 
+/**
+ * Updates the methods list.
+ */
 void asFramePredictors::UpdateMethodsList() {
     wxArrayString methods = m_forecastManager->GetMethodNamesWxArray();
     m_choiceMethod->Set(methods);
@@ -198,6 +229,9 @@ void asFramePredictors::UpdateMethodsList() {
     UpdateForecastList();
 }
 
+/**
+ * Updates the forecasts list.
+ */
 void asFramePredictors::UpdateForecastList() {
     wxArrayString forecasts = m_forecastManager->GetForecastNamesWxArray(m_selectedMethod);
     m_choiceForecast->Set(forecasts);
@@ -209,6 +243,9 @@ void asFramePredictors::UpdateForecastList() {
     UpdateTargetDatesList();
 }
 
+/**
+ * Updates the available predictors list.
+ */
 void asFramePredictors::UpdatePredictorsList() {
     asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     vwxs predictorDataIds = forecast->GetPredictorDataIdsOper();
@@ -231,6 +268,9 @@ void asFramePredictors::UpdatePredictorsList() {
     m_listPredictors->Layout();
 }
 
+/**
+ * Updates the predictors properties.
+ */
 void asFramePredictors::UpdatePredictorsProperties() {
     asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
@@ -247,6 +287,9 @@ void asFramePredictors::UpdatePredictorsProperties() {
     m_predictorsManagerAnalog->SetHours(forecast->GetPredictorHours());
 }
 
+/**
+ * Updates the target dates list.
+ */
 void asFramePredictors::UpdateTargetDatesList() {
     wxArrayString dates = m_forecastManager->GetTargetDatesWxArray(m_selectedMethod, m_selectedForecast);
     m_choiceTargetDates->Set(dates);
@@ -255,6 +298,9 @@ void asFramePredictors::UpdateTargetDatesList() {
     UpdateAnalogDatesList();
 }
 
+/**
+ * Updates the analog dates list.
+ */
 void asFramePredictors::UpdateAnalogDatesList() {
     asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     a1f analogDates = forecast->GetAnalogsDates(m_selectedTargetDate);
@@ -271,6 +317,9 @@ void asFramePredictors::UpdateAnalogDatesList() {
     m_choiceAnalogDates->Select(m_selectedAnalogDate);
 }
 
+/**
+ * Initializes the map extent.
+ */
 void asFramePredictors::InitExtent() {
     vrRealRect desiredExtent = getDesiredExtent();
 
@@ -278,6 +327,11 @@ void asFramePredictors::InitExtent() {
     m_viewerLayerManagerRight->InitializeExtent(desiredExtent);
 }
 
+/**
+ * Opens the preferences frame.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OpenFramePreferences(wxCommandEvent& event) {
     wxBusyCursor wait;
 
@@ -286,6 +340,11 @@ void asFramePredictors::OpenFramePreferences(wxCommandEvent& event) {
     frame->Show();
 }
 
+/**
+ * Moves the map separator to the right.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnSwitchRight(wxCommandEvent& event) {
     if (!m_displayPanelRight) return;
 
@@ -307,6 +366,11 @@ void asFramePredictors::OnSwitchRight(wxCommandEvent& event) {
     Thaw();
 }
 
+/**
+ * Moves the map separator to the left.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnSwitchLeft(wxCommandEvent& event) {
     if (!m_displayPanelLeft) return;
 
@@ -328,6 +392,11 @@ void asFramePredictors::OnSwitchLeft(wxCommandEvent& event) {
     Thaw();
 }
 
+/**
+ * Updates the map when the predictor selection changes.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnPredictorSelectionChange(wxCommandEvent& event) {
     m_selectedPredictor = event.GetInt();
     m_predictorsManagerTarget->NeedsDataReload();
@@ -335,6 +404,11 @@ void asFramePredictors::OnPredictorSelectionChange(wxCommandEvent& event) {
     UpdateLayers();
 }
 
+/**
+ * Updates the map and the list of forecasts when the method changes.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnMethodChange(wxCommandEvent& event) {
     m_selectedMethod = event.GetInt();
     m_predictorsManagerTarget->NeedsDataReload();
@@ -343,6 +417,11 @@ void asFramePredictors::OnMethodChange(wxCommandEvent& event) {
     UpdateLayers();
 }
 
+/**
+ * Updates the map and the list of target dates when the forecast changes.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnForecastChange(wxCommandEvent& event) {
     m_selectedForecast = event.GetInt();
     m_predictorsManagerTarget->NeedsDataReload();
@@ -351,6 +430,11 @@ void asFramePredictors::OnForecastChange(wxCommandEvent& event) {
     UpdateLayers();
 }
 
+/**
+ * Updates the map and the analog dates when the target date changes.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnTargetDateChange(wxCommandEvent& event) {
     m_selectedTargetDate = event.GetInt();
     m_predictorsManagerTarget->NeedsDataReload();
@@ -359,6 +443,11 @@ void asFramePredictors::OnTargetDateChange(wxCommandEvent& event) {
     UpdateLayers();
 }
 
+/**
+ * Updates the map when the analog date changes.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnAnalogDateChange(wxCommandEvent& event) {
     m_selectedAnalogDate = event.GetInt();
     m_predictorsManagerTarget->NeedsDataReload();
@@ -366,6 +455,9 @@ void asFramePredictors::OnAnalogDateChange(wxCommandEvent& event) {
     UpdateLayers();
 }
 
+/**
+ * Opens the default maps layers (background).
+ */
 void asFramePredictors::OpenDefaultLayers() {
     // Default paths
     wxConfigBase* pConfig = wxFileConfig::Get();
@@ -520,6 +612,12 @@ void asFramePredictors::OpenDefaultLayers() {
     m_viewerLayerManagerRight->FreezeEnd();
 }
 
+/**
+ * Opens a list of layers.
+ *
+ * @param names Array of layer names to open.
+ * @return True if successful.
+ */
 bool asFramePredictors::OpenLayers(const wxArrayString& names) {
     // Open files
     for (unsigned int i = 0; i < names.GetCount(); i++) {
@@ -551,6 +649,11 @@ bool asFramePredictors::OpenLayers(const wxArrayString& names) {
     return true;
 }
 
+/**
+ * Opens a dialog to select a layer.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnOpenLayer(wxCommandEvent& event) {
     vrDrivers drivers;
     wxFileDialog myFileDlg(this, _("Select GIS layers"), wxEmptyString, wxEmptyString, drivers.GetWildcards(),
@@ -567,6 +670,11 @@ void asFramePredictors::OnOpenLayer(wxCommandEvent& event) {
     }
 }
 
+/**
+ * Opens a dialog to select a layer to close.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnCloseLayer(wxCommandEvent& event) {
 #if defined(__WIN32__)
     m_critSectionViewerLayerManager.Enter();
@@ -629,6 +737,11 @@ void asFramePredictors::OnCloseLayer(wxCommandEvent& event) {
 #endif
 }
 
+/**
+ * Key down event to handle the zoom in and out.
+ *
+ * @param event The key event.
+ */
 void asFramePredictors::OnKeyDown(wxKeyEvent& event) {
     m_KeyBoardState = wxKeyboardState(event.ControlDown(), event.ShiftDown(), event.AltDown(), event.MetaDown());
     if (m_KeyBoardState.GetModifiers() != wxMOD_CMD) {
@@ -649,6 +762,11 @@ void asFramePredictors::OnKeyDown(wxKeyEvent& event) {
     event.Skip();
 }
 
+/**
+ * Key up event to handle the zoom in and out.
+ *
+ * @param event The key event.
+ */
 void asFramePredictors::OnKeyUp(wxKeyEvent& event) {
     if (m_KeyBoardState.GetModifiers() != wxMOD_CMD) {
         event.Skip();
@@ -668,30 +786,60 @@ void asFramePredictors::OnKeyUp(wxKeyEvent& event) {
     event.Skip();
 }
 
+/**
+ * Activates or deactivates the syncro mode between the two maps.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnSyncroToolSwitch(wxCommandEvent& event) {
     m_syncroTool = GetMenuBar()->IsChecked(asID_SET_SYNCRO_MODE);
 }
 
+/**
+ * Sets the zoom in tool.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnToolZoomIn(wxCommandEvent& event) {
     m_displayCtrlLeft->SetToolZoom();
     m_displayCtrlRight->SetToolZoom();
 }
 
+/**
+ * Sets the zoom out tool.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnToolZoomOut(wxCommandEvent& event) {
     m_displayCtrlLeft->SetToolZoomOut();
     m_displayCtrlRight->SetToolZoomOut();
 }
 
+/**
+ * Sets the pan tool.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnToolPan(wxCommandEvent& event) {
     m_displayCtrlLeft->SetToolPan();
     m_displayCtrlRight->SetToolPan();
 }
 
+/**
+ * Sets the sight tool.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnToolSight(wxCommandEvent& event) {
     m_displayCtrlLeft->SetToolSight();
     m_displayCtrlRight->SetToolSight();
 }
 
+/**
+ * Handles the zoom to fit event.
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnToolZoomToFit(wxCommandEvent& event) {
     vrRealRect desiredExtent = getDesiredExtent();
 
@@ -705,6 +853,11 @@ void asFramePredictors::OnToolZoomToFit(wxCommandEvent& event) {
     }
 }
 
+/**
+ * Get the desired extent for the map.
+ *
+ * @return The desired extent.
+ */
 vrRealRect asFramePredictors::getDesiredExtent() const {
     vf extent = m_forecastManager->GetMaxExtent();
     float width = extent[1] - extent[0];
@@ -721,6 +874,11 @@ vrRealRect asFramePredictors::getDesiredExtent() const {
     return desiredExtent;
 }
 
+/**
+ * Handles the different tool actions (zoom, pan, etc).
+ *
+ * @param event The command event.
+ */
 void asFramePredictors::OnToolAction(wxCommandEvent& event) {
     auto msg = static_cast<vrDisplayToolMessage*>(event.GetClientData());
     wxASSERT(msg);
@@ -873,6 +1031,9 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
     wxDELETE(msg);
 }
 
+/**
+ * Sets target and analog dates in lists and refreshes the map.
+ */
 void asFramePredictors::UpdateLayers() {
     // Check that elements are selected
     if ((m_selectedMethod == -1) || (m_selectedForecast == -1) || (m_selectedTargetDate == -1) ||
@@ -905,6 +1066,12 @@ void asFramePredictors::UpdateLayers() {
     m_predictorsRenderer->Redraw(domain, location);
 }
 
+/**
+ * Gets the mean coordinates of the stations in WGS84.
+ *
+ * @param forecast The forecast object.
+ * @return The mean coordinates of the stations in WGS84.
+ */
 Coo asFramePredictors::GetStationsMeanCoordinatesWgs84(asResultsForecast* forecast) {
     Coo location = {0, 0};
     wxString coordSys = forecast->GetCoordinateSystem();
@@ -936,6 +1103,9 @@ Coo asFramePredictors::GetStationsMeanCoordinatesWgs84(asResultsForecast* foreca
     return location;
 }
 
+/**
+ * Reloads the left viewer layer manager.
+ */
 void asFramePredictors::ReloadViewerLayerManagerLeft() {
 #if defined(__WIN32__)
     auto thread = new asThreadViewerLayerManagerReload(m_viewerLayerManagerLeft, &m_critSectionViewerLayerManager);
@@ -945,6 +1115,9 @@ void asFramePredictors::ReloadViewerLayerManagerLeft() {
 #endif
 }
 
+/**
+ * Reloads the right viewer layer manager.
+ */
 void asFramePredictors::ReloadViewerLayerManagerRight() {
 #if defined(__WIN32__)
     auto thread = new asThreadViewerLayerManagerReload(m_viewerLayerManagerRight, &m_critSectionViewerLayerManager);

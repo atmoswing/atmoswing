@@ -73,6 +73,11 @@ void asPanelForecast::CheckFileExists() {
     }
 }
 
+/**
+ * Set the content of the tooltip. It provides the description of the forecast.
+ *
+ * @param filePath The path to the forecast file.
+ */
 void asPanelForecast::SetTooTipContent(const wxString &filePath) {
     asParametersForecast param;
     if (param.LoadFromFile(filePath)) {
@@ -81,10 +86,20 @@ void asPanelForecast::SetTooTipContent(const wxString &filePath) {
     }
 }
 
+/**
+ * Close the panel.
+ *
+ * @param event The command event.
+ */
 void asPanelForecast::ClosePanel(wxCommandEvent& event) {
     m_panelsManager->RemovePanel(this);
 }
 
+/**
+ * Edit the forecast file path.
+ *
+ * @param event The command event.
+ */
 void asPanelForecast::OnEditForecastFile(wxCommandEvent& event) {
     auto button = dynamic_cast<wxWindow*>(event.GetEventObject());
     wxASSERT(button);
@@ -100,6 +115,11 @@ void asPanelForecast::OnEditForecastFile(wxCommandEvent& event) {
     panel->SetParametersFileName(filename);
 }
 
+/**
+ * Show the details of the forecast on a styled text control.
+ *
+ * @param event The command event.
+ */
 void asPanelForecast::OnDetailsForecastFile(wxCommandEvent& event) {
     wxASSERT(m_batchForecasts);
     wxString fileName = GetParametersFileName();
@@ -115,6 +135,11 @@ void asPanelForecast::OnDetailsForecastFile(wxCommandEvent& event) {
     }
 }
 
+/**
+ * Layout the panel.
+ *
+ * @return True if done.
+ */
 bool asPanelForecast::Layout() {
     asPanelForecastVirtual::Layout();
     return true;

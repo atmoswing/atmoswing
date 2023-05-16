@@ -201,6 +201,11 @@ void asFrameForecaster::OnOpenBatchForecasts(wxCommandEvent& event) {
     m_fileHistory->AddFileToHistory(batchFilePath);
 }
 
+/**
+ * Open the batch file selected from the recent entries.
+ *
+ * @param event The menu event.
+ */
 void asFrameForecaster::OnFileHistory(wxCommandEvent& event) {
     int id = event.GetId() - wxID_FILE1;
     wxString batchFilePath = m_fileHistory->GetHistoryFile(id);
@@ -555,6 +560,9 @@ void asFrameForecaster::SetForecastDate(double date) {
     m_textCtrlForecastHour->SetValue(hourStr);
 }
 
+/**
+ * Update the recent files list and remove the ones that do not exist anymore.
+ */
 void asFrameForecaster::UpdateRecentFiles() {
     wxASSERT(m_fileHistory);
 
@@ -567,6 +575,9 @@ void asFrameForecaster::UpdateRecentFiles() {
     }
 }
 
+/**
+ * Set the recent files list in the menu.
+ */
 void asFrameForecaster::SetRecentFiles() {
     wxConfigBase* config = wxFileConfig::Get();
     config->SetPath("/Recent");
@@ -585,6 +596,9 @@ void asFrameForecaster::SetRecentFiles() {
     config->SetPath("..");
 }
 
+/**
+ * Save the recent files list in the config file.
+ */
 void asFrameForecaster::SaveRecentFiles() {
     wxASSERT(m_fileHistory);
     wxConfigBase* config = wxFileConfig::Get();
