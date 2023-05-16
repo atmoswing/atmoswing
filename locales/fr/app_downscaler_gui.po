@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-07 10:51+0200\n"
-"PO-Revision-Date: 2023-05-07 10:52+0200\n"
+"POT-Creation-Date: 2023-05-16 23:19+0200\n"
+"PO-Revision-Date: 2023-05-16 23:21+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,9 +16,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:42
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:43
 msgid "Run downscaler"
 msgstr "Exécuter le Downscaler"
 
@@ -26,7 +26,7 @@ msgstr "Exécuter le Downscaler"
 msgid "Run downscaler now"
 msgstr "Lancer le downscaler maintenant"
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:44
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:45
 msgid "Cancel downscaling"
 msgstr "Annuler la descente d'échelle"
 
@@ -40,34 +40,34 @@ msgstr "Annuler la descente d'échelle actuelle"
 msgid "Preferences"
 msgstr "Préférences"
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:245
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:241
 msgid "Wrong method selection."
 msgstr "Mauvaise sélection de la méthode."
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:250
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:246
 msgid "Proceeding to classic downscaling."
 msgstr "Procéder à une descente d'échelle classique."
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:255
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:251
 msgid "Chosen method not defined yet."
 msgstr "La méthode choisie n'est pas encore définie."
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:267
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:263
 #, c-format
 msgid "Bad allocation caught: %s"
 msgstr "Mauvaise allocation détectée : %s"
 
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:264
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:268
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:272
 msgid "Failed to process the downscaling."
 msgstr "Échec du traitement de la descente d'échelle."
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:271
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:267
 #, c-format
 msgid "Exception caught: %s"
 msgstr "Une exception a été détectée : %s"
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:277
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:273
 msgid "Downscaler over."
 msgstr "La descente d'échelle est terminée."
 

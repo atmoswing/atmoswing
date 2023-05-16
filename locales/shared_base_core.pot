@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-07 10:51+0200\n"
+"POT-Creation-Date: 2023-05-16 23:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -427,12 +427,12 @@ msgstr ""
 msgid "You are trying to read a line after the end of the file %s"
 msgstr ""
 
-#: src/shared_base/core/asFileText.cpp:133
-#: src/shared_base/core/asFileText.cpp:150
+#: src/shared_base/core/asFileText.cpp:143
+#: src/shared_base/core/asFileText.cpp:160
 msgid "Reached the end of the file while skipping lines."
 msgstr ""
 
-#: src/shared_base/core/asFileText.cpp:167
+#: src/shared_base/core/asFileText.cpp:177
 #, c-format
 msgid "Couldn't open the file %s."
 msgstr ""
@@ -1440,11 +1440,6 @@ msgstr ""
 
 #: src/shared_base/core/asTimeArray.cpp:207
 msgid "The time array mode is not allowed for the analogs."
-msgstr ""
-
-#: src/shared_base/core/asTimeArray.cpp:225
-msgid ""
-"The 'exclude_days' parameter cannot be 0 or ignored. Defaulted to 30 days."
 msgstr ""
 
 #: src/shared_base/core/asTimeArray.cpp:453

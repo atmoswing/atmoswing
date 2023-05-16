@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-13 22:16+0200\n"
-"PO-Revision-Date: 2023-04-13 22:27+0200\n"
+"POT-Creation-Date: 2023-05-16 23:19+0200\n"
+"PO-Revision-Date: 2023-05-16 23:28+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 
 #: src/shared_base/core/asArea.cpp:71
 msgid "Unable to build a consistent area with the given coordinates."
@@ -428,12 +428,12 @@ msgstr ""
 "paramètres."
 
 #: src/shared_base/core/asFileParameters.cpp:428
-#: src/shared_base/core/asParameters.cpp:729
+#: src/shared_base/core/asParameters.cpp:725
 msgid "The station ID was not provided."
 msgstr "L'identifiant de la station n'a pas été fourni."
 
 #: src/shared_base/core/asFileParameters.cpp:438
-#: src/shared_base/core/asParameters.cpp:744
+#: src/shared_base/core/asParameters.cpp:740
 msgid ""
 "The format of the station ID is not correct (more than one opening bracket)."
 msgstr ""
@@ -441,7 +441,7 @@ msgstr ""
 "ouvrante)."
 
 #: src/shared_base/core/asFileParameters.cpp:444
-#: src/shared_base/core/asParameters.cpp:750
+#: src/shared_base/core/asParameters.cpp:746
 msgid ""
 "The format of the station ID is not correct (location of the closing "
 "bracket)."
@@ -450,7 +450,7 @@ msgstr ""
 "la parenthèse fermante)."
 
 #: src/shared_base/core/asFileParameters.cpp:464
-#: src/shared_base/core/asParameters.cpp:770
+#: src/shared_base/core/asParameters.cpp:766
 msgid "The format of the station ID is not correct (should be only digits)."
 msgstr ""
 "Le format de l'identifiant de la station n'est pas correct (ne doit "
@@ -468,12 +468,12 @@ msgstr ""
 msgid "You are trying to read a line after the end of the file %s"
 msgstr "Vous essayez de lire une ligne après la fin du fichier %s"
 
-#: src/shared_base/core/asFileText.cpp:133
-#: src/shared_base/core/asFileText.cpp:150
+#: src/shared_base/core/asFileText.cpp:143
+#: src/shared_base/core/asFileText.cpp:160
 msgid "Reached the end of the file while skipping lines."
 msgstr "A atteint la fin du fichier en sautant des lignes."
 
-#: src/shared_base/core/asFileText.cpp:167
+#: src/shared_base/core/asFileText.cpp:177
 #, c-format
 msgid "Couldn't open the file %s."
 msgstr "Impossible d'ouvrir le fichier %s."
@@ -523,74 +523,48 @@ msgstr "Le nœud est vide dans le fichier xml."
 msgid "Empty %s attribute of the element %s (XML file)."
 msgstr "Attribut vide %s de l'élément %s (fichier XML)."
 
-#: src/shared_base/core/asInternet.cpp:120
-msgid "Downloading predictors.\n"
-msgstr "Téléchargement des prédicteurs.\n"
-
-#: src/shared_base/core/asInternet.cpp:142
+#: src/shared_base/core/asInternet.cpp:90
 #: src/shared_base/core/asThreadInternetDownload.cpp:74
 #, c-format
 msgid "Downloading file %s."
 msgstr "Téléchargement du fichier %s."
 
-#: src/shared_base/core/asInternet.cpp:148
+#: src/shared_base/core/asInternet.cpp:96
 #: src/shared_base/core/asThreadInternetDownload.cpp:80
 msgid "The directory to save real-time predictors data cannot be created."
 msgstr ""
 "Le répertoire d'enregistrement des données des variables prédicteurs en "
 "temps réel ne peut pas être créé."
 
-#: src/shared_base/core/asInternet.cpp:157
-#, c-format
-msgid "Downloading file %s\n"
-msgstr "Téléchargement du fichier %s\n"
-
-#: src/shared_base/core/asInternet.cpp:158
-#, c-format
-msgid "Downloading: %d / %d files"
-msgstr "Téléchargement : %d / %d fichiers"
-
-#: src/shared_base/core/asInternet.cpp:160
-msgid "The download has been canceled by the user."
-msgstr "Le téléchargement a été annulé par l'utilisateur."
-
-#: src/shared_base/core/asInternet.cpp:207
+#: src/shared_base/core/asInternet.cpp:143
 #: src/shared_base/core/asThreadInternetDownload.cpp:127
 #, c-format
 msgid "Failed downloading file. Curl error code: %d"
 msgstr "Échec du téléchargement du fichier. Code d'erreur Curl : %d"
 
-#: src/shared_base/core/asInternet.cpp:208
+#: src/shared_base/core/asInternet.cpp:144
 #: src/shared_base/core/asThreadInternetDownload.cpp:128
 #, c-format
 msgid "Curl error message: %s"
 msgstr "Message d'erreur Curl : %s"
 
-#: src/shared_base/core/asInternet.cpp:209
+#: src/shared_base/core/asInternet.cpp:145
 #: src/shared_base/core/asThreadInternetDownload.cpp:129
 #, c-format
 msgid "URL: %s"
 msgstr "URL: %s"
 
-#: src/shared_base/core/asInternet.cpp:214
+#: src/shared_base/core/asInternet.cpp:150
 #, c-format
 msgid "File %d/%d downloaded successfully."
 msgstr "Fichier %d/%d téléchargé avec succès."
 
-#: src/shared_base/core/asParameters.cpp:90
-msgid "Loading parameters file."
-msgstr "Chargement du fichier de paramètres."
-
-#: src/shared_base/core/asParameters.cpp:93
+#: src/shared_base/core/asParameters.cpp:91
 msgid "The given path to the parameters file is empty."
 msgstr "Le chemin d'accès au fichier de paramètres est vide."
 
-#: src/shared_base/core/asParameters.cpp:138
-msgid "Parameters file loaded."
-msgstr "Fichier de paramètres chargé."
-
-#: src/shared_base/core/asParameters.cpp:429
-#: src/shared_base/core/asParameters.cpp:611
+#: src/shared_base/core/asParameters.cpp:425
+#: src/shared_base/core/asParameters.cpp:607
 #, c-format
 msgid ""
 "The size of the provided predictors (%d) does not match the requirements "
@@ -599,32 +573,32 @@ msgstr ""
 "La taille des prédicteurs fournis (%d) ne correspond pas aux exigences (%d) "
 "de la méthode de prétraitement %s."
 
-#: src/shared_base/core/asParameters.cpp:462
-#: src/shared_base/core/asParameters.cpp:637
+#: src/shared_base/core/asParameters.cpp:458
+#: src/shared_base/core/asParameters.cpp:633
 #, c-format
 msgid "The %s preprocessing method is not yet handled with the preload option."
 msgstr ""
 "La méthode de prétraitement %s n'est pas encore gérée par l'option preload."
 
-#: src/shared_base/core/asParameters.cpp:477
+#: src/shared_base/core/asParameters.cpp:473
 msgid ""
 "The beginning of the archive period was not provided in the parameters file."
 msgstr ""
 "Le début de la période d'archivage n'a pas été indiqué dans le fichier de "
 "paramètres."
 
-#: src/shared_base/core/asParameters.cpp:482
+#: src/shared_base/core/asParameters.cpp:478
 msgid "The end of the archive period was not provided in the parameters file."
 msgstr ""
 "La fin de la période d'archivage n'a pas été indiquée dans le fichier de "
 "paramètres."
 
-#: src/shared_base/core/asParameters.cpp:487
-#: src/shared_base/core/asParameters.cpp:492
+#: src/shared_base/core/asParameters.cpp:483
+#: src/shared_base/core/asParameters.cpp:488
 msgid "The time step was not provided in the parameters file."
 msgstr "Le pas de temps n'a pas été fourni dans le fichier de paramètres."
 
-#: src/shared_base/core/asParameters.cpp:500
+#: src/shared_base/core/asParameters.cpp:496
 msgid ""
 "The predictand time series (for the threshold preselection) was not provided "
 "in the parameters  file."
@@ -632,14 +606,14 @@ msgstr ""
 "La série temporelle du prédictand (pour la présélection du seuil) n'a pas "
 "été fournie dans le fichier de paramètres."
 
-#: src/shared_base/core/asParameters.cpp:505
+#: src/shared_base/core/asParameters.cpp:501
 msgid ""
 "The provided min/max predictand thresholds are equal in the parameters file."
 msgstr ""
 "Les seuils min/max des prédictands fournis sont égaux dans le fichier des "
 "paramètres."
 
-#: src/shared_base/core/asParameters.cpp:514
+#: src/shared_base/core/asParameters.cpp:510
 msgid ""
 "The interval days for the analogs preselection was not provided in the "
 "parameters file."
@@ -647,7 +621,7 @@ msgstr ""
 "L'intervalle de jours pour la présélection des analogues n'a pas été fourni "
 "dans le fichier de paramètres."
 
-#: src/shared_base/core/asParameters.cpp:520
+#: src/shared_base/core/asParameters.cpp:516
 msgid ""
 "The number of days to exclude around the target date was not provided in the "
 "parameters file."
@@ -655,7 +629,7 @@ msgstr ""
 "Le nombre de jours à exclure autour de la date cible n'a pas été fourni dans "
 "le fichier de paramètres."
 
-#: src/shared_base/core/asParameters.cpp:529
+#: src/shared_base/core/asParameters.cpp:525
 #, c-format
 msgid ""
 "The number of analogs (step %d) was not provided in the parameters file."
@@ -663,7 +637,7 @@ msgstr ""
 "Le nombre d'analogues (étape %d) n'a pas été fourni dans le fichier de "
 "paramètres."
 
-#: src/shared_base/core/asParameters.cpp:536
+#: src/shared_base/core/asParameters.cpp:532
 #, c-format
 msgid ""
 "The preprocessing method (step %d, predictor %d) was not provided in the "
@@ -672,7 +646,7 @@ msgstr ""
 "La méthode de prétraitement (étape %d, prédicteur %d) n'a pas été fournie "
 "dans le fichier de paramètres."
 
-#: src/shared_base/core/asParameters.cpp:544
+#: src/shared_base/core/asParameters.cpp:540
 #, c-format
 msgid ""
 "The dataset for preprocessing (step %d, predictor %d) was not provided in "
@@ -681,7 +655,7 @@ msgstr ""
 "Le jeu de données pour le prétraitement (étape %d, prédicteur %d) n'a pas "
 "été fourni dans le fichier de paramètres."
 
-#: src/shared_base/core/asParameters.cpp:550
+#: src/shared_base/core/asParameters.cpp:546
 #, c-format
 msgid ""
 "The data for preprocessing (step %d, predictor %d) was not provided in the "
@@ -690,7 +664,7 @@ msgstr ""
 "Les données pour le prétraitement (étape %d, prédicteur %d) n'ont pas été "
 "fournies dans le fichier de paramètres."
 
-#: src/shared_base/core/asParameters.cpp:558
+#: src/shared_base/core/asParameters.cpp:554
 #, c-format
 msgid ""
 "The dataset (step %d, predictor %d) was not provided in the parameters file."
@@ -698,7 +672,7 @@ msgstr ""
 "Le jeu de données (étape %d, prédicteur %d) n'a pas été fourni dans le "
 "fichier de paramètres."
 
-#: src/shared_base/core/asParameters.cpp:564
+#: src/shared_base/core/asParameters.cpp:560
 #, c-format
 msgid ""
 "The data (step %d, predictor %d) was not provided in the parameters file."
@@ -706,14 +680,14 @@ msgstr ""
 "Les données (étape %d, prédicteur %d) n'ont pas été fournies dans le fichier "
 "de paramètres."
 
-#: src/shared_base/core/asParameters.cpp:572
+#: src/shared_base/core/asParameters.cpp:568
 #, c-format
 msgid "The grid type (step %d, predictor %d) is empty in the parameters file."
 msgstr ""
 "Le type de grille (étape %d, prédicteur %d) est vide dans le fichier de "
 "paramètres."
 
-#: src/shared_base/core/asParameters.cpp:578
+#: src/shared_base/core/asParameters.cpp:574
 #, c-format
 msgid ""
 "The X points nb value (step %d, predictor %d) was not provided in the "
@@ -722,7 +696,7 @@ msgstr ""
 "La valeur nb de points en X (étape %d, prédicteur %d) n'a pas été fournie "
 "dans le fichier de paramètres."
 
-#: src/shared_base/core/asParameters.cpp:584
+#: src/shared_base/core/asParameters.cpp:580
 #, c-format
 msgid ""
 "The Y points nb value (step %d, predictor %d) was not provided in the "
@@ -731,7 +705,7 @@ msgstr ""
 "La valeur nb de points en Y (étape %d, prédicteur %d) n'a pas été fournie "
 "dans le fichier de paramètres."
 
-#: src/shared_base/core/asParameters.cpp:590
+#: src/shared_base/core/asParameters.cpp:586
 #, c-format
 msgid ""
 "The criteria (step %d, predictor %d) was not provided in the parameters file."
@@ -739,44 +713,44 @@ msgstr ""
 "Le critère (étape %d, prédicteur %d) n'a pas été fourni dans le fichier de "
 "paramètres."
 
-#: src/shared_base/core/asParameters.cpp:1109
+#: src/shared_base/core/asParameters.cpp:1105
 msgid "AtmoSwing current parameters\n"
 msgstr "Paramètres actuels d'AtmoSwing\n"
 
-#: src/shared_base/core/asParameters.cpp:1122
+#: src/shared_base/core/asParameters.cpp:1118
 #: src/shared_base/core/asUtils.cpp:1641
 msgid "Error when parsing the parameters file"
 msgstr "Erreur lors de l'analyse du fichier de paramètres"
 
-#: src/shared_base/core/asParameters.cpp:1311
+#: src/shared_base/core/asParameters.cpp:1307
 msgid "The provided preload data IDs vector is empty."
 msgstr "Le vecteur d'ID de données de préchargement fourni est vide."
 
-#: src/shared_base/core/asParameters.cpp:1317
+#: src/shared_base/core/asParameters.cpp:1313
 msgid "There are empty values in the provided preload data IDs vector."
 msgstr ""
 "Le vecteur d'ID de données de préchargement fourni contient des valeurs "
 "vides."
 
-#: src/shared_base/core/asParameters.cpp:1338
+#: src/shared_base/core/asParameters.cpp:1334
 msgid "The provided preload time (hours) vector is empty."
 msgstr "Le vecteur de temps de préchargement (heures) fourni est vide."
 
-#: src/shared_base/core/asParameters.cpp:1344
+#: src/shared_base/core/asParameters.cpp:1340
 msgid "There are NaN values in the provided preload time (hours) vector."
 msgstr ""
 "Il y a des valeurs NaN dans le vecteur de temps de préchargement (heures) "
 "fourni."
 
-#: src/shared_base/core/asParameters.cpp:1362
+#: src/shared_base/core/asParameters.cpp:1358
 msgid "The provided 'preload levels' vector is empty."
 msgstr "Le vecteur 'preload levels' fourni est vide."
 
-#: src/shared_base/core/asParameters.cpp:1368
+#: src/shared_base/core/asParameters.cpp:1364
 msgid "There are NaN values in the provided 'preload levels' vector."
 msgstr "Le vecteur 'preload levels' fourni contient des valeurs NaN."
 
-#: src/shared_base/core/asParameters.cpp:1518
+#: src/shared_base/core/asParameters.cpp:1514
 msgid ""
 "Trying to access to an element outside of preprocessLevels in the parameters "
 "object."
@@ -798,32 +772,32 @@ msgstr "Le type de paramètre de données fourni est inconnu."
 msgid "The Unit enumeration (%s) entry doesn't exists"
 msgstr "L'entrée de l'énumération Unit (%s) n'existe pas"
 
-#: src/shared_base/core/asPredictand.cpp:141
+#: src/shared_base/core/asPredictand.cpp:129
 #, c-format
 msgid "The temporalResolution enumeration (%s) entry doesn't exists"
 msgstr "L'entrée de l'énumération temporalResolution (%s) n'existe pas"
 
-#: src/shared_base/core/asPredictand.cpp:169
+#: src/shared_base/core/asPredictand.cpp:151
 msgid "The given data temporal resolution type in unknown."
 msgstr "Le type de résolution temporelle des données est inconnu."
 
-#: src/shared_base/core/asPredictand.cpp:184
+#: src/shared_base/core/asPredictand.cpp:166
 #, c-format
 msgid "The spatialAggregation enumeration (%s) entry doesn't exists"
 msgstr "L'entrée de l'énumération spatialAggregation (%s) n'existe pas"
 
-#: src/shared_base/core/asPredictand.cpp:200
+#: src/shared_base/core/asPredictand.cpp:182
 msgid "The given data spatial aggregation type in unknown."
 msgstr "Le type d'agrégation spatiale des données est inconnu."
 
-#: src/shared_base/core/asPredictand.cpp:231
+#: src/shared_base/core/asPredictand.cpp:213
 msgid ""
 "The predictand parameter is not listed in the asPredictand instance factory."
 msgstr ""
 "Le paramètre predictand n'est pas répertorié dans la fabrique d'instance "
 "asPredictand."
 
-#: src/shared_base/core/asPredictand.cpp:238
+#: src/shared_base/core/asPredictand.cpp:220
 #: src/shared_base/core/asPredictandLightning.cpp:48
 #: src/shared_base/core/asPredictandPrecipitation.cpp:56
 #: src/shared_base/core/asPredictandTemperature.cpp:48
@@ -831,7 +805,7 @@ msgstr ""
 msgid "Opening the file %s"
 msgstr "Ouverture du fichier %s"
 
-#: src/shared_base/core/asPredictand.cpp:241
+#: src/shared_base/core/asPredictand.cpp:223
 #: src/shared_base/core/asPredictandLightning.cpp:51
 #: src/shared_base/core/asPredictandPrecipitation.cpp:59
 #: src/shared_base/core/asPredictandTemperature.cpp:51
@@ -839,15 +813,8 @@ msgstr "Ouverture du fichier %s"
 msgid "Couldn't open file %s"
 msgstr "Impossible d'ouvrir le fichier %s"
 
-#: src/shared_base/core/asPredictand.cpp:244
-#: src/shared_base/core/asPredictandLightning.cpp:54
-#: src/shared_base/core/asPredictandPrecipitation.cpp:62
-#: src/shared_base/core/asPredictandTemperature.cpp:54
-msgid "File successfully opened"
-msgstr "Fichier ouvert avec succès"
-
-#: src/shared_base/core/asPredictand.cpp:251
-#: src/shared_base/core/asPredictand.cpp:347
+#: src/shared_base/core/asPredictand.cpp:231
+#: src/shared_base/core/asPredictand.cpp:323
 msgid ""
 "The predictand DB file was made with an older version of AtmoSwing that is "
 "no longer supported. Please generate the file with the actual version."
@@ -856,19 +823,19 @@ msgstr ""
 "qui n'est plus supportée. Veuillez générer le fichier avec la version "
 "actuelle."
 
-#: src/shared_base/core/asPredictand.cpp:316
+#: src/shared_base/core/asPredictand.cpp:292
 msgid "The stations number is inferior to 1."
 msgstr "Le nombre de stations est inférieur à 1."
 
-#: src/shared_base/core/asPredictand.cpp:320
+#: src/shared_base/core/asPredictand.cpp:296
 msgid "The time length is inferior to 1."
 msgstr "La durée est inférieure à 1."
 
-#: src/shared_base/core/asPredictand.cpp:543
+#: src/shared_base/core/asPredictand.cpp:523
 msgid "Loading data from files.\n"
 msgstr "Chargement de données à partir de fichiers.\n"
 
-#: src/shared_base/core/asPredictand.cpp:554
+#: src/shared_base/core/asPredictand.cpp:534
 #, c-format
 msgid ""
 "Loading data from files.\n"
@@ -877,18 +844,22 @@ msgstr ""
 "Chargement de données à partir de fichiers.\n"
 "Fichier : %s"
 
-#: src/shared_base/core/asPredictand.cpp:556
-#: src/shared_base/core/asPredictandPrecipitation.cpp:272
+#: src/shared_base/core/asPredictand.cpp:536
+#: src/shared_base/core/asPredictandPrecipitation.cpp:270
 msgid "The process has been canceled by the user."
 msgstr "Le processus a été annulé par l'utilisateur."
 
-#: src/shared_base/core/asPredictand.cpp:598
+#: src/shared_base/core/asPredictand.cpp:578
 #, c-format
 msgid "The given start date for \"%s\" is out of the catalog range."
 msgstr ""
 "La date de début donnée pour \"%s\" est en dehors de la plage du catalogue."
 
-#: src/shared_base/core/asPredictand.cpp:614
+#: src/shared_base/core/asPredictand.cpp:593
+msgid "The line length doesn't match."
+msgstr "La longueur de la ligne ne correspond pas."
+
+#: src/shared_base/core/asPredictand.cpp:601
 #, c-format
 msgid ""
 "The time index is larger than the matrix (timeIndex = %d, m_timeLength = %d)."
@@ -896,12 +867,18 @@ msgstr ""
 "L'index temporel est plus grand que la matrice (timeIndex = %d, m_timeLength "
 "= %d)."
 
-#: src/shared_base/core/asPredictand.cpp:642
-#: src/shared_base/core/asPredictand.cpp:711
-msgid "The data file pattern is not correctly defined."
-msgstr "Le modèle de fichier de données n'est pas correctement défini."
+#: src/shared_base/core/asPredictand.cpp:626
+#, c-format
+msgid "The given end date for \"%s\" is out of the catalog range."
+msgstr ""
+"La date de fin donnée pour \"%s\" est en dehors de la plage du catalogue."
 
-#: src/shared_base/core/asPredictand.cpp:703
+#: src/shared_base/core/asPredictand.cpp:633
+#, c-format
+msgid "The length of the data in \"%s / %s\" is not coherent"
+msgstr "La longueur des données dans \"%s / %s\" n'est pas cohérente"
+
+#: src/shared_base/core/asPredictand.cpp:665
 msgid ""
 "The data file pattern is not correctly defined. Trying to access an element "
 "(date) after the line width."
@@ -909,38 +886,28 @@ msgstr ""
 "Le modèle du fichier de données n'est pas correctement défini. Tentative "
 "d'accès à un élément (date) après la largeur de ligne."
 
-#: src/shared_base/core/asPredictand.cpp:718
+#: src/shared_base/core/asPredictand.cpp:673
+#: src/shared_base/core/asPredictand.cpp:723
+msgid "The data file pattern is not correctly defined."
+msgstr "Le modèle de fichier de données n'est pas correctement défini."
+
+#: src/shared_base/core/asPredictand.cpp:679
 msgid ""
-"The data file pattern is not correctly defined. Trying to access an element "
+"The data file pattern is not correctly defined.Trying to access an element "
 "(hour) after the line width."
 msgstr ""
 "Le modèle du fichier de données n'est pas correctement défini. Tentative "
 "d'accès à un élément (heure) après la largeur de ligne."
 
-#: src/shared_base/core/asPredictand.cpp:727
+#: src/shared_base/core/asPredictand.cpp:687
 msgid ""
-"The data file pattern is not correctly defined. Trying to access an element "
+"The data file pattern is not correctly defined.Trying to access an element "
 "(minute) after the line width."
 msgstr ""
 "Le modèle du fichier de données n'est pas correctement défini. Tentative "
 "d'accès à un élément (minute) après la largeur de ligne."
 
-#: src/shared_base/core/asPredictand.cpp:755
-msgid "The line length doesn't match."
-msgstr "La longueur de la ligne ne correspond pas."
-
-#: src/shared_base/core/asPredictand.cpp:765
-#, c-format
-msgid "The given end date for \"%s\" is out of the catalog range."
-msgstr ""
-"La date de fin donnée pour \"%s\" est en dehors de la plage du catalogue."
-
-#: src/shared_base/core/asPredictand.cpp:772
-#, c-format
-msgid "The length of the data in \"%s / %s\" is not coherent"
-msgstr "La longueur des données dans \"%s / %s\" n'est pas cohérente"
-
-#: src/shared_base/core/asPredictand.cpp:811
+#: src/shared_base/core/asPredictand.cpp:792
 msgid ""
 "The timestep for the extraction of the predictands maximums has to be a "
 "multiple of the data timestep."
@@ -948,7 +915,7 @@ msgstr ""
 "Le pas de temps pour l'extraction des maximums des prédictands doit être un "
 "multiple du pas de temps des données."
 
-#: src/shared_base/core/asPredictand.cpp:826
+#: src/shared_base/core/asPredictand.cpp:807
 msgid ""
 "The timestep for the extraction of the predictands maximums cannot be lower "
 "than the data timestep."
@@ -956,24 +923,24 @@ msgstr ""
 "Le pas de temps pour l'extraction des maximums des prédictands ne peut être "
 "inférieur au pas de temps des données."
 
-#: src/shared_base/core/asPredictandLightning.cpp:140
-#: src/shared_base/core/asPredictandLightning.cpp:144
-#: src/shared_base/core/asPredictandPrecipitation.cpp:208
-#: src/shared_base/core/asPredictandPrecipitation.cpp:212
-#: src/shared_base/core/asPredictandTemperature.cpp:104
-#: src/shared_base/core/asPredictandTemperature.cpp:108
+#: src/shared_base/core/asPredictandLightning.cpp:138
+#: src/shared_base/core/asPredictandLightning.cpp:142
+#: src/shared_base/core/asPredictandPrecipitation.cpp:206
+#: src/shared_base/core/asPredictandPrecipitation.cpp:210
+#: src/shared_base/core/asPredictandTemperature.cpp:102
+#: src/shared_base/core/asPredictandTemperature.cpp:106
 msgid "Predictand DB saved."
 msgstr "BD des prédictands sauvegardée."
 
-#: src/shared_base/core/asPredictandPrecipitation.cpp:248
+#: src/shared_base/core/asPredictandPrecipitation.cpp:246
 msgid "The data time steps is not correctly defined."
 msgstr "Le pas de temps des données n'est pas correctement défini."
 
-#: src/shared_base/core/asPredictandPrecipitation.cpp:263
+#: src/shared_base/core/asPredictandPrecipitation.cpp:261
 msgid "Making Gumbel adjustments."
 msgstr "Calcul des ajustements de Gumbel."
 
-#: src/shared_base/core/asPredictandPrecipitation.cpp:285
+#: src/shared_base/core/asPredictandPrecipitation.cpp:283
 msgid ""
 "Caution, a time serie is shorter than 20 years. It is too short to process a "
 "Gumbel adjustment."
@@ -981,7 +948,7 @@ msgstr ""
 "Attention, une série temporelle est inférieure à 20 ans. C'est trop court "
 "pour effectuer un ajustement de Gumbel."
 
-#: src/shared_base/core/asPredictandPrecipitation.cpp:289
+#: src/shared_base/core/asPredictandPrecipitation.cpp:287
 msgid ""
 "Caution, a time serie is shorter than 30 years. It is a bit short to process "
 "a Gumbel adjustment."
@@ -995,14 +962,14 @@ msgid "The data ID (%s) does not contain the level type"
 msgstr "L'ID de données (%s) ne contient pas le type de niveau"
 
 #: src/shared_base/core/asPredictor.cpp:164
-#: src/shared_base/core/asPredictorOper.cpp:128
+#: src/shared_base/core/asPredictorOper.cpp:124
 msgid "The requested dataset does not exist. Please correct the dataset Id."
 msgstr ""
 "Le jeu de données demandé n'existe pas. Veuillez corriger l'identifiant du "
 "jeu de données."
 
 #: src/shared_base/core/asPredictor.cpp:173
-#: src/shared_base/core/asPredictorOper.cpp:133
+#: src/shared_base/core/asPredictorOper.cpp:129
 msgid "The predictor did not initialize correctly."
 msgstr "Le prédicteur ne s'est pas initialisé correctement."
 
@@ -1158,6 +1125,7 @@ msgstr ""
 
 #: src/shared_base/core/asPredictor.cpp:596
 #: src/shared_base/core/asPredictor.cpp:622
+#: src/shared_base/core/asPredictorOper.cpp:308
 msgid "Predictor file type not correctly defined."
 msgstr "Le type de fichier du prédicteur n'est pas correctement défini."
 
@@ -1280,62 +1248,62 @@ msgstr ""
 msgid "The desired level (%g) does not exist for %s"
 msgstr "Le niveau souhaité (%g) n'existe pas pour %s"
 
-#: src/shared_base/core/asPredictor.cpp:1567
+#: src/shared_base/core/asPredictor.cpp:1570
 msgid "Grib files do not handle stride."
 msgstr "Les fichiers grib ne gèrent pas les 'strides'."
 
-#: src/shared_base/core/asPredictor.cpp:1693
+#: src/shared_base/core/asPredictor.cpp:1699
 msgid "The standardization of ensemble datasets is not yet supported."
 msgstr ""
 "La normalisation des ensembles de données n'est pas encore prise en charge."
 
-#: src/shared_base/core/asPredictor.cpp:1774
+#: src/shared_base/core/asPredictor.cpp:1780
 msgid ""
 "An error occurred while trying to clip data to another area (extended axis)."
 msgstr ""
 "Une erreur s'est produite lors de la découpe des données dans une autre zone "
 "(axe étendu)."
 
-#: src/shared_base/core/asPredictor.cpp:1775
-#: src/shared_base/core/asPredictor.cpp:1783
+#: src/shared_base/core/asPredictor.cpp:1781
+#: src/shared_base/core/asPredictor.cpp:1789
 #, c-format
 msgid "Looking for lon %.2f and %.2f in between %.2f to %.2f."
 msgstr "Recherche de lon %.2f et %.2f entre %.2f et %.2f."
 
-#: src/shared_base/core/asPredictor.cpp:1782
-#: src/shared_base/core/asPredictor.cpp:1799
+#: src/shared_base/core/asPredictor.cpp:1788
+#: src/shared_base/core/asPredictor.cpp:1805
 msgid "An error occurred while trying to clip data to another area."
 msgstr ""
 "Une erreur s'est produite lors de l'extraction de données vers une autre "
 "zone."
 
-#: src/shared_base/core/asPredictor.cpp:1800
+#: src/shared_base/core/asPredictor.cpp:1806
 #, c-format
 msgid "Looking for lat %.2f and %.2f in between %.2f to %.2f."
 msgstr "Recherche des lattes %.2f et %.2f entre %.2f et %.2f."
 
-#: src/shared_base/core/asPredictor.cpp:1837
+#: src/shared_base/core/asPredictor.cpp:1843
 msgid "The preprocessed area cannot be clipped to another area."
 msgstr "La zone prétraitée ne peut pas être coupée en une autre zone."
 
-#: src/shared_base/core/asPredictor.cpp:1850
-#: src/shared_base/core/asPredictor.cpp:1909
-#: src/shared_base/core/asPredictor.cpp:1953
+#: src/shared_base/core/asPredictor.cpp:1856
+#: src/shared_base/core/asPredictor.cpp:1915
+#: src/shared_base/core/asPredictor.cpp:1959
 msgid "Wrong axes lengths (cannot be clipped to another area)."
 msgstr ""
 "Longueurs d'axes erronées (impossibles à découper dans une autre zone)."
 
-#: src/shared_base/core/asPredictor.cpp:1986
+#: src/shared_base/core/asPredictor.cpp:1992
 msgid "Wrong preprocessing definition (cannot be clipped to another area)."
 msgstr ""
 "Mauvaise définition du prétraitement (ne peut pas être découpé dans une "
 "autre zone)."
 
-#: src/shared_base/core/asPredictor.cpp:2084
+#: src/shared_base/core/asPredictor.cpp:2090
 msgid "Interpolation not allowed on irregular grids."
 msgstr "L'interpolation n'est pas autorisée sur les grilles irrégulières."
 
-#: src/shared_base/core/asPredictor.cpp:2174
+#: src/shared_base/core/asPredictor.cpp:2180
 #, c-format
 msgid ""
 "The desired point is not available in the data for interpolation. Latitude "
@@ -1345,7 +1313,7 @@ msgstr ""
 "l'interpolation. La latitude %f n'a pas été trouvée entre %f (index %d) et "
 "%f (index %d) (taille = %d)."
 
-#: src/shared_base/core/asPredictor.cpp:2207
+#: src/shared_base/core/asPredictor.cpp:2213
 #, c-format
 msgid ""
 "The desired point is not available in the data for interpolation. Longitude "
@@ -1354,7 +1322,7 @@ msgstr ""
 "Le point souhaité n'est pas disponible dans les données pour "
 "l'interpolation. La longitude %f n'a pas été trouvée entre %f et %f."
 
-#: src/shared_base/core/asPredictor.cpp:2329
+#: src/shared_base/core/asPredictor.cpp:2335
 msgid ""
 "The type of product must be defined for this dataset (prefix to the variable "
 "name. Ex: press/hgt)."
@@ -1369,7 +1337,7 @@ msgstr ""
 #: src/shared_base/core/asPredictorCustomMFvgSynop.cpp:140
 #: src/shared_base/core/asPredictorCustomUnilNR1.cpp:110
 #: src/shared_base/core/asPredictorCustomUnilOisst2.cpp:66
-#: src/shared_base/core/asPredictorEcmwfIfs.cpp:109
+#: src/shared_base/core/asPredictorEcmwfIfs.cpp:108
 #: src/shared_base/core/asPredictorJmaJra55CSubset.cpp:82
 #: src/shared_base/core/asPredictorJmaJra55CSubset.cpp:102
 #: src/shared_base/core/asPredictorJmaJra55CSubset.cpp:122
@@ -1393,9 +1361,9 @@ msgstr ""
 #: src/shared_base/core/asPredictorNcepR2.cpp:305
 #: src/shared_base/core/asPredictorNoaa20Cr2c.cpp:112
 #: src/shared_base/core/asPredictorNoaa20Cr2c.cpp:126
-#: src/shared_base/core/asPredictorOperEcmwfIfs.cpp:106
-#: src/shared_base/core/asPredictorOperMfArpege.cpp:93
-#: src/shared_base/core/asPredictorOperNwsGfs.cpp:109
+#: src/shared_base/core/asPredictorOperEcmwfIfs.cpp:102
+#: src/shared_base/core/asPredictorOperMfArpege.cpp:89
+#: src/shared_base/core/asPredictorOperNwsGfs.cpp:104
 #, c-format
 msgid "No '%s' parameter identified for the provided level type (%s)."
 msgstr ""
@@ -1548,7 +1516,15 @@ msgstr ""
 msgid "Product type not implemented for this reanalysis dataset."
 msgstr "Type de produit non implémenté pour ce jeu de données de réanalyse."
 
-#: src/shared_base/core/asPredictorOperCustomFvg.cpp:140
+#: src/shared_base/core/asPredictorOper.cpp:285
+msgid ""
+"Issue extracting operational predictor data: number of files and time steps "
+"do not match."
+msgstr ""
+"Problème d'extraction des données du prédicteur opérationnel : le nombre de "
+"fichiers et les pas de temps ne correspondent pas."
+
+#: src/shared_base/core/asPredictorOperCustomFvg.cpp:139
 #, c-format
 msgid "No '%s' parameter identified."
 msgstr "Aucun paramètre '%s' n'a été identifié."
@@ -1558,50 +1534,22 @@ msgstr "Aucun paramètre '%s' n'a été identifié."
 msgid "File %s downloaded successfully."
 msgstr "Fichier %s téléchargé avec succès."
 
-#: src/shared_base/core/asThreadsManager.cpp:139
-#, c-format
-msgid "%d running threads (checking available threads)."
-msgstr ""
-"%d threads en cours d'exécution (vérification des threads disponibles)."
-
-#: src/shared_base/core/asThreadsManager.cpp:155
-#, c-format
-msgid "%d running threads before addition of a new thread."
-msgstr "%d threads en cours d'exécution avant l'ajout d'un nouveau thread."
-
-#: src/shared_base/core/asThreadsManager.cpp:162
+#: src/shared_base/core/asThreadsManager.cpp:160
 msgid "Cannot create the thread !"
 msgstr "Impossible de créer le thread !"
 
-#: src/shared_base/core/asThreadsManager.cpp:172
+#: src/shared_base/core/asThreadsManager.cpp:170
 msgid "The thread array is currently full."
 msgstr "Le liste des threads est actuellement pleine."
 
-#: src/shared_base/core/asThreadsManager.cpp:183
-#, c-format
-msgid "A new thread was created (id=%d)."
-msgstr "Un nouveau thread a été créé (id=%d)."
-
-#: src/shared_base/core/asThreadsManager.cpp:188
+#: src/shared_base/core/asThreadsManager.cpp:185
 msgid "Can't run the thread!"
 msgstr "Impossible d'exécuter le thread !"
 
-#: src/shared_base/core/asThreadsManager.cpp:214
+#: src/shared_base/core/asThreadsManager.cpp:211
 #, c-format
 msgid "Thread %d couldn't be removed."
 msgstr "Le thread %d n'a pas pu être supprimé."
-
-#: src/shared_base/core/asThreadsManager.cpp:235
-msgid "Thread array cleared."
-msgstr "Le tableau des threads est réinitialisé."
-
-#: src/shared_base/core/asThreadsManager.cpp:248
-msgid "All threads have done."
-msgstr "Tous les threads ont terminé."
-
-#: src/shared_base/core/asThreadsManager.cpp:264
-msgid "A thread is available."
-msgstr "Un thread est disponible."
 
 #: src/shared_base/core/asTime.cpp:72 src/shared_base/core/asTime.cpp:92
 msgid "The timezone is not correctly set"
@@ -1633,50 +1581,43 @@ msgstr "Méthode incorrecte."
 msgid "Time array mode not correctly defined (%s)!"
 msgstr "Le mode de tableau des dates n'est pas correctement défini (%s) !"
 
-#: src/shared_base/core/asTimeArray.cpp:125
+#: src/shared_base/core/asTimeArray.cpp:132
 msgid "The given date is in an excluded year."
 msgstr "La date donnée se situe dans une année exclue."
 
-#: src/shared_base/core/asTimeArray.cpp:135
-#: src/shared_base/core/asTimeArray.cpp:182
+#: src/shared_base/core/asTimeArray.cpp:142
+#: src/shared_base/core/asTimeArray.cpp:189
 msgid "Time array creation failed."
 msgstr "La création d'un tableau de dates a échoué."
 
-#: src/shared_base/core/asTimeArray.cpp:147
-#: src/shared_base/core/asTimeArray.cpp:174
-#: src/shared_base/core/asTimeArray.cpp:194
-#: src/shared_base/core/asTimeArray.cpp:251
-#: src/shared_base/core/asTimeArray.cpp:536
+#: src/shared_base/core/asTimeArray.cpp:154
+#: src/shared_base/core/asTimeArray.cpp:181
+#: src/shared_base/core/asTimeArray.cpp:201
+#: src/shared_base/core/asTimeArray.cpp:258
+#: src/shared_base/core/asTimeArray.cpp:543
 msgid "Time array creation failed"
 msgstr "Échec de la création d'un tableau de dates"
 
-#: src/shared_base/core/asTimeArray.cpp:157
-#: src/shared_base/core/asTimeArray.cpp:246
+#: src/shared_base/core/asTimeArray.cpp:164
+#: src/shared_base/core/asTimeArray.cpp:253
 msgid "The time array mode is not correctly set"
 msgstr "Le mode 'time array' n'est pas correctement défini"
 
-#: src/shared_base/core/asTimeArray.cpp:200
+#: src/shared_base/core/asTimeArray.cpp:207
 msgid "The time array mode is not allowed for the analogs."
 msgstr "Le mode du tableau des dates n'est pas autorisé pour les analogues."
 
-#: src/shared_base/core/asTimeArray.cpp:218
-msgid ""
-"The 'exclude_days' parameter cannot be 0 or ignored. Defaulted to 30 days."
-msgstr ""
-"Le paramètre 'exclude_days' ne peut pas être égal à 0 ou ignoré. La valeur "
-"par défaut est de 30 jours."
-
-#: src/shared_base/core/asTimeArray.cpp:446
-#: src/shared_base/core/asTimeArray.cpp:479
+#: src/shared_base/core/asTimeArray.cpp:453
+#: src/shared_base/core/asTimeArray.cpp:486
 #, c-format
 msgid "Month '%s' not recognized."
 msgstr "Le mois '%s' n'est pas reconnu."
 
-#: src/shared_base/core/asTimeArray.cpp:491
+#: src/shared_base/core/asTimeArray.cpp:498
 msgid "Season not recognized."
 msgstr "Saison non reconnue."
 
-#: src/shared_base/core/asTimeArray.cpp:550
+#: src/shared_base/core/asTimeArray.cpp:557
 msgid ""
 "The predictand series is not correctly defined in the time array "
 "construction."
@@ -1684,8 +1625,8 @@ msgstr ""
 "La série de prédicteurs n'est pas correctement définie dans la construction "
 "du tableau des dates."
 
-#: src/shared_base/core/asTimeArray.cpp:584
-#: src/shared_base/core/asTimeArray.cpp:589
+#: src/shared_base/core/asTimeArray.cpp:591
+#: src/shared_base/core/asTimeArray.cpp:596
 #, c-format
 msgid ""
 "The day %s was not considered in the timearray due to difference in hours "
@@ -1694,25 +1635,25 @@ msgstr ""
 "Le jour %s n'a pas été pris en compte dans la liste des dates en raison de "
 "la différence d'heures avec %s."
 
-#: src/shared_base/core/asTimeArray.cpp:595
+#: src/shared_base/core/asTimeArray.cpp:602
 #, c-format
 msgid "%d days were in the precipitation range and %d were not."
 msgstr ""
 "%d jours se situaient dans la fourchette des précipitations et %d de jours "
 "ne s'y situaient pas."
 
-#: src/shared_base/core/asTimeArray.cpp:598
+#: src/shared_base/core/asTimeArray.cpp:605
 msgid "The selection of the dates on the predictand threshold is empty!"
 msgstr "La sélection des dates sur la base du seuil du prédictand est vide !"
 
-#: src/shared_base/core/asTimeArray.cpp:613
-#: src/shared_base/core/asTimeArray.cpp:635
-#: src/shared_base/core/asTimeArray.cpp:652
+#: src/shared_base/core/asTimeArray.cpp:620
+#: src/shared_base/core/asTimeArray.cpp:642
+#: src/shared_base/core/asTimeArray.cpp:659
 msgid "Trying to get a date outside of the time array."
 msgstr "Tentative d'obtention d'une date en dehors du tableau des dates."
 
-#: src/shared_base/core/asTimeArray.cpp:703
-#: src/shared_base/core/asTimeArray.cpp:750
+#: src/shared_base/core/asTimeArray.cpp:710
+#: src/shared_base/core/asTimeArray.cpp:757
 msgid "The given year to remove fall outside of the time array."
 msgstr "L'année à supprimer se situe en dehors du tableau des dates."
 
@@ -1752,3 +1693,54 @@ msgstr "Le tableau a une valeur unique."
 #: src/shared_base/core/asUtils.cpp:1508
 msgid "The array has a negative size..."
 msgstr "Le tableau a une taille négative..."
+
+#~ msgid "Downloading predictors.\n"
+#~ msgstr "Téléchargement des prédicteurs.\n"
+
+#, c-format
+#~ msgid "Downloading file %s\n"
+#~ msgstr "Téléchargement du fichier %s\n"
+
+#, c-format
+#~ msgid "Downloading: %d / %d files"
+#~ msgstr "Téléchargement : %d / %d fichiers"
+
+#~ msgid "The download has been canceled by the user."
+#~ msgstr "Le téléchargement a été annulé par l'utilisateur."
+
+#~ msgid "Loading parameters file."
+#~ msgstr "Chargement du fichier de paramètres."
+
+#~ msgid "Parameters file loaded."
+#~ msgstr "Fichier de paramètres chargé."
+
+#~ msgid "File successfully opened"
+#~ msgstr "Fichier ouvert avec succès"
+
+#, c-format
+#~ msgid "%d running threads (checking available threads)."
+#~ msgstr ""
+#~ "%d threads en cours d'exécution (vérification des threads disponibles)."
+
+#, c-format
+#~ msgid "%d running threads before addition of a new thread."
+#~ msgstr "%d threads en cours d'exécution avant l'ajout d'un nouveau thread."
+
+#, c-format
+#~ msgid "A new thread was created (id=%d)."
+#~ msgstr "Un nouveau thread a été créé (id=%d)."
+
+#~ msgid "Thread array cleared."
+#~ msgstr "Le tableau des threads est réinitialisé."
+
+#~ msgid "All threads have done."
+#~ msgstr "Tous les threads ont terminé."
+
+#~ msgid "A thread is available."
+#~ msgstr "Un thread est disponible."
+
+#~ msgid ""
+#~ "The 'exclude_days' parameter cannot be 0 or ignored. Defaulted to 30 days."
+#~ msgstr ""
+#~ "Le paramètre 'exclude_days' ne peut pas être égal à 0 ou ignoré. La "
+#~ "valeur par défaut est de 30 jours."

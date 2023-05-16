@@ -16,7 +16,7 @@
 
 ### Changed
 
-*   Replacing icons by SVG versions.
+*   Replacing icons with SVG versions.
 
 
 ## v3.0.5 - 12 May 2023

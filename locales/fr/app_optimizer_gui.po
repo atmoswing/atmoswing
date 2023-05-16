@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-07 10:51+0200\n"
-"PO-Revision-Date: 2023-05-07 10:54+0200\n"
+"POT-Creation-Date: 2023-05-16 23:19+0200\n"
+"PO-Revision-Date: 2023-05-16 23:25+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,9 +16,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:50
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:51
 msgid "Run optimizer"
 msgstr "Lancer l'optimiseur"
 
@@ -26,47 +26,47 @@ msgstr "Lancer l'optimiseur"
 msgid "Run optimizer now"
 msgstr "Lancer l'optimiseur maintenant"
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:52
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:53
 msgid "Cancel optimization"
 msgstr "Annuler l'optimisation"
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:53
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:54
 msgid "Cancel current optimization"
 msgstr "Annuler l'optimisation en cours"
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:55
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:56
 #: src/app_optimizer/gui/asFramePreferencesOptimizer.cpp:33
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:600
 msgid "Preferences"
 msgstr "Préférences"
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:394
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:391
 msgid "Wrong method selection."
 msgstr "Mauvaise sélection de la méthode."
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:443
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:440
 msgid "Chosen method not defined yet."
 msgstr "La méthode choisie n'est pas encore définie."
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:454
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:451
 #, c-format
 msgid "Bad allocation caught: %s"
 msgstr "Mauvaise allocation détectée : %s"
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:455
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:452
 msgid "Failed to process the calibration."
 msgstr "Échec du calage."
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:458
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:455
 #, c-format
 msgid "Exception caught: %s"
 msgstr "Une exception a été détectée : %s"
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:459
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:456
 msgid "Failed to process the optimization."
 msgstr "Le traitement de l'optimisation a échoué."
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:464
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:461
 msgid "Optimizer over."
 msgstr "L'optimization est terminée."
 
