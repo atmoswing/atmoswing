@@ -54,9 +54,14 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     : asFrameForecasterVirtual(parent) {
     m_forecaster = nullptr;
     m_logWindow = nullptr;
+    m_fileHistory = new wxFileHistory(10);
 
     // Fix colors
     // m_panelMain->SetBackgroundColour(asConfig::GetFrameBgColour());
+
+    // Menu recent
+    auto menuOpenRecent = new wxMenu();
+    m_menuFile->Insert(1, asID_MENU_RECENT, _("Open recent"), menuOpenRecent);
 
     // Toolbar
     m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap,
@@ -108,7 +113,7 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     m_panelsManager = new asPanelsManagerForecasts();
 
     // Connect events
-    this->Connect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::LaunchForecasting));
+    Connect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::LaunchForecasting));
     this->Connect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::CancelForecasting));
     this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
                   wxCommandEventHandler(asFrameForecaster::OpenFramePredictandDB));
@@ -119,10 +124,14 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));
 #endif
+
+    SetRecentFiles();
 }
 
 asFrameForecaster::~asFrameForecaster() {
     wxDELETE(m_panelsManager);
+
+    SaveRecentFiles();
 
     // Disconnect events
     this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::LaunchForecasting));
@@ -158,9 +167,7 @@ void asFrameForecaster::OnInit() {
             wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
         }
 
-        if (!OpenBatchForecasts()) {
-            wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
-        }
+        OpenBatchForecasts();
     } else {
         asWizardBatchForecasts wizard(this, &m_batchForecasts);
         wizard.RunWizard(wizard.GetFirstPage());
@@ -191,9 +198,9 @@ void asFrameForecaster::OnOpenBatchForecasts(wxCommandEvent& event) {
         wxLogError(_("Failed to open the batch file ") + batchFilePath);
     }
 
-    if (!OpenBatchForecasts()) {
-        wxLogError(_("Failed to open the batch file ") + batchFilePath);
-    }
+    OpenBatchForecasts();
+
+    m_fileHistory->AddFileToHistory(batchFilePath);
 }
 
 void asFrameForecaster::OnSaveBatchForecasts(wxCommandEvent& event) {
@@ -476,6 +483,8 @@ void asFrameForecaster::LaunchForecasting(wxCommandEvent& event) {
     wxLogVerbose(_("Forecast processed for the date %s"), realForecastDateStr);
 
     wxDELETE(m_forecaster);
+
+    InitOverallProgress();
 }
 
 void asFrameForecaster::CancelForecasting(wxCommandEvent& event) {
@@ -533,6 +542,46 @@ void asFrameForecaster::SetForecastDate(double date) {
     Time forecastDateStruct = asTime::GetTimeStruct(date);
     wxString hourStr = asStrF("%d", forecastDateStruct.hour);
     m_textCtrlForecastHour->SetValue(hourStr);
+}
+
+void asFrameForecaster::UpdateRecentFiles() {
+    wxASSERT(m_fileHistory);
+
+    for (int i = 0; i < m_fileHistory->GetCount(); ++i) {
+        wxString filePath = m_fileHistory->GetHistoryFile(i);
+        if (!wxFileExists(filePath)) {
+            m_fileHistory->RemoveFileFromHistory(i);
+            --i;
+        }
+    }
+}
+
+void asFrameForecaster::SetRecentFiles() {
+    wxConfigBase* config = wxFileConfig::Get();
+    config->SetPath("/Recent");
+
+    wxMenuItem* menuItem = m_menuBar->FindItem(asID_MENU_RECENT);
+    if (menuItem->IsSubMenu()) {
+        wxMenu* menu = menuItem->GetSubMenu();
+        if (menu) {
+            m_fileHistory->Load(*config);
+            UpdateRecentFiles();
+            m_fileHistory->UseMenu(menu);
+            m_fileHistory->AddFilesToMenu(menu);
+        }
+    }
+
+    config->SetPath("..");
+}
+
+void asFrameForecaster::SaveRecentFiles() {
+    wxASSERT(m_fileHistory);
+    wxConfigBase* config = wxFileConfig::Get();
+    config->SetPath("/Recent");
+
+    m_fileHistory->Save(*config);
+
+    config->SetPath("..");
 }
 
 void asFrameForecaster::InitOverallProgress() {

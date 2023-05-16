@@ -107,11 +107,16 @@ bool forecastDropFiles::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& f
 asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
     : asFrameViewerVirtual(parent, id) {
     g_silentMode = false;
+    m_fileHistory = new wxFileHistory(10);
 
     // Adjust size
     int sashMinSize = m_splitterGIS->GetMinimumPaneSize();
     sashMinSize *= g_ppiScaleDc;
     m_splitterGIS->SetMinimumPaneSize(sashMinSize);
+
+    // Menu recent
+    auto menuOpenRecent = new wxMenu();
+    m_menuFile->Insert(1, asID_MENU_RECENT, _("Open recent"), menuOpenRecent);
 
     // Toolbar
     m_toolBar->AddTool(asID_OPEN, wxT("Open"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::OPEN), wxNullBitmap,
@@ -256,6 +261,8 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
 
     Layout();
 
+    SetRecentFiles();
+
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));
@@ -263,6 +270,9 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
 }
 
 asFrameViewer::~asFrameViewer() {
+
+    SaveRecentFiles();
+
     // Save preferences
     wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/SidebarPanelsDisplay/Forecasts", !m_panelSidebarForecasts->IsReduced());
@@ -456,6 +466,8 @@ void asFrameViewer::OnOpenWorkspace(wxCommandEvent& event) {
     if (!OpenWorkspace()) {
         wxLogError(_("Failed to open the workspace file ") + workspaceFilePath);
     }
+
+    m_fileHistory->AddFileToHistory(workspaceFilePath);
 }
 
 void asFrameViewer::OnSaveWorkspace(wxCommandEvent& event) {
@@ -1830,4 +1842,44 @@ void asFrameViewer::UpdatePanelStationsList() {
 
     wxArrayString arrayStation = m_forecastManager->GetStationNamesWithHeights(methodRow, forecastRow);
     m_panelSidebarStationsList->SetChoices(arrayStation);
+}
+
+void asFrameViewer::UpdateRecentFiles() {
+    wxASSERT(m_fileHistory);
+
+    for (int i = 0; i < m_fileHistory->GetCount(); ++i) {
+        wxString filePath = m_fileHistory->GetHistoryFile(i);
+        if (!wxFileExists(filePath)) {
+            m_fileHistory->RemoveFileFromHistory(i);
+            --i;
+        }
+    }
+}
+
+void asFrameViewer::SetRecentFiles() {
+    wxConfigBase* config = wxFileConfig::Get();
+    config->SetPath("/Recent");
+
+    wxMenuItem* menuItem = m_menuBar->FindItem(asID_MENU_RECENT);
+    if (menuItem->IsSubMenu()) {
+        wxMenu* menu = menuItem->GetSubMenu();
+        if (menu) {
+            m_fileHistory->Load(*config);
+            UpdateRecentFiles();
+            m_fileHistory->UseMenu(menu);
+            m_fileHistory->AddFilesToMenu(menu);
+        }
+    }
+
+    config->SetPath("..");
+}
+
+void asFrameViewer::SaveRecentFiles() {
+    wxASSERT(m_fileHistory);
+    wxConfigBase* config = wxFileConfig::Get();
+    config->SetPath("/Recent");
+
+    m_fileHistory->Save(*config);
+
+    config->SetPath("..");
 }

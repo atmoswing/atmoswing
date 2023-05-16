@@ -188,10 +188,6 @@ asFrameForecasterVirtual::asFrameForecasterVirtual( wxWindow* parent, wxWindowID
 	m_menuItemOpenBatchFile = new wxMenuItem( m_menuFile, wxID_ANY, wxString( _("Open a batch file") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menuFile->Append( m_menuItemOpenBatchFile );
 
-	wxMenuItem* m_menuItemOpenRecent;
-	m_menuItemOpenRecent = new wxMenuItem( m_menuFile, asID_MENU_RECENT, wxString( _("Open recent") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menuFile->Append( m_menuItemOpenRecent );
-
 	wxMenuItem* m_menuItemSaveBatchFile;
 	m_menuItemSaveBatchFile = new wxMenuItem( m_menuFile, wxID_ANY, wxString( _("Save batch file") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menuFile->Append( m_menuItemSaveBatchFile );

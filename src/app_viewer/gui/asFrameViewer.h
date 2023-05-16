@@ -30,6 +30,7 @@
 #define AS_FRAME_VIEWER_H
 
 #include <wx/process.h>
+#include <wx/filehistory.h>
 
 #include "AtmoswingViewerGui.h"
 #include "asForecastManager.h"
@@ -47,6 +48,8 @@
 #include "asWorkspace.h"
 #include "vroomgis.h"
 #include "wx/dnd.h"
+
+#define asID_MENU_RECENT 1301
 
 const int as_POPUP_OFFSET = 50;
 const int asID_MENU_POPUP_LAYER = wxID_HIGHEST + 2 + as_POPUP_OFFSET;
@@ -111,6 +114,7 @@ class asFrameViewer : public asFrameViewerVirtual {
     asPanelSidebarAlarms* m_panelSidebarAlarms;
     asLeadTimeSwitcher* m_leadTimeSwitcher;
     asWorkspace m_workspace;
+    wxFileHistory* m_fileHistory;
     bool m_launchedPresentForecast;
 
 #if defined(__WIN32__)
@@ -224,6 +228,12 @@ class asFrameViewer : public asFrameViewerVirtual {
     void UpdatePanelAnalogDates();
 
     void UpdatePanelStationsList();
+
+    void UpdateRecentFiles();
+
+    void SetRecentFiles();
+
+    void SaveRecentFiles();
 
     virtual void OnRightClick(wxMouseEvent& event) {
         event.Skip();

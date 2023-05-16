@@ -39,6 +39,8 @@
 #include "asMethodForecasting.h"
 #include "asPanelsManagerForecasts.h"
 
+#define asID_MENU_RECENT 1300
+
 class asFrameForecaster : public asFrameForecasterVirtual {
   public:
     explicit asFrameForecaster(wxWindow* parent);
@@ -59,7 +61,7 @@ class asFrameForecaster : public asFrameForecasterVirtual {
     awxLed* m_ledProcessing;
     awxLed* m_ledSaving;
     asBatchForecasts m_batchForecasts;
-    wxFileHistory m_fileHistory;
+    wxFileHistory* m_fileHistory;
 
     void OnOpenBatchForecasts(wxCommandEvent& event) override;
 
@@ -106,6 +108,12 @@ class asFrameForecaster : public asFrameForecasterVirtual {
     void AddForecast(wxCommandEvent& event) override;
 
     void SetPresentDate();
+
+    void UpdateRecentFiles();
+
+    void SetRecentFiles();
+
+    void SaveRecentFiles();
 
     void InitOverallProgress();
 
