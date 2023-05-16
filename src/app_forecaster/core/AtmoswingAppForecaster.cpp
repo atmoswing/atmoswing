@@ -102,7 +102,9 @@ bool AtmoswingAppForecaster::OnInit() {
     m_doForecastPast = false;
     m_forecastDate = 0.0;
     m_forecastPastDays = 0;
+#if USE_GUI
     m_singleInstanceChecker = nullptr;
+#endif
 
     // Set the local config object
     wxFileConfig* pConfig = new wxFileConfig(

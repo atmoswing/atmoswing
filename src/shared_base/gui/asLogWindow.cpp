@@ -30,7 +30,7 @@
 asLogWindow::asLogWindow(wxFrame* parent, const wxString& title, bool show, bool passToOld)
     : wxLogWindow(parent, title, show, passToOld) {
     // Reduce the font size
-    wxFrame* pFrame = GetFrame();
+    wxFrame* pFrame = this->GetFrame();
     wxFont font = pFrame->GetFont();
     font.SetPointSize(8);
     wxWindow* pLogTxt = pFrame->GetChildren()[0];

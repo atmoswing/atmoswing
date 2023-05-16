@@ -112,7 +112,7 @@ asPanelPlot::asPanelPlot(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
     bSizer->Add(m_plotCtrl, 1, wxEXPAND, 5);
 
     SetSizer(bSizer);
-    Layout();
+    this->Layout();
     bSizer->Fit(this);
 }
 

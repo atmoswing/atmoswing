@@ -210,13 +210,13 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
 
     m_scrolledWindowOptions->Layout();
     m_sizerScrolledWindow->Fit(m_scrolledWindowOptions);
-    Layout();
+    this->Layout();
 
     // Lead time switcher
     m_leadTimeSwitcher = nullptr;
 
     // Status bar
-    SetStatusText(_("Welcome to AtmoSwing"));
+    this->SetStatusText(_("Welcome to AtmoSwing"));
 
     // Connect Events
     m_displayCtrl->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFrameViewer::OnRightClick), nullptr, this);
@@ -704,6 +704,11 @@ bool asFrameViewer::OpenWorkspace(bool openRecentForecasts) {
 
 #if defined(__WIN32__)
     m_critSectionViewerLayerManager.Leave();
+#endif
+
+#if wxUSE_STATUSBAR
+    wxString fileName = wxFileName(m_workspace.GetFilePath()).GetFullName();
+    this->SetStatusText(asStrF(_("Welcome to AtmoSwing %s  |  Workspace: %s"), asVersion::GetFullString(), fileName));
 #endif
 
     return true;
