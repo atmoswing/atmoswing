@@ -153,8 +153,7 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     m_displayCtrlLeft->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFramePredictors::OnRightClick), nullptr, this);
     m_displayCtrlLeft->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFramePredictors::OnKeyDown), nullptr, this);
     m_displayCtrlLeft->Connect(wxEVT_KEY_UP, wxKeyEventHandler(asFramePredictors::OnKeyUp), nullptr, this);
-    this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFramePredictors::OpenFramePreferences));
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFramePredictors::OpenFramePreferences, this, asID_PREFERENCES);
 
     // DND
     m_scrolledWindowOptions->SetDropTarget(new vroomDropFilesPredictors(this));
@@ -174,8 +173,7 @@ asFramePredictors::~asFramePredictors() {
     m_displayCtrlLeft->Disconnect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFramePredictors::OnRightClick), nullptr, this);
     m_displayCtrlLeft->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFramePredictors::OnKeyDown), nullptr, this);
     m_displayCtrlLeft->Disconnect(wxEVT_KEY_UP, wxKeyEventHandler(asFramePredictors::OnKeyUp), nullptr, this);
-    this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFramePredictors::OpenFramePreferences));
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFramePredictors::OpenFramePreferences, this, asID_PREFERENCES);
 
     wxDELETE(m_layerManager);
 }

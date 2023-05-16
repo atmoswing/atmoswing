@@ -107,7 +107,7 @@ bool forecastDropFiles::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& f
 asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
     : asFrameViewerVirtual(parent, id) {
     g_silentMode = false;
-    m_fileHistory = new wxFileHistory(10);
+    m_fileHistory = new wxFileHistory(9);
 
     // Adjust size
     int sashMinSize = m_splitterGIS->GetMinimumPaneSize();
@@ -222,14 +222,13 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
     m_displayCtrl->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFrameViewer::OnRightClick), nullptr, this);
     m_displayCtrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFrameViewer::OnKeyDown), nullptr, this);
     m_displayCtrl->Connect(wxEVT_KEY_UP, wxKeyEventHandler(asFrameViewer::OnKeyUp), nullptr, this);
-    this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameViewer::OpenFramePreferences));
-    this->Connect(asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFramePlots));
-    this->Connect(asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFrameGrid));
-    this->Connect(asID_FRAME_PREDICTORS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFramePredictors));
-    this->Connect(asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OnOpenForecast));
-    this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameViewer::OpenFramePredictandDB));
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePreferences, this, asID_PREFERENCES);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePlots, this, asID_FRAME_PLOTS);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFrameGrid, this, asID_FRAME_GRID);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePredictors, this, asID_FRAME_PREDICTORS);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OnOpenForecast, this, asID_OPEN);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePredictandDB, this, asID_DB_CREATE);
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &asFrameViewer::OnFileHistory, this, wxID_FILE1, wxID_FILE9);
 
     // Process
     m_processForecast = nullptr;
@@ -300,16 +299,13 @@ asFrameViewer::~asFrameViewer() {
     m_displayCtrl->Disconnect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFrameViewer::OnRightClick), nullptr, this);
     m_displayCtrl->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFrameViewer::OnKeyDown), nullptr, this);
     m_displayCtrl->Disconnect(wxEVT_KEY_UP, wxKeyEventHandler(asFrameViewer::OnKeyUp), nullptr, this);
-    this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameViewer::OpenFramePreferences));
-    this->Disconnect(asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameViewer::OpenFramePlots));
-    this->Disconnect(asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFrameGrid));
-    this->Disconnect(asID_FRAME_PREDICTORS, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameViewer::OpenFramePredictors));
-    this->Disconnect(asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OnOpenForecast));
-    this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameViewer::OpenFramePredictandDB));
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePreferences, this, asID_PREFERENCES);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePlots, this, asID_FRAME_PLOTS);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFrameGrid, this, asID_FRAME_GRID);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePredictors, this, asID_FRAME_PREDICTORS);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OnOpenForecast, this, asID_OPEN);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePredictandDB, this, asID_DB_CREATE);
+    Unbind(wxEVT_COMMAND_MENU_SELECTED, &asFrameViewer::OnFileHistory, this, wxID_FILE1, wxID_FILE9);
 
     // Don't delete m_viewerLayerManager, will be deleted by the manager
     wxDELETE(m_layerManager);
@@ -468,6 +464,26 @@ void asFrameViewer::OnOpenWorkspace(wxCommandEvent& event) {
     }
 
     m_fileHistory->AddFileToHistory(workspaceFilePath);
+}
+
+void asFrameViewer::OnFileHistory(wxCommandEvent& event) {
+    int id = event.GetId() - wxID_FILE1;
+    wxString workspaceFilePath = m_fileHistory->GetHistoryFile(id);
+
+    wxBusyCursor wait;
+
+    // Save preferences
+    wxConfigBase* pConfig = wxFileConfig::Get();
+    pConfig->Write("/Workspace/LastOpened", workspaceFilePath);
+
+    // Do open the workspace
+    if (!m_workspace.Load(workspaceFilePath)) {
+        wxLogError(_("Failed to open the workspace file ") + workspaceFilePath);
+    }
+
+    if (!OpenWorkspace()) {
+        wxLogError(_("Failed to open the workspace file ") + workspaceFilePath);
+    }
 }
 
 void asFrameViewer::OnSaveWorkspace(wxCommandEvent& event) {

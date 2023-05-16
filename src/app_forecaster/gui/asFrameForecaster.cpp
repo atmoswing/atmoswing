@@ -54,7 +54,7 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     : asFrameForecasterVirtual(parent) {
     m_forecaster = nullptr;
     m_logWindow = nullptr;
-    m_fileHistory = new wxFileHistory(10);
+    m_fileHistory = new wxFileHistory(9);
 
     // Fix colors
     // m_panelMain->SetBackgroundColour(asConfig::GetFrameBgColour());
@@ -113,12 +113,11 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     m_panelsManager = new asPanelsManagerForecasts();
 
     // Connect events
-    Connect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::LaunchForecasting));
-    this->Connect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::CancelForecasting));
-    this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameForecaster::OpenFramePredictandDB));
-    this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameForecaster::OpenFramePreferences));
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::LaunchForecasting, this, asID_RUN);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::CancelForecasting, this, asID_CANCEL);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::OpenFramePredictandDB, this, asID_DB_CREATE);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::OpenFramePreferences, this, asID_PREFERENCES);
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &asFrameForecaster::OnFileHistory, this, wxID_FILE1, wxID_FILE9);
 
     // Icon
 #ifdef __WXMSW__
@@ -134,12 +133,11 @@ asFrameForecaster::~asFrameForecaster() {
     SaveRecentFiles();
 
     // Disconnect events
-    this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::LaunchForecasting));
-    this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::CancelForecasting));
-    this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameForecaster::OpenFramePredictandDB));
-    this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameForecaster::OpenFramePreferences));
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::LaunchForecasting, this, asID_RUN);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::CancelForecasting, this, asID_CANCEL);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::OpenFramePredictandDB, this, asID_DB_CREATE);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::OpenFramePreferences, this, asID_PREFERENCES);
+    Unbind(wxEVT_COMMAND_MENU_SELECTED, &asFrameForecaster::OnFileHistory, this, wxID_FILE1, wxID_FILE9);
 }
 
 void asFrameForecaster::OnInit() {
@@ -201,6 +199,19 @@ void asFrameForecaster::OnOpenBatchForecasts(wxCommandEvent& event) {
     OpenBatchForecasts();
 
     m_fileHistory->AddFileToHistory(batchFilePath);
+}
+
+void asFrameForecaster::OnFileHistory(wxCommandEvent& event) {
+    int id = event.GetId() - wxID_FILE1;
+    wxString batchFilePath = m_fileHistory->GetHistoryFile(id);
+
+    wxBusyCursor wait;
+
+    if (!m_batchForecasts.Load(batchFilePath)) {
+        wxLogError(_("Failed to open the batch file ") + batchFilePath);
+    }
+
+    OpenBatchForecasts();
 }
 
 void asFrameForecaster::OnSaveBatchForecasts(wxCommandEvent& event) {

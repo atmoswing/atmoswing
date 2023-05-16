@@ -48,12 +48,10 @@ asFrameDownscaler::asFrameDownscaler(wxWindow* parent)
     m_toolBar->Realize();
 
     // Connect events
-    this->Connect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameDownscaler::Launch));
-    this->Connect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameDownscaler::Cancel));
-    this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameDownscaler::OpenFramePreferences));
-    this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameDownscaler::OpenFramePredictandDB));
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::Launch, this, asID_RUN);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::Cancel, this, asID_CANCEL);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::OpenFramePreferences, this, asID_PREFERENCES);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::OpenFramePredictandDB, this, asID_DB_CREATE);
 
     // Icon
 #ifdef __WXMSW__
@@ -63,12 +61,10 @@ asFrameDownscaler::asFrameDownscaler(wxWindow* parent)
 
 asFrameDownscaler::~asFrameDownscaler() {
     // Disconnect events
-    this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameDownscaler::Launch));
-    this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameDownscaler::Cancel));
-    this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameDownscaler::OpenFramePreferences));
-    this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameDownscaler::OpenFramePredictandDB));
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::Launch, this, asID_RUN);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::Cancel, this, asID_CANCEL);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::OpenFramePreferences, this, asID_PREFERENCES);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::OpenFramePredictandDB, this, asID_DB_CREATE);
 }
 
 void asFrameDownscaler::OnInit() {

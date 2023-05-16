@@ -65,6 +65,8 @@ class asFrameForecaster : public asFrameForecasterVirtual {
 
     void OnOpenBatchForecasts(wxCommandEvent& event) override;
 
+    void OnFileHistory(wxCommandEvent& event);
+
     void OnSaveBatchForecasts(wxCommandEvent& event) override;
 
     void OnSaveBatchForecastsAs(wxCommandEvent& event) override;

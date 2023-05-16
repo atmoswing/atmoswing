@@ -137,6 +137,8 @@ class asFrameViewer : public asFrameViewerVirtual {
 
     void OnOpenWorkspace(wxCommandEvent& event) override;
 
+    void OnFileHistory(wxCommandEvent& event);
+
     void OnSaveWorkspace(wxCommandEvent& event) override;
 
     void OnSaveWorkspaceAs(wxCommandEvent& event) override;
