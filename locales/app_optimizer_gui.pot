@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-07 10:51+0200\n"
+"POT-Creation-Date: 2023-05-16 23:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:50
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:51
 msgid "Run optimizer"
 msgstr ""
 
@@ -25,47 +25,47 @@ msgstr ""
 msgid "Run optimizer now"
 msgstr ""
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:52
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:53
 msgid "Cancel optimization"
 msgstr ""
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:53
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:54
 msgid "Cancel current optimization"
 msgstr ""
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:55
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:56
 #: src/app_optimizer/gui/asFramePreferencesOptimizer.cpp:33
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:600
 msgid "Preferences"
 msgstr ""
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:394
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:391
 msgid "Wrong method selection."
 msgstr ""
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:443
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:440
 msgid "Chosen method not defined yet."
 msgstr ""
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:454
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:451
 #, c-format
 msgid "Bad allocation caught: %s"
 msgstr ""
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:455
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:452
 msgid "Failed to process the calibration."
 msgstr ""
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:458
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:455
 #, c-format
 msgid "Exception caught: %s"
 msgstr ""
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:459
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:456
 msgid "Failed to process the optimization."
 msgstr ""
 
-#: src/app_optimizer/gui/asFrameOptimizer.cpp:464
+#: src/app_optimizer/gui/asFrameOptimizer.cpp:461
 msgid "Optimizer over."
 msgstr ""
 

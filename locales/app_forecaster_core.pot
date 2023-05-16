@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-07 10:51+0200\n"
+"POT-Creation-Date: 2023-05-16 23:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,217 +31,217 @@ msgstr ""
 msgid "The file %s is not a parameters file for the Forecaster."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:68
+#: src/app_forecaster/core/asMethodForecasting.cpp:69
 msgid "The date of the forecast has not been defined."
-msgstr ""
-
-#: src/app_forecaster/core/asMethodForecasting.cpp:100
-#, c-format
-msgid "Processing %s... "
 msgstr ""
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:101
 #, c-format
+msgid "Processing %s... "
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:102
+#, c-format
 msgid "Processing %s"
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:121
+#: src/app_forecaster/core/asMethodForecasting.cpp:123
 msgid "FAILED!\n"
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:122
+#: src/app_forecaster/core/asMethodForecasting.cpp:124
 msgid "The forecast could not be processed"
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:135
+#: src/app_forecaster/core/asMethodForecasting.cpp:137
 #, c-format
 msgid "done in %.1f sec.\n"
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:136
+#: src/app_forecaster/core/asMethodForecasting.cpp:138
 #, c-format
 msgid "Processing of the forecast \"%s\" - \"%s\" took %.1f sec to execute"
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:155
+#: src/app_forecaster/core/asMethodForecasting.cpp:157
 msgid "The export of the synthetic xml failed."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:159
-#: src/app_forecaster/core/asMethodForecasting.cpp:163
+#: src/app_forecaster/core/asMethodForecasting.cpp:161
+#: src/app_forecaster/core/asMethodForecasting.cpp:165
 msgid "The export of the synthetic csv failed."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:180
+#: src/app_forecaster/core/asMethodForecasting.cpp:182
 msgid "Forecasting over."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:206
-#: src/app_forecaster/core/asMethodForecasting.cpp:242
-#: src/app_forecaster/core/asMethodForecasting.cpp:458
-#: src/app_forecaster/core/asMethodForecasting.cpp:493
+#: src/app_forecaster/core/asMethodForecasting.cpp:208
+#: src/app_forecaster/core/asMethodForecasting.cpp:244
+#: src/app_forecaster/core/asMethodForecasting.cpp:460
+#: src/app_forecaster/core/asMethodForecasting.cpp:495
 msgid "Forecast already exists."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:335
-#: src/app_forecaster/core/asMethodForecasting.cpp:339
+#: src/app_forecaster/core/asMethodForecasting.cpp:337
+#: src/app_forecaster/core/asMethodForecasting.cpp:341
 #: src/app_forecaster/core/asResultsForecast.cpp:640
 #, c-format
 msgid "Exception caught: %s"
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:380
+#: src/app_forecaster/core/asMethodForecasting.cpp:382
 msgid "Downloading data."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:435
+#: src/app_forecaster/core/asMethodForecasting.cpp:437
 msgid "Data downloaded."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:504
+#: src/app_forecaster/core/asMethodForecasting.cpp:506
 msgid "The maximum attempts is reached to download the real-time predictor."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:520
+#: src/app_forecaster/core/asMethodForecasting.cpp:522
 #, c-format
 msgid "File not found: %s"
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:529
+#: src/app_forecaster/core/asMethodForecasting.cpp:531
 #, c-format
 msgid "Directory: %s"
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:590
+#: src/app_forecaster/core/asMethodForecasting.cpp:592
 #, c-format
 msgid "Loading data (step %d, predictor nb %d)."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:661
-#: src/app_forecaster/core/asMethodForecasting.cpp:814
-#: src/app_forecaster/core/asMethodForecasting.cpp:1091
-#: src/app_forecaster/core/asMethodForecasting.cpp:1225
+#: src/app_forecaster/core/asMethodForecasting.cpp:663
+#: src/app_forecaster/core/asMethodForecasting.cpp:816
+#: src/app_forecaster/core/asMethodForecasting.cpp:1093
+#: src/app_forecaster/core/asMethodForecasting.cpp:1227
 #, c-format
 msgid ""
 "The real-time predictor time array is not consistent (listTimeArray[%d](%f)!"
 "=timeArrayDataTarget[%d](%f))."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:664
-#: src/app_forecaster/core/asMethodForecasting.cpp:817
-#: src/app_forecaster/core/asMethodForecasting.cpp:1094
-#: src/app_forecaster/core/asMethodForecasting.cpp:1228
+#: src/app_forecaster/core/asMethodForecasting.cpp:666
+#: src/app_forecaster/core/asMethodForecasting.cpp:819
+#: src/app_forecaster/core/asMethodForecasting.cpp:1096
+#: src/app_forecaster/core/asMethodForecasting.cpp:1230
 msgid ""
 "It is likely that the lead times you defined go beyond the data availability."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:676
+#: src/app_forecaster/core/asMethodForecasting.cpp:678
 msgid "Data standardization is not yet implemented in operational forecasting."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:684
-#: src/app_forecaster/core/asMethodForecasting.cpp:828
+#: src/app_forecaster/core/asMethodForecasting.cpp:686
+#: src/app_forecaster/core/asMethodForecasting.cpp:830
 msgid "Loading archive data."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:686
-#: src/app_forecaster/core/asMethodForecasting.cpp:831
-#: src/app_forecaster/core/asMethodForecasting.cpp:1106
-#: src/app_forecaster/core/asMethodForecasting.cpp:1241
+#: src/app_forecaster/core/asMethodForecasting.cpp:688
+#: src/app_forecaster/core/asMethodForecasting.cpp:833
+#: src/app_forecaster/core/asMethodForecasting.cpp:1108
+#: src/app_forecaster/core/asMethodForecasting.cpp:1243
 #, c-format
 msgid "Archive data (%s) could not be loaded."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:697
-#: src/app_forecaster/core/asMethodForecasting.cpp:721
-#: src/app_forecaster/core/asMethodForecasting.cpp:888
-#: src/app_forecaster/core/asMethodForecasting.cpp:897
-#: src/app_forecaster/core/asMethodForecasting.cpp:1117
-#: src/app_forecaster/core/asMethodForecasting.cpp:1139
-#: src/app_forecaster/core/asMethodForecasting.cpp:1306
-#: src/app_forecaster/core/asMethodForecasting.cpp:1315
+#: src/app_forecaster/core/asMethodForecasting.cpp:699
+#: src/app_forecaster/core/asMethodForecasting.cpp:723
+#: src/app_forecaster/core/asMethodForecasting.cpp:890
+#: src/app_forecaster/core/asMethodForecasting.cpp:899
+#: src/app_forecaster/core/asMethodForecasting.cpp:1119
+#: src/app_forecaster/core/asMethodForecasting.cpp:1141
+#: src/app_forecaster/core/asMethodForecasting.cpp:1308
+#: src/app_forecaster/core/asMethodForecasting.cpp:1317
 msgid "Data standardisation has failed."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:709
+#: src/app_forecaster/core/asMethodForecasting.cpp:711
 msgid "Loading forecast data (predictorRealtime->Load)."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:711
-#: src/app_forecaster/core/asMethodForecasting.cpp:843
-#: src/app_forecaster/core/asMethodForecasting.cpp:1129
-#: src/app_forecaster/core/asMethodForecasting.cpp:1252
+#: src/app_forecaster/core/asMethodForecasting.cpp:713
+#: src/app_forecaster/core/asMethodForecasting.cpp:845
+#: src/app_forecaster/core/asMethodForecasting.cpp:1131
+#: src/app_forecaster/core/asMethodForecasting.cpp:1254
 #, c-format
 msgid "Real-time data (%s) could not be loaded."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:734
-#: src/app_forecaster/core/asMethodForecasting.cpp:1151
+#: src/app_forecaster/core/asMethodForecasting.cpp:736
+#: src/app_forecaster/core/asMethodForecasting.cpp:1153
 #, c-format
 msgid "Preprocessing data (%d predictor(s)) while loading."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:737
-#: src/app_forecaster/core/asMethodForecasting.cpp:1154
+#: src/app_forecaster/core/asMethodForecasting.cpp:739
+#: src/app_forecaster/core/asMethodForecasting.cpp:1156
 #, c-format
 msgid "Loading predictor %d."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:840
+#: src/app_forecaster/core/asMethodForecasting.cpp:842
 msgid "Loading forecast data (predictorRealtimePreprocess->Load)."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:863
-#: src/app_forecaster/core/asMethodForecasting.cpp:878
-#: src/app_forecaster/core/asMethodForecasting.cpp:1281
-#: src/app_forecaster/core/asMethodForecasting.cpp:1296
+#: src/app_forecaster/core/asMethodForecasting.cpp:865
+#: src/app_forecaster/core/asMethodForecasting.cpp:880
+#: src/app_forecaster/core/asMethodForecasting.cpp:1283
+#: src/app_forecaster/core/asMethodForecasting.cpp:1298
 msgid "Data preprocessing failed."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:912
-#: src/app_forecaster/core/asMethodForecasting.cpp:1329
+#: src/app_forecaster/core/asMethodForecasting.cpp:914
+#: src/app_forecaster/core/asMethodForecasting.cpp:1331
 msgid "Data loaded"
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:950
-#: src/app_forecaster/core/asMethodForecasting.cpp:1384
+#: src/app_forecaster/core/asMethodForecasting.cpp:952
+#: src/app_forecaster/core/asMethodForecasting.cpp:1386
 msgid "Failed processing the analogs dates."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:1005
+#: src/app_forecaster/core/asMethodForecasting.cpp:1007
 #, c-format
 msgid ""
 "The time array is not consistent in asMethodForecasting::GetAnalogsDates: "
 "size=%d."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:1024
+#: src/app_forecaster/core/asMethodForecasting.cpp:1026
 msgid "Loading data."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:1332
+#: src/app_forecaster/core/asMethodForecasting.cpp:1334
 msgid "Creating a criterion object."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:1335
+#: src/app_forecaster/core/asMethodForecasting.cpp:1337
 msgid "Criterion object created."
 msgstr ""
 
-#: src/app_forecaster/core/asMethodForecasting.cpp:1534
+#: src/app_forecaster/core/asMethodForecasting.cpp:1536
 msgid "Failed setting the predictand values to the corresponding analog dates."
-msgstr ""
-
-#: src/app_forecaster/core/asMethodForecasting.cpp:1614
-#, c-format
-msgid "Needed memory for data: %.2f Mb (cannot evaluate available memory)"
 msgstr ""
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1616
 #, c-format
-msgid "Needed memory for data: %.2f Mb (%.2f Mb available)"
+msgid "Needed memory for data: %.2f Mb (cannot evaluate available memory)"
 msgstr ""
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1618
+#, c-format
+msgid "Needed memory for data: %.2f Mb (%.2f Mb available)"
+msgstr ""
+
+#: src/app_forecaster/core/asMethodForecasting.cpp:1620
 msgid "Data cannot fit into available memory."
 msgstr ""
 
@@ -439,141 +439,141 @@ msgstr ""
 msgid "The desired return period is not available in the forecast file."
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:128
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:131
 msgid "Program already running, aborting."
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:318
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:323
 msgid "The value provided for 'forecast-past' could not be interpreted.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:332
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:337
 msgid "Wrong date format.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:415
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:420
 msgid "An existing batch file was found and has been loaded.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:426
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:431
 msgid "Please provide a path to save the batch file.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:427
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:447
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:464
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:487
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:499
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:510
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:521
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:532
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:432
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:452
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:469
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:492
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:504
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:515
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:526
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:537
 msgid "Current value (enter to keep): "
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:428
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:448
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:488
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:500
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:511
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:522
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:533
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:433
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:453
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:493
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:505
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:516
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:527
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:538
 msgid "New value: "
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:438
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:443
 msgid "The batch file exists and will be loaded.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:441
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:446
 msgid "Failed opening the batch file.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:446
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:451
 msgid "Please provide a directory to save the forecasts.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:457
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:462
 msgid "Do you want to export synthetic xml files of the forecasts ?\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:467
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:472
 msgid "New value (Y/N): "
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:478
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:483
 msgid "The provided value is not allowed. Please enter Y or N.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:486
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:491
 msgid "Please provide a directory to save the exports.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:498
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:503
 msgid "Please provide the directory containing the parameters files.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:509
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:514
 msgid "Please provide the directory containing the archive predictors.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:520
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:525
 msgid "Please provide a directory to save the downloaded predictors.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:531
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:536
 msgid "Please provide the directory containing the predictand database.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:542
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:547
 msgid "Batch file created successfully.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:549
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:554
 msgid ""
 "Warning: there is no forecast listed in the batch file. Please create the "
 "batch file on a version with the graphical interface or edit the generated "
 "file manually.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:557
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:638
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:562
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:643
 #, c-format
 msgid "Forecast started for the %s UTC"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:568
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:617
-msgid "Failed to open the batch file "
-msgstr ""
-
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:569
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:618
-#, c-format
-msgid "Failed to open the batch file %s\n"
-msgstr ""
-
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:573
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:622
-msgid "Please run 'atmoswing-forecaster -c' first in order to configure."
+msgid "Failed to open the batch file "
 msgstr ""
 
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:574
 #: src/app_forecaster/core/AtmoswingAppForecaster.cpp:623
+#, c-format
+msgid "Failed to open the batch file %s\n"
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:578
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:627
+msgid "Please run 'atmoswing-forecaster -c' first in order to configure."
+msgstr ""
+
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:579
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:628
 msgid "Please run 'atmoswing-forecaster -c' first in order to configure.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:582
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:645
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:587
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:650
 msgid "Failed processing the forecast."
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:583
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:646
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:588
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:651
 msgid "Failed processing the forecast.\n"
 msgstr ""
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:590
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:653
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:595
+#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:658
 #, c-format
 msgid "Forecast processed for the date %s UTC"
 msgstr ""

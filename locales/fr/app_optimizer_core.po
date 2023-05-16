@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-13 22:16+0200\n"
-"PO-Revision-Date: 2023-04-13 22:22+0200\n"
+"POT-Creation-Date: 2023-05-16 23:19+0200\n"
+"PO-Revision-Date: 2023-05-16 23:24+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 
 #: src/app_optimizer/core/asFileParametersCalibration.cpp:49
 #, c-format
@@ -32,14 +32,14 @@ msgid "The file %s is not a parameters file for the Optimizer."
 msgstr "Le fichier %s n'est pas un fichier de paramètres pour l'Optimizer."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:90
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:482
-#: src/app_optimizer/core/asMethodOptimizerMC.cpp:158
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:480
+#: src/app_optimizer/core/asMethodOptimizerMC.cpp:156
 #, c-format
 msgid "The whole processing took %.3f min to execute"
 msgstr "L'ensemble du traitement a duré %.3f min"
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:92
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:985
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:984
 msgid "Calibration over."
 msgstr "Le calage est terminé."
 
@@ -71,15 +71,15 @@ msgstr ""
 #: src/app_optimizer/core/asMethodCalibrator.cpp:456
 #: src/app_optimizer/core/asMethodCalibrator.cpp:524
 #: src/app_optimizer/core/asMethodCalibrator.cpp:529
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:253
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:251
 msgid "The time array mode for the target dates is not correctly defined."
 msgstr ""
 "Le mode de tableau des dates pour les dates cibles n'est pas correctement "
 "défini."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:479
-#: src/app_optimizer/core/asMethodCalibrator.cpp:564
-#: src/app_optimizer/core/asMethodCalibrator.cpp:632
+#: src/app_optimizer/core/asMethodCalibrator.cpp:563
+#: src/app_optimizer/core/asMethodCalibrator.cpp:625
 msgid "Failed loading predictor data."
 msgstr "Échec du chargement des données prédicteurs."
 
@@ -92,97 +92,36 @@ msgstr ""
 "Le tableau des dates n'est pas cohérent dans asMethodCalibrator::"
 "GetAnalogsDates : size=%d."
 
-#: src/app_optimizer/core/asMethodCalibrator.cpp:559
-#: src/app_optimizer/core/asMethodCalibrator.cpp:627
-msgid "Date arrays created."
-msgstr "Tableaux des dates créés."
-
 #: src/app_optimizer/core/asMethodCalibrator.cpp:597
-#: src/app_optimizer/core/asMethodCalibrator.cpp:654
-msgid "Start processing the comparison."
-msgstr "Début du calcul de la comparaison."
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:601
-#: src/app_optimizer/core/asMethodCalibrator.cpp:657
+#: src/app_optimizer/core/asMethodCalibrator.cpp:647
 msgid "Failed processing the analogs dates."
 msgstr "Échec du calcul des dates analogues."
 
-#: src/app_optimizer/core/asMethodCalibrator.cpp:606
-#: src/app_optimizer/core/asMethodCalibrator.cpp:662
-msgid "The processing is over."
-msgstr "Le calcul est terminé."
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:621
-msgid "Creating a date arrays for the processor."
-msgstr "Création d'un tableau de dates pour le processeur."
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:640
-msgid "Creating a criterion object."
-msgstr "Création d'un objet critère."
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:643
-msgid "Criterion object created."
-msgstr "Objet de critère créé."
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:678
-msgid "Start setting the predictand values to the corresponding analog dates."
-msgstr ""
-"Début de l'attribution des valeurs de prédictand aux les dates analogues "
-"correspondantes."
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:680
+#: src/app_optimizer/core/asMethodCalibrator.cpp:668
 msgid "Failed setting the predictand values to the corresponding analog dates."
 msgstr ""
 "Échec de l'attribution des valeurs de prédictand aux les dates analogues "
 "correspondantes."
 
-#: src/app_optimizer/core/asMethodCalibrator.cpp:683
-msgid "Predictand association over."
-msgstr "L'association des prédicteurs est terminée."
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:695
-msgid "Instantiating a score object"
-msgstr "Instanciation d'un objet score"
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:702
+#: src/app_optimizer/core/asMethodCalibrator.cpp:688
 msgid "Processing the score of the climatology."
 msgstr "Calcul du score de la climatologie."
 
-#: src/app_optimizer/core/asMethodCalibrator.cpp:715
-msgid "Start processing the score."
-msgstr "Début du calcul du score."
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:718
+#: src/app_optimizer/core/asMethodCalibrator.cpp:701
 msgid "Failed processing the score."
 msgstr "Échec du calcul du score."
 
-#: src/app_optimizer/core/asMethodCalibrator.cpp:735
-msgid "Creating a date array for the final score."
-msgstr "Création d'un tableau de dates pour le score final."
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:746
-msgid "Date array created."
-msgstr "Tableau de dates créé."
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:749
-msgid "Start processing the final score."
-msgstr "Début du calcul du score final."
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:751
+#: src/app_optimizer/core/asMethodCalibrator.cpp:731
 msgid "Failed to process the final score."
 msgstr "Échec du calcul du score final."
 
-#: src/app_optimizer/core/asMethodCalibrator.cpp:754
-msgid "Processing over."
-msgstr "Le calcul est terminé."
-
-#: src/app_optimizer/core/asMethodCalibrator.cpp:776
+#: src/app_optimizer/core/asMethodCalibrator.cpp:755
 msgid "Error assessing the number of analogues."
 msgstr "Erreur d'évaluation du nombre d'analogues."
 
-#: src/app_optimizer/core/asMethodCalibrator.cpp:791
-#: src/app_optimizer/core/asMethodCalibrator.cpp:859
-#: src/app_optimizer/core/asMethodCalibrator.cpp:906
+#: src/app_optimizer/core/asMethodCalibrator.cpp:770
+#: src/app_optimizer/core/asMethodCalibrator.cpp:838
+#: src/app_optimizer/core/asMethodCalibrator.cpp:885
 #: src/app_optimizer/core/asMethodCalibratorEvaluateAllScores.cpp:203
 #: src/app_optimizer/core/asMethodCalibratorEvaluateAllScores.cpp:238
 #: src/app_optimizer/core/asMethodCalibratorSingle.cpp:191
@@ -195,7 +134,7 @@ msgstr "Erreur d'évaluation du nombre d'analogues."
 msgid "The dates selection contains NaNs"
 msgstr "La sélection des dates contient des NaNs"
 
-#: src/app_optimizer/core/asMethodCalibrator.cpp:883
+#: src/app_optimizer/core/asMethodCalibrator.cpp:862
 #: src/app_optimizer/core/asMethodOptimizer.cpp:79
 msgid "The parameters have no validation period !"
 msgstr "Les paramètres n'ont pas de période de validation !"
@@ -449,75 +388,65 @@ msgstr "Échec de la reprise des résultats précédents"
 msgid "Could not create the operators file."
 msgstr "Impossible de créer le fichier des opérateurs."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:239
-#: src/app_optimizer/core/asMethodOptimizerMC.cpp:84
-msgid "Loading the Predictand DB."
-msgstr "Chargement de la base de données des prédictands."
-
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:241
-#: src/app_optimizer/core/asMethodOptimizerMC.cpp:86
-msgid "Predictand DB loaded."
-msgstr "BD des prédictands chargé."
-
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:346
-#: src/app_optimizer/core/asMethodOptimizerMC.cpp:142
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:344
+#: src/app_optimizer/core/asMethodOptimizerMC.cpp:140
 #, c-format
 msgid "NaN found in the scores (element %d on %d in m_scoresCalib)."
 msgstr "NaN trouvé dans les scores (élément %d sur %d dans m_scoresCalib)."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:349
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:347
 #, c-format
 msgid "Parameters #%d: %s"
 msgstr "Paramètres #%d : %s"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:396
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:394
 #, c-format
 msgid "Mean %g, best %g"
 msgstr "Moyenne %g, meilleur %g"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:433
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:431
 #, c-format
 msgid "Epoch number %d"
 msgstr "Numéro d'époque %d"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:465
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:463
 msgid "Optimization process over."
 msgstr "Le processus d'optimisation est terminé."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:475
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:473
 msgid "The parameters could not be optimized"
 msgstr "Les paramètres n'ont pas pu être optimisés"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:484
-#: src/app_optimizer/core/asMethodOptimizerMC.cpp:160
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:482
+#: src/app_optimizer/core/asMethodOptimizerMC.cpp:158
 msgid "Optimization over."
 msgstr "Optimisation terminée."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:504
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:502
 msgid "The file containing the final population could not be generated."
 msgstr "Le fichier contenant la population finale n'a pas pu être généré."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:510
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:508
 msgid "The file containing the best individual could not be generated."
 msgstr "Le fichier contenant le meilleur individu n'a pas pu être généré."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:517
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:515
 msgid "The output xml parameters file could not be generated."
 msgstr "Le fichier de paramètres xml de sortie n'a pas pu être généré."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:627
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:970
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:625
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:968
 #, c-format
 msgid "The directory %s could not be opened."
 msgstr "Le répertoire %s n'a pas pu être ouvert."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:635
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:976
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:633
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:974
 #, c-format
 msgid "The directory %s already contains the resulting file."
 msgstr "Le répertoire %s contient déjà le fichier résultat."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:654
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:652
 #, c-format
 msgid ""
 "The number of former results is not consistent with the population size (%d)."
@@ -525,21 +454,21 @@ msgstr ""
 "Le nombre d'anciens résultats n'est pas cohérent avec la taille de la "
 "population (%d)."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:658
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:656
 #, c-format
 msgid "Previous intermediate results were found and will be loaded (%d lines)."
 msgstr ""
 "Les résultats intermédiaires précédents ont été trouvés et seront chargés "
 "(%d lignes)."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:663
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:822
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:880
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:661
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:820
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:878
 #, c-format
 msgid "Couldn't open the file %s."
 msgstr "Impossible d'ouvrir le fichier %s."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:683
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:681
 msgid ""
 "The number of steps do not correspond between the current and the previous "
 "parameters."
@@ -547,7 +476,7 @@ msgstr ""
 "Le nombre d'étapes ne correspond pas entre les paramètres actuels et les "
 "paramètres précédents."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:701
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:699
 msgid ""
 "The number of predictors do not correspond between the current and the "
 "previous parameters."
@@ -555,7 +484,7 @@ msgstr ""
 "Le nombre de prédicteurs ne correspond pas entre les paramètres actuels et "
 "les paramètres précédents."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:719
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:717
 msgid ""
 "The number of atmospheric levels do not correspond between the current and "
 "the previous parameters."
@@ -563,159 +492,159 @@ msgstr ""
 "Le nombre de niveaux atmosphériques ne correspond pas entre les paramètres "
 "actuels et les paramètres précédents."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:778
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:776
 #, c-format
 msgid "%d former results have been reloaded."
 msgstr "%d anciens résultats ont été rechargés."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:779
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:777
 #, c-format
 msgid "%d former results have been reloaded.\n"
 msgstr "%d anciens résultats ont été rechargés.\n"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:782
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:780
 #, c-format
 msgid "%d generation bests have been reloaded."
 msgstr "%d meilleurs individus ont été rechargés."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:783
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:781
 #, c-format
 msgid "%d generation bests have been reloaded.\n"
 msgstr "%d meilleurs individus ont été rechargés.\n"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:811
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:809
 #, c-format
 msgid "No log file found to restore the number of epochs (directory: %s)"
 msgstr ""
 "Aucun fichier journal n'a été trouvé pour restaurer le nombre d'époques "
 "(répertoire : %s)"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:847
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:845
 #, c-format
 msgid "Starting again from epoch %d."
 msgstr "Recommencer à partir de l'époque %d."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:865
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:863
 msgid "Previous operators were found and will be loaded."
 msgstr "Des opérateurs précédents ont été trouvés et seront chargés."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:866
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:864
 msgid "Previous operators were found and will be loaded.\n"
 msgstr "Des opérateurs précédents ont été trouvés et seront chargés.\n"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:874
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:892
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:872
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:890
 #, c-format
 msgid "Mismatch between number of parameters (%d) and operators (%d)."
 msgstr ""
 "Inadéquation entre le nombre de paramètres (%d) et les opérateurs (%d)."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:953
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1040
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:951
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1038
 msgid "The mutation method was not found when saving operators."
 msgstr ""
 "La méthode de mutation n'a pas été trouvée lors de l'enregistrement des "
 "opérateurs."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1057
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1055
 #, c-format
 msgid "The population is made of %d individuals."
 msgstr "La population est composée de %d individus."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1115
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1113
 #, c-format
 msgid "m_parameters[%d] = %s"
 msgstr "m_parameters[%d] = %s"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1138
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1136
 #, c-format
 msgid "Generation number %d"
 msgstr "Numéro de génération %d"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1192
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1203
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1190
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1201
 msgid "Application of elitism after mutation."
 msgstr "Application de l'élitisme après mutation."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1213
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1249
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1211
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1247
 msgid "Score order not correctly defined."
 msgstr "L'ordre des scores n'est pas correctement défini."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1230
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1240
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1228
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1238
 msgid "Application of elitism in the natural selection."
 msgstr "Application de l'élitisme dans la sélection naturelle."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1261
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1259
 msgid "Applying natural selection."
 msgstr "Application de la sélection naturelle."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1279
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1277
 msgid "Natural selection: ratio elitism"
 msgstr "Sélection naturelle : élitisme par ratios"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1289
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1287
 msgid "Natural selection: tournament"
 msgstr "Sélection naturelle : tournoi"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1340
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1338
 msgid "The given natural selection method couldn't be found."
 msgstr "La méthode de sélection naturelle donnée n'a pas pu être trouvée."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1356
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1354
 msgid "Applying mating."
 msgstr "Application de l'accouplement."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1370
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1368
 msgid "Selecting couples."
 msgstr "Sélection des couples."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1374
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1372
 msgid "Couples selection: rank pairing"
 msgstr "Sélection des couples : appariement des rangs"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1388
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1386
 msgid "Couples selection: random"
 msgstr "Sélection des couples : au hasard"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1396
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1394
 msgid "Couples selection: roulette wheel rank"
 msgstr "Sélection des couples : roulette sur la base des rangs"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1413
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1450
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1411
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1448
 #, c-format
 msgid "probabilities[last]-1.0=%f"
 msgstr "probabilities[last]-1.0=%f"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1428
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1426
 msgid "Couples selection: roulette wheel score"
 msgstr "Sélection des couples : roulette sur la base des scores"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1444
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1442
 msgid "The sum of the probabilities is null."
 msgstr "La somme des probabilités est nulle."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1464
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1470
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1462
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1468
 msgid "Could not find a value in the probability distribution."
 msgstr "Impossible de trouver une valeur dans la distribution de probabilité."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1480
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1478
 msgid "Couples selection: tournament"
 msgstr "Sélection des couples : tournoi"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1488
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1486
 msgid "The number of individuals for tournament selection is inferior to 2."
 msgstr "Le nombre d'individus pour la sélection du tournoi est inférieur à 2."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1489
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1496
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1487
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1494
 msgid "The number of individuals for tournament selection has been changed."
 msgstr "Le nombre d'individus pour la sélection du tournoi a été modifié."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1494
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1492
 msgid ""
 "The number of individuals for tournament selection superior to the half of "
 "the intermediate population."
@@ -723,129 +652,119 @@ msgstr ""
 "Le nombre d'individus pour la sélection du tournoi est supérieur à la moitié "
 "de la population intermédiaire."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1524
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1522
 msgid "The desired couples selection method is not yet implemented."
 msgstr ""
 "La méthode de sélection des couples souhaitée n'est pas encore implémentée."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1535
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1531
 #, c-format
 msgid "m_scoresCalib[%d] = %f"
 msgstr "m_scoresCalib[%d] = %f"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1539
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1535
 #, c-format
 msgid "probabilities[%d] = %f"
 msgstr "probabilities[%d] = %f"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1541
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1537
 msgid "The same two partners were chosen more than 100 times. Lost in a loop."
 msgstr ""
 "Les deux mêmes partenaires ont été choisis plus de 100 fois. Perdu dans une "
 "boucle."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1550
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1546
 msgid "Crossing chromosomes."
 msgstr "Croisement de chromosomes."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1553
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1549
 msgid "Crossing: single point crossover"
 msgstr "Croisement : croisement à point unique"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1593
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1589
 msgid "Crossing: double points crossover"
 msgstr "Croisement : croisement à double point"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1611
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1671
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1784
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1841
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1918
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1979
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1607
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1667
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1780
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1837
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1914
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1975
 msgid "Crossing point already selected. Selection of a new one."
 msgstr ""
 "Point de croisement déjà sélectionné. Sélection d'un nouveau point de "
 "croisement."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1617
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1790
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1847
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1924
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1985
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1613
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1786
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1843
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1920
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1981
 msgid "There are more crossing points than chromosomes."
 msgstr "Il y a plus de points de croisement que de chromosomes."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1647
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1643
 msgid "Crossing: multiple points crossover"
 msgstr "Croisement : croisement à plusieurs points"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1660
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1656
 msgid "The desired crossings number is superior or equal to the genes number."
 msgstr ""
 "Le nombre de croisements souhaité est supérieur ou égal au nombre de gènes."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1704
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1700
 msgid "Crossing: uniform crossover"
 msgstr "Croisement : croisement uniforme"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1759
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1755
 msgid "Crossing: limited blending"
 msgstr "Croisement : mélange limité"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1820
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1816
 msgid "Crossing: linear crossover"
 msgstr "Croisement : croisement linéaire"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1893
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1889
 msgid "Crossing: heuristic crossover"
 msgstr "Croisement : croisement heuristique"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1954
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:1950
 msgid "Crossing: binary-like crossover"
 msgstr "Croisement : croisement de type binaire"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2015
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2011
 msgid "Crossing: linear interpolation"
 msgstr "Croisement : interpolation linéaire"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2041
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2037
 msgid "Crossing: free interpolation"
 msgstr "Croisement : interpolation libre"
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2067
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2063
 msgid "The desired chromosomes crossing is not yet implemented."
 msgstr "Le croisement des chromosomes souhaité n'est pas encore implémenté."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2084
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2080
 msgid "Applying mutations."
 msgstr "Application des mutations."
 
-#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2302
+#: src/app_optimizer/core/asMethodOptimizerGAs.cpp:2298
 msgid "The desired mutation method is not yet implemented."
 msgstr "La méthode de mutation souhaitée n'est pas encore implémentée."
 
-#: src/app_optimizer/core/asMethodOptimizerMC.cpp:155
+#: src/app_optimizer/core/asMethodOptimizerMC.cpp:153
 msgid "Random method over."
 msgstr "Méthode aléatoire terminée."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:47
-#: src/app_optimizer/core/asParametersOptimization.cpp:109
-msgid "Loading parameters file."
-msgstr "Chargement du fichier de paramètres."
-
-#: src/app_optimizer/core/asParametersCalibration.cpp:50
-#: src/app_optimizer/core/asParametersOptimization.cpp:112
-#: src/app_optimizer/core/asParametersScoring.cpp:60
+#: src/app_optimizer/core/asParametersCalibration.cpp:48
+#: src/app_optimizer/core/asParametersOptimization.cpp:110
+#: src/app_optimizer/core/asParametersScoring.cpp:58
 msgid "The given path to the parameters file is empty."
 msgstr "Le chemin d'accès au fichier de paramètres est vide."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:101
-#: src/app_optimizer/core/asParametersOptimization.cpp:163
-msgid "Parameters file loaded."
-msgstr "Fichier de paramètres chargé."
-
-#: src/app_optimizer/core/asParametersCalibration.cpp:246
-#: src/app_optimizer/core/asParametersOptimization.cpp:343
+#: src/app_optimizer/core/asParametersCalibration.cpp:242
+#: src/app_optimizer/core/asParametersOptimization.cpp:339
 msgid ""
 "The preload option has been disabled. This can result in very long "
 "computation time."
@@ -853,32 +772,32 @@ msgstr ""
 "L'option de préchargement a été désactivée. Cela peut entraîner des temps de "
 "calcul très longs."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:383
-#: src/app_optimizer/core/asParametersOptimization.cpp:591
+#: src/app_optimizer/core/asParametersCalibration.cpp:379
+#: src/app_optimizer/core/asParametersOptimization.cpp:587
 msgid "The postptocessing is not yet fully implemented."
 msgstr "Le postptocessing n'est pas encore entièrement mis en œuvre."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:483
-#: src/app_optimizer/core/asParametersOptimization.cpp:723
+#: src/app_optimizer/core/asParametersCalibration.cpp:479
+#: src/app_optimizer/core/asParametersOptimization.cpp:719
 #, c-format
 msgid "The %s preprocessing method is not yet handled with the preload option."
 msgstr ""
 "La méthode de prétraitement %s n'est pas encore gérée par l'option preload."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:528
+#: src/app_optimizer/core/asParametersCalibration.cpp:524
 msgid ""
 "The beginning of the archive period was not provided in the parameters file."
 msgstr ""
 "Le début de la période d'archive n'a pas été indiqué dans le fichier de "
 "paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:533
+#: src/app_optimizer/core/asParametersCalibration.cpp:529
 msgid "The end of the archive period was not provided in the parameters file."
 msgstr ""
 "La fin de la période d'archive n'a pas été indiquée dans le fichier de "
 "paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:538
+#: src/app_optimizer/core/asParametersCalibration.cpp:534
 msgid ""
 "The beginning of the calibration period was not provided in the parameters "
 "file."
@@ -886,14 +805,14 @@ msgstr ""
 "Le début de la période de calage n'a pas été indiqué dans le fichier de "
 "paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:543
+#: src/app_optimizer/core/asParametersCalibration.cpp:539
 msgid ""
 "The end of the calibration period was not provided in the parameters file."
 msgstr ""
 "La fin de la période de calage n'a pas été indiquée dans le fichier des "
 "paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:548
+#: src/app_optimizer/core/asParametersCalibration.cpp:544
 msgid ""
 "The validation period was not provided in the parameters file (it can be on "
 "purpose)."
@@ -901,12 +820,12 @@ msgstr ""
 "La période de validation n'a pas été indiquée dans le fichier des paramètres "
 "(cela peut être volontaire)."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:553
-#: src/app_optimizer/core/asParametersCalibration.cpp:558
+#: src/app_optimizer/core/asParametersCalibration.cpp:549
+#: src/app_optimizer/core/asParametersCalibration.cpp:554
 msgid "The time step was not provided in the parameters file."
 msgstr "Le pas de temps n'a pas été fourni dans le fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:566
+#: src/app_optimizer/core/asParametersCalibration.cpp:562
 msgid ""
 "The predictand time series (for the threshold preselection) was not provided "
 "in the parameters file."
@@ -914,14 +833,14 @@ msgstr ""
 "La série temporelle du prédictand (pour la présélection du seuil) n'a pas "
 "été fournie dans le fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:571
+#: src/app_optimizer/core/asParametersCalibration.cpp:567
 msgid ""
 "The provided min/max predictand thresholds are equal in the parameters file."
 msgstr ""
 "Les seuils min/max des prédictands fournis sont égaux dans le fichier des "
 "paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:579
+#: src/app_optimizer/core/asParametersCalibration.cpp:575
 msgid ""
 "The interval days for the analogs preselection was not provided in the "
 "parameters file."
@@ -929,7 +848,7 @@ msgstr ""
 "L'intervalle de jours pour la présélection des analogues n'a pas été fourni "
 "dans le fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:584
+#: src/app_optimizer/core/asParametersCalibration.cpp:580
 msgid ""
 "The number of days to exclude around the target date was not provided in the "
 "parameters file."
@@ -937,7 +856,7 @@ msgstr ""
 "Le nombre de jours à exclure autour de la date cible n'est pas fourni dans "
 "le fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:592
+#: src/app_optimizer/core/asParametersCalibration.cpp:588
 #, c-format
 msgid ""
 "The number of analogs (step %d) was not provided in the parameters file."
@@ -945,7 +864,7 @@ msgstr ""
 "Le nombre d'analogues (étape %d) n'a pas été fourni dans le fichier de "
 "paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:600
+#: src/app_optimizer/core/asParametersCalibration.cpp:596
 #, c-format
 msgid ""
 "The preprocessing method (step %d, predictor %d) was not provided in the "
@@ -954,7 +873,7 @@ msgstr ""
 "La méthode de prétraitement (étape %d, prédicteur %d) n'a pas été fournie "
 "dans le fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:607
+#: src/app_optimizer/core/asParametersCalibration.cpp:603
 #, c-format
 msgid ""
 "The dataset for preprocessing (step %d, predictor %d) was not provided in "
@@ -963,7 +882,7 @@ msgstr ""
 "Le jeu de données pour le prétraitement (étape %d, prédicteur %d) n'a pas "
 "été fourni dans le fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:613
+#: src/app_optimizer/core/asParametersCalibration.cpp:609
 #, c-format
 msgid ""
 "The data for preprocessing (step %d, predictor %d) was not provided in the "
@@ -972,7 +891,7 @@ msgstr ""
 "Les données pour le prétraitement (étape %d, prédicteur %d) n'ont pas été "
 "fournies dans le fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:619
+#: src/app_optimizer/core/asParametersCalibration.cpp:615
 #, c-format
 msgid ""
 "The level for preprocessing (step %d, predictor %d) was not provided in the "
@@ -981,7 +900,7 @@ msgstr ""
 "Le niveau de prétraitement (étape %d, prédicteur %d) n'a pas été fourni dans "
 "le fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:625
+#: src/app_optimizer/core/asParametersCalibration.cpp:621
 #, c-format
 msgid ""
 "The time for preprocessing (step %d, predictor %d) was not provided in the "
@@ -990,7 +909,7 @@ msgstr ""
 "L'heure du prétraitement (étape %d, prédicteur %d) n'a pas été indiquée dans "
 "le fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:633
+#: src/app_optimizer/core/asParametersCalibration.cpp:629
 #, c-format
 msgid ""
 "The dataset (step %d, predictor %d) was not provided in the parameters file."
@@ -998,7 +917,7 @@ msgstr ""
 "Le jeu de données (étape %d, prédicteur %d) n'a pas été fourni dans le "
 "fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:637
+#: src/app_optimizer/core/asParametersCalibration.cpp:633
 #, c-format
 msgid ""
 "The data (step %d, predictor %d) was not provided in the parameters file."
@@ -1006,7 +925,7 @@ msgstr ""
 "Les données (étape %d, prédicteur %d) n'ont pas été fournies dans le fichier "
 "de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:641
+#: src/app_optimizer/core/asParametersCalibration.cpp:637
 #, c-format
 msgid ""
 "The level (step %d, predictor %d) was not provided in the parameters file."
@@ -1014,7 +933,7 @@ msgstr ""
 "Le niveau (étape %d, prédicteur %d) n'a pas été fourni dans le fichier de "
 "paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:645
+#: src/app_optimizer/core/asParametersCalibration.cpp:641
 #, c-format
 msgid ""
 "The time (step %d, predictor %d) was not provided in the parameters file."
@@ -1022,14 +941,14 @@ msgstr ""
 "L'heure (étape %d, prédicteur %d) n'a pas été fourni dans le fichier de "
 "paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:651
+#: src/app_optimizer/core/asParametersCalibration.cpp:647
 #, c-format
 msgid "The grid type (step %d, predictor %d) is empty in the parameters file."
 msgstr ""
 "Le type de grille (étape %d, prédicteur %d) est vide dans le fichier de "
 "paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:655
+#: src/app_optimizer/core/asParametersCalibration.cpp:651
 #, c-format
 msgid ""
 "The X min value (step %d, predictor %d) was not provided in the parameters "
@@ -1038,7 +957,7 @@ msgstr ""
 "La valeur X min (étape %d, prédicteur %d) n'a pas été fournie dans le "
 "fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:659
+#: src/app_optimizer/core/asParametersCalibration.cpp:655
 #, c-format
 msgid ""
 "The X points nb value (step %d, predictor %d) was not provided in the "
@@ -1047,7 +966,7 @@ msgstr ""
 "La valeur nb des points en X (étape %d, prédicteur %d) n'a pas été fournie "
 "dans le fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:664
+#: src/app_optimizer/core/asParametersCalibration.cpp:660
 #, c-format
 msgid ""
 "The Y min value (step %d, predictor %d) was not provided in the parameters "
@@ -1056,7 +975,7 @@ msgstr ""
 "La valeur Y min (étape %d, prédicteur %d) n'a pas été fournie dans le "
 "fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:668
+#: src/app_optimizer/core/asParametersCalibration.cpp:664
 #, c-format
 msgid ""
 "The Y points nb value (step %d, predictor %d) was not provided in the "
@@ -1065,7 +984,7 @@ msgstr ""
 "La valeur nb des points en Y (étape %d, prédicteur %d) n'a pas été fournie "
 "dans le fichier de paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:673
+#: src/app_optimizer/core/asParametersCalibration.cpp:669
 #, c-format
 msgid ""
 "The criteria (step %d, predictor %d) was not provided in the parameters file."
@@ -1073,7 +992,7 @@ msgstr ""
 "Le critère (étape %d, prédicteur %d) n'a pas été fourni dans le fichier de "
 "paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:681
+#: src/app_optimizer/core/asParametersCalibration.cpp:677
 msgid ""
 "The station ID was not provided in the parameters file (it can be on "
 "purpose)."
@@ -1081,29 +1000,29 @@ msgstr ""
 "L'identifiant de la station n'a pas été fourni dans le fichier de paramètres "
 "(cela peut être volontaire)."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:687
+#: src/app_optimizer/core/asParametersCalibration.cpp:683
 msgid "The score was not provided in the parameters file."
 msgstr "Le score n'a pas été fourni dans le fichier des paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:693
+#: src/app_optimizer/core/asParametersCalibration.cpp:689
 msgid "The total score was not provided in the parameters file."
 msgstr "Le score total n'a pas été fourni dans le fichier des paramètres."
 
+#: src/app_optimizer/core/asParametersCalibration.cpp:772
 #: src/app_optimizer/core/asParametersCalibration.cpp:776
-#: src/app_optimizer/core/asParametersCalibration.cpp:780
 msgid "The provided predictand ID vector is empty."
 msgstr "Le vecteur d'identification du prédictand fourni est vide."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:787
+#: src/app_optimizer/core/asParametersCalibration.cpp:783
 msgid "There are 0s in the provided predictand ID vector."
 msgstr ""
 "Le vecteur d'identification du prédictand fourni contient des valeurs nulles."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:807
+#: src/app_optimizer/core/asParametersCalibration.cpp:803
 msgid "There are NaN values in the provided scores vector."
 msgstr "Le vecteur de scores fourni contient des valeurs NaN."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:812
+#: src/app_optimizer/core/asParametersCalibration.cpp:808
 msgid ""
 "The rank histogram can only be processed in the 'all scores' evaluation "
 "method."
@@ -1111,7 +1030,7 @@ msgstr ""
 "L'histogramme des rangs ne peut être traité que dans la méthode d'évaluation "
 "'all scores'."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:836
+#: src/app_optimizer/core/asParametersCalibration.cpp:832
 msgid ""
 "Trying to access to an element outside of preprocessHours (lower limit) in "
 "the parameters object."
@@ -1119,7 +1038,7 @@ msgstr ""
 "Tentative d'accès à un élément en dehors de preprocessHours (limite "
 "inférieure) dans l'objet des paramètres."
 
-#: src/app_optimizer/core/asParametersCalibration.cpp:896
+#: src/app_optimizer/core/asParametersCalibration.cpp:892
 msgid ""
 "Trying to access to an element outside of preprocessHours (upper limit) in "
 "the parameters object."
@@ -1127,14 +1046,14 @@ msgstr ""
 "Tentative d'accès à un élément en dehors de preprocessHours (limite "
 "supérieure) dans l'objet des paramètres."
 
-#: src/app_optimizer/core/asParametersOptimization.cpp:720
+#: src/app_optimizer/core/asParametersOptimization.cpp:716
 #, c-format
 msgid "The %s preprocessing method is not handled in the optimizer."
 msgstr ""
 "La méthode de prétraitement %s n'est pas prise en compte par l'optimiseur."
 
-#: src/app_optimizer/core/asParametersOptimization.cpp:871
-#: src/app_optimizer/core/asParametersOptimization.cpp:995
+#: src/app_optimizer/core/asParametersOptimization.cpp:867
+#: src/app_optimizer/core/asParametersOptimization.cpp:991
 #, c-format
 msgid ""
 "asParametersOptimization::CheckRange is not ready to use on unregular grids "
@@ -1143,7 +1062,7 @@ msgstr ""
 "asParametersOptimization::CheckRange n'est pas prêt à être utilisé sur des "
 "grilles non régulières (PredictorGridType = %s)"
 
-#: src/app_optimizer/core/asParametersOptimization.cpp:1101
+#: src/app_optimizer/core/asParametersOptimization.cpp:1097
 #, c-format
 msgid ""
 "The sum of the locked weights of the analogy level number %d is higher than "
@@ -1156,26 +1075,18 @@ msgstr ""
 msgid "We should never reach that point..."
 msgstr "Nous ne devrions jamais en arriver là..."
 
-#: src/app_optimizer/core/asParametersScoring.cpp:57
-msgid "Generating parameters file."
-msgstr "Génération d'un fichier de paramètres."
-
-#: src/app_optimizer/core/asParametersScoring.cpp:230
-msgid "Parameters file generated."
-msgstr "Fichier de paramètres généré."
-
-#: src/app_optimizer/core/asParametersScoring.cpp:245
+#: src/app_optimizer/core/asParametersScoring.cpp:241
 msgid "The preprocess dataId must be unique with the preload option."
 msgstr ""
 "L'identifiant de données de prétraitement doit être unique avec l'option "
 "preload."
 
-#: src/app_optimizer/core/asParametersScoring.cpp:311
+#: src/app_optimizer/core/asParametersScoring.cpp:307
 #, c-format
 msgid "The current score (%s) doesn't correspond to the previous one (%s)."
 msgstr "Le score actuel (%s) ne correspond pas au score précédent (%s)."
 
-#: src/app_optimizer/core/asParametersScoring.cpp:312
+#: src/app_optimizer/core/asParametersScoring.cpp:308
 #, c-format
 msgid ""
 "Error: The current score (%s) doesn't correspond to the previous one (%s).\n"
@@ -1655,18 +1566,18 @@ msgstr "Période non implémentée dans asTotalScoreTS."
 msgid "Program already running, aborting."
 msgstr "Programme déjà en cours d'exécution, interruption."
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:293
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:290
 #, c-format
 msgid "An existing directory was found for the run number %d"
 msgstr "Un répertoire existant a été trouvé pour le numéro de run %d"
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:335
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:332
 #, c-format
 msgid "The number of groups (%d) differ from the previous config file (%d)."
 msgstr ""
 "Le nombre de groupes (%d) diffère du fichier de configuration précédent (%d)."
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:362
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:359
 #, c-format
 msgid ""
 "The option %s (under Optimizer/%s) differ from the previous config file (%s !"
@@ -1675,76 +1586,139 @@ msgstr ""
 "L'option %s (sous Optimizer/%s) diffère du fichier de configuration "
 "précédent (%s !=%s)."
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:485
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:482
 msgid "The value provided for 'log-level' could not be interpreted.\n"
 msgstr "La valeur fournie pour \"log-level\" n'a pas pu être interprétée.\n"
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:518
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:515
 #, c-format
 msgid "The given calibration file (%s) couldn't be found."
 msgstr "Le fichier de calage donné (%s) n'a pas été trouvé."
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:530
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:527
 #, c-format
 msgid "The given predictand DB (%s) couldn't be found."
 msgstr "La base de données des prédictands (%s) n'a pas été trouvée."
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:542
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:539
 #, c-format
 msgid "The given predictors directory (%s) couldn't be found."
 msgstr "Le répertoire des prédicteurs donné (%s) n'a pas pu être trouvé."
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:621
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:618
 msgid "The value provided for 'ga-config' could not be interpreted.\n"
 msgstr "La valeur fournie pour 'ga-config' n'a pas pu être interprétée.\n"
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:661
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:658
 msgid "The value provided for 'ga-config' does not match any option.\n"
 msgstr "La valeur fournie pour 'ga-config' ne correspond à aucune option.\n"
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:817
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:814
 msgid "Initialization for command-line interface failed."
 msgstr "L'initialisation de l'interface de ligne de commande a échoué."
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:821
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:818
 #, c-format
 msgid "Given calibration method: %s"
 msgstr "Méthode de calage donnée : %s"
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:894
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:893
 msgid "The parameters file is not given."
 msgstr "Le fichier de paramètres n'est pas fourni."
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:899
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:898
 msgid "The predictand DB is not given."
 msgstr "La base de données des prédictands n'a pas été fournie."
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:904
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:903
 msgid "The predictors directory is not given."
 msgstr "Le répertoire des prédicteurs n'est pas fourni."
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:977
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:976
 #, c-format
 msgid "Bad allocation caught: %s"
 msgstr "Mauvaise allocation détectée : %s"
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:981
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:980
 #, c-format
 msgid "Exception caught: %s"
 msgstr "Une exception a été détectée : %s"
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:986
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:985
 msgid "Calibration over.\n"
 msgstr "Le calage est terminé.\n"
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:1020
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:1014
 msgid "An exception occured in the main loop"
 msgstr "Une exception s'est produite dans la boucle principale"
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:1025
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:1019
 msgid "An fatal exception occured"
 msgstr "Une exception fatale s'est produite"
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:1029
+#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:1023
 msgid "An unhandled exception occured"
 msgstr "Une exception non gérée s'est produite"
+
+#~ msgid "Date arrays created."
+#~ msgstr "Tableaux des dates créés."
+
+#~ msgid "Start processing the comparison."
+#~ msgstr "Début du calcul de la comparaison."
+
+#~ msgid "The processing is over."
+#~ msgstr "Le calcul est terminé."
+
+#~ msgid "Creating a date arrays for the processor."
+#~ msgstr "Création d'un tableau de dates pour le processeur."
+
+#~ msgid "Creating a criterion object."
+#~ msgstr "Création d'un objet critère."
+
+#~ msgid "Criterion object created."
+#~ msgstr "Objet de critère créé."
+
+#~ msgid ""
+#~ "Start setting the predictand values to the corresponding analog dates."
+#~ msgstr ""
+#~ "Début de l'attribution des valeurs de prédictand aux les dates analogues "
+#~ "correspondantes."
+
+#~ msgid "Predictand association over."
+#~ msgstr "L'association des prédicteurs est terminée."
+
+#~ msgid "Instantiating a score object"
+#~ msgstr "Instanciation d'un objet score"
+
+#~ msgid "Start processing the score."
+#~ msgstr "Début du calcul du score."
+
+#~ msgid "Creating a date array for the final score."
+#~ msgstr "Création d'un tableau de dates pour le score final."
+
+#~ msgid "Date array created."
+#~ msgstr "Tableau de dates créé."
+
+#~ msgid "Start processing the final score."
+#~ msgstr "Début du calcul du score final."
+
+#~ msgid "Processing over."
+#~ msgstr "Le calcul est terminé."
+
+#~ msgid "Loading the Predictand DB."
+#~ msgstr "Chargement de la base de données des prédictands."
+
+#~ msgid "Predictand DB loaded."
+#~ msgstr "BD des prédictands chargé."
+
+#~ msgid "Loading parameters file."
+#~ msgstr "Chargement du fichier de paramètres."
+
+#~ msgid "Parameters file loaded."
+#~ msgstr "Fichier de paramètres chargé."
+
+#~ msgid "Generating parameters file."
+#~ msgstr "Génération d'un fichier de paramètres."
+
+#~ msgid "Parameters file generated."
+#~ msgstr "Fichier de paramètres généré."

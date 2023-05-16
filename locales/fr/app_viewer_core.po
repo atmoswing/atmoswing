@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-13 22:16+0200\n"
-"PO-Revision-Date: 2023-04-13 22:23+0200\n"
+"POT-Creation-Date: 2023-05-16 23:19+0200\n"
+"PO-Revision-Date: 2023-05-16 23:25+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 
 #: src/app_viewer/core/asFileWorkspace.cpp:47
 #, c-format
@@ -36,13 +36,13 @@ msgid "The file extension (%s) is not correct."
 msgstr "L'extension du fichier (%s) n'est pas correcte."
 
 #: src/app_viewer/core/asPredictorsManager.cpp:65
-#: src/app_viewer/core/asPredictorsManager.cpp:88
+#: src/app_viewer/core/asPredictorsManager.cpp:94
 #, c-format
 msgid "Failed to get an instance of %s from %s."
 msgstr "Échec de l'obtention d'une instance de %s à partir de %s."
 
-#: src/app_viewer/core/asPredictorsManager.cpp:77
-#: src/app_viewer/core/asPredictorsManager.cpp:93
+#: src/app_viewer/core/asPredictorsManager.cpp:83
+#: src/app_viewer/core/asPredictorsManager.cpp:99
 #, c-format
 msgid "The variable %s from %s could not be loaded."
 msgstr "La variable %s de %s n'a pas pu être chargée."

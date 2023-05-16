@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-07 10:51+0200\n"
+"POT-Creation-Date: 2023-05-16 23:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:42
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:43
 msgid "Run downscaler"
 msgstr ""
 
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Run downscaler now"
 msgstr ""
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:44
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:45
 msgid "Cancel downscaling"
 msgstr ""
 
@@ -39,34 +39,34 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:245
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:241
 msgid "Wrong method selection."
 msgstr ""
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:250
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:246
 msgid "Proceeding to classic downscaling."
 msgstr ""
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:255
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:251
 msgid "Chosen method not defined yet."
 msgstr ""
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:267
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:263
 #, c-format
 msgid "Bad allocation caught: %s"
 msgstr ""
 
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:264
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:268
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:272
 msgid "Failed to process the downscaling."
 msgstr ""
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:271
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:267
 #, c-format
 msgid "Exception caught: %s"
 msgstr ""
 
-#: src/app_downscaler/gui/asFrameDownscaler.cpp:277
+#: src/app_downscaler/gui/asFrameDownscaler.cpp:273
 msgid "Downscaler over."
 msgstr ""
 

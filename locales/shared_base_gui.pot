@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-07 10:51+0200\n"
+"POT-Creation-Date: 2023-05-16 23:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,46 +40,46 @@ msgstr ""
 msgid "Predictand database generator"
 msgstr ""
 
-#: src/shared_base/gui/asFramePredictandDB.cpp:133
+#: src/shared_base/gui/asFramePredictandDB.cpp:132
 msgid "The given path for the predictand catalog is empty."
 msgstr ""
 
-#: src/shared_base/gui/asFramePredictandDB.cpp:138
+#: src/shared_base/gui/asFramePredictandDB.cpp:137
 msgid "The given path for the data directory is empty."
 msgstr ""
 
-#: src/shared_base/gui/asFramePredictandDB.cpp:143
+#: src/shared_base/gui/asFramePredictandDB.cpp:142
 msgid "The given path for the output destination is empty."
 msgstr ""
 
-#: src/shared_base/gui/asFramePredictandDB.cpp:148
+#: src/shared_base/gui/asFramePredictandDB.cpp:147
 msgid "The given path for the patterns directory is empty."
 msgstr ""
 
-#: src/shared_base/gui/asFramePredictandDB.cpp:156
-#: src/shared_base/gui/asFramePredictandDB.cpp:190
+#: src/shared_base/gui/asFramePredictandDB.cpp:155
+#: src/shared_base/gui/asFramePredictandDB.cpp:189
 msgid "Wrong selection of the temporal resolution option."
 msgstr ""
 
-#: src/shared_base/gui/asFramePredictandDB.cpp:197
-#: src/shared_base/gui/asFramePredictandDB.cpp:221
+#: src/shared_base/gui/asFramePredictandDB.cpp:196
+#: src/shared_base/gui/asFramePredictandDB.cpp:220
 msgid "Wrong selection of the spatial aggregation option."
 msgstr ""
 
-#: src/shared_base/gui/asFramePredictandDB.cpp:227
-#: src/shared_base/gui/asFramePredictandDB.cpp:281
+#: src/shared_base/gui/asFramePredictandDB.cpp:226
+#: src/shared_base/gui/asFramePredictandDB.cpp:280
 msgid "Wrong selection of the data parameter option."
 msgstr ""
 
-#: src/shared_base/gui/asFramePredictandDB.cpp:244
+#: src/shared_base/gui/asFramePredictandDB.cpp:243
 msgid "The given return period is not consistent."
 msgstr ""
 
-#: src/shared_base/gui/asFramePredictandDB.cpp:277
+#: src/shared_base/gui/asFramePredictandDB.cpp:276
 msgid "Generic predictand database not yet implemented."
 msgstr ""
 
-#: src/shared_base/gui/asFramePredictandDB.cpp:285
+#: src/shared_base/gui/asFramePredictandDB.cpp:284
 #, c-format
 msgid "Exception caught: %s"
 msgstr ""
