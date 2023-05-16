@@ -83,6 +83,8 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
 
     void InitPlotCtrl();
 
+    void ResetExtent(wxCommandEvent& event) override;
+
     void PlotAllReturnPeriods();
 
     void PlotReturnPeriod(int returnPeriod);

@@ -199,6 +199,7 @@ class asFramePlotTimeSeriesVirtual : public wxFrame
 		wxButton* m_buttonSaveTxt;
 		wxButton* m_buttonPreview;
 		wxButton* m_buttonPrint;
+		wxButton* m_buttonReset;
 		wxSplitterWindow* m_splitter;
 		wxPanel* m_panelLeft;
 		wxCheckListBox* m_checkListToc;
@@ -210,6 +211,7 @@ class asFramePlotTimeSeriesVirtual : public wxFrame
 		virtual void OnExportTXT( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPreview( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPrint( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ResetExtent( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTocSelectionChange( wxCommandEvent& event ) { event.Skip(); }
 
 
@@ -247,6 +249,7 @@ class asFramePlotDistributionsVirutal : public wxFrame
 		wxSplitterWindow* m_splitter4;
 		wxPanel* m_panelPredictandsLeft;
 		wxCheckListBox* m_checkListTocPredictands;
+		wxButton* m_buttonResetZoom;
 		wxPanel* m_panelPredictandsRight;
 		wxBoxSizer* m_sizerPlotPredictands;
 		wxPanel* m_panelCriteria;
@@ -257,6 +260,7 @@ class asFramePlotDistributionsVirutal : public wxFrame
 		virtual void OnChoiceStationChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChoiceDateChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTocSelectionChange( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ResetExtent( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
