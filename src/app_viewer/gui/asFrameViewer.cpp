@@ -39,6 +39,7 @@
 
 #include <wx/dir.h>
 
+#include "asBitmaps.h"
 #include "asFileText.h"
 #include "asFrameAbout.h"
 #include "asFrameGridAnalogsValues.h"
@@ -47,7 +48,6 @@
 #include "asFramePlotTimeSeries.h"
 #include "asFramePreferencesViewer.h"
 #include "asWizardWorkspace.h"
-#include "images.h"
 #include "vrlayervector.h"
 
 BEGIN_EVENT_TABLE(asFrameViewer, wxFrame)
@@ -107,34 +107,42 @@ bool forecastDropFiles::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& f
 asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
     : asFrameViewerVirtual(parent, id) {
     g_silentMode = false;
+    m_fileHistory = new wxFileHistory(9);
 
     // Adjust size
     int sashMinSize = m_splitterGIS->GetMinimumPaneSize();
     sashMinSize *= g_ppiScaleDc;
     m_splitterGIS->SetMinimumPaneSize(sashMinSize);
 
+    // Menu recent
+    auto menuOpenRecent = new wxMenu();
+    m_menuFile->Insert(1, asID_MENU_RECENT, _("Open recent"), menuOpenRecent);
+
     // Toolbar
-    m_toolBar->AddTool(asID_OPEN, wxT("Open"), *_img_open, *_img_open, wxITEM_NORMAL, _("Open forecast"),
-                       _("Open a forecast"), nullptr);
-    m_toolBar->AddTool(asID_SELECT, wxT("Select"), *_img_map_select, *_img_map_select, wxITEM_NORMAL, _("Select"),
-                       _("Select data on the map"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), *_img_map_zoom_in, *_img_map_zoom_in, wxITEM_NORMAL, _("Zoom in"),
-                       _("Zoom in"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), *_img_map_zoom_out, *_img_map_zoom_out, wxITEM_NORMAL,
-                       _("Zoom out"), _("Zoom out"), nullptr);
-    m_toolBar->AddTool(asID_PAN, wxT("Pan"), *_img_map_move, *_img_map_move, wxITEM_NORMAL, _("Pan the map"),
-                       _("Move the map by panning"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), *_img_map_fit, *_img_map_fit, wxITEM_NORMAL,
-                       _("Zoom to visible layers"), _("Zoom view to the full extent of all visible layers"), nullptr);
-    m_toolBar->AddTool(asID_FRAME_PLOTS, wxT("Open distributions plots"), *_img_frame_distributions,
-                       *_img_frame_distributions, wxITEM_NORMAL, _("Open distributions plots"),
+    m_toolBar->AddTool(asID_OPEN, wxT("Open"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::OPEN), wxNullBitmap,
+                       wxITEM_NORMAL, _("Open forecast"), _("Open a forecast"), nullptr);
+    m_toolBar->AddTool(asID_SELECT, wxT("Select"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_SELECT),
+                       wxNullBitmap, wxITEM_NORMAL, _("Select"), _("Select data on the map"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN),
+                       wxNullBitmap, wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT),
+                       wxNullBitmap, wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), nullptr);
+    m_toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_MOVE),
+                       wxNullBitmap, wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_FIT),
+                       wxNullBitmap, wxITEM_NORMAL, _("Zoom to visible layers"),
+                       _("Zoom view to the full extent of all visible layers"), nullptr);
+    m_toolBar->AddTool(asID_FRAME_PLOTS, wxT("Open distributions plots"),
+                       asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_DISTRIBUTIONS),
+                       wxNullBitmap, wxITEM_NORMAL, _("Open distributions plots"),
                        _("Open distributions plots"), nullptr);
-    m_toolBar->AddTool(asID_FRAME_GRID, wxT("Open analogs list"), *_img_frame_analogs, *_img_frame_analogs,
-                       wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), nullptr);
-    m_toolBar->AddTool(asID_FRAME_PREDICTORS, wxT("Open predictor maps"), *_img_frame_predictors, *_img_frame_predictors,
+    m_toolBar->AddTool(asID_FRAME_GRID, wxT("Open analogs list"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_ANALOGS),
+                       wxNullBitmap, wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), nullptr);
+    m_toolBar->AddTool(asID_FRAME_PREDICTORS, wxT("Open predictor maps"),
+                       asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_PREDICTORS), wxNullBitmap,
                        wxITEM_NORMAL, _("Open predictor maps"), _("Open predictor maps"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
-                       _("Preferences"), _("Preferences"), nullptr);
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
+                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
     // VroomGIS controls
@@ -202,26 +210,25 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
 
     m_scrolledWindowOptions->Layout();
     m_sizerScrolledWindow->Fit(m_scrolledWindowOptions);
-    Layout();
+    this->Layout();
 
     // Lead time switcher
     m_leadTimeSwitcher = nullptr;
 
     // Status bar
-    SetStatusText(_("Welcome to AtmoSwing"));
+    this->SetStatusText(_("Welcome to AtmoSwing"));
 
     // Connect Events
     m_displayCtrl->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFrameViewer::OnRightClick), nullptr, this);
     m_displayCtrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFrameViewer::OnKeyDown), nullptr, this);
     m_displayCtrl->Connect(wxEVT_KEY_UP, wxKeyEventHandler(asFrameViewer::OnKeyUp), nullptr, this);
-    this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameViewer::OpenFramePreferences));
-    this->Connect(asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFramePlots));
-    this->Connect(asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFrameGrid));
-    this->Connect(asID_FRAME_PREDICTORS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFramePredictors));
-    this->Connect(asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OnOpenForecast));
-    this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameViewer::OpenFramePredictandDB));
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePreferences, this, asID_PREFERENCES);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePlots, this, asID_FRAME_PLOTS);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFrameGrid, this, asID_FRAME_GRID);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePredictors, this, asID_FRAME_PREDICTORS);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OnOpenForecast, this, asID_OPEN);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePredictandDB, this, asID_DB_CREATE);
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &asFrameViewer::OnFileHistory, this, wxID_FILE1, wxID_FILE9);
 
     // Process
     m_processForecast = nullptr;
@@ -253,6 +260,8 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
 
     Layout();
 
+    SetRecentFiles();
+
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));
@@ -260,6 +269,9 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
 }
 
 asFrameViewer::~asFrameViewer() {
+
+    SaveRecentFiles();
+
     // Save preferences
     wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/SidebarPanelsDisplay/Forecasts", !m_panelSidebarForecasts->IsReduced());
@@ -287,16 +299,13 @@ asFrameViewer::~asFrameViewer() {
     m_displayCtrl->Disconnect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFrameViewer::OnRightClick), nullptr, this);
     m_displayCtrl->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFrameViewer::OnKeyDown), nullptr, this);
     m_displayCtrl->Disconnect(wxEVT_KEY_UP, wxKeyEventHandler(asFrameViewer::OnKeyUp), nullptr, this);
-    this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameViewer::OpenFramePreferences));
-    this->Disconnect(asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameViewer::OpenFramePlots));
-    this->Disconnect(asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OpenFrameGrid));
-    this->Disconnect(asID_FRAME_PREDICTORS, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameViewer::OpenFramePredictors));
-    this->Disconnect(asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameViewer::OnOpenForecast));
-    this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameViewer::OpenFramePredictandDB));
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePreferences, this, asID_PREFERENCES);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePlots, this, asID_FRAME_PLOTS);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFrameGrid, this, asID_FRAME_GRID);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePredictors, this, asID_FRAME_PREDICTORS);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OnOpenForecast, this, asID_OPEN);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameViewer::OpenFramePredictandDB, this, asID_DB_CREATE);
+    Unbind(wxEVT_COMMAND_MENU_SELECTED, &asFrameViewer::OnFileHistory, this, wxID_FILE1, wxID_FILE9);
 
     // Don't delete m_viewerLayerManager, will be deleted by the manager
     wxDELETE(m_layerManager);
@@ -453,6 +462,28 @@ void asFrameViewer::OnOpenWorkspace(wxCommandEvent& event) {
     if (!OpenWorkspace()) {
         wxLogError(_("Failed to open the workspace file ") + workspaceFilePath);
     }
+
+    m_fileHistory->AddFileToHistory(workspaceFilePath);
+}
+
+void asFrameViewer::OnFileHistory(wxCommandEvent& event) {
+    int id = event.GetId() - wxID_FILE1;
+    wxString workspaceFilePath = m_fileHistory->GetHistoryFile(id);
+
+    wxBusyCursor wait;
+
+    // Save preferences
+    wxConfigBase* pConfig = wxFileConfig::Get();
+    pConfig->Write("/Workspace/LastOpened", workspaceFilePath);
+
+    // Do open the workspace
+    if (!m_workspace.Load(workspaceFilePath)) {
+        wxLogError(_("Failed to open the workspace file ") + workspaceFilePath);
+    }
+
+    if (!OpenWorkspace()) {
+        wxLogError(_("Failed to open the workspace file ") + workspaceFilePath);
+    }
 }
 
 void asFrameViewer::OnSaveWorkspace(wxCommandEvent& event) {
@@ -556,7 +587,7 @@ bool asFrameViewer::SaveWorkspace() {
     }
 
     if (!m_workspace.Save()) {
-        wxLogError(_("Could not save the worspace."));
+        wxLogError(_("Could not save the workspace."));
         return false;
     }
 
@@ -673,6 +704,11 @@ bool asFrameViewer::OpenWorkspace(bool openRecentForecasts) {
 
 #if defined(__WIN32__)
     m_critSectionViewerLayerManager.Leave();
+#endif
+
+#if wxUSE_STATUSBAR
+    wxString fileName = wxFileName(m_workspace.GetFilePath()).GetFullName();
+    this->SetStatusText(asStrF(_("Welcome to AtmoSwing %s  |  Workspace: %s"), asVersion::GetFullString(), fileName));
 #endif
 
     return true;
@@ -1827,4 +1863,44 @@ void asFrameViewer::UpdatePanelStationsList() {
 
     wxArrayString arrayStation = m_forecastManager->GetStationNamesWithHeights(methodRow, forecastRow);
     m_panelSidebarStationsList->SetChoices(arrayStation);
+}
+
+void asFrameViewer::UpdateRecentFiles() {
+    wxASSERT(m_fileHistory);
+
+    for (int i = 0; i < m_fileHistory->GetCount(); ++i) {
+        wxString filePath = m_fileHistory->GetHistoryFile(i);
+        if (!wxFileExists(filePath)) {
+            m_fileHistory->RemoveFileFromHistory(i);
+            --i;
+        }
+    }
+}
+
+void asFrameViewer::SetRecentFiles() {
+    wxConfigBase* config = wxFileConfig::Get();
+    config->SetPath("/Recent");
+
+    wxMenuItem* menuItem = m_menuBar->FindItem(asID_MENU_RECENT);
+    if (menuItem->IsSubMenu()) {
+        wxMenu* menu = menuItem->GetSubMenu();
+        if (menu) {
+            m_fileHistory->Load(*config);
+            UpdateRecentFiles();
+            m_fileHistory->UseMenu(menu);
+            m_fileHistory->AddFilesToMenu(menu);
+        }
+    }
+
+    config->SetPath("..");
+}
+
+void asFrameViewer::SaveRecentFiles() {
+    wxASSERT(m_fileHistory);
+    wxConfigBase* config = wxFileConfig::Get();
+    config->SetPath("/Recent");
+
+    m_fileHistory->Save(*config);
+
+    config->SetPath("..");
 }

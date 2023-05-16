@@ -30,6 +30,7 @@
 #define AS_FRAME_FORECASTER
 
 #include <wx/awx/led.h>
+#include <wx/filehistory.h>
 
 #include "AtmoswingForecasterGui.h"
 #include "asBatchForecasts.h"
@@ -37,6 +38,8 @@
 #include "asLogWindow.h"
 #include "asMethodForecasting.h"
 #include "asPanelsManagerForecasts.h"
+
+#define asID_MENU_RECENT 1300
 
 class asFrameForecaster : public asFrameForecasterVirtual {
   public:
@@ -58,8 +61,11 @@ class asFrameForecaster : public asFrameForecasterVirtual {
     awxLed* m_ledProcessing;
     awxLed* m_ledSaving;
     asBatchForecasts m_batchForecasts;
+    wxFileHistory* m_fileHistory;
 
     void OnOpenBatchForecasts(wxCommandEvent& event) override;
+
+    void OnFileHistory(wxCommandEvent& event);
 
     void OnSaveBatchForecasts(wxCommandEvent& event) override;
 
@@ -104,6 +110,12 @@ class asFrameForecaster : public asFrameForecasterVirtual {
     void AddForecast(wxCommandEvent& event) override;
 
     void SetPresentDate();
+
+    void UpdateRecentFiles();
+
+    void SetRecentFiles();
+
+    void SaveRecentFiles();
 
     void InitOverallProgress();
 

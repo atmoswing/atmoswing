@@ -217,22 +217,22 @@ bool asTimeArray::Init(double targetDate, double intervalDays, double exclusionD
 }
 
 void asTimeArray::RemoveExcludedDates(double targetDate, double exclusionDays) {
-    a1d newTimeArray;
-    newTimeArray.resize(m_timeArray.size());
 
     if (exclusionDays == 0) {
-        exclusionDays = 30;
-        wxLogWarning(_("The 'exclude_days' parameter cannot be 0 or ignored. Defaulted to 30 days."));
+        return;
     }
+
+    a1d newTimeArray;
+    newTimeArray.resize(m_timeArray.size());
 
     // The period to exclude
     double excludeStart = targetDate - exclusionDays;
     double excludeEnd = targetDate + exclusionDays;
 
     int counter = 0;
-    for (int i = 0; i < m_timeArray.size(); ++i) {
-        if (m_timeArray[i] < excludeStart || m_timeArray[i] > excludeEnd) {
-            newTimeArray[counter] = m_timeArray[i];
+    for (double time : m_timeArray) {
+        if (time < excludeStart || time > excludeEnd) {
+            newTimeArray[counter] = time;
             counter++;
         }
     }

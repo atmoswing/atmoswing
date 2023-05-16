@@ -28,6 +28,7 @@
 
 #include "asFrameOptimizer.h"
 
+#include "asBitmaps.h"
 #include "asFrameAbout.h"
 #include "asFramePredictandDB.h"
 #include "asFramePreferencesOptimizer.h"
@@ -39,7 +40,6 @@
 #include "asMethodCalibratorSingleOnlyValues.h"
 #include "asMethodOptimizerGAs.h"
 #include "asMethodOptimizerMC.h"
-#include "images.h"
 #include "wx/fileconf.h"
 
 asFrameOptimizer::asFrameOptimizer(wxWindow* parent)
@@ -47,21 +47,20 @@ asFrameOptimizer::asFrameOptimizer(wxWindow* parent)
       m_logWindow(nullptr),
       m_methodCalibrator(nullptr) {
     // Toolbar
-    m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run optimizer"),
-                       _("Run optimizer now"), nullptr);
-    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel optimization"),
+    m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap,
+                       wxITEM_NORMAL, _("Run optimizer"), _("Run optimizer now"), nullptr);
+    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::STOP),
+                       wxNullBitmap, wxITEM_NORMAL, _("Cancel optimization"),
                        _("Cancel current optimization"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
-                       _("Preferences"), _("Preferences"), nullptr);
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
+                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
     // Connect events
-    this->Connect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Launch));
-    this->Connect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Cancel));
-    this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameOptimizer::OpenFramePreferences));
-    this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameOptimizer::OpenFramePredictandDB));
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::Launch, this, asID_RUN);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::Cancel, this, asID_CANCEL);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::OpenFramePreferences, this, asID_PREFERENCES);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::OpenFramePredictandDB, this, asID_DB_CREATE);
 
     // Icon
 #ifdef __WXMSW__
@@ -71,12 +70,10 @@ asFrameOptimizer::asFrameOptimizer(wxWindow* parent)
 
 asFrameOptimizer::~asFrameOptimizer() {
     // Disconnect events
-    this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Launch));
-    this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Cancel));
-    this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameOptimizer::OpenFramePreferences));
-    this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameOptimizer::OpenFramePredictandDB));
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::Launch, this, asID_RUN);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::Cancel, this, asID_CANCEL);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::OpenFramePreferences, this, asID_PREFERENCES);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::OpenFramePredictandDB, this, asID_DB_CREATE);
 }
 
 void asFrameOptimizer::OnInit() {

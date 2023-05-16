@@ -28,8 +28,8 @@
 
 #include "asListBoxForecasts.h"
 
+#include "asBitmaps.h"
 #include "asForecastRenderer.h"
-#include "images.h"
 
 BEGIN_EVENT_TABLE(asListBoxForecasts, wxTreeCtrl)
 EVT_TREE_SEL_CHANGED(wxID_ANY, asListBoxForecasts::OnForecastSlctChange)
@@ -67,11 +67,11 @@ void asListBoxForecasts::CreateImageList() {
     auto images = new wxImageList(size, size, true);
 
     // Images must match the enum
-    images->Add(*_img_icon_precip);
-    images->Add(*_img_icon_temp);
-    images->Add(*_img_icon_lightning);
-    images->Add(*_img_icon_wind);
-    images->Add(*_img_icon_other);
+    images->Add(asBitmaps::Get(asBitmaps::ICON_PRECIP));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_TEMP));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_LIGHTNING));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_WIND));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_OTHER));
 
     AssignImageList(images);
 }

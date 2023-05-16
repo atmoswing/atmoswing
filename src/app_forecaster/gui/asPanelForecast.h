@@ -32,15 +32,20 @@
 #include <wx/awx/led.h>
 
 #include "AtmoswingForecasterGui.h"
-#include "images.h"
+#include "asBitmaps.h"
 
 class asPanelsManagerForecasts;
+class asBatchForecasts;
 
 class asPanelForecast : public asPanelForecastVirtual {
   public:
-    explicit asPanelForecast(wxWindow* parent);
+    explicit asPanelForecast(wxWindow* parent, asBatchForecasts* batch);
 
     bool Layout() override;
+
+    void CheckFileExists();
+
+    void SetTooTipContent(const wxString &filePath);
 
     awxLed* GetLed() const {
         return m_led;
@@ -51,20 +56,24 @@ class asPanelForecast : public asPanelForecastVirtual {
     }
 
     wxString GetParametersFileName() const {
-        return m_textCtrlParametersFileName->GetValue();
+        return m_textParametersFileName->GetLabel();
     }
 
     void SetParametersFileName(const wxString& val) {
-        m_textCtrlParametersFileName->SetValue(val);
+        m_textParametersFileName->SetLabel(val);
+        CheckFileExists();
     }
 
   protected:
     wxWindow* m_parentFrame;
     awxLed* m_led;
+    asBatchForecasts* m_batchForecasts;
 
     void ClosePanel(wxCommandEvent& event) override;
 
-    void ChangeForecastName(wxCommandEvent& event);
+    void OnEditForecastFile(wxCommandEvent& event) override;
+
+    void OnDetailsForecastFile(wxCommandEvent& event) override;
 
   private:
     asPanelsManagerForecasts* m_panelsManager;

@@ -30,7 +30,6 @@ list(APPEND inc_dirs
 if (USE_GUI)
     list(APPEND inc_dirs
             "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
-            "${CMAKE_SOURCE_DIR}/src/shared_base/gui/img/"
             "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
             "${PROJECT_SOURCE_DIR}/gui/"
             )

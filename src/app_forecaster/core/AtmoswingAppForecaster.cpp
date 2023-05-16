@@ -53,7 +53,7 @@ IMPLEMENT_APP(AtmoswingAppForecaster)
 
 #if USE_GUI
 
-#include "images.h"
+#include "asBitmaps.h"
 
 #endif
 
@@ -102,6 +102,9 @@ bool AtmoswingAppForecaster::OnInit() {
     m_doForecastPast = false;
     m_forecastDate = 0.0;
     m_forecastPastDays = 0;
+#if USE_GUI
+    m_singleInstanceChecker = nullptr;
+#endif
 
     // Set the local config object
     wxFileConfig* pConfig = new wxFileConfig(
@@ -159,9 +162,6 @@ bool AtmoswingAppForecaster::OnInit() {
 #if USE_GUI
     // Following for GUI only
     wxInitAllImageHandlers();
-
-    // Initialize images
-    initialize_images(g_ppiScaleDc);
 
     // Create frame
     AtmoswingFrameForecaster* frame = new AtmoswingFrameForecaster(0L);
@@ -260,8 +260,13 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
         wxConfigBase* pConfig = wxFileConfig::Get();
         pConfig->Write("/Internet/UsesProxy", true);
 
-        wxString proxyAddress = proxy.BeforeFirst(':');
-        wxString proxyPort = proxy.AfterFirst(':');
+        wxString proxyAddress = proxy.BeforeLast(':');
+        wxString proxyPort = proxy.AfterLast(':');
+
+        if (proxyAddress.IsSameAs("http", false) || proxyAddress.IsSameAs("https", false) || proxyAddress.Len() < 5) {
+            proxyAddress = proxy;
+            proxyPort = "";
+        }
 
         pConfig->Write("/Internet/ProxyAddress", proxyAddress);
         pConfig->Write("/Internet/ProxyPort", proxyPort);
@@ -664,10 +669,7 @@ int AtmoswingAppForecaster::OnRun() {
 int AtmoswingAppForecaster::OnExit() {
 #if USE_GUI
     // Instance checker
-    delete m_singleInstanceChecker;
-
-    // Delete images
-    cleanup_images();
+    wxDELETE(m_singleInstanceChecker);
 #endif
 
     // Config file (from wxWidgets samples)

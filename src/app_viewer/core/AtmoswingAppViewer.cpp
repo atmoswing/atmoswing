@@ -42,7 +42,7 @@ IMPLEMENT_APP(AtmoswingAppViewer);
 #include <wx/stdpaths.h>
 
 #include "asInternet.h"
-#include "images.h"
+#include "asBitmaps.h"
 #include "vroomgis_bmp.h"
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
@@ -100,7 +100,6 @@ bool AtmoswingAppViewer::OnInit() {
     wxInitAllImageHandlers();
 
     // Initialize images
-    initialize_images(g_ppiScaleDc);
     vroomgis_initialize_images();
 
     // Init cURL
@@ -246,7 +245,6 @@ int AtmoswingAppViewer::OnExit() {
 
     // Cleanup images
     vroomgis_clear_images();
-    cleanup_images();
 
     return 1;
 }

@@ -43,7 +43,7 @@ asFramePlotTimeSeries::asFramePlotTimeSeries(wxWindow* parent, int selectedMetho
       m_selectedMethod(selectedMethod),
       m_selectedForecast(selectedForecast),
       m_maxVal(100) {
-    SetLabel(_("Forecast plots"));
+    this->SetLabel(_("Forecast plots"));
 
     auto paneMinSize = (int)(m_splitter->GetMinimumPaneSize() * g_ppiScaleDc);
     m_splitter->SetMinimumPaneSize(paneMinSize);
@@ -65,7 +65,7 @@ asFramePlotTimeSeries::asFramePlotTimeSeries(wxWindow* parent, int selectedMetho
     SetIcon(wxICON(myicon));
 #endif
 
-    Layout();
+    this->Layout();
 }
 
 void asFramePlotTimeSeries::OnClose(wxCloseEvent& evt) {
@@ -456,10 +456,18 @@ bool asFramePlotTimeSeries::Plot() {
     return true;
 }
 
-void asFramePlotTimeSeries::PlotAllReturnPeriods() {
-    // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlot->GetPlotCtrl();
+void asFramePlotTimeSeries::ResetExtent(wxCommandEvent& event) {
+    // Set the view rectangle
+    double dt = m_leadTimes[1] - m_leadTimes[0];
+    double nbPerDay = 1.0 / dt;
+    wxRect2DDouble view(m_leadTimes[0] - 2.5 / nbPerDay, 0, (m_leadTimes.size() + 2) / nbPerDay, m_maxVal * 1.1);
+    m_panelPlot->GetPlotCtrl()->SetViewRect(view);
 
+    // Redraw
+    m_panelPlot->GetPlotCtrl()->Redraw(wxPLOTCTRL_REDRAW_PLOT);
+}
+
+void asFramePlotTimeSeries::PlotAllReturnPeriods() {
     // Get return periods
     a1f retPeriods = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetReferenceAxis();
 
@@ -477,7 +485,7 @@ void asFramePlotTimeSeries::PlotAllReturnPeriods() {
         // Markers -> cannot add legend entries
         // wxPlotMarker marker;
         // marker.CreateHorizLineMarker(val, pen);
-        // plotctrl->AddMarker(marker);
+        // m_panelPlot->GetPlotCtrl()->AddMarker(marker);
 
         // Store max val
         if (val > m_maxVal) m_maxVal = val;
@@ -505,7 +513,7 @@ void asFramePlotTimeSeries::PlotAllReturnPeriods() {
             // Add the curve
             bool select = false;
             bool send_event = false;
-            plotctrl->AddCurve(plotData, select, send_event);
+            m_panelPlot->GetPlotCtrl()->AddCurve(plotData, select, send_event);
         } else {
             wxLogError(_("The return periods couldn't be added to the plot"));
         }
@@ -515,9 +523,6 @@ void asFramePlotTimeSeries::PlotAllReturnPeriods() {
 }
 
 void asFramePlotTimeSeries::PlotReturnPeriod(int returnPeriod) {
-    // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlot->GetPlotCtrl();
-
     // Get return periods
     a1f retPeriods = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetReferenceAxis();
 
@@ -535,7 +540,7 @@ void asFramePlotTimeSeries::PlotReturnPeriod(int returnPeriod) {
         // Lines
         wxPlotMarker marker;
         marker.CreateHorizLineMarker(val, pen);
-        plotctrl->AddMarker(marker);
+        m_panelPlot->GetPlotCtrl()->AddMarker(marker);
 
         // Store max val
         if (val > m_maxVal) m_maxVal = val;
@@ -545,9 +550,6 @@ void asFramePlotTimeSeries::PlotReturnPeriod(int returnPeriod) {
 }
 
 void asFramePlotTimeSeries::PlotAllAnalogs() {
-    // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlot->GetPlotCtrl();
-
     // Get forecast
     asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
@@ -591,7 +593,7 @@ void asFramePlotTimeSeries::PlotAllAnalogs() {
         // Add the curve
         bool select = false;
         bool send_event = false;
-        plotctrl->AddCurve(plotData, select, send_event);
+        m_panelPlot->GetPlotCtrl()->AddCurve(plotData, select, send_event);
     } else {
         wxLogError(_("The analogs data couldn't be added to the plot"));
     }
@@ -600,9 +602,6 @@ void asFramePlotTimeSeries::PlotAllAnalogs() {
 }
 
 void asFramePlotTimeSeries::PlotBestAnalogs(int pointsNb) {
-    // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlot->GetPlotCtrl();
-
     // Get forecast
     asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
@@ -648,7 +647,7 @@ void asFramePlotTimeSeries::PlotBestAnalogs(int pointsNb) {
             // Add the curve
             bool select = false;
             bool send_event = false;
-            plotctrl->AddCurve(plotData, select, send_event);
+            m_panelPlot->GetPlotCtrl()->AddCurve(plotData, select, send_event);
         } else {
             wxLogError(_("The analogs data couldn't be added to the plot"));
         }
@@ -665,9 +664,6 @@ void asFramePlotTimeSeries::PlotClassicQuantiles() {
     colours.emplace_back(0, 0, 175);
     colours.emplace_back(0, 83, 255);
     colours.emplace_back(0, 226, 255);
-
-    // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlot->GetPlotCtrl();
 
     // Get forecast
     asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
@@ -705,7 +701,7 @@ void asFramePlotTimeSeries::PlotClassicQuantiles() {
             // Add the curve
             bool select = false;
             bool send_event = false;
-            plotctrl->AddCurve(plotData, select, send_event);
+            m_panelPlot->GetPlotCtrl()->AddCurve(plotData, select, send_event);
         } else {
             wxLogError(_("The quantiles couldn't be added to the plot"));
         }
@@ -730,9 +726,6 @@ void asFramePlotTimeSeries::PlotPastForecast(int i) {
     colours.emplace_back(152, 152, 222);
     colours.emplace_back(152, 187, 255);
     colours.emplace_back(153, 243, 254);
-
-    // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlot->GetPlotCtrl();
 
     // Get forecast
     asResultsForecast* forecast = m_forecastManager->GetPastForecast(m_selectedMethod, m_selectedForecast, i);
@@ -771,7 +764,7 @@ void asFramePlotTimeSeries::PlotPastForecast(int i) {
             // Add the curve
             bool select = false;
             bool send_event = false;
-            plotctrl->AddCurve(plotData, select, send_event);
+            m_panelPlot->GetPlotCtrl()->AddCurve(plotData, select, send_event);
         } else {
             wxLogError(_("The quantiles couldn't be added to the plot"));
         }
@@ -794,9 +787,6 @@ void asFramePlotTimeSeries::PlotAllQuantiles() {
     colours.emplace_back(150, 150, 150);
     colours.emplace_back(100, 100, 100);
     wxColour colourMid = wxColour(50, 50, 50);
-
-    // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlot->GetPlotCtrl();
 
     // Get forecast
     asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
@@ -848,7 +838,7 @@ void asFramePlotTimeSeries::PlotAllQuantiles() {
             // Add the curve
             bool select = false;
             bool send_event = false;
-            plotctrl->AddCurve(plotData, select, send_event);
+            m_panelPlot->GetPlotCtrl()->AddCurve(plotData, select, send_event);
         } else {
             wxLogError(_("The quantiles couldn't be added to the plot"));
         }
@@ -884,7 +874,7 @@ void asFramePlotTimeSeries::PlotAllQuantiles() {
         // Add the curve
         bool select = false;
         bool send_event = false;
-        plotctrl->AddCurve(plotData, select, send_event);
+        m_panelPlot->GetPlotCtrl()->AddCurve(plotData, select, send_event);
     } else {
         wxLogError(_("The quantiles couldn't be added to the plot"));
     }
@@ -893,9 +883,6 @@ void asFramePlotTimeSeries::PlotAllQuantiles() {
 }
 
 void asFramePlotTimeSeries::PlotInterpretation() {
-    // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlot->GetPlotCtrl();
-
     // Get forecast
     asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
@@ -943,7 +930,7 @@ void asFramePlotTimeSeries::PlotInterpretation() {
         // Add the curve
         bool select = false;
         bool send_event = false;
-        plotctrl->AddCurve(plotData, select, send_event);
+        m_panelPlot->GetPlotCtrl()->AddCurve(plotData, select, send_event);
     } else {
         wxLogError(_("The interpretation curve couldn't be added to the plot"));
     }

@@ -370,6 +370,15 @@ bool asFramePlotDistributions::PlotPredictands() {
     return true;
 }
 
+void asFramePlotDistributions::ResetExtent(wxCommandEvent& event) {
+    // Set the view rectangle (wxRect2DDouble(x, y, w, h))
+    wxRect2DDouble currentView(0, 0, m_xmaxPredictands * 1.1, 1);
+    m_panelPlotPredictands->GetPlotCtrl()->SetViewRect(currentView);
+
+    // Redraw
+    m_panelPlotPredictands->GetPlotCtrl()->Redraw(wxPLOTCTRL_REDRAW_PLOT);
+}
+
 bool asFramePlotDistributions::PlotCriteria() {
     wxBusyCursor wait;
 

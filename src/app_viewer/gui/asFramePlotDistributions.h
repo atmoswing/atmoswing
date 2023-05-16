@@ -47,6 +47,8 @@ class asFramePlotDistributions : public asFramePlotDistributionsVirutal {
 
     bool PlotPredictands();
 
+    void ResetExtent(wxCommandEvent& event) override;
+
     bool PlotCriteria();
 
   protected:

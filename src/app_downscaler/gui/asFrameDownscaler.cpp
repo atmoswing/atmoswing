@@ -27,11 +27,11 @@
 
 #include "asFrameDownscaler.h"
 
+#include "asBitmaps.h"
 #include "asFrameAbout.h"
 #include "asFramePredictandDB.h"
 #include "asFramePreferencesDownscaler.h"
 #include "asMethodDownscalerClassic.h"
-#include "images.h"
 #include "wx/fileconf.h"
 
 asFrameDownscaler::asFrameDownscaler(wxWindow* parent)
@@ -39,21 +39,19 @@ asFrameDownscaler::asFrameDownscaler(wxWindow* parent)
       m_logWindow(nullptr),
       m_methodDownscaler(nullptr) {
     // Toolbar
-    m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run downscaler"),
-                       _("Run downscaler now"), nullptr);
-    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel downscaling"),
-                       _("Cancel current downscaling"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
-                       _("Preferences"), _("Preferences"), nullptr);
+    m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap,
+                       wxITEM_NORMAL, _("Run downscaler"), _("Run downscaler now"), nullptr);
+    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::STOP),
+                       wxNullBitmap, wxITEM_NORMAL, _("Cancel downscaling"), _("Cancel current downscaling"), nullptr);
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
+                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
     // Connect events
-    this->Connect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameDownscaler::Launch));
-    this->Connect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameDownscaler::Cancel));
-    this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameDownscaler::OpenFramePreferences));
-    this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameDownscaler::OpenFramePredictandDB));
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::Launch, this, asID_RUN);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::Cancel, this, asID_CANCEL);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::OpenFramePreferences, this, asID_PREFERENCES);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::OpenFramePredictandDB, this, asID_DB_CREATE);
 
     // Icon
 #ifdef __WXMSW__
@@ -63,12 +61,10 @@ asFrameDownscaler::asFrameDownscaler(wxWindow* parent)
 
 asFrameDownscaler::~asFrameDownscaler() {
     // Disconnect events
-    this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameDownscaler::Launch));
-    this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameDownscaler::Cancel));
-    this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameDownscaler::OpenFramePreferences));
-    this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameDownscaler::OpenFramePredictandDB));
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::Launch, this, asID_RUN);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::Cancel, this, asID_CANCEL);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::OpenFramePreferences, this, asID_PREFERENCES);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameDownscaler::OpenFramePredictandDB, this, asID_DB_CREATE);
 }
 
 void asFrameDownscaler::OnInit() {

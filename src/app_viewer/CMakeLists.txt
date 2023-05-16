@@ -39,7 +39,6 @@ list(REMOVE_DUPLICATES src_app_viewer)
 list(APPEND inc_dirs
         "${CMAKE_SOURCE_DIR}/src/shared_base/core/"
         "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
-        "${CMAKE_SOURCE_DIR}/src/shared_base/gui/img/"
         "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
         "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/"
         "${PROJECT_SOURCE_DIR}/core/"

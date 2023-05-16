@@ -39,7 +39,7 @@ asFramePredictandDB::asFramePredictandDB(wxWindow* parent, wxWindowID id)
     wxConfigBase* pConfig = wxFileConfig::Get();
     m_choiceDataParam->SetSelection((int)0);
 
-    m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+    m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain);
     m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
 
     m_filePickerCatalogPath->SetPath(pConfig->Read("/PredictandDBToolbox/CatalogPath", wxEmptyString));
@@ -101,14 +101,13 @@ void asFramePredictandDB::OnDataSelection(wxCommandEvent& event) {
     switch (m_choiceDataParam->GetSelection()) {
         case 0:  // precipitation
         {
-            m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain, wxID_ANY, wxDefaultPosition,
-                                                                   wxDefaultSize);
+            m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain);
             m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
             break;
         }
         case 2:  // lightning
         {
-            m_panelProcessing = new asPanelProcessingLightning(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+            m_panelProcessing = new asPanelProcessingLightning(m_panelMain);
             m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
             break;
         }

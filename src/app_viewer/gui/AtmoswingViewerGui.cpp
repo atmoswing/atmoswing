@@ -497,22 +497,25 @@ asFramePlotTimeSeriesVirtual::asFramePlotTimeSeriesVirtual( wxWindow* parent, wx
 
 	bSizer37->Add( m_staticTextStationName, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	m_buttonSaveTxt = new wxButton( m_panelStationName, wxID_ANY, _("Export as txt"), wxDefaultPosition, wxSize( -1,25 ), 0 );
+	m_buttonSaveTxt = new wxButton( m_panelStationName, wxID_ANY, _("Export as txt"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	m_buttonSaveTxt->SetFont( wxFont( 8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer37->Add( m_buttonSaveTxt, 0, wxALL, 5 );
 
-	m_buttonPreview = new wxButton( m_panelStationName, wxID_ANY, _("Preview"), wxDefaultPosition, wxSize( 50,20 ), 0 );
+	m_buttonPreview = new wxButton( m_panelStationName, wxID_ANY, _("Preview"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	m_buttonPreview->Enable( false );
 	m_buttonPreview->Hide();
 
 	bSizer37->Add( m_buttonPreview, 0, wxALL, 5 );
 
-	m_buttonPrint = new wxButton( m_panelStationName, wxID_ANY, _("Print"), wxDefaultPosition, wxSize( 50,20 ), 0 );
+	m_buttonPrint = new wxButton( m_panelStationName, wxID_ANY, _("Print"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	m_buttonPrint->Enable( false );
 	m_buttonPrint->Hide();
 
 	bSizer37->Add( m_buttonPrint, 0, wxALL, 5 );
+
+	m_buttonReset = new wxButton( m_panelStationName, wxID_ANY, _("Reset zoom"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer37->Add( m_buttonReset, 0, wxALL, 5 );
 
 
 	bSizer29->Add( bSizer37, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -563,6 +566,7 @@ asFramePlotTimeSeriesVirtual::asFramePlotTimeSeriesVirtual( wxWindow* parent, wx
 	m_buttonSaveTxt->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnExportTXT ), NULL, this );
 	m_buttonPreview->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnPreview ), NULL, this );
 	m_buttonPrint->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnPrint ), NULL, this );
+	m_buttonReset->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::ResetExtent ), NULL, this );
 	m_checkListToc->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnTocSelectionChange ), NULL, this );
 	m_checkListPast->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnTocSelectionChange ), NULL, this );
 }
@@ -573,6 +577,7 @@ asFramePlotTimeSeriesVirtual::~asFramePlotTimeSeriesVirtual()
 	m_buttonSaveTxt->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnExportTXT ), NULL, this );
 	m_buttonPreview->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnPreview ), NULL, this );
 	m_buttonPrint->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnPrint ), NULL, this );
+	m_buttonReset->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::ResetExtent ), NULL, this );
 	m_checkListToc->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnTocSelectionChange ), NULL, this );
 	m_checkListPast->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnTocSelectionChange ), NULL, this );
 
@@ -652,6 +657,9 @@ asFramePlotDistributionsVirutal::asFramePlotDistributionsVirutal( wxWindow* pare
 	m_checkListTocPredictands = new wxCheckListBox( m_panelPredictandsLeft, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_checkListTocPredictandsChoices, 0|wxBORDER_NONE );
 	bSizer55->Add( m_checkListTocPredictands, 1, wxEXPAND|wxTOP|wxBOTTOM|wxLEFT, 5 );
 
+	m_buttonResetZoom = new wxButton( m_panelPredictandsLeft, wxID_ANY, _("Reset zoom"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer55->Add( m_buttonResetZoom, 0, wxALL|wxEXPAND, 5 );
+
 
 	m_panelPredictandsLeft->SetSizer( bSizer55 );
 	m_panelPredictandsLeft->Layout();
@@ -693,6 +701,7 @@ asFramePlotDistributionsVirutal::asFramePlotDistributionsVirutal( wxWindow* pare
 	m_choiceStation->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePlotDistributionsVirutal::OnChoiceStationChange ), NULL, this );
 	m_choiceDate->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePlotDistributionsVirutal::OnChoiceDateChange ), NULL, this );
 	m_checkListTocPredictands->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePlotDistributionsVirutal::OnTocSelectionChange ), NULL, this );
+	m_buttonResetZoom->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotDistributionsVirutal::ResetExtent ), NULL, this );
 }
 
 asFramePlotDistributionsVirutal::~asFramePlotDistributionsVirutal()
@@ -702,6 +711,7 @@ asFramePlotDistributionsVirutal::~asFramePlotDistributionsVirutal()
 	m_choiceStation->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePlotDistributionsVirutal::OnChoiceStationChange ), NULL, this );
 	m_choiceDate->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePlotDistributionsVirutal::OnChoiceDateChange ), NULL, this );
 	m_checkListTocPredictands->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePlotDistributionsVirutal::OnTocSelectionChange ), NULL, this );
+	m_buttonResetZoom->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotDistributionsVirutal::ResetExtent ), NULL, this );
 
 }
 

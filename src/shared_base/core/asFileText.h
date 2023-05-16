@@ -41,7 +41,7 @@ class asFileText : public asFile {
         TabsDelimited
     };
 
-    asFileText(const wxString& fileName, const asFile::FileMode& fileMode);
+    asFileText(const wxString& fileName, const asFile::FileMode& fileMode = asFile::ReadOnly);
 
     ~asFileText() override = default;
 
@@ -52,6 +52,8 @@ class asFileText : public asFile {
     void AddContent(const wxString& lineContent = wxEmptyString);
 
     wxString GetNextLine();
+
+    wxString GetContent();
 
     int GetInt();
 

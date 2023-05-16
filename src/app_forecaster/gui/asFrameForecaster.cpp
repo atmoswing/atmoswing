@@ -26,6 +26,7 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
+#include "asBitmaps.h"
 #include "asFrameAbout.h"
 #include "asFrameForecaster.h"
 #include "asFramePredictandDB.h"
@@ -53,17 +54,22 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     : asFrameForecasterVirtual(parent) {
     m_forecaster = nullptr;
     m_logWindow = nullptr;
+    m_fileHistory = new wxFileHistory(9);
 
     // Fix colors
     // m_panelMain->SetBackgroundColour(asConfig::GetFrameBgColour());
 
+    // Menu recent
+    auto menuOpenRecent = new wxMenu();
+    m_menuFile->Insert(1, asID_MENU_RECENT, _("Open recent"), menuOpenRecent);
+
     // Toolbar
-    m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run forecast"),
-                       _("Run forecast now"), nullptr);
-    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel forecast"),
-                       _("Cancel current forecast"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
-                       _("Preferences"), _("Preferences"), nullptr);
+    m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap,
+                       wxITEM_NORMAL, _("Run forecast"), _("Run forecast now"), nullptr);
+    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::STOP),
+                       wxNullBitmap, wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), nullptr);
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
+                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
     // Leds
@@ -71,8 +77,7 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     m_ledDownloading->SetState(awxLED_OFF);
     m_sizerLeds->Add(m_ledDownloading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxStaticText* textDownloading = new wxStaticText(m_panelMain, wxID_ANY, _("Downloading predictors"),
-                                                     wxDefaultPosition, wxDefaultSize, 0);
+    auto textDownloading = new wxStaticText(m_panelMain, wxID_ANY, _("Downloading predictors"));
     textDownloading->Wrap(-1);
     m_sizerLeds->Add(textDownloading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
@@ -80,8 +85,7 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     m_ledLoading->SetState(awxLED_OFF);
     m_sizerLeds->Add(m_ledLoading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxStaticText* textLoading = new wxStaticText(m_panelMain, wxID_ANY, _("Loading data"), wxDefaultPosition,
-                                                 wxDefaultSize, 0);
+    auto textLoading = new wxStaticText(m_panelMain, wxID_ANY, _("Loading data"));
     textLoading->Wrap(-1);
     m_sizerLeds->Add(textLoading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
@@ -89,8 +93,7 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     m_ledProcessing->SetState(awxLED_OFF);
     m_sizerLeds->Add(m_ledProcessing, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxStaticText* textProcessing = new wxStaticText(m_panelMain, wxID_ANY, _("Processing"), wxDefaultPosition,
-                                                    wxDefaultSize, 0);
+    auto textProcessing = new wxStaticText(m_panelMain, wxID_ANY, _("Processing"));
     textProcessing->Wrap(-1);
     m_sizerLeds->Add(textProcessing, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
@@ -98,42 +101,43 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
     m_ledSaving->SetState(awxLED_OFF);
     m_sizerLeds->Add(m_ledSaving, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    wxStaticText* textSaving = new wxStaticText(m_panelMain, wxID_ANY, _("Saving results"), wxDefaultPosition,
-                                                wxDefaultSize, 0);
+    auto textSaving = new wxStaticText(m_panelMain, wxID_ANY, _("Saving results"));
     textSaving->Wrap(-1);
     m_sizerLeds->Add(textSaving, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
     // Buttons
-    m_bpButtonNow->SetBitmapLabel(*_img_update);
-    m_bpButtonAdd->SetBitmapLabel(*_img_plus);
+    m_bpButtonNow->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::UPDATE));
+    m_bpButtonAdd->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::PLUS));
 
     // Create panels manager
     m_panelsManager = new asPanelsManagerForecasts();
 
     // Connect events
-    this->Connect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::LaunchForecasting));
-    this->Connect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::CancelForecasting));
-    this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameForecaster::OpenFramePredictandDB));
-    this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameForecaster::OpenFramePreferences));
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::LaunchForecasting, this, asID_RUN);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::CancelForecasting, this, asID_CANCEL);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::OpenFramePredictandDB, this, asID_DB_CREATE);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::OpenFramePreferences, this, asID_PREFERENCES);
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &asFrameForecaster::OnFileHistory, this, wxID_FILE1, wxID_FILE9);
 
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));
 #endif
+
+    SetRecentFiles();
 }
 
 asFrameForecaster::~asFrameForecaster() {
     wxDELETE(m_panelsManager);
 
+    SaveRecentFiles();
+
     // Disconnect events
-    this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::LaunchForecasting));
-    this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecaster::CancelForecasting));
-    this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameForecaster::OpenFramePredictandDB));
-    this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameForecaster::OpenFramePreferences));
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::LaunchForecasting, this, asID_RUN);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::CancelForecasting, this, asID_CANCEL);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::OpenFramePredictandDB, this, asID_DB_CREATE);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameForecaster::OpenFramePreferences, this, asID_PREFERENCES);
+    Unbind(wxEVT_COMMAND_MENU_SELECTED, &asFrameForecaster::OnFileHistory, this, wxID_FILE1, wxID_FILE9);
 }
 
 void asFrameForecaster::OnInit() {
@@ -161,9 +165,7 @@ void asFrameForecaster::OnInit() {
             wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
         }
 
-        if (!OpenBatchForecasts()) {
-            wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
-        }
+        OpenBatchForecasts();
     } else {
         asWizardBatchForecasts wizard(this, &m_batchForecasts);
         wizard.RunWizard(wizard.GetFirstPage());
@@ -194,9 +196,22 @@ void asFrameForecaster::OnOpenBatchForecasts(wxCommandEvent& event) {
         wxLogError(_("Failed to open the batch file ") + batchFilePath);
     }
 
-    if (!OpenBatchForecasts()) {
+    OpenBatchForecasts();
+
+    m_fileHistory->AddFileToHistory(batchFilePath);
+}
+
+void asFrameForecaster::OnFileHistory(wxCommandEvent& event) {
+    int id = event.GetId() - wxID_FILE1;
+    wxString batchFilePath = m_fileHistory->GetHistoryFile(id);
+
+    wxBusyCursor wait;
+
+    if (!m_batchForecasts.Load(batchFilePath)) {
         wxLogError(_("Failed to open the batch file ") + batchFilePath);
     }
+
+    OpenBatchForecasts();
 }
 
 void asFrameForecaster::OnSaveBatchForecasts(wxCommandEvent& event) {
@@ -270,7 +285,7 @@ bool asFrameForecaster::OpenBatchForecasts() {
 
     // Create the panels
     for (int i = 0; i < m_batchForecasts.GetForecastsNb(); i++) {
-        auto panel = new asPanelForecast(m_scrolledWindowForecasts);
+        auto panel = new asPanelForecast(m_scrolledWindowForecasts, &m_batchForecasts);
         panel->SetParametersFileName(m_batchForecasts.GetForecastFileName(i));
         panel->Layout();
         m_sizerForecasts->Add(panel, 0, wxALL | wxEXPAND, 5);
@@ -479,6 +494,8 @@ void asFrameForecaster::LaunchForecasting(wxCommandEvent& event) {
     wxLogVerbose(_("Forecast processed for the date %s"), realForecastDateStr);
 
     wxDELETE(m_forecaster);
+
+    InitOverallProgress();
 }
 
 void asFrameForecaster::CancelForecasting(wxCommandEvent& event) {
@@ -489,7 +506,7 @@ void asFrameForecaster::CancelForecasting(wxCommandEvent& event) {
 
 void asFrameForecaster::AddForecast(wxCommandEvent& event) {
     Freeze();
-    auto panel = new asPanelForecast(m_scrolledWindowForecasts);
+    auto panel = new asPanelForecast(m_scrolledWindowForecasts, &m_batchForecasts);
     panel->Layout();
     m_sizerForecasts->Add(panel, 0, wxALL | wxEXPAND, 5);
     Layout();  // For the scrollbar
@@ -536,6 +553,46 @@ void asFrameForecaster::SetForecastDate(double date) {
     Time forecastDateStruct = asTime::GetTimeStruct(date);
     wxString hourStr = asStrF("%d", forecastDateStruct.hour);
     m_textCtrlForecastHour->SetValue(hourStr);
+}
+
+void asFrameForecaster::UpdateRecentFiles() {
+    wxASSERT(m_fileHistory);
+
+    for (int i = 0; i < m_fileHistory->GetCount(); ++i) {
+        wxString filePath = m_fileHistory->GetHistoryFile(i);
+        if (!wxFileExists(filePath)) {
+            m_fileHistory->RemoveFileFromHistory(i);
+            --i;
+        }
+    }
+}
+
+void asFrameForecaster::SetRecentFiles() {
+    wxConfigBase* config = wxFileConfig::Get();
+    config->SetPath("/Recent");
+
+    wxMenuItem* menuItem = m_menuBar->FindItem(asID_MENU_RECENT);
+    if (menuItem->IsSubMenu()) {
+        wxMenu* menu = menuItem->GetSubMenu();
+        if (menu) {
+            m_fileHistory->Load(*config);
+            UpdateRecentFiles();
+            m_fileHistory->UseMenu(menu);
+            m_fileHistory->AddFilesToMenu(menu);
+        }
+    }
+
+    config->SetPath("..");
+}
+
+void asFrameForecaster::SaveRecentFiles() {
+    wxASSERT(m_fileHistory);
+    wxConfigBase* config = wxFileConfig::Get();
+    config->SetPath("/Recent");
+
+    m_fileHistory->Save(*config);
+
+    config->SetPath("..");
 }
 
 void asFrameForecaster::InitOverallProgress() {

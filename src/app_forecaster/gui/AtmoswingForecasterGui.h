@@ -42,6 +42,7 @@
 #include <wx/wizard.h>
 #include <wx/dynarray.h>
 WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
+#include <wx/stc/stc.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -112,15 +113,20 @@ class asFrameForecasterVirtual : public wxFrame
 class asPanelForecastVirtual : public wxPanel
 {
 	private:
-		wxBoxSizer* m_sizerFilename;
 
 	protected:
 		wxBoxSizer* m_sizerPanel;
 		wxBoxSizer* m_sizerHeader;
-		wxTextCtrl* m_textCtrlParametersFileName;
+		wxStaticText* m_textParametersFileName;
+		wxBitmapButton* m_bpButtonWarning;
+		wxBitmapButton* m_bpButtonEdit;
+		wxBitmapButton* m_bpButtonInfo;
+		wxBitmapButton* m_bpButtonDetails;
 		wxBitmapButton* m_bpButtonClose;
 
 		// Virtual event handlers, override them in your derived class
+		virtual void OnEditForecastFile( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDetailsForecastFile( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ClosePanel( wxCommandEvent& event ) { event.Skip(); }
 
 
@@ -248,6 +254,24 @@ class asWizardBatchForecastsVirtual : public wxWizard
 		WizardPages m_pages;
 
 		~asWizardBatchForecastsVirtual();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class asFrameStyledTextCtrlVirtual
+///////////////////////////////////////////////////////////////////////////////
+class asFrameStyledTextCtrlVirtual : public wxFrame
+{
+	private:
+
+	protected:
+		wxStyledTextCtrl* m_scintilla;
+
+	public:
+
+		asFrameStyledTextCtrlVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 700,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+
+		~asFrameStyledTextCtrlVirtual();
 
 };
 

@@ -99,6 +99,16 @@ wxString asFileText::GetNextLine() {
     return lineContent;
 }
 
+wxString asFileText::GetContent() {
+    wxString content;
+
+    while (!EndOfFile()) {
+        content.Append(GetNextLine() + "\n");
+    }
+
+    return content;
+}
+
 int asFileText::GetInt() {
     wxASSERT(m_opened);
 
