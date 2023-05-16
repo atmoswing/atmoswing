@@ -1,6 +1,24 @@
 # Changelog AtmoSwing
 
 
+## v3.0.6 - 16 May 2023
+
+### Added
+
+*   New management of the parameters listing in the Forecaster.
+*   Adding access to the parameter information in the Forecaster.
+*   Adding menu entries for recent workspaces and batch files.
+*   Adding buttons to reset the plots zoom extent in the Viewer.
+
+### Fixed
+
+*   Fixing proxy parsing.
+
+### Changed
+
+*   Replacing icons by SVG versions.
+
+
 ## v3.0.5 - 12 May 2023
 
 ### Fixed
