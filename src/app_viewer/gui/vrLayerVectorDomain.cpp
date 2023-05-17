@@ -30,10 +30,16 @@
 #include "vrlabel.h"
 #include "vrrender.h"
 
+/**
+ * The constructor for the vroomgis layer class containing the spatial window.
+ */
 vrLayerVectorDomain::vrLayerVectorDomain() {
     wxASSERT(!m_dataset);
     wxASSERT(!m_layer);
     m_driverType = vrDRIVER_VECTOR_MEMORY;
 }
 
+/**
+ * The destructor for the vroomgis layer class containing the spatial window.
+*/
 vrLayerVectorDomain::~vrLayerVectorDomain() = default;

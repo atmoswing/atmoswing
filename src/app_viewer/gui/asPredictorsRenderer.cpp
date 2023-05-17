@@ -38,6 +38,16 @@
 #include "vrlayerraster.h"
 #include "vrrender.h"
 
+/**
+ * The constructor of the renderer for the predictors (asPredictorsRenderer).
+ * 
+ * @param parent The parent window.
+ * @param layerManager The layer manager.
+ * @param predictorsManagerTarget The predictors manager for the target data.
+ * @param predictorsManagerAnalog The predictors manager for the analog data.
+ * @param viewerLayerManagerTarget The viewer layer manager for the target data.
+ * @param viewerLayerManagerAnalog The viewer layer manager for the analog data.
+*/
 asPredictorsRenderer::asPredictorsRenderer(wxWindow* parent, vrLayerManager* layerManager,
                                            asPredictorsManager* predictorsManagerTarget,
                                            asPredictorsManager* predictorsManagerAnalog,
@@ -50,14 +60,29 @@ asPredictorsRenderer::asPredictorsRenderer(wxWindow* parent, vrLayerManager* lay
       m_viewerLayerManagerTarget(viewerLayerManagerTarget),
       m_viewerLayerManagerAnalog(viewerLayerManagerAnalog) {}
 
+/**
+ * The destructor of the renderer for the predictors (asPredictorsRenderer).
+*/
 asPredictorsRenderer::~asPredictorsRenderer() = default;
 
+/**
+ * Associate the colorbars to the renderer.
+ * 
+ * @param colorbarTarget The colorbar for the target data.
+ * @param colorbarAnalog The colorbar for the analog data.
+*/
 void asPredictorsRenderer::LinkToColorbars(asPanelPredictorsColorbar* colorbarTarget,
                                            asPanelPredictorsColorbar* colorbarAnalog) {
     m_colorbarTarget = colorbarTarget;
     m_colorbarAnalog = colorbarAnalog;
 }
 
+/**
+ * Redraw the predictor maps.
+ * 
+ * @param domain The spatial window.
+ * @param location The target location.
+*/
 void asPredictorsRenderer::Redraw(vf& domain, Coo& location) {
     bool targetDataLoaded = false;
     bool analogDataLoaded = false;
@@ -133,6 +158,15 @@ void asPredictorsRenderer::Redraw(vf& domain, Coo& location) {
     }
 }
 
+/**
+ * Redraw the predictor raster.
+ * 
+ * @param name The name of the layer.
+ * @param viewerLayerManager The layer manager.
+ * @param predictorsManager The predictors manager.
+ * @param minVal The minimum value of the data.
+ * @param maxVal The maximum value of the data.
+*/
 vrLayerRasterPredictor* asPredictorsRenderer::RedrawRasterPredictor(const wxString& name,
                                                                     vrViewerLayerManager* viewerLayerManager,
                                                                     asPredictorsManager* predictorsManager,
@@ -163,6 +197,14 @@ vrLayerRasterPredictor* asPredictorsRenderer::RedrawRasterPredictor(const wxStri
     return layerRaster;
 }
 
+/**
+ * Redraw the contour lines.
+ * 
+ * @param name The name of the layer.
+ * @param viewerLayerManager The layer manager.
+ * @param layerRaster The raster layer.
+ * @param step The step of the contour lines.
+*/
 void asPredictorsRenderer::RedrawContourLines(const wxString& name, vrViewerLayerManager* viewerLayerManager,
                                               vrLayerRasterPredictor* layerRaster, double step) {
     // Create a memory layer
@@ -197,6 +239,13 @@ void asPredictorsRenderer::RedrawContourLines(const wxString& name, vrViewerLaye
     viewerLayerManager->Add(-1, layerVector, render, nullptr, true);
 }
 
+/**
+ * Redraw the spatial windows.
+ * 
+ * @param name The name of the layer.
+ * @param viewerLayerManager The layer manager.
+ * @param domain The spatial window extent.
+*/
 void asPredictorsRenderer::RedrawSpatialWindow(const wxString& name, vrViewerLayerManager* viewerLayerManager,
                                                vf &domain) {
     // Create a memory layer
@@ -237,6 +286,13 @@ void asPredictorsRenderer::RedrawSpatialWindow(const wxString& name, vrViewerLay
     viewerLayerManager->Add(-1, layerVector, render, nullptr, true);
 }
 
+/**
+ * Redraw the target location.
+ * 
+ * @param name The name of the layer.
+ * @param viewerLayerManager The layer manager.
+ * @param location The target location.
+*/
 void asPredictorsRenderer::RedrawLocation(const wxString& name, vrViewerLayerManager* viewerLayerManager,
                                           Coo& location) {
     if (location.x == 0 && location.y == 0) {
@@ -269,6 +325,12 @@ void asPredictorsRenderer::RedrawLocation(const wxString& name, vrViewerLayerMan
     viewerLayerManager->Add(-1, layerVector, render, nullptr, true);
 }
 
+/**
+ * Close the layer if present.
+ * 
+ * @param viewerLayerManager The layer manager.
+ * @param memoryVector The memory vector name.
+*/
 void asPredictorsRenderer::CloseLayerIfPresent(vrViewerLayerManager* viewerLayerManager,
                                                const wxFileName& memoryVector) {
     for (int i = 0; i < viewerLayerManager->GetCount(); i++) {
@@ -283,6 +345,13 @@ void asPredictorsRenderer::CloseLayerIfPresent(vrViewerLayerManager* viewerLayer
     }
 }
 
+/**
+ * Compute the step for the contour lines.
+ * 
+ * @param minVal The minimum value.
+ * @param maxVal The maximum value.
+ * @return The step for the contour lines.
+*/
 double asPredictorsRenderer::ComputeStep(double minVal, double maxVal) const {
     if (maxVal == minVal) {
         return 100;
