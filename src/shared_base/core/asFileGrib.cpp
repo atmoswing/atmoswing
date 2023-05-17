@@ -31,12 +31,6 @@
 
 #include "eccodes.h"
 
-/**
- * The constructor for the Grib file class.
- *
- * @param fileName The file name.
- * @param fileMode The file opening mode .
- */
 asFileGrib::asFileGrib(const wxString& fileName, const FileMode& fileMode)
     : asFile(fileName, fileMode),
       m_filtPtr(nullptr),
@@ -55,26 +49,15 @@ asFileGrib::asFileGrib(const wxString& fileName, const FileMode& fileMode)
     }
 }
 
-/**
- * The destructor for the Grib file class.
- */
 asFileGrib::~asFileGrib() {
     Close();
 }
 
-/**
- * Set the ecCodes context.
- */
 void asFileGrib::SetContext() {
     grib_context* context = grib_context_get_default();
     codes_context_set_definitions_path(context, asFileGrib::GetDefinitionsPath());
 }
 
-/**
- * Get the ecCodes definitions path.
- *
- * @return The ecCodes definitions path.
- */
 wxString asFileGrib::GetDefinitionsPath() {
     wxString definitionsPathEnv;
     wxGetEnv("ECCODES_DEFINITION_PATH", &definitionsPathEnv);
@@ -93,11 +76,6 @@ wxString asFileGrib::GetDefinitionsPath() {
     return definitionsPath;
 }
 
-/**
- * Find and open the file.
- *
- * @return True if successful.
- */
 bool asFileGrib::Open() {
     if (!Find()) return false;
     wxLogVerbose(_("Grib file found."));

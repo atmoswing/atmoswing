@@ -41,10 +41,20 @@ class asPanelForecast : public asPanelForecastVirtual {
   public:
     explicit asPanelForecast(wxWindow* parent, asBatchForecasts* batch);
 
+    /**
+     * Layout the panel.
+     *
+     * @return True if done.
+     */
     bool Layout() override;
 
     void CheckFileExists();
 
+    /**
+     * Set the content of the tooltip. It provides the description of the forecast.
+     *
+     * @param filePath The path to the forecast file.
+     */
     void SetTooTipContent(const wxString& filePath);
 
     awxLed* GetLed() const {
@@ -69,10 +79,25 @@ class asPanelForecast : public asPanelForecastVirtual {
     awxLed* m_led;
     asBatchForecasts* m_batchForecasts;
 
+    /**
+     * Close the panel.
+     *
+     * @param event The command event.
+     */
     void ClosePanel(wxCommandEvent& event) override;
 
+    /**
+     * Edit the forecast file path.
+     *
+     * @param event The command event.
+     */
     void OnEditForecastFile(wxCommandEvent& event) override;
 
+    /**
+     * Show the details of the forecast on a styled text control.
+     *
+     * @param event The command event.
+     */
     void OnDetailsForecastFile(wxCommandEvent& event) override;
 
   private:

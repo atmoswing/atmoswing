@@ -37,12 +37,33 @@
 
 class vrLayerRasterPredictor : public vrLayerRasterGDAL {
   public:
+    /**
+     * The constructor for the vroomgis layer class containing raster predictor data.
+     *
+     * @param predictorsManager The predictors manager.
+     * @param minVal The minimum value.
+     * @param maxVal The maximum value.
+     */
     vrLayerRasterPredictor(asPredictorsManager* predictorsManager, double minVal, double maxVal);
 
+    /**
+     * The destructor for the vroomgis layer class containing raster predictor data.
+     */
     ~vrLayerRasterPredictor() override;
 
+    /**
+     * Creates the layer in memory.
+     *
+     * @param name The filename.
+     * @return True if successful.
+     */
     bool CreateInMemory(const wxFileName& name);
 
+    /**
+     * Gets the layer name to display.
+     *
+     * @return The layer name.
+     */
     wxFileName GetDisplayName() override;
 
     asPredictor::Parameter GetParameter() {
@@ -50,6 +71,15 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
     }
 
   protected:
+    /**
+     * Transforms the raster data into a bitmap.
+     *
+     * @param imgData The image data pointer.
+     * @param outImgPxSize The output image size.
+     * @param readImgPxInfo The bounding box of the data to read.
+     * @param render The render.
+     * @return True if successful.
+     */
     virtual bool _GetRasterData(unsigned char** imgData, const wxSize& outImgPxSize, const wxRect& readImgPxInfo,
                                 const vrRender* render);
 
@@ -59,6 +89,11 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
     double m_minVal;
     double m_maxVal;
 
+    /**
+     * Closes the layer and the dataset.
+     *
+     * @return True if successful.
+     */
     bool Close();
 };
 

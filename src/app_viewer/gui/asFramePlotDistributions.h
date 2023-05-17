@@ -47,8 +47,18 @@ class asFramePlotDistributions : public asFramePlotDistributionsVirutal {
 
     bool PlotPredictands();
 
+    /**
+     * Reset the extent of the plot to the default value.
+     *
+     * @param event The command event.
+     */
     void ResetExtent(wxCommandEvent& event) override;
 
+    /**
+     * Plot the analogy criteria.
+     *
+     * @return True if plotted successfully.
+     */
     bool PlotCriteria();
 
   protected:

@@ -36,14 +36,36 @@
 
 class asFileGrib : public asFile {
   public:
+    /**
+     * The constructor for the Grib file class.
+     *
+     * @param fileName The file name.
+     * @param fileMode The file opening mode .
+     */
     asFileGrib(const wxString& fileName, const FileMode& fileMode);
 
+    /**
+     * The destructor for the Grib file class.
+     */
     ~asFileGrib() override;
 
+    /**
+     * Set the ecCodes context.
+     */
     static void SetContext();
 
+    /**
+     * Get the ecCodes definitions path.
+     *
+     * @return The ecCodes definitions path.
+     */
     static wxString GetDefinitionsPath();
 
+    /**
+     * Find and open the file.
+     *
+     * @return True if successful.
+     */
     bool Open() override;
 
     bool Close() override;

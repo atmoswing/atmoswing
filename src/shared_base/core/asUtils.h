@@ -43,18 +43,36 @@ bool asRemoveDir(const wxString& path);
 
 void asInitRandom();
 
-/** Generate a random number
- * \link http://members.cox.net/srice1/random/crandom.html
+/**
+ * Generate a random number.
+ *
+ * @param min The minimum value.
+ * @param max The maximum value.
+ * @param step The step between each value.
+ * @return A random number.
+ * @note From http://members.cox.net/srice1/random/crandom.html
  */
 int asRandom(int min, int max, int step = 1);
 
-/** Generate a random number
- * \link http://members.cox.net/srice1/random/crandom.html
+/**
+ * Generate a random number.
+ *
+ * @param min The minimum value.
+ * @param max The maximum value.
+ * @param step The step between each value.
+ * @return A random number.
+ * @note From http://members.cox.net/srice1/random/crandom.html
  */
 float asRandom(float min, float max, float step = 0);
 
-/** Generate a random number
- * \link http://members.cox.net/srice1/random/crandom.html
+/**
+ * Generate a random number.
+ *
+ * @param min The minimum value.
+ * @param max The maximum value.
+ * @param step The step between each value.
+ * @return A random number.
+ * @note From http://members.cox.net/srice1/random/crandom.html
  */
 double asRandom(double min, double max, double step = 0);
 
@@ -78,18 +96,36 @@ float asMean(const float* pArrStart, const float* pArrEnd);
 
 double asMean(const double* pArrStart, const double* pArrEnd);
 
-/** Standard Deviation of an array
- * \link http://easycalculation.com/statistics/learn-standard-deviation.php
+/**
+ * Standard deviation of the numbers contained in an array
+ *
+ * @param pArrStart A pointer to the array start.
+ * @param pArrEnd A pointer to the array end.
+ * @param sample The sample method (asSAMPLE or asPOPULATION).
+ * @return The standard deviation.
+ * @note From http://easycalculation.com/statistics/learn-standard-deviation.php
  */
 float asStDev(const int* pArrStart, const int* pArrEnd, int sample = asSAMPLE);
 
-/** Standard Deviation of an array
- * \link http://easycalculation.com/statistics/learn-standard-deviation.php
+/**
+ * Standard deviation of the numbers contained in an array
+ *
+ * @param pArrStart A pointer to the array start.
+ * @param pArrEnd A pointer to the array end.
+ * @param sample The sample method (asSAMPLE or asPOPULATION).
+ * @return The standard deviation.
+ * @note From http://easycalculation.com/statistics/learn-standard-deviation.php
  */
 float asStDev(const float* pArrStart, const float* pArrEnd, int sample = asSAMPLE);
 
-/** Standard Deviation of an array
- * \link http://easycalculation.com/statistics/learn-standard-deviation.php
+/**
+ * Standard deviation of the numbers contained in an array
+ *
+ * @param pArrStart A pointer to the array start.
+ * @param pArrEnd A pointer to the array end.
+ * @param sample The sample method (asSAMPLE or asPOPULATION).
+ * @return The standard deviation.
+ * @note From http://easycalculation.com/statistics/learn-standard-deviation.php
  */
 double asStDev(const double* pArrStart, const double* pArrEnd, int sample = asSAMPLE);
 

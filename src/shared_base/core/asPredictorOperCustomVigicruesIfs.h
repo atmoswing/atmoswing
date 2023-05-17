@@ -36,10 +36,25 @@ class asArea;
 
 class asPredictorOperCustomVigicruesIfs : public asPredictorOperEcmwfIfs {
   public:
+    /**
+     * The constructor for the operational predictor class from IFS grib files with the Vigicrues naming convention.
+     *
+     * @param dataId Identifier of the data variable (meteorological parameter).
+     */
     explicit asPredictorOperCustomVigicruesIfs(const wxString& dataId);
 
+    /**
+     * Destructor.
+     */
     ~asPredictorOperCustomVigicruesIfs() override = default;
 
+    /**
+     * Get the file name from the data ID and the date.
+     *
+     * @param date Date of the model run for the file.
+     * @param level Level of the data.
+     * @return The file name.
+     */
     wxString GetFileName(const double date, const int leadTime) override;
 
   protected:

@@ -36,12 +36,31 @@
 
 class vrRenderRasterPredictor : public vrRenderRaster {
   public:
+    /**
+     * The constructor for the vroomgis layer class containing the raster.
+     */
     vrRenderRasterPredictor();
 
+    /**
+     * The destructor for the vroomgis layer class containing the raster.
+     */
     ~vrRenderRasterPredictor() override;
 
+    /**
+     * Get the color for the given pixel value from the color table.
+     *
+     * @param pxVal The pixel value.
+     * @param minVal The minimum value of the color table.
+     * @param range The range of the color table.
+     * @return The color.
+     */
     wxImage::RGBValue GetColorFromTable(double pxVal, double minVal, double range);
 
+    /**
+     * Initialize the layer.
+     *
+     * @param parameter The meteorological parameter.
+     */
     void Init(asPredictor::Parameter parameter);
 
   protected:
@@ -50,16 +69,42 @@ class vrRenderRasterPredictor : public vrRenderRaster {
     a2f m_colorTable;
     asPredictor::Parameter m_parameter;
 
+    /**
+     * Parse the color table file.
+     *
+     * @return True if the color table was parsed successfully.
+     */
     bool ParseColorTable();
 
+    /**
+     * Parse the color table file in ACT format.
+     *
+     * @return True if the color table was parsed successfully.
+     */
     bool ParseACTfile();
 
+    /**
+     * Parse the color table file in RGB format.
+     *
+     * @return True if the color table was parsed successfully.
+     */
     bool ParseRGBfile();
 
+    /**
+     * Resize the color table class attribute.
+     *
+     * @param size The new size of the color table.
+     */
     void ResizeColorTable(int size);
 
+    /**
+     * Scale the color table values to the range 0-255.
+     */
     void ScaleColors();
 
+    /**
+     * Select the color table according to the meteorological parameter.
+     */
     void SelectColorTable();
 };
 

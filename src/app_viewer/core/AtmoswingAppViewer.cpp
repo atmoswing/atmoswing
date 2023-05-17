@@ -178,9 +178,6 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser) {
     return true;
 }
 
-/**
- * Initialize the language support.
- */
 void AtmoswingAppViewer::InitLanguageSupport() {
     wxLocale* locale;
 

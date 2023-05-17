@@ -353,9 +353,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
     return true;
 }
 
-/**
- * Initialize the language support.
- */
 void AtmoswingAppForecaster::InitLanguageSupport() {
     wxLocale* locale;
 
