@@ -456,6 +456,11 @@ bool asFramePlotTimeSeries::Plot() {
     return true;
 }
 
+/**
+ * Reset the extent of the plot to the default value.
+ *
+ * @param event The command event.
+ */
 void asFramePlotTimeSeries::ResetExtent(wxCommandEvent& event) {
     // Set the view rectangle
     double dt = m_leadTimes[1] - m_leadTimes[0];
