@@ -370,11 +370,6 @@ bool asFramePlotDistributions::PlotPredictands() {
     return true;
 }
 
-/**
- * Reset the extent of the plot to the default value.
- *
- * @param event The command event.
- */
 void asFramePlotDistributions::ResetExtent(wxCommandEvent& event) {
     // Set the view rectangle (wxRect2DDouble(x, y, w, h))
     wxRect2DDouble currentView(0, 0, m_xmaxPredictands * 1.1, 1);
@@ -384,11 +379,6 @@ void asFramePlotDistributions::ResetExtent(wxCommandEvent& event) {
     m_panelPlotPredictands->GetPlotCtrl()->Redraw(wxPLOTCTRL_REDRAW_PLOT);
 }
 
-/**
- * Plot the analogy criteria.
- *
- * @return True if plotted successfully.
- */
 bool asFramePlotDistributions::PlotCriteria() {
     wxBusyCursor wait;
 

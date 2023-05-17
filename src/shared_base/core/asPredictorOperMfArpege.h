@@ -35,15 +35,41 @@ class asArea;
 
 class asPredictorOperMfArpege : public asPredictorOper {
   public:
+    /**
+     * The constructor for the operational ARPEGE predictor from Meteo France.
+     *
+     * @param dataId Identifier of the data variable (meteorological parameter).
+     */
     explicit asPredictorOperMfArpege(const wxString& dataId);
 
+    /**
+     * Destructor.
+     */
     ~asPredictorOperMfArpege() override = default;
 
+    /**
+     * Initialize the parameters of the data source.
+     *
+     * @return True if the initialisation went well.
+     */
     bool Init() override;
 
+    /**
+     * Get the file name from the forecast date and the lead time.
+     *
+     * @param date The forecast date.
+     * @param leadTime The lead time.
+     * @return The file name.
+     */
     wxString GetFileName(const double date, const int leadTime) override;
 
   protected:
+    /**
+     * Convert the tima array from hours to MJD.
+     *
+     * @param time The time array in hours (as in the files).
+     * @param refValue The reference value to add to the time array (as in the files).
+     */
     void ConvertToMjd(a1d& time, double refValue = NAN) const override;
 
   private:

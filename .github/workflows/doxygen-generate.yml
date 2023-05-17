@@ -20,7 +20,7 @@ jobs:
           doxyfile-path: ./Doxyfile
           working-directory: ./docs
           enable-latex: true
-          additional-packages: font-fira-code
+          additional-packages: texmf-dist-fontsextra
 
       # Deploy the HTML documentation to GitHub Pages
       - name: GH Pages Deployment

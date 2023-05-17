@@ -38,24 +38,80 @@ class vrLayerRasterPredictor;
 
 class asPredictorsRenderer {
   public:
+    /**
+     * The constructor of the renderer for the predictors (asPredictorsRenderer).
+     *
+     * @param parent The parent window.
+     * @param layerManager The layer manager.
+     * @param predictorsManagerTarget The predictors manager for the target data.
+     * @param predictorsManagerAnalog The predictors manager for the analog data.
+     * @param viewerLayerManagerTarget The viewer layer manager for the target data.
+     * @param viewerLayerManagerAnalog The viewer layer manager for the analog data.
+     */
     asPredictorsRenderer(wxWindow* parent, vrLayerManager* layerManager, asPredictorsManager* predictorsManagerTarget,
                          asPredictorsManager* predictorsManagerAnalog, vrViewerLayerManager* viewerLayerManagerTarget,
                          vrViewerLayerManager* viewerLayerManagerAnalog);
 
+    /**
+     * The destructor of the renderer for the predictors (asPredictorsRenderer).
+     */
     virtual ~asPredictorsRenderer();
 
+    /**
+     * Associate the colorbars to the renderer.
+     *
+     * @param colorbarTarget The colorbar for the target data.
+     * @param colorbarAnalog The colorbar for the analog data.
+     */
     void LinkToColorbars(asPanelPredictorsColorbar* colorbarTarget, asPanelPredictorsColorbar* colorbarAnalog);
 
+    /**
+     * Redraw the predictor maps.
+     *
+     * @param domain The spatial window.
+     * @param location The target location.
+     */
     void Redraw(vf& domain, Coo& location);
 
+    /**
+     * Redraw the predictor raster.
+     *
+     * @param name The name of the layer.
+     * @param viewerLayerManager The layer manager.
+     * @param predictorsManager The predictors manager.
+     * @param minVal The minimum value of the data.
+     * @param maxVal The maximum value of the data.
+     */
     vrLayerRasterPredictor* RedrawRasterPredictor(const wxString& name, vrViewerLayerManager* viewerLayerManager,
                                                   asPredictorsManager* predictorsManager, double minVal, double maxVal);
 
+    /**
+     * Redraw the contour lines.
+     *
+     * @param name The name of the layer.
+     * @param viewerLayerManager The layer manager.
+     * @param layerRaster The raster layer.
+     * @param step The step of the contour lines.
+     */
     void RedrawContourLines(const wxString& name, vrViewerLayerManager* viewerLayerManager,
                             vrLayerRasterPredictor* layerRaster, double step);
 
+    /**
+     * Redraw the spatial windows.
+     *
+     * @param name The name of the layer.
+     * @param viewerLayerManager The layer manager.
+     * @param domain The spatial window extent.
+     */
     void RedrawSpatialWindow(const wxString& name, vrViewerLayerManager* viewerLayerManager, vf& domain);
 
+    /**
+     * Redraw the target location.
+     *
+     * @param name The name of the layer.
+     * @param viewerLayerManager The layer manager.
+     * @param location The target location.
+     */
     void RedrawLocation(const wxString& name, vrViewerLayerManager* viewerLayerManager, Coo& location);
 
   protected:
@@ -69,8 +125,21 @@ class asPredictorsRenderer {
     asPanelPredictorsColorbar* m_colorbarTarget;
     asPanelPredictorsColorbar* m_colorbarAnalog;
 
+    /**
+     * Close the layer if present.
+     *
+     * @param viewerLayerManager The layer manager.
+     * @param memoryVector The memory vector name.
+     */
     void CloseLayerIfPresent(vrViewerLayerManager* viewerLayerManager, const wxFileName& memoryVector);
 
+    /**
+     * Compute the step for the contour lines.
+     *
+     * @param minVal The minimum value.
+     * @param maxVal The maximum value.
+     * @return The step for the contour lines.
+     */
     double ComputeStep(double minVal, double maxVal) const;
 };
 

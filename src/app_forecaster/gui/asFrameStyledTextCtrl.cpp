@@ -29,33 +29,14 @@
 
 #include "wx/settings.h"
 
-/**
- * Constructor of the styled text control frame.
- *
- * @param parent The parent window.
- * @param id An identifier for the control. wxID_ANY is taken as a default value.
- * @param title The title of the frame.
- * @param pos The position of the frame.
- */
 asFrameStyledTextCtrl::asFrameStyledTextCtrl(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos)
     : asFrameStyledTextCtrlVirtual(parent, id, title, pos) {}
 
-/**
- * Set the content of the styled text control.
- *
- * @param content The string to set.
- */
 void asFrameStyledTextCtrl::SetContent(const wxString& content) {
     m_scintilla->SetText(content);
     SetLexerXml();
 }
 
-/**
- * Set the lexer to XML fo styling.
- *
- * @note This is a copy of the function from the wxWidgets sample
- *       (https://github.com/wxWidgets/wxWidgets/blob/master/samples/stc/stctest.cpp).
- */
 void asFrameStyledTextCtrl::SetLexerXml() {
     const wxColour colTag = *wxBLUE;
     const wxColour colAttr = *wxRED;

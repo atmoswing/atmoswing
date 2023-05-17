@@ -65,6 +65,11 @@ class asFrameForecaster : public asFrameForecasterVirtual {
 
     void OnOpenBatchForecasts(wxCommandEvent& event) override;
 
+    /**
+     * Open the batch file selected from the recent entries.
+     *
+     * @param event The menu event.
+     */
     void OnFileHistory(wxCommandEvent& event);
 
     void OnSaveBatchForecasts(wxCommandEvent& event) override;
@@ -111,10 +116,19 @@ class asFrameForecaster : public asFrameForecasterVirtual {
 
     void SetPresentDate();
 
+    /**
+     * Update the recent files list and remove the ones that do not exist anymore.
+     */
     void UpdateRecentFiles();
 
+    /**
+     * Set the recent files list in the menu.
+     */
     void SetRecentFiles();
 
+    /**
+     * Save the recent files list in the config file.
+     */
     void SaveRecentFiles();
 
     void InitOverallProgress();

@@ -83,6 +83,11 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
 
     void InitPlotCtrl();
 
+    /**
+     * Reset the extent of the plot to the default value.
+     *
+     * @param event The command event.
+     */
     void ResetExtent(wxCommandEvent& event) override;
 
     void PlotAllReturnPeriods();

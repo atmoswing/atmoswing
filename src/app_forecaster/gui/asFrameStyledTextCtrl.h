@@ -32,13 +32,35 @@
 
 class asFrameStyledTextCtrl : public asFrameStyledTextCtrlVirtual {
   public:
+    /**
+     * Constructor of the styled text control frame.
+     *
+     * @param parent The parent window.
+     * @param id An identifier for the control. wxID_ANY is taken as a default value.
+     * @param title The title of the frame.
+     * @param pos The position of the frame.
+     */
     asFrameStyledTextCtrl(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString,
                           const wxPoint& pos = wxDefaultPosition);
 
+    /**
+     * Destructor of the styled text control frame.
+     */
     ~asFrameStyledTextCtrl() override = default;
 
+    /**
+     * Set the content of the styled text control.
+     *
+     * @param content The string to set.
+     */
     void SetContent(const wxString& content);
 
+    /**
+     * Set the lexer to XML fo styling.
+     *
+     * @note This is a copy of the function from the wxWidgets sample
+     *       (https://github.com/wxWidgets/wxWidgets/blob/master/samples/stc/stctest.cpp).
+     */
     void SetLexerXml();
 };
 

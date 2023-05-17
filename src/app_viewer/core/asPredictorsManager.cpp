@@ -30,13 +30,6 @@
 #include "asAreaGridFull.h"
 #include "asPredictorOper.h"
 
-/**
- * The constructor of the class handling the predictor data for the Viewer.
- *
- * @param listPredictors The list of predictors from the interface.
- * @param workspace The opened workspace.
- * @param isTargetPredictor A boolean indicating if the predictor is the target.
- */
 asPredictorsManager::asPredictorsManager(wxListBox* listPredictors, asWorkspace* workspace, bool isTargetPredictor)
     : m_workspace(workspace),
       m_listPredictors(listPredictors),
@@ -47,25 +40,12 @@ asPredictorsManager::asPredictorsManager(wxListBox* listPredictors, asWorkspace*
       m_leadTimeNb(5),
       m_needsDataReload(true) {}
 
-/**
- * The destructor of the class handling the predictor data for the Viewer.
- */
 asPredictorsManager::~asPredictorsManager() = default;
 
-/**
- * Get the meteorological parameter in use.
- *
- * @return The meteorological parameter.
- */
 asPredictor::Parameter asPredictorsManager::GetParameter() {
     return m_predictor->GetParameter();
 }
 
-/**
- * Load the data for the selected predictor.
- *
- * @return True if the data was loaded successfully.
- */
 bool asPredictorsManager::LoadData() {
     if (!m_needsDataReload) return true;
 
@@ -138,49 +118,23 @@ bool asPredictorsManager::LoadData() {
     return true;
 }
 
-/**
- * Access to a pointer to the loaded data.
- *
- * @return A pointer to the loaded data.
- */
 float* asPredictorsManager::GetData() {
     return m_data->data();
 }
 
-/**
- * Access to a row of the loaded data array.
- *
- * @param row The row to access.
- * @return A row of the loaded data array.
- */
 float* asPredictorsManager::GetDataRow(int row) {
     wxASSERT(m_data->rows() > row);
     return &(*m_data)(row, 0);
 }
 
-/**
- * Get the minimum value of the loaded data.
- *
- * @return The minimum value of the loaded data.
- */
 float asPredictorsManager::GetDataMin() {
     return m_data->minCoeff();
 }
 
-/**
- * Get the maximum value of the loaded data.
- *
- * @return The maximum value of the loaded data.
- */
 float asPredictorsManager::GetDataMax() {
     return m_data->maxCoeff();
 }
 
-/**
- * Set the desired date for the predictor data.
- *
- * @param date The desired date.
- */
 void asPredictorsManager::SetDate(double date) {
     if (m_date == date) return;
     m_date = date;

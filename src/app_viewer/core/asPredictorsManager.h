@@ -34,33 +34,94 @@
 
 class asPredictorsManager {
   public:
+    /**
+     * The constructor of the class handling the predictor data for the Viewer.
+     *
+     * @param listPredictors The list of predictors from the interface.
+     * @param workspace The opened workspace.
+     * @param isTargetPredictor A boolean indicating if the predictor is the target.
+     */
     explicit asPredictorsManager(wxListBox* listPredictors, asWorkspace* workspace, bool isTargetPredictor = false);
 
+    /**
+     * The destructor of the class handling the predictor data for the Viewer.
+     */
     virtual ~asPredictorsManager();
 
+    /**
+     * Get the meteorological parameter in use.
+     *
+     * @return The meteorological parameter.
+     */
     asPredictor::Parameter GetParameter();
 
+    /**
+     * Load the data for the selected predictor.
+     *
+     * @return True if the data was loaded successfully.
+     */
     bool LoadData();
 
+    /**
+     * Access to a pointer to the loaded data.
+     *
+     * @return A pointer to the loaded data.
+     */
     float* GetData();
 
+    /**
+     * Access to a row of the loaded data array.
+     *
+     * @param row The row to access.
+     * @return A row of the loaded data array.
+     */
     float* GetDataRow(int row);
 
+    /**
+     * Get the minimum value of the loaded data.
+     *
+     * @return The minimum value of the loaded data.
+     */
     float GetDataMin();
 
+    /**
+     * Get the maximum value of the loaded data.
+     *
+     * @return The maximum value of the loaded data.
+     */
     float GetDataMax();
 
+    /**
+     * Set the desired date for the predictor data.
+     *
+     * @param date The desired date.
+     */
     void SetDate(double date);
 
+    /**
+     * Set the desired forecast date for the predictor data.
+     *
+     * @param date The desired forecast date.
+     */
     void SetForecastDate(double date) {
         m_forecastDate = date;
         m_needsDataReload = true;
     }
 
+    /**
+     * Set the desired forecast time step for the predictor data.
+     *
+     * @param forecastTimeStepHours The desired forecast time step.
+     */
     void SetForecastTimeStepHours(double forecastTimeStepHours) {
         m_forecastTimeStepHours = forecastTimeStepHours;
     }
 
+    /**
+     * Set the desired lead time for the predictor data.
+     *
+     * @param leadTimeNb The desired lead time.
+     */
     void SetLeadTimeNb(int leadTimeNb) {
         m_leadTimeNb = leadTimeNb;
     }
