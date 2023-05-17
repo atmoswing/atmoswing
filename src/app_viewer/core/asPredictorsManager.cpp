@@ -67,6 +67,7 @@ bool asPredictorsManager::LoadData() {
         }
         predictor->SetPredictorsRealtimeDirectory(directory);
         predictor->SetRunDateInUse(m_forecastDate);
+        predictor->SetLevel(m_levels[selection]);
 
         double dataHour = 0;
         if (m_forecastTimeStepHours >= 24) {
