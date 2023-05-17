@@ -45,7 +45,7 @@ class asPanelForecast : public asPanelForecastVirtual {
 
     void CheckFileExists();
 
-    void SetTooTipContent(const wxString &filePath);
+    void SetTooTipContent(const wxString& filePath);
 
     awxLed* GetLed() const {
         return m_led;

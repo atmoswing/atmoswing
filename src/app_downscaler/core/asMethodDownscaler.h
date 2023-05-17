@@ -82,9 +82,8 @@ class asMethodDownscaler : public asMethodStandard {
     bool LoadProjectionData(vector<asPredictor*>& predictors, asParametersDownscaling* params, int iStep,
                             double timeStartData, double timeEndData);
 
-    bool ExtractProjectionDataWithoutPreprocessing(vector<asPredictor*>& predictors,
-                                                   asParametersDownscaling* params, int iStep, int iPtor,
-                                                   double timeStartData, double timeEndData);
+    bool ExtractProjectionDataWithoutPreprocessing(vector<asPredictor*>& predictors, asParametersDownscaling* params,
+                                                   int iStep, int iPtor, double timeStartData, double timeEndData);
 
     bool ExtractProjectionDataWithPreprocessing(vector<asPredictor*>& predictors, asParametersDownscaling* params,
                                                 int iStep, int iPtor, double timeStartData, double timeEndData);

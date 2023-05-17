@@ -161,7 +161,8 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometr
     }
 }
 
-void vrLayerVectorFcstRing::CreatePathPatch(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb) {
+void vrLayerVectorFcstRing::CreatePathPatch(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb,
+                                            int segmentNb) {
     const wxDouble radiusOut = 25 * g_ppiScaleDc;
     const wxDouble radiusIn = 10 * g_ppiScaleDc;
 
@@ -192,7 +193,8 @@ void vrLayerVectorFcstRing::CreatePathPatch(wxGraphicsPath& path, const wxPoint&
     path.CloseSubpath();
 }
 
-void vrLayerVectorFcstRing::CreatePathTick(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb) {
+void vrLayerVectorFcstRing::CreatePathTick(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb,
+                                           int segmentNb) {
     const wxDouble radiusOut = 25 * g_ppiScaleDc;
     const wxDouble radiusIn = 10 * g_ppiScaleDc;
 

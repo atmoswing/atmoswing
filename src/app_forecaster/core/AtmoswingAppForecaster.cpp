@@ -396,7 +396,7 @@ void AtmoswingAppForecaster::InitLanguageSupport() {
     std::setlocale(LC_NUMERIC, "C");
 #if USE_GUI
 #ifdef __WXMSW__
-    const wxLanguageInfo *info = wxLocale::GetLanguageInfo(language);
+    const wxLanguageInfo* info = wxLocale::GetLanguageInfo(language);
     wxUint32 lcid = MAKELCID(MAKELANGID(info->WinLang, info->WinSublang), SORT_DEFAULT);
     wxChar buffer[2];
     buffer[0] = '.';

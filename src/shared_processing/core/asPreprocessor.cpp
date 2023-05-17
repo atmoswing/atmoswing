@@ -33,8 +33,7 @@
 #include "asCriteria.h"
 #include "asPredictor.h"
 
-bool asPreprocessor::Preprocess(const vector<asPredictor*>& predictors, const wxString& method,
-                                asPredictor* result) {
+bool asPreprocessor::Preprocess(const vector<asPredictor*>& predictors, const wxString& method, asPredictor* result) {
     wxASSERT(result);
 
     result->SetPreprocessMethod(method);
@@ -974,8 +973,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(const vector<asPredictor*>& p
     return true;
 }
 
-bool asPreprocessor::PreprocessMergeByHalfAndMultiply(const vector<asPredictor*>& predictors,
-                                                      asPredictor* result) {
+bool asPreprocessor::PreprocessMergeByHalfAndMultiply(const vector<asPredictor*>& predictors, asPredictor* result) {
     // More than one predictor
     int inputSize = (int)predictors.size();
     int factorSize = inputSize / 2;
@@ -1019,8 +1017,8 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(const vector<asPredictor*>
                     wxASSERT(predictors[iCurr]->GetTimeSize() == timeSize);
                     wxASSERT(predictors[iCurr]->GetMembersNb() == membersNb);
 
-                    copyData[iHalf][iTime][iMem].block(iPre * originalRowsNb, 0, originalRowsNb, originalColsNb) =
-                        predictors[iCurr]->GetData()[iTime][iMem];
+                    copyData[iHalf][iTime][iMem].block(iPre * originalRowsNb, 0, originalRowsNb,
+                                                       originalColsNb) = predictors[iCurr]->GetData()[iTime][iMem];
                 }
             }
         }

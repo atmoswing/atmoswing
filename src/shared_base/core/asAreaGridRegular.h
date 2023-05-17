@@ -35,13 +35,13 @@
 class asAreaGridRegular : public asAreaGrid {
   public:
     asAreaGridRegular(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR, double xStep,
-                  double yStep, int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
+                      double yStep, int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
     asAreaGridRegular(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
-                  int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
+                      int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
     asAreaGridRegular(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
-                  bool isLatLon = true);
+                      bool isLatLon = true);
 
     ~asAreaGridRegular() override = default;
 

@@ -27,8 +27,8 @@
 
 #include "asFrameAbout.h"
 
-#include "asIncludes.h"
 #include "asBitmaps.h"
+#include "asIncludes.h"
 
 asFrameAbout::asFrameAbout(wxWindow* parent)
     : asFrameAboutVirtual(parent) {

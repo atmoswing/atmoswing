@@ -278,7 +278,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
     file.AddContent("\n");
 
     // All traces
-    if (m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast) == 0){
+    if (m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast) == 0) {
         file.Close();
         return;
     }
@@ -307,10 +307,9 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
         file.AddContent(asStrF("Quantile %.2f:\n", qt));
         file.AddContent(allLeadtimesStr + "\n");
 
-        for (int past = 0; past < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast);
-             past++) {
-            asResultsForecast* pastForecast = m_forecastManager->GetPastForecast(m_selectedMethod,
-                                                                                 m_selectedForecast, past);
+        for (int past = 0; past < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast); past++) {
+            asResultsForecast* pastForecast = m_forecastManager->GetPastForecast(m_selectedMethod, m_selectedForecast,
+                                                                                 past);
             a1f dates = pastForecast->GetTargetDates();
             wxString currentLine = asTime::GetStringTime(pastForecast->GetLeadTimeOrigin(), dateFormat) + ";";
 

@@ -32,7 +32,7 @@
 
 /**
  * The constructor for the operational predictor class from IFS grib files with the Vigicrues naming convention.
- * 
+ *
  * @param dataId Identifier of the data variable (meteorological parameter).
  */
 asPredictorOperCustomVigicruesIfs::asPredictorOperCustomVigicruesIfs(const wxString& dataId)
@@ -50,11 +50,11 @@ asPredictorOperCustomVigicruesIfs::asPredictorOperCustomVigicruesIfs(const wxStr
 
 /**
  * Get the file name from the data ID and the date.
- * 
+ *
  * @param date Date of the model run for the file.
  * @param level Level of the data.
  * @return The file name.
-*/
+ */
 wxString asPredictorOperCustomVigicruesIfs::GetFileName(const double date, const int) {
     wxString dateStr = asTime::GetStringTime(date, "YYYYMMDDhhmm");
 

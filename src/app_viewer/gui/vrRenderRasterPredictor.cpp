@@ -27,28 +27,28 @@
 
 #include "vrRenderRasterPredictor.h"
 
-#include <fstream>
 #include <wx/tokenzr.h>
 
-#include "vrlabel.h"
+#include <fstream>
+
 #include "asFileText.h"
+#include "vrlabel.h"
 
 /**
  * The constructor for the vroomgis layer class containing the raster.
-*/
+ */
 vrRenderRasterPredictor::vrRenderRasterPredictor()
     : vrRenderRaster(),
-      m_parameter(asPredictor::GeopotentialHeight){
-}
+      m_parameter(asPredictor::GeopotentialHeight) {}
 
 /**
  * The destructor for the vroomgis layer class containing the raster.
-*/
+ */
 vrRenderRasterPredictor::~vrRenderRasterPredictor() = default;
 
 /**
  * Initialize the layer.
- * 
+ *
  * @param parameter The meteorological parameter.
  */
 void vrRenderRasterPredictor::Init(asPredictor::Parameter parameter) {
@@ -61,7 +61,7 @@ void vrRenderRasterPredictor::Init(asPredictor::Parameter parameter) {
 
 /**
  * Select the color table according to the meteorological parameter.
-*/
+ */
 void vrRenderRasterPredictor::SelectColorTable() {
     wxConfigBase* pConfig = wxFileConfig::Get();
     wxString dirData = asConfig::GetDataDir() + "share";
@@ -95,14 +95,13 @@ void vrRenderRasterPredictor::SelectColorTable() {
 
 /**
  * Get the color for the given pixel value from the color table.
- * 
+ *
  * @param pxVal The pixel value.
  * @param minVal The minimum value of the color table.
  * @param range The range of the color table.
  * @return The color.
-*/
+ */
 wxImage::RGBValue vrRenderRasterPredictor::GetColorFromTable(double pxVal, double minVal, double range) {
-
     int nColors = int(m_colorTable.rows());
 
     int index = static_cast<int>((pxVal - minVal) * (nColors / range));
@@ -116,9 +115,9 @@ wxImage::RGBValue vrRenderRasterPredictor::GetColorFromTable(double pxVal, doubl
 
 /**
  * Parse the color table file.
- * 
+ *
  * @return True if the color table was parsed successfully.
-*/
+ */
 bool vrRenderRasterPredictor::ParseColorTable() {
     wxString extension = m_colorTableFile.GetExt();
     if (extension == "act") {
@@ -133,9 +132,9 @@ bool vrRenderRasterPredictor::ParseColorTable() {
 
 /**
  * Parse the color table file in ACT format.
- * 
+ *
  * @return True if the color table was parsed successfully.
-*/
+ */
 bool vrRenderRasterPredictor::ParseACTfile() {
     ResizeColorTable(255);
 
@@ -165,11 +164,10 @@ bool vrRenderRasterPredictor::ParseACTfile() {
 
 /**
  * Parse the color table file in RGB format.
- * 
+ *
  * @return True if the color table was parsed successfully.
-*/
+ */
 bool vrRenderRasterPredictor::ParseRGBfile() {
-
     asFileText file(m_colorTableFile.GetFullPath(), asFile::ReadOnly);
     if (!file.Open()) {
         wxLogError(_("Color table file %s could not be opened..."), m_colorTableFile.GetFullPath());
@@ -204,8 +202,7 @@ bool vrRenderRasterPredictor::ParseRGBfile() {
 
         int n = 0;
         wxStringTokenizer tokenizer(fileLine, " ");
-        while ( tokenizer.HasMoreTokens() )
-        {
+        while (tokenizer.HasMoreTokens()) {
             wxString token = tokenizer.GetNextToken();
             double val;
             if (!token.ToDouble(&val)) {
@@ -228,9 +225,9 @@ bool vrRenderRasterPredictor::ParseRGBfile() {
 
 /**
  * Resize the color table class attribute.
- * 
+ *
  * @param size The new size of the color table.
-*/
+ */
 void vrRenderRasterPredictor::ResizeColorTable(int size) {
     m_colorTable.resize(size, 3);
     m_colorTable.fill(0);
@@ -238,7 +235,7 @@ void vrRenderRasterPredictor::ResizeColorTable(int size) {
 
 /**
  * Scale the color table values to the range 0-255.
-*/
+ */
 void vrRenderRasterPredictor::ScaleColors() {
     if (m_colorTable.maxCoeff() <= 1) {
         m_colorTable *= 255;

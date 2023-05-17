@@ -598,8 +598,8 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, int station
 
         // Check the size of the array
         if (timeIndex >= m_timeLength) {
-            wxLogError(_("The time index is larger than the matrix (timeIndex = %d, m_timeLength = %d)."),
-                       timeIndex, m_timeLength);
+            wxLogError(_("The time index is larger than the matrix (timeIndex = %d, m_timeLength = %d)."), timeIndex,
+                       m_timeLength);
             return false;
         }
 
@@ -724,12 +724,10 @@ bool asPredictand::ParseConstantWidthContent(int stationIndex, const asFileDat::
             return false;
         }
 
-        lineContent.Mid(pattern.timeYearBegin - 1, pattern.timeYearEnd - pattern.timeYearBegin + 1)
-            .ToInt(&valTimeYear);
+        lineContent.Mid(pattern.timeYearBegin - 1, pattern.timeYearEnd - pattern.timeYearBegin + 1).ToInt(&valTimeYear);
         lineContent.Mid(pattern.timeMonthBegin - 1, pattern.timeMonthEnd - pattern.timeMonthBegin + 1)
             .ToInt(&valTimeMonth);
-        lineContent.Mid(pattern.timeDayBegin - 1, pattern.timeDayEnd - pattern.timeDayBegin + 1)
-            .ToInt(&valTimeDay);
+        lineContent.Mid(pattern.timeDayBegin - 1, pattern.timeDayEnd - pattern.timeDayBegin + 1).ToInt(&valTimeDay);
 
         if (pattern.timeHourBegin != 0 && pattern.timeHourEnd != 0) {
             lineContent.Mid(pattern.timeHourBegin - 1, pattern.timeHourEnd - pattern.timeHourBegin + 1)

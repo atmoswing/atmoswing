@@ -197,7 +197,6 @@ void asPanelSidebarAlarmsDrawing::CreateGrid(a1f& dates, const vwxs& names) {
 }
 
 void asPanelSidebarAlarmsDrawing::AddRow(a1f& dates, a1f& values, int row) {
-
     // Handle sub-daily time steps
     double fraction = double(dates.size()) / double(values.size());
     if (fraction < 0.2) {
@@ -258,8 +257,8 @@ void asPanelSidebarAlarmsDrawing::OnPaint(wxPaintEvent& event) {
     event.Skip();
 }
 
-void asPanelSidebarAlarmsDrawing::CreatePath(wxGraphicsPath& path, const wxPoint& start, float cellWidth, int cellHeight,
-                                             int iCol, int iRow) {
+void asPanelSidebarAlarmsDrawing::CreatePath(wxGraphicsPath& path, const wxPoint& start, float cellWidth,
+                                             int cellHeight, int iCol, int iRow) {
     double startPointX = (double)start.x + iCol * cellWidth;
     double startPointY = (double)start.y + iRow * cellHeight;
 

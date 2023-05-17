@@ -217,7 +217,6 @@ bool asTimeArray::Init(double targetDate, double intervalDays, double exclusionD
 }
 
 void asTimeArray::RemoveExcludedDates(double targetDate, double exclusionDays) {
-
     if (exclusionDays == 0) {
         return;
     }

@@ -29,13 +29,13 @@
 
 /**
  * The constructor of the panel for the colorbar (asPanelPredictorsColorbar).
- * 
+ *
  * @param parent The parent window.
  * @param id The window ID.
  * @param pos The position.
  * @param size The size.
  * @param style The style (flags).
-*/
+ */
 asPanelPredictorsColorbar::asPanelPredictorsColorbar(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                                                      const wxSize& size, long style)
     : wxPanel(parent, id, pos, size, style),
@@ -56,16 +56,16 @@ asPanelPredictorsColorbar::asPanelPredictorsColorbar(wxWindow* parent, wxWindowI
 
 /**
  * The destructor of the panel for the colorbar (asPanelPredictorsColorbar).
-*/
+ */
 asPanelPredictorsColorbar::~asPanelPredictorsColorbar() {
     Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelPredictorsColorbar::OnPaint), nullptr, this);
 }
 
 /**
  * Paint event.
- * 
+ *
  * @param event The event.
-*/
+ */
 void asPanelPredictorsColorbar::OnPaint(wxPaintEvent& event) {
     m_panelDrawing->DrawColorbar(m_valMin, m_valMax, m_step);
     event.Skip();
@@ -73,10 +73,10 @@ void asPanelPredictorsColorbar::OnPaint(wxPaintEvent& event) {
 
 /**
  * Set the range of the colorbar.
- * 
+ *
  * @param valMin The minimum value.
  * @param valMax The maximum value.
-*/
+ */
 void asPanelPredictorsColorbar::SetRange(double valMin, double valMax) {
     m_valMin = valMin;
     m_valMax = valMax;
@@ -84,31 +84,31 @@ void asPanelPredictorsColorbar::SetRange(double valMin, double valMax) {
 
 /**
  * Set the step of the colorbar.
- * 
+ *
  * @param step The step for the ticks.
-*/
+ */
 void asPanelPredictorsColorbar::SetStep(double step) {
     m_step = step;
 }
 
 /**
  * Set the render.
- * 
+ *
  * @param render The render.
-*/
+ */
 void asPanelPredictorsColorbar::SetRender(vrRenderRasterPredictor* render) {
     m_panelDrawing->SetRender(render);
 }
 
 /**
  * The constructor of the panel for the colorbar drawing (asPanelPredictorsColorbarDrawing).
- * 
+ *
  * @param parent The parent window.
  * @param id The window ID.
  * @param pos The position.
  * @param size The size.
  * @param style The style (flags).
-*/
+ */
 asPanelPredictorsColorbarDrawing::asPanelPredictorsColorbarDrawing(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                                                                    const wxSize& size, long style)
     : wxPanel(parent, id, pos, size, style),
@@ -122,7 +122,7 @@ asPanelPredictorsColorbarDrawing::asPanelPredictorsColorbarDrawing(wxWindow* par
 
 /**
  * The destructor of the panel for the colorbar drawing (asPanelPredictorsColorbarDrawing).
-*/
+ */
 asPanelPredictorsColorbarDrawing::~asPanelPredictorsColorbarDrawing() {
     Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelPredictorsColorbarDrawing::OnPaint), nullptr, this);
     wxDELETE(m_bmpColorbar);
@@ -130,11 +130,11 @@ asPanelPredictorsColorbarDrawing::~asPanelPredictorsColorbarDrawing() {
 
 /**
  * Draw the colorbar.
- * 
+ *
  * @param valMin The minimum value.
  * @param valMax The maximum value.
  * @param step The step for the ticks.
-*/
+ */
 void asPanelPredictorsColorbarDrawing::DrawColorbar(double valMin, double valMax, double step) {
     if (!m_render) {
         return;
@@ -175,9 +175,9 @@ void asPanelPredictorsColorbarDrawing::DrawColorbar(double valMin, double valMax
 
 /**
  * The paint event.
- * 
+ *
  * @param event The event.
-*/
+ */
 void asPanelPredictorsColorbarDrawing::OnPaint(wxPaintEvent& event) {
     wxPaintDC dc(this);
 
@@ -192,11 +192,10 @@ void asPanelPredictorsColorbarDrawing::OnPaint(wxPaintEvent& event) {
 
 /**
  * Creates the colorbar path.
- * 
+ *
  * @param path The path.
-*/
+ */
 void asPanelPredictorsColorbarDrawing::CreateColorbarPath(wxGraphicsPath& path) {
-
     wxSize sizePanel = GetSize();
 
     int startX = 30;
@@ -213,12 +212,12 @@ void asPanelPredictorsColorbarDrawing::CreateColorbarPath(wxGraphicsPath& path) 
 
 /**
  * Fills the colorbar.
- * 
+ *
  * @param gc The graphics context.
  * @param path The path.
  * @param valMin The minimum value.
  * @param valMax The maximum value.
-*/
+ */
 void asPanelPredictorsColorbarDrawing::FillColorbar(wxGraphicsContext* gc, wxGraphicsPath& path, double valMin,
                                                     double valMax) {
     // Get the path box
@@ -246,13 +245,13 @@ void asPanelPredictorsColorbarDrawing::FillColorbar(wxGraphicsContext* gc, wxGra
 
 /**
  * Creates the colorbar text.
- * 
+ *
  * @param gc The graphics context.
  * @param path The path.
  * @param valMin The minimum value.
  * @param valMax The maximum value.
  * @param step The step for the ticks.
-*/
+ */
 void asPanelPredictorsColorbarDrawing::CreateColorbarText(wxGraphicsContext* gc, wxGraphicsPath& path, double valMin,
                                                           double valMax, double step) {
     gc->SetPen(*wxBLACK);
@@ -262,12 +261,12 @@ void asPanelPredictorsColorbarDrawing::CreateColorbarText(wxGraphicsContext* gc,
     path.GetBox(&x, &y, &w, &h);
 
     // Set ticks and labels
-    double val = step * ceil(valMin/step);
+    double val = step * ceil(valMin / step);
     int dy = 18 * g_ppiScaleDc;
     while (val <= valMax) {
         int xTick = floor(w * (val - valMin) / (valMax - valMin));
         wxGraphicsPath pathTick = gc->CreatePath();
-        pathTick.MoveToPoint(x + xTick, y );
+        pathTick.MoveToPoint(x + xTick, y);
         pathTick.AddLineToPoint(x + xTick, y + h + 5);
         gc->StrokePath(pathTick);
 
@@ -280,9 +279,9 @@ void asPanelPredictorsColorbarDrawing::CreateColorbarText(wxGraphicsContext* gc,
 
 /**
  * Sets the render.
- * 
+ *
  * @param render The render.
-*/
+ */
 void asPanelPredictorsColorbarDrawing::SetRender(vrRenderRasterPredictor* render) {
     m_render = render;
 }

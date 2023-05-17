@@ -33,9 +33,7 @@
 
 asScoreCRPSaccurAR::asScoreCRPSaccurAR()
     : asScore(asScore::CRPSaccuracyAR, _("CRPS Accuracy Approx Rectangle"),
-              _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method"), Asc, 0, NAN) {
-
-}
+              _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method"), Asc, 0, NAN) {}
 
 float asScoreCRPSaccurAR::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);

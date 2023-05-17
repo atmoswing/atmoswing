@@ -45,7 +45,6 @@ asLeadTimeSwitcher::asLeadTimeSwitcher(wxWindow* parent, asWorkspace* workspace,
       m_cellHeight(int(40 * g_ppiScaleDc)),
       m_margin(5 * g_ppiScaleDc),
       m_leadTime(0) {
-
     m_hasSubDaily = m_forecastManager->HasSubDailyForecasts();
     if (m_hasSubDaily) {
         m_cellWidth = int(50 * g_ppiScaleDc);

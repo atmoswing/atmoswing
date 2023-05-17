@@ -326,7 +326,7 @@ EVT_TIMER(wxID_ANY, wxPlotCtrl::OnTimer)
 EVT_TEXT_ENTER(wxID_ANY, wxPlotCtrl::OnTextEnter)
 END_EVENT_TABLE()
 
-    void wxPlotCtrl::Init() {
+void wxPlotCtrl::Init() {
     m_drawOnScreen = true;
 
     m_activeCurve = NULL;

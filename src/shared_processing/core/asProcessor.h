@@ -52,14 +52,13 @@ class asProcessor : public wxObject {
     static bool GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
                                 asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayArchiveSelection,
                                 asTimeArray& timeArrayTargetData, asTimeArray& timeArrayTargetSelection,
-                                vector<asCriteria*> criteria, asParameters* params, int step,
-                                asResultsDates& results, bool& containsNaNs);
+                                vector<asCriteria*> criteria, asParameters* params, int step, asResultsDates& results,
+                                bool& containsNaNs);
 
-    static bool GetAnalogsSubDates(vector<asPredictor*> predictorsArchive,
-                                   vector<asPredictor*> predictorsTarget, asTimeArray& timeArrayArchiveData,
-                                   asTimeArray& timeArrayTargetData, asResultsDates& anaDates,
-                                   vector<asCriteria*> criteria, asParameters* params, int step,
-                                   asResultsDates& results, bool& containsNaNs);
+    static bool GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
+                                   asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayTargetData,
+                                   asResultsDates& anaDates, vector<asCriteria*> criteria, asParameters* params,
+                                   int step, asResultsDates& results, bool& containsNaNs);
 
     static bool GetAnalogsValues(asPredictand& predictand, asResultsDates& anaDates, asParameters* params,
                                  asResultsValues& results);

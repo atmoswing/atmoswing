@@ -41,5 +41,5 @@ vrLayerVectorDomain::vrLayerVectorDomain() {
 
 /**
  * The destructor for the vroomgis layer class containing the spatial window.
-*/
+ */
 vrLayerVectorDomain::~vrLayerVectorDomain() = default;

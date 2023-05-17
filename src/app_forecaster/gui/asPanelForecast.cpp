@@ -78,7 +78,7 @@ void asPanelForecast::CheckFileExists() {
  *
  * @param filePath The path to the forecast file.
  */
-void asPanelForecast::SetTooTipContent(const wxString &filePath) {
+void asPanelForecast::SetTooTipContent(const wxString& filePath) {
     asParametersForecast param;
     if (param.LoadFromFile(filePath)) {
         wxString description = param.GetDescription();

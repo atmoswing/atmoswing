@@ -25,11 +25,12 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
+#include "asPredictorGeneric.h"
+
 #include <wx/dir.h>
 #include <wx/regex.h>
 
 #include "asAreaGrid.h"
-#include "asPredictorGeneric.h"
 #include "asTimeArray.h"
 
 asPredictorGeneric::asPredictorGeneric(const wxString& dataId)

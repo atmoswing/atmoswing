@@ -32,7 +32,7 @@
 
 /**
  * The constructor for the vroomgis layer class containing the target location.
-*/
+ */
 vrLayerVectorLocation::vrLayerVectorLocation() {
     wxASSERT(!m_dataset);
     wxASSERT(!m_layer);
@@ -41,16 +41,16 @@ vrLayerVectorLocation::vrLayerVectorLocation() {
 
 /**
  * The destructor for the vroomgis layer class containing the target location.
-*/
+ */
 vrLayerVectorLocation::~vrLayerVectorLocation() = default;
 
 /**
  * Add a feature to the layer.
- * 
+ *
  * @param geometry The geometry of the feature.
  * @param data The data of the feature.
  * @return The feature ID.
-*/
+ */
 long vrLayerVectorLocation::AddFeature(OGRGeometry* geometry, void* data) {
     wxASSERT(m_layer);
     OGRFeature* feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
@@ -71,7 +71,7 @@ long vrLayerVectorLocation::AddFeature(OGRGeometry* geometry, void* data) {
 
 /**
  * Draw the layer (for vroomgis).
- * 
+ *
  * @param dc The device context.
  * @param feature The feature (OGRFeature).
  * @param geometry The geometry (OGRGeometry).
@@ -79,7 +79,7 @@ long vrLayerVectorLocation::AddFeature(OGRGeometry* geometry, void* data) {
  * @param render The render.
  * @param label The label.
  * @param pxsize The pixel size.
-*/
+ */
 void vrLayerVectorLocation::_DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry,
                                        const wxRect2DDouble& coord, const vrRender* render, vrLabel* label,
                                        double pxsize) {

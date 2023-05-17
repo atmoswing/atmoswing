@@ -29,7 +29,6 @@
 #define AS_PREDICTORS_MANAGER_H
 
 #include "asIncludes.h"
-
 #include "asPredictor.h"
 #include "asWorkspace.h"
 
@@ -66,22 +65,22 @@ class asPredictorsManager {
         m_leadTimeNb = leadTimeNb;
     }
 
-    void SetDatasetIds(const vwxs &predictorDatasetIds) {
+    void SetDatasetIds(const vwxs& predictorDatasetIds) {
         m_datasetIds = predictorDatasetIds;
         m_needsDataReload = true;
     }
 
-    void SetDataIds(const vwxs &predictorDataIds) {
+    void SetDataIds(const vwxs& predictorDataIds) {
         m_dataIds = predictorDataIds;
         m_needsDataReload = true;
     }
 
-    void SetLevels(const vf &predictorLevels) {
+    void SetLevels(const vf& predictorLevels) {
         m_levels = predictorLevels;
         m_needsDataReload = true;
     }
 
-    void SetHours(const vf &predictorHours) {
+    void SetHours(const vf& predictorHours) {
         m_hours = predictorHours;
         m_needsDataReload = true;
     }

@@ -26,8 +26,9 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#include "asForecastManager.h"
 #include "asForecastRenderer.h"
+
+#include "asForecastManager.h"
 #include "asFrameViewer.h"
 #include "vrLayerVectorFcstDots.h"
 #include "vrLayerVectorFcstRing.h"
@@ -46,8 +47,7 @@ asForecastRenderer::asForecastRenderer(asFrameViewer* parent, asForecastManager*
       m_layerMaxValue(1),
       m_methodSelection(-1),
       m_forecastSelection(-1),
-      m_opened(false)
-{
+      m_opened(false) {
     m_displayForecast.Add(_("Value"));
     m_displayForecast.Add(_("Ratio P/P2"));
     m_displayForecast.Add(_("Ratio P/P5"));
@@ -297,7 +297,7 @@ void asForecastRenderer::Redraw() {
         bool timeShiftEndAccumulation = false;
         if (forecasts[0]->IsSubDaily()) {
             timeShiftEndAccumulation = true;
-            leadTimeSize -=1;
+            leadTimeSize -= 1;
         }
 
         // Adding fields

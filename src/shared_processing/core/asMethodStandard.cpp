@@ -826,8 +826,8 @@ bool asMethodStandard::LoadArchiveData(vector<asPredictor*>& predictors, asParam
     return true;
 }
 
-bool asMethodStandard::ExtractPreloadedArchiveData(vector<asPredictor*>& predictors, asParameters* params,
-                                                   int iStep, int iPtor) {
+bool asMethodStandard::ExtractPreloadedArchiveData(vector<asPredictor*>& predictors, asParameters* params, int iStep,
+                                                   int iPtor) {
     wxLogVerbose(_("Using preloaded data."));
 
     bool doPreprocessGradients = false;
@@ -1034,8 +1034,8 @@ bool asMethodStandard::ExtractPreloadedArchiveData(vector<asPredictor*>& predict
     return true;
 }
 
-bool asMethodStandard::ExtractArchiveData(vector<asPredictor*>& predictors, asParameters* params, int iStep,
-                                          int iPtor, double timeStartData, double timeEndData) {
+bool asMethodStandard::ExtractArchiveData(vector<asPredictor*>& predictors, asParameters* params, int iStep, int iPtor,
+                                          double timeStartData, double timeEndData) {
     // Date array object instantiation for the data loading.
     double ptorStart = timeStartData + params->GetPredictorTimeAsDays(iStep, iPtor);
     double ptorEnd = timeEndData + params->GetPredictorTimeAsDays(iStep, iPtor);

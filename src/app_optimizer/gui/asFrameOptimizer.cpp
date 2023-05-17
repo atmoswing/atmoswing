@@ -47,11 +47,10 @@ asFrameOptimizer::asFrameOptimizer(wxWindow* parent)
       m_logWindow(nullptr),
       m_methodCalibrator(nullptr) {
     // Toolbar
-    m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap,
-                       wxITEM_NORMAL, _("Run optimizer"), _("Run optimizer now"), nullptr);
-    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::STOP),
-                       wxNullBitmap, wxITEM_NORMAL, _("Cancel optimization"),
-                       _("Cancel current optimization"), nullptr);
+    m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap, wxITEM_NORMAL,
+                       _("Run optimizer"), _("Run optimizer now"), nullptr);
+    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::STOP), wxNullBitmap,
+                       wxITEM_NORMAL, _("Cancel optimization"), _("Cancel current optimization"), nullptr);
     m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
                        wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();

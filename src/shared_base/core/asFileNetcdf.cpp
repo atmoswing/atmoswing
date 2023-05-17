@@ -601,8 +601,8 @@ short asFileNetcdf::GetAttShort(const wxString& attName, const wxString& varName
         if (nctype == NC_INT) {
             return (short)*static_cast<int*>(m_struct.atts[attId].pValue);
         } else if (nctype != NC_SHORT) {
-            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."), attName,
-                           (int)nctype, (int)NC_SHORT));
+            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                       attName, (int)nctype, (int)NC_SHORT));
         }
 
         // Get value
@@ -623,8 +623,9 @@ short asFileNetcdf::GetAttShort(const wxString& attName, const wxString& varName
         if (nctype == NC_INT) {
             return (short)*static_cast<int*>(m_struct.vars[varId].atts[attId].pValue);
         } else if (nctype != NC_SHORT) {
-            throw runtime_error(asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                           attName, (int)nctype, (int)NC_SHORT));
+            throw runtime_error(
+                asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
+                       attName, (int)nctype, (int)NC_SHORT));
         }
 
         // Get value
@@ -648,8 +649,8 @@ int asFileNetcdf::GetAttInt(const wxString& attName, const wxString& varName) {
         if (nctype == NC_SHORT) {
             return *static_cast<short*>(m_struct.atts[attId].pValue);
         } else if (nctype != NC_INT) {
-            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."), attName,
-                           (int)nctype, (int)NC_INT));
+            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                       attName, (int)nctype, (int)NC_INT));
         }
 
         // Get value
@@ -666,8 +667,9 @@ int asFileNetcdf::GetAttInt(const wxString& attName, const wxString& varName) {
         if (nctype == NC_SHORT) {
             return *static_cast<short*>(m_struct.vars[varId].atts[attId].pValue);
         } else if (nctype != NC_INT) {
-            throw runtime_error(asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                           attName, (int)nctype, (int)NC_INT));
+            throw runtime_error(
+                asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
+                       attName, (int)nctype, (int)NC_INT));
         }
 
         // Get value
@@ -691,8 +693,8 @@ float asFileNetcdf::GetAttFloat(const wxString& attName, const wxString& varName
         if (nctype == NC_DOUBLE) {
             return (float)*static_cast<double*>(m_struct.atts[attId].pValue);
         } else if (nctype != NC_FLOAT) {
-            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."), attName,
-                           (int)nctype, (int)NC_FLOAT));
+            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                       attName, (int)nctype, (int)NC_FLOAT));
         }
 
         // Get value
@@ -709,8 +711,9 @@ float asFileNetcdf::GetAttFloat(const wxString& attName, const wxString& varName
         if (nctype == NC_DOUBLE) {
             return (float)*static_cast<double*>(m_struct.vars[varId].atts[attId].pValue);
         } else if (nctype != NC_FLOAT) {
-            throw runtime_error(asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                           attName, (int)nctype, (int)NC_FLOAT));
+            throw runtime_error(
+                asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
+                       attName, (int)nctype, (int)NC_FLOAT));
         }
 
         // Get value
@@ -734,8 +737,8 @@ double asFileNetcdf::GetAttDouble(const wxString& attName, const wxString& varNa
         if (nctype == NC_FLOAT) {
             return (double)*static_cast<float*>(m_struct.atts[attId].pValue);
         } else if (nctype != NC_DOUBLE) {
-            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."), attName,
-                           (int)nctype, (int)NC_DOUBLE));
+            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                       attName, (int)nctype, (int)NC_DOUBLE));
         }
 
         // Get value
@@ -752,8 +755,9 @@ double asFileNetcdf::GetAttDouble(const wxString& attName, const wxString& varNa
         if (nctype == NC_FLOAT) {
             return (double)*static_cast<float*>(m_struct.vars[varId].atts[attId].pValue);
         } else if (nctype != NC_DOUBLE) {
-            throw runtime_error(asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                           attName, (int)nctype, (int)NC_DOUBLE));
+            throw runtime_error(
+                asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
+                       attName, (int)nctype, (int)NC_DOUBLE));
         }
 
         // Get value
@@ -779,8 +783,8 @@ char asFileNetcdf::GetAttChar(const wxString& attName, const wxString& varName) 
 
         // Check the given type
         if (nctype != NC_CHAR) {
-            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."), attName,
-                           (int)nctype, (int)NC_CHAR));
+            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                       attName, (int)nctype, (int)NC_CHAR));
         }
 
         // Get value
@@ -799,8 +803,9 @@ char asFileNetcdf::GetAttChar(const wxString& attName, const wxString& varName) 
 
         // Check the given type
         if (nctype != NC_CHAR) {
-            throw runtime_error(asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                           attName, (int)nctype, (int)NC_CHAR));
+            throw runtime_error(
+                asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
+                       attName, (int)nctype, (int)NC_CHAR));
         }
 
         // Get value
@@ -832,8 +837,8 @@ wxString asFileNetcdf::GetAttString(const wxString& attName, const wxString& var
         nc_type nctype = m_struct.atts[attId].type;
         if (nctype != NC_CHAR) {
             wxDELETEA(text);
-            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."), attName,
-                           (int)nctype, (int)NC_CHAR));
+            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                       attName, (int)nctype, (int)NC_CHAR));
         }
 
         // Get value
@@ -863,8 +868,9 @@ wxString asFileNetcdf::GetAttString(const wxString& attName, const wxString& var
         nc_type nctype = m_struct.vars[varId].atts[attId].type;
         if (nctype != NC_CHAR) {
             wxDELETEA(text);
-            throw runtime_error(asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                           attName, (int)nctype, (int)NC_CHAR));
+            throw runtime_error(
+                asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
+                       attName, (int)nctype, (int)NC_CHAR));
         }
 
         // Get value
@@ -938,8 +944,8 @@ void asFileNetcdf::GetVar(const wxString& varName, short* pValue) {
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_SHORT)
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                       (int)nctype, (int)NC_SHORT));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                   varName, (int)nctype, (int)NC_SHORT));
 
     // Get value
     m_status = nc_get_var_short(m_fileId, varId, pValue);
@@ -961,8 +967,8 @@ void asFileNetcdf::GetVar(const wxString& varName, int* pValue) {
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_INT) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                       (int)nctype, (int)NC_INT));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                   varName, (int)nctype, (int)NC_INT));
     }
 
     // Get value
@@ -985,8 +991,8 @@ void asFileNetcdf::GetVar(const wxString& varName, float* pValue) {
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_FLOAT) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                       (int)nctype, (int)NC_FLOAT));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                   varName, (int)nctype, (int)NC_FLOAT));
     }
 
     // Get value
@@ -1009,8 +1015,8 @@ void asFileNetcdf::GetVar(const wxString& varName, double* pValue) {
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_DOUBLE) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                       (int)nctype, (int)NC_DOUBLE));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                   varName, (int)nctype, (int)NC_DOUBLE));
     }
 
     // Get value
@@ -1033,8 +1039,8 @@ void asFileNetcdf::GetVar(const wxString& varName, wxString* pValue, const size_
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_STRING) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                       (int)nctype, (int)NC_STRING));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                   varName, (int)nctype, (int)NC_STRING));
     }
 
     // Get value
@@ -1064,8 +1070,8 @@ short asFileNetcdf::GetVarOneShort(const wxString& varName, size_t arrIndex) {
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_SHORT) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                       (int)nctype, (int)NC_SHORT));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                   varName, (int)nctype, (int)NC_SHORT));
     }
 
     // Get value
@@ -1091,8 +1097,8 @@ int asFileNetcdf::GetVarOneInt(const wxString& varName, size_t arrIndex) {
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_INT) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                       (int)nctype, (int)NC_INT));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                   varName, (int)nctype, (int)NC_INT));
     }
 
     // Get value
@@ -1118,8 +1124,8 @@ float asFileNetcdf::GetVarOneFloat(const wxString& varName, size_t arrIndex) {
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_FLOAT) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                       (int)nctype, (int)NC_FLOAT));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                   varName, (int)nctype, (int)NC_FLOAT));
     }
 
     // Get value
@@ -1145,8 +1151,8 @@ double asFileNetcdf::GetVarOneDouble(const wxString& varName, size_t arrIndex) {
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_DOUBLE) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                       (int)nctype, (int)NC_DOUBLE));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                   varName, (int)nctype, (int)NC_DOUBLE));
     }
 
     // Get value
@@ -1173,8 +1179,8 @@ void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."), varName,
-                       (int)nctype));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+                                   varName, (int)nctype));
     }
 
     // Get value
@@ -1206,8 +1212,8 @@ void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."), varName,
-                       (int)nctype));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+                                   varName, (int)nctype));
     }
 
     // Get value
@@ -1239,8 +1245,8 @@ void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."), varName,
-                       (int)nctype));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+                                   varName, (int)nctype));
     }
 
     // Get value
@@ -1272,8 +1278,8 @@ void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."), varName,
-                       (int)nctype));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+                                   varName, (int)nctype));
     }
 
     // Get value
@@ -1305,8 +1311,8 @@ void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."), varName,
-                       (int)nctype));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+                                   varName, (int)nctype));
     }
 
     // Get value
@@ -1339,8 +1345,8 @@ void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."), varName,
-                       (int)nctype));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+                                   varName, (int)nctype));
     }
 
     // Get value
@@ -1373,8 +1379,8 @@ void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart
     // Check the given type. Allow the short type here.
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."), varName,
-                       (int)nctype));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+                                   varName, (int)nctype));
     }
 
     // Get value
@@ -1407,8 +1413,8 @@ void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."), varName,
-                       (int)nctype));
+        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+                                   varName, (int)nctype));
     }
 
     // Get value

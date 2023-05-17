@@ -26,6 +26,7 @@
  */
 
 #include "asAreaGridFull.h"
+
 #include "asTypeDefs.h"
 
 asAreaGridFull::asAreaGridFull(bool isLatLon)

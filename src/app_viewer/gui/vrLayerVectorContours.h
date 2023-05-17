@@ -39,7 +39,6 @@
 #include "asIncludes.h"
 #include "vrlayervector.h"
 
-
 class vrLayerVectorContours : public vrLayerVectorOGR {
   public:
     vrLayerVectorContours();

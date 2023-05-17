@@ -253,7 +253,8 @@ void asPanelSidebarCaptionForecastRingDrawing::CreatePathTick(wxGraphicsPath& pa
     path.AddLineToPoint(centerX + dXout, centerY + dYout);
 }
 
-void asPanelSidebarCaptionForecastRingDrawing::CreatePathAround(wxGraphicsPath& path, const wxPoint& center, double scale) {
+void asPanelSidebarCaptionForecastRingDrawing::CreatePathAround(wxGraphicsPath& path, const wxPoint& center,
+                                                                double scale) {
     const wxDouble radiusOut = 100 * scale;
     const wxDouble radiusIn = 40 * scale;
 

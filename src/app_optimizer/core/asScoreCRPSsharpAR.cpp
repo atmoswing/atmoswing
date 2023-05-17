@@ -32,9 +32,7 @@
 
 asScoreCRPSsharpAR::asScoreCRPSsharpAR()
     : asScore(asScore::CRPSsharpnessAR, _("CRPS Accuracy Approx Rectangle"),
-              _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method"), Asc, 0, NAN) {
-
-}
+              _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method"), Asc, 0, NAN) {}
 
 asScoreCRPSsharpAR::~asScoreCRPSsharpAR() {}
 
