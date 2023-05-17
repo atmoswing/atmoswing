@@ -50,8 +50,8 @@ class vroomDropFilesPredictors : public wxFileDropTarget {
 
 class asFramePredictors : public asFramePredictorsVirtual {
   public:
-    asFramePredictors(wxWindow* parent, asForecastManager* forecastManager, asWorkspace* workspace,
-                      int methodRow, int forecastRow, wxWindowID id = asWINDOW_PREDICTORS);
+    asFramePredictors(wxWindow* parent, asForecastManager* forecastManager, asWorkspace* workspace, int methodRow,
+                      int forecastRow, wxWindowID id = asWINDOW_PREDICTORS);
 
     ~asFramePredictors() override;
 

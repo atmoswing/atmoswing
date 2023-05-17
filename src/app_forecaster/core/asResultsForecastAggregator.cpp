@@ -279,7 +279,7 @@ wxArrayString asResultsForecastAggregator::GetForecastNamesWxArray(int methodRow
 wxArrayString asResultsForecastAggregator::GetCombinedForecastNamesWxArray() const {
     wxArrayString names;
 
-    for (const auto & method : m_forecasts) {
+    for (const auto& method : m_forecasts) {
         wxASSERT(!method.empty());
 
         wxString methodName = method[0]->GetMethodIdDisplay();
@@ -459,7 +459,7 @@ wxArrayString asResultsForecastAggregator::GetTargetDatesWxArray(int methodRow, 
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
 
-    return m_forecasts[methodRow][forecastRow]->GetTargetDatesWxArray();;
+    return m_forecasts[methodRow][forecastRow]->GetTargetDatesWxArray();
 }
 
 vf asResultsForecastAggregator::GetMaxExtent() const {

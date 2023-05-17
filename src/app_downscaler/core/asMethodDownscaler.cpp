@@ -464,8 +464,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(vector<asPredict
     return true;
 }
 
-bool asMethodDownscaler::Preprocess(vector<asPredictorProj*> predictors, const wxString& method,
-                                    asPredictor* result) {
+bool asMethodDownscaler::Preprocess(vector<asPredictorProj*> predictors, const wxString& method, asPredictor* result) {
     vector<asPredictor*> ptorsPredictors(predictors.begin(), predictors.end());
 
     return asPreprocessor::Preprocess(ptorsPredictors, method, result);

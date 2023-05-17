@@ -26,13 +26,20 @@
  */
 
 #include "vrLayerRasterPredictor.h"
-#include "vrRenderRasterPredictor.h"
 
+#include "vrRenderRasterPredictor.h"
 #include "vrlabel.h"
 #include "vrrealrect.h"
 
 #define UseRasterIO 0
 
+/**
+ * The constructor for the vroomgis layer class containing raster predictor data.
+ *
+ * @param predictorsManager The predictors manager.
+ * @param minVal The minimum value.
+ * @param maxVal The maximum value.
+ */
 vrLayerRasterPredictor::vrLayerRasterPredictor(asPredictorsManager* predictorsManager, double minVal, double maxVal)
     : vrLayerRasterGDAL(),
       m_predictorsManager(predictorsManager),
@@ -41,8 +48,16 @@ vrLayerRasterPredictor::vrLayerRasterPredictor(asPredictorsManager* predictorsMa
     m_driverType = vrDRIVER_RASTER_MEMORY;
 }
 
+/**
+ * The destructor for the vroomgis layer class containing raster predictor data.
+ */
 vrLayerRasterPredictor::~vrLayerRasterPredictor() = default;
 
+/**
+ * Closes the layer and the dataset.
+ *
+ * @return True if successful.
+ */
 bool vrLayerRasterPredictor::Close() {
     if (m_dataset == nullptr) {
         return false;
@@ -53,7 +68,13 @@ bool vrLayerRasterPredictor::Close() {
     return true;
 }
 
-bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
+/**
+ * Creates the layer in memory.
+ *
+ * @param name The filename.
+ * @return True if successful.
+ */
+bool vrLayerRasterPredictor::CreateInMemory(const wxFileName& name) {
     // Try to close
     Close();
     wxASSERT(m_dataset == nullptr);
@@ -85,12 +106,12 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
 
     // Set geotransform
     double adfGeoTransform[6];
-    adfGeoTransform[0] = m_predictorsManager->GetLongitudeMin(); // top left x
-    adfGeoTransform[1] = m_predictorsManager->GetLongitudeResol(); // w-e pixel resolution
-    adfGeoTransform[2] = 0; // rotation, 0 if image is "north up"
-    adfGeoTransform[3] = m_predictorsManager->GetLatitudeMax(); // top left y
-    adfGeoTransform[4] = 0; // rotation, 0 if image is "north up"
-    adfGeoTransform[5] = m_predictorsManager->GetLatitudeResol();  // n-s pixel resolution
+    adfGeoTransform[0] = m_predictorsManager->GetLongitudeMin();    // top left x
+    adfGeoTransform[1] = m_predictorsManager->GetLongitudeResol();  // w-e pixel resolution
+    adfGeoTransform[2] = 0;                                         // rotation, 0 if image is "north up"
+    adfGeoTransform[3] = m_predictorsManager->GetLatitudeMax();     // top left y
+    adfGeoTransform[4] = 0;                                         // rotation, 0 if image is "north up"
+    adfGeoTransform[5] = m_predictorsManager->GetLatitudeResol();   // n-s pixel resolution
     if (m_dataset->SetGeoTransform(adfGeoTransform) != CE_None) {
         wxLogError(_("Setting geotransform to predictor layer failed."));
         return false;
@@ -132,12 +153,26 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName &name) {
     return true;
 }
 
+/**
+ * Gets the layer name to display.
+ *
+ * @return The layer name.
+ */
 wxFileName vrLayerRasterPredictor::GetDisplayName() {
     wxFileName myName(m_fileName);
     myName.SetExt(wxEmptyString);
     return myName;
 }
 
+/**
+ * Transforms the raster data into a bitmap.
+ *
+ * @param imgData The image data pointer.
+ * @param outImgPxSize The output image size.
+ * @param readImgPxInfo The bounding box of the data to read.
+ * @param render The render.
+ * @return True if successful.
+ */
 bool vrLayerRasterPredictor::_GetRasterData(unsigned char** imgData, const wxSize& outImgPxSize,
                                             const wxRect& readImgPxInfo, const vrRender* render) {
     wxASSERT(m_dataset);

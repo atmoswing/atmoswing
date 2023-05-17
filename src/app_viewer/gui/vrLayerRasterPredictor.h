@@ -31,10 +31,9 @@
 #include <asIncludes.h>
 #include <wx/image.h>
 
-#include "vrlayerraster.h"
 #include "asPredictor.h"
 #include "asPredictorsManager.h"
-
+#include "vrlayerraster.h"
 
 class vrLayerRasterPredictor : public vrLayerRasterGDAL {
   public:
@@ -42,7 +41,7 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
 
     ~vrLayerRasterPredictor() override;
 
-    bool CreateInMemory(const wxFileName &name);
+    bool CreateInMemory(const wxFileName& name);
 
     wxFileName GetDisplayName() override;
 

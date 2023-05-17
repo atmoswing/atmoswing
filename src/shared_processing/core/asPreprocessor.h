@@ -44,8 +44,7 @@ class asPreprocessor : public wxObject {
     static bool PreprocessSimpleGradientsWithGaussianWeights(const vector<asPredictor*>& predictors,
                                                              asPredictor* result);
 
-    static bool PreprocessRealGradientsWithGaussianWeights(const vector<asPredictor*>& predictors,
-                                                           asPredictor* result);
+    static bool PreprocessRealGradientsWithGaussianWeights(const vector<asPredictor*>& predictors, asPredictor* result);
 
     static bool PreprocessSimpleCurvature(const vector<asPredictor*>& predictors, asPredictor* result);
 
@@ -54,8 +53,7 @@ class asPreprocessor : public wxObject {
     static bool PreprocessSimpleCurvatureWithGaussianWeights(const vector<asPredictor*>& predictors,
                                                              asPredictor* result);
 
-    static bool PreprocessRealCurvatureWithGaussianWeights(const vector<asPredictor*>& predictors,
-                                                           asPredictor* result);
+    static bool PreprocessRealCurvatureWithGaussianWeights(const vector<asPredictor*>& predictors, asPredictor* result);
 
     static bool PreprocessAddition(const vector<asPredictor*>& predictors, asPredictor* result);
 

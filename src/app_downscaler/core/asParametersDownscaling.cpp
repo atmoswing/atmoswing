@@ -49,7 +49,6 @@ void asParametersDownscaling::AddPredictorProj(ParamsStepProj& step) {
 }
 
 bool asParametersDownscaling::LoadFromFile(const wxString& filePath) {
-
     if (filePath.IsEmpty()) {
         wxLogError(_("The given path to the parameters file is empty."));
         return false;

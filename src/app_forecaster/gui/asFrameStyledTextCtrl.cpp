@@ -25,9 +25,9 @@
  * Portions Copyright 2023 Pascal Horton, Terranum.
  */
 
-#include "wx/settings.h"
-
 #include "asFrameStyledTextCtrl.h"
+
+#include "wx/settings.h"
 
 /**
  * Constructor of the styled text control frame.
@@ -56,8 +56,7 @@ void asFrameStyledTextCtrl::SetContent(const wxString& content) {
  * @note This is a copy of the function from the wxWidgets sample
  *       (https://github.com/wxWidgets/wxWidgets/blob/master/samples/stc/stctest.cpp).
  */
-void asFrameStyledTextCtrl::SetLexerXml()
-{
+void asFrameStyledTextCtrl::SetLexerXml() {
     const wxColour colTag = *wxBLUE;
     const wxColour colAttr = *wxRED;
 

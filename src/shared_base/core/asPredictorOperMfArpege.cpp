@@ -30,6 +30,11 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
+/**
+ * The constructor for the operational ARPEGE predictor from Meteo France.
+ *
+ * @param dataId Identifier of the data variable (meteorological parameter).
+ */
 asPredictorOperMfArpege::asPredictorOperMfArpege(const wxString& dataId)
     : asPredictorOper(dataId) {
     // Set the basic properties.
@@ -53,6 +58,11 @@ asPredictorOperMfArpege::asPredictorOperMfArpege(const wxString& dataId)
     m_runUpdate = 12;
 }
 
+/**
+ * Initialize the parameters of the data source.
+ *
+ * @return True if the initialisation went well.
+ */
 bool asPredictorOperMfArpege::Init() {
     // Identify data ID and set the corresponding properties.
     if (IsGeopotential()) {
@@ -96,10 +106,23 @@ bool asPredictorOperMfArpege::Init() {
     return true;
 }
 
+/**
+ * Convert the tima array from hours to MJD.
+ *
+ * @param time The time array in hours (as in the files).
+ * @param refValue The reference value to add to the time array (as in the files).
+ */
 void asPredictorOperMfArpege::ConvertToMjd(a1d& time, double refValue) const {
     time = (time / 24.0) + refValue;
 }
 
+/**
+ * Get the file name from the forecast date and the lead time.
+ *
+ * @param date The forecast date.
+ * @param leadTime The lead time.
+ * @return The file name.
+ */
 wxString asPredictorOperMfArpege::GetFileName(const double date, const int leadTime) {
     double mjdTarget = date + double(leadTime) / 24.0;
     wxString dateTarget = asTime::GetStringTime(mjdTarget, "YYYYMMDDhhmm");

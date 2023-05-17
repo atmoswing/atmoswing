@@ -106,21 +106,20 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
       m_displayPanelRight(true),
       m_selectedTargetDate(-1),
       m_selectedAnalogDate(-1),
-      m_selectedPredictor(-1)
-{
+      m_selectedPredictor(-1) {
     this->SetLabel(_("Predictors overview"));
 
     m_selectedForecast = wxMax(m_selectedForecast, 0);
 
     // Toolbar
-    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN),
-                       wxNullBitmap, wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN), wxNullBitmap,
+                       wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
     m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT),
                        wxNullBitmap, wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), nullptr);
-    m_toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_MOVE),
-                       wxNullBitmap, wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_FIT),
-                       wxNullBitmap, wxITEM_NORMAL, _("Zoom to visible layers"),
+    m_toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_MOVE), wxNullBitmap,
+                       wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_FIT), wxNullBitmap,
+                       wxITEM_NORMAL, _("Zoom to visible layers"),
                        _("Zoom view to the full extent of all visible layers"), nullptr);
     m_toolBar->AddTool(asID_CROSS_MARKER, wxT("Marker overlay"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_CROSS),
                        wxNullBitmap, wxITEM_NORMAL, _("Display a cross marker overlay"),

@@ -29,9 +29,8 @@
 #define AS_PREDICTORS_VIEWER_H
 
 #include "asIncludes.h"
-#include "vroomgis.h"
 #include "asPanelPredictorsColorbar.h"
-
+#include "vroomgis.h"
 
 class asPredictorsManager;
 
@@ -39,10 +38,8 @@ class vrLayerRasterPredictor;
 
 class asPredictorsRenderer {
   public:
-    asPredictorsRenderer(wxWindow* parent, vrLayerManager* layerManager,
-                         asPredictorsManager* predictorsManagerTarget,
-                         asPredictorsManager* predictorsManagerAnalog,
-                         vrViewerLayerManager* viewerLayerManagerTarget,
+    asPredictorsRenderer(wxWindow* parent, vrLayerManager* layerManager, asPredictorsManager* predictorsManagerTarget,
+                         asPredictorsManager* predictorsManagerAnalog, vrViewerLayerManager* viewerLayerManagerTarget,
                          vrViewerLayerManager* viewerLayerManagerAnalog);
 
     virtual ~asPredictorsRenderer();
@@ -57,7 +54,7 @@ class asPredictorsRenderer {
     void RedrawContourLines(const wxString& name, vrViewerLayerManager* viewerLayerManager,
                             vrLayerRasterPredictor* layerRaster, double step);
 
-    void RedrawSpatialWindow(const wxString& name, vrViewerLayerManager* viewerLayerManager, vf &domain);
+    void RedrawSpatialWindow(const wxString& name, vrViewerLayerManager* viewerLayerManager, vf& domain);
 
     void RedrawLocation(const wxString& name, vrViewerLayerManager* viewerLayerManager, Coo& location);
 

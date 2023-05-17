@@ -10,8 +10,8 @@
 
 #include <wx/wxprec.h>
 
-#include "asIncludes.h"
 #include "asBitmaps.h"
+#include "asIncludes.h"
 
 BEGIN_EVENT_TABLE(awxLed, wxWindow)
 EVT_ERASE_BACKGROUND(awxLed::OnErase)

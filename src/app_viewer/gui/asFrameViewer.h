@@ -29,8 +29,8 @@
 #ifndef AS_FRAME_VIEWER_H
 #define AS_FRAME_VIEWER_H
 
-#include <wx/process.h>
 #include <wx/filehistory.h>
+#include <wx/process.h>
 
 #include "AtmoswingViewerGui.h"
 #include "asForecastManager.h"

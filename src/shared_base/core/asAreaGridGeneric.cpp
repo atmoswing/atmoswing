@@ -26,13 +26,15 @@
  */
 
 #include "asAreaGridGeneric.h"
+
 #include "asTypeDefs.h"
 
 asAreaGridGeneric::asAreaGridGeneric(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
-                             int flatAllowed, bool isLatLon)
+                                     int flatAllowed, bool isLatLon)
     : asAreaGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon) {}
 
-asAreaGridGeneric::asAreaGridGeneric(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed, bool isLatLon)
+asAreaGridGeneric::asAreaGridGeneric(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed,
+                                     bool isLatLon)
     : asAreaGrid(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon) {}
 
 asAreaGridGeneric::asAreaGridGeneric(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)

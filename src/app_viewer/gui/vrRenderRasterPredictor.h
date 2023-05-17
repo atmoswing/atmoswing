@@ -31,9 +31,8 @@
 #include <wx/image.h>
 
 #include "asIncludes.h"
-#include "vrrender.h"
 #include "asPredictor.h"
-
+#include "vrrender.h"
 
 class vrRenderRasterPredictor : public vrRenderRaster {
   public:

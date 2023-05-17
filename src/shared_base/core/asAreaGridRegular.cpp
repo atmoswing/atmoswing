@@ -26,12 +26,12 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include <cmath>
-
 #include "asAreaGridRegular.h"
 
+#include <cmath>
+
 asAreaGridRegular::asAreaGridRegular(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
-                             double xStep, double yStep, int flatAllowed, bool isLatLon)
+                                     double xStep, double yStep, int flatAllowed, bool isLatLon)
     : asAreaGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon),
       m_xStep(xStep),
       m_yStep(yStep) {
@@ -41,7 +41,7 @@ asAreaGridRegular::asAreaGridRegular(const Coo& cornerUL, const Coo& cornerUR, c
 }
 
 asAreaGridRegular::asAreaGridRegular(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
-                             int flatAllowed, bool isLatLon)
+                                     int flatAllowed, bool isLatLon)
     : asAreaGrid(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon),
       m_xStep(xStep),
       m_yStep(yStep) {

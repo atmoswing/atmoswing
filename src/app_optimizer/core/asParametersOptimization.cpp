@@ -865,8 +865,8 @@ void asParametersOptimization::CheckRange() {
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (!GetPredictorGridType(i, j).IsSameAs("Regular", false))
                 throw runtime_error(asStrF(_("asParametersOptimization::CheckRange is not ready to use on "
-                                 "unregular grids (PredictorGridType = %s)"),
-                               GetPredictorGridType(i, j)));
+                                             "unregular grids (PredictorGridType = %s)"),
+                                           GetPredictorGridType(i, j)));
 
             if (NeedsPreprocessing(i, j)) {
                 int preprocessSize = GetPreprocessSize(i, j);
@@ -989,8 +989,8 @@ bool asParametersOptimization::IsInRange() {
 
             if (!GetPredictorGridType(i, j).IsSameAs("Regular", false))
                 throw runtime_error(asStrF(_("asParametersOptimization::CheckRange is not ready to use on "
-                                 "unregular grids (PredictorGridType = %s)"),
-                               GetPredictorGridType(i, j)));
+                                             "unregular grids (PredictorGridType = %s)"),
+                                           GetPredictorGridType(i, j)));
 
             // Check ranges
             if (!m_stepsLocks[i].predictors[j].xMin) {

@@ -72,8 +72,7 @@ class asMethodForecasting : public asMethodStandard {
     bool GetFiles(asParametersForecast& params, asPredictorOper* predictorRealtime, bool& forecastDateChanged,
                   double hour);
 
-    bool PreprocessRealtimePredictors(vector<asPredictorOper*> predictors, const wxString& method,
-                                      asPredictor* result);
+    bool PreprocessRealtimePredictors(vector<asPredictorOper*> predictors, const wxString& method, asPredictor* result);
 
     bool GetAnalogsDates(asResultsForecast& results, asParametersForecast& params, int iStep);
 

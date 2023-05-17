@@ -45,7 +45,7 @@ asPredictorsManager::asPredictorsManager(wxListBox* listPredictors, asWorkspace*
       m_date(-1),
       m_forecastTimeStepHours(6),
       m_leadTimeNb(5),
-      m_needsDataReload(true){}
+      m_needsDataReload(true) {}
 
 /**
  * The destructor of the class handling the predictor data for the Viewer.
@@ -100,7 +100,8 @@ bool asPredictorsManager::LoadData() {
         }
 
         if (!predictor->Load(area, m_date + m_hours[selection] / 24, m_levels[selection])) {
-            wxLogError(_("The variable %s from %s could not be loaded."), m_dataIds[selection], m_datasetIds[selection]);
+            wxLogError(_("The variable %s from %s could not be loaded."), m_dataIds[selection],
+                       m_datasetIds[selection]);
             wxDELETE(predictor);
             return false;
         }
@@ -116,7 +117,8 @@ bool asPredictorsManager::LoadData() {
         }
 
         if (!m_predictor->Load(area, m_date + m_hours[selection] / 24, m_levels[selection])) {
-            wxLogError(_("The variable %s from %s could not be loaded."), m_dataIds[selection], m_datasetIds[selection]);
+            wxLogError(_("The variable %s from %s could not be loaded."), m_dataIds[selection],
+                       m_datasetIds[selection]);
             wxDELETE(m_predictor);
             return false;
         }
@@ -153,7 +155,7 @@ float* asPredictorsManager::GetData() {
  */
 float* asPredictorsManager::GetDataRow(int row) {
     wxASSERT(m_data->rows() > row);
-    return &(*m_data)(row,0);
+    return &(*m_data)(row, 0);
 }
 
 /**

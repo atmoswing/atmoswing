@@ -34,13 +34,13 @@
 class asAreaGridGeneric : public asAreaGrid {
   public:
     asAreaGridGeneric(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
-                  int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
+                      int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
     asAreaGridGeneric(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
-                  bool isLatLon = true);
+                      bool isLatLon = true);
 
     asAreaGridGeneric(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
-                  bool isLatLon = true);
+                      bool isLatLon = true);
 
     ~asAreaGridGeneric() override = default;
 

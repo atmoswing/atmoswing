@@ -56,9 +56,9 @@ class asWorkspace : public wxObject {
 
     void ClearPredictorDirs();
 
-    void AddPredictorDir(const wxString &id, const wxString &dir);
+    void AddPredictorDir(const wxString& id, const wxString& dir);
 
-    wxString GetPredictorId(int i, const wxString &defVal = wxEmptyString);
+    wxString GetPredictorId(int i, const wxString& defVal = wxEmptyString);
 
     wxString GetPredictorDir(int i);
 

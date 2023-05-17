@@ -49,11 +49,11 @@
 #include "asProcessorCuda.cuh"
 #endif
 
-bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive,
-                                  vector<asPredictor*> predictorsTarget, asTimeArray& timeArrayArchiveData,
-                                  asTimeArray& timeArrayArchiveSelection, asTimeArray& timeArrayTargetData,
-                                  asTimeArray& timeArrayTargetSelection, vector<asCriteria*> criteria,
-                                  asParameters* params, int step, asResultsDates& results, bool& containsNaNs) {
+bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
+                                  asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayArchiveSelection,
+                                  asTimeArray& timeArrayTargetData, asTimeArray& timeArrayTargetSelection,
+                                  vector<asCriteria*> criteria, asParameters* params, int step, asResultsDates& results,
+                                  bool& containsNaNs) {
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase* pConfig = wxFileConfig::Get();
@@ -643,8 +643,7 @@ bool asProcessor::CheckTargetTimeArray(const vector<asPredictor*>& predictorsTar
     return true;
 }
 
-bool asProcessor::CheckArchiveTimeArray(const vector<asPredictor*>& predictorsArchive,
-                                        const a1d& timeArchiveData) {
+bool asProcessor::CheckArchiveTimeArray(const vector<asPredictor*>& predictorsArchive, const a1d& timeArchiveData) {
     wxASSERT(timeArchiveData.size() > 0);
     wxASSERT(!predictorsArchive.empty());
     wxASSERT(!predictorsArchive[0]->GetData().empty());
@@ -759,11 +758,10 @@ void asProcessor::InsertInArraysNoDuplicate(bool isAsc, int analogsNb, float ana
     }
 }
 
-bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive,
-                                     vector<asPredictor*> predictorsTarget, asTimeArray& timeArrayArchiveData,
-                                     asTimeArray& timeArrayTargetData, asResultsDates& anaDates,
-                                     vector<asCriteria*> criteria, asParameters* params, int step,
-                                     asResultsDates& results, bool& containsNaNs) {
+bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
+                                     asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayTargetData,
+                                     asResultsDates& anaDates, vector<asCriteria*> criteria, asParameters* params,
+                                     int step, asResultsDates& results, bool& containsNaNs) {
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase* pConfig = wxFileConfig::Get();

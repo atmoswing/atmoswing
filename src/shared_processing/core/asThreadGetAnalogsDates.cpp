@@ -36,11 +36,10 @@
 #include "asTimeArray.h"
 
 asThreadGetAnalogsDates::asThreadGetAnalogsDates(
-    vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
-    asTimeArray* timeArrayArchiveData, asTimeArray* timeArrayArchiveSelection, asTimeArray* timeArrayTargetData,
-    asTimeArray* timeArrayTargetSelection, vector<asCriteria*> criteria, asParameters* params, int step,
-    a1i& vRowsNb, a1i& vColsNb, int start, int end, a2f* finalAnalogsCriteria, a2f* finalAnalogsDates,
-    bool* containsNaNs, bool allowDuplicateDates, bool* success)
+    vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget, asTimeArray* timeArrayArchiveData,
+    asTimeArray* timeArrayArchiveSelection, asTimeArray* timeArrayTargetData, asTimeArray* timeArrayTargetSelection,
+    vector<asCriteria*> criteria, asParameters* params, int step, a1i& vRowsNb, a1i& vColsNb, int start, int end,
+    a2f* finalAnalogsCriteria, a2f* finalAnalogsDates, bool* containsNaNs, bool allowDuplicateDates, bool* success)
     : asThread(asThread::ProcessorGetAnalogsDates),
       m_pPredictorsArchive(std::move(predictorsArchive)),
       m_pPredictorsTarget(std::move(predictorsTarget)),

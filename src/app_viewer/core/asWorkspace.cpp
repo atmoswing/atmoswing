@@ -264,12 +264,12 @@ void asWorkspace::ClearPredictorDirs() {
     m_predictorDirs.clear();
 }
 
-void asWorkspace::AddPredictorDir(const wxString &id, const wxString &dir) {
+void asWorkspace::AddPredictorDir(const wxString& id, const wxString& dir) {
     m_predictorIds.push_back(id);
     m_predictorDirs.push_back(dir);
 }
 
-wxString asWorkspace::GetPredictorId(int i, const wxString &defVal) {
+wxString asWorkspace::GetPredictorId(int i, const wxString& defVal) {
     if (m_predictorIds.size() < i) {
         return defVal;
     }

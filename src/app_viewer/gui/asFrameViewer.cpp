@@ -26,9 +26,10 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
+#include "asFrameViewer.h"
+
 #include "AtmoswingAppViewer.h"
 #include "asFramePredictandDB.h"
-#include "asFrameViewer.h"
 
 #if defined(__WIN32__)
 #include "asThreadViewerLayerManagerReload.h"
@@ -43,9 +44,9 @@
 #include "asFileText.h"
 #include "asFrameAbout.h"
 #include "asFrameGridAnalogsValues.h"
-#include "asFramePredictors.h"
 #include "asFramePlotDistributions.h"
 #include "asFramePlotTimeSeries.h"
+#include "asFramePredictors.h"
 #include "asFramePreferencesViewer.h"
 #include "asWizardWorkspace.h"
 #include "vrlayervector.h"
@@ -119,28 +120,27 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
     m_menuFile->Insert(1, asID_MENU_RECENT, _("Open recent"), menuOpenRecent);
 
     // Toolbar
-    m_toolBar->AddTool(asID_OPEN, wxT("Open"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::OPEN), wxNullBitmap,
-                       wxITEM_NORMAL, _("Open forecast"), _("Open a forecast"), nullptr);
-    m_toolBar->AddTool(asID_SELECT, wxT("Select"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_SELECT),
-                       wxNullBitmap, wxITEM_NORMAL, _("Select"), _("Select data on the map"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN),
-                       wxNullBitmap, wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
+    m_toolBar->AddTool(asID_OPEN, wxT("Open"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::OPEN), wxNullBitmap, wxITEM_NORMAL,
+                       _("Open forecast"), _("Open a forecast"), nullptr);
+    m_toolBar->AddTool(asID_SELECT, wxT("Select"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_SELECT), wxNullBitmap,
+                       wxITEM_NORMAL, _("Select"), _("Select data on the map"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN), wxNullBitmap,
+                       wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
     m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT),
                        wxNullBitmap, wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), nullptr);
-    m_toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_MOVE),
-                       wxNullBitmap, wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_FIT),
-                       wxNullBitmap, wxITEM_NORMAL, _("Zoom to visible layers"),
+    m_toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_MOVE), wxNullBitmap,
+                       wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
+    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_FIT), wxNullBitmap,
+                       wxITEM_NORMAL, _("Zoom to visible layers"),
                        _("Zoom view to the full extent of all visible layers"), nullptr);
     m_toolBar->AddTool(asID_FRAME_PLOTS, wxT("Open distributions plots"),
-                       asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_DISTRIBUTIONS),
-                       wxNullBitmap, wxITEM_NORMAL, _("Open distributions plots"),
-                       _("Open distributions plots"), nullptr);
+                       asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_DISTRIBUTIONS), wxNullBitmap, wxITEM_NORMAL,
+                       _("Open distributions plots"), _("Open distributions plots"), nullptr);
     m_toolBar->AddTool(asID_FRAME_GRID, wxT("Open analogs list"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_ANALOGS),
                        wxNullBitmap, wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), nullptr);
     m_toolBar->AddTool(asID_FRAME_PREDICTORS, wxT("Open predictor maps"),
-                       asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_PREDICTORS), wxNullBitmap,
-                       wxITEM_NORMAL, _("Open predictor maps"), _("Open predictor maps"), nullptr);
+                       asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_PREDICTORS), wxNullBitmap, wxITEM_NORMAL,
+                       _("Open predictor maps"), _("Open predictor maps"), nullptr);
     m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
                        wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
@@ -269,7 +269,6 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
 }
 
 asFrameViewer::~asFrameViewer() {
-
     SaveRecentFiles();
 
     // Save preferences
@@ -756,7 +755,7 @@ void asFrameViewer::OpenFramePlots(wxCommandEvent& event) {
         wxBusyCursor wait;
 
         auto framePlot = new asFramePlotDistributions(this, m_forecastViewer->GetMethodSelection(),
-                                                       m_forecastViewer->GetForecastSelection(), m_forecastManager);
+                                                      m_forecastViewer->GetForecastSelection(), m_forecastManager);
 
         if (g_ppiScaleDc > 1) {
             wxSize frameSize = framePlot->GetSize();
@@ -777,7 +776,7 @@ void asFrameViewer::OpenFrameGrid(wxCommandEvent& event) {
         wxBusyCursor wait;
 
         auto frameGrid = new asFrameGridAnalogsValues(this, m_forecastViewer->GetMethodSelection(),
-                                                       m_forecastViewer->GetForecastSelection(), m_forecastManager);
+                                                      m_forecastViewer->GetForecastSelection(), m_forecastManager);
 
         if (g_ppiScaleDc > 1) {
             wxSize frameSize = frameGrid->GetSize();
@@ -797,8 +796,8 @@ void asFrameViewer::OpenFramePredictors(wxCommandEvent& event) {
         wxBusyCursor wait;
 
         auto framePredictors = new asFramePredictors(this, m_forecastManager, &m_workspace,
-                                                      m_forecastViewer->GetMethodSelection(),
-                                                      m_forecastViewer->GetForecastSelection());
+                                                     m_forecastViewer->GetMethodSelection(),
+                                                     m_forecastViewer->GetForecastSelection());
 
         if (g_ppiScaleDc > 1) {
             wxSize frameSize = framePredictors->GetSize();
