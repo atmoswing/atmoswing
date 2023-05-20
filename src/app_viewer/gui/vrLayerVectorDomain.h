@@ -47,7 +47,7 @@ class vrLayerVectorDomain : public vrLayerVectorOGR {
     vrLayerVectorDomain();
 
     /**
-     * The destructor for the vroomgis layer class containing the spatial window.
+     * The destructor for the vroomgis layer class showing the spatial window.
      */
     ~vrLayerVectorDomain() override;
 

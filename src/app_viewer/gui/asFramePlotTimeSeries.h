@@ -36,13 +36,34 @@ class asForecastManager;
 
 class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
   public:
+    /**
+     * Constructor.
+     * 
+     * @param parent Parent window.
+     * @param selectedMethod The selected method.
+     * @param selectedForecast The selected forecast.
+     * @param selectedStation The selected station.
+     * @param forecastManager The forecast manager.
+     * @param id Window ID.
+     */
     asFramePlotTimeSeries(wxWindow* parent, int selectedMethod, int selectedForecast, int selectedStation,
                           asForecastManager* forecastManager, wxWindowID id = asWINDOW_PLOTS_TIMESERIES);
 
+    /**
+     * Destructor.
+     */
     ~asFramePlotTimeSeries() override = default;
 
+    /**
+     * Initialize the frame.
+     */ 
     void Init();
 
+    /**
+     * Plot the data.
+     * 
+     * @return True if plotted successfully.
+     */
     bool Plot();
 
   protected:
@@ -59,28 +80,64 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
         Interpretation
     };
 
-    asPanelPlot* m_panelPlot;
-    asForecastManager* m_forecastManager;
-    int m_selectedStation;
-    int m_selectedMethod;
-    int m_selectedForecast;
-    float m_maxVal;
-    vd m_leadTimes;
+    asPanelPlot* m_panelPlot; /**< The plot panel. */
+    asForecastManager* m_forecastManager; /**< The forecast manager. */
+    int m_selectedStation; /**< The selected station (index). */
+    int m_selectedMethod; /**< The selected method (index). */
+    int m_selectedForecast; /**< The selected forecast (index). */
+    float m_maxVal; /**< The maximum value of the time series. */
+    vd m_leadTimes; /**< The lead times. */
 
+    /**
+     * Event triggered when the frame is closed.
+     * 
+     * @param evt The event.
+     */
     void OnClose(wxCloseEvent& evt);
 
+    /**
+     * Event triggered when the choice of the items to show has changed in the table of content.
+     * 
+     * @param event The command event.
+     */
     void OnTocSelectionChange(wxCommandEvent& event) override;
 
+    /**
+     * Event triggered when the export to TXT button is pressed.
+     * 
+     * @param event The command event.
+     */
     void OnExportTXT(wxCommandEvent& event) override;
 
+    /**
+     * Event triggered when the export to SVG button is pressed.
+     * 
+     * @param event The command event.
+     */
     void OnExportSVG(wxCommandEvent& event);
 
+    /**
+     * Event triggered when the preview button is pressed.
+     * 
+     * @param event The command event.
+     */
     void OnPreview(wxCommandEvent& event) override;
 
+    /**
+     * Event triggered when the print button is pressed.
+     * 
+     * @param event The command event.
+     */
     void OnPrint(wxCommandEvent& event) override;
 
+    /**
+     * Initialize the check list box.
+     */
     void InitCheckListBox();
 
+    /**
+     * Initialize the plot control.
+     */
     void InitPlotCtrl();
 
     /**
@@ -90,22 +147,55 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
      */
     void ResetExtent(wxCommandEvent& event) override;
 
+    /**
+     * Plot all return periods.
+     */
     void PlotAllReturnPeriods();
 
+    /**
+     * Plot the given return period.
+     *
+     * @param returnPeriod The given return period.
+     */
     void PlotReturnPeriod(int returnPeriod);
 
+    /**
+     * Plot all analogs.
+     */
     void PlotAllAnalogs();
 
+    /**
+     * Plot the best analogs as points.
+     *
+     * @param pointsNb The number of analogs.
+     */
     void PlotBestAnalogs(int pointsNb);
 
+    /**
+     * Plot the classic quantiles.
+     */
     void PlotClassicQuantiles();
 
+    /** 
+     * Plot the past forecasts.
+     */
     void PlotPastForecasts();
 
+    /**
+     * Plot a past forecast.
+     *
+     * @param i The index of the forecast.
+     */
     void PlotPastForecast(int i);
 
+    /**
+     * Plot all quantiles.
+     */
     void PlotAllQuantiles();
 
+    /**
+     * Plot the interpretation curve (not enabled yet).
+     */
     void PlotInterpretation();
 
     DECLARE_EVENT_TABLE()

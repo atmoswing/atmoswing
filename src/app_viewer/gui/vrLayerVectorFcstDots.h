@@ -47,12 +47,30 @@ class vrLabel;
 
 class vrLayerVectorFcstDots : public vrLayerVectorOGR {
   public:
+    /**
+     * The constructor for the vroomgis layer class showing the forecast values as dots.
+     */
     vrLayerVectorFcstDots();
 
+    /**
+     * The destructor for the vroomgis layer class showing the forecast values as dots.
+     */
     ~vrLayerVectorFcstDots() override;
 
+    /**
+     * Add a feature to the layer.
+     * 
+     * @param geometry The geometry of the feature.
+     * @param data The data of the feature.
+     * @return The ID of the feature.
+     */
     long AddFeature(OGRGeometry* geometry, void* data) override;
 
+    /**
+     * Set the maximum value of the forecast values.
+     * 
+     * @param val The maximum value.
+     */
     void SetMaxValue(double val) {
         if (val < 0.1) {
             wxLogWarning(
@@ -64,15 +82,46 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
     }
 
   protected:
-    double m_valueMax;
+    double m_valueMax; /**< The maximum value of the forecast values. */
 
+    /**
+     * Draw a point (vroomgis function).
+     * 
+     * @param dc The device context.
+     * @param feature The feature.
+     * @param geometry The geometry.
+     * @param coord The coordinates.
+     * @param render The render.
+     * @param label The label.
+     * @param pxsize The pixel size.
+     */
     void _DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry, const wxRect2DDouble& coord,
                     const vrRender* render, vrLabel* label, double pxsize) override;
 
+    /**
+     * Create the path for the dot.
+     * 
+     * @param path The path.
+     * @param center The center of the dot.
+     */
     static void CreatePath(wxGraphicsPath& path, const wxPoint& center);
 
+    /**
+     * Paint the dots.
+     * 
+     * @param gdc The graphics context.
+     * @param path The path.
+     * @param value The predictand value.
+     */
     void Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value) const;
 
+    /**
+     * Add a label to the dot.
+     * 
+     * @param gdc The graphics context.
+     * @param center The center of the dot.
+     * @param value The predictand value.
+     */
     static void AddLabel(wxGraphicsContext* gdc, const wxPoint& center, double value);
 };
 

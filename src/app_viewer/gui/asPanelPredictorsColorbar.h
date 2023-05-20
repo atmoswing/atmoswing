@@ -63,26 +63,26 @@ class asPanelPredictorsColorbarDrawing : public wxPanel {
     void DrawColorbar(double valMin, double valMax, double step);
 
     /**
-     * Sets the render.
+     * Set the render.
      *
      * @param render The render.
      */
     void SetRender(vrRenderRasterPredictor* render);
 
   private:
-    wxBitmap* m_bmpColorbar;
-    wxGraphicsContext* m_gdc;
-    vrRenderRasterPredictor* m_render;
+    wxBitmap* m_bmpColorbar; /**< The bitmap for the colorbar. */
+    wxGraphicsContext* m_gdc; /**< The graphics context. */
+    vrRenderRasterPredictor* m_render; /**< The render. */
 
     /**
-     * Creates the colorbar path.
+     * Create the colorbar path.
      *
      * @param path The path.
      */
     void CreateColorbarPath(wxGraphicsPath& path);
 
     /**
-     * Creates the colorbar text.
+     * Create the colorbar text.
      *
      * @param gc The graphics context.
      * @param path The path.
@@ -93,7 +93,7 @@ class asPanelPredictorsColorbarDrawing : public wxPanel {
     void CreateColorbarText(wxGraphicsContext* gc, wxGraphicsPath& path, double valMin, double valMax, double step);
 
     /**
-     * Fills the colorbar.
+     * Fill the colorbar.
      *
      * @param gc The graphics context.
      * @param path The path.
@@ -153,11 +153,11 @@ class asPanelPredictorsColorbar : public wxPanel {
     void SetRender(vrRenderRasterPredictor* render);
 
   private:
-    wxBoxSizer* m_sizerContent;
-    asPanelPredictorsColorbarDrawing* m_panelDrawing;
-    double m_valMin;
-    double m_valMax;
-    double m_step;
+    wxBoxSizer* m_sizerContent; /**< The sizer for the content. */
+    asPanelPredictorsColorbarDrawing* m_panelDrawing; /**< The panel for the drawing. */
+    double m_valMin; /**< The minimum value. */
+    double m_valMax; /**< The maximum value. */
+    double m_step; /**< The step for the ticks. */
 
     /**
      * Paint event.

@@ -65,7 +65,7 @@ class asPredictorOperMfArpege : public asPredictorOper {
 
   protected:
     /**
-     * Convert the tima array from hours to MJD.
+     * Convert the time array from hours to MJD.
      *
      * @param time The time array in hours (as in the files).
      * @param refValue The reference value to add to the time array (as in the files).
