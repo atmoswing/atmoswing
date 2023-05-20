@@ -1,6 +1,14 @@
 # Changelog AtmoSwing
 
 
+## v3.0.7 - 20 May 2023
+
+### Fixed
+
+*   Fixing issue with 6-hourly forecasts.
+*   Fixing missing level value to display ARPEGE data.
+
+
 ## v3.0.6 - 16 May 2023
 
 ### Added
