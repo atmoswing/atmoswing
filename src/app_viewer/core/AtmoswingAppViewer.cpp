@@ -123,15 +123,12 @@ bool AtmoswingAppViewer::OnInit() {
 }
 
 void AtmoswingAppViewer::OnInitCmdLine(wxCmdLineParser& parser) {
-    // From http://wiki.wxwidgets.org/Command-Line_Arguments
     parser.SetDesc(g_cmdLineDesc);
     // Must refuse '/' as parameter starter or cannot use "/path" style paths
     parser.SetSwitchChars(wxT("-"));
 }
 
 bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser) {
-    // From http://wiki.wxwidgets.org/Command-Line_Arguments
-
     // Check if the user asked for command-line help
     if (parser.Found("h")) {
         parser.Usage();

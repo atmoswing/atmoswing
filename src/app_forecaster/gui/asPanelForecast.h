@@ -39,6 +39,12 @@ class asBatchForecasts;
 
 class asPanelForecast : public asPanelForecastVirtual {
   public:
+    /**
+     * Constructor.
+     *
+     * @param parent The parent window.
+     * @param batch The batch of forecasts.
+     */
     explicit asPanelForecast(wxWindow* parent, asBatchForecasts* batch);
 
     /**
@@ -48,6 +54,9 @@ class asPanelForecast : public asPanelForecastVirtual {
      */
     bool Layout() override;
 
+    /**
+     * Check if the forecast file exists.
+     */
     void CheckFileExists();
 
     /**
@@ -57,27 +66,47 @@ class asPanelForecast : public asPanelForecastVirtual {
      */
     void SetTooTipContent(const wxString& filePath);
 
+    /**
+     * Access the LED.
+     * 
+     * @return The LED pointer.
+     */
     awxLed* GetLed() const {
         return m_led;
     }
 
+    /**
+     * Set the panel manager.
+     * 
+     * @param panelManager The panel manager.
+     */
     void SetPanelsManager(asPanelsManagerForecasts* panelManager) {
         m_panelsManager = panelManager;
     }
 
+    /**
+     * Access the forecast parameters file name.
+     * 
+     * @return The file name.
+     */
     wxString GetParametersFileName() const {
         return m_textParametersFileName->GetLabel();
     }
 
+    /**
+     * Set the forecast parameters file name.
+     * 
+     * @param val The file name.
+     */
     void SetParametersFileName(const wxString& val) {
         m_textParametersFileName->SetLabel(val);
         CheckFileExists();
     }
 
   protected:
-    wxWindow* m_parentFrame;
-    awxLed* m_led;
-    asBatchForecasts* m_batchForecasts;
+    wxWindow* m_parentFrame; /**< The parent frame. */
+    awxLed* m_led; /**< The LED. */
+    asBatchForecasts* m_batchForecasts; /**< The batch of forecasts. */
 
     /**
      * Close the panel.
@@ -101,7 +130,7 @@ class asPanelForecast : public asPanelForecastVirtual {
     void OnDetailsForecastFile(wxCommandEvent& event) override;
 
   private:
-    asPanelsManagerForecasts* m_panelsManager;
+    asPanelsManagerForecasts* m_panelsManager; /**< The panels manager. */
 };
 
 #endif

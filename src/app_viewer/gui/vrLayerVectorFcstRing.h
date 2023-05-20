@@ -47,12 +47,30 @@ class vrLabel;
 
 class vrLayerVectorFcstRing : public vrLayerVectorOGR {
   public:
+    /**
+     * The constructor for the vroomgis layer class showing the forecast values as a ring.
+     */
     vrLayerVectorFcstRing();
 
+    /**
+     * The destructor for the vroomgis layer class showing the forecast values as a ring.
+     */
     ~vrLayerVectorFcstRing() override;
 
+    /**
+     * Add a feature to the layer.
+     * 
+     * @param geometry The geometry of the feature.
+     * @param data The data of the feature.
+     * @return The feature ID.
+     */
     long AddFeature(OGRGeometry* geometry, void* data) override;
 
+    /**
+     * Set the maximum value of the forecast.
+     * 
+     * @param val The maximum value.
+     */
     void SetMaxValue(double val) {
         if (val < 0.1) {
             wxLogWarning(
@@ -64,17 +82,57 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
     }
 
   protected:
-    double m_valueMax;
+    double m_valueMax; /**< The maximum value of the forecast. */
 
+    /**
+     * Draw the point (vroomgis function).
+     * 
+     * @param dc The device context.
+     * @param feature The feature.
+     * @param geometry The geometry.
+     * @param coord The coordinates.
+     * @param render The render.
+     * @param label The label.
+     * @param pxsize The pixel size.
+     */
     void _DrawPoint(wxDC* dc, OGRFeature* feature, OGRGeometry* geometry, const wxRect2DDouble& coord,
                     const vrRender* render, vrLabel* label, double pxsize) override;
 
+    /**
+     * Create the path for the ring.
+     * 
+     * @param path The path.
+     * @param center The center of the ring.
+     * @param segmentsTotNb The total number of segments.
+     * @param segmentNb The current segment number.
+     */
     void CreatePathPatch(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb);
 
+    /**
+     * Create the path for the tick.
+     * 
+     * @param path The path.
+     * @param center The center of the ring.
+     * @param segmentsTotNb The total number of segments.
+     * @param segmentNb The current segment number.
+     */
     void CreatePathTick(wxGraphicsPath& path, const wxPoint& center, int segmentsTotNb, int segmentNb);
 
+    /**
+     * Create the path aroung the ring.
+     * 
+     * @param path The path.
+     * @param center The center of the ring.
+     */
     void CreatePathAround(wxGraphicsPath& path, const wxPoint& center);
 
+    /**
+     * Paint the path.
+     * 
+     * @param gdc The graphics context.
+     * @param path The path.
+     * @param value The value.
+     */
     void Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, double value) const;
 };
 

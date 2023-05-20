@@ -38,7 +38,7 @@
 class vrLayerRasterPredictor : public vrLayerRasterGDAL {
   public:
     /**
-     * The constructor for the vroomgis layer class containing raster predictor data.
+     * The constructor for the vroomgis layer class showing raster predictor data.
      *
      * @param predictorsManager The predictors manager.
      * @param minVal The minimum value.
@@ -47,12 +47,12 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
     vrLayerRasterPredictor(asPredictorsManager* predictorsManager, double minVal, double maxVal);
 
     /**
-     * The destructor for the vroomgis layer class containing raster predictor data.
+     * The destructor for the vroomgis layer class showing raster predictor data.
      */
     ~vrLayerRasterPredictor() override;
 
     /**
-     * Creates the layer in memory.
+     * Create the layer in memory.
      *
      * @param name The filename.
      * @return True if successful.
@@ -60,7 +60,7 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
     bool CreateInMemory(const wxFileName& name);
 
     /**
-     * Gets the layer name to display.
+     * Get the layer name to display.
      *
      * @return The layer name.
      */
@@ -72,7 +72,7 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
 
   protected:
     /**
-     * Transforms the raster data into a bitmap.
+     * Transform the raster data into a bitmap.
      *
      * @param imgData The image data pointer.
      * @param outImgPxSize The output image size.
@@ -84,13 +84,13 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
                                 const vrRender* render);
 
   private:
-    asPredictorsManager* m_predictorsManager;
-    asPredictor::Parameter m_parameter;
-    double m_minVal;
-    double m_maxVal;
+    asPredictorsManager* m_predictorsManager; /**< The predictors manager. */
+    asPredictor::Parameter m_parameter; /**< The meteorological parameter. */
+    double m_minVal; /**< The minimum value. */
+    double m_maxVal; /**< The maximum value. */
 
     /**
-     * Closes the layer and the dataset.
+     * Close the layer and the dataset.
      *
      * @return True if successful.
      */

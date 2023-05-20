@@ -68,10 +68,28 @@ class asFileGrib : public asFile {
      */
     bool Open() override;
 
+    /**
+     * Close the file.
+     *
+     * @return True if successful.
+     */
     bool Close() override;
 
+    /**
+     * Set the index at the desired position in the file.
+     * 
+     * @param gribCode The GRIB code of the desired variable.
+     * @param level The desired vertical level.
+     * @param useWarnings True to use warnings.
+     * @return True if successful.
+     */
     bool SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings = true);
 
+    /**
+     * Set the index at the desired position in the file without filtering by the vertical level value.
+     * 
+     * @param gribCode The GRIB code of the desired variable.
+     */
     bool SetIndexPositionAnyLevel(vi gribCode);
 
     bool GetVarArray(const int IndexStart[], const int IndexCount[], float* pValue);

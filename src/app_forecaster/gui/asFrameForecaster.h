@@ -54,14 +54,14 @@ class asFrameForecaster : public asFrameForecasterVirtual {
     void SetForecastDate(double date);
 
   protected:
-    asLogWindow* m_logWindow;
-    asMethodForecasting* m_forecaster;
-    awxLed* m_ledDownloading;
-    awxLed* m_ledLoading;
-    awxLed* m_ledProcessing;
-    awxLed* m_ledSaving;
-    asBatchForecasts m_batchForecasts;
-    wxFileHistory* m_fileHistory;
+    asLogWindow* m_logWindow; /**< The log window. */
+    asMethodForecasting* m_forecaster; /**< The forecasting method. */
+    awxLed* m_ledDownloading; /**< The LED for downloading. */
+    awxLed* m_ledLoading; /**< The LED for loading. */
+    awxLed* m_ledProcessing; /**< The LED for processing. */
+    awxLed* m_ledSaving; /**< The LED for saving. */
+    asBatchForecasts m_batchForecasts; /**< The batch forecasts object. */
+    wxFileHistory* m_fileHistory; /**< The file history. */
 
     void OnOpenBatchForecasts(wxCommandEvent& event) override;
 
@@ -136,7 +136,7 @@ class asFrameForecaster : public asFrameForecasterVirtual {
     void IncrementOverallProgress();
 
   private:
-    asPanelsManagerForecasts* m_panelsManager;
+    asPanelsManagerForecasts* m_panelsManager; /**< The panels manager. */
 
     DECLARE_EVENT_TABLE()
 };

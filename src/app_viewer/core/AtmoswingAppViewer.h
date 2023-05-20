@@ -40,12 +40,29 @@ class asThreadsManager;
 
 class AtmoswingAppViewer : public wxApp {
   public:
+    /**
+     * The initialization of the application.
+     */
     bool OnInit() override;
 
+    /**
+     * Clean up on exit.
+     */
     int OnExit() override;
 
+    /**
+     * Initialize the command line parser.
+     * 
+     * @param parser The command line parser.
+     * @note From http://wiki.wxwidgets.org/Command-Line_Arguments
+     */
     void OnInitCmdLine(wxCmdLineParser& parser) override;
 
+    /**
+     * Proceed to the command line parsing.
+     * 
+     * @param parser The command line parser.
+    */
     bool OnCmdLineParsed(wxCmdLineParser& parser) override;
 
     /**
@@ -54,7 +71,7 @@ class AtmoswingAppViewer : public wxApp {
     static void InitLanguageSupport();
 
   private:
-    wxSingleInstanceChecker* m_singleInstanceChecker;
+    wxSingleInstanceChecker* m_singleInstanceChecker; /**< The single instance checker. */
 };
 
 DECLARE_APP(AtmoswingAppViewer);

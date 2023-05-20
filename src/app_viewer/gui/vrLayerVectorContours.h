@@ -42,12 +42,12 @@
 class vrLayerVectorContours : public vrLayerVectorOGR {
   public:
     /**
-     * The constructor for the vroomgis layer class containing the contours.
+     * The constructor for the vroomgis layer class showing the contours.
      */
     vrLayerVectorContours();
 
     /**
-     * The destructor for the vroomgis layer class containing the contours.
+     * The destructor for the vroomgis layer class showing the contours.
      */
     ~vrLayerVectorContours() override;
 

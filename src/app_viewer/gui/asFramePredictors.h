@@ -83,17 +83,17 @@ class asFramePredictors : public asFramePredictorsVirtual {
     ~asFramePredictors() override;
 
     /**
-     * Initializes the frame.
+     * Initialize the frame.
      */
     void Init();
 
     /**
-     * Initializes the map extent.
+     * Initialize the map extent.
      */
     void InitExtent();
 
     /**
-     * Opens a list of layers.
+     * Open a list of layers.
      *
      * @param names Array of layer names to open.
      * @return True if successful.
@@ -101,191 +101,196 @@ class asFramePredictors : public asFramePredictorsVirtual {
     bool OpenLayers(const wxArrayString& names);
 
     /**
-     * Opens the default maps layers (background).
+     * Open the default maps layers (background).
      */
     void OpenDefaultLayers();
 
   protected:
-    wxKeyboardState m_KeyBoardState;
+    wxKeyboardState m_KeyBoardState; /**< Keyboard state. */
 
+    /**
+     * Handle the right click on the map.
+     * 
+     * @param event The mouse event.
+     */
     virtual void OnRightClick(wxMouseEvent& event) {
         event.Skip();
     }
 
   private:
-    asForecastManager* m_forecastManager;
-    asPredictorsRenderer* m_predictorsRenderer;
-    asPredictorsManager* m_predictorsManagerTarget;
-    asPredictorsManager* m_predictorsManagerAnalog;
-    asWorkspace* m_workspace;
-    asPanelPredictorsColorbar* m_panelPredictorsColorbarLeft;
-    asPanelPredictorsColorbar* m_panelPredictorsColorbarRight;
-    int m_selectedMethod;
-    int m_selectedForecast;
-    int m_selectedTargetDate;
-    int m_selectedAnalogDate;
-    int m_selectedPredictor;
-    bool m_syncroTool;
-    bool m_displayPanelLeft;
-    bool m_displayPanelRight;
-    wxOverlay m_overlay;
+    asForecastManager* m_forecastManager; /**< The forecast manager. */
+    asPredictorsRenderer* m_predictorsRenderer; /**< The predictors renderer. */
+    asPredictorsManager* m_predictorsManagerTarget; /**< The predictors manager for the target date. */
+    asPredictorsManager* m_predictorsManagerAnalog; /**< The predictors manager for the analog date. */
+    asWorkspace* m_workspace; /**< The workspace. */
+    asPanelPredictorsColorbar* m_panelPredictorsColorbarLeft; /**< The left colorbar. */
+    asPanelPredictorsColorbar* m_panelPredictorsColorbarRight; /**< The right colorbar. */
+    int m_selectedMethod; /**< The selected method (index). */
+    int m_selectedForecast; /**< The selected forecast (index). */
+    int m_selectedTargetDate; /**< The selected target date (index). */
+    int m_selectedAnalogDate; /**< The selected analog date (index). */
+    int m_selectedPredictor; /**< The selected predictor (index). */
+    bool m_syncroTool; /**< A flag to indicate if the syncro tool is active. */
+    bool m_displayPanelLeft; /**< A flag to indicate if the left panel is displayed. */
+    bool m_displayPanelRight; /**< A flag to indicate if the right panel is displayed. */
+    wxOverlay m_overlay; /**< The overlay. */
 #if defined(__WIN32__)
-    wxCriticalSection m_critSectionViewerLayerManager;
+    wxCriticalSection m_critSectionViewerLayerManager; /**< The critical section for the viewer layer manager. */
 #endif
 
     // Vroomgis
-    vrLayerManager* m_layerManager;
-    vrViewerTOCList* m_tocCtrlLeft;
-    vrViewerTOCList* m_tocCtrlRight;
-    vrViewerLayerManager* m_viewerLayerManagerLeft;
-    vrViewerLayerManager* m_viewerLayerManagerRight;
-    vrViewerDisplay* m_displayCtrlLeft;
-    vrViewerDisplay* m_displayCtrlRight;
+    vrLayerManager* m_layerManager; /**< The layer manager. */
+    vrViewerTOCList* m_tocCtrlLeft; /**< The left TOC control. */
+    vrViewerTOCList* m_tocCtrlRight; /**< The right TOC control. */
+    vrViewerLayerManager* m_viewerLayerManagerLeft; /**< The left viewer layer manager. */
+    vrViewerLayerManager* m_viewerLayerManagerRight; /**< The right viewer layer manager. */
+    vrViewerDisplay* m_displayCtrlLeft; /**< The left display control. */
+    vrViewerDisplay* m_displayCtrlRight; /**< The right display control. */
 
     /**
-     * Updates the methods list.
+     * Update the methods list.
      */
     void UpdateMethodsList();
 
     /**
-     * Updates the forecasts list.
+     * Update the forecasts list.
      */
     void UpdateForecastList();
 
     /**
-     * Updates the available predictors list.
+     * Update the available predictors list.
      */
     void UpdatePredictorsList();
 
     /**
-     * Updates the predictors properties.
+     * Update the predictors properties.
      */
     void UpdatePredictorsProperties();
 
     /**
-     * Updates the target dates list.
+     * Update the target dates list.
      */
     void UpdateTargetDatesList();
 
     /**
-     * Updates the analog dates list.
+     * Update the analog dates list.
      */
     void UpdateAnalogDatesList();
 
     /**
-     * Opens the preferences frame.
+     * Open the preferences frame.
      *
      * @param event The command event.
      */
     void OpenFramePreferences(wxCommandEvent& event);
 
     /**
-     * Moves the map separator to the right.
+     * Move the map separator to the right.
      *
      * @param event The command event.
      */
     void OnSwitchRight(wxCommandEvent& event) override;
 
     /**
-     * Moves the map separator to the left.
+     * Move the map separator to the left.
      *
      * @param event The command event.
      */
     void OnSwitchLeft(wxCommandEvent& event) override;
 
     /**
-     * Updates the map when the predictor selection changes.
+     * Update the map when the predictor selection changes.
      *
      * @param event The command event.
      */
     void OnPredictorSelectionChange(wxCommandEvent& event) override;
 
     /**
-     * Updates the map and the list of forecasts when the method changes.
+     * Update the map and the list of forecasts when the method changes.
      *
      * @param event The command event.
      */
     void OnMethodChange(wxCommandEvent& event) override;
 
     /**
-     * Updates the map and the list of target dates when the forecast changes.
+     * Update the map and the list of target dates when the forecast changes.
      *
      * @param event The command event.
      */
     void OnForecastChange(wxCommandEvent& event) override;
 
     /**
-     * Updates the map and the analog dates when the target date changes.
+     * Update the map and the analog dates when the target date changes.
      *
      * @param event The command event.
      */
     void OnTargetDateChange(wxCommandEvent& event) override;
 
     /**
-     * Updates the map when the analog date changes.
+     * Update the map when the analog date changes.
      *
      * @param event The command event.
      */
     void OnAnalogDateChange(wxCommandEvent& event) override;
 
     /**
-     * Opens a dialog to select a layer.
+     * Open a dialog to select a layer.
      *
      * @param event The command event.
      */
     void OnOpenLayer(wxCommandEvent& event) override;
 
     /**
-     * Opens a dialog to select a layer to close.
+     * Open a dialog to select a layer to close.
      *
      * @param event The command event.
      */
     void OnCloseLayer(wxCommandEvent& event) override;
 
     /**
-     * Activates or deactivates the syncro mode between the two maps.
+     * Activate or deactivates the syncro mode between the two maps.
      *
      * @param event The command event.
      */
     void OnSyncroToolSwitch(wxCommandEvent& event);
 
     /**
-     * Sets the zoom in tool.
+     * Set the zoom in tool.
      *
      * @param event The command event.
      */
     void OnToolZoomIn(wxCommandEvent& event);
 
     /**
-     * Sets the zoom out tool.
+     * Set the zoom out tool.
      *
      * @param event The command event.
      */
     void OnToolZoomOut(wxCommandEvent& event);
 
     /**
-     * Sets the pan tool.
+     * Set the pan tool.
      *
      * @param event The command event.
      */
     void OnToolPan(wxCommandEvent& event);
 
     /**
-     * Sets the sight tool.
+     * Set the sight tool.
      *
      * @param event The command event.
      */
     void OnToolSight(wxCommandEvent& event);
 
     /**
-     * Handles the zoom to fit event.
+     * Handle the zoom to fit event.
      *
      * @param event The command event.
      */
     void OnToolZoomToFit(wxCommandEvent& event);
 
     /**
-     * Handles the different tool actions (zoom, pan, etc).
+     * Handle the different tool actions (zoom, pan, etc).
      *
      * @param event The command event.
      */
@@ -306,12 +311,12 @@ class asFramePredictors : public asFramePredictorsVirtual {
     void OnKeyUp(wxKeyEvent& event);
 
     /**
-     * Sets target and analog dates in lists and refreshes the map.
+     * Set target and analog dates in lists and refreshes the map.
      */
     void UpdateLayers();
 
     /**
-     * Gets the mean coordinates of the stations in WGS84.
+     * Get the mean coordinates of the stations in WGS84.
      *
      * @param forecast The forecast object.
      * @return The mean coordinates of the stations in WGS84.
@@ -319,12 +324,12 @@ class asFramePredictors : public asFramePredictorsVirtual {
     Coo GetStationsMeanCoordinatesWgs84(asResultsForecast* forecast);
 
     /**
-     * Reloads the left viewer layer manager.
+     * Reload the left viewer layer manager.
      */
     void ReloadViewerLayerManagerLeft();
 
     /**
-     * Reloads the right viewer layer manager.
+     * Reload the right viewer layer manager.
      */
     void ReloadViewerLayerManagerRight();
 
