@@ -228,11 +228,14 @@ class asParameters : public wxObject {
     }
 
     double GetTimeShiftDays() const {
-        double margin = 0;
-        if (m_timeMinHours < 0) {
-            margin = floor(m_timeMinHours / m_targetTimeStepHours) * m_targetTimeStepHours / 24.0;
+        if (m_timeMinHours >= 0) {
+            return 0;
         }
-        return std::abs(margin);
+        if (m_targetTimeStepHours < 24) {
+            return 0;
+        }
+
+        return std::abs(floor(m_timeMinHours / m_targetTimeStepHours) * m_targetTimeStepHours / 24.0);
     }
 
     double GetTimeSpanDays() const {
