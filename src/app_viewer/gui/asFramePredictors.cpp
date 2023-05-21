@@ -77,12 +77,12 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
       m_workspace(workspace),
       m_selectedMethod(methodRow),
       m_selectedForecast(forecastRow),
-      m_syncroTool(true),
-      m_displayPanelLeft(true),
-      m_displayPanelRight(true),
       m_selectedTargetDate(-1),
       m_selectedAnalogDate(-1),
-      m_selectedPredictor(-1) {
+      m_selectedPredictor(-1),
+      m_syncroTool(true),
+      m_displayPanelLeft(true),
+      m_displayPanelRight(true) {
     this->SetLabel(_("Predictors overview"));
 
     m_selectedForecast = wxMax(m_selectedForecast, 0);
