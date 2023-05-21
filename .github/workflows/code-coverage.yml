@@ -1,6 +1,11 @@
 name: Code coverage
 
-on: push
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - feature/*
 
 env:
   BUILD_TYPE: RelWithDebInfo
@@ -17,7 +22,7 @@ jobs:
           python-version: '3.10'
 
       - name: Install system libraries
-        run: sudo apt install lcov
+        run: sudo apt install lcov xvfb
 
       - name: Cache Conan libs
         id: cache-conan
@@ -48,7 +53,7 @@ jobs:
 
       - name: Build and run code coverage
         working-directory: ${{github.workspace}}/bin
-        run: cmake --build . --config ${{env.BUILD_TYPE}} --target atmoswing-coverage
+        run: xvfb-run cmake --build . --config ${{env.BUILD_TYPE}} --target atmoswing-coverage
 
       - name: Preparing coverage data
         working-directory: ${{github.workspace}}/bin
