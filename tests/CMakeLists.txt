@@ -13,11 +13,18 @@ file(GLOB_RECURSE src_tests_h src/*.h)
 file(GLOB_RECURSE src_tests_cpp src/*.cpp)
 list(APPEND src_tests ${src_tests_h} ${src_viewer_core_h}) # Include optimization files anyway (to test the analogue method)
 list(APPEND src_tests ${src_tests_cpp} ${src_viewer_core_cpp})
+
 if (BUILD_FORECASTER)
     file(GLOB_RECURSE src_forec_core_h ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/*.h)
     file(GLOB_RECURSE src_forec_core_cpp ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/*.cpp)
+    file(GLOB_RECURSE src_forec_gui_h ${CMAKE_SOURCE_DIR}/src/app_forecaster/gui/*.h)
+    file(GLOB_RECURSE src_forec_gui_cpp ${CMAKE_SOURCE_DIR}/src/app_forecaster/gui/*.cpp)
     list(APPEND src_tests ${src_forec_core_h})
     list(APPEND src_tests ${src_forec_core_cpp})
+    if (USE_GUI)
+        list(APPEND src_app_forecaster ${src_forec_gui_h})
+        list(APPEND src_app_forecaster ${src_forec_gui_cpp})
+    endif (USE_GUI)
     list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.h")
     list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.cpp")
     list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/AtmoswingAppForecaster.h")
@@ -30,27 +37,55 @@ else ()
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperNwsGfsTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersForecastingTest.cpp")
 endif ()
+
 if (BUILD_OPTIMIZER)
     file(GLOB_RECURSE src_optim_core_h ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.h)
     file(GLOB_RECURSE src_optim_core_cpp ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.cpp)
+    file(GLOB_RECURSE src_optim_gui_h ${CMAKE_SOURCE_DIR}/src/app_optimizer/gui/*.h)
+    file(GLOB_RECURSE src_optim_gui_cpp ${CMAKE_SOURCE_DIR}/src/app_optimizer/gui/*.cpp)
     list(APPEND src_tests ${src_optim_core_h})
     list(APPEND src_tests ${src_optim_core_cpp})
+    if (USE_GUI)
+        list(APPEND src_app_optimizer ${src_optim_gui_h})
+        list(APPEND src_app_optimizer ${src_optim_gui_cpp})
+    endif (USE_GUI)
 else ()
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asScoreTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asMethodCalibratorTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersOptimizationTest.cpp")
 endif ()
+
 if (BUILD_DOWNSCALER)
     file(GLOB_RECURSE src_downscaler_core_h ${CMAKE_SOURCE_DIR}/src/app_downscaler/core/*.h)
     file(GLOB_RECURSE src_downscaler_core_cpp ${CMAKE_SOURCE_DIR}/src/app_downscaler/core/*.cpp)
+    file(GLOB_RECURSE src_downscaler_gui_h ${CMAKE_SOURCE_DIR}/src/app_downscaler/gui/*.h)
+    file(GLOB_RECURSE src_downscaler_gui_cpp ${CMAKE_SOURCE_DIR}/src/app_downscaler/gui/*.cpp)
     list(APPEND src_tests ${src_downscaler_core_h})
     list(APPEND src_tests ${src_downscaler_core_cpp})
+    if (USE_GUI)
+        list(APPEND src_tests ${src_downsc_gui_h})
+        list(APPEND src_tests ${src_downsc_gui_cpp})
+    endif (USE_GUI)
 else ()
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorProjCmip5Test.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorProjCordexTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersDownscalingTest.cpp")
 endif ()
+
+if (BUILD_VIEWER)
+    file(GLOB_RECURSE src_viewer_core_h ${CMAKE_SOURCE_DIR}/src/app_viewer/core/*.h)
+    file(GLOB_RECURSE src_viewer_core_cpp ${CMAKE_SOURCE_DIR}/src/app_viewer/core/*.cpp)
+    file(GLOB_RECURSE src_viewer_gui_h ${CMAKE_SOURCE_DIR}/src/app_viewer/gui/*.h)
+    file(GLOB_RECURSE src_viewer_gui_cpp ${CMAKE_SOURCE_DIR}/src/app_viewer/gui/*.cpp)
+    list(APPEND src_tests ${src_viewer_core_h})
+    list(APPEND src_tests ${src_viewer_core_cpp})
+    if (USE_GUI)
+        list(APPEND src_tests ${src_viewer_gui_h})
+        list(APPEND src_tests ${src_viewer_gui_cpp})
+    endif (USE_GUI)
+endif ()
+
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.h")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.cpp")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/asGlobVarsDownscaler.h")
@@ -88,6 +123,21 @@ list(APPEND inc_dirs
         "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/"
         "${PROJECT_SOURCE_DIR}/test/src/"
         )
+if (USE_GUI)
+    list(APPEND inc_dirs
+            "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
+            "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
+            "${CMAKE_SOURCE_DIR}/src/shared_processing/gui/"
+            "${CMAKE_SOURCE_DIR}/src/app_forecaster/gui/"
+            "${CMAKE_SOURCE_DIR}/src/app_optimizer/gui/"
+            "${CMAKE_SOURCE_DIR}/src/app_downscaler/gui/"
+            "${CMAKE_SOURCE_DIR}/src/app_viewer/gui/"
+            "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxmathplot/"
+            "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxplotctrl/"
+            "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxplotctrl/include/"
+            "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxthings/include/"
+            )
+endif (USE_GUI)
 include_directories(${inc_dirs})
 
 if (USE_GUI)
