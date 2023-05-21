@@ -86,8 +86,6 @@ if (BUILD_VIEWER)
     endif (USE_GUI)
 endif ()
 
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.h")
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.cpp")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/asGlobVarsDownscaler.h")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/asGlobVarsDownscaler.cpp")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/AtmoswingAppViewer.h")
@@ -161,6 +159,13 @@ if (USE_CUDA)
     add_definitions(-DUSE_CUDA)
 endif (USE_CUDA)
 
+if (USE_GUI)
+    # vroomgis
+    FetchContent_MakeAvailable(vroomgis)
+    include_directories(${vroomgis_SOURCE_DIR}/vroomgis/src)
+    include_directories(${vroomgis_SOURCE_DIR}/vroomgis/art)
+endif (USE_GUI)
+
 ##### DECLARE EXECUTABLE
 
 if (WIN32)
@@ -218,7 +223,13 @@ if (USE_CUDA)
     target_link_libraries(atmoswing-tests astestscuda)
     add_definitions(-DUSE_CUDA)
 endif ()
-
+if (USE_GUI)
+    add_dependencies(atmoswing-tests vroomgis)
+    add_dependencies(atmoswing-tests wxplotctrl)
+    target_link_libraries(atmoswing-tests vroomgis)
+    target_link_libraries(atmoswing-tests wxplotctrl)
+    target_link_libraries(atmoswing-tests CONAN_PKG::gdal)
+endif (USE_GUI)
 
 ##### CTEST
 
