@@ -9,12 +9,13 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/tests)
 ##### SOURCE FILES
 
 # List source files
-file(GLOB_RECURSE src_tests_h src/*.h)
-file(GLOB_RECURSE src_tests_cpp src/*.cpp)
+file(GLOB_RECURSE src_tests_h src/as*.h)
+file(GLOB_RECURSE src_tests_cpp src/as*.cpp)
 file(GLOB_RECURSE src_tests_gui_h src/gui/*.h)
 file(GLOB_RECURSE src_tests_gui_cpp src/gui/*.cpp)
 list(APPEND src_tests ${src_tests_h} ${src_viewer_core_h}) # Include optimization files anyway (to test the analogue method)
 list(APPEND src_tests ${src_tests_cpp} ${src_viewer_core_cpp})
+list(APPEND src_tests "${PROJECT_SOURCE_DIR}/src/main.cpp")
 if (USE_GUI)
     list(APPEND src_tests ${src_tests_gui_h})
     list(APPEND src_tests ${src_tests_gui_cpp})
