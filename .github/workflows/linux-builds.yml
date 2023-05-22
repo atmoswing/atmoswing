@@ -59,7 +59,7 @@ jobs:
       - name: Install system libraries
         run: |
           sudo apt-get update -y
-          sudo apt-get install libgtk-3-0 libgtk-3-dev
+          sudo apt-get install libgtk-3-0 libgtk-3-dev xvfb
 
       - name: Cache Conan libs
         id: cache-conan
@@ -89,7 +89,5 @@ jobs:
         run: conan build ..
 
       - name: Test (using xvfb)
-        uses: coactions/setup-xvfb@v1
-        with:
-          run: ./atmoswing-tests
-          working-directory: ${{github.workspace}}/bin/bin
+        working-directory: ${{github.workspace}}/bin/bin
+        run: xvfb-run --server-args="-screen 0, 1280x720x24" -a ./atmoswing-tests
