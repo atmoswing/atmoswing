@@ -53,15 +53,11 @@ jobs:
         working-directory: ${{github.workspace}}/bin
         run: cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DUSE_CODECOV=1 -DBUILD_TESTS=1 -DBUILD_VIEWER=1 -DUSE_GUI=1
 
-      - name: Start Xvfb
-        run: |
-          export DISPLAY=:99
-          Xvfb $DISPLAY -screen 0 1024x768x24 > /dev/null 2>&1 &
-          sleep 5
-
-      - name: Build and run code coverage
-        working-directory: ${{github.workspace}}/bin
-        run: xvfb-run --server-args="-screen 0 1024x768x24" cmake --build . --config ${{env.BUILD_TYPE}} --target atmoswing-coverage
+      - name: Build and run code coverage (using xvfb)
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: cmake --build . --config ${{env.BUILD_TYPE}} --target atmoswing-coverage
+          working-directory: ${{github.workspace}}/bin
 
       - name: Preparing coverage data
         working-directory: ${{github.workspace}}/bin
