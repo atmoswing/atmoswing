@@ -15,7 +15,7 @@
 #include <wx/wx.h>
 #endif //WX_PRECOMP
 
-#include "AtmoswingForecasterGui.h"
+#include "AtmoSwingForecasterGui.h"
 
 ///////////////////////////////////////////////////////////////////////////
 

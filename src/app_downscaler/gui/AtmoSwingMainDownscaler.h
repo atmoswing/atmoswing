@@ -22,22 +22,22 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef AS_MAIN_FORECATSER_H
-#define AS_MAIN_FORECATSER_H
+#ifndef ATMOSWING_MAIN_DOWNSCALER_H
+#define ATMOSWING_MAIN_DOWNSCALER_H
 
-#include "AtmoSwingAppForecaster.h"
-#include "asFrameForecaster.h"
+// #include "version.h"
+#include "AtmoSwingAppDownscaler.h"
+#include "asFrameDownscaler.h"
 #include "asIncludes.h"
 
-class AtmoswingFrameForecaster : public asFrameForecaster {
+class AtmoSwingFrameDownscaler : public asFrameDownscaler {
   public:
-    explicit AtmoswingFrameForecaster(wxFrame* frame);
+    explicit AtmoSwingFrameDownscaler(wxFrame* frame);
 
-    ~AtmoswingFrameForecaster() override;
+    ~AtmoSwingFrameDownscaler() override;
 
   private:
     virtual void OnClose(wxCloseEvent& event);

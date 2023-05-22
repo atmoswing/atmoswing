@@ -37,7 +37,7 @@
 
 #if USE_GUI
 
-#include "AtmoswingMainDownscaler.h"
+#include "AtmoSwingMainDownscaler.h"
 
 #endif
 
@@ -144,7 +144,7 @@ bool AtmoSwingAppDownscaler::OnInit() {
     wxInitAllImageHandlers();
 
     // Create frame
-    AtmoswingFrameDownscaler* frame = new AtmoswingFrameDownscaler(0L);
+    AtmoSwingFrameDownscaler* frame = new AtmoSwingFrameDownscaler(0L);
     frame->OnInit();
 
 #ifdef __WXMSW__

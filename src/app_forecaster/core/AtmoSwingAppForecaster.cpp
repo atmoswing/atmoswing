@@ -39,7 +39,7 @@
 
 #if USE_GUI
 
-#include "AtmoswingMainForecaster.h"
+#include "AtmoSwingMainForecaster.h"
 
 #endif
 
@@ -164,7 +164,7 @@ bool AtmoSwingAppForecaster::OnInit() {
     wxInitAllImageHandlers();
 
     // Create frame
-    AtmoswingFrameForecaster* frame = new AtmoswingFrameForecaster(0L);
+    AtmoSwingFrameForecaster* frame = new AtmoSwingFrameForecaster(0L);
     frame->OnInit();
 
 #ifdef __WXMSW__

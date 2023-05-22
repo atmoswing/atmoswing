@@ -22,7 +22,8 @@
  */
 
 /*
- * Portions Copyright 2017 Pascal Horton, University of Bern.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
 #ifdef WX_PRECOMP
@@ -33,10 +34,10 @@
 #pragma hdrstop
 #endif  //__BORLANDC__
 
-#include "AtmoswingMainDownscaler.h"
+#include "AtmoSwingMainForecaster.h"
 
-AtmoswingFrameDownscaler::AtmoswingFrameDownscaler(wxFrame* frame)
-    : asFrameDownscaler(frame) {
+AtmoSwingFrameForecaster::AtmoSwingFrameForecaster(wxFrame* frame)
+    : asFrameForecaster(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
@@ -51,12 +52,13 @@ AtmoswingFrameDownscaler::AtmoswingFrameDownscaler(wxFrame* frame)
     delete wxLog::SetActiveTarget(new asLogGui());
     m_logWindow = new asLogWindow(this, _("AtmoSwing log window"),
                                   pConfig->ReadBool("/General/DisplayLogWindow", true));
-    Log()->CreateFile("AtmoSwingDownscaler.log");
+    Log()->CreateFile("AtmoSwingForecaster.log");
+    Log()->SetLevel(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
-    int x = pConfig->ReadLong("/MainFrame/x", 50), y = pConfig->ReadLong("/MainFrame/y", 50),
-        w = pConfig->ReadLong("/MainFrame/w", minWidth), h = pConfig->ReadLong("/MainFrame/h", minHeight);
+    int x = (int)pConfig->ReadLong("/MainFrame/x", 50), y = (int)pConfig->ReadLong("/MainFrame/y", 50),
+        w = (int)pConfig->ReadLong("/MainFrame/w", minWidth), h = (int)pConfig->ReadLong("/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x < screen.x - 10) x = screen.x;
     if (x > screen.width) x = screen.x;
@@ -85,24 +87,19 @@ AtmoswingFrameDownscaler::AtmoswingFrameDownscaler(wxFrame* frame)
     }
 }
 
-void AtmoswingFrameDownscaler::SetDefaultOptions() {
+void AtmoSwingFrameForecaster::SetDefaultOptions() {
     wxConfigBase* pConfig = wxFileConfig::Get();
 
     // General
     pConfig->Write("/General/GuiOptions", pConfig->ReadLong("/General/GuiOptions", 1l));
-    pConfig->Write("/General/Responsive", pConfig->ReadBool("/General/Responsive", false));
-    pConfig->Write("/General/LogLevel", pConfig->ReadLong("/General/LogLevel", 1));
-    pConfig->Write("/General/DisplayLogWindow", pConfig->ReadLong("/General/DisplayLogWindow", false));
+    pConfig->Write("/General/Responsive", pConfig->ReadBool("/General/Responsive", true));
+    pConfig->Write("/General/LogLevel", pConfig->Read("/General/LogLevel", 1));
+    pConfig->Write("/General/DisplayLogWindow", pConfig->ReadBool("/General/DisplayLogWindow", false));
 
-    // Paths
-    wxString dirData = asConfig::GetDataDir() + "data" + DS;
-    pConfig->Write("/Paths/DataPredictandDBDir", pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands"));
-    pConfig->Write(
-        "/Paths/DownscalerResultsDir",
-        pConfig->Read("/Paths/DownscalerResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Downscaler"));
-    pConfig->Write("/Paths/ArchivePredictorsDir", pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors"));
-    pConfig->Write("/Paths/ScenarioPredictorsDir",
-                   pConfig->Read("/Paths/ScenarioPredictorsDir", dirData + "predictors"));
+    // Internet
+    pConfig->Write("/Internet/MaxPreviousStepsNb", pConfig->Read("/Internet/MaxPreviousStepsNb", "5"));
+    pConfig->Write("/Internet/RestrictDownloads", pConfig->ReadBool("/Internet/RestrictDownloads", true));
+    pConfig->Write("/Internet/UsesProxy", pConfig->ReadBool("/Internet/UsesProxy", false));
 
     // Processing
     bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
@@ -112,14 +109,14 @@ void AtmoswingFrameDownscaler::SetDefaultOptions() {
     pConfig->Write("/Processing/ThreadsNb", pConfig->Read("/Processing/ThreadsNb", asStrF("%d", maxThreads)));
     long processingMethod = pConfig->Read("/Processing/Method", (long)asMULTITHREADS);
     if (!allowMultithreading) {
-        processingMethod = (long)asSTANDARD;
+        processingMethod = (long)asMULTITHREADS;
     }
     pConfig->Write("/Processing/Method", processingMethod);
 
     pConfig->Flush();
 }
 
-AtmoswingFrameDownscaler::~AtmoswingFrameDownscaler() {
+AtmoSwingFrameForecaster::~AtmoSwingFrameForecaster() {
     // Config file
     wxConfigBase* pConfig = wxFileConfig::Get();
     if (!pConfig) return;
@@ -133,13 +130,13 @@ AtmoswingFrameDownscaler::~AtmoswingFrameDownscaler() {
     pConfig->Write("/MainFrame/w", (long)w);
     pConfig->Write("/MainFrame/h", (long)h);
 
-    Destroy();
+    // wxDELETE(m_logWindow);
 }
 
-void AtmoswingFrameDownscaler::OnClose(wxCloseEvent& event) {
+void AtmoSwingFrameForecaster::OnClose(wxCloseEvent& event) {
     Close(true);
 }
 
-void AtmoswingFrameDownscaler::OnQuit(wxCommandEvent& event) {
+void AtmoSwingFrameForecaster::OnQuit(wxCommandEvent& event) {
     Close(true);
 }
