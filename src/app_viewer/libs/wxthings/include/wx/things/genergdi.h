@@ -424,10 +424,6 @@ class WXDLLIMPEXP_THINGS wxGenericBrush : public wxObject {
 
     wxBitmap* GetStipple() const;
 
-    bool IsHatch() const {
-        return (GetStyle() >= wxHATCHSTYLE_FIRST) && (GetStyle() <= wxHATCHSTYLE_LAST);
-    }
-
     // -----------------------------------------------------------------------
     // Equivalency tests
     bool IsSameAs(const wxGenericBrush& brush) const;
