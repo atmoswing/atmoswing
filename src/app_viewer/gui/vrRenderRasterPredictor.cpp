@@ -117,8 +117,12 @@ bool vrRenderRasterPredictor::ParseACTfile() {
     }
 
     // Read the entire contents into the palette array
-    fread(palette, 3, 255, f);
+    size_t nRows = fread(palette, 3, 255, f);
     fclose(f);
+    if (nRows == 0) {
+        wxLogError(_("Color table file %s is empty..."), m_colorTableFile.GetFullPath());
+        return false;
+    }
 
     // Copy the palette values to the color table array
     for (int i = 0; i < 255; i++) {

@@ -33,11 +33,10 @@
 asPredictorsManager::asPredictorsManager(wxListBox* listPredictors, asWorkspace* workspace, bool isTargetPredictor)
     : m_workspace(workspace),
       m_listPredictors(listPredictors),
-      m_isTargetPredictor(isTargetPredictor),
       m_predictor(nullptr),
+      m_isTargetPredictor(isTargetPredictor),
       m_date(-1),
       m_forecastTimeStepHours(6),
-      m_leadTimeNb(5),
       m_needsDataReload(true) {}
 
 asPredictorsManager::~asPredictorsManager() = default;

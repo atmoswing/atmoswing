@@ -233,7 +233,6 @@ void asFramePredictors::UpdatePredictorsProperties() {
 
     m_predictorsManagerTarget->SetForecastDate(forecast->GetLeadTimeOrigin());
     m_predictorsManagerTarget->SetForecastTimeStepHours(forecast->GetForecastTimeStepHours());
-    m_predictorsManagerTarget->SetLeadTimeNb(forecast->GetTargetDatesLength());
     m_predictorsManagerTarget->SetDatasetIds(forecast->GetPredictorDatasetIdsOper());
     m_predictorsManagerTarget->SetDataIds(forecast->GetPredictorDataIdsOper());
     m_predictorsManagerTarget->SetLevels(forecast->GetPredictorLevels());

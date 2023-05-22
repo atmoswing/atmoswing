@@ -118,15 +118,6 @@ class asPredictorsManager {
     }
 
     /**
-     * Set the lead time number for the predictor data.
-     *
-     * @param leadTimeNb The number of lead time.
-     */
-    void SetLeadTimeNb(int leadTimeNb) {
-        m_leadTimeNb = leadTimeNb;
-    }
-
-    /**
      * Set the dataset IDs for the predictor data.
      *
      * @param predictorDatasetIds The dataset IDs.
@@ -247,7 +238,6 @@ class asPredictorsManager {
     double m_forecastDate; /**< The forecast date as MJD. */
     double m_date; /**< The data date as MJD. */
     double m_forecastTimeStepHours;  /**< The forecast time step in hours. */
-    int m_leadTimeNb; /**< The number of lead time. */
     vwxs m_datasetIds; /**< The dataset IDs. */
     vwxs m_dataIds; /**< The data IDs. */
     vf m_levels; /**< The vertical levels. */
