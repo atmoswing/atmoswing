@@ -32,7 +32,7 @@
 #include <wx/awx/led.h>
 #include <wx/filehistory.h>
 
-#include "AtmoswingForecasterGui.h"
+#include "AtmoSwingForecasterGui.h"
 #include "asBatchForecasts.h"
 #include "asIncludes.h"
 #include "asLogWindow.h"

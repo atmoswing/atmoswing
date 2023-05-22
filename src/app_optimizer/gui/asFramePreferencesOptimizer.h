@@ -29,7 +29,7 @@
 #ifndef AS_FRAME_PREFERENCES_OPTIMIZER
 #define AS_FRAME_PREFERENCES_OPTIMIZER
 
-#include "AtmoswingOptimizerGui.h"
+#include "AtmoSwingOptimizerGui.h"
 #include "asIncludes.h"
 
 class asFramePreferencesOptimizer : public asFramePreferencesOptimizerVirtual {

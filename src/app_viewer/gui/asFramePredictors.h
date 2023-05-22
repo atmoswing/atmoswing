@@ -28,7 +28,7 @@
 #ifndef AS_FRAME_PREDICTORS_H
 #define AS_FRAME_PREDICTORS_H
 
-#include "AtmoswingViewerGui.h"
+#include "AtmoSwingViewerGui.h"
 #include "asForecastManager.h"
 #include "asIncludes.h"
 #include "asPanelPredictorsColorbar.h"

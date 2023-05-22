@@ -50,7 +50,7 @@
             <property name="size">606,500</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass"></property>
-            <property name="title">Atmoswing Downscaler</property>
+            <property name="title">AtmoSwing Downscaler</property>
             <property name="tooltip"></property>
             <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>

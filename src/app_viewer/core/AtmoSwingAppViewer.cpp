@@ -35,7 +35,7 @@
 #endif  //__BORLANDC__
 
 #include "AtmoSwingAppViewer.h"
-#include "AtmoswingMainViewer.h"
+#include "AtmoSwingMainViewer.h"
 
 IMPLEMENT_APP(AtmoSwingAppViewer);
 
@@ -110,7 +110,7 @@ bool AtmoSwingAppViewer::OnInit() {
         return false;
 
     // Create frame
-    auto frame = new AtmoswingFrameViewer(0L);
+    auto frame = new AtmoSwingFrameViewer(0L);
     frame->Init();
 
 #ifdef __WXMSW__

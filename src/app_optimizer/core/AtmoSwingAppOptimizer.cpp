@@ -38,7 +38,7 @@
 
 #if USE_GUI
 
-#include "AtmoswingMainOptimizer.h"
+#include "AtmoSwingMainOptimizer.h"
 
 #endif
 
@@ -211,7 +211,7 @@ bool AtmoSwingAppOptimizer::OnInit() {
     wxInitAllImageHandlers();
 
     // Create frame
-    AtmoswingFrameOptimizer* frame = new AtmoswingFrameOptimizer(0L);
+    AtmoSwingFrameOptimizer* frame = new AtmoSwingFrameOptimizer(0L);
     frame->OnInit();
 
 #ifdef __WXMSW__

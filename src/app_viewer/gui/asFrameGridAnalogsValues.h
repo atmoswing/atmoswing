@@ -29,7 +29,7 @@
 #ifndef AS_FRAME_GRID_ANALOGS_VALUES_H
 #define AS_FRAME_GRID_ANALOGS_VALUES_H
 
-#include "AtmoswingViewerGui.h"
+#include "AtmoSwingViewerGui.h"
 #include "asIncludes.h"
 
 class asForecastManager;

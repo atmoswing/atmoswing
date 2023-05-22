@@ -34,9 +34,9 @@
 #pragma hdrstop
 #endif  //__BORLANDC__
 
-#include "AtmoswingMainOptimizer.h"
+#include "AtmoSwingMainOptimizer.h"
 
-AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame* frame)
+AtmoSwingFrameOptimizer::AtmoSwingFrameOptimizer(wxFrame* frame)
     : asFrameOptimizer(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
@@ -88,7 +88,7 @@ AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame* frame)
     }
 }
 
-void AtmoswingFrameOptimizer::SetDefaultOptions() {
+void AtmoSwingFrameOptimizer::SetDefaultOptions() {
     wxConfigBase* pConfig = wxFileConfig::Get();
 
     // General
@@ -119,7 +119,7 @@ void AtmoswingFrameOptimizer::SetDefaultOptions() {
     pConfig->Flush();
 }
 
-AtmoswingFrameOptimizer::~AtmoswingFrameOptimizer() {
+AtmoSwingFrameOptimizer::~AtmoSwingFrameOptimizer() {
     // Config file
     wxConfigBase* pConfig = wxFileConfig::Get();
     if (!pConfig) return;
@@ -136,10 +136,10 @@ AtmoswingFrameOptimizer::~AtmoswingFrameOptimizer() {
     Destroy();
 }
 
-void AtmoswingFrameOptimizer::OnClose(wxCloseEvent& event) {
+void AtmoSwingFrameOptimizer::OnClose(wxCloseEvent& event) {
     Close(true);
 }
 
-void AtmoswingFrameOptimizer::OnQuit(wxCommandEvent& event) {
+void AtmoSwingFrameOptimizer::OnQuit(wxCommandEvent& event) {
     Close(true);
 }

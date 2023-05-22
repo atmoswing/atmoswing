@@ -28,7 +28,7 @@
 #ifndef AS_FRAME_STYLED_TEXT_CTRL_H
 #define AS_FRAME_STYLED_TEXT_CTRL_H
 
-#include "AtmoswingForecasterGui.h"
+#include "AtmoSwingForecasterGui.h"
 
 class asFrameStyledTextCtrl : public asFrameStyledTextCtrlVirtual {
   public:

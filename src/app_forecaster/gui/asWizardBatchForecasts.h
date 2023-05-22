@@ -28,7 +28,7 @@
 #ifndef AS_WIZARD_BATCH_FORECASTS
 #define AS_WIZARD_BATCH_FORECASTS
 
-#include "AtmoswingForecasterGui.h"
+#include "AtmoSwingForecasterGui.h"
 #include "asBatchForecasts.h"
 #include "asIncludes.h"
 

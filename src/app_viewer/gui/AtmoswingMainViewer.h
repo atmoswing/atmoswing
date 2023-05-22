@@ -33,11 +33,11 @@
 #include "asFrameViewer.h"
 #include "asIncludes.h"
 
-class AtmoswingFrameViewer : public asFrameViewer {
+class AtmoSwingFrameViewer : public asFrameViewer {
   public:
-    explicit AtmoswingFrameViewer(wxFrame* frame);
+    explicit AtmoSwingFrameViewer(wxFrame* frame);
 
-    ~AtmoswingFrameViewer() override = default;
+    ~AtmoSwingFrameViewer() override = default;
 
   private:
     asLogWindow* m_logWindow;

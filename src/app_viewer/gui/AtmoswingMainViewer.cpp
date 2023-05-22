@@ -34,9 +34,9 @@
 #pragma hdrstop
 #endif  //__BORLANDC__
 
-#include "AtmoswingMainViewer.h"
+#include "AtmoSwingMainViewer.h"
 
-AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame* frame)
+AtmoSwingFrameViewer::AtmoSwingFrameViewer(wxFrame* frame)
     : asFrameViewer(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
@@ -52,15 +52,15 @@ AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame* frame)
     Log()->CreateFile("AtmoSwingViewer.log");
 }
 
-void AtmoswingFrameViewer::OnClose(wxCloseEvent& event) {
+void AtmoSwingFrameViewer::OnClose(wxCloseEvent& event) {
     Close(true);
 }
 
-void AtmoswingFrameViewer::OnQuit(wxCommandEvent& event) {
+void AtmoSwingFrameViewer::OnQuit(wxCommandEvent& event) {
     Close(true);
 }
 
-void AtmoswingFrameViewer::OnShowLog(wxCommandEvent& event) {
+void AtmoSwingFrameViewer::OnShowLog(wxCommandEvent& event) {
     wxASSERT(m_logWindow);
     m_logWindow->Show();
 }

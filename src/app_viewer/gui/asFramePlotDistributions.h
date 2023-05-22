@@ -29,7 +29,7 @@
 #ifndef AS_FRAME_PLOT_DISTRIBUTIONS_H
 #define AS_FRAME_PLOT_DISTRIBUTIONS_H
 
-#include "AtmoswingViewerGui.h"
+#include "AtmoSwingViewerGui.h"
 #include "asPanelPlot.h"
 
 class asForecastManager;

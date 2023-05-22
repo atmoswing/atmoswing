@@ -34,11 +34,11 @@
 #include "asFrameOptimizer.h"
 #include "asIncludes.h"
 
-class AtmoswingFrameOptimizer : public asFrameOptimizer {
+class AtmoSwingFrameOptimizer : public asFrameOptimizer {
   public:
-    AtmoswingFrameOptimizer(wxFrame* frame);
+    AtmoSwingFrameOptimizer(wxFrame* frame);
 
-    ~AtmoswingFrameOptimizer() override;
+    ~AtmoSwingFrameOptimizer() override;
 
   private:
     virtual void OnClose(wxCloseEvent& event);

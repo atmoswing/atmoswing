@@ -31,7 +31,7 @@
 
 #include <wx/awx/led.h>
 
-#include "AtmoswingForecasterGui.h"
+#include "AtmoSwingForecasterGui.h"
 #include "asBitmaps.h"
 
 class asPanelsManagerForecasts;

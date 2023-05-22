@@ -26,8 +26,8 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AtmoswingAPPVIEWER_H
-#define AtmoswingAPPVIEWER_H
+#ifndef AtmoSwingAPPVIEWER_H
+#define AtmoSwingAPPVIEWER_H
 
 #include <wx/app.h>
 #include <wx/cmdline.h>
