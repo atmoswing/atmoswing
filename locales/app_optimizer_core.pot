@@ -36,7 +36,7 @@ msgid "The whole processing took %.3f min to execute"
 msgstr ""
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:92
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:984
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:984
 msgid "Calibration over."
 msgstr ""
 
@@ -1416,97 +1416,97 @@ msgstr ""
 msgid "Period not yet implemented in asTotalScoreTS."
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:205
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:205
 msgid "Program already running, aborting."
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:290
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:290
 #, c-format
 msgid "An existing directory was found for the run number %d"
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:332
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:332
 #, c-format
 msgid "The number of groups (%d) differ from the previous config file (%d)."
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:359
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:359
 #, c-format
 msgid ""
 "The option %s (under Optimizer/%s) differ from the previous config file (%s !"
 "= %s)."
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:482
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:482
 msgid "The value provided for 'log-level' could not be interpreted.\n"
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:515
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:515
 #, c-format
 msgid "The given calibration file (%s) couldn't be found."
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:527
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:527
 #, c-format
 msgid "The given predictand DB (%s) couldn't be found."
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:539
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:539
 #, c-format
 msgid "The given predictors directory (%s) couldn't be found."
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:618
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:618
 msgid "The value provided for 'ga-config' could not be interpreted.\n"
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:658
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:658
 msgid "The value provided for 'ga-config' does not match any option.\n"
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:814
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:814
 msgid "Initialization for command-line interface failed."
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:818
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:818
 #, c-format
 msgid "Given calibration method: %s"
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:893
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:893
 msgid "The parameters file is not given."
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:898
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:898
 msgid "The predictand DB is not given."
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:903
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:903
 msgid "The predictors directory is not given."
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:976
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:976
 #, c-format
 msgid "Bad allocation caught: %s"
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:980
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:980
 #, c-format
 msgid "Exception caught: %s"
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:985
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:985
 msgid "Calibration over.\n"
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:1014
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:1014
 msgid "An exception occured in the main loop"
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:1019
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:1019
 msgid "An fatal exception occured"
 msgstr ""
 
-#: src/app_optimizer/core/AtmoswingAppOptimizer.cpp:1023
+#: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:1023
 msgid "An unhandled exception occured"
 msgstr ""

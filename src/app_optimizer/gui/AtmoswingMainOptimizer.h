@@ -30,7 +30,7 @@
 #define AS_MAIN_OPTIMIZER_H
 
 // #include "version.h"
-#include "AtmoswingAppOptimizer.h"
+#include "AtmoSwingAppOptimizer.h"
 #include "asFrameOptimizer.h"
 #include "asIncludes.h"
 

@@ -40,10 +40,10 @@
 #include "asTimeArray.h"
 
 #ifdef APP_FORECASTER
-#include "AtmoswingAppForecaster.h"
+#include "AtmoSwingAppForecaster.h"
 #endif
 #ifdef APP_OPTIMIZER
-#include "AtmoswingAppOptimizer.h"
+#include "AtmoSwingAppOptimizer.h"
 #endif
 #ifdef USE_CUDA
 #include "asProcessorCuda.cuh"

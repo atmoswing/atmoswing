@@ -37,7 +37,7 @@
 
 #ifndef UNIT_TESTING
 
-#include "AtmoswingAppForecaster.h"
+#include "AtmoSwingAppForecaster.h"
 
 #endif
 

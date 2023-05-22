@@ -62,6 +62,6 @@ msgstr ""
 "Le nombre d'éléments dans les couches n'est pas cohérent dans le fichier de "
 "l'espace de travail."
 
-#: src/app_viewer/core/AtmoswingAppViewer.cpp:95
+#: src/app_viewer/core/AtmoSwingAppViewer.cpp:95
 msgid "Program already running, aborting."
 msgstr "Programme déjà en cours d'exécution, interruption."

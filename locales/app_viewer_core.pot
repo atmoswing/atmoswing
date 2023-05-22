@@ -59,6 +59,6 @@ msgid ""
 "The number of elements in the layers is not consistent in the workspace file."
 msgstr ""
 
-#: src/app_viewer/core/AtmoswingAppViewer.cpp:95
+#: src/app_viewer/core/AtmoSwingAppViewer.cpp:95
 msgid "Program already running, aborting."
 msgstr ""

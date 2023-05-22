@@ -29,7 +29,7 @@
 #ifndef AS_MAIN_VIEWER_H
 #define AS_MAIN_VIEWER_H
 
-#include "AtmoswingAppViewer.h"
+#include "AtmoSwingAppViewer.h"
 #include "asFrameViewer.h"
 #include "asIncludes.h"
 

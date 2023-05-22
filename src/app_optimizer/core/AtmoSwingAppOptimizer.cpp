@@ -34,7 +34,7 @@
 #pragma hdrstop
 #endif  //__BORLANDC__
 
-#include "AtmoswingAppOptimizer.h"
+#include "AtmoSwingAppOptimizer.h"
 
 #if USE_GUI
 
@@ -54,7 +54,7 @@
 #include "asMethodOptimizerGAs.h"
 #include "asMethodOptimizerMC.h"
 
-IMPLEMENT_APP(AtmoswingAppOptimizer)
+IMPLEMENT_APP(AtmoSwingAppOptimizer)
 
 #if USE_GUI
 
@@ -154,7 +154,7 @@ static const wxString cmdLineLogo = wxT(
     "_________________________________________\n"
     "\n");
 
-bool AtmoswingAppOptimizer::OnInit() {
+bool AtmoSwingAppOptimizer::OnInit() {
 #if _DEBUG
 #ifdef __WXMSW__
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -224,7 +224,7 @@ bool AtmoswingAppOptimizer::OnInit() {
     return true;
 }
 
-wxString AtmoswingAppOptimizer::GetLocalPath() {
+wxString AtmoSwingAppOptimizer::GetLocalPath() {
     // Prepare local path
     wxString localPath = wxFileName::GetCwd() + DS;
     if (g_runNb > 0) {
@@ -237,7 +237,7 @@ wxString AtmoswingAppOptimizer::GetLocalPath() {
     return localPath;
 }
 
-bool AtmoswingAppOptimizer::InitLog() {
+bool AtmoSwingAppOptimizer::InitLog() {
     if (g_local) {
         wxString fullPath = GetLocalPath();
         fullPath.Append("AtmoSwingOptimizer.log");
@@ -274,7 +274,7 @@ bool AtmoswingAppOptimizer::InitLog() {
     return true;
 }
 
-bool AtmoswingAppOptimizer::SetUseAsCmdLine() {
+bool AtmoSwingAppOptimizer::SetUseAsCmdLine() {
     g_guiMode = false;
     g_unitTesting = false;
     g_silentMode = true;
@@ -284,7 +284,7 @@ bool AtmoswingAppOptimizer::SetUseAsCmdLine() {
     return true;
 }
 
-bool AtmoswingAppOptimizer::InitForCmdLineOnly() {
+bool AtmoSwingAppOptimizer::InitForCmdLineOnly() {
     // Warn the user if reloading previous results
     if (g_resumePreviousRun) {
         wxLogWarning(_("An existing directory was found for the run number %d"), g_runNb);
@@ -375,7 +375,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly() {
     return true;
 }
 
-void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser& parser) {
+void AtmoSwingAppOptimizer::OnInitCmdLine(wxCmdLineParser& parser) {
     wxAppConsole::OnInitCmdLine(parser);
 
     parser.SetDesc(g_cmdLineDesc);
@@ -385,7 +385,7 @@ void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser& parser) {
     parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
+bool AtmoSwingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if runs with GUI or CL
     if (parser.Found("calibration-method")) {
         SetUseAsCmdLine();
@@ -830,7 +830,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
     return true;
 }
 
-void AtmoswingAppOptimizer::InitLanguageSupport() {
+void AtmoSwingAppOptimizer::InitLanguageSupport() {
     wxLocale* locale;
 
     wxConfigBase* pConfig = wxFileConfig::Get();
@@ -880,7 +880,7 @@ void AtmoswingAppOptimizer::InitLanguageSupport() {
 #endif
 }
 
-int AtmoswingAppOptimizer::OnRun() {
+int AtmoSwingAppOptimizer::OnRun() {
     if (g_guiMode) {
         return wxApp::OnRun();
     }
@@ -987,13 +987,13 @@ int AtmoswingAppOptimizer::OnRun() {
     return 0;
 }
 
-int AtmoswingAppOptimizer::OnExit() {
+int AtmoSwingAppOptimizer::OnExit() {
     CleanUp();
 
     return 0;
 }
 
-void AtmoswingAppOptimizer::CleanUp() {
+void AtmoSwingAppOptimizer::CleanUp() {
 #if USE_GUI
     // Instance checker
     wxDELETE(m_singleInstanceChecker);
@@ -1010,15 +1010,15 @@ void AtmoswingAppOptimizer::CleanUp() {
     wxApp::CleanUp();
 }
 
-bool AtmoswingAppOptimizer::OnExceptionInMainLoop() {
+bool AtmoSwingAppOptimizer::OnExceptionInMainLoop() {
     wxLogError(_("An exception occured in the main loop"));
     return false;
 }
 
-void AtmoswingAppOptimizer::OnFatalException() {
+void AtmoSwingAppOptimizer::OnFatalException() {
     wxLogError(_("An fatal exception occured"));
 }
 
-void AtmoswingAppOptimizer::OnUnhandledException() {
+void AtmoSwingAppOptimizer::OnUnhandledException() {
     wxLogError(_("An unhandled exception occured"));
 }

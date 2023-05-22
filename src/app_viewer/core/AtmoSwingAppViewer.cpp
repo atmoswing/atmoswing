@@ -34,10 +34,10 @@
 #pragma hdrstop
 #endif  //__BORLANDC__
 
-#include "AtmoswingAppViewer.h"
+#include "AtmoSwingAppViewer.h"
 #include "AtmoswingMainViewer.h"
 
-IMPLEMENT_APP(AtmoswingAppViewer);
+IMPLEMENT_APP(AtmoSwingAppViewer);
 
 #include <wx/stdpaths.h>
 
@@ -57,7 +57,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
     {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
     {wxCMD_LINE_NONE}};
 
-bool AtmoswingAppViewer::OnInit() {
+bool AtmoSwingAppViewer::OnInit() {
 #if _DEBUG
 #ifdef __WXMSW__
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -122,13 +122,13 @@ bool AtmoswingAppViewer::OnInit() {
     return true;
 }
 
-void AtmoswingAppViewer::OnInitCmdLine(wxCmdLineParser& parser) {
+void AtmoSwingAppViewer::OnInitCmdLine(wxCmdLineParser& parser) {
     parser.SetDesc(g_cmdLineDesc);
     // Must refuse '/' as parameter starter or cannot use "/path" style paths
     parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser) {
+bool AtmoSwingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if the user asked for command-line help
     if (parser.Found("h")) {
         parser.Usage();
@@ -175,7 +175,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser) {
     return true;
 }
 
-void AtmoswingAppViewer::InitLanguageSupport() {
+void AtmoSwingAppViewer::InitLanguageSupport() {
     wxLocale* locale;
 
     wxConfigBase* pConfig = wxFileConfig::Get();
@@ -226,7 +226,7 @@ void AtmoswingAppViewer::InitLanguageSupport() {
 #endif
 }
 
-int AtmoswingAppViewer::OnExit() {
+int AtmoSwingAppViewer::OnExit() {
     // Instance checker
     wxDELETE(m_singleInstanceChecker);
 

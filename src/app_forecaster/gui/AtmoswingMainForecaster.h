@@ -29,7 +29,7 @@
 #ifndef AS_MAIN_FORECATSER_H
 #define AS_MAIN_FORECATSER_H
 
-#include "AtmoswingAppForecaster.h"
+#include "AtmoSwingAppForecaster.h"
 #include "asFrameForecaster.h"
 #include "asIncludes.h"
 

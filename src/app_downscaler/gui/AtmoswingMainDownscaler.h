@@ -29,7 +29,7 @@
 #define ATMOSWING_MAIN_DOWNSCALER_H
 
 // #include "version.h"
-#include "AtmoswingAppDownscaler.h"
+#include "AtmoSwingAppDownscaler.h"
 #include "asFrameDownscaler.h"
 #include "asIncludes.h"
 

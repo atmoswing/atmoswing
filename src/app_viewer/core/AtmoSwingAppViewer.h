@@ -22,11 +22,12 @@
  */
 
 /*
- * Portions Copyright 2017 Pascal Horton, University of Bern.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ATMOSWINGAPPDOWNSCALER_H
-#define ATMOSWINGAPPDOWNSCALER_H
+#ifndef AtmoswingAPPVIEWER_H
+#define AtmoswingAPPVIEWER_H
 
 #include <wx/app.h>
 #include <wx/cmdline.h>
@@ -35,58 +36,44 @@
 
 #include "asIncludes.h"
 
-#if USE_GUI
+class asThreadsManager;
 
-class AtmoswingAppDownscaler : public wxApp
-#else
-
-class AtmoswingAppDownscaler : public wxAppConsole
-#endif
-{
+class AtmoSwingAppViewer : public wxApp {
   public:
-    virtual ~AtmoswingAppDownscaler(){};
+    /**
+     * The initialization of the application.
+     */
+    bool OnInit() override;
 
-    virtual bool OnInit();
+    /**
+     * Clean up on exit.
+     */
+    int OnExit() override;
 
-    virtual int OnRun();
+    /**
+     * Initialize the command line parser.
+     * 
+     * @param parser The command line parser.
+     * @note From http://wiki.wxwidgets.org/Command-Line_Arguments
+     */
+    void OnInitCmdLine(wxCmdLineParser& parser) override;
 
-    virtual int OnExit();
+    /**
+     * Proceed to the command line parsing.
+     * 
+     * @param parser The command line parser.
+    */
+    bool OnCmdLineParsed(wxCmdLineParser& parser) override;
 
-    void CleanUp();
-
-    virtual void OnInitCmdLine(wxCmdLineParser& parser);
-
-    wxString GetLocalPath();
-
-    bool InitLog();
-
-    bool SetUseAsCmdLine();
-
-    bool InitForCmdLineOnly();
-
-    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
-
+    /**
+     * Initialize the language support.
+     */
     static void InitLanguageSupport();
 
-    virtual bool OnExceptionInMainLoop();
-
-    virtual void OnFatalException();
-
-    virtual void OnUnhandledException();
-
   private:
-    wxString m_downscalingParamsFile;
-    wxString m_downscalingMethod;
-    wxString m_predictandDB;
-    wxString m_predictorsArchiveDir;
-    wxString m_predictorsScenarioDir;
-    vi m_predictandStationIds;
-    bool m_doProcessing;
-#if USE_GUI
-    wxSingleInstanceChecker* m_singleInstanceChecker;
-#endif
+    wxSingleInstanceChecker* m_singleInstanceChecker; /**< The single instance checker. */
 };
 
-DECLARE_APP(AtmoswingAppDownscaler);
+DECLARE_APP(AtmoSwingAppViewer);
 
 #endif
