@@ -223,12 +223,12 @@ class WXDLLIMPEXP_THINGS wxGenericPen : public wxObject {
         Create(pen);
     }
 
-    wxGenericPen(const wxGenericColour& colour, int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND,
-                 wxPenJoin join = wxJOIN_ROUND) {
+    wxGenericPen(const wxGenericColour& colour, int width = 1, wxPenStyle style = wxPENSTYLE_SOLID,
+                 wxPenCap cap = wxCAP_ROUND, wxPenJoin join = wxJOIN_ROUND) {
         Create(colour, width, style, cap, join);
     }
 
-    wxGenericPen(const wxColour& colour, int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND,
+    wxGenericPen(const wxColour& colour, int width = 1, wxPenStyle style = wxPENSTYLE_SOLID, wxPenCap cap = wxCAP_ROUND,
                  wxPenJoin join = wxJOIN_ROUND) {
         Create(colour, width, style, cap, join);
     }
@@ -252,10 +252,10 @@ class WXDLLIMPEXP_THINGS wxGenericPen : public wxObject {
 
     void Create(const wxPen& pen);
 
-    void Create(const wxGenericColour& colour, int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND,
-                wxPenJoin join = wxJOIN_ROUND);
+    void Create(const wxGenericColour& colour, int width = 1, wxPenStyle style = wxPENSTYLE_SOLID,
+                wxPenCap cap = wxCAP_ROUND, wxPenJoin join = wxJOIN_ROUND);
 
-    void Create(const wxColour& colour, int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND,
+    void Create(const wxColour& colour, int width = 1, wxPenStyle style = wxPENSTYLE_SOLID, wxPenCap cap = wxCAP_ROUND,
                 wxPenJoin join = wxJOIN_ROUND);
 
     // -----------------------------------------------------------------------
@@ -275,7 +275,7 @@ class WXDLLIMPEXP_THINGS wxGenericPen : public wxObject {
 
     void SetJoin(wxPenJoin joinStyle);
 
-    void SetStyle(int style);
+    void SetStyle(wxPenStyle style);
 
     void SetWidth(int width);
 
@@ -291,7 +291,7 @@ class WXDLLIMPEXP_THINGS wxGenericPen : public wxObject {
 
     int GetWidth() const;
 
-    int GetStyle() const;
+    wxPenStyle GetStyle() const;
 
     wxPenCap GetCap() const;
 
@@ -358,11 +358,11 @@ class WXDLLIMPEXP_THINGS wxGenericBrush : public wxObject {
         Create(brush);
     }
 
-    wxGenericBrush(const wxGenericColour& colour, int style = wxSOLID) {
+    wxGenericBrush(const wxGenericColour& colour, wxBrushStyle style = wxBRUSHSTYLE_SOLID) {
         Create(colour, style);
     }
 
-    wxGenericBrush(const wxColour& colour, int style = wxSOLID) {
+    wxGenericBrush(const wxColour& colour, wxBrushStyle style = wxBRUSHSTYLE_SOLID) {
         Create(colour, style);
     }
 
@@ -389,9 +389,9 @@ class WXDLLIMPEXP_THINGS wxGenericBrush : public wxObject {
 
     void Create(const wxBrush& brush);
 
-    void Create(const wxGenericColour& colour, int style = wxSOLID);
+    void Create(const wxGenericColour& colour, wxBrushStyle style = wxBRUSHSTYLE_SOLID);
 
-    void Create(const wxColour& colour, int style = wxSOLID);
+    void Create(const wxColour& colour, wxBrushStyle style = wxBRUSHSTYLE_SOLID);
 
     void Create(const wxBitmap& stipple);
 
@@ -408,7 +408,7 @@ class WXDLLIMPEXP_THINGS wxGenericBrush : public wxObject {
 
     void SetColour(int red, int green, int blue, int alpha = 255);
 
-    void SetStyle(int style);
+    void SetStyle(wxBrushStyle style);
 
     void SetStipple(const wxBitmap& stipple);
 
@@ -420,12 +420,12 @@ class WXDLLIMPEXP_THINGS wxGenericBrush : public wxObject {
 
     wxColour GetColour() const;
 
-    int GetStyle() const;
+    wxBrushStyle GetStyle() const;
 
     wxBitmap* GetStipple() const;
 
     bool IsHatch() const {
-        return (GetStyle() >= wxFIRST_HATCH) && (GetStyle() <= wxLAST_HATCH);
+        return (GetStyle() >= wxHATCHSTYLE_FIRST) && (GetStyle() <= wxHATCHSTYLE_LAST);
     }
 
     // -----------------------------------------------------------------------

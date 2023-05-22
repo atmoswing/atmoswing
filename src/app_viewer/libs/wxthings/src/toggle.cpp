@@ -359,7 +359,7 @@ void wxCustomButton::Paint(wxDC& dc) {
 
 #else
 
-    wxBrush brush(backColour, wxSOLID);
+    wxBrush brush(backColour, wxBRUSHSTYLE_SOLID);
     dc.SetBackground(brush);
     dc.SetBrush(brush);
     dc.SetPen(*wxTRANSPARENT_PEN);

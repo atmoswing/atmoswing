@@ -528,7 +528,7 @@ void wxPlotCtrl::DrawPlotCtrl(wxDC* dc) {
 #ifdef DRAW_BORDERS
     // Test code for sizing to show the extent of the axes
     dc->SetBrush(*wxTRANSPARENT_BRUSH);
-    dc->SetPen(wxPen(GetBorderColour(), 1, wxSOLID));
+    dc->SetPen(wxPen(GetBorderColour(), 1, wxPENSTYLE_SOLID));
     dc->DrawRectangle(m_titleRect);
     dc->DrawRectangle(m_xLabelRect);
     dc->DrawRectangle(m_yLabelRect);

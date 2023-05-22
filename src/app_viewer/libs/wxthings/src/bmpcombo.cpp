@@ -55,7 +55,7 @@ wxBmpComboPopupChild::wxBmpComboPopupChild(wxWindow* parent, wxBmpComboBox* owne
 void wxBmpComboPopupChild::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     wxPaintDC dc(this);
     PrepareDC(dc);
-    // dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID));
+    // dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID));
     // dc.Clear();
 
     dc.SetFont(m_bmpCombo->GetFont());
@@ -187,9 +187,9 @@ void wxBmpComboLabel::OnChar(wxKeyEvent& event) {
 void wxBmpComboLabel::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     wxPaintDC dc(this);
     dc.SetFont(m_bmpCombo->GetFont());
-    // dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID));
+    // dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID));
     // dc.Clear();
-    dc.SetBrush(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID));
+    dc.SetBrush(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID));
     dc.SetPen(*wxTRANSPARENT_PEN);
     dc.DrawRectangle(wxRect(wxPoint(0, 0), GetClientSize()));
 
