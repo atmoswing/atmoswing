@@ -29,7 +29,7 @@
 #ifndef AS_FRAME_OPTIMIZER
 #define AS_FRAME_OPTIMIZER
 
-#include "AtmoswingOptimizerGui.h"
+#include "AtmoSwingOptimizerGui.h"
 #include "asIncludes.h"
 #include "asLogWindow.h"
 #include "asMethodCalibrator.h"

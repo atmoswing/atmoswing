@@ -501,103 +501,103 @@ msgstr ""
 "La période de retour souhaitée n'est pas disponible dans le fichier de "
 "prévision."
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:131
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:131
 msgid "Program already running, aborting."
 msgstr "Programme déjà en cours d'exécution, interruption."
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:323
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:323
 msgid "The value provided for 'forecast-past' could not be interpreted.\n"
 msgstr "La valeur fournie pour 'forecast-past' n'a pas pu être interprétée.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:337
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:337
 msgid "Wrong date format.\n"
 msgstr "Format de date incorrect.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:420
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:420
 msgid "An existing batch file was found and has been loaded.\n"
 msgstr "Un fichier batch existant a été trouvé et a été chargé.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:431
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:431
 msgid "Please provide a path to save the batch file.\n"
 msgstr ""
 "Veuillez indiquer un chemin d'accès pour enregistrer le fichier batch.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:432
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:452
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:469
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:492
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:504
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:515
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:526
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:537
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:432
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:452
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:469
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:492
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:504
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:515
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:526
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:537
 msgid "Current value (enter to keep): "
 msgstr "Valeur actuelle (entrer pour conserver) : "
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:433
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:453
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:493
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:505
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:516
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:527
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:538
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:433
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:453
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:493
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:505
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:516
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:527
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:538
 msgid "New value: "
 msgstr "Nouvelle valeur : "
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:443
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:443
 msgid "The batch file exists and will be loaded.\n"
 msgstr "Le fichier batch existe et sera chargé.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:446
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:446
 msgid "Failed opening the batch file.\n"
 msgstr "Échec de l'ouverture du fichier batch.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:451
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:451
 msgid "Please provide a directory to save the forecasts.\n"
 msgstr "Veuillez indiquer un répertoire où enregistrer les prévisions.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:462
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:462
 msgid "Do you want to export synthetic xml files of the forecasts ?\n"
 msgstr "Voulez-vous exporter des fichiers xml synthétiques des prévisions ?\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:472
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:472
 msgid "New value (Y/N): "
 msgstr "Nouvelle valeur (Y/N) : "
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:483
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:483
 msgid "The provided value is not allowed. Please enter Y or N.\n"
 msgstr ""
 "La valeur fournie n'est pas autorisée. Veuillez saisir Y (oui) ou N (non).\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:491
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:491
 msgid "Please provide a directory to save the exports.\n"
 msgstr "Veuillez indiquer un répertoire où enregistrer les exports.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:503
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:503
 msgid "Please provide the directory containing the parameters files.\n"
 msgstr ""
 "Veuillez indiquer le répertoire contenant les fichiers de paramètres.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:514
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:514
 msgid "Please provide the directory containing the archive predictors.\n"
 msgstr ""
 "Veuillez indiquer le répertoire contenant les archives de prédicteurs.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:525
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:525
 msgid "Please provide a directory to save the downloaded predictors.\n"
 msgstr ""
 "Veuillez indiquer un répertoire où enregistrer les prédicteurs téléchargés.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:536
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:536
 msgid "Please provide the directory containing the predictand database.\n"
 msgstr ""
 "Veuillez indiquer le répertoire contenant la base de données des "
 "prédictands.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:547
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:547
 msgid "Batch file created successfully.\n"
 msgstr "Fichier batch créé avec succès.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:554
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:554
 msgid ""
 "Warning: there is no forecast listed in the batch file. Please create the "
 "batch file on a version with the graphical interface or edit the generated "
@@ -607,49 +607,49 @@ msgstr ""
 "fichier batch à l'aide une version avec l'interface graphique ou éditer le "
 "fichier généré manuellement.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:562
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:643
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:562
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:643
 #, c-format
 msgid "Forecast started for the %s UTC"
 msgstr "Début des prévisions pour le %s UTC"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:573
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:622
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:573
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:622
 msgid "Failed to open the batch file "
 msgstr "Échec de l'ouverture du fichier batch "
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:574
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:623
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:574
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:623
 #, c-format
 msgid "Failed to open the batch file %s\n"
 msgstr "Échec de l'ouverture du fichier batch %s\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:578
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:627
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:578
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:627
 msgid "Please run 'atmoswing-forecaster -c' first in order to configure."
 msgstr ""
 "Veuillez exécuter 'atmoswing-forecaster -c' en premier pour configurer le "
 "système."
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:579
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:628
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:579
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:628
 msgid "Please run 'atmoswing-forecaster -c' first in order to configure.\n"
 msgstr ""
 "Veuillez exécuter 'atmoswing-forecaster -c' en premier pour configurer le "
 "système.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:587
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:650
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:587
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:650
 msgid "Failed processing the forecast."
 msgstr "Échec du traitement de la prévision."
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:588
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:651
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:588
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:651
 msgid "Failed processing the forecast.\n"
 msgstr "Échec du traitement de la prévision.\n"
 
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:595
-#: src/app_forecaster/core/AtmoswingAppForecaster.cpp:658
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:595
+#: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:658
 #, c-format
 msgid "Forecast processed for the date %s UTC"
 msgstr "Prévision traitée pour la date %s UTC"

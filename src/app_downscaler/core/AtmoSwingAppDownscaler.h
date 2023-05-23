@@ -22,12 +22,11 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2014-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef AtmoswingAPPVIEWER_H
-#define AtmoswingAPPVIEWER_H
+#ifndef ATMOSWINGAPPDOWNSCALER_H
+#define ATMOSWINGAPPDOWNSCALER_H
 
 #include <wx/app.h>
 #include <wx/cmdline.h>
@@ -36,44 +35,58 @@
 
 #include "asIncludes.h"
 
-class asThreadsManager;
+#if USE_GUI
 
-class AtmoswingAppViewer : public wxApp {
+class AtmoSwingAppDownscaler : public wxApp
+#else
+
+class AtmoSwingAppDownscaler : public wxAppConsole
+#endif
+{
   public:
-    /**
-     * The initialization of the application.
-     */
-    bool OnInit() override;
+    virtual ~AtmoSwingAppDownscaler(){};
 
-    /**
-     * Clean up on exit.
-     */
-    int OnExit() override;
+    virtual bool OnInit();
 
-    /**
-     * Initialize the command line parser.
-     * 
-     * @param parser The command line parser.
-     * @note From http://wiki.wxwidgets.org/Command-Line_Arguments
-     */
-    void OnInitCmdLine(wxCmdLineParser& parser) override;
+    virtual int OnRun();
 
-    /**
-     * Proceed to the command line parsing.
-     * 
-     * @param parser The command line parser.
-    */
-    bool OnCmdLineParsed(wxCmdLineParser& parser) override;
+    virtual int OnExit();
 
-    /**
-     * Initialize the language support.
-     */
+    void CleanUp();
+
+    virtual void OnInitCmdLine(wxCmdLineParser& parser);
+
+    wxString GetLocalPath();
+
+    bool InitLog();
+
+    bool SetUseAsCmdLine();
+
+    bool InitForCmdLineOnly();
+
+    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
+
     static void InitLanguageSupport();
 
+    virtual bool OnExceptionInMainLoop();
+
+    virtual void OnFatalException();
+
+    virtual void OnUnhandledException();
+
   private:
-    wxSingleInstanceChecker* m_singleInstanceChecker; /**< The single instance checker. */
+    wxString m_downscalingParamsFile;
+    wxString m_downscalingMethod;
+    wxString m_predictandDB;
+    wxString m_predictorsArchiveDir;
+    wxString m_predictorsScenarioDir;
+    vi m_predictandStationIds;
+    bool m_doProcessing;
+#if USE_GUI
+    wxSingleInstanceChecker* m_singleInstanceChecker;
+#endif
 };
 
-DECLARE_APP(AtmoswingAppViewer);
+DECLARE_APP(AtmoSwingAppDownscaler);
 
 #endif

@@ -28,7 +28,7 @@
 
 #include "asFrameViewer.h"
 
-#include "AtmoswingAppViewer.h"
+#include "AtmoSwingAppViewer.h"
 #include "asFramePredictandDB.h"
 
 #if defined(__WIN32__)

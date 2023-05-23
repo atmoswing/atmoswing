@@ -528,7 +528,7 @@ void wxPlotCtrl::DrawPlotCtrl(wxDC* dc) {
 #ifdef DRAW_BORDERS
     // Test code for sizing to show the extent of the axes
     dc->SetBrush(*wxTRANSPARENT_BRUSH);
-    dc->SetPen(wxPen(GetBorderColour(), 1, wxSOLID));
+    dc->SetPen(wxPen(GetBorderColour(), 1, wxPENSTYLE_SOLID));
     dc->DrawRectangle(m_titleRect);
     dc->DrawRectangle(m_xLabelRect);
     dc->DrawRectangle(m_yLabelRect);
@@ -2115,8 +2115,8 @@ void wxPlotCtrl::DrawAreaWindow(wxDC* dc, const wxRect& rect) {
 
     dc->SetClippingRegion(refreshRect);
 
-    dc->SetBrush(wxBrush(GetBackgroundColour(), wxSOLID));
-    dc->SetPen(wxPen(GetBorderColour(), m_area_border_width, wxSOLID));
+    dc->SetBrush(wxBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID));
+    dc->SetPen(wxPen(GetBorderColour(), m_area_border_width, wxPENSTYLE_SOLID));
     dc->DrawRectangle(clientRect);
 
     DrawTickMarks(dc, refreshRect);
@@ -2184,7 +2184,7 @@ void wxPlotCtrl::DrawAreaWindow(wxDC* dc, const wxRect& rect) {
 
     // refresh border
     dc->SetBrush(*wxTRANSPARENT_BRUSH);
-    dc->SetPen(wxPen(GetBorderColour(), m_area_border_width, wxSOLID));
+    dc->SetPen(wxPen(GetBorderColour(), m_area_border_width, wxPENSTYLE_SOLID));
     dc->DrawRectangle(clientRect);
 
     dc->SetPen(wxNullPen);
@@ -2199,7 +2199,7 @@ void wxPlotCtrl::DrawMouseMarker(wxDC* dc, int type, const wxRect& rect) {
     wxRasterOperationMode logical_fn = dc->GetLogicalFunction();
     dc->SetLogicalFunction(wxINVERT);
     dc->SetBrush(*wxTRANSPARENT_BRUSH);
-    dc->SetPen(*wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxDOT));
+    dc->SetPen(*wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxPENSTYLE_DOT));
 
     switch (type) {
         case wxPLOTCTRL_MARKER_NONE:
@@ -2382,7 +2382,7 @@ void wxPlotCtrl::DrawCurveCursor(wxDC* dc) {
 
 void wxPlotCtrl::DrawTickMarks(wxDC* dc, const wxRect& rect) {
     wxRect clientRect(GetPlotAreaRect());
-    dc->SetPen(wxPen(GetGridColour(), 1, wxSOLID));
+    dc->SetPen(wxPen(GetGridColour(), 1, wxPENSTYLE_SOLID));
 
     int xtick_length = GetDrawGrid() ? clientRect.height : 10;
     int ytick_length = GetDrawGrid() ? clientRect.width : 10;

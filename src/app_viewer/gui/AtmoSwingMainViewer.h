@@ -26,25 +26,27 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AS_MAIN_FORECATSER_H
-#define AS_MAIN_FORECATSER_H
+#ifndef AS_MAIN_VIEWER_H
+#define AS_MAIN_VIEWER_H
 
-#include "AtmoswingAppForecaster.h"
-#include "asFrameForecaster.h"
+#include "AtmoSwingAppViewer.h"
+#include "asFrameViewer.h"
 #include "asIncludes.h"
 
-class AtmoswingFrameForecaster : public asFrameForecaster {
+class AtmoSwingFrameViewer : public asFrameViewer {
   public:
-    explicit AtmoswingFrameForecaster(wxFrame* frame);
+    explicit AtmoSwingFrameViewer(wxFrame* frame);
 
-    ~AtmoswingFrameForecaster() override;
+    ~AtmoSwingFrameViewer() override = default;
 
   private:
+    asLogWindow* m_logWindow;
+
     virtual void OnClose(wxCloseEvent& event);
 
-    virtual void OnQuit(wxCommandEvent& event);
+    void OnQuit(wxCommandEvent& event) override;
 
-    void SetDefaultOptions();
+    void OnShowLog(wxCommandEvent& event) override;
 };
 
 #endif

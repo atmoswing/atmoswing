@@ -15,7 +15,7 @@
 #include <wx/wx.h>
 #endif //WX_PRECOMP
 
-#include "AtmoswingViewerGui.h"
+#include "AtmoSwingViewerGui.h"
 
 ///////////////////////////////////////////////////////////////////////////
 

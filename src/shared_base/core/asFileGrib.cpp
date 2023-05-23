@@ -524,7 +524,7 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
 
     int iTime = iTimeStart;
 
-    for (auto& date : fullTimeArray) {
+    for (int i = 0; i < fullTimeArray.size(); ++i) {
         wxASSERT(iTime < timeArray.size());
 
         wxString refDate = asTime::GetStringTime(referenceDateArray[iTime], YYYYMMDD);

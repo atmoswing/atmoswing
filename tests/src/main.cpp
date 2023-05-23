@@ -46,6 +46,9 @@ int main(int argc, char** argv) {
         g_unitTesting = true;
         g_silentMode = true;
         g_guiMode = false;
+#if USE_GUI
+        g_guiMode = true;
+#endif
 
         // Initialize wxWidgets (also wxApp)
         int argcApp = 0;

@@ -1,6 +1,11 @@
 name: Code coverage
 
-on: push
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - feature/*
 
 env:
   BUILD_TYPE: RelWithDebInfo
@@ -17,7 +22,9 @@ jobs:
           python-version: '3.10'
 
       - name: Install system libraries
-        run: sudo apt install lcov
+        run: |
+          sudo apt-get update
+          sudo apt-get install lcov xvfb
 
       - name: Cache Conan libs
         id: cache-conan
@@ -32,21 +39,25 @@ jobs:
           conan profile new default --detect --force
           conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
           conan profile update settings.compiler.libcxx=libstdc++11 default
+          conan profile update conf.tools.system.package_manager:mode=install default
+          conan profile update conf.tools.system.package_manager:sudo=True default
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/bin
 
       - name: Get dependencies
         working-directory: ${{github.workspace}}/bin
-        run: conan install .. -s build_type=Release -o build_viewer=False -o with_gui=False -o enable_tests=True -o code_coverage=True --build=missing --build=openjpeg
+        run: conan install .. -s build_type=Release -o build_viewer=True -o with_gui=True -o enable_tests=True -o code_coverage=True --build=missing --build=openjpeg
 
       - name: Configure with CMake
         working-directory: ${{github.workspace}}/bin
-        run: cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DUSE_CODECOV=1 -DBUILD_TESTS=1 -DBUILD_VIEWER=0 -DUSE_GUI=0
+        run: cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DUSE_CODECOV=1 -DBUILD_TESTS=1 -DBUILD_VIEWER=1 -DUSE_GUI=1
 
-      - name: Build and run code coverage
-        working-directory: ${{github.workspace}}/bin
-        run: cmake --build . --config ${{env.BUILD_TYPE}} --target atmoswing-coverage
+      - name: Build and run code coverage (using xvfb)
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: cmake --build . --config ${{env.BUILD_TYPE}} --target atmoswing-coverage
+          working-directory: ${{github.workspace}}/bin
 
       - name: Preparing coverage data
         working-directory: ${{github.workspace}}/bin

@@ -22,36 +22,29 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef AS_FRAME_PREFERENCES_VIEWER_H
-#define AS_FRAME_PREFERENCES_VIEWER_H
+#ifndef ATMOSWING_MAIN_DOWNSCALER_H
+#define ATMOSWING_MAIN_DOWNSCALER_H
 
-#include "AtmoSwingViewerGui.h"
+// #include "version.h"
+#include "AtmoSwingAppDownscaler.h"
+#include "asFrameDownscaler.h"
 #include "asIncludes.h"
-#include "asWorkspace.h"
 
-class asFramePreferencesViewer : public asFramePreferencesViewerVirtual {
+class AtmoSwingFrameDownscaler : public asFrameDownscaler {
   public:
-    asFramePreferencesViewer(wxWindow* parent, asWorkspace* workspace, wxWindowID id = asWINDOW_PREFERENCES);
+    explicit AtmoSwingFrameDownscaler(wxFrame* frame);
 
-  protected:
-    void CloseFrame(wxCommandEvent& event) override;
-
-    void Update() override;
-
-    void LoadPreferences();
-
-    void SavePreferences();
-
-    void SaveAndClose(wxCommandEvent& event) override;
-
-    void ApplyChanges(wxCommandEvent& event) override;
+    ~AtmoSwingFrameDownscaler() override;
 
   private:
-    asWorkspace* m_workspace;
+    virtual void OnClose(wxCloseEvent& event);
+
+    virtual void OnQuit(wxCommandEvent& event);
+
+    void SetDefaultOptions();
 };
 
 #endif

@@ -22,30 +22,44 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2023 Pascal Horton, Terranum.
  */
 
-#ifndef AS_MAIN_OPTIMIZER_H
-#define AS_MAIN_OPTIMIZER_H
+#include <gtest/gtest.h>
+#include <wx/wx.h>
 
-// #include "version.h"
-#include "AtmoswingAppOptimizer.h"
-#include "asFrameOptimizer.h"
-#include "asIncludes.h"
+#include "asFrameViewer.h"
 
-class AtmoswingFrameOptimizer : public asFrameOptimizer {
-  public:
-    AtmoswingFrameOptimizer(wxFrame* frame);
+// Test fixture for the frame test
+class FrameViewer : public testing::Test {
+  protected:
+    void SetUp() override {
+        // Initialize wxWidgets
+        int argc = 0;
+        wxApp::SetInstance(new wxAppBase);
+        wxChar** argvApp = NULL;
+        wxEntryStart(argc, argvApp);
 
-    ~AtmoswingFrameOptimizer() override;
+        // Create the frame
+        frame = new asFrameViewer(nullptr);
+    }
 
-  private:
-    virtual void OnClose(wxCloseEvent& event);
+    void TearDown() override {
+        // Cleanup wxWidgets
+        frame->Destroy();
+        wxEntryCleanup();
+    }
 
-    virtual void OnQuit(wxCommandEvent& event);
-
-    void SetDefaultOptions();
+    asFrameViewer* frame;
 };
 
-#endif
+TEST_F(FrameViewer, Initialises) {
+    // Ensure the frame is not initially shown
+    EXPECT_FALSE(frame->IsShown());
+
+    // Show the frame
+    frame->Show();
+
+    // Check if the frame is shown
+    EXPECT_TRUE(frame->IsShown());
+}

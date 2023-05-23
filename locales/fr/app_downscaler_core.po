@@ -29,7 +29,7 @@ msgid "The whole processing took %.3f min to execute"
 msgstr "L'ensemble du traitement a duré %.3f min"
 
 #: src/app_downscaler/core/asMethodDownscaler.cpp:87
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:531
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:531
 msgid "Downscaling over."
 msgstr "La descente d'échelle est terminée."
 
@@ -357,87 +357,87 @@ msgid "The dates sequence was not found in the CORDEX file name : %s."
 msgstr ""
 "La séquence de dates n'a pas été trouvée dans le nom du fichier CORDEX : %s."
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:138
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:138
 msgid "Program already running, aborting."
 msgstr "Programme déjà en cours d'exécution, interruption."
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:282
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:282
 msgid "A directory with the same name already exists.\n"
 msgstr "Un répertoire portant le même nom existe déjà.\n"
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:283
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:283
 msgid "A directory with the same name already exists."
 msgstr "Un répertoire avec le même nom existe déjà."
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:337
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:337
 msgid "The value provided for 'log-level' could not be interpreted.\n"
 msgstr "La valeur fournie pour 'log-level' n'a pas pu être interprétée.\n"
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:364
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:364
 #, c-format
 msgid "The given downscaling file (%s) couldn't be found."
 msgstr "Le fichier de descente d'échelle (%s) n'a pas été trouvé."
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:376
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:376
 #, c-format
 msgid "The given predictand DB (%s) couldn't be found."
 msgstr "La base de données des prédictands (%s) n'a pas été trouvée."
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:388
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:388
 #, c-format
 msgid "The given archive predictors directory (%s) couldn't be found."
 msgstr "Le répertoire des archives de prédicteurs (%s) n'a pas été trouvé."
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:400
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:400
 #, c-format
 msgid "The given scenario predictors directory (%s) couldn't be found."
 msgstr ""
 "Le répertoire de prédicteurs issus des scénarios (%s) n'a pas pu être trouvé."
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:418
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:418
 msgid "Initialization for command-line interface failed."
 msgstr "L'initialisation de l'interface de ligne de commande a échoué."
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:422
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:422
 #, c-format
 msgid "Given downscaling method: %s"
 msgstr "Méthode de descente d'échelle donnée : %s"
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:496
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:496
 msgid "The parameters file is not given."
 msgstr "Le fichier de paramètres n'est pas fourni."
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:501
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:501
 msgid "The predictand DB is not given."
 msgstr "La base de données des prédictands n'a pas été fournie."
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:506
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:506
 msgid "The predictors directory is not given."
 msgstr "Le répertoire des prédicteurs n'est pas fourni."
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:523
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:523
 #, c-format
 msgid "Bad allocation caught: %s"
 msgstr "Mauvaise allocation détectée : %s"
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:527
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:527
 #, c-format
 msgid "Exception caught: %s"
 msgstr "Une exception a été détectée : %s"
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:532
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:532
 msgid "Downscaling over.\n"
 msgstr "La descente d'échelle est terminée.\n"
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:561
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:561
 msgid "An exception occured in the main loop"
 msgstr "Une exception s'est produite dans la boucle principale"
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:566
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:566
 msgid "An fatal exception occured"
 msgstr "Une exception fatale s'est produite"
 
-#: src/app_downscaler/core/AtmoswingAppDownscaler.cpp:570
+#: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:570
 msgid "An unhandled exception occured"
 msgstr "Une exception non gérée s'est produite"
 

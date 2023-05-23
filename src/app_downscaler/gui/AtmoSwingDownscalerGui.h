@@ -87,7 +87,7 @@ class asFrameDownscalerVirtual : public wxFrame
 
 	public:
 
-		asFrameDownscalerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Downscaler"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 606,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameDownscalerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Downscaler"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 606,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~asFrameDownscalerVirtual();
 

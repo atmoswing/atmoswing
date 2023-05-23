@@ -32,7 +32,7 @@
 #include <wx/filehistory.h>
 #include <wx/process.h>
 
-#include "AtmoswingViewerGui.h"
+#include "AtmoSwingViewerGui.h"
 #include "asForecastManager.h"
 #include "asForecastRenderer.h"
 #include "asIncludes.h"

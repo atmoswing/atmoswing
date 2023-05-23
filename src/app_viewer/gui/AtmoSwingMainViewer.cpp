@@ -26,27 +26,41 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AS_MAIN_VIEWER_H
-#define AS_MAIN_VIEWER_H
-
-#include "AtmoswingAppViewer.h"
-#include "asFrameViewer.h"
-#include "asIncludes.h"
-
-class AtmoswingFrameViewer : public asFrameViewer {
-  public:
-    explicit AtmoswingFrameViewer(wxFrame* frame);
-
-    ~AtmoswingFrameViewer() override = default;
-
-  private:
-    asLogWindow* m_logWindow;
-
-    virtual void OnClose(wxCloseEvent& event);
-
-    void OnQuit(wxCommandEvent& event) override;
-
-    void OnShowLog(wxCommandEvent& event) override;
-};
-
+#ifdef WX_PRECOMP
+#include "wx_pch.h"
 #endif
+
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif  //__BORLANDC__
+
+#include "AtmoSwingMainViewer.h"
+
+AtmoSwingFrameViewer::AtmoSwingFrameViewer(wxFrame* frame)
+    : asFrameViewer(frame) {
+#if wxUSE_STATUSBAR
+    wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
+#endif
+
+    // Config file
+    wxConfigBase* pConfig = wxFileConfig::Get();
+
+    // Create log window and file
+    delete wxLog::SetActiveTarget(new asLogGui());
+    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"),
+                                  pConfig->ReadBool("/General/DisplayLogWindow", true));
+    Log()->CreateFile("AtmoSwingViewer.log");
+}
+
+void AtmoSwingFrameViewer::OnClose(wxCloseEvent& event) {
+    Close(true);
+}
+
+void AtmoSwingFrameViewer::OnQuit(wxCommandEvent& event) {
+    Close(true);
+}
+
+void AtmoSwingFrameViewer::OnShowLog(wxCommandEvent& event) {
+    wxASSERT(m_logWindow);
+    m_logWindow->Show();
+}

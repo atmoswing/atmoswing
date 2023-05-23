@@ -33,11 +33,11 @@
 #pragma hdrstop
 #endif  //__BORLANDC__
 
-#include "AtmoswingAppDownscaler.h"
+#include "AtmoSwingAppDownscaler.h"
 
 #if USE_GUI
 
-#include "AtmoswingMainDownscaler.h"
+#include "AtmoSwingMainDownscaler.h"
 
 #endif
 
@@ -47,7 +47,7 @@
 #include "asMethodDownscalerClassic.h"
 #include "asParameters.h"
 
-IMPLEMENT_APP(AtmoswingAppDownscaler)
+IMPLEMENT_APP(AtmoSwingAppDownscaler)
 
 #if USE_GUI
 
@@ -86,7 +86,7 @@ static const wxString cmdLineLogo = wxT(
     "_________________________________________\n"
     "\n");
 
-bool AtmoswingAppDownscaler::OnInit() {
+bool AtmoSwingAppDownscaler::OnInit() {
 #if _DEBUG
 #ifdef __WXMSW__
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -144,7 +144,7 @@ bool AtmoswingAppDownscaler::OnInit() {
     wxInitAllImageHandlers();
 
     // Create frame
-    AtmoswingFrameDownscaler* frame = new AtmoswingFrameDownscaler(0L);
+    AtmoSwingFrameDownscaler* frame = new AtmoSwingFrameDownscaler(0L);
     frame->OnInit();
 
 #ifdef __WXMSW__
@@ -157,7 +157,7 @@ bool AtmoswingAppDownscaler::OnInit() {
     return true;
 }
 
-wxString AtmoswingAppDownscaler::GetLocalPath() {
+wxString AtmoSwingAppDownscaler::GetLocalPath() {
     // Prepare local path
     wxString localPath = wxFileName::GetCwd() + DS;
     if (g_runNb > 0) {
@@ -170,7 +170,7 @@ wxString AtmoswingAppDownscaler::GetLocalPath() {
     return localPath;
 }
 
-bool AtmoswingAppDownscaler::InitLog() {
+bool AtmoSwingAppDownscaler::InitLog() {
     if (g_local) {
         wxString fullPath = GetLocalPath();
         fullPath.Append("AtmoSwingDownscaler.log");
@@ -199,7 +199,7 @@ bool AtmoswingAppDownscaler::InitLog() {
     return true;
 }
 
-bool AtmoswingAppDownscaler::SetUseAsCmdLine() {
+bool AtmoSwingAppDownscaler::SetUseAsCmdLine() {
     g_guiMode = false;
     g_unitTesting = false;
     g_silentMode = true;
@@ -209,7 +209,7 @@ bool AtmoswingAppDownscaler::SetUseAsCmdLine() {
     return true;
 }
 
-bool AtmoswingAppDownscaler::InitForCmdLineOnly() {
+bool AtmoSwingAppDownscaler::InitForCmdLineOnly() {
     if (g_local) {
         wxString dirData = wxFileName::GetCwd() + DS + "data" + DS;
 
@@ -236,7 +236,7 @@ bool AtmoswingAppDownscaler::InitForCmdLineOnly() {
     return true;
 }
 
-void AtmoswingAppDownscaler::OnInitCmdLine(wxCmdLineParser& parser) {
+void AtmoSwingAppDownscaler::OnInitCmdLine(wxCmdLineParser& parser) {
     wxAppConsole::OnInitCmdLine(parser);
 
     parser.SetDesc(g_cmdLineDesc);
@@ -246,7 +246,7 @@ void AtmoswingAppDownscaler::OnInitCmdLine(wxCmdLineParser& parser) {
     parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
+bool AtmoSwingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if runs with GUI or CL
     if (parser.Found("downscaling-method")) {
         SetUseAsCmdLine();
@@ -433,7 +433,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
     return true;
 }
 
-void AtmoswingAppDownscaler::InitLanguageSupport() {
+void AtmoSwingAppDownscaler::InitLanguageSupport() {
     wxLocale* locale;
 
     wxConfigBase* pConfig = wxFileConfig::Get();
@@ -483,7 +483,7 @@ void AtmoswingAppDownscaler::InitLanguageSupport() {
 #endif
 }
 
-int AtmoswingAppDownscaler::OnRun() {
+int AtmoSwingAppDownscaler::OnRun() {
     if (g_guiMode) {
         return wxApp::OnRun();
     }
@@ -534,13 +534,13 @@ int AtmoswingAppDownscaler::OnRun() {
     return 0;
 }
 
-int AtmoswingAppDownscaler::OnExit() {
+int AtmoSwingAppDownscaler::OnExit() {
     CleanUp();
 
     return 0;
 }
 
-void AtmoswingAppDownscaler::CleanUp() {
+void AtmoSwingAppDownscaler::CleanUp() {
 #if USE_GUI
     // Instance checker
     wxDELETE(m_singleInstanceChecker);
@@ -557,15 +557,15 @@ void AtmoswingAppDownscaler::CleanUp() {
     wxApp::CleanUp();
 }
 
-bool AtmoswingAppDownscaler::OnExceptionInMainLoop() {
+bool AtmoSwingAppDownscaler::OnExceptionInMainLoop() {
     wxLogError(_("An exception occured in the main loop"));
     return false;
 }
 
-void AtmoswingAppDownscaler::OnFatalException() {
+void AtmoSwingAppDownscaler::OnFatalException() {
     wxLogError(_("An fatal exception occured"));
 }
 
-void AtmoswingAppDownscaler::OnUnhandledException() {
+void AtmoSwingAppDownscaler::OnUnhandledException() {
     wxLogError(_("An unhandled exception occured"));
 }

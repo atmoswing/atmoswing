@@ -101,11 +101,6 @@ class asForecastRenderer {
 
   protected:
   private:
-    int m_leadTimeIndex;
-    float m_leadTimeDate;
-    float m_leadTimeStep;
-    float m_layerMaxValue;
-    bool m_opened;
     asFrameViewer* m_parent;
     asForecastManager* m_forecastManager;
     vrLayerManager* m_layerManager;
@@ -114,10 +109,15 @@ class asForecastRenderer {
     wxArrayString m_displayQuantiles;
     vf m_returnPeriods;
     vf m_quantiles;
+    int m_leadTimeIndex;
+    float m_leadTimeDate;
+    float m_leadTimeStep;
+    float m_layerMaxValue;
     int m_forecastDisplaySelection;
     int m_quantileSelection;
     int m_methodSelection;
     int m_forecastSelection;
+    bool m_opened;
 
     void AdaptLeadTimeIndex();
 };

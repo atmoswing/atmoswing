@@ -70,9 +70,9 @@ void asPanelPredictorsColorbar::SetRender(vrRenderRasterPredictor* render) {
 asPanelPredictorsColorbarDrawing::asPanelPredictorsColorbarDrawing(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                                                                    const wxSize& size, long style)
     : wxPanel(parent, id, pos, size, style),
-      m_render(nullptr),
       m_bmpColorbar(nullptr),
-      m_gdc(nullptr) {
+      m_gdc(nullptr),
+      m_render(nullptr) {
     Layout();
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelPredictorsColorbarDrawing::OnPaint), nullptr, this);

@@ -161,6 +161,7 @@ using std::runtime_error;
 #endif
 #ifdef UNIT_TESTING
 #include "asGlobVarsOptimizer.h"
+#include "asGlobVarsViewer.h"
 #endif
 
 #endif  // AS_INC_H

@@ -1,0 +1,10 @@
+coverage:
+  status:
+    project:
+      default:
+        ignore:
+          - dependabot/github_actions/actions/checkout-3
+          - dependabot/github_actions/*
+          - gh-readonly-queue/*
+          - feature-*
+          - master

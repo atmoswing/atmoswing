@@ -34,7 +34,7 @@
 #include "asThreadGAs.h"
 
 #ifndef UNIT_TESTING
-#include "AtmoswingAppOptimizer.h"
+#include "AtmoSwingAppOptimizer.h"
 #endif
 
 #ifdef USE_CUDA

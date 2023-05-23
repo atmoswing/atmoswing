@@ -6,9 +6,10 @@ variableScope:*/asPredictorArchNoaaOisst2.cpp
 variableScope:*/asDataPredictorArchiveNoaaOisst2Terranum.cpp
 
 // style: The class 'classname' does not have a constructor
-noConstructor:*/AtmoswingAppViewer.h
-noConstructor:*/AtmoswingAppCalibrator.h
-noConstructor:*/AtmoswingAppForecaster.h
+noConstructor:*/AtmoSwingAppViewer.h
+noConstructor:*/AtmoSwingAppDownscaler.h
+noConstructor:*/AtmoSwingAppOptimizer.h
+noConstructor:*/AtmoSwingAppForecaster.h
 
 // style: The function 'functionname' is never used.
 unusedFunction

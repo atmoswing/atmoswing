@@ -29,7 +29,7 @@
 #ifndef AS_FRAME_PREFERENCES_FORECASTER
 #define AS_FRAME_PREFERENCES_FORECASTER
 
-#include "AtmoswingForecasterGui.h"
+#include "AtmoSwingForecasterGui.h"
 #include "asBatchForecasts.h"
 #include "asIncludes.h"
 

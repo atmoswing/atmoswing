@@ -28,7 +28,7 @@
 #ifndef AS_WIZARD_WORKSPACE_H
 #define AS_WIZARD_WORKSPACE_H
 
-#include "AtmoswingViewerGui.h"
+#include "AtmoSwingViewerGui.h"
 #include "asIncludes.h"
 #include "asWorkspace.h"
 

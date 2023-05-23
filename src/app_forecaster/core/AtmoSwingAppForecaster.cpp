@@ -34,16 +34,16 @@
 #pragma hdrstop
 #endif  //__BORLANDC__
 
-#include "AtmoswingAppForecaster.h"
+#include "AtmoSwingAppForecaster.h"
 #include "asBatchForecasts.h"
 
 #if USE_GUI
 
-#include "AtmoswingMainForecaster.h"
+#include "AtmoSwingMainForecaster.h"
 
 #endif
 
-IMPLEMENT_APP(AtmoswingAppForecaster)
+IMPLEMENT_APP(AtmoSwingAppForecaster)
 
 #include <wx/stdpaths.h>
 
@@ -84,7 +84,7 @@ static const wxString cmdLineLogo = wxT(
     "_________________________________________\n"
     "\n");
 
-bool AtmoswingAppForecaster::OnInit() {
+bool AtmoSwingAppForecaster::OnInit() {
 #if _DEBUG
 #ifdef __WXMSW__
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -164,7 +164,7 @@ bool AtmoswingAppForecaster::OnInit() {
     wxInitAllImageHandlers();
 
     // Create frame
-    AtmoswingFrameForecaster* frame = new AtmoswingFrameForecaster(0L);
+    AtmoSwingFrameForecaster* frame = new AtmoSwingFrameForecaster(0L);
     frame->OnInit();
 
 #ifdef __WXMSW__
@@ -177,7 +177,7 @@ bool AtmoswingAppForecaster::OnInit() {
     return true;
 }
 
-bool AtmoswingAppForecaster::InitLog() {
+bool AtmoSwingAppForecaster::InitLog() {
 #if USE_GUI
     if (!g_guiMode) {
         Log()->CreateFileOnly("AtmoSwingForecaster.log");
@@ -190,7 +190,7 @@ bool AtmoswingAppForecaster::InitLog() {
     return true;
 }
 
-bool AtmoswingAppForecaster::SetUseAsCmdLine() {
+bool AtmoSwingAppForecaster::SetUseAsCmdLine() {
     g_guiMode = false;
     g_unitTesting = false;
     g_silentMode = true;
@@ -198,7 +198,7 @@ bool AtmoswingAppForecaster::SetUseAsCmdLine() {
     return true;
 }
 
-void AtmoswingAppForecaster::OnInitCmdLine(wxCmdLineParser& parser) {
+void AtmoSwingAppForecaster::OnInitCmdLine(wxCmdLineParser& parser) {
     parser.SetDesc(g_cmdLineDesc);
     parser.SetLogo(cmdLineLogo);
 
@@ -206,7 +206,7 @@ void AtmoswingAppForecaster::OnInitCmdLine(wxCmdLineParser& parser) {
     parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
+bool AtmoSwingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if runs with GUI or CL
     if (parser.Found("forecast-date") || parser.Found("forecast-past") || parser.Found("forecast-now")) {
         SetUseAsCmdLine();
@@ -353,7 +353,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
     return true;
 }
 
-void AtmoswingAppForecaster::InitLanguageSupport() {
+void AtmoSwingAppForecaster::InitLanguageSupport() {
     wxLocale* locale;
 
     wxConfigBase* pConfig = wxFileConfig::Get();
@@ -403,7 +403,7 @@ void AtmoswingAppForecaster::InitLanguageSupport() {
 #endif
 }
 
-int AtmoswingAppForecaster::OnRun() {
+int AtmoSwingAppForecaster::OnRun() {
     if (g_guiMode) {
         return wxApp::OnRun();
     }
@@ -666,7 +666,7 @@ int AtmoswingAppForecaster::OnRun() {
     return 0;
 }
 
-int AtmoswingAppForecaster::OnExit() {
+int AtmoSwingAppForecaster::OnExit() {
 #if USE_GUI
     // Instance checker
     wxDELETE(m_singleInstanceChecker);

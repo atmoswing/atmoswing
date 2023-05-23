@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AtmoswingAPPOptimizer_H
-#define AtmoswingAPPOptimizer_H
+#ifndef AS_APP_FORECASTER_H
+#define AS_APP_FORECASTER_H
 
 #include <wx/app.h>
 #include <wx/cmdline.h>
@@ -38,55 +38,43 @@
 
 #if USE_GUI
 
-class AtmoswingAppOptimizer : public wxApp
+class AtmoSwingAppForecaster : public wxApp
 #else
 
-class AtmoswingAppOptimizer : public wxAppConsole
+class AtmoSwingAppForecaster : public wxAppConsole
 #endif
 {
   public:
-    virtual ~AtmoswingAppOptimizer(){};
+    bool OnInit() override;
 
-    virtual bool OnInit();
+    int OnRun() override;
 
-    virtual int OnRun();
+    int OnExit() override;
 
-    virtual int OnExit();
-
-    void CleanUp();
-
-    virtual void OnInitCmdLine(wxCmdLineParser& parser);
-
-    wxString GetLocalPath();
+    void OnInitCmdLine(wxCmdLineParser& parser) override;
 
     bool InitLog();
 
     bool SetUseAsCmdLine();
 
-    bool InitForCmdLineOnly();
+    bool OnCmdLineParsed(wxCmdLineParser& parser) override;
 
+    /**
+     * Initialize the language support.
+     */
     static void InitLanguageSupport();
 
-    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
-
-    virtual bool OnExceptionInMainLoop();
-
-    virtual void OnFatalException();
-
-    virtual void OnUnhandledException();
-
   private:
-    wxString m_calibParamsFile;
-    wxString m_predictandDB;
-    wxString m_predictorsDir;
-    vi m_predictandStationIds;
-    wxString m_calibMethod;
-    bool m_doProcessing;
+    bool m_doConfig; /**< Do we want to configure the software? */
+    bool m_doForecast; /**< Do we want to run the forecast? */
+    bool m_doForecastPast; /**< Do we want to run the forecast for past dates? */
+    double m_forecastDate; /**< Date of the forecast. */
+    int m_forecastPastDays; /**< Number of days to forecast in the past. */
 #if USE_GUI
-    wxSingleInstanceChecker* m_singleInstanceChecker;
+    wxSingleInstanceChecker* m_singleInstanceChecker; /**< The single instance checker. */
 #endif
 };
 
-DECLARE_APP(AtmoswingAppOptimizer);
+DECLARE_APP(AtmoSwingAppForecaster);
 
 #endif

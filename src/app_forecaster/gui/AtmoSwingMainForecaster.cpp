@@ -34,10 +34,10 @@
 #pragma hdrstop
 #endif  //__BORLANDC__
 
-#include "AtmoswingMainOptimizer.h"
+#include "AtmoSwingMainForecaster.h"
 
-AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame* frame)
-    : asFrameOptimizer(frame) {
+AtmoSwingFrameForecaster::AtmoSwingFrameForecaster(wxFrame* frame)
+    : asFrameForecaster(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
@@ -52,14 +52,13 @@ AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame* frame)
     delete wxLog::SetActiveTarget(new asLogGui());
     m_logWindow = new asLogWindow(this, _("AtmoSwing log window"),
                                   pConfig->ReadBool("/General/DisplayLogWindow", true));
-    Log()->CreateFile("AtmoSwingOptimizer.log");
+    Log()->CreateFile("AtmoSwingForecaster.log");
+    Log()->SetLevel(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
-    int x = pConfig->ReadLong("/MainFrame/x", 50);
-    int y = pConfig->ReadLong("/MainFrame/y", 50);
-    int w = pConfig->ReadLong("/MainFrame/w", minWidth);
-    int h = pConfig->ReadLong("/MainFrame/h", minHeight);
+    int x = (int)pConfig->ReadLong("/MainFrame/x", 50), y = (int)pConfig->ReadLong("/MainFrame/y", 50),
+        w = (int)pConfig->ReadLong("/MainFrame/w", minWidth), h = (int)pConfig->ReadLong("/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x < screen.x - 10) x = screen.x;
     if (x > screen.width) x = screen.x;
@@ -88,21 +87,19 @@ AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame* frame)
     }
 }
 
-void AtmoswingFrameOptimizer::SetDefaultOptions() {
+void AtmoSwingFrameForecaster::SetDefaultOptions() {
     wxConfigBase* pConfig = wxFileConfig::Get();
 
     // General
     pConfig->Write("/General/GuiOptions", pConfig->ReadLong("/General/GuiOptions", 1l));
-    pConfig->Write("/General/Responsive", pConfig->ReadBool("/General/Responsive", false));
-    pConfig->Write("/General/LogLevel", pConfig->ReadLong("/General/LogLevel", 1));
+    pConfig->Write("/General/Responsive", pConfig->ReadBool("/General/Responsive", true));
+    pConfig->Write("/General/LogLevel", pConfig->Read("/General/LogLevel", 1));
     pConfig->Write("/General/DisplayLogWindow", pConfig->ReadBool("/General/DisplayLogWindow", false));
 
-    // Paths
-    wxString dirData = asConfig::GetDataDir() + "data" + DS;
-    pConfig->Write("/Paths/DataPredictandDBDir", pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands"));
-    pConfig->Write("/Paths/ResultsDir",
-                   pConfig->Read("/Paths/ResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer"));
-    pConfig->Write("/Paths/ArchivePredictorsDir", pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors"));
+    // Internet
+    pConfig->Write("/Internet/MaxPreviousStepsNb", pConfig->Read("/Internet/MaxPreviousStepsNb", "5"));
+    pConfig->Write("/Internet/RestrictDownloads", pConfig->ReadBool("/Internet/RestrictDownloads", true));
+    pConfig->Write("/Internet/UsesProxy", pConfig->ReadBool("/Internet/UsesProxy", false));
 
     // Processing
     bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
@@ -112,14 +109,14 @@ void AtmoswingFrameOptimizer::SetDefaultOptions() {
     pConfig->Write("/Processing/ThreadsNb", pConfig->Read("/Processing/ThreadsNb", asStrF("%d", maxThreads)));
     long processingMethod = pConfig->Read("/Processing/Method", (long)asMULTITHREADS);
     if (!allowMultithreading) {
-        processingMethod = (long)asSTANDARD;
+        processingMethod = (long)asMULTITHREADS;
     }
     pConfig->Write("/Processing/Method", processingMethod);
 
     pConfig->Flush();
 }
 
-AtmoswingFrameOptimizer::~AtmoswingFrameOptimizer() {
+AtmoSwingFrameForecaster::~AtmoSwingFrameForecaster() {
     // Config file
     wxConfigBase* pConfig = wxFileConfig::Get();
     if (!pConfig) return;
@@ -133,13 +130,13 @@ AtmoswingFrameOptimizer::~AtmoswingFrameOptimizer() {
     pConfig->Write("/MainFrame/w", (long)w);
     pConfig->Write("/MainFrame/h", (long)h);
 
-    Destroy();
+    // wxDELETE(m_logWindow);
 }
 
-void AtmoswingFrameOptimizer::OnClose(wxCloseEvent& event) {
+void AtmoSwingFrameForecaster::OnClose(wxCloseEvent& event) {
     Close(true);
 }
 
-void AtmoswingFrameOptimizer::OnQuit(wxCommandEvent& event) {
+void AtmoSwingFrameForecaster::OnQuit(wxCommandEvent& event) {
     Close(true);
 }

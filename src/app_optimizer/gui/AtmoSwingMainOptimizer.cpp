@@ -22,7 +22,8 @@
  */
 
 /*
- * Portions Copyright 2017 Pascal Horton, University of Bern.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
 #ifdef WX_PRECOMP
@@ -33,10 +34,10 @@
 #pragma hdrstop
 #endif  //__BORLANDC__
 
-#include "AtmoswingMainDownscaler.h"
+#include "AtmoSwingMainOptimizer.h"
 
-AtmoswingFrameDownscaler::AtmoswingFrameDownscaler(wxFrame* frame)
-    : asFrameDownscaler(frame) {
+AtmoSwingFrameOptimizer::AtmoSwingFrameOptimizer(wxFrame* frame)
+    : asFrameOptimizer(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
@@ -51,12 +52,14 @@ AtmoswingFrameDownscaler::AtmoswingFrameDownscaler(wxFrame* frame)
     delete wxLog::SetActiveTarget(new asLogGui());
     m_logWindow = new asLogWindow(this, _("AtmoSwing log window"),
                                   pConfig->ReadBool("/General/DisplayLogWindow", true));
-    Log()->CreateFile("AtmoSwingDownscaler.log");
+    Log()->CreateFile("AtmoSwingOptimizer.log");
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
-    int x = pConfig->ReadLong("/MainFrame/x", 50), y = pConfig->ReadLong("/MainFrame/y", 50),
-        w = pConfig->ReadLong("/MainFrame/w", minWidth), h = pConfig->ReadLong("/MainFrame/h", minHeight);
+    int x = pConfig->ReadLong("/MainFrame/x", 50);
+    int y = pConfig->ReadLong("/MainFrame/y", 50);
+    int w = pConfig->ReadLong("/MainFrame/w", minWidth);
+    int h = pConfig->ReadLong("/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x < screen.x - 10) x = screen.x;
     if (x > screen.width) x = screen.x;
@@ -85,24 +88,21 @@ AtmoswingFrameDownscaler::AtmoswingFrameDownscaler(wxFrame* frame)
     }
 }
 
-void AtmoswingFrameDownscaler::SetDefaultOptions() {
+void AtmoSwingFrameOptimizer::SetDefaultOptions() {
     wxConfigBase* pConfig = wxFileConfig::Get();
 
     // General
     pConfig->Write("/General/GuiOptions", pConfig->ReadLong("/General/GuiOptions", 1l));
     pConfig->Write("/General/Responsive", pConfig->ReadBool("/General/Responsive", false));
     pConfig->Write("/General/LogLevel", pConfig->ReadLong("/General/LogLevel", 1));
-    pConfig->Write("/General/DisplayLogWindow", pConfig->ReadLong("/General/DisplayLogWindow", false));
+    pConfig->Write("/General/DisplayLogWindow", pConfig->ReadBool("/General/DisplayLogWindow", false));
 
     // Paths
     wxString dirData = asConfig::GetDataDir() + "data" + DS;
     pConfig->Write("/Paths/DataPredictandDBDir", pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands"));
-    pConfig->Write(
-        "/Paths/DownscalerResultsDir",
-        pConfig->Read("/Paths/DownscalerResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Downscaler"));
+    pConfig->Write("/Paths/ResultsDir",
+                   pConfig->Read("/Paths/ResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer"));
     pConfig->Write("/Paths/ArchivePredictorsDir", pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors"));
-    pConfig->Write("/Paths/ScenarioPredictorsDir",
-                   pConfig->Read("/Paths/ScenarioPredictorsDir", dirData + "predictors"));
 
     // Processing
     bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
@@ -119,7 +119,7 @@ void AtmoswingFrameDownscaler::SetDefaultOptions() {
     pConfig->Flush();
 }
 
-AtmoswingFrameDownscaler::~AtmoswingFrameDownscaler() {
+AtmoSwingFrameOptimizer::~AtmoSwingFrameOptimizer() {
     // Config file
     wxConfigBase* pConfig = wxFileConfig::Get();
     if (!pConfig) return;
@@ -136,10 +136,10 @@ AtmoswingFrameDownscaler::~AtmoswingFrameDownscaler() {
     Destroy();
 }
 
-void AtmoswingFrameDownscaler::OnClose(wxCloseEvent& event) {
+void AtmoSwingFrameOptimizer::OnClose(wxCloseEvent& event) {
     Close(true);
 }
 
-void AtmoswingFrameDownscaler::OnQuit(wxCommandEvent& event) {
+void AtmoSwingFrameOptimizer::OnQuit(wxCommandEvent& event) {
     Close(true);
 }
