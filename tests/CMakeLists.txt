@@ -72,17 +72,15 @@ if (BUILD_DOWNSCALER)
     endif (TEST_GUI)
 endif ()
 
-if (BUILD_VIEWER)
+if (BUILD_VIEWER AND TEST_GUI)
     file(GLOB_RECURSE src_tests_viewer_h src/specific_viewer/*.h)
     file(GLOB_RECURSE src_tests_viewer_cpp src/specific_viewer/*.cpp)
+    file(GLOB_RECURSE src_tests_viewer_h src/specific_viewer/gui/*.h)
+    file(GLOB_RECURSE src_tests_viewer_cpp src/specific_viewer/gui/*.cpp)
     list(APPEND src_tests ${src_tests_viewer_h})
     list(APPEND src_tests ${src_tests_viewer_cpp})
-    if (TEST_GUI)
-        file(GLOB_RECURSE src_tests_viewer_h src/specific_viewer/gui/*.h)
-        file(GLOB_RECURSE src_tests_viewer_cpp src/specific_viewer/gui/*.cpp)
-        list(APPEND src_tests ${src_tests_viewer_gui_h})
-        list(APPEND src_tests ${src_tests_viewer_gui_cpp})
-    endif (TEST_GUI)
+    list(APPEND src_tests ${src_tests_viewer_gui_h})
+    list(APPEND src_tests ${src_tests_viewer_gui_cpp})
 
     file(GLOB_RECURSE src_viewer_core_h ${CMAKE_SOURCE_DIR}/src/app_viewer/core/*.h)
     file(GLOB_RECURSE src_viewer_core_cpp ${CMAKE_SOURCE_DIR}/src/app_viewer/core/*.cpp)
@@ -90,10 +88,8 @@ if (BUILD_VIEWER)
     file(GLOB_RECURSE src_viewer_gui_cpp ${CMAKE_SOURCE_DIR}/src/app_viewer/gui/*.cpp)
     list(APPEND src_tests ${src_viewer_core_h})
     list(APPEND src_tests ${src_viewer_core_cpp})
-    if (TEST_GUI)
-        list(APPEND src_tests ${src_viewer_gui_h})
-        list(APPEND src_tests ${src_viewer_gui_cpp})
-    endif (TEST_GUI)
+    list(APPEND src_tests ${src_viewer_gui_h})
+    list(APPEND src_tests ${src_viewer_gui_cpp})
 endif ()
 
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.h")
@@ -128,28 +124,23 @@ list(REMOVE_DUPLICATES src_tests)
 # Include source directories
 list(APPEND inc_dirs
         "${CMAKE_SOURCE_DIR}/src/shared_base/core/"
+        "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
+        "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
         "${CMAKE_SOURCE_DIR}/src/shared_processing/core/"
         "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/"
+        "${CMAKE_SOURCE_DIR}/src/app_forecaster/gui/"
         "${CMAKE_SOURCE_DIR}/src/app_viewer/core/"
         "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/"
+        "${CMAKE_SOURCE_DIR}/src/app_optimizer/gui/"
         "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/"
+        "${CMAKE_SOURCE_DIR}/src/app_downscaler/gui/"
+        "${CMAKE_SOURCE_DIR}/src/app_viewer/gui/"
+        "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxmathplot/"
+        "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxplotctrl/"
+        "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxplotctrl/include/"
+        "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxthings/include/"
         "${PROJECT_SOURCE_DIR}/test/src/"
         )
-if (USE_GUI)
-    list(APPEND inc_dirs
-            "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
-            "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
-            "${CMAKE_SOURCE_DIR}/src/shared_processing/gui/"
-            "${CMAKE_SOURCE_DIR}/src/app_forecaster/gui/"
-            "${CMAKE_SOURCE_DIR}/src/app_optimizer/gui/"
-            "${CMAKE_SOURCE_DIR}/src/app_downscaler/gui/"
-            "${CMAKE_SOURCE_DIR}/src/app_viewer/gui/"
-            "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxmathplot/"
-            "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxplotctrl/"
-            "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxplotctrl/include/"
-            "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxthings/include/"
-            )
-endif (USE_GUI)
 include_directories(${inc_dirs})
 
 if (USE_GUI)
