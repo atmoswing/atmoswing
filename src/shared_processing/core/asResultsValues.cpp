@@ -134,7 +134,7 @@ bool asResultsValues::Save() {
     size_t countSTA[] = {nStations, nTime, nAnalogs};
 
     // Write data
-    ncFile.PutVarArray("stations", startS, countS, &m_targetDates(0));
+    ncFile.PutVarArray("stations", startS, countS, &m_predictandStationIds[0]);
     ncFile.PutVarArray("target_dates", startT, countT, &m_targetDates(0));
     ncFile.PutVarArray("target_values_norm", startST, countST, &m_targetValuesNorm[0](0));
     ncFile.PutVarArray("target_values_raw", startST, countST, &m_targetValuesRaw[0](0));

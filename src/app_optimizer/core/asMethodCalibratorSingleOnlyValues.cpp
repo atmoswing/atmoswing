@@ -139,8 +139,6 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration& para
     // Create a analogsdate object to save previous analogs dates selection.
     asResultsDates anaDatesPrevious;
 
-    wxLogMessage(_("Do not process a score. Use to save intermediate values."));
-
     for (const auto& stationId : stationsId) {
         ClearAll();
 
