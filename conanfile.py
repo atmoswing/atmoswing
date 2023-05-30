@@ -108,7 +108,7 @@ class AmtoSwing(ConanFile):
             self.copy("*.mo", dst="bin/fr",
                       src=os.path.join(_source_folder, "locales/fr"))
         if self.settings.os == "Linux":
-            self.copy("*.mo", dst="/usr/share/locale/fr/LC_MESSAGES/",
+            self.copy("*.mo", dst="bin/share/locale/fr/LC_MESSAGES/",
                       src=os.path.join(_source_folder, "locales/fr"))
         if self.settings.os == "Macos":
             self.copy("*.mo", dst="bin/AtmoSwing.app/Contents/Resources/fr.lproj",
