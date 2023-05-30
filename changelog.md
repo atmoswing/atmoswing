@@ -18,13 +18,13 @@
 *   Adding menu entries for recent workspaces and batch files.
 *   Adding buttons to reset the plots zoom extent in the Viewer.
 
-### Fixed
-
-*   Fixing proxy parsing.
-
 ### Changed
 
 *   Replacing icons with SVG versions.
+
+### Fixed
+
+*   Fixing proxy parsing.
 
 
 ## v3.0.5 - 12 May 2023

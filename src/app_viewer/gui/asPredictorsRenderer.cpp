@@ -165,10 +165,17 @@ vrLayerRasterPredictor* asPredictorsRenderer::RedrawRasterPredictor(const wxStri
 
 void asPredictorsRenderer::RedrawContourLines(const wxString& name, vrViewerLayerManager* viewerLayerManager,
                                               vrLayerRasterPredictor* layerRaster, double step) {
+    if (!layerRaster) return;
+
+    if (layerRaster->GetParameter() == asPredictor::RelativeHumidity ||
+        layerRaster->GetParameter() == asPredictor::SpecificHumidity ||
+        layerRaster->GetParameter() == asPredictor::PrecipitableWater ||
+        layerRaster->GetParameter() == asPredictor::TotalColumnWater) {
+        return;
+    }
+
     // Create a memory layer
     wxFileName memoryVector("", name, "memory");
-
-    if (!layerRaster) return;
 
     // Create the layers
     auto layerVector = new vrLayerVectorContours();
