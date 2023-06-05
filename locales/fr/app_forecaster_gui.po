@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-16 23:19+0200\n"
-"PO-Revision-Date: 2023-05-16 23:23+0200\n"
+"PO-Revision-Date: 2023-06-05 16:46+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -169,7 +169,7 @@ msgstr "Options"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:214
 msgid "Build predictand DB"
-msgstr "Construire une base de données des prédictands"
+msgstr "Construire une base de données des prédictants"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:217
 msgid "Tools"
@@ -240,7 +240,7 @@ msgstr "Sélectionner un dossier"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:363
 msgid "Directory containing the predictand DB"
-msgstr "Répertoire contenant la base de données des prédictands"
+msgstr "Répertoire contenant la base de données des prédictants"
 
 #: src/app_forecaster/gui/AtmoswingForecasterGui.cpp:370
 msgid "Directory containing archive predictors"

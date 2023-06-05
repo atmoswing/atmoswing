@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-16 23:19+0200\n"
-"PO-Revision-Date: 2023-05-16 23:21+0200\n"
+"PO-Revision-Date: 2023-06-05 16:46+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -148,7 +148,7 @@ msgstr "Options"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:141
 msgid "Build predictand DB"
-msgstr "Construire la base de données des prédictands"
+msgstr "Construire la base de données des prédictants"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:144
 msgid "Tools"
@@ -234,7 +234,7 @@ msgstr "Répertoire contenant les prédicteurs prévus"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:296
 msgid "Default predictand DB directory"
-msgstr "Répertoire contenant la base de données des prédictands"
+msgstr "Répertoire contenant la base de données des prédictants"
 
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:310
 #: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:334

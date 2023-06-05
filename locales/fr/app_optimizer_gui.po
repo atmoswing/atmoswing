@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-16 23:19+0200\n"
-"PO-Revision-Date: 2023-05-16 23:25+0200\n"
+"PO-Revision-Date: 2023-06-05 16:50+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -20,11 +20,11 @@ msgstr ""
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:51
 msgid "Run optimizer"
-msgstr "Lancer l'optimiseur"
+msgstr "Lancer l'optimisation"
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:51
 msgid "Run optimizer now"
-msgstr "Lancer l'optimiseur maintenant"
+msgstr "Lancer l'optimisation maintenant"
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:53
 msgid "Cancel optimization"
@@ -68,7 +68,7 @@ msgstr "Le traitement de l'optimisation a échoué."
 
 #: src/app_optimizer/gui/asFrameOptimizer.cpp:461
 msgid "Optimizer over."
-msgstr "L'optimization est terminée."
+msgstr "L'optimisation est terminée."
 
 #: src/app_optimizer/gui/AtmoswingMainOptimizer.cpp:42
 #, c-format
@@ -115,7 +115,7 @@ msgstr "Évaluer touts les scores"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
 msgid "Only predictand values"
-msgstr "Uniquement les valeurs du prédictand"
+msgstr "Uniquement les valeurs du prédictant"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:42
 msgid "Only analog dates (and criteria)"
@@ -480,7 +480,7 @@ msgstr "Enregistrer par défaut"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:607
 msgid "Build predictand DB"
-msgstr "Construire la base de données des prédictands"
+msgstr "Construire la base de données des prédictants"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:610
 msgid "Tools"
@@ -562,7 +562,7 @@ msgstr "Répertoire contenant les archives de prédicteurs"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:755
 msgid "Default predictand DB directory"
-msgstr "Répertoire contenant la base de données des prédictands"
+msgstr "Répertoire contenant la base de données des prédictants"
 
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:769
 #: src/app_optimizer/gui/AtmoswingOptimizerGui.cpp:793

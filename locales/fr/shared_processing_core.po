@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-16 23:19+0200\n"
-"PO-Revision-Date: 2023-05-16 23:29+0200\n"
+"PO-Revision-Date: 2023-06-05 16:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -123,7 +123,7 @@ msgstr "Seulement ses NaNs dans le calcul du critère DAU."
 
 #: src/shared_processing/core/asMethodStandard.cpp:76
 msgid "There is no predictand database file selected."
-msgstr "Pas de fichier de base de données de prédictands sélectionné."
+msgstr "Pas de fichier de base de données de prédictants sélectionné."
 
 #: src/shared_processing/core/asMethodStandard.cpp:84
 #: src/shared_processing/core/asMethodStandard.cpp:92
