@@ -1160,23 +1160,15 @@ void asFrameViewer::SwitchForecast(double increment) {
     }
 
     // Get path
-    wxString forecastsPath = m_forecastManager->GetFilePath(m_forecastViewer->GetMethodSelection(),
-                                                            m_forecastViewer->GetForecastSelection());
-    wxFileName forecastFileName(forecastsPath);
-    wxString fileName = forecastFileName.GetName();
-    wxString partialFileNameV2 = fileName.SubString(10, fileName.size() - 1);
-    wxString partialFileNameV3 = fileName.SubString(13, fileName.size() - 1);
-    wxString patternFileNameV2 = "%d%02d%02d%02d";
-    wxString patternFileNameV3 = "%d-%02d-%02d_%02d";
-    wxString prefixFileName = wxEmptyString;
+    wxString basePath = m_workspace.GetForecastsDirectory();
 
-    forecastFileName.RemoveLastDir();
-    forecastFileName.RemoveLastDir();
-    forecastFileName.RemoveLastDir();
-    wxString forecastsBaseDirectory = forecastFileName.GetPath();
+    if (basePath.IsEmpty()) {
+        wxLogError(_("The directory containing the forecasts was not provided."));
+        return;
+    }
 
-    if (!wxFileName::DirExists(forecastsBaseDirectory)) {
-        wxLogError("The directory that is supposed to contain the forecasts does not exist.");
+    if (!wxFileName::DirExists(basePath)) {
+        wxLogError(_("The directory that is supposed to contain the forecasts does not exist."));
         return;
     }
 
@@ -1184,59 +1176,42 @@ void asFrameViewer::SwitchForecast(double increment) {
     double date = m_forecastManager->GetLeadTimeOrigin();
 
     // Look for former files
-    wxString basePath = forecastsBaseDirectory + wxFileName::GetPathSeparator();
-    wxFileName fullPathV3(basePath);
-    wxFileName fullPathV1, fullPathV2, fullPathV4;
-    for (int i = 0; i < 100; i++) {
-        date += increment;
-        fullPathV3 = wxFileName(basePath);
-        fullPathV3.AppendDir(asStrF("%d", asTime::GetYear(date)));
-        fullPathV3.AppendDir(asStrF("%02d", asTime::GetMonth(date)));
-        fullPathV3.AppendDir(asStrF("%02d", asTime::GetDay(date)));
-
-        fullPathV2 = fullPathV3;
-
-        prefixFileName = asStrF(patternFileNameV3, asTime::GetYear(date), asTime::GetMonth(date), asTime::GetDay(date),
-                                asTime::GetHour(date));
-        fullPathV3.SetName(prefixFileName + partialFileNameV3);
-
-        fullPathV4 = fullPathV3;
-        fullPathV4.SetExt("nc");
-
-        if (fullPathV4.Exists()) break;
-
-        fullPathV3.SetExt("asff");
-
-        if (fullPathV3.Exists()) break;
-
-        prefixFileName = asStrF(patternFileNameV2, asTime::GetYear(date), asTime::GetMonth(date), asTime::GetDay(date),
-                                asTime::GetHour(date));
-        fullPathV2.SetName(prefixFileName + partialFileNameV2);
-        fullPathV2.SetExt("asff");
-
-        if (fullPathV2.Exists()) break;
-
-        fullPathV1 = fullPathV2;
-        fullPathV1.SetExt("fcst");
-
-        if (fullPathV1.Exists()) break;
-
-        if (i == 99) {
-            wxLogError(_("No previous/next forecast was found under %s"), fullPathV2.GetPath());
+    wxString prefixFiles = wxEmptyString;
+    wxString dirPathStr = wxEmptyString;
+    for (int i = 0; i < 10; i++) {
+        if (i == 9) {
+            wxLogError(_("No previous/next forecast was found."));
             return;
         }
+
+        date += increment;
+        dirPathStr = basePath + asStrF("%c%d%c%02d%c%02d", wxFileName::GetPathSeparator(),
+                                       asTime::GetYear(date), wxFileName::GetPathSeparator(),
+                                       asTime::GetMonth(date), wxFileName::GetPathSeparator(),
+                                       asTime::GetDay(date));
+        if (!wxDir::Exists(dirPathStr)) continue;
+
+        wxDir dirPath = wxDir(dirPathStr);
+
+        prefixFiles = asStrF("%d-%02d-%02d_%02d*.*", asTime::GetYear(date), asTime::GetMonth(date),
+                             asTime::GetDay(date), asTime::GetHour(date));
+        if (dirPath.HasFiles(prefixFiles)) break;
+
+        prefixFiles = asStrF("%d%02d%02d%02d*.*", asTime::GetYear(date), asTime::GetMonth(date),
+                             asTime::GetDay(date), asTime::GetHour(date));
+        if (dirPath.HasFiles(prefixFiles)) break;
     }
 
     // List the files in the directory
     wxArrayString files;
-    wxDir::GetAllFiles(fullPathV3.GetPath(), &files);
+    wxDir::GetAllFiles(dirPathStr, &files);
 
     // Identify the corresponding forecasts
     wxArrayString accurateFiles;
     for (int i = 0; i < (int)files.GetCount(); i++) {
         wxFileName fileNameCheck(files[i]);
 
-        if (fileNameCheck.GetFullName().Contains(prefixFileName)) {
+        if (fileNameCheck.GetFullName().Matches(prefixFiles)) {
             accurateFiles.Add(files[i]);
         }
     }
