@@ -1287,6 +1287,7 @@ bool asFrameViewer::OpenForecast(const wxArrayString& names) {
 
         bool doRefresh = false;
         if (i == names.GetCount() - 1) {
+            m_forecastViewer->FixMethodSelection();
             doRefresh = true;
         }
 
@@ -1304,8 +1305,6 @@ bool asFrameViewer::OpenForecast(const wxArrayString& names) {
 #if defined(__WIN32__)
     m_critSectionViewerLayerManager.Leave();
 #endif
-
-    m_forecastViewer->FixMethodSelection();
 
     UpdateLeadTimeSwitch();
 
