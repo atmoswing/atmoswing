@@ -63,6 +63,8 @@ class asForecastRenderer {
 
     void SetLeadTimeDate(float date);
 
+    void FixMethodSelection();
+
     wxArrayString GetForecastDisplayStringArray() const {
         return m_displayForecast;
     }

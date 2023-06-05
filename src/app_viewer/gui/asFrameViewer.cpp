@@ -1305,6 +1305,8 @@ bool asFrameViewer::OpenForecast(const wxArrayString& names) {
     m_critSectionViewerLayerManager.Leave();
 #endif
 
+    m_forecastViewer->FixMethodSelection();
+
     UpdateLeadTimeSwitch();
 
     m_leadTimeSwitcher->SetLeadTime(m_forecastViewer->GetLeadTimeIndex());

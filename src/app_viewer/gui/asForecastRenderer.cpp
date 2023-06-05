@@ -611,3 +611,9 @@ void asForecastRenderer::ChangeLeadTime(int val) {
 
     Redraw();
 }
+
+void asForecastRenderer::FixMethodSelection() {
+    if (m_methodSelection >= m_forecastManager->GetMethodsNb()) {
+        m_methodSelection = m_forecastManager->GetMethodsNb() - 1;
+    }
+}
