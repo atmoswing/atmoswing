@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-16 23:19+0200\n"
-"PO-Revision-Date: 2023-05-16 23:29+0200\n"
+"PO-Revision-Date: 2023-06-05 16:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -39,11 +39,11 @@ msgstr "À propos"
 
 #: src/shared_base/gui/asFramePredictandDB.cpp:36
 msgid "Predictand database generator"
-msgstr "Générateur de la base de données du prédictand"
+msgstr "Générateur de la base de données du prédictant"
 
 #: src/shared_base/gui/asFramePredictandDB.cpp:132
 msgid "The given path for the predictand catalog is empty."
-msgstr "Le chemin d'accès au catalogue de prédictands est vide."
+msgstr "Le chemin d'accès au catalogue de prédictants est vide."
 
 #: src/shared_base/gui/asFramePredictandDB.cpp:137
 msgid "The given path for the data directory is empty."
@@ -78,7 +78,7 @@ msgstr "La période de retour donnée n'est pas cohérente."
 
 #: src/shared_base/gui/asFramePredictandDB.cpp:276
 msgid "Generic predictand database not yet implemented."
-msgstr "La base de données générique des prédictands n'a pas encore été implémentée."
+msgstr "La base de données générique des prédictants n'a pas encore été implémentée."
 
 #: src/shared_base/gui/asFramePredictandDB.cpp:284
 #, c-format
@@ -101,7 +101,7 @@ msgstr "Veuillez sélectionner le répertoire et le nom du fichier."
 
 #: src/shared_base/gui/AtmoswingSharedGui.cpp:101
 msgid "Predictand parameter"
-msgstr "Paramètre du prédictand"
+msgstr "Paramètre du prédictant"
 
 #: src/shared_base/gui/AtmoswingSharedGui.cpp:105
 msgid "Precipitation"
@@ -169,11 +169,11 @@ msgstr "Région"
 
 #: src/shared_base/gui/AtmoswingSharedGui.cpp:139
 msgid "Select the predictand catalog"
-msgstr "Sélectionner le catalogue de prédictands"
+msgstr "Sélectionner le catalogue de prédictants"
 
 #: src/shared_base/gui/AtmoswingSharedGui.cpp:146
 msgid "Select the predictand data directory"
-msgstr "Sélectionner le répertoire de données du prédictand"
+msgstr "Sélectionner le répertoire de données du prédictant"
 
 #: src/shared_base/gui/AtmoswingSharedGui.cpp:150
 #: src/shared_base/gui/AtmoswingSharedGui.cpp:157

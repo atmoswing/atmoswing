@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-16 23:19+0200\n"
-"PO-Revision-Date: 2023-05-16 23:26+0200\n"
+"PO-Revision-Date: 2023-06-05 16:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -822,7 +822,7 @@ msgstr "Options"
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:207
 msgid "Build predictand DB"
-msgstr "Construire la base de données des prédictands"
+msgstr "Construire la base de données des prédictants"
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:210
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:1032
@@ -1007,7 +1007,7 @@ msgstr "Sélectionner une date"
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:681
 msgid "Predictands distribution"
-msgstr "Distribution des prédictands"
+msgstr "Distribution des prédictants"
 
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:734
 #: src/app_viewer/gui/AtmoswingViewerGui.cpp:899

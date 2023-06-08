@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-16 23:19+0200\n"
-"PO-Revision-Date: 2023-05-16 23:28+0200\n"
+"PO-Revision-Date: 2023-06-05 16:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -82,7 +82,7 @@ msgstr ""
 
 #: src/shared_base/core/asCatalogPredictands.cpp:52
 msgid "No path was given for the predictand catalog."
-msgstr "Aucun chemin n'a été donné pour le catalogue des prédictands."
+msgstr "Aucun chemin n'a été donné pour le catalogue des prédictants."
 
 #: src/shared_base/core/asFile.cpp:48
 #, c-format
@@ -603,14 +603,14 @@ msgid ""
 "The predictand time series (for the threshold preselection) was not provided "
 "in the parameters  file."
 msgstr ""
-"La série temporelle du prédictand (pour la présélection du seuil) n'a pas "
+"La série temporelle du prédictant (pour la présélection du seuil) n'a pas "
 "été fournie dans le fichier de paramètres."
 
 #: src/shared_base/core/asParameters.cpp:501
 msgid ""
 "The provided min/max predictand thresholds are equal in the parameters file."
 msgstr ""
-"Les seuils min/max des prédictands fournis sont égaux dans le fichier des "
+"Les seuils min/max des prédictants fournis sont égaux dans le fichier des "
 "paramètres."
 
 #: src/shared_base/core/asParameters.cpp:510
@@ -912,7 +912,7 @@ msgid ""
 "The timestep for the extraction of the predictands maximums has to be a "
 "multiple of the data timestep."
 msgstr ""
-"Le pas de temps pour l'extraction des maximums des prédictands doit être un "
+"Le pas de temps pour l'extraction des maximums des prédictants doit être un "
 "multiple du pas de temps des données."
 
 #: src/shared_base/core/asPredictand.cpp:807
@@ -920,7 +920,7 @@ msgid ""
 "The timestep for the extraction of the predictands maximums cannot be lower "
 "than the data timestep."
 msgstr ""
-"Le pas de temps pour l'extraction des maximums des prédictands ne peut être "
+"Le pas de temps pour l'extraction des maximums des prédictants ne peut être "
 "inférieur au pas de temps des données."
 
 #: src/shared_base/core/asPredictandLightning.cpp:138
@@ -930,7 +930,7 @@ msgstr ""
 #: src/shared_base/core/asPredictandTemperature.cpp:102
 #: src/shared_base/core/asPredictandTemperature.cpp:106
 msgid "Predictand DB saved."
-msgstr "BD des prédictands sauvegardée."
+msgstr "BD des prédictants sauvegardée."
 
 #: src/shared_base/core/asPredictandPrecipitation.cpp:246
 msgid "The data time steps is not correctly defined."
@@ -1644,7 +1644,7 @@ msgstr ""
 
 #: src/shared_base/core/asTimeArray.cpp:605
 msgid "The selection of the dates on the predictand threshold is empty!"
-msgstr "La sélection des dates sur la base du seuil du prédictand est vide !"
+msgstr "La sélection des dates sur la base du seuil du prédictant est vide !"
 
 #: src/shared_base/core/asTimeArray.cpp:620
 #: src/shared_base/core/asTimeArray.cpp:642

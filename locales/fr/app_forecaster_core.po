@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-16 23:19+0200\n"
-"PO-Revision-Date: 2023-05-16 23:22+0200\n"
+"PO-Revision-Date: 2023-06-05 16:46+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -242,7 +242,7 @@ msgstr "Objet de critère créé."
 #: src/app_forecaster/core/asMethodForecasting.cpp:1536
 msgid "Failed setting the predictand values to the corresponding analog dates."
 msgstr ""
-"Échec de l'attribution des valeurs de prédictand aux les dates analogues "
+"Échec de l'attribution des valeurs de prédictant aux les dates analogues "
 "correspondantes."
 
 #: src/app_forecaster/core/asMethodForecasting.cpp:1616
@@ -591,7 +591,7 @@ msgstr ""
 msgid "Please provide the directory containing the predictand database.\n"
 msgstr ""
 "Veuillez indiquer le répertoire contenant la base de données des "
-"prédictands.\n"
+"prédictants.\n"
 
 #: src/app_forecaster/core/AtmoSwingAppForecaster.cpp:547
 msgid "Batch file created successfully.\n"
@@ -655,10 +655,10 @@ msgid "Forecast processed for the date %s UTC"
 msgstr "Prévision traitée pour la date %s UTC"
 
 #~ msgid "Loading the Predictand DB."
-#~ msgstr "Chargement de la base de données des prédictands."
+#~ msgstr "Chargement de la base de données des prédictants."
 
 #~ msgid "Predictand DB loaded."
-#~ msgstr "BD des prédictands chargé."
+#~ msgstr "BD des prédictants chargé."
 
 #~ msgid ""
 #~ "The maximum attempts is reached to search for the real-time predictor."
@@ -678,7 +678,7 @@ msgstr "Prévision traitée pour la date %s UTC"
 #~ msgid ""
 #~ "Start setting the predictand values to the corresponding analog dates."
 #~ msgstr ""
-#~ "Début de l'attribution des valeurs de prédictand aux les dates analogues "
+#~ "Début de l'attribution des valeurs de prédictant aux les dates analogues "
 #~ "correspondantes."
 
 #~ msgid "Predictands association over."

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-16 23:19+0200\n"
-"PO-Revision-Date: 2023-05-16 23:21+0200\n"
+"PO-Revision-Date: 2023-06-05 16:45+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -72,7 +72,7 @@ msgstr "Échec du traitement des dates analogues."
 #: src/app_downscaler/core/asMethodDownscaler.cpp:274
 msgid "Failed setting the predictand values to the corresponding analog dates."
 msgstr ""
-"Échec de l'attribution des valeurs de prédictand aux les dates analogues "
+"Échec de l'attribution des valeurs de prédictant aux les dates analogues "
 "correspondantes."
 
 #: src/app_downscaler/core/asMethodDownscaler.cpp:297
@@ -304,12 +304,12 @@ msgstr ""
 #: src/app_downscaler/core/asParametersDownscaling.cpp:535
 #: src/app_downscaler/core/asParametersDownscaling.cpp:539
 msgid "The provided predictand ID vector is empty."
-msgstr "Le vecteur d'identification du prédictand fourni est vide."
+msgstr "Le vecteur d'identification du prédictant fourni est vide."
 
 #: src/app_downscaler/core/asParametersDownscaling.cpp:546
 msgid "There are 0s in the provided predictand ID vector."
 msgstr ""
-"Le vecteur d'identification du prédictand fourni contient des valeurs nulles."
+"Le vecteur d'identification du prédictant fourni contient des valeurs nulles."
 
 #: src/app_downscaler/core/asParametersDownscaling.cpp:571
 #: src/app_downscaler/core/asParametersDownscaling.cpp:589
@@ -381,7 +381,7 @@ msgstr "Le fichier de descente d'échelle (%s) n'a pas été trouvé."
 #: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:376
 #, c-format
 msgid "The given predictand DB (%s) couldn't be found."
-msgstr "La base de données des prédictands (%s) n'a pas été trouvée."
+msgstr "La base de données des prédictants (%s) n'a pas été trouvée."
 
 #: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:388
 #, c-format
@@ -409,7 +409,7 @@ msgstr "Le fichier de paramètres n'est pas fourni."
 
 #: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:501
 msgid "The predictand DB is not given."
-msgstr "La base de données des prédictands n'a pas été fournie."
+msgstr "La base de données des prédictants n'a pas été fournie."
 
 #: src/app_downscaler/core/AtmoSwingAppDownscaler.cpp:506
 msgid "The predictors directory is not given."
@@ -462,11 +462,11 @@ msgstr "Une exception non gérée s'est produite"
 #~ msgid ""
 #~ "Start setting the predictand values to the corresponding analog dates."
 #~ msgstr ""
-#~ "Début de l'attribution des valeurs de prédictand aux les dates analogues "
+#~ "Début de l'attribution des valeurs de prédictant aux les dates analogues "
 #~ "correspondantes."
 
 #~ msgid "Predictand association over."
-#~ msgstr "L'association des prédictands est terminée."
+#~ msgstr "L'association des prédictants est terminée."
 
 #~ msgid "Loading parameters file."
 #~ msgstr "Chargement du fichier de paramètres."

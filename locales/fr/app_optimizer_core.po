@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-16 23:19+0200\n"
-"PO-Revision-Date: 2023-05-16 23:24+0200\n"
+"PO-Revision-Date: 2023-06-05 16:46+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -64,7 +64,7 @@ msgstr "Une erreur inattendue s’est produite."
 #: src/app_optimizer/core/asMethodCalibrator.cpp:517
 msgid "You cannot use predictand thresholds with the multivariate approach."
 msgstr ""
-"Il n'est pas possible d'utiliser des seuils de prédictands avec l'approche "
+"Il n'est pas possible d'utiliser des seuils de prédictants avec l'approche "
 "multivariée."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:451
@@ -100,7 +100,7 @@ msgstr "Échec du calcul des dates analogues."
 #: src/app_optimizer/core/asMethodCalibrator.cpp:668
 msgid "Failed setting the predictand values to the corresponding analog dates."
 msgstr ""
-"Échec de l'attribution des valeurs de prédictand aux les dates analogues "
+"Échec de l'attribution des valeurs de prédictant aux les dates analogues "
 "correspondantes."
 
 #: src/app_optimizer/core/asMethodCalibrator.cpp:688
@@ -830,14 +830,14 @@ msgid ""
 "The predictand time series (for the threshold preselection) was not provided "
 "in the parameters file."
 msgstr ""
-"La série temporelle du prédictand (pour la présélection du seuil) n'a pas "
+"La série temporelle du prédictant (pour la présélection du seuil) n'a pas "
 "été fournie dans le fichier de paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:567
 msgid ""
 "The provided min/max predictand thresholds are equal in the parameters file."
 msgstr ""
-"Les seuils min/max des prédictands fournis sont égaux dans le fichier des "
+"Les seuils min/max des prédictants fournis sont égaux dans le fichier des "
 "paramètres."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:575
@@ -1011,12 +1011,12 @@ msgstr "Le score total n'a pas été fourni dans le fichier des paramètres."
 #: src/app_optimizer/core/asParametersCalibration.cpp:772
 #: src/app_optimizer/core/asParametersCalibration.cpp:776
 msgid "The provided predictand ID vector is empty."
-msgstr "Le vecteur d'identification du prédictand fourni est vide."
+msgstr "Le vecteur d'identification du prédictant fourni est vide."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:783
 msgid "There are 0s in the provided predictand ID vector."
 msgstr ""
-"Le vecteur d'identification du prédictand fourni contient des valeurs nulles."
+"Le vecteur d'identification du prédictant fourni contient des valeurs nulles."
 
 #: src/app_optimizer/core/asParametersCalibration.cpp:803
 msgid "There are NaN values in the provided scores vector."
@@ -1598,7 +1598,7 @@ msgstr "Le fichier de calage donné (%s) n'a pas été trouvé."
 #: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:527
 #, c-format
 msgid "The given predictand DB (%s) couldn't be found."
-msgstr "La base de données des prédictands (%s) n'a pas été trouvée."
+msgstr "La base de données des prédictants (%s) n'a pas été trouvée."
 
 #: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:539
 #, c-format
@@ -1628,7 +1628,7 @@ msgstr "Le fichier de paramètres n'est pas fourni."
 
 #: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:898
 msgid "The predictand DB is not given."
-msgstr "La base de données des prédictands n'a pas été fournie."
+msgstr "La base de données des prédictants n'a pas été fournie."
 
 #: src/app_optimizer/core/AtmoSwingAppOptimizer.cpp:903
 msgid "The predictors directory is not given."
@@ -1681,7 +1681,7 @@ msgstr "Une exception non gérée s'est produite"
 #~ msgid ""
 #~ "Start setting the predictand values to the corresponding analog dates."
 #~ msgstr ""
-#~ "Début de l'attribution des valeurs de prédictand aux les dates analogues "
+#~ "Début de l'attribution des valeurs de prédictant aux les dates analogues "
 #~ "correspondantes."
 
 #~ msgid "Predictand association over."
@@ -1706,10 +1706,10 @@ msgstr "Une exception non gérée s'est produite"
 #~ msgstr "Le calcul est terminé."
 
 #~ msgid "Loading the Predictand DB."
-#~ msgstr "Chargement de la base de données des prédictands."
+#~ msgstr "Chargement de la base de données des prédictants."
 
 #~ msgid "Predictand DB loaded."
-#~ msgstr "BD des prédictands chargé."
+#~ msgstr "BD des prédictants chargé."
 
 #~ msgid "Loading parameters file."
 #~ msgstr "Chargement du fichier de paramètres."
