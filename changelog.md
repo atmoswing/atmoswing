@@ -1,6 +1,24 @@
 # Changelog AtmoSwing
 
 
+## v3.0.8 - 08 Jun 2023
+
+### Changed
+
+*   Disable contour lines for moisture variables in the predictor map.
+*   Changing CLI options order for the Optimizer.
+*   Various code improvements.
+
+### Fixed
+
+*   Fixing issues with the forecast navigation in the Viewer.
+*   Fixing lead time switcher colour when predictand value = 0.
+*   Fixing French translations.
+*   Fixing station ID in the resulting calibration files.
+*   Fixing locale file path under Linux.
+*   Updating deprecated variables in third party libraries.
+
+
 ## v3.0.7 - 20 May 2023
 
 ### Fixed
