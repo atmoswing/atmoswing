@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atmoswing version="1.0" target="forecaster">
+  <forecasts_output_directory>/tmp/forecasts</forecasts_output_directory>
+  <exports_output_directory>/tmp/forecasts/exports</exports_output_directory>
+  <parameters_files_directory>/tmp/params</parameters_files_directory>
+  <predictors_archive_directory>/tmp/data/ERA5</predictors_archive_directory>
+  <predictors_realtime_directory>/tmp/data/GFS</predictors_realtime_directory>
+  <predictand_db_directory>/tmp/data/predictand</predictand_db_directory>
+  <export_synthesis>0</export_synthesis>
+  <forecasts>
+    <filename>parameters_forecasting_6hrly.xml</filename>
+    <filename>parameters_forecasting_daily.xml</filename>
+  </forecasts>
+</atmoswing>
