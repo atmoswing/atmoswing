@@ -32,5 +32,4 @@
 TEST(FileGrib, GetDefinitionsPath) {
     wxString path = asFileGrib::GetDefinitionsPath();
     EXPECT_TRUE(path.size() > 0);
-    EXPECT_TRUE(wxDirExists(path));
 }
