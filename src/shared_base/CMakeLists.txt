@@ -6,12 +6,12 @@ project(base)
 ##### SOURCE FILES
 
 # List source files
-file(GLOB_RECURSE src_base_core_h core/*.h)
-file(GLOB_RECURSE src_base_core_cpp core/*.cpp)
-file(GLOB_RECURSE src_base_gui_h gui/*.h)
-file(GLOB_RECURSE src_base_gui_cpp gui/*.cpp)
-file(GLOB_RECURSE src_lib_awxled_h libs/awxled/*.h)
-file(GLOB_RECURSE src_lib_awxled_cpp libs/awxled/*.cpp)
+file(GLOB src_base_core_h core/*.h)
+file(GLOB src_base_core_cpp core/*.cpp)
+file(GLOB src_base_gui_h gui/*.h)
+file(GLOB src_base_gui_cpp gui/*.cpp)
+file(GLOB src_lib_awxled_h libs/awxled/*.h)
+file(GLOB src_lib_awxled_cpp libs/awxled/*.cpp)
 list(APPEND src_shared_base ${src_base_core_h})
 list(APPEND src_shared_base ${src_base_core_cpp})
 if (USE_GUI)

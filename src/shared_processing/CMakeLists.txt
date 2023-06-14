@@ -6,8 +6,8 @@ project(processing)
 ##### SOURCE FILES
 
 # List source files
-file(GLOB_RECURSE src_proc_core_h core/*.h)
-file(GLOB_RECURSE src_proc_core_cpp core/*.cpp)
+file(GLOB src_proc_core_h core/*.h)
+file(GLOB src_proc_core_cpp core/*.cpp)
 file(GLOB src_proc_thread_h src/shared_base/core/asThread.h)
 file(GLOB src_proc_thread_cpp src/shared_base/core/asThread.cpp)
 list(APPEND src_shared_processing ${src_proc_core_h} ${src_proc_thread_h})
@@ -15,8 +15,8 @@ list(APPEND src_shared_processing ${src_proc_core_cpp} ${src_proc_thread_cpp})
 
 # CUDA library
 if (USE_CUDA)
-    file(GLOB_RECURSE src_proc_core_cu core/*.cu)
-    file(GLOB_RECURSE src_proc_core_cuh core/*.cuh)
+    file(GLOB src_proc_core_cu core/*.cu)
+    file(GLOB src_proc_core_cuh core/*.cuh)
     list(APPEND src_cuda ${src_proc_core_cu})
     list(APPEND src_cuda ${src_proc_core_cuh})
     list(APPEND src_app_optimizer ${src_proc_core_cuh})

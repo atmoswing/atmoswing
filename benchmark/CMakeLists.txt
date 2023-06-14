@@ -9,10 +9,10 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/benchmark)
 ##### SOURCE FILES
 
 # List source files
-file(GLOB_RECURSE src_benchmark_h src/*.h)
-file(GLOB_RECURSE src_benchmark_cpp src/*.cpp)
-file(GLOB_RECURSE src_optim_core_h ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.h)
-file(GLOB_RECURSE src_optim_core_cpp ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.cpp)
+file(GLOB src_benchmark_h src/*.h)
+file(GLOB src_benchmark_cpp src/*.cpp)
+file(GLOB src_optim_core_h ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.h)
+file(GLOB src_optim_core_cpp ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.cpp)
 list(APPEND src_benchmark ${src_benchmark_h} ${src_optim_core_h})
 list(APPEND src_benchmark ${src_benchmark_cpp} ${src_optim_core_cpp})
 list(REMOVE_ITEM src_benchmark "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/AtmoswingAppOptimizer.h")
