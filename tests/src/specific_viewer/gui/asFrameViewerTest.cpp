@@ -36,7 +36,7 @@ class FrameViewer : public testing::Test {
     void SetUp() override {
         // Initialize wxWidgets
         int argc = 0;
-        wxApp::SetInstance(new wxAppBase);
+        wxApp::SetInstance(new wxApp);
         wxChar** argvApp = NULL;
         wxEntryStart(argc, argvApp);
 
