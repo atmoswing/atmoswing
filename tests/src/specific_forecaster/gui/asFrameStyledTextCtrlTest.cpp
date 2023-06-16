@@ -35,10 +35,8 @@ class FrameStyledTextCtrl : public testing::Test {
   protected:
     void SetUp() override {
         // Initialize wxWidgets
-        int argc = 0;
         wxApp::SetInstance(new wxApp);
-        wxChar** argvApp = NULL;
-        wxEntryStart(argc, argvApp);
+        wxEntryStart(0, nullptr);
     }
 
     void TearDown() override {

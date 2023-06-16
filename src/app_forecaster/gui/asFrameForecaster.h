@@ -53,6 +53,12 @@ class asFrameForecaster : public asFrameForecasterVirtual {
 
     void SetForecastDate(double date);
 
+    bool OpenBatchForecasts();
+
+    void SetBatchForecasts(asBatchForecasts& batchForecasts) {
+        m_batchForecasts = batchForecasts;
+    }
+
     asPanelsManagerForecasts* GetPanelsManager() const {
         return m_panelsManager;
     }
@@ -85,8 +91,6 @@ class asFrameForecaster : public asFrameForecasterVirtual {
     bool UpdateBatchForecasts();
 
     void OnNewBatchForecasts(wxCommandEvent& event) override;
-
-    bool OpenBatchForecasts();
 
     void Update() override;
 

@@ -76,6 +76,42 @@ class asPanelForecast : public asPanelForecastVirtual {
     }
 
     /**
+     * Access the info button.
+     *
+     * @return The info button pointer.
+     */
+    wxBitmapButton* GetButtonInfo() const {
+        return m_bpButtonInfo;
+    }
+
+    /**
+     * Access the edit button.
+     *
+     * @return The edit button pointer.
+     */
+    wxBitmapButton* GetButtonEdit() const {
+        return m_bpButtonEdit;
+    }
+
+    /**
+     * Access the details button.
+     *
+     * @return The details button pointer.
+     */
+    wxBitmapButton* GetButtonDetails() const {
+        return m_bpButtonDetails;
+    }
+
+    /**
+     * Access the label of the parameters file name field.
+     *
+     * @return The label of the parameters file name field.
+     */
+    wxString GetTextParametersFileNameValue() {
+        return m_textParametersFileName->GetLabel();
+    }
+
+    /**
      * Set the panel manager.
      * 
      * @param panelManager The panel manager.

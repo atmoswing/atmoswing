@@ -28,6 +28,7 @@
 #ifndef AS_FRAME_STYLED_TEXT_CTRL_H
 #define AS_FRAME_STYLED_TEXT_CTRL_H
 
+#include "asGlobEnums.h"
 #include "AtmoSwingForecasterGui.h"
 
 class asFrameStyledTextCtrl : public asFrameStyledTextCtrlVirtual {
@@ -40,8 +41,8 @@ class asFrameStyledTextCtrl : public asFrameStyledTextCtrlVirtual {
      * @param title The title of the frame.
      * @param pos The position of the frame.
      */
-    explicit asFrameStyledTextCtrl(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString,
-                                   const wxPoint& pos = wxDefaultPosition);
+    explicit asFrameStyledTextCtrl(wxWindow* parent, wxWindowID id = asWINDOW_PARAMETERS_DETAILS,
+                                   const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition);
 
     /**
      * Destructor of the styled text control frame.
