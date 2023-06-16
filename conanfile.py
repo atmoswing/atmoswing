@@ -10,6 +10,7 @@ class AmtoSwing(ConanFile):
         "enable_benchmark": [True, False],
         "code_coverage": [True, False],
         "with_gui": [True, False],
+        "test_gui": [True, False],
         "use_cuda": [True, False],
         "build_forecaster": [True, False],
         "build_viewer": [True, False],
@@ -22,6 +23,7 @@ class AmtoSwing(ConanFile):
         "enable_benchmark": False,
         "code_coverage": False,
         "with_gui": True,
+        "test_gui": False,
         "use_cuda": False,
         "build_forecaster": True,
         "build_viewer": True,
@@ -62,6 +64,7 @@ class AmtoSwing(ConanFile):
         self.options["gdal"].with_curl = True # for xml support
         self.options["gdal"].shared = True
         if not self.options.with_gui:
+            self.options.test_gui = False
             self.options["wxbase"].xml = True
             self.options["wxbase"].sockets = True
 
@@ -117,6 +120,7 @@ class AmtoSwing(ConanFile):
     def build(self):
         cmake = CMake(self)
         cmake.definitions["BUILD_TESTS"] = self.options.enable_tests
+        cmake.definitions["TEST_GUI"] = self.options.test_gui
         cmake.definitions["BUILD_BENCHMARK"] = self.options.enable_benchmark
         cmake.definitions["USE_CODECOV"] = self.options.code_coverage
         cmake.definitions["USE_GUI"] = self.options.with_gui
