@@ -134,8 +134,8 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     m_panelColorbarRight->Layout();
 
     // Viewer
-    m_predictorsManagerTarget = new asPredictorsManager(m_listPredictors, m_workspace, true);
-    m_predictorsManagerAnalog = new asPredictorsManager(m_listPredictors, m_workspace);
+    m_predictorsManagerTarget = new asPredictorsManager(m_workspace, true);
+    m_predictorsManagerAnalog = new asPredictorsManager(m_workspace);
     m_predictorsRenderer = new asPredictorsRenderer(this, m_layerManager, m_predictorsManagerTarget,
                                                     m_predictorsManagerAnalog, m_viewerLayerManagerLeft,
                                                     m_viewerLayerManagerRight);
@@ -898,7 +898,7 @@ void asFramePredictors::UpdateLayers() {
 
     m_predictorsManagerTarget->SetDate(targetDate);
     m_predictorsManagerAnalog->SetDate(analogDate);
-    m_predictorsRenderer->Redraw(domain, location);
+    m_predictorsRenderer->Redraw(domain, location, m_listPredictors->GetSelection());
 }
 
 Coo asFramePredictors::GetStationsMeanCoordinatesWgs84(asResultsForecast* forecast) {

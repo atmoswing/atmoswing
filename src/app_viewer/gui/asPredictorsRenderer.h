@@ -70,8 +70,9 @@ class asPredictorsRenderer {
      *
      * @param domain The spatial window.
      * @param location The target location.
+     * @param predictorSelection The predictor selection.
      */
-    void Redraw(vf& domain, Coo& location);
+    void Redraw(vf& domain, Coo& location, int predictorSelection);
 
     /**
      * Redraw the predictor raster.
