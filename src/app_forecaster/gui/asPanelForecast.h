@@ -64,7 +64,7 @@ class asPanelForecast : public asPanelForecastVirtual {
      *
      * @param filePath The path to the forecast file.
      */
-    void SetTooTipContent(const wxString& filePath);
+    void SetToolTipContent(const wxString& filePath);
 
     /**
      * Access the LED.

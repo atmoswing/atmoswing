@@ -53,6 +53,10 @@ class asFrameForecaster : public asFrameForecasterVirtual {
 
     void SetForecastDate(double date);
 
+    asPanelsManagerForecasts* GetPanelsManager() const {
+        return m_panelsManager;
+    }
+
   protected:
     asLogWindow* m_logWindow; /**< The log window. */
     asMethodForecasting* m_forecaster; /**< The forecasting method. */

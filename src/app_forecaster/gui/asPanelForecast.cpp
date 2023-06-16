@@ -64,7 +64,7 @@ void asPanelForecast::CheckFileExists() {
     wxString dirPath = m_batchForecasts->GetParametersFileDirectory();
     if (wxFileExists(dirPath + DS + fileName)) {
         m_bpButtonWarning->Hide();
-        SetTooTipContent(dirPath + DS + fileName);
+        SetToolTipContent(dirPath + DS + fileName);
     } else {
         m_bpButtonWarning->Show();
         Layout();
@@ -73,7 +73,7 @@ void asPanelForecast::CheckFileExists() {
     }
 }
 
-void asPanelForecast::SetTooTipContent(const wxString& filePath) {
+void asPanelForecast::SetToolTipContent(const wxString& filePath) {
     asParametersForecast param;
     if (param.LoadFromFile(filePath)) {
         wxString description = param.GetDescription();

@@ -93,3 +93,25 @@ TEST_F(FrameForecaster, RemovesInexistingFiles) {
 
     frame->Destroy();
 }
+
+TEST_F(FrameForecaster, OpenBatchFileFromRecent) {
+    wxConfigBase* config = wxFileConfig::Get();
+    wxString testsPath = wxFileName::GetCwd();
+    config->Write("/Recent/file1", testsPath + "/files/batch_forecaster.xml");
+
+    frame = new asFrameForecaster(nullptr);
+
+    // Check that there is no panel
+    EXPECT_EQ(0, frame->GetPanelsManager()->GetPanelsNb());
+
+    // Click on the first item
+    wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED, wxID_FILE1);
+    frame->GetEventHandler()->ProcessEvent(event);
+
+    wxYield();
+
+    // Check that there is one panel
+    EXPECT_EQ(2, frame->GetPanelsManager()->GetPanelsNb());
+
+    frame->Destroy();
+}

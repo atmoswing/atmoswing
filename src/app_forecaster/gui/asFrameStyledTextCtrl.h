@@ -40,8 +40,8 @@ class asFrameStyledTextCtrl : public asFrameStyledTextCtrlVirtual {
      * @param title The title of the frame.
      * @param pos The position of the frame.
      */
-    asFrameStyledTextCtrl(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString,
-                          const wxPoint& pos = wxDefaultPosition);
+    explicit asFrameStyledTextCtrl(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString,
+                                   const wxPoint& pos = wxDefaultPosition);
 
     /**
      * Destructor of the styled text control frame.
@@ -62,6 +62,15 @@ class asFrameStyledTextCtrl : public asFrameStyledTextCtrlVirtual {
      *       (https://github.com/wxWidgets/wxWidgets/blob/master/samples/stc/stctest.cpp).
      */
     void SetLexerXml();
+
+    /**
+     * Get the scintilla control.
+     *
+     * @return The scintilla control.
+     */
+    wxStyledTextCtrl* GetScintilla() {
+        return m_scintilla;
+    }
 };
 
 #endif
