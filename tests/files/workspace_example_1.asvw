@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atmoswing version="1.0" target="viewer">
+  <coordinate_system>EPSG:2154</coordinate_system>
+  <forecast_directory>/tmp/forecasts</forecast_directory>
+  <colorbar_max_value>50</colorbar_max_value>
+  <plot_time_series_past_days_nb>5</plot_time_series_past_days_nb>
+  <time_series_max_length_daily>-1</time_series_max_length_daily>
+  <time_series_max_length_sub_daily>-1</time_series_max_length_sub_daily>
+  <panel_alarms_return_period>5</panel_alarms_return_period>
+  <panel_alarms_quantile>0.900000</panel_alarms_quantile>
+  <predictors>
+    <predictor>
+      <dir>/tmp/data/ERA5</dir>
+      <id>Generic_ERA5</id>
+    </predictor>
+    <predictor>
+      <dir>/tmp/data/NR-1</dir>
+      <id>Generic_NCEP_R1</id>
+    </predictor>
+    <predictor>
+      <dir>/tmp/data/GFS</dir>
+      <id>NWS_GFS</id>
+    </predictor>
+    <predictor>
+      <dir>/tmp/data/IFS</dir>
+      <id>ECMWF_IFS</id>
+    </predictor>
+    <predictor>
+      <dir></dir>
+      <id></id>
+    </predictor>
+    <predictor>
+      <dir></dir>
+      <id></id>
+    </predictor>
+    <predictor>
+      <dir></dir>
+      <id></id>
+    </predictor>
+  </predictors>
+  <layers>
+  </layers>
+</atmoswing>
