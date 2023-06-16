@@ -36,8 +36,8 @@
 asPanelForecast::asPanelForecast(wxWindow* parent, asBatchForecasts* batch)
     : asPanelForecastVirtual(parent),
       m_parentFrame(nullptr),
-      m_panelsManager(nullptr),
-      m_batchForecasts(batch) {
+      m_batchForecasts(batch),
+      m_panelsManager(nullptr) {
     // Led
     m_led = new awxLed(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0);
     m_led->SetState(awxLED_OFF);
