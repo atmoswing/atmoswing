@@ -41,7 +41,9 @@ class PanelForecast : public testing::Test {
     void SetUp() override {
         // Initialize wxWidgets
         wxApp::SetInstance(new wxApp);
-        wxEntryStart(0, nullptr);
+        int argc = 0;
+        wxChar** argv = NULL;
+        wxEntryStart(argc, argv);
 
         // Add a recent batch file
         wxString filePath = wxFileName::GetCwd() + "/files/batch_forecaster.xml";
