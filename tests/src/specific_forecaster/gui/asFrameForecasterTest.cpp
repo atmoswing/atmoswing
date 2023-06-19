@@ -33,19 +33,6 @@
 // Test fixture for the frame test
 class FrameForecaster : public testing::Test {
   protected:
-    void SetUp() override {
-        // Initialize wxWidgets
-        wxApp::SetInstance(new wxApp);
-        int argc = 0;
-        wxChar** argv = NULL;
-        wxEntryStart(argc, argv);
-    }
-
-    void TearDown() override {
-        // Cleanup wxWidgets
-        wxEntryCleanup();
-    }
-
     asFrameForecaster* frame;
 };
 

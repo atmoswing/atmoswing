@@ -51,6 +51,11 @@ int main(int argc, char** argv) {
 #endif
 
         // Initialize wxWidgets (also wxApp)
+#if USE_GUI
+        wxApp::SetInstance(new wxApp);
+#else
+        wxApp::SetInstance(new wxAppBase);
+#endif
         int argcApp = 0;
         wxChar** argvApp = NULL;
         wxEntryStart(argcApp, argvApp);
