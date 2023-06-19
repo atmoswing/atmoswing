@@ -34,20 +34,12 @@
 class FrameViewer : public testing::Test {
   protected:
     void SetUp() override {
-        // Initialize wxWidgets
-        wxApp::SetInstance(new wxApp);
-        int argc = 0;
-        wxChar** argv = NULL;
-        wxEntryStart(argc, argv);
-
         // Create the frame
         frame = new asFrameViewer(nullptr);
     }
 
     void TearDown() override {
-        // Cleanup wxWidgets
         frame->Destroy();
-        wxEntryCleanup();
     }
 
     asFrameViewer* frame;

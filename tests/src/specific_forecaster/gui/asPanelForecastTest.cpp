@@ -39,12 +39,6 @@
 class PanelForecast : public testing::Test {
   protected:
     void SetUp() override {
-        // Initialize wxWidgets
-        wxApp::SetInstance(new wxApp);
-        int argc = 0;
-        wxChar** argv = NULL;
-        wxEntryStart(argc, argv);
-
         // Add a recent batch file
         wxString filePath = wxFileName::GetCwd() + "/files/batch_forecaster.xml";
 
@@ -58,11 +52,6 @@ class PanelForecast : public testing::Test {
 
         // Access to the panel
         panel = frame->GetPanelsManager()->GetPanel(0);
-    }
-
-    void TearDown() override {
-        // Cleanup wxWidgets
-        wxEntryCleanup();
     }
 
     asFrameForecaster* frame;
