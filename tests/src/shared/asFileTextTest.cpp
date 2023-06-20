@@ -26,32 +26,17 @@
  */
 
 #include <gtest/gtest.h>
-#include <wx/wx.h>
 
-#include "asFrameViewer.h"
+#include "asFileText.h"
 
-// Test fixture for the frame test
-class FrameViewer : public testing::Test {
-  protected:
-    void SetUp() override {
-        // Create the frame
-        frame = new asFrameViewer(nullptr);
-    }
+TEST(FileText, GetFileContent) {
+    wxString filePath = wxFileName::GetCwd();
+    filePath.Append("/files/precipitation_file.txt");
+    asFileText file(filePath, asFile::ReadOnly);
+    file.Open();
 
-    void TearDown() override {
-        frame->Destroy();
-    }
+    wxString content = file.GetContent();
 
-    asFrameViewer* frame;
-};
-
-TEST_F(FrameViewer, Initialises) {
-    // Ensure the frame is not initially shown
-    EXPECT_FALSE(frame->IsShown());
-
-    // Show the frame
-    frame->Show();
-
-    // Check if the frame is shown
-    EXPECT_TRUE(frame->IsShown());
+    EXPECT_TRUE(content.Len() > 0);
+    EXPECT_TRUE(content.Contains("19620102  14.4"));
 }

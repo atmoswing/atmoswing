@@ -6,10 +6,10 @@ project(viewer)
 ##### SOURCE FILES
 
 # List source files
-file(GLOB_RECURSE src_viewer_core_h core/*.h)
-file(GLOB_RECURSE src_viewer_core_cpp core/*.cpp)
-file(GLOB_RECURSE src_viewer_gui_h gui/*.h)
-file(GLOB_RECURSE src_viewer_gui_cpp gui/*.cpp)
+file(GLOB src_viewer_core_h core/*.h)
+file(GLOB src_viewer_core_cpp core/*.cpp)
+file(GLOB src_viewer_gui_h gui/*.h)
+file(GLOB src_viewer_gui_cpp gui/*.cpp)
 list(APPEND src_app_viewer ${src_viewer_core_h} ${src_viewer_gui_h})
 list(APPEND src_app_viewer ${src_viewer_core_cpp} ${src_viewer_gui_cpp})
 list(APPEND src_app_viewer
@@ -22,13 +22,13 @@ list(APPEND src_app_viewer
         )
 
 # wxPlotCtrl library (and dependences)
-file(GLOB_RECURSE src_lib_wxmathplot_h libs/wxmathplot/*.h)
-file(GLOB_RECURSE src_lib_wxmathplot_cpp libs/wxmathplot/*.cpp)
-file(GLOB_RECURSE src_lib_wxplotctrl_h libs/wxplotctrl/src/*.h)
-file(GLOB_RECURSE src_lib_wxplotctrl_hh libs/wxplotctrl/src/*.hh)
-file(GLOB_RECURSE src_lib_wxplotctrl_cpp libs/wxplotctrl/src/*.cpp)
-file(GLOB_RECURSE src_lib_wxplotctrl_c libs/wxplotctrl/src/*.c)
-file(GLOB_RECURSE src_lib_wxthings_cpp libs/wxthings/src/*.cpp)
+file(GLOB src_lib_wxmathplot_h libs/wxmathplot/*.h)
+file(GLOB src_lib_wxmathplot_cpp libs/wxmathplot/*.cpp)
+file(GLOB src_lib_wxplotctrl_h libs/wxplotctrl/src/*.h)
+file(GLOB src_lib_wxplotctrl_hh libs/wxplotctrl/src/*.hh)
+file(GLOB src_lib_wxplotctrl_cpp libs/wxplotctrl/src/*.cpp)
+file(GLOB src_lib_wxplotctrl_c libs/wxplotctrl/src/*.c)
+file(GLOB src_lib_wxthings_cpp libs/wxthings/src/*.cpp)
 list(APPEND src_lib_wxplotctrl ${src_lib_wxmathplot_h} ${src_lib_wxplotctrl_h} ${src_lib_wxplotctrl_hh})
 list(APPEND src_lib_wxplotctrl ${src_lib_wxmathplot_cpp} ${src_lib_wxplotctrl_cpp} ${src_lib_wxplotctrl_c} ${src_lib_wxthings_cpp})
 

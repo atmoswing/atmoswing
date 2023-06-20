@@ -26,32 +26,10 @@
  */
 
 #include <gtest/gtest.h>
-#include <wx/wx.h>
 
-#include "asFrameViewer.h"
+#include "asFileGrib.h"
 
-// Test fixture for the frame test
-class FrameViewer : public testing::Test {
-  protected:
-    void SetUp() override {
-        // Create the frame
-        frame = new asFrameViewer(nullptr);
-    }
-
-    void TearDown() override {
-        frame->Destroy();
-    }
-
-    asFrameViewer* frame;
-};
-
-TEST_F(FrameViewer, Initialises) {
-    // Ensure the frame is not initially shown
-    EXPECT_FALSE(frame->IsShown());
-
-    // Show the frame
-    frame->Show();
-
-    // Check if the frame is shown
-    EXPECT_TRUE(frame->IsShown());
+TEST(FileGrib, GetDefinitionsPath) {
+    wxString path = asFileGrib::GetDefinitionsPath();
+    EXPECT_TRUE(path.size() > 0);
 }

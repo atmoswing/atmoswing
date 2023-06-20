@@ -58,12 +58,12 @@ void asPredictorsRenderer::LinkToColorbars(asPanelPredictorsColorbar* colorbarTa
     m_colorbarAnalog = colorbarAnalog;
 }
 
-void asPredictorsRenderer::Redraw(vf& domain, Coo& location) {
+void asPredictorsRenderer::Redraw(vf& domain, Coo& location, int predictorSelection) {
     bool targetDataLoaded = false;
     bool analogDataLoaded = false;
     try {
-        targetDataLoaded = m_predictorsManagerTarget->LoadData();
-        analogDataLoaded = m_predictorsManagerAnalog->LoadData();
+        targetDataLoaded = m_predictorsManagerTarget->LoadData(predictorSelection);
+        analogDataLoaded = m_predictorsManagerAnalog->LoadData(predictorSelection);
     } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught during data loading: %s"), msg);

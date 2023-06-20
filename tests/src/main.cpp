@@ -51,6 +51,9 @@ int main(int argc, char** argv) {
 #endif
 
         // Initialize wxWidgets (also wxApp)
+#if USE_GUI
+        wxApp::SetInstance(new wxApp);
+#endif
         int argcApp = 0;
         wxChar** argvApp = NULL;
         wxEntryStart(argcApp, argvApp);
@@ -61,8 +64,8 @@ int main(int argc, char** argv) {
         wxLogNull logNo;
 
         // Set the local config object
-        wxFileConfig* pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwing.ini",
-                                                 asConfig::GetTempDir() + "AtmoSwing.ini", wxCONFIG_USE_LOCAL_FILE);
+        auto pConfig = new wxFileConfig("AtmoSwingTests", wxEmptyString, asConfig::GetTempDir() + "AtmoSwingTests.ini",
+                                        asConfig::GetTempDir() + "AtmoSwingTests.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
 
         // Check path

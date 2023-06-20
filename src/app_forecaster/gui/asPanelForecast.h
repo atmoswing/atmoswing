@@ -64,7 +64,7 @@ class asPanelForecast : public asPanelForecastVirtual {
      *
      * @param filePath The path to the forecast file.
      */
-    void SetTooTipContent(const wxString& filePath);
+    void SetToolTipContent(const wxString& filePath);
 
     /**
      * Access the LED.
@@ -73,6 +73,42 @@ class asPanelForecast : public asPanelForecastVirtual {
      */
     awxLed* GetLed() const {
         return m_led;
+    }
+
+    /**
+     * Access the info button.
+     *
+     * @return The info button pointer.
+     */
+    wxBitmapButton* GetButtonInfo() const {
+        return m_bpButtonInfo;
+    }
+
+    /**
+     * Access the edit button.
+     *
+     * @return The edit button pointer.
+     */
+    wxBitmapButton* GetButtonEdit() const {
+        return m_bpButtonEdit;
+    }
+
+    /**
+     * Access the details button.
+     *
+     * @return The details button pointer.
+     */
+    wxBitmapButton* GetButtonDetails() const {
+        return m_bpButtonDetails;
+    }
+
+    /**
+     * Access the label of the parameters file name field.
+     *
+     * @return The label of the parameters file name field.
+     */
+    wxString GetTextParametersFileNameValue() {
+        return m_textParametersFileName->GetLabel();
     }
 
     /**
