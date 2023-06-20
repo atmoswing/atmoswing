@@ -49,6 +49,7 @@ TEST_F(FrameForecaster, Initialises) {
     EXPECT_TRUE(frame->IsShown());
 
     frame->Destroy();
+    wxYield();
 }
 
 TEST_F(FrameForecaster, LoadRecentFiles) {
@@ -64,6 +65,7 @@ TEST_F(FrameForecaster, LoadRecentFiles) {
     EXPECT_EQ(1, menu->GetMenuItemCount());
 
     frame->Destroy();
+    wxYield();
 }
 
 TEST_F(FrameForecaster, RemovesInexistingFiles) {
@@ -79,6 +81,7 @@ TEST_F(FrameForecaster, RemovesInexistingFiles) {
     EXPECT_EQ(0, menu->GetMenuItemCount());
 
     frame->Destroy();
+    wxYield();
 }
 
 TEST_F(FrameForecaster, OpenBatchFileFromRecent) {
@@ -101,4 +104,5 @@ TEST_F(FrameForecaster, OpenBatchFileFromRecent) {
     EXPECT_EQ(2, frame->GetPanelsManager()->GetPanelsNb());
 
     frame->Destroy();
+    wxYield();
 }

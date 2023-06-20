@@ -49,6 +49,7 @@ TEST_F(FrameStyledTextCtrl, Initialises) {
     EXPECT_TRUE(frame->IsShown());
 
     frame->Destroy();
+    wxYield();
 }
 
 TEST_F(FrameStyledTextCtrl, SetContent) {
@@ -58,4 +59,5 @@ TEST_F(FrameStyledTextCtrl, SetContent) {
     EXPECT_TRUE(frame->GetScintilla()->GetText().IsSameAs("Test"));
 
     frame->Destroy();
+    wxYield();
 }

@@ -77,6 +77,7 @@ TEST_F(PanelForecast, Initialises) {
     EXPECT_TRUE(panel->IsShown());
 
     frame->Close();
+    wxYield();
 }
 
 TEST_F(PanelForecast, SetToolTipContent) {
@@ -87,6 +88,7 @@ TEST_F(PanelForecast, SetToolTipContent) {
     EXPECT_TRUE(tooltipText.IsSameAs("XYZ region"));
 
     frame->Close();
+    wxYield();
 }
 
 TEST_F(PanelForecast, OnEditForecastFile) {
@@ -118,6 +120,7 @@ TEST_F(PanelForecast, OnEditForecastFile) {
     EXPECT_TRUE(panel->GetTextParametersFileNameValue().IsSameAs("xyz.txt"));
 #endif
     frame->Close();
+    wxYield();
 }
 
 TEST_F(PanelForecast, OnDetailsForecastFile) {
@@ -144,4 +147,5 @@ TEST_F(PanelForecast, OnDetailsForecastFile) {
     }
 
     frame->Close();
+    wxYield();
 }
