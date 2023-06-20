@@ -28,24 +28,49 @@
 #include <gtest/gtest.h>
 
 #include "asPredictorsManager.h"
+#include "asResultsForecast.h"
 
 // Test fixture for the frame test
 class PredictorsManager : public testing::Test {
   protected:
     void SetUp() override {
+        wxString dataPath = wxFileName::GetCwd() + "/files/data-predictors-display/";
+
         // Load the workspace
-        wxString filePath = wxFileName::GetCwd() + "/files/workspace_example_1.asvw";
+        wxString filePath = dataPath + "workspace_example.asvw";
         workspace = new asWorkspace();
-        workspace->Load(filePath);
+        ASSERT_TRUE(workspace->Load(filePath));
+        workspace->SetForecastsDirectory(dataPath);
+        workspace->AddPredictorDir("NWS_GFS", dataPath);
+
+        // Load the forecast
+        forecast = new asResultsForecast();
+        forecast->SetFilePath(dataPath + "2023/06/14/2023-06-14_00.2Z-24h-GFS.nc");
+        ASSERT_TRUE(forecast->Load());
+
+        // Initialize the predictors manager
+        predictorsManager = new asPredictorsManager(workspace, true);
+        predictorsManager->SetForecastDate(forecast->GetLeadTimeOrigin());
+        predictorsManager->SetDate(forecast->GetLeadTimeOrigin());
+        predictorsManager->SetForecastTimeStepHours(forecast->GetForecastTimeStepHours());
+        predictorsManager->SetDatasetIds(forecast->GetPredictorDatasetIdsOper());
+        predictorsManager->SetDataIds(forecast->GetPredictorDataIdsOper());
+        predictorsManager->SetLevels(forecast->GetPredictorLevels());
+        predictorsManager->SetHours(forecast->GetPredictorHours());
     }
 
     void TearDown() override {
         wxDELETE(workspace);
+        wxDELETE(forecast);
+        wxDELETE(predictorsManager);
     }
 
     asWorkspace* workspace;
+    asResultsForecast* forecast;
+    asPredictorsManager* predictorsManager;
 };
 
-TEST_F(PredictorsManager, Initializes) {
-    asPredictorsManager predictorsManager(workspace, false);
+TEST_F(PredictorsManager, LoadData) {
+    EXPECT_TRUE(predictorsManager->LoadData(0));
+    EXPECT_TRUE(predictorsManager->LoadData(1));
 }

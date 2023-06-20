@@ -10,20 +10,20 @@
   <panel_alarms_quantile>0.900000</panel_alarms_quantile>
   <predictors>
     <predictor>
-      <dir>/tmp/data/ERA5</dir>
-      <id>Generic_ERA5</id>
+      <dir></dir>
+      <id></id>
     </predictor>
     <predictor>
-      <dir>/tmp/data/NR-1</dir>
-      <id>Generic_NCEP_R1</id>
+      <dir></dir>
+      <id></id>
     </predictor>
     <predictor>
-      <dir>/tmp/data/GFS</dir>
-      <id>NWS_GFS</id>
+      <dir></dir>
+      <id></id>
     </predictor>
     <predictor>
-      <dir>/tmp/data/IFS</dir>
-      <id>ECMWF_IFS</id>
+      <dir></dir>
+      <id></id>
     </predictor>
     <predictor>
       <dir></dir>
