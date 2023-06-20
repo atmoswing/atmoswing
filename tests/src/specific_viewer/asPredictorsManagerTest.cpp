@@ -70,7 +70,64 @@ class PredictorsManager : public testing::Test {
     asPredictorsManager* predictorsManager;
 };
 
-TEST_F(PredictorsManager, LoadData) {
+TEST_F(PredictorsManager, LoadDataTarget) {
     EXPECT_TRUE(predictorsManager->LoadData(0));
+    predictorsManager->NeedsDataReload();
     EXPECT_TRUE(predictorsManager->LoadData(1));
+}
+
+TEST_F(PredictorsManager, LoadDataAnalog) {
+    wxString dataPath = wxFileName::GetCwd() + "/files/data-ncep-r1/v2014/";
+    workspace->SetForecastsDirectory(dataPath);
+    workspace->AddPredictorDir("NCEP_R1", dataPath);
+
+    vwxs datasetIds = {"NCEP_R1", "NCEP_R1"};
+    vwxs dataIds = {"pressure/hgt", "pressure/hgt"};
+
+    asPredictorsManager predictorsManagerArch(workspace, false);
+    predictorsManagerArch.SetForecastDate(forecast->GetLeadTimeOrigin());
+    predictorsManagerArch.SetDate(36934); // 1906-01-01
+    predictorsManagerArch.SetForecastTimeStepHours(forecast->GetForecastTimeStepHours());
+    predictorsManagerArch.SetDatasetIds(datasetIds);
+    predictorsManagerArch.SetDataIds(dataIds);
+    predictorsManagerArch.SetLevels(forecast->GetPredictorLevels());
+    predictorsManagerArch.SetHours(forecast->GetPredictorHours());
+
+    EXPECT_TRUE(predictorsManagerArch.LoadData(1));
+}
+
+TEST_F(PredictorsManager, GetLatLonAxes) {
+    EXPECT_TRUE(predictorsManager->LoadData(0));
+    EXPECT_EQ(149, predictorsManager->GetLongitudesNb());
+    EXPECT_EQ(105, predictorsManager->GetLatitudesNb());
+    EXPECT_EQ(328 - 360, predictorsManager->GetLongitudeMin());
+    EXPECT_EQ(20, predictorsManager->GetLatitudeMin());
+    EXPECT_EQ(72, predictorsManager->GetLatitudeMax());
+    EXPECT_EQ(0.5, predictorsManager->GetLongitudeResol());
+    EXPECT_EQ(-0.5, predictorsManager->GetLatitudeResol());
+}
+
+TEST_F(PredictorsManager, GetParameter) {
+    EXPECT_TRUE(predictorsManager->LoadData(0));
+    EXPECT_EQ(asPredictor::GeopotentialHeight, predictorsManager->GetParameter());
+}
+
+TEST_F(PredictorsManager, GetDataMinMax) {
+    EXPECT_TRUE(predictorsManager->LoadData(0));
+    EXPECT_FLOAT_EQ(5424.6968f, predictorsManager->GetDataMin());
+    EXPECT_FLOAT_EQ(5943.0171f, predictorsManager->GetDataMax());
+}
+
+TEST_F(PredictorsManager, GetData) {
+    EXPECT_TRUE(predictorsManager->LoadData(0));
+    float* data = predictorsManager->GetData();
+    EXPECT_FLOAT_EQ(5581.1768f, data[0]);
+}
+
+TEST_F(PredictorsManager, GetDataRow) {
+    EXPECT_TRUE(predictorsManager->LoadData(0));
+    float* data = predictorsManager->GetDataRow(3);
+    EXPECT_FLOAT_EQ(5597.1567f, data[0]);
+    EXPECT_FLOAT_EQ(5600.8770f, data[1]);
+    EXPECT_FLOAT_EQ(5622.1367f, data[10]);
 }
