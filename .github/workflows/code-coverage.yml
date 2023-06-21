@@ -15,6 +15,9 @@ jobs:
   coverage-scan:
     runs-on: ubuntu-22.04
 
+    env:
+      PROJ_DATA: ${{github.workspace}}/bin/share/proj
+
     steps:
       - uses: actions/checkout@v3
 
