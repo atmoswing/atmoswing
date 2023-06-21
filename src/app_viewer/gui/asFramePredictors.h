@@ -105,6 +105,32 @@ class asFramePredictors : public asFramePredictorsVirtual {
      */
     void OpenDefaultLayers();
 
+    /**
+     * Move the map separator to the right.
+     */
+    void SwitchPanelRight();
+
+    /**
+     * Move the map separator to the left.
+     */
+    void SwitchPanelLeft();
+
+    /**
+     * Get a pointer to the left panel.
+     * @return A pointer to the left panel.
+     */
+    wxPanel* GetPanelRight() {
+        return m_panelRight;
+    }
+
+    /**
+     * Get a pointer to the right panel.
+     * @return A pointer to the right panel.
+     */
+    wxPanel* GetPanelLeft() {
+        return m_panelLeft;
+    }
+
   protected:
     wxKeyboardState m_KeyBoardState; /**< Keyboard state. */
 
