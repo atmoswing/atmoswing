@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 23:19+0200\n"
+"POT-Creation-Date: 2023-06-21 18:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr ""
 
 #: src/app_downscaler/gui/asFrameDownscaler.cpp:47
 #: src/app_downscaler/gui/asFramePreferencesDownscaler.cpp:32
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:134
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:134
 msgid "Preferences"
 msgstr ""
 
@@ -70,273 +70,273 @@ msgstr ""
 msgid "Downscaler over."
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:37
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:37
 msgid "Select the downscaling method"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:43
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:43
 msgid "Classic downscaling"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:51
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:51
 msgid "Select the parameters file for the downscaling"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:55
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:62
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:55
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:62
 msgid "Select a file"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:55
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:55
 msgid "*.xml"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:58
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:58
 msgid "Select the predictand DB file"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:62
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:62
 msgid "*.nc"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:65
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:65
 msgid "Select the archive predictors directory"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:69
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:76
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:83
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:286
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:293
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:300
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:399
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:69
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:76
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:83
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:286
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:293
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:300
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:399
 msgid "Select a folder"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:72
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:72
 msgid "Select the predictors directory for the target period"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:79
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:79
 msgid "Directory to save downscaling outputs"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:86
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:86
 msgid ""
 "Parallel evaluations when possible (competes with multithreading in the "
 "processor)"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:92
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:92
 msgid "Downscaling state: "
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:98
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:98
 msgid "Not running."
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:116
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:116
 msgid "Save as default"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:137
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:137
 msgid "Options"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:141
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:141
 msgid "Build predictand DB"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:144
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:144
 msgid "Tools"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:148
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:148
 msgid "Show Log Window"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:152
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:152
 msgid "Log level"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:154
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:154
 msgid "Only errors"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:158
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:248
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:158
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:248
 msgid "Errors and warnings"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:162
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:251
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:162
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:251
 msgid "Verbose"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:167
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:167
 msgid "Log"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:171
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:171
 msgid "About"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:174
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:174
 msgid "Help"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:221
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:221
 msgid "Language"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:223
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:223
 msgid "English"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:223
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:223
 msgid "French"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:229
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:229
 msgid "Restart AtmoSwing for the change to take effect."
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:237
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:237
 msgid "Logs"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:245
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:245
 msgid "Errors only (recommanded)"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:260
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:260
 msgid "Display window"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:264
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:264
 msgid "Save to a file"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:280
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:280
 msgid "Directories"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:282
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:282
 msgid "Directory containing archive predictors"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:289
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:289
 msgid "Directory containing scenario predictors"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:296
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:296
 msgid "Default predictand DB directory"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:310
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:334
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:310
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:334
 msgid "General"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:320
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:320
 msgid "Silent (no progressbar, much faster)"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:320
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:320
 msgid "Standard (recommanded)"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:320
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:320
 msgid "Verbose (not much used)"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:322
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:322
 msgid "GUI options"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:326
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:326
 msgid "Let the software be responsive while processing (recommended)."
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:340
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:340
 msgid "Multithreading"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:342
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:342
 msgid "Allow multithreading"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:349
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:349
 msgid "Max nb of threads"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:362
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:362
 msgid "Threads priority"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:375
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:375
 msgid "Multithreaded (only if allowed hereabove)"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:375
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:375
 msgid "Standard (slower)"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:377
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:377
 msgid "Processing options"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:379
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:379
 msgid "These options don't affect the results, only the processor efficiency."
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:387
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:387
 msgid "Processing"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:393
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:393
 msgid "Working directories"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:395
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:395
 msgid "Directory to save intermediate temporary results"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:406
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:406
 msgid "User specific paths"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:413
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:413
 msgid "User working directory:"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:417
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:425
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:433
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:417
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:425
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:433
 msgid "..."
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:421
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:421
 msgid "Log file:"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:429
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:429
 msgid "Preferences file:"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:447
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:447
 msgid "User paths"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingDownscalerGui.cpp:455
+#: src/app_downscaler/gui/AtmoSwingDownscalerGui.cpp:455
 msgid "Advanced"
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingMainDownscaler.cpp:41
+#: src/app_downscaler/gui/AtmoSwingMainDownscaler.cpp:41
 #, c-format
 msgid "Welcome to AtmoSwing %s."
 msgstr ""
 
-#: src/app_downscaler/gui/AtmoswingMainDownscaler.cpp:52
+#: src/app_downscaler/gui/AtmoSwingMainDownscaler.cpp:52
 msgid "AtmoSwing log window"
 msgstr ""

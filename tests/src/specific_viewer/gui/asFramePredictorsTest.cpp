@@ -29,6 +29,7 @@
 #include <wx/wx.h>
 
 #include "asFramePredictors.h"
+#include "asPredictorsManager.h"
 
 // Test fixture for the frame test
 class FramePredictors : public testing::Test {
@@ -42,6 +43,8 @@ class FramePredictors : public testing::Test {
         ASSERT_TRUE(workspace->Load(filePath));
         workspace->SetForecastsDirectory(dataPath);
         workspace->AddPredictorDir("NWS_GFS", dataPath);
+        wxString archiveDataPath = wxFileName::GetCwd() + "/files/data-ncep-r1/v2014/";
+        workspace->AddPredictorDir("NCEP_R1", archiveDataPath);
 
         // Set up the forecast manager
         forecastManager = new asForecastManager(nullptr, workspace);
@@ -77,7 +80,6 @@ TEST_F(FramePredictors, Initialises) {
 }
 
 TEST_F(FramePredictors, SwitchPanelRight) {
-    // Show the frame
     frame->Layout();
     frame->Init();
     frame->Show();
@@ -89,7 +91,6 @@ TEST_F(FramePredictors, SwitchPanelRight) {
 }
 
 TEST_F(FramePredictors, SwitchPanelLeft) {
-    // Show the frame
     frame->Layout();
     frame->Init();
     frame->Show();
@@ -98,4 +99,85 @@ TEST_F(FramePredictors, SwitchPanelLeft) {
 
     EXPECT_TRUE(frame->GetPanelRight()->IsShown());
     EXPECT_FALSE(frame->GetPanelLeft()->IsShown());
+}
+
+TEST_F(FramePredictors, SwitchPanelRightAndLeft) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    frame->SwitchPanelRight();
+    frame->SwitchPanelLeft();
+
+    EXPECT_TRUE(frame->GetPanelRight()->IsShown());
+    EXPECT_TRUE(frame->GetPanelLeft()->IsShown());
+}
+
+TEST_F(FramePredictors, SwitchPanelLeftAndRight) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    frame->SwitchPanelLeft();
+    frame->SwitchPanelRight();
+
+    EXPECT_TRUE(frame->GetPanelRight()->IsShown());
+    EXPECT_TRUE(frame->GetPanelLeft()->IsShown());
+}
+
+TEST_F(FramePredictors, UpdateLayers) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    // Replace dataset for the analog to match existing data.
+    vwxs datasetIds = {"NCEP_R1", "NCEP_R1"};
+    vwxs dataIds = {"pressure/hgt", "pressure/hgt"};
+    asPredictorsManager* predictorsManagerAnalog = frame->GetPredictorsManagerAnalog();
+    predictorsManagerAnalog->SetDatasetIds(datasetIds);
+    predictorsManagerAnalog->SetDataIds(dataIds);
+
+    // Replace date for the analog to match existing data.
+    asResultsForecast* forecast = frame->GetForecastManager()->GetForecast(0, 0);
+    a1f analogDates = forecast->GetAnalogsDates(0);
+    analogDates[0] = 36934; // 1906-01-01
+    forecast->SetAnalogsDates(0, analogDates);
+
+    // Set list selection and trigger event
+    wxListBox* listBox = frame->GetListPredictors();
+    listBox->SetSelection(1);
+    wxCommandEvent event(wxEVT_COMMAND_LISTBOX_SELECTED);
+    event.SetId(listBox->GetId());
+    event.SetInt(1);
+    listBox->GetEventHandler()->ProcessEvent(event);
+
+    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+}
+
+TEST_F(FramePredictors, OpenLayers) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    // Layer path
+    wxString dirData = asConfig::GetDataDir() + "share";
+    if (!wxDirExists(dirData)) {
+        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
+        dirDataWxFile.RemoveLastDir();
+        dirDataWxFile.AppendDir("share");
+        dirData = dirDataWxFile.GetFullPath();
+    }
+    if (!wxDirExists(dirData)) {
+        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
+        dirDataWxFile.RemoveLastDir();
+        dirData = dirDataWxFile.GetFullPath();
+    }
+    ASSERT_TRUE(wxDirExists(dirData));
+
+    wxString gisData = dirData + DS + "atmoswing" + DS + "gis" + DS + "shapefiles";
+    wxString filePath = gisData + DS + "geogrid.shp";
+
+    wxArrayString layers;
+    layers.Add(filePath);
+    EXPECT_TRUE(frame->OpenLayers(layers));
 }

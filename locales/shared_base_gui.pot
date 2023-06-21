@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 23:19+0200\n"
+"POT-Creation-Date: 2023-06-21 18:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,9 +18,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/shared_base/gui/asDialogFilePicker.cpp:33
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:33
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:65
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:143
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:33
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:65
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:143
 msgid "Select a file"
 msgstr ""
 
@@ -84,162 +84,162 @@ msgstr ""
 msgid "Exception caught: %s"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:29
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:29
 msgid "Please select the file."
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:33
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:65
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:143
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:33
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:65
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:143
 msgid "*.*"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:61
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:61
 msgid "Please select the directory and the file name."
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:101
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:101
 msgid "Predictand parameter"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:105
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:105
 msgid "Precipitation"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:105
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:105
 msgid "Temperature"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:105
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:105
 msgid "Lightning"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:105
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:105
 msgid "Other"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:111
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:111
 msgid "Temporal resolution"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:115
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:115
 msgid "24 hours"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:115
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:115
 msgid "6 hours"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:115
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:115
 msgid "1-hr MTW"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:115
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:115
 msgid "3-hr MTW"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:115
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:115
 msgid "6-hr MTW"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:115
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:115
 msgid "12-hr MTW"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:121
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:121
 msgid "Spatial aggregation"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:125
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:125
 msgid "Station"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:125
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:125
 msgid "Groupment"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:125
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:125
 msgid "Catchment"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:125
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:125
 msgid "Region"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:139
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:139
 msgid "Select the predictand catalog"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:146
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:146
 msgid "Select the predictand data directory"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:150
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:157
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:164
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:150
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:157
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:164
 msgid "Select a folder"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:153
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:153
 msgid "Select the directory containing the file patterns description"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:160
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:160
 msgid "Select the destination directory"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:215
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:215
 msgid "Precipitation data normalization"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:225
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:225
 msgid "Normalize by the return period of"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:229
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:229
 msgid "10"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:232
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:232
 msgid "years"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:239
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:239
 msgid "Process the square root"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:260
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:260
 msgid "Lightning data normalization"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:267
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:267
 msgid "Process log10(nb+1)"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:309
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:309
 msgid "Main developer:"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:315
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:315
 msgid "Pascal Horton"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:319
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:319
 msgid "Developed at:"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:325
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:325
 msgid ""
 "University of Lausanne\n"
 "Terranum\n"
 "University of Bern"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:329
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:329
 msgid "Special thanks to:"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:335
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:335
 msgid ""
 "Charles Obled\n"
 "Michel Jaboyedoff\n"
@@ -248,10 +248,10 @@ msgid ""
 "Richard Metzger"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:347
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:347
 msgid "Credits"
 msgstr ""
 
-#: src/shared_base/gui/AtmoswingSharedGui.cpp:359
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:359
 msgid "License"
 msgstr ""
