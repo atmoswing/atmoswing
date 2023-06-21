@@ -36,8 +36,8 @@
 asPanelForecast::asPanelForecast(wxWindow* parent, asBatchForecasts* batch)
     : asPanelForecastVirtual(parent),
       m_parentFrame(nullptr),
-      m_panelsManager(nullptr),
-      m_batchForecasts(batch) {
+      m_batchForecasts(batch),
+      m_panelsManager(nullptr) {
     // Led
     m_led = new awxLed(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0);
     m_led->SetState(awxLED_OFF);
@@ -64,7 +64,7 @@ void asPanelForecast::CheckFileExists() {
     wxString dirPath = m_batchForecasts->GetParametersFileDirectory();
     if (wxFileExists(dirPath + DS + fileName)) {
         m_bpButtonWarning->Hide();
-        SetTooTipContent(dirPath + DS + fileName);
+        SetToolTipContent(dirPath + DS + fileName);
     } else {
         m_bpButtonWarning->Show();
         Layout();
@@ -73,7 +73,7 @@ void asPanelForecast::CheckFileExists() {
     }
 }
 
-void asPanelForecast::SetTooTipContent(const wxString& filePath) {
+void asPanelForecast::SetToolTipContent(const wxString& filePath) {
     asParametersForecast param;
     if (param.LoadFromFile(filePath)) {
         wxString description = param.GetDescription();

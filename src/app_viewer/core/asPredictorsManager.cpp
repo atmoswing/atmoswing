@@ -30,9 +30,8 @@
 #include "asAreaGridFull.h"
 #include "asPredictorOper.h"
 
-asPredictorsManager::asPredictorsManager(wxListBox* listPredictors, asWorkspace* workspace, bool isTargetPredictor)
+asPredictorsManager::asPredictorsManager(asWorkspace* workspace, bool isTargetPredictor)
     : m_workspace(workspace),
-      m_listPredictors(listPredictors),
       m_predictor(nullptr),
       m_isTargetPredictor(isTargetPredictor),
       m_date(-1),
@@ -45,12 +44,11 @@ asPredictor::Parameter asPredictorsManager::GetParameter() {
     return m_predictor->GetParameter();
 }
 
-bool asPredictorsManager::LoadData() {
+bool asPredictorsManager::LoadData(int selection) {
     if (!m_needsDataReload) return true;
 
     wxDELETE(m_predictor);
 
-    int selection = m_listPredictors->GetSelection();
     if (selection < 0) {
         return false;
     }

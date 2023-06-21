@@ -37,11 +37,10 @@ class asPredictorsManager {
     /**
      * The constructor of the class handling the predictor data for the Viewer.
      *
-     * @param listPredictors The list of predictors from the interface.
      * @param workspace The opened workspace.
      * @param isTargetPredictor A boolean indicating if the predictor is the target.
      */
-    explicit asPredictorsManager(wxListBox* listPredictors, asWorkspace* workspace, bool isTargetPredictor = false);
+    explicit asPredictorsManager(asWorkspace* workspace, bool isTargetPredictor = false);
 
     /**
      * The destructor of the class handling the predictor data for the Viewer.
@@ -58,9 +57,10 @@ class asPredictorsManager {
     /**
      * Load the data for the selected predictor.
      *
+     * @param selection The selection of the predictor in the list.
      * @return True if the data was loaded successfully.
      */
-    bool LoadData();
+    bool LoadData(int selection);
 
     /**
      * Access to a pointer to the loaded data.
@@ -232,7 +232,6 @@ class asPredictorsManager {
   protected:
   private:
     asWorkspace* m_workspace; /**< The Viewer workspace. */
-    wxListBox* m_listPredictors; /**< The list of predictors from the interface. */
     asPredictor* m_predictor; /**< The selected predictor. */
     bool m_isTargetPredictor; /**< A boolean indicating if the predictor is the target. */
     double m_forecastDate; /**< The forecast date as MJD. */
