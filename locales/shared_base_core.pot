@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 23:19+0200\n"
+"POT-Creation-Date: 2023-06-21 18:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/shared_base/core/asArea.cpp:71
+#: src/shared_base/core/asArea.cpp:68
 msgid "Unable to build a consistent area with the given coordinates."
 msgstr ""
 
-#: src/shared_base/core/asArea.cpp:72
+#: src/shared_base/core/asArea.cpp:69
 msgid "The provided area is not rectangle."
 msgstr ""
 
@@ -154,7 +154,7 @@ msgid "Check if Grib error"
 msgstr ""
 
 #: src/shared_base/core/asFileGrib.cpp:146
-#: src/shared_base/core/asPredictor.cpp:521
+#: src/shared_base/core/asPredictor.cpp:520
 #, c-format
 msgid "Exception caught: %s"
 msgstr ""
@@ -231,60 +231,40 @@ msgstr ""
 
 #: src/shared_base/core/asFileNetcdf.cpp:596
 #: src/shared_base/core/asFileNetcdf.cpp:618
-#: src/shared_base/core/asFileNetcdf.cpp:776
-#: src/shared_base/core/asFileNetcdf.cpp:796
+#: src/shared_base/core/asFileNetcdf.cpp:780
+#: src/shared_base/core/asFileNetcdf.cpp:800
 msgid "Cannot find the desired attribute in the netCDF file."
 msgstr ""
 
 #: src/shared_base/core/asFileNetcdf.cpp:604
-#: src/shared_base/core/asFileNetcdf.cpp:651
-#: src/shared_base/core/asFileNetcdf.cpp:694
-#: src/shared_base/core/asFileNetcdf.cpp:737
-#: src/shared_base/core/asFileNetcdf.cpp:782
-#: src/shared_base/core/asFileNetcdf.cpp:835
+#: src/shared_base/core/asFileNetcdf.cpp:652
+#: src/shared_base/core/asFileNetcdf.cpp:696
+#: src/shared_base/core/asFileNetcdf.cpp:740
+#: src/shared_base/core/asFileNetcdf.cpp:786
+#: src/shared_base/core/asFileNetcdf.cpp:840
 #, c-format
 msgid ""
 "The attribute (%s) type (%d) in file doesn't match the desired type (%d)."
 msgstr ""
 
 #: src/shared_base/core/asFileNetcdf.cpp:614
-#: src/shared_base/core/asFileNetcdf.cpp:792
+#: src/shared_base/core/asFileNetcdf.cpp:796
 msgid "Cannot find the desired variable in the netCDF file."
 msgstr ""
 
-#: src/shared_base/core/asFileNetcdf.cpp:626
-#: src/shared_base/core/asFileNetcdf.cpp:669
-#: src/shared_base/core/asFileNetcdf.cpp:712
-#: src/shared_base/core/asFileNetcdf.cpp:755
-#: src/shared_base/core/asFileNetcdf.cpp:802
-#: src/shared_base/core/asFileNetcdf.cpp:866
+#: src/shared_base/core/asFileNetcdf.cpp:627
+#: src/shared_base/core/asFileNetcdf.cpp:671
+#: src/shared_base/core/asFileNetcdf.cpp:715
+#: src/shared_base/core/asFileNetcdf.cpp:759
+#: src/shared_base/core/asFileNetcdf.cpp:807
+#: src/shared_base/core/asFileNetcdf.cpp:872
 #, c-format
 msgid ""
 "The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."
 msgstr ""
 
-#: src/shared_base/core/asFileNetcdf.cpp:920
+#: src/shared_base/core/asFileNetcdf.cpp:926
 msgid "Variable name not found in the file."
-msgstr ""
-
-#: src/shared_base/core/asFileNetcdf.cpp:935
-#: src/shared_base/core/asFileNetcdf.cpp:958
-#: src/shared_base/core/asFileNetcdf.cpp:982
-#: src/shared_base/core/asFileNetcdf.cpp:1006
-#: src/shared_base/core/asFileNetcdf.cpp:1030
-#: src/shared_base/core/asFileNetcdf.cpp:1061
-#: src/shared_base/core/asFileNetcdf.cpp:1088
-#: src/shared_base/core/asFileNetcdf.cpp:1115
-#: src/shared_base/core/asFileNetcdf.cpp:1142
-#: src/shared_base/core/asFileNetcdf.cpp:1170
-#: src/shared_base/core/asFileNetcdf.cpp:1203
-#: src/shared_base/core/asFileNetcdf.cpp:1236
-#: src/shared_base/core/asFileNetcdf.cpp:1269
-#: src/shared_base/core/asFileNetcdf.cpp:1302
-#: src/shared_base/core/asFileNetcdf.cpp:1336
-#: src/shared_base/core/asFileNetcdf.cpp:1370
-#: src/shared_base/core/asFileNetcdf.cpp:1404
-msgid "Cannot get the desired variable from the netCDF file."
 msgstr ""
 
 #: src/shared_base/core/asFileNetcdf.cpp:941
@@ -296,11 +276,6 @@ msgstr ""
 #: src/shared_base/core/asFileNetcdf.cpp:1094
 #: src/shared_base/core/asFileNetcdf.cpp:1121
 #: src/shared_base/core/asFileNetcdf.cpp:1148
-#, c-format
-msgid ""
-"The variable (%s) type (%d) in file doesn't match the desired type (%d)."
-msgstr ""
-
 #: src/shared_base/core/asFileNetcdf.cpp:1176
 #: src/shared_base/core/asFileNetcdf.cpp:1209
 #: src/shared_base/core/asFileNetcdf.cpp:1242
@@ -309,33 +284,58 @@ msgstr ""
 #: src/shared_base/core/asFileNetcdf.cpp:1342
 #: src/shared_base/core/asFileNetcdf.cpp:1376
 #: src/shared_base/core/asFileNetcdf.cpp:1410
+msgid "Cannot get the desired variable from the netCDF file."
+msgstr ""
+
+#: src/shared_base/core/asFileNetcdf.cpp:947
+#: src/shared_base/core/asFileNetcdf.cpp:970
+#: src/shared_base/core/asFileNetcdf.cpp:994
+#: src/shared_base/core/asFileNetcdf.cpp:1018
+#: src/shared_base/core/asFileNetcdf.cpp:1042
+#: src/shared_base/core/asFileNetcdf.cpp:1073
+#: src/shared_base/core/asFileNetcdf.cpp:1100
+#: src/shared_base/core/asFileNetcdf.cpp:1127
+#: src/shared_base/core/asFileNetcdf.cpp:1154
+#, c-format
+msgid ""
+"The variable (%s) type (%d) in file doesn't match the desired type (%d)."
+msgstr ""
+
+#: src/shared_base/core/asFileNetcdf.cpp:1182
+#: src/shared_base/core/asFileNetcdf.cpp:1215
+#: src/shared_base/core/asFileNetcdf.cpp:1248
+#: src/shared_base/core/asFileNetcdf.cpp:1281
+#: src/shared_base/core/asFileNetcdf.cpp:1314
+#: src/shared_base/core/asFileNetcdf.cpp:1348
+#: src/shared_base/core/asFileNetcdf.cpp:1382
+#: src/shared_base/core/asFileNetcdf.cpp:1416
 #, c-format
 msgid ""
 "The variable (%s) type (%d) in file doesn't match the desired type (numeric)."
 msgstr ""
 
-#: src/shared_base/core/asFileNetcdf.cpp:1188
-#: src/shared_base/core/asFileNetcdf.cpp:1221
-#: src/shared_base/core/asFileNetcdf.cpp:1254
-#: src/shared_base/core/asFileNetcdf.cpp:1287
-#: src/shared_base/core/asFileNetcdf.cpp:1321
-#: src/shared_base/core/asFileNetcdf.cpp:1355
-#: src/shared_base/core/asFileNetcdf.cpp:1389
-#: src/shared_base/core/asFileNetcdf.cpp:1423
+#: src/shared_base/core/asFileNetcdf.cpp:1194
+#: src/shared_base/core/asFileNetcdf.cpp:1227
+#: src/shared_base/core/asFileNetcdf.cpp:1260
+#: src/shared_base/core/asFileNetcdf.cpp:1293
+#: src/shared_base/core/asFileNetcdf.cpp:1327
+#: src/shared_base/core/asFileNetcdf.cpp:1361
+#: src/shared_base/core/asFileNetcdf.cpp:1395
+#: src/shared_base/core/asFileNetcdf.cpp:1429
 msgid "Requested indices: "
 msgstr ""
 
-#: src/shared_base/core/asFileNetcdf.cpp:1475
-#: src/shared_base/core/asFileNetcdf.cpp:1527
-#: src/shared_base/core/asFileNetcdf.cpp:1663
-#: src/shared_base/core/asFileNetcdf.cpp:1763
+#: src/shared_base/core/asFileNetcdf.cpp:1481
+#: src/shared_base/core/asFileNetcdf.cpp:1533
+#: src/shared_base/core/asFileNetcdf.cpp:1669
+#: src/shared_base/core/asFileNetcdf.cpp:1769
 #, c-format
 msgid ""
 "NetCDF file: data type (%d) of attribute %s not taken into account in "
 "AtmoSwing."
 msgstr ""
 
-#: src/shared_base/core/asFileNetcdf.cpp:1566
+#: src/shared_base/core/asFileNetcdf.cpp:1572
 msgid "The NetCDF format is unknown"
 msgstr ""
 
@@ -804,13 +804,13 @@ msgid ""
 "(minute) after the line width."
 msgstr ""
 
-#: src/shared_base/core/asPredictand.cpp:792
+#: src/shared_base/core/asPredictand.cpp:790
 msgid ""
 "The timestep for the extraction of the predictands maximums has to be a "
 "multiple of the data timestep."
 msgstr ""
 
-#: src/shared_base/core/asPredictand.cpp:807
+#: src/shared_base/core/asPredictand.cpp:805
 msgid ""
 "The timestep for the extraction of the predictands maximums cannot be lower "
 "than the data timestep."
@@ -871,7 +871,7 @@ msgid "Failed writing the file %s"
 msgstr ""
 
 #: src/shared_base/core/asPredictor.cpp:245
-#: src/shared_base/core/asPredictor.cpp:293
+#: src/shared_base/core/asPredictor.cpp:292
 #, c-format
 msgid "Failed closing the file %s"
 msgstr ""
@@ -881,304 +881,304 @@ msgstr ""
 msgid "Failed opening the file %s"
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:348
+#: src/shared_base/core/asPredictor.cpp:347
 #, c-format
 msgid "Empty files list for %s (%s)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:370
+#: src/shared_base/core/asPredictor.cpp:369
 #, c-format
 msgid "No wildcard is yet authorized in the path (%s)"
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:379
+#: src/shared_base/core/asPredictor.cpp:378
 #, c-format
 msgid "Multiple files were found matching the name %s:"
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:389
-#: src/shared_base/core/asPredictor.cpp:401
-#: src/shared_base/core/asPredictor.cpp:403
+#: src/shared_base/core/asPredictor.cpp:388
+#: src/shared_base/core/asPredictor.cpp:400
+#: src/shared_base/core/asPredictor.cpp:402
 #, c-format
 msgid "File not found: %s"
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:415
+#: src/shared_base/core/asPredictor.cpp:414
 #, c-format
 msgid "%.2f percent of the files are missing (%s, %s)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:427
+#: src/shared_base/core/asPredictor.cpp:426
 #, c-format
 msgid "Error at initialization of the predictor dataset %s."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:436
+#: src/shared_base/core/asPredictor.cpp:435
 #, c-format
 msgid "Files not found for %s (%s)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:439
+#: src/shared_base/core/asPredictor.cpp:438
 msgid "Predictor files found."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:443
+#: src/shared_base/core/asPredictor.cpp:442
 msgid "Failing to get the file structure."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:446
+#: src/shared_base/core/asPredictor.cpp:445
 msgid "File structure parsed."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:451
-#: src/shared_base/core/asPredictor.cpp:453
+#: src/shared_base/core/asPredictor.cpp:450
+#: src/shared_base/core/asPredictor.cpp:452
 msgid "Failing to get the desired level."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:460
+#: src/shared_base/core/asPredictor.cpp:459
 msgid "The time array is not valid to load data."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:476
+#: src/shared_base/core/asPredictor.cpp:475
 msgid "Extracting from files."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:479
-#: src/shared_base/core/asPredictor.cpp:481
+#: src/shared_base/core/asPredictor.cpp:478
+#: src/shared_base/core/asPredictor.cpp:480
 msgid "Extracting data from files failed."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:488
+#: src/shared_base/core/asPredictor.cpp:487
 msgid "Transforming data"
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:490
+#: src/shared_base/core/asPredictor.cpp:489
 msgid "Data transformation has failed."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:496
+#: src/shared_base/core/asPredictor.cpp:495
 msgid "Interpolating predictor grid."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:498
+#: src/shared_base/core/asPredictor.cpp:497
 msgid "Interpolation failed."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:504
+#: src/shared_base/core/asPredictor.cpp:503
 msgid "Loading forecast data (predictorRealtime->Load)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:506
+#: src/shared_base/core/asPredictor.cpp:505
 #, c-format
 msgid ""
 "The date and the data array lengths do not match (time = %d and data = %d)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:508
+#: src/shared_base/core/asPredictor.cpp:507
 #, c-format
 msgid "Time array starts on %s and ends on %s."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:517
+#: src/shared_base/core/asPredictor.cpp:516
 #, c-format
 msgid "Bad allocation (%s) caught when loading data %s (%s)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:522
+#: src/shared_base/core/asPredictor.cpp:521
 msgid "Failed to load data (exception)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:556
+#: src/shared_base/core/asPredictor.cpp:555
 msgid "The desired timestep is smaller than the data timestep."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:563
+#: src/shared_base/core/asPredictor.cpp:562
 msgid "The desired timestep is not a multiple of the data timestep."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:569
+#: src/shared_base/core/asPredictor.cpp:568
 #, c-format
 msgid ""
 "The desired startDate (%gh) is not coherent with the data properties "
 "(fractpart = %g)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:596
-#: src/shared_base/core/asPredictor.cpp:622
+#: src/shared_base/core/asPredictor.cpp:595
+#: src/shared_base/core/asPredictor.cpp:621
 #: src/shared_base/core/asPredictorOper.cpp:308
 msgid "Predictor file type not correctly defined."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:704
+#: src/shared_base/core/asPredictor.cpp:703
 msgid "Opening grib file to enquire the structure."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:712
+#: src/shared_base/core/asPredictor.cpp:711
 msgid "Setting index position in the grib file."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:723
+#: src/shared_base/core/asPredictor.cpp:722
 msgid ""
 "Creating an instance of the grib object to enquire the structure (2nd file)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:726
+#: src/shared_base/core/asPredictor.cpp:725
 msgid "Opening grib file to enquire the structure (2nd file)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:734
+#: src/shared_base/core/asPredictor.cpp:733
 msgid "Setting index position in the grib file (2nd file)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:743
+#: src/shared_base/core/asPredictor.cpp:742
 msgid "Parsing the grib structure."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:755
+#: src/shared_base/core/asPredictor.cpp:754
 msgid "Parsing the grib structure (single file)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:782
+#: src/shared_base/core/asPredictor.cpp:781
 msgid "Opening the grib file."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:792
+#: src/shared_base/core/asPredictor.cpp:791
 msgid "Setting index position in grib file."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:800
+#: src/shared_base/core/asPredictor.cpp:799
 msgid "Parsing grib file structure."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:834
+#: src/shared_base/core/asPredictor.cpp:833
 msgid "The first file cannot be missing."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:840
+#: src/shared_base/core/asPredictor.cpp:839
 msgid "Missing files are handled only when there is 1 file per time step."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:885
+#: src/shared_base/core/asPredictor.cpp:884
 msgid "Variable type not supported yet for the time dimension."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:901
+#: src/shared_base/core/asPredictor.cpp:900
 msgid "Time reference could not be extracted."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:938
-#: src/shared_base/core/asPredictor.cpp:1012
+#: src/shared_base/core/asPredictor.cpp:937
+#: src/shared_base/core/asPredictor.cpp:1011
 msgid "Variable type not supported yet for the level dimension."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:952
+#: src/shared_base/core/asPredictor.cpp:951
 #, c-format
 msgid "Unknown unit for the level dimension: %s."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:969
+#: src/shared_base/core/asPredictor.cpp:968
 msgid "X/longitude axis not found."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:982
+#: src/shared_base/core/asPredictor.cpp:981
 msgid "Y/latitude axis not found."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1067
+#: src/shared_base/core/asPredictor.cpp:1066
 msgid "Longitude axis seems not consistent (multiple breaks)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1094
+#: src/shared_base/core/asPredictor.cpp:1093
 #, c-format
 msgid "Level %f was requested and %f was found in file (single level)"
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1099
-#: src/shared_base/core/asPredictor.cpp:1101
+#: src/shared_base/core/asPredictor.cpp:1098
+#: src/shared_base/core/asPredictor.cpp:1100
 #, c-format
 msgid "Cannot find level %f"
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1125
-#: src/shared_base/core/asPredictor.cpp:1143
-#: src/shared_base/core/asPredictor.cpp:1159
-#: src/shared_base/core/asPredictor.cpp:1184
+#: src/shared_base/core/asPredictor.cpp:1124
+#: src/shared_base/core/asPredictor.cpp:1142
+#: src/shared_base/core/asPredictor.cpp:1158
+#: src/shared_base/core/asPredictor.cpp:1183
 msgid "Failed at initializing the axes."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1266
+#: src/shared_base/core/asPredictor.cpp:1265
 #, c-format
 msgid "Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f)"
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1292
-#: src/shared_base/core/asPredictor.cpp:1299
+#: src/shared_base/core/asPredictor.cpp:1291
+#: src/shared_base/core/asPredictor.cpp:1298
 #, c-format
 msgid "The desired level (%g) does not exist for %s"
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1570
+#: src/shared_base/core/asPredictor.cpp:1569
 msgid "Grib files do not handle stride."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1699
+#: src/shared_base/core/asPredictor.cpp:1698
 msgid "The standardization of ensemble datasets is not yet supported."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1780
+#: src/shared_base/core/asPredictor.cpp:1779
 msgid ""
 "An error occurred while trying to clip data to another area (extended axis)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1781
-#: src/shared_base/core/asPredictor.cpp:1789
+#: src/shared_base/core/asPredictor.cpp:1780
+#: src/shared_base/core/asPredictor.cpp:1788
 #, c-format
 msgid "Looking for lon %.2f and %.2f in between %.2f to %.2f."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1788
-#: src/shared_base/core/asPredictor.cpp:1805
+#: src/shared_base/core/asPredictor.cpp:1787
+#: src/shared_base/core/asPredictor.cpp:1804
 msgid "An error occurred while trying to clip data to another area."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1806
+#: src/shared_base/core/asPredictor.cpp:1805
 #, c-format
 msgid "Looking for lat %.2f and %.2f in between %.2f to %.2f."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1843
+#: src/shared_base/core/asPredictor.cpp:1842
 msgid "The preprocessed area cannot be clipped to another area."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1856
-#: src/shared_base/core/asPredictor.cpp:1915
-#: src/shared_base/core/asPredictor.cpp:1959
+#: src/shared_base/core/asPredictor.cpp:1855
+#: src/shared_base/core/asPredictor.cpp:1914
+#: src/shared_base/core/asPredictor.cpp:1958
 msgid "Wrong axes lengths (cannot be clipped to another area)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:1992
+#: src/shared_base/core/asPredictor.cpp:1991
 msgid "Wrong preprocessing definition (cannot be clipped to another area)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:2090
+#: src/shared_base/core/asPredictor.cpp:2089
 msgid "Interpolation not allowed on irregular grids."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:2180
+#: src/shared_base/core/asPredictor.cpp:2179
 #, c-format
 msgid ""
 "The desired point is not available in the data for interpolation. Latitude "
 "%f was not found in between %f (index %d) to %f (index %d) (size = %d)."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:2213
+#: src/shared_base/core/asPredictor.cpp:2212
 #, c-format
 msgid ""
 "The desired point is not available in the data for interpolation. Longitude "
 "%f was not found in between %f to %f."
 msgstr ""
 
-#: src/shared_base/core/asPredictor.cpp:2335
+#: src/shared_base/core/asPredictor.cpp:2334
 msgid ""
 "The type of product must be defined for this dataset (prefix to the variable "
 "name. Ex: press/hgt)."
@@ -1251,7 +1251,7 @@ msgstr ""
 #: src/shared_base/core/asPredictorEcmwfEra20C.cpp:122
 #: src/shared_base/core/asPredictorEcmwfEra5.cpp:218
 #: src/shared_base/core/asPredictorEcmwfEraInterim.cpp:304
-#: src/shared_base/core/asPredictorGeneric.cpp:178
+#: src/shared_base/core/asPredictorGeneric.cpp:179
 #: src/shared_base/core/asPredictorJmaJra55CSubset.cpp:193
 #: src/shared_base/core/asPredictorJmaJra55Subset.cpp:201
 #: src/shared_base/core/asPredictorNasaMerra2.cpp:95
@@ -1320,7 +1320,7 @@ msgstr ""
 msgid "No ERA-interim file found."
 msgstr ""
 
-#: src/shared_base/core/asPredictorGeneric.cpp:203
+#: src/shared_base/core/asPredictorGeneric.cpp:204
 msgid "No file found for the generic archive."
 msgstr ""
 
@@ -1428,13 +1428,13 @@ msgstr ""
 #: src/shared_base/core/asTimeArray.cpp:154
 #: src/shared_base/core/asTimeArray.cpp:181
 #: src/shared_base/core/asTimeArray.cpp:201
-#: src/shared_base/core/asTimeArray.cpp:258
-#: src/shared_base/core/asTimeArray.cpp:543
+#: src/shared_base/core/asTimeArray.cpp:257
+#: src/shared_base/core/asTimeArray.cpp:542
 msgid "Time array creation failed"
 msgstr ""
 
 #: src/shared_base/core/asTimeArray.cpp:164
-#: src/shared_base/core/asTimeArray.cpp:253
+#: src/shared_base/core/asTimeArray.cpp:252
 msgid "The time array mode is not correctly set"
 msgstr ""
 
@@ -1442,47 +1442,47 @@ msgstr ""
 msgid "The time array mode is not allowed for the analogs."
 msgstr ""
 
-#: src/shared_base/core/asTimeArray.cpp:453
-#: src/shared_base/core/asTimeArray.cpp:486
+#: src/shared_base/core/asTimeArray.cpp:452
+#: src/shared_base/core/asTimeArray.cpp:485
 #, c-format
 msgid "Month '%s' not recognized."
 msgstr ""
 
-#: src/shared_base/core/asTimeArray.cpp:498
+#: src/shared_base/core/asTimeArray.cpp:497
 msgid "Season not recognized."
 msgstr ""
 
-#: src/shared_base/core/asTimeArray.cpp:557
+#: src/shared_base/core/asTimeArray.cpp:556
 msgid ""
 "The predictand series is not correctly defined in the time array "
 "construction."
 msgstr ""
 
-#: src/shared_base/core/asTimeArray.cpp:591
-#: src/shared_base/core/asTimeArray.cpp:596
+#: src/shared_base/core/asTimeArray.cpp:590
+#: src/shared_base/core/asTimeArray.cpp:595
 #, c-format
 msgid ""
 "The day %s was not considered in the timearray due to difference in hours "
 "with %s."
 msgstr ""
 
-#: src/shared_base/core/asTimeArray.cpp:602
+#: src/shared_base/core/asTimeArray.cpp:601
 #, c-format
 msgid "%d days were in the precipitation range and %d were not."
 msgstr ""
 
-#: src/shared_base/core/asTimeArray.cpp:605
+#: src/shared_base/core/asTimeArray.cpp:604
 msgid "The selection of the dates on the predictand threshold is empty!"
 msgstr ""
 
-#: src/shared_base/core/asTimeArray.cpp:620
-#: src/shared_base/core/asTimeArray.cpp:642
-#: src/shared_base/core/asTimeArray.cpp:659
+#: src/shared_base/core/asTimeArray.cpp:619
+#: src/shared_base/core/asTimeArray.cpp:641
+#: src/shared_base/core/asTimeArray.cpp:658
 msgid "Trying to get a date outside of the time array."
 msgstr ""
 
-#: src/shared_base/core/asTimeArray.cpp:710
-#: src/shared_base/core/asTimeArray.cpp:757
+#: src/shared_base/core/asTimeArray.cpp:709
+#: src/shared_base/core/asTimeArray.cpp:756
 msgid "The given year to remove fall outside of the time array."
 msgstr ""
 
