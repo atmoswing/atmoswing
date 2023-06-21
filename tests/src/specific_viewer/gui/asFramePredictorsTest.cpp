@@ -27,6 +27,7 @@
 
 #include <gtest/gtest.h>
 #include <wx/wx.h>
+#include <proj.h>
 
 #include "asFramePredictors.h"
 #include "asPredictorsManager.h"
@@ -35,6 +36,10 @@
 class FramePredictors : public testing::Test {
   protected:
     void SetUp() override {
+        context = proj_context_create();
+        const char* searchPaths[] = { "../share/proj", "share/proj" };
+        proj_context_set_search_paths(context, 2, searchPaths);
+
         wxString dataPath = wxFileName::GetCwd() + "/files/data-predictors-display/";
 
         // Load the workspace
@@ -56,6 +61,7 @@ class FramePredictors : public testing::Test {
     }
 
     void TearDown() override {
+        proj_context_destroy(context);
         wxDELETE(workspace);
         wxDELETE(forecastManager);
         frame->Destroy();
@@ -64,6 +70,7 @@ class FramePredictors : public testing::Test {
     asWorkspace* workspace;
     asForecastManager* forecastManager;
     asFramePredictors* frame;
+    PJ_CONTEXT* context;
 };
 
 TEST_F(FramePredictors, Initialises) {
