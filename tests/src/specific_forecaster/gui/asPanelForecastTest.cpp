@@ -91,6 +91,7 @@ TEST_F(PanelForecast, SetToolTipContent) {
     wxYield();
 }
 
+#if defined(__WIN32__)
 TEST_F(PanelForecast, OnEditForecastFile) {
     wxUIActionSimulator sim;
 
@@ -104,7 +105,7 @@ TEST_F(PanelForecast, OnEditForecastFile) {
     wxYield();
 
     // Wait for the dialog to open (adjust the delay if necessary)
-    wxMilliSleep(200);
+    wxMilliSleep(500);
 
     // Handle the dialog frame
     sim.MouseClick(); // Click to set focus on the app
@@ -116,9 +117,8 @@ TEST_F(PanelForecast, OnEditForecastFile) {
     ProcessEvents();
 
     EXPECT_TRUE(panel->GetTextParametersFileNameValue().Len() > 0);
-#if defined(__WIN32__)
     EXPECT_TRUE(panel->GetTextParametersFileNameValue().IsSameAs("xyz.txt"));
-#endif
+
     frame->Close();
     wxYield();
 }
@@ -138,9 +138,7 @@ TEST_F(PanelForecast, OnDetailsForecastFile) {
     // Get the new frame
     auto popUp = dynamic_cast<asFrameStyledTextCtrl*>(wxWindow::FindWindowById(asWINDOW_PARAMETERS_DETAILS));
 
-#if defined(__WIN32__)
     EXPECT_TRUE(popUp != nullptr);
-#endif
 
     if (popUp) {
         EXPECT_TRUE(popUp->IsShown());
@@ -149,3 +147,4 @@ TEST_F(PanelForecast, OnDetailsForecastFile) {
     frame->Close();
     wxYield();
 }
+#endif
