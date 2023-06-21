@@ -282,7 +282,7 @@ void asFramePredictors::OpenFramePreferences(wxCommandEvent& event) {
     frame->Show();
 }
 
-void asFramePredictors::OnSwitchRight(wxCommandEvent& event) {
+void asFramePredictors::SwitchPanelRight() {
     if (!m_displayPanelRight) return;
 
     Freeze();
@@ -303,7 +303,11 @@ void asFramePredictors::OnSwitchRight(wxCommandEvent& event) {
     Thaw();
 }
 
-void asFramePredictors::OnSwitchLeft(wxCommandEvent& event) {
+void asFramePredictors::OnSwitchRight(wxCommandEvent& event) {
+    SwitchPanelRight();
+}
+
+void asFramePredictors::SwitchPanelLeft() {
     if (!m_displayPanelLeft) return;
 
     Freeze();
@@ -322,6 +326,10 @@ void asFramePredictors::OnSwitchLeft(wxCommandEvent& event) {
     Layout();
     Refresh();
     Thaw();
+}
+
+void asFramePredictors::OnSwitchLeft(wxCommandEvent& event) {
+    SwitchPanelLeft();
 }
 
 void asFramePredictors::OnPredictorSelectionChange(wxCommandEvent& event) {
