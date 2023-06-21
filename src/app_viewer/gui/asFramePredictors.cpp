@@ -38,6 +38,7 @@
 
 #include <proj.h>
 #include <wx/colour.h>
+#include <wx/filename.h>
 
 #include "asPredictorsManager.h"
 
@@ -375,7 +376,19 @@ void asFramePredictors::OpenDefaultLayers() {
     wxConfigBase* pConfig = wxFileConfig::Get();
     wxString dirData = asConfig::GetDataDir() + "share";
     if (!wxDirExists(dirData)) {
-        dirData = asConfig::GetDataDir() + ".." + DS + "share";
+        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
+        dirDataWxFile.RemoveLastDir();
+        dirDataWxFile.AppendDir("share");
+        dirData = dirDataWxFile.GetFullPath();
+    }
+    if (!wxDirExists(dirData)) {
+        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
+        dirDataWxFile.RemoveLastDir();
+        dirData = dirDataWxFile.GetFullPath();
+    }
+    if (!wxDirExists(dirData)) {
+        wxLogError(_("The share directory could not be found (%s)."), dirData);
+        return;
     }
 
     wxString gisData = dirData + DS + "atmoswing" + DS + "gis" + DS + "shapefiles";
@@ -418,10 +431,10 @@ void asFramePredictors::OpenDefaultLayers() {
             m_viewerLayerManagerLeft->Add(-1, layer, renderContinents1, nullptr, continentsVisibility);
             m_viewerLayerManagerRight->Add(-1, layer, renderContinents2, nullptr, continentsVisibility);
         } else {
-            wxLogWarning(_("The Continents layer file %s cound not be opened."), continentsFilePath.c_str());
+            wxLogError(_("The Continents layer file %s cound not be opened."), continentsFilePath.c_str());
         }
     } else {
-        wxLogWarning(_("The Continents layer file %s cound not be found."), continentsFilePath.c_str());
+        wxLogError(_("The Continents layer file %s cound not be found."), continentsFilePath.c_str());
     }
 
     // LatLong
