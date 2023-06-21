@@ -463,10 +463,10 @@ void asFramePredictors::OpenDefaultLayers() {
             m_viewerLayerManagerLeft->Add(-1, layer, renderLatLong1, nullptr, latLongVisibility);
             m_viewerLayerManagerRight->Add(-1, layer, renderLatLong2, nullptr, latLongVisibility);
         } else {
-            wxLogWarning(_("The LatLong layer file %s cound not be opened."), latLongFilePath.c_str());
+            wxLogError(_("The LatLong layer file %s cound not be opened."), latLongFilePath.c_str());
         }
     } else {
-        wxLogWarning(_("The LatLong layer file %s cound not be found."), latLongFilePath.c_str());
+        wxLogError(_("The LatLong layer file %s cound not be found."), latLongFilePath.c_str());
     }
 
     // Geogrid
@@ -495,10 +495,10 @@ void asFramePredictors::OpenDefaultLayers() {
             m_viewerLayerManagerLeft->Add(-1, layer, renderGeogrid1, nullptr, geogridVisibility);
             m_viewerLayerManagerRight->Add(-1, layer, renderGeogrid2, nullptr, geogridVisibility);
         } else {
-            wxLogWarning(_("The Geogrid layer file %s cound not be opened."), geogridFilePath.c_str());
+            wxLogError(_("The Geogrid layer file %s cound not be opened."), geogridFilePath.c_str());
         }
     } else {
-        wxLogWarning(_("The Geogrid layer file %s cound not be found."), geogridFilePath.c_str());
+        wxLogError(_("The Geogrid layer file %s cound not be found."), geogridFilePath.c_str());
     }
 
     // Countries
@@ -527,10 +527,10 @@ void asFramePredictors::OpenDefaultLayers() {
             m_viewerLayerManagerLeft->Add(-1, layer, renderCountries1, nullptr, countriesVisibility);
             m_viewerLayerManagerRight->Add(-1, layer, renderCountries2, nullptr, countriesVisibility);
         } else {
-            wxLogWarning(_("The Countries layer file %s cound not be opened."), countriesFilePath.c_str());
+            wxLogError(_("The Countries layer file %s cound not be opened."), countriesFilePath.c_str());
         }
     } else {
-        wxLogWarning(_("The Countries layer file %s cound not be found."), countriesFilePath.c_str());
+        wxLogError(_("The Countries layer file %s cound not be found."), countriesFilePath.c_str());
     }
 
     m_viewerLayerManagerLeft->FreezeEnd();

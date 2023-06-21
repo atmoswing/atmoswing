@@ -77,7 +77,6 @@ TEST_F(FramePredictors, Initialises) {
 }
 
 TEST_F(FramePredictors, SwitchPanelRight) {
-    // Show the frame
     frame->Layout();
     frame->Init();
     frame->Show();
@@ -89,7 +88,6 @@ TEST_F(FramePredictors, SwitchPanelRight) {
 }
 
 TEST_F(FramePredictors, SwitchPanelLeft) {
-    // Show the frame
     frame->Layout();
     frame->Init();
     frame->Show();
@@ -98,4 +96,71 @@ TEST_F(FramePredictors, SwitchPanelLeft) {
 
     EXPECT_TRUE(frame->GetPanelRight()->IsShown());
     EXPECT_FALSE(frame->GetPanelLeft()->IsShown());
+}
+
+TEST_F(FramePredictors, SwitchPanelRightAndLeft) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    frame->SwitchPanelRight();
+    frame->SwitchPanelLeft();
+
+    EXPECT_TRUE(frame->GetPanelRight()->IsShown());
+    EXPECT_TRUE(frame->GetPanelLeft()->IsShown());
+}
+
+TEST_F(FramePredictors, SwitchPanelLeftAndRight) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    frame->SwitchPanelLeft();
+    frame->SwitchPanelRight();
+
+    EXPECT_TRUE(frame->GetPanelRight()->IsShown());
+    EXPECT_TRUE(frame->GetPanelLeft()->IsShown());
+}
+
+TEST_F(FramePredictors, UpdateLayers) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    wxListBox* listBox = frame->GetListPredictors();
+    wxCommandEvent event(wxEVT_COMMAND_LISTBOX_SELECTED);
+    event.SetEventType(wxEVT_COMMAND_LISTBOX_SELECTED);
+    event.SetId(listBox->GetId());
+    event.SetInt(1);
+    listBox->GetEventHandler()->ProcessEvent(event);
+
+    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+}
+
+TEST_F(FramePredictors, OpenLayers) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    // Layer path
+    wxString dirData = asConfig::GetDataDir() + "share";
+    if (!wxDirExists(dirData)) {
+        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
+        dirDataWxFile.RemoveLastDir();
+        dirDataWxFile.AppendDir("share");
+        dirData = dirDataWxFile.GetFullPath();
+    }
+    if (!wxDirExists(dirData)) {
+        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
+        dirDataWxFile.RemoveLastDir();
+        dirData = dirDataWxFile.GetFullPath();
+    }
+    ASSERT_TRUE(wxDirExists(dirData));
+
+    wxString gisData = dirData + DS + "atmoswing" + DS + "gis" + DS + "shapefiles";
+    wxString filePath = gisData + DS + "geogrid.shp";
+
+    wxArrayString layers;
+    layers.Add(filePath);
+    EXPECT_TRUE(frame->OpenLayers(layers));
 }

@@ -131,6 +131,14 @@ class asFramePredictors : public asFramePredictorsVirtual {
         return m_panelLeft;
     }
 
+    /**
+     * Get a pointer to the list of predictors.
+     * @return A pointer to the list of predictors.
+     */
+    wxListBox* GetListPredictors() {
+        return m_listPredictors;
+    }
+
   protected:
     wxKeyboardState m_KeyBoardState; /**< Keyboard state. */
 
