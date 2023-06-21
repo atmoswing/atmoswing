@@ -29,6 +29,7 @@
 #include <wx/wx.h>
 
 #include "asFramePredictors.h"
+#include "asPredictorsManager.h"
 
 // Test fixture for the frame test
 class FramePredictors : public testing::Test {
@@ -42,6 +43,8 @@ class FramePredictors : public testing::Test {
         ASSERT_TRUE(workspace->Load(filePath));
         workspace->SetForecastsDirectory(dataPath);
         workspace->AddPredictorDir("NWS_GFS", dataPath);
+        wxString archiveDataPath = wxFileName::GetCwd() + "/files/data-ncep-r1/v2014/";
+        workspace->AddPredictorDir("NCEP_R1", archiveDataPath);
 
         // Set up the forecast manager
         forecastManager = new asForecastManager(nullptr, workspace);
@@ -127,9 +130,23 @@ TEST_F(FramePredictors, UpdateLayers) {
     frame->Init();
     frame->Show();
 
+    // Replace dataset for the analog to match existing data.
+    vwxs datasetIds = {"NCEP_R1", "NCEP_R1"};
+    vwxs dataIds = {"pressure/hgt", "pressure/hgt"};
+    asPredictorsManager* predictorsManagerAnalog = frame->GetPredictorsManagerAnalog();
+    predictorsManagerAnalog->SetDatasetIds(datasetIds);
+    predictorsManagerAnalog->SetDataIds(dataIds);
+
+    // Replace date for the analog to match existing data.
+    asResultsForecast* forecast = frame->GetForecastManager()->GetForecast(0, 0);
+    a1f analogDates = forecast->GetAnalogsDates(0);
+    analogDates[0] = 36934; // 1906-01-01
+    forecast->SetAnalogsDates(0, analogDates);
+
+    // Set list selection and trigger event
     wxListBox* listBox = frame->GetListPredictors();
+    listBox->SetSelection(1);
     wxCommandEvent event(wxEVT_COMMAND_LISTBOX_SELECTED);
-    event.SetEventType(wxEVT_COMMAND_LISTBOX_SELECTED);
     event.SetId(listBox->GetId());
     event.SetInt(1);
     listBox->GetEventHandler()->ProcessEvent(event);

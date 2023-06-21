@@ -139,6 +139,30 @@ class asFramePredictors : public asFramePredictorsVirtual {
         return m_listPredictors;
     }
 
+    /**
+     * Get a pointer to the target predictors manager.
+     * @return A pointer to the target predictors manager.
+     */
+    asPredictorsManager* GetPredictorsManagerTarget() {
+        return m_predictorsManagerTarget;
+    }
+
+    /**
+     * Get a pointer to the analog predictors manager.
+     * @return A pointer to the analog predictors manager.
+     */
+    asPredictorsManager* GetPredictorsManagerAnalog() {
+        return m_predictorsManagerAnalog;
+    }
+
+    /**
+     * Get a pointer to the forecast manager.
+     * @return A pointer to the forecast manager.
+     */
+    asForecastManager* GetForecastManager() {
+        return m_forecastManager;
+    }
+
   protected:
     wxKeyboardState m_KeyBoardState; /**< Keyboard state. */
 
