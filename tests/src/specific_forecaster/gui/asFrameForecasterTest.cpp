@@ -33,19 +33,6 @@
 // Test fixture for the frame test
 class FrameForecaster : public testing::Test {
   protected:
-    void SetUp() override {
-        // Initialize wxWidgets
-        int argc = 0;
-        wxApp::SetInstance(new wxApp);
-        wxChar** argvApp = NULL;
-        wxEntryStart(argc, argvApp);
-    }
-
-    void TearDown() override {
-        // Cleanup wxWidgets
-        wxEntryCleanup();
-    }
-
     asFrameForecaster* frame;
 };
 
@@ -62,6 +49,7 @@ TEST_F(FrameForecaster, Initialises) {
     EXPECT_TRUE(frame->IsShown());
 
     frame->Destroy();
+    wxYield();
 }
 
 TEST_F(FrameForecaster, LoadRecentFiles) {
@@ -77,6 +65,7 @@ TEST_F(FrameForecaster, LoadRecentFiles) {
     EXPECT_EQ(1, menu->GetMenuItemCount());
 
     frame->Destroy();
+    wxYield();
 }
 
 TEST_F(FrameForecaster, RemovesInexistingFiles) {
@@ -92,4 +81,28 @@ TEST_F(FrameForecaster, RemovesInexistingFiles) {
     EXPECT_EQ(0, menu->GetMenuItemCount());
 
     frame->Destroy();
+    wxYield();
+}
+
+TEST_F(FrameForecaster, OpenBatchFileFromRecent) {
+    wxConfigBase* config = wxFileConfig::Get();
+    wxString testsPath = wxFileName::GetCwd();
+    config->Write("/Recent/file1", testsPath + "/files/batch_forecaster.xml");
+
+    frame = new asFrameForecaster(nullptr);
+
+    // Check that there is no panel
+    EXPECT_EQ(0, frame->GetPanelsManager()->GetPanelsNb());
+
+    // Click on the first item
+    wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED, wxID_FILE1);
+    frame->GetEventHandler()->ProcessEvent(event);
+
+    wxYield();
+
+    // Check that there is one panel
+    EXPECT_EQ(2, frame->GetPanelsManager()->GetPanelsNb());
+
+    frame->Destroy();
+    wxYield();
 }

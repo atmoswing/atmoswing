@@ -28,24 +28,17 @@
 #include <gtest/gtest.h>
 #include <wx/wx.h>
 
-#include "asFrameViewer.h"
+#include "asFrameStyledTextCtrl.h"
 
 // Test fixture for the frame test
-class FrameViewer : public testing::Test {
+class FrameStyledTextCtrl : public testing::Test {
   protected:
-    void SetUp() override {
-        // Create the frame
-        frame = new asFrameViewer(nullptr);
-    }
-
-    void TearDown() override {
-        frame->Destroy();
-    }
-
-    asFrameViewer* frame;
+    asFrameStyledTextCtrl* frame;
 };
 
-TEST_F(FrameViewer, Initialises) {
+TEST_F(FrameStyledTextCtrl, Initialises) {
+    frame = new asFrameStyledTextCtrl(nullptr);
+
     // Ensure the frame is not initially shown
     EXPECT_FALSE(frame->IsShown());
 
@@ -54,4 +47,17 @@ TEST_F(FrameViewer, Initialises) {
 
     // Check if the frame is shown
     EXPECT_TRUE(frame->IsShown());
+
+    frame->Destroy();
+    wxYield();
+}
+
+TEST_F(FrameStyledTextCtrl, SetContent) {
+    frame = new asFrameStyledTextCtrl(nullptr);
+
+    frame->SetContent("Test");
+    EXPECT_TRUE(frame->GetScintilla()->GetText().IsSameAs("Test"));
+
+    frame->Destroy();
+    wxYield();
 }
