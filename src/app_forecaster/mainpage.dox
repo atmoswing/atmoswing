@@ -1,0 +1,6 @@
+/**
+ * @mainpage Codes related to AtmoSwing Forecaster.
+ *
+ * This directory contains the source code of the AtmoSwing Forecaster application.
+ * The code present in this directory is not needed for the other modules of AtmoSwing.
+ */
