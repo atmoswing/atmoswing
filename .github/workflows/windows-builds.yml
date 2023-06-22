@@ -1,6 +1,9 @@
 name: Windows builds
 
-on: push
+on:
+  push:
+    branches-ignore:
+      - ci/coverage-gui
 
 env:
   BUILD_TYPE: Release
@@ -56,6 +59,11 @@ jobs:
 
   build-desktop-version:
     runs-on: windows-2022
+
+    env:
+      ECCODES_DEFINITION_PATH: ${{github.workspace}}/bin/share/eccodes/definitions
+      PROJ_DATA: ${{github.workspace}}/bin/share/proj
+      PROJ_LIB: ${{github.workspace}}/bin/share/proj
 
     steps:
       - uses: actions/checkout@v3

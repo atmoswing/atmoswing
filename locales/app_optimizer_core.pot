@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 23:19+0200\n"
+"POT-Creation-Date: 2023-06-21 18:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,7 +115,7 @@ msgstr ""
 #: src/app_optimizer/core/asMethodCalibratorEvaluateAllScores.cpp:238
 #: src/app_optimizer/core/asMethodCalibratorSingle.cpp:191
 #: src/app_optimizer/core/asMethodCalibratorSingleOnlyDates.cpp:151
-#: src/app_optimizer/core/asMethodCalibratorSingleOnlyValues.cpp:164
+#: src/app_optimizer/core/asMethodCalibratorSingleOnlyValues.cpp:162
 #: src/app_optimizer/core/asMethodOptimizer.cpp:59
 #: src/app_optimizer/core/asMethodOptimizer.cpp:102
 #: src/app_optimizer/core/asThreadGAs.cpp:83
@@ -301,7 +301,6 @@ msgid "all_station_parameters"
 msgstr ""
 
 #: src/app_optimizer/core/asMethodCalibratorSingleOnlyDates.cpp:134
-#: src/app_optimizer/core/asMethodCalibratorSingleOnlyValues.cpp:142
 msgid "Do not process a score. Use to save intermediate values."
 msgstr ""
 
@@ -1033,12 +1032,12 @@ msgstr ""
 #: src/app_optimizer/core/asScoreBS.cpp:44
 #: src/app_optimizer/core/asScoreBSS.cpp:46
 #: src/app_optimizer/core/asScoreContingencyTable.cpp:44
-#: src/app_optimizer/core/asScoreCRPSaccurAR.cpp:49
+#: src/app_optimizer/core/asScoreCRPSaccurAR.cpp:47
 #: src/app_optimizer/core/asScoreCRPSaccurEP.cpp:47
 #: src/app_optimizer/core/asScoreCRPSAR.cpp:45
 #: src/app_optimizer/core/asScoreCRPSEP.cpp:46
 #: src/app_optimizer/core/asScoreCRPSS.cpp:50
-#: src/app_optimizer/core/asScoreCRPSsharpAR.cpp:50
+#: src/app_optimizer/core/asScoreCRPSsharpAR.cpp:48
 #: src/app_optimizer/core/asScoreCRPSsharpEP.cpp:48
 #: src/app_optimizer/core/asScoreDF0.cpp:44
 #: src/app_optimizer/core/asScoreMAE.cpp:43
