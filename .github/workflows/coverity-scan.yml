@@ -34,13 +34,15 @@ jobs:
           conan profile new default --detect --force
           conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
           conan profile update settings.compiler.libcxx=libstdc++11 default
+          conan profile update conf.tools.system.package_manager:mode=install default
+          conan profile update conf.tools.system.package_manager:sudo=True default
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/bin
 
       - name: Get dependencies
         working-directory: ${{github.workspace}}/bin
-        run: conan install .. -s build_type=Release -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing
+        run: conan install .. -s build_type=Release -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing --build=openjpeg
 
       - name: Configure
         working-directory: ${{github.workspace}}/bin

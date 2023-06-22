@@ -70,9 +70,6 @@ jobs:
         run: cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DUSE_CODECOV=1 -DBUILD_TESTS=1 -DBUILD_VIEWER=1 -DUSE_GUI=1 -DTEST_GUI=0
         if: ${{ github.ref != 'refs/heads/ci/coverage-gui' }}
 
-      - name: List proj dir content
-        run: ls ${{github.workspace}}/bin/share/proj
-
       - name: Build and run code coverage (using xvfb)
         uses: coactions/setup-xvfb@v1
         with:
