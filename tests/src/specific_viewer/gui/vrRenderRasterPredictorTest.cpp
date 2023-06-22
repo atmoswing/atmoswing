@@ -36,7 +36,7 @@ TEST(RenderRasterPredictor, ParseACTfile) {
     EXPECT_TRUE(vrRenderRasterPredictor.IsOk());
 }
 
-TEST(RenderRasterPredictor, ParseACTfile) {
+TEST(RenderRasterPredictor, ParseRGBfile) {
     vrRenderRasterPredictor vrRenderRasterPredictor;
     vrRenderRasterPredictor.Init(asPredictor::CloudCover);
     EXPECT_TRUE(vrRenderRasterPredictor.IsOk());

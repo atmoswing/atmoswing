@@ -49,7 +49,7 @@ void vrRenderRasterPredictor::Init(asPredictor::Parameter parameter) {
 }
 
 bool vrRenderRasterPredictor::IsOk() const {
-    if (m_colorTable.rows() != 255) return false;
+    if (m_colorTable.rows() != 256) return false;
     if (m_colorTable.cols() != 3) return false;
 
     return true;
@@ -111,10 +111,10 @@ bool vrRenderRasterPredictor::ParseColorTable() {
 }
 
 bool vrRenderRasterPredictor::ParseACTfile() {
-    ResizeColorTable(255);
+    ResizeColorTable(256);
 
     FILE* f;
-    uint8_t palette[255][3];
+    uint8_t palette[256][3];
 
     // Open the ACT file
     f = fopen(m_colorTableFile.GetFullPath(), "rb");
@@ -124,7 +124,7 @@ bool vrRenderRasterPredictor::ParseACTfile() {
     }
 
     // Read the entire contents into the palette array
-    size_t nRows = fread(palette, 3, 255, f);
+    size_t nRows = fread(palette, 3, 256, f);
     fclose(f);
     if (nRows == 0) {
         wxLogError(_("Color table file %s is empty..."), m_colorTableFile.GetFullPath());
@@ -132,7 +132,7 @@ bool vrRenderRasterPredictor::ParseACTfile() {
     }
 
     // Copy the palette values to the color table array
-    for (int i = 0; i < 255; i++) {
+    for (int i = 0; i < 256; i++) {
         m_colorTable(i, 0) = palette[i][0];
         m_colorTable(i, 1) = palette[i][1];
         m_colorTable(i, 2) = palette[i][2];
