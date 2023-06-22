@@ -140,6 +140,38 @@ class asFramePredictors : public asFramePredictorsVirtual {
     }
 
     /**
+     * Get a pointer to the method choice.
+     * @return A pointer to the method choice.
+     */
+    wxChoice* GetChoiceMethod() {
+        return m_choiceMethod;
+    }
+
+    /**
+     * Get a pointer to the forecast choice.
+     * @return A pointer to the forecast choice.
+     */
+    wxChoice* GetChoiceForecast() {
+        return m_choiceForecast;
+    }
+
+    /**
+     * Get a pointer to the target date choice.
+     * @return A pointer to the target date choice.
+     */
+    wxChoice* GetChoiceTargetDates() {
+        return m_choiceTargetDates;
+    }
+
+    /**
+     * Get a pointer to the analog date choice.
+     * @return A pointer to the analog date choice.
+     */
+    wxChoice* GetChoiceAnalogDates() {
+        return m_choiceAnalogDates;
+    }
+
+    /**
      * Get a pointer to the target predictors manager.
      * @return A pointer to the target predictors manager.
      */
@@ -297,13 +329,6 @@ class asFramePredictors : public asFramePredictorsVirtual {
      * @param event The command event.
      */
     void OnOpenLayer(wxCommandEvent& event) override;
-
-    /**
-     * Open a dialog to select a layer to close.
-     *
-     * @param event The command event.
-     */
-    void OnCloseLayer(wxCommandEvent& event) override;
 
     /**
      * Activate or deactivates the syncro mode between the two maps.

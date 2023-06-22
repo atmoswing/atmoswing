@@ -51,6 +51,7 @@ jobs:
 
     env:
       PROJ_DATA: ${{github.workspace}}/bin/share/proj
+      PROJ_LIB: ${{github.workspace}}/bin/share/proj
 
     steps:
       - uses: actions/checkout@v3

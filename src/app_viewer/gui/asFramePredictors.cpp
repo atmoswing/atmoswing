@@ -44,7 +44,6 @@
 
 BEGIN_EVENT_TABLE(asFramePredictors, wxFrame)
 EVT_MENU(wxID_OPEN, asFramePredictors::OnOpenLayer)
-EVT_MENU(wxID_REMOVE, asFramePredictors::OnCloseLayer)
 EVT_MENU(asID_ZOOM_IN, asFramePredictors::OnToolZoomIn)
 EVT_MENU(asID_ZOOM_OUT, asFramePredictors::OnToolZoomOut)
 EVT_MENU(asID_ZOOM_FIT, asFramePredictors::OnToolZoomToFit)
@@ -374,23 +373,7 @@ void asFramePredictors::OnAnalogDateChange(wxCommandEvent& event) {
 void asFramePredictors::OpenDefaultLayers() {
     // Default paths
     wxConfigBase* pConfig = wxFileConfig::Get();
-    wxString dirData = asConfig::GetDataDir() + "share";
-    if (!wxDirExists(dirData)) {
-        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
-        dirDataWxFile.RemoveLastDir();
-        dirDataWxFile.AppendDir("share");
-        dirData = dirDataWxFile.GetFullPath();
-    }
-    if (!wxDirExists(dirData)) {
-        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
-        dirDataWxFile.RemoveLastDir();
-        dirData = dirDataWxFile.GetFullPath();
-    }
-    if (!wxDirExists(dirData)) {
-        wxLogError(_("The share directory could not be found (%s)."), dirData);
-        return;
-    }
-
+    wxString dirData = asConfig::GetShareDir();
     wxString gisData = dirData + DS + "atmoswing" + DS + "gis" + DS + "shapefiles";
 
     wxString continentsFilePath = pConfig->Read("/GIS/LayerContinentsFilePath", gisData + DS + "continents.shp");
@@ -584,68 +567,6 @@ void asFramePredictors::OnOpenLayer(wxCommandEvent& event) {
     }
 }
 
-void asFramePredictors::OnCloseLayer(wxCommandEvent& event) {
-#if defined(__WIN32__)
-    m_critSectionViewerLayerManager.Enter();
-#endif
-
-    wxArrayString layersName;
-    for (int i = 0; i < m_viewerLayerManagerLeft->GetCount(); i++) {
-        vrRenderer* renderer = m_viewerLayerManagerLeft->GetRenderer(i);
-        wxASSERT(renderer);
-        layersName.Add(renderer->GetLayer()->GetDisplayName().GetFullName());
-    }
-
-    if (layersName.IsEmpty()) {
-        wxLogError("No layer opened, nothing to close.");
-#if defined(__WIN32__)
-        m_critSectionViewerLayerManager.Leave();
-#endif
-        return;
-    }
-
-    wxMultiChoiceDialog choiceDlg(this, "Select Layer(s) to close.", "Close layer(s)", layersName);
-    if (choiceDlg.ShowModal() != wxID_OK) {
-#if defined(__WIN32__)
-        m_critSectionViewerLayerManager.Leave();
-#endif
-        return;
-    }
-
-    wxArrayInt layerToRemoveIndex = choiceDlg.GetSelections();
-    if (layerToRemoveIndex.IsEmpty()) {
-        wxLogWarning(_("Nothing selected, no layer will be closed."));
-#if defined(__WIN32__)
-        m_critSectionViewerLayerManager.Leave();
-#endif
-        return;
-    }
-
-    // Removing layer(s)
-    m_viewerLayerManagerLeft->FreezeBegin();
-    m_viewerLayerManagerRight->FreezeBegin();
-
-    for (int j = (signed)layerToRemoveIndex.GetCount() - 1; j >= 0; j--) {
-        // Remove from viewer manager (TOC and Display)
-        vrRenderer* rendererLeft = m_viewerLayerManagerLeft->GetRenderer(layerToRemoveIndex.Item(j));
-        vrLayer* layer = rendererLeft->GetLayer();
-        wxASSERT(rendererLeft);
-        m_viewerLayerManagerLeft->Remove(rendererLeft);
-
-        vrRenderer* rendererRight = m_viewerLayerManagerRight->GetRenderer(layerToRemoveIndex.Item(j));
-        wxASSERT(rendererRight);
-        m_viewerLayerManagerRight->Remove(rendererRight);
-
-        // Close layer (not used anymore);
-        m_layerManager->Close(layer);
-    }
-    m_viewerLayerManagerLeft->FreezeEnd();
-    m_viewerLayerManagerRight->FreezeEnd();
-#if defined(__WIN32__)
-    m_critSectionViewerLayerManager.Leave();
-#endif
-}
-
 void asFramePredictors::OnKeyDown(wxKeyEvent& event) {
     m_KeyBoardState = wxKeyboardState(event.ControlDown(), event.ShiftDown(), event.AltDown(), event.MetaDown());
     if (m_KeyBoardState.GetModifiers() != wxMOD_CMD) {
@@ -742,19 +663,17 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
     auto msg = static_cast<vrDisplayToolMessage*>(event.GetClientData());
     wxASSERT(msg);
 
+    vrRealRect realRect;
+
     if (msg->m_evtType == vrEVT_TOOL_ZOOM) {
         // Get rectangle
         vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
-        wxASSERT(coord);
 
         // Get real rectangle
-        vrRealRect realRect;
         coord->ConvertFromPixels(msg->m_rect, realRect);
-        wxASSERT(realRect.IsOk());
 
         // Get fitted rectangle
         vrRealRect fittedRect = coord->GetRectFitted(realRect);
-        wxASSERT(fittedRect.IsOk());
 
         if (!m_syncroTool) {
 #if defined(__WIN32__)
@@ -787,16 +706,12 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
     } else if (msg->m_evtType == vrEVT_TOOL_ZOOMOUT) {
         // Getting rectangle
         vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
-        wxASSERT(coord);
 
         // Get real rectangle
-        vrRealRect realRect;
         coord->ConvertFromPixels(msg->m_rect, realRect);
-        wxASSERT(realRect.IsOk());
 
         // Get fitted rectangle
         vrRealRect fittedRect = coord->GetRectFitted(realRect);
-        wxASSERT(fittedRect.IsOk());
 
         if (!m_syncroTool) {
 #if defined(__WIN32__)
@@ -828,7 +743,6 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
         }
     } else if (msg->m_evtType == vrEVT_TOOL_PAN) {
         vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
-        wxASSERT(coord);
 
         wxPoint movedPos = msg->m_position;
         wxPoint2DDouble myMovedRealPt;
@@ -838,21 +752,21 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
             return;
         }
 
-        vrRealRect actExtent = coord->GetExtent();
-        actExtent.MoveLeftTopTo(myMovedRealPt);
+        realRect = coord->GetExtent();
+        realRect.MoveLeftTopTo(myMovedRealPt);
 
         if (!m_syncroTool) {
-            coord->SetExtent(actExtent);
+            coord->SetExtent(realRect);
             msg->m_parentManager->Reload();
             ReloadViewerLayerManagerLeft();
             ReloadViewerLayerManagerRight();
         } else {
             if (m_displayPanelLeft) {
-                m_viewerLayerManagerLeft->GetDisplay()->GetCoordinate()->SetExtent(actExtent);
+                m_viewerLayerManagerLeft->GetDisplay()->GetCoordinate()->SetExtent(realRect);
                 ReloadViewerLayerManagerLeft();
             }
             if (m_displayPanelRight) {
-                m_viewerLayerManagerRight->GetDisplay()->GetCoordinate()->SetExtent(actExtent);
+                m_viewerLayerManagerRight->GetDisplay()->GetCoordinate()->SetExtent(realRect);
                 ReloadViewerLayerManagerRight();
             }
         }

@@ -63,6 +63,13 @@ class vrRenderRasterPredictor : public vrRenderRaster {
      */
     void Init(asPredictor::Parameter parameter);
 
+    /**
+     * Check that the renderer is OK.
+     *
+     * @return True if the renderer is OK.
+     */
+    bool IsOk() const;
+
   protected:
   private:
     wxFileName m_colorTableFile; /**< The color table file. */

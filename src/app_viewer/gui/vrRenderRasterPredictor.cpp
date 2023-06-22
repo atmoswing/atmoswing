@@ -48,13 +48,17 @@ void vrRenderRasterPredictor::Init(asPredictor::Parameter parameter) {
     ScaleColors();
 }
 
+bool vrRenderRasterPredictor::IsOk() const {
+    if (m_colorTable.rows() < 255) return false;
+    if (m_colorTable.rows() > 256) return false;
+    if (m_colorTable.cols() != 3) return false;
+
+    return true;
+}
+
 void vrRenderRasterPredictor::SelectColorTable() {
     wxConfigBase* pConfig = wxFileConfig::Get();
-    wxString dirData = asConfig::GetDataDir() + "share";
-    if (!wxDirExists(dirData)) {
-        dirData = asConfig::GetDataDir() + ".." + DS + "share";
-    }
-
+    wxString dirData = asConfig::GetShareDir();
     wxString colorFilesDir = dirData + DS + "atmoswing" + DS + "color_tables";
     wxString filePath;
 

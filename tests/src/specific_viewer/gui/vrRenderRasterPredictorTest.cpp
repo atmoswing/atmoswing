@@ -22,48 +22,22 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2023 Pascal Horton, Terranum.
  */
 
-#ifndef AS_CONFIG_H
-#define AS_CONFIG_H
+#include <gtest/gtest.h>
+#include <wx/wx.h>
 
-#include "asIncludes.h"
-#include "wx/fileconf.h"  // wxFileConfig
+#include "vrRenderRasterPredictor.h"
 
-class asConfig : public wxObject {
-  public:
-    asConfig() = default;
+TEST(RenderRasterPredictor, ParseACTfile) {
+    vrRenderRasterPredictor vrRenderRasterPredictor;
+    vrRenderRasterPredictor.Init(asPredictor::GeopotentialHeight);
+    EXPECT_TRUE(vrRenderRasterPredictor.IsOk());
+}
 
-    ~asConfig() override = default;
-
-    static wxString GetLogDir();
-
-    static wxString GetTempDir();
-
-    static wxString CreateTempFileName(const wxString& prefix);
-
-    static wxString CreateTempDir(const wxString& prefix);
-
-    static wxString GetDataDir();
-
-    static wxString GetShareDir();
-
-    static wxString GetSoftDir();
-
-    static wxString GetUserDataDir();
-
-    static wxString GetDocumentsDir();
-
-    static wxString GetDefaultUserWorkingDir();
-
-#if USE_GUI
-    static wxColour GetFrameBgColour();
-#endif
-
-  protected:
-  private:
-};
-
-#endif
+TEST(RenderRasterPredictor, ParseRGBfile) {
+    vrRenderRasterPredictor vrRenderRasterPredictor;
+    vrRenderRasterPredictor.Init(asPredictor::CloudCover);
+    EXPECT_TRUE(vrRenderRasterPredictor.IsOk());
+}
