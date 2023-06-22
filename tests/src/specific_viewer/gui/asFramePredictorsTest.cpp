@@ -53,6 +53,19 @@ class FramePredictors : public testing::Test {
 
         // Create the frame
         frame = new asFramePredictors(nullptr, forecastManager, workspace, 0, 0);
+
+        // Replace dataset for the analog to match existing data.
+        vwxs datasetIds = {"NCEP_R1", "NCEP_R1"};
+        vwxs dataIds = {"pressure/hgt", "pressure/hgt"};
+        asPredictorsManager* predictorsManagerAnalog = frame->GetPredictorsManagerAnalog();
+        predictorsManagerAnalog->SetDatasetIds(datasetIds);
+        predictorsManagerAnalog->SetDataIds(dataIds);
+
+        // Replace date for the analog to match existing data.
+        asResultsForecast* forecast = frame->GetForecastManager()->GetForecast(0, 0);
+        a1f analogDates = forecast->GetAnalogsDates(0);
+        analogDates[0] = 36934; // 1906-01-01
+        forecast->SetAnalogsDates(0, analogDates);
     }
 
     void TearDown() override {
@@ -125,46 +138,6 @@ TEST_F(FramePredictors, SwitchPanelLeftAndRight) {
     EXPECT_TRUE(frame->GetPanelLeft()->IsShown());
 }
 
-TEST_F(FramePredictors, UpdateLayers) {
-    frame->Layout();
-    frame->Init();
-    frame->Show();
-
-    // Replace dataset for the analog to match existing data.
-    vwxs datasetIds = {"NCEP_R1", "NCEP_R1"};
-    vwxs dataIds = {"pressure/hgt", "pressure/hgt"};
-    asPredictorsManager* predictorsManagerAnalog = frame->GetPredictorsManagerAnalog();
-    predictorsManagerAnalog->SetDatasetIds(datasetIds);
-    predictorsManagerAnalog->SetDataIds(dataIds);
-
-    // Replace date for the analog to match existing data.
-    asResultsForecast* forecast = frame->GetForecastManager()->GetForecast(0, 0);
-    a1f analogDates = forecast->GetAnalogsDates(0);
-    analogDates[0] = 36934; // 1906-01-01
-    forecast->SetAnalogsDates(0, analogDates);
-
-    // Set list selection to 2nd entry and trigger event
-    wxListBox* listBox = frame->GetListPredictors();
-    listBox->SetSelection(1);
-    wxCommandEvent event(wxEVT_COMMAND_LISTBOX_SELECTED);
-    event.SetId(listBox->GetId());
-    event.SetInt(1);
-    listBox->GetEventHandler()->ProcessEvent(event);
-
-    frame->Refresh();
-    wxYield();
-
-    // Set list selection to 1st entry and trigger event
-    listBox->SetSelection(0);
-    event.SetInt(0);
-    listBox->GetEventHandler()->ProcessEvent(event);
-
-    frame->Refresh();
-    wxYield();
-
-    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
-}
-
 TEST_F(FramePredictors, OpenLayers) {
     frame->Layout();
     frame->Init();
@@ -191,4 +164,126 @@ TEST_F(FramePredictors, OpenLayers) {
     wxArrayString layers;
     layers.Add(filePath);
     EXPECT_TRUE(frame->OpenLayers(layers));
+}
+
+TEST_F(FramePredictors, TriggerPredictorSelectionChange) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    // Set list selection to 2nd entry and trigger event
+    wxListBox* listBox = frame->GetListPredictors();
+    listBox->SetSelection(1);
+    wxCommandEvent event(wxEVT_COMMAND_LISTBOX_SELECTED);
+    event.SetId(listBox->GetId());
+    event.SetInt(1);
+    listBox->GetEventHandler()->ProcessEvent(event);
+
+    frame->Refresh();
+    wxYield();
+
+    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+}
+
+TEST_F(FramePredictors, ChangePredictorSelection) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    // Set list selection to 2nd entry and trigger event
+    wxListBox* listBox = frame->GetListPredictors();
+    listBox->SetSelection(1);
+    wxCommandEvent event(wxEVT_COMMAND_LISTBOX_SELECTED);
+    event.SetId(listBox->GetId());
+    event.SetInt(1);
+    listBox->GetEventHandler()->ProcessEvent(event);
+
+    frame->Refresh();
+    wxYield();
+
+    // Set list selection to 1st entry and trigger event
+    listBox->SetSelection(0);
+    event.SetInt(0);
+    listBox->GetEventHandler()->ProcessEvent(event);
+
+    frame->Refresh();
+    wxYield();
+
+    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+}
+
+TEST_F(FramePredictors, TriggerMethodChange) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    // Set list selection to 2nd entry and trigger event
+    wxChoice* choice = frame->GetChoiceMethod();
+    choice->SetSelection(0);
+    wxCommandEvent event(wxEVT_COMMAND_CHOICE_SELECTED);
+    event.SetId(choice->GetId());
+    event.SetInt(0);
+    choice->GetEventHandler()->ProcessEvent(event);
+
+    frame->Refresh();
+    wxYield();
+
+    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+}
+
+TEST_F(FramePredictors, TriggerForecastChange) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    // Set list selection to 2nd entry and trigger event
+    wxChoice* choice = frame->GetChoiceForecast();
+    choice->SetSelection(0);
+    wxCommandEvent event(wxEVT_COMMAND_CHOICE_SELECTED);
+    event.SetId(choice->GetId());
+    event.SetInt(0);
+    choice->GetEventHandler()->ProcessEvent(event);
+
+    frame->Refresh();
+    wxYield();
+
+    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+}
+
+TEST_F(FramePredictors, TriggerTargetDateChange) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    // Set list selection to 2nd entry and trigger event
+    wxChoice* choice = frame->GetChoiceTargetDates();
+    choice->SetSelection(0);
+    wxCommandEvent event(wxEVT_COMMAND_CHOICE_SELECTED);
+    event.SetId(choice->GetId());
+    event.SetInt(0);
+    choice->GetEventHandler()->ProcessEvent(event);
+
+    frame->Refresh();
+    wxYield();
+
+    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+}
+
+TEST_F(FramePredictors, TriggerAnalogDateChange) {
+    frame->Layout();
+    frame->Init();
+    frame->Show();
+
+    // Set list selection to 2nd entry and trigger event
+    wxChoice* choice = frame->GetChoiceAnalogDates();
+    choice->SetSelection(0);
+    wxCommandEvent event(wxEVT_COMMAND_CHOICE_SELECTED);
+    event.SetId(choice->GetId());
+    event.SetInt(0);
+    choice->GetEventHandler()->ProcessEvent(event);
+
+    frame->Refresh();
+    wxYield();
+
+    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
 }
