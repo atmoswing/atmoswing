@@ -39,6 +39,11 @@
 #include "asIncludes.h"
 #include "vrlayervector.h"
 
+/**
+ * @brief Vroomgis layer class showing the contours.
+ *
+ * Vroomgis layer class showing the contours.
+ */
 class vrLayerVectorContours : public vrLayerVectorOGR {
   public:
     /**

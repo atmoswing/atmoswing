@@ -32,6 +32,11 @@
 #include "asPredictor.h"
 #include "asWorkspace.h"
 
+/**
+ * @brief The class handling the predictor data for the Viewer.
+ *
+ * This class is used to load the data for the selected predictor in the predictors frame (meteorological maps)
+ */
 class asPredictorsManager {
   public:
     /**
