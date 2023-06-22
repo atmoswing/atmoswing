@@ -1,6 +1,7 @@
 <CPackWiXPatch>
   <CPackWiXFragment Id="CM_CP_share.proj.proj.db">
     <Environment Id="PROJ_LIB" Action="set" Name="PROJ_LIB" Value="[INSTALL_ROOT]share\proj" System="no"/>
+    <Environment Id="PROJ_DATA" Action="set" Name="PROJ_LIB" Value="[INSTALL_ROOT]share\proj" System="no"/>
   </CPackWiXFragment>
   <CPackWiXFragment Id="CM_CP_share.eccodes.definitions.boot.def">
     <Environment Id="ECCODES_DEFINITION_PATH" Action="set" Name="ECCODES_DEFINITION_PATH" Value="[INSTALL_ROOT]share\eccodes\definitions" System="no"/>
