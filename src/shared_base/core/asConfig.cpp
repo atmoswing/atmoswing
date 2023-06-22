@@ -88,6 +88,25 @@ wxString asConfig::GetDataDir() {
     return dirData;
 }
 
+wxString asConfig::GetShareDir() {
+    wxString dirShare = asConfig::GetDataDir() + "share";
+    if (!wxDirExists(dirShare)) {
+        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
+        dirDataWxFile.RemoveLastDir();
+        dirDataWxFile.AppendDir("share");
+        dirShare = dirDataWxFile.GetFullPath();
+    }
+    if (!wxDirExists(dirShare)) {
+        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
+        dirDataWxFile.RemoveLastDir();
+        dirShare = dirDataWxFile.GetFullPath();
+    }
+    if (!wxDirExists(dirShare)) {
+        wxLogError(_("The share directory could not be found (%s)."), dirShare);
+    }
+    return dirShare;
+}
+
 wxString asConfig::GetSoftDir() {
     ThreadsManager().CritSectionConfig().Enter();
     wxString appPath = wxStandardPaths::Get().GetExecutablePath();

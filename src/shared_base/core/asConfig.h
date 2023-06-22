@@ -48,6 +48,8 @@ class asConfig : public wxObject {
 
     static wxString GetDataDir();
 
+    static wxString GetShareDir();
+
     static wxString GetSoftDir();
 
     static wxString GetUserDataDir();

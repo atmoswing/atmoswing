@@ -138,10 +138,7 @@ void asFramePreferencesViewer::LoadPreferences() {
      * Colors
      */
 
-    wxString dirData = asConfig::GetDataDir() + "share";
-    if (!wxDirExists(dirData)) {
-        dirData = asConfig::GetDataDir() + ".." + DS + "share";
-    }
+    wxString dirData = asConfig::GetShareDir();
     wxString colorDir = dirData + DS + "atmoswing" + DS + "color_tables";
 
     m_filePickerColorZ->SetPath(pConfig->Read("/ColorTable/GeopotentialHeight", colorDir + DS + "NEO_grav_anom.act"));

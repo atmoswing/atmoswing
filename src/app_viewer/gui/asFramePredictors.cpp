@@ -374,23 +374,7 @@ void asFramePredictors::OnAnalogDateChange(wxCommandEvent& event) {
 void asFramePredictors::OpenDefaultLayers() {
     // Default paths
     wxConfigBase* pConfig = wxFileConfig::Get();
-    wxString dirData = asConfig::GetDataDir() + "share";
-    if (!wxDirExists(dirData)) {
-        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
-        dirDataWxFile.RemoveLastDir();
-        dirDataWxFile.AppendDir("share");
-        dirData = dirDataWxFile.GetFullPath();
-    }
-    if (!wxDirExists(dirData)) {
-        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
-        dirDataWxFile.RemoveLastDir();
-        dirData = dirDataWxFile.GetFullPath();
-    }
-    if (!wxDirExists(dirData)) {
-        wxLogError(_("The share directory could not be found (%s)."), dirData);
-        return;
-    }
-
+    wxString dirData = asConfig::GetShareDir();
     wxString gisData = dirData + DS + "atmoswing" + DS + "gis" + DS + "shapefiles";
 
     wxString continentsFilePath = pConfig->Read("/GIS/LayerContinentsFilePath", gisData + DS + "continents.shp");

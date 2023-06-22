@@ -50,11 +50,7 @@ void vrRenderRasterPredictor::Init(asPredictor::Parameter parameter) {
 
 void vrRenderRasterPredictor::SelectColorTable() {
     wxConfigBase* pConfig = wxFileConfig::Get();
-    wxString dirData = asConfig::GetDataDir() + "share";
-    if (!wxDirExists(dirData)) {
-        dirData = asConfig::GetDataDir() + ".." + DS + "share";
-    }
-
+    wxString dirData = asConfig::GetShareDir();
     wxString colorFilesDir = dirData + DS + "atmoswing" + DS + "color_tables";
     wxString filePath;
 
