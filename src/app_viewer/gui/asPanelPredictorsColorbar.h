@@ -34,6 +34,8 @@
 #include "vrRenderRasterPredictor.h"
 
 /**
+ * @brief The drawing of the colorbar in the predictors mapping frame.
+ *
  * The drawing of the colorbar in the predictors mapping frame.
  */
 class asPanelPredictorsColorbarDrawing : public wxPanel {
@@ -114,6 +116,8 @@ class asPanelPredictorsColorbarDrawing : public wxPanel {
 };
 
 /**
+ * @brief The panel for the colorbar in the predictors mapping frame.
+ *
  * The panel for the colorbar in the predictors mapping frame.
  */
 class asPanelPredictorsColorbar : public wxPanel {

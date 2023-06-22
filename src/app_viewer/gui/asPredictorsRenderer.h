@@ -37,6 +37,8 @@ class asPredictorsManager;
 class vrLayerRasterPredictor;
 
 /**
+ * @brief The class handling the predictors rendering for the predictors mapping.
+ *
  * The class handling the predictors rendering for the predictors mapping.
  */
 class asPredictorsRenderer {
