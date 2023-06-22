@@ -34,13 +34,13 @@
 asResultsTotalScore::asResultsTotalScore()
     : asResults(),
       m_hasSingleValue(true),
-      m_score(NaNf) {}
+      m_score(NAN) {}
 
 asResultsTotalScore::~asResultsTotalScore() {}
 
 void asResultsTotalScore::Init() {
     // Set to nan to avoid keeping old results
-    m_score = NaNf;
+    m_score = NAN;
     m_scoreArray.resize(0);
 }
 
@@ -53,7 +53,7 @@ void asResultsTotalScore::BuildFileName() {
         m_filePath.Append(m_subFolder);
     }
     m_filePath.Append(DS);
-    m_filePath.Append(wxString::Format("TotalScore_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
+    m_filePath.Append(asStrF("TotalScore_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
     m_filePath.Append(".nc");
 }
 

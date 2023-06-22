@@ -314,10 +314,6 @@ bool asPredictorNcepCfsrSubset::Init() {
         }
         m_fileNamePattern = "flxf06.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
-    } else if (IsIsentropicLevel()) {
-        wxLogError(_("Isentropic levels for CFSR are not implemented yet."));
-        return false;
-
     } else {
         wxLogError(_("level type not implemented for this reanalysis dataset."));
         return false;
@@ -352,7 +348,7 @@ void asPredictorNcepCfsrSubset::ListFiles(asTimeArray& timeArray) {
         Time t1 = asTime::GetTimeStruct(fileStart);
         Time t2 = asTime::GetTimeStruct(fileEnd);
         m_files.push_back(GetFullDirectoryPath() +
-                          wxString::Format(m_fileNamePattern, t1.year, t1.month, t1.day, t2.year, t2.month, t2.day));
+                          asStrF(m_fileNamePattern, t1.year, t1.month, t1.day, t2.year, t2.month, t2.day));
         fileStart = fileEnd + 1;
         fileEnd = fileStart + 4;
 

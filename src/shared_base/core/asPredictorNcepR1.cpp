@@ -431,7 +431,7 @@ bool asPredictorNcepR1::Init() {
 
 void asPredictorNcepR1::ListFiles(asTimeArray& timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
-        m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
+        m_files.push_back(GetFullDirectoryPath() + asStrF(m_fileNamePattern, iYear));
     }
 }
 

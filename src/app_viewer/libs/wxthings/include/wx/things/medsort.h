@@ -70,7 +70,7 @@
                                                                                 \
             if (high == low + 1) { /* Two elements only */                      \
                 if (arr[low] > arr[high]) {                                     \
-                    register elem_type t = arr[low];                            \
+                    elem_type t = arr[low];                                     \
                     arr[low] = arr[high];                                       \
                     arr[high] = t;                                              \
                 }                                                               \
@@ -80,24 +80,24 @@
             /* Find median of low, middle and high items; swap into low */      \
             middle = (low + high) / 2;                                          \
             if (arr[middle] > arr[high]) {                                      \
-                register elem_type t = arr[middle];                             \
+                elem_type t = arr[middle];                                      \
                 arr[middle] = arr[high];                                        \
                 arr[high] = t;                                                  \
             }                                                                   \
             if (arr[low] > arr[high]) {                                         \
-                register elem_type t = arr[low];                                \
+                elem_type t = arr[low];                                         \
                 arr[low] = arr[high];                                           \
                 arr[high] = t;                                                  \
             }                                                                   \
             if (arr[middle] > arr[low]) {                                       \
-                register elem_type t = arr[middle];                             \
+                elem_type t = arr[middle];                                      \
                 arr[middle] = arr[low];                                         \
                 arr[low] = t;                                                   \
             }                                                                   \
                                                                                 \
             /* Swap low item (now in position middle) into position (low+1) */  \
             {                                                                   \
-                register elem_type t = arr[middle];                             \
+                elem_type t = arr[middle];                                      \
                 arr[middle] = arr[low + 1];                                     \
                 arr[low + 1] = t;                                               \
             }                                                                   \
@@ -114,7 +114,7 @@
                 if (hh < ll) break;                                             \
                                                                                 \
                 {                                                               \
-                    register elem_type t = arr[ll];                             \
+                    elem_type t = arr[ll];                                      \
                     arr[ll] = arr[hh];                                          \
                     arr[hh] = t;                                                \
                 }                                                               \
@@ -122,7 +122,7 @@
                                                                                 \
             /* Swap middle item (in position low) back into correct position */ \
             {                                                                   \
-                register elem_type t = arr[low];                                \
+                elem_type t = arr[low];                                         \
                 arr[low] = arr[hh];                                             \
                 arr[hh] = t;                                                    \
             }                                                                   \
@@ -179,8 +179,8 @@
 
 #define IMPLEMENT_WIRTHS_KTH_SMALLEST(elem_type, arr, n, k, ksmallest) \
     {                                                                  \
-        register int i, j, l = 0, m = n - 1;                           \
-        register elem_type x;                                          \
+        int i, j, l = 0, m = n - 1;                                    \
+        elem_type x;                                                   \
                                                                        \
         while (l < m) {                                                \
             x = arr[k];                                                \
@@ -191,7 +191,7 @@
                 while (x < arr[j]) j--;                                \
                 if (i <= j) {                                          \
                     {                                                  \
-                        register elem_type t = arr[i];                 \
+                        elem_type t = arr[i];                          \
                         arr[i] = arr[j];                               \
                         arr[j] = t;                                    \
                     }                                                  \

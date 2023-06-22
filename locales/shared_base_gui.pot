@@ -1,0 +1,257 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-21 18:28+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/shared_base/gui/asDialogFilePicker.cpp:33
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:33
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:65
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:143
+msgid "Select a file"
+msgstr ""
+
+#: src/shared_base/gui/asDialogFileSaver.cpp:32
+msgid "Save to a file"
+msgstr ""
+
+#: src/shared_base/gui/asDialogProgressBar.cpp:47
+msgid "Please wait"
+msgstr ""
+
+#: src/shared_base/gui/asFrameAbout.cpp:35
+msgid "About"
+msgstr ""
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:36
+msgid "Predictand database generator"
+msgstr ""
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:132
+msgid "The given path for the predictand catalog is empty."
+msgstr ""
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:137
+msgid "The given path for the data directory is empty."
+msgstr ""
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:142
+msgid "The given path for the output destination is empty."
+msgstr ""
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:147
+msgid "The given path for the patterns directory is empty."
+msgstr ""
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:155
+#: src/shared_base/gui/asFramePredictandDB.cpp:189
+msgid "Wrong selection of the temporal resolution option."
+msgstr ""
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:196
+#: src/shared_base/gui/asFramePredictandDB.cpp:220
+msgid "Wrong selection of the spatial aggregation option."
+msgstr ""
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:226
+#: src/shared_base/gui/asFramePredictandDB.cpp:280
+msgid "Wrong selection of the data parameter option."
+msgstr ""
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:243
+msgid "The given return period is not consistent."
+msgstr ""
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:276
+msgid "Generic predictand database not yet implemented."
+msgstr ""
+
+#: src/shared_base/gui/asFramePredictandDB.cpp:284
+#, c-format
+msgid "Exception caught: %s"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:29
+msgid "Please select the file."
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:33
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:65
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:143
+msgid "*.*"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:61
+msgid "Please select the directory and the file name."
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:101
+msgid "Predictand parameter"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:105
+msgid "Precipitation"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:105
+msgid "Temperature"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:105
+msgid "Lightning"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:105
+msgid "Other"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:111
+msgid "Temporal resolution"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:115
+msgid "24 hours"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:115
+msgid "6 hours"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:115
+msgid "1-hr MTW"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:115
+msgid "3-hr MTW"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:115
+msgid "6-hr MTW"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:115
+msgid "12-hr MTW"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:121
+msgid "Spatial aggregation"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:125
+msgid "Station"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:125
+msgid "Groupment"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:125
+msgid "Catchment"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:125
+msgid "Region"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:139
+msgid "Select the predictand catalog"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:146
+msgid "Select the predictand data directory"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:150
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:157
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:164
+msgid "Select a folder"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:153
+msgid "Select the directory containing the file patterns description"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:160
+msgid "Select the destination directory"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:215
+msgid "Precipitation data normalization"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:225
+msgid "Normalize by the return period of"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:229
+msgid "10"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:232
+msgid "years"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:239
+msgid "Process the square root"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:260
+msgid "Lightning data normalization"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:267
+msgid "Process log10(nb+1)"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:309
+msgid "Main developer:"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:315
+msgid "Pascal Horton"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:319
+msgid "Developed at:"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:325
+msgid ""
+"University of Lausanne\n"
+"Terranum\n"
+"University of Bern"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:329
+msgid "Special thanks to:"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:335
+msgid ""
+"Charles Obled\n"
+"Michel Jaboyedoff\n"
+"Lucien Schreiber\n"
+"Renaud Marty\n"
+"Richard Metzger"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:347
+msgid "Credits"
+msgstr ""
+
+#: src/shared_base/gui/AtmoSwingSharedGui.cpp:359
+msgid "License"
+msgstr ""

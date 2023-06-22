@@ -33,7 +33,7 @@
 
 asScoreCRPSaccurEP::asScoreCRPSaccurEP()
     : asScore(asScore::CRPSaccuracyEP, _("CRPS Accuracy Exact Primitive"),
-              _("Continuous Ranked Probability Score Accuracy exact solution"), Asc, 0, NaNf) {}
+              _("Continuous Ranked Probability Score Accuracy exact solution"), Asc, 0, NAN) {}
 
 float asScoreCRPSaccurEP::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
@@ -41,11 +41,11 @@ float asScoreCRPSaccurEP::Assess(float obs, const a1f& values, int nbElements) c
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
-        return NaNf;
+        return NAN;
     }
     if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
+        return NAN;
     }
 
     asScoreCRPSEP scoreCRPSEP = asScoreCRPSEP();

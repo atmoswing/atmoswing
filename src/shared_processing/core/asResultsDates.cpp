@@ -53,7 +53,7 @@ void asResultsDates::BuildFileName() {
         m_filePath.Append(m_subFolder);
     }
     m_filePath.Append(DS);
-    m_filePath.Append(wxString::Format("AnalogDates_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
+    m_filePath.Append(asStrF("AnalogDates_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
     m_filePath.Append(".nc");
 }
 

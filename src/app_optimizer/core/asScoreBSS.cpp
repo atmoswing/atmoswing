@@ -31,7 +31,7 @@
 #include "asScoreBS.h"
 
 asScoreBSS::asScoreBSS()
-    : asScore(asScore::BSS, _("BS Skill Score"), _("BS Skill Score"), Desc, 1, NaNf, true) {}
+    : asScore(asScore::BSS, _("BS Skill Score"), _("BS Skill Score"), Desc, 1, NAN, true) {}
 
 float asScoreBSS::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
@@ -40,11 +40,11 @@ float asScoreBSS::Assess(float obs, const a1f& values, int nbElements) const {
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
-        return NaNf;
+        return NAN;
     }
     if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
+        return NAN;
     }
 
     // First process the BS and then the skill score
@@ -72,10 +72,10 @@ bool asScoreBSS::ProcessScoreClimatology(const a1f& refVals, const a1f& climatol
     score->SetOnMean(GetOnMean());
 
     for (int iRefTime = 0; iRefTime < refVals.size(); iRefTime++) {
-        if (!asIsNaN(refVals(iRefTime))) {
+        if (!isnan(refVals(iRefTime))) {
             scoresClimatology(iRefTime) = score->Assess(refVals(iRefTime), climatologyData, climatologyData.size());
         } else {
-            scoresClimatology(iRefTime) = NaNf;
+            scoresClimatology(iRefTime) = NAN;
         }
     }
 

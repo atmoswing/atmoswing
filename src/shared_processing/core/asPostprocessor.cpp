@@ -43,7 +43,7 @@ a1f asPostprocessor::Postprocess(const a1f &analogsValues, const a1f &analogsCri
     }
     else
     {
-        asThrowException(_("The postprocessing method was not correctly defined."));
+        throw runtime_error(_("The postprocessing method was not correctly defined."));
     }
 }
 

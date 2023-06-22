@@ -45,11 +45,9 @@ class asResultsParametersArray : public asResults {
 
     void StoreValues(asParametersScoring& params);
 
-    void Add(asParametersScoring& params, float scoreCalib);
-
     void AddWithoutProcessingMedian(asParametersScoring& params, float scoreCalib);
 
-    void Add(asParametersScoring& params, float scoreCalib, float scoreValid);
+    void Add(asParametersScoring& params, float scoreCalib, float scoreValid = NAN);
 
     void Add(asParametersScoring& params, const a1f& scoreCalib, const a1f& scoreValid);
 
@@ -75,7 +73,7 @@ class asResultsParametersArray : public asResults {
     void BuildFileName(const wxString& fileTag);
 
   private:
-    std::vector<asParametersScoring::VectorParamsStep> m_parameters;
+    vector<asParametersScoring::VectorParamsStep> m_parameters;
     asParametersScoring::ParamsScore m_scores;
     vvi m_predictandStationIds;
     vi m_analogsIntervalDays;

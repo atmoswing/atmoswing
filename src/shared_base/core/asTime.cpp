@@ -69,7 +69,7 @@ double asTime::NowMJD(int timezone) {
             todaytm = *localtime(&todayepoch);
             break;
         default:
-            asThrowException(_("The timezone is not correctly set"));
+            throw runtime_error(_("The timezone is not correctly set"));
     }
 
     return TimeTmToMJD(todaytm);
@@ -89,7 +89,7 @@ Time asTime::NowTimeStruct(int timezone) {
             todaytm = *localtime(&todayepoch);
             break;
         default:
-            asThrowException(_("The timezone is not correctly set"));
+            throw runtime_error(_("The timezone is not correctly set"));
     }
 
     return TimeTmToTimeStruct(todaytm);
@@ -157,14 +157,14 @@ wxString asTime::GetStringTime(double mjd, const wxString& format) {
 wxString asTime::GetStringTime(const Time& date, const wxString& format) {
     wxString datestr = format;
 
-    wxString year = wxString::Format("%d", date.year);
-    wxString month = wxString::Format("%d", date.month);
+    wxString year = asStrF("%d", date.year);
+    wxString month = asStrF("%d", date.month);
     if (month.Length() < 2) month = "0" + month;
-    wxString day = wxString::Format("%d", date.day);
+    wxString day = asStrF("%d", date.day);
     if (day.Length() < 2) day = "0" + day;
-    wxString hour = wxString::Format("%d", date.hour);
+    wxString hour = asStrF("%d", date.hour);
     if (hour.Length() < 2) hour = "0" + hour;
-    wxString minute = wxString::Format("%d", date.min);
+    wxString minute = asStrF("%d", date.min);
     if (minute.Length() < 2) minute = "0" + minute;
 
     datestr.Replace("YYYY", year);
@@ -174,7 +174,6 @@ wxString asTime::GetStringTime(const Time& date, const wxString& format) {
     datestr.Replace("hh", hour);
     datestr.Replace("HH", hour);
     datestr.Replace("mm", minute);
-    datestr.Replace("HH", minute);
 
     return datestr;
 }
@@ -189,32 +188,30 @@ wxString asTime::GetStringTime(double mjd, TimeFormat format) {
 wxString asTime::GetStringTime(const Time& date, TimeFormat format) {
     switch (format) {
         case (ISOdate):
-            return wxString::Format("%4.4d-%2.2d-%2.2d", date.year, date.month, date.day);
+            return asStrF("%4.4d-%2.2d-%2.2d", date.year, date.month, date.day);
         case (ISOdateTime):
-            return wxString::Format("%4.4d-%2.2d-%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day, date.hour,
-                                    date.min, date.sec);
+            return asStrF("%4.4d-%2.2d-%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day, date.hour, date.min,
+                          date.sec);
         case (DD_MM_YYYY):
-            return wxString::Format("%2.2d.%2.2d.%4.4d", date.day, date.month, date.year);
+            return asStrF("%2.2d.%2.2d.%4.4d", date.day, date.month, date.year);
         case (YYYY_MM_DD):
-            return wxString::Format("%4.4d/%2.2d/%2.2d", date.year, date.month, date.day);
+            return asStrF("%4.4d/%2.2d/%2.2d", date.year, date.month, date.day);
         case (YYYYMMDD):
-            return wxString::Format("%4.4d%2.2d%2.2d", date.year, date.month, date.day);
+            return asStrF("%4.4d%2.2d%2.2d", date.year, date.month, date.day);
         case (DD_MM_YYYY_hh_mm):
-            return wxString::Format("%2.2d.%2.2d.%4.4d %2.2d:%2.2d", date.day, date.month, date.year, date.hour,
-                                    date.min);
+            return asStrF("%2.2d.%2.2d.%4.4d %2.2d:%2.2d", date.day, date.month, date.year, date.hour, date.min);
         case (YYYY_MM_DD_hh_mm):
-            return wxString::Format("%4.4d/%2.2d/%2.2d %2.2d:%2.2d", date.year, date.month, date.day, date.hour,
-                                    date.min);
+            return asStrF("%4.4d/%2.2d/%2.2d %2.2d:%2.2d", date.year, date.month, date.day, date.hour, date.min);
         case (DD_MM_YYYY_hh_mm_ss):
-            return wxString::Format("%2.2d.%2.2d.%4.4d %2.2d:%2.2d:%2.2d", date.day, date.month, date.year, date.hour,
-                                    date.min, date.sec);
+            return asStrF("%2.2d.%2.2d.%4.4d %2.2d:%2.2d:%2.2d", date.day, date.month, date.year, date.hour, date.min,
+                          date.sec);
         case (YYYY_MM_DD_hh_mm_ss):
-            return wxString::Format("%4.4d/%2.2d/%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day, date.hour,
-                                    date.min, date.sec);
+            return asStrF("%4.4d/%2.2d/%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day, date.hour, date.min,
+                          date.sec);
         case (hh_mm):
-            return wxString::Format("%2.2d:%2.2d", date.hour, date.min);
+            return asStrF("%2.2d:%2.2d", date.hour, date.min);
         case (YYYYMMDD_hhmm):
-            return wxString::Format("%4.4d%2.2d%2.2d-%2.2d%2.2d", date.year, date.month, date.day, date.hour, date.min);
+            return asStrF("%4.4d%2.2d%2.2d-%2.2d%2.2d", date.year, date.month, date.day, date.hour, date.min);
         default:
             wxLogError(_("The date format is not correctly set"));
     }
@@ -237,283 +234,253 @@ double asTime::GetTimeFromString(const wxString& datestr, TimeFormat format) {
         case (ISOdate):
 
             if (datestr.Len() == 10) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(5, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day);
             }
 
-            asThrowException(wxString::Format(errormsglength, (int)datestr.Len(), 14, 19));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 14, 19));
 
         case (ISOdateTime):
 
             if (datestr.Len() == 19) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(5, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(11, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(14, 2).ToLong(&min)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(17, 2).ToLong(&sec)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(17, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min, sec);
             }
 
-            asThrowException(wxString::Format(errormsglength, (int)datestr.Len(), 14, 19));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 14, 19));
 
         case (DD_MM_YYYY):
 
             if (datestr.Len() == 10) {
-                if (!datestr.Mid(0, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(3, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(3, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day);
             } else if (datestr.Len() == 8) {
-                if (!datestr.Mid(0, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(2, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(2, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day);
             }
 
-            asThrowException(wxString::Format(errormsglength, (int)datestr.Len(), 8, 10));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 8, 10));
 
         case (YYYY_MM_DD):
         case (YYYYMMDD):
 
             if (datestr.Len() == 10) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(5, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day);
             } else if (datestr.Len() == 8) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day);
             }
 
-            asThrowException(wxString::Format(errormsglength, (int)datestr.Len(), 8, 10));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 8, 10));
 
         case (YYYY_MM_DD_hh):
 
             if (datestr.Len() == 13) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(5, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(11, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour);
             } else if (datestr.Len() == 10) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour);
             }
 
-            asThrowException(wxString::Format(errormsglength, (int)datestr.Len(), 10, 13));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 10, 13));
 
         case (DD_MM_YYYY_hh_mm):
 
             if (datestr.Len() == 16) {
-                if (!datestr.Mid(0, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(3, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(11, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(14, 2).ToLong(&min)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(3, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min);
             } else if (datestr.Len() == 12) {
-                if (!datestr.Mid(0, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(2, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(10, 2).ToLong(&min)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(2, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(10, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min);
             }
 
-            asThrowException(wxString::Format(errormsglength, (int)datestr.Len(), 12, 16));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 12, 16));
 
         case (YYYY_MM_DD_hh_mm):
 
             if (datestr.Len() == 16) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(5, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(11, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(14, 2).ToLong(&min)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min);
             } else if (datestr.Len() == 12) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(10, 2).ToLong(&min)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(10, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min);
             }
 
-            asThrowException(wxString::Format(errormsglength, (int)datestr.Len(), 12, 16));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 12, 16));
 
         case (DD_MM_YYYY_hh_mm_ss):
 
             if (datestr.Len() == 19) {
-                if (!datestr.Mid(0, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(3, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(11, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(14, 2).ToLong(&min)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(17, 2).ToLong(&sec)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(3, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(17, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min, sec);
             } else if (datestr.Len() == 14) {
-                if (!datestr.Mid(0, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(2, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(10, 2).ToLong(&min)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(12, 2).ToLong(&sec)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(2, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(10, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(12, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min, sec);
             }
 
-            asThrowException(wxString::Format(errormsglength, (int)datestr.Len(), 14, 19));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 14, 19));
 
         case (YYYY_MM_DD_hh_mm_ss):
 
             if (datestr.Len() == 19) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(5, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(11, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(14, 2).ToLong(&min)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(17, 2).ToLong(&sec)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(17, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min, sec);
             } else if (datestr.Len() == 14) {
-                if (!datestr.Mid(0, 4).ToLong(&year)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(4, 2).ToLong(&month)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(6, 2).ToLong(&day)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(8, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(10, 2).ToLong(&min)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(12, 2).ToLong(&sec)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(4, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(6, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(10, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(12, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min, sec);
             }
 
-            asThrowException(wxString::Format(errormsglength, (int)datestr.Len(), 14, 19));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 14, 19));
 
         case (hh_mm):
 
             if (datestr.Len() == 5) {
-                if (!datestr.Mid(0, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(3, 2).ToLong(&min)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(3, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(0, 0, 0, hour, min);
             } else if (datestr.Len() == 4) {
-                if (!datestr.Mid(0, 2).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
-                if (!datestr.Mid(2, 2).ToLong(&min)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(0, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                if (!datestr.Mid(2, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 return GetMJD(0, 0, 0, hour, min);
             }
 
-            asThrowException(wxString::Format(errormsglength, (int)datestr.Len(), 4, 5));
+            throw runtime_error(asStrF(errormsglength, (int)datestr.Len(), 4, 5));
 
         case (guess):
 
             if (datestr.Mid(0, 1) == "+") {
-                if (!datestr.Mid(1).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(1).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 date = NowMJD(asUTM);
                 date += (double)hour / 24;
                 return date;
             } else if (datestr.Mid(0, 1) == "-") {
-                if (!datestr.Mid(1).ToLong(&hour)) asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(1).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
                 date = NowMJD(asUTM);
                 date -= (double)hour / 24;
                 return date;
             } else {
                 if (datestr.Len() == 10) {
                     if (datestr.Mid(0, 4).ToLong(&year)) {
-                        if (!datestr.Mid(0, 4).ToLong(&year))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(5, 2).ToLong(&month))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(8, 2).ToLong(&day))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
+                        if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
                         return GetMJD(year, month, day);
                     } else if (datestr.Mid(0, 2).ToLong(&day)) {
-                        if (!datestr.Mid(0, 2).ToLong(&day))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(3, 2).ToLong(&month))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(6, 4).ToLong(&year))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
+                        if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(3, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(6, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
                         return GetMJD(year, month, day);
                     }
 
-                    asThrowException(wxString::Format(errormsgconversion, datestr));
+                    throw runtime_error(asStrF(errormsgconversion, datestr));
 
                 } else if (datestr.Len() == 16) {
                     if (datestr.Mid(0, 4).ToLong(&year)) {
-                        if (!datestr.Mid(0, 4).ToLong(&year))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(5, 2).ToLong(&month))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(8, 2).ToLong(&day))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(11, 2).ToLong(&hour))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(14, 2).ToLong(&min))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
+                        if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                         return GetMJD(year, month, day, hour, min);
                     } else if (datestr.Mid(0, 2).ToLong(&day)) {
-                        if (!datestr.Mid(0, 2).ToLong(&day))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(3, 2).ToLong(&month))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(6, 4).ToLong(&year))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(11, 2).ToLong(&hour))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(14, 2).ToLong(&min))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
+                        if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(3, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(6, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                         return GetMJD(year, month, day, hour, min);
                     }
-                    asThrowException(wxString::Format(errormsgconversion, datestr));
+                    throw runtime_error(asStrF(errormsgconversion, datestr));
                 } else if (datestr.Len() == 19) {
                     if (datestr.Mid(0, 4).ToLong(&year)) {
-                        if (!datestr.Mid(0, 4).ToLong(&year))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(5, 2).ToLong(&month))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(8, 2).ToLong(&day))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(11, 2).ToLong(&hour))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(14, 2).ToLong(&min))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(17, 2).ToLong(&sec))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
+                        if (!datestr.Mid(0, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(5, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(8, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(17, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                         return GetMJD(year, month, day, hour, min, sec);
                     } else if (datestr.Mid(0, 2).ToLong(&day)) {
-                        if (!datestr.Mid(0, 2).ToLong(&day))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(3, 2).ToLong(&month))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(6, 4).ToLong(&year))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(11, 2).ToLong(&hour))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(14, 2).ToLong(&min))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
-                        if (!datestr.Mid(17, 2).ToLong(&sec))
-                            asThrowException(wxString::Format(errormsgconversion, datestr));
+                        if (!datestr.Mid(0, 2).ToLong(&day)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(3, 2).ToLong(&month)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(6, 4).ToLong(&year)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(11, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(14, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                        if (!datestr.Mid(17, 2).ToLong(&sec)) throw runtime_error(asStrF(errormsgconversion, datestr));
                         return GetMJD(year, month, day, hour, min, sec);
                     }
-                    asThrowException(wxString::Format(errormsgconversion, datestr));
+                    throw runtime_error(asStrF(errormsgconversion, datestr));
                 } else if (datestr.Len() == 5) {
-                    if (!datestr.Mid(0, 2).ToLong(&hour))
-                        asThrowException(wxString::Format(errormsgconversion, datestr));
-                    if (!datestr.Mid(3, 2).ToLong(&min))
-                        asThrowException(wxString::Format(errormsgconversion, datestr));
+                    if (!datestr.Mid(0, 2).ToLong(&hour)) throw runtime_error(asStrF(errormsgconversion, datestr));
+                    if (!datestr.Mid(3, 2).ToLong(&min)) throw runtime_error(asStrF(errormsgconversion, datestr));
                     return GetMJD(0, 0, 0, hour, min);
                 }
 
-                asThrowException(wxString::Format(errormsgconversion, datestr));
+                throw runtime_error(asStrF(errormsgconversion, datestr));
             }
 
             break;
         default:
-            asThrowException(_("The date format is not correctly set"));
+            throw runtime_error(_("The date format is not correctly set"));
     }
 }
 

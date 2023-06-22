@@ -54,6 +54,16 @@ class asWorkspace : public wxObject {
 
     void AddLayer();
 
+    void ClearPredictorDirs();
+
+    void AddPredictorDir(const wxString& id, const wxString& dir);
+
+    wxString GetPredictorId(int i, const wxString& defVal = wxEmptyString);
+
+    wxString GetPredictorDir(int i);
+
+    wxString GetPredictorDir(wxString& datasetId);
+
     wxString GetFilePath() const {
         return m_filePath;
     }
@@ -170,6 +180,22 @@ class asWorkspace : public wxObject {
         m_timeSeriesPlotPastDaysNb = val;
     }
 
+    int GetTimeSeriesMaxLengthDaily() const {
+        return m_timeSeriesMaxLengthDaily;
+    }
+
+    void SetTimeSeriesMaxLengthDaily(int val) {
+        m_timeSeriesMaxLengthDaily = val;
+    }
+
+    int GetTimeSeriesMaxLengthSubDaily() const {
+        return m_timeSeriesMaxLengthSubDaily;
+    }
+
+    void SetTimeSeriesMaxLengthSubDaily(int val) {
+        m_timeSeriesMaxLengthSubDaily = val;
+    }
+
     int GetAlarmsPanelReturnPeriod() const {
         return m_alarmsPanelReturnPeriod;
     }
@@ -206,14 +232,18 @@ class asWorkspace : public wxObject {
     vb m_layerVisibilities;
     vi m_layerLineWidths;
 #if USE_GUI
-    std::vector<wxColour> m_layerLineColors;
-    std::vector<wxColour> m_layerFillColors;
-    std::vector<wxBrushStyle> m_layerBrushStyles;
+    vector<wxColour> m_layerLineColors;
+    vector<wxColour> m_layerFillColors;
+    vector<wxBrushStyle> m_layerBrushStyles;
 #endif
     double m_colorbarMaxValue;
     int m_timeSeriesPlotPastDaysNb;
+    int m_timeSeriesMaxLengthDaily;
+    int m_timeSeriesMaxLengthSubDaily;
     int m_alarmsPanelReturnPeriod;
     float m_alarmsPanelQuantile;
+    vwxs m_predictorIds;
+    vwxs m_predictorDirs;
 };
 
 #endif

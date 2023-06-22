@@ -294,8 +294,8 @@ wxString LM_LeastSquare::GetResultMessage() const {
             msg.Printf(
                 wxT("Both actual and predicted relative reductions in the sum of squares are at most ftol (%lg)."),
                 m_ftol);
-            msg +=
-                wxString::Format(wxT("Relative error between two consecutive iterates is at most xtol (%lg)."), m_xtol);
+            msg += wxString::Format(wxT("Relative error between two consecutive iterates is at most xtol (%lg)."),
+                                    m_xtol);
             break;
         case 4:
             msg.Printf(wxT("The cosine of the angle between fvec and any column of the jacobian is at most gtol (%lg) "

@@ -92,11 +92,9 @@ class asMethodCalibrator : public asMethodStandard {
 
     bool KeepIfBetter(asParametersCalibration& params, asResultsTotalScore& scoreFinal);
 
-    bool SetSelectedParameters(asResultsParametersArray& results);
-
     virtual bool SetBestParameters(asResultsParametersArray& results);
 
-    wxString GetPredictandStationIdsList(vi& stationIds) const;
+    wxString GetStationIdsList(vi& stationIds) const;
 
     bool Manager() override;
 
@@ -139,10 +137,13 @@ class asMethodCalibrator : public asMethodStandard {
     Order m_scoreOrder;
     float m_scoreValid;
     vf m_scoreClimatology;
-    std::vector<asParametersCalibration> m_parameters;
-    std::vector<asParametersCalibration> m_parametersTemp;
+    vector<asParametersCalibration> m_parameters;
+    vector<asParametersCalibration> m_parametersTemp;
     asParametersCalibration m_originalParams;
     bool m_validationMode;
+    bool m_useBatches;
+    int m_batchStart;
+    int m_batchEnd;
 
     virtual bool Calibrate(asParametersCalibration& params) = 0;
 
@@ -152,11 +153,11 @@ class asMethodCalibrator : public asMethodStandard {
 
     double GetEffectiveArchiveDataEnd(asParameters* params) const override;
 
-  private:
     double GetTimeStartCalibration(asParametersScoring* params) const;
 
     double GetTimeEndCalibration(asParametersScoring* params) const;
 
+  private:
     void LoadScoreOrder(asParametersCalibration& params);
 };
 

@@ -499,8 +499,8 @@ wxPlotDrawerAxisBase::wxPlotDrawerAxisBase(wxPlotCtrl* owner)
     m_tickColour = wxGenericColour(0, 0, 0);
     m_labelColour = wxGenericColour(0, 0, 0);
 
-    m_tickPen = wxGenericPen(m_tickColour, wxSOLID);
-    m_backgroundBrush = wxGenericBrush(wxGenericColour(255, 255, 255), wxSOLID);
+    m_tickPen = wxGenericPen(m_tickColour, wxPENSTYLE_SOLID);
+    m_backgroundBrush = wxGenericBrush(wxGenericColour(255, 255, 255), wxBRUSHSTYLE_SOLID);
 }
 
 //-----------------------------------------------------------------------------

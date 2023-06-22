@@ -41,7 +41,7 @@ class asFileText : public asFile {
         TabsDelimited
     };
 
-    asFileText(const wxString& fileName, const asFile::FileMode& fileMode);
+    asFileText(const wxString& fileName, const asFile::FileMode& fileMode = asFile::ReadOnly);
 
     ~asFileText() override = default;
 
@@ -52,6 +52,11 @@ class asFileText : public asFile {
     void AddContent(const wxString& lineContent = wxEmptyString);
 
     wxString GetNextLine();
+
+    /**
+     * Get the content of the file into a single string (wxString).
+     */
+    wxString GetContent();
 
     int GetInt();
 
@@ -69,7 +74,7 @@ class asFileText : public asFile {
 
   protected:
   private:
-    std::fstream m_file;  // Not using wxTextFile because it's not optimized for files > 1Mb
+    std::fstream m_file; /**< The file stream (not using wxTextFile because it's not optimized for files > 1Mb). */
 };
 
 #endif

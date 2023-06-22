@@ -97,6 +97,8 @@
 #include <exception>
 #include <vector>
 
+using std::runtime_error;
+
 //---------------------------------
 // Automatic leak detection with Microsoft VisualC++
 // http://msdn.microsoft.com/en-us/library/e5ewb1h3(v=VS.90).aspx
@@ -127,9 +129,7 @@
 // Some AtmoSwing stuff - frequently used classes
 //---------------------------------
 
-#define asThrowException(msg) throw std::runtime_error((const char*)msg.ToUTF8())
-
-#include "asTypeDefs.h"
+#include "asTypeDefs.h" // Must be first
 
 #include "asConfig.h"
 #include "asGlobEnums.h"
@@ -138,7 +138,7 @@
 #include "asThreadsManager.h"
 #include "asThreadsManagerGlobalFunctions.h"
 #include "asTime.h"
-#include "asUtilities.h"
+#include "asUtils.h"
 #include "asVersion.h"
 
 #if USE_GUI
@@ -161,6 +161,7 @@
 #endif
 #ifdef UNIT_TESTING
 #include "asGlobVarsOptimizer.h"
+#include "asGlobVarsViewer.h"
 #endif
 
 #endif  // AS_INC_H

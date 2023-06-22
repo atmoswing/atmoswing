@@ -32,7 +32,9 @@
 wxDEFINE_EVENT(asEVT_ACTION_OPEN_WORKSPACE, wxCommandEvent);
 
 asWizardWorkspace::asWizardWorkspace(wxWindow* parent, wxWindowID id)
-    : asWizardWorkspaceVirtual(parent, id) {}
+    : asWizardWorkspaceVirtual(parent, id) {
+    SetLabel(_("Workspace creation wizard"));
+}
 
 asWizardWorkspace::~asWizardWorkspace() {}
 
@@ -44,13 +46,7 @@ void asWizardWorkspace::OnWizardFinished(wxWizardEvent& event) {
 
     int baseMapSlct = m_choiceBaseMap->GetSelection();
     wxString baseMapPath = wxEmptyString;
-    wxString wmsDir = wxEmptyString;
-#if defined(__WIN32__)
-    wmsDir = wxStandardPaths::Get().GetDataDir();
-#else
-    wmsDir = wxStandardPaths::Get().GetInstallPrefix();
-#endif
-    wmsDir = wmsDir + DS + "share" + DS + "atmoswing" + DS + "wms" + DS + "basemaps" + DS;
+    wxString wmsDir = asConfig::GetShareDir() + DS + "atmoswing" + DS + "gis" + DS + "wms" + DS;
     switch (baseMapSlct) {
         case 0:  // Custom layers
 

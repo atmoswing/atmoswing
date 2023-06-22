@@ -47,8 +47,6 @@ void asParametersForecast::AddPredictorForecast(ParamsStepForecast& step) {
 }
 
 bool asParametersForecast::LoadFromFile(const wxString& filePath) {
-    wxLogVerbose(_("Loading parameters file."));
-
     if (filePath.IsEmpty()) {
         wxLogError(_("The given path to the parameters file is empty."));
         return false;
@@ -96,8 +94,6 @@ bool asParametersForecast::LoadFromFile(const wxString& filePath) {
     FixTimeLimits();
     FixWeights();
     FixCoordinates();
-
-    wxLogVerbose(_("Parameters file loaded."));
 
     return true;
 }
@@ -340,12 +336,12 @@ bool asParametersForecast::InputsOK() const {
         return false;
     }
 
-    if (asIsNaN(GetArchiveStart())) {
+    if (isnan(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetArchiveEnd())) {
+    if (isnan(GetArchiveEnd())) {
         wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }

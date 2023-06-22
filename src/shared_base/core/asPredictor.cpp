@@ -32,8 +32,8 @@
 #include <wx/dir.h>
 #include <wx/ffile.h>
 
-#include "asAreaGenGrid.h"
-#include "asAreaRegGrid.h"
+#include "asAreaGridGeneric.h"
+#include "asAreaGridRegular.h"
 #include "asPredictorCustomLtheNR1.h"
 #include "asPredictorCustomMFvgMeso.h"
 #include "asPredictorCustomMFvgMesoPacked.h"
@@ -45,8 +45,8 @@
 #include "asPredictorEcmwfEra20C.h"
 #include "asPredictorEcmwfEra5.h"
 #include "asPredictorEcmwfEraInterim.h"
-#include "asPredictorEcmwfIfsGrib.h"
-#include "asPredictorGenericNetcdf.h"
+#include "asPredictorEcmwfIfs.h"
+#include "asPredictorGeneric.h"
 #include "asPredictorJmaJra55CSubset.h"
 #include "asPredictorJmaJra55Subset.h"
 #include "asPredictorNasaMerra2.h"
@@ -111,8 +111,9 @@ asPredictor::asPredictor(const wxString& dataId)
 asPredictor* asPredictor::GetInstance(const wxString& datasetId, const wxString& dataId, const wxString& directory) {
     asPredictor* predictor = nullptr;
 
-    if (datasetId.IsSameAs("GenericNetcdf", false)) {
-        predictor = new asPredictorGenericNetcdf(dataId);
+    if (datasetId.StartsWith("Generic") || datasetId.StartsWith("generic")) {
+        predictor = new asPredictorGeneric(dataId);
+        predictor->SetDatasetId(datasetId);
     } else if (datasetId.IsSameAs("NCEP_R1", false)) {
         predictor = new asPredictorNcepR1(dataId);
     } else if (datasetId.IsSameAs("NCEP_R2", false)) {
@@ -129,8 +130,8 @@ asPredictor* asPredictor::GetInstance(const wxString& datasetId, const wxString&
         predictor = new asPredictorEcmwfEra20C(dataId);
     } else if (datasetId.IsSameAs("ECMWF_CERA_20C", false)) {
         predictor = new asPredictorEcmwfCera20C(dataId);
-    } else if (datasetId.IsSameAs("ECMWF_IFS_GRIB", false)) {
-        predictor = new asPredictorEcmwfIfsGrib(dataId);
+    } else if (datasetId.IsSameAs("ECMWF_IFS", false)) {
+        predictor = new asPredictorEcmwfIfs(dataId);
     } else if (datasetId.IsSameAs("NASA_MERRA_2", false)) {
         predictor = new asPredictorNasaMerra2(dataId);
     } else if (datasetId.IsSameAs("NASA_MERRA_2_subset", false)) {
@@ -274,8 +275,7 @@ bool asPredictor::LoadDumpedData() {
     file.Read(&m_axisLat[0], nLats * sizeof(double));
     file.Read(&m_axisLon[0], nLons * sizeof(double));
 
-    m_data.resize(m_time.size(),
-                  std::vector<a2f, Eigen::aligned_allocator<a2f>>(m_membersNb, a2f(m_latPtsnb, m_lonPtsnb)));
+    m_data.resize(m_time.size(), vector<a2f, Eigen::aligned_allocator<a2f>>(m_membersNb, a2f(m_latPtsnb, m_lonPtsnb)));
     size_t size = m_time.size() * m_membersNb * m_latPtsnb * m_lonPtsnb * sizeof(float);
 
     a2f data(m_time.size() * m_membersNb * m_latPtsnb, m_lonPtsnb);
@@ -435,12 +435,14 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
             wxLogError(_("Files not found for %s (%s)."), m_dataId, m_datasetName);
             return false;
         }
+        wxLogVerbose(_("Predictor files found."));
 
         // Get file axes
         if (!EnquireFileStructure(timeArray)) {
             wxLogError(_("Failing to get the file structure."));
             return false;
         }
+        wxLogVerbose(_("File structure parsed."));
 
         // Check the level availability
         if (!HasDesiredLevel(m_warnMissingLevels)) {
@@ -469,7 +471,8 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
             m_fInd.timeStep = wxMax(timeArray.GetTimeStepHours() / m_fStr.timeStep, 1);
         }
 
-        // Extract composite data from files
+        // Extract data from files
+        wxLogVerbose(_("Extracting from files."));
         if (!ExtractFromFiles(dataArea, timeArray)) {
             if (m_warnMissingFiles && m_warnMissingLevels) {
                 wxLogWarning(_("Extracting data from files failed."));
@@ -481,6 +484,7 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
         }
 
         // Transform data
+        wxLogVerbose(_("Transforming data"));
         if (!TransformData()) {
             wxLogError(_("Data transformation has failed."));
             wxFAIL;
@@ -488,6 +492,7 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
         }
 
         // Interpolate the loaded data on the desired grid
+        wxLogVerbose(_("Interpolating predictor grid."));
         if (desiredArea && desiredArea->IsRegular() && !InterpolateOnGrid(dataArea, desiredArea)) {
             wxLogError(_("Interpolation failed."));
             wxDELETE(dataArea);
@@ -495,6 +500,7 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
         }
 
         // Check the data container length
+        wxLogVerbose(_("Loading forecast data (predictorRealtime->Load)."));
         if (m_time.size() > m_data.size()) {
             wxLogError(_("The date and the data array lengths do not match (time = %d and data = %d)."),
                        (int)m_time.size(), (int)m_data.size());
@@ -509,7 +515,7 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation (%s) caught when loading data %s (%s)."), msg, m_dataId, m_datasetName);
         return false;
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         wxLogError(_("Failed to load data (exception)."));
@@ -694,6 +700,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
     ThreadsManager().CritSectionGrib().Enter();
     asFileGrib gbFile0(m_files[0], asFileGrib::ReadOnly);
 
+    wxLogVerbose(_("Opening grib file to enquire the structure."));
     if (!gbFile0.Open()) {
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
@@ -701,6 +708,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
     }
 
     // Set index position
+    wxLogVerbose(_("Setting index position in the grib file."));
     if (!gbFile0.SetIndexPositionAnyLevel(m_gribCode)) {
         gbFile0.Close();
         ThreadsManager().CritSectionGrib().Leave();
@@ -709,10 +717,12 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
 
     // Parse file structure
     if (m_fStr.singleTimeStep && m_files.size() > 1) {
-        wxASSERT(times.size() > 1);
+        wxASSERT(times.size() >= 1);
 
+        wxLogVerbose(_("Creating an instance of the grib object to enquire the structure (2nd file)."));
         asFileGrib gbFile1 = asFileGrib(m_files[1], asFileGrib::ReadOnly);
 
+        wxLogVerbose(_("Opening grib file to enquire the structure (2nd file)."));
         if (!gbFile1.Open()) {
             gbFile0.Close();
             ThreadsManager().CritSectionGrib().Leave();
@@ -720,6 +730,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
             return false;
         }
 
+        wxLogVerbose(_("Setting index position in the grib file (2nd file)."));
         if (!gbFile1.SetIndexPositionAnyLevel(m_gribCode)) {
             gbFile0.Close();
             gbFile1.Close();
@@ -728,6 +739,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
             return false;
         }
 
+        wxLogVerbose(_("Parsing the grib structure."));
         if (!ParseFileStructure(&gbFile0, &gbFile1)) {
             gbFile0.Close();
             gbFile1.Close();
@@ -739,6 +751,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
         gbFile1.Close();
 
     } else {
+        wxLogVerbose(_("Parsing the grib structure (single file)."));
         if (!ParseFileStructure(&gbFile0)) {
             gbFile0.Close();
             ThreadsManager().CritSectionGrib().Leave();
@@ -765,6 +778,7 @@ bool asPredictor::ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dat
     }
 
     // Open the Grib file
+    wxLogVerbose(_("Opening the grib file."));
     ThreadsManager().CritSectionGrib().Enter();
     asFileGrib gbFile(fileName, asFileGrib::ReadOnly);
     if (!gbFile.Open()) {
@@ -774,6 +788,7 @@ bool asPredictor::ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dat
     }
 
     // Set index position
+    wxLogVerbose(_("Setting index position in grib file."));
     if (!gbFile.SetIndexPosition(m_gribCode, m_level, m_warnMissingLevels)) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();
@@ -781,6 +796,7 @@ bool asPredictor::ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dat
     }
 
     // Parse file structure
+    wxLogVerbose(_("Parsing grib file structure."));
     if (!ParseFileStructure(&gbFile)) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();
@@ -827,7 +843,7 @@ bool asPredictor::FillWithNaNs() {
     // Fill with NaNs
     va2f memLatLonData;
     for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
-        a2f latLonData = NaNf * a2f::Ones(m_data[0][iMem].rows(), m_data[0][iMem].cols());
+        a2f latLonData = NAN * a2f::Ones(m_data[0][iMem].rows(), m_data[0][iMem].cols());
         memLatLonData.push_back(latLonData);
     }
     m_data.push_back(memLatLonData);
@@ -869,7 +885,7 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf& ncFile) {
             return false;
     }
 
-    double refValue = NaNd;
+    double refValue = NAN;
     if (m_parseTimeReference) {
         wxString refValueStr = ncFile.GetAttString("units", m_fStr.dimTimeName);
         int start = refValueStr.Find("since");
@@ -1091,67 +1107,92 @@ asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
     wxASSERT(m_fStr.lons.size() > 0);
     wxASSERT(m_fStr.lats.size() > 0);
 
-    if (desiredArea) {
-        bool strideAllowed = m_fileType == asFile::Netcdf;
-
-        if (!desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats, true)) {
-            asThrowException(_("Failed at initializing the axes."));
-        }
-
-        if (desiredArea->IsRegular()) {
-            auto desiredAreaReg = dynamic_cast<asAreaRegGrid*>(desiredArea);
-
-            if (!strideAllowed) {
-                m_fInd.lonStep = 1;
-                m_fInd.latStep = 1;
-            } else {
-                m_fInd.lonStep = desiredAreaReg->GetXstepStride();
-                m_fInd.latStep = desiredAreaReg->GetYstepStride();
-            }
-
-            auto dataArea = new asAreaRegGrid(*desiredAreaReg);
-            if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
-                asThrowException(_("Failed at initializing the axes."));
-            }
-
-            dataArea->CorrectCornersWithAxes();
-
-            if (!strideAllowed) {
-                dataArea->SetSameStepAsData();
-            }
-
-            m_lonPtsnb = dataArea->GetXptsNb();
-            m_latPtsnb = dataArea->GetYptsNb();
-            m_axisLon = desiredArea->GetXaxis();
-            m_axisLat = desiredArea->GetYaxis();
-
-            // Order latitude axis (as data will also be ordered)
-            asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Desc);
-
-            return dataArea;
-
-        } else {
-            auto desiredAreaGen = dynamic_cast<asAreaGenGrid*>(desiredArea);
-            m_fInd.lonStep = 1;
-            m_fInd.latStep = 1;
-            auto dataArea = new asAreaGenGrid(*desiredAreaGen);
-            if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
-                asThrowException(_("Failed at initializing the axes."));
-            }
-
-            m_lonPtsnb = dataArea->GetXptsNb();
-            m_latPtsnb = dataArea->GetYptsNb();
-            m_axisLon = desiredArea->GetXaxis();
-            m_axisLat = desiredArea->GetYaxis();
-
-            // Order latitude axis (as data will also be ordered)
-            asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Desc);
-
-            return dataArea;
-        }
+    if (!desiredArea) {
+        return nullptr;
     }
 
-    return nullptr;
+    bool strideAllowed = m_fileType == asFile::Netcdf;
+
+    if (desiredArea->IsFull()) {
+        double xMin = m_fStr.lons.minCoeff();
+        int xPtsNb = (int)m_fStr.lons.size();
+        double yMin = m_fStr.lats.minCoeff();
+        int yPtsNb = (int)m_fStr.lats.size();
+
+        auto dataArea = new asAreaGridRegular(xMin, xPtsNb, yMin, yPtsNb, true, desiredArea->FlatsAllowed());
+        if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
+            throw runtime_error(_("Failed at initializing the axes."));
+        }
+
+        m_fInd.lonStep = 1;
+        m_fInd.latStep = 1;
+
+        m_lonPtsnb = dataArea->GetXptsNb();
+        m_latPtsnb = dataArea->GetYptsNb();
+        m_axisLon = dataArea->GetXaxis();
+        m_axisLat = dataArea->GetYaxis();
+
+        // Order latitude axis (as data will also be ordered)
+        asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Desc);
+
+        return dataArea;
+    }
+
+    if (!desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats, true)) {
+        throw runtime_error(_("Failed at initializing the axes."));
+    }
+
+    if (desiredArea->IsRegular()) {
+        auto desiredAreaReg = dynamic_cast<asAreaGridRegular*>(desiredArea);
+
+        if (!strideAllowed) {
+            m_fInd.lonStep = 1;
+            m_fInd.latStep = 1;
+        } else {
+            m_fInd.lonStep = desiredAreaReg->GetXstepStride();
+            m_fInd.latStep = desiredAreaReg->GetYstepStride();
+        }
+
+        auto dataArea = new asAreaGridRegular(*desiredAreaReg);
+        if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
+            throw runtime_error(_("Failed at initializing the axes."));
+        }
+
+        dataArea->CorrectCornersWithAxes();
+
+        if (!strideAllowed) {
+            dataArea->SetSameStepAsData();
+        }
+
+        m_lonPtsnb = dataArea->GetXptsNb();
+        m_latPtsnb = dataArea->GetYptsNb();
+        m_axisLon = desiredArea->GetXaxis();
+        m_axisLat = desiredArea->GetYaxis();
+
+        // Order latitude axis (as data will also be ordered)
+        asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Desc);
+
+        return dataArea;
+
+    } else {
+        auto desiredAreaGen = dynamic_cast<asAreaGridGeneric*>(desiredArea);
+        m_fInd.lonStep = 1;
+        m_fInd.latStep = 1;
+        auto dataArea = new asAreaGridGeneric(*desiredAreaGen);
+        if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
+            throw runtime_error(_("Failed at initializing the axes."));
+        }
+
+        m_lonPtsnb = dataArea->GetXptsNb();
+        m_latPtsnb = dataArea->GetYptsNb();
+        m_axisLon = desiredArea->GetXaxis();
+        m_axisLat = desiredArea->GetYaxis();
+
+        // Order latitude axis (as data will also be ordered)
+        asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Desc);
+
+        return dataArea;
+    }
 }
 
 bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) {
@@ -1167,10 +1208,10 @@ bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) 
     m_fInd.timeStartStorage = iStartTimeArray;
 
     if (m_fStr.time.size() > 1) {
-        int iStartTimeFile =
-            asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size() - 1], timeArray[iStartTimeArray]);
-        int iEndTimeFile =
-            asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size() - 1], timeArray[iEndTimeArray]);
+        int iStartTimeFile = asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size() - 1],
+                                           timeArray[iStartTimeArray]);
+        int iEndTimeFile = asFindClosest(&m_fStr.time[0], &m_fStr.time[m_fStr.time.size() - 1],
+                                         timeArray[iEndTimeArray]);
 
         if (iStartTimeFile == asOUT_OF_RANGE || iEndTimeFile == asOUT_OF_RANGE) {
             return false;
@@ -1208,33 +1249,33 @@ bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) 
         m_fInd.area.latCount = dataArea->GetYaxisPtsnb();
 
         // Get the spatial indices of the desired data
-        m_fInd.area.lonStart =
-            asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin, 0.01f, asHIDE_WARNINGS);
+        m_fInd.area.lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin, 0.01f,
+                                      asHIDE_WARNINGS);
         if (m_fInd.area.lonStart == asOUT_OF_RANGE) {
             // If not found, try with negative angles
-            m_fInd.area.lonStart =
-                asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin - 360, 0.01f, asHIDE_WARNINGS);
+            m_fInd.area.lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin - 360, 0.01f,
+                                          asHIDE_WARNINGS);
         }
         if (m_fInd.area.lonStart == asOUT_OF_RANGE) {
             // If not found, try with angles above 360 degrees
-            m_fInd.area.lonStart =
-                asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin + 360, 0.01f, asHIDE_WARNINGS);
+            m_fInd.area.lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin + 360, 0.01f,
+                                          asHIDE_WARNINGS);
         }
         if (m_fInd.area.lonStart < 0) {
-            wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin, m_fStr.lons[0],
-                       (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1]);
+            wxLogError(_("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f)"), lonMin,
+                       m_fStr.lons[0], (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1]);
             return false;
         }
         wxASSERT_MSG(m_fInd.area.lonStart >= 0,
-                     wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", m_fStr.lons[0],
-                                      (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
+                     asStrF("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", m_fStr.lons[0],
+                            (int)m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
 
         int indexStartLat1 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinStart, 0.01f);
         int indexStartLat2 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinEnd, 0.01f);
-        wxASSERT_MSG(indexStartLat1 >= 0, wxString::Format("Looking for %g in %g to %g", latMinStart, m_fStr.lats[0],
-                                                           m_fStr.lats[m_fStr.lats.size() - 1]));
-        wxASSERT_MSG(indexStartLat2 >= 0, wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fStr.lats[0],
-                                                           m_fStr.lats[m_fStr.lats.size() - 1]));
+        wxASSERT_MSG(indexStartLat1 >= 0, asStrF("Looking for %g in %g to %g", latMinStart, m_fStr.lats[0],
+                                                 m_fStr.lats[m_fStr.lats.size() - 1]));
+        wxASSERT_MSG(indexStartLat2 >= 0, asStrF("Looking for %g in %g to %g", latMinEnd, m_fStr.lats[0],
+                                                 m_fStr.lats[m_fStr.lats.size() - 1]));
         m_fInd.area.latStart = wxMin(indexStartLat1, indexStartLat2);
     } else {
         m_fInd.area.lonStart = 0;
@@ -1437,7 +1478,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf& ncFile) {
 
     // Fill with NaN if data are missing before the file starts
     while (m_fInd.timeStartStorage > m_data.size()) {
-        va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+        va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NAN);
         m_data.push_back(memLatLonData);
     }
 
@@ -1450,13 +1491,13 @@ bool asPredictor::GetDataFromFile(asFileNetcdf& ncFile) {
         if (!m_fInd.timeConsistent) {
             if (iTimeFile > m_fInd.timeStartFile + m_fInd.timeCountFile - 1) {
                 // Fill with NaN if data are missing after the data
-                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NAN);
                 m_data.push_back(memLatLonData);
                 iTimeStorage++;
                 continue;
             } else if (m_time[iTimeStorage] < m_fStr.time[iTimeFile]) {
                 // Fill in missing data
-                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NAN);
                 m_data.push_back(memLatLonData);
                 iTimeStorage++;
                 continue;
@@ -1493,8 +1534,11 @@ bool asPredictor::GetDataFromFile(asFileNetcdf& ncFile) {
                             notNan = false;
                         }
                     }
+                    if (isnan(dataF[ind]) || isnan(latLonData(iLat, iLon))) {
+                        notNan = false;
+                    }
                     if (!notNan) {
-                        latLonData(iLat, iLon) = NaNf;
+                        latLonData(iLat, iLon) = NAN;
                     }
                 }
             }
@@ -1548,7 +1592,7 @@ bool asPredictor::GetDataFromFile(asFileGrib& gbFile) {
 
     // Fill with NaN if data are missing before the file starts
     while (m_fInd.timeStartStorage > m_data.size()) {
-        va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+        va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NAN);
         m_data.push_back(memLatLonData);
     }
 
@@ -1561,13 +1605,13 @@ bool asPredictor::GetDataFromFile(asFileGrib& gbFile) {
         if (!m_fInd.timeConsistent) {
             if (iTimeFile > m_fInd.timeStartFile + m_fInd.timeCountFile - 1) {
                 // Fill with NaN if data are missing after the data
-                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NAN);
                 m_data.push_back(memLatLonData);
                 iTimeStorage++;
                 continue;
             } else if (m_time[iTimeStorage] < m_fStr.time[iTimeFile]) {
                 // Fill in missing data
-                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NaNf);
+                va2f memLatLonData(m_fInd.memberCount, a2f::Ones(m_fInd.area.latCount, m_fInd.area.lonCount) * NAN);
                 m_data.push_back(memLatLonData);
                 iTimeStorage++;
                 continue;
@@ -1600,8 +1644,11 @@ bool asPredictor::GetDataFromFile(asFileGrib& gbFile) {
                             notNan = false;
                         }
                     }
+                    if (isnan(dataF[ind]) || isnan(latLonData(iLat, iLon))) {
+                        notNan = false;
+                    }
                     if (!notNan) {
-                        latLonData(iLat, iLon) = NaNf;
+                        latLonData(iLat, iLon) = NAN;
                     }
                 }
             }
@@ -1652,7 +1699,7 @@ bool asPredictor::StandardizeData(double mean, double sd) {
         return false;
     }
 
-    if (asIsNaN(mean) || asIsNaN(sd)) {
+    if (isnan(mean) || isnan(sd)) {
         // Get the mean
         double sum = 0;
         int count = 0;
@@ -1722,8 +1769,8 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
     int xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin, toleranceLon, asHIDE_WARNINGS);
     int xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax, toleranceLon, asHIDE_WARNINGS);
     if (xStartIndex < 0) {
-        xStartIndex =
-            asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + 360, toleranceLon, asHIDE_WARNINGS);
+        xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + 360, toleranceLon,
+                             asHIDE_WARNINGS);
         xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax + 360, toleranceLon, asHIDE_WARNINGS);
         if (xStartIndex < 0 || xEndIndex < 0) {
             xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin - 360, toleranceLon);
@@ -1773,13 +1820,13 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
                 // Clear axes
                 a1d newAxisLon(xLength);
                 for (int i = 0; i < xLength; i++) {
-                    newAxisLon[i] = NaNd;
+                    newAxisLon[i] = NAN;
                 }
                 m_axisLon = newAxisLon;
 
                 a1d newAxisLat(2 * yLength);
                 for (int i = 0; i < 2 * yLength; i++) {
-                    newAxisLat[i] = NaNd;
+                    newAxisLat[i] = NAN;
                 }
                 m_axisLat = newAxisLat;
 
@@ -1844,13 +1891,13 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
 
                 a1d newAxisLon(xLength);
                 for (int i = 0; i < xLength; i++) {
-                    newAxisLon[i] = NaNd;
+                    newAxisLon[i] = NAN;
                 }
                 m_axisLon = newAxisLon;
 
                 a1d newAxisLat(2 * yLength);
                 for (int i = 0; i < 2 * yLength; i++) {
-                    newAxisLat[i] = NaNd;
+                    newAxisLat[i] = NAN;
                 }
                 m_axisLat = newAxisLat;
 
@@ -1876,8 +1923,8 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
                 for (int i = 0; i < originalData.size(); i++) {
                     for (int j = 0; j < originalData[i].size(); j++) {
                         a2f dat1 = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength, xLength);
-                        a2f dat2 =
-                            originalData[i][j].block(yStartIndexReal + m_axisLat.size(), xStartIndex, yLength, xLength);
+                        a2f dat2 = originalData[i][j].block(yStartIndexReal + m_axisLat.size(), xStartIndex, yLength,
+                                                            xLength);
                         a2f datMerged(2 * yLength, xLength);
                         datMerged.block(0, 0, yLength, xLength) = dat1;
                         datMerged.block(yLength, 0, yLength, xLength) = dat2;
@@ -1887,13 +1934,13 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
 
                 a1d newAxisLon(xLength);
                 for (int i = 0; i < xLength; i++) {
-                    newAxisLon[i] = NaNd;
+                    newAxisLon[i] = NAN;
                 }
                 m_axisLon = newAxisLon;
 
                 a1d newAxisLat(2 * yLength);
                 for (int i = 0; i < 2 * yLength; i++) {
-                    newAxisLat[i] = NaNd;
+                    newAxisLat[i] = NAN;
                 }
                 m_axisLat = newAxisLat;
 
@@ -1925,13 +1972,13 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
 
                 a1d newAxisLon(xLength);
                 for (int i = 0; i < xLength; i++) {
-                    newAxisLon[i] = NaNd;
+                    newAxisLon[i] = NAN;
                 }
                 m_axisLon = newAxisLon;
 
                 a1d newAxisLat(2 * yLength);
                 for (int i = 0; i < 2 * yLength; i++) {
-                    newAxisLat[i] = NaNd;
+                    newAxisLat[i] = NAN;
                 }
                 m_axisLat = newAxisLat;
 
@@ -2005,7 +2052,7 @@ bool asPredictor::Inline() {
     m_latPtsnb = (int)m_data[0][0].rows();
     m_lonPtsnb = (int)m_data[0][0].cols();
     a1d emptyAxis(1);
-    emptyAxis[0] = NaNd;
+    emptyAxis[0] = NAN;
     m_axisLat = emptyAxis;
     m_axisLon = emptyAxis;
 
@@ -2135,9 +2182,8 @@ bool asPredictor::InterpolateOnGrid(asAreaGrid* dataArea, asAreaGrid* desiredAre
                                    axisDataLat[axisDataLatEnd], axisDataLatEnd, (int)axisDataLat.size());
                         return false;
                     }
-                    wxASSERT_MSG(indexYfloor >= 0,
-                                 wxString::Format("%f in %f to %f", axisFinalLat[iLat], axisDataLat[indexLastLat],
-                                                  axisDataLat[axisDataLatEnd]));
+                    wxASSERT_MSG(indexYfloor >= 0, asStrF("%f in %f to %f", axisFinalLat[iLat],
+                                                          axisDataLat[indexLastLat], axisDataLat[axisDataLatEnd]));
                     wxASSERT(indexYceil >= 0);
 
                     // Save last index
@@ -2284,7 +2330,7 @@ bool asPredictor::IsLatLon(const wxString& datasetId) {
 
 void asPredictor::CheckLevelTypeIsDefined() {
     if (m_product.IsEmpty()) {
-        asThrowException(
+        throw runtime_error(
             _("The type of product must be defined for this dataset (prefix to the variable name. Ex: press/hgt)."));
     }
 }
@@ -2348,12 +2394,20 @@ bool asPredictor::IsSpecificHumidity() const {
 }
 
 bool asPredictor::IsVerticalVelocity() const {
-    return m_dataId.IsSameAs("w", false) || m_dataId.IsSameAs("vvel", false) || m_dataId.IsSameAs("wap", false) ||
-           m_dataId.IsSameAs("omega", false);
+    return m_dataId.IsSameAs("w", false) || m_dataId.IsSameAs("vvel", false) || m_dataId.IsSameAs("vv", false) ||
+           m_dataId.IsSameAs("wap", false) || m_dataId.IsSameAs("omega", false);
+}
+
+bool asPredictor::IsTotalColumnWater() const {
+    return m_dataId.IsSameAs("tcw", false);
+}
+
+bool asPredictor::IsTotalColumnWaterVapour() const {
+    return m_dataId.IsSameAs("tcwv", false);
 }
 
 bool asPredictor::IsPrecipitableWater() const {
-    return m_dataId.IsSameAs("pwat", false) || m_dataId.IsSameAs("p_wat", false) || m_dataId.IsSameAs("tcw", false) ||
+    return m_dataId.IsSameAs("pwat", false) || m_dataId.IsSameAs("p_wat", false) ||
            m_dataId.IsSameAs("pr_wtr", false) || m_dataId.IsSameAs("prwtr", false);
 }
 

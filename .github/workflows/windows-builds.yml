@@ -1,0 +1,103 @@
+name: Windows builds
+
+on:
+  push:
+    branches-ignore:
+      - ci/coverage-gui
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build-server-version:
+    runs-on: windows-2022
+
+    env:
+      ECCODES_DEFINITION_PATH: ${{github.workspace}}/bin/share/eccodes/definitions
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Cache Conan libs
+        id: cache-conan
+        uses: pat-s/always-upload-cache@v3.0.11
+        with:
+          path: C:/Users/runneradmin/.conan
+          key: conan-windows-server
+
+      - name: Setup Conan
+        run: |
+          pip install conan==1.*
+          conan profile new default --detect --force
+          conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/bin
+
+      - name: Get dependencies
+        working-directory: ${{github.workspace}}/bin
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=False -o with_gui=False -o enable_tests=True -o create_installer=True --build=missing
+
+      - name: Build
+        working-directory: ${{github.workspace}}/bin
+        run: conan build ..
+
+      - name: Test
+        working-directory: ${{github.workspace}}/bin/bin
+        run: ./atmoswing-tests
+
+      - name: Make installer
+        working-directory: ${{github.workspace}}/bin
+        run: |
+          cpack -C release -G ZIP
+          cpack -C release -G WIX
+
+
+  build-desktop-version:
+    runs-on: windows-2022
+
+    env:
+      ECCODES_DEFINITION_PATH: ${{github.workspace}}/bin/share/eccodes/definitions
+      PROJ_DATA: ${{github.workspace}}/bin/share/proj
+      PROJ_LIB: ${{github.workspace}}/bin/share/proj
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Cache Conan libs
+        id: cache-conan
+        uses: pat-s/always-upload-cache@v3.0.11
+        with:
+          path: C:/Users/runneradmin/.conan
+          key: conan-windows-desktop
+
+      - name: Setup Conan
+        run: |
+          pip install conan==1.*
+          conan profile new default --detect --force
+          conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/bin
+
+      - name: Get dependencies
+        working-directory: ${{github.workspace}}/bin
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o enable_tests=False -o create_installer=True --build=missing
+
+      - name: Build
+        working-directory: ${{github.workspace}}/bin
+        run: conan build ..
+
+      - name: Make installer
+        working-directory: ${{github.workspace}}/bin
+        run: |
+          cpack -C release -G ZIP
+          cpack -C release -G WIX

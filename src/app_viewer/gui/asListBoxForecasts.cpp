@@ -28,8 +28,8 @@
 
 #include "asListBoxForecasts.h"
 
-#include "asForecastViewer.h"
-#include "images.h"
+#include "asBitmaps.h"
+#include "asForecastRenderer.h"
 
 BEGIN_EVENT_TABLE(asListBoxForecasts, wxTreeCtrl)
 EVT_TREE_SEL_CHANGED(wxID_ANY, asListBoxForecasts::OnForecastSlctChange)
@@ -64,14 +64,14 @@ void asListBoxForecasts::CreateImageList() {
     int size = 16 * g_ppiScaleDc;
 
     // Make an image list containing small icons
-    auto* images = new wxImageList(size, size, true);
+    auto images = new wxImageList(size, size, true);
 
     // Images must match the enum
-    images->Add(*_img_icon_precip);
-    images->Add(*_img_icon_temp);
-    images->Add(*_img_icon_lightning);
-    images->Add(*_img_icon_wind);
-    images->Add(*_img_icon_other);
+    images->Add(asBitmaps::Get(asBitmaps::ICON_PRECIP));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_TEMP));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_LIGHTNING));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_WIND));
+    images->Add(asBitmaps::Get(asBitmaps::ICON_OTHER));
 
     AssignImageList(images);
 }
@@ -104,10 +104,10 @@ void asListBoxForecasts::Update() {
                 image = asListBoxForecasts::TreeCtrlIcon_Other;
         }
 
-        auto* itemMethod = new asForecastTreeItemData(methodRow, -1);
+        auto itemMethod = new asForecastTreeItemData(methodRow, -1);
 
-        wxString label = wxString::Format("%d. %s (%s)", methodRow + 1, forecastFirst->GetMethodIdDisplay(),
-                                          forecastFirst->GetMethodId());
+        wxString label = asStrF("%d. %s (%s)", methodRow + 1, forecastFirst->GetMethodIdDisplay(),
+                                forecastFirst->GetMethodId());
         wxTreeItemId parentItemId = AppendItem(GetRootItem(), label, image, image, itemMethod);
 
         if (parentItemId.IsOk()) {
@@ -115,7 +115,7 @@ void asListBoxForecasts::Update() {
                 asResultsForecast* forecast = m_forecastManager->GetForecast(methodRow, forecastRow);
 
                 // Create the new forecast item
-                auto* itemForecast = new asForecastTreeItemData(methodRow, forecastRow);
+                auto itemForecast = new asForecastTreeItemData(methodRow, forecastRow);
 
                 wxString name = forecast->GetSpecificTagDisplay();
                 if (name.IsEmpty()) name = forecast->GetMethodIdDisplay();
@@ -131,7 +131,7 @@ void asListBoxForecasts::OnForecastSlctChange(wxTreeEvent& event) {
     wxTreeItemId itemId = event.GetItem();
 
     if (!m_skipSlctChangeEvent && itemId.IsOk()) {
-        auto* item = (asForecastTreeItemData*)GetItemData(itemId);
+        auto item = (asForecastTreeItemData*)GetItemData(itemId);
 
         int methodRow = item->GetMethodRow();
         int forecastRow = item->GetForecastRow();
@@ -139,7 +139,7 @@ void asListBoxForecasts::OnForecastSlctChange(wxTreeEvent& event) {
         if (methodRow >= 0) {
             wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_SELECTION_CHANGED);
 
-            auto* message = new asMessageForecastChoice(methodRow, forecastRow);
+            auto message = new asMessageForecastChoice(methodRow, forecastRow);
 
             eventSlct.SetClientData(message);
             GetParent()->ProcessWindowEvent(eventSlct);

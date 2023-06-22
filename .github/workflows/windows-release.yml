@@ -1,0 +1,110 @@
+name: Windows release
+
+on:
+  release:
+    types: [created]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build-server-version:
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Cache Conan libs
+        id: cache-conan
+        uses: pat-s/always-upload-cache@v3.0.11
+        with:
+          path: C:/Users/runneradmin/.conan
+          key: conan-windows-server-release
+
+      - name: Setup Conan
+        run: |
+          pip install conan==1.*
+          conan profile new default --detect --force
+          conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/bin
+
+      - name: Get dependencies
+        working-directory: ${{github.workspace}}/bin
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o build_viewer=False -o with_gui=False -o enable_tests=False -o create_installer=True --build=missing
+
+      - name: Build
+        working-directory: ${{github.workspace}}/bin
+        run: conan build ..
+
+      - name: Make installer
+        working-directory: ${{github.workspace}}/bin
+        run: |
+          cpack -C release -G ZIP
+          cpack -C release -G WIX
+
+      - name: Upload release
+        uses: xresloader/upload-to-github-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "bin/*.zip;bin/*.msi"
+          tags: true
+          draft: true
+          verbose: true
+
+
+  build-desktop-version:
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Cache Conan libs
+        id: cache-conan
+        uses: pat-s/always-upload-cache@v3.0.11
+        with:
+          path: C:/Users/runneradmin/.conan
+          key: conan-windows-desktop-release
+
+      - name: Setup Conan
+        run: |
+          pip install conan==1.*
+          conan profile new default --detect --force
+          conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/bin
+
+      - name: Get dependencies
+        working-directory: ${{github.workspace}}/bin
+        run: conan install .. -s build_type=${{env.BUILD_TYPE}} -o enable_tests=False -o create_installer=True --build=missing
+
+      - name: Build
+        working-directory: ${{github.workspace}}/bin
+        run: conan build ..
+
+      - name: Make installer
+        working-directory: ${{github.workspace}}/bin
+        run: |
+          cpack -C release -G ZIP
+          cpack -C release -G WIX
+
+      - name: Upload release
+        uses: xresloader/upload-to-github-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "bin/*.zip;bin/*.msi"
+          tags: true
+          draft: true
+          verbose: true

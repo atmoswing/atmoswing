@@ -44,8 +44,6 @@ void asParametersCalibration::AddStep() {
 }
 
 bool asParametersCalibration::LoadFromFile(const wxString& filePath) {
-    wxLogVerbose(_("Loading parameters file."));
-
     if (filePath.IsEmpty()) {
         wxLogError(_("The given path to the parameters file is empty."));
         return false;
@@ -97,8 +95,6 @@ bool asParametersCalibration::LoadFromFile(const wxString& filePath) {
     FixTimeLimits();
     FixWeights();
     FixCoordinates();
-
-    wxLogVerbose(_("Parameters file loaded."));
 
     return true;
 }
@@ -236,11 +232,15 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
             AddPredictor(iStep);
             AddPredictorVect(m_stepsVect[iStep]);
             SetPreprocess(iStep, iPtor, false);
-            SetPreload(iStep, iPtor, false);
+            SetPreload(iStep, iPtor, true);
             wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "preload") {
                     SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
+                    if (!fileParams.GetBool(nodeParam)) {
+                        wxLogWarning(
+                            _("The preload option has been disabled. This can result in very long computation time."));
+                    }
                 } else if (nodeParam->GetName() == "standardize") {
                     SetStandardize(iStep, iPtor, fileParams.GetBool(nodeParam));
                 } else if (nodeParam->GetName() == "standardize_mean") {
@@ -520,22 +520,22 @@ void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPto
 
 bool asParametersCalibration::InputsOK() const {
     // Time properties
-    if (asIsNaN(GetArchiveStart())) {
+    if (isnan(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetArchiveEnd())) {
+    if (isnan(GetArchiveEnd())) {
         wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetCalibrationStart())) {
+    if (isnan(GetCalibrationStart())) {
         wxLogError(_("The beginning of the calibration period was not provided in the parameters file."));
         return false;
     }
 
-    if (asIsNaN(GetCalibrationEnd())) {
+    if (isnan(GetCalibrationEnd())) {
         wxLogError(_("The end of the calibration period was not provided in the parameters file."));
         return false;
     }
@@ -585,8 +585,7 @@ bool asParametersCalibration::InputsOK() const {
     // Analog dates
     for (int i = 0; i < GetStepsNb(); i++) {
         if (GetAnalogsNumberVector(i).empty()) {
-            wxLogError(
-                wxString::Format(_("The number of analogs (step %d) was not provided in the parameters file."), i));
+            wxLogError(_("The number of analogs (step %d) was not provided in the parameters file."), i);
             return false;
         }
 
@@ -769,21 +768,20 @@ void asParametersCalibration::InitValues() {
 }
 
 bool asParametersCalibration::SetPredictandStationIdsVector(vvi val) {
-    if (val.size() < 1) {
+    if (val.empty()) {
         wxLogError(_("The provided predictand ID vector is empty."));
         return false;
-    } else {
-        if (val[0].size() < 1) {
-            wxLogError(_("The provided predictand ID vector is empty."));
-            return false;
-        }
+    }
+    if (val[0].empty()) {
+        wxLogError(_("The provided predictand ID vector is empty."));
+        return false;
+    }
 
-        for (int i = 0; i < (int)val.size(); i++) {
-            for (int j = 0; j < (int)val[i].size(); j++) {
-                if (asIsNaN(val[i][j])) {
-                    wxLogError(_("There are NaN values in the provided predictand ID vector."));
-                    return false;
-                }
+    for (auto& iVal : val) {
+        for (int v : iVal) {
+            if (v == 0) {
+                wxLogError(_("There are 0s in the provided predictand ID vector."));
+                return false;
             }
         }
     }
@@ -794,12 +792,12 @@ bool asParametersCalibration::SetPredictandStationIdsVector(vvi val) {
 }
 
 void asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(vi val) {
-    wxASSERT(val.size() > 0);
+    wxASSERT(!val.empty());
     m_timeArrayAnalogsIntervalDaysVect = val;
 }
 
 bool asParametersCalibration::SetScoreNameVector(vwxs val) {
-    wxASSERT(val.size() > 0);
+    wxASSERT(!val.empty());
     for (int i = 0; i < (int)val.size(); i++) {
         if (val[i].IsEmpty()) {
             wxLogError(_("There are NaN values in the provided scores vector."));
@@ -832,7 +830,7 @@ double asParametersCalibration::GetPreprocessHoursLowerLimit(int iStep, int iPto
     } else {
         wxLogError(
             _("Trying to access to an element outside of preprocessHours (lower limit) in the parameters object."));
-        return NaNd;
+        return NAN;
     }
 }
 
@@ -840,8 +838,8 @@ double asParametersCalibration::GetPredictorXminLowerLimit(int iStep, int iPtor)
     wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastRow = m_stepsVect[iStep].predictors[iPtor].xMin.size() - 1;
     wxASSERT(lastRow >= 0);
-    double val =
-        asMinArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0], &m_stepsVect[iStep].predictors[iPtor].xMin[lastRow]);
+    double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0],
+                            &m_stepsVect[iStep].predictors[iPtor].xMin[lastRow]);
     return val;
 }
 
@@ -858,8 +856,8 @@ double asParametersCalibration::GetPredictorYminLowerLimit(int iStep, int iPtor)
     wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastRow = m_stepsVect[iStep].predictors[iPtor].yMin.size() - 1;
     wxASSERT(lastRow >= 0);
-    double val =
-        asMinArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0], &m_stepsVect[iStep].predictors[iPtor].yMin[lastRow]);
+    double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0],
+                            &m_stepsVect[iStep].predictors[iPtor].yMin[lastRow]);
     return val;
 }
 
@@ -892,7 +890,7 @@ double asParametersCalibration::GetPreprocessHoursUpperLimit(int iStep, int iPto
     } else {
         wxLogError(
             _("Trying to access to an element outside of preprocessHours (upper limit) in the parameters object."));
-        return NaNd;
+        return NAN;
     }
 }
 
@@ -900,8 +898,8 @@ double asParametersCalibration::GetPredictorXminUpperLimit(int iStep, int iPtor)
     wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastRow = m_stepsVect[iStep].predictors[iPtor].xMin.size() - 1;
     wxASSERT(lastRow >= 0);
-    double val =
-        asMaxArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0], &m_stepsVect[iStep].predictors[iPtor].xMin[lastRow]);
+    double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0],
+                            &m_stepsVect[iStep].predictors[iPtor].xMin[lastRow]);
     return val;
 }
 
@@ -918,8 +916,8 @@ double asParametersCalibration::GetPredictorYminUpperLimit(int iStep, int iPtor)
     wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastRow = m_stepsVect[iStep].predictors[iPtor].yMin.size() - 1;
     wxASSERT(lastRow >= 0);
-    double val =
-        asMaxArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0], &m_stepsVect[iStep].predictors[iPtor].yMin[lastRow]);
+    double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0],
+                            &m_stepsVect[iStep].predictors[iPtor].yMin[lastRow]);
     return val;
 }
 

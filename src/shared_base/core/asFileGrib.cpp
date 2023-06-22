@@ -45,7 +45,7 @@ asFileGrib::asFileGrib(const wxString& fileName, const FileMode& fileMode)
         case (New):
         case (Append):
         default:
-            asThrowException(_("Grib files edition is not implemented."));
+            throw runtime_error(_("Grib files edition is not implemented."));
     }
 }
 
@@ -53,8 +53,32 @@ asFileGrib::~asFileGrib() {
     Close();
 }
 
+void asFileGrib::SetContext() {
+    grib_context* context = grib_context_get_default();
+    codes_context_set_definitions_path(context, asFileGrib::GetDefinitionsPath());
+}
+
+wxString asFileGrib::GetDefinitionsPath() {
+    wxString definitionsPathEnv;
+    wxGetEnv("ECCODES_DEFINITION_PATH", &definitionsPathEnv);
+    wxConfigBase* pConfig = wxFileConfig::Get();
+    wxString definitionsPath = pConfig->Read("/Libraries/EcCodesDefinitions", definitionsPathEnv);
+
+    wxUniChar separator = wxFileName::GetPathSeparator();
+    if (!definitionsPath.EndsWith("definitions") && !definitionsPath.EndsWith("definitions" + wxString(separator))) {
+        definitionsPath += wxString(separator) + "definitions";
+    }
+
+    if (!wxDirExists(definitionsPath)) {
+        wxLogWarning(_("The ecCodes definition path '%s' was not found."), definitionsPath);
+    }
+
+    return definitionsPath;
+}
+
 bool asFileGrib::Open() {
     if (!Find()) return false;
+    wxLogVerbose(_("Grib file found."));
 
     if (!OpenDataset()) return false;
 
@@ -92,31 +116,36 @@ bool asFileGrib::OpenDataset() {
 
 bool asFileGrib::ParseStructure() {
     int err = 0;
-    codes_handle* h;
 
     // Loop over the GRIB messages in the source
-    while ((h = codes_handle_new_from_file(0, m_filtPtr, PRODUCT_GRIB, &err)) != NULL) {
-        if (!h) {
-            wxLogError("Unable to create handle from file %s", m_fileName.GetFullPath());
-            return false;
-        }
-        if (!CheckGribErrorCode(err)) {
-            return false;
-        }
+    wxLogVerbose(_("Creating handle from file %s"), m_fileName.GetFullPath());
+    try {
+        codes_handle* h;
+        while ((h = codes_handle_new_from_file(NULL, m_filtPtr, PRODUCT_GRIB, &err)) != nullptr) {
+            wxLogVerbose(_("Check if Grib error"));
+            if (!CheckGribErrorCode(err)) {
+                return false;
+            }
 
-        if (m_version == 0) {
-            long version;
-            CODES_CHECK(codes_get_long(h, "editionNumber", &version), 0);
-            m_version = version;
+            if (m_version == 0) {
+                long version;
+                CODES_CHECK(codes_get_long(h, "editionNumber", &version), 0);
+                m_version = version;
+            }
+            wxASSERT(m_version == 1 || m_version == 2);
+
+            ExtractAxes(h);
+            ExtractLevel(h);
+            ExtractTime(h);
+            ExtractGribCode(h);
+
+            codes_handle_delete(h);
         }
-        wxASSERT(m_version == 1 || m_version == 2);
-
-        ExtractAxes(h);
-        ExtractLevel(h);
-        ExtractTime(h);
-        ExtractGribCode(h);
-
-        codes_handle_delete(h);
+    } catch (runtime_error& e) {
+        wxString msg(e.what(), wxConvUTF8);
+        wxLogError(_("Exception caught: %s"), msg);
+        wxLogError(_("Failed to parse grib file (exception)."));
+        return false;
     }
 
     return CheckGribErrorCode(err);
@@ -128,7 +157,7 @@ void asFileGrib::ExtractTime(codes_handle* h) {
     // Get reference date
     size_t dataDateLength = 20;
     char* buffer1 = NULL;
-    buffer1 = (char*)malloc(dataDateLength * sizeof(char));
+    buffer1 = static_cast<char*>(malloc(dataDateLength * sizeof(char)));
     CODES_CHECK(codes_get_string(h, "dataDate", &buffer1[0], &dataDateLength), 0);
     wxString dataDate(buffer1, wxConvUTF8);
     free(buffer1);
@@ -137,7 +166,7 @@ void asFileGrib::ExtractTime(codes_handle* h) {
 
     size_t dataTimeLength = 20;
     char* buffer2 = NULL;
-    buffer2 = (char*)malloc(dataTimeLength * sizeof(char));
+    buffer2 = static_cast<char*>(malloc(dataTimeLength * sizeof(char)));
     CODES_CHECK(codes_get_string(h, "dataTime", &buffer2[0], &dataTimeLength), 0);
     wxString dataTime(buffer2, wxConvUTF8);
     free(buffer2);
@@ -166,7 +195,7 @@ void asFileGrib::ExtractTime(codes_handle* h) {
     } else if (timeUnit == 2) {
         // Days -> nothing to do
     } else {
-        asThrowException(_("Error reading grib file: unlisted time unit."));
+        throw runtime_error(_("Error reading grib file: unlisted time unit."));
     }
 
     if (refTime > 100) {
@@ -182,7 +211,7 @@ void asFileGrib::ExtractLevel(codes_handle* h) {
     // Get level type
     size_t typeLength = 255;
     char* typeVal = NULL;
-    typeVal = (char*)malloc(typeLength * sizeof(char));
+    typeVal = static_cast<char*>(malloc(typeLength * sizeof(char)));
     CODES_CHECK(codes_get_string(h, "typeOfLevel", &typeVal[0], &typeLength), 0);
     wxString type(typeVal, wxConvUTF8);
     free(typeVal);
@@ -197,7 +226,7 @@ void asFileGrib::ExtractLevel(codes_handle* h) {
         wxASSERT(codes_is_defined(h, "indicatorOfTypeOfLevel"));
         CODES_CHECK(codes_get_long(h, "indicatorOfTypeOfLevel", &typeCode), 0);
     } else {
-        asThrowException(_("Error reading grib file: type of level not found."));
+        throw runtime_error(_("Error reading grib file: type of level not found."));
     }
     m_levelTypes.push_back((int)typeCode);
 
@@ -448,6 +477,11 @@ bool asFileGrib::SetIndexPosition(const vi& gribCode, const float level, const b
 bool asFileGrib::SetIndexPositionAnyLevel(const vi gribCode) {
     wxASSERT(gribCode.size() == 4);
 
+    if (m_parameterCode1.empty()) {
+        wxLogError(_("The file %s is empty."), m_fileName.GetFullName());
+        return false;
+    }
+
     // Find corresponding data
     m_index = asNOT_FOUND;
     for (int i = 0; i < m_parameterCode3.size(); ++i) {
@@ -490,12 +524,13 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
 
     int iTime = iTimeStart;
 
-    for (auto& date : fullTimeArray) {
+    for (int i = 0; i < fullTimeArray.size(); ++i) {
         wxASSERT(iTime < timeArray.size());
 
         wxString refDate = asTime::GetStringTime(referenceDateArray[iTime], YYYYMMDD);
         char refDateChar[10];
-        strncpy(refDateChar, (const char*)refDate.mb_str(wxConvUTF8), 9);
+        strncpy(refDateChar, static_cast<const char*>(refDate.mb_str(wxConvUTF8)), 9);
+        refDateChar[sizeof(refDateChar) - 1] = '\0';
         double refTime = referenceTimeArray[iTime];
         double forecastTime = forecastTimeArray[iTime];
 
@@ -505,10 +540,10 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
         int count = 0;
 
         if (m_version == 2) {
-            index = codes_index_new(0, "discipline,parameterCategory,parameterNumber,level,dataDate,dataTime,endStep",
-                                    &err);
+            index = codes_index_new(
+                NULL, "discipline,parameterCategory,parameterNumber,level,dataDate,dataTime,endStep", &err);
         } else if (m_version == 1) {
-            index = codes_index_new(0, "table2Version,indicatorOfParameter,level,dataDate,dataTime,endStep", &err);
+            index = codes_index_new(NULL, "table2Version,indicatorOfParameter,level,dataDate,dataTime,endStep", &err);
         }
 
         if (!CheckGribErrorCode(err)) {
@@ -587,11 +622,11 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
             count++;
 
             // Get data
-            double* values = NULL;
+            double* values = nullptr;
             size_t valuesLenth = 0;
-            CODES_CHECK(codes_get_size(h, "values", &valuesLenth), 0);
+            CODES_CHECK(codes_get_size(h, "values", &valuesLenth), nullptr);
             values = new double[valuesLenth + 1];
-            CODES_CHECK(codes_get_double_array(h, "values", values, &valuesLenth), 0);
+            CODES_CHECK(codes_get_double_array(h, "values", values, &valuesLenth), nullptr);
 
             if (nLats > 0 && m_yAxes[m_index][0] > m_yAxes[m_index][1]) {
                 for (int iLat = nLats - 1; iLat >= 0; iLat--) {

@@ -47,7 +47,7 @@ float asCriteriaS1::Assess(const a2f& refData, const a2f& evalData, int rowsNb, 
 
     if (m_checkNaNs && (refData.hasNaN() || evalData.hasNaN())) {
         wxLogWarning(_("NaNs are not handled in with S1 without preprocessing."));
-        return NaNf;
+        return NAN;
     }
 
     float dividend = 0, divisor = 0;
@@ -96,8 +96,8 @@ float asCriteriaS1::Assess(const a2f& refData, const a2f& evalData, int rowsNb, 
         if (dividend == 0) {
             wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
             return m_scaleWorst;
-        } else if (asIsNaN(divisor) || asIsNaN(dividend)) {
-            return NaNf;
+        } else if (isnan(divisor) || isnan(dividend)) {
+            return NAN;
         } else {
             return m_scaleWorst;
         }

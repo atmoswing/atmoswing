@@ -1,6 +1,19 @@
 
 install(FILES ${CMAKE_SOURCE_DIR}/license.txt ${CMAKE_SOURCE_DIR}/notice.txt DESTINATION share/atmoswing)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/ DESTINATION share/atmoswing)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/share DESTINATION .)
+if (WIN32)
+    install(
+            DIRECTORY ${CMAKE_BINARY_DIR}/bin/
+            DESTINATION .
+            FILES_MATCHING
+            PATTERN "*.dll"
+    )
+    install(
+            DIRECTORY ${CMAKE_BINARY_DIR}/bin/fr
+            DESTINATION .
+    )
+endif()
 
 # COMMON PROPERTIES
 

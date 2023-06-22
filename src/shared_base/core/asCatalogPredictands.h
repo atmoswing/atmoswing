@@ -165,7 +165,7 @@ class asCatalogPredictands : public wxObject {
     wxString m_coordSys;
     asPredictand::Parameter m_parameter;
     asPredictand::Unit m_unit;
-    std::vector<DataStruct> m_stations;
+    vector<DataStruct> m_stations;
     asPredictand::TemporalResolution m_temporalResolution;
     asPredictand::SpatialAggregation m_spatialAggregation;
 };

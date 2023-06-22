@@ -40,14 +40,14 @@ class asParametersForecast : public asParameters {
         wxString archiveDatasetId;
         wxString archiveDataId;
         bool archiveStandardize = false;
-        double archiveStandardizeMean = NaNd;
-        double archiveStandardizeSd = NaNd;
+        double archiveStandardizeMean = NAN;
+        double archiveStandardizeSd = NAN;
         int archiveMembersNb = 0;
         wxString realtimeDatasetId;
         wxString realtimeDataId;
         bool realtimeStandardize = false;
-        double realtimeStandardizeMean = NaNd;
-        double realtimeStandardizeSd = NaNd;
+        double realtimeStandardizeMean = NAN;
+        double realtimeStandardizeSd = NAN;
         int realtimeMembersNb = 0;
         vwxs preprocessArchiveDatasetIds;
         vwxs preprocessArchiveDataIds;
@@ -57,14 +57,14 @@ class asParametersForecast : public asParameters {
         int preprocessRealtimeMembersNb = 0;
     } ParamsPredictorForecast;
 
-    typedef std::vector<ParamsPredictorForecast> VectorParamsPredictorsForecast;
+    typedef vector<ParamsPredictorForecast> VectorParamsPredictorsForecast;
 
     typedef struct ParamsStepForecast {
         vi analogsNumberLeadTime;
         VectorParamsPredictorsForecast predictors;
     } ParamsStepForecast;
 
-    typedef std::vector<ParamsStepForecast> VectorParamsStepForecast;
+    typedef vector<ParamsStepForecast> VectorParamsStepForecast;
 
     asParametersForecast();
 

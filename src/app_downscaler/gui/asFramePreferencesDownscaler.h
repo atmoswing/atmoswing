@@ -28,7 +28,7 @@
 #ifndef AS_FRAME_PREFERENCES_DOWNSCALER
 #define AS_FRAME_PREFERENCES_DOWNSCALER
 
-#include "AtmoswingDownscalerGui.h"
+#include "AtmoSwingDownscalerGui.h"
 #include "asIncludes.h"
 
 class asFramePreferencesDownscaler : public asFramePreferencesDownscalerVirtual {

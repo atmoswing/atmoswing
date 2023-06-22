@@ -84,8 +84,8 @@ bool asPredictorEcmwfCera20C::Init() {
 
     } else if (IsSurfaceLevel()) {
         m_fStr.hasLevelDim = false;
-        if (IsPrecipitableWater()) {
-            m_parameter = PrecipitableWater;
+        if (IsTotalColumnWater()) {
+            m_parameter = TotalColumnWater;
             m_parameterName = "Total column water";
             m_fileVarName = "tcw";
             m_unit = kg_m2;
@@ -134,7 +134,7 @@ bool asPredictorEcmwfCera20C::Init() {
 
 void asPredictorEcmwfCera20C::ListFiles(asTimeArray& timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
-        m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
+        m_files.push_back(GetFullDirectoryPath() + asStrF(m_fileNamePattern, iYear));
     }
 }
 

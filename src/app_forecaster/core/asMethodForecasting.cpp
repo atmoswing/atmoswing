@@ -37,14 +37,14 @@
 
 #ifndef UNIT_TESTING
 
-#include "AtmoswingAppForecaster.h"
+#include "AtmoSwingAppForecaster.h"
 
 #endif
 
 asMethodForecasting::asMethodForecasting(asBatchForecasts* batchForecasts, wxWindow* parent)
     : asMethodStandard(),
       m_batchForecasts(batchForecasts),
-      m_forecastDate(NaNd),
+      m_forecastDate(NAN),
       m_parent(parent) {}
 
 asMethodForecasting::~asMethodForecasting() {
@@ -60,11 +60,12 @@ bool asMethodForecasting::Manager() {
     asPredictorOper::SetDefaultPredictorsUrls();
 
 #if USE_GUI
-    if (g_responsive) wxGetApp().Yield();
+    if (g_responsive) wxTheApp->Yield();
 #endif
     m_cancel = false;
+    bool hasErrors = false;
 
-    if (asIsNaN(m_forecastDate)) {
+    if (isnan(m_forecastDate)) {
         wxLogError(_("The date of the forecast has not been defined."));
         return false;
     }
@@ -85,7 +86,7 @@ bool asMethodForecasting::Manager() {
         // Execute the forecasts
         for (int i = 0; i < m_batchForecasts->GetForecastsNb(); i++) {
 #if USE_GUI
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
             if (m_cancel) return false;
 
             // Send event
@@ -95,10 +96,10 @@ bool asMethodForecasting::Manager() {
                 m_parent->ProcessWindowEvent(eventRunning);
             }
 
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
 #endif
-            asLog::PrintToConsole(wxString::Format("Processing %s... ", m_batchForecasts->GetForecastFileName(i)));
-            wxLogMessage("Processing %s", m_batchForecasts->GetForecastFileName(i));
+            asLog::PrintToConsole(asStrF(_("Processing %s... "), m_batchForecasts->GetForecastFileName(i)));
+            wxLogMessage(_("Processing %s"), m_batchForecasts->GetForecastFileName(i));
             fflush(stdout);
 
             // Load parameters
@@ -110,7 +111,7 @@ bool asMethodForecasting::Manager() {
             m_predictandDBFilePath = predictandDBDir + DS + params.GetPredictandDatabase();
 
 #if USE_GUI
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
 #endif
 
             // Watch
@@ -118,8 +119,9 @@ bool asMethodForecasting::Manager() {
 
             // Forecast
             if (!Forecast(params)) {
+                hasErrors = true;
                 asLog::PrintToConsole(_("FAILED!\n"));
-                wxLogError(_("The forecast could not be achieved"));
+                wxLogError(_("The forecast could not be processed"));
 
 #if USE_GUI
                 // Send event
@@ -132,7 +134,7 @@ bool asMethodForecasting::Manager() {
                 Cleanup();
             } else {
                 // Display processing time
-                asLog::PrintToConsole(wxString::Format(_("done in %.1f sec.\n"), float(sw.Time()) / 1000.0f));
+                asLog::PrintToConsole(asStrF(_("done in %.1f sec.\n"), float(sw.Time()) / 1000.0f));
                 wxLogMessage(_("Processing of the forecast \"%s\" - \"%s\" took %.1f sec to execute"),
                              params.GetMethodIdDisplay(), params.GetSpecificTagDisplay(), float(sw.Time()) / 1000.0f);
                 fflush(stdout);
@@ -164,7 +166,7 @@ bool asMethodForecasting::Manager() {
                 }
             }
         }
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         if (!msg.IsEmpty()) {
 #if USE_GUI
@@ -182,7 +184,7 @@ bool asMethodForecasting::Manager() {
 #endif
     Cleanup();
 
-    return true;
+    return !hasErrors;
 }
 
 bool asMethodForecasting::Forecast(asParametersForecast& params) {
@@ -195,7 +197,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
     bool forecastDateChanged = true;
     while (forecastDateChanged) {
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
         if (m_cancel) return false;
 
@@ -206,13 +208,13 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
             wxLogVerbose(_("Forecast already exists."));
             m_resultsFilePaths.push_back(resultsCheck.GetFilePath());
             if (m_batchForecasts->HasExports()) {
-                auto* results = new asResultsForecast();
+                auto results = new asResultsForecast();
                 results->SetFilePath(resultsCheck.GetFilePath());
                 results->Load();
                 m_aggregator.Add(results);
             }
 #if USE_GUI
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
 #endif
             return true;
         }
@@ -224,13 +226,13 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
             m_parent->ProcessWindowEvent(eventDownloading);
         }
 
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
 
         forecastDateChanged = false;
         for (int iStep = 0; iStep < stepsNb; iStep++) {
 #if USE_GUI
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
 #endif
             if (m_cancel) return false;
             if (!DownloadRealtimePredictors(params, iStep, forecastDateChanged)) return false;
@@ -242,13 +244,13 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
             wxLogVerbose(_("Forecast already exists."));
             m_resultsFilePaths.push_back(resultsCheck.GetFilePath());
             if (m_batchForecasts->HasExports()) {
-                auto* results = new asResultsForecast();
+                auto results = new asResultsForecast();
                 results->SetFilePath(resultsCheck.GetFilePath());
                 results->Load();
                 m_aggregator.Add(results);
             }
 #if USE_GUI
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
 #endif
             return true;
         }
@@ -263,28 +265,25 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
     }
 
 #if USE_GUI
-    if (g_responsive) wxGetApp().Yield();
+    if (g_responsive) wxTheApp->Yield();
 #endif
     if (m_cancel) return false;
 
-    // Load the Predictand DB
-    wxLogVerbose(_("Loading the Predictand DB."));
     if (!LoadPredictandDB(m_predictandDBFilePath)) return false;
-    wxLogVerbose(_("Predictand DB loaded."));
 
 #if USE_GUI
-    if (g_responsive) wxGetApp().Yield();
+    if (g_responsive) wxTheApp->Yield();
 #endif
     if (m_cancel) return false;
 
     // Resulting object
-    auto* resultsPrevious = new asResultsForecast();
-    auto* results = new asResultsForecast();
+    auto resultsPrevious = new asResultsForecast();
+    auto results = new asResultsForecast();
     results->SetForecastsDirectory(m_batchForecasts->GetForecastsOutputDirectory());
 
     for (int iStep = 0; iStep < stepsNb; iStep++) {
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
         if (m_cancel) {
             wxDELETE(results);
@@ -309,7 +308,7 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
         // At last get the values
         if (iStep == stepsNb - 1) {
 #if USE_GUI
-            if (g_responsive) wxGetApp().Yield();
+            if (g_responsive) wxTheApp->Yield();
 #endif
             if (m_cancel) {
                 wxDELETE(results);
@@ -333,13 +332,13 @@ bool asMethodForecasting::Forecast(asParametersForecast& params) {
 
             try {
                 results->Save();
-            } catch (std::exception& e) {
+            } catch (runtime_error& e) {
                 wxString msg(e.what(), wxConvUTF8);
                 wxLogError(_("Exception caught: %s"), msg);
 #if USE_GUI
                 if (!g_silentMode) wxMessageBox(msg);
 #else
-                asLog::PrintToConsole(wxString::Format(_("Exception caught: %s"), msg));
+                asLog::PrintToConsole(asStrF(_("Exception caught: %s"), msg));
 #endif
                 if (wxFileExists(results->GetFilePath())) {
                     wxRemoveFile(results->GetFilePath());
@@ -376,14 +375,14 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast& param
                                                      bool& forecastDateChanged) {
     for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
         if (m_cancel) return false;
 
         wxLogVerbose(_("Downloading data."));
 
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
 
         if (!params.NeedsPreprocessing(iStep, iPtor)) {
@@ -396,6 +395,8 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast& param
                 return false;
             }
 
+            predictorRealtime->SetLevel(params.GetPredictorLevel(iStep, iPtor));
+
             if (!GetFiles(params, predictorRealtime, forecastDateChanged, params.GetPredictorHour(iStep, iPtor))) {
                 wxDELETE(predictorRealtime);
                 return false;
@@ -407,19 +408,21 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast& param
 
             for (int iPre = 0; iPre < preprocessSize; iPre++) {
 #if USE_GUI
-                if (g_responsive) wxGetApp().Yield();
+                if (g_responsive) wxTheApp->Yield();
 #endif
                 if (m_cancel) return false;
 
                 // Instantiate a predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
 
                 if (!predictorRealtimePreprocess) {
                     wxDELETE(predictorRealtimePreprocess);
                     return false;
                 }
+
+                predictorRealtimePreprocess->SetLevel(params.GetPreprocessLevel(iStep, iPtor, iPre));
 
                 if (!GetFiles(params, predictorRealtimePreprocess, forecastDateChanged,
                               params.GetPreprocessHour(iStep, iPtor, iPre))) {
@@ -456,17 +459,13 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
     if (resultsCheck.Exists()) {
         wxLogVerbose(_("Forecast already exists."));
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
         return true;
     }
 
-    // Restriction needed
-    wxASSERT(params.GetTargetTimeStepHours() > 0);
-    predictorRealtime->RestrictTimeArray(hour, params.GetTargetTimeStepHours(), params.GetLeadTimeNb());
-
     // Update forecasting date
-    if (!predictorRealtime->BuildFilenamesUrls()) {
+    if (!predictorRealtime->BuildFilenamesAndUrls(hour, params.GetTargetTimeStepHours(), params.GetLeadTimeNb())) {
         return false;
     }
 
@@ -474,7 +473,7 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
     int counterFails = 0;
     while (true) {
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
         if (m_cancel) {
             return false;
@@ -495,17 +494,16 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
                     if (resultsCheck.Exists()) {
                         wxLogVerbose(_("Forecast already exists."));
 #if USE_GUI
-                        if (g_responsive) wxGetApp().Yield();
+                        if (g_responsive) wxTheApp->Yield();
 #endif
                         return true;
                     }
                     forecastDateChanged = true;
-                    predictorRealtime->BuildFilenamesUrls();
+                    predictorRealtime->BuildFilenamesAndUrls(hour, params.GetTargetTimeStepHours(),
+                                                             params.GetLeadTimeNb());
                     counterFails++;
                 } else {
-                    wxLogError(
-                        _("The maximum attempts is reached to download the real-time predictor. "
-                          "Forecasting failed."));
+                    wxLogError(_("The maximum attempts is reached to download the real-time predictor."));
                     return false;
                 }
             } else {
@@ -521,6 +519,7 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
             for (const auto& fileName : fileNames) {
                 wxString filePath = m_batchForecasts->GetPredictorsRealtimeDirectory() + DS + fileName;
                 if (!wxFileName::FileExists(filePath)) {
+                    wxLogError(_("File not found: %s"), filePath);
                     countMissing++;
                 }
             }
@@ -529,28 +528,8 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
                 break;
             }
 
-            if (counterFails < maxPrevStepsNb) {
-                // Try to download older data
-                m_forecastDate = predictorRealtime->DecrementRunDateInUse();
-                // Check if result already exists
-                resultsCheck.SetCurrentStep(params.GetStepsNb() - 1);
-                resultsCheck.Init(params, m_forecastDate);
-                if (resultsCheck.Exists()) {
-                    wxLogVerbose(_("Forecast already exists."));
-#if USE_GUI
-                    if (g_responsive) wxGetApp().Yield();
-#endif
-                    return true;
-                }
-                forecastDateChanged = true;
-                predictorRealtime->BuildFilenamesUrls();
-                counterFails++;
-            } else {
-                wxLogError(
-                    _("The maximum attempts is reached to search for the real-time predictor. Forecasting "
-                      "failed."));
-                return false;
-            }
+            wxLogError(_("Directory: %s"), m_batchForecasts->GetPredictorsRealtimeDirectory());
+            return false;
         }
     }
     m_forecastDate = predictorRealtime->GetRunDateInUse();
@@ -558,9 +537,9 @@ bool asMethodForecasting::GetFiles(asParametersForecast& params, asPredictorOper
     return true;
 }
 
-bool asMethodForecasting::PreprocessRealtimePredictors(std::vector<asPredictorOper*> predictors, const wxString& method,
+bool asMethodForecasting::PreprocessRealtimePredictors(vector<asPredictorOper*> predictors, const wxString& method,
                                                        asPredictor* result) {
-    std::vector<asPredictor*> ptorsPredictors(predictors.begin(), predictors.end());
+    vector<asPredictor*> ptorsPredictors(predictors.begin(), predictors.end());
 
     return asPreprocessor::Preprocess(ptorsPredictors, method, result);
 }
@@ -578,49 +557,15 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                                  params.GetTimeArrayAnalogsMode());
     timeArrayArchive.Init();
 
-    // Get last lead time of the data
-    double lastLeadTime = 9999;
-    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-        if (!params.NeedsPreprocessing(iStep, iPtor)) {
-            // Instantiate a predictor object
-            asPredictorOper* predictorRealtime = asPredictorOper::GetInstance(
-                params.GetPredictorRealtimeDatasetId(iStep, iPtor), params.GetPredictorRealtimeDataId(iStep, iPtor));
-            if (!predictorRealtime) {
-                return false;
-            }
-
-            predictorRealtime->SetRunDateInUse(m_forecastDate);
-            lastLeadTime =
-                wxMin(lastLeadTime, predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
-
-            wxDELETE(predictorRealtime);
-        } else {
-            for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
-                // Instantiate a predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
-                if (!predictorRealtimePreprocess) {
-                    return false;
-                }
-
-                predictorRealtimePreprocess->SetRunDateInUse(m_forecastDate);
-                lastLeadTime = wxMin(lastLeadTime, predictorRealtimePreprocess->GetForecastLeadTimeEnd() / 24.0 -
-                                                       params.GetTimeSpanDays());
-
-                wxDELETE(predictorRealtimePreprocess);
-            }
-        }
-    }
-
     // Target time array
     vd leadTime = params.GetLeadTimeDaysVector();
     vd tmpTimeArray;
     for (double i : leadTime) {
-        if (i > lastLeadTime) break;
-
-        double tmpDate = floor(m_forecastDate) + i;
-        tmpTimeArray.push_back(tmpDate);
+        if (params.GetTargetTimeStepHours() >= 24) {
+            tmpTimeArray.push_back(floor(m_forecastDate) + i);
+        } else {
+            tmpTimeArray.push_back(m_forecastDate + i);
+        }
     }
     wxASSERT(!tmpTimeArray.empty());
     double timeStartTarget = tmpTimeArray[0];
@@ -629,38 +574,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
     asTimeArray timeArrayTarget = asTimeArray(tmpTimeArray);
     timeArrayTarget.Init();
 
-    // Check archive time array length
-    if (timeArrayArchive.GetSize() < 100) {
-        wxLogError(_("The time array is not consistent in asMethodForecasting::GetAnalogsDates: size=%d."),
-                   timeArrayArchive.GetSize());
+    wxASSERT(timeArrayArchive.GetSize() > 100);
+    if (!HasEnoughMemory(params, iStep, timeArrayArchive)) {
         return false;
-    }
-    wxLogVerbose(_("Date array created."));
-
-    // Calculate needed memory
-    wxLongLong neededMem = 0;
-    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-        neededMem += (params.GetPredictorXptsnb(iStep, iPtor)) * (params.GetPredictorYptsnb(iStep, iPtor));
-    }
-    neededMem *= timeArrayArchive.GetSize();  // time dimension
-    neededMem *= 4;                           // to bytes (for floats)
-    double neededMemMb = neededMem.ToDouble();
-    neededMemMb /= 1048576.0;  // to Mb
-
-    // Get available memory
-    wxMemorySize freeMemSize = wxGetFreeMemory();
-    wxLongLong freeMem = freeMemSize;
-    double freeMemMb = freeMem.ToDouble();
-    freeMemMb /= 1048576.0;  // To Mb
-
-    if (freeMemSize < 0) {
-        wxLogVerbose(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb);
-    } else {
-        wxLogVerbose(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb);
-        if (neededMemMb > freeMemMb) {
-            wxLogError(_("Data cannot fit into available memory."));
-            return false;
-        }
     }
 
 #if USE_GUI
@@ -676,7 +592,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
         wxLogVerbose(_("Loading data (step %d, predictor nb %d)."), iStep, iPtor);
 
 #if USE_GUI
-        if (g_responsive) wxGetApp().Yield();
+        if (g_responsive) wxTheApp->Yield();
 #endif
 
         if (!params.NeedsPreprocessing(iStep, iPtor)) {
@@ -728,13 +644,10 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 predictorRealtime->SelectMembers(params.GetPredictorRealtimeMembersNb(iStep, iPtor));
             }
 
-            // Restriction needed
-            wxASSERT(params.GetTargetTimeStepHours() > 0);
-            predictorRealtime->RestrictTimeArray(params.GetPredictorHour(iStep, iPtor), params.GetTargetTimeStepHours(),
-                                                 params.GetLeadTimeNb());
-
             // Update
-            if (!predictorRealtime->BuildFilenamesUrls()) {
+            predictorRealtime->SetLevel(params.GetPredictorLevel(iStep, iPtor));
+            if (!predictorRealtime->BuildFilenamesAndUrls(params.GetPredictorHour(iStep, iPtor),
+                                                          params.GetTargetTimeStepHours(), params.GetLeadTimeNb())) {
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
                 return false;
@@ -743,8 +656,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             // Check time array for real-time data
             vd listTimeArray = predictorRealtime->GetDataDates();
             wxASSERT_MSG(listTimeArray.size() >= timeArrayDataTarget.GetSize(),
-                         wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
-                                          (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
+                         asStrF("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
+                                (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
             for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
                 if (listTimeArray[i] != timeArrayDataTarget[i]) {
                     wxLogError(_("The real-time predictor time array is not consistent "
@@ -795,7 +708,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             m_storagePredictorsArchive.push_back(predictorArchive);
 
             // Realtime data loading
-            wxLogVerbose(_("Loading forecast data."));
+            wxLogVerbose(_("Loading forecast data (predictorRealtime->Load)."));
             if (!predictorRealtime->Load(area, timeArrayDataTarget, params.GetPredictorLevel(iStep, iPtor))) {
                 wxLogError(_("Real-time data (%s) could not be loaded."), predictorRealtime->GetDataId());
                 wxDELETE(area);
@@ -825,7 +738,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             for (int iPre = 0; iPre < preprocessSize; iPre++) {
                 wxLogVerbose(_("Loading predictor %d."), iPre);
 #if USE_GUI
-                if (g_responsive) wxGetApp().Yield();
+                if (g_responsive) wxTheApp->Yield();
 #endif
 
                 // Date array object instantiation for the data loading.
@@ -848,10 +761,10 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 timeArrayDataTarget.Init();
 
                 // Instantiate an archive predictor object
-                asPredictor* predictorArchivePreprocess =
-                    asPredictor::GetInstance(params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
-                                             params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
-                                             m_batchForecasts->GetPredictorsArchiveDirectory());
+                asPredictor* predictorArchivePreprocess = asPredictor::GetInstance(
+                    params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
+                    m_batchForecasts->GetPredictorsArchiveDirectory());
                 if (!predictorArchivePreprocess) {
                     return false;
                 }
@@ -865,9 +778,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 }
 
                 // Instantiate an realtime predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
                 if (!predictorRealtimePreprocess) {
                     wxDELETE(predictorArchivePreprocess);
                     return false;
@@ -882,13 +795,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                         params.GetPreprocessRealtimeMembersNb(iStep, iPtor, iPre));
                 }
 
-                // Restriction needed
-                wxASSERT(params.GetTargetTimeStepHours() > 0);
-                predictorRealtimePreprocess->RestrictTimeArray(params.GetPreprocessHour(iStep, iPtor, iPre),
-                                                               params.GetTargetTimeStepHours(), params.GetLeadTimeNb());
-
                 // Update
-                if (!predictorRealtimePreprocess->BuildFilenamesUrls()) {
+                predictorRealtimePreprocess->SetLevel(params.GetPreprocessLevel(iStep, iPtor, iPre));
+                if (!predictorRealtimePreprocess->BuildFilenamesAndUrls(params.GetPreprocessHour(iStep, iPtor, iPre),
+                                                                        params.GetTargetTimeStepHours(),
+                                                                        params.GetLeadTimeNb())) {
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
                     return false;
@@ -897,8 +808,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 // Check time array for real-time data
                 vd listTimeArray = predictorRealtimePreprocess->GetDataDates();
                 wxASSERT_MSG(listTimeArray.size() >= timeArrayDataTarget.GetSize(),
-                             wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
-                                              (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
+                             asStrF("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
+                                    (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
 
                 for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
                     if (listTimeArray[i] != timeArrayDataTarget[i]) {
@@ -928,7 +839,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
                 m_storagePredictorsArchivePreprocess.push_back(predictorArchivePreprocess);
 
                 // Realtime data loading
-                wxLogVerbose(_("Loading forecast data."));
+                wxLogVerbose(_("Loading forecast data (predictorRealtimePreprocess->Load)."));
                 if (!predictorRealtimePreprocess->Load(area, timeArrayDataTarget,
                                                        params.GetPreprocessLevel(iStep, iPtor, iPre))) {
                     wxLogError(_("Real-time data (%s) could not be loaded."), predictorRealtimePreprocess->GetDataId());
@@ -944,7 +855,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             params.FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
             // Instantiate an archive predictor object
-            auto* predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
+            auto predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
             if (!predictorArchive) {
                 return false;
             }
@@ -957,7 +868,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
             }
 
             // Instantiate an realtime predictor object
-            auto* predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
+            auto predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
             if (!predictorRealtime) {
                 wxDELETE(predictorArchive);
                 return false;
@@ -1003,10 +914,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
         wxLogVerbose(_("Data loaded"));
 
         // Instantiate a score object
-        wxLogVerbose(_("Creating a criterion object."));
         asCriteria* criterion = asCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor));
         m_storageCriteria.push_back(criterion);
-        wxLogVerbose(_("Criterion object created."));
     }
 
 #if USE_GUI
@@ -1018,9 +927,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
         m_parent->ProcessWindowEvent(eventProcessing);
     }
 #endif
-
-    // Send data and criteria to processor
-    wxLogVerbose(_("Start processing the comparison."));
 
     a1d timeArrayTargetVect = timeArrayTarget.GetTimeArray();
     a1d timeArrayTargetVectUnique(1);
@@ -1072,9 +978,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
     results.SetCurrentStep(iStep);
     results.Init(params, m_forecastDate);
 
-    // Date array object instantiation for the processor
-    wxLogVerbose(_("Creating a date arrays for the processor."));
-
     // Archive time array
     double timeStartArchive = params.GetArchiveStart();
     double timeEndArchive = params.GetArchiveEnd() - params.GetTimeSpanDays();
@@ -1082,50 +985,15 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                                  params.GetTimeArrayAnalogsMode());
     timeArrayArchive.Init();
 
-    // Get last lead time of the data
-    double lastLeadTime = 9999;
-    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-        if (!params.NeedsPreprocessing(iStep, iPtor)) {
-            // Instantiate a predictor object
-            asPredictorOper* predictorRealtime = asPredictorOper::GetInstance(
-                params.GetPredictorRealtimeDatasetId(iStep, iPtor), params.GetPredictorRealtimeDataId(iStep, iPtor));
-            if (!predictorRealtime) {
-                return false;
-            }
-            predictorRealtime->SetPredictorsRealtimeDirectory(m_batchForecasts->GetPredictorsRealtimeDirectory());
-            predictorRealtime->SetRunDateInUse(m_forecastDate);
-            lastLeadTime =
-                wxMin(lastLeadTime, predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
-
-            wxDELETE(predictorRealtime);
-        } else {
-            for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
-                // Instantiate a predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
-                if (!predictorRealtimePreprocess) {
-                    return false;
-                }
-                predictorRealtimePreprocess->SetPredictorsRealtimeDirectory(
-                    m_batchForecasts->GetPredictorsRealtimeDirectory());
-                predictorRealtimePreprocess->SetRunDateInUse(m_forecastDate);
-                lastLeadTime = wxMin(lastLeadTime, predictorRealtimePreprocess->GetForecastLeadTimeEnd() / 24.0 -
-                                                       params.GetTimeSpanDays());
-
-                wxDELETE(predictorRealtimePreprocess);
-            }
-        }
-    }
-
     // Target time array
     vd leadTime = params.GetLeadTimeDaysVector();
     vd tmpTimeArray;
     for (double time : leadTime) {
-        if (time > lastLeadTime) break;
-
-        double tmpDate = floor(m_forecastDate) + time;
-        tmpTimeArray.push_back(tmpDate);
+        if (params.GetTargetTimeStepHours() >= 24) {
+            tmpTimeArray.push_back(floor(m_forecastDate) + time);
+        } else {
+            tmpTimeArray.push_back(m_forecastDate + time);
+        }
     }
     wxASSERT(!tmpTimeArray.empty());
     double timeStartTarget = tmpTimeArray[0];
@@ -1140,32 +1008,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                    timeArrayArchive.GetSize());
         return false;
     }
-    wxLogVerbose(_("Date array created."));
 
-    // Calculate needed memory
-    wxLongLong neededMem = 0;
-    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-        neededMem += (params.GetPredictorXptsnb(iStep, iPtor)) * (params.GetPredictorYptsnb(iStep, iPtor));
-    }
-    neededMem *= timeArrayArchive.GetSize();  // time dimension
-    neededMem *= 4;                           // to bytes (for floats)
-    double neededMemMb = neededMem.ToDouble();
-    neededMemMb /= 1048576.0;  // to Mb
-
-    // Get available memory
-    wxMemorySize freeMemSize = wxGetFreeMemory();
-    wxLongLong freeMem = freeMemSize;
-    double freeMemMb = freeMem.ToDouble();
-    freeMemMb /= 1048576.0;  // To Mb
-
-    if (freeMemSize < 0) {
-        wxLogVerbose(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb);
-    } else {
-        wxLogVerbose(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb);
-        if (neededMemMb > freeMemMb) {
-            wxLogError(_("Data cannot fit into available memory."));
-            return false;
-        }
+    if (!HasEnoughMemory(params, iStep, timeArrayArchive)) {
+        return false;
     }
 
 #if USE_GUI
@@ -1229,13 +1074,10 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                 predictorRealtime->SelectMembers(params.GetPredictorRealtimeMembersNb(iStep, iPtor));
             }
 
-            // Restriction needed
-            wxASSERT(params.GetTargetTimeStepHours() > 0);
-            predictorRealtime->RestrictTimeArray(params.GetPredictorHour(iStep, iPtor), params.GetTargetTimeStepHours(),
-                                                 params.GetLeadTimeNb());
-
             // Update
-            if (!predictorRealtime->BuildFilenamesUrls()) {
+            predictorRealtime->SetLevel(params.GetPredictorLevel(iStep, iPtor));
+            if (!predictorRealtime->BuildFilenamesAndUrls(params.GetPredictorHour(iStep, iPtor),
+                                                          params.GetTargetTimeStepHours(), params.GetLeadTimeNb())) {
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
                 return false;
@@ -1244,8 +1086,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
             // Check time array for real-time data
             vd listTimeArray = predictorRealtime->GetDataDates();
             wxASSERT_MSG(listTimeArray.size() >= timeArrayDataTarget.GetSize(),
-                         wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
-                                          (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
+                         asStrF("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
+                                (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
             for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
                 if (listTimeArray[i] != timeArrayDataTarget[i]) {
                     wxLogError(_("The real-time predictor time array is not consistent "
@@ -1331,10 +1173,10 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                 timeArrayDataTarget.Init();
 
                 // Instantiate an archive predictor object
-                asPredictor* predictorArchivePreprocess =
-                    asPredictor::GetInstance(params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
-                                             params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
-                                             m_batchForecasts->GetPredictorsArchiveDirectory());
+                asPredictor* predictorArchivePreprocess = asPredictor::GetInstance(
+                    params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
+                    m_batchForecasts->GetPredictorsArchiveDirectory());
                 if (!predictorArchivePreprocess) {
                     return false;
                 }
@@ -1348,9 +1190,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                 }
 
                 // Instantiate an realtime predictor object
-                asPredictorOper* predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                asPredictorOper* predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
                 if (!predictorRealtimePreprocess) {
                     wxDELETE(predictorArchivePreprocess);
                     return false;
@@ -1365,13 +1207,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                         params.GetPreprocessRealtimeMembersNb(iStep, iPtor, iPre));
                 }
 
-                // Restriction needed
-                wxASSERT(params.GetTargetTimeStepHours() > 0);
-                predictorRealtimePreprocess->RestrictTimeArray(params.GetPreprocessHour(iStep, iPtor, iPre),
-                                                               params.GetTargetTimeStepHours(), params.GetLeadTimeNb());
-
                 // Update
-                if (!predictorRealtimePreprocess->BuildFilenamesUrls()) {
+                predictorRealtimePreprocess->SetLevel(params.GetPreprocessLevel(iStep, iPtor, iPre));
+                if (!predictorRealtimePreprocess->BuildFilenamesAndUrls(params.GetPreprocessHour(iStep, iPtor, iPre),
+                                                                        params.GetTargetTimeStepHours(),
+                                                                        params.GetLeadTimeNb())) {
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
                     return false;
@@ -1380,8 +1220,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
                 // Check time array for real-time data
                 vd listTimeArray = predictorRealtimePreprocess->GetDataDates();
                 wxASSERT_MSG(listTimeArray.size() >= timeArrayDataTarget.GetSize(),
-                             wxString::Format("listTimeArray.size() = %d, timeArrayDataTarget.GetSize() = %d",
-                                              (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
+                             asStrF("listTimeArray.size() = %d, timeArrayDataTarget.GetSize() = %d",
+                                    (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
                 for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
                     if (listTimeArray[i] != timeArrayDataTarget[i]) {
                         wxLogError(_("The real-time predictor time array is not consistent "
@@ -1421,21 +1261,19 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
 
                 wxASSERT_MSG(
                     predictorArchivePreprocess->GetLatPtsnb() == predictorRealtimePreprocess->GetLatPtsnb(),
-                    wxString::Format(
-                        "predictorArchivePreprocess.GetLatPtsnb()=%d, predictorRealtimePreprocess.GetLatPtsnb()=%d",
-                        predictorArchivePreprocess->GetLatPtsnb(), predictorRealtimePreprocess->GetLatPtsnb()));
+                    asStrF("predictorArchivePreprocess.GetLatPtsnb()=%d, predictorRealtimePreprocess.GetLatPtsnb()=%d",
+                           predictorArchivePreprocess->GetLatPtsnb(), predictorRealtimePreprocess->GetLatPtsnb()));
                 wxASSERT_MSG(
                     predictorArchivePreprocess->GetLonPtsnb() == predictorRealtimePreprocess->GetLonPtsnb(),
-                    wxString::Format(
-                        "predictorArchivePreprocess.GetLonPtsnb()=%d, predictorRealtimePreprocess.GetLonPtsnb()=%d",
-                        predictorArchivePreprocess->GetLonPtsnb(), predictorRealtimePreprocess->GetLonPtsnb()));
+                    asStrF("predictorArchivePreprocess.GetLonPtsnb()=%d, predictorRealtimePreprocess.GetLonPtsnb()=%d",
+                           predictorArchivePreprocess->GetLonPtsnb(), predictorRealtimePreprocess->GetLonPtsnb()));
             }
 
             // Fix the criteria if S1
             params.FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
             // Instantiate an archive predictor object
-            auto* predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
+            auto predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
             if (!predictorArchive) {
                 return false;
             }
@@ -1448,7 +1286,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
             }
 
             // Instantiate an realtime predictor object
-            auto* predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
+            auto predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
             if (!predictorRealtime) {
                 wxDELETE(predictorArchive);
                 return false;
@@ -1508,9 +1346,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
         m_parent->ProcessWindowEvent(eventProcessing);
     }
 #endif
-
-    // Send data and criteria to processor
-    wxLogVerbose(_("Start processing the comparison."));
 
     a1f leadTimes = resultsPrev.GetTargetDates();
 
@@ -1578,11 +1413,12 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast& results, asParamet
     results.SetPredictandParameter(m_predictandDB->GetDataParameter());
     results.SetPredictandTemporalResolution(m_predictandDB->GetDataTemporalResolution());
     results.SetPredictandSpatialAggregation(m_predictandDB->GetDataSpatialAggregation());
+    results.SetCoordinateSystem(m_predictandDB->GetCoordSys());
 
     // Set the predictands values to the corresponding analog dates
     wxASSERT(m_predictandDB);
 
-    // Extract the stations IDs and coordinates
+    // Set the stations IDs and coordinates
     wxASSERT(m_predictandDB->GetStationsNb() > 0);
     a1i stationsId = m_predictandDB->GetStationsIdArray();
     wxASSERT(stationsId.size() > 0);
@@ -1599,9 +1435,66 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast& results, asParamet
         results.SetReferenceValues(refValues);
     }
 
-    a1f leadTimes = results.GetTargetDates();
+    // Set the predictor properties
+    vwxs predictorDatasetIdsOper;
+    vwxs predictorDatasetIdsArchive;
+    vwxs predictorDataIdsOper;
+    vwxs predictorDataIdsArchive;
+    vf predictorLevels;
+    vf predictorHours;
+    vf predictorXmin;
+    vf predictorXmax;
+    vf predictorYmin;
+    vf predictorYmax;
 
-    wxLogVerbose(_("Start setting the predictand values to the corresponding analog dates."));
+    for (int i = 0; i < params.GetStepsNb(); ++i) {
+        for (int j = 0; j < params.GetPredictorsNb(i); ++j) {
+            auto xMin = float(params.GetPredictorXmin(i, j));
+            auto xMax = float(params.GetPredictorXmin(i, j) +
+                              params.GetPredictorXstep(i, j) * (params.GetPredictorXptsnb(i, j) - 1));
+            auto yMin = float(params.GetPredictorYmin(i, j));
+            auto yMax = float(params.GetPredictorYmin(i, j) +
+                              params.GetPredictorYstep(i, j) * (params.GetPredictorYptsnb(i, j) - 1));
+            if (params.NeedsPreprocessing(i, j)) {
+                for (int k = 0; k < params.GetPreprocessSize(i, j); ++k) {
+                    predictorDatasetIdsOper.push_back(params.GetPreprocessRealtimeDatasetId(i, j, k));
+                    predictorDatasetIdsArchive.push_back(params.GetPreprocessArchiveDatasetId(i, j, k));
+                    predictorDataIdsOper.push_back(params.GetPreprocessRealtimeDataId(i, j, k));
+                    predictorDataIdsArchive.push_back(params.GetPreprocessArchiveDataId(i, j, k));
+                    predictorLevels.push_back(params.GetPreprocessLevel(i, j, k));
+                    predictorHours.push_back(float(params.GetPreprocessHour(i, j, k)));
+                    predictorXmin.push_back(xMin);
+                    predictorXmax.push_back(xMax);
+                    predictorYmin.push_back(yMin);
+                    predictorYmax.push_back(yMax);
+                }
+            } else {
+                predictorDatasetIdsOper.push_back(params.GetPredictorRealtimeDatasetId(i, j));
+                predictorDatasetIdsArchive.push_back(params.GetPredictorArchiveDatasetId(i, j));
+                predictorDataIdsOper.push_back(params.GetPredictorRealtimeDataId(i, j));
+                predictorDataIdsArchive.push_back(params.GetPredictorArchiveDataId(i, j));
+                predictorLevels.push_back(params.GetPredictorLevel(i, j));
+                predictorHours.push_back(float(params.GetPredictorHour(i, j)));
+                predictorXmin.push_back(xMin);
+                predictorXmax.push_back(xMax);
+                predictorYmin.push_back(yMin);
+                predictorYmax.push_back(yMax);
+            }
+        }
+    }
+
+    results.SetPredictorDatasetIdsOper(predictorDatasetIdsOper);
+    results.SetPredictorDatasetIdsArchive(predictorDatasetIdsArchive);
+    results.SetPredictorDataIdsOper(predictorDataIdsOper);
+    results.SetPredictorDataIdsArchive(predictorDataIdsArchive);
+    results.SetPredictorLevels(predictorLevels);
+    results.SetPredictorHours(predictorHours);
+    results.SetPredictorLonMin(predictorXmin);
+    results.SetPredictorLonMax(predictorXmax);
+    results.SetPredictorLatMin(predictorYmin);
+    results.SetPredictorLatMax(predictorYmax);
+
+    a1f leadTimes = results.GetTargetDates();
 
     // Loop over the lead times
     for (int iLead = 0; iLead < leadTimes.size(); iLead++) {
@@ -1664,8 +1557,6 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast& results, asParamet
     }
 #endif
 
-    wxLogVerbose(_("Predictands association over."));
-
     return true;
 }
 
@@ -1702,6 +1593,36 @@ void asMethodForecasting::Cleanup() {
     }
 
     // Do not delete preloaded data here !
+}
+
+bool asMethodForecasting::HasEnoughMemory(const asParametersForecast& params, int iStep,
+                                          const asTimeArray& timeArrayArchive) const {
+    wxLongLong neededMem = 0;
+    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+        neededMem += (params.GetPredictorXptsnb(iStep, iPtor)) * (params.GetPredictorYptsnb(iStep, iPtor));
+    }
+    neededMem *= timeArrayArchive.GetSize();  // time dimension
+    neededMem *= 4;                           // to bytes (for floats)
+    double neededMemMb = neededMem.ToDouble();
+    neededMemMb /= 1048576.0;  // to Mb
+
+    // Get available memory
+    wxMemorySize freeMemSize = wxGetFreeMemory();
+    wxLongLong freeMem = freeMemSize;
+    double freeMemMb = freeMem.ToDouble();
+    freeMemMb /= 1048576.0;  // To Mb
+
+    if (freeMemSize < 0) {
+        wxLogVerbose(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb);
+    } else {
+        wxLogVerbose(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb);
+        if (neededMemMb > freeMemMb) {
+            wxLogError(_("Data cannot fit into available memory."));
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void asMethodForecasting::DeletePreprocessData() {

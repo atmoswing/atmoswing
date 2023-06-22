@@ -6,10 +6,10 @@ project(downscaler)
 ##### SOURCE FILES
 
 # List source files
-file(GLOB_RECURSE src_downsc_core_h core/*.h)
-file(GLOB_RECURSE src_downsc_core_cpp core/*.cpp)
-file(GLOB_RECURSE src_downsc_gui_h gui/*.h)
-file(GLOB_RECURSE src_downsc_gui_cpp gui/*.cpp)
+file(GLOB src_downsc_core_h core/*.h)
+file(GLOB src_downsc_core_cpp core/*.cpp)
+file(GLOB src_downsc_gui_h gui/*.h)
+file(GLOB src_downsc_gui_cpp gui/*.cpp)
 list(APPEND src_app_downscaler ${src_downsc_core_h})
 list(APPEND src_app_downscaler ${src_downsc_core_cpp})
 if (USE_GUI)
@@ -30,7 +30,6 @@ list(APPEND inc_dirs
 if (USE_GUI)
     list(APPEND inc_dirs
             "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
-            "${CMAKE_SOURCE_DIR}/src/shared_base/gui/img/"
             "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
             "${PROJECT_SOURCE_DIR}/gui/"
             )

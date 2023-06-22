@@ -30,7 +30,7 @@
 
 asScoreCRPSEP::asScoreCRPSEP()
     : asScore(asScore::CRPSEP, _("CRPS Exact Primitive"), _("Continuous Ranked Probability Score exact solution"), Asc,
-              0, NaNf) {}
+              0, NAN) {}
 
 asScoreCRPSEP::~asScoreCRPSEP() {}
 
@@ -40,11 +40,11 @@ float asScoreCRPSEP::Assess(float obs, const a1f& values, int nbElements) const 
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
-        return NaNf;
+        return NAN;
     }
     if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
+        return NAN;
     }
 
     // Create the container to sort the data
@@ -55,7 +55,7 @@ float asScoreCRPSEP::Assess(float obs, const a1f& values, int nbElements) const 
     int nbPredict = CleanNans(values, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function"));
-        return NaNf;
+        return NAN;
     }
 
     // Sort the forcast array

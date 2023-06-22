@@ -56,7 +56,7 @@ wxString asConfig::CreateTempFileName(const wxString& prefix) {
 
     static const size_t numTries = 1000;
     for (size_t n = 0; n < numTries; n++) {
-        wxString pathFile = path + wxString::Format(wxT("%.03x"), (unsigned int)n);
+        wxString pathFile = path + asStrF(wxT("%.03x"), (unsigned int)n);
         if (!wxFileName::FileExists(pathFile) && !wxFileName::DirExists(pathFile)) {
             return pathFile;
         }
@@ -70,7 +70,7 @@ wxString asConfig::CreateTempDir(const wxString& prefix) {
 
     static const size_t numTries = 1000;
     for (size_t n = 0; n < numTries; n++) {
-        wxString pathDir = path + wxString::Format(wxT("%.03x"), (unsigned int)n);
+        wxString pathDir = path + asStrF(wxT("%.03x"), (unsigned int)n);
         if (!wxFileName::FileExists(pathDir) && !wxFileName::DirExists(pathDir)) {
             wxDir::Make(pathDir);
             return pathDir;
@@ -86,6 +86,25 @@ wxString asConfig::GetDataDir() {
     ThreadsManager().CritSectionConfig().Leave();
     dirData.Append(DS);
     return dirData;
+}
+
+wxString asConfig::GetShareDir() {
+    wxString dirShare = asConfig::GetDataDir() + "share";
+    if (!wxDirExists(dirShare)) {
+        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
+        dirDataWxFile.RemoveLastDir();
+        dirDataWxFile.AppendDir("share");
+        dirShare = dirDataWxFile.GetFullPath();
+    }
+    if (!wxDirExists(dirShare)) {
+        wxFileName dirDataWxFile = wxFileName(asConfig::GetDataDir());
+        dirDataWxFile.RemoveLastDir();
+        dirShare = dirDataWxFile.GetFullPath();
+    }
+    if (!wxDirExists(dirShare)) {
+        wxLogError(_("The share directory could not be found (%s)."), dirShare);
+    }
+    return dirShare;
 }
 
 wxString asConfig::GetSoftDir() {

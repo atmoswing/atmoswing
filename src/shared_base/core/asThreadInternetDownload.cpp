@@ -57,7 +57,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
     // Do the job
     if (curl) {
         // Set a buffer for the error messages
-        auto* errorbuffer = new char[CURL_ERROR_SIZE];
+        auto errorbuffer = new char[CURL_ERROR_SIZE];
         curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorbuffer);
         // Some servers don't like requests that are made without a user-agent field, so we provide one
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
@@ -75,7 +75,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
 
             // Use of a wxFileName object to create the directory.
             wxFileName currentFilePath = wxFileName(filePath);
-            if (!currentFilePath.DirExists()) {
+            if (!currentFilePath.Exists()) {
                 if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL)) {
                     wxLogError(_("The directory to save real-time predictors data cannot be created."));
                     curl_easy_cleanup(curl);
@@ -91,23 +91,28 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
                                                     nullptr};
 
                 // Define the URL
-                curl_easy_setopt(curl, CURLOPT_URL, (const char*)url.mb_str(wxConvUTF8));
+                curl_easy_setopt(curl, CURLOPT_URL, static_cast<const char*>(url.mb_str(wxConvUTF8)));
                 // Define our callback to get called when there's data to be written
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, asInternet::WriteFile);
                 // Set a pointer to our struct to pass to the callback
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, &file);
-
+#if defined(__WIN32__)
+                // Disable certificate check (CURLOPT_CAPATH does not work on Windows)
+                curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
+#endif
                 // If a proxy is used
                 if (m_usesProxy) {
                     if (!m_proxyAddress.IsEmpty()) {
-                        curl_easy_setopt(curl, CURLOPT_PROXY, (const char*)m_proxyAddress.mb_str(wxConvUTF8));
+                        curl_easy_setopt(curl, CURLOPT_PROXY,
+                                         static_cast<const char*>(m_proxyAddress.mb_str(wxConvUTF8)));
                     }
                     if (m_proxyPort > 0) {
                         curl_easy_setopt(curl, CURLOPT_PROXYPORT, m_proxyPort);
                     }
                     if (!m_proxyUser.IsEmpty()) {
                         wxString proxyLogin = m_proxyUser + ":" + m_proxyPasswd;
-                        curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, (const char*)proxyLogin.mb_str(wxConvUTF8));
+                        curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD,
+                                         static_cast<const char*>(proxyLogin.mb_str(wxConvUTF8)));
                     }
                 }
 

@@ -51,14 +51,14 @@ float asTotalScorePC::Assess(const a1f& targetDates, const a1f& scores, const as
                     countD++;
                 } else {
                     wxLogError(_("The PC score (%f) is not an authorized value."), scores[i]);
-                    return NaNf;
+                    return NAN;
                 }
             }
             break;
         }
 
         default: {
-            asThrowException(_("Period not yet implemented in asTotalScorePC."));
+            throw runtime_error(_("Period not yet implemented in asTotalScorePC."));
         }
     }
 
@@ -67,7 +67,7 @@ float asTotalScorePC::Assess(const a1f& targetDates, const a1f& scores, const as
     if (countTot > 0) {
         score = float(countA + countD) / float(countTot);
     } else {
-        score = NaNf;
+        score = NAN;
     }
 
     return score;

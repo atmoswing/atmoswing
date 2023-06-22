@@ -28,6 +28,7 @@
 
 #include "asFrameOptimizer.h"
 
+#include "asBitmaps.h"
 #include "asFrameAbout.h"
 #include "asFramePredictandDB.h"
 #include "asFramePreferencesOptimizer.h"
@@ -37,9 +38,8 @@
 #include "asMethodCalibratorSingle.h"
 #include "asMethodCalibratorSingleOnlyDates.h"
 #include "asMethodCalibratorSingleOnlyValues.h"
-#include "asMethodOptimizerGeneticAlgorithms.h"
-#include "asMethodOptimizerRandomSet.h"
-#include "images.h"
+#include "asMethodOptimizerGAs.h"
+#include "asMethodOptimizerMC.h"
 #include "wx/fileconf.h"
 
 asFrameOptimizer::asFrameOptimizer(wxWindow* parent)
@@ -47,21 +47,19 @@ asFrameOptimizer::asFrameOptimizer(wxWindow* parent)
       m_logWindow(nullptr),
       m_methodCalibrator(nullptr) {
     // Toolbar
-    m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run optimizer"),
-                       _("Run optimizer now"), nullptr);
-    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel optimization"),
-                       _("Cancel current optimization"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
-                       _("Preferences"), _("Preferences"), nullptr);
+    m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap, wxITEM_NORMAL,
+                       _("Run optimizer"), _("Run optimizer now"), nullptr);
+    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::STOP), wxNullBitmap,
+                       wxITEM_NORMAL, _("Cancel optimization"), _("Cancel current optimization"), nullptr);
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
+                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
     // Connect events
-    this->Connect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Launch));
-    this->Connect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Cancel));
-    this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameOptimizer::OpenFramePreferences));
-    this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameOptimizer::OpenFramePredictandDB));
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::Launch, this, asID_RUN);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::Cancel, this, asID_CANCEL);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::OpenFramePreferences, this, asID_PREFERENCES);
+    Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::OpenFramePredictandDB, this, asID_DB_CREATE);
 
     // Icon
 #ifdef __WXMSW__
@@ -71,12 +69,10 @@ asFrameOptimizer::asFrameOptimizer(wxWindow* parent)
 
 asFrameOptimizer::~asFrameOptimizer() {
     // Disconnect events
-    this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Launch));
-    this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Cancel));
-    this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameOptimizer::OpenFramePreferences));
-    this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameOptimizer::OpenFramePredictandDB));
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::Launch, this, asID_RUN);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::Cancel, this, asID_CANCEL);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::OpenFramePreferences, this, asID_PREFERENCES);
+    Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::OpenFramePredictandDB, this, asID_DB_CREATE);
 }
 
 void asFrameOptimizer::OnInit() {
@@ -94,7 +90,7 @@ void asFrameOptimizer::Update() {
 void asFrameOptimizer::OpenFramePredictandDB(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePredictandDB(this);
+    auto frame = new asFramePredictandDB(this);
     frame->Fit();
     frame->Show();
 }
@@ -102,7 +98,7 @@ void asFrameOptimizer::OpenFramePredictandDB(wxCommandEvent& event) {
 void asFrameOptimizer::OpenFramePreferences(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFramePreferencesOptimizer(this);
+    auto frame = new asFramePreferencesOptimizer(this);
     frame->Fit();
     frame->Show();
 }
@@ -110,7 +106,7 @@ void asFrameOptimizer::OpenFramePreferences(wxCommandEvent& event) {
 void asFrameOptimizer::OpenFrameAbout(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto* frame = new asFrameAbout(this);
+    auto frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
@@ -221,8 +217,8 @@ void asFrameOptimizer::LoadOptions() {
     m_choiceGAsCrossoverOperator->SetSelection(pConfig->ReadLong("/GAs/CrossoverOperator", 1l));
     m_choiceGAsMutationOperator->SetSelection(pConfig->ReadLong("/GAs/MutationOperator", 0l));
     m_textCtrlGAsRunNumbers->SetValue(pConfig->Read("/GAs/NbRuns", "20"));
-    m_textCtrlGAsPopulationSize->SetValue(pConfig->Read("/GAs/PopulationSize", "50"));
-    m_textCtrlGAsConvergenceNb->SetValue(pConfig->Read("/GAs/ConvergenceStepsNb", "20"));
+    m_textCtrlGAsPopulationSize->SetValue(pConfig->Read("/GAs/PopulationSize", "500"));
+    m_textCtrlGAsConvergenceNb->SetValue(pConfig->Read("/GAs/ConvergenceStepsNb", "30"));
     m_textCtrlGAsRatioIntermGen->SetValue(pConfig->Read("/GAs/RatioIntermediateGeneration", "0.5"));
     m_checkBoxGAsAllowElitism->SetValue(pConfig->ReadBool("/GAs/AllowElitismForTheBest", true));
     m_textCtrlGAsNaturalSlctTournamentProb->SetValue(
@@ -259,8 +255,8 @@ void asFrameOptimizer::LoadOptions() {
     m_textCtrlGAsMutationsNormalVarStdDevEnd->SetValue(pConfig->Read("/GAs/MutationsNormalVariableStdDevEnd", "0.01"));
     m_textCtrlGAsMutationsNonUniformProb->SetValue(pConfig->Read("/GAs/MutationsNonUniformProbability", "0.2"));
     m_textCtrlGAsMutationsNonUniformGensNb->SetValue(pConfig->Read("/GAs/MutationsNonUniformMaxGensNbVar", "50"));
-    m_textCtrlGAsMutationsNonUniformMinRate->SetValue(pConfig->Read("/GAs/MutationsNonUniformMinRate", "0.20"));
-    m_textCtrlGAsMutationsMultiScaleProb->SetValue(pConfig->Read("/GAs/MutationsMultiScaleProbability", "0.20"));
+    m_textCtrlGAsMutationsNonUniformMinRate->SetValue(pConfig->Read("/GAs/MutationsNonUniformMinRate", "0.10"));
+    m_textCtrlGAsMutationsMultiScaleProb->SetValue(pConfig->Read("/GAs/MutationsMultiScaleProbability", "0.10"));
 }
 
 void asFrameOptimizer::OnSaveDefault(wxCommandEvent& event) {
@@ -416,12 +412,12 @@ void asFrameOptimizer::Launch(wxCommandEvent& event) {
             }
             case 4:  // Random sets
             {
-                m_methodCalibrator = new asMethodOptimizerRandomSet();
+                m_methodCalibrator = new asMethodOptimizerMC();
                 break;
             }
             case 5:  // Genetic algorithms
             {
-                m_methodCalibrator = new asMethodOptimizerGeneticAlgorithms();
+                m_methodCalibrator = new asMethodOptimizerGAs();
                 break;
             }
             case 6:  // Scores evaluation
@@ -453,7 +449,7 @@ void asFrameOptimizer::Launch(wxCommandEvent& event) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught: %s"), msg);
         wxLogError(_("Failed to process the calibration."));
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         wxLogError(_("Failed to process the optimization."));

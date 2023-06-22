@@ -59,7 +59,7 @@ float asTotalScoreCRPSpotential::Assess(const a1f& targetDates, const a2f& score
     float potential = 0;
 
     for (int i = 0; i < binsNbs; i++) {
-        if (!asIsNaN(g[i]) && !asIsInf(g[i]) && !asIsNaN(o[i]) && !asIsInf(o[i])) {
+        if (isfinite(g[i]) && isfinite(o[i])) {
             potential += g[i] * o[i] * (1 - o[i]);
         }
     }

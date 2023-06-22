@@ -29,7 +29,7 @@
 #include "asScoreMAE.h"
 
 asScoreMAE::asScoreMAE()
-    : asScore(asScore::MAE, _("Mean absolute error"), _("Mean absolute error"), Asc, 0, NaNf) {}
+    : asScore(asScore::MAE, _("Mean absolute error"), _("Mean absolute error"), Asc, 0, NAN) {}
 
 float asScoreMAE::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
@@ -37,11 +37,11 @@ float asScoreMAE::Assess(float obs, const a1f& values, int nbElements) const {
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
-        return NaNf;
+        return NAN;
     }
     if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
+        return NAN;
     }
 
     // Create the container to sort the data
@@ -51,10 +51,10 @@ float asScoreMAE::Assess(float obs, const a1f& values, int nbElements) const {
     int nbPredict = CleanNans(values, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
-        return NaNf;
+        return NAN;
     } else if (nbPredict <= 2) {
         wxLogWarning(_("Not enough elements to process the MAE."));
-        return NaNf;
+        return NAN;
     }
 
     a1f cleanValues = x.head(nbPredict);
@@ -64,7 +64,7 @@ float asScoreMAE::Assess(float obs, const a1f& values, int nbElements) const {
         value = cleanValues.mean();
     } else {
         // Get value for quantile
-        wxASSERT(!asIsNaN(m_quantile));
+        wxASSERT(!isnan(m_quantile));
         wxASSERT(m_quantile > 0);
         wxASSERT(m_quantile < 1);
         value = asGetValueForQuantile(cleanValues, m_quantile);

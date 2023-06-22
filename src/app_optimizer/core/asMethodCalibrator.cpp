@@ -37,8 +37,11 @@
 asMethodCalibrator::asMethodCalibrator()
     : asMethodStandard(),
       m_scoreOrder(Asc),
-      m_scoreValid(NaNf),
-      m_validationMode(false) {
+      m_scoreValid(NAN),
+      m_validationMode(false),
+      m_useBatches(false),
+      m_batchStart(0),
+      m_batchEnd(0) {
     // Seeds the random generator
     asInitRandom();
 }
@@ -110,7 +113,7 @@ void asMethodCalibrator::ClearAll() {
     m_scoresCalibTemp.clear();
     m_parameters.clear();
     m_scoresCalib.clear();
-    m_scoreValid = NaNf;
+    m_scoreValid = NAN;
 }
 
 void asMethodCalibrator::ClearTemp() {
@@ -131,11 +134,11 @@ bool asMethodCalibrator::PushBackBestTemp() {
 void asMethodCalibrator::RemoveNaNsInTemp() {
     wxASSERT(m_parametersTemp.size() == m_scoresCalibTemp.size());
 
-    std::vector<asParametersCalibration> copyParametersTemp;
+    vector<asParametersCalibration> copyParametersTemp;
     vf copyScoresCalibTemp;
 
     for (int i = 0; i < m_scoresCalibTemp.size(); i++) {
-        if (!asIsNaN(m_scoresCalibTemp[i])) {
+        if (!isnan(m_scoresCalibTemp[i])) {
             copyScoresCalibTemp.push_back(m_scoresCalibTemp[i]);
             copyParametersTemp.push_back(m_parametersTemp[i]);
         }
@@ -187,7 +190,7 @@ bool asMethodCalibrator::SortScoresAndParametersTemp() {
     }
 
     // Sort the parameters sets as the scores
-    std::vector<asParametersCalibration> copyParameters;
+    vector<asParametersCalibration> copyParameters;
     for (int i = 0; i < m_scoresCalibTemp.size(); i++) {
         copyParameters.push_back(m_parametersTemp[i]);
     }
@@ -220,7 +223,7 @@ bool asMethodCalibrator::PushBackInTempIfBetter(asParametersCalibration& params,
             break;
 
         default:
-            asThrowException(_("The score order is not correctly defined."));
+            throw runtime_error(_("The score order is not correctly defined."));
     }
 
     return false;
@@ -251,19 +254,10 @@ bool asMethodCalibrator::KeepIfBetter(asParametersCalibration& params, asResults
             break;
 
         default:
-            asThrowException(_("The score order is not correctly defined."));
+            throw runtime_error(_("The score order is not correctly defined."));
     }
 
     return false;
-}
-
-bool asMethodCalibrator::SetSelectedParameters(asResultsParametersArray& results) {
-    // Extract selected parameters & best parameters
-    for (int i = 0; i < m_parameters.size(); i++) {
-        results.Add(m_parameters[i], m_scoresCalib[i], m_scoreValid);
-    }
-
-    return true;
 }
 
 bool asMethodCalibrator::SetBestParameters(asResultsParametersArray& results) {
@@ -299,7 +293,7 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray& results) {
     return true;
 }
 
-wxString asMethodCalibrator::GetPredictandStationIdsList(vi& stationIds) const {
+wxString asMethodCalibrator::GetStationIdsList(vi& stationIds) const {
     wxString id;
 
     if (stationIds.size() == 1) {
@@ -329,13 +323,13 @@ double asMethodCalibrator::GetTimeEndCalibration(asParametersScoring* params) co
 }
 
 double asMethodCalibrator::GetEffectiveArchiveDataStart(asParameters* params) const {
-    auto* paramsScoring = (asParametersScoring*)params;
+    auto paramsScoring = dynamic_cast<asParametersScoring*>(params);
 
     return wxMin(GetTimeStartCalibration(paramsScoring), GetTimeStartArchive(paramsScoring));
 }
 
 double asMethodCalibrator::GetEffectiveArchiveDataEnd(asParameters* params) const {
-    auto* paramsScoring = (asParametersScoring*)params;
+    auto paramsScoring = dynamic_cast<asParametersScoring*>(params);
 
     return wxMax(GetTimeEndCalibration(paramsScoring), GetTimeEndArchive(paramsScoring));
 }
@@ -358,8 +352,8 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring* params) {
     }
 
     // Check if data are effectively available for this period
-    int indexPredictandTimeStart =
-        asFindCeil(&predictandTime[0], &predictandTime[predictandTime.size() - 1], timeStart);
+    int indexPredictandTimeStart = asFindCeil(&predictandTime[0], &predictandTime[predictandTime.size() - 1],
+                                              timeStart);
     int indexPredictandTimeEnd = asFindFloor(&predictandTime[0], &predictandTime[predictandTime.size() - 1], timeEnd);
 
     if (indexPredictandTimeStart < 0 || indexPredictandTimeEnd < 0) {
@@ -370,10 +364,10 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring* params) {
     for (int iStat = 0; iStat < (int)stationIds.size(); iStat++) {
         a1f predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[iStat]);
 
-        while (asIsNaN(predictandDataNorm(indexPredictandTimeStart))) {
+        while (isnan(predictandDataNorm(indexPredictandTimeStart))) {
             indexPredictandTimeStart++;
         }
-        while (asIsNaN(predictandDataNorm(indexPredictandTimeEnd))) {
+        while (isnan(predictandDataNorm(indexPredictandTimeEnd))) {
             indexPredictandTimeEnd--;
             if (indexPredictandTimeEnd < 0) {
                 wxLogError(_("An unexpected error occurred."));
@@ -480,7 +474,7 @@ bool asMethodCalibrator::PreloadDataOnly(asParametersScoring* params) {
     timeArrayData.Init();
 
     // Load the predictor data
-    std::vector<asPredictor*> predictors;
+    vector<asPredictor*> predictors;
     if (!LoadArchiveData(predictors, params, 0, timeStartData, timeEndData)) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
@@ -516,8 +510,8 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
         timeArrayTarget.SetForbiddenYears(params->GetValidationYearsVector());
     }
 
-    if (params->GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds") == 0 ||
-        params->GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds") == 0) {
+    if (!m_validationMode && (params->GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds") == 0 ||
+                              params->GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds") == 0)) {
         vi stations = params->GetPredictandStationIds();
         if (stations.size() > 1) {
             wxLogError(_("You cannot use predictand thresholds with the multivariate approach."));
@@ -542,6 +536,10 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
         timeArrayTarget.KeepOnlyYears(params->GetValidationYearsVector());
     }
 
+    if (!m_validationMode && m_useBatches) {
+        timeArrayTarget.KeepOnlyRange(m_batchStart, m_batchEnd);
+    }
+
     // Data date array
     double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params));
     double timeEndData = wxMax(GetTimeEndCalibration(params), GetTimeEndArchive(params));
@@ -558,10 +556,9 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
                    timeArrayArchive.GetSize());
         return false;
     }
-    wxLogVerbose(_("Date arrays created."));
 
     // Load the predictor data
-    std::vector<asPredictor*> predictors;
+    vector<asPredictor*> predictors;
     if (!LoadArchiveData(predictors, params, iStep, timeStartData, timeEndData)) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
@@ -569,7 +566,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
     }
 
     // Create the criterion
-    std::vector<asCriteria*> criteria;
+    vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         // Instantiate a score object
         asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
@@ -595,9 +592,6 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
         }
     }
 
-    // Send data and criteria to processor
-    wxLogVerbose(_("Start processing the comparison."));
-
     if (!asProcessor::GetAnalogsDates(predictors, predictors, timeArrayData, timeArrayArchive, timeArrayData,
                                       timeArrayTarget, criteria, params, iStep, results, containsNaNs)) {
         wxLogError(_("Failed processing the analogs dates."));
@@ -605,7 +599,6 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
         Cleanup(criteria);
         return false;
     }
-    wxLogVerbose(_("The processing is over."));
 
     Cleanup(predictors);
     Cleanup(criteria);
@@ -620,16 +613,14 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates& results, asParameter
     results.Init(params);
 
     // Date array object instantiation for the processor
-    wxLogVerbose(_("Creating a date arrays for the processor."));
     double timeStart = params->GetArchiveStart();
     double timeEnd = params->GetArchiveEnd() - params->GetTimeSpanDays();
     asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetAnalogsTimeStepHours(),
                                  params->GetTimeArrayTargetMode());
     timeArrayArchive.Init();
-    wxLogVerbose(_("Date arrays created."));
 
     // Load the predictor data
-    std::vector<asPredictor*> predictors;
+    vector<asPredictor*> predictors;
     if (!LoadArchiveData(predictors, params, iStep, timeStart, timeEnd)) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
@@ -637,12 +628,10 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates& results, asParameter
     }
 
     // Create the score objects
-    std::vector<asCriteria*> criteria;
+    vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
-        wxLogVerbose(_("Creating a criterion object."));
         asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
         criteria.push_back(criterion);
-        wxLogVerbose(_("Criterion object created."));
     }
 
     // Inline the data when possible
@@ -653,7 +642,6 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates& results, asParameter
     }
 
     // Send data and criteria to processor
-    wxLogVerbose(_("Start processing the comparison."));
     if (!asProcessor::GetAnalogsSubDates(predictors, predictors, timeArrayArchive, timeArrayArchive, anaDates, criteria,
                                          params, iStep, results, containsNaNs)) {
         wxLogError(_("Failed processing the analogs dates."));
@@ -661,7 +649,6 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates& results, asParameter
         Cleanup(criteria);
         return false;
     }
-    wxLogVerbose(_("The processing is over."));
 
     Cleanup(predictors);
     Cleanup(criteria);
@@ -677,12 +664,10 @@ bool asMethodCalibrator::GetAnalogsValues(asResultsValues& results, asParameters
 
     // Set the predictand values to the corresponding analog dates
     wxASSERT(m_predictandDB);
-    wxLogVerbose(_("Start setting the predictand values to the corresponding analog dates."));
     if (!asProcessor::GetAnalogsValues(*m_predictandDB, anaDates, params, results)) {
         wxLogError(_("Failed setting the predictand values to the corresponding analog dates."));
         return false;
     }
-    wxLogVerbose(_("Predictand association over."));
 
     return true;
 }
@@ -694,7 +679,6 @@ bool asMethodCalibrator::GetAnalogsScores(asResultsScores& results, asParameters
     results.Init(params);
 
     // Instantiate a score object
-    wxLogVerbose(_("Instantiating a score object"));
     asScore* score = asScore::GetInstance(params->GetScoreName());
     score->SetQuantile(params->GetScoreQuantile());
     score->SetThreshold(params->GetScoreThreshold());
@@ -712,9 +696,6 @@ bool asMethodCalibrator::GetAnalogsScores(asResultsScores& results, asParameters
             m_scoreClimatology[iStat] = score->GetScoreClimatology();
         }
     }
-
-    // Pass data and score to processor
-    wxLogVerbose(_("Start processing the score."));
 
     if (!asProcessorScore::GetAnalogsScores(anaValues, score, params, results, m_scoreClimatology)) {
         wxLogError(_("Failed processing the score."));
@@ -734,7 +715,6 @@ bool asMethodCalibrator::GetAnalogsTotalScore(asResultsTotalScore& results, asPa
     results.Init();
 
     // Date array object instantiation for the final score
-    wxLogVerbose(_("Creating a date array for the final score."));
     double timeStart = params->GetCalibrationStart();
     double timeEnd = params->GetCalibrationEnd() + 1;
     while (timeEnd > params->GetCalibrationEnd() + 0.999) {
@@ -745,15 +725,12 @@ bool asMethodCalibrator::GetAnalogsTotalScore(asResultsTotalScore& results, asPa
     // TODO: Add every options for the Init function (generic version)
     //    timeArray.Init(params->GetScoreTimeArrayDate(), params->GetForecastScoreTimeArrayIntervalDays());
     timeArray.Init();
-    wxLogVerbose(_("Date array created."));
 
     // Pass data and score to processor
-    wxLogVerbose(_("Start processing the final score."));
     if (!asProcessorScore::GetAnalogsTotalScore(anaScores, timeArray, params, results)) {
         wxLogError(_("Failed to process the final score."));
         return false;
     }
-    wxLogVerbose(_("Processing over."));
 
     return true;
 }
@@ -882,7 +859,7 @@ bool asMethodCalibrator::Validate(asParametersCalibration* params) {
     }
 
     if (!params->HasValidationPeriod()) {
-        wxLogWarning("The parameters have no validation period !");
+        wxLogWarning(_("The parameters have no validation period !"));
         return true;
     }
 

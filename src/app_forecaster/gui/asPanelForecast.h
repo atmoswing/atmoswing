@@ -31,43 +31,142 @@
 
 #include <wx/awx/led.h>
 
-#include "AtmoswingForecasterGui.h"
-#include "images.h"
+#include "AtmoSwingForecasterGui.h"
+#include "asBitmaps.h"
 
 class asPanelsManagerForecasts;
+class asBatchForecasts;
 
 class asPanelForecast : public asPanelForecastVirtual {
   public:
-    explicit asPanelForecast(wxWindow* parent);
+    /**
+     * Constructor.
+     *
+     * @param parent The parent window.
+     * @param batch The batch of forecasts.
+     */
+    explicit asPanelForecast(wxWindow* parent, asBatchForecasts* batch);
 
+    /**
+     * Layout the panel.
+     *
+     * @return True if done.
+     */
     bool Layout() override;
 
+    /**
+     * Check if the forecast file exists.
+     */
+    void CheckFileExists();
+
+    /**
+     * Set the content of the tooltip. It provides the description of the forecast.
+     *
+     * @param filePath The path to the forecast file.
+     */
+    void SetToolTipContent(const wxString& filePath);
+
+    /**
+     * Access the LED.
+     * 
+     * @return The LED pointer.
+     */
     awxLed* GetLed() const {
         return m_led;
     }
 
+    /**
+     * Access the info button.
+     *
+     * @return The info button pointer.
+     */
+    wxBitmapButton* GetButtonInfo() const {
+        return m_bpButtonInfo;
+    }
+
+    /**
+     * Access the edit button.
+     *
+     * @return The edit button pointer.
+     */
+    wxBitmapButton* GetButtonEdit() const {
+        return m_bpButtonEdit;
+    }
+
+    /**
+     * Access the details button.
+     *
+     * @return The details button pointer.
+     */
+    wxBitmapButton* GetButtonDetails() const {
+        return m_bpButtonDetails;
+    }
+
+    /**
+     * Access the label of the parameters file name field.
+     *
+     * @return The label of the parameters file name field.
+     */
+    wxString GetTextParametersFileNameValue() {
+        return m_textParametersFileName->GetLabel();
+    }
+
+    /**
+     * Set the panel manager.
+     * 
+     * @param panelManager The panel manager.
+     */
     void SetPanelsManager(asPanelsManagerForecasts* panelManager) {
         m_panelsManager = panelManager;
     }
 
+    /**
+     * Access the forecast parameters file name.
+     * 
+     * @return The file name.
+     */
     wxString GetParametersFileName() const {
-        return m_textCtrlParametersFileName->GetValue();
+        return m_textParametersFileName->GetLabel();
     }
 
+    /**
+     * Set the forecast parameters file name.
+     * 
+     * @param val The file name.
+     */
     void SetParametersFileName(const wxString& val) {
-        m_textCtrlParametersFileName->SetValue(val);
+        m_textParametersFileName->SetLabel(val);
+        CheckFileExists();
     }
 
   protected:
-    wxWindow* m_parentFrame;
-    awxLed* m_led;
+    wxWindow* m_parentFrame; /**< The parent frame. */
+    awxLed* m_led; /**< The LED. */
+    asBatchForecasts* m_batchForecasts; /**< The batch of forecasts. */
 
+    /**
+     * Close the panel.
+     *
+     * @param event The command event.
+     */
     void ClosePanel(wxCommandEvent& event) override;
 
-    void ChangeForecastName(wxCommandEvent& event);
+    /**
+     * Edit the forecast file path.
+     *
+     * @param event The command event.
+     */
+    void OnEditForecastFile(wxCommandEvent& event) override;
+
+    /**
+     * Show the details of the forecast on a styled text control.
+     *
+     * @param event The command event.
+     */
+    void OnDetailsForecastFile(wxCommandEvent& event) override;
 
   private:
-    asPanelsManagerForecasts* m_panelsManager;
+    asPanelsManagerForecasts* m_panelsManager; /**< The panels manager. */
 };
 
 #endif

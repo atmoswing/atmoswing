@@ -136,10 +136,12 @@ class asParametersOptimizationGAs : public asParametersOptimization {
 
     bool IsParamLocked(int index);
 
-    /** Get the parameter type (list of value vs value)
-     * \param index The index in the chromosome
-     * \return A code: 1 for value - 2 for advanced list (notion of proximity) - 3 for simple list (no proximity between
-     * elements)
+    /**
+     * Get the parameter type (list of value vs value)
+     *
+     * @param index The index in the chromosome
+     * @return A code: 1 for value - 2 for advanced list (notion of proximity) -
+     *         3 for simple list (no proximity between elements)
      */
     int GetParamType(int index);
 

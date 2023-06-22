@@ -28,23 +28,17 @@
 
 #include "asResultsForecast.h"
 
+#include <vector>
+#include <numeric>
 #include <wx/tokenzr.h>
 
 #include "asFileNetcdf.h"
 
 asResultsForecast::asResultsForecast()
     : asResults(),
-      m_methodId(wxEmptyString),
-      m_methodIdDisplay(wxEmptyString),
-      m_specificTag(wxEmptyString),
-      m_specificTagDisplay(wxEmptyString),
-      m_description(wxEmptyString),
       m_predictandParameter(asPredictand::Precipitation),
       m_predictandTemporalResolution(asPredictand::Daily),
       m_predictandSpatialAggregation(asPredictand::Station),
-      m_predictandDatasetId(wxEmptyString),
-      m_predictandDatabase(wxEmptyString),
-      m_forecastsDir(wxEmptyString),
       m_hasReferenceValues(false),
       m_leadTimeOrigin(0.0) {}
 
@@ -64,6 +58,16 @@ void asResultsForecast::Init(asParametersForecast& params, double leadTimeOrigin
     m_stationYCoords.resize(0);
     m_referenceAxis.resize(0);
     m_referenceValues.resize(0, 0);
+    m_predictorDatasetIdsOper.resize(0);
+    m_predictorDatasetIdsArchive.resize(0);
+    m_predictorDataIdsOper.resize(0);
+    m_predictorDataIdsArchive.resize(0);
+    m_predictorLevels.resize(0);
+    m_predictorHours.resize(0);
+    m_predictorLonMin.resize(0);
+    m_predictorLonMax.resize(0);
+    m_predictorLatMin.resize(0);
+    m_predictorLatMax.resize(0);
 
     m_methodId = params.GetMethodId();
     m_methodIdDisplay = params.GetMethodIdDisplay();
@@ -114,7 +118,7 @@ void asResultsForecast::BuildFileName() {
     wxString forecastname = m_methodId + '.' + m_specificTag;
     wxString nowstr = asTime::GetStringTime(m_leadTimeOrigin, "YYYY-MM-DD_hh");
     wxString ext = "nc";
-    wxString filename = wxString::Format("%s.%s.%s", nowstr, forecastname, ext);
+    wxString filename = asStrF("%s.%s.%s", nowstr, forecastname, ext);
     m_filePath.Append(filename);
 }
 
@@ -139,13 +143,12 @@ bool asResultsForecast::Save() {
         wxASSERT(m_referenceValues.rows() > 0);
     }
 
-    wxLogVerbose(_("Saving forecast file: %s"), m_filePath);
-
     // Get the elements size
     size_t nLeadtime = m_targetDates.size();
     size_t nAnalogsTot = m_analogsNb.sum();
     size_t nStations = m_stationIds.size();
     size_t nReferenceAxis = m_referenceAxis.size();
+    size_t nPredictors = m_predictorDatasetIdsOper.size();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
@@ -174,6 +177,7 @@ bool asResultsForecast::Save() {
     ncFile.PutAtt("description", m_description);
     ncFile.PutAtt("date_processed", &m_dateProcessed);
     ncFile.PutAtt("lead_time_origin", &m_leadTimeOrigin);
+    ncFile.PutAtt("coordinate_system", m_coordinateSystem);
     short hasReferenceValues = 0;
     if (m_hasReferenceValues) {
         hasReferenceValues = 1;
@@ -187,26 +191,29 @@ bool asResultsForecast::Save() {
     if (m_hasReferenceValues) {
         ncFile.DefDim("reference_axis", nReferenceAxis);
     }
+    ncFile.DefDim("predictors", nPredictors);
 
     // The dimensions name array is used to pass the dimensions to the variable.
     vstds dimNamesLeadTime;
-    dimNamesLeadTime.push_back("lead_time");
+    dimNamesLeadTime.emplace_back("lead_time");
     vstds dimNamesAnalogsTot;
-    dimNamesAnalogsTot.push_back("analogs_tot");
+    dimNamesAnalogsTot.emplace_back("analogs_tot");
     vstds dimNamesStations;
-    dimNamesStations.push_back("stations");
+    dimNamesStations.emplace_back("stations");
     vstds dimNamesAnalogsStations;
-    dimNamesAnalogsStations.push_back("stations");
-    dimNamesAnalogsStations.push_back("analogs_tot");
+    dimNamesAnalogsStations.emplace_back("stations");
+    dimNamesAnalogsStations.emplace_back("analogs_tot");
     vstds dimNameReferenceAxis;
     vstds dimNameReferenceValues;
     if (m_hasReferenceValues) {
-        dimNameReferenceAxis.push_back("reference_axis");
-        dimNameReferenceValues.push_back("stations");
-        dimNameReferenceValues.push_back("reference_axis");
+        dimNameReferenceAxis.emplace_back("reference_axis");
+        dimNameReferenceValues.emplace_back("stations");
+        dimNameReferenceValues.emplace_back("reference_axis");
     }
+    vstds dimNamesPredictors;
+    dimNamesPredictors.emplace_back("predictors");
 
-    // Define variables: the analogcriteria and the corresponding dates
+    // Define variables
     ncFile.DefVar("target_dates", NC_FLOAT, 1, dimNamesLeadTime);
     ncFile.DefVar("analogs_nb", NC_INT, 1, dimNamesLeadTime);
     ncFile.DefVar("station_names", NC_STRING, 1, dimNamesStations);
@@ -225,6 +232,16 @@ bool asResultsForecast::Save() {
         ncFile.DefVar("reference_axis", NC_FLOAT, 1, dimNameReferenceAxis);
         ncFile.DefVar("reference_values", NC_FLOAT, 2, dimNameReferenceValues);
     }
+    ncFile.DefVar("predictor_dataset_ids_realtime", NC_STRING, 1, dimNamesPredictors);
+    ncFile.DefVar("predictor_dataset_ids_archive", NC_STRING, 1, dimNamesPredictors);
+    ncFile.DefVar("predictor_data_ids_realtime", NC_STRING, 1, dimNamesPredictors);
+    ncFile.DefVar("predictor_data_ids_archive", NC_STRING, 1, dimNamesPredictors);
+    ncFile.DefVar("predictor_levels", NC_FLOAT, 1, dimNamesPredictors);
+    ncFile.DefVar("predictor_hours", NC_FLOAT, 1, dimNamesPredictors);
+    ncFile.DefVar("predictor_lon_min", NC_FLOAT, 1, dimNamesPredictors);
+    ncFile.DefVar("predictor_lon_max", NC_FLOAT, 1, dimNamesPredictors);
+    ncFile.DefVar("predictor_lat_min", NC_FLOAT, 1, dimNamesPredictors);
+    ncFile.DefVar("predictor_lat_max", NC_FLOAT, 1, dimNamesPredictors);
 
     // Put attributes
     DefTargetDatesAttributes(ncFile);
@@ -253,6 +270,29 @@ bool asResultsForecast::Save() {
         ncFile.PutAtt("long_name", "Reference values", "reference_values");
         ncFile.PutAtt("var_desc", "Reference values", "reference_values");
     }
+    ncFile.PutAtt("long_name", "Realtime predictor dataset IDs", "predictor_dataset_ids_realtime");
+    ncFile.PutAtt("var_desc", "Realtime (NWP) predictor dataset IDs used to compute the forecast.",
+                  "predictor_dataset_ids_realtime");
+    ncFile.PutAtt("long_name", "Archive predictor dataset IDs", "predictor_dataset_ids_archive");
+    ncFile.PutAtt("var_desc", "Archive predictor dataset IDs used to compute the forecast.",
+                  "predictor_dataset_ids_archive");
+    ncFile.PutAtt("long_name", "Realtime predictor data IDs", "predictor_data_ids_realtime");
+    ncFile.PutAtt("var_desc", "Realtime (NWP) predictor data IDs used to compute the forecast.",
+                  "predictor_data_ids_realtime");
+    ncFile.PutAtt("long_name", "Archive predictor data IDs", "predictor_data_ids_archive");
+    ncFile.PutAtt("var_desc", "Archive predictor data IDs used to compute the forecast.", "predictor_data_ids_archive");
+    ncFile.PutAtt("long_name", "Predictor levels", "predictor_levels");
+    ncFile.PutAtt("var_desc", "Predictor levels used to compute the forecast.", "predictor_levels");
+    ncFile.PutAtt("long_name", "Predictor hours", "predictor_hours");
+    ncFile.PutAtt("var_desc", "Predictor hours used to compute the forecast.", "predictor_hours");
+    ncFile.PutAtt("long_name", "Predictor min longitudes", "predictor_lon_min");
+    ncFile.PutAtt("var_desc", "Predictor minimum longitudes", "predictor_lon_min");
+    ncFile.PutAtt("long_name", "Predictor max longitudes", "predictor_lon_max");
+    ncFile.PutAtt("var_desc", "Predictor maximum longitudes", "predictor_lon_max");
+    ncFile.PutAtt("long_name", "Predictor min latitudes", "predictor_lat_min");
+    ncFile.PutAtt("var_desc", "Predictor minimum latitudes", "predictor_lat_min");
+    ncFile.PutAtt("long_name", "Predictor max latitudes", "predictor_lat_max");
+    ncFile.PutAtt("var_desc", "Predictor maximum latitudes", "predictor_lat_max");
 
     // End definitions: leave define mode
     ncFile.EndDef();
@@ -266,6 +306,8 @@ bool asResultsForecast::Save() {
     size_t countStations[] = {nStations};
     size_t startAnalogsStations[] = {0, 0};
     size_t countAnalogsStations[] = {nStations, nAnalogsTot};
+    size_t startPredictors[] = {0};
+    size_t countPredictors[] = {nPredictors};
 
     // Set the matrices in vectors
     vf analogsCriteria(nAnalogsTot);
@@ -314,6 +356,20 @@ bool asResultsForecast::Save() {
         ncFile.PutVarArray("reference_axis", startReferenceAxis, countReferenceAxis, &m_referenceAxis(0));
         ncFile.PutVarArray("reference_values", startReferenceValues, countReferenceValues, &m_referenceValues(0, 0));
     }
+    ncFile.PutVarArray("predictor_dataset_ids_realtime", startPredictors, countPredictors,
+                       &m_predictorDatasetIdsOper[0], nPredictors);
+    ncFile.PutVarArray("predictor_dataset_ids_archive", startPredictors, countPredictors,
+                       &m_predictorDatasetIdsArchive[0], nPredictors);
+    ncFile.PutVarArray("predictor_data_ids_realtime", startPredictors, countPredictors, &m_predictorDataIdsOper[0],
+                       nPredictors);
+    ncFile.PutVarArray("predictor_data_ids_archive", startPredictors, countPredictors, &m_predictorDataIdsArchive[0],
+                       nPredictors);
+    ncFile.PutVarArray("predictor_levels", startPredictors, countPredictors, &m_predictorLevels[0]);
+    ncFile.PutVarArray("predictor_hours", startPredictors, countPredictors, &m_predictorHours[0]);
+    ncFile.PutVarArray("predictor_lon_min", startPredictors, countPredictors, &m_predictorLonMin[0]);
+    ncFile.PutVarArray("predictor_lon_max", startPredictors, countPredictors, &m_predictorLonMax[0]);
+    ncFile.PutVarArray("predictor_lat_min", startPredictors, countPredictors, &m_predictorLatMin[0]);
+    ncFile.PutVarArray("predictor_lat_max", startPredictors, countPredictors, &m_predictorLatMax[0]);
 
     // Close:save new netCDF dataset
     ncFile.Close();
@@ -329,7 +385,9 @@ bool asResultsForecast::Load() {
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
-    int nLeadtime, nAnalogsTot, nStations;
+    int nLeadtime = 0;
+    int nStations = 0;
+    int nPredictors = 0;
     int versionMajor, versionMinor;
     vf analogsCriteria, analogsDates, analogsValuesRaw, analogsValuesNorm;
 
@@ -342,9 +400,9 @@ bool asResultsForecast::Load() {
         // Get global attributes
         versionMajor = ncFile.GetAttInt("version_major");
         versionMinor = ncFile.GetAttInt("version_minor");
-        if (asIsNaN(versionMajor)) {
+        if (versionMajor == 0) {
             float version = ncFile.GetAttFloat("version");
-            if (asIsNaN(version)) {
+            if (isnan(version)) {
                 versionMajor = 1;
                 versionMinor = 0;
             } else {
@@ -403,12 +461,12 @@ bool asResultsForecast::Load() {
                     return false;
                 }
             } else {
-                m_predictandParameter =
-                    asPredictand::StringToParameterEnum(ncFile.GetAttString("predictand_parameter"));
-                m_predictandTemporalResolution =
-                    asPredictand::StringToTemporalResolutionEnum(ncFile.GetAttString("predictand_temporal_resolution"));
-                m_predictandSpatialAggregation =
-                    asPredictand::StringToSpatialAggregationEnum(ncFile.GetAttString("predictand_spatial_aggregation"));
+                m_predictandParameter = asPredictand::StringToParameterEnum(
+                    ncFile.GetAttString("predictand_parameter"));
+                m_predictandTemporalResolution = asPredictand::StringToTemporalResolutionEnum(
+                    ncFile.GetAttString("predictand_temporal_resolution"));
+                m_predictandSpatialAggregation = asPredictand::StringToSpatialAggregationEnum(
+                    ncFile.GetAttString("predictand_spatial_aggregation"));
             }
 
             m_predictandDatasetId = ncFile.GetAttString("predictand_dataset_id");
@@ -424,9 +482,14 @@ bool asResultsForecast::Load() {
             if (ncFile.GetAttShort("has_reference_values") == 1) {
                 m_hasReferenceValues = true;
             }
+
+            if (ncFile.HasAttribute("coordinate_system")) {
+                m_coordinateSystem = ncFile.GetAttString("coordinate_system");
+            }
         }
 
         // Get the elements size
+        int nAnalogsTot;
         if (versionMajor == 1 && versionMinor == 0) {
             nLeadtime = ncFile.GetDimLength("leadtime");
             nAnalogsTot = ncFile.GetDimLength("analogstot");
@@ -435,6 +498,9 @@ bool asResultsForecast::Load() {
             nLeadtime = ncFile.GetDimLength("lead_time");
             nAnalogsTot = ncFile.GetDimLength("analogs_tot");
             nStations = ncFile.GetDimLength("stations");
+        }
+        if (versionMajor >= 3) {
+            nPredictors = ncFile.GetDimLength("predictors");
         }
 
         // Get lead time data
@@ -512,6 +578,31 @@ bool asResultsForecast::Load() {
             }
         }
 
+        // Get predictors info
+        if (versionMajor >= 3) {
+            m_predictorDatasetIdsOper.resize(nPredictors);
+            m_predictorDatasetIdsArchive.resize(nPredictors);
+            m_predictorDataIdsOper.resize(nPredictors);
+            m_predictorDataIdsArchive.resize(nPredictors);
+            m_predictorLevels.resize(nPredictors);
+            m_predictorHours.resize(nPredictors);
+            m_predictorLonMin.resize(nPredictors);
+            m_predictorLonMax.resize(nPredictors);
+            m_predictorLatMin.resize(nPredictors);
+            m_predictorLatMax.resize(nPredictors);
+
+            ncFile.GetVar("predictor_dataset_ids_realtime", &m_predictorDatasetIdsOper[0], nPredictors);
+            ncFile.GetVar("predictor_dataset_ids_archive", &m_predictorDatasetIdsArchive[0], nPredictors);
+            ncFile.GetVar("predictor_data_ids_realtime", &m_predictorDataIdsOper[0], nPredictors);
+            ncFile.GetVar("predictor_data_ids_archive", &m_predictorDataIdsArchive[0], nPredictors);
+            ncFile.GetVar("predictor_levels", &m_predictorLevels[0]);
+            ncFile.GetVar("predictor_hours", &m_predictorHours[0]);
+            ncFile.GetVar("predictor_lon_min", &m_predictorLonMin[0]);
+            ncFile.GetVar("predictor_lon_max", &m_predictorLonMax[0]);
+            ncFile.GetVar("predictor_lat_min", &m_predictorLatMin[0]);
+            ncFile.GetVar("predictor_lat_max", &m_predictorLatMax[0]);
+        }
+
         // Create vectors for matrices data
         analogsCriteria.resize(nAnalogsTot);
         analogsDates.resize(nAnalogsTot);
@@ -544,7 +635,7 @@ bool asResultsForecast::Load() {
 
         ncFile.Close();
 
-    } catch (std::exception& e) {
+    } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
 
@@ -593,7 +684,7 @@ bool asResultsForecast::Load() {
         // Create containers
         for (int iTime = 0; iTime < nLeadtime; iTime++) {
             a2f analogsValuesLeadTime(nStations, m_analogsNb[iTime]);
-            analogsValuesLeadTime.fill(NaNf);
+            analogsValuesLeadTime.fill(NAN);
             m_analogsValuesRaw.push_back(analogsValuesLeadTime);
             m_analogsValuesNorm.push_back(analogsValuesLeadTime);
         }
@@ -630,7 +721,7 @@ bool asResultsForecast::Load() {
     return true;
 }
 
-wxArrayString asResultsForecast::GetStationNamesWxArrayString() const {
+wxArrayString asResultsForecast::GetStationNamesWxArray() const {
     wxArrayString stationsNames;
     for (const auto& stationName : m_stationNames) {
         stationsNames.Add(stationName);
@@ -638,26 +729,83 @@ wxArrayString asResultsForecast::GetStationNamesWxArrayString() const {
     return stationsNames;
 }
 
-wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArrayString() const {
+wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArray() const {
     wxArrayString stationsNames;
     for (int i = 0; i < m_stationNames.size(); i++) {
         wxString label;
-        if (!asIsNaN(m_stationHeights[i]) && m_stationHeights[i] != 0) {
-            label = wxString::Format("%s (%4.0fm)", m_stationNames[i], m_stationHeights[i]);
+        if (std::isfinite(m_stationHeights[i]) && m_stationHeights[i] != 0 && m_stationHeights[i] != -1) {
+            label = asStrF("%s (%4.0fm)", m_stationNames[i], m_stationHeights[i]);
         } else {
-            label = wxString::Format("%s", m_stationNames[i]);
+            label = asStrF("%s", m_stationNames[i]);
         }
         stationsNames.Add(label);
     }
     return stationsNames;
 }
 
+void asResultsForecast::LimitDataToHours(int hours) {
+    LimitDataToNbTimeSteps(1 + int(hours / GetForecastTimeStepHours()));
+}
+
+void asResultsForecast::LimitDataToDays(int days) {
+    LimitDataToNbTimeSteps(days);
+}
+
+void asResultsForecast::LimitDataToNbTimeSteps(int length) {
+    if (length >= m_targetDates.size()) return;
+
+    a1f targetDates = m_targetDates.head(length);
+    m_targetDates = targetDates;
+    a1i analogsNb = m_analogsNb.head(length);
+    m_analogsNb = analogsNb;
+
+    va1f analogsDates(m_analogsDates.begin(), m_analogsDates.begin() + length);
+    m_analogsDates = analogsDates;
+    va1f analogsCriteria(m_analogsCriteria.begin(), m_analogsCriteria.begin() + length);
+    m_analogsCriteria = analogsCriteria;
+    va2f analogsValuesRaw(m_analogsValuesRaw.begin(), m_analogsValuesRaw.begin() + length);
+    m_analogsValuesRaw = analogsValuesRaw;
+    va2f analogsValuesNorm(m_analogsValuesNorm.begin(), m_analogsValuesNorm.begin() + length);
+    m_analogsValuesNorm = analogsValuesNorm;
+}
+
+wxString asResultsForecast::GetDateFormatting() const {
+    wxString format = "DD.MM.YYYY";
+    if (GetPredictandTemporalResolution() != asPredictand::Daily) {
+        format = "DD.MM.YYYY hh";
+    }
+
+    return format;
+}
+
+double asResultsForecast::GetForecastTimeStepHours() const {
+    if (GetPredictandTemporalResolution() == asPredictand::Hourly) return 1;
+    if (GetPredictandTemporalResolution() == asPredictand::SixHourly) return 6;
+    if (GetPredictandTemporalResolution() == asPredictand::Daily) return 24;
+
+    return 24;
+}
+
+bool asResultsForecast::IsSubDaily() const {
+    return GetForecastTimeStepHours() < 24;
+}
+
+wxArrayString asResultsForecast::GetTargetDatesWxArray() const {
+    wxArrayString dates;
+    wxString format = GetDateFormatting();
+    for (float date : m_targetDates) {
+        dates.Add(asTime::GetStringTime(date, format));
+    }
+
+    return dates;
+}
+
 wxString asResultsForecast::GetStationNameAndHeight(int iStat) const {
     wxString stationName;
-    if (!asIsNaN(m_stationHeights[iStat]) && m_stationHeights[iStat] != 0) {
-        stationName = wxString::Format("%s (%4.0fm)", m_stationNames[iStat], m_stationHeights[iStat]);
+    if (std::isfinite(m_stationHeights[iStat]) && m_stationHeights[iStat] != 0 && m_stationHeights[iStat] != -1) {
+        stationName = asStrF("%s (%4.0fm)", m_stationNames[iStat], m_stationHeights[iStat]);
     } else {
-        stationName = wxString::Format("%s", m_stationNames[iStat]);
+        stationName = asStrF("%s", m_stationNames[iStat]);
     }
     return stationName;
 }
@@ -676,7 +824,7 @@ wxString asResultsForecast::GetPredictandStationIdsString() const {
     return ids;
 }
 
-void asResultsForecast::SetPredictandStationIds(wxString val) {
+void asResultsForecast::SetPredictandStationIds(const wxString& val) {
     wxStringTokenizer tokenizer(val, ":,; ");
     while (tokenizer.HasMoreTokens()) {
         wxString token = tokenizer.GetNextToken();
@@ -722,7 +870,7 @@ bool asResultsForecast::IsCompatibleWith(asResultsForecast* otherForecast) const
         compatible = false;
     } else {
         for (int i = 0; i < m_referenceAxis.size(); i++) {
-            if (!asIsNaN(m_referenceAxis[i]) && m_referenceAxis[i] != referenceAxis[i]) {
+            if (!isnan(m_referenceAxis[i]) && m_referenceAxis[i] != referenceAxis[i]) {
                 compatible = false;
             }
         }
@@ -782,8 +930,8 @@ bool asResultsForecast::IsSameAs(asResultsForecast* otherForecast) const {
 }
 
 bool asResultsForecast::IsSpecificForStationId(int stationId) const {
-    for (int i = 0; i < (int)m_predictandStationIds.size(); i++) {
-        if (m_predictandStationIds[i] == stationId) {
+    for (int predictandStationId : m_predictandStationIds) {
+        if (predictandStationId == stationId) {
             return true;
         }
     }
@@ -798,6 +946,17 @@ int asResultsForecast::GetStationRowFromId(int stationId) const {
     }
 
     wxFAIL;
-    wxLogError("The station ID %d was not found in the forecast results.", stationId);
+    wxLogError(_("The station ID %d was not found in the forecast results."), stationId);
     return -1;
+}
+
+Coo asResultsForecast::GetStationsMeanCoordinates() {
+    vd xs, ys;
+    for (int id : m_predictandStationIds) {
+        int i = GetStationRowFromId(id);
+        xs.push_back(m_stationXCoords[i]);
+        ys.push_back(m_stationYCoords[i]);
+    }
+
+    return {std::reduce(xs.begin(), xs.end()) / xs.size(), std::reduce(ys.begin(), ys.end()) / ys.size()};
 }

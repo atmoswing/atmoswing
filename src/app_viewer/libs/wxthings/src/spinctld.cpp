@@ -158,8 +158,8 @@ bool wxSpinCtrlDbl::Create(wxWindow* parent, wxWindowID id, const wxString& valu
     validator.SetIncludeList(list);
 #endif  // wxCHECK_VER(2, 5, 4)
 
-    m_spinButton =
-        new wxSpinButton(this, id, wxPoint(0, 0), wxSize(-1, height), wxSP_ARROW_KEYS | wxSP_VERTICAL | wxSP_WRAP);
+    m_spinButton = new wxSpinButton(this, id, wxPoint(0, 0), wxSize(-1, height),
+                                    wxSP_ARROW_KEYS | wxSP_VERTICAL | wxSP_WRAP);
     m_textCtrl = new wxSpinCtrlDblTextCtrl(this, id, value, wxPoint(0, 0),
                                            wxSize(width - m_spinButton->GetSize().GetWidth(), height),
                                            wxTE_NOHIDESEL | wxTE_PROCESS_ENTER, validator);

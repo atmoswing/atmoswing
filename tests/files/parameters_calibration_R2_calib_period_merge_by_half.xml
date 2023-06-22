@@ -76,6 +76,7 @@
   <analog_dates>
     <analogs_number>30</analogs_number>
     <predictor>
+      <preload>0</preload>
       <preprocessing>
         <preprocessing_method>MergeByHalfAndMultiply</preprocessing_method>
         <preprocessing_data>

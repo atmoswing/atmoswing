@@ -55,7 +55,7 @@ wxBmpComboPopupChild::wxBmpComboPopupChild(wxWindow* parent, wxBmpComboBox* owne
 void wxBmpComboPopupChild::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     wxPaintDC dc(this);
     PrepareDC(dc);
-    // dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID));
+    // dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID));
     // dc.Clear();
 
     dc.SetFont(m_bmpCombo->GetFont());
@@ -187,9 +187,9 @@ void wxBmpComboLabel::OnChar(wxKeyEvent& event) {
 void wxBmpComboLabel::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     wxPaintDC dc(this);
     dc.SetFont(m_bmpCombo->GetFont());
-    // dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID));
+    // dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID));
     // dc.Clear();
-    dc.SetBrush(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID));
+    dc.SetBrush(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID));
     dc.SetPen(*wxTRANSPARENT_PEN);
     dc.DrawRectangle(wxRect(wxPoint(0, 0), GetClientSize()));
 
@@ -391,8 +391,8 @@ void wxBmpComboBox::CalcLabelBitmapPos(int n, const wxSize& area, wxPoint& label
     } else  // if ((m_label_style & wxBMPCOMBO_LEFT) != 0)
     {
         labelPos = wxPoint(BORDER, (area.y - lh) / 2);
-        bitmapPos =
-            wxPoint(BORDER * 2 + m_labelSize.x + (area.x - BORDER * 2 - m_labelSize.x - bw) / 2, (area.y - bh) / 2);
+        bitmapPos = wxPoint(BORDER * 2 + m_labelSize.x + (area.x - BORDER * 2 - m_labelSize.x - bw) / 2,
+                            (area.y - bh) / 2);
     }
 }
 

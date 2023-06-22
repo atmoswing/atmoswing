@@ -29,7 +29,7 @@
 #ifndef AS_FRAME_PREFERENCES_VIEWER_H
 #define AS_FRAME_PREFERENCES_VIEWER_H
 
-#include "AtmoswingViewerGui.h"
+#include "AtmoSwingViewerGui.h"
 #include "asIncludes.h"
 #include "asWorkspace.h"
 

@@ -31,8 +31,8 @@
 #include "asFileNetcdf.h"
 
 asResults::asResults()
-    : m_fileVersionMajor(2),
-      m_fileVersionMinor(1),
+    : m_fileVersionMajor(3),
+      m_fileVersionMinor(0),
       m_currentStep(0),
       m_dateProcessed(0),
       m_subFolder(wxEmptyString),
@@ -75,7 +75,8 @@ wxString asResults::GetPredictandStationIdsList() const {
 bool asResults::DefTargetDatesAttributes(asFileNetcdf& ncFile) const {
     ncFile.PutAtt("long_name", "Target dates", "target_dates");
     ncFile.PutAtt("var_desc", "Date of the day to predict", "target_dates");
-    ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "target_dates");
+    ncFile.PutAtt("units", "days since 1858-11-17 00:00:00.0", "target_dates");
+    ncFile.PutAtt("units_note", "Modified Julian Day Number (MJD)", "target_dates");
     return true;
 }
 
@@ -118,7 +119,8 @@ bool asResults::DefAnalogsCriteriaAttributes(asFileNetcdf& ncFile) const {
 bool asResults::DefAnalogsDatesAttributes(asFileNetcdf& ncFile) const {
     ncFile.PutAtt("long_name", "Analogs dates", "analog_dates");
     ncFile.PutAtt("var_desc", "Analogs dates from the analog method", "analog_dates");
-    ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "analog_dates");
+    ncFile.PutAtt("units", "days since 1858-11-17 00:00:00.0", "analog_dates");
+    ncFile.PutAtt("units_note", "Modified Julian Day Number (MJD)", "analog_dates");
     return true;
 }
 

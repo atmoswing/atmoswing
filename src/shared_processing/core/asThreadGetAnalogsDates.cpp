@@ -36,11 +36,10 @@
 #include "asTimeArray.h"
 
 asThreadGetAnalogsDates::asThreadGetAnalogsDates(
-    std::vector<asPredictor*> predictorsArchive, std::vector<asPredictor*> predictorsTarget,
-    asTimeArray* timeArrayArchiveData, asTimeArray* timeArrayArchiveSelection, asTimeArray* timeArrayTargetData,
-    asTimeArray* timeArrayTargetSelection, std::vector<asCriteria*> criteria, asParameters* params, int step,
-    a1i& vRowsNb, a1i& vColsNb, int start, int end, a2f* finalAnalogsCriteria, a2f* finalAnalogsDates,
-    bool* containsNaNs, bool allowDuplicateDates, bool* success)
+    vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget, asTimeArray* timeArrayArchiveData,
+    asTimeArray* timeArrayArchiveSelection, asTimeArray* timeArrayTargetData, asTimeArray* timeArrayTargetSelection,
+    vector<asCriteria*> criteria, asParameters* params, int step, a1i& vRowsNb, a1i& vColsNb, int start, int end,
+    a2f* finalAnalogsCriteria, a2f* finalAnalogsDates, bool* containsNaNs, bool allowDuplicateDates, bool* success)
     : asThread(asThread::ProcessorGetAnalogsDates),
       m_pPredictorsArchive(std::move(predictorsArchive)),
       m_pPredictorsTarget(std::move(predictorsTarget)),
@@ -66,8 +65,8 @@ asThreadGetAnalogsDates::asThreadGetAnalogsDates(
     wxASSERT_MSG(m_end < timeArrayTargetSelection->GetSize(),
                  _("The given time array end is superior to the time array size."));
     wxASSERT_MSG(m_end != timeArrayTargetSelection->GetSize() - 2,
-                 wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
-                                  (int)timeArrayTargetSelection->GetSize()));
+                 asStrF(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
+                        (int)timeArrayTargetSelection->GetSize()));
 }
 
 asThreadGetAnalogsDates::~asThreadGetAnalogsDates() {}
@@ -92,9 +91,9 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
 
     // Containers for daily results
     a1f scoreArrayOneDay(analogsNb);
-    scoreArrayOneDay.fill(NaNf);
+    scoreArrayOneDay.fill(NAN);
     a1f dateArrayOneDay(analogsNb);
-    dateArrayOneDay.fill(NaNf);
+    dateArrayOneDay.fill(NAN);
 
     // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks
     // the predictors we are interested in, but which didn't take place at the same time.
@@ -108,8 +107,8 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
 
     // Loop through every timestep as target data
     for (int iDateTarg = m_start; iDateTarg <= m_end; iDateTarg++) {
-        int iTimeTargRelative =
-            asProcessor::FindNextDate(timeTargetSelection, timeTargetData, iTimeTargStart, iDateTarg);
+        int iTimeTargRelative = asProcessor::FindNextDate(timeTargetSelection, timeTargetData, iTimeTargStart,
+                                                          iDateTarg);
 
         // Check if a row was found
         if (iTimeTargRelative != asNOT_FOUND && iTimeTargRelative != asOUT_OF_RANGE) {
@@ -124,8 +123,8 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
             // Counter representing the current index
             int counter = 0;
 
-            scoreArrayOneDay.fill(NaNf);
-            dateArrayOneDay.fill(NaNf);
+            scoreArrayOneDay.fill(NAN);
+            dateArrayOneDay.fill(NAN);
 
             // Loop over the members
             for (int iMem = 0; iMem < membersNb; ++iMem) {
@@ -162,7 +161,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
                             // Weight and add the score
                             thisScore += tmpScore * m_params->GetPredictorWeight(m_step, iPtor);
                         }
-                        if (asIsNaN(thisScore)) {
+                        if (isnan(thisScore)) {
                             *m_pContainsNaNs = true;
                             continue;
                         }

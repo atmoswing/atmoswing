@@ -131,11 +131,11 @@ bool asCatalogPredictands::Load() {
                                 } else if (nodeDetail->GetName() == "file_pattern") {
                                     station.filePattern = asFileXml::GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "start") {
-                                    station.startDate =
-                                        asTime::GetTimeFromString(asFileXml::GetString(nodeDetail), guess);
+                                    station.startDate = asTime::GetTimeFromString(asFileXml::GetString(nodeDetail),
+                                                                                  guess);
                                 } else if (nodeDetail->GetName() == "end") {
-                                    station.endDate =
-                                        asTime::GetTimeFromString(asFileXml::GetString(nodeDetail), guess);
+                                    station.endDate = asTime::GetTimeFromString(asFileXml::GetString(nodeDetail),
+                                                                                guess);
                                 } else {
                                     xmlFile.UnknownNode(nodeDetail);
                                 }
@@ -187,15 +187,6 @@ bool asCatalogPredictands::Load() {
             break;
         case (asPredictand::TwelveHourlyMTW):
             m_timeStepHours = 12.0;
-            break;
-        case (asPredictand::TwoDays):
-            m_timeStepHours = 48.0;
-            break;
-        case (asPredictand::ThreeDays):
-            m_timeStepHours = 72.0;
-            break;
-        case (asPredictand::Weekly):
-            m_timeStepHours = 168.0;
             break;
         default:
             wxFAIL;

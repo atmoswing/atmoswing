@@ -50,7 +50,7 @@ asCriteria::asCriteria(const wxString& name, const wxString& fullname, Order ord
       m_order(order),
       m_minPointsNb(1),
       m_scaleBest(0),
-      m_scaleWorst(Inff),
+      m_scaleWorst(INFINITY),
       m_canUseInline(false),
       m_checkNaNs(true) {}
 
@@ -111,7 +111,7 @@ void asCriteria::CheckNaNs(const asPredictor* ptor1, const asPredictor* ptor2) {
         return;
     }
 
-    if (!ptor1->HasNaN() && !ptor1->HasNaN()) {
+    if (!ptor1->HasNaN() && !ptor2->HasNaN()) {
         m_checkNaNs = false;
     }
 }

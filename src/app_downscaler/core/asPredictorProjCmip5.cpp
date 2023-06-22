@@ -172,7 +172,7 @@ void asPredictorProjCmip5::ListFiles(asTimeArray& timeArray) {
     if (nbFiles == 0) {
         throw std::runtime_error("sdfsdfsdf");
         // throw "No CMIP5 file found for this pattern : .";
-        // asThrowException(wxString::Format(_("No CMIP5 file found for this pattern : %s."), m_fileNamePattern));
+        // throw runtime_error(asStrF(_("No CMIP5 file found for this pattern : %s."), m_fileNamePattern));
     }
 
     // Sort the list of files
@@ -185,8 +185,7 @@ void asPredictorProjCmip5::ListFiles(asTimeArray& timeArray) {
     for (int i = 0; i < listFiles.Count(); ++i) {
         wxRegEx reDates("\\d{8,}-\\d{8,}", wxRE_ADVANCED);
         if (!reDates.Matches(listFiles.Item(i))) {
-            asThrowException(wxString::Format(_("The dates sequence was not found in the CMIP5 file name : %s."),
-                                              listFiles.Item(i)));
+            throw runtime_error(asStrF(_("The dates sequence was not found in the CMIP5 file name : %s."), listFiles.Item(i)));
         }
 
         wxString datesSrt = reDates.GetMatch(listFiles.Item(i));

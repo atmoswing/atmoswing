@@ -106,8 +106,6 @@ void asParametersOptimization::AddPredictorLocks(ParamsStepBool& step) {
 }
 
 bool asParametersOptimization::LoadFromFile(const wxString& filePath) {
-    wxLogVerbose(_("Loading parameters file."));
-
     if (filePath.IsEmpty()) {
         wxLogError(_("The given path to the parameters file is empty."));
         return false;
@@ -159,8 +157,6 @@ bool asParametersOptimization::LoadFromFile(const wxString& filePath) {
     FixTimeLimits();
     FixWeights();
     FixCoordinates();
-
-    wxLogVerbose(_("Parameters file loaded."));
 
     return true;
 }
@@ -322,7 +318,7 @@ bool asParametersOptimization::ParseAnalogDatesParams(asFileParametersOptimizati
             AddPredictorLowerLimit(m_stepsLowerLimit[iStep]);
             AddPredictorLocks(m_stepsLocks[iStep]);
             SetPreprocess(iStep, iPtor, false);
-            SetPreload(iStep, iPtor, false);
+            SetPreload(iStep, iPtor, true);
             if (!ParsePredictors(fileParams, iStep, iPtor, nodeParamBlock)) return false;
             iPtor++;
         } else {
@@ -339,6 +335,9 @@ bool asParametersOptimization::ParsePredictors(asFileParametersOptimization& fil
     while (nodeParam) {
         if (nodeParam->GetName() == "preload") {
             SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
+            if (!fileParams.GetBool(nodeParam)) {
+                wxLogWarning(_("The preload option has been disabled. This can result in very long computation time."));
+            }
         } else if (nodeParam->GetName() == "standardize") {
             SetStandardize(iStep, iPtor, fileParams.GetBool(nodeParam));
         } else if (nodeParam->GetName() == "standardize_mean") {
@@ -636,9 +635,9 @@ bool asParametersOptimization::SetPreloadingProperties() {
                 }
 
                 if (!IsPredictorXptsnbLocked(iStep, iPtor)) {
-                    int xBasePtsNb =
-                        std::abs(GetPredictorXminUpperLimit(iStep, iPtor) - GetPredictorXminLowerLimit(iStep, iPtor)) /
-                        GetPredictorXstep(iStep, iPtor);
+                    int xBasePtsNb = std::abs(GetPredictorXminUpperLimit(iStep, iPtor) -
+                                              GetPredictorXminLowerLimit(iStep, iPtor)) /
+                                     GetPredictorXstep(iStep, iPtor);
                     SetPreloadXptsnb(iStep, iPtor,
                                      xBasePtsNb + GetPredictorXptsnbUpperLimit(iStep, iPtor));  // No need to add +1
                 } else {
@@ -646,9 +645,9 @@ bool asParametersOptimization::SetPreloadingProperties() {
                 }
 
                 if (!IsPredictorYptsnbLocked(iStep, iPtor)) {
-                    int yBasePtsNb =
-                        std::abs(GetPredictorYminUpperLimit(iStep, iPtor) - GetPredictorYminLowerLimit(iStep, iPtor)) /
-                        GetPredictorYstep(iStep, iPtor);
+                    int yBasePtsNb = std::abs(GetPredictorYminUpperLimit(iStep, iPtor) -
+                                              GetPredictorYminLowerLimit(iStep, iPtor)) /
+                                     GetPredictorYstep(iStep, iPtor);
                     SetPreloadYptsnb(iStep, iPtor,
                                      yBasePtsNb + GetPredictorYptsnbUpperLimit(iStep, iPtor));  // No need to add +1
                 } else {
@@ -865,9 +864,9 @@ void asParametersOptimization::CheckRange() {
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (!GetPredictorGridType(i, j).IsSameAs("Regular", false))
-                asThrowException(wxString::Format(_("asParametersOptimization::CheckRange is not ready to use on "
-                                                    "unregular grids (PredictorGridType = %s)"),
-                                                  GetPredictorGridType(i, j).c_str()));
+                throw runtime_error(asStrF(_("asParametersOptimization::CheckRange is not ready to use on "
+                                             "unregular grids (PredictorGridType = %s)"),
+                                           GetPredictorGridType(i, j)));
 
             if (NeedsPreprocessing(i, j)) {
                 int preprocessSize = GetPreprocessSize(i, j);
@@ -989,9 +988,9 @@ bool asParametersOptimization::IsInRange() {
             }
 
             if (!GetPredictorGridType(i, j).IsSameAs("Regular", false))
-                asThrowException(wxString::Format(_("asParametersOptimization::CheckRange is not ready to use on "
-                                                    "unregular grids (PredictorGridType = %s)"),
-                                                  GetPredictorGridType(i, j).c_str()));
+                throw runtime_error(asStrF(_("asParametersOptimization::CheckRange is not ready to use on "
+                                             "unregular grids (PredictorGridType = %s)"),
+                                           GetPredictorGridType(i, j)));
 
             // Check ranges
             if (!m_stepsLocks[i].predictors[j].xMin) {
@@ -1118,8 +1117,8 @@ bool asParametersOptimization::FixWeights() {
             if (totWeightLocked > 1) {
                 float precision = GetPredictorWeightIteration(i, j);
                 float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                newWeight =
-                    wxMax(precision * asRound(newWeight * (1.0 / precision)), GetPredictorWeightLowerLimit(i, j));
+                newWeight = wxMax(precision * asRound(newWeight * (1.0 / precision)),
+                                  GetPredictorWeightLowerLimit(i, j));
                 newSum += newWeight;
 
                 SetPredictorWeight(i, j, newWeight);
@@ -1127,8 +1126,8 @@ bool asParametersOptimization::FixWeights() {
                 if (!IsPredictorWeightLocked(i, j)) {
                     float precision = GetPredictorWeightIteration(i, j);
                     float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                    newWeight =
-                        wxMax(precision * asRound(newWeight * (1.0 / precision)), GetPredictorWeightLowerLimit(i, j));
+                    newWeight = wxMax(precision * asRound(newWeight * (1.0 / precision)),
+                                      GetPredictorWeightLowerLimit(i, j));
                     newSum += newWeight;
 
                     SetPredictorWeight(i, j, newWeight);
@@ -1137,8 +1136,8 @@ bool asParametersOptimization::FixWeights() {
         }
 
         // Last weight: difference to 0
-        float lastWeight =
-            wxMax(1.0f - newSum - totWeightLocked, GetPredictorWeightLowerLimit(i, GetPredictorsNb(i) - 1));
+        float lastWeight = wxMax(1.0f - newSum - totWeightLocked,
+                                 GetPredictorWeightLowerLimit(i, GetPredictorsNb(i) - 1));
         SetPredictorWeight(i, GetPredictorsNb(i) - 1, lastWeight);
     }
 

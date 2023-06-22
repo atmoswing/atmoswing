@@ -45,7 +45,9 @@ class asPanelSidebarAlarmsDrawing : public wxPanel {
 
     ~asPanelSidebarAlarmsDrawing() override;
 
-    void DrawAlarms(a1f& dates, const vwxs& forecasts, a2f& values);
+    void CreateGrid(a1f& dates, const vwxs& names);
+
+    void AddRow(a1f& dates, a1f& values, int row);
 
     void SetParent(asPanelSidebarAlarms* parent);
 
@@ -54,13 +56,11 @@ class asPanelSidebarAlarmsDrawing : public wxPanel {
     wxGraphicsContext* m_gdc;
     asPanelSidebarAlarms* m_parent;
 
-    void SetBitmapAlarms(wxBitmap* bmp);
-
-    void CreatePath(wxGraphicsPath& path, const wxPoint& start, int witdh, int height, int iCol, int iRow);
+    void CreatePath(wxGraphicsPath& path, const wxPoint& start, float cellWidth, int height, int iCol, int iRow);
 
     void FillPath(wxGraphicsContext* gc, wxGraphicsPath& path, float value);
 
-    void CreateDatesText(wxGraphicsContext* gc, const wxPoint& start, int cellWitdh, int iCol, const wxString& label);
+    void CreateDatesText(wxGraphicsContext* gc, const wxPoint& start, int cellWidth, int iCol, const wxString& label);
 
     void CreateNbText(wxGraphicsContext* gc, const wxPoint& start, int cellHeight, int iRow, const wxString& label);
 
@@ -75,7 +75,9 @@ class asPanelSidebarAlarms : public asPanelSidebar {
 
     ~asPanelSidebarAlarms() override;
 
-    void SetData(a1f& dates, a2f& values);
+    void CreateGrid(a1f& dates);
+
+    void AddRow(a1f& dates, a1f& values, int row);
 
     void Update() override;
 

@@ -103,18 +103,18 @@ bool asBatchForecasts::Save() const {
     if (!fileBatch.EditRootElement()) return false;
 
     // Get general data
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("forecasts_output_directory", m_forecastsOutputDirectory));
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("exports_output_directory", m_exportsOutputDirectory));
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("parameters_files_directory", m_parametersFileDirectory));
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_archive_directory", m_predictorsArchiveDirectory));
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_realtime_directory", m_predictorsRealtimeDirectory));
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictand_db_directory", m_predictandDBDirectory));
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("export_synthesis", m_export));
+    fileBatch.AddChild(fileBatch.CreateNode("forecasts_output_directory", m_forecastsOutputDirectory));
+    fileBatch.AddChild(fileBatch.CreateNode("exports_output_directory", m_exportsOutputDirectory));
+    fileBatch.AddChild(fileBatch.CreateNode("parameters_files_directory", m_parametersFileDirectory));
+    fileBatch.AddChild(fileBatch.CreateNode("predictors_archive_directory", m_predictorsArchiveDirectory));
+    fileBatch.AddChild(fileBatch.CreateNode("predictors_realtime_directory", m_predictorsRealtimeDirectory));
+    fileBatch.AddChild(fileBatch.CreateNode("predictand_db_directory", m_predictandDBDirectory));
+    fileBatch.AddChild(fileBatch.CreateNode("export_synthesis", m_export));
 
     // Forecasts
     wxXmlNode* nodeForecasts = new wxXmlNode(wxXML_ELEMENT_NODE, "forecasts");
     for (int iFcst = 0; iFcst < GetForecastsNb(); iFcst++) {
-        nodeForecasts->AddChild(fileBatch.CreateNodeWithValue("filename", m_forecastFileNames[iFcst]));
+        nodeForecasts->AddChild(fileBatch.CreateNode("filename", m_forecastFileNames[iFcst]));
     }
     fileBatch.AddChild(nodeForecasts);
 

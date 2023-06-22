@@ -43,6 +43,8 @@ asFramePlotDistributions::asFramePlotDistributions(wxWindow* parent, int methodR
       m_selectedStation(0),
       m_selectedDate(0),
       m_xmaxPredictands(0) {
+    SetLabel(_("Distribution plots"));
+
     forecastRow = wxMax(forecastRow, 0);
 
     m_panelPlotPredictands = new asPanelPlot(m_panelPredictandsRight);
@@ -101,7 +103,7 @@ void asFramePlotDistributions::Init() {
     RebuildChoiceForecast();
 
     // Dates list
-    wxArrayString arrayDates = m_forecastManager->GetLeadTimes(m_selectedMethod, m_selectedForecast);
+    wxArrayString arrayDates = m_forecastManager->GetTargetDatesWxArray(m_selectedMethod, m_selectedForecast);
     m_choiceDate->Set(arrayDates);
     m_choiceDate->Select(m_selectedDate);
 
@@ -117,7 +119,7 @@ void asFramePlotDistributions::Init() {
 
 void asFramePlotDistributions::RebuildChoiceForecast() {
     // Reset forecast list
-    wxArrayString arrayForecasts = m_forecastManager->GetAllForecastNamesWxArray();
+    wxArrayString arrayForecasts = m_forecastManager->GetCombinedForecastNamesWxArray();
     m_choiceForecast->Set(arrayForecasts);
     int linearIndex = m_forecastManager->GetLinearIndex(m_selectedMethod, m_selectedForecast);
     m_choiceForecast->Select(linearIndex);
@@ -128,7 +130,7 @@ void asFramePlotDistributions::RebuildChoiceForecast() {
             m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetStationId(m_selectedStation);
         int forecastRow = m_forecastManager->GetForecastRowSpecificForStationId(methodRow, stationId);
         int index = m_forecastManager->GetLinearIndex(methodRow, forecastRow);
-        wxString val = " --> " + m_choiceForecast->GetString(index) + " <-- ";
+        wxString val = "* " + m_choiceForecast->GetString(index) + " *";
         m_choiceForecast->SetString(index, val);
     }
 }
@@ -139,7 +141,7 @@ void asFramePlotDistributions::OnChoiceForecastChange(wxCommandEvent& event) {
     m_selectedForecast = m_forecastManager->GetForecastRowFromLinearIndex(linearIndex);
 
     // Dates list
-    wxArrayString arrayDates = m_forecastManager->GetLeadTimes(m_selectedMethod, m_selectedForecast);
+    wxArrayString arrayDates = m_forecastManager->GetTargetDatesWxArray(m_selectedMethod, m_selectedForecast);
     m_choiceDate->Set(arrayDates);
     if (arrayDates.size() <= m_selectedDate) {
         m_selectedDate = 0;
@@ -368,6 +370,15 @@ bool asFramePlotDistributions::PlotPredictands() {
     return true;
 }
 
+void asFramePlotDistributions::ResetExtent(wxCommandEvent& event) {
+    // Set the view rectangle (wxRect2DDouble(x, y, w, h))
+    wxRect2DDouble currentView(0, 0, m_xmaxPredictands * 1.1, 1);
+    m_panelPlotPredictands->GetPlotCtrl()->SetViewRect(currentView);
+
+    // Redraw
+    m_panelPlotPredictands->GetPlotCtrl()->Redraw(wxPLOTCTRL_REDRAW_PLOT);
+}
+
 bool asFramePlotDistributions::PlotCriteria() {
     wxBusyCursor wait;
 
@@ -447,10 +458,10 @@ void asFramePlotDistributions::PlotAllReturnPeriods() {
         wxPlotData plotData;
         plotData.Create(2);
         if (std::abs(retPeriods[i] - 2.33) < 0.1) {
-            plotData.SetFilename(wxString::Format("P%3.2f", retPeriods[i]));
+            plotData.SetFilename(asStrF("P%3.2f", retPeriods[i]));
         } else {
             auto roundedVal = (int)asRound(retPeriods[i]);
-            plotData.SetFilename(wxString::Format("P%d", roundedVal));
+            plotData.SetFilename(asStrF("P%d", roundedVal));
         }
         plotData.SetValue(0, val, -1);
         plotData.SetValue(1, val, 2);

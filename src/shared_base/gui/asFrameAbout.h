@@ -29,7 +29,7 @@
 #ifndef AS_FRAME_ABOUT_H
 #define AS_FRAME_ABOUT_H
 
-#include "AtmoswingSharedGui.h"
+#include "AtmoSwingSharedGui.h"
 
 class asFrameAbout : public asFrameAboutVirtual {
   public:

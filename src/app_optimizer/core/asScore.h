@@ -69,8 +69,8 @@ class asScore : public wxObject {
 
     asScore();
 
-    asScore(Score score, const wxString& name, const wxString& fullname, Order order, float scaleBest = NaNf,
-            float scaleWorst = NaNf, bool usesClimatology = false, bool singleValue = true);
+    asScore(Score score, const wxString& name, const wxString& fullname, Order order, float scaleBest = NAN,
+            float scaleWorst = NAN, bool usesClimatology = false, bool singleValue = true);
 
     ~asScore() override = default;
 

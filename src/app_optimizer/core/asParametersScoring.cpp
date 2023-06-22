@@ -32,30 +32,28 @@
 
 asParametersScoring::asParametersScoring()
     : asParameters(),
-      m_calibrationStart(NaNd),
-      m_calibrationEnd(NaNd) {}
+      m_calibrationStart(NAN),
+      m_calibrationEnd(NAN) {}
 
 asParametersScoring::~asParametersScoring() {}
 
 void asParametersScoring::AddPredictorVect(ParamsStepVect& step) {
     ParamsPredictorVect predictor;
 
-    predictor.dataId.push_back("");
+    predictor.dataId.emplace_back("");
     predictor.level.push_back(0);
     predictor.xMin.push_back(0);
     predictor.xPtsNb.push_back(0);
     predictor.yMin.push_back(0);
     predictor.yPtsNb.push_back(0);
     predictor.hours.push_back(0);
-    predictor.criteria.push_back("");
+    predictor.criteria.emplace_back("");
     predictor.weight.push_back(1);
 
     step.predictors.push_back(predictor);
 }
 
 bool asParametersScoring::GenerateSimpleParametersFile(const wxString& filePath) const {
-    wxLogVerbose(_("Generating parameters file."));
-
     if (filePath.IsEmpty()) {
         wxLogError(_("The given path to the parameters file is empty."));
         return false;
@@ -68,34 +66,34 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString& filePath)
     if (!fileParams.EditRootElement()) return false;
 
     // Description
-    wxXmlNode* nodeDescr = new wxXmlNode(wxXML_ELEMENT_NODE, "description");
-    nodeDescr->AddChild(fileParams.CreateNodeWithValue("method_id", GetMethodId()));
-    nodeDescr->AddChild(fileParams.CreateNodeWithValue("method_id_display", GetMethodIdDisplay()));
-    nodeDescr->AddChild(fileParams.CreateNodeWithValue("specific_tag", GetSpecificTag()));
-    nodeDescr->AddChild(fileParams.CreateNodeWithValue("specific_tag_display", GetSpecificTagDisplay()));
-    nodeDescr->AddChild(fileParams.CreateNodeWithValue("description", GetDescription()));
+    auto nodeDescr = new wxXmlNode(wxXML_ELEMENT_NODE, "description");
+    nodeDescr->AddChild(fileParams.CreateNode("method_id", GetMethodId()));
+    nodeDescr->AddChild(fileParams.CreateNode("method_id_display", GetMethodIdDisplay()));
+    nodeDescr->AddChild(fileParams.CreateNode("specific_tag", GetSpecificTag()));
+    nodeDescr->AddChild(fileParams.CreateNode("specific_tag_display", GetSpecificTagDisplay()));
+    nodeDescr->AddChild(fileParams.CreateNode("description", GetDescription()));
 
     fileParams.AddChild(nodeDescr);
 
     // Time properties
-    wxXmlNode* nodeTime = new wxXmlNode(wxXML_ELEMENT_NODE, "time_properties");
+    auto nodeTime = new wxXmlNode(wxXML_ELEMENT_NODE, "time_properties");
 
-    wxXmlNode* nodeTimeArchivePeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "archive_period");
+    auto nodeTimeArchivePeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "archive_period");
     nodeTime->AddChild(nodeTimeArchivePeriod);
     wxString archiveStart = asTime::GetStringTime(GetArchiveStart(), "DD.MM.YYYY");
-    nodeTimeArchivePeriod->AddChild(fileParams.CreateNodeWithValue("start", archiveStart));
+    nodeTimeArchivePeriod->AddChild(fileParams.CreateNode("start", archiveStart));
     wxString archiveEnd = asTime::GetStringTime(GetArchiveEnd(), "DD.MM.YYYY");
-    nodeTimeArchivePeriod->AddChild(fileParams.CreateNodeWithValue("end", archiveEnd));
+    nodeTimeArchivePeriod->AddChild(fileParams.CreateNode("end", archiveEnd));
 
-    wxXmlNode* nodeTimeCalibrationPeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "calibration_period");
+    auto nodeTimeCalibrationPeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "calibration_period");
     nodeTime->AddChild(nodeTimeCalibrationPeriod);
     wxString calibrationStart = asTime::GetStringTime(GetCalibrationStart(), "DD.MM.YYYY");
-    nodeTimeCalibrationPeriod->AddChild(fileParams.CreateNodeWithValue("start", calibrationStart));
+    nodeTimeCalibrationPeriod->AddChild(fileParams.CreateNode("start", calibrationStart));
     wxString calibrationEnd = asTime::GetStringTime(GetCalibrationEnd(), "DD.MM.YYYY");
-    nodeTimeCalibrationPeriod->AddChild(fileParams.CreateNodeWithValue("end", calibrationEnd));
+    nodeTimeCalibrationPeriod->AddChild(fileParams.CreateNode("end", calibrationEnd));
 
     if (HasValidationPeriod()) {
-        wxXmlNode* nodeTimeValidationPeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "validation_period");
+        auto nodeTimeValidationPeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "validation_period");
         nodeTime->AddChild(nodeTimeValidationPeriod);
         wxString validationYears;
         vi validationYearsVect = GetValidationYearsVector();
@@ -105,131 +103,127 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString& filePath)
                 validationYears << ", ";
             }
         }
-        nodeTimeValidationPeriod->AddChild(fileParams.CreateNodeWithValue("years", validationYears));
+        nodeTimeValidationPeriod->AddChild(fileParams.CreateNode("years", validationYears));
     }
 
     wxString timeArrayTimeStep;
     timeArrayTimeStep << GetTargetTimeStepHours();
-    nodeTime->AddChild(fileParams.CreateNodeWithValue("time_step", timeArrayTimeStep));
+    nodeTime->AddChild(fileParams.CreateNode("time_step", timeArrayTimeStep));
 
-    wxXmlNode* nodeTimeArrayTarget = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_target");
+    auto nodeTimeArrayTarget = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_target");
     nodeTime->AddChild(nodeTimeArrayTarget);
-    nodeTimeArrayTarget->AddChild(fileParams.CreateNodeWithValue("time_array", GetTimeArrayTargetMode()));
+    nodeTimeArrayTarget->AddChild(fileParams.CreateNode("time_array", GetTimeArrayTargetMode()));
     if (GetTimeArrayTargetMode().IsSameAs("predictand_thresholds")) {
         nodeTimeArrayTarget->AddChild(
-            fileParams.CreateNodeWithValue("predictand_serie_name", GetTimeArrayTargetPredictandSerieName()));
+            fileParams.CreateNode("predictand_serie_name", GetTimeArrayTargetPredictandSerieName()));
         nodeTimeArrayTarget->AddChild(
-            fileParams.CreateNodeWithValue("predictand_min_threshold", GetTimeArrayTargetPredictandMinThreshold()));
+            fileParams.CreateNode("predictand_min_threshold", GetTimeArrayTargetPredictandMinThreshold()));
         nodeTimeArrayTarget->AddChild(
-            fileParams.CreateNodeWithValue("predictand_max_threshold", GetTimeArrayTargetPredictandMaxThreshold()));
+            fileParams.CreateNode("predictand_max_threshold", GetTimeArrayTargetPredictandMaxThreshold()));
     }
 
-    wxXmlNode* nodeTimeArrayAnalogs = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_analogs");
+    auto nodeTimeArrayAnalogs = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_analogs");
     nodeTime->AddChild(nodeTimeArrayAnalogs);
-    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("time_array", GetTimeArrayAnalogsMode()));
-    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("interval_days", GetAnalogsIntervalDays()));
-    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("exclude_days", GetAnalogsExcludeDays()));
+    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNode("time_array", GetTimeArrayAnalogsMode()));
+    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNode("interval_days", GetAnalogsIntervalDays()));
+    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNode("exclude_days", GetAnalogsExcludeDays()));
 
     fileParams.AddChild(nodeTime);
 
     // Analog dates
     for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
-        wxXmlNode* nodeAnalogDates = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_dates");
+        auto nodeAnalogDates = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_dates");
 
-        nodeAnalogDates->AddChild(fileParams.CreateNodeWithValue("analogs_number", GetAnalogsNumber(iStep)));
+        nodeAnalogDates->AddChild(fileParams.CreateNode("analogs_number", GetAnalogsNumber(iStep)));
 
         // Predictors
         for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
-            wxXmlNode* nodePredictor = new wxXmlNode(wxXML_ELEMENT_NODE, "predictor");
+            auto nodePredictor = new wxXmlNode(wxXML_ELEMENT_NODE, "predictor");
             nodeAnalogDates->AddChild(nodePredictor);
 
-            nodePredictor->AddChild(fileParams.CreateNodeWithValue("preload", NeedsPreloading(iStep, iPtor)));
-            nodePredictor->AddChild(fileParams.CreateNodeWithValue("standardize", GetStandardize(iStep, iPtor)));
-            nodePredictor->AddChild(
-                fileParams.CreateNodeWithValue("standardize_mean", GetStandardizeMean(iStep, iPtor)));
-            nodePredictor->AddChild(fileParams.CreateNodeWithValue("standardize_sd", GetStandardizeSd(iStep, iPtor)));
+            nodePredictor->AddChild(fileParams.CreateNode("preload", NeedsPreloading(iStep, iPtor)));
+            nodePredictor->AddChild(fileParams.CreateNode("standardize", GetStandardize(iStep, iPtor)));
+            nodePredictor->AddChild(fileParams.CreateNode("standardize_mean", GetStandardizeMean(iStep, iPtor)));
+            nodePredictor->AddChild(fileParams.CreateNode("standardize_sd", GetStandardizeSd(iStep, iPtor)));
 
             if (NeedsPreprocessing(iStep, iPtor)) {
-                wxXmlNode* nodePreprocessing = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing");
+                auto nodePreprocessing = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing");
                 nodePredictor->AddChild(nodePreprocessing);
 
                 nodePreprocessing->AddChild(
-                    fileParams.CreateNodeWithValue("preprocessing_method", GetPreprocessMethod(iStep, iPtor)));
+                    fileParams.CreateNode("preprocessing_method", GetPreprocessMethod(iStep, iPtor)));
 
                 for (int iPre = 0; iPre < GetPreprocessSize(iStep, iPtor); iPre++) {
-                    wxXmlNode* nodePreprocessingData = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing_data");
+                    auto nodePreprocessingData = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing_data");
                     nodePreprocessing->AddChild(nodePreprocessingData);
 
                     nodePreprocessingData->AddChild(
-                        fileParams.CreateNodeWithValue("dataset_id", GetPreprocessDatasetId(iStep, iPtor, iPre)));
+                        fileParams.CreateNode("dataset_id", GetPreprocessDatasetId(iStep, iPtor, iPre)));
                     nodePreprocessingData->AddChild(
-                        fileParams.CreateNodeWithValue("data_id", GetPreprocessDataId(iStep, iPtor, iPre)));
+                        fileParams.CreateNode("data_id", GetPreprocessDataId(iStep, iPtor, iPre)));
                     nodePreprocessingData->AddChild(
-                        fileParams.CreateNodeWithValue("level", GetPreprocessLevel(iStep, iPtor, iPre)));
+                        fileParams.CreateNode("level", GetPreprocessLevel(iStep, iPtor, iPre)));
                     nodePreprocessingData->AddChild(
-                        fileParams.CreateNodeWithValue("time", GetPreprocessHour(iStep, iPtor, iPre)));
+                        fileParams.CreateNode("time", GetPreprocessHour(iStep, iPtor, iPre)));
                 }
             } else {
-                nodePredictor->AddChild(
-                    fileParams.CreateNodeWithValue("dataset_id", GetPredictorDatasetId(iStep, iPtor)));
-                nodePredictor->AddChild(fileParams.CreateNodeWithValue("data_id", GetPredictorDataId(iStep, iPtor)));
-                nodePredictor->AddChild(fileParams.CreateNodeWithValue("level", GetPredictorLevel(iStep, iPtor)));
-                nodePredictor->AddChild(fileParams.CreateNodeWithValue("time", GetPredictorHour(iStep, iPtor)));
+                nodePredictor->AddChild(fileParams.CreateNode("dataset_id", GetPredictorDatasetId(iStep, iPtor)));
+                nodePredictor->AddChild(fileParams.CreateNode("data_id", GetPredictorDataId(iStep, iPtor)));
+                nodePredictor->AddChild(fileParams.CreateNode("level", GetPredictorLevel(iStep, iPtor)));
+                nodePredictor->AddChild(fileParams.CreateNode("time", GetPredictorHour(iStep, iPtor)));
             }
 
-            wxXmlNode* nodeWindow = new wxXmlNode(wxXML_ELEMENT_NODE, "spatial_window");
+            auto nodeWindow = new wxXmlNode(wxXML_ELEMENT_NODE, "spatial_window");
             nodePredictor->AddChild(nodeWindow);
 
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("grid_type", GetPredictorGridType(iStep, iPtor)));
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("x_min", GetPredictorXmin(iStep, iPtor)));
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("x_points_nb", GetPredictorXptsnb(iStep, iPtor)));
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("x_step", GetPredictorXstep(iStep, iPtor)));
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("y_min", GetPredictorYmin(iStep, iPtor)));
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("y_points_nb", GetPredictorYptsnb(iStep, iPtor)));
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("y_step", GetPredictorYstep(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNode("grid_type", GetPredictorGridType(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNode("x_min", GetPredictorXmin(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNode("x_points_nb", GetPredictorXptsnb(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNode("x_step", GetPredictorXstep(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNode("y_min", GetPredictorYmin(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNode("y_points_nb", GetPredictorYptsnb(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNode("y_step", GetPredictorYstep(iStep, iPtor)));
 
-            nodePredictor->AddChild(fileParams.CreateNodeWithValue("criteria", GetPredictorCriteria(iStep, iPtor)));
-            nodePredictor->AddChild(fileParams.CreateNodeWithValue("weight", GetPredictorWeight(iStep, iPtor)));
+            nodePredictor->AddChild(fileParams.CreateNode("criteria", GetPredictorCriteria(iStep, iPtor)));
+            nodePredictor->AddChild(fileParams.CreateNode("weight", GetPredictorWeight(iStep, iPtor)));
         }
 
         fileParams.AddChild(nodeAnalogDates);
     }
 
     // Analogs values
-    wxXmlNode* nodeAnalogValues = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_values");
+    auto nodeAnalogValues = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_values");
 
-    wxXmlNode* nodePredictand = new wxXmlNode(wxXML_ELEMENT_NODE, "predictand");
+    auto nodePredictand = new wxXmlNode(wxXML_ELEMENT_NODE, "predictand");
     nodeAnalogValues->AddChild(nodePredictand);
 
     vvi predictandStationIdsVect = GetPredictandStationIdsVector();
     wxString predictandStationIds = GetPredictandStationIdsVectorString(predictandStationIdsVect);
-    nodePredictand->AddChild(fileParams.CreateNodeWithValue("station_id", predictandStationIds));
+    nodePredictand->AddChild(fileParams.CreateNode("station_id", predictandStationIds));
 
     fileParams.AddChild(nodeAnalogValues);
 
     // Forecast scores
-    wxXmlNode* nodeAnalogScore = new wxXmlNode(wxXML_ELEMENT_NODE, "evaluation");
+    auto nodeAnalogScore = new wxXmlNode(wxXML_ELEMENT_NODE, "evaluation");
 
-    nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("score", GetScoreName()));
+    nodeAnalogScore->AddChild(fileParams.CreateNode("score", GetScoreName()));
 
     float fsThreshold = GetScoreThreshold();
-    if (!asIsNaN(fsThreshold)) {
-        nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("threshold", fsThreshold));
+    if (!isnan(fsThreshold)) {
+        nodeAnalogScore->AddChild(fileParams.CreateNode("threshold", fsThreshold));
     }
 
     float fsQuantile = GetScoreQuantile();
-    if (!asIsNaN(fsQuantile)) {
-        nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("quantile", fsQuantile));
+    if (!isnan(fsQuantile)) {
+        nodeAnalogScore->AddChild(fileParams.CreateNode("quantile", fsQuantile));
     }
 
-    nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("time_array", GetScoreTimeArrayMode()));
+    nodeAnalogScore->AddChild(fileParams.CreateNode("time_array", GetScoreTimeArrayMode()));
 
     fileParams.AddChild(nodeAnalogScore);
 
     if (!fileParams.Save()) return false;
     if (!fileParams.Close()) return false;
-
-    wxLogVerbose(_("Parameters file generated."));
 
     return true;
 }
@@ -289,14 +283,14 @@ wxString asParametersScoring::Print() const {
     // Create content string
     wxString content = asParameters::Print();
 
-    content.Append(wxString::Format("|||| Score\t%s\t", GetScoreName()));
-    if (!asIsNaN(GetScoreQuantile())) {
-        content.Append(wxString::Format("quantile\t%f\t", GetScoreQuantile()));
+    content.Append(asStrF("|||| Score\t%s\t", GetScoreName()));
+    if (!isnan(GetScoreQuantile())) {
+        content.Append(asStrF("quantile\t%f\t", GetScoreQuantile()));
     }
-    if (!asIsNaN(GetScoreThreshold())) {
-        content.Append(wxString::Format("threshold\t%f\t", GetScoreThreshold()));
+    if (!isnan(GetScoreThreshold())) {
+        content.Append(asStrF("threshold\t%f\t", GetScoreThreshold()));
     }
-    content.Append(wxString::Format("TimeArray\t%s\t", GetScoreTimeArrayMode()));
+    content.Append(asStrF("TimeArray\t%s\t", GetScoreTimeArrayMode()));
 
     return content;
 }
@@ -311,8 +305,8 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals) {
     wxString strVal = asExtractParamValueAndCut(stringVals, "Score");
     if (!strVal.IsSameAs(GetScoreName())) {
         wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetScoreName(), strVal);
-        asLog::PrintToConsole(wxString::Format(
-            _("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"), GetScoreName(), strVal));
+        asLog::PrintToConsole(asStrF(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"),
+                                     GetScoreName(), strVal));
         return false;
     }
 

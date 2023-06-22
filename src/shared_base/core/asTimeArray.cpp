@@ -90,17 +90,24 @@ asTimeArray::asTimeArray(vd& timeArray)
     : asTime(),
       m_initialized(false),
       m_mode(Custom) {
-    wxASSERT(timeArray.size() > 1);
-    wxASSERT(timeArray[timeArray.size() - 1] > timeArray[0]);
+    if (timeArray.size() == 1) {
+        m_initialized = false;
+        m_mode = SingleDay;
+        m_start = timeArray[0];
+        m_end = timeArray[0];
+        m_timeStepDays = 0;
+    } else {
+        wxASSERT(timeArray.size() > 1);
+        wxASSERT(timeArray[timeArray.size() - 1] > timeArray[0]);
 
-    // Get values
-    m_timeStepDays = timeArray[1] - timeArray[0];
-    m_start = timeArray[0];
-    m_end = timeArray[timeArray.size() - 1];
-    m_timeArray.resize(timeArray.size());
+        m_timeStepDays = timeArray[1] - timeArray[0];
+        m_start = timeArray[0];
+        m_end = timeArray[timeArray.size() - 1];
+        m_timeArray.resize(timeArray.size());
 
-    for (int i = 0; i < timeArray.size(); i++) {
-        m_timeArray[i] = timeArray[i];
+        for (int i = 0; i < timeArray.size(); i++) {
+            m_timeArray[i] = timeArray[i];
+        }
     }
 }
 
@@ -210,22 +217,21 @@ bool asTimeArray::Init(double targetDate, double intervalDays, double exclusionD
 }
 
 void asTimeArray::RemoveExcludedDates(double targetDate, double exclusionDays) {
+    if (exclusionDays == 0) {
+        return;
+    }
+
     a1d newTimeArray;
     newTimeArray.resize(m_timeArray.size());
-
-    if (exclusionDays == 0) {
-        exclusionDays = 30;
-        wxLogWarning(_("The 'exclude_days' parameter cannot be 0 or ignored. Defaulted to 30 days."));
-    }
 
     // The period to exclude
     double excludeStart = targetDate - exclusionDays;
     double excludeEnd = targetDate + exclusionDays;
 
     int counter = 0;
-    for (int i = 0; i < m_timeArray.size(); ++i) {
-        if (m_timeArray[i] < excludeStart || m_timeArray[i] > excludeEnd) {
-            newTimeArray[counter] = m_timeArray[i];
+    for (double time : m_timeArray) {
+        if (time < excludeStart || time > excludeEnd) {
+            newTimeArray[counter] = time;
             counter++;
         }
     }
@@ -611,7 +617,7 @@ int asTimeArray::GetClosestIndex(double date) const {
 
     if (date - 0.00001 > m_end || date + 0.00001 < m_start) {  // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
-        return NaNi;
+        return 0;
     }
 
     int index = asFindClosest(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
@@ -797,5 +803,16 @@ void asTimeArray::fixEndIfForbidden(double& currentEnd) const {
         while (currentEnd >= yearStart) {
             currentEnd -= m_timeStepDays;
         }
+    }
+}
+
+void asTimeArray::KeepOnlyRange(int start, int end) {
+    a1d timeArray = m_timeArray;
+    wxASSERT(m_timeArray.size() > start);
+    wxASSERT(m_timeArray.size() > end);
+    m_timeArray.resize(end - start + 1);
+
+    for (int i = 0; i < m_timeArray.size(); i++) {
+        m_timeArray[i] = timeArray[start + i];
     }
 }

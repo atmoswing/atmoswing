@@ -40,6 +40,8 @@ asFrameGridAnalogsValues::asFrameGridAnalogsValues(wxWindow* parent, int methodR
       m_selectedDate(0),
       m_sortAfterCol(0),
       m_sortOrder(Asc) {
+    SetLabel(_("Analogs details"));
+
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));
@@ -51,7 +53,7 @@ void asFrameGridAnalogsValues::Init() {
     RebuildChoiceForecast();
 
     // Dates list
-    wxArrayString arrayDates = m_forecastManager->GetLeadTimes(m_selectedMethod, m_selectedForecast);
+    wxArrayString arrayDates = m_forecastManager->GetTargetDatesWxArray(m_selectedMethod, m_selectedForecast);
     m_choiceDate->Set(arrayDates);
     m_choiceDate->Select(m_selectedDate);
 
@@ -69,18 +71,18 @@ void asFrameGridAnalogsValues::Init() {
 
 void asFrameGridAnalogsValues::RebuildChoiceForecast() {
     // Reset forecast list
-    wxArrayString arrayForecasts = m_forecastManager->GetAllForecastNamesWxArray();
+    wxArrayString arrayForecasts = m_forecastManager->GetCombinedForecastNamesWxArray();
     m_choiceForecast->Set(arrayForecasts);
     int linearIndex = m_forecastManager->GetLinearIndex(m_selectedMethod, m_selectedForecast);
     m_choiceForecast->Select(linearIndex);
 
     // Highlight the specific forecasts
     for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++) {
-        int stationId =
-            m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetStationId(m_selectedStation);
+        int stationId = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)
+                            ->GetStationId(m_selectedStation);
         int forecastRow = m_forecastManager->GetForecastRowSpecificForStationId(methodRow, stationId);
         int index = m_forecastManager->GetLinearIndex(methodRow, forecastRow);
-        wxString val = " --> " + m_choiceForecast->GetString(index) + " <-- ";
+        wxString val = "* " + m_choiceForecast->GetString(index) + " *";
         m_choiceForecast->SetString(index, val);
     }
 }
@@ -91,7 +93,7 @@ void asFrameGridAnalogsValues::OnChoiceForecastChange(wxCommandEvent& event) {
     m_selectedForecast = m_forecastManager->GetForecastRowFromLinearIndex(linearIndex);
 
     // Dates list
-    wxArrayString arrayDates = m_forecastManager->GetLeadTimes(m_selectedMethod, m_selectedForecast);
+    wxArrayString arrayDates = m_forecastManager->GetTargetDatesWxArray(m_selectedMethod, m_selectedForecast);
     m_choiceDate->Set(arrayDates);
     if (arrayDates.size() <= m_selectedDate) {
         m_selectedDate = 0;
@@ -155,6 +157,8 @@ bool asFrameGridAnalogsValues::UpdateGrid() {
     a1f values = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
     a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);
     a1f analogNb = a1f::LinSpaced(dates.size(), 1, dates.size());
+
+    wxString dateFormat = forecast->GetDateFormatting();
 
     m_grid->Hide();
 
@@ -239,7 +243,7 @@ bool asFrameGridAnalogsValues::UpdateGrid() {
         buf.Printf("%d", (int)analogNb[i]);
         m_grid->SetCellValue(i, 0, buf);
 
-        buf.Printf("%s", asTime::GetStringTime(dates[i], "DD.MM.YYYY"));
+        buf.Printf("%s", asTime::GetStringTime(dates[i], dateFormat));
         m_grid->SetCellValue(i, 1, buf);
 
         buf.Printf("%g", values[i]);

@@ -57,30 +57,49 @@ class asTime : public wxObject {
 
     static bool IsLeapYear(int year);
 
-    /** Transform a date to a MJD date
-     * \author David Burki
-     * \link http://www.xmission.com/~tknarr/code/Date.html
+    /**
+     * Get the date as a Modified Julian Date (MJD).
+     *
+     * @param year The year.
+     * @param month The month.
+     * @param day The day.
+     * @param hour The hour.
+     * @param minute The minute.
+     * @param second The second.
+     * @param method The method to use.
+     * @return The date as a MJD.
+     * @author David Burki
+     * @note From http://www.xmission.com/~tknarr/code/Date.html
      */
     static double GetMJD(int year, int month = 1, int day = 1, int hour = 0, int minute = 0, int second = 0,
                          int method = asUSE_NORMAL_METHOD);
 
-    /** Transform a date to a MJD date
-     * \author David Burki
-     * \link http://www.xmission.com/~tknarr/code/Date.html
+    /**
+     * Transform a time struct to a MJD date
+     *
+     * @param date The time struct.
+     * @param method The method to use.
+     * @return The date as a MJD.
      */
     static double GetMJD(const Time& date, int method = asUSE_NORMAL_METHOD);
 
-    /** Transform a wxDateTime to a MJD date
-     * \author David Burki
-     * \link http://www.xmission.com/~tknarr/code/Date.html
+    /**
+     * Transform a wxDateTime to a MJD date
+     *
+     * @param date The wxDateTime.
+     * @param method The method to use.
+     * @return The date as a MJD.
      */
     static double GetMJD(wxDateTime& date, int method = asUSE_NORMAL_METHOD);
 
     static wxDateTime GetWxDateTime(double mjd, int method = asUSE_NORMAL_METHOD);
 
-    /** Transform a MJD into a time struct
-     * \author David Burki
-     * \link http://www.xmission.com/~tknarr/code/Date.html
+    /**
+     * Get the date as a time struct.
+     *
+     * @param mjd The date as a MJD.
+     * @param method The method to use.
+     * @return The date as a time struct.
      */
     static Time GetTimeStruct(double mjd, int method = asUSE_NORMAL_METHOD);
 

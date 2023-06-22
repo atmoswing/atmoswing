@@ -36,16 +36,60 @@
 
 class asFileGrib : public asFile {
   public:
+    /**
+     * The constructor for the Grib file class.
+     *
+     * @param fileName The file name.
+     * @param fileMode The file opening mode .
+     */
     asFileGrib(const wxString& fileName, const FileMode& fileMode);
 
+    /**
+     * The destructor for the Grib file class.
+     */
     ~asFileGrib() override;
 
+    /**
+     * Set the ecCodes context.
+     */
+    static void SetContext();
+
+    /**
+     * Get the ecCodes definitions path.
+     *
+     * @return The ecCodes definitions path.
+     */
+    static wxString GetDefinitionsPath();
+
+    /**
+     * Find and open the file.
+     *
+     * @return True if successful.
+     */
     bool Open() override;
 
+    /**
+     * Close the file.
+     *
+     * @return True if successful.
+     */
     bool Close() override;
 
+    /**
+     * Set the index at the desired position in the file.
+     * 
+     * @param gribCode The GRIB code of the desired variable.
+     * @param level The desired vertical level.
+     * @param useWarnings True to use warnings.
+     * @return True if successful.
+     */
     bool SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings = true);
 
+    /**
+     * Set the index at the desired position in the file without filtering by the vertical level value.
+     * 
+     * @param gribCode The GRIB code of the desired variable.
+     */
     bool SetIndexPositionAnyLevel(vi gribCode);
 
     bool GetVarArray(const int IndexStart[], const int IndexCount[], float* pValue);

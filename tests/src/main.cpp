@@ -28,6 +28,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <wx/init.h>
 
 #include "asGlobVars.h"
 
@@ -45,17 +46,26 @@ int main(int argc, char** argv) {
         g_unitTesting = true;
         g_silentMode = true;
         g_guiMode = false;
+#if USE_GUI
+        g_guiMode = true;
+#endif
 
-        // Initialize the library because wxApp is not called
-        wxInitialize();
+        // Initialize wxWidgets (also wxApp)
+#if USE_GUI
+        wxApp::SetInstance(new wxApp);
+#endif
+        int argcApp = 0;
+        wxChar** argvApp = NULL;
+        wxEntryStart(argcApp, argvApp);
 
         // Set the log
         Log()->CreateFile("AtmoSwingTests.log");
         Log()->SetLevel(2);
+        wxLogNull logNo;
 
         // Set the local config object
-        wxFileConfig* pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwing.ini",
-                                                 asConfig::GetTempDir() + "AtmoSwing.ini", wxCONFIG_USE_LOCAL_FILE);
+        auto pConfig = new wxFileConfig("AtmoSwingTests", wxEmptyString, asConfig::GetTempDir() + "AtmoSwingTests.ini",
+                                        asConfig::GetTempDir() + "AtmoSwingTests.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
 
         // Check path
@@ -88,7 +98,7 @@ int main(int argc, char** argv) {
         resultTest = RUN_ALL_TESTS();
 
         // Cleanup
-        wxUninitialize();
+        wxEntryCleanup();
         DeleteThreadsManager();
         DeleteLog();
         delete wxFileConfig::Set((wxFileConfig*)nullptr);

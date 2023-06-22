@@ -191,13 +191,13 @@ bool asPredictorEcmwfEraInterim::Init() {
             m_parameterName = "2 metre temperature";
             m_fileVarName = "t2m";
             m_unit = degK;
-        } else if (IsPrecipitableWater()) {
-            m_parameter = PrecipitableWater;
+        } else if (m_dataId.IsSameAs("tcw", false)) {
+            m_parameter = TotalColumnWater;
             m_parameterName = "Total column water";
             m_fileVarName = "tcw";
             m_unit = kg_m2;
         } else if (m_dataId.IsSameAs("tcwv", false)) {
-            m_parameter = WaterVapour;
+            m_parameter = PrecipitableWater;
             m_parameterName = "Total column water vapour";
             m_fileVarName = "tcwv";
             m_unit = kg_m2;
@@ -326,7 +326,7 @@ void asPredictorEcmwfEraInterim::ListFiles(asTimeArray& timeArray) {
     size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, "*.nc");
 
     if (nbFiles == 0) {
-        asThrowException(_("No ERA-interim file found."));
+        throw runtime_error(_("No ERA-interim file found."));
     }
 
     listFiles.Sort();

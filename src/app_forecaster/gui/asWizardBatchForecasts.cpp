@@ -46,7 +46,7 @@ void asWizardBatchForecasts::OnWizardFinished(wxWizardEvent& event) {
     }
 
     // Open the preferences frame
-    auto* frame = new asFramePreferencesForecaster(nullptr, m_batchForecasts);
+    auto frame = new asFramePreferencesForecaster(nullptr, m_batchForecasts);
     frame->Fit();
     frame->Show();
 }

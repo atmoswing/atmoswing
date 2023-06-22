@@ -5,72 +5,132 @@ project(tests)
 # Output path
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/tests)
 
+if (USE_GUI)
+    option(TEST_GUI "Should we test GUI ?" OFF)
+endif(USE_GUI)
+
+option(TEST_CALIBRATION "Should we test calibration functions (long tests) ?" ON)
 
 ##### SOURCE FILES
 
 # List source files
-file(GLOB_RECURSE src_tests_h src/*.h)
-file(GLOB_RECURSE src_tests_cpp src/*.cpp)
-list(APPEND src_tests ${src_tests_h} ${src_viewer_core_h}) # Include optimization files anyway (to test the analogue method)
-list(APPEND src_tests ${src_tests_cpp} ${src_viewer_core_cpp})
+file(GLOB src_tests_shared_h src/shared/*.h)
+file(GLOB src_tests_shared_cpp src/shared/*.cpp)
+list(APPEND src_tests ${src_tests_shared_h})
+list(APPEND src_tests ${src_tests_shared_cpp})
+list(APPEND src_tests "${PROJECT_SOURCE_DIR}/src/main.cpp")
+
 if (BUILD_FORECASTER)
-    file(GLOB_RECURSE src_forec_core_h ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/*.h)
-    file(GLOB_RECURSE src_forec_core_cpp ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/*.cpp)
+    file(GLOB src_tests_forecaster_h src/specific_forecaster/*.h)
+    file(GLOB src_tests_forecaster_cpp src/specific_forecaster/*.cpp)
+    list(APPEND src_tests ${src_tests_forecaster_h})
+    list(APPEND src_tests ${src_tests_forecaster_cpp})
+    if (TEST_GUI)
+        file(GLOB src_tests_forecaster_gui_h src/specific_forecaster/gui/*.h)
+        file(GLOB src_tests_forecaster_gui_cpp src/specific_forecaster/gui/*.cpp)
+        list(APPEND src_tests ${src_tests_forecaster_gui_h})
+        list(APPEND src_tests ${src_tests_forecaster_gui_cpp})
+    endif (TEST_GUI)
+
+    file(GLOB src_forec_core_h ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/*.h)
+    file(GLOB src_forec_core_cpp ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/*.cpp)
     list(APPEND src_tests ${src_forec_core_h})
     list(APPEND src_tests ${src_forec_core_cpp})
-    list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.h")
-    list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.cpp")
-    list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/AtmoswingAppForecaster.h")
-    list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/AtmoswingAppForecaster.cpp")
-else ()
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperNwsGfsTest.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperEcmwfIfsTest.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperCustomMeteoFvgTest.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersForecastingTest.cpp")
+    if (TEST_GUI)
+        file(GLOB src_forec_gui_h ${CMAKE_SOURCE_DIR}/src/app_forecaster/gui/*.h)
+        file(GLOB src_forec_gui_cpp ${CMAKE_SOURCE_DIR}/src/app_forecaster/gui/*.cpp)
+        list(APPEND src_tests ${src_forec_gui_h})
+        list(APPEND src_tests ${src_forec_gui_cpp})
+    endif (TEST_GUI)
 endif ()
+
 if (BUILD_OPTIMIZER)
-    file(GLOB_RECURSE src_optim_core_h ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.h)
-    file(GLOB_RECURSE src_optim_core_cpp ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.cpp)
+    file(GLOB src_tests_optimizer_h src/specific_optimizer/*.h)
+    file(GLOB src_tests_optimizer_cpp src/specific_optimizer/*.cpp)
+    list(APPEND src_tests ${src_tests_optimizer_h})
+    list(APPEND src_tests ${src_tests_optimizer_cpp})
+    if (NOT TEST_CALIBRATION)
+        list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/tests/src/specific_optimizer/asMethodCalibratorTest.cpp")
+        list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/tests/src/specific_optimizer/asMethodCalibratorTest.h")
+    endif (NOT TEST_CALIBRATION)
+    file(GLOB src_optim_core_h ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.h)
+    file(GLOB src_optim_core_cpp ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.cpp)
     list(APPEND src_tests ${src_optim_core_h})
     list(APPEND src_tests ${src_optim_core_cpp})
-else ()
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asScoreTest.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asMethodCalibratorTest.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersTest.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersOptimizationTest.cpp")
+    if (TEST_GUI)
+        file(GLOB src_optim_gui_h ${CMAKE_SOURCE_DIR}/src/app_optimizer/gui/*.h)
+        file(GLOB src_optim_gui_cpp ${CMAKE_SOURCE_DIR}/src/app_optimizer/gui/*.cpp)
+        list(APPEND src_tests ${src_optim_gui_h})
+        list(APPEND src_tests ${src_optim_gui_cpp})
+    endif (TEST_GUI)
 endif ()
+
 if (BUILD_DOWNSCALER)
-    file(GLOB_RECURSE src_downscaler_core_h ${CMAKE_SOURCE_DIR}/src/app_downscaler/core/*.h)
-    file(GLOB_RECURSE src_downscaler_core_cpp ${CMAKE_SOURCE_DIR}/src/app_downscaler/core/*.cpp)
+    file(GLOB src_tests_downscaler_h src/specific_downscaler/*.h)
+    file(GLOB src_tests_downscaler_cpp src/specific_downscaler/*.cpp)
+    list(APPEND src_tests ${src_tests_downscaler_h})
+    list(APPEND src_tests ${src_tests_downscaler_cpp})
+
+    file(GLOB src_downscaler_core_h ${CMAKE_SOURCE_DIR}/src/app_downscaler/core/*.h)
+    file(GLOB src_downscaler_core_cpp ${CMAKE_SOURCE_DIR}/src/app_downscaler/core/*.cpp)
     list(APPEND src_tests ${src_downscaler_core_h})
     list(APPEND src_tests ${src_downscaler_core_cpp})
-else ()
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorProjCmip5Test.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorProjCordexTest.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersDownscalingTest.cpp")
+    if (TEST_GUI)
+        file(GLOB src_downscaler_gui_h ${CMAKE_SOURCE_DIR}/src/app_downscaler/gui/*.h)
+        file(GLOB src_downscaler_gui_cpp ${CMAKE_SOURCE_DIR}/src/app_downscaler/gui/*.cpp)
+        list(APPEND src_tests ${src_downsc_gui_h})
+        list(APPEND src_tests ${src_downsc_gui_cpp})
+    endif (TEST_GUI)
 endif ()
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.h")
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.cpp")
+
+if (BUILD_VIEWER)
+    file(GLOB src_tests_viewer_h src/specific_viewer/*.h)
+    file(GLOB src_tests_viewer_cpp src/specific_viewer/*.cpp)
+    list(APPEND src_tests ${src_tests_viewer_h})
+    list(APPEND src_tests ${src_tests_viewer_cpp})
+    if (TEST_GUI)
+        file(GLOB src_tests_viewer_gui_h src/specific_viewer/gui/*.h)
+        file(GLOB src_tests_viewer_gui_cpp src/specific_viewer/gui/*.cpp)
+        list(APPEND src_tests ${src_tests_viewer_gui_h})
+        list(APPEND src_tests ${src_tests_viewer_gui_cpp})
+    endif (TEST_GUI)
+
+    file(GLOB src_viewer_core_h ${CMAKE_SOURCE_DIR}/src/app_viewer/core/*.h)
+    file(GLOB src_viewer_core_cpp ${CMAKE_SOURCE_DIR}/src/app_viewer/core/*.cpp)
+    list(APPEND src_tests ${src_viewer_core_h})
+    list(APPEND src_tests ${src_viewer_core_cpp})
+    if (TEST_GUI)
+        file(GLOB src_viewer_gui_h ${CMAKE_SOURCE_DIR}/src/app_viewer/gui/*.h)
+        file(GLOB src_viewer_gui_cpp ${CMAKE_SOURCE_DIR}/src/app_viewer/gui/*.cpp)
+        list(APPEND src_tests ${src_viewer_gui_h})
+        list(APPEND src_tests ${src_viewer_gui_cpp})
+    endif (TEST_GUI)
+endif ()
+
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.h")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.cpp")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/AtmoSwingAppForecaster.h")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/AtmoSwingAppForecaster.cpp")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/asGlobVarsDownscaler.h")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/asGlobVarsDownscaler.cpp")
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/AtmoswingAppViewer.h")
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/AtmoswingAppViewer.cpp")
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/AtmoswingAppOptimizer.h")
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/AtmoswingAppOptimizer.cpp")
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/AtmoswingAppDownscaler.h")
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/AtmoswingAppDownscaler.cpp")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/AtmoSwingAppViewer.h")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/AtmoSwingAppViewer.cpp")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/AtmoSwingAppOptimizer.h")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/AtmoSwingAppOptimizer.cpp")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/AtmoSwingAppDownscaler.h")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/AtmoSwingAppDownscaler.cpp")
 
 # CUDA library
 if (USE_CUDA)
     option(TEST_CUDA "Should CUDA implementation be tested ?" ON)
-    file(GLOB_RECURSE src_tests_cu src/*.cu)
-    file(GLOB_RECURSE src_tests_cuh src/*.cuh)
+    file(GLOB src_tests_cu src/*.cu)
+    file(GLOB src_tests_cuh src/*.cuh)
     list(APPEND src_tests_cuda ${src_tests_cu})
     list(APPEND src_tests_cuda ${src_tests_cuh})
     list(APPEND tests ${src_tests_cuh})
     if (TEST_CUDA)
         add_definitions(-DTEST_CUDA)
-    endif(TEST_CUDA)
+    endif (TEST_CUDA)
 endif (USE_CUDA)
 
 # Remove eventual duplicates
@@ -79,11 +139,21 @@ list(REMOVE_DUPLICATES src_tests)
 # Include source directories
 list(APPEND inc_dirs
         "${CMAKE_SOURCE_DIR}/src/shared_base/core/"
+        "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
+        "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
         "${CMAKE_SOURCE_DIR}/src/shared_processing/core/"
         "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/"
+        "${CMAKE_SOURCE_DIR}/src/app_forecaster/gui/"
         "${CMAKE_SOURCE_DIR}/src/app_viewer/core/"
         "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/"
+        "${CMAKE_SOURCE_DIR}/src/app_optimizer/gui/"
         "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/"
+        "${CMAKE_SOURCE_DIR}/src/app_downscaler/gui/"
+        "${CMAKE_SOURCE_DIR}/src/app_viewer/gui/"
+        "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxmathplot/"
+        "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxplotctrl/"
+        "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxplotctrl/include/"
+        "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxthings/include/"
         "${PROJECT_SOURCE_DIR}/test/src/"
         )
 include_directories(${inc_dirs})
@@ -109,6 +179,13 @@ if (USE_CUDA)
     add_definitions(-DUSE_CUDA)
 endif (USE_CUDA)
 
+if (TEST_GUI)
+    # vroomgis
+    FetchContent_MakeAvailable(vroomgis)
+    include_directories(${vroomgis_SOURCE_DIR}/vroomgis/src)
+    include_directories(${vroomgis_SOURCE_DIR}/vroomgis/art)
+endif (TEST_GUI)
+
 ##### DECLARE EXECUTABLE
 
 if (WIN32)
@@ -129,12 +206,20 @@ endif ()
 
 ##### DEFINITIONS
 
-if(WIN32)
+if (WIN32)
     set_target_properties(atmoswing-tests PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
-    set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=0; _CONSOLE")
-else()
-    set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=0")
-endif()
+    if (USE_GUI)
+        set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=1; _CONSOLE")
+    else (USE_GUI)
+        set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=0; _CONSOLE")
+    endif (USE_GUI)
+else ()
+    if (USE_GUI)
+        set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=1")
+    else (USE_GUI)
+        set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=0")
+    endif (USE_GUI)
+endif ()
 
 
 ##### LINKING
@@ -158,7 +243,13 @@ if (USE_CUDA)
     target_link_libraries(atmoswing-tests astestscuda)
     add_definitions(-DUSE_CUDA)
 endif ()
-
+if (TEST_GUI)
+    add_dependencies(atmoswing-tests vroomgis)
+    add_dependencies(atmoswing-tests wxplotctrl)
+    target_link_libraries(atmoswing-tests vroomgis)
+    target_link_libraries(atmoswing-tests wxplotctrl)
+    target_link_libraries(atmoswing-tests CONAN_PKG::gdal)
+endif (TEST_GUI)
 
 ##### CTEST
 

@@ -42,7 +42,7 @@ float asTotalScoreMeanWithClim::Assess(const a1f& targetDates, const a1f& scores
             float score = 0, divisor = 0;
 
             for (int iTime = 0; iTime < targetDatesLength; iTime++) {
-                if (!asIsNaN(scores(iTime))) {
+                if (!isnan(scores(iTime))) {
                     score += scores(iTime);
                     divisor++;
                 }
@@ -52,11 +52,11 @@ float asTotalScoreMeanWithClim::Assess(const a1f& targetDates, const a1f& scores
         }
 
         case (asTotalScore::SpecificPeriod): {
-            asThrowException(_("You cannot process a score using the climatology on a binned period."));
+            throw runtime_error(_("You cannot process a score using the climatology on a binned period."));
         }
 
         default: {
-            asThrowException(_("Period not yet implemented in asTotalScoreMeanWithClim."));
+            throw runtime_error(_("Period not yet implemented in asTotalScoreMeanWithClim."));
         }
     }
 }

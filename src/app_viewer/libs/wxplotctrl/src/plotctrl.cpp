@@ -152,41 +152,41 @@ wxString wxPlotCtrl_GetEventName(wxEventType eventType) {
     aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_ADD_CURVE) aDEFINE_LOCAL_EVENT_TYPE(
         wxEVT_PLOTCTRL_DELETING_CURVE) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_DELETED_CURVE)
 
-        aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_CURVE_SEL_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(
-            wxEVT_PLOTCTRL_CURVE_SEL_CHANGED)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_CURVE_SEL_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(
+        wxEVT_PLOTCTRL_CURVE_SEL_CHANGED)
 
-            aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_MOUSE_MOTION) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_CLICKED)
-                aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_DOUBLECLICKED) aDEFINE_LOCAL_EVENT_TYPE(
-                    wxEVT_PLOTCTRL_POINT_CLICKED) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_POINT_DOUBLECLICKED)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_MOUSE_MOTION) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_CLICKED)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_DOUBLECLICKED) aDEFINE_LOCAL_EVENT_TYPE(
+        wxEVT_PLOTCTRL_POINT_CLICKED) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_POINT_DOUBLECLICKED)
 
-                    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_AREA_SEL_CREATING) aDEFINE_LOCAL_EVENT_TYPE(
-                        wxEVT_PLOTCTRL_AREA_SEL_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_AREA_SEL_CREATED)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_AREA_SEL_CREATING) aDEFINE_LOCAL_EVENT_TYPE(
+        wxEVT_PLOTCTRL_AREA_SEL_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_AREA_SEL_CREATED)
 
-                        aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_VIEW_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(
-                            wxEVT_PLOTCTRL_VIEW_CHANGED)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_VIEW_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(
+        wxEVT_PLOTCTRL_VIEW_CHANGED)
 
-                            aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_CURSOR_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(
-                                wxEVT_PLOTCTRL_CURSOR_CHANGED)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_CURSOR_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(
+        wxEVT_PLOTCTRL_CURSOR_CHANGED)
 
-                                aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_ERROR)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_ERROR)
 
-                                    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_BEGIN_TITLE_EDIT) aDEFINE_LOCAL_EVENT_TYPE(
-                                        wxEVT_PLOTCTRL_END_TITLE_EDIT)
-                                        aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_BEGIN_X_LABEL_EDIT)
-                                            aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_END_X_LABEL_EDIT)
-                                                aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_BEGIN_Y_LABEL_EDIT)
-                                                    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_END_Y_LABEL_EDIT)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_BEGIN_TITLE_EDIT) aDEFINE_LOCAL_EVENT_TYPE(
+        wxEVT_PLOTCTRL_END_TITLE_EDIT)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_BEGIN_X_LABEL_EDIT)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_END_X_LABEL_EDIT)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_BEGIN_Y_LABEL_EDIT)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_END_Y_LABEL_EDIT)
 
-                                                        aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGING)
-                                                            aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGED)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGING)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGED)
 
-        // wxPlotCtrlSelEvent
-        // DEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CREATING)
-        // DEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CREATED)
-        // DEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CHANGING)
-        aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CHANGED)
+    // wxPlotCtrlSelEvent
+    // DEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CREATING)
+    // DEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CREATED)
+    // DEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CHANGING)
+    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CHANGED)
 
-            return wxT("Unknown Event Type");
+        return wxT("Unknown Event Type");
 }
 
 //-----------------------------------------------------------------------------
@@ -225,10 +225,11 @@ EVT_PAINT(wxPlotCtrlArea::OnPaint)
 EVT_MOUSE_EVENTS(wxPlotCtrlArea::OnMouse)
 EVT_CHAR(wxPlotCtrlArea::OnChar)
 EVT_KEY_DOWN(wxPlotCtrlArea::OnKeyDown)
-EVT_KEY_UP(wxPlotCtrlArea::OnKeyUp) END_EVENT_TABLE()
+EVT_KEY_UP(wxPlotCtrlArea::OnKeyUp)
+END_EVENT_TABLE()
 
-    wxPlotCtrlArea::wxPlotCtrlArea(wxWindow* parent, wxWindowID win_id, const wxPoint& pos, const wxSize& size,
-                                   long style, const wxString& name) {
+wxPlotCtrlArea::wxPlotCtrlArea(wxWindow* parent, wxWindowID win_id, const wxPoint& pos, const wxSize& size, long style,
+                               const wxString& name) {
     m_owner = wxDynamicCast(parent, wxPlotCtrl);
 
     if (!wxWindow::Create(parent, win_id, pos, size, style, name)) return;
@@ -319,11 +320,13 @@ EVT_PAINT(wxPlotCtrl::OnPaint)
 EVT_CHAR(wxPlotCtrl::OnChar)
 EVT_SCROLL(wxPlotCtrl::OnScroll)
 EVT_IDLE(wxPlotCtrl::OnIdle)
-EVT_MOUSE_EVENTS(wxPlotCtrl::OnMouse) EVT_TIMER(wxID_ANY, wxPlotCtrl::OnTimer)
+EVT_MOUSE_EVENTS(wxPlotCtrl::OnMouse)
+EVT_TIMER(wxID_ANY, wxPlotCtrl::OnTimer)
 
-    EVT_TEXT_ENTER(wxID_ANY, wxPlotCtrl::OnTextEnter) END_EVENT_TABLE()
+EVT_TEXT_ENTER(wxID_ANY, wxPlotCtrl::OnTextEnter)
+END_EVENT_TABLE()
 
-        void wxPlotCtrl::Init() {
+void wxPlotCtrl::Init() {
     m_drawOnScreen = true;
 
     m_activeCurve = NULL;
@@ -462,8 +465,8 @@ bool wxPlotCtrl::Create(wxWindow* parent, wxWindowID win_id, const wxPoint& pos,
     m_xAxis = new wxPlotCtrlAxis(wxPLOTCTRL_X_AXIS, this, ID_PLOTCTRL_X_AXIS);
     m_yAxis = new wxPlotCtrlAxis(wxPLOTCTRL_Y_AXIS, this, ID_PLOTCTRL_Y_AXIS);
     m_area = new wxPlotCtrlArea(this, ID_PLOTCTRL_AREA);
-    m_xAxisScrollbar =
-        new wxScrollBar(this, ID_PLOTCTRL_X_SCROLLBAR, wxDefaultPosition, wxDefaultSize, wxSB_HORIZONTAL);
+    m_xAxisScrollbar = new wxScrollBar(this, ID_PLOTCTRL_X_SCROLLBAR, wxDefaultPosition, wxDefaultSize,
+                                       wxSB_HORIZONTAL);
     m_yAxisScrollbar = new wxScrollBar(this, ID_PLOTCTRL_Y_SCROLLBAR, wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
 
     m_area->SetCursor(wxCURSOR_CROSS);
@@ -525,7 +528,7 @@ void wxPlotCtrl::DrawPlotCtrl(wxDC* dc) {
 #ifdef DRAW_BORDERS
     // Test code for sizing to show the extent of the axes
     dc->SetBrush(*wxTRANSPARENT_BRUSH);
-    dc->SetPen(wxPen(GetBorderColour(), 1, wxSOLID));
+    dc->SetPen(wxPen(GetBorderColour(), 1, wxPENSTYLE_SOLID));
     dc->DrawRectangle(m_titleRect);
     dc->DrawRectangle(m_xLabelRect);
     dc->DrawRectangle(m_yLabelRect);
@@ -625,11 +628,11 @@ void wxPlotCtrl::ShowTextCtrl(wxPlotCtrlTextCtrl_Type type, bool send_event) {
                 if (!DoSendEvent(pevent)) return;
             }
 
-            m_textCtrl =
-                new wxTextCtrl(this, wxEVT_PLOTCTRL_END_Y_LABEL_EDIT, GetYAxisLabel(),
-                               wxPoint(0, m_areaRect.y + m_areaRect.height / 2),
-                               wxSize(m_clientRect.width - m_axisFontSize.y / 2, m_yLabelRect.width + 2 * m_border),
-                               wxTE_PROCESS_ENTER);
+            m_textCtrl = new wxTextCtrl(
+                this, wxEVT_PLOTCTRL_END_Y_LABEL_EDIT, GetYAxisLabel(),
+                wxPoint(0, m_areaRect.y + m_areaRect.height / 2),
+                wxSize(m_clientRect.width - m_axisFontSize.y / 2, m_yLabelRect.width + 2 * m_border),
+                wxTE_PROCESS_ENTER);
 
             m_textCtrl->SetFont(GetAxisLabelFont());
             m_textCtrl->SetForegroundColour(GetAxisLabelColour());
@@ -1958,8 +1961,8 @@ void wxPlotCtrl::DoSize(const wxRect& boundingRect, bool set_window_sizes) {
     m_xAxisRect = wxRect(m_yAxisRect.GetRight(), m_yAxisRect.GetBottom() - area_border + 1,
                          area_width + 2 * area_border, xaxis_height);
 
-    m_areaRect =
-        wxRect(m_yAxisRect.GetRight() + area_border, m_yAxisRect.GetTop() + area_border, area_width, area_height);
+    m_areaRect = wxRect(m_yAxisRect.GetRight() + area_border, m_yAxisRect.GetTop() + area_border, area_width,
+                        area_height);
 
     // scrollbar to right and bottom
     if (set_window_sizes) {
@@ -2112,8 +2115,8 @@ void wxPlotCtrl::DrawAreaWindow(wxDC* dc, const wxRect& rect) {
 
     dc->SetClippingRegion(refreshRect);
 
-    dc->SetBrush(wxBrush(GetBackgroundColour(), wxSOLID));
-    dc->SetPen(wxPen(GetBorderColour(), m_area_border_width, wxSOLID));
+    dc->SetBrush(wxBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID));
+    dc->SetPen(wxPen(GetBorderColour(), m_area_border_width, wxPENSTYLE_SOLID));
     dc->DrawRectangle(clientRect);
 
     DrawTickMarks(dc, refreshRect);
@@ -2181,7 +2184,7 @@ void wxPlotCtrl::DrawAreaWindow(wxDC* dc, const wxRect& rect) {
 
     // refresh border
     dc->SetBrush(*wxTRANSPARENT_BRUSH);
-    dc->SetPen(wxPen(GetBorderColour(), m_area_border_width, wxSOLID));
+    dc->SetPen(wxPen(GetBorderColour(), m_area_border_width, wxPENSTYLE_SOLID));
     dc->DrawRectangle(clientRect);
 
     dc->SetPen(wxNullPen);
@@ -2196,7 +2199,7 @@ void wxPlotCtrl::DrawMouseMarker(wxDC* dc, int type, const wxRect& rect) {
     wxRasterOperationMode logical_fn = dc->GetLogicalFunction();
     dc->SetLogicalFunction(wxINVERT);
     dc->SetBrush(*wxTRANSPARENT_BRUSH);
-    dc->SetPen(*wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxDOT));
+    dc->SetPen(*wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxPENSTYLE_DOT));
 
     switch (type) {
         case wxPLOTCTRL_MARKER_NONE:
@@ -2379,7 +2382,7 @@ void wxPlotCtrl::DrawCurveCursor(wxDC* dc) {
 
 void wxPlotCtrl::DrawTickMarks(wxDC* dc, const wxRect& rect) {
     wxRect clientRect(GetPlotAreaRect());
-    dc->SetPen(wxPen(GetGridColour(), 1, wxSOLID));
+    dc->SetPen(wxPen(GetGridColour(), 1, wxPENSTYLE_SOLID));
 
     int xtick_length = GetDrawGrid() ? clientRect.height : 10;
     int ytick_length = GetDrawGrid() ? clientRect.width : 10;

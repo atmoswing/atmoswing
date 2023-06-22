@@ -66,13 +66,13 @@ void asResultsScoresMap::BuildFileName() {
     m_filePath.Append(DS);
     m_filePath.Append("RelevanceMap");
     m_filePath.Append(DS);
-    m_filePath.Append(wxString::Format("%s", GetPredictandStationIdsList()));
+    m_filePath.Append(asStrF("%s", GetPredictandStationIdsList()));
     m_filePath.Append(".nc");
 }
 
 bool asResultsScoresMap::Add(asParametersScoring& params, float score) {
     if (!params.GetPredictorGridType(0, 0).IsSameAs("Regular", false))
-        asThrowException(_("asResultsScoresMap::Add is not ready to use on unregular grids"));
+        throw runtime_error(_("asResultsScoresMap::Add is not ready to use on unregular grids"));
 
     m_scores.push_back(score);
     m_lon.push_back(
@@ -93,7 +93,7 @@ bool asResultsScoresMap::MakeMap() {
     m_mapLon = lons;
     m_mapLat = lats;
 
-    a2f tmpLatLon = a2f::Constant(m_mapLat.size(), m_mapLon.size(), NaNf);
+    a2f tmpLatLon = a2f::Constant(m_mapLat.size(), m_mapLon.size(), NAN);
 
     for (int iLevel = 0; iLevel <= m_mapLevel.size(); iLevel++) {
         m_mapScores.push_back(tmpLatLon);
@@ -177,7 +177,7 @@ bool asResultsScoresMap::Save(asParametersCalibration& params) {
 
     // Set the scores in a vector
     vf scores(nLevel * nLat * nLon);
-    int ind = 0;
+    int ind;
 
     for (int iLevel = 0; iLevel < nLevel; iLevel++) {
         for (int iLat = 0; iLat < nLat; iLat++) {

@@ -30,14 +30,14 @@
 
 asScoreCRPSHersbachDecomp::asScoreCRPSHersbachDecomp()
     : asScore(asScore::CRPSHersbachDecomp, _("CRPS Hersbach decomposition"),
-              _("Hersbach decomposition of the Continuous Ranked Probability Score (Hersbach, 2000)"), Asc, 0, NaNf,
+              _("Hersbach decomposition of the Continuous Ranked Probability Score (Hersbach, 2000)"), Asc, 0, NAN,
               false, false) {}
 
 asScoreCRPSHersbachDecomp::~asScoreCRPSHersbachDecomp() {}
 
 float asScoreCRPSHersbachDecomp::Assess(float obs, const a1f& values, int nbElements) const {
     wxLogError(_("The Hersbach decomposition of the CRPS cannot provide a single score value !"));
-    return NaNf;
+    return NAN;
 }
 
 a1f asScoreCRPSHersbachDecomp::AssessOnArray(float obs, const a1f& values, int nbElements) const {
@@ -48,7 +48,7 @@ a1f asScoreCRPSHersbachDecomp::AssessOnArray(float obs, const a1f& values, int n
     a1f x = values;
 
     // NaNs are not allowed as it messes up the ranks
-    if (asHasNaN(&x[0], &x[nbElements - 1]) || asIsNaN(obs)) {
+    if (asHasNaN(&x[0], &x[nbElements - 1]) || isnan(obs)) {
         wxLogError(_("NaNs were found in the CRPS Hersbach decomposition processing function. Cannot continue."));
         return a2f();
     }

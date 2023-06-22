@@ -1,14 +1,14 @@
 [![AtmoSwing](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/logo/logo.png)](http://www.atmoswing.org)
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4075537.svg?style=flat-square)](https://doi.org/10.5281/zenodo.4075537)
-[![Build Status](https://github.com/atmoswing/atmoswing/actions/workflows/linux-builds.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/linux-builds.yml)
-[![Build Status](https://github.com/atmoswing/atmoswing/actions/workflows/docker-images.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/docker-images.yml)
-[![Build status](https://ci.appveyor.com/api/projects/status/1otp6de8c8go0nxm?svg=true)](https://ci.appveyor.com/project/pascalhorton/atmoswing)
+[![DOI](https://zenodo.org/badge/95885904.svg)](https://zenodo.org/badge/latestdoi/95885904)
+[![Linux builds](https://github.com/atmoswing/atmoswing/actions/workflows/linux-builds.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/linux-builds.yml)
+[![Windows builds](https://github.com/atmoswing/atmoswing/actions/workflows/windows-builds.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/windows-builds.yml)
+[![Docker images](https://github.com/atmoswing/atmoswing/actions/workflows/docker-images.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/docker-images.yml)
 [![codecov](https://codecov.io/gh/atmoswing/atmoswing/branch/master/graph/badge.svg)](https://codecov.io/gh/atmoswing/atmoswing)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/13133/badge.svg)](https://scan.coverity.com/projects/atmoswing-atmoswing)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1107/badge)](https://bestpractices.coreinfrastructure.org/projects/1107)
 [![Documentation Status](https://readthedocs.org/projects/atmoswing/badge/?version=latest)](https://atmoswing.readthedocs.io/en/latest/?badge=latest)
-
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/87f76e2cfa7f4e2280d37c824df843f1)](https://www.codacy.com/gh/atmoswing/atmoswing/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=atmoswing/atmoswing&amp;utm_campaign=Badge_Grade)
 
 Analog methods (AMs) allow predicting local meteorological variables of interest (predictand), such as the daily precipitation, based on synoptic variables (predictors). They rely on the hypothesis that similar atmospheric conditions are likely to result in similar local effects. The statistical relationship is first defined (e.g. which predictors, and how many subsampling steps) and calibrated (e.g. which spatial domain, and how many analogues) before being applied to the target period, may it be for operational forecasting or for climate impact studies. A benefit of AMs is that they are lightweight and can provide valuable results for a negligible cost.
 
@@ -26,10 +26,10 @@ The Viewer displays the forecasts in an interactive GIS environment. It contains
 
 This repository contains 4 different tools:
 
-* The Forecaster: automatically processes the forecast
-* The Viewer: displays the resulting files in a GIS environment
-* The Optimizer: optimizes the method for a given precipitation timeseries
-* The Downscaler: downscaling for climate impact studies
+*   The Forecaster: automatically processes the forecast
+*   The Viewer: displays the resulting files in a GIS environment
+*   The Optimizer: optimizes the method for a given precipitation timeseries
+*   The Downscaler: downscaling for climate impact studies
 
 Additionally, multiple unit tests are available and are built along with the software. It is highly recommended to run these tests before using AtmoSwing operationally.
 
@@ -53,15 +53,15 @@ You can download the releases under: https://github.com/atmoswing/atmoswing/rele
 
 Nightly (experimental) automatic builds are available for:
 
-* Linux (Ubuntu) & osx: https://console.cloud.google.com/storage/browser/atmoswing-deploy
-* Windows: https://ci.appveyor.com/project/pascalhorton/atmoswing
+*   Linux (Ubuntu) & osx: https://console.cloud.google.com/storage/browser/atmoswing-deploy
+*   Windows: https://ci.appveyor.com/project/pascalhorton/atmoswing
 
 ## How to build AtmoSwing ##
 
 The wiki (https://github.com/atmoswing/atmoswing/wiki) explains how to compile the required libraries and the source code of AtmoSwing. In order to get AtmoSwing compiled, follow these steps:
 
-1. [Get the required **libraries**](https://github.com/atmoswing/atmoswing/wiki/Libraries)
-3. [**Configure / build** with CMake](https://github.com/atmoswing/atmoswing/wiki/Build)
+1.  [Get the required **libraries**](https://github.com/atmoswing/atmoswing/wiki/Libraries)
+2.  [**Configure / build** with CMake](https://github.com/atmoswing/atmoswing/wiki/Build)
 
 ## How to contribute ##
 
@@ -72,11 +72,11 @@ When adding a new feature, please write a test along with it.
 Additionally, you can report issues or suggestions in the issues tracker (https://github.com/atmoswing/atmoswing/issues).
 
 AtmoSwing will follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) (not the case so far) with a few differences (mainly based on [wxWidgets Coding Guidelines](https://www.wxwidgets.org/develop/coding-guidelines)):
-* Use ``CamelCase`` for types (classes, structs, enums, unions), methods and functions 
-* Use ``camelCase`` for the variables.
-* Use ``m_`` prefix for member variables.
-* Global variables shouldn’t normally be used at all, but if they are, should have ``g_`` prefix.
-* Use Set/Get prefixes for accessors
+*   Use ``CamelCase`` for types (classes, structs, enums, unions), methods and functions 
+*   Use ``camelCase`` for the variables.
+*   Use ``m_`` prefix for member variables.
+*   Global variables shouldn’t normally be used at all, but if they are, should have ``g_`` prefix.
+*   Use Set/Get prefixes for accessors
 
 ## Credits ##
 
@@ -94,15 +94,15 @@ Copyright (C) 2016-2017, [University of Bern](http://www.geography.unibe.ch/), S
 
 Contributions:
 
-* Developed by Pascal Horton
-* Under the supervision of Charles Obled and Michel Jaboyedoff
-* With inputs from Lucien Schreiber, Richard Metzger and Renaud Marty
+*   Developed by Pascal Horton
+*   Under the supervision of Charles Obled and Michel Jaboyedoff
+*   With inputs from Lucien Schreiber, Richard Metzger and Renaud Marty
 
 Financial contributions:
 
-* 2008-2011 Cantons of Valais and Vaud (Switzerland): basis of the software from the MINERVE project.
-* 2011-2013 University of Lausanne (Switzerland): reorganization of the source code, improvement of the build system, documentation.
-* 2014 Direction régionale de l’environnement, de l’aménagement et du logement (France): addition of new forecast skill scores (reliability of the CRPS and rank histogram).
-* 2015 Cantons of Valais (Switzerland): addition of synthetic xml export and the aggregation of parametrizations in the viewer.
+*   2008-2011 Cantons of Valais and Vaud (Switzerland): basis of the software from the MINERVE project.
+*   2011-2013 University of Lausanne (Switzerland): reorganization of the source code, improvement of the build system, documentation.
+*   2014 Direction régionale de l’environnement, de l’aménagement et du logement (France): addition of new forecast skill scores (reliability of the CRPS and rank histogram).
+*   2015 Cantons of Valais (Switzerland): addition of synthetic xml export and the aggregation of parametrizations in the viewer.
 
 See both license.txt and notice.txt files for details about the license and its enforcement.

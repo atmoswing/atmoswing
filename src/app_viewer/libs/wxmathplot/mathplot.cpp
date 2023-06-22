@@ -100,7 +100,7 @@ mpLayer::mpLayer()
 wxBitmap mpLayer::GetColourSquare(int side) {
     wxBitmap square(side, side, -1);
     wxColour filler = m_pen.GetColour();
-    wxBrush brush(filler, wxSOLID);
+    wxBrush brush(filler);
     wxMemoryDC dc;
     dc.SelectObject(square);
     dc.SetBackground(brush);
@@ -742,10 +742,10 @@ void mpScaleX::Plot(wxDC& dc, mpWindow& w) {
         }
 
         // double n = floor( (w.GetPosX() - (double)extend / w.GetScaleX()) / step ) * step ;
-        double n0 =
-            floor((w.GetPosX() /* - (double)(extend - w.GetMarginLeft() - w.GetMarginRight())/ w.GetScaleX() */) /
-                  step) *
-            step;
+        double n0 = floor(
+                        (w.GetPosX() /* - (double)(extend - w.GetMarginLeft() - w.GetMarginRight())/ w.GetScaleX() */) /
+                        step) *
+                    step;
         double n = 0;
 #ifdef MATHPLOT_DO_LOGGING
         wxLogMessage(wxT("mpScaleX::Plot: dig: %f , step: %f, end: %f, n: %f"), dig, step, end, n0);
@@ -770,7 +770,7 @@ void mpScaleX::Plot(wxDC& dc, mpWindow& w) {
                     else
                         dc.DrawLine(p, orgy, p, orgy + 4);
                 } else {  // draw grid dotted lines
-                    m_pen.SetStyle(wxDOT);
+                    m_pen.SetStyle(wxPENSTYLE_DOT);
                     dc.SetPen(m_pen);
                     if ((m_flags == mpALIGN_BOTTOM) && !m_drawOutsideMargins) {
                         dc.DrawLine(p, orgy + 4, p, minYpx);
@@ -781,7 +781,7 @@ void mpScaleX::Plot(wxDC& dc, mpWindow& w) {
                             dc.DrawLine(p, 0 /*-w.GetScrY()*/, p, w.GetScrY());
                         }
                     }
-                    m_pen.SetStyle(wxSOLID);
+                    m_pen.SetStyle(wxPENSTYLE_SOLID);
                     dc.SetPen(m_pen);
                 }
                 // Write ticks labels in s string
@@ -980,9 +980,9 @@ void mpScaleY::Plot(wxDC& dc, mpWindow& w) {
         //         fmt.Printf(wxT("%%.%dg"), (tmp >= -1) ? 2 : -tmp);
         //     }
 
-        double n =
-            floor((w.GetPosY() - (double)(extend - w.GetMarginTop() - w.GetMarginBottom()) / w.GetScaleY()) / step) *
-            step;
+        double n = floor((w.GetPosY() - (double)(extend - w.GetMarginTop() - w.GetMarginBottom()) / w.GetScaleY()) /
+                         step) *
+                   step;
 
         /* wxCoord startPx = m_drawOutsideMargins ? 0 : w.GetMarginLeft(); */
         wxCoord endPx = m_drawOutsideMargins ? w.GetScrX() : w.GetScrX() - w.GetMarginRight();
@@ -1005,7 +1005,7 @@ void mpScaleY::Plot(wxDC& dc, mpWindow& w) {
                         dc.DrawLine(orgx - 4, p, orgx, p);  //( orgx, p, orgx+4, p);
                     }
                 } else {
-                    m_pen.SetStyle(wxDOT);
+                    m_pen.SetStyle(wxPENSTYLE_DOT);
                     dc.SetPen(m_pen);
                     if ((m_flags == mpALIGN_LEFT) && !m_drawOutsideMargins) {
                         dc.DrawLine(orgx - 4, p, endPx, p);
@@ -1016,7 +1016,7 @@ void mpScaleY::Plot(wxDC& dc, mpWindow& w) {
                             dc.DrawLine(0 /*-w.GetScrX()*/, p, w.GetScrX(), p);
                         }
                     }
-                    m_pen.SetStyle(wxSOLID);
+                    m_pen.SetStyle(wxPENSTYLE_SOLID);
                     dc.SetPen(m_pen);
                 }
                 // Print ticks labels
@@ -1092,13 +1092,14 @@ EVT_PAINT(mpWindow::OnPaint)
 EVT_SIZE(mpWindow::OnSize)
 EVT_SCROLLWIN_THUMBTRACK(mpWindow::OnScrollThumbTrack)
 EVT_SCROLLWIN_PAGEUP(mpWindow::OnScrollPageUp)
-EVT_SCROLLWIN_PAGEDOWN(mpWindow::OnScrollPageDown) EVT_SCROLLWIN_LINEUP(mpWindow::OnScrollLineUp)
-    EVT_SCROLLWIN_LINEDOWN(mpWindow::OnScrollLineDown) EVT_SCROLLWIN_TOP(mpWindow::OnScrollTop)
-        EVT_SCROLLWIN_BOTTOM(mpWindow::OnScrollBottom)
+EVT_SCROLLWIN_PAGEDOWN(mpWindow::OnScrollPageDown)
+EVT_SCROLLWIN_LINEUP(mpWindow::OnScrollLineUp)
+EVT_SCROLLWIN_LINEDOWN(mpWindow::OnScrollLineDown)
+EVT_SCROLLWIN_TOP(mpWindow::OnScrollTop) EVT_SCROLLWIN_BOTTOM(mpWindow::OnScrollBottom)
 
-            EVT_MIDDLE_UP(mpWindow::OnShowPopupMenu) EVT_RIGHT_DOWN(mpWindow::OnMouseRightDown)  // JLB
-    EVT_RIGHT_UP(mpWindow::OnShowPopupMenu) EVT_MOUSEWHEEL(mpWindow::OnMouseWheel)               // JLB
-    EVT_MOTION(mpWindow::OnMouseMove)                                                            // JLB
+    EVT_MIDDLE_UP(mpWindow::OnShowPopupMenu) EVT_RIGHT_DOWN(mpWindow::OnMouseRightDown)  // JLB
+    EVT_RIGHT_UP(mpWindow::OnShowPopupMenu) EVT_MOUSEWHEEL(mpWindow::OnMouseWheel)       // JLB
+    EVT_MOTION(mpWindow::OnMouseMove)                                                    // JLB
     EVT_LEFT_DOWN(mpWindow::OnMouseLeftDown) EVT_LEFT_UP(mpWindow::OnMouseLeftRelease)
 
         EVT_MENU(mpID_CENTER, mpWindow::OnCenter) EVT_MENU(mpID_FIT, mpWindow::OnFit)
@@ -1247,7 +1248,7 @@ void mpWindow::OnMouseMove(wxMouseEvent& event) {
         if (event.m_leftDown) {
             if (m_movingInfoLayer == NULL) {
                 wxClientDC dc(this);
-                wxPen pen(*wxBLACK, 1, wxDOT);
+                wxPen pen(*wxBLACK, 1, wxPENSTYLE_DOT);
                 dc.SetPen(pen);
                 dc.SetBrush(*wxTRANSPARENT_BRUSH);
                 dc.DrawRectangle(m_mouseLClick_X, m_mouseLClick_Y, event.GetX() - m_mouseLClick_X,

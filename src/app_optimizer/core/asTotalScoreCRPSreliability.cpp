@@ -59,7 +59,7 @@ float asTotalScoreCRPSreliability::Assess(const a1f& targetDates, const a2f& sco
     float reliability = 0;
 
     for (int i = 0; i < binsNbs; i++) {
-        if (!asIsNaN(g[i]) && !asIsInf(g[i]) && !asIsNaN(o[i]) && !asIsInf(o[i])) {
+        if (isfinite(g[i]) && isfinite(o[i])) {
             reliability += g[i] * (o[i] - p[i]) * (o[i] - p[i]);
         }
     }

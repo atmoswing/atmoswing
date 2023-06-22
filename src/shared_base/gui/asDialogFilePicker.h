@@ -28,7 +28,7 @@
 #ifndef AS_DIALOG_FILE_PICKER_H
 #define AS_DIALOG_FILE_PICKER_H
 
-#include "AtmoswingSharedGui.h"
+#include "AtmoSwingSharedGui.h"
 #include "asIncludes.h"
 
 class asDialogFilePicker : public asDialogFilePickerVirtual {

@@ -45,9 +45,6 @@ asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, int flatA
     if (flatAllowed == asFLAT_ALLOWED) {
         yWidth = wxMax(yWidth, 0.0);
         xWidth = wxMax(xWidth, 0.0);
-    } else {
-        wxASSERT(yWidth > 0);
-        wxASSERT(xWidth > 0);
     }
 
     m_cornerUL = {xMin, yMin + yWidth};
@@ -68,8 +65,8 @@ asArea::asArea()
 
 void asArea::Init() {
     if (m_isLatLon) DoCheckPoints();
-    if (!CheckConsistency()) asThrowException(_("Unable to build a consistent area with the given coordinates."));
-    if (!IsRectangle()) asThrowException(_("The provided area is not rectangle."));
+    if (!CheckConsistency()) throw runtime_error(_("Unable to build a consistent area with the given coordinates."));
+    if (!IsRectangle()) throw runtime_error(_("The provided area is not rectangle."));
 }
 
 void asArea::DoCheckPoints() {

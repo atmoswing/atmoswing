@@ -35,11 +35,10 @@
 #include "asTimeArray.h"
 
 asThreadGetAnalogsSubDates::asThreadGetAnalogsSubDates(
-    std::vector<asPredictor*> predictorsArchive, std::vector<asPredictor*> predictorsTarget,
-    asTimeArray* timeArrayArchiveData, asTimeArray* timeArrayTargetData, a1f* timeTargetSelection,
-    std::vector<asCriteria*> criteria, asParameters* params, int step, vpa2f& vTargData, vpa2f& vArchData, a1i& vRowsNb,
-    a1i& vColsNb, int start, int end, a2f* finalAnalogsCriteria, a2f* finalAnalogsDates, a2f* previousAnalogsDates,
-    bool* containsNaNs, bool* success)
+    vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget, asTimeArray* timeArrayArchiveData,
+    asTimeArray* timeArrayTargetData, a1f* timeTargetSelection, vector<asCriteria*> criteria, asParameters* params,
+    int step, vpa2f& vTargData, vpa2f& vArchData, a1i& vRowsNb, a1i& vColsNb, int start, int end,
+    a2f* finalAnalogsCriteria, a2f* finalAnalogsDates, a2f* previousAnalogsDates, bool* containsNaNs, bool* success)
     : asThread(asThread::ProcessorGetAnalogsDates),
       m_pPredictorsArchive(std::move(predictorsArchive)),
       m_pPredictorsTarget(std::move(predictorsTarget)),
@@ -64,8 +63,8 @@ asThreadGetAnalogsSubDates::asThreadGetAnalogsSubDates(
     wxASSERT_MSG(m_end < m_pTimeTargetSelection->size(),
                  _("The given time array end is superior to the time array size."));
     wxASSERT_MSG(m_end != m_pTimeTargetSelection->size() - 2,
-                 wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
-                                  (int)m_pTimeTargetSelection->size()));
+                 asStrF(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
+                        (int)m_pTimeTargetSelection->size()));
 }
 
 asThreadGetAnalogsSubDates::~asThreadGetAnalogsSubDates() {}
@@ -93,9 +92,9 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
     // Containers for daily results
     a1f currentAnalogsDates(analogsNbPrevious);
     a1f scoreArrayOneDay(analogsNb);
-    scoreArrayOneDay.fill(NaNf);
+    scoreArrayOneDay.fill(NAN);
     a1f dateArrayOneDay(analogsNb);
-    dateArrayOneDay.fill(NaNf);
+    dateArrayOneDay.fill(NAN);
 
     // Loop through every timestep as target data
     // Former, but disabled: for (int iDateTarg=m_start; !ThreadsManager().Cancelled() && (iDateTarg<=m_end);
@@ -117,8 +116,8 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
         // Counter representing the current index
         int counter = 0;
 
-        scoreArrayOneDay.fill(NaNf);
-        dateArrayOneDay.fill(NaNf);
+        scoreArrayOneDay.fill(NAN);
+        dateArrayOneDay.fill(NAN);
 
         // Loop over the members
         for (int iMem = 0; iMem < membersNb; ++iMem) {
@@ -129,7 +128,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
 
             // Loop through the previous analogs for candidate data
             for (int iPrevAnalog = 0; iPrevAnalog < analogsNbPrevious; iPrevAnalog++) {
-                if (asIsNaN(currentAnalogsDates[iPrevAnalog])) {
+                if (isnan(currentAnalogsDates[iPrevAnalog])) {
                     *m_pContainsNaNs = true;
                     continue;
                 }
@@ -160,7 +159,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
                         // Weight and add the score
                         thisscore += tmpscore * m_params->GetPredictorWeight(m_step, iPtor);
                     }
-                    if (asIsNaN(thisscore)) {
+                    if (isnan(thisscore)) {
                         *m_pContainsNaNs = true;
                         continue;
                     }
@@ -184,7 +183,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
                         // Add score and date to the vectors
                         scoreArrayOneDay[counter] = thisscore;
                         dateArrayOneDay[counter] = (float)timeArchiveData[iTimeArch];
-                    } else if (counter == analogsNb - 1) {
+                    } else {
                         // Add score and date to the vectors
                         scoreArrayOneDay[counter] = thisscore;
                         dateArrayOneDay[counter] = (float)timeArchiveData[iTimeArch];

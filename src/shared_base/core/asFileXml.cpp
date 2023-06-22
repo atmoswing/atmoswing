@@ -77,35 +77,35 @@ bool asFileXml::CheckRootElement() const {
     return FileVersionIsOrAbove(1.0);
 }
 
-wxXmlNode* asFileXml::CreateNodeWithValue(const wxString& name, const bool& content) {
+wxXmlNode* asFileXml::CreateNode(const wxString& name, const bool& content) {
     wxString value;
     value << content;
 
-    return CreateNodeWithValue(name, value);
+    return CreateNode(name, value);
 }
 
-wxXmlNode* asFileXml::CreateNodeWithValue(const wxString& name, const int& content) {
+wxXmlNode* asFileXml::CreateNode(const wxString& name, const int& content) {
     wxString value;
     value << content;
 
-    return CreateNodeWithValue(name, value);
+    return CreateNode(name, value);
 }
 
-wxXmlNode* asFileXml::CreateNodeWithValue(const wxString& name, const float& content) {
+wxXmlNode* asFileXml::CreateNode(const wxString& name, const float& content) {
     wxString value;
     value << content;
 
-    return CreateNodeWithValue(name, value);
+    return CreateNode(name, value);
 }
 
-wxXmlNode* asFileXml::CreateNodeWithValue(const wxString& name, const double& content) {
+wxXmlNode* asFileXml::CreateNode(const wxString& name, const double& content) {
     wxString value;
     value << content;
 
-    return CreateNodeWithValue(name, value);
+    return CreateNode(name, value);
 }
 
-wxXmlNode* asFileXml::CreateNodeWithValue(const wxString& name, const wxString& content) {
+wxXmlNode* asFileXml::CreateNode(const wxString& name, const wxString& content) {
     auto node = new wxXmlNode(wxXML_ELEMENT_NODE, name);
     auto nodeValue = new wxXmlNode(wxXML_TEXT_NODE, name, content);
     node->AddChild(nodeValue);
@@ -280,7 +280,7 @@ int asFileXml::GetAttributeInt(wxXmlNode* node, const wxString& attribute) {
 
     if (attrVal.IsEmpty()) {
         wxLogError(_("Empty %s attribute of the element %s (XML file)."), attribute, node->GetName());
-        return NaNi;
+        return 0;
     }
 
     long value;
@@ -295,7 +295,7 @@ float asFileXml::GetAttributeFloat(wxXmlNode* node, const wxString& attribute) {
 
     if (attrVal.IsEmpty()) {
         wxLogError(_("Empty %s attribute of the element %s (XML file)."), attribute, node->GetName());
-        return NaNf;
+        return NAN;
     }
 
     double value;
@@ -310,7 +310,7 @@ double asFileXml::GetAttributeDouble(wxXmlNode* node, const wxString& attribute)
 
     if (attrVal.IsEmpty()) {
         wxLogError(_("Empty %s attribute of the element %s (XML file)."), attribute, node->GetName());
-        return NaNd;
+        return NAN;
     }
 
     double value;

@@ -79,7 +79,7 @@ bool asDialogProgressBar::Update(int value, const wxString& message) {
                 m_currentStepIndex++;
                 if (g_verboseMode) {
                     if (!message.IsEmpty()) {
-                        newMessage = message + wxString::Format("(%d/%d)", value, m_valueMax);
+                        newMessage = message + asStrF("(%d/%d)", value, m_valueMax);
                     }
                 }
                 return m_progressBar->Update(value, newMessage);
@@ -87,7 +87,7 @@ bool asDialogProgressBar::Update(int value, const wxString& message) {
         } else {
             if (g_verboseMode) {
                 if (!message.IsEmpty()) {
-                    newMessage = message + wxString::Format("(%d/%d)", value, m_valueMax);
+                    newMessage = message + asStrF("(%d/%d)", value, m_valueMax);
                 }
             }
             return m_progressBar->Update(value, newMessage);

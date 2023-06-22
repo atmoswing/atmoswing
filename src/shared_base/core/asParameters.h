@@ -43,8 +43,8 @@ class asParameters : public wxObject {
     typedef struct ParamsPredictor {
         bool preload = false;
         bool standardize = false;
-        double standardizeMean = NaNd;
-        double standardizeSd = NaNd;
+        double standardizeMean = NAN;
+        double standardizeSd = NAN;
         bool preprocess = false;
         std::string datasetId;
         std::string dataId;
@@ -78,14 +78,14 @@ class asParameters : public wxObject {
         float weight = 1;
     } ParamsPredictor;
 
-    typedef std::vector<ParamsPredictor> VectorParamsPredictors;
+    typedef vector<ParamsPredictor> VectorParamsPredictors;
 
     typedef struct ParamsStep {
         int analogsNumber = 0;
         VectorParamsPredictors predictors;
     } ParamsStep;
 
-    typedef std::vector<ParamsStep> VectorParamsStep;
+    typedef vector<ParamsStep> VectorParamsStep;
 
     asParameters();
 
@@ -228,11 +228,14 @@ class asParameters : public wxObject {
     }
 
     double GetTimeShiftDays() const {
-        double margin = 0;
-        if (m_timeMinHours < 0) {
-            margin = floor(m_timeMinHours / m_targetTimeStepHours) * m_targetTimeStepHours / 24.0;
+        if (m_timeMinHours >= 0) {
+            return 0;
         }
-        return std::abs(margin);
+        if (m_targetTimeStepHours < 24) {
+            return 0;
+        }
+
+        return std::abs(floor(m_timeMinHours / m_targetTimeStepHours) * m_targetTimeStepHours / 24.0);
     }
 
     double GetTimeSpanDays() const {
@@ -307,7 +310,7 @@ class asParameters : public wxObject {
         return vec;
     }
 
-    void SetPredictandStationIds(vi val);
+    void SetPredictandStationIds(const vi& val);
 
     double GetPredictandTimeHours() const {
         return m_predictandTimeHours;

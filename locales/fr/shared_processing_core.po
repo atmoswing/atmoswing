@@ -1,0 +1,664 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-16 23:19+0200\n"
+"PO-Revision-Date: 2023-06-05 16:51+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.3.1\n"
+
+#: src/shared_processing/core/asCriteria.cpp:103
+#, c-format
+msgid "The predictor criteria was not correctly defined (%s)."
+msgstr "Le critère n'a pas été correctement défini (%s)."
+
+#: src/shared_processing/core/asCriteriaDMV.cpp:31
+msgid "Absolute difference in mean value (nonspatial)"
+msgstr "Différence absolue de la valeur moyenne (non spatiale)"
+
+#: src/shared_processing/core/asCriteriaDMV.cpp:51
+msgid "Only NaNs in the DMV criteria calculation."
+msgstr "Seulement des NaN dans le calcul des critères DMV."
+
+#: src/shared_processing/core/asCriteriaDSD.cpp:31
+msgid "Difference in standard deviation (nonspatial)"
+msgstr "Différence d'écart-type (non spatial)"
+
+#: src/shared_processing/core/asCriteriaDSD.cpp:55
+msgid "Not enough data to process the DSD score."
+msgstr "Pas assez de données pour traiter le score DSD."
+
+#: src/shared_processing/core/asCriteriaMD.cpp:32
+msgid "Mean Absolute Difference"
+msgstr "Différence moyenne absolue"
+
+#: src/shared_processing/core/asCriteriaMD.cpp:50
+msgid "Only NaNs in the MD criteria calculation."
+msgstr "Seulement des NaNs dans le calcul des critères MD."
+
+#: src/shared_processing/core/asCriteriaRMSE.cpp:32
+msgid "Root Mean Square Error"
+msgstr "Erreur quadratique moyenne"
+
+#: src/shared_processing/core/asCriteriaRMSE.cpp:56
+msgid "Only NaNs in the RMSE criteria calculation."
+msgstr "Seulement des NaNs dans le calcul du critère RMSE."
+
+#: src/shared_processing/core/asCriteriaRSE.cpp:32
+msgid "Root Squared Error"
+msgstr "Erreur quadratique"
+
+#: src/shared_processing/core/asCriteriaRSE.cpp:52
+msgid "Only NaNs in the RSE criteria calculation."
+msgstr "Seulement des NaNs dans le calcul des critères RSE."
+
+#: src/shared_processing/core/asCriteriaS0.cpp:31
+msgid "Teweles-Wobus on raw data"
+msgstr "Teweles-Wobus sur données brutes"
+
+#: src/shared_processing/core/asCriteriaS0.cpp:63
+#: src/shared_processing/core/asCriteriaS0obs.cpp:63
+#: src/shared_processing/core/asCriteriaS1.cpp:97
+#: src/shared_processing/core/asCriteriaS1G.cpp:82
+#: src/shared_processing/core/asCriteriaS1grads.cpp:67
+#: src/shared_processing/core/asCriteriaS1obs.cpp:70
+#: src/shared_processing/core/asCriteriaS2.cpp:83
+msgid "Both dividend and divisor are equal to zero in the predictor criteria."
+msgstr ""
+"Le dividende et le diviseur sont tous deux égaux à zéro dans le calcul du "
+"critère."
+
+#: src/shared_processing/core/asCriteriaS0obs.cpp:31
+msgid "S0 with division by actual value"
+msgstr "S0 avec division par la valeur réelle"
+
+#: src/shared_processing/core/asCriteriaS1.cpp:32
+msgid "Teweles-Wobus score"
+msgstr "Score Teweles-Wobus"
+
+#: src/shared_processing/core/asCriteriaS1.cpp:49
+#: src/shared_processing/core/asCriteriaS1G.cpp:48
+#: src/shared_processing/core/asCriteriaS1obs.cpp:48
+msgid "NaNs are not handled in with S1 without preprocessing."
+msgstr "Les NaNs ne sont pas gérés avec S1 sans prétraitement."
+
+#: src/shared_processing/core/asCriteriaS1G.cpp:31
+msgid "Teweles-Wobus score with a Gaussian weighting"
+msgstr "Score de Teweles-Wobus avec une pondération gaussienne"
+
+#: src/shared_processing/core/asCriteriaS1grads.cpp:32
+msgid "Teweles-Wobus on gradients"
+msgstr "Teweles-Wobus sur les gradients"
+
+#: src/shared_processing/core/asCriteriaS1obs.cpp:31
+msgid "S1 with division by actual value"
+msgstr "S1 avec division par la valeur réelle"
+
+#: src/shared_processing/core/asCriteriaS2.cpp:31
+msgid "Derivative of Teweles-Wobus score"
+msgstr "Dérivée du score de Teweles-Wobus"
+
+#: src/shared_processing/core/asCriteriaS2.cpp:46
+msgid "NaNs are not handled in with S2 without preprocessing."
+msgstr "Les NaNs ne sont pas gérés avec S2 sans prétraitement."
+
+#: src/shared_processing/core/asCriteriaSAD.cpp:32
+msgid "Sum of Absolute Differences"
+msgstr "Somme des différences absolues"
+
+#: src/shared_processing/core/asCriteriaSAD.cpp:50
+msgid "Only NaNs in the SAD criteria calculation."
+msgstr "Seulement ses NaNs dans le calcul du critère DAU."
+
+#: src/shared_processing/core/asMethodStandard.cpp:76
+msgid "There is no predictand database file selected."
+msgstr "Pas de fichier de base de données de prédictants sélectionné."
+
+#: src/shared_processing/core/asMethodStandard.cpp:84
+#: src/shared_processing/core/asMethodStandard.cpp:92
+msgid "Couldn't load the predictand database."
+msgstr "Impossible de charger la base de données des predictands."
+
+#: src/shared_processing/core/asMethodStandard.cpp:179
+msgid "Preloading data with threads."
+msgstr "Préchargement des données avec des threads."
+
+#: src/shared_processing/core/asMethodStandard.cpp:227
+msgid "Data preloaded with threads."
+msgstr "Données préchargées avec des threads."
+
+#: src/shared_processing/core/asMethodStandard.cpp:240
+#, c-format
+msgid "No data was preloaded for step %d, predictor %d and num %d."
+msgstr ""
+"Aucune donnée n'a été préchargée pour l'étape %d, le prédicteur %d et le num "
+"%d."
+
+#: src/shared_processing/core/asMethodStandard.cpp:247
+#, c-format
+msgid "No data was preloaded for step %d and predictor %d."
+msgstr "Aucune donnée n'a été préchargée pour l'étape %d et le prédicteur %d."
+
+#: src/shared_processing/core/asMethodStandard.cpp:383
+msgid "Share data pointer"
+msgstr "Partage du pointeur des données"
+
+#: src/shared_processing/core/asMethodStandard.cpp:415
+#, c-format
+msgid "Preloading data for predictor %d of step %d."
+msgstr "Préchargement des données pour le prédicteur %d de l'étape %d."
+
+#: src/shared_processing/core/asMethodStandard.cpp:462
+#, c-format
+msgid ""
+"Adapt Y axis extent according to the maximum allowed (from %.3f to %.3f)."
+msgstr ""
+"Adapter l'étendue de l'axe Y en fonction du maximum autorisé (de %.3f à "
+"%.3f)."
+
+#: src/shared_processing/core/asMethodStandard.cpp:464
+#, c-format
+msgid "Remove %d points (%.3f-%.3f)/%.3f."
+msgstr "Suppression de %d points (%.3f-%.3f)/%.3f."
+
+#: src/shared_processing/core/asMethodStandard.cpp:507
+#: src/shared_processing/core/asMethodStandard.cpp:940
+msgid "Failed loading dumped data."
+msgstr "Échec du chargement des données temporaires."
+
+#: src/shared_processing/core/asMethodStandard.cpp:519
+#: src/shared_processing/core/asMethodStandard.cpp:725
+#, c-format
+msgid "Loading %s data for level %d, %gh."
+msgstr "Chargement des données %s pour le niveau %d, %gh."
+
+#: src/shared_processing/core/asMethodStandard.cpp:524
+#: src/shared_processing/core/asMethodStandard.cpp:527
+#, c-format
+msgid "The data (%s for level %d, at %gh) could not be loaded."
+msgstr "Les données (%s pour le niveau %d, à %gh) n'ont pas pu être chargées."
+
+#: src/shared_processing/core/asMethodStandard.cpp:536
+#, c-format
+msgid "Bad allocation caught during data preloading: %s"
+msgstr "Mauvaise allocation détectée lors du préchargement des données : %s"
+
+#: src/shared_processing/core/asMethodStandard.cpp:543
+#, c-format
+msgid "Exception caught during data preloading: %s"
+msgstr "Exception levée lors du préchargement des données : %s"
+
+#: src/shared_processing/core/asMethodStandard.cpp:548
+msgid "Data loaded."
+msgstr "Données chargées."
+
+#: src/shared_processing/core/asMethodStandard.cpp:552
+#, c-format
+msgid ""
+"The preloaded data has a different length than other data series: %d != %d"
+msgstr ""
+"Les données préchargées ont une longueur différente de celle des autres "
+"séries de données : %d != %d"
+
+#: src/shared_processing/core/asMethodStandard.cpp:564
+#: src/shared_processing/core/asMethodStandard.cpp:752
+#: src/shared_processing/core/asMethodStandard.cpp:1081
+#: src/shared_processing/core/asMethodStandard.cpp:1174
+msgid "Data standardisation has failed."
+msgstr "La normalisation des données a échoué."
+
+#: src/shared_processing/core/asMethodStandard.cpp:574
+#, c-format
+msgid "File dumbed for %s (level %d, %gh)."
+msgstr "Fichier temporaire créé pour %s (niveau %d, %gh)."
+
+#: src/shared_processing/core/asMethodStandard.cpp:589
+#, c-format
+msgid "Preloading data for predictor preprocessed %d of step %d."
+msgstr ""
+"Préchargement des données pour le prédicteur prétraité %d de l'étape %d."
+
+#: src/shared_processing/core/asMethodStandard.cpp:627
+msgid "Preprocessing method unknown in PreloadArchiveDataWithPreprocessing."
+msgstr ""
+"Méthode de prétraitement inconnue dans PreloadArchiveDataWithPreprocessing."
+
+#: src/shared_processing/core/asMethodStandard.cpp:631
+#: src/shared_processing/core/asMethodStandard.cpp:1116
+#, c-format
+msgid "Preprocessing data (%d predictor(s)) while loading."
+msgstr "Prétraitement des données (%d prédicteur(s)) pendant le chargement."
+
+#: src/shared_processing/core/asMethodStandard.cpp:639
+#, c-format
+msgid "Preloading data for predictor %d (preprocess %d) of step %d."
+msgstr ""
+"Préchargement des données pour le prédicteur %d (preprocess %d) de l'étape "
+"%d."
+
+#: src/shared_processing/core/asMethodStandard.cpp:705
+#, c-format
+msgid ""
+"Adapt Y axis extent according to the maximum allowed (from %.2f to %.2f)."
+msgstr ""
+"Adapter l'étendue de l'axe Y en fonction du maximum autorisé (de %.2f à "
+"%.2f)."
+
+#: src/shared_processing/core/asMethodStandard.cpp:728
+#: src/shared_processing/core/asMethodStandard.cpp:1071
+#: src/shared_processing/core/asMethodStandard.cpp:1150
+msgid "The data could not be loaded."
+msgstr "Les données n'ont pas pu être chargées."
+
+#: src/shared_processing/core/asMethodStandard.cpp:737
+msgid "Preprocessing data."
+msgstr "Prétraitement des données."
+
+#: src/shared_processing/core/asMethodStandard.cpp:742
+#: src/shared_processing/core/asMethodStandard.cpp:1019
+#: src/shared_processing/core/asMethodStandard.cpp:1092
+#: src/shared_processing/core/asMethodStandard.cpp:1165
+msgid "Data preprocessing failed."
+msgstr "Le prétraitement des données a échoué."
+
+#: src/shared_processing/core/asMethodStandard.cpp:763
+#, c-format
+msgid "Bad allocation caught in the data preprocessing: %s"
+msgstr "Mauvaise allocation détectée lors du prétraitement des données : %s"
+
+#: src/shared_processing/core/asMethodStandard.cpp:770
+#, c-format
+msgid "Exception caught during data preprocessing: %s"
+msgstr "Une exception a été levée pendant le traitement des données : %s"
+
+#: src/shared_processing/core/asMethodStandard.cpp:776
+msgid "Preprocessing over."
+msgstr "Prétraitement terminé."
+
+#: src/shared_processing/core/asMethodStandard.cpp:792
+msgid "Could not preload the data."
+msgstr "Impossible de précharger les données."
+
+#: src/shared_processing/core/asMethodStandard.cpp:801
+msgid "Loading data."
+msgstr "Chargement des données en cours."
+
+#: src/shared_processing/core/asMethodStandard.cpp:813
+msgid "Data loaded"
+msgstr "Données chargées"
+
+#: src/shared_processing/core/asMethodStandard.cpp:818
+#, c-format
+msgid "Bad allocation caught during data loading: %s"
+msgstr "Mauvaise allocation détectée lors du chargement des données : %s"
+
+#: src/shared_processing/core/asMethodStandard.cpp:822
+#, c-format
+msgid "Exception caught during data loading: %s"
+msgstr "Exception lors du chargement des données : %s"
+
+#: src/shared_processing/core/asMethodStandard.cpp:831
+msgid "Using preloaded data."
+msgstr "Utilisation de données préchargées."
+
+#: src/shared_processing/core/asMethodStandard.cpp:872
+msgid ""
+"The criteria value has not been changed after the gradient preprocessing."
+msgstr ""
+"La valeur du critère n'a pas été modifiée après le prétraitement du gradient."
+
+#: src/shared_processing/core/asMethodStandard.cpp:900
+#, c-format
+msgid "The level (%f) could not be found in the preloaded data."
+msgstr "Le niveau (%f) n'a pas été trouvé dans les données préchargées."
+
+#: src/shared_processing/core/asMethodStandard.cpp:904
+#, c-format
+msgid "The hour (%d) could not be found in the preloaded data."
+msgstr "L'heure (%d) n'a pas été trouvée dans les données préchargées."
+
+#: src/shared_processing/core/asMethodStandard.cpp:917
+msgid "The pointer to preloaded data is null."
+msgstr "Le pointeur sur les données préchargées est nul."
+
+#: src/shared_processing/core/asMethodStandard.cpp:928
+#: src/shared_processing/core/asMethodStandard.cpp:967
+#: src/shared_processing/core/asMethodStandard.cpp:976
+#: src/shared_processing/core/asProcessor.cpp:1165
+#: src/shared_processing/core/asProcessor.cpp:1347
+#: src/shared_processing/core/asProcessor.cpp:1361
+#: src/shared_processing/core/asProcessor.cpp:1368
+#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:109
+#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:142
+msgid "An unexpected error occurred."
+msgstr "Une erreur inattendue s’est produite."
+
+#: src/shared_processing/core/asMethodStandard.cpp:1005
+#, c-format
+msgid ""
+"The data could not be extracted (iStep = %d, iPtor = %d, iPre = %d, iLevel = "
+"%d, iHour = %d)."
+msgstr ""
+"Les données n'ont pas pu être extraites (iStep = %d, iPtor = %d, iPre = %d, "
+"iLevel = %d, iHour = %d)."
+
+#: src/shared_processing/core/asPreprocessor.cpp:77
+msgid "The preprocessing method was not correctly defined."
+msgstr "La méthode de prétraitement n'a pas été correctement définie."
+
+#: src/shared_processing/core/asPreprocessor.cpp:87
+#: src/shared_processing/core/asPreprocessor.cpp:153
+#: src/shared_processing/core/asPreprocessor.cpp:235
+#: src/shared_processing/core/asPreprocessor.cpp:305
+#: src/shared_processing/core/asPreprocessor.cpp:391
+#: src/shared_processing/core/asPreprocessor.cpp:465
+#: src/shared_processing/core/asPreprocessor.cpp:549
+#: src/shared_processing/core/asPreprocessor.cpp:627
+msgid ""
+"The number of predictors must be equal to 1 in asPreprocessor::"
+"PreprocessGradients"
+msgstr ""
+"Le nombre de prédicteurs doit être égal à 1 dans asPreprocessor::"
+"PreprocessGradients"
+
+#: src/shared_processing/core/asPreprocessor.cpp:159
+#: src/shared_processing/core/asPreprocessor.cpp:311
+msgid "The predictor must be lat/lon to process the real gradients."
+msgstr "Le prédicteur doit être lat/lon pour traiter les gradients réels."
+
+#: src/shared_processing/core/asPreprocessor.cpp:713
+#: src/shared_processing/core/asPreprocessor.cpp:752
+msgid ""
+"The number of predictors must be superior to 1 in asPreprocessor::"
+"PreprocessAddition"
+msgstr ""
+"Le nombre de prédicteurs doit être supérieur à 1 dans asPreprocessor::"
+"PreprocessAddition"
+
+#: src/shared_processing/core/asPreprocessor.cpp:792
+msgid ""
+"The number of predictors must be equal to 2 in asPreprocessor::"
+"PreprocessDifference"
+msgstr ""
+"Le nombre de prédicteurs doit être égal à 2 dans asPreprocessor::"
+"PreprocessDifference"
+
+#: src/shared_processing/core/asPreprocessor.cpp:829
+msgid ""
+"The number of predictors must be superior to 1 in asPreprocessor::"
+"PreprocessMultiplication"
+msgstr ""
+"Le nombre de prédicteurs doit être supérieur à 1 dans asPreprocessor::"
+"PreprocessMultiplication"
+
+#: src/shared_processing/core/asPreprocessor.cpp:869
+msgid ""
+"The number of predictors must be equal to 4 in asPreprocessor::"
+"PreprocessFormerHumidityIndex"
+msgstr ""
+"Le nombre de prédicteurs doit être égal à 4 dans asPreprocessor::"
+"PreprocessFormerHumidityIndex"
+
+#: src/shared_processing/core/asPreprocessor.cpp:921
+msgid "The predictors sizes make them impossible to merge."
+msgstr "La taille des prédicteurs les rend impossibles à fusionner."
+
+#: src/shared_processing/core/asPreprocessor.cpp:983
+msgid ""
+"The number of predictors must be superior to 2 in "
+"PreprocessMergeByHalfAndMultiply"
+msgstr ""
+"Le nombre de prédicteurs doit être supérieur à 2 dans "
+"PreprocessMergeByHalfAndMultiply"
+
+#: src/shared_processing/core/asPreprocessor.cpp:987
+msgid ""
+"The number of predictors must be dividable by 2 in "
+"PreprocessMergeByHalfAndMultiply"
+msgstr ""
+"Le nombre de prédicteurs doit être divisible par 2 dans "
+"PreprocessMergeByHalfAndMultiply"
+
+#: src/shared_processing/core/asPreprocessor.cpp:1055
+msgid ""
+"The number of predictors must be equal to 4 in asPreprocessor::"
+"PreprocessHumidityFlux"
+msgstr ""
+"Le nombre de prédicteurs doit être égal à 4 dans asPreprocessor::"
+"PreprocessHumidityFlux"
+
+#: src/shared_processing/core/asPreprocessor.cpp:1112
+msgid ""
+"The number of predictors must be equal to 2 in asPreprocessor::"
+"PreprocessWindSpeed"
+msgstr ""
+"Le nombre de prédicteurs doit être égal à 2 dans asPreprocessor::"
+"PreprocessWindSpeed"
+
+#: src/shared_processing/core/asProcessor.cpp:81
+msgid "The Analogs SubDates method must be called for this step."
+msgstr "La méthode Analogs SubDates doit être appelée pour cette étape."
+
+#: src/shared_processing/core/asProcessor.cpp:102
+msgid "The given analog number is superior to the time series."
+msgstr ""
+"Le nombre d'analogues donné est supérieur à la taille de la série temporelle."
+
+#: src/shared_processing/core/asProcessor.cpp:120
+#: src/shared_processing/core/asProcessor.cpp:833
+msgid "All variables must contain the same number of members."
+msgstr "Toutes les variables doivent contenir le même nombre de membres."
+
+#: src/shared_processing/core/asProcessor.cpp:126
+#: src/shared_processing/core/asProcessor.cpp:839
+msgid "You cannot combine criteria that are ascendant and descendant."
+msgstr "Vous ne pouvez pas combiner des critères croissants et décroissants."
+
+#: src/shared_processing/core/asProcessor.cpp:140
+#: src/shared_processing/core/asProcessor.cpp:856
+msgid "Processing the data comparison."
+msgstr "Traitement de la comparaison des données."
+
+#: src/shared_processing/core/asProcessor.cpp:149
+#: src/shared_processing/core/asProcessor.cpp:865
+msgid "No support for ensemble datasets in CUDA yet."
+msgstr "Pas encore de prise en charge des ensembles de données dans CUDA."
+
+#: src/shared_processing/core/asProcessor.cpp:156
+#: src/shared_processing/core/asProcessor.cpp:872
+msgid ""
+"The CUDA implementation is only available in calibration (prefect prog)."
+msgstr ""
+"L'implémentation CUDA n'est disponible qu'en calibration (prefect prog)."
+
+#: src/shared_processing/core/asProcessor.cpp:195
+#: src/shared_processing/core/asProcessor.cpp:908
+#, c-format
+msgid "The %s criteria is not yet implemented for CUDA."
+msgstr "Le critère %s n'est pas encore implémenté pour CUDA."
+
+#: src/shared_processing/core/asProcessor.cpp:318
+#: src/shared_processing/core/asProcessor.cpp:546
+#, c-format
+msgid ""
+"The candidate (%s) was not found in the array (%s - %s) (Target date: %s)."
+msgstr ""
+"Le candidat (%s) n'a pas été trouvé dans le tableau (%s - %s) (date cible : "
+"%s)."
+
+#: src/shared_processing/core/asProcessor.cpp:374
+#: src/shared_processing/core/asProcessor.cpp:462
+#: src/shared_processing/core/asProcessor.cpp:1051
+#: src/shared_processing/core/asProcessor.cpp:1131
+msgid "NaNs were found in the criteria values."
+msgstr "Des NaNs ont été trouvés dans les valeurs des critères."
+
+#: src/shared_processing/core/asProcessor.cpp:375
+#: src/shared_processing/core/asProcessor.cpp:579
+#: src/shared_processing/core/asProcessor.cpp:1052
+#: src/shared_processing/core/asProcessor.cpp:1226
+#, c-format
+msgid "Target date: %s, archive date: %s."
+msgstr "Date cible : %s, date de l'archive : %s."
+
+#: src/shared_processing/core/asProcessor.cpp:388
+msgid "There is not enough available data to satisfy the number of analogs."
+msgstr ""
+"Les données disponibles ne sont pas suffisantes pour satisfaire le nombre "
+"d'analogues."
+
+#: src/shared_processing/core/asProcessor.cpp:389
+#, c-format
+msgid ""
+"Analogs number (%d) > resCounter (%d), date array size (%d) with %d days "
+"intervals."
+msgstr ""
+"Nombre d'analogues (%d) > resCounter (%d), taille du vecteur des dates (%d) "
+"avec des intervalles de %d jours."
+
+#: src/shared_processing/core/asProcessor.cpp:473
+#: src/shared_processing/core/asProcessor.cpp:1143
+msgid "Errors were found during extraction of the analog dates."
+msgstr ""
+"Des erreurs ont été constatées lors de l'extraction des dates analogues."
+
+#: src/shared_processing/core/asProcessor.cpp:576
+#: src/shared_processing/core/asProcessor.cpp:1223
+#, c-format
+msgid "NaNs were found in the criteria values (%s/%s)."
+msgstr "Des NaNs ont été trouvés dans les valeurs des critères (%s/%s)."
+
+#: src/shared_processing/core/asProcessor.cpp:594
+#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:175
+msgid ""
+"It should not happen that the array of analogue dates is not full when "
+"adding members."
+msgstr ""
+"Le tableau des dates analogues devrait être plein lors de l'ajout de membres."
+
+#: src/shared_processing/core/asProcessor.cpp:618
+#: src/shared_processing/core/asProcessor.cpp:1283
+msgid "The processing method is not correctly defined."
+msgstr "La méthode de traitement n'est pas correctement définie."
+
+#: src/shared_processing/core/asProcessor.cpp:627
+#, c-format
+msgid "The function asProcessor::GetAnalogsDates took %.3f s to execute"
+msgstr "La fonction asProcessor::GetAnalogsDates a mis %.3f s à s'exécuter"
+
+#: src/shared_processing/core/asProcessor.cpp:636
+#, c-format
+msgid ""
+"The size of the time array and the target data are not equal (%d != %d)."
+msgstr ""
+"La taille du vecteur des dates et celle des données cibles ne sont pas "
+"égales (%d !=%d)."
+
+#: src/shared_processing/core/asProcessor.cpp:638
+#: src/shared_processing/core/asProcessor.cpp:655
+#, c-format
+msgid "Time array starts on %s and ends on %s."
+msgstr "Le vecteur des dates commence à %s et se termine à %s."
+
+#: src/shared_processing/core/asProcessor.cpp:653
+#, c-format
+msgid ""
+"The size of the time array and the archive data are not equal (%d != %d)."
+msgstr ""
+"La taille du vecteur des dates et celle des données d'archives ne sont pas "
+"égales (%d !=%d)."
+
+#: src/shared_processing/core/asProcessor.cpp:790
+msgid "The  Analogs Dates method cannot be called first."
+msgstr "La méthode Analogs Dates ne peut pas être appelée en premier."
+
+#: src/shared_processing/core/asProcessor.cpp:817
+#, c-format
+msgid "The given analog number (%d) is superior to the previous step (%d)."
+msgstr ""
+"Le nombre d'analogues donné (%d) est supérieur à celui de l'étape précédente "
+"(%d)."
+
+#: src/shared_processing/core/asProcessor.cpp:985
+#: src/shared_processing/core/asProcessor.cpp:1159
+#, c-format
+msgid "Looking for %s in betwwen %s and %s."
+msgstr "Recherche de %s entre %s et %s."
+
+#: src/shared_processing/core/asProcessor.cpp:1002
+#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:205
+msgid ""
+"The date was not found in the array (Analogs subdates fct). That should not "
+"happen."
+msgstr ""
+"La date n'a pas été trouvée dans le tableau (Analogs subdates fct). Cela ne "
+"devrait pas se produire."
+
+#: src/shared_processing/core/asProcessor.cpp:1193
+msgid "The date was not found in the array (Analogs subdates fct)."
+msgstr "La date n'a pas été trouvée dans le tableau (Analogs subdates fct)."
+
+#: src/shared_processing/core/asProcessor.cpp:1299
+#, c-format
+msgid "The function asProcessor::GetAnalogsSubDates took %.3f s to execute"
+msgstr "La fonction asProcessor::GetAnalogsSubDates a mis %.3f s à s'exécuter"
+
+#: src/shared_processing/core/asProcessor.cpp:1430
+#, c-format
+msgid "The current analog date (%s) is outside of the allowed period (%s-%s))."
+msgstr ""
+"La date analogue actuelle (%s) est en dehors de la période autorisée (%s-"
+"%s))."
+
+#: src/shared_processing/core/asProcessor.cpp:1443
+#, c-format
+msgid ""
+"The current analog date (%s) was not found in the predictand time array (%s-"
+"%s)."
+msgstr ""
+"La date analogue actuelle (%s) n'a pas été trouvée dans les predictands (%s-"
+"%s)."
+
+#: src/shared_processing/core/asResultsDates.cpp:143
+msgid ""
+"The target date array is not consistent in the temp file (last value makes "
+"no sense)."
+msgstr ""
+"Le tableau des dates cibles n'est pas cohérent dans le fichier temporaire "
+"(la dernière valeur n'a pas de sens)."
+
+#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:67
+#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:65
+msgid "The given time array end is superior to the time array size."
+msgstr "La fin du tableau des dates est supérieure à sa taille."
+
+#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:69
+#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:67
+#, c-format
+msgid "The given time array end is missing its last value (end=%d, size=%d)."
+msgstr ""
+"La dernière valeur du tableau des dates est manquante (end=%d, size=%d)."
+
+#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:190
+msgid ""
+"The date was not found in the array (Analogs Dates fct, multithreaded "
+"option). That should not happen."
+msgstr ""
+"La date n'a pas été trouvée dans le tableau (Analogues Dates fct, option "
+"multithreaded). Cela ne devrait pas se produire."
+
+#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:192
+#, c-format
+msgid "Start: %g, end: %g, desired value: %g."
+msgstr "Début : %g, fin : %g, valeur souhaitée : %g."

@@ -1,0 +1,303 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-21 18:28+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrcoordinate.cpp:213
+msgid "Rectangle not inited!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrdisplaytool.cpp:630
+#, c-format
+msgid "Unsupported geometry type for modification! (%d)"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrdisplaytool.cpp:653
+#, c-format
+msgid "Active vertex is : %d"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrdriver.cpp:44
+msgid "All supported formats|"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayermanager.cpp:124
+#, c-format
+msgid "Layer with same name allready exists '%s'"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayermanager.cpp:171
+#, c-format
+msgid "Unable to Delete: '%s'. This file is still used!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayermanager.cpp:189
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayermanager.cpp:204
+#, c-format
+msgid "Deleting '%s' Failed!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayermanager.cpp:210
+msgid "Unable to delete C2P file!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayerraster.cpp:76
+msgid "Error getting geotransform data!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayerraster.cpp:352
+#, c-format
+msgid "Unknown error while reading band %i from %s"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayerraster.cpp:495
+#, c-format
+msgid ""
+"Getting information for raster '%s' failed!\n"
+"This image is either empty or corrupted."
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayerraster.cpp:733
+msgid "Error creating translucency"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayerraster.cpp:963
+msgid "Some metadata weren't fetched! wrong structure."
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayervector.cpp:126
+#, c-format
+msgid "Error going to index : %ld, (code %d)"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayervector.cpp:172
+#, c-format
+msgid "Error deleting feature: %ld! (Error number: %d)"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayervector.cpp:341
+msgid "Origin layer is empty! copying failed!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayervector.cpp:363
+#, c-format
+msgid "Error copying layer: %s"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayervector.cpp:396
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayervectorc2p.cpp:281
+msgid "Error creating feature"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayervector.cpp:456
+#, c-format
+msgid "Object with FID: %ld has no Geometry!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayervector.cpp:524
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayervectorc2p.cpp:137
+#, c-format
+msgid ""
+"Polygon with FID: %ld has an incorrect ring (less than a vertex!). Total "
+"number of ring for that polygon is: %d"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayervector.cpp:695
+#, c-format
+msgid "Error cleaning attribute filter: (code %d)"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayervector.cpp:704
+#, c-format
+msgid "Error setting following attribute filter : %s, (code %d)"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrlayervectorc2p.cpp:218
+msgid ""
+"Unable to load SQLite Driver! GDAL is maybe not compiled with SQLite support"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vroperationvectorprofiler.cpp:57
+#, c-format
+msgid "Actually Profile works only on line with 2 vertex, found: %d vertex"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vroperationvectorprofiler.cpp:75
+msgid "Unable to create profile, line is too small"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vroperationvectorprofiler.cpp:124
+msgid "Index out of bounds!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vroperationvectorprofiler.cpp:129
+msgid "Point Geometry is NULL!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vroperationvectorprofiler.cpp:149
+msgid "Line Geometry is NULL!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vroperationvectorprofiler.cpp:157
+#, c-format
+msgid "Error getting point: %ld"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrperformance.cpp:58
+msgid "Date\tPlateform\tDebug\tElapsed time\tUsed Memory\t"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrperformance.cpp:68
+msgid "Yes"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrperformance.cpp:70
+msgid "No"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrrenderer.cpp:149
+#, c-format
+msgid "Unsupported geometry type: %d"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrrendervectorc2p.cpp:96
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrrendervectorc2p.cpp:218
+#, c-format
+msgid "Adding '%s' colour with '%d' id isn't allowed. ID allready used."
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrrendervectorc2p.cpp:115
+#, c-format
+msgid "Setting '%s' colour with '%d' id isn't allowed. ID didn't exist (dips)."
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrserialize.cpp:35
+msgid "Error, stream is in writing mode"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrserialize.cpp:40
+msgid "Nothing to read, stream empty"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrserialize.cpp:55
+msgid "Error trying to convert string to integer"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrshapeeditor.cpp:130
+#, c-format
+msgid "Point: %.3f, %.3f already exists"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrshapeeditor.cpp:188
+#, c-format
+msgid "Only %d vertex, unable to create polygon"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewerdisplay.cpp:189
+msgid "No GIS Data"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewerlayermanager.cpp:116
+msgid "Couldn't apply the desired extent."
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewerlayermanager.cpp:305
+msgid "Selection on raster isn't valid"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewerlayermanager.cpp:428
+#, c-format
+msgid "Total Vector drawn: %ld"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewerlayermanager.cpp:496
+msgid ""
+"Engine not fully compatible with Linux, vector layers will not be rendered! "
+"Continue ?"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewerlayermanager.cpp:497
+msgid "Linux Problem"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:35
+msgid "Add Group"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:39
+msgid "Set Transparency..."
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:41
+msgid "Set Pen color..."
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:42
+msgid "Set Pen width..."
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:45
+msgid "Set Brush color..."
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:47
+msgid "Solid Brush"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:48
+msgid "Transparent Brush"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:49
+msgid "Diagonal Brush"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:50
+msgid "Brush"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:123
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:143
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:184
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:222
+msgid "Error getting selected layer!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:209
+#, c-format
+msgid "Brush style not supported: %d"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:684
+#, c-format
+msgid "Error layer '%s' not found into ViewerLayerMaanger!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:742
+msgid "Case not supported!"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:835
+msgid "New group"
+msgstr ""
+
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:1010
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:1048
+#: cmake-build-debug/_deps/vroomgis-src/vroomgis/src/vrviewertoc.cpp:1062
+#, c-format
+msgid "Error, item %d not found!!!"
+msgstr ""

@@ -29,7 +29,7 @@
 #ifndef AS_PANEL_SIDEBAR_H
 #define AS_PANEL_SIDEBAR_H
 
-#include "AtmoswingViewerGui.h"
+#include "AtmoSwingViewerGui.h"
 #include "asIncludes.h"
 
 class asPanelSidebar : public asPanelSidebarVirtual {

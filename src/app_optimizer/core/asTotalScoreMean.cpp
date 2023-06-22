@@ -43,7 +43,7 @@ float asTotalScoreMean::Assess(const a1f& targetDates, const a1f& scores, const 
             float score = 0, divisor = 0;
 
             for (int iTime = 0; iTime < targetDatesLength; iTime++) {
-                if (!asIsNaN(scores(iTime))) {
+                if (!isnan(scores(iTime))) {
                     score += scores(iTime);
                     divisor++;
                 }
@@ -69,11 +69,11 @@ float asTotalScoreMean::Assess(const a1f& targetDates, const a1f& scores, const 
             for (int iTime = indexStart; iTime <= indexEnd; iTime++) {
                 if (iTime < 0) {
                     wxLogError(_("Error processing the final mean score."));
-                    return NaNf;
+                    return NAN;
                 }
                 int indexCurrent = asFindClosest(&targetDates(0), &targetDates(targetDatesLength - 1), dateTime(iTime));
                 if ((indexCurrent != asNOT_FOUND) & (indexCurrent != asOUT_OF_RANGE)) {
-                    if (!asIsNaN(scores(indexCurrent))) {
+                    if (!isnan(scores(indexCurrent))) {
                         score += scores(indexCurrent);
                         divisor++;
                     }
@@ -84,7 +84,7 @@ float asTotalScoreMean::Assess(const a1f& targetDates, const a1f& scores, const 
         }
 
         default: {
-            asThrowException(_("Period not yet implemented in asTotalScoreMean."));
+            throw runtime_error(_("Period not yet implemented in asTotalScoreMean."));
         }
     }
 }

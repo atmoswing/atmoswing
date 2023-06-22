@@ -32,9 +32,7 @@
 
 asScoreCRPSsharpAR::asScoreCRPSsharpAR()
     : asScore(asScore::CRPSsharpnessAR, _("CRPS Accuracy Approx Rectangle"),
-              _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method"), Asc, 0, NaNf) {
-
-}
+              _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method"), Asc, 0, NAN) {}
 
 asScoreCRPSsharpAR::~asScoreCRPSsharpAR() {}
 
@@ -44,11 +42,11 @@ float asScoreCRPSsharpAR::Assess(float obs, const a1f& values, int nbElements) c
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
-        return NaNf;
+        return NAN;
     }
     if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
+        return NAN;
     }
 
     // The median

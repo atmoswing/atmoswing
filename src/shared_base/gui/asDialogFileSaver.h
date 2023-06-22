@@ -28,7 +28,7 @@
 #ifndef AS_DIALOG_FILE_SAVER_H
 #define AS_DIALOG_FILE_SAVER_H
 
-#include "AtmoswingSharedGui.h"
+#include "AtmoSwingSharedGui.h"
 #include "asIncludes.h"
 
 class asDialogFileSaver : public asDialogFileSaverVirtual {
