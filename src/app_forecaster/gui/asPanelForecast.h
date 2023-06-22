@@ -37,6 +37,13 @@
 class asPanelsManagerForecasts;
 class asBatchForecasts;
 
+/**
+ * @brief Panel for a forecast configuration on the AtmoSwing Forecaster frame.
+ *
+ * This class is a panel for a forecast configuration on the AtmoSwing Forecaster frame.
+ * It contains graphical user interface elements allowing to edit the path to the parameters file,
+ * and retrieve some information from its content.
+ */
 class asPanelForecast : public asPanelForecastVirtual {
   public:
     /**

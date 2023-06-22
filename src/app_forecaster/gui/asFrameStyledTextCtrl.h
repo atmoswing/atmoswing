@@ -31,6 +31,11 @@
 #include "asGlobEnums.h"
 #include "AtmoSwingForecasterGui.h"
 
+/**
+ * @brief Styled text control frame.
+ *
+ * This is a frame to display the content of an XML file with syntax highlighting.
+ */
 class asFrameStyledTextCtrl : public asFrameStyledTextCtrlVirtual {
   public:
     /**
