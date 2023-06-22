@@ -48,6 +48,13 @@ void vrRenderRasterPredictor::Init(asPredictor::Parameter parameter) {
     ScaleColors();
 }
 
+bool vrRenderRasterPredictor::IsOk() const {
+    if (m_colorTable.rows() != 255) return false;
+    if (m_colorTable.cols() != 3) return false;
+
+    return true;
+}
+
 void vrRenderRasterPredictor::SelectColorTable() {
     wxConfigBase* pConfig = wxFileConfig::Get();
     wxString dirData = asConfig::GetShareDir();
