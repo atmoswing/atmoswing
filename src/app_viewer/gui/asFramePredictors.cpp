@@ -663,19 +663,17 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
     auto msg = static_cast<vrDisplayToolMessage*>(event.GetClientData());
     wxASSERT(msg);
 
+    vrRealRect realRect;
+
     if (msg->m_evtType == vrEVT_TOOL_ZOOM) {
         // Get rectangle
         vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
-        wxASSERT(coord);
 
         // Get real rectangle
-        vrRealRect realRect;
         coord->ConvertFromPixels(msg->m_rect, realRect);
-        wxASSERT(realRect.IsOk());
 
         // Get fitted rectangle
         vrRealRect fittedRect = coord->GetRectFitted(realRect);
-        wxASSERT(fittedRect.IsOk());
 
         if (!m_syncroTool) {
 #if defined(__WIN32__)
@@ -708,16 +706,12 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
     } else if (msg->m_evtType == vrEVT_TOOL_ZOOMOUT) {
         // Getting rectangle
         vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
-        wxASSERT(coord);
 
         // Get real rectangle
-        vrRealRect realRect;
         coord->ConvertFromPixels(msg->m_rect, realRect);
-        wxASSERT(realRect.IsOk());
 
         // Get fitted rectangle
         vrRealRect fittedRect = coord->GetRectFitted(realRect);
-        wxASSERT(fittedRect.IsOk());
 
         if (!m_syncroTool) {
 #if defined(__WIN32__)
@@ -749,7 +743,6 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
         }
     } else if (msg->m_evtType == vrEVT_TOOL_PAN) {
         vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
-        wxASSERT(coord);
 
         wxPoint movedPos = msg->m_position;
         wxPoint2DDouble myMovedRealPt;
@@ -759,21 +752,21 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
             return;
         }
 
-        vrRealRect actExtent = coord->GetExtent();
-        actExtent.MoveLeftTopTo(myMovedRealPt);
+        realRect = coord->GetExtent();
+        realRect.MoveLeftTopTo(myMovedRealPt);
 
         if (!m_syncroTool) {
-            coord->SetExtent(actExtent);
+            coord->SetExtent(realRect);
             msg->m_parentManager->Reload();
             ReloadViewerLayerManagerLeft();
             ReloadViewerLayerManagerRight();
         } else {
             if (m_displayPanelLeft) {
-                m_viewerLayerManagerLeft->GetDisplay()->GetCoordinate()->SetExtent(actExtent);
+                m_viewerLayerManagerLeft->GetDisplay()->GetCoordinate()->SetExtent(realRect);
                 ReloadViewerLayerManagerLeft();
             }
             if (m_displayPanelRight) {
-                m_viewerLayerManagerRight->GetDisplay()->GetCoordinate()->SetExtent(actExtent);
+                m_viewerLayerManagerRight->GetDisplay()->GetCoordinate()->SetExtent(realRect);
                 ReloadViewerLayerManagerRight();
             }
         }
