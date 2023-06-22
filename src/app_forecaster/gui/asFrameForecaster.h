@@ -41,6 +41,12 @@
 
 #define asID_MENU_RECENT 1300
 
+/**
+ * @brief Main frame of the AtmoSwing Forecaster application.
+ *
+ * This class is the main frame of the AtmoSwing Forecaster application
+ * and contains graphical user interface elements.
+ */
 class asFrameForecaster : public asFrameForecasterVirtual {
   public:
     explicit asFrameForecaster(wxWindow* parent);
