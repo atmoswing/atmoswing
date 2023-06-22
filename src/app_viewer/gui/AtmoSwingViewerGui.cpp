@@ -1022,10 +1022,6 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_menuItemOpenGisLayer = new wxMenuItem( m_menuFile, wxID_ANY, wxString( _("Open GIS layer") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menuFile->Append( m_menuItemOpenGisLayer );
 
-	wxMenuItem* m_menuItemCloseGISLayer;
-	m_menuItemCloseGISLayer = new wxMenuItem( m_menuFile, wxID_ANY, wxString( _("Close a GIS layer") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menuFile->Append( m_menuItemCloseGISLayer );
-
 	m_menubar->Append( m_menuFile, _("File") );
 
 	m_menuTools = new wxMenu();
@@ -1048,7 +1044,6 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_bpButtonSwitchLeft->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictorsVirtual::OnSwitchLeft ), NULL, this );
 	m_choiceAnalogDates->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnAnalogDateChange ), NULL, this );
 	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnOpenLayer ), this, m_menuItemOpenGisLayer->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFramePredictorsVirtual::OnCloseLayer ), this, m_menuItemCloseGISLayer->GetId());
 }
 
 asFramePredictorsVirtual::~asFramePredictorsVirtual()

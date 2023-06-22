@@ -362,7 +362,6 @@ class asFramePredictorsVirtual : public wxFrame
 		virtual void OnSwitchLeft( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAnalogDateChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpenLayer( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnCloseLayer( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

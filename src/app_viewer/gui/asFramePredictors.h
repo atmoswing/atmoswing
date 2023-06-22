@@ -299,13 +299,6 @@ class asFramePredictors : public asFramePredictorsVirtual {
     void OnOpenLayer(wxCommandEvent& event) override;
 
     /**
-     * Open a dialog to select a layer to close.
-     *
-     * @param event The command event.
-     */
-    void OnCloseLayer(wxCommandEvent& event) override;
-
-    /**
      * Activate or deactivates the syncro mode between the two maps.
      *
      * @param event The command event.

@@ -44,7 +44,6 @@
 
 BEGIN_EVENT_TABLE(asFramePredictors, wxFrame)
 EVT_MENU(wxID_OPEN, asFramePredictors::OnOpenLayer)
-EVT_MENU(wxID_REMOVE, asFramePredictors::OnCloseLayer)
 EVT_MENU(asID_ZOOM_IN, asFramePredictors::OnToolZoomIn)
 EVT_MENU(asID_ZOOM_OUT, asFramePredictors::OnToolZoomOut)
 EVT_MENU(asID_ZOOM_FIT, asFramePredictors::OnToolZoomToFit)
@@ -566,68 +565,6 @@ void asFramePredictors::OnOpenLayer(wxCommandEvent& event) {
 
         OpenLayers(pathsFileName);
     }
-}
-
-void asFramePredictors::OnCloseLayer(wxCommandEvent& event) {
-#if defined(__WIN32__)
-    m_critSectionViewerLayerManager.Enter();
-#endif
-
-    wxArrayString layersName;
-    for (int i = 0; i < m_viewerLayerManagerLeft->GetCount(); i++) {
-        vrRenderer* renderer = m_viewerLayerManagerLeft->GetRenderer(i);
-        wxASSERT(renderer);
-        layersName.Add(renderer->GetLayer()->GetDisplayName().GetFullName());
-    }
-
-    if (layersName.IsEmpty()) {
-        wxLogError("No layer opened, nothing to close.");
-#if defined(__WIN32__)
-        m_critSectionViewerLayerManager.Leave();
-#endif
-        return;
-    }
-
-    wxMultiChoiceDialog choiceDlg(this, "Select Layer(s) to close.", "Close layer(s)", layersName);
-    if (choiceDlg.ShowModal() != wxID_OK) {
-#if defined(__WIN32__)
-        m_critSectionViewerLayerManager.Leave();
-#endif
-        return;
-    }
-
-    wxArrayInt layerToRemoveIndex = choiceDlg.GetSelections();
-    if (layerToRemoveIndex.IsEmpty()) {
-        wxLogWarning(_("Nothing selected, no layer will be closed."));
-#if defined(__WIN32__)
-        m_critSectionViewerLayerManager.Leave();
-#endif
-        return;
-    }
-
-    // Removing layer(s)
-    m_viewerLayerManagerLeft->FreezeBegin();
-    m_viewerLayerManagerRight->FreezeBegin();
-
-    for (int j = (signed)layerToRemoveIndex.GetCount() - 1; j >= 0; j--) {
-        // Remove from viewer manager (TOC and Display)
-        vrRenderer* rendererLeft = m_viewerLayerManagerLeft->GetRenderer(layerToRemoveIndex.Item(j));
-        vrLayer* layer = rendererLeft->GetLayer();
-        wxASSERT(rendererLeft);
-        m_viewerLayerManagerLeft->Remove(rendererLeft);
-
-        vrRenderer* rendererRight = m_viewerLayerManagerRight->GetRenderer(layerToRemoveIndex.Item(j));
-        wxASSERT(rendererRight);
-        m_viewerLayerManagerRight->Remove(rendererRight);
-
-        // Close layer (not used anymore);
-        m_layerManager->Close(layer);
-    }
-    m_viewerLayerManagerLeft->FreezeEnd();
-    m_viewerLayerManagerRight->FreezeEnd();
-#if defined(__WIN32__)
-    m_critSectionViewerLayerManager.Leave();
-#endif
 }
 
 void asFramePredictors::OnKeyDown(wxKeyEvent& event) {
