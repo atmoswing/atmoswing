@@ -158,6 +158,9 @@ TEST_F(FramePredictors, UpdateLayers) {
     event.SetInt(1);
     listBox->GetEventHandler()->ProcessEvent(event);
 
+    frame->Refresh();
+    wxYield();
+
     EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
 }
 
