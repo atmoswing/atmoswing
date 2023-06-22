@@ -1,6 +1,9 @@
 name: Windows builds
 
-on: push
+on:
+  push:
+    branches-ignore:
+      - ci/coverage-gui
 
 env:
   BUILD_TYPE: Release
