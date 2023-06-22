@@ -161,11 +161,6 @@ bool vrLayerRasterPredictor::_GetRasterData(unsigned char** imgData, const wxSiz
         wxLogError(_("Error getting raster predictor data."));
         if (rasterData != nullptr) {
             CPLFree(rasterData);
-            rasterData = nullptr;
-        }
-        if (*imgData != nullptr) {
-            CPLFree(*imgData);
-            *imgData = nullptr;
         }
         return false;
     }

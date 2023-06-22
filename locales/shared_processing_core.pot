@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 23:19+0200\n"
+"POT-Creation-Date: 2023-06-21 18:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -319,12 +319,12 @@ msgstr ""
 #: src/shared_processing/core/asMethodStandard.cpp:928
 #: src/shared_processing/core/asMethodStandard.cpp:967
 #: src/shared_processing/core/asMethodStandard.cpp:976
-#: src/shared_processing/core/asProcessor.cpp:1165
-#: src/shared_processing/core/asProcessor.cpp:1347
-#: src/shared_processing/core/asProcessor.cpp:1361
-#: src/shared_processing/core/asProcessor.cpp:1368
-#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:109
-#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:142
+#: src/shared_processing/core/asProcessor.cpp:1163
+#: src/shared_processing/core/asProcessor.cpp:1345
+#: src/shared_processing/core/asProcessor.cpp:1359
+#: src/shared_processing/core/asProcessor.cpp:1366
+#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:108
+#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:141
 msgid "An unexpected error occurred."
 msgstr ""
 
@@ -335,76 +335,76 @@ msgid ""
 "%d, iHour = %d)."
 msgstr ""
 
-#: src/shared_processing/core/asPreprocessor.cpp:77
+#: src/shared_processing/core/asPreprocessor.cpp:76
 msgid "The preprocessing method was not correctly defined."
 msgstr ""
 
-#: src/shared_processing/core/asPreprocessor.cpp:87
-#: src/shared_processing/core/asPreprocessor.cpp:153
-#: src/shared_processing/core/asPreprocessor.cpp:235
-#: src/shared_processing/core/asPreprocessor.cpp:305
-#: src/shared_processing/core/asPreprocessor.cpp:391
-#: src/shared_processing/core/asPreprocessor.cpp:465
-#: src/shared_processing/core/asPreprocessor.cpp:549
-#: src/shared_processing/core/asPreprocessor.cpp:627
+#: src/shared_processing/core/asPreprocessor.cpp:86
+#: src/shared_processing/core/asPreprocessor.cpp:152
+#: src/shared_processing/core/asPreprocessor.cpp:234
+#: src/shared_processing/core/asPreprocessor.cpp:304
+#: src/shared_processing/core/asPreprocessor.cpp:390
+#: src/shared_processing/core/asPreprocessor.cpp:464
+#: src/shared_processing/core/asPreprocessor.cpp:548
+#: src/shared_processing/core/asPreprocessor.cpp:626
 msgid ""
 "The number of predictors must be equal to 1 in asPreprocessor::"
 "PreprocessGradients"
 msgstr ""
 
-#: src/shared_processing/core/asPreprocessor.cpp:159
-#: src/shared_processing/core/asPreprocessor.cpp:311
+#: src/shared_processing/core/asPreprocessor.cpp:158
+#: src/shared_processing/core/asPreprocessor.cpp:310
 msgid "The predictor must be lat/lon to process the real gradients."
 msgstr ""
 
-#: src/shared_processing/core/asPreprocessor.cpp:713
-#: src/shared_processing/core/asPreprocessor.cpp:752
+#: src/shared_processing/core/asPreprocessor.cpp:712
+#: src/shared_processing/core/asPreprocessor.cpp:751
 msgid ""
 "The number of predictors must be superior to 1 in asPreprocessor::"
 "PreprocessAddition"
 msgstr ""
 
-#: src/shared_processing/core/asPreprocessor.cpp:792
+#: src/shared_processing/core/asPreprocessor.cpp:791
 msgid ""
 "The number of predictors must be equal to 2 in asPreprocessor::"
 "PreprocessDifference"
 msgstr ""
 
-#: src/shared_processing/core/asPreprocessor.cpp:829
+#: src/shared_processing/core/asPreprocessor.cpp:828
 msgid ""
 "The number of predictors must be superior to 1 in asPreprocessor::"
 "PreprocessMultiplication"
 msgstr ""
 
-#: src/shared_processing/core/asPreprocessor.cpp:869
+#: src/shared_processing/core/asPreprocessor.cpp:868
 msgid ""
 "The number of predictors must be equal to 4 in asPreprocessor::"
 "PreprocessFormerHumidityIndex"
 msgstr ""
 
-#: src/shared_processing/core/asPreprocessor.cpp:921
+#: src/shared_processing/core/asPreprocessor.cpp:920
 msgid "The predictors sizes make them impossible to merge."
 msgstr ""
 
-#: src/shared_processing/core/asPreprocessor.cpp:983
+#: src/shared_processing/core/asPreprocessor.cpp:981
 msgid ""
 "The number of predictors must be superior to 2 in "
 "PreprocessMergeByHalfAndMultiply"
 msgstr ""
 
-#: src/shared_processing/core/asPreprocessor.cpp:987
+#: src/shared_processing/core/asPreprocessor.cpp:985
 msgid ""
 "The number of predictors must be dividable by 2 in "
 "PreprocessMergeByHalfAndMultiply"
 msgstr ""
 
-#: src/shared_processing/core/asPreprocessor.cpp:1055
+#: src/shared_processing/core/asPreprocessor.cpp:1053
 msgid ""
 "The number of predictors must be equal to 4 in asPreprocessor::"
 "PreprocessHumidityFlux"
 msgstr ""
 
-#: src/shared_processing/core/asPreprocessor.cpp:1112
+#: src/shared_processing/core/asPreprocessor.cpp:1110
 msgid ""
 "The number of predictors must be equal to 2 in asPreprocessor::"
 "PreprocessWindSpeed"
@@ -419,33 +419,33 @@ msgid "The given analog number is superior to the time series."
 msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:120
-#: src/shared_processing/core/asProcessor.cpp:833
+#: src/shared_processing/core/asProcessor.cpp:831
 msgid "All variables must contain the same number of members."
 msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:126
-#: src/shared_processing/core/asProcessor.cpp:839
+#: src/shared_processing/core/asProcessor.cpp:837
 msgid "You cannot combine criteria that are ascendant and descendant."
 msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:140
-#: src/shared_processing/core/asProcessor.cpp:856
+#: src/shared_processing/core/asProcessor.cpp:854
 msgid "Processing the data comparison."
 msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:149
-#: src/shared_processing/core/asProcessor.cpp:865
+#: src/shared_processing/core/asProcessor.cpp:863
 msgid "No support for ensemble datasets in CUDA yet."
 msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:156
-#: src/shared_processing/core/asProcessor.cpp:872
+#: src/shared_processing/core/asProcessor.cpp:870
 msgid ""
 "The CUDA implementation is only available in calibration (prefect prog)."
 msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:195
-#: src/shared_processing/core/asProcessor.cpp:908
+#: src/shared_processing/core/asProcessor.cpp:906
 #, c-format
 msgid "The %s criteria is not yet implemented for CUDA."
 msgstr ""
@@ -459,15 +459,15 @@ msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:374
 #: src/shared_processing/core/asProcessor.cpp:462
-#: src/shared_processing/core/asProcessor.cpp:1051
-#: src/shared_processing/core/asProcessor.cpp:1131
+#: src/shared_processing/core/asProcessor.cpp:1049
+#: src/shared_processing/core/asProcessor.cpp:1129
 msgid "NaNs were found in the criteria values."
 msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:375
 #: src/shared_processing/core/asProcessor.cpp:579
-#: src/shared_processing/core/asProcessor.cpp:1052
-#: src/shared_processing/core/asProcessor.cpp:1226
+#: src/shared_processing/core/asProcessor.cpp:1050
+#: src/shared_processing/core/asProcessor.cpp:1224
 #, c-format
 msgid "Target date: %s, archive date: %s."
 msgstr ""
@@ -484,25 +484,25 @@ msgid ""
 msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:473
-#: src/shared_processing/core/asProcessor.cpp:1143
+#: src/shared_processing/core/asProcessor.cpp:1141
 msgid "Errors were found during extraction of the analog dates."
 msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:576
-#: src/shared_processing/core/asProcessor.cpp:1223
+#: src/shared_processing/core/asProcessor.cpp:1221
 #, c-format
 msgid "NaNs were found in the criteria values (%s/%s)."
 msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:594
-#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:175
+#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:174
 msgid ""
 "It should not happen that the array of analogue dates is not full when "
 "adding members."
 msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:618
-#: src/shared_processing/core/asProcessor.cpp:1283
+#: src/shared_processing/core/asProcessor.cpp:1281
 msgid "The processing method is not correctly defined."
 msgstr ""
 
@@ -518,54 +518,54 @@ msgid ""
 msgstr ""
 
 #: src/shared_processing/core/asProcessor.cpp:638
-#: src/shared_processing/core/asProcessor.cpp:655
+#: src/shared_processing/core/asProcessor.cpp:654
 #, c-format
 msgid "Time array starts on %s and ends on %s."
 msgstr ""
 
-#: src/shared_processing/core/asProcessor.cpp:653
+#: src/shared_processing/core/asProcessor.cpp:652
 #, c-format
 msgid ""
 "The size of the time array and the archive data are not equal (%d != %d)."
 msgstr ""
 
-#: src/shared_processing/core/asProcessor.cpp:790
+#: src/shared_processing/core/asProcessor.cpp:788
 msgid "The  Analogs Dates method cannot be called first."
 msgstr ""
 
-#: src/shared_processing/core/asProcessor.cpp:817
+#: src/shared_processing/core/asProcessor.cpp:815
 #, c-format
 msgid "The given analog number (%d) is superior to the previous step (%d)."
 msgstr ""
 
-#: src/shared_processing/core/asProcessor.cpp:985
-#: src/shared_processing/core/asProcessor.cpp:1159
+#: src/shared_processing/core/asProcessor.cpp:983
+#: src/shared_processing/core/asProcessor.cpp:1157
 #, c-format
 msgid "Looking for %s in betwwen %s and %s."
 msgstr ""
 
-#: src/shared_processing/core/asProcessor.cpp:1002
-#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:205
+#: src/shared_processing/core/asProcessor.cpp:1000
+#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:204
 msgid ""
 "The date was not found in the array (Analogs subdates fct). That should not "
 "happen."
 msgstr ""
 
-#: src/shared_processing/core/asProcessor.cpp:1193
+#: src/shared_processing/core/asProcessor.cpp:1191
 msgid "The date was not found in the array (Analogs subdates fct)."
 msgstr ""
 
-#: src/shared_processing/core/asProcessor.cpp:1299
+#: src/shared_processing/core/asProcessor.cpp:1297
 #, c-format
 msgid "The function asProcessor::GetAnalogsSubDates took %.3f s to execute"
 msgstr ""
 
-#: src/shared_processing/core/asProcessor.cpp:1430
+#: src/shared_processing/core/asProcessor.cpp:1428
 #, c-format
 msgid "The current analog date (%s) is outside of the allowed period (%s-%s))."
 msgstr ""
 
-#: src/shared_processing/core/asProcessor.cpp:1443
+#: src/shared_processing/core/asProcessor.cpp:1441
 #, c-format
 msgid ""
 "The current analog date (%s) was not found in the predictand time array (%s-"
@@ -578,24 +578,24 @@ msgid ""
 "no sense)."
 msgstr ""
 
-#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:67
-#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:65
+#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:66
+#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:64
 msgid "The given time array end is superior to the time array size."
 msgstr ""
 
-#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:69
-#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:67
+#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:68
+#: src/shared_processing/core/asThreadGetAnalogsSubDates.cpp:66
 #, c-format
 msgid "The given time array end is missing its last value (end=%d, size=%d)."
 msgstr ""
 
-#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:190
+#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:189
 msgid ""
 "The date was not found in the array (Analogs Dates fct, multithreaded "
 "option). That should not happen."
 msgstr ""
 
-#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:192
+#: src/shared_processing/core/asThreadGetAnalogsDates.cpp:191
 #, c-format
 msgid "Start: %g, end: %g, desired value: %g."
 msgstr ""

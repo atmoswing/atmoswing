@@ -105,6 +105,96 @@ class asFramePredictors : public asFramePredictorsVirtual {
      */
     void OpenDefaultLayers();
 
+    /**
+     * Move the map separator to the right.
+     */
+    void SwitchPanelRight();
+
+    /**
+     * Move the map separator to the left.
+     */
+    void SwitchPanelLeft();
+
+    /**
+     * Get a pointer to the left panel.
+     * @return A pointer to the left panel.
+     */
+    wxPanel* GetPanelRight() {
+        return m_panelRight;
+    }
+
+    /**
+     * Get a pointer to the right panel.
+     * @return A pointer to the right panel.
+     */
+    wxPanel* GetPanelLeft() {
+        return m_panelLeft;
+    }
+
+    /**
+     * Get a pointer to the list of predictors.
+     * @return A pointer to the list of predictors.
+     */
+    wxListBox* GetListPredictors() {
+        return m_listPredictors;
+    }
+
+    /**
+     * Get a pointer to the method choice.
+     * @return A pointer to the method choice.
+     */
+    wxChoice* GetChoiceMethod() {
+        return m_choiceMethod;
+    }
+
+    /**
+     * Get a pointer to the forecast choice.
+     * @return A pointer to the forecast choice.
+     */
+    wxChoice* GetChoiceForecast() {
+        return m_choiceForecast;
+    }
+
+    /**
+     * Get a pointer to the target date choice.
+     * @return A pointer to the target date choice.
+     */
+    wxChoice* GetChoiceTargetDates() {
+        return m_choiceTargetDates;
+    }
+
+    /**
+     * Get a pointer to the analog date choice.
+     * @return A pointer to the analog date choice.
+     */
+    wxChoice* GetChoiceAnalogDates() {
+        return m_choiceAnalogDates;
+    }
+
+    /**
+     * Get a pointer to the target predictors manager.
+     * @return A pointer to the target predictors manager.
+     */
+    asPredictorsManager* GetPredictorsManagerTarget() {
+        return m_predictorsManagerTarget;
+    }
+
+    /**
+     * Get a pointer to the analog predictors manager.
+     * @return A pointer to the analog predictors manager.
+     */
+    asPredictorsManager* GetPredictorsManagerAnalog() {
+        return m_predictorsManagerAnalog;
+    }
+
+    /**
+     * Get a pointer to the forecast manager.
+     * @return A pointer to the forecast manager.
+     */
+    asForecastManager* GetForecastManager() {
+        return m_forecastManager;
+    }
+
   protected:
     wxKeyboardState m_KeyBoardState; /**< Keyboard state. */
 
@@ -239,13 +329,6 @@ class asFramePredictors : public asFramePredictorsVirtual {
      * @param event The command event.
      */
     void OnOpenLayer(wxCommandEvent& event) override;
-
-    /**
-     * Open a dialog to select a layer to close.
-     *
-     * @param event The command event.
-     */
-    void OnCloseLayer(wxCommandEvent& event) override;
 
     /**
      * Activate or deactivates the syncro mode between the two maps.
