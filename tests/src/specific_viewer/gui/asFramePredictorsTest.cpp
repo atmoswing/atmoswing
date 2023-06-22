@@ -143,12 +143,20 @@ TEST_F(FramePredictors, UpdateLayers) {
     analogDates[0] = 36934; // 1906-01-01
     forecast->SetAnalogsDates(0, analogDates);
 
-    // Set list selection and trigger event
+    // Set list selection to 2nd entry and trigger event
     wxListBox* listBox = frame->GetListPredictors();
     listBox->SetSelection(1);
     wxCommandEvent event(wxEVT_COMMAND_LISTBOX_SELECTED);
     event.SetId(listBox->GetId());
     event.SetInt(1);
+    listBox->GetEventHandler()->ProcessEvent(event);
+
+    frame->Refresh();
+    wxYield();
+
+    // Set list selection to 1st entry and trigger event
+    listBox->SetSelection(0);
+    event.SetInt(0);
     listBox->GetEventHandler()->ProcessEvent(event);
 
     frame->Refresh();
