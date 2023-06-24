@@ -64,7 +64,7 @@ class asMethodDownscaler : public asMethodStandard {
         return m_preloadedProjectionPointerCopy[iStep][iPtor][iPre];
     }
 
-    void SetPredictandStationIds(vi val) {
+    void SetPredictandStationIds(const vi& val) {
         m_predictandStationIds = val;
     }
 

@@ -85,13 +85,9 @@ bool asResultsScoresMap::Add(asParametersScoring& params, float score) {
 }
 
 bool asResultsScoresMap::MakeMap() {
-    a1f levels(asExtractUniqueValues(&m_level[0], &m_level[m_level.size() - 1], 0.0001f));
-    a1f lons(asExtractUniqueValues(&m_lon[0], &m_lon[m_lon.size() - 1], 0.0001f));
-    a1f lats(asExtractUniqueValues(&m_lat[0], &m_lat[m_lat.size() - 1], 0.0001f));
-
-    m_mapLevel = levels;
-    m_mapLon = lons;
-    m_mapLat = lats;
+    m_mapLevel = a1f(asExtractUniqueValues(&m_level[0], &m_level[m_level.size() - 1], 0.0001f));
+    m_mapLon = a1f(asExtractUniqueValues(&m_lon[0], &m_lon[m_lon.size() - 1], 0.0001f));
+    m_mapLat = a1f(asExtractUniqueValues(&m_lat[0], &m_lat[m_lat.size() - 1], 0.0001f));
 
     a2f tmpLatLon = a2f::Constant(m_mapLat.size(), m_mapLon.size(), NAN);
 

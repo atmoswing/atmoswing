@@ -117,7 +117,7 @@ class asParametersScoring : public asParameters {
 
     bool PreprocessingDataIdsOk();
 
-    wxString GetPredictandStationIdsVectorString(vvi& predictandStationIdsVect) const;
+    wxString GetPredictandStationIdsVectorString(const vvi& predictandStationIdsVect) const;
 
     wxString Print() const override;
 
@@ -155,7 +155,7 @@ class asParametersScoring : public asParameters {
         return m_validationYears;
     }
 
-    void SetValidationYearsVector(vi val) {
+    void SetValidationYearsVector(const vi& val) {
         wxASSERT(!val.empty());
         m_validationYears = val;
     }
@@ -224,12 +224,12 @@ class asParametersScoring : public asParameters {
         return m_stepsVect[iStep].analogsNumber;
     }
 
-    void SetAnalogsNumberVector(int iStep, vi val) {
+    void SetAnalogsNumberVector(int iStep, const vi& val) {
         wxASSERT(!val.empty());
         m_stepsVect[iStep].analogsNumber = val;
     }
 
-    void SetPreprocessHourVector(int iStep, int iPtor, int iPre, vd val) {
+    void SetPreprocessHourVector(int iStep, int iPtor, int iPre, const vd& val) {
         wxASSERT(!val.empty());
         if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
             m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].clear();
@@ -243,7 +243,7 @@ class asParametersScoring : public asParameters {
         return m_stepsVect[iStep].predictors[iPtor].xMin;
     }
 
-    void SetPredictorXminVector(int iStep, int iPtor, vd val) {
+    void SetPredictorXminVector(int iStep, int iPtor, const vd& val) {
         wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].xMin = val;
     }
@@ -252,7 +252,7 @@ class asParametersScoring : public asParameters {
         return m_stepsVect[iStep].predictors[iPtor].xPtsNb;
     }
 
-    void SetPredictorXptsnbVector(int iStep, int iPtor, vi val) {
+    void SetPredictorXptsnbVector(int iStep, int iPtor, const vi& val) {
         wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].xPtsNb = val;
     }
@@ -261,7 +261,7 @@ class asParametersScoring : public asParameters {
         return m_stepsVect[iStep].predictors[iPtor].yMin;
     }
 
-    void SetPredictorYminVector(int iStep, int iPtor, vd val) {
+    void SetPredictorYminVector(int iStep, int iPtor, const vd& val) {
         wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].yMin = val;
     }
@@ -270,7 +270,7 @@ class asParametersScoring : public asParameters {
         return m_stepsVect[iStep].predictors[iPtor].yPtsNb;
     }
 
-    void SetPredictorYptsnbVector(int iStep, int iPtor, vi val) {
+    void SetPredictorYptsnbVector(int iStep, int iPtor, const vi& val) {
         wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].yPtsNb = val;
     }
@@ -279,7 +279,7 @@ class asParametersScoring : public asParameters {
         return m_stepsVect[iStep].predictors[iPtor].hours;
     }
 
-    void SetPredictorHoursVector(int iStep, int iPtor, vd val) {
+    void SetPredictorHoursVector(int iStep, int iPtor, const vd& val) {
         wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].hours = val;
     }
@@ -288,7 +288,7 @@ class asParametersScoring : public asParameters {
         return m_stepsVect[iStep].predictors[iPtor].weight;
     }
 
-    void SetPredictorWeightVector(int iStep, int iPtor, vf val) {
+    void SetPredictorWeightVector(int iStep, int iPtor, const vf& val) {
         wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].weight = val;
     }
@@ -303,7 +303,7 @@ class asParametersScoring : public asParameters {
         }
     }
 
-    void SetPreprocessDataIdVector(int iStep, int iPtor, int iPre, vwxs val) {
+    void SetPreprocessDataIdVector(int iStep, int iPtor, int iPre, const vwxs& val) {
         wxASSERT(!val.empty());
         if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= iPre + 1) {
             m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre].clear();
@@ -323,7 +323,7 @@ class asParametersScoring : public asParameters {
         }
     }
 
-    void SetPreprocessLevelVector(int iStep, int iPtor, int iPre, vf val) {
+    void SetPreprocessLevelVector(int iStep, int iPtor, int iPre, const vf& val) {
         wxASSERT(!val.empty());
         if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
             m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre].clear();
@@ -353,7 +353,7 @@ class asParametersScoring : public asParameters {
         return (int)m_stepsVect[iStep].predictors[iPtor].dataId.size();
     }
 
-    void SetPredictorDataIdVector(int iStep, int iPtor, vwxs val) {
+    void SetPredictorDataIdVector(int iStep, int iPtor, const vwxs& val) {
         wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].dataId = val;
     }
@@ -362,7 +362,7 @@ class asParametersScoring : public asParameters {
         return m_stepsVect[iStep].predictors[iPtor].level;
     }
 
-    void SetPredictorLevelVector(int iStep, int iPtor, vf val) {
+    void SetPredictorLevelVector(int iStep, int iPtor, const vf& val) {
         wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].level = val;
     }
@@ -371,7 +371,7 @@ class asParametersScoring : public asParameters {
         return m_stepsVect[iStep].predictors[iPtor].criteria;
     }
 
-    void SetPredictorCriteriaVector(int iStep, int iPtor, vwxs val) {
+    void SetPredictorCriteriaVector(int iStep, int iPtor, const vwxs& val) {
         wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].criteria = val;
     }

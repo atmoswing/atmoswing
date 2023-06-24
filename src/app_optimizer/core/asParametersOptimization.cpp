@@ -239,8 +239,7 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization&
                 nodeParam = nodeParam->GetNext();
             }
             if (yStart > 0 && yEnd > 0) {
-                vi vect = asFileParameters::BuildVectorInt(yStart, yEnd, 1);
-                SetValidationYearsVector(vect);
+                SetValidationYearsVector(asFileParameters::BuildVectorInt(yStart, yEnd, 1));
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
             SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock));

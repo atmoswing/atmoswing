@@ -54,7 +54,7 @@ class asResultsTotalScore : public asResults {
         return m_scoreArray;
     }
 
-    void SetScore(a1f val) {
+    void SetScore(const a1f& val) {
         m_scoreArray = val;
         m_hasSingleValue = false;
     }

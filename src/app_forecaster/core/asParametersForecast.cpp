@@ -485,19 +485,19 @@ void asParametersForecast::InitValues() {
     FixAnalogsNb();
 }
 
-void asParametersForecast::SetLeadTimeDaysVector(vd val) {
+void asParametersForecast::SetLeadTimeDaysVector(const vd& val) {
     wxASSERT(val.size() > 0);
     m_leadTimeDaysVect = val;
 }
 
-void asParametersForecast::SetLeadTimeHoursVector(vd val) {
+void asParametersForecast::SetLeadTimeHoursVector(const vd& val) {
     wxASSERT(val.size() > 0);
     for (float hour : val) {
         m_leadTimeDaysVect.push_back(hour / 24.0);
     }
 }
 
-void asParametersForecast::SetAnalogsNumberLeadTimeVector(int iStep, vi val) {
+void asParametersForecast::SetAnalogsNumberLeadTimeVector(int iStep, const vi& val) {
     wxASSERT(val.size() > 0);
 
     if (val.size() == GetLeadTimeDaysVector().size()) {

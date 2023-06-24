@@ -324,12 +324,14 @@ double asMethodCalibrator::GetTimeEndCalibration(asParametersScoring* params) co
 
 double asMethodCalibrator::GetEffectiveArchiveDataStart(asParameters* params) const {
     auto paramsScoring = dynamic_cast<asParametersScoring*>(params);
+    wxASSERT(paramsScoring);
 
     return wxMin(GetTimeStartCalibration(paramsScoring), GetTimeStartArchive(paramsScoring));
 }
 
 double asMethodCalibrator::GetEffectiveArchiveDataEnd(asParameters* params) const {
     auto paramsScoring = dynamic_cast<asParametersScoring*>(params);
+    wxASSERT(paramsScoring);
 
     return wxMax(GetTimeEndCalibration(paramsScoring), GetTimeEndArchive(paramsScoring));
 }
@@ -348,7 +350,7 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring* params) {
 
     if (predictandTime.size() < 1) {
         wxLogError(_("An unexpected error occurred."));
-        return va1f(stationIds.size(), a1f(1));
+        return {stationIds.size(), a1f(1)};
     }
 
     // Check if data are effectively available for this period
@@ -358,7 +360,7 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring* params) {
 
     if (indexPredictandTimeStart < 0 || indexPredictandTimeEnd < 0) {
         wxLogError(_("An unexpected error occurred."));
-        return va1f(stationIds.size(), a1f(1));
+        return {stationIds.size(), a1f(1)};
     }
 
     for (int iStat = 0; iStat < (int)stationIds.size(); iStat++) {
@@ -371,14 +373,14 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring* params) {
             indexPredictandTimeEnd--;
             if (indexPredictandTimeEnd < 0) {
                 wxLogError(_("An unexpected error occurred."));
-                return va1f(stationIds.size(), a1f(1));
+                return {stationIds.size(), a1f(1)};
             }
         }
     }
 
     if (indexPredictandTimeStart < 0 || indexPredictandTimeEnd < 0) {
         wxLogError(_("An unexpected error occurred."));
-        return va1f(stationIds.size(), a1f(1));
+        return {stationIds.size(), a1f(1)};
     }
 
     timeStart = predictandTime[indexPredictandTimeStart];
@@ -390,7 +392,7 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring* params) {
 
     if (indexPredictandTimeStart < 0 || indexPredictandTimeEnd < 0) {
         wxLogError(_("An unexpected error occurred."));
-        return va1f(stationIds.size(), a1f(1));
+        return {stationIds.size(), a1f(1)};
     }
 
     // Get index step
