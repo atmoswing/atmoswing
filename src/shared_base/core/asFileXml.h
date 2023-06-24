@@ -34,6 +34,11 @@
 #include "asFile.h"
 #include "asIncludes.h"
 
+/**
+ * @brief XML file class.
+ *
+ * This class is a wrapper around the wxXmlDocument library.
+ */
 class asFileXml : public asFile {
   public:
     asFileXml(const wxString& fileName, const FileMode& fileMode);

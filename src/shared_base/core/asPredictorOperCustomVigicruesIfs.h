@@ -34,6 +34,11 @@
 
 class asArea;
 
+/**
+ * @brief Operational predictor from the IFS model (ECMWF) with the Vigicrues naming convention.
+ *
+ * Operational predictor from the IFS model (ECMWF) with the Vigicrues naming convention.
+ */
 class asPredictorOperCustomVigicruesIfs : public asPredictorOperEcmwfIfs {
   public:
     /**

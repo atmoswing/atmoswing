@@ -33,6 +33,11 @@
 
 class asArea;
 
+/**
+ * @brief Operational predictor from the ARPEGE model (Meteo-France).
+ *
+ * Operational predictor from the ARPEGE model (Meteo-France).
+ */
 class asPredictorOperMfArpege : public asPredictorOper {
   public:
     /**

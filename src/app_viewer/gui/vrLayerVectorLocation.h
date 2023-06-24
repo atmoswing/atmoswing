@@ -44,6 +44,11 @@ class vrRender;
 
 class vrLabel;
 
+/**
+ * @brief Vroomgis layer class showing the target location.
+ *
+ * Vroomgis layer class showing the target location.
+ */
 class vrLayerVectorLocation : public vrLayerVectorOGR {
   public:
     /**

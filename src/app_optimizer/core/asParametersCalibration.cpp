@@ -177,8 +177,7 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration& f
                 nodeParam = nodeParam->GetNext();
             }
             if (yStart > 0 && yEnd > 0) {
-                vi vect = asFileParameters::BuildVectorInt(yStart, yEnd, 1);
-                SetValidationYearsVector(vect);
+                SetValidationYearsVector(asFileParameters::BuildVectorInt(yStart, yEnd, 1));
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
             SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock));
@@ -767,7 +766,7 @@ void asParametersCalibration::InitValues() {
     FixAnalogsNb();
 }
 
-bool asParametersCalibration::SetPredictandStationIdsVector(vvi val) {
+bool asParametersCalibration::SetPredictandStationIdsVector(const vvi& val) {
     if (val.empty()) {
         wxLogError(_("The provided predictand ID vector is empty."));
         return false;
@@ -791,7 +790,7 @@ bool asParametersCalibration::SetPredictandStationIdsVector(vvi val) {
     return true;
 }
 
-void asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(vi val) {
+void asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(const vi& val) {
     wxASSERT(!val.empty());
     m_timeArrayAnalogsIntervalDaysVect = val;
 }
@@ -814,7 +813,7 @@ bool asParametersCalibration::SetScoreNameVector(vwxs val) {
     return true;
 }
 
-void asParametersCalibration::SetScoreTimeArrayModeVector(vwxs val) {
+void asParametersCalibration::SetScoreTimeArrayModeVector(const vwxs& val) {
     wxASSERT(val.size() > 0);
     m_scoreVect.timeArrayMode = val;
 }

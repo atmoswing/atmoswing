@@ -33,6 +33,11 @@
 #include "asIncludes.h"
 #include "netcdf.h"
 
+/**
+ * @brief NetCDF file class.
+ *
+ * This class is a wrapper around the NetCDF library.
+ */
 class asFileNetcdf : public asFile {
   public:
     enum Type {

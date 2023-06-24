@@ -34,6 +34,11 @@
 #include "asFile.h"
 #include "asIncludes.h"
 
+/**
+ * @brief Text file class.
+ *
+ * This class is a wrapper around the standard library.
+ */
 class asFileText : public asFile {
   public:
     enum FileStructType {

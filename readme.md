@@ -51,11 +51,6 @@ AtmoSwing Downscaler image: https://hub.docker.com/r/atmoswing/downscaler
 
 You can download the releases under: https://github.com/atmoswing/atmoswing/releases
 
-Nightly (experimental) automatic builds are available for:
-
-*   Linux (Ubuntu) & osx: https://console.cloud.google.com/storage/browser/atmoswing-deploy
-*   Windows: https://ci.appveyor.com/project/pascalhorton/atmoswing
-
 ## How to build AtmoSwing ##
 
 The wiki (https://github.com/atmoswing/atmoswing/wiki) explains how to compile the required libraries and the source code of AtmoSwing. In order to get AtmoSwing compiled, follow these steps:

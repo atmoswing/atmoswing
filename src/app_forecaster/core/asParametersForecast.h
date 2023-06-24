@@ -90,15 +90,15 @@ class asParametersForecast : public asParameters {
         return (int)m_leadTimeDaysVect.size();
     }
 
-    void SetLeadTimeDaysVector(vd val);
+    void SetLeadTimeDaysVector(const vd& val);
 
-    void SetLeadTimeHoursVector(vd val);
+    void SetLeadTimeHoursVector(const vd& val);
 
     vd GetLeadTimeDaysVector() const {
         return m_leadTimeDaysVect;
     }
 
-    void SetAnalogsNumberLeadTimeVector(int iStep, vi val);
+    void SetAnalogsNumberLeadTimeVector(int iStep, const vi& val);
 
     vi GetAnalogsNumberLeadTimeVector(int iStep) const {
         return m_stepsForecast[iStep].analogsNumberLeadTime;

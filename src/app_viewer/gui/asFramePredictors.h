@@ -36,7 +36,6 @@
 #include "vroomgis.h"
 #include "wx/dnd.h"
 
-/** Implementing vroomDropFiles */
 class asFramePredictors;
 class vroomDropFilesPredictors : public wxFileDropTarget {
   public:
@@ -62,6 +61,11 @@ class vroomDropFilesPredictors : public wxFileDropTarget {
     asFramePredictors* m_LoaderFrame;
 };
 
+/**
+ * @brief The frame to plot the predictors.
+ *
+ * This class is the frame used to plot the predictors.
+ */
 class asFramePredictors : public asFramePredictorsVirtual {
   public:
     /**

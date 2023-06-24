@@ -34,6 +34,11 @@
 #include "asIncludes.h"
 #include "eccodes.h"
 
+/**
+ * @brief GRIB file class.
+ *
+ * This class is a wrapper around the ecCodes library.
+ */
 class asFileGrib : public asFile {
   public:
     /**

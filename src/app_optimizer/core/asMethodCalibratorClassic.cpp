@@ -68,7 +68,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration& params) {
     // Create an object to save previous analogs dates selection.
     asResultsDates anaDatesPrevious;
 
-    for (auto stationId : stationsId) {
+    for (auto& stationId : stationsId) {
         wxLogVerbose(_("Calibrating station %s."), GetStationIdsList(stationId));
 
         // Reset the score of the climatology

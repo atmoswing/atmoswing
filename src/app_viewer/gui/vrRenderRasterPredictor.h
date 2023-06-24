@@ -34,6 +34,11 @@
 #include "asPredictor.h"
 #include "vrrender.h"
 
+/**
+ * @brief Vroomgis render class for the predictor raster.
+ *
+ * Vroomgis render class for the predictor raster.
+ */
 class vrRenderRasterPredictor : public vrRenderRaster {
   public:
     /**
