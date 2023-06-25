@@ -766,7 +766,7 @@ void asParametersCalibration::InitValues() {
     FixAnalogsNb();
 }
 
-bool asParametersCalibration::SetPredictandStationIdsVector(const vvi& val) {
+bool asParametersCalibration::SetPredictandStationIdsVector(vvi& val) {
     if (val.empty()) {
         wxLogError(_("The provided predictand ID vector is empty."));
         return false;

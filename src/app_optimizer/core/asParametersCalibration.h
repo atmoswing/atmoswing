@@ -62,13 +62,13 @@ class asParametersCalibration : public asParametersScoring {
         return m_predictandStationIdsVect;
     }
 
-    bool SetPredictandStationIdsVector(vvi val);
+    bool SetPredictandStationIdsVector(vvi& val);
 
     vi GetTimeArrayAnalogsIntervalDaysVector() const {
         return m_timeArrayAnalogsIntervalDaysVect;
     }
 
-    void SetTimeArrayAnalogsIntervalDaysVector(vi val);
+    void SetTimeArrayAnalogsIntervalDaysVector(const vi& val);
 
     vwxs GetScoreNameVector() const {
         return m_scoreVect.name;
@@ -80,7 +80,7 @@ class asParametersCalibration : public asParametersScoring {
         return m_scoreVect.timeArrayMode;
     }
 
-    void SetScoreTimeArrayModeVector(vwxs val);
+    void SetScoreTimeArrayModeVector(const vwxs& val);
 
     vd GetScoreTimeArrayDateVector() const {
         return m_scoreVect.timeArrayDate;
