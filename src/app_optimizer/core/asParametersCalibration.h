@@ -62,7 +62,7 @@ class asParametersCalibration : public asParametersScoring {
         return m_predictandStationIdsVect;
     }
 
-    bool SetPredictandStationIdsVector(vvi& val);
+    bool SetPredictandStationIdsVector(const vvi& val);
 
     vi GetTimeArrayAnalogsIntervalDaysVector() const {
         return m_timeArrayAnalogsIntervalDaysVect;
