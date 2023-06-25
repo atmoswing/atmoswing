@@ -188,7 +188,7 @@ void asFrameForecaster::OnOpenBatchForecasts(wxCommandEvent& event) {
 
     wxString batchFilePath = openFileDialog.GetPath();
 
-    // Save preferences
+    // Save last opened
     wxConfigBase* pConfig = wxFileConfig::Get();
     pConfig->Write("/BatchForecasts/LastOpened", batchFilePath);
 
@@ -208,6 +208,11 @@ void asFrameForecaster::OnFileHistory(wxCommandEvent& event) {
 
     wxBusyCursor wait;
 
+    // Save last opened
+    wxConfigBase* pConfig = wxFileConfig::Get();
+    pConfig->Write("/BatchForecasts/LastOpened", batchFilePath);
+
+    // Do open the batch file
     if (!m_batchForecasts.Load(batchFilePath)) {
         wxLogError(_("Failed to open the batch file ") + batchFilePath);
     }
