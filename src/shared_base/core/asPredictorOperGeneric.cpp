@@ -22,10 +22,10 @@
  */
 
 /*
- * Portions Copyright 2019 Pascal Horton, University of Bern.
+ * Portions Copyright 2023 Pascal Horton, Terranum.
  */
 
-#include "asPredictorGeneric.h"
+#include "asPredictorOperGeneric.h"
 
 #include <wx/dir.h>
 #include <wx/regex.h>
@@ -33,8 +33,8 @@
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
-asPredictorGeneric::asPredictorGeneric(const wxString& dataId)
-    : asPredictor(dataId) {
+asPredictorOperGeneric::asPredictorOperGeneric(const wxString& dataId)
+    : asPredictorOper(dataId) {
     // Set the basic properties.
     m_datasetId = "Generic";
     m_provider = "";
@@ -50,7 +50,7 @@ asPredictorGeneric::asPredictorGeneric(const wxString& dataId)
     m_fStr.dimLevelName = "level";
 }
 
-bool asPredictorGeneric::Init() {
+bool asPredictorOperGeneric::Init() {
     m_parameter = ParameterUndefined;
     m_parameterName = "Undefined";
     m_fileVarName = m_dataId;
@@ -187,55 +187,6 @@ bool asPredictorGeneric::Init() {
     return true;
 }
 
-void asPredictorGeneric::ListFiles(asTimeArray& timeArray) {
-    // Case 1: single file with the variable name
-    wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".nc";
-
-    if (wxFileExists(filePath)) {
-        m_files.push_back(filePath);
-        return;
-    }
-
-    // Case 2: yearly files
-    wxArrayString listFiles;
-    size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, "*.nc");
-
-    if (nbFiles == 0) {
-        throw runtime_error(_("No file found for the generic archive."));
-    }
-
-    listFiles.Sort();
-
-    double firstYear = timeArray.GetStartingYear();
-    double lastYear = timeArray.GetEndingYear();
-
-    for (size_t i = 0; i < listFiles.Count(); ++i) {
-        wxRegEx reDates("\\d{4,}", wxRE_ADVANCED);
-        if (!reDates.Matches(listFiles.Item(i))) {
-            continue;
-        }
-
-        wxString datesSrt = reDates.GetMatch(listFiles.Item(i));
-        double fileYear = 0;
-        datesSrt.ToDouble(&fileYear);
-
-        if (fileYear < firstYear || fileYear > lastYear) {
-            continue;
-        }
-
-        m_files.push_back(listFiles.Item(i));
-    }
-
-    if (!m_files.empty()) {
-        return;
-    }
-
-    // Case 3: list all files from the directory
-    for (size_t i = 0; i < listFiles.Count(); ++i) {
-        m_files.push_back(listFiles.Item(i));
-    }
-}
-
-void asPredictorGeneric::ConvertToMjd(a1d& time, double refValue) const {
+void asPredictorOperGeneric::ConvertToMjd(a1d& time, double refValue) const {
     // Nothing to do
 }
