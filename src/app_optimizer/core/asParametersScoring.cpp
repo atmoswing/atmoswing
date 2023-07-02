@@ -249,7 +249,7 @@ bool asParametersScoring::PreprocessingDataIdsOk() {
     return true;
 }
 
-wxString asParametersScoring::GetPredictandStationIdsVectorString(vvi& predictandStationIdsVect) const {
+wxString asParametersScoring::GetPredictandStationIdsVectorString(const vvi& predictandStationIdsVect) const {
     wxString ids;
 
     for (int i = 0; i < (int)predictandStationIdsVect.size(); i++) {

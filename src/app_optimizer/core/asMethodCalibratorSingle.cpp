@@ -159,7 +159,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration& params) {
     // Create a analogsdate object to save previous analogs dates selection.
     asResultsDates anaDatesPrevious;
 
-    for (auto stationId : stationsId) {
+    for (auto& stationId : stationsId) {
         ClearAll();
 
         // Reset the score of the climatology

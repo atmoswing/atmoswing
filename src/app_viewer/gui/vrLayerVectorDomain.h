@@ -39,6 +39,11 @@
 #include "asIncludes.h"
 #include "vrlayervector.h"
 
+/**
+ * @brief Vroomgis layer class showing the spatial window.
+ *
+ * Vroomgis layer class showing the spatial window.
+ */
 class vrLayerVectorDomain : public vrLayerVectorOGR {
   public:
     /**

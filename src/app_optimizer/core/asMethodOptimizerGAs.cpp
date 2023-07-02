@@ -814,7 +814,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
         wxDir::GetAllFiles(parentDir.GetName(), &logFiles, logFilePattern, wxDIR_FILES);
 
         m_epoch = 1;
-        for (auto logFilePath : logFiles) {
+        for (const auto& logFilePath : logFiles) {
             asFileText logContent(logFilePath, asFile::ReadOnly);
             if (!logContent.Open()) {
                 wxLogWarning(_("Couldn't open the file %s."), logFilePath);
@@ -1552,6 +1552,7 @@ bool asMethodOptimizerGAs::Mating() {
                 int crossoverNbPoints = 1;
 
                 // Get points
+                wxASSERT(partner1 >= 0);
                 int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
                 wxASSERT(chromosomeLength > 0);
 

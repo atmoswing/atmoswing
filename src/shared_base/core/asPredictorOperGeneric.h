@@ -25,44 +25,58 @@
  * Portions Copyright 2023 Pascal Horton, Terranum.
  */
 
-#ifndef AS_PREDICTOR_OPER_VIGICRUES_IFS_H
-#define AS_PREDICTOR_OPER_VIGICRUES_IFS_H
+#ifndef AS_PREDICTOR_OPER_GENERIC_H
+#define AS_PREDICTOR_OPER_GENERIC_H
 
 #include "asIncludes.h"
-#include "asPredictorEcmwfIfs.h"
-#include "asPredictorOperEcmwfIfs.h"
+#include "asPredictorOper.h"
 
 class asArea;
 
 /**
- * @brief Operational predictor from the IFS model (ECMWF) with the Vigicrues naming convention.
+ * @brief Operational generic predictor dataset.
  *
- * Operational predictor from the IFS model (ECMWF) with the Vigicrues naming convention.
+ * Operational generic predictor dataset.
  */
-class asPredictorOperCustomVigicruesIfs : public asPredictorOperEcmwfIfs {
+class asPredictorOperGeneric : public asPredictorOper {
   public:
     /**
-     * The constructor for the operational predictor class from IFS grib files with the Vigicrues naming convention.
+     * The constructor for the operational generic predictors.
      *
      * @param dataId Identifier of the data variable (meteorological parameter).
      */
-    explicit asPredictorOperCustomVigicruesIfs(const wxString& dataId);
+    explicit asPredictorOperGeneric(const wxString& dataId);
 
     /**
      * Destructor.
      */
-    ~asPredictorOperCustomVigicruesIfs() override = default;
+    ~asPredictorOperGeneric() override = default;
 
     /**
-     * Get the file name from the data ID and the date.
+     * Initialize the parameters of the data source.
      *
-     * @param date Date of the model run for the file.
-     * @param level Level of the data.
+     * @return True if the initialisation went well.
+     */
+    bool Init() override;
+
+    /**
+     * Get the file name from the forecast date and the lead time.
+     *
+     * @param date The forecast date.
+     * @param leadTime The lead time.
      * @return The file name.
      */
     wxString GetFileName(const double date, const int leadTime) override;
 
   protected:
+    /**
+     * Convert the time array from hours to MJD.
+     *
+     * @param time The time array in hours (as in the files).
+     * @param refValue The reference value to add to the time array (as in the files).
+     */
+    void ConvertToMjd(a1d& time, double refValue = NAN) const override;
+
   private:
 };
 

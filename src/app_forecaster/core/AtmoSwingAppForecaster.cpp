@@ -270,9 +270,6 @@ bool AtmoSwingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
 
         pConfig->Write("/Internet/ProxyAddress", proxyAddress);
         pConfig->Write("/Internet/ProxyPort", proxyPort);
-    } else {
-        wxConfigBase* pConfig = wxFileConfig::Get();
-        pConfig->Write("/Internet/UsesProxy", false);
     }
 
     // Proxy user

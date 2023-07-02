@@ -32,6 +32,11 @@
 #include "asFileText.h"
 #include "asIncludes.h"
 
+/**
+ * @brief Data file class.
+ *
+ * This class is a text file that is data-oriented.
+ */
 class asFileDat : public asFileText {
   public:
     struct Pattern {

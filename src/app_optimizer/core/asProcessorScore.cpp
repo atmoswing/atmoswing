@@ -151,15 +151,12 @@ bool asProcessorScore::GetAnalogsTotalScore(asResultsScores& anaScores, asTimeAr
     finalScore->SetRanksNb(params->GetScoreAnalogsNumber() + 1);
 
     if (finalScore->Has2DArrayArgument()) {
-        float result = finalScore->Assess(anaScores.GetTargetDates(), anaScores.GetScores2DArray(), timeArray);
-        results.SetScore(result);
+        results.SetScore(finalScore->Assess(anaScores.GetTargetDates(), anaScores.GetScores2DArray(), timeArray));
     } else {
         if (finalScore->SingleValue()) {
-            float result = finalScore->Assess(anaScores.GetTargetDates(), anaScores.GetScores(), timeArray);
-            results.SetScore(result);
+            results.SetScore(finalScore->Assess(anaScores.GetTargetDates(), anaScores.GetScores(), timeArray));
         } else {
-            a1f result = finalScore->AssessOnArray(anaScores.GetTargetDates(), anaScores.GetScores(), timeArray);
-            results.SetScore(result);
+            results.SetScore(finalScore->AssessOnArray(anaScores.GetTargetDates(), anaScores.GetScores(), timeArray));
         }
     }
 

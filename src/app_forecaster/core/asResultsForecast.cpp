@@ -754,19 +754,13 @@ void asResultsForecast::LimitDataToDays(int days) {
 void asResultsForecast::LimitDataToNbTimeSteps(int length) {
     if (length >= m_targetDates.size()) return;
 
-    a1f targetDates = m_targetDates.head(length);
-    m_targetDates = targetDates;
-    a1i analogsNb = m_analogsNb.head(length);
-    m_analogsNb = analogsNb;
+    m_targetDates = m_targetDates.head(length);
+    m_analogsNb = m_analogsNb.head(length);
 
-    va1f analogsDates(m_analogsDates.begin(), m_analogsDates.begin() + length);
-    m_analogsDates = analogsDates;
-    va1f analogsCriteria(m_analogsCriteria.begin(), m_analogsCriteria.begin() + length);
-    m_analogsCriteria = analogsCriteria;
-    va2f analogsValuesRaw(m_analogsValuesRaw.begin(), m_analogsValuesRaw.begin() + length);
-    m_analogsValuesRaw = analogsValuesRaw;
-    va2f analogsValuesNorm(m_analogsValuesNorm.begin(), m_analogsValuesNorm.begin() + length);
-    m_analogsValuesNorm = analogsValuesNorm;
+    m_analogsDates = va1f(m_analogsDates.begin(), m_analogsDates.begin() + length);
+    m_analogsCriteria = va1f(m_analogsCriteria.begin(), m_analogsCriteria.begin() + length);
+    m_analogsValuesRaw = va2f(m_analogsValuesRaw.begin(), m_analogsValuesRaw.begin() + length);
+    m_analogsValuesNorm = va2f(m_analogsValuesNorm.begin(), m_analogsValuesNorm.begin() + length);
 }
 
 wxString asResultsForecast::GetDateFormatting() const {
@@ -954,6 +948,7 @@ Coo asResultsForecast::GetStationsMeanCoordinates() {
     vd xs, ys;
     for (int id : m_predictandStationIds) {
         int i = GetStationRowFromId(id);
+        wxASSERT(i >= 0);
         xs.push_back(m_stationXCoords[i]);
         ys.push_back(m_stationYCoords[i]);
     }

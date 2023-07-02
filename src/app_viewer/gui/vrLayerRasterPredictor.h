@@ -35,6 +35,11 @@
 #include "asPredictorsManager.h"
 #include "vrlayerraster.h"
 
+/**
+ * @brief Vroomgis layer class showing raster predictor data.
+ *
+ * Vroomgis layer class showing raster predictor data.
+ */
 class vrLayerRasterPredictor : public vrLayerRasterGDAL {
   public:
     /**
