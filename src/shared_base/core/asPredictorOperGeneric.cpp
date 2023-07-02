@@ -56,6 +56,7 @@ bool asPredictorOperGeneric::Init() {
     m_fileVarName = m_dataId;
     m_unit = UnitUndefined;
     m_fStr.hasLevelDim = true;
+    m_fileNamePattern = "%s." + m_datasetId + "." + m_dataId + ".nc";
 
     if (m_dataId.IsSameAs("d", false)) {
         m_parameter = Divergence;
@@ -189,4 +190,10 @@ bool asPredictorOperGeneric::Init() {
 
 void asPredictorOperGeneric::ConvertToMjd(a1d& time, double refValue) const {
     // Nothing to do
+}
+
+wxString asPredictorOperGeneric::GetFileName(const double date, const int leadTime) {
+    wxString dateForecast = asTime::GetStringTime(date, "YYYYMMDDhhmm");
+
+    return asStrF(m_fileNamePattern, dateForecast);
 }

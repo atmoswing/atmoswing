@@ -33,15 +33,48 @@
 
 class asArea;
 
+/**
+ * @brief Operational generic predictor dataset.
+ *
+ * Operational generic predictor dataset.
+ */
 class asPredictorOperGeneric : public asPredictorOper {
   public:
+    /**
+     * The constructor for the operational generic predictors.
+     *
+     * @param dataId Identifier of the data variable (meteorological parameter).
+     */
     explicit asPredictorOperGeneric(const wxString& dataId);
 
+    /**
+     * Destructor.
+     */
     ~asPredictorOperGeneric() override = default;
 
+    /**
+     * Initialize the parameters of the data source.
+     *
+     * @return True if the initialisation went well.
+     */
     bool Init() override;
 
+    /**
+     * Get the file name from the forecast date and the lead time.
+     *
+     * @param date The forecast date.
+     * @param leadTime The lead time.
+     * @return The file name.
+     */
+    wxString GetFileName(const double date, const int leadTime) override;
+
   protected:
+    /**
+     * Convert the time array from hours to MJD.
+     *
+     * @param time The time array in hours (as in the files).
+     * @param refValue The reference value to add to the time array (as in the files).
+     */
     void ConvertToMjd(a1d& time, double refValue = NAN) const override;
 
   private:

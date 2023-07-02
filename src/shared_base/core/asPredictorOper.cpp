@@ -30,6 +30,7 @@
 
 #include "asAreaGrid.h"
 #include "asInternet.h"
+#include "asPredictorOperGeneric.h"
 #include "asPredictorOperCustomFvg.h"
 #include "asPredictorOperCustomVigicruesIfs.h"
 #include "asPredictorOperEcmwfIfs.h"
@@ -108,7 +109,10 @@ void asPredictorOper::SetDefaultPredictorsUrls() {
 asPredictorOper* asPredictorOper::GetInstance(const wxString& datasetId, const wxString& dataId) {
     asPredictorOper* predictor = nullptr;
 
-    if (datasetId.IsSameAs("NWS_GFS", false)) {
+    if (datasetId.StartsWith("Generic") || datasetId.StartsWith("generic")) {
+        predictor = new asPredictorOperGeneric(dataId);
+        predictor->SetDatasetId(datasetId);
+    } else if (datasetId.IsSameAs("NWS_GFS", false)) {
         predictor = new asPredictorOperNwsGfs(dataId);
     } else if (datasetId.IsSameAs("NWS_GFS_Local", false)) {
         predictor = new asPredictorOperNwsGfsLocal(dataId);
