@@ -1,6 +1,19 @@
 # Changelog AtmoSwing
 
 
+## v3.0.9 - 03 Jul 2023
+
+### Changed
+
+*   Saving the last opened batch file from recent files.
+*   Adding tests, including some GUI tests.
+
+### Fixed
+
+*   Applying coverity scan suggestions.
+*   The proxy was disabled when not given by command line.
+
+
 ## v3.0.8 - 08 Jun 2023
 
 ### Changed
