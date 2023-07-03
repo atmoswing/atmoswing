@@ -1,13 +1,17 @@
 [![AtmoSwing](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/logo/logo.png)](http://www.atmoswing.org)
 
-[![DOI](https://zenodo.org/badge/95885904.svg)](https://zenodo.org/badge/latestdoi/95885904)
+[![doi](https://zenodo.org/badge/95885904.svg)](https://zenodo.org/badge/latestdoi/95885904)
+[![GitHub release](https://img.shields.io/github/v/release/atmoswing/atmoswing)](https://github.com/atmoswing/atmoswing/releases)
+![Docker Image Version](https://img.shields.io/docker/v/atmoswing/forecaster?label=docker%20forecaster)
+![Docker Image Version](https://img.shields.io/docker/v/atmoswing/optimizer?label=docker%20optimizer)
+![Docker Image Version](https://img.shields.io/docker/v/atmoswing/downscaler?label=docker%20downscaler)
 [![Linux builds](https://github.com/atmoswing/atmoswing/actions/workflows/linux-builds.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/linux-builds.yml)
 [![Windows builds](https://github.com/atmoswing/atmoswing/actions/workflows/windows-builds.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/windows-builds.yml)
 [![Docker images](https://github.com/atmoswing/atmoswing/actions/workflows/docker-images.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/docker-images.yml)
-[![codecov](https://codecov.io/gh/atmoswing/atmoswing/branch/master/graph/badge.svg)](https://codecov.io/gh/atmoswing/atmoswing)
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/13133/badge.svg)](https://scan.coverity.com/projects/atmoswing-atmoswing)
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1107/badge)](https://bestpractices.coreinfrastructure.org/projects/1107)
+[![Coverity Scan](https://img.shields.io/coverity/scan/13133)](https://scan.coverity.com/projects/atmoswing-atmoswing)
 [![Documentation Status](https://readthedocs.org/projects/atmoswing/badge/?version=latest)](https://atmoswing.readthedocs.io/en/latest/?badge=latest)
+[![Codecov](https://img.shields.io/codecov/c/github/atmoswing/atmoswing)](https://codecov.io/gh/atmoswing/atmoswing)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1107/badge)](https://bestpractices.coreinfrastructure.org/projects/1107)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/87f76e2cfa7f4e2280d37c824df843f1)](https://www.codacy.com/gh/atmoswing/atmoswing/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=atmoswing/atmoswing&amp;utm_campaign=Badge_Grade)
 
 Analog methods (AMs) allow predicting local meteorological variables of interest (predictand), such as the daily precipitation, based on synoptic variables (predictors). They rely on the hypothesis that similar atmospheric conditions are likely to result in similar local effects. The statistical relationship is first defined (e.g. which predictors, and how many subsampling steps) and calibrated (e.g. which spatial domain, and how many analogues) before being applied to the target period, may it be for operational forecasting or for climate impact studies. A benefit of AMs is that they are lightweight and can provide valuable results for a negligible cost.
