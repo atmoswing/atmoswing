@@ -2,9 +2,9 @@
 
 [![doi](https://zenodo.org/badge/95885904.svg)](https://zenodo.org/badge/latestdoi/95885904)
 [![GitHub release](https://img.shields.io/github/v/release/atmoswing/atmoswing)](https://github.com/atmoswing/atmoswing/releases)
-![Docker Image Version](https://img.shields.io/docker/v/atmoswing/forecaster?label=docker%20forecaster)
-![Docker Image Version](https://img.shields.io/docker/v/atmoswing/optimizer?label=docker%20optimizer)
-![Docker Image Version](https://img.shields.io/docker/v/atmoswing/downscaler?label=docker%20downscaler)
+[![Docker Image Version](https://img.shields.io/docker/v/atmoswing/forecaster?label=docker%20forecaster)](https://hub.docker.com/r/atmoswing/forecaster)
+[![Docker Image Version](https://img.shields.io/docker/v/atmoswing/optimizer?label=docker%20optimizer)](https://hub.docker.com/r/atmoswing/optimizer)
+[![Docker Image Version](https://img.shields.io/docker/v/atmoswing/downscaler?label=docker%20downscaler)](https://hub.docker.com/r/atmoswing/downscaler)
 [![Linux builds](https://github.com/atmoswing/atmoswing/actions/workflows/linux-builds.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/linux-builds.yml)
 [![Windows builds](https://github.com/atmoswing/atmoswing/actions/workflows/windows-builds.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/windows-builds.yml)
 [![Docker images](https://github.com/atmoswing/atmoswing/actions/workflows/docker-images.yml/badge.svg)](https://github.com/atmoswing/atmoswing/actions/workflows/docker-images.yml)
