@@ -147,7 +147,7 @@ void asFramePreferencesDownscaler::LoadPreferences() {
     wxString logpath = asConfig::GetLogDir();
     logpath.Append("AtmoSwingDownscaler.log");
     m_staticTextLogFile->SetLabel(logpath);
-    m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir() + "AtmoSwingDownscaler.ini");
+    m_staticTextPrefFile->SetLabel(asConfig::GetConfigFilePath("AtmoSwingDownscaler.ini"));
 }
 
 void asFramePreferencesDownscaler::SavePreferences() const {

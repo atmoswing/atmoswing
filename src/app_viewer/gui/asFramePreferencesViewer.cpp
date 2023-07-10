@@ -196,7 +196,7 @@ void asFramePreferencesViewer::LoadPreferences() {
     wxString logpathViewer = asConfig::GetLogDir();
     logpathViewer.Append("AtmoSwingViewer.log");
     m_staticTextLogFile->SetLabel(logpathViewer);
-    m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir() + "AtmoSwingViewer.ini");
+    m_staticTextPrefFile->SetLabel(asConfig::GetConfigFilePath("AtmoSwingViewer.ini"));
 }
 
 void asFramePreferencesViewer::SavePreferences() {

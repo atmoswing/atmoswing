@@ -144,7 +144,7 @@ void asFramePreferencesOptimizer::LoadPreferences() {
     wxString logpath = asConfig::GetLogDir();
     logpath.Append("AtmoSwingOptimizer.log");
     m_staticTextLogFile->SetLabel(logpath);
-    m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini");
+    m_staticTextPrefFile->SetLabel(asConfig::GetConfigFilePath("AtmoSwingOptimizer.ini"));
 }
 
 void asFramePreferencesOptimizer::SavePreferences() const {
