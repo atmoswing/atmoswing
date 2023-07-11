@@ -76,9 +76,9 @@ bool AtmoSwingAppViewer::OnInit() {
     userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
     // Set the local config object
-    wxFileConfig* pConfig = new wxFileConfig(
-        "AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingViewer.ini",
-        asConfig::GetUserDataDir() + "AtmoSwingViewer.ini", wxCONFIG_USE_LOCAL_FILE);
+    wxString configFilePath = asConfig::GetConfigFilePath("AtmoSwingViewer.ini");
+    auto pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, configFilePath,
+                                    configFilePath, wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
     // Set locale

@@ -175,3 +175,14 @@ wxColour asConfig::GetFrameBgColour() {
 #endif
 }
 #endif
+
+wxString asConfig::GetConfigFilePath(const wxString& fileName) {
+    // If the configuration file exists locally use it, otherwise use the default one
+    wxFileName exePath(wxStandardPaths::Get().GetExecutablePath());
+    wxFileName configLocal = wxFileName(exePath.GetPath() + wxFileName::GetPathSeparator() + fileName);
+    if (configLocal.FileExists()) {
+        return configLocal.GetFullPath();
+    }
+
+    return asConfig::GetUserDataDir() + fileName;
+}

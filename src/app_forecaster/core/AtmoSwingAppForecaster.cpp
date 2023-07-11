@@ -106,10 +106,11 @@ bool AtmoSwingAppForecaster::OnInit() {
     m_singleInstanceChecker = nullptr;
 #endif
 
+    wxString configFilePath = asConfig::GetConfigFilePath("AtmoSwingForecaster.ini");
+    auto pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, configFilePath,
+                                    configFilePath, wxCONFIG_USE_LOCAL_FILE);
+
     // Set the local config object
-    wxFileConfig* pConfig = new wxFileConfig(
-        "AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingForecaster.ini",
-        asConfig::GetUserDataDir() + "AtmoSwingForecaster.ini", wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
     // Set locale

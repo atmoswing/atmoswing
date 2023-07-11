@@ -1,6 +1,15 @@
 # Changelog AtmoSwing
 
 
+## v3.0.10 - 11 Jul 2023
+
+### Added
+
+*   Adding the usage of local configuration files (e.g., AtmoSwingForecaster.ini) that is loaded if present. 
+    This allows to override the default configuration file located in the user directory.
+    This is useful for multiple installations on the same machine.
+
+
 ## v3.0.9 - 07 Jul 2023
 
 ### Changed

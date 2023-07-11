@@ -62,6 +62,8 @@ class asConfig : public wxObject {
     static wxColour GetFrameBgColour();
 #endif
 
+    static wxString GetConfigFilePath(const wxString& fileName);
+
   protected:
   private:
 };
