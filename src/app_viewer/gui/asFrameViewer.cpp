@@ -1155,7 +1155,7 @@ void asFrameViewer::SwitchForecast(double increment) {
     wxBusyCursor wait;
 
     if (m_forecastManager->GetMethodsNb() == 0) {
-        wxLogError("There is no opened forecast.");
+        wxLogError(_("There is no opened forecast."));
         return;
     }
 
