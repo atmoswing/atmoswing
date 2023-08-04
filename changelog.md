@@ -1,7 +1,7 @@
 # Changelog AtmoSwing
 
 
-## v3.0.11 - 08 Aug 2023
+## v3.0.11 - 04 Aug 2023
 
 ### Added
 
