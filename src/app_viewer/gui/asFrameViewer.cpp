@@ -1155,7 +1155,7 @@ void asFrameViewer::SwitchForecast(double increment) {
     wxBusyCursor wait;
 
     if (m_forecastManager->GetMethodsNb() == 0) {
-        wxLogError("There is no opened forecast.");
+        wxLogError(_("There is no opened forecast."));
         return;
     }
 
@@ -1178,12 +1178,7 @@ void asFrameViewer::SwitchForecast(double increment) {
     // Look for former files
     wxString prefixFiles = wxEmptyString;
     wxString dirPathStr = wxEmptyString;
-    for (int i = 0; i < 10; i++) {
-        if (i == 9) {
-            wxLogError(_("No previous/next forecast was found."));
-            return;
-        }
-
+    for (int i = 0; i < 26; i++) {
         date += increment;
         dirPathStr = basePath + asStrF("%c%d%c%02d%c%02d", wxFileName::GetPathSeparator(),
                                        asTime::GetYear(date), wxFileName::GetPathSeparator(),
@@ -1200,6 +1195,11 @@ void asFrameViewer::SwitchForecast(double increment) {
         prefixFiles = asStrF("%d%02d%02d%02d*.*", asTime::GetYear(date), asTime::GetMonth(date),
                              asTime::GetDay(date), asTime::GetHour(date));
         if (dirPath.HasFiles(prefixFiles)) break;
+
+        if (i == 25) {
+            wxLogError(_("No previous/next forecast was found."));
+            return;
+        }
     }
 
     // List the files in the directory

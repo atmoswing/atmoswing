@@ -1,6 +1,21 @@
 # Changelog AtmoSwing
 
 
+## v3.0.11 - 08 Aug 2023
+
+### Added
+
+*   Adding a command-line option to specify the Viewer workspace.
+
+### Changed
+
+*   Viewer: search for previous/next forecasts in a 24h window (instead of 10h).
+
+### Fixed
+
+*   A translation was missing.
+
+
 ## v3.0.10 - 11 Jul 2023
 
 ### Added
