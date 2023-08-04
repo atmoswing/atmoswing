@@ -48,6 +48,7 @@ IMPLEMENT_APP(AtmoSwingAppViewer);
 static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
     {wxCMD_LINE_SWITCH, "h", "help", "This help text"},
     {wxCMD_LINE_SWITCH, "v", "version", "Show version number and quit"},
+    {wxCMD_LINE_OPTION, "f", "workspace-file", "Workspace file to open (full path)"},
     {wxCMD_LINE_OPTION, "l", "log-level",
      "set a log level"
      "\n \t\t\t\t 0: minimum"
@@ -141,6 +142,13 @@ bool AtmoSwingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser) {
         asLog::PrintToConsole(asStrF("AtmoSwing version %s, %s\n", g_version, static_cast<const wxChar*>(date)));
 
         return false;
+    }
+
+    // Workspace file to open
+    wxString workspaceFile;
+    if (parser.Found("f", &workspaceFile)) {
+        wxConfigBase* pConfig = wxFileConfig::Get();
+        pConfig->Write("/Workspace/LastOpened", workspaceFile);
     }
 
     // Check for a log level option
