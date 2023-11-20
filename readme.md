@@ -65,7 +65,7 @@ In order to get AtmoSwing compiled, follow these steps:
    * Conan v.1
      ```
      pip install conan==1.*
-     conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
+     conan remote add gitlab https://gitlab.com/api/v4/packages/conan
      ```
 2. Install dependencies with conan (from a new directory):
    * Example for a headless server:
