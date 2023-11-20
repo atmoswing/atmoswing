@@ -63,6 +63,7 @@ class AmtoSwing(ConanFile):
             self.options.enable_tests = True
         self.options["gdal"].with_curl = True # for xml support
         self.options["gdal"].shared = True
+        self.options["proj"].build_executables = False
         if not self.options.with_gui:
             self.options.test_gui = False
             self.options["wxbase"].xml = True
