@@ -62,16 +62,20 @@ In order to get AtmoSwing compiled, follow these steps:
 1. Install the requirements:
    * a compiler,
    * CMake,
-   * Conan v.1 (``pip install conan==1.*``)
+   * Conan v.1
+     ```
+     pip install conan==1.*
+     conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
+     ```
 2. Install dependencies with conan (from a new directory):
    * Example for a headless server:
-     
-       ``conan install .. -s build_type=Release -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing``
-     
+     ```
+     conan install .. -s build_type=Release -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing
+     ```
    * Example for the desktop version:
-     
-       ``conan install .. -s build_type=Release -o enable_tests=False -o create_installer=True --build=missing``
-     
+     ```
+     conan install .. -s build_type=Release -o enable_tests=False -o create_installer=True --build=missing
+     ```
    * The options are:
      * enable_tests: default: True
      * enable_benchmark: default: False
