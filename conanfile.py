@@ -35,28 +35,28 @@ class AmtoSwing(ConanFile):
     generators = "cmake", "gcc"
 
     def requirements(self):
-        self.requires("proj/9.0.1")
-        self.requires("libcurl/7.85.0")
-        self.requires("libtiff/4.4.0")
-        self.requires("sqlite3/3.39.3")
+        self.requires("proj/9.3.0")
+        self.requires("libcurl/8.4.0")
+        self.requires("libtiff/4.6.0")
+        self.requires("sqlite3/3.44.0")
         self.requires("eigen/3.4.0")
         self.requires("netcdf/4.8.1")
-        self.requires("libdeflate/1.12")
+        self.requires("libdeflate/1.19")
         self.requires("libjpeg/9e")
-        self.requires("zlib/1.2.13")
-        self.requires("libpng/1.6.38")
+        self.requires("zlib/1.3")
+        self.requires("libpng/1.6.40")
         self.requires("eccodes/2.27.0@terranum-conan+eccodes/stable")
         if self.options.enable_tests or self.options.code_coverage:
-            self.requires("gtest/1.13.0")
+            self.requires("gtest/1.14.0")
         if self.options.enable_benchmark:
-            self.requires("benchmark/1.7.1")
-            self.requires("gtest/1.13.0")
+            self.requires("benchmark/1.8.3")
+            self.requires("gtest/1.14.0")
         if self.options.with_gui:
             self.requires("wxwidgets/3.2.2.1@terranum-conan+wxwidgets/stable")
         else:
             self.requires("wxbase/3.2.1@terranum-conan+wxbase/stable")
         if self.options.build_viewer:
-            self.requires("gdal/3.5.2@terranum-conan+gdal/stable")
+            self.requires("gdal/3.7.0")
 
     def configure(self):
         if self.options.code_coverage:
