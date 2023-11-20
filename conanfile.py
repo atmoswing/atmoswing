@@ -17,6 +17,7 @@ class AmtoSwing(ConanFile):
         "build_optimizer": [True, False],
         "build_downscaler": [True, False],
         "create_installer": [True, False],
+        "with_ssl": [True, False],  # for libcurl; can be disabled in case of problems
     }
     default_options = {
         "enable_tests": True,
@@ -30,6 +31,7 @@ class AmtoSwing(ConanFile):
         "build_optimizer": True,
         "build_downscaler": True,
         "create_installer": False,
+        "with_ssl": True,
     }
 
     generators = "cmake", "gcc"
@@ -64,6 +66,10 @@ class AmtoSwing(ConanFile):
         self.options["gdal"].with_curl = True # for xml support
         self.options["gdal"].shared = True
         self.options["proj"].build_executables = False
+        if self.options.with_ssl:
+            self.options["libcurl"].with_ssl = "openssl"
+        else:
+            self.options["libcurl"].with_ssl = False
         if not self.options.with_gui:
             self.options.test_gui = False
             self.options["wxbase"].xml = True
