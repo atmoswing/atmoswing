@@ -18,12 +18,6 @@ if (USE_GUI)
     list(APPEND src_shared_base ${src_base_gui_h} ${src_lib_awxled_h})
     list(APPEND src_shared_base ${src_base_gui_cpp} ${src_lib_awxled_cpp})
 endif (USE_GUI)
-if (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER)
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asInternet.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asInternet.cpp")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asThreadInternetDownload.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asThreadInternetDownload.cpp")
-endif (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER)
 
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_shared_base)
