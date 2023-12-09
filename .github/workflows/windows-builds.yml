@@ -16,7 +16,7 @@ jobs:
       ECCODES_DEFINITION_PATH: ${{github.workspace}}/bin/share/eccodes/definitions
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v4
         with:
@@ -66,7 +66,7 @@ jobs:
       PROJ_LIB: ${{github.workspace}}/bin/share/proj
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v4
         with:

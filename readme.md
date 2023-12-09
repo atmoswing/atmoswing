@@ -57,10 +57,38 @@ You can download the releases under: https://github.com/atmoswing/atmoswing/rele
 
 ## How to build AtmoSwing ##
 
-The wiki (https://github.com/atmoswing/atmoswing/wiki) explains how to compile the required libraries and the source code of AtmoSwing. In order to get AtmoSwing compiled, follow these steps:
+In order to get AtmoSwing compiled, follow these steps:
 
-1.  [Get the required **libraries**](https://github.com/atmoswing/atmoswing/wiki/Libraries)
-2.  [**Configure / build** with CMake](https://github.com/atmoswing/atmoswing/wiki/Build)
+1. Install the requirements:
+   * a compiler,
+   * CMake,
+   * Conan v.1
+     ```
+     pip install conan==1.*
+     conan remote add gitlab https://gitlab.com/api/v4/packages/conan
+     ```
+2. Install dependencies with conan (from a new directory):
+   * Example for a headless server:
+     ```
+     conan install .. -s build_type=Release -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing
+     ```
+   * Example for the desktop version:
+     ```
+     conan install .. -s build_type=Release -o enable_tests=False -o create_installer=True --build=missing
+     ```
+   * The options are:
+     * enable_tests: default: True
+     * enable_benchmark: default: False
+     * code_coverage: default: False
+     * with_gui: default: True
+     * test_gui: default: False
+     * use_cuda: default: False
+     * build_forecaster: default: True
+     * build_viewer: default: True
+     * build_optimizer: [default: True
+     * build_downscaler: default: True
+     * create_installer: default: False
+3. Build with conan: ``conan build ..``
 
 ## How to contribute ##
 
