@@ -322,9 +322,7 @@ wxString asPredictor::GetDumpFileName() const {
 size_t asPredictor::CreateHash() const {
     wxString hash;
     hash << m_standardized;
-    hash << m_parameter;
     hash << m_product;
-    hash << m_unit;
     hash << m_strideAllowed;
     hash << m_level;
     hash << m_time[0];
