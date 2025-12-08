@@ -64,18 +64,18 @@ endif (USE_GUI)
 
 ##### LINKING
 
-target_link_libraries(asbase CONAN_PKG::netcdf)
-target_link_libraries(asbase CONAN_PKG::proj)
-target_link_libraries(asbase CONAN_PKG::eccodes)
+target_link_libraries(asbase netcdf)
+target_link_libraries(asbase proj)
+target_link_libraries(asbase eccodes)
 
 if (BUILD_FORECASTER OR BUILD_VIEWER)
-    target_link_libraries(asbase CONAN_PKG::libcurl)
+    target_link_libraries(asbase libcurl)
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
 if (USE_GUI)
-    target_link_libraries(asbase CONAN_PKG::wxwidgets)
+    target_link_libraries(asbase wxwidgets)
 else (USE_GUI)
-    target_link_libraries(asbase CONAN_PKG::wxbase)
+    target_link_libraries(asbase wxbase)
 endif (USE_GUI)
 
 

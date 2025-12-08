@@ -79,3 +79,4 @@ benchmark/z.nc
 benchmark/atmoswing-benchmark
 docs/html/
 docs/latex/
+vcpkg_installed/

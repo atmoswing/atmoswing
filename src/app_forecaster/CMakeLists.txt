@@ -78,7 +78,7 @@ endif (USE_GUI)
 
 target_link_libraries(atmoswing-forecaster asbase)
 target_link_libraries(atmoswing-forecaster asprocessing)
-target_link_libraries(atmoswing-forecaster CONAN_PKG::openssl)
+target_link_libraries(atmoswing-forecaster openssl)
 if (USE_VLD)
     target_link_libraries(atmoswing-forecaster ${VLD_LIBRARIES})
 endif (USE_VLD)

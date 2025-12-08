@@ -1,0 +1,40 @@
+{
+  "name": "atmoswing",
+  "version": "3.0.11",
+  "builtin-baseline": "bffcbb75f71553824aa948a7e7b4f798662a6fa7",
+  "dependencies": [
+    "vcpkg-tool-ninja",
+    "eigen3",
+    "gtest",
+    "benchmark",
+    "proj",
+    "curl",
+    "tiff",
+    "sqlite3",
+    "libdeflate",
+    "zlib",
+    "libpng",
+    {
+      "name": "gdal",
+      "features": [
+        "recommended-features",
+        "curl",
+        "zstd"
+      ]
+    },
+    {
+      "name": "netcdf-c",
+      "features": [
+        "hdf5"
+      ]
+    },
+    {
+      "name": "hdf5",
+      "default-features": false,
+      "features": [
+        "cpp",
+        "zlib"
+      ]
+    }
+  ]
+}

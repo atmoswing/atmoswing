@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.18) # To support FetchContent / FetchContent_MakeAvailable / SOURCE_SUBDIR
 
+include(FetchContent)
+
 if (POLICY CMP0043)
     cmake_policy(SET CMP0043 NEW)
 endif ()
@@ -10,28 +12,22 @@ if (POLICY CMP0077)
     cmake_policy(SET CMP0077 NEW)
 endif ()
 
+# vcpkg
+if (NOT DEFINED ENV{VCPKG_ROOT})
+    message(FATAL_ERROR "Please define the environment variable VCPKG_ROOT")
+endif ()
+set(CMAKE_TOOLCHAIN_FILE
+        "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        CACHE STRING "Vcpkg toolchain file")
+message(STATUS "VCPKG_TARGET_TRIPLET = ${VCPKG_TARGET_TRIPLET}")
+set(VCPKG_LIBRARY_LINKAGE "static")
+
 # Project name
 if (UNIX)
     project(atmoswing)
 else (UNIX)
     project(AtmoSwing)
 endif (UNIX)
-
-
-##### DEPENDENCIES
-
-include(FetchContent)
-
-FetchContent_Declare(
-        vroomgis
-        GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
-        GIT_TAG 780cc0f52979a221ba1f96e42b8ab3cef48eca60
-        SOURCE_SUBDIR vroomgis)
-
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
-
-include_directories(${CONAN_INCLUDE_DIRS})
 
 
 ##### OPTIONS
@@ -136,6 +132,44 @@ else (WIN32)
     set(INSTALL_DIR_BIN bin)
 endif (WIN32)
 
+
+##### DEPENDENCIES
+
+# vroomgis
+FetchContent_Declare(
+        vroomgis
+        GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
+        GIT_TAG 780cc0f52979a221ba1f96e42b8ab3cef48eca60
+        SOURCE_SUBDIR vroomgis)
+
+# wxWidgets
+if (USE_GUI)
+    set(wxUSE_GUI ON)
+else (USE_GUI)
+    set(wxUSE_GUI OFF)
+endif (USE_GUI)
+set(wxBUILD_INSTALL OFF)
+set(wxBUILD_SAMPLES OFF)
+set(wxBUILD_TESTS OFF)
+set(wxBUILD_SHARED OFF)
+
+FetchContent_Declare(
+        wxWidgets
+        GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
+        GIT_TAG v3.3.1)
+FetchContent_MakeAvailable(wxWidgets)
+
+include_directories(${wxWidgets_SOURCE_DIR}/include)
+link_directories(${wxWidgets_BINARY_DIR}/lib)
+message(STATUS "wxWidgets include dir = ${wxWidgets_SOURCE_DIR}/include")
+message(STATUS "wxWidgets lib dir = ${wxWidgets_BINARY_DIR}/lib")
+
+# eccodes
+FetchContent_Declare(
+        eccodes
+        GIT_REPOSITORY https://github.com/ecmwf/eccodes.git
+        GIT_TAG 2.44.0)
+FetchContent_MakeAvailable(eccodes)
 
 ##### FIND ANALYSIS TOOLS
 
