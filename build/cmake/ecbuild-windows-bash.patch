@@ -1,0 +1,14 @@
+diff --git a/cmake/ecbuild_check_os.cmake b/cmake/ecbuild_check_os.cmake
+index 1111111..2222222 100644
+--- a/cmake/ecbuild_check_os.cmake
++++ b/cmake/ecbuild_check_os.cmake
+@@ -448,7 +448,9 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows" OR WIN32 )
+   ecbuild_warn( "CMake doesn't support symlinks on Windows. "
+                 "Replacing all symlinks with copies." )
+-  execute_process( COMMAND ${BASH_EXE} -c "${ECBUILD_MACROS_DIR}/ecbuild_windows_replace_symlinks.sh"
++  set (bash_cmd "bash")
++  set (bash_arg -c "./cmake/ecbuild_windows_replace_symlinks.sh")
++  execute_process( COMMAND ${bash_cmd} ${bash_arg}
+                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                    RESULT_VARIABLE CMD_RESULT
+                    OUTPUT_VARIABLE CMD_OUTPUT
