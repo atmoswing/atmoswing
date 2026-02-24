@@ -163,21 +163,12 @@ link_directories(${wxWidgets_BINARY_DIR}/lib)
 message(STATUS "wxWidgets include dir = ${wxWidgets_SOURCE_DIR}/include")
 message(STATUS "wxWidgets lib dir = ${wxWidgets_BINARY_DIR}/lib")
 
-# ecbuild
-set(ecbuild_patch_links git apply --ignore-whitespace --whitespace=fix "${CMAKE_SOURCE_DIR}/build/cmake/ecbuild-windows-bash.patch")
-set(ecbuild_patch_version git apply --ignore-whitespace --whitespace=fix "${CMAKE_SOURCE_DIR}/build/cmake/ecbuild-version.patch")
-set(ecbuild_VERSION "3.13.0")
-FetchContent_Declare(ecbuild
-        GIT_REPOSITORY https://github.com/ecmwf/ecbuild.git
-        GIT_TAG 3.13.0
-        PATCH_COMMAND ${CMAKE_COMMAND} -D SRC_DIR=<SOURCE_DIR> -P "${CMAKE_SOURCE_DIR}/build/cmake/apply-ecbuild-patches.cmake"
-        UPDATE_DISCONNECTED 1)
-FetchContent_MakeAvailable(ecbuild)
-
 # eccodes
+set(BASH_EXE "C:/Program Files/Git/bin/bash.exe")
 FetchContent_Declare(eccodes
         GIT_REPOSITORY https://github.com/ecmwf/eccodes.git
-        GIT_TAG 2.44.0)
+        GIT_TAG 2.46.0
+)
 FetchContent_MakeAvailable(eccodes)
 
 
