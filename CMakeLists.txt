@@ -135,13 +135,6 @@ endif (WIN32)
 
 ##### DEPENDENCIES
 
-# vroomgis
-set(BUILD_VROOMGIS_WITH_CONAN OFF)
-FetchContent_Declare(vroomgis
-        GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
-        GIT_TAG 1f84d4aeba43bef00e67f5b0da3af626cfbae8ba
-        SOURCE_SUBDIR vroomgis)
-
 # wxWidgets
 if (USE_GUI)
     set(wxUSE_GUI ON)
@@ -155,13 +148,25 @@ set(wxBUILD_SHARED OFF)
 
 FetchContent_Declare(wxWidgets
         GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
-        GIT_TAG v3.3.1)
+        GIT_TAG v3.3.2)
 FetchContent_MakeAvailable(wxWidgets)
 
 include_directories(${wxWidgets_SOURCE_DIR}/include)
 link_directories(${wxWidgets_BINARY_DIR}/lib)
 message(STATUS "wxWidgets include dir = ${wxWidgets_SOURCE_DIR}/include")
 message(STATUS "wxWidgets lib dir = ${wxWidgets_BINARY_DIR}/lib")
+
+# Make wxWidgets discoverable for find_package calls in dependencies
+set(wxWidgets_DIR "${wxWidgets_BINARY_DIR}" CACHE PATH "Path to wxWidgets config files")
+set(wxWidgets_FOUND TRUE CACHE BOOL "wxWidgets found via FetchContent")
+
+# vroomgis
+set(BUILD_VROOMGIS_WITH_CONAN OFF)
+FetchContent_Declare(vroomgis
+        GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
+        GIT_TAG 1f84d4aeba43bef00e67f5b0da3af626cfbae8ba
+        SOURCE_SUBDIR vroomgis)
+FetchContent_MakeAvailable(vroomgis)
 
 # eccodes
 set(BASH_EXE "C:/Program Files/Git/bin/bash.exe")
