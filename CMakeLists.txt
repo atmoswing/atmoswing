@@ -165,6 +165,11 @@ message(STATUS "wxWidgets lib dir = ${wxWidgets_BINARY_DIR}/lib")
 
 # eccodes
 set(BASH_EXE "C:/Program Files/Git/bin/bash.exe")
+set(ENABLE_FORTRAN OFF)
+set(ENABLE_PYTHON OFF)
+set(ENABLE_TESTS OFF)
+set(ECBUILD_LOG_LEVEL "OFF")  # Disable all logging
+set(ECBUILD_LOG_FILE "${CMAKE_BINARY_DIR}/ecbuild.log")  # Set proper log file location
 FetchContent_Declare(eccodes
         GIT_REPOSITORY https://github.com/ecmwf/eccodes.git
         GIT_TAG 2.46.0
