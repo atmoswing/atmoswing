@@ -1,0 +1,11 @@
+diff --git a/cmake/ecbuild_configure_file.cmake b/cmake/ecbuild_configure_file.cmake
+--- a/cmake/ecbuild_configure_file.cmake
++++ b/cmake/ecbuild_configure_file.cmake
+@@ -21,6 +21,6 @@
+   if(NOT IS_ABSOLUTE "${_PAR_FILENAME}")
+     set(_PAR_FILENAME "${CMAKE_CURRENT_BINARY_DIR}/${_PAR_FILENAME}")
+   endif()
+
+-  file(GENERATE OUTPUT "${_PAR_FILENAME}" INPUT "${tmp_file}" )
++  file(GENERATE OUTPUT "${_PAR_FILENAME}" INPUT "${tmp_file}" TARGET eccodes)
+ endfunction()

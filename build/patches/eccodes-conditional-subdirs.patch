@@ -1,0 +1,42 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -23,8 +23,9 @@ if(NOT ecbuild_FOUND)
+     message(STATUS "Fetching ecbuild...")
+     include(FetchContent)
+     FetchContent_Populate(ecbuild
+         GIT_REPOSITORY https://github.com/ecmwf/ecbuild.git
+         GIT_TAG        3.12.0
++        PATCH_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> git apply "${CMAKE_SOURCE_DIR}/build/patches/ecbuild-configure-file-target.patch"
+     )
+     find_package( ecbuild 3.7 REQUIRED HINTS ${ecbuild_SOURCE_DIR})
+ endif()
+@@ -469,14 +470,22 @@ include_directories(
+-add_subdirectory( definitions ) # must be before memfs
++if( ENABLE_SYMLINKS )
++    add_subdirectory( definitions ) # must be before memfs
++endif()
+ add_subdirectory( memfs )
+ add_subdirectory( src )
+-if( HAVE_BUILD_TOOLS )
++if( HAVE_BUILD_TOOLS AND ENABLE_TOOLS )
+     add_subdirectory( tools )
+ endif()
+ add_subdirectory( fortran )
+
+-add_subdirectory( tests )
+-add_subdirectory( examples )
++if( ENABLE_TESTS )
++    add_subdirectory( tests )
++endif()
++if( ENABLE_EXAMPLES )
++    add_subdirectory( examples )
++endif()
+ add_subdirectory( data )
+-add_subdirectory( samples )
+-add_subdirectory( ifs_samples ) # must come after samples
++if( ENABLE_SAMPLES )
++    add_subdirectory( samples )
++    add_subdirectory( ifs_samples ) # must come after samples
++endif()
+

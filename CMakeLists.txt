@@ -164,22 +164,57 @@ set(wxWidgets_FOUND TRUE CACHE BOOL "wxWidgets found via FetchContent")
 set(BUILD_VROOMGIS_WITH_CONAN OFF)
 FetchContent_Declare(vroomgis
         GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
-        GIT_TAG 1f84d4aeba43bef00e67f5b0da3af626cfbae8ba
+        GIT_TAG c87215c9d9fb086eefe75d6efbd10b98ac8b7290
         SOURCE_SUBDIR vroomgis)
 FetchContent_MakeAvailable(vroomgis)
 
 # eccodes
 set(BASH_EXE "C:/Program Files/Git/bin/bash.exe")
-set(ENABLE_FORTRAN OFF)
-set(ENABLE_PYTHON OFF)
 set(ENABLE_TESTS OFF)
+set(ENABLE_EXTRA_TESTS OFF)
+set(ENABLE_EXAMPLES OFF)
+set(ENABLE_SAMPLES OFF)
+set(ENABLE_SYMLINKS OFF)
 set(ECBUILD_LOG_LEVEL "OFF")  # Disable all logging
 set(ECBUILD_LOG_FILE "${CMAKE_BINARY_DIR}/ecbuild.log")  # Set proper log file location
+if (WIN32)
+    set(ECCODES_ON_WINDOWS 1)
+endif ()
 FetchContent_Declare(eccodes
         GIT_REPOSITORY https://github.com/ecmwf/eccodes.git
         GIT_TAG 2.46.0
+        PATCH_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> git apply "${CMAKE_SOURCE_DIR}/build/patches/eccodes-conditional-subdirs.patch"
 )
-FetchContent_MakeAvailable(eccodes)
+FetchContent_GetProperties(eccodes)
+if (NOT eccodes_POPULATED)
+    message(STATUS "Fetching ecCodes...")
+    FetchContent_MakeAvailable(eccodes)
+
+    # Mirror ecCodes definitions into this build tree using a filtered file set.
+    set(ECCODES_SHARE_DIR "${CMAKE_BINARY_DIR}/share/eccodes")
+    set(_eccodes_def_src "${eccodes_SOURCE_DIR}/definitions")
+    set(_eccodes_def_dst "${ECCODES_SHARE_DIR}/definitions")
+    if (EXISTS "${_eccodes_def_src}")
+        file(MAKE_DIRECTORY "${_eccodes_def_dst}")
+        file(GLOB_RECURSE _eccodes_def_files RELATIVE "${_eccodes_def_src}"
+                "${_eccodes_def_src}/*.def"
+                "${_eccodes_def_src}/*.txt"
+                "${_eccodes_def_src}/*.list"
+                "${_eccodes_def_src}/*.table")
+        foreach(_eccodes_rel_file ${_eccodes_def_files})
+            get_filename_component(_eccodes_rel_dir "${_eccodes_rel_file}" DIRECTORY)
+            if (NOT _eccodes_rel_dir STREQUAL "")
+                file(MAKE_DIRECTORY "${_eccodes_def_dst}/${_eccodes_rel_dir}")
+            endif ()
+            configure_file("${_eccodes_def_src}/${_eccodes_rel_file}" "${_eccodes_def_dst}/${_eccodes_rel_file}" COPYONLY)
+        endforeach()
+    endif ()
+else ()
+    message(STATUS "ecCodes already fetched.")
+endif ()
+
+
+
 
 
 ##### FIND ANALYSIS TOOLS

@@ -15,6 +15,7 @@
     "zlib",
     "libpng",
     "libaec",
+    "geos",
     {
       "name": "gdal",
       "features": [
