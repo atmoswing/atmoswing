@@ -19,15 +19,54 @@ endif ()
 set(CMAKE_TOOLCHAIN_FILE
         "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
         CACHE STRING "Vcpkg toolchain file")
-message(STATUS "VCPKG_TARGET_TRIPLET = ${VCPKG_TARGET_TRIPLET}")
 set(VCPKG_LIBRARY_LINKAGE "static")
+
+# ---- Build target selection (declared before project() so VCPKG_MANIFEST_FEATURES can be derived) ----
+set(BUILD_FORECASTER ON  CACHE BOOL "Do you want to build AtmoSwing Forecaster ?")
+set(BUILD_VIEWER     ON  CACHE BOOL "Do you want to build AtmoSwing Viewer ?")
+set(BUILD_OPTIMIZER  ON  CACHE BOOL "Do you want to build AtmoSwing Optimizer ?")
+set(BUILD_DOWNSCALER ON  CACHE BOOL "Do you want to build AtmoSwing Downscaler ?")
+
+# Derive BUILD_TESTS / BUILD_BENCHMARK defaults following the same logic used after project()
+if (BUILD_FORECASTER OR BUILD_OPTIMIZER OR BUILD_DOWNSCALER)
+    set(BUILD_TESTS ON  CACHE BOOL "Do you want to build the tests (recommended) ?")
+else ()
+    set(BUILD_TESTS OFF CACHE BOOL "Do you want to build the tests (recommended) ?")
+endif ()
+if (BUILD_OPTIMIZER)
+    set(BUILD_BENCHMARK OFF CACHE BOOL "Do you want to build the benchmark suite ?")
+else ()
+    set(BUILD_BENCHMARK OFF CACHE BOOL "Do you want to build the benchmark suite ?")
+endif ()
+
+# ---- Map build targets → vcpkg manifest features ----
+# Note: VCPKG_MANIFEST_FEATURES is FORCE-set so it recomputes on every cmake run.
+# If you change a BUILD_* option, run cmake twice: first run updates the cache,
+# second run invokes vcpkg with the new feature set.
+set(_vcpkg_features)
+if (BUILD_VIEWER)
+    list(APPEND _vcpkg_features "viewer")
+endif ()
+if (BUILD_FORECASTER)
+    list(APPEND _vcpkg_features "forecaster")
+endif ()
+if (BUILD_TESTS)
+    list(APPEND _vcpkg_features "tests")
+endif ()
+if (BUILD_BENCHMARK)
+    list(APPEND _vcpkg_features "benchmark")
+endif ()
+set(VCPKG_MANIFEST_FEATURES "${_vcpkg_features}" CACHE STRING
+        "vcpkg manifest features (auto-derived from BUILD_* options; do not edit manually)" FORCE)
+message(STATUS "VCPKG_MANIFEST_FEATURES = ${VCPKG_MANIFEST_FEATURES}")
+message(STATUS "VCPKG_TARGET_TRIPLET    = ${VCPKG_TARGET_TRIPLET}")
 
 # Project name
 if (UNIX)
     project(atmoswing)
-else (UNIX)
+else ()
     project(AtmoSwing)
-endif (UNIX)
+endif ()
 
 
 ##### OPTIONS
@@ -43,23 +82,20 @@ add_definitions(-DATMOSWING_PATCH_VERSION=${VERSION_PATCH})
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/build/cmake ${CMAKE_MODULE_PATH})
 
 # Choice of the targets
-option(BUILD_FORECASTER "Do you want to build AtmoSwing Forecaster ?" ON)
-option(BUILD_VIEWER "Do you want to build AtmoSwing Viewer ?" ON)
-option(BUILD_OPTIMIZER "Do you want to build AtmoSwing Optimizer ?" ON)
-option(BUILD_DOWNSCALER "Do you want to build AtmoSwing Downscaler ?" ON)
+# BUILD_FORECASTER / BUILD_VIEWER / BUILD_OPTIMIZER / BUILD_DOWNSCALER are already in the cache
+# (set before project() above). Just make them visible in cmake-gui.
+mark_as_advanced(CLEAR BUILD_FORECASTER BUILD_VIEWER BUILD_OPTIMIZER BUILD_DOWNSCALER)
 option(CREATE_INSTALLER "Do you want to generate installer packages ?" OFF)
 if (BUILD_FORECASTER OR BUILD_OPTIMIZER OR BUILD_DOWNSCALER)
-    option(BUILD_TESTS "Do you want to build the tests (recommended) ?" ON)
     mark_as_advanced(CLEAR BUILD_TESTS)
 else ()
-    set(BUILD_TESTS OFF)
+    set(BUILD_TESTS OFF)    # shadow cache so no test target is configured
     mark_as_advanced(BUILD_TESTS)
 endif ()
 if (BUILD_OPTIMIZER)
-    option(BUILD_BENCHMARK "Do you want to build the benchmark suite ?" OFF)
     mark_as_advanced(CLEAR BUILD_BENCHMARK)
 else ()
-    set(BUILD_BENCHMARK OFF)
+    set(BUILD_BENCHMARK OFF)    # shadow cache
     mark_as_advanced(BUILD_BENCHMARK)
 endif ()
 
@@ -180,8 +216,8 @@ message(STATUS "wxWidgets include dir = ${wxWidgets_SOURCE_DIR}/include")
 message(STATUS "wxWidgets lib dir = ${wxWidgets_BINARY_DIR}/lib")
 
 # Make wxWidgets discoverable for find_package calls in dependencies
-set(wxWidgets_DIR "${wxWidgets_BINARY_DIR}" CACHE PATH "Path to wxWidgets config files")
-set(wxWidgets_FOUND TRUE CACHE BOOL "wxWidgets found via FetchContent")
+#set(wxWidgets_DIR "${wxWidgets_BINARY_DIR}" CACHE PATH "Path to wxWidgets config files")
+#set(wxWidgets_FOUND TRUE CACHE BOOL "wxWidgets found via FetchContent")
 
 # vroomgis
 set(BUILD_VROOMGIS_WITH_CONAN OFF)

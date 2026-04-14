@@ -9,6 +9,12 @@ if (USE_GUI)
     option(TEST_GUI "Should we test GUI ?" OFF)
 endif(USE_GUI)
 
+# GUI tests require the viewer (and its deps) to be present
+if (TEST_GUI AND NOT BUILD_VIEWER)
+    message(WARNING "TEST_GUI=ON requires BUILD_VIEWER=ON; disabling TEST_GUI.")
+    set(TEST_GUI OFF)
+endif ()
+
 option(TEST_CALIBRATION "Should we test calibration functions (long tests) ?" ON)
 
 

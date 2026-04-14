@@ -5,26 +5,11 @@
   "dependencies": [
     "vcpkg-tool-ninja",
     "eigen3",
-    "gtest",
-    "benchmark",
     "proj",
-    "curl",
-    "tiff",
     "sqlite3",
-    "libdeflate",
-    "zlib",
-    "libpng",
     "libaec",
-    "geos",
-    "jasper",
-    {
-      "name": "gdal",
-      "features": [
-        "recommended-features",
-        "curl",
-        "zstd"
-      ]
-    },
+    "curl",
+    "zlib",
     {
       "name": "netcdf-c",
       "features": [
@@ -39,5 +24,44 @@
         "zlib"
       ]
     }
-  ]
+  ],
+  "features": {
+    "viewer": {
+      "description": "Dependencies for AtmoSwing Viewer (BUILD_VIEWER=ON)",
+      "dependencies": [
+        "libpng",
+        "tiff",
+        "libdeflate",
+        "geos",
+        "jasper",
+        {
+          "name": "gdal",
+          "features": [
+            "recommended-features",
+            "curl",
+            "zstd"
+          ]
+        }
+      ]
+    },
+    "forecaster": {
+      "description": "Dependencies for AtmoSwing Forecaster (BUILD_FORECASTER=ON)",
+      "dependencies": [
+        "openssl"
+      ]
+    },
+    "tests": {
+      "description": "Unit test dependencies (BUILD_TESTS=ON)",
+      "dependencies": [
+        "gtest"
+      ]
+    },
+    "benchmark": {
+      "description": "Benchmark dependencies (BUILD_BENCHMARK=ON)",
+      "dependencies": [
+        "benchmark",
+        "gtest"
+      ]
+    }
+  }
 }
