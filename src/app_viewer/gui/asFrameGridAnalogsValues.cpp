@@ -253,7 +253,7 @@ bool asFrameGridAnalogsValues::UpdateGrid() {
         m_grid->SetCellValue(i, 3, buf);
     }
 
-    m_grid->Show();
+    m_grid->Show(true);
 
     return true;
 }

@@ -43,7 +43,6 @@ IMPLEMENT_APP(AtmoSwingAppViewer);
 
 #include "asBitmaps.h"
 #include "asInternet.h"
-#include "vroomgis_bmp.h"
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
     {wxCMD_LINE_SWITCH, "h", "help", "This help text"},
@@ -99,9 +98,6 @@ bool AtmoSwingAppViewer::OnInit() {
     }
 
     wxInitAllImageHandlers();
-
-    // Initialize images
-    vroomgis_initialize_images();
 
     // Init cURL
     asInternet::Init();
@@ -247,9 +243,6 @@ int AtmoSwingAppViewer::OnExit() {
 
     // Cleanup cURL
     asInternet::Cleanup();
-
-    // Cleanup images
-    vroomgis_clear_images();
 
     return 1;
 }

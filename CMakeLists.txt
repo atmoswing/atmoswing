@@ -169,6 +169,15 @@ else (WIN32)
 endif (WIN32)
 
 
+##### COMPILE FLAGS (must be set before FetchContent so sub-projects inherit the same flags)
+
+# Applying definitions and flags here ensures that FetchContent dependencies (wxWidgets, eccodes,
+# vroomgis) are compiled with the same wxDEBUG_LEVEL as AtmoSwing itself.  Without this ordering,
+# wxbase would be compiled with wxDEBUG_LEVEL=1 (the wx default) while AtmoSwing release objects
+# use wxDEBUG_LEVEL=0, causing an LNK2005 duplicate-symbol error for wxFormatString::Validate.
+include(atmoswing_definitions_and_flags)
+
+
 ##### DEPENDENCIES
 
 # wxWidgets
@@ -229,6 +238,7 @@ FetchContent_MakeAvailable(vroomgis)
 
 # eccodes
 set(BASH_EXE "C:/Program Files/Git/bin/bash.exe")
+set(ENABLE_FORTRAN OFF)
 set(ENABLE_TESTS OFF)
 set(ENABLE_EXTRA_TESTS OFF)
 set(ENABLE_EXAMPLES OFF)
@@ -299,11 +309,7 @@ if (USE_CODECOV)
 endif (USE_CODECOV)
 
 
-##### DISPLAY SOME INFORMATION
-
-include(atmoswing_definitions_and_flags)
-
-# Add components
+##### ADD COMPONENTS
 add_subdirectory(src/shared_base)
 if (BUILD_FORECASTER OR BUILD_OPTIMIZER OR BUILD_DOWNSCALER)
     add_subdirectory(src/shared_processing)
