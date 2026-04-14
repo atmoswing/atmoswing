@@ -77,8 +77,7 @@ endif (USE_GUI)
 
 ##### LINKING
 
-target_link_libraries(atmoswing-downscaler asbase)
-target_link_libraries(atmoswing-downscaler asprocessing)
+target_link_libraries(atmoswing-downscaler asbase asprocessing)
 if (USE_VLD)
     target_link_libraries(atmoswing-downscaler ${VLD_LIBRARIES})
 endif (USE_VLD)

@@ -138,8 +138,10 @@ endif (WIN32)
 # wxWidgets
 if (USE_GUI)
     set(wxUSE_GUI ON)
+    set(WX_LIB_BASENAME "mswu")
 else (USE_GUI)
     set(wxUSE_GUI OFF)
+    set(WX_LIB_BASENAME "baseu")
 endif (USE_GUI)
 set(wxBUILD_INSTALL OFF)
 set(wxBUILD_SAMPLES OFF)
@@ -152,6 +154,27 @@ FetchContent_Declare(wxWidgets
 FetchContent_MakeAvailable(wxWidgets)
 
 include_directories(${wxWidgets_SOURCE_DIR}/include)
+if (WIN32)
+    include_directories(${wxWidgets_BINARY_DIR}/lib/vc_x64_lib/$<IF:$<CONFIG:Debug>,${WX_LIB_BASENAME}d,${WX_LIB_BASENAME}>)
+else ()
+    # On Unix-like systems, wxWidgets generates setup.h in lib/wx/include/<toolkit>-<configuration> Find the actual
+    # setup.h directory dynamically (version-agnostic)
+    include_directories(${wxWidgets_BINARY_DIR}/lib)
+
+    # Try to find the setup.h directory dynamically. First try the more common non-debug variant, then fall back to
+    # debug variant if needed
+    file(GLOB WX_SETUP_INCLUDE_DIR "${wxWidgets_BINARY_DIR}/lib/wx/include/base-unicode-static-*")
+    if (NOT WX_SETUP_INCLUDE_DIR)
+        file(GLOB WX_SETUP_INCLUDE_DIR "${wxWidgets_BINARY_DIR}/lib/wx/include/base-unicode-debug-static-*")
+    endif ()
+
+    if (WX_SETUP_INCLUDE_DIR)
+        include_directories(${WX_SETUP_INCLUDE_DIR})
+        message(STATUS "wxWidgets setup dir = ${WX_SETUP_INCLUDE_DIR}")
+    else ()
+        message(WARNING "Could not find wxWidgets setup.h directory. Build may fail.")
+    endif ()
+endif ()
 link_directories(${wxWidgets_BINARY_DIR}/lib)
 message(STATUS "wxWidgets include dir = ${wxWidgets_SOURCE_DIR}/include")
 message(STATUS "wxWidgets lib dir = ${wxWidgets_BINARY_DIR}/lib")
@@ -183,38 +206,35 @@ endif ()
 FetchContent_Declare(eccodes
         GIT_REPOSITORY https://github.com/ecmwf/eccodes.git
         GIT_TAG 2.46.0
-        PATCH_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> git apply "${CMAKE_SOURCE_DIR}/build/patches/eccodes-conditional-subdirs.patch"
+        UPDATE_DISCONNECTED TRUE
+        PATCH_COMMAND ${CMAKE_COMMAND}
+                      -DSOURCE_DIR=<SOURCE_DIR>
+                      -DPATCH_FILE=${CMAKE_SOURCE_DIR}/build/patches/eccodes-conditional-subdirs.patch
+                      -P ${CMAKE_SOURCE_DIR}/build/cmake/apply_git_patch_if_needed.cmake
 )
-FetchContent_GetProperties(eccodes)
-if (NOT eccodes_POPULATED)
-    message(STATUS "Fetching ecCodes...")
-    FetchContent_MakeAvailable(eccodes)
+FetchContent_MakeAvailable(eccodes)
 
-    # Mirror ecCodes definitions into this build tree using a filtered file set.
-    set(ECCODES_SHARE_DIR "${CMAKE_BINARY_DIR}/share/eccodes")
-    set(_eccodes_def_src "${eccodes_SOURCE_DIR}/definitions")
-    set(_eccodes_def_dst "${ECCODES_SHARE_DIR}/definitions")
-    if (EXISTS "${_eccodes_def_src}")
-        file(MAKE_DIRECTORY "${_eccodes_def_dst}")
-        file(GLOB_RECURSE _eccodes_def_files RELATIVE "${_eccodes_def_src}"
-                "${_eccodes_def_src}/*.def"
-                "${_eccodes_def_src}/*.txt"
-                "${_eccodes_def_src}/*.list"
-                "${_eccodes_def_src}/*.table")
-        foreach(_eccodes_rel_file ${_eccodes_def_files})
-            get_filename_component(_eccodes_rel_dir "${_eccodes_rel_file}" DIRECTORY)
-            if (NOT _eccodes_rel_dir STREQUAL "")
-                file(MAKE_DIRECTORY "${_eccodes_def_dst}/${_eccodes_rel_dir}")
-            endif ()
-            configure_file("${_eccodes_def_src}/${_eccodes_rel_file}" "${_eccodes_def_dst}/${_eccodes_rel_file}" COPYONLY)
-        endforeach()
-    endif ()
-else ()
-    message(STATUS "ecCodes already fetched.")
+# Mirror ecCodes definitions into this build tree using a filtered file set (only if not already done).
+set(ECCODES_SHARE_DIR "${CMAKE_BINARY_DIR}/share/eccodes")
+set(_eccodes_def_src "${eccodes_SOURCE_DIR}/definitions")
+set(_eccodes_def_dst "${ECCODES_SHARE_DIR}/definitions")
+set(_eccodes_stamp_file "${_eccodes_def_dst}/.eccodes_copied")
+if (EXISTS "${_eccodes_def_src}" AND NOT EXISTS "${_eccodes_stamp_file}")
+    file(MAKE_DIRECTORY "${_eccodes_def_dst}")
+    file(GLOB_RECURSE _eccodes_def_files RELATIVE "${_eccodes_def_src}"
+            "${_eccodes_def_src}/*.def"
+            "${_eccodes_def_src}/*.txt"
+            "${_eccodes_def_src}/*.list"
+            "${_eccodes_def_src}/*.table")
+    foreach(_eccodes_rel_file ${_eccodes_def_files})
+        get_filename_component(_eccodes_rel_dir "${_eccodes_rel_file}" DIRECTORY)
+        if (NOT _eccodes_rel_dir STREQUAL "")
+            file(MAKE_DIRECTORY "${_eccodes_def_dst}/${_eccodes_rel_dir}")
+        endif ()
+        configure_file("${_eccodes_def_src}/${_eccodes_rel_file}" "${_eccodes_def_dst}/${_eccodes_rel_file}" COPYONLY)
+    endforeach()
+    file(TOUCH "${_eccodes_stamp_file}")
 endif ()
-
-
-
 
 
 ##### FIND ANALYSIS TOOLS

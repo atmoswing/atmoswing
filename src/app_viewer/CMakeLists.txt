@@ -3,6 +3,11 @@
 project(viewer)
 
 
+##### DEPENDENCIES
+
+find_package(GDAL REQUIRED)
+find_package(PNG REQUIRED)
+
 ##### SOURCE FILES
 
 # List source files
@@ -98,11 +103,7 @@ set_target_properties(atmoswing-viewer PROPERTIES COMPILE_DEFINITIONS "APP_VIEWE
 ##### LINKING
 
 add_dependencies(atmoswing-viewer vroomgis)
-target_link_libraries(atmoswing-viewer libpng)
-target_link_libraries(atmoswing-viewer gdal)
-target_link_libraries(atmoswing-viewer asbase)
-target_link_libraries(atmoswing-viewer vroomgis)
-target_link_libraries(atmoswing-viewer wxplotctrl)
+target_link_libraries(atmoswing-viewer PNG::PNG GDAL::GDAL asbase vroomgis wxplotctrl)
 if (USE_VLD)
     target_link_libraries(atmoswing-viewer ${VLD_LIBRARIES})
 endif (USE_VLD)

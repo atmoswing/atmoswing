@@ -3,6 +3,11 @@
 project(forecaster)
 
 
+##### DEPENDENCIES
+
+find_package(OpenSSL REQUIRED)
+
+
 ##### SOURCE FILES
 
 # List source files
@@ -76,9 +81,7 @@ endif (USE_GUI)
 
 ##### LINKING
 
-target_link_libraries(atmoswing-forecaster asbase)
-target_link_libraries(atmoswing-forecaster asprocessing)
-target_link_libraries(atmoswing-forecaster openssl)
+target_link_libraries(atmoswing-forecaster asbase asprocessing OpenSSL::SSL)
 if (USE_VLD)
     target_link_libraries(atmoswing-forecaster ${VLD_LIBRARIES})
 endif (USE_VLD)

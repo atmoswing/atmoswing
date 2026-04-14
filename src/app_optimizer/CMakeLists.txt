@@ -89,8 +89,7 @@ endif (USE_GUI)
 
 ##### LINKING
 
-target_link_libraries(atmoswing-optimizer asbase)
-target_link_libraries(atmoswing-optimizer asprocessing)
+target_link_libraries(atmoswing-optimizer asbase asprocessing)
 if (USE_VLD)
     target_link_libraries(atmoswing-optimizer ${VLD_LIBRARIES})
 endif (USE_VLD)

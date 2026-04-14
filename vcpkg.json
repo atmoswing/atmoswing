@@ -16,6 +16,7 @@
     "libpng",
     "libaec",
     "geos",
+    "jasper",
     {
       "name": "gdal",
       "features": [

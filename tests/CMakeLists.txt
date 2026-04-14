@@ -11,6 +11,15 @@ endif(USE_GUI)
 
 option(TEST_CALIBRATION "Should we test calibration functions (long tests) ?" ON)
 
+
+##### DEPENDENCIES
+
+find_package(GTest CONFIG REQUIRED)
+if (TEST_GUI)
+    find_package(GDAL REQUIRED)
+endif (TEST_GUI)
+
+
 ##### SOURCE FILES
 
 # List source files
@@ -226,9 +235,7 @@ endif ()
 
 add_dependencies(atmoswing-tests asbase)
 add_dependencies(atmoswing-tests asprocessing)
-target_link_libraries(atmoswing-tests asbase)
-target_link_libraries(atmoswing-tests asprocessing)
-target_link_libraries(atmoswing-tests gtest)
+target_link_libraries(atmoswing-tests asbase asprocessing GTest::gtest GTest::gtest_main)
 if (UNIX)
     target_link_libraries(atmoswing-tests pthread)
 endif ()
@@ -239,16 +246,13 @@ if (USE_CUDA)
     add_dependencies(atmoswing-tests ascuda)
     add_dependencies(atmoswing-tests astestscuda)
     target_link_libraries(astestscuda ${CUDA_LIBRARIES})
-    target_link_libraries(atmoswing-tests ascuda)
-    target_link_libraries(atmoswing-tests astestscuda)
+    target_link_libraries(atmoswing-tests ascuda astestscuda)
     add_definitions(-DUSE_CUDA)
 endif ()
 if (TEST_GUI)
     add_dependencies(atmoswing-tests vroomgis)
     add_dependencies(atmoswing-tests wxplotctrl)
-    target_link_libraries(atmoswing-tests vroomgis)
-    target_link_libraries(atmoswing-tests wxplotctrl)
-    target_link_libraries(atmoswing-tests gdal)
+    target_link_libraries(atmoswing-tests vroomgis wxplotctrl GDAL::GDAL)
 endif (TEST_GUI)
 
 ##### CTEST

@@ -2,6 +2,15 @@
 # Project name
 project(base)
 
+##### DEPENDENCIES
+
+find_package(CURL REQUIRED)
+find_package(ZLIB REQUIRED)
+find_package(eccodes REQUIRED)
+find_package(netCDF CONFIG REQUIRED)
+find_package(Eigen3 CONFIG REQUIRED)
+find_package(PROJ CONFIG REQUIRED)
+
 
 ##### SOURCE FILES
 
@@ -64,18 +73,16 @@ endif (USE_GUI)
 
 ##### LINKING
 
-target_link_libraries(asbase netcdf)
-target_link_libraries(asbase proj)
-target_link_libraries(asbase eccodes)
+target_link_libraries(asbase netCDF::netcdf PROJ::proj eccodes Eigen3::Eigen)
 
 if (BUILD_FORECASTER OR BUILD_VIEWER)
-    target_link_libraries(asbase libcurl)
+    target_link_libraries(asbase CURL::libcurl ZLIB::ZLIB)
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
 if (USE_GUI)
-    target_link_libraries(asbase wxwidgets)
+    target_link_libraries(asbase wx::core wx::xml)
 else (USE_GUI)
-    target_link_libraries(asbase wxbase)
+    target_link_libraries(asbase wx::base wx::xml)
 endif (USE_GUI)
 
 
