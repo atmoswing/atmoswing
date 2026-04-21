@@ -5,15 +5,6 @@ import os
 class AmtoSwing(ConanFile):
 
     def configure(self):
-        if self.options.code_coverage:
-            self.options.enable_tests = True
-        self.options["gdal"].with_curl = True # for xml support
-        self.options["gdal"].shared = True
-        self.options["proj"].build_executables = False
-        if self.options.with_ssl:
-            self.options["libcurl"].with_ssl = "openssl"
-        else:
-            self.options["libcurl"].with_ssl = False
         if not self.options.with_gui:
             self.options.test_gui = False
             self.options["wxbase"].xml = True

@@ -11,6 +11,11 @@ endif ()
 if (POLICY CMP0077)
     cmake_policy(SET CMP0077 NEW)
 endif ()
+if (POLICY CMP0168)
+    # Avoid FetchContent sub-builds (Ninja recompact/restat), which can fail on
+    # Windows reconfigure when subbuild files are transiently locked.
+    cmake_policy(SET CMP0168 NEW)
+endif ()
 
 # vcpkg
 if (NOT DEFINED ENV{VCPKG_ROOT})
@@ -180,6 +185,9 @@ include(atmoswing_definitions_and_flags)
 
 ##### DEPENDENCIES
 
+# Prevent re-cloning/updating already-populated FetchContent dependencies on reconfigure.
+set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
+
 # wxWidgets
 if (USE_GUI)
     set(wxUSE_GUI ON)
@@ -191,16 +199,17 @@ endif (USE_GUI)
 set(wxBUILD_INSTALL OFF)
 set(wxBUILD_SAMPLES OFF)
 set(wxBUILD_TESTS OFF)
-set(wxBUILD_SHARED OFF)
 
 FetchContent_Declare(wxWidgets
         GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
-        GIT_TAG v3.3.2)
+        GIT_TAG        v3.3.2
+        UPDATE_DISCONNECTED TRUE)
 FetchContent_MakeAvailable(wxWidgets)
 
 include_directories(${wxWidgets_SOURCE_DIR}/include)
 if (WIN32)
     include_directories(${wxWidgets_BINARY_DIR}/lib/vc_x64_lib/$<IF:$<CONFIG:Debug>,${WX_LIB_BASENAME}d,${WX_LIB_BASENAME}>)
+    include_directories(${wxWidgets_BINARY_DIR}/lib/vc_x64_dll/$<IF:$<CONFIG:Debug>,${WX_LIB_BASENAME}d,${WX_LIB_BASENAME}>)
 else ()
     # On Unix-like systems, wxWidgets generates setup.h in lib/wx/include/<toolkit>-<configuration> Find the actual
     # setup.h directory dynamically (version-agnostic)
@@ -232,8 +241,9 @@ message(STATUS "wxWidgets lib dir = ${wxWidgets_BINARY_DIR}/lib")
 set(BUILD_VROOMGIS_WITH_CONAN OFF)
 FetchContent_Declare(vroomgis
         GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
-        GIT_TAG c87215c9d9fb086eefe75d6efbd10b98ac8b7290
-        SOURCE_SUBDIR vroomgis)
+        GIT_TAG        c87215c9d9fb086eefe75d6efbd10b98ac8b7290
+        SOURCE_SUBDIR  vroomgis
+        UPDATE_DISCONNECTED TRUE)
 FetchContent_MakeAvailable(vroomgis)
 
 # eccodes
@@ -259,6 +269,10 @@ FetchContent_Declare(eccodes
                       -P ${CMAKE_SOURCE_DIR}/build/cmake/apply_git_patch_if_needed.cmake
 )
 FetchContent_MakeAvailable(eccodes)
+
+# Allow find_package(eccodes) to locate ecbuild's generated config in sub-builds
+# (needed when CMP0168 is not available, i.e. CMake < 3.30)
+list(APPEND CMAKE_PREFIX_PATH "${eccodes_BINARY_DIR}")
 
 # Mirror ecCodes definitions into this build tree using a filtered file set (only if not already done).
 set(ECCODES_SHARE_DIR "${CMAKE_BINARY_DIR}/share/eccodes")
@@ -332,6 +346,8 @@ endif ()
 if (BUILD_BENCHMARK)
     add_subdirectory(benchmark)
 endif()
+
+include(atmoswing_stage_runtime_dlls)
 
 
 ##### DISPLAY SOME INFORMATION
