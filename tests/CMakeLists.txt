@@ -261,6 +261,11 @@ if (TEST_GUI)
     target_link_libraries(atmoswing-tests vroomgis wxplotctrl GDAL::GDAL)
 endif (TEST_GUI)
 
+##### RUNTIME DLL STAGING (Windows)
+
+atmoswing_stage_runtime_dlls(atmoswing-tests)
+
+
 ##### CTEST
 
 set(CTEST_TEST_TIMEOUT 3600)

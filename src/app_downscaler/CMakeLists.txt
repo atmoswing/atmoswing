@@ -87,6 +87,11 @@ if (USE_CUDA)
 endif (USE_CUDA)
 
 
+##### RUNTIME DLL STAGING (Windows)
+
+atmoswing_stage_runtime_dlls(atmoswing-downscaler)
+
+
 ##### INSTALLER
 
 install(TARGETS atmoswing-downscaler DESTINATION ${INSTALL_DIR_BIN})

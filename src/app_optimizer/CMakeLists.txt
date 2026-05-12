@@ -100,6 +100,11 @@ if (USE_CUDA)
 endif (USE_CUDA)
 
 
+##### RUNTIME DLL STAGING (Windows)
+
+atmoswing_stage_runtime_dlls(atmoswing-optimizer)
+
+
 ##### INSTALLER
 
 install(TARGETS atmoswing-optimizer DESTINATION ${INSTALL_DIR_BIN})

@@ -199,6 +199,7 @@ endif (USE_GUI)
 set(wxBUILD_INSTALL OFF)
 set(wxBUILD_SAMPLES OFF)
 set(wxBUILD_TESTS OFF)
+set(wxBUILD_SHARED OFF)
 
 FetchContent_Declare(wxWidgets
         GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
@@ -324,6 +325,11 @@ endif (USE_CODECOV)
 
 
 ##### ADD COMPONENTS
+
+# Provides atmoswing_stage_runtime_dlls(<target>); each app subdir calls it on
+# its executable so the DLL staging runs as POST_BUILD on the exe.
+include(atmoswing_stage_runtime_dlls)
+
 add_subdirectory(src/shared_base)
 if (BUILD_FORECASTER OR BUILD_OPTIMIZER OR BUILD_DOWNSCALER)
     add_subdirectory(src/shared_processing)
@@ -346,8 +352,6 @@ endif ()
 if (BUILD_BENCHMARK)
     add_subdirectory(benchmark)
 endif()
-
-include(atmoswing_stage_runtime_dlls)
 
 
 ##### DISPLAY SOME INFORMATION

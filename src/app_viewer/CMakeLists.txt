@@ -112,6 +112,11 @@ if (WIN32)
 endif (WIN32)
 
 
+##### RUNTIME DLL STAGING (Windows)
+
+atmoswing_stage_runtime_dlls(atmoswing-viewer)
+
+
 ##### INSTALLER
 
 install(TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
