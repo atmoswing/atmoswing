@@ -2,12 +2,6 @@ cmake_minimum_required(VERSION 3.18) # To support FetchContent / FetchContent_Ma
 
 include(FetchContent)
 
-if (POLICY CMP0043)
-    cmake_policy(SET CMP0043 NEW)
-endif ()
-if (POLICY CMP0074)
-    cmake_policy(SET CMP0074 NEW)
-endif ()
 if (POLICY CMP0077)
     cmake_policy(SET CMP0077 NEW)
 endif ()
@@ -67,11 +61,7 @@ message(STATUS "VCPKG_MANIFEST_FEATURES = ${VCPKG_MANIFEST_FEATURES}")
 message(STATUS "VCPKG_TARGET_TRIPLET    = ${VCPKG_TARGET_TRIPLET}")
 
 # Project name
-if (UNIX)
-    project(atmoswing)
-else ()
-    project(AtmoSwing)
-endif ()
+project(AtmoSwing)
 
 
 ##### OPTIONS
@@ -248,7 +238,6 @@ FetchContent_Declare(vroomgis
 FetchContent_MakeAvailable(vroomgis)
 
 # eccodes
-set(BASH_EXE "C:/Program Files/Git/bin/bash.exe")
 set(ENABLE_FORTRAN OFF)
 set(ENABLE_TESTS OFF)
 set(ENABLE_EXTRA_TESTS OFF)
@@ -259,6 +248,7 @@ set(ECBUILD_LOG_LEVEL "OFF")  # Disable all logging
 set(ECBUILD_LOG_FILE "${CMAKE_BINARY_DIR}/ecbuild.log")  # Set proper log file location
 if (WIN32)
     set(ECCODES_ON_WINDOWS 1)
+    set(BASH_EXE "C:/Program Files/Git/bin/bash.exe")
 endif ()
 FetchContent_Declare(eccodes
         GIT_REPOSITORY https://github.com/ecmwf/eccodes.git

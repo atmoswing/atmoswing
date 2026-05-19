@@ -58,8 +58,7 @@ include_directories(${inc_dirs})
 
 ##### LIBRARIES
 
-# vroomgis
-FetchContent_MakeAvailable(vroomgis)
+# vroomgis (already made available at top-level CMakeLists.txt)
 include_directories(${vroomgis_SOURCE_DIR}/vroomgis/src)
 include_directories(${vroomgis_SOURCE_DIR}/vroomgis/art)
 
@@ -89,11 +88,11 @@ endif (USE_CPPCHECK)
 
 # Compilation flags
 if (MINGW OR MSYS OR UNIX AND NOT APPLE)
-    set_target_properties(vroomgis PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable")
-    set_target_properties(wxplotctrl PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable -Wno-attributes")
+    target_compile_options(vroomgis PRIVATE -Wno-unused-but-set-variable)
+    target_compile_options(wxplotctrl PRIVATE -Wno-unused-but-set-variable -Wno-attributes)
 elseif (WIN32)
-    set_target_properties(vroomgis PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} /W2")
-    set_target_properties(wxplotctrl PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} /W2")
+    target_compile_options(vroomgis PRIVATE /W2)
+    target_compile_options(wxplotctrl PRIVATE /W2)
 endif ()
 
 # Specific definitions
