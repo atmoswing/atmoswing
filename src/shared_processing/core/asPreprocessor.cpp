@@ -123,14 +123,14 @@ bool asPreprocessor::PreprocessSimpleGradients(const vector<asPredictor*>& predi
     for (int iTime = 0; iTime < timeSize; iTime++) {
         for (int iMem = 0; iMem < membersNb; iMem++) {
             // Vertical gradients
-            tmpgrad.block(0, 0, rowsNb - 1, colsNb) =
-                predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
-                predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb - 1, colsNb);
+            tmpgrad.block(0, 0, rowsNb - 1,
+                          colsNb) = predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
+                                    predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb - 1, colsNb);
 
             // Horizontal gradients
-            tmpgrad.block(rowsNb, 0, rowsNb, colsNb - 1) =
-                predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
-                predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1);
+            tmpgrad.block(rowsNb, 0, rowsNb,
+                          colsNb - 1) = predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
+                                        predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1);
 
             gradients[iTime].push_back(tmpgrad);
         }
@@ -202,16 +202,16 @@ bool asPreprocessor::PreprocessRealGradients(const vector<asPredictor*>& predict
     for (int iTime = 0; iTime < timeSize; iTime++) {
         for (int iMem = 0; iMem < membersNb; iMem++) {
             // Vertical gradients
-            tmpgrad.block(0, 0, rowsNb - 1, colsNb) =
-                (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
-                 predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb - 1, colsNb)) /
-                distYs;
+            tmpgrad.block(0, 0, rowsNb - 1,
+                          colsNb) = (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
+                                     predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb - 1, colsNb)) /
+                                    distYs;
 
             // Horizontal gradients
-            tmpgrad.block(rowsNb, 0, rowsNb, colsNb - 1) =
-                (predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
-                 predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1)) /
-                distXs;
+            tmpgrad.block(rowsNb, 0, rowsNb,
+                          colsNb - 1) = (predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
+                                         predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1)) /
+                                        distXs;
 
             gradients[iTime].push_back(tmpgrad);
         }
@@ -274,14 +274,14 @@ bool asPreprocessor::PreprocessSimpleGradientsWithGaussianWeights(const vector<a
     for (int iTime = 0; iTime < timeSize; iTime++) {
         for (int iMem = 0; iMem < membersNb; iMem++) {
             // Vertical gradients
-            tmpgrad.block(0, 0, rowsNb - 1, colsNb) =
-                g2 * (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
-                      predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb - 1, colsNb));
+            tmpgrad.block(0, 0, rowsNb - 1,
+                          colsNb) = g2 * (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
+                                          predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb - 1, colsNb));
 
             // Horizontal gradients
-            tmpgrad.block(rowsNb, 0, rowsNb, colsNb - 1) =
-                g1 * (predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
-                      predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1));
+            tmpgrad.block(rowsNb, 0, rowsNb,
+                          colsNb - 1) = g1 * (predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
+                                              predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1));
 
             gradients[iTime].push_back(tmpgrad);
         }
@@ -357,18 +357,18 @@ bool asPreprocessor::PreprocessRealGradientsWithGaussianWeights(const vector<asP
     for (int iTime = 0; iTime < timeSize; iTime++) {
         for (int iMem = 0; iMem < membersNb; iMem++) {
             // Vertical gradients
-            tmpgrad.block(0, 0, rowsNb - 1, colsNb) =
-                g2 *
-                (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
-                 predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb - 1, colsNb)) /
-                distYs;
+            tmpgrad.block(0, 0, rowsNb - 1,
+                          colsNb) = g2 *
+                                    (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
+                                     predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb - 1, colsNb)) /
+                                    distYs;
 
             // Horizontal gradients
-            tmpgrad.block(rowsNb, 0, rowsNb, colsNb - 1) =
-                g1 *
-                (predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
-                 predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1)) /
-                distXs;
+            tmpgrad.block(rowsNb, 0, rowsNb,
+                          colsNb - 1) = g1 *
+                                        (predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
+                                         predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1)) /
+                                        distXs;
 
             gradients[iTime].push_back(tmpgrad);
         }

@@ -40,11 +40,11 @@ asFrameDownscaler::asFrameDownscaler(wxWindow* parent)
       _methodDownscaler(nullptr) {
     // Toolbar
     _toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap, wxITEM_NORMAL,
-                       _("Run downscaler"), _("Run downscaler now"), nullptr);
+                      _("Run downscaler"), _("Run downscaler now"), nullptr);
     _toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::STOP), wxNullBitmap,
-                       wxITEM_NORMAL, _("Cancel downscaling"), _("Cancel current downscaling"), nullptr);
+                      wxITEM_NORMAL, _("Cancel downscaling"), _("Cancel current downscaling"), nullptr);
     _toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
-                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
+                      wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     _toolBar->Realize();
 
     // Connect events

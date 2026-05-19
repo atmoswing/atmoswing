@@ -65,10 +65,10 @@ class AtmoSwingAppForecaster : public wxAppConsole
     static void InitLanguageSupport();
 
   private:
-    bool _doConfig; /**< Do we want to configure the software? */
-    bool _doForecast; /**< Do we want to run the forecast? */
-    bool _doForecastPast; /**< Do we want to run the forecast for past dates? */
-    double _forecastDate; /**< Date of the forecast. */
+    bool _doConfig;        /**< Do we want to configure the software? */
+    bool _doForecast;      /**< Do we want to run the forecast? */
+    bool _doForecastPast;  /**< Do we want to run the forecast for past dates? */
+    double _forecastDate;  /**< Date of the forecast. */
     int _forecastPastDays; /**< Number of days to forecast in the past. */
 #if USE_GUI
     wxSingleInstanceChecker* _singleInstanceChecker; /**< The single instance checker. */

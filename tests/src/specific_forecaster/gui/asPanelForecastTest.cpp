@@ -26,14 +26,14 @@
  */
 
 #include <gtest/gtest.h>
-#include <wx/wx.h>
-#include <wx/uiaction.h>
 #include <wx/evtloop.h>
+#include <wx/uiaction.h>
+#include <wx/wx.h>
 
-#include "asPanelForecast.h"
 #include "asBatchForecasts.h"
 #include "asFrameForecaster.h"
 #include "asFrameStyledTextCtrl.h"
+#include "asPanelForecast.h"
 
 // Test fixture for the frame test
 class PanelForecast : public testing::Test {
@@ -60,14 +60,14 @@ class PanelForecast : public testing::Test {
 
 void ProcessEvents() {
     wxEventLoop loop;
-    wxEventLoop::SetActive(&loop); // Start the event loop
+    wxEventLoop::SetActive(&loop);  // Start the event loop
 
     while (loop.Pending()) {
         loop.Dispatch();
         wxMilliSleep(10);
     }
 
-    wxEventLoop::SetActive(NULL); // Stop the event loop
+    wxEventLoop::SetActive(NULL);  // Stop the event loop
 }
 
 TEST_F(PanelForecast, Initialises) {
@@ -108,7 +108,7 @@ TEST_F(PanelForecast, OnEditForecastFile) {
     wxMilliSleep(500);
 
     // Handle the dialog frame
-    sim.MouseClick(); // Click to set focus on the app
+    sim.MouseClick();  // Click to set focus on the app
     sim.Text("xyz.txt");
     sim.KeyDown(WXK_RETURN);
     sim.KeyUp(WXK_RETURN);

@@ -89,19 +89,19 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
 
     // Toolbar
     _toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN), wxNullBitmap,
-                       wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
-    _toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT),
-                       wxNullBitmap, wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), nullptr);
+                      wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
+    _toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT), wxNullBitmap,
+                      wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), nullptr);
     _toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_MOVE), wxNullBitmap,
-                       wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
+                      wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
     _toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_FIT), wxNullBitmap,
-                       wxITEM_NORMAL, _("Zoom to visible layers"),
-                       _("Zoom view to the full extent of all visible layers"), nullptr);
+                      wxITEM_NORMAL, _("Zoom to visible layers"),
+                      _("Zoom view to the full extent of all visible layers"), nullptr);
     _toolBar->AddTool(asID_CROSS_MARKER, wxT("Marker overlay"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_CROSS),
-                       wxNullBitmap, wxITEM_NORMAL, _("Display a cross marker overlay"),
-                       _("Display a cross marker overlay on both frames"), nullptr);
+                      wxNullBitmap, wxITEM_NORMAL, _("Display a cross marker overlay"),
+                      _("Display a cross marker overlay on both frames"), nullptr);
     _toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
-                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
+                      wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     _toolBar->Realize();
 
     // VroomGIS controls
@@ -122,13 +122,13 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
 
     // Colorbars
     _panelPredictorsColorbarLeft = new asPanelPredictorsColorbar(_panelColorbarLeft, wxID_ANY, wxDefaultPosition,
-                                                                  wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
+                                                                 wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
     _panelPredictorsColorbarLeft->Layout();
     _sizerColorbarLeft->Add(_panelPredictorsColorbarLeft, 1, wxEXPAND, 0);
     _panelColorbarLeft->Layout();
 
     _panelPredictorsColorbarRight = new asPanelPredictorsColorbar(_panelColorbarRight, wxID_ANY, wxDefaultPosition,
-                                                                   wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
+                                                                  wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
     _panelPredictorsColorbarRight->Layout();
     _sizerColorbarRight->Add(_panelPredictorsColorbarRight, 1, wxEXPAND, 0);
     _panelColorbarRight->Layout();
@@ -137,13 +137,13 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
     _predictorsManagerTarget = new asPredictorsManager(_workspace, true);
     _predictorsManagerAnalog = new asPredictorsManager(_workspace);
     _predictorsRenderer = new asPredictorsRenderer(this, _layerManager, _predictorsManagerTarget,
-                                                    _predictorsManagerAnalog, _viewerLayerManagerLeft,
-                                                    _viewerLayerManagerRight);
+                                                   _predictorsManagerAnalog, _viewerLayerManagerLeft,
+                                                   _viewerLayerManagerRight);
     _predictorsRenderer->LinkToColorbars(_panelPredictorsColorbarLeft, _panelPredictorsColorbarRight);
 
     // Menus
     _menuTools->AppendCheckItem(asID_SET_SYNCRO_MODE, _("Synchronize tools"),
-                                 _("When set to true, browsing is synchronized on all display"));
+                                _("When set to true, browsing is synchronized on all display"));
     _menuTools->Check(asID_SET_SYNCRO_MODE, _syncroTool);
 
     // Connect Events
@@ -219,7 +219,8 @@ void asFramePredictors::UpdatePredictorsList() {
         if (int(predictorLevels[i]) == 0) {
             dataListString.Add(asStrF("%s %dh", predictorDataIds[i], int(predictorHours[i])));
         } else {
-            dataListString.Add(asStrF("%s %d %dh", predictorDataIds[i], int(predictorLevels[i]), int(predictorHours[i])));
+            dataListString.Add(
+                asStrF("%s %d %dh", predictorDataIds[i], int(predictorLevels[i]), int(predictorHours[i])));
         }
     }
 

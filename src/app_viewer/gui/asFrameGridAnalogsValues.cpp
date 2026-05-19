@@ -78,8 +78,8 @@ void asFrameGridAnalogsValues::RebuildChoiceForecast() {
 
     // Highlight the specific forecasts
     for (int methodRow = 0; methodRow < _forecastManager->GetMethodsNb(); methodRow++) {
-        int stationId = _forecastManager->GetForecast(_selectedMethod, _selectedForecast)
-                            ->GetStationId(_selectedStation);
+        int stationId =
+            _forecastManager->GetForecast(_selectedMethod, _selectedForecast)->GetStationId(_selectedStation);
         int forecastRow = _forecastManager->GetForecastRowSpecificForStationId(methodRow, stationId);
         int index = _forecastManager->GetLinearIndex(methodRow, forecastRow);
         wxString val = "* " + _choiceForecast->GetString(index) + " *";

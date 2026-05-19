@@ -778,7 +778,8 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
 
     if (_useBatches && _reassessBatchBests) {
         wxLogMessage(_("%d generation bests have been reloaded."), int(_parametersBatchBests.size()));
-        asLog::PrintToConsole(asStrF(_("%d generation bests have been reloaded.\n"), int(_parametersBatchBests.size())));
+        asLog::PrintToConsole(
+            asStrF(_("%d generation bests have been reloaded.\n"), int(_parametersBatchBests.size())));
     }
 
     // Restore best and mean scores
@@ -2198,8 +2199,7 @@ bool asMethodOptimizerGAs::Mutation() {
             for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                _parameters[iInd].MutateNonUniform(mutationsProbability, _generationNb, nbGenMax, minRate,
-                                                    hasMutated);
+                _parameters[iInd].MutateNonUniform(mutationsProbability, _generationNb, nbGenMax, minRate, hasMutated);
                 if (hasMutated) _scoresCalib[iInd] = NAN;
 
                 _parameters[iInd].FixWeights();

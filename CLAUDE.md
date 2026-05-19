@@ -110,7 +110,7 @@ src/
 Follow the Google C++ Style Guide with these project-specific conventions:
 - **Types and methods:** `CamelCase`
 - **Variables:** `camelCase`
-- **Member variables:** `m_` prefix
+- **Member variables:** `_` prefix (leading underscore, lowercase first letter — never `_<UpperCase>` because that form is reserved by the C++ standard)
 - **Global variables:** `g_` prefix
 
 Formatting is enforced by `.clang-format` (Google base, 4-space indent, 120-column limit, `PointerAlignment: Left`). Run clang-format before committing.

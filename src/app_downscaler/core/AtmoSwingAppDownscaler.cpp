@@ -303,8 +303,8 @@ bool AtmoSwingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
 
         // Set the local config object
         wxString configFilePath = asConfig::GetConfigFilePath("AtmoSwingDownscaler.ini");
-        auto pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, configFilePath,
-                                        configFilePath, wxCONFIG_USE_LOCAL_FILE);
+        auto pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, configFilePath, configFilePath,
+                                        wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     }
 

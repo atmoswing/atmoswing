@@ -104,7 +104,7 @@ void asPanelSidebarAlarms::CreateGrid(a1f& dates) {
     // Delete and recreate the panel.
     wxDELETE(_panelDrawing);
     _panelDrawing = new asPanelSidebarAlarmsDrawing(this, wxID_ANY, wxDefaultPosition, wxSize(width, totHeight),
-                                                     wxTAB_TRAVERSAL);
+                                                    wxTAB_TRAVERSAL);
     _panelDrawing->SetParent(this);
     _panelDrawing->Layout();
 

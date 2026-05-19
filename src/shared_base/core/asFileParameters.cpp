@@ -49,7 +49,8 @@ bool asFileParameters::CheckRootElement() const {
 
 vi asFileParameters::BuildVectorInt(int min, int max, int step) {
     if (min > max) {
-        throw runtime_error(asStrF(_("Error when building a vector from the parameters file: min=%d > max=%d."), min, max));
+        throw runtime_error(
+            asStrF(_("Error when building a vector from the parameters file: min=%d > max=%d."), min, max));
     }
     if (step == 0) {
         throw runtime_error(_("Error when building a vector from the parameters file: step=0."));
@@ -87,7 +88,8 @@ vi asFileParameters::BuildVectorInt(wxString str) {
 
 vf asFileParameters::BuildVectorFloat(float min, float max, float step) {
     if (min > max) {
-        throw runtime_error(asStrF(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
+        throw runtime_error(
+            asStrF(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
     }
     if (step == 0) {
         throw runtime_error(_("Error when building a vector from the parameters file: step=0."));
@@ -125,7 +127,8 @@ vf asFileParameters::BuildVectorFloat(wxString str) {
 
 vd asFileParameters::BuildVectorDouble(double min, double max, double step) {
     if (min > max) {
-        throw runtime_error(asStrF(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
+        throw runtime_error(
+            asStrF(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
     }
     if (step == 0) {
         throw runtime_error(_("Error when building a vector from the parameters file: step=0."));

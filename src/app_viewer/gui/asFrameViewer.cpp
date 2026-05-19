@@ -121,28 +121,28 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
 
     // Toolbar
     _toolBar->AddTool(asID_OPEN, wxT("Open"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::OPEN), wxNullBitmap, wxITEM_NORMAL,
-                       _("Open forecast"), _("Open a forecast"), nullptr);
+                      _("Open forecast"), _("Open a forecast"), nullptr);
     _toolBar->AddTool(asID_SELECT, wxT("Select"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_SELECT), wxNullBitmap,
-                       wxITEM_NORMAL, _("Select"), _("Select data on the map"), nullptr);
+                      wxITEM_NORMAL, _("Select"), _("Select data on the map"), nullptr);
     _toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN), wxNullBitmap,
-                       wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
-    _toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT),
-                       wxNullBitmap, wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), nullptr);
+                      wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
+    _toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT), wxNullBitmap,
+                      wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), nullptr);
     _toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_MOVE), wxNullBitmap,
-                       wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
+                      wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
     _toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_FIT), wxNullBitmap,
-                       wxITEM_NORMAL, _("Zoom to visible layers"),
-                       _("Zoom view to the full extent of all visible layers"), nullptr);
+                      wxITEM_NORMAL, _("Zoom to visible layers"),
+                      _("Zoom view to the full extent of all visible layers"), nullptr);
     _toolBar->AddTool(asID_FRAME_PLOTS, wxT("Open distributions plots"),
-                       asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_DISTRIBUTIONS), wxNullBitmap, wxITEM_NORMAL,
-                       _("Open distributions plots"), _("Open distributions plots"), nullptr);
+                      asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_DISTRIBUTIONS), wxNullBitmap, wxITEM_NORMAL,
+                      _("Open distributions plots"), _("Open distributions plots"), nullptr);
     _toolBar->AddTool(asID_FRAME_GRID, wxT("Open analogs list"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_ANALOGS),
-                       wxNullBitmap, wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), nullptr);
+                      wxNullBitmap, wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), nullptr);
     _toolBar->AddTool(asID_FRAME_PREDICTORS, wxT("Open predictor maps"),
-                       asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_PREDICTORS), wxNullBitmap, wxITEM_NORMAL,
-                       _("Open predictor maps"), _("Open predictor maps"), nullptr);
+                      asBitmaps::Get(asBitmaps::ID_TOOLBAR::FRAME_PREDICTORS), wxNullBitmap, wxITEM_NORMAL,
+                      _("Open predictor maps"), _("Open predictor maps"), nullptr);
     _toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
-                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
+                      wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     _toolBar->Realize();
 
     // VroomGIS controls
@@ -152,7 +152,7 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
 
     // Gis panel
     _panelSidebarGisLayers = new asPanelSidebarGisLayers(_scrolledWindowOptions, wxID_ANY, wxDefaultPosition,
-                                                          wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
+                                                         wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
     _panelSidebarGisLayers->Layout();
     _sizerScrolledWindow->Add(_panelSidebarGisLayers, 0, wxEXPAND, 0);
     _panelSidebarGisLayers->SetDropTarget(new vroomDropFiles(this));
@@ -160,7 +160,7 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
     // VroomGIS
     _layerManager = new vrLayerManager();
     _viewerLayerManager = new vrViewerLayerManager(_layerManager, this, _displayCtrl,
-                                                    _panelSidebarGisLayers->GetTocCtrl());
+                                                   _panelSidebarGisLayers->GetTocCtrl());
     //    _layerManager->AllowReprojectOnTheFly(true);
 
     // Forecast manager
@@ -172,27 +172,27 @@ asFrameViewer::asFrameViewer(wxWindow* parent, wxWindowID id)
 
     // Forecasts
     _panelSidebarForecasts = new asPanelSidebarForecasts(_scrolledWindowOptions, _forecastManager, wxID_ANY,
-                                                          wxDefaultPosition, wxDefaultSize,
-                                                          wxNO_BORDER | wxTAB_TRAVERSAL);
+                                                         wxDefaultPosition, wxDefaultSize,
+                                                         wxNO_BORDER | wxTAB_TRAVERSAL);
     _panelSidebarForecasts->Layout();
     _sizerScrolledWindow->Insert(0, _panelSidebarForecasts, 0, wxEXPAND, 0);
     _panelSidebarForecasts->SetDropTarget(new forecastDropFiles(this));
 
     // Alarms
     _panelSidebarAlarms = new asPanelSidebarAlarms(_scrolledWindowOptions, &_workspace, _forecastManager, wxID_ANY,
-                                                    wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
+                                                   wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
     _panelSidebarAlarms->Layout();
     _sizerScrolledWindow->Add(_panelSidebarAlarms, 0, wxEXPAND, 0);
 
     // Stations list
     _panelSidebarStationsList = new asPanelSidebarStationsList(_scrolledWindowOptions, wxID_ANY, wxDefaultPosition,
-                                                                wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
+                                                               wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
     _panelSidebarStationsList->Layout();
     _sizerScrolledWindow->Add(_panelSidebarStationsList, 0, wxEXPAND, 0);
 
     // Analog dates sidebar
     _panelSidebarAnalogDates = new asPanelSidebarAnalogDates(_scrolledWindowOptions, wxID_ANY, wxDefaultPosition,
-                                                              wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
+                                                             wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
     _panelSidebarAnalogDates->Layout();
     _sizerScrolledWindow->Add(_panelSidebarAnalogDates, 0, wxEXPAND, 0);
 
@@ -384,8 +384,7 @@ void asFrameViewer::Init() {
     }
 
     // Set the display options
-    _panelSidebarForecasts->GetForecastDisplayCtrl()->SetStringArray(
-        _forecastViewer->GetForecastDisplayStringArray());
+    _panelSidebarForecasts->GetForecastDisplayCtrl()->SetStringArray(_forecastViewer->GetForecastDisplayStringArray());
     _panelSidebarForecasts->GetQuantilesCtrl()->SetStringArray(_forecastViewer->GetQuantilesStringArray());
     _panelSidebarForecasts->GetForecastDisplayCtrl()->Select(_forecastViewer->GetForecastDisplaySelection());
     _panelSidebarForecasts->GetQuantilesCtrl()->Select(_forecastViewer->GetQuantileSelection());
@@ -732,10 +731,10 @@ void asFrameViewer::OnQuit(wxCommandEvent& event) {
 void asFrameViewer::UpdateLeadTimeSwitch() {
     // Delete and recreate the panel. Cannot get it work with a resize...
     wxDELETE(_leadTimeSwitcher);
-    _leadTimeSwitcher = new asLeadTimeSwitcher(_panelTop, &_workspace, _forecastManager, wxID_ANY,
-                                                wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+    _leadTimeSwitcher = new asLeadTimeSwitcher(_panelTop, &_workspace, _forecastManager, wxID_ANY, wxDefaultPosition,
+                                               wxDefaultSize, wxTAB_TRAVERSAL);
     _leadTimeSwitcher->SetForecastSelection(_forecastViewer->GetMethodSelection(),
-                                             _forecastViewer->GetForecastSelection());
+                                            _forecastViewer->GetForecastSelection());
     _leadTimeSwitcher->SetBackgroundColour(wxColour(77, 77, 77));
     _leadTimeSwitcher->Layout();
     _leadTimeSwitcher->SetMinSize(_leadTimeSwitcher->GetSize());
@@ -1180,10 +1179,9 @@ void asFrameViewer::SwitchForecast(double increment) {
     wxString dirPathStr = wxEmptyString;
     for (int i = 0; i < 26; i++) {
         date += increment;
-        dirPathStr = basePath + asStrF("%c%d%c%02d%c%02d", wxFileName::GetPathSeparator(),
-                                       asTime::GetYear(date), wxFileName::GetPathSeparator(),
-                                       asTime::GetMonth(date), wxFileName::GetPathSeparator(),
-                                       asTime::GetDay(date));
+        dirPathStr = basePath + asStrF("%c%d%c%02d%c%02d", wxFileName::GetPathSeparator(), asTime::GetYear(date),
+                                       wxFileName::GetPathSeparator(), asTime::GetMonth(date),
+                                       wxFileName::GetPathSeparator(), asTime::GetDay(date));
         if (!wxDir::Exists(dirPathStr)) continue;
 
         wxDir dirPath = wxDir(dirPathStr);
@@ -1192,8 +1190,8 @@ void asFrameViewer::SwitchForecast(double increment) {
                              asTime::GetDay(date), asTime::GetHour(date));
         if (dirPath.HasFiles(prefixFiles)) break;
 
-        prefixFiles = asStrF("%d%02d%02d%02d*.*", asTime::GetYear(date), asTime::GetMonth(date),
-                             asTime::GetDay(date), asTime::GetHour(date));
+        prefixFiles = asStrF("%d%02d%02d%02d*.*", asTime::GetYear(date), asTime::GetMonth(date), asTime::GetDay(date),
+                             asTime::GetHour(date));
         if (dirPath.HasFiles(prefixFiles)) break;
 
         if (i == 25) {
@@ -1310,7 +1308,7 @@ bool asFrameViewer::OpenForecast(const wxArrayString& names) {
 
     _leadTimeSwitcher->SetLeadTime(_forecastViewer->GetLeadTimeIndex());
     _leadTimeSwitcher->SetForecastSelection(_forecastViewer->GetMethodSelection(),
-                                             _forecastViewer->GetForecastSelection());
+                                            _forecastViewer->GetForecastSelection());
 
     Thaw();
 
@@ -1552,7 +1550,8 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
                     DrawPlotStation(stationRow);
                 } else {
                     // Search on the other (not specific) forecast layer
-                    vrLayerVector* layerOther = (vrLayerVector*)_layerManager->GetLayer(_("Forecast - other") + ".memory");
+                    vrLayerVector* layerOther = (vrLayerVector*)_layerManager->GetLayer(_("Forecast - other") +
+                                                                                        ".memory");
                     if (layerOther != nullptr) {
                         // Search features
                         layerOther->SearchFeatures(&polygon, stationsClose);
@@ -1673,7 +1672,7 @@ void asFrameViewer::OnForecastForecastSelectionChange(wxCommandEvent& event) {
 
     if (_leadTimeSwitcher) {
         _leadTimeSwitcher->SetForecastSelection(_forecastViewer->GetMethodSelection(),
-                                                 _forecastViewer->GetForecastSelection());
+                                                _forecastViewer->GetForecastSelection());
         _leadTimeSwitcher->SetLeadTime(_forecastViewer->GetLeadTimeIndex());
     }
 
@@ -1768,7 +1767,7 @@ void asFrameViewer::UpdateHeaderTexts() {
         forecastName = _forecastManager->GetMethodName(_forecastViewer->GetMethodSelection());
     } else {
         forecastName = _forecastManager->GetForecastName(_forecastViewer->GetMethodSelection(),
-                                                          _forecastViewer->GetForecastSelection());
+                                                         _forecastViewer->GetForecastSelection());
     }
 
     _staticTextForecast->SetLabel(forecastName);
@@ -1821,7 +1820,7 @@ void asFrameViewer::UpdatePanelAnalogDates() {
     _panelSidebarAnalogDates->Show();
 
     asResultsForecast* forecast = _forecastManager->GetForecast(_forecastViewer->GetMethodSelection(),
-                                                                 _forecastViewer->GetForecastSelection());
+                                                                _forecastViewer->GetForecastSelection());
     a1f arrayDate = forecast->GetAnalogsDates(_forecastViewer->GetLeadTimeIndex());
     a1f arrayCriteria = forecast->GetAnalogsCriteria(_forecastViewer->GetLeadTimeIndex());
     _panelSidebarAnalogDates->SetChoices(arrayDate, arrayCriteria, forecast->GetDateFormatting());

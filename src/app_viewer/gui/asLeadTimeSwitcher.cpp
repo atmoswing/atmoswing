@@ -123,8 +123,8 @@ void asLeadTimeSwitcher::Draw(a1f& dates) {
             if (!_forecastManager->GetAggregator()->GetForecast(iMethod, 0)->IsSubDaily()) {
                 continue;
             }
-            a1f methodMaxValues = _forecastManager->GetAggregator()->GetMethodMaxValues(
-                dates, iMethod, returnPeriodRef, quantileThreshold);
+            a1f methodMaxValues = _forecastManager->GetAggregator()->GetMethodMaxValues(dates, iMethod, returnPeriodRef,
+                                                                                        quantileThreshold);
             methodMaxValues = (methodMaxValues.isFinite()).select(methodMaxValues, NAN);
             if (valuesSubDaily.size() == 0) {
                 valuesSubDaily = methodMaxValues;

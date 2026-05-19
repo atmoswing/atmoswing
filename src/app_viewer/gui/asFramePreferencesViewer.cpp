@@ -142,7 +142,8 @@ void asFramePreferencesViewer::LoadPreferences() {
     wxString colorDir = dirData + DS + "atmoswing" + DS + "color_tables";
 
     _filePickerColorZ->SetPath(pConfig->Read("/ColorTable/GeopotentialHeight", colorDir + DS + "NEO_grav_anom.act"));
-    _filePickerColorPwat->SetPath(pConfig->Read("/ColorTable/PrecipitableWater", colorDir + DS + "NEO_soil_moisture.act"));
+    _filePickerColorPwat->SetPath(
+        pConfig->Read("/ColorTable/PrecipitableWater", colorDir + DS + "NEO_soil_moisture.act"));
     _filePickerColorRh->SetPath(pConfig->Read("/ColorTable/RelativeHumidity", colorDir + DS + "NEO_soil_moisture.act"));
     _filePickerColorSh->SetPath(pConfig->Read("/ColorTable/SpecificHumidity", colorDir + DS + "NEO_soil_moisture.act"));
 

@@ -30,10 +30,10 @@
 
 #include "asAreaGrid.h"
 #include "asInternet.h"
-#include "asPredictorOperGeneric.h"
 #include "asPredictorOperCustomFvg.h"
 #include "asPredictorOperCustomVigicruesIfs.h"
 #include "asPredictorOperEcmwfIfs.h"
+#include "asPredictorOperGeneric.h"
 #include "asPredictorOperMfArpege.h"
 #include "asPredictorOperNwsGfs.h"
 #include "asPredictorOperNwsGfsLocal.h"

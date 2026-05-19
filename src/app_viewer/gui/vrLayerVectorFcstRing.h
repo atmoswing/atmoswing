@@ -59,7 +59,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Add a feature to the layer.
-     * 
+     *
      * @param geometry The geometry of the feature.
      * @param data The data of the feature.
      * @return The feature ID.
@@ -68,7 +68,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Set the maximum value of the forecast.
-     * 
+     *
      * @param val The maximum value.
      */
     void SetMaxValue(double val) {
@@ -86,7 +86,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Draw the point (vroomgis function).
-     * 
+     *
      * @param dc The device context.
      * @param feature The feature.
      * @param geometry The geometry.
@@ -100,7 +100,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Create the path for the ring.
-     * 
+     *
      * @param path The path.
      * @param center The center of the ring.
      * @param segmentsTotNb The total number of segments.
@@ -110,7 +110,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Create the path for the tick.
-     * 
+     *
      * @param path The path.
      * @param center The center of the ring.
      * @param segmentsTotNb The total number of segments.
@@ -120,7 +120,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Create the path aroung the ring.
-     * 
+     *
      * @param path The path.
      * @param center The center of the ring.
      */
@@ -128,7 +128,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Paint the path.
-     * 
+     *
      * @param gdc The graphics context.
      * @param path The path.
      * @param value The value.

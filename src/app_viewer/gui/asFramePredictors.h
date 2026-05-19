@@ -204,7 +204,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
 
     /**
      * Handle the right click on the map.
-     * 
+     *
      * @param event The mouse event.
      */
     virtual void OnRightClick(wxMouseEvent& event) {
@@ -212,34 +212,34 @@ class asFramePredictors : public asFramePredictorsVirtual {
     }
 
   private:
-    asForecastManager* _forecastManager; /**< The forecast manager. */
-    asPredictorsRenderer* _predictorsRenderer; /**< The predictors renderer. */
-    asPredictorsManager* _predictorsManagerTarget; /**< The predictors manager for the target date. */
-    asPredictorsManager* _predictorsManagerAnalog; /**< The predictors manager for the analog date. */
-    asWorkspace* _workspace; /**< The workspace. */
-    asPanelPredictorsColorbar* _panelPredictorsColorbarLeft; /**< The left colorbar. */
+    asForecastManager* _forecastManager;                      /**< The forecast manager. */
+    asPredictorsRenderer* _predictorsRenderer;                /**< The predictors renderer. */
+    asPredictorsManager* _predictorsManagerTarget;            /**< The predictors manager for the target date. */
+    asPredictorsManager* _predictorsManagerAnalog;            /**< The predictors manager for the analog date. */
+    asWorkspace* _workspace;                                  /**< The workspace. */
+    asPanelPredictorsColorbar* _panelPredictorsColorbarLeft;  /**< The left colorbar. */
     asPanelPredictorsColorbar* _panelPredictorsColorbarRight; /**< The right colorbar. */
-    int _selectedMethod; /**< The selected method (index). */
-    int _selectedForecast; /**< The selected forecast (index). */
-    int _selectedTargetDate; /**< The selected target date (index). */
-    int _selectedAnalogDate; /**< The selected analog date (index). */
-    int _selectedPredictor; /**< The selected predictor (index). */
-    bool _syncroTool; /**< A flag to indicate if the syncro tool is active. */
-    bool _displayPanelLeft; /**< A flag to indicate if the left panel is displayed. */
+    int _selectedMethod;                                      /**< The selected method (index). */
+    int _selectedForecast;                                    /**< The selected forecast (index). */
+    int _selectedTargetDate;                                  /**< The selected target date (index). */
+    int _selectedAnalogDate;                                  /**< The selected analog date (index). */
+    int _selectedPredictor;                                   /**< The selected predictor (index). */
+    bool _syncroTool;                                         /**< A flag to indicate if the syncro tool is active. */
+    bool _displayPanelLeft;                                   /**< A flag to indicate if the left panel is displayed. */
     bool _displayPanelRight; /**< A flag to indicate if the right panel is displayed. */
-    wxOverlay _overlay; /**< The overlay. */
+    wxOverlay _overlay;      /**< The overlay. */
 #if defined(__WIN32__)
     wxCriticalSection _critSectionViewerLayerManager; /**< The critical section for the viewer layer manager. */
 #endif
 
     // Vroomgis
-    vrLayerManager* _layerManager; /**< The layer manager. */
-    vrViewerTOCList* _tocCtrlLeft; /**< The left TOC control. */
-    vrViewerTOCList* _tocCtrlRight; /**< The right TOC control. */
-    vrViewerLayerManager* _viewerLayerManagerLeft; /**< The left viewer layer manager. */
+    vrLayerManager* _layerManager;                  /**< The layer manager. */
+    vrViewerTOCList* _tocCtrlLeft;                  /**< The left TOC control. */
+    vrViewerTOCList* _tocCtrlRight;                 /**< The right TOC control. */
+    vrViewerLayerManager* _viewerLayerManagerLeft;  /**< The left viewer layer manager. */
     vrViewerLayerManager* _viewerLayerManagerRight; /**< The right viewer layer manager. */
-    vrViewerDisplay* _displayCtrlLeft; /**< The left display control. */
-    vrViewerDisplay* _displayCtrlRight; /**< The right display control. */
+    vrViewerDisplay* _displayCtrlLeft;              /**< The left display control. */
+    vrViewerDisplay* _displayCtrlRight;             /**< The right display control. */
 
     /**
      * Update the methods list.

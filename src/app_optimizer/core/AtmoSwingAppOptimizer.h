@@ -45,7 +45,7 @@ class AtmoSwingAppOptimizer : public wxAppConsole
 #endif
 {
   public:
-    virtual ~AtmoSwingAppOptimizer(){};
+    virtual ~AtmoSwingAppOptimizer() {};
 
     virtual bool OnInit();
 

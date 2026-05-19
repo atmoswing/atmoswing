@@ -271,9 +271,8 @@ bool asParametersOptimizationGAs::IsParamLocked(int index) {
         }
     }
 
-    wxASSERT_MSG(
-        counter == _allParametersCount,
-        asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
+    wxASSERT_MSG(counter == _allParametersCount,
+                 asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
     _parametersListOver = true;
@@ -383,9 +382,8 @@ int asParametersOptimizationGAs::GetParamType(int index) {
         }
     }
 
-    wxASSERT_MSG(
-        counter == _allParametersCount,
-        asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
+    wxASSERT_MSG(counter == _allParametersCount,
+                 asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
     throw runtime_error(_("We should never reach that point..."));
@@ -543,9 +541,8 @@ double asParametersOptimizationGAs::GetParameterValue(int index) {
         }
     }
 
-    wxASSERT_MSG(
-        counter == _allParametersCount,
-        asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
+    wxASSERT_MSG(counter == _allParametersCount,
+                 asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
     return NAN;
@@ -665,9 +662,8 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index) {
         }
     }
 
-    wxASSERT_MSG(
-        counter == _allParametersCount,
-        asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
+    wxASSERT_MSG(counter == _allParametersCount,
+                 asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
     return NAN;
@@ -782,9 +778,8 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index) {
         }
     }
 
-    wxASSERT_MSG(
-        counter == _allParametersCount,
-        asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
+    wxASSERT_MSG(counter == _allParametersCount,
+                 asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
     return NAN;
@@ -899,9 +894,8 @@ double asParametersOptimizationGAs::GetParameterIteration(int index) {
         }
     }
 
-    wxASSERT_MSG(
-        counter == _allParametersCount,
-        asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
+    wxASSERT_MSG(counter == _allParametersCount,
+                 asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
     return NAN;
@@ -1067,9 +1061,8 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
         }
     }
 
-    wxASSERT_MSG(
-        counter == _allParametersCount,
-        asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
+    wxASSERT_MSG(counter == _allParametersCount,
+                 asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
     return;

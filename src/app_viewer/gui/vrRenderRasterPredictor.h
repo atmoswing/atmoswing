@@ -77,8 +77,8 @@ class vrRenderRasterPredictor : public vrRenderRaster {
 
   protected:
   private:
-    wxFileName _colorTableFile; /**< The color table file. */
-    a2f _colorTable; /**< The color table. */
+    wxFileName _colorTableFile;        /**< The color table file. */
+    a2f _colorTable;                   /**< The color table. */
     asPredictor::Parameter _parameter; /**< The meteorological parameter. */
 
     /**

@@ -58,7 +58,9 @@ TEST(PredictorOperMeteoFranceArpege, GetCorrectPredictors) {
 
 TEST(PredictorOperMeteoFranceArpege, LoadSingleDay) {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-meteofrance-arpege/2023/02/02/ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302020000_202302020000.grb");
+    filepaths.push_back(wxFileName::GetCwd() +
+                        "/files/data-meteofrance-arpege/2023/02/02/"
+                        "ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302020000_202302020000.grb");
 
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 2, 00), 6, "Simple");
     dates.Init();
@@ -114,7 +116,9 @@ TEST(PredictorOperMeteoFranceArpege, LoadSingleDay) {
 
 TEST(PredictorOperMeteoFranceArpege, LoadThirdTimeStep) {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-meteofrance-arpege/2023/02/02/ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302021200_202302020000.grb");
+    filepaths.push_back(wxFileName::GetCwd() +
+                        "/files/data-meteofrance-arpege/2023/02/02/"
+                        "ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302021200_202302020000.grb");
 
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 12), asTime::GetMJD(2023, 2, 2, 12), 6, "Simple");
     dates.Init();
@@ -170,12 +174,24 @@ TEST(PredictorOperMeteoFranceArpege, LoadThirdTimeStep) {
 
 TEST(PredictorOperMeteoFranceArpege, LoadFullTimeArray) {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-meteofrance-arpege/2023/02/02/ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302020000_202302020000.grb");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-meteofrance-arpege/2023/02/02/ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302020600_202302020000.grb");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-meteofrance-arpege/2023/02/02/ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302021200_202302020000.grb");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-meteofrance-arpege/2023/02/02/ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302021800_202302020000.grb");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-meteofrance-arpege/2023/02/02/ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302030000_202302020000.grb");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-meteofrance-arpege/2023/02/02/ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302030600_202302020000.grb");
+    filepaths.push_back(wxFileName::GetCwd() +
+                        "/files/data-meteofrance-arpege/2023/02/02/"
+                        "ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302020000_202302020000.grb");
+    filepaths.push_back(wxFileName::GetCwd() +
+                        "/files/data-meteofrance-arpege/2023/02/02/"
+                        "ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302020600_202302020000.grb");
+    filepaths.push_back(wxFileName::GetCwd() +
+                        "/files/data-meteofrance-arpege/2023/02/02/"
+                        "ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302021200_202302020000.grb");
+    filepaths.push_back(wxFileName::GetCwd() +
+                        "/files/data-meteofrance-arpege/2023/02/02/"
+                        "ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302021800_202302020000.grb");
+    filepaths.push_back(wxFileName::GetCwd() +
+                        "/files/data-meteofrance-arpege/2023/02/02/"
+                        "ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302030000_202302020000.grb");
+    filepaths.push_back(wxFileName::GetCwd() +
+                        "/files/data-meteofrance-arpege/2023/02/02/"
+                        "ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_500_202302030600_202302020000.grb");
 
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 3, 6), 6, "Simple");
     dates.Init();
@@ -279,7 +295,9 @@ TEST(PredictorOperMeteoFranceArpege, LoadFullTimeArray) {
 
 TEST(PredictorOperMeteoFranceArpege, LoadRelativeHumidity) {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-meteofrance-arpege/2023/02/02/ARP_RELATIVE_HUMIDITY__ISOBARIC_SURFACE_850_202302020000_202302020000.grb");
+    filepaths.push_back(wxFileName::GetCwd() +
+                        "/files/data-meteofrance-arpege/2023/02/02/"
+                        "ARP_RELATIVE_HUMIDITY__ISOBARIC_SURFACE_850_202302020000_202302020000.grb");
 
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 2, 00), 6, "Simple");
     dates.Init();
@@ -334,7 +352,6 @@ TEST(PredictorOperMeteoFranceArpege, LoadRelativeHumidity) {
 }
 
 TEST(PredictorOperMeteoFranceArpege, CanFindFiles) {
-
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 6, 06), 6, "Simple");
     dates.Init();
 

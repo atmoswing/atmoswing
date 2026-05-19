@@ -90,9 +90,9 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
 
   private:
     asPredictorsManager* _predictorsManager; /**< The predictors manager. */
-    asPredictor::Parameter _parameter; /**< The meteorological parameter. */
-    double _minVal; /**< The minimum value. */
-    double _maxVal; /**< The maximum value. */
+    asPredictor::Parameter _parameter;       /**< The meteorological parameter. */
+    double _minVal;                          /**< The minimum value. */
+    double _maxVal;                          /**< The maximum value. */
 
     /**
      * Close the layer and the dataset.

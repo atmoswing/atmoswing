@@ -122,14 +122,14 @@ class asPredictorsRenderer {
 
   protected:
   private:
-    wxWindow* _parent; /**< The parent window. */
-    vrLayerManager* _layerManager; /**< The layer manager. */
-    asPredictorsManager* _predictorsManagerTarget; /**< The predictors manager for the target data. */
-    asPredictorsManager* _predictorsManagerAnalog; /**< The predictors manager for the analog data. */
+    wxWindow* _parent;                               /**< The parent window. */
+    vrLayerManager* _layerManager;                   /**< The layer manager. */
+    asPredictorsManager* _predictorsManagerTarget;   /**< The predictors manager for the target data. */
+    asPredictorsManager* _predictorsManagerAnalog;   /**< The predictors manager for the analog data. */
     vrViewerLayerManager* _viewerLayerManagerTarget; /**< The viewer layer manager for the target data. */
     vrViewerLayerManager* _viewerLayerManagerAnalog; /**< The viewer layer manager for the analog data. */
-    asPanelPredictorsColorbar* _colorbarTarget; /**< The colorbar for the target data. */
-    asPanelPredictorsColorbar* _colorbarAnalog; /**< The colorbar for the analog data. */
+    asPanelPredictorsColorbar* _colorbarTarget;      /**< The colorbar for the target data. */
+    asPanelPredictorsColorbar* _colorbarAnalog;      /**< The colorbar for the analog data. */
 
     /**
      * Close the layer if present.

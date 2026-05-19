@@ -129,8 +129,6 @@ using std::runtime_error;
 // Some AtmoSwing stuff - frequently used classes
 //---------------------------------
 
-#include "asTypeDefs.h" // Must be first
-
 #include "asConfig.h"
 #include "asGlobEnums.h"
 #include "asGlobVars.h"
@@ -138,6 +136,7 @@ using std::runtime_error;
 #include "asThreadsManager.h"
 #include "asThreadsManagerGlobalFunctions.h"
 #include "asTime.h"
+#include "asTypeDefs.h"  // Must be first
 #include "asUtils.h"
 #include "asVersion.h"
 

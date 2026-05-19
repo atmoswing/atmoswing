@@ -1208,8 +1208,7 @@ bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) 
     if (_fStr.time.size() > 1) {
         int iStartTimeFile = asFindClosest(&_fStr.time[0], &_fStr.time[_fStr.time.size() - 1],
                                            timeArray[iStartTimeArray]);
-        int iEndTimeFile = asFindClosest(&_fStr.time[0], &_fStr.time[_fStr.time.size() - 1],
-                                         timeArray[iEndTimeArray]);
+        int iEndTimeFile = asFindClosest(&_fStr.time[0], &_fStr.time[_fStr.time.size() - 1], timeArray[iEndTimeArray]);
 
         if (iStartTimeFile == asOUT_OF_RANGE || iEndTimeFile == asOUT_OF_RANGE) {
             return false;
@@ -1248,20 +1247,20 @@ bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) 
 
         // Get the spatial indices of the desired data
         _fInd.area.lonStart = asFind(&_fStr.lons[0], &_fStr.lons[_fStr.lons.size() - 1], lonMin, 0.01f,
-                                      asHIDE_WARNINGS);
+                                     asHIDE_WARNINGS);
         if (_fInd.area.lonStart == asOUT_OF_RANGE) {
             // If not found, try with negative angles
             _fInd.area.lonStart = asFind(&_fStr.lons[0], &_fStr.lons[_fStr.lons.size() - 1], lonMin - 360, 0.01f,
-                                          asHIDE_WARNINGS);
+                                         asHIDE_WARNINGS);
         }
         if (_fInd.area.lonStart == asOUT_OF_RANGE) {
             // If not found, try with angles above 360 degrees
             _fInd.area.lonStart = asFind(&_fStr.lons[0], &_fStr.lons[_fStr.lons.size() - 1], lonMin + 360, 0.01f,
-                                          asHIDE_WARNINGS);
+                                         asHIDE_WARNINGS);
         }
         if (_fInd.area.lonStart < 0) {
-            wxLogError(_("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f)"), lonMin,
-                       _fStr.lons[0], (int)_fStr.lons.size(), _fStr.lons[_fStr.lons.size() - 1]);
+            wxLogError(_("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f)"), lonMin, _fStr.lons[0],
+                       (int)_fStr.lons.size(), _fStr.lons[_fStr.lons.size() - 1]);
             return false;
         }
         wxASSERT_MSG(_fInd.area.lonStart >= 0,
@@ -1272,8 +1271,8 @@ bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) 
         int indexStartLat2 = asFind(&_fStr.lats[0], &_fStr.lats[_fStr.lats.size() - 1], latMinEnd, 0.01f);
         wxASSERT_MSG(indexStartLat1 >= 0, asStrF("Looking for %g in %g to %g", latMinStart, _fStr.lats[0],
                                                  _fStr.lats[_fStr.lats.size() - 1]));
-        wxASSERT_MSG(indexStartLat2 >= 0, asStrF("Looking for %g in %g to %g", latMinEnd, _fStr.lats[0],
-                                                 _fStr.lats[_fStr.lats.size() - 1]));
+        wxASSERT_MSG(indexStartLat2 >= 0,
+                     asStrF("Looking for %g in %g to %g", latMinEnd, _fStr.lats[0], _fStr.lats[_fStr.lats.size() - 1]));
         _fInd.area.latStart = wxMin(indexStartLat1, indexStartLat2);
     } else {
         _fInd.area.lonStart = 0;
@@ -1629,8 +1628,7 @@ bool asPredictor::GetDataFromFile(asFileGrib& gbFile) {
             for (int iLat = 0; iLat < _fInd.area.latCount; iLat++) {
                 for (int iLon = 0; iLon < _fInd.area.lonCount; iLon++) {
                     int latRevIndex = _fInd.area.latCount - 1 - iLat;
-                    ind = iLon + latRevIndex * _fInd.area.lonCount +
-                          iMem * _fInd.area.lonCount * _fInd.area.latCount +
+                    ind = iLon + latRevIndex * _fInd.area.lonCount + iMem * _fInd.area.lonCount * _fInd.area.latCount +
                           iTimeData * _fInd.memberCount * _fInd.area.lonCount * _fInd.area.latCount;
 
                     latLonData(iLat, iLon) = dataF[ind];
@@ -1767,8 +1765,7 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
     int xStartIndex = asFind(&_axisLon[0], &_axisLon[_axisLon.size() - 1], xMin, toleranceLon, asHIDE_WARNINGS);
     int xEndIndex = asFind(&_axisLon[0], &_axisLon[_axisLon.size() - 1], xMax, toleranceLon, asHIDE_WARNINGS);
     if (xStartIndex < 0) {
-        xStartIndex = asFind(&_axisLon[0], &_axisLon[_axisLon.size() - 1], xMin + 360, toleranceLon,
-                             asHIDE_WARNINGS);
+        xStartIndex = asFind(&_axisLon[0], &_axisLon[_axisLon.size() - 1], xMin + 360, toleranceLon, asHIDE_WARNINGS);
         xEndIndex = asFind(&_axisLon[0], &_axisLon[_axisLon.size() - 1], xMax + 360, toleranceLon, asHIDE_WARNINGS);
         if (xStartIndex < 0 || xEndIndex < 0) {
             xStartIndex = asFind(&_axisLon[0], &_axisLon[_axisLon.size() - 1], xMin - 360, toleranceLon);
@@ -1848,8 +1845,7 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
                 method.IsSameAs("RealGradientsWithGaussianWeights")) {
                 vva2f originalData = _data;
 
-                if (originalData[0][0].cols() != _axisLon.size() ||
-                    originalData[0][0].rows() != 2 * _axisLat.size()) {
+                if (originalData[0][0].cols() != _axisLon.size() || originalData[0][0].rows() != 2 * _axisLat.size()) {
                     wxLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
                     wxLogError(
                         "originalData[0].cols() = %d, _axisLon.size() = %d, originalData[0].rows() = %d, "
@@ -1907,8 +1903,7 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
             } else if (method.IsSameAs("FormerHumidityIndex")) {
                 vva2f originalData = _data;
 
-                if (originalData[0][0].cols() != _axisLon.size() ||
-                    originalData[0][0].rows() != 2 * _axisLat.size()) {
+                if (originalData[0][0].cols() != _axisLon.size() || originalData[0][0].rows() != 2 * _axisLat.size()) {
                     wxLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
                     wxLogError(
                         "originalData[0].cols() = %d, _axisLon.size() = %d, originalData[0].rows() = %d, "
@@ -2253,9 +2248,9 @@ bool asPredictor::InterpolateOnGrid(asAreaGrid* dataArea, asAreaGrid* desiredAre
                             valLRcorner = _data[iTime][iMem](indexYfloor, indexXceil);
                             valURcorner = _data[iTime][iMem](indexYceil, indexXceil);
 
-                            latlonTimeData[iTime][iMem](iLat, iLon) =
-                                (1 - dX) * (1 - dY) * valLLcorner + (1 - dX) * (dY)*valULcorner +
-                                (dX) * (1 - dY) * valLRcorner + (dX) * (dY)*valURcorner;
+                            latlonTimeData[iTime][iMem](
+                                iLat, iLon) = (1 - dX) * (1 - dY) * valLLcorner + (1 - dX) * (dY)*valULcorner +
+                                              (dX) * (1 - dY) * valLRcorner + (dX) * (dY)*valURcorner;
                         }
                     }
 
@@ -2336,8 +2331,8 @@ void asPredictor::CheckLevelTypeIsDefined() {
 bool asPredictor::IsPressureLevel() const {
     return _product.IsSameAs("pressure_level", false) || _product.IsSameAs("pressure_levels", false) ||
            _product.IsSameAs("pressure", false) || _product.IsSameAs("press", false) ||
-           _product.IsSameAs("isobaric", false) || _product.IsSameAs("pl", false) ||
-           _product.IsSameAs("pgbh", false) || _product.IsSameAs("pgbhnl", false) || _product.IsSameAs("pgb", false);
+           _product.IsSameAs("isobaric", false) || _product.IsSameAs("pl", false) || _product.IsSameAs("pgbh", false) ||
+           _product.IsSameAs("pgbhnl", false) || _product.IsSameAs("pgb", false);
 }
 
 bool asPredictor::IsIsentropicLevel() const {
@@ -2405,13 +2400,12 @@ bool asPredictor::IsTotalColumnWaterVapour() const {
 }
 
 bool asPredictor::IsPrecipitableWater() const {
-    return _dataId.IsSameAs("pwat", false) || _dataId.IsSameAs("p_wat", false) ||
-           _dataId.IsSameAs("pr_wtr", false) || _dataId.IsSameAs("prwtr", false);
+    return _dataId.IsSameAs("pwat", false) || _dataId.IsSameAs("p_wat", false) || _dataId.IsSameAs("pr_wtr", false) ||
+           _dataId.IsSameAs("prwtr", false);
 }
 
 bool asPredictor::IsPressure() const {
-    return _dataId.IsSameAs("pressure", false) || _dataId.IsSameAs("press", false) ||
-           _dataId.IsSameAs("pres", false);
+    return _dataId.IsSameAs("pressure", false) || _dataId.IsSameAs("press", false) || _dataId.IsSameAs("pres", false);
 }
 
 bool asPredictor::IsSeaLevelPressure() const {

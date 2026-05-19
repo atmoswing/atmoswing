@@ -48,11 +48,11 @@ asFrameOptimizer::asFrameOptimizer(wxWindow* parent)
       _methodCalibrator(nullptr) {
     // Toolbar
     _toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap, wxITEM_NORMAL,
-                       _("Run optimizer"), _("Run optimizer now"), nullptr);
+                      _("Run optimizer"), _("Run optimizer now"), nullptr);
     _toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::STOP), wxNullBitmap,
-                       wxITEM_NORMAL, _("Cancel optimization"), _("Cancel current optimization"), nullptr);
+                      wxITEM_NORMAL, _("Cancel optimization"), _("Cancel current optimization"), nullptr);
     _toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
-                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
+                      wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     _toolBar->Realize();
 
     // Connect events
@@ -221,8 +221,7 @@ void asFrameOptimizer::LoadOptions() {
     _textCtrlGAsConvergenceNb->SetValue(pConfig->Read("/GAs/ConvergenceStepsNb", "30"));
     _textCtrlGAsRatioIntermGen->SetValue(pConfig->Read("/GAs/RatioIntermediateGeneration", "0.5"));
     _checkBoxGAsAllowElitism->SetValue(pConfig->ReadBool("/GAs/AllowElitismForTheBest", true));
-    _textCtrlGAsNaturalSlctTournamentProb->SetValue(
-        pConfig->Read("/GAs/NaturalSelectionTournamentProbability", "0.9"));
+    _textCtrlGAsNaturalSlctTournamentProb->SetValue(pConfig->Read("/GAs/NaturalSelectionTournamentProbability", "0.9"));
     _textCtrlGAsCouplesSlctTournamentNb->SetValue(pConfig->Read("/GAs/CouplesSelectionTournamentNb", "3"));
     _textCtrlGAsCrossoverMultipleNbPts->SetValue(pConfig->Read("/GAs/CrossoverMultiplePointsNb", "3"));
     _textCtrlGAsCrossoverBlendingNbPts->SetValue(pConfig->Read("/GAs/CrossoverBlendingPointsNb", "2"));

@@ -66,11 +66,11 @@ asFrameForecaster::asFrameForecaster(wxWindow* parent)
 
     // Toolbar
     _toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap, wxITEM_NORMAL,
-                       _("Run forecast"), _("Run forecast now"), nullptr);
+                      _("Run forecast"), _("Run forecast now"), nullptr);
     _toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::STOP), wxNullBitmap,
-                       wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), nullptr);
+                      wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), nullptr);
     _toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
-                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
+                      wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
     _toolBar->Realize();
 
     // Leds

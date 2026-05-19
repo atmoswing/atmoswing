@@ -121,6 +121,6 @@ void asPredictorNcepCfsr::ListFiles(asTimeArray& timeArray) {
     for (int i = 0; i < tArray.size(); i++) {
         Time t = asTime::GetTimeStruct(tArray[i]);
         _files.push_back(GetFullDirectoryPath() + asStrF(_fileNamePattern, t.year, t.year, t.month, t.year, t.month,
-                                                          t.day, t.year, t.month, t.day, t.hour));
+                                                         t.day, t.year, t.month, t.day, t.hour));
     }
 }

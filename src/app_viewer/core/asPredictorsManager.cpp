@@ -78,8 +78,7 @@ bool asPredictorsManager::LoadData(int selection) {
         }
 
         if (!predictor->Load(area, _date + _hours[selection] / 24, _levels[selection])) {
-            wxLogError(_("The variable %s from %s could not be loaded."), _dataIds[selection],
-                       _datasetIds[selection]);
+            wxLogError(_("The variable %s from %s could not be loaded."), _dataIds[selection], _datasetIds[selection]);
             wxDELETE(predictor);
             return false;
         }
@@ -95,8 +94,7 @@ bool asPredictorsManager::LoadData(int selection) {
         }
 
         if (!_predictor->Load(area, _date + _hours[selection] / 24, _levels[selection])) {
-            wxLogError(_("The variable %s from %s could not be loaded."), _dataIds[selection],
-                       _datasetIds[selection]);
+            wxLogError(_("The variable %s from %s could not be loaded."), _dataIds[selection], _datasetIds[selection]);
             wxDELETE(_predictor);
             return false;
         }

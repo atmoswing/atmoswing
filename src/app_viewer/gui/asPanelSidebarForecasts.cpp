@@ -52,7 +52,7 @@ asPanelSidebarForecasts::asPanelSidebarForecasts(wxWindow* parent, asForecastMan
     wxSize displaySize = wxSize();
     displaySize.SetHeight(130 * g_ppiScaleDc);
     _forecastDisplayCtrl = new asListBoxForecastDisplay(this, wxID_ANY, wxDefaultPosition, displaySize, 0, nullptr,
-                                                         wxNO_BORDER);
+                                                        wxNO_BORDER);
     subSizer->Add(_forecastDisplayCtrl, 1, wxEXPAND, 5);
 
     _quantilesCtrl = new asListBoxQuantiles(this, wxID_ANY, wxDefaultPosition, displaySize, 0, nullptr, wxNO_BORDER);

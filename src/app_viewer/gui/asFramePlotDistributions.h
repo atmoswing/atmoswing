@@ -38,7 +38,7 @@ class asFramePlotDistributions : public asFramePlotDistributionsVirutal {
   public:
     /**
      * Constructor.
-     * 
+     *
      * @param parent Parent window.
      * @param methodRow The selected method row.
      * @param forecastRow The selected forecast row.
@@ -100,14 +100,14 @@ class asFramePlotDistributions : public asFramePlotDistributionsVirutal {
         AllReturnPeriods
     };
 
-    asPanelPlot* _panelPlotPredictands; /**< The panel for the predictands plot. */
-    asPanelPlot* _panelPlotCriteria; /**< The panel for the criteria plot. */
+    asPanelPlot* _panelPlotPredictands;  /**< The panel for the predictands plot. */
+    asPanelPlot* _panelPlotCriteria;     /**< The panel for the criteria plot. */
     asForecastManager* _forecastManager; /**< The forecast manager. */
-    int _selectedMethod; /**< The selected method (index). */
-    int _selectedForecast; /**< The selected forecast (index). */
-    int _selectedStation; /**< The selected station (index). */
-    int _selectedDate;  /**< The selected date (index). */
-    int _xmaxPredictands; /**< The maximum value for the x-axis of the predictands plot. */
+    int _selectedMethod;                 /**< The selected method (index). */
+    int _selectedForecast;               /**< The selected forecast (index). */
+    int _selectedStation;                /**< The selected station (index). */
+    int _selectedDate;                   /**< The selected date (index). */
+    int _xmaxPredictands;                /**< The maximum value for the x-axis of the predictands plot. */
 
     /**
      * Rebuild the choice of the forecast.
@@ -177,37 +177,37 @@ class asFramePlotDistributions : public asFramePlotDistributionsVirutal {
 
     /**
      * When the choice of the method changes.
-     * 
+     *
      * @param event The command event.
      */
     void OnChoiceForecastChange(wxCommandEvent& event) override;
 
     /**
      * Event triggered when the choice of the station changes.
-     * 
+     *
      * @param event The command event.
      */
     void OnChoiceStationChange(wxCommandEvent& event) override;
 
     /**
      * Event triggered when the choice of the date changes.
-     * 
+     *
      * @param event The command event.
      */
     void OnChoiceDateChange(wxCommandEvent& event) override;
 
     /**
      * Event triggered when the choice of the items to show has changed in the table of content.
-     * 
+     *
      * @param event The command event.
      */
     void OnTocSelectionChange(wxCommandEvent& event) override;
 
-    /** 
+    /**
      * Event triggered when the frame is being closed.
-     * 
+     *
      * @param evt The event.
-    */
+     */
     void OnClose(wxCloseEvent& evt);
 
     DECLARE_EVENT_TABLE()

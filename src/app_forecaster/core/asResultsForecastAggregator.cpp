@@ -478,10 +478,8 @@ vf asResultsForecastAggregator::GetMaxExtent() const {
     }
 
     vf extent = {
-        *std::min_element(vecLonMin.begin(), vecLonMin.end()),
-        *std::max_element(vecLonMax.begin(), vecLonMax.end()),
-        *std::min_element(vecLatMin.begin(), vecLatMin.end()),
-        *std::max_element(vecLatMax.begin(), vecLatMax.end())};
+        *std::min_element(vecLonMin.begin(), vecLonMin.end()), *std::max_element(vecLonMax.begin(), vecLonMax.end()),
+        *std::min_element(vecLatMin.begin(), vecLatMin.end()), *std::max_element(vecLatMax.begin(), vecLatMax.end())};
 
     for (const auto& method : _forecasts) {
         for (const auto& forecast : method) {

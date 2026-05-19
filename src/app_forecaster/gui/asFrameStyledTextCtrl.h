@@ -28,8 +28,8 @@
 #ifndef AS_FRAME_STYLED_TEXT_CTRL_H
 #define AS_FRAME_STYLED_TEXT_CTRL_H
 
-#include "asGlobEnums.h"
 #include "AtmoSwingForecasterGui.h"
+#include "asGlobEnums.h"
 
 /**
  * @brief Styled text control frame.

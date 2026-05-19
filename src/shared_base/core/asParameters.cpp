@@ -854,7 +854,7 @@ bool asParameters::FixCoordinates() {
                                     _steps[i].predictors[j].xStep;
                     factor = asRound(factor);
                     _steps[i].predictors[j].xMin = factor * _steps[i].predictors[j].xStep +
-                                                    _steps[i].predictors[j].xShift;
+                                                   _steps[i].predictors[j].xShift;
                 }
 
                 if (std::abs(std::fmod(_steps[i].predictors[j].yMin - _steps[i].predictors[j].yShift,
@@ -863,7 +863,7 @@ bool asParameters::FixCoordinates() {
                                     _steps[i].predictors[j].yStep;
                     factor = asRound(factor);
                     _steps[i].predictors[j].yMin = factor * _steps[i].predictors[j].yStep +
-                                                    _steps[i].predictors[j].yShift;
+                                                   _steps[i].predictors[j].yShift;
                 }
             }
 
@@ -1405,10 +1405,8 @@ void asParameters::SetPreprocessMethod(int iStep, int iPtor, const wxString& val
 bool asParameters::NeedsGradientPreprocessing(int iStep, int iPtor) const {
     wxString method = _steps[iStep].predictors[iPtor].preprocessMethod;
 
-    return method.IsSameAs("Gradients", false) ||
-           method.IsSameAs("SimpleGradients", false) ||
-           method.IsSameAs("RealGradients", false) ||
-           method.IsSameAs("SimpleGradientsWithGaussianWeights", false) ||
+    return method.IsSameAs("Gradients", false) || method.IsSameAs("SimpleGradients", false) ||
+           method.IsSameAs("RealGradients", false) || method.IsSameAs("SimpleGradientsWithGaussianWeights", false) ||
            method.IsSameAs("RealGradientsWithGaussianWeights", false);
 }
 
@@ -1423,10 +1421,8 @@ bool asParameters::IsCriteriaUsingGradients(int iStep, int iPtor) const {
 
 void asParameters::FixCriteriaIfGradientsPreprocessed(int iStep, int iPtor) {
     if (NeedsGradientPreprocessing(iStep, iPtor)) {
-        if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") ||
-            GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r") ||
-            GetPredictorCriteria(iStep, iPtor).IsSameAs("S1s") ||
-            GetPredictorCriteria(iStep, iPtor).IsSameAs("S1G") ||
+        if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r") ||
+            GetPredictorCriteria(iStep, iPtor).IsSameAs("S1s") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S1G") ||
             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1rG") ||
             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1sG")) {
             SetPredictorCriteria(iStep, iPtor, "S1grads");
@@ -1443,8 +1439,7 @@ void asParameters::FixCriteriaIfGradientsPreprocessed(int iStep, int iPtor) {
 
 void asParameters::ForceUsingGradientsPreprocessing(int iStep, int iPtor) {
     // Gradients - S1
-    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") ||
-        GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r")) {
+    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r")) {
         SetPredictorCriteria(iStep, iPtor, "S1grads");
         SetPreprocessMethod(iStep, iPtor, "RealGradients");
     } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1s")) {
@@ -1460,8 +1455,7 @@ void asParameters::ForceUsingGradientsPreprocessing(int iStep, int iPtor) {
     }
 
     // Curvature - S2
-    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2") ||
-        GetPredictorCriteria(iStep, iPtor).IsSameAs("S2r")) {
+    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S2r")) {
         SetPredictorCriteria(iStep, iPtor, "S2grads");
         SetPreprocessMethod(iStep, iPtor, "RealCurvature");
     } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2s")) {

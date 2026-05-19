@@ -730,8 +730,8 @@ bool asParametersOptimization::SetPreloadingProperties() {
 void asParametersOptimization::InitRandomValues() {
     if (!_timeArrayAnalogsIntervalDaysLocks) {
         _analogsIntervalDays = asRandom(_timeArrayAnalogsIntervalDaysLowerLimit,
-                                         _timeArrayAnalogsIntervalDaysUpperLimit,
-                                         _timeArrayAnalogsIntervalDaysIteration);
+                                        _timeArrayAnalogsIntervalDaysUpperLimit,
+                                        _timeArrayAnalogsIntervalDaysIteration);
     }
 
     for (int i = 0; i < GetStepsNb(); i++) {
@@ -851,7 +851,7 @@ void asParametersOptimization::CheckRange() {
     // Check that the actual parameters values are within ranges
     if (!_timeArrayAnalogsIntervalDaysLocks) {
         _analogsIntervalDays = wxMax(wxMin(_analogsIntervalDays, _timeArrayAnalogsIntervalDaysUpperLimit),
-                                      _timeArrayAnalogsIntervalDaysLowerLimit);
+                                     _timeArrayAnalogsIntervalDaysLowerLimit);
     }
     wxASSERT(_analogsIntervalDays > 0);
 

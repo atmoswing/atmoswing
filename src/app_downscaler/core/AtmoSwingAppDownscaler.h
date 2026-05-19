@@ -44,7 +44,7 @@ class AtmoSwingAppDownscaler : public wxAppConsole
 #endif
 {
   public:
-    virtual ~AtmoSwingAppDownscaler(){};
+    virtual ~AtmoSwingAppDownscaler() {};
 
     virtual bool OnInit();
 

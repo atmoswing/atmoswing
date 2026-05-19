@@ -35,7 +35,7 @@ asPanelPredictorsColorbar::asPanelPredictorsColorbar(wxWindow* parent, wxWindowI
       _step(10) {
     _sizerContent = new wxBoxSizer(wxVERTICAL);
     _panelDrawing = new asPanelPredictorsColorbarDrawing(this, wxID_ANY, wxDefaultPosition,
-                                                          wxSize(-1, 50 * g_ppiScaleDc), wxTAB_TRAVERSAL);
+                                                         wxSize(-1, 50 * g_ppiScaleDc), wxTAB_TRAVERSAL);
     _sizerContent->Add(_panelDrawing, 1, wxEXPAND, 0);
 
     SetSizer(_sizerContent);

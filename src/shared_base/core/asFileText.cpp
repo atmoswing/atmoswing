@@ -89,9 +89,11 @@ wxString asFileText::GetNextLine() {
 
         // Check the state flags
         if ((!_file.eof()) && (_file.fail()))
-            throw runtime_error(asStrF(_("An error occured while trying to write in file %s"), _fileName.GetFullPath()));
+            throw runtime_error(
+                asStrF(_("An error occured while trying to write in file %s"), _fileName.GetFullPath()));
     } else {
-        throw runtime_error(asStrF(_("You are trying to read a line after the end of the file %s"), _fileName.GetFullPath()));
+        throw runtime_error(
+            asStrF(_("You are trying to read a line after the end of the file %s"), _fileName.GetFullPath()));
     }
 
     wxString lineContent = wxString(tmpLineContent.c_str(), wxConvUTF8);

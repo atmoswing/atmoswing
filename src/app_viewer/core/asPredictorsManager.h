@@ -164,7 +164,7 @@ class asPredictorsManager {
 
     /**
      * Get the number of longitude points.
-     * 
+     *
      * @return The number of longitude points.
      */
     int GetLongitudesNb() {
@@ -173,7 +173,7 @@ class asPredictorsManager {
 
     /**
      * Get the number of latitude points.
-     * 
+     *
      * @return The number of latitude points.
      */
     int GetLatitudesNb() {
@@ -182,7 +182,7 @@ class asPredictorsManager {
 
     /**
      * Get the minimum longitude value.
-     * 
+     *
      * @return The minimum longitude value.
      */
     double GetLongitudeMin() {
@@ -191,7 +191,7 @@ class asPredictorsManager {
 
     /**
      * Get the minimum latitude value.
-     * 
+     *
      * @return The minimum latitude value.
      */
     double GetLatitudeMin() {
@@ -200,7 +200,7 @@ class asPredictorsManager {
 
     /**
      * Get the maximum latitude value.
-     * 
+     *
      * @return The maximum latitude value.
      */
     double GetLatitudeMax() {
@@ -209,7 +209,7 @@ class asPredictorsManager {
 
     /**
      * Get the resolution of the longitude grid.
-     * 
+     *
      * @return The resolution of the longitude grid.
      */
     double GetLongitudeResol() {
@@ -219,7 +219,7 @@ class asPredictorsManager {
 
     /**
      * Get the resolution of the latitude grid.
-     * 
+     *
      * @return The resolution of the latitude grid.
      */
     double GetLatitudeResol() {
@@ -236,20 +236,20 @@ class asPredictorsManager {
 
   protected:
   private:
-    asWorkspace* _workspace; /**< The Viewer workspace. */
-    asPredictor* _predictor; /**< The selected predictor. */
-    bool _isTargetPredictor; /**< A boolean indicating if the predictor is the target. */
-    double _forecastDate; /**< The forecast date as MJD. */
-    double _date; /**< The data date as MJD. */
-    double _forecastTimeStepHours;  /**< The forecast time step in hours. */
-    vwxs _datasetIds; /**< The dataset IDs. */
-    vwxs _dataIds; /**< The data IDs. */
-    vf _levels; /**< The vertical levels. */
-    vf _hours; /**< The hours. */
-    bool _needsDataReload; /**< A boolean indicating if the data needs to be reloaded. */
-    a2f* _data; /**< The loaded data. */
-    a1d* _longitudes; /**< The longitudes. */
-    a1d* _latitudes; /**< The latitudes. */
+    asWorkspace* _workspace;       /**< The Viewer workspace. */
+    asPredictor* _predictor;       /**< The selected predictor. */
+    bool _isTargetPredictor;       /**< A boolean indicating if the predictor is the target. */
+    double _forecastDate;          /**< The forecast date as MJD. */
+    double _date;                  /**< The data date as MJD. */
+    double _forecastTimeStepHours; /**< The forecast time step in hours. */
+    vwxs _datasetIds;              /**< The dataset IDs. */
+    vwxs _dataIds;                 /**< The data IDs. */
+    vf _levels;                    /**< The vertical levels. */
+    vf _hours;                     /**< The hours. */
+    bool _needsDataReload;         /**< A boolean indicating if the data needs to be reloaded. */
+    a2f* _data;                    /**< The loaded data. */
+    a1d* _longitudes;              /**< The longitudes. */
+    a1d* _latitudes;               /**< The latitudes. */
 };
 
 #endif

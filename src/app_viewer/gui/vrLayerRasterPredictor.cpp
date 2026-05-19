@@ -70,8 +70,8 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName& name) {
 
     // Create dataset
     _dataset = poDriver->Create((const char*)_fileName.GetFullPath().mb_str(wxConvUTF8),
-                                 _predictorsManager->GetLongitudesNb(), _predictorsManager->GetLatitudesNb(), 1,
-                                 GDT_Float32, nullptr);
+                                _predictorsManager->GetLongitudesNb(), _predictorsManager->GetLatitudesNb(), 1,
+                                GDT_Float32, nullptr);
     if (_dataset == nullptr) {
         wxLogError(_("Creation of memory dataset failed."));
         return false;
@@ -87,9 +87,9 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName& name) {
     double adfGeoTransform[6];
     adfGeoTransform[0] = _predictorsManager->GetLongitudeMin();    // top left x
     adfGeoTransform[1] = _predictorsManager->GetLongitudeResol();  // w-e pixel resolution
-    adfGeoTransform[2] = 0;                                         // rotation, 0 if image is "north up"
+    adfGeoTransform[2] = 0;                                        // rotation, 0 if image is "north up"
     adfGeoTransform[3] = _predictorsManager->GetLatitudeMax();     // top left y
-    adfGeoTransform[4] = 0;                                         // rotation, 0 if image is "north up"
+    adfGeoTransform[4] = 0;                                        // rotation, 0 if image is "north up"
     adfGeoTransform[5] = _predictorsManager->GetLatitudeResol();   // n-s pixel resolution
     if (_dataset->SetGeoTransform(adfGeoTransform) != CE_None) {
         wxLogError(_("Setting geotransform to predictor layer failed."));

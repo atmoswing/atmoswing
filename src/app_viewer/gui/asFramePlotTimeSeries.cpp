@@ -204,8 +204,8 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
     file.Open();
 
     // Add header
-    file.AddContent(asStrF("Forecast of the %sh\n",
-                           asTime::GetStringTime(_forecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY hh")));
+    file.AddContent(
+        asStrF("Forecast of the %sh\n", asTime::GetStringTime(_forecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY hh")));
     file.AddContent(asStrF("Forecast: %s\n", forecastName));
     file.AddContent(asStrF("Station: %s\n", stationName));
     file.AddContent("\n");
@@ -309,7 +309,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
 
         for (int past = 0; past < _forecastManager->GetPastForecastsNb(_selectedMethod, _selectedForecast); past++) {
             asResultsForecast* pastForecast = _forecastManager->GetPastForecast(_selectedMethod, _selectedForecast,
-                                                                                 past);
+                                                                                past);
             a1f dates = pastForecast->GetTargetDates();
             wxString currentLine = asTime::GetStringTime(pastForecast->GetLeadTimeOrigin(), dateFormat) + ";";
 
@@ -474,8 +474,8 @@ void asFramePlotTimeSeries::PlotAllReturnPeriods() {
         if (std::abs(retPeriods[i] - 2.33) < 0.1) continue;
 
         // Get precipitation value
-        float val = _forecastManager->GetForecast(_selectedMethod, _selectedForecast)
-                        ->GetReferenceValue(_selectedStation, i);
+        float val =
+            _forecastManager->GetForecast(_selectedMethod, _selectedForecast)->GetReferenceValue(_selectedStation, i);
 
         // Color (from yellow to red)
         float ratio = (float)i / (float)(retPeriods.size() - 1);

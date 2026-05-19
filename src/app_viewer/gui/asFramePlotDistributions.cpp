@@ -439,8 +439,8 @@ void asFramePlotDistributions::PlotAllReturnPeriods() {
         if (std::abs(retPeriods[i] - 2.33) < 0.1) continue;
 
         // Get precipitation value
-        float val = _forecastManager->GetForecast(_selectedMethod, _selectedForecast)
-                        ->GetReferenceValue(_selectedStation, i);
+        float val =
+            _forecastManager->GetForecast(_selectedMethod, _selectedForecast)->GetReferenceValue(_selectedStation, i);
 
         // Color (from yellow to red)
         float ratio = (float)i / (float)(retPeriods.size() - 1);

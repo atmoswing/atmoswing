@@ -52,7 +52,7 @@ class AtmoSwingAppViewer : public wxApp {
 
     /**
      * Initialize the command line parser.
-     * 
+     *
      * @param parser The command line parser.
      * @note From http://wiki.wxwidgets.org/Command-Line_Arguments
      */
@@ -60,9 +60,9 @@ class AtmoSwingAppViewer : public wxApp {
 
     /**
      * Proceed to the command line parsing.
-     * 
+     *
      * @param parser The command line parser.
-    */
+     */
     bool OnCmdLineParsed(wxCmdLineParser& parser) override;
 
     /**

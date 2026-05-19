@@ -56,8 +56,7 @@ asPredictand::Parameter asPredictand::StringToParameterEnum(const wxString& para
         return Precipitation;
     } else if (parameterStr.CmpNoCase("AirTemperature") == 0) {
         return AirTemperature;
-    } else if (parameterStr.CmpNoCase("Lightning") == 0 ||
-               parameterStr.CmpNoCase("Lightnings") == 0) {
+    } else if (parameterStr.CmpNoCase("Lightning") == 0 || parameterStr.CmpNoCase("Lightnings") == 0) {
         return Lightning;
     } else if (parameterStr.CmpNoCase("Wind") == 0) {
         return Wind;
@@ -662,8 +661,9 @@ bool asPredictand::ParseTabsDelimitedContent(int stationIndex, const asFileDat::
         if (pattern.timeYearBegin != 0 && pattern.timeMonthBegin != 0 && pattern.timeDayBegin != 0) {
             if (pattern.timeYearBegin > vColumns.size() || pattern.timeMonthBegin > vColumns.size() ||
                 pattern.timeDayBegin > vColumns.size()) {
-                wxLogError(_("The data file pattern is not correctly defined. "
-                           "Trying to access an element (date) after the line width."));
+                wxLogError(
+                    _("The data file pattern is not correctly defined. "
+                      "Trying to access an element (date) after the line width."));
                 return false;
             }
             vColumns[pattern.timeYearBegin - 1].ToInt(&valTimeYear);
@@ -676,16 +676,18 @@ bool asPredictand::ParseTabsDelimitedContent(int stationIndex, const asFileDat::
 
         if (pattern.timeHourBegin != 0) {
             if (pattern.timeHourBegin > vColumns.size()) {
-                wxLogError(_("The data file pattern is not correctly defined."
-                           "Trying to access an element (hour) after the line width."));
+                wxLogError(
+                    _("The data file pattern is not correctly defined."
+                      "Trying to access an element (hour) after the line width."));
                 return false;
             }
             vColumns[pattern.timeHourBegin - 1].ToInt(&valTimeHour);
         }
         if (pattern.timeMinuteBegin != 0) {
             if (pattern.timeMinuteBegin > vColumns.size()) {
-                wxLogError(_("The data file pattern is not correctly defined."
-                           "Trying to access an element (minute) after the line width."));
+                wxLogError(
+                    _("The data file pattern is not correctly defined."
+                      "Trying to access an element (minute) after the line width."));
                 return false;
             }
             vColumns[pattern.timeMinuteBegin - 1].ToInt(&valTimeMinute);

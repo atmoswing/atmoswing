@@ -107,8 +107,8 @@ bool AtmoSwingAppForecaster::OnInit() {
 #endif
 
     wxString configFilePath = asConfig::GetConfigFilePath("AtmoSwingForecaster.ini");
-    auto pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, configFilePath,
-                                    configFilePath, wxCONFIG_USE_LOCAL_FILE);
+    auto pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, configFilePath, configFilePath,
+                                    wxCONFIG_USE_LOCAL_FILE);
 
     // Set the local config object
     wxFileConfig::Set(pConfig);

@@ -75,7 +75,7 @@ class asPanelForecast : public asPanelForecastVirtual {
 
     /**
      * Access the LED.
-     * 
+     *
      * @return The LED pointer.
      */
     awxLed* GetLed() const {
@@ -120,7 +120,7 @@ class asPanelForecast : public asPanelForecastVirtual {
 
     /**
      * Set the panel manager.
-     * 
+     *
      * @param panelManager The panel manager.
      */
     void SetPanelsManager(asPanelsManagerForecasts* panelManager) {
@@ -129,7 +129,7 @@ class asPanelForecast : public asPanelForecastVirtual {
 
     /**
      * Access the forecast parameters file name.
-     * 
+     *
      * @return The file name.
      */
     wxString GetParametersFileName() const {
@@ -138,7 +138,7 @@ class asPanelForecast : public asPanelForecastVirtual {
 
     /**
      * Set the forecast parameters file name.
-     * 
+     *
      * @param val The file name.
      */
     void SetParametersFileName(const wxString& val) {
@@ -147,8 +147,8 @@ class asPanelForecast : public asPanelForecastVirtual {
     }
 
   protected:
-    wxWindow* _parentFrame; /**< The parent frame. */
-    awxLed* _led; /**< The LED. */
+    wxWindow* _parentFrame;            /**< The parent frame. */
+    awxLed* _led;                      /**< The LED. */
     asBatchForecasts* _batchForecasts; /**< The batch of forecasts. */
 
     /**

@@ -82,7 +82,7 @@ class asFileGrib : public asFile {
 
     /**
      * Set the index at the desired position in the file.
-     * 
+     *
      * @param gribCode The GRIB code of the desired variable.
      * @param level The desired vertical level.
      * @param useWarnings True to use warnings.
@@ -92,7 +92,7 @@ class asFileGrib : public asFile {
 
     /**
      * Set the index at the desired position in the file without filtering by the vertical level value.
-     * 
+     *
      * @param gribCode The GRIB code of the desired variable.
      */
     bool SetIndexPositionAnyLevel(vi gribCode);

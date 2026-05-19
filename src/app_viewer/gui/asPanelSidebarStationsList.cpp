@@ -36,13 +36,13 @@ asPanelSidebarStationsList::asPanelSidebarStationsList(wxWindow* parent, wxWindo
 
     wxArrayString stationSelectionChoices;
     _choiceStationSelection = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, stationSelectionChoices,
-                                            0);
+                                           0);
     _choiceStationSelection->SetSelection(0);
     _sizerContent->Add(_choiceStationSelection, 0, wxALL | wxEXPAND, 5);
 
     _choiceStationSelection->Connect(wxEVT_COMMAND_CHOICE_SELECTED,
-                                      wxCommandEventHandler(asPanelSidebarStationsList::OnStationSelection), nullptr,
-                                      this);
+                                     wxCommandEventHandler(asPanelSidebarStationsList::OnStationSelection), nullptr,
+                                     this);
 
     Layout();
     _sizerContent->Fit(this);
@@ -50,8 +50,8 @@ asPanelSidebarStationsList::asPanelSidebarStationsList(wxWindow* parent, wxWindo
 
 asPanelSidebarStationsList::~asPanelSidebarStationsList() {
     _choiceStationSelection->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED,
-                                         wxCommandEventHandler(asPanelSidebarStationsList::OnStationSelection), nullptr,
-                                         this);
+                                        wxCommandEventHandler(asPanelSidebarStationsList::OnStationSelection), nullptr,
+                                        this);
 }
 
 void asPanelSidebarStationsList::OnStationSelection(wxCommandEvent& event) {

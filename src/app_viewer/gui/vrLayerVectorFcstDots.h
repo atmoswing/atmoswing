@@ -59,7 +59,7 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
 
     /**
      * Add a feature to the layer.
-     * 
+     *
      * @param geometry The geometry of the feature.
      * @param data The data of the feature.
      * @return The ID of the feature.
@@ -68,7 +68,7 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
 
     /**
      * Set the maximum value of the forecast values.
-     * 
+     *
      * @param val The maximum value.
      */
     void SetMaxValue(double val) {
@@ -86,7 +86,7 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
 
     /**
      * Draw a point (vroomgis function).
-     * 
+     *
      * @param dc The device context.
      * @param feature The feature.
      * @param geometry The geometry.
@@ -100,7 +100,7 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
 
     /**
      * Create the path for the dot.
-     * 
+     *
      * @param path The path.
      * @param center The center of the dot.
      */
@@ -108,7 +108,7 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
 
     /**
      * Paint the dots.
-     * 
+     *
      * @param gdc The graphics context.
      * @param path The path.
      * @param value The predictand value.
@@ -117,7 +117,7 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
 
     /**
      * Add a label to the dot.
-     * 
+     *
      * @param gdc The graphics context.
      * @param center The center of the dot.
      * @param value The predictand value.

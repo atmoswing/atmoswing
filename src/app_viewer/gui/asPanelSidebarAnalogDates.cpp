@@ -37,7 +37,7 @@ asPanelSidebarAnalogDates::asPanelSidebarAnalogDates(wxWindow* parent, wxWindowI
     wxSize listSize = wxSize();
     listSize.SetHeight(120);
     _listCtrl = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, listSize,
-                                wxLC_REPORT | wxNO_BORDER | wxLC_SINGLE_SEL);
+                               wxLC_REPORT | wxNO_BORDER | wxLC_SINGLE_SEL);
     _listCtrl->InsertColumn(0l, _("Analog"), wxLIST_FORMAT_RIGHT, 50);
     _listCtrl->InsertColumn(1l, _("Date"), wxLIST_FORMAT_LEFT, 100);
     _listCtrl->InsertColumn(2l, _("Criteria"), wxLIST_FORMAT_LEFT, 80);
@@ -45,8 +45,8 @@ asPanelSidebarAnalogDates::asPanelSidebarAnalogDates(wxWindow* parent, wxWindowI
 
     _sizerContent->Add(_listCtrl, 0, wxEXPAND, 0);
 
-    _listCtrl->Connect(wxEVT_COMMAND_LIST_ITEM_SELECTED,
-                        wxListEventHandler(asPanelSidebarAnalogDates::OnDateSelection), nullptr, this);
+    _listCtrl->Connect(wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler(asPanelSidebarAnalogDates::OnDateSelection),
+                       nullptr, this);
 
     Layout();
     _sizerContent->Fit(this);
@@ -54,7 +54,7 @@ asPanelSidebarAnalogDates::asPanelSidebarAnalogDates(wxWindow* parent, wxWindowI
 
 asPanelSidebarAnalogDates::~asPanelSidebarAnalogDates() {
     _listCtrl->Disconnect(wxEVT_COMMAND_LIST_ITEM_SELECTED,
-                           wxListEventHandler(asPanelSidebarAnalogDates::OnDateSelection), nullptr, this);
+                          wxListEventHandler(asPanelSidebarAnalogDates::OnDateSelection), nullptr, this);
 }
 
 void asPanelSidebarAnalogDates::OnDateSelection(wxListEvent& event) {

@@ -70,14 +70,14 @@ class asFrameForecaster : public asFrameForecasterVirtual {
     }
 
   protected:
-    asLogWindow* _logWindow; /**< The log window. */
+    asLogWindow* _logWindow;          /**< The log window. */
     asMethodForecasting* _forecaster; /**< The forecasting method. */
-    awxLed* _ledDownloading; /**< The LED for downloading. */
-    awxLed* _ledLoading; /**< The LED for loading. */
-    awxLed* _ledProcessing; /**< The LED for processing. */
-    awxLed* _ledSaving; /**< The LED for saving. */
+    awxLed* _ledDownloading;          /**< The LED for downloading. */
+    awxLed* _ledLoading;              /**< The LED for loading. */
+    awxLed* _ledProcessing;           /**< The LED for processing. */
+    awxLed* _ledSaving;               /**< The LED for saving. */
     asBatchForecasts _batchForecasts; /**< The batch forecasts object. */
-    wxFileHistory* _fileHistory; /**< The file history. */
+    wxFileHistory* _fileHistory;      /**< The file history. */
 
     void OnOpenBatchForecasts(wxCommandEvent& event) override;
 

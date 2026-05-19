@@ -448,8 +448,8 @@ bool AtmoSwingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
 
         // Set the local config object
         wxString configFilePath = asConfig::GetConfigFilePath("AtmoSwingOptimizer.ini");
-        auto pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, configFilePath,
-                                        configFilePath, wxCONFIG_USE_LOCAL_FILE);
+        auto pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, configFilePath, configFilePath,
+                                        wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     }
 

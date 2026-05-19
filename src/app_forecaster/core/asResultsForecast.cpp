@@ -28,9 +28,10 @@
 
 #include "asResultsForecast.h"
 
-#include <vector>
-#include <numeric>
 #include <wx/tokenzr.h>
+
+#include <numeric>
+#include <vector>
 
 #include "asFileNetcdf.h"
 
@@ -356,8 +357,8 @@ bool asResultsForecast::Save() {
         ncFile.PutVarArray("reference_axis", startReferenceAxis, countReferenceAxis, &_referenceAxis(0));
         ncFile.PutVarArray("reference_values", startReferenceValues, countReferenceValues, &_referenceValues(0, 0));
     }
-    ncFile.PutVarArray("predictor_dataset_ids_realtime", startPredictors, countPredictors,
-                       &_predictorDatasetIdsOper[0], nPredictors);
+    ncFile.PutVarArray("predictor_dataset_ids_realtime", startPredictors, countPredictors, &_predictorDatasetIdsOper[0],
+                       nPredictors);
     ncFile.PutVarArray("predictor_dataset_ids_archive", startPredictors, countPredictors,
                        &_predictorDatasetIdsArchive[0], nPredictors);
     ncFile.PutVarArray("predictor_data_ids_realtime", startPredictors, countPredictors, &_predictorDataIdsOper[0],
@@ -461,8 +462,7 @@ bool asResultsForecast::Load() {
                     return false;
                 }
             } else {
-                _predictandParameter = asPredictand::StringToParameterEnum(
-                    ncFile.GetAttString("predictand_parameter"));
+                _predictandParameter = asPredictand::StringToParameterEnum(ncFile.GetAttString("predictand_parameter"));
                 _predictandTemporalResolution = asPredictand::StringToTemporalResolutionEnum(
                     ncFile.GetAttString("predictand_temporal_resolution"));
                 _predictandSpatialAggregation = asPredictand::StringToSpatialAggregationEnum(

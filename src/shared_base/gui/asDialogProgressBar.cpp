@@ -45,8 +45,8 @@ asDialogProgressBar::asDialogProgressBar(const wxString& dialogMessage, int valu
 
         if (valueMax > 10) {
             _progressBar = new wxProgressDialog(_("Please wait"), dialogMessage, valueMax, nullptr,
-                                                 wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME |
-                                                     wxPD_ELAPSED_TIME | wxPD_SMOOTH);  // wxPD_APP_MODAL |
+                                                wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME |
+                                                    wxPD_ELAPSED_TIME | wxPD_SMOOTH);  // wxPD_APP_MODAL |
             _initiated = true;
         }
     }

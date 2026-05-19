@@ -156,7 +156,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
                             // Assess the criteria
                             wxASSERT(_criteria.size() > iPtor);
                             float tmpScore = _criteria[iPtor]->Assess(*_vTargData[iPtor], *_vArchData[iPtor],
-                                                                       _vRowsNb[iPtor], _vColsNb[iPtor]);
+                                                                      _vRowsNb[iPtor], _vColsNb[iPtor]);
 
                             // Weight and add the score
                             thisScore += tmpScore * _params->GetPredictorWeight(_step, iPtor);
