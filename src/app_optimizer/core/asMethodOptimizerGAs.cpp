@@ -1156,14 +1156,17 @@ bool asMethodOptimizerGAs::HasConverged() {
     ThreadsManager().CritSectionConfig().Leave();
 
     // Check if enough generations
-    if (_bestScores.size() < convergenceStepsNb) {
+    wxASSERT(convergenceStepsNb > 0);
+    if (_bestScores.size() < static_cast<size_t>(convergenceStepsNb)) {
         return false;
     }
 
-    // Check the best convergenceStepsNb scores
-    for (int i = _bestScores.size() - 1; i > _bestScores.size() - convergenceStepsNb; i--)  // Checked
-    {
-        float lastScore = _bestScores[_bestScores.size() - 1];
+    // Check the best convergenceStepsNb scores. The guard above ensures
+    // _bestScores.size() >= convergenceStepsNb, so the unsigned subtraction below cannot underflow.
+    const size_t n = _bestScores.size();
+    const size_t k = static_cast<size_t>(convergenceStepsNb);
+    for (size_t i = n - 1; i > n - k; i--) {
+        float lastScore = _bestScores[n - 1];
 
         if (lastScore == 0) {
             if (_bestScores[i] != _bestScores[i - 1]) {
