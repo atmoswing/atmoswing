@@ -1,0 +1,90 @@
+name: Lint
+
+on:
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - '**/*.cpp'
+      - '**/*.h'
+      - '**/*.hpp'
+      - '.clang-tidy'
+      - '.github/workflows/lint.yml'
+
+env:
+  VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
+
+jobs:
+  clang-tidy:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # need history for diff against base branch
+
+      - name: Install build deps + clang-tidy
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y autoconf automake libtool pkg-config clang-tidy
+
+      - name: Locate clang-tidy-diff
+        run: |
+          # clang-tidy-diff.py is shipped with llvm-* packages under a versioned name
+          # (e.g. /usr/share/clang/clang-tidy-diff.py or /usr/bin/clang-tidy-diff-<ver>).
+          set -e
+          for candidate in \
+            /usr/share/clang/clang-tidy-diff.py \
+            $(ls /usr/bin/clang-tidy-diff-* 2>/dev/null || true) \
+            $(ls /usr/share/clang/clang-tidy-diff-*.py 2>/dev/null || true); do
+            if [ -x "$candidate" ] || [ -f "$candidate" ]; then
+              echo "CLANG_TIDY_DIFF=$candidate" >> "$GITHUB_ENV"
+              break
+            fi
+          done
+          if [ -z "${CLANG_TIDY_DIFF:-}" ] && [ -z "$(grep CLANG_TIDY_DIFF "$GITHUB_ENV" 2>/dev/null)" ]; then
+            echo "clang-tidy-diff.py not found, falling back to running clang-tidy on all changed files"
+            echo "CLANG_TIDY_DIFF=" >> "$GITHUB_ENV"
+          fi
+
+      - name: Export GitHub Actions cache env (for vcpkg x-gha)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+      - name: Set VCPKG_ROOT
+        run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
+
+      - name: Configure (produces compile_commands.json)
+        run: cmake -B build -G Ninja
+             -DCMAKE_BUILD_TYPE=Release
+             -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+             -DBUILD_FORECASTER=ON
+             -DBUILD_OPTIMIZER=ON
+             -DBUILD_DOWNSCALER=ON
+             -DBUILD_VIEWER=OFF
+             -DUSE_GUI=OFF
+             -DBUILD_TESTS=ON
+
+      - name: Run clang-tidy on changed lines
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          BASE_SHA=$(git rev-parse origin/${{ github.base_ref }})
+          if [ -n "$CLANG_TIDY_DIFF" ]; then
+            echo "Running clang-tidy-diff against $BASE_SHA..."
+            git diff -U0 "$BASE_SHA"...HEAD -- '*.cpp' '*.h' '*.hpp' \
+              | python3 "$CLANG_TIDY_DIFF" -p1 -path build -clang-tidy-binary clang-tidy
+          else
+            echo "Running clang-tidy on whole changed files..."
+            files=$(git diff --name-only "$BASE_SHA"...HEAD -- '*.cpp' '*.h' '*.hpp' \
+              | grep -v -E '(libs/|_deps/|vcpkg_installed/|AtmoSwing.*Gui\.)' || true)
+            if [ -z "$files" ]; then
+              echo "No relevant changed files."
+              exit 0
+            fi
+            for f in $files; do
+              echo "::group::clang-tidy $f"
+              clang-tidy -p build "$f" || true
+              echo "::endgroup::"
+            done
+          fi
