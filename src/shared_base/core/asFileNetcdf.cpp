@@ -118,9 +118,15 @@ bool asFileNetcdf::Close() {
 }
 
 bool asFileNetcdf::ForceClose() {
+    // ForceClose is the no-throw counterpart of Close(); it is called from exception-handling
+    // paths (e.g. asResultsForecast.cpp:642 inside a `catch` block) where HandleErrorNetcdf()'s
+    // throw semantics would terminate the program. Log the nc_close failure but do not throw.
     CheckDefModeClosed();  // Check that the file is not in define mode
     ClearStruct();
     _status = nc_close(_fileId);
+    if (_status != NC_NOERR) {
+        wxLogWarning(_("NetCDF: failed to force-close file %s: %s"), _fileName.GetName(), nc_strerror(_status));
+    }
     _fileId = 0;
 
     return true;
@@ -428,7 +434,8 @@ void asFileNetcdf::PutVarArray(const wxString& varName, const size_t* arrStart, 
     // Get Var ID
     _status = nc_inq_varid(_fileId, varName.mb_str(wxConvUTF8), &varId);
     if (_status) HandleErrorNetcdf();
-    // Write data
+    // Write data. The const_cast adds const (char** → const char**) to match nc_put_vara_string's
+    // read-only contract; nothing is cast away. Safe — NetCDF does not write through this pointer.
     _status = nc_put_vara_string(_fileId, varId, arrStart, arrCount, const_cast<const char**>(cstr));
     if (_status) HandleErrorNetcdf();
 

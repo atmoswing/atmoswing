@@ -146,21 +146,10 @@ using std::runtime_error;
 #include "asDialogProgressBar.h"
 #endif
 
-#ifdef APP_FORECASTER
-#include "asGlobVarsForecaster.h"
-#endif
-#ifdef APP_VIEWER
-#include "asGlobVarsViewer.h"
-#endif
-#ifdef APP_OPTIMIZER
+// g_cmdFileName, g_local, g_runNb now live in asGlobVars.h (already pulled in above).
+// Only the Optimizer still has app-specific globals (g_resumePreviousRun).
+#if defined(APP_OPTIMIZER) || defined(UNIT_TESTING)
 #include "asGlobVarsOptimizer.h"
-#endif
-#ifdef APP_DOWNSCALER
-#include "asGlobVarsDownscaler.h"
-#endif
-#ifdef UNIT_TESTING
-#include "asGlobVarsOptimizer.h"
-#include "asGlobVarsViewer.h"
 #endif
 
 #endif  // AS_INC_H

@@ -31,8 +31,7 @@
 
 #include "asIncludes.h"
 
-extern bool g_local;
-extern int g_runNb;
+// g_local and g_runNb are shared with the Downscaler; they live in asGlobVars.h.
 extern bool g_resumePreviousRun;
 
 #endif

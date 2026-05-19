@@ -37,6 +37,13 @@ extern bool g_responsive;
 extern bool g_unitTesting;
 extern bool g_guiMode;
 
+// CLI-driven state shared by Forecaster and Viewer.
+extern wxString g_cmdFileName;
+
+// CLI-driven state shared by Optimizer and Downscaler.
+extern bool g_local;
+extern int g_runNb;
+
 // Constants
 extern const double g_cst_Euler;
 extern const double g_cst_Pi;

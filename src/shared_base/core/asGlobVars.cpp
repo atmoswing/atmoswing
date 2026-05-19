@@ -34,6 +34,11 @@ bool g_responsive = true;
 bool g_unitTesting = false;
 bool g_guiMode = true;
 
+wxString g_cmdFileName = wxEmptyString;
+
+bool g_local = false;
+int g_runNb = 0;
+
 // Constants
 const double g_cst_Euler = 0.5772156649;  // Euler-Mascheroni
 const double g_cst_Pi = 3.1415926535;
