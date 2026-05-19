@@ -46,7 +46,6 @@ if (USE_GUI)
             "${PROJECT_SOURCE_DIR}/gui/"
     )
 endif (USE_GUI)
-include_directories(${inc_dirs})
 
 
 ##### DECLARE EXECUTABLE
@@ -65,6 +64,8 @@ else (WIN32)
     add_executable(atmoswing-optimizer ${src_app_optimizer})
 endif (WIN32)
 
+target_include_directories(atmoswing-optimizer PRIVATE ${inc_dirs})
+
 # Cppcheck
 if (USE_CPPCHECK)
     add_cppcheck(atmoswing-optimizer STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
@@ -73,30 +74,21 @@ endif (USE_CPPCHECK)
 
 ##### DEFINITIONS
 
-# Global definitions
-if (USE_CUDA)
-    add_definitions(-DUSE_CUDA)
-endif (USE_CUDA)
-
-if (USE_GUI)
-    set_target_properties(atmoswing-optimizer PROPERTIES COMPILE_DEFINITIONS "APP_OPTIMIZER; MINIMAL_LINKS; USE_GUI=1")
-    set_target_properties(asprocessing PROPERTIES COMPILE_DEFINITIONS "USE_GUI=1")
-else (USE_GUI)
-    set_target_properties(atmoswing-optimizer PROPERTIES COMPILE_DEFINITIONS "APP_OPTIMIZER; MINIMAL_LINKS; USE_GUI=0")
-    set_target_properties(asprocessing PROPERTIES COMPILE_DEFINITIONS "USE_GUI=0")
-endif (USE_GUI)
+# APP_OPTIMIZER and MINIMAL_LINKS are target-specific. USE_GUI / USE_CUDA / version macros
+# are inherited from atmoswing_compile_options via the asbase/asprocessing PUBLIC link chain.
+target_compile_definitions(atmoswing-optimizer PRIVATE APP_OPTIMIZER MINIMAL_LINKS)
 
 
 ##### LINKING
 
-target_link_libraries(atmoswing-optimizer asbase asprocessing)
+target_link_libraries(atmoswing-optimizer PRIVATE asbase asprocessing)
 if (USE_VLD)
-    target_link_libraries(atmoswing-optimizer ${VLD_LIBRARIES})
+    target_link_libraries(atmoswing-optimizer PRIVATE ${VLD_LIBRARIES})
 endif (USE_VLD)
 if (USE_CUDA)
     add_dependencies(atmoswing-optimizer ascuda)
-    target_link_libraries(ascuda ${CUDA_LIBRARIES})
-    target_link_libraries(atmoswing-optimizer ascuda)
+    target_link_libraries(ascuda PRIVATE ${CUDA_LIBRARIES})
+    target_link_libraries(atmoswing-optimizer PRIVATE ascuda)
 endif (USE_CUDA)
 
 

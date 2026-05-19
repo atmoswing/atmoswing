@@ -38,21 +38,23 @@ list(APPEND inc_dirs "${PROJECT_SOURCE_DIR}/core/")
 if (USE_GUI)
     list(APPEND inc_dirs "${PROJECT_SOURCE_DIR}/gui/")
 endif (USE_GUI)
-include_directories(${inc_dirs})
 
 
 ##### LIBRARIES
 
-# Intel MKL
-if (USE_MKL)
-    find_package(MKL REQUIRED)
-    include_directories(${MKL_INCLUDE_DIRS})
-    link_libraries(${MKL_LIBRARIES})
-    add_definitions(-DEIGEN_USE_MKL_ALL)
-endif (USE_MKL)
-
 # Own libraries
 add_library(asbase STATIC ${src_shared_base})
+
+# Include directories: PUBLIC so consumers (apps, tests, benchmark) inherit transitively.
+target_include_directories(asbase PUBLIC ${inc_dirs})
+
+# Intel MKL (optional)
+if (USE_MKL)
+    find_package(MKL REQUIRED)
+    target_include_directories(asbase PRIVATE ${MKL_INCLUDE_DIRS})
+    target_link_libraries(asbase PUBLIC ${MKL_LIBRARIES})
+    target_compile_definitions(asbase PUBLIC EIGEN_USE_MKL_ALL)
+endif (USE_MKL)
 
 
 ##### DECLARE EXECUTABLE
@@ -63,28 +65,22 @@ if (USE_CPPCHECK)
 endif (USE_CPPCHECK)
 
 
-##### DEFINITIONS
-
-# Specific definitions
-if (USE_GUI)
-    set_target_properties(asbase PROPERTIES COMPILE_DEFINITIONS "USE_GUI=1")
-else (USE_GUI)
-    set_target_properties(asbase PROPERTIES COMPILE_DEFINITIONS "USE_GUI=0")
-endif (USE_GUI)
-
-
 ##### LINKING
 
-target_link_libraries(asbase netCDF::netcdf PROJ::proj eccodes Eigen3::Eigen)
+# PUBLIC link so consumers inherit shared defines/includes (USE_GUI, version macros,
+# wxWidgets paths, USE_JPEG2000, EIGEN_NO_DEBUG, ...).
+target_link_libraries(asbase PUBLIC atmoswing_compile_options)
+
+target_link_libraries(asbase PUBLIC netCDF::netcdf PROJ::proj eccodes Eigen3::Eigen)
 
 if (BUILD_FORECASTER OR BUILD_VIEWER)
-    target_link_libraries(asbase CURL::libcurl ZLIB::ZLIB)
+    target_link_libraries(asbase PUBLIC CURL::libcurl ZLIB::ZLIB)
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
 if (USE_GUI)
-    target_link_libraries(asbase wx::core wx::xml)
+    target_link_libraries(asbase PUBLIC wx::core wx::xml)
 else (USE_GUI)
-    target_link_libraries(asbase wx::base wx::xml)
+    target_link_libraries(asbase PUBLIC wx::base wx::xml)
 endif (USE_GUI)
 
 

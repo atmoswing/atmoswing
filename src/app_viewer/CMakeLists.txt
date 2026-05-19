@@ -53,17 +53,18 @@ list(APPEND inc_dirs
         "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/include/"
         "${PROJECT_SOURCE_DIR}/libs/wxthings/include/"
 )
-include_directories(${inc_dirs})
 
 
 ##### LIBRARIES
 
-# vroomgis (already made available at top-level CMakeLists.txt)
-include_directories(${vroomgis_SOURCE_DIR}/vroomgis/src)
-include_directories(${vroomgis_SOURCE_DIR}/vroomgis/art)
-
-# wxplotctrl
+# wxplotctrl (uses wxWidgets headers from atmoswing_compile_options).
 add_library(wxplotctrl STATIC ${src_lib_wxplotctrl})
+target_include_directories(wxplotctrl PUBLIC
+        "${PROJECT_SOURCE_DIR}/libs/wxmathplot/"
+        "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/"
+        "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/include/"
+        "${PROJECT_SOURCE_DIR}/libs/wxthings/include/")
+target_link_libraries(wxplotctrl PRIVATE atmoswing_compile_options)
 
 
 ##### DECLARE EXECUTABLE
@@ -77,6 +78,11 @@ elseif (APPLE)
 else (WIN32)
     add_executable(atmoswing-viewer ${src_app_viewer})
 endif (WIN32)
+
+target_include_directories(atmoswing-viewer PRIVATE
+        ${inc_dirs}
+        ${vroomgis_SOURCE_DIR}/vroomgis/src
+        ${vroomgis_SOURCE_DIR}/vroomgis/art)
 
 # Cppcheck
 if (USE_CPPCHECK)
@@ -95,19 +101,20 @@ elseif (WIN32)
     target_compile_options(wxplotctrl PRIVATE /W2)
 endif ()
 
-# Specific definitions
-set_target_properties(atmoswing-viewer PROPERTIES COMPILE_DEFINITIONS "APP_VIEWER")
+# APP_VIEWER is target-specific. USE_GUI / version macros come from atmoswing_compile_options
+# via asbase's PUBLIC link.
+target_compile_definitions(atmoswing-viewer PRIVATE APP_VIEWER)
 
 
 ##### LINKING
 
 add_dependencies(atmoswing-viewer vroomgis)
-target_link_libraries(atmoswing-viewer PNG::PNG GDAL::GDAL asbase vroomgis wxplotctrl)
+target_link_libraries(atmoswing-viewer PRIVATE PNG::PNG GDAL::GDAL asbase vroomgis wxplotctrl)
 if (USE_VLD)
-    target_link_libraries(atmoswing-viewer ${VLD_LIBRARIES})
+    target_link_libraries(atmoswing-viewer PRIVATE ${VLD_LIBRARIES})
 endif (USE_VLD)
 if (WIN32)
-    target_link_libraries(atmoswing-viewer Psapi.lib)
+    target_link_libraries(atmoswing-viewer PRIVATE Psapi.lib)
 endif (WIN32)
 
 

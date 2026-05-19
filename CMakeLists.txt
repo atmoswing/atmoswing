@@ -64,15 +64,25 @@ message(STATUS "VCPKG_TARGET_TRIPLET    = ${VCPKG_TARGET_TRIPLET}")
 project(AtmoSwing)
 
 
+# ---- Shared compile options ----
+# All project targets (asbase, asprocessing, executables, tests, benchmark) link to this INTERFACE
+# library so they pick up the shared compile definitions, include paths, and C++ standard. Avoids
+# global add_definitions / include_directories leaking into FetchContent sub-projects (wxWidgets,
+# eccodes, vroomgis).
+add_library(atmoswing_compile_options INTERFACE)
+target_compile_features(atmoswing_compile_options INTERFACE cxx_std_17)
+
+
 ##### OPTIONS
 
 # Version number
 set(VERSION_MAJOR "3")
 set(VERSION_MINOR "0")
 set(VERSION_PATCH "11")
-add_definitions(-DATMOSWING_MAJOR_VERSION=${VERSION_MAJOR})
-add_definitions(-DATMOSWING_MINOR_VERSION=${VERSION_MINOR})
-add_definitions(-DATMOSWING_PATCH_VERSION=${VERSION_PATCH})
+target_compile_definitions(atmoswing_compile_options INTERFACE
+        ATMOSWING_MAJOR_VERSION=${VERSION_MAJOR}
+        ATMOSWING_MINOR_VERSION=${VERSION_MINOR}
+        ATMOSWING_PATCH_VERSION=${VERSION_PATCH})
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/build/cmake ${CMAKE_MODULE_PATH})
 
@@ -108,8 +118,8 @@ endif (WIN32)
 # Docker option
 option(ON_DOCKER "Enable only if AtmoSwing is built for Docker." OFF)
 if (ON_DOCKER)
-    add_definitions(-DON_DOCKER)
-endif(ON_DOCKER)
+    target_compile_definitions(atmoswing_compile_options INTERFACE ON_DOCKER)
+endif (ON_DOCKER)
 
 # Using the Intel MKL
 option(USE_MKL "Do you want to use Intel MKL ?" OFF)
@@ -149,8 +159,10 @@ else (BUILD_VIEWER)
 endif (BUILD_VIEWER)
 
 if (USE_GUI)
-    add_definitions(-DUSE_GUI)
-endif(USE_GUI)
+    target_compile_definitions(atmoswing_compile_options INTERFACE USE_GUI=1)
+else (USE_GUI)
+    target_compile_definitions(atmoswing_compile_options INTERFACE USE_GUI=0)
+endif (USE_GUI)
 
 # Disable testing tree
 set(BUILD_TESTING OFF)
@@ -197,14 +209,16 @@ FetchContent_Declare(wxWidgets
         UPDATE_DISCONNECTED TRUE)
 FetchContent_MakeAvailable(wxWidgets)
 
-include_directories(${wxWidgets_SOURCE_DIR}/include)
+target_include_directories(atmoswing_compile_options INTERFACE ${wxWidgets_SOURCE_DIR}/include)
 if (WIN32)
-    include_directories(${wxWidgets_BINARY_DIR}/lib/vc_x64_lib/$<IF:$<CONFIG:Debug>,${WX_LIB_BASENAME}d,${WX_LIB_BASENAME}>)
-    include_directories(${wxWidgets_BINARY_DIR}/lib/vc_x64_dll/$<IF:$<CONFIG:Debug>,${WX_LIB_BASENAME}d,${WX_LIB_BASENAME}>)
+    target_include_directories(atmoswing_compile_options INTERFACE
+            ${wxWidgets_BINARY_DIR}/lib/vc_x64_lib/$<IF:$<CONFIG:Debug>,${WX_LIB_BASENAME}d,${WX_LIB_BASENAME}>)
+    target_include_directories(atmoswing_compile_options INTERFACE
+            ${wxWidgets_BINARY_DIR}/lib/vc_x64_dll/$<IF:$<CONFIG:Debug>,${WX_LIB_BASENAME}d,${WX_LIB_BASENAME}>)
 else ()
     # On Unix-like systems, wxWidgets generates setup.h in lib/wx/include/<toolkit>-<configuration> Find the actual
     # setup.h directory dynamically (version-agnostic)
-    include_directories(${wxWidgets_BINARY_DIR}/lib)
+    target_include_directories(atmoswing_compile_options INTERFACE ${wxWidgets_BINARY_DIR}/lib)
 
     # Try to find the setup.h directory dynamically. First try the more common non-debug variant, then fall back to
     # debug variant if needed
@@ -214,13 +228,13 @@ else ()
     endif ()
 
     if (WX_SETUP_INCLUDE_DIR)
-        include_directories(${WX_SETUP_INCLUDE_DIR})
+        target_include_directories(atmoswing_compile_options INTERFACE ${WX_SETUP_INCLUDE_DIR})
         message(STATUS "wxWidgets setup dir = ${WX_SETUP_INCLUDE_DIR}")
     else ()
         message(WARNING "Could not find wxWidgets setup.h directory. Build may fail.")
     endif ()
 endif ()
-link_directories(${wxWidgets_BINARY_DIR}/lib)
+target_link_directories(atmoswing_compile_options INTERFACE ${wxWidgets_BINARY_DIR}/lib)
 message(STATUS "wxWidgets include dir = ${wxWidgets_SOURCE_DIR}/include")
 message(STATUS "wxWidgets lib dir = ${wxWidgets_BINARY_DIR}/lib")
 
@@ -293,7 +307,7 @@ endif ()
 # Visual Leak Detector
 if (USE_VLD)
     find_package(VLD)
-    include_directories(${VLD_INCLUDE_DIRS})
+    target_include_directories(atmoswing_compile_options INTERFACE ${VLD_INCLUDE_DIRS})
 endif (USE_VLD)
 
 # Cppcheck
