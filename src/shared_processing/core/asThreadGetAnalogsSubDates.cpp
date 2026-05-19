@@ -76,10 +76,11 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
 
     // Some other variables
     float tmpscore, thisscore;
-    int timeArchiveDataSize = timeArchiveData.size();
-    int timeTargetDataSize = timeTargetData.size();
+    int timeArchiveDataSize = static_cast<int>(timeArchiveData.size());
+    int timeTargetDataSize = static_cast<int>(timeTargetData.size());
     int predictorsNb = _params->GetPredictorsNb(_step);
-    int membersNb = (_pPredictorsTarget)[0]->GetData()[0].size();
+    wxASSERT(!(_pPredictorsTarget)[0]->GetData().empty());
+    int membersNb = static_cast<int>((_pPredictorsTarget)[0]->GetData()[0].size());
     int analogsNbPrevious = _params->GetAnalogsNumber(_step - 1);
     int analogsNb = _params->GetAnalogsNumber(_step);
     bool isasc = (_criteria[0]->GetOrder() == Asc);
@@ -103,7 +104,6 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
         int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
                                (double)_pTimeTargetSelection->coeff(iDateTarg), 0.01);
         wxASSERT(_pTimeTargetSelection->coeff(iDateTarg) > 0);
-        wxASSERT(iTimeTarg >= 0);
         if (iTimeTarg < 0) {
             wxLogError(_("An unexpected error occurred."));
             *_success = false;

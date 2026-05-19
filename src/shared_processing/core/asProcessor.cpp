@@ -91,7 +91,8 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
     wxASSERT(criteria[0]);
     bool isAsc = (criteria[0]->GetOrder() == Asc);
     int predictorsNb = params->GetPredictorsNb(step);
-    int membersNb = predictorsTarget[0]->GetData()[0].size();
+    wxASSERT(!predictorsTarget[0]->GetData().empty());
+    int membersNb = static_cast<int>(predictorsTarget[0]->GetData()[0].size());
 
     wxASSERT(!predictorsArchive.empty());
     wxASSERT((int)predictorsArchive.size() == predictorsNb);

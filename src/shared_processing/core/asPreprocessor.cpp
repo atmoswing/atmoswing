@@ -1056,7 +1056,8 @@ bool asPreprocessor::PreprocessHumidityFlux(const vector<asPredictor*>& predicto
     wxASSERT(predictors[0]);
 
 #ifdef _DEBUG
-    for (int iPre = 0; iPre < predictors.size() - 1; iPre++) {
+    // Use `iPre + 1 < size` instead of `iPre < size - 1` to avoid unsigned-underflow when empty.
+    for (size_t iPre = 0; iPre + 1 < predictors.size(); iPre++) {
         wxASSERT(predictors[iPre]->GetData()[0][0].rows() == predictors[iPre + 1]->GetData()[0][0].rows());
         wxASSERT(predictors[iPre]->GetData()[0][0].cols() == predictors[iPre + 1]->GetData()[0][0].cols());
         wxASSERT(predictors[iPre]->GetData().size() == predictors[iPre + 1]->GetData().size());

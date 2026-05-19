@@ -326,7 +326,7 @@ a1f asResultsForecastAggregator::GetTargetDates(int methodRow) const {
         }
     }
 
-    int size = asRound(lastDate - firstDate + 1);
+    int size = static_cast<int>(asRound(lastDate - firstDate + 1));
     a1f dates = a1f::LinSpaced(size, firstDate, lastDate);
 
     return dates;
@@ -347,7 +347,7 @@ a1f asResultsForecastAggregator::GetFullTargetDates() const {
         }
     }
 
-    int size = int(asRound(lastDate - firstDate + 1));
+    int size = static_cast<int>(asRound(lastDate - firstDate + 1));
     a1f dates = a1f::LinSpaced(size, firstDate, lastDate);
 
     return dates;
