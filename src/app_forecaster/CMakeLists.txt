@@ -82,6 +82,9 @@ endif (USE_GUI)
 ##### LINKING
 
 target_link_libraries(atmoswing-forecaster asbase asprocessing OpenSSL::SSL)
+if (USE_GUI)
+    target_link_libraries(atmoswing-forecaster wx::stc)
+endif ()
 if (USE_VLD)
     target_link_libraries(atmoswing-forecaster ${VLD_LIBRARIES})
 endif (USE_VLD)
