@@ -723,9 +723,6 @@ bool asMethodCalibrator::GetAnalogsTotalScore(asResultsTotalScore& results, asPa
         timeEnd -= params->GetTargetTimeStepHours() / 24.0;
     }
     asTimeArray timeArray(timeStart, timeEnd, params->GetTargetTimeStepHours(), params->GetScoreTimeArrayMode());
-
-    // TODO: Add every options for the Init function (generic version)
-    //    timeArray.Init(params->GetScoreTimeArrayDate(), params->GetForecastScoreTimeArrayIntervalDays());
     timeArray.Init();
 
     // Pass data and score to processor

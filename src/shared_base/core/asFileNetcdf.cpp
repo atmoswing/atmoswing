@@ -1584,7 +1584,6 @@ bool asFileNetcdf::ParseStruct() {
         _struct.dims.push_back(nds);
     }
 
-    // FIXME (phorton#1#): Cannot get the Netcdf4 functions ??
     // Find all unlimited dimensions
     int unlimDimIds[NC_MAX_DIMS];
     _status = nc_inq_unlimdims(_fileId, &_struct.nUDims, nullptr);
