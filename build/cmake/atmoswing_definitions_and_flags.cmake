@@ -47,6 +47,3 @@ if (WIN32)
             _CRTDBG_MAP_ALLOC)
 endif ()
 
-if (USE_VLD)
-    target_compile_definitions(atmoswing_compile_options INTERFACE USE_VLD)
-endif ()

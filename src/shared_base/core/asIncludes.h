@@ -119,10 +119,6 @@ using std::runtime_error;
 #endif
 #endif
 
-#ifdef USE_VLD
-#include <vld.h>  // Visual Leak Detector (https://vld.codeplex.com/)
-#endif
-
 #endif
 
 //---------------------------------

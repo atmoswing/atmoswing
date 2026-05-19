@@ -70,9 +70,6 @@ target_compile_definitions(atmoswing-downscaler PRIVATE APP_DOWNSCALER MINIMAL_L
 ##### LINKING
 
 target_link_libraries(atmoswing-downscaler PRIVATE asbase asprocessing)
-if (USE_VLD)
-    target_link_libraries(atmoswing-downscaler PRIVATE ${VLD_LIBRARIES})
-endif (USE_VLD)
 if (USE_CUDA)
     add_dependencies(atmoswing-downscaler ascuda)
     target_link_libraries(atmoswing-downscaler PRIVATE ascuda)

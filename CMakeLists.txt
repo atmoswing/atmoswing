@@ -134,13 +134,6 @@ if (WIN32)
     endif()
 endif ()
 
-# Enable Visual Leak Detector
-if (WIN32)
-    option(USE_VLD "Should we use Visual Leak Detector (https://vld.codeplex.com) ?" OFF)
-else (WIN32)
-    set(USE_VLD OFF)
-endif (WIN32)
-
 # Enable Cppcheck
 option(USE_CPPCHECK "Should we use Cppcheck (http://cppcheck.sourceforge.net/) ?" OFF)
 
@@ -303,12 +296,6 @@ endif ()
 
 
 ##### FIND ANALYSIS TOOLS
-
-# Visual Leak Detector
-if (USE_VLD)
-    find_package(VLD)
-    target_include_directories(atmoswing_compile_options INTERFACE ${VLD_INCLUDE_DIRS})
-endif (USE_VLD)
 
 # Cppcheck
 if (USE_CPPCHECK)

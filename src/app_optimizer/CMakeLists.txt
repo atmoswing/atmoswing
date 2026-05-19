@@ -82,9 +82,6 @@ target_compile_definitions(atmoswing-optimizer PRIVATE APP_OPTIMIZER MINIMAL_LIN
 ##### LINKING
 
 target_link_libraries(atmoswing-optimizer PRIVATE asbase asprocessing)
-if (USE_VLD)
-    target_link_libraries(atmoswing-optimizer PRIVATE ${VLD_LIBRARIES})
-endif (USE_VLD)
 if (USE_CUDA)
     add_dependencies(atmoswing-optimizer ascuda)
     target_link_libraries(ascuda PRIVATE ${CUDA_LIBRARIES})
