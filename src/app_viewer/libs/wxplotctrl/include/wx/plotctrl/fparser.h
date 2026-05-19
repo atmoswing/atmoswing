@@ -116,7 +116,7 @@ class WXDLLIMPEXP_PLOTCTRL wxFunctionParser {
 
     // Ok is true after a sucessful call to Parse
     bool Ok() const {
-        return m_ok;
+        return _ok;
     }
 
     // Get the number of comma delimited variables sent to Parse
@@ -124,12 +124,12 @@ class WXDLLIMPEXP_PLOTCTRL wxFunctionParser {
 
     // Get the function string sent to Parse
     wxString GetFunctionString() const {
-        return m_function;
+        return _function;
     }
 
     // Get the variable string sent to Parse
     wxString GetVariableString() const {
-        return m_variables;
+        return _variables;
     }
 
     // Get one of the variable names from the string sent to Parse
@@ -143,13 +143,13 @@ class WXDLLIMPEXP_PLOTCTRL wxFunctionParser {
 
     // implementation
     FunctionParser* GetFunctionParser() const {
-        return m_functionParser;
+        return _functionParser;
     }
 
   protected:
-    FunctionParser* m_functionParser;
-    wxString m_function, m_variables;
-    bool m_ok;
+    FunctionParser* _functionParser;
+    wxString _function, _variables;
+    bool _ok;
 };
 
 #endif  // ONCE_wxFPARSER_H_

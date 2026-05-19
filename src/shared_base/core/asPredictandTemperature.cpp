@@ -35,8 +35,8 @@
 asPredictandTemperature::asPredictandTemperature(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                                                  SpatialAggregation dataSpatialAggregation)
     : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation) {
-    m_hasNormalizedData = false;
-    m_hasReferenceValues = false;
+    _hasNormalizedData = false;
+    _hasReferenceValues = false;
 }
 
 bool asPredictandTemperature::InitContainers() {

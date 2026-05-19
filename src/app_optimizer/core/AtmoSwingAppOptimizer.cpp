@@ -166,15 +166,15 @@ bool AtmoSwingAppOptimizer::OnInit() {
     wxApp::SetAppName(appName);
 
     g_local = false;
-    m_calibParamsFile = wxEmptyString;
-    m_predictandDB = wxEmptyString;
-    m_predictandStationIds = vi(0);
-    m_predictorsDir = wxEmptyString;
-    m_calibMethod = wxEmptyString;
-    m_doProcessing = false;
+    _calibParamsFile = wxEmptyString;
+    _predictandDB = wxEmptyString;
+    _predictandStationIds = vi(0);
+    _predictorsDir = wxEmptyString;
+    _calibMethod = wxEmptyString;
+    _doProcessing = false;
 #if USE_GUI
     g_guiMode = true;
-    m_singleInstanceChecker = nullptr;
+    _singleInstanceChecker = nullptr;
 #else
     g_guiMode = false;
 #endif
@@ -195,13 +195,13 @@ bool AtmoSwingAppOptimizer::OnInit() {
     wxSize ppiDC = dcTestPpi.GetPPI();
     g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
 
-    m_singleInstanceChecker = nullptr;
+    _singleInstanceChecker = nullptr;
 
     // Check that it is the unique instance
     if (!wxFileConfig::Get()->ReadBool("/General/MultiInstances", false)) {
         const wxString instanceName = asStrF(wxT("atmoswing-optimizer-%s"), wxGetUserId());
-        m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-        if (m_singleInstanceChecker->IsAnotherRunning()) {
+        _singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+        if (_singleInstanceChecker->IsAnotherRunning()) {
             wxMessageBox(_("Program already running, aborting."));
             return false;
         }
@@ -310,7 +310,7 @@ bool AtmoSwingAppOptimizer::InitForCmdLineOnly() {
         if (pConfig->ReadLong("/Processing/GpusNb", 0) > 0) {
             pConfig->Write("/Processing/Method", (long)asCUDA);
         }
-        if (m_calibMethod.IsSameAs("ga", false)) {
+        if (_calibMethod.IsSameAs("ga", false)) {
             pConfig->Write("/Processing/AllowMultithreading", false);  // Because we are using parallel evaluations
             pConfig->Write("/GAs/AllowElitismForTheBest", true);
         }
@@ -506,37 +506,37 @@ bool AtmoSwingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
     }
 
     // Check for a calibration params file
-    if (parser.Found("file-parameters", &m_calibParamsFile)) {
+    if (parser.Found("file-parameters", &_calibParamsFile)) {
         if (g_local) {
-            m_calibParamsFile = wxFileName::GetCwd() + DS + m_calibParamsFile;
+            _calibParamsFile = wxFileName::GetCwd() + DS + _calibParamsFile;
         }
 
-        if (!wxFileName::FileExists(m_calibParamsFile)) {
-            wxLogError(_("The given calibration file (%s) couldn't be found."), m_calibParamsFile);
+        if (!wxFileName::FileExists(_calibParamsFile)) {
+            wxLogError(_("The given calibration file (%s) couldn't be found."), _calibParamsFile);
             return false;
         }
     }
 
     // Check for a calibration predictand DB
-    if (parser.Found("predictand-db", &m_predictandDB)) {
+    if (parser.Found("predictand-db", &_predictandDB)) {
         if (g_local) {
-            m_predictandDB = wxFileName::GetCwd() + DS + m_predictandDB;
+            _predictandDB = wxFileName::GetCwd() + DS + _predictandDB;
         }
 
-        if (!wxFileName::FileExists(m_predictandDB)) {
-            wxLogError(_("The given predictand DB (%s) couldn't be found."), m_predictandDB);
+        if (!wxFileName::FileExists(_predictandDB)) {
+            wxLogError(_("The given predictand DB (%s) couldn't be found."), _predictandDB);
             return false;
         }
     }
 
     // Check for a predictors directory
-    if (parser.Found("dir-predictors", &m_predictorsDir)) {
-        if (g_local && wxFileName::Exists(wxFileName::GetCwd() + DS + m_predictorsDir)) {
-            m_predictorsDir = wxFileName::GetCwd() + DS + m_predictorsDir;
+    if (parser.Found("dir-predictors", &_predictorsDir)) {
+        if (g_local && wxFileName::Exists(wxFileName::GetCwd() + DS + _predictorsDir)) {
+            _predictorsDir = wxFileName::GetCwd() + DS + _predictorsDir;
         }
 
-        if (!wxFileName::DirExists(m_predictorsDir)) {
-            wxLogError(_("The given predictors directory (%s) couldn't be found."), m_predictorsDir);
+        if (!wxFileName::DirExists(_predictorsDir)) {
+            wxLogError(_("The given predictors directory (%s) couldn't be found."), _predictorsDir);
             return false;
         }
     }
@@ -550,7 +550,7 @@ bool AtmoSwingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Station ID
     wxString stationIdStr = wxEmptyString;
     if (parser.Found("station-id", &stationIdStr)) {
-        m_predictandStationIds = asParameters::GetFileStationIds(stationIdStr);
+        _predictandStationIds = asParameters::GetFileStationIds(stationIdStr);
     }
 
     // Flag to disable the duplicate dates
@@ -809,13 +809,13 @@ bool AtmoSwingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser) {
      */
 
     // Check for a calibration method option
-    if (parser.Found("calibration-method", &m_calibMethod)) {
+    if (parser.Found("calibration-method", &_calibMethod)) {
         if (!InitForCmdLineOnly()) {
             wxLogError(_("Initialization for command-line interface failed."));
             return false;
         }
-        m_doProcessing = true;
-        wxLogVerbose(_("Given calibration method: %s"), m_calibMethod);
+        _doProcessing = true;
+        wxLogVerbose(_("Given calibration method: %s"), _calibMethod);
 
         return true;
     }
@@ -885,91 +885,91 @@ int AtmoSwingAppOptimizer::OnRun() {
         return wxApp::OnRun();
     }
 
-    if (!m_doProcessing) {
+    if (!_doProcessing) {
         return 0;
     }
 
-    if (m_calibParamsFile.IsEmpty()) {
+    if (_calibParamsFile.IsEmpty()) {
         wxLogError(_("The parameters file is not given."));
         return 1;
     }
 
-    if (m_predictandDB.IsEmpty()) {
+    if (_predictandDB.IsEmpty()) {
         wxLogError(_("The predictand DB is not given."));
         return 1;
     }
 
-    if (m_predictorsDir.IsEmpty()) {
+    if (_predictorsDir.IsEmpty()) {
         wxLogError(_("The predictors directory is not given."));
         return 1;
     }
 
     try {
-        if (m_calibMethod.IsSameAs("single", false)) {
+        if (_calibMethod.IsSameAs("single", false)) {
             asMethodCalibratorSingle calibrator;
-            calibrator.SetParamsFilePath(m_calibParamsFile);
-            calibrator.SetPredictandDBFilePath(m_predictandDB);
-            calibrator.SetPredictandStationIds(m_predictandStationIds);
-            calibrator.SetPredictorDataDir(m_predictorsDir);
+            calibrator.SetParamsFilePath(_calibParamsFile);
+            calibrator.SetPredictandDBFilePath(_predictandDB);
+            calibrator.SetPredictandStationIds(_predictandStationIds);
+            calibrator.SetPredictorDataDir(_predictorsDir);
             calibrator.Manager();
-        } else if (m_calibMethod.IsSameAs("classic", false)) {
+        } else if (_calibMethod.IsSameAs("classic", false)) {
             asMethodCalibratorClassic calibrator;
-            calibrator.SetParamsFilePath(m_calibParamsFile);
-            calibrator.SetPredictandDBFilePath(m_predictandDB);
-            calibrator.SetPredictandStationIds(m_predictandStationIds);
-            calibrator.SetPredictorDataDir(m_predictorsDir);
+            calibrator.SetParamsFilePath(_calibParamsFile);
+            calibrator.SetPredictandDBFilePath(_predictandDB);
+            calibrator.SetPredictandStationIds(_predictandStationIds);
+            calibrator.SetPredictorDataDir(_predictorsDir);
             calibrator.Manager();
-        } else if (m_calibMethod.IsSameAs("classicp", false)) {
+        } else if (_calibMethod.IsSameAs("classicp", false)) {
             asMethodCalibratorClassic calibrator;
             calibrator.SetAsCalibrationPlus();
-            calibrator.SetParamsFilePath(m_calibParamsFile);
-            calibrator.SetPredictandDBFilePath(m_predictandDB);
-            calibrator.SetPredictandStationIds(m_predictandStationIds);
-            calibrator.SetPredictorDataDir(m_predictorsDir);
+            calibrator.SetParamsFilePath(_calibParamsFile);
+            calibrator.SetPredictandDBFilePath(_predictandDB);
+            calibrator.SetPredictandStationIds(_predictandStationIds);
+            calibrator.SetPredictorDataDir(_predictorsDir);
             calibrator.Manager();
-        } else if (m_calibMethod.IsSameAs("varexplocp", false)) {
+        } else if (_calibMethod.IsSameAs("varexplocp", false)) {
             asMethodCalibratorClassicVarExplo calibrator;
             calibrator.SetAsCalibrationPlus();
-            calibrator.SetParamsFilePath(m_calibParamsFile);
-            calibrator.SetPredictandDBFilePath(m_predictandDB);
-            calibrator.SetPredictandStationIds(m_predictandStationIds);
-            calibrator.SetPredictorDataDir(m_predictorsDir);
+            calibrator.SetParamsFilePath(_calibParamsFile);
+            calibrator.SetPredictandDBFilePath(_predictandDB);
+            calibrator.SetPredictandStationIds(_predictandStationIds);
+            calibrator.SetPredictorDataDir(_predictorsDir);
             calibrator.Manager();
-        } else if (m_calibMethod.IsSameAs("montecarlo", false)) {
+        } else if (_calibMethod.IsSameAs("montecarlo", false)) {
             asMethodOptimizerMC optimizer;
-            optimizer.SetParamsFilePath(m_calibParamsFile);
-            optimizer.SetPredictandDBFilePath(m_predictandDB);
-            optimizer.SetPredictandStationIds(m_predictandStationIds);
-            optimizer.SetPredictorDataDir(m_predictorsDir);
+            optimizer.SetParamsFilePath(_calibParamsFile);
+            optimizer.SetPredictandDBFilePath(_predictandDB);
+            optimizer.SetPredictandStationIds(_predictandStationIds);
+            optimizer.SetPredictorDataDir(_predictorsDir);
             optimizer.Manager();
-        } else if (m_calibMethod.IsSameAs("ga", false)) {
+        } else if (_calibMethod.IsSameAs("ga", false)) {
             asMethodOptimizerGAs optimizer;
-            optimizer.SetParamsFilePath(m_calibParamsFile);
-            optimizer.SetPredictandDBFilePath(m_predictandDB);
-            optimizer.SetPredictandStationIds(m_predictandStationIds);
-            optimizer.SetPredictorDataDir(m_predictorsDir);
+            optimizer.SetParamsFilePath(_calibParamsFile);
+            optimizer.SetPredictandDBFilePath(_predictandDB);
+            optimizer.SetPredictandStationIds(_predictandStationIds);
+            optimizer.SetPredictorDataDir(_predictorsDir);
             optimizer.Manager();
-        } else if (m_calibMethod.IsSameAs("evalscores", false)) {
+        } else if (_calibMethod.IsSameAs("evalscores", false)) {
             asMethodCalibratorEvaluateAllScores calibrator;
-            calibrator.SetParamsFilePath(m_calibParamsFile);
-            calibrator.SetPredictandDBFilePath(m_predictandDB);
-            calibrator.SetPredictandStationIds(m_predictandStationIds);
-            calibrator.SetPredictorDataDir(m_predictorsDir);
+            calibrator.SetParamsFilePath(_calibParamsFile);
+            calibrator.SetPredictandDBFilePath(_predictandDB);
+            calibrator.SetPredictandStationIds(_predictandStationIds);
+            calibrator.SetPredictorDataDir(_predictorsDir);
             calibrator.Manager();
-        } else if (m_calibMethod.IsSameAs("onlyvalues", false)) {
+        } else if (_calibMethod.IsSameAs("onlyvalues", false)) {
             asMethodCalibratorSingleOnlyValues calibrator;
-            calibrator.SetParamsFilePath(m_calibParamsFile);
-            calibrator.SetPredictandDBFilePath(m_predictandDB);
-            calibrator.SetPredictandStationIds(m_predictandStationIds);
-            calibrator.SetPredictorDataDir(m_predictorsDir);
+            calibrator.SetParamsFilePath(_calibParamsFile);
+            calibrator.SetPredictandDBFilePath(_predictandDB);
+            calibrator.SetPredictandStationIds(_predictandStationIds);
+            calibrator.SetPredictorDataDir(_predictorsDir);
             calibrator.Manager();
-        } else if (m_calibMethod.IsSameAs("onlydates", false)) {
+        } else if (_calibMethod.IsSameAs("onlydates", false)) {
             asMethodCalibratorSingleOnlyDates calibrator;
-            calibrator.SetParamsFilePath(m_calibParamsFile);
-            calibrator.SetPredictorDataDir(m_predictorsDir);
+            calibrator.SetParamsFilePath(_calibParamsFile);
+            calibrator.SetPredictorDataDir(_predictorsDir);
             calibrator.Manager();
         } else {
-            asLog::PrintToConsole(asStrF("Wrong calibration method selection (%s).\n", m_calibMethod));
+            asLog::PrintToConsole(asStrF("Wrong calibration method selection (%s).\n", _calibMethod));
         }
     } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
@@ -996,7 +996,7 @@ int AtmoSwingAppOptimizer::OnExit() {
 void AtmoSwingAppOptimizer::CleanUp() {
 #if USE_GUI
     // Instance checker
-    wxDELETE(m_singleInstanceChecker);
+    wxDELETE(_singleInstanceChecker);
 #endif
 
     // Config file (from wxWidgets samples)

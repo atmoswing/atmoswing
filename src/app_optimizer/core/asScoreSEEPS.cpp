@@ -31,19 +31,19 @@
 asScoreSEEPS::asScoreSEEPS()
     : asScore(asScore::SEEPS, _("Stable equitable error in probability space"),
               _("Stable equitable error in probability space"), Asc, NAN, NAN, true),
-      m_p1(NAN),
-      m_p3(NAN),
-      m_thresNull(0.2f),
-      m_thresHigh(NAN) {}
+      _p1(NAN),
+      _p3(NAN),
+      _thresNull(0.2f),
+      _thresHigh(NAN) {}
 
 asScoreSEEPS::~asScoreSEEPS() {}
 
 float asScoreSEEPS::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(!isnan(m_p1));
-    wxASSERT(!isnan(m_p3));
-    wxASSERT(!isnan(m_thresHigh));
+    wxASSERT(!isnan(_p1));
+    wxASSERT(!isnan(_p3));
+    wxASSERT(!isnan(_thresHigh));
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
@@ -70,52 +70,52 @@ float asScoreSEEPS::Assess(float obs, const a1f& values, int nbElements) const {
     a1f cleanValues = x.head(nbPredict);
     float value = 0;
 
-    if (m_onMean) {
+    if (_onMean) {
         value = cleanValues.mean();
     } else {
         // Get value for quantile
-        wxASSERT(!isnan(m_quantile));
-        wxASSERT(m_quantile > 0);
-        wxASSERT(m_quantile < 1);
-        value = asGetValueForQuantile(cleanValues, m_quantile);
+        wxASSERT(!isnan(_quantile));
+        wxASSERT(_quantile > 0);
+        wxASSERT(_quantile < 1);
+        value = asGetValueForQuantile(cleanValues, _quantile);
     }
 
     float score = 0;
 
     // Forecasted 1, observed 1
-    if (value <= m_thresNull && obs <= m_thresNull) {
+    if (value <= _thresNull && obs <= _thresNull) {
         score = 0.0f;
     }
     // Forecasted 2, observed 1
-    else if (value <= m_thresNull && obs > m_thresNull && obs <= m_thresHigh) {
-        score = 0.5 * (1.0 / (1.0 - m_p1));
+    else if (value <= _thresNull && obs > _thresNull && obs <= _thresHigh) {
+        score = 0.5 * (1.0 / (1.0 - _p1));
     }
     // Forecasted 3, observed 1
-    else if (value <= m_thresNull && obs > m_thresHigh) {
-        score = 0.5 * ((1.0 / m_p3) + (1.0 / (1.0 - m_p1)));
+    else if (value <= _thresNull && obs > _thresHigh) {
+        score = 0.5 * ((1.0 / _p3) + (1.0 / (1.0 - _p1)));
     }
     // Forecasted 1, observed 2
-    else if (value > m_thresNull && value <= m_thresHigh && obs <= m_thresNull) {
-        score = 0.5 * (1.0 / m_p1);
+    else if (value > _thresNull && value <= _thresHigh && obs <= _thresNull) {
+        score = 0.5 * (1.0 / _p1);
     }
     // Forecasted 2, observed 2
-    else if (value > m_thresNull && value <= m_thresHigh && obs > m_thresNull && obs <= m_thresHigh) {
+    else if (value > _thresNull && value <= _thresHigh && obs > _thresNull && obs <= _thresHigh) {
         score = 0.0f;
     }
     // Forecasted 3, observed 2
-    else if (value > m_thresNull && value <= m_thresHigh && obs > m_thresHigh) {
-        score = 0.5 * (1.0 / m_p3);
+    else if (value > _thresNull && value <= _thresHigh && obs > _thresHigh) {
+        score = 0.5 * (1.0 / _p3);
     }
     // Forecasted 1, observed 3
-    else if (value > m_thresHigh && obs <= m_thresNull) {
-        score = 0.5 * ((1.0 / m_p1) + (1.0 / (1.0 - m_p3)));
+    else if (value > _thresHigh && obs <= _thresNull) {
+        score = 0.5 * ((1.0 / _p1) + (1.0 / (1.0 - _p3)));
     }
     // Forecasted 2, observed 3
-    else if (value > m_thresHigh && obs > m_thresNull && obs <= m_thresHigh) {
-        score = 0.5 * (1.0 / (1.0 - m_p3));
+    else if (value > _thresHigh && obs > _thresNull && obs <= _thresHigh) {
+        score = 0.5 * (1.0 / (1.0 - _p3));
     }
     // Forecasted 3, observed 3
-    else if (value > m_thresHigh && obs > m_thresHigh) {
+    else if (value > _thresHigh && obs > _thresHigh) {
         score = 0.0f;
     }
 
@@ -130,24 +130,24 @@ bool asScoreSEEPS::ProcessScoreClimatology(const a1f& refVals, const a1f& climDa
     asSortArray(&climDataSorted[0], &climDataSorted[climDataSorted.size() - 1], Asc);
 
     // Find first value above the lower threshold
-    int rowAboveThreshold1 = asFindFloor(&climDataSorted[0], &climDataSorted[climDataSorted.size() - 1], m_threshold);
+    int rowAboveThreshold1 = asFindFloor(&climDataSorted[0], &climDataSorted[climDataSorted.size() - 1], _threshold);
     if (rowAboveThreshold1 < 0) {
         wxLogError(_("Error processing the SEEPS climatology score."));
         return false;
     }
 
-    while (climDataSorted[rowAboveThreshold1] <= m_threshold) {
+    while (climDataSorted[rowAboveThreshold1] <= _threshold) {
         rowAboveThreshold1++;
     }
 
     // Process probability (without processing the empirical frequencies...). Do not substract 1 because it is in 0
     // basis.
-    m_p1 = (float)rowAboveThreshold1 / (float)climDataSorted.size();
+    _p1 = (float)rowAboveThreshold1 / (float)climDataSorted.size();
 
-    m_p3 = (1 - m_p1) / 3.0f;
+    _p3 = (1 - _p1) / 3.0f;
 
-    int indexThreshold2 = climDataSorted.size() * (m_p1 + 2 * m_p3);
-    m_thresHigh = climDataSorted[indexThreshold2];
+    int indexThreshold2 = climDataSorted.size() * (_p1 + 2 * _p3);
+    _thresHigh = climDataSorted[indexThreshold2];
 
     return true;
 }

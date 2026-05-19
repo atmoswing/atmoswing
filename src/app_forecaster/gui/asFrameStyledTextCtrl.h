@@ -75,7 +75,7 @@ class asFrameStyledTextCtrl : public asFrameStyledTextCtrlVirtual {
      * @return The scintilla control.
      */
     wxStyledTextCtrl* GetScintilla() {
-        return m_scintilla;
+        return _scintilla;
     }
 };
 

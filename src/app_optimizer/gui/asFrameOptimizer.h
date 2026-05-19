@@ -43,8 +43,8 @@ class asFrameOptimizer : public asFrameOptimizerVirtual {
     void OnInit();
 
   protected:
-    asLogWindow* m_logWindow;
-    asMethodCalibrator* m_methodCalibrator;
+    asLogWindow* _logWindow;
+    asMethodCalibrator* _methodCalibrator;
 
     void Update() override;
 

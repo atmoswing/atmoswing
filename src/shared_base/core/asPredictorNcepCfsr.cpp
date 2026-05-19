@@ -33,11 +33,11 @@
 asPredictorNcepCfsr::asPredictorNcepCfsr(const wxString& dataId)
     : asPredictor(dataId) {
     // Set the basic properties.
-    m_datasetId = "NCEP_CFSR";
-    m_provider = "NCEP";
-    m_datasetName = "CFSR";
-    m_fileType = asFile::Grib;
-    m_strideAllowed = false;
+    _datasetId = "NCEP_CFSR";
+    _provider = "NCEP";
+    _datasetName = "CFSR";
+    _fileType = asFile::Grib;
+    _strideAllowed = false;
 }
 
 bool asPredictorNcepCfsr::Init() {
@@ -47,38 +47,38 @@ bool asPredictorNcepCfsr::Init() {
 
     // Identify data ID and set the corresponding properties.
     if (IsPressureLevel()) {
-        m_fStr.hasLevelDim = true;
-        m_fStr.singleLevel = true;
+        _fStr.hasLevelDim = true;
+        _fStr.singleLevel = true;
         if (IsGeopotentialHeight()) {
-            m_parameter = GeopotentialHeight;
-            m_gribCode = {0, 3, 5, 100};
-            m_parameterName = "Geopotential height @ Isobaric surface";
-            m_unit = gpm;
+            _parameter = GeopotentialHeight;
+            _gribCode = {0, 3, 5, 100};
+            _parameterName = "Geopotential height @ Isobaric surface";
+            _unit = gpm;
         } else if (IsPrecipitableWater()) {
-            m_parameter = PrecipitableWater;
-            m_gribCode = {0, 1, 3, 200};
-            m_parameterName = "Precipitable water @ Entire atmosphere layer";
-            m_unit = kg_m2;
+            _parameter = PrecipitableWater;
+            _gribCode = {0, 1, 3, 200};
+            _parameterName = "Precipitable water @ Entire atmosphere layer";
+            _unit = kg_m2;
         } else if (IsSeaLevelPressure()) {
-            m_parameter = Pressure;
-            m_gribCode = {0, 3, 0, 101};
-            m_parameterName = "Pressure @ Mean sea level";
-            m_unit = Pa;
+            _parameter = Pressure;
+            _gribCode = {0, 3, 0, 101};
+            _parameterName = "Pressure @ Mean sea level";
+            _unit = Pa;
         } else if (IsRelativeHumidity()) {
-            m_parameter = RelativeHumidity;
-            m_gribCode = {0, 1, 1, 100};
-            m_parameterName = "Relative humidity @ Isobaric surface";
-            m_unit = percent;
+            _parameter = RelativeHumidity;
+            _gribCode = {0, 1, 1, 100};
+            _parameterName = "Relative humidity @ Isobaric surface";
+            _unit = percent;
         } else if (IsAirTemperature()) {
-            m_parameter = AirTemperature;
-            m_gribCode = {0, 0, 0, 100};
-            m_parameterName = "Temperature @ Isobaric surface";
-            m_unit = degK;
+            _parameter = AirTemperature;
+            _gribCode = {0, 0, 0, 100};
+            _parameterName = "Temperature @ Isobaric surface";
+            _unit = degK;
         } else {
-            wxLogError(_("Parameter '%s' not implemented yet."), m_dataId);
+            wxLogError(_("Parameter '%s' not implemented yet."), _dataId);
             return false;
         }
-        m_fileNamePattern = "%4d/%4d%02d/%4d%02d%02d/pgbhnl.gdas.%4d%02d%02d%02d.grb2";
+        _fileNamePattern = "%4d/%4d%02d/%4d%02d%02d/pgbhnl.gdas.%4d%02d%02d%02d.grb2";
 
     } else if (IsIsentropicLevel()) {
         wxLogError(_("Isentropic levels for CFSR are not implemented yet."));
@@ -94,23 +94,23 @@ bool asPredictorNcepCfsr::Init() {
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_gribCode[2] == asNOT_FOUND) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
-                   m_datasetName);
+    if (_fileNamePattern.IsEmpty() || _gribCode[2] == asNOT_FOUND) {
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), _dataId,
+                   _datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
-                   m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), _dataId,
+                   _datasetName);
         return false;
     }
 
-    wxASSERT(m_gribCode.size() == 4);
+    wxASSERT(_gribCode.size() == 4);
 
     // Set to initialized
-    m_initialized = true;
+    _initialized = true;
 
     return true;
 }
@@ -120,7 +120,7 @@ void asPredictorNcepCfsr::ListFiles(asTimeArray& timeArray) {
 
     for (int i = 0; i < tArray.size(); i++) {
         Time t = asTime::GetTimeStruct(tArray[i]);
-        m_files.push_back(GetFullDirectoryPath() + asStrF(m_fileNamePattern, t.year, t.year, t.month, t.year, t.month,
+        _files.push_back(GetFullDirectoryPath() + asStrF(_fileNamePattern, t.year, t.year, t.month, t.year, t.month,
                                                           t.day, t.year, t.month, t.day, t.hour));
     }
 }

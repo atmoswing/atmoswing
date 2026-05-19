@@ -81,11 +81,11 @@ bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration& param
                             slctPreloadHours.push_back(hour);
                             params.SetPreloadHours(iStep, iPtor, slctPreloadHours);
 
-                            m_originalParams = params;
+                            _originalParams = params;
 
                             if (!asMethodCalibratorClassic::Calibrate(params)) return false;
 
-                            params = m_originalParams;
+                            params = _originalParams;
 
                             ClearAll();
                         }

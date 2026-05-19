@@ -32,18 +32,18 @@
 #include "vrrender.h"
 
 vrLayerVectorFcstRing::vrLayerVectorFcstRing() {
-    wxASSERT(!m_dataset);
-    wxASSERT(!m_layer);
-    m_driverType = vrDRIVER_VECTOR_MEMORY;
-    m_valueMax = 1;
+    wxASSERT(!_dataset);
+    wxASSERT(!_layer);
+    _driverType = vrDRIVER_VECTOR_MEMORY;
+    _valueMax = 1;
 }
 
 vrLayerVectorFcstRing::~vrLayerVectorFcstRing() = default;
 
 long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
-    wxASSERT(m_layer);
-    OGRFeature* feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
-    wxASSERT(m_layer);
+    wxASSERT(_layer);
+    OGRFeature* feature = OGRFeature::CreateFeature(_layer->GetLayerDefn());
+    wxASSERT(_layer);
     feature->SetGeometry(geometry);
 
     if (data != nullptr) {
@@ -55,7 +55,7 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
         }
     }
 
-    if (m_layer->CreateFeature(feature) != OGRERR_NONE) {
+    if (_layer->CreateFeature(feature) != OGRERR_NONE) {
         wxLogError(_("Error creating feature"));
         OGRFeature::DestroyFeature(feature);
         return wxNOT_FOUND;
@@ -183,8 +183,8 @@ void vrLayerVectorFcstRing::CreatePathPatch(wxGraphicsPath& path, const wxPoint&
 
     const wxDouble radiusRatio = ((radiusOut - radiusIn) / radiusOut);
     wxPoint2DDouble currentPoint = path.GetCurrentPoint();
-    wxDouble newPointX = currentPoint.m_x - (currentPoint.m_x - centerX) * radiusRatio;
-    wxDouble newPointY = currentPoint.m_y - (currentPoint.m_y - centerY) * radiusRatio;
+    wxDouble newPointX = currentPoint._x - (currentPoint._x - centerX) * radiusRatio;
+    wxDouble newPointY = currentPoint._y - (currentPoint._y - centerY) * radiusRatio;
 
     path.AddLineToPoint(newPointX, newPointY);
 
@@ -233,8 +233,8 @@ void vrLayerVectorFcstRing::CreatePathAround(wxGraphicsPath& path, const wxPoint
 
     const wxDouble radiusRatio = ((radiusOut - radiusIn) / radiusOut);
     wxPoint2DDouble currentPoint = path.GetCurrentPoint();
-    wxDouble newPointX = currentPoint.m_x - (currentPoint.m_x - centerX) * radiusRatio;
-    wxDouble newPointY = currentPoint.m_y - (currentPoint.m_y - centerY) * radiusRatio;
+    wxDouble newPointX = currentPoint._x - (currentPoint._x - centerX) * radiusRatio;
+    wxDouble newPointY = currentPoint._y - (currentPoint._y - centerY) * radiusRatio;
 
     path.AddLineToPoint(newPointX, newPointY);
 
@@ -256,17 +256,17 @@ void vrLayerVectorFcstRing::Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, 
     } else if (value == 0)  // No rain -> white
     {
         colour.Set(255, 255, 255);
-    } else if (value / m_valueMax <= 0.5)  // light green to yellow
+    } else if (value / _valueMax <= 0.5)  // light green to yellow
     {
         int baseVal = 200;
-        int valColour = ((value / (0.5 * m_valueMax))) * baseVal;
-        int valColourCompl = ((value / (0.5 * m_valueMax))) * (255 - baseVal);
+        int valColour = ((value / (0.5 * _valueMax))) * baseVal;
+        int valColourCompl = ((value / (0.5 * _valueMax))) * (255 - baseVal);
         if (valColour > baseVal) valColour = baseVal;
         if (valColourCompl + baseVal > 255) valColourCompl = 255 - baseVal;
         colour.Set((baseVal + valColourCompl), 255, (baseVal - valColour));
     } else  // Yellow to red
     {
-        int valColour = ((value - 0.5 * m_valueMax) / (0.5 * m_valueMax)) * 255;
+        int valColour = ((value - 0.5 * _valueMax) / (0.5 * _valueMax)) * 255;
         if (valColour > 255) valColour = 255;
         colour.Set(255, (255 - valColour), 0);
     }

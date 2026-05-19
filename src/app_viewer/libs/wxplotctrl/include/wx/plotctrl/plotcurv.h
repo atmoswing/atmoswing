@@ -74,7 +74,7 @@ enum wxPlotPen_Type {
 #define wxPLOTCURVE_DATASEPARATOR_TAB wxT("\t")
 
 //----------------------------------------------------------------------------
-// wxPlotCurveRefData - the wxObject::m_refData used for wxPlotCurves
+// wxPlotCurveRefData - the wxObject::_refData used for wxPlotCurves
 //   this should be the base class for ref data for your subclassed curves
 //
 //   The ref data is also of class wxClientDataContainer so that you can
@@ -91,16 +91,16 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCurveRefData : public wxObjectRefData, public w
 
     void Copy(const wxPlotCurveRefData& source);
 
-    wxRect2DDouble m_boundingRect;  // bounds the curve or part to draw
+    wxRect2DDouble _boundingRect;  // bounds the curve or part to draw
     // if width or height <= 0 then no bounds
 
-    wxArrayGenericPen m_pens;
+    wxArrayGenericPen _pens;
     static wxArrayGenericPen sm_defaultPens;
 
-    wxBrush m_brush;
+    wxBrush _brush;
 
-    wxSortedArrayString m_optionNames;
-    wxArrayString m_optionValues;
+    wxSortedArrayString _optionNames;
+    wxArrayString _optionValues;
 };
 
 //-----------------------------------------------------------------------------
@@ -215,11 +215,11 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCurve : public wxObject {
     //-------------------------------------------------------------------------
     // operators
     bool operator==(const wxPlotCurve& plotCurve) const {
-        return m_refData == plotCurve.m_refData;
+        return _refData == plotCurve._refData;
     }
 
     bool operator!=(const wxPlotCurve& plotCurve) const {
-        return m_refData != plotCurve.m_refData;
+        return _refData != plotCurve._refData;
     }
 
     wxPlotCurve& operator=(const wxPlotCurve& plotCurve) {

@@ -31,20 +31,20 @@
 #include "vrrender.h"
 
 vrLayerVectorLocation::vrLayerVectorLocation() {
-    wxASSERT(!m_dataset);
-    wxASSERT(!m_layer);
-    m_driverType = vrDRIVER_VECTOR_MEMORY;
+    wxASSERT(!_dataset);
+    wxASSERT(!_layer);
+    _driverType = vrDRIVER_VECTOR_MEMORY;
 }
 
 vrLayerVectorLocation::~vrLayerVectorLocation() = default;
 
 long vrLayerVectorLocation::AddFeature(OGRGeometry* geometry, void* data) {
-    wxASSERT(m_layer);
-    OGRFeature* feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
-    wxASSERT(m_layer);
+    wxASSERT(_layer);
+    OGRFeature* feature = OGRFeature::CreateFeature(_layer->GetLayerDefn());
+    wxASSERT(_layer);
     feature->SetGeometry(geometry);
 
-    if (m_layer->CreateFeature(feature) != OGRERR_NONE) {
+    if (_layer->CreateFeature(feature) != OGRERR_NONE) {
         wxLogError(_("Error creating feature"));
         OGRFeature::DestroyFeature(feature);
         return wxNOT_FOUND;

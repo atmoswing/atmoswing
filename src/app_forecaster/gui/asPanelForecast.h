@@ -79,7 +79,7 @@ class asPanelForecast : public asPanelForecastVirtual {
      * @return The LED pointer.
      */
     awxLed* GetLed() const {
-        return m_led;
+        return _led;
     }
 
     /**
@@ -88,7 +88,7 @@ class asPanelForecast : public asPanelForecastVirtual {
      * @return The info button pointer.
      */
     wxBitmapButton* GetButtonInfo() const {
-        return m_bpButtonInfo;
+        return _bpButtonInfo;
     }
 
     /**
@@ -97,7 +97,7 @@ class asPanelForecast : public asPanelForecastVirtual {
      * @return The edit button pointer.
      */
     wxBitmapButton* GetButtonEdit() const {
-        return m_bpButtonEdit;
+        return _bpButtonEdit;
     }
 
     /**
@@ -106,7 +106,7 @@ class asPanelForecast : public asPanelForecastVirtual {
      * @return The details button pointer.
      */
     wxBitmapButton* GetButtonDetails() const {
-        return m_bpButtonDetails;
+        return _bpButtonDetails;
     }
 
     /**
@@ -115,7 +115,7 @@ class asPanelForecast : public asPanelForecastVirtual {
      * @return The label of the parameters file name field.
      */
     wxString GetTextParametersFileNameValue() {
-        return m_textParametersFileName->GetLabel();
+        return _textParametersFileName->GetLabel();
     }
 
     /**
@@ -124,7 +124,7 @@ class asPanelForecast : public asPanelForecastVirtual {
      * @param panelManager The panel manager.
      */
     void SetPanelsManager(asPanelsManagerForecasts* panelManager) {
-        m_panelsManager = panelManager;
+        _panelsManager = panelManager;
     }
 
     /**
@@ -133,7 +133,7 @@ class asPanelForecast : public asPanelForecastVirtual {
      * @return The file name.
      */
     wxString GetParametersFileName() const {
-        return m_textParametersFileName->GetLabel();
+        return _textParametersFileName->GetLabel();
     }
 
     /**
@@ -142,14 +142,14 @@ class asPanelForecast : public asPanelForecastVirtual {
      * @param val The file name.
      */
     void SetParametersFileName(const wxString& val) {
-        m_textParametersFileName->SetLabel(val);
+        _textParametersFileName->SetLabel(val);
         CheckFileExists();
     }
 
   protected:
-    wxWindow* m_parentFrame; /**< The parent frame. */
-    awxLed* m_led; /**< The LED. */
-    asBatchForecasts* m_batchForecasts; /**< The batch of forecasts. */
+    wxWindow* _parentFrame; /**< The parent frame. */
+    awxLed* _led; /**< The LED. */
+    asBatchForecasts* _batchForecasts; /**< The batch of forecasts. */
 
     /**
      * Close the panel.
@@ -173,7 +173,7 @@ class asPanelForecast : public asPanelForecastVirtual {
     void OnDetailsForecastFile(wxCommandEvent& event) override;
 
   private:
-    asPanelsManagerForecasts* m_panelsManager; /**< The panels manager. */
+    asPanelsManagerForecasts* _panelsManager; /**< The panels manager. */
 };
 
 #endif

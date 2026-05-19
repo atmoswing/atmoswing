@@ -50,7 +50,7 @@ AtmoSwingFrameForecaster::AtmoSwingFrameForecaster(wxFrame* frame)
 
     // Create log window and file
     delete wxLog::SetActiveTarget(new asLogGui());
-    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"),
+    _logWindow = new asLogWindow(this, _("AtmoSwing log window"),
                                   pConfig->ReadBool("/General/DisplayLogWindow", true));
     Log()->CreateFile("AtmoSwingForecaster.log");
     Log()->SetLevel(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
@@ -130,7 +130,7 @@ AtmoSwingFrameForecaster::~AtmoSwingFrameForecaster() {
     pConfig->Write("/MainFrame/w", (long)w);
     pConfig->Write("/MainFrame/h", (long)h);
 
-    // wxDELETE(m_logWindow);
+    // wxDELETE(_logWindow);
 }
 
 void AtmoSwingFrameForecaster::OnClose(wxCloseEvent& event) {

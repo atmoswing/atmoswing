@@ -80,13 +80,13 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
         Interpretation
     };
 
-    asPanelPlot* m_panelPlot; /**< The plot panel. */
-    asForecastManager* m_forecastManager; /**< The forecast manager. */
-    int m_selectedStation; /**< The selected station (index). */
-    int m_selectedMethod; /**< The selected method (index). */
-    int m_selectedForecast; /**< The selected forecast (index). */
-    float m_maxVal; /**< The maximum value of the time series. */
-    vd m_leadTimes; /**< The lead times. */
+    asPanelPlot* _panelPlot; /**< The plot panel. */
+    asForecastManager* _forecastManager; /**< The forecast manager. */
+    int _selectedStation; /**< The selected station (index). */
+    int _selectedMethod; /**< The selected method (index). */
+    int _selectedForecast; /**< The selected forecast (index). */
+    float _maxVal; /**< The maximum value of the time series. */
+    vd _leadTimes; /**< The lead times. */
 
     /**
      * Event triggered when the frame is closed.

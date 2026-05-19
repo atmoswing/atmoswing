@@ -52,9 +52,9 @@ class asPanelSidebarAlarmsDrawing : public wxPanel {
     void SetParent(asPanelSidebarAlarms* parent);
 
   private:
-    wxBitmap* m_bmpAlarms;
-    wxGraphicsContext* m_gdc;
-    asPanelSidebarAlarms* m_parent;
+    wxBitmap* _bmpAlarms;
+    wxGraphicsContext* _gdc;
+    asPanelSidebarAlarms* _parent;
 
     void CreatePath(wxGraphicsPath& path, const wxPoint& start, float cellWidth, int height, int iCol, int iRow);
 
@@ -82,14 +82,14 @@ class asPanelSidebarAlarms : public asPanelSidebar {
     void Update() override;
 
     int GetMode() {
-        return m_mode;
+        return _mode;
     }
 
   private:
-    asWorkspace* m_workspace;
-    asForecastManager* m_forecastManager;
-    asPanelSidebarAlarmsDrawing* m_panelDrawing;
-    int m_mode;
+    asWorkspace* _workspace;
+    asForecastManager* _forecastManager;
+    asPanelSidebarAlarmsDrawing* _panelDrawing;
+    int _mode;
 
     void OnPaint(wxPaintEvent& event);
 };

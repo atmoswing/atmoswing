@@ -36,154 +36,154 @@
 asPredictorOperGeneric::asPredictorOperGeneric(const wxString& dataId)
     : asPredictorOper(dataId) {
     // Set the basic properties.
-    m_datasetId = "Generic";
-    m_provider = "";
-    m_datasetName = "Generic";
-    m_fileType = asFile::Netcdf;
-    m_strideAllowed = true;
-    m_nanValues.push_back(-32767);
-    m_nanValues.push_back(3.4E38f);
-    m_nanValues.push_back(100000002004087730000.0);
-    m_fStr.dimLatName = "lat";
-    m_fStr.dimLonName = "lon";
-    m_fStr.dimTimeName = "time";
-    m_fStr.dimLevelName = "level";
+    _datasetId = "Generic";
+    _provider = "";
+    _datasetName = "Generic";
+    _fileType = asFile::Netcdf;
+    _strideAllowed = true;
+    _nanValues.push_back(-32767);
+    _nanValues.push_back(3.4E38f);
+    _nanValues.push_back(100000002004087730000.0);
+    _fStr.dimLatName = "lat";
+    _fStr.dimLonName = "lon";
+    _fStr.dimTimeName = "time";
+    _fStr.dimLevelName = "level";
 }
 
 bool asPredictorOperGeneric::Init() {
-    m_parameter = ParameterUndefined;
-    m_parameterName = "Undefined";
-    m_fileVarName = m_dataId;
-    m_unit = UnitUndefined;
-    m_fStr.hasLevelDim = true;
-    m_fileNamePattern = "%s." + m_datasetId + "." + m_dataId + ".nc";
+    _parameter = ParameterUndefined;
+    _parameterName = "Undefined";
+    _fileVarName = _dataId;
+    _unit = UnitUndefined;
+    _fStr.hasLevelDim = true;
+    _fileNamePattern = "%s." + _datasetId + "." + _dataId + ".nc";
 
-    if (m_dataId.IsSameAs("d", false)) {
-        m_parameter = Divergence;
-        m_parameterName = "Divergence";
-        m_unit = per_s;
+    if (_dataId.IsSameAs("d", false)) {
+        _parameter = Divergence;
+        _parameterName = "Divergence";
+        _unit = per_s;
     } else if (IsPotentialVorticity()) {
-        m_parameter = PotentialVorticity;
-        m_parameterName = "Potential vorticity";
-        m_unit = degKm2_kg_s;
+        _parameter = PotentialVorticity;
+        _parameterName = "Potential vorticity";
+        _unit = degKm2_kg_s;
     } else if (IsSpecificHumidity()) {
-        m_parameter = SpecificHumidity;
-        m_parameterName = "Specific humidity";
-        m_unit = kg_kg;
+        _parameter = SpecificHumidity;
+        _parameterName = "Specific humidity";
+        _unit = kg_kg;
     } else if (IsRelativeHumidity()) {
-        m_parameter = RelativeHumidity;
-        m_parameterName = "Relative humidity";
-        m_unit = percent;
+        _parameter = RelativeHumidity;
+        _parameterName = "Relative humidity";
+        _unit = percent;
     } else if (IsAirTemperature()) {
-        m_parameter = AirTemperature;
-        m_parameterName = "Temperature";
-        m_unit = degK;
+        _parameter = AirTemperature;
+        _parameterName = "Temperature";
+        _unit = degK;
     } else if (IsUwindComponent()) {
-        m_parameter = Uwind;
-        m_parameterName = "U component of wind";
-        m_unit = m_s;
+        _parameter = Uwind;
+        _parameterName = "U component of wind";
+        _unit = _s;
     } else if (IsVwindComponent()) {
-        m_parameter = Vwind;
-        m_parameterName = "V component of wind";
-        m_unit = m_s;
-    } else if (m_dataId.IsSameAs("vo", false)) {
-        m_parameter = Vorticity;
-        m_parameterName = "Vorticity (relative)";
-        m_unit = per_s;
+        _parameter = Vwind;
+        _parameterName = "V component of wind";
+        _unit = _s;
+    } else if (_dataId.IsSameAs("vo", false)) {
+        _parameter = Vorticity;
+        _parameterName = "Vorticity (relative)";
+        _unit = per_s;
     } else if (IsVerticalVelocity()) {
-        m_parameter = VerticalVelocity;
-        m_parameterName = "Vertical velocity";
-        m_unit = Pa_s;
+        _parameter = VerticalVelocity;
+        _parameterName = "Vertical velocity";
+        _unit = Pa_s;
     } else if (IsGeopotential()) {
-        m_parameter = Geopotential;
-        m_parameterName = "Geopotential";
-        m_unit = m2_s2;
+        _parameter = Geopotential;
+        _parameterName = "Geopotential";
+        _unit = m2_s2;
     } else if (IsGeopotentialHeight()) {
-        m_parameter = GeopotentialHeight;
-        m_parameterName = "Geopotential height";
-        m_unit = m;
+        _parameter = GeopotentialHeight;
+        _parameterName = "Geopotential height";
+        _unit = m;
     }
 
     // Surface analysis
-    if (m_dataId.IsSameAs("d2m", false)) {
-        m_parameter = DewpointTemperature;
-        m_parameterName = "2 metre dewpoint temperature";
-        m_unit = degK;
+    if (_dataId.IsSameAs("d2m", false)) {
+        _parameter = DewpointTemperature;
+        _parameterName = "2 metre dewpoint temperature";
+        _unit = degK;
     } else if (IsSeaLevelPressure()) {
-        m_parameter = Pressure;
-        m_parameterName = "Sea level pressure";
-        m_unit = Pa;
-    } else if (m_dataId.IsSameAs("sd", false)) {
-        m_parameter = SnowWaterEquivalent;
-        m_parameterName = "Snow depth";
-        m_unit = m;
-    } else if (m_dataId.IsSameAs("sst", false)) {
-        m_parameter = SeaSurfaceTemperature;
-        m_parameterName = "Sea surface temperature";
-        m_unit = degK;
-    } else if (m_dataId.IsSameAs("t2m", false)) {
-        m_parameter = AirTemperature;
-        m_parameterName = "2 metre temperature";
-        m_unit = degK;
-    } else if (m_dataId.IsSameAs("tcw", false)) {
-        m_parameter = TotalColumnWater;
-        m_parameterName = "Total column water";
-        m_unit = kg_m2;
-    } else if (m_dataId.IsSameAs("tcwv", false)) {
-        m_parameter = PrecipitableWater;
-        m_parameterName = "Total column water vapour";
-        m_unit = kg_m2;
+        _parameter = Pressure;
+        _parameterName = "Sea level pressure";
+        _unit = Pa;
+    } else if (_dataId.IsSameAs("sd", false)) {
+        _parameter = SnowWaterEquivalent;
+        _parameterName = "Snow depth";
+        _unit = m;
+    } else if (_dataId.IsSameAs("sst", false)) {
+        _parameter = SeaSurfaceTemperature;
+        _parameterName = "Sea surface temperature";
+        _unit = degK;
+    } else if (_dataId.IsSameAs("t2m", false)) {
+        _parameter = AirTemperature;
+        _parameterName = "2 metre temperature";
+        _unit = degK;
+    } else if (_dataId.IsSameAs("tcw", false)) {
+        _parameter = TotalColumnWater;
+        _parameterName = "Total column water";
+        _unit = kg_m2;
+    } else if (_dataId.IsSameAs("tcwv", false)) {
+        _parameter = PrecipitableWater;
+        _parameterName = "Total column water vapour";
+        _unit = kg_m2;
     } else if (IsPrecipitableWater()) {
-        m_parameter = PrecipitableWater;
-        m_parameterName = "Precipitable water";
-        m_unit = kg_m2;
-    } else if (m_dataId.IsSameAs("u10", false)) {
-        m_parameter = Uwind;
-        m_parameterName = "10 metre U wind component";
-        m_unit = m_s;
-    } else if (m_dataId.IsSameAs("v10", false)) {
-        m_parameter = Vwind;
-        m_parameterName = "10 metre V wind component";
-        m_unit = m_s;
+        _parameter = PrecipitableWater;
+        _parameterName = "Precipitable water";
+        _unit = kg_m2;
+    } else if (_dataId.IsSameAs("u10", false)) {
+        _parameter = Uwind;
+        _parameterName = "10 metre U wind component";
+        _unit = _s;
+    } else if (_dataId.IsSameAs("v10", false)) {
+        _parameter = Vwind;
+        _parameterName = "10 metre V wind component";
+        _unit = _s;
     } else if (IsTotalPrecipitation()) {
-        m_parameter = Precipitation;
-        m_parameterName = "Total precipitation";
-        m_unit = m;
-    } else if (m_dataId.IsSameAs("cape", false)) {
-        m_parameter = CAPE;
-        m_parameterName = "Convective available potential energy";
-        m_unit = J_kg;
-    } else if (m_dataId.IsSameAs("ie", false)) {
-        m_parameter = MoistureFlux;
-        m_parameterName = "Instantaneous moisture flux";
-        m_unit = kg_m2_s;
-    } else if (m_dataId.IsSameAs("ssr", false)) {
-        m_parameter = Radiation;
-        m_parameterName = "Surface net solar radiation";
-        m_unit = J_m2;
-    } else if (m_dataId.IsSameAs("ssrd", false)) {
-        m_parameter = Radiation;
-        m_parameterName = "Surface solar radiation downwards";
-        m_unit = J_m2;
-    } else if (m_dataId.IsSameAs("str", false)) {
-        m_parameter = Radiation;
-        m_parameterName = "Surface net thermal radiation";
-        m_unit = J_m2;
-    } else if (m_dataId.IsSameAs("strd", false)) {
-        m_parameter = Radiation;
-        m_parameterName = "Surface thermal radiation downwards";
-        m_unit = J_m2;
+        _parameter = Precipitation;
+        _parameterName = "Total precipitation";
+        _unit = m;
+    } else if (_dataId.IsSameAs("cape", false)) {
+        _parameter = CAPE;
+        _parameterName = "Convective available potential energy";
+        _unit = J_kg;
+    } else if (_dataId.IsSameAs("ie", false)) {
+        _parameter = MoistureFlux;
+        _parameterName = "Instantaneous moisture flux";
+        _unit = kg_m2_s;
+    } else if (_dataId.IsSameAs("ssr", false)) {
+        _parameter = Radiation;
+        _parameterName = "Surface net solar radiation";
+        _unit = J_m2;
+    } else if (_dataId.IsSameAs("ssrd", false)) {
+        _parameter = Radiation;
+        _parameterName = "Surface solar radiation downwards";
+        _unit = J_m2;
+    } else if (_dataId.IsSameAs("str", false)) {
+        _parameter = Radiation;
+        _parameterName = "Surface net thermal radiation";
+        _unit = J_m2;
+    } else if (_dataId.IsSameAs("strd", false)) {
+        _parameter = Radiation;
+        _parameterName = "Surface thermal radiation downwards";
+        _unit = J_m2;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
-                   m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), _dataId,
+                   _datasetName);
         return false;
     }
 
     // Set to initialized
-    m_initialized = true;
+    _initialized = true;
 
     return true;
 }
@@ -195,5 +195,5 @@ void asPredictorOperGeneric::ConvertToMjd(a1d& time, double refValue) const {
 wxString asPredictorOperGeneric::GetFileName(const double date, const int leadTime) {
     wxString dateForecast = asTime::GetStringTime(date, "YYYYMMDDhhmm");
 
-    return asStrF(m_fileNamePattern, dateForecast);
+    return asStrF(_fileNamePattern, dateForecast);
 }

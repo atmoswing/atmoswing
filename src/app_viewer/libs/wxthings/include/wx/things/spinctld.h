@@ -124,7 +124,7 @@ class WXDLLIMPEXP_THINGS wxSpinCtrlDbl : public wxControl {
 
     // Set the control the the default value.
     virtual void SetDefaultValue() {
-        SetValue(m_default_value);
+        SetValue(_default_value);
     }
 
     // Set the value of the default value, default is the inital value.
@@ -137,47 +137,47 @@ class WXDLLIMPEXP_THINGS wxSpinCtrlDbl : public wxControl {
     void SetSnapToTicks(bool forceTicks);
 
     double GetValue() const {
-        return m_value;
+        return _value;
     }
 
     double GetMin() const {
-        return m_min;
+        return _min;
     }
 
     double GetMax() const {
-        return m_max;
+        return _max;
     }
 
     virtual bool HasRange() const {
-        return m_max >= m_min;
+        return _max >= _min;
     }
 
     virtual bool InRange(double value) const {
-        return !HasRange() || ((value >= m_min) && (value <= m_max));
+        return !HasRange() || ((value >= _min) && (value <= _max));
     }
 
     double GetIncrement() const {
-        return m_increment;
+        return _increment;
     }
 
     int GetDigits() const {
-        return m_digits;
+        return _digits;
     }
 
     wxString GetFormat() const {
-        return m_textFormat;
+        return _textFormat;
     }
 
     double GetDefaultValue() const {
-        return m_default_value;
+        return _default_value;
     }
 
     bool GetSnapToTicks() const {
-        return m_snap_ticks;
+        return _snap_ticks;
     }
 
     bool IsDefaultValue() const {
-        return (m_value == m_default_value);
+        return (_value == _default_value);
     }
 
     virtual bool SetFont(const wxFont& font);
@@ -194,7 +194,7 @@ class WXDLLIMPEXP_THINGS wxSpinCtrlDbl : public wxControl {
 
     // for setting... stuff
     wxTextCtrl* GetTextCtrl() {
-        return (wxTextCtrl*)m_textCtrl;
+        return (wxTextCtrl*)_textCtrl;
     }
 
   protected:
@@ -222,17 +222,17 @@ class WXDLLIMPEXP_THINGS wxSpinCtrlDbl : public wxControl {
     void OnFocus(wxFocusEvent& event);  // pass focus to textctrl, for wxTAB_TRAVERSAL
     void OnKillFocus(wxFocusEvent& event);
 
-    wxSpinButton* m_spinButton;
-    wxSpinCtrlDblTextCtrl* m_textCtrl;
+    wxSpinButton* _spinButton;
+    wxSpinCtrlDblTextCtrl* _textCtrl;
 
-    double m_min;            // min allowed value
-    double m_max;            // max allowed value
-    double m_value;          // current value
-    double m_default_value;  // initial value, or SetDefaultValue(value)
-    double m_increment;      // how much to to add per spin
-    int m_digits;            // number of digits displayed after decimal point
-    bool m_snap_ticks;       // value is divisible by increment
-    wxString m_textFormat;   // used as wxString.Printf(m_textFormat.c_str(), m_value);
+    double _min;            // min allowed value
+    double _max;            // max allowed value
+    double _value;          // current value
+    double _default_value;  // initial value, or SetDefaultValue(value)
+    double _increment;      // how much to to add per spin
+    int _digits;            // number of digits displayed after decimal point
+    bool _snap_ticks;       // value is divisible by increment
+    wxString _textFormat;   // used as wxString.Printf(_textFormat.c_str(), _value);
 
   private:
     friend class wxSpinCtrlDblTextCtrl;

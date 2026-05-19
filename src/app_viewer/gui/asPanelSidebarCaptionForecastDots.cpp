@@ -35,16 +35,16 @@
 asPanelSidebarCaptionForecastDots::asPanelSidebarCaptionForecastDots(wxWindow* parent, wxWindowID id,
                                                                      const wxPoint& pos, const wxSize& size, long style)
     : asPanelSidebar(parent, id, pos, size, style) {
-    m_header->SetLabelText(_("Forecast caption"));
+    _header->SetLabelText(_("Forecast caption"));
 
-    m_panelDrawing = new asPanelSidebarCaptionForecastDotsDrawing(
+    _panelDrawing = new asPanelSidebarCaptionForecastDotsDrawing(
         this, wxID_ANY, wxDefaultPosition, wxSize(240 * g_ppiScaleDc, 70 * g_ppiScaleDc), wxTAB_TRAVERSAL);
-    m_sizerContent->Add(m_panelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
+    _sizerContent->Add(_panelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDots::OnPaint), nullptr, this);
 
     Layout();
-    m_sizerMain->Fit(this);
+    _sizerMain->Fit(this);
     FitInside();
 }
 
@@ -57,7 +57,7 @@ void asPanelSidebarCaptionForecastDots::OnPaint(wxPaintEvent& event) {
 }
 
 void asPanelSidebarCaptionForecastDots::SetColorbarMax(double valmax) {
-    m_panelDrawing->DrawColorbar(valmax);
+    _panelDrawing->DrawColorbar(valmax);
 }
 
 /*
@@ -68,8 +68,8 @@ asPanelSidebarCaptionForecastDotsDrawing::asPanelSidebarCaptionForecastDotsDrawi
                                                                                    const wxPoint& pos,
                                                                                    const wxSize& size, long style)
     : wxPanel(parent, id, pos, size, style) {
-    m_bmpColorbar = nullptr;
-    m_gdc = nullptr;
+    _bmpColorbar = nullptr;
+    _gdc = nullptr;
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDotsDrawing::OnPaint), nullptr, this);
 
@@ -80,16 +80,16 @@ asPanelSidebarCaptionForecastDotsDrawing::asPanelSidebarCaptionForecastDotsDrawi
 
 asPanelSidebarCaptionForecastDotsDrawing::~asPanelSidebarCaptionForecastDotsDrawing() {
     Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDotsDrawing::OnPaint), nullptr, this);
-    wxDELETE(m_bmpColorbar);
+    wxDELETE(_bmpColorbar);
 }
 
 void asPanelSidebarCaptionForecastDotsDrawing::DrawColorbar(double valmax) {
-    wxDELETE(m_bmpColorbar);
-    m_bmpColorbar = new wxBitmap(int(240 * g_ppiScaleDc), int(70 * g_ppiScaleDc));
-    wxASSERT(m_bmpColorbar);
+    wxDELETE(_bmpColorbar);
+    _bmpColorbar = new wxBitmap(int(240 * g_ppiScaleDc), int(70 * g_ppiScaleDc));
+    wxASSERT(_bmpColorbar);
 
     // Create device context
-    wxMemoryDC dc(*m_bmpColorbar);
+    wxMemoryDC dc(*_bmpColorbar);
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
 
@@ -118,8 +118,8 @@ void asPanelSidebarCaptionForecastDotsDrawing::DrawColorbar(double valmax) {
 void asPanelSidebarCaptionForecastDotsDrawing::OnPaint(wxPaintEvent& event) {
     wxPaintDC dc(this);
 
-    if (m_bmpColorbar != nullptr) {
-        dc.DrawBitmap(*m_bmpColorbar, 0, 0, true);
+    if (_bmpColorbar != nullptr) {
+        dc.DrawBitmap(*_bmpColorbar, 0, 0, true);
     }
 
     Layout();

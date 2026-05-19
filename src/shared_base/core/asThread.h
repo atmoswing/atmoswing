@@ -52,20 +52,20 @@ class asThread : public wxThread {
     void OnExit() override;
 
     asThread::Type GetType() const {
-        return m_type;
+        return _type;
     }
 
     int GetDevice() const {
-        return m_device;
+        return _device;
     }
 
     void SetDevice(int val) {
-        m_device = val;
+        _device = val;
     }
 
   protected:
-    asThread::Type m_type;
-    int m_device;
+    asThread::Type _type;
+    int _device;
 
   private:
 };

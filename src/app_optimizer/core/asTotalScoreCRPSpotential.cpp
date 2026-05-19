@@ -30,7 +30,7 @@
 
 asTotalScoreCRPSpotential::asTotalScoreCRPSpotential(const wxString& periodString)
     : asTotalScore(periodString) {
-    m_has2DArrayArgument = true;
+    _has2DArrayArgument = true;
 }
 
 float asTotalScoreCRPSpotential::Assess(const a1f& targetDates, const a2f& scores, const asTimeArray& timeArray) const {

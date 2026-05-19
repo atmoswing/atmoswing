@@ -43,8 +43,8 @@ class asPredictorProj : public asPredictor {
                                         const wxString& dataId, const wxString& directory = wxEmptyString);
 
   protected:
-    wxString m_model;
-    wxString m_scenario;
+    wxString _model;
+    wxString _scenario;
 
   private:
 };

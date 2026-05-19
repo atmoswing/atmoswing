@@ -104,7 +104,7 @@ class asPredictor : public wxObject {
         Pa_s,
         g_kg,
         kg_kg,
-        m_s,
+        _s,
         W_m2,
         kg_m2,
         kg_m2_s,
@@ -163,43 +163,43 @@ class asPredictor : public wxObject {
     bool HasNaN() const;
 
     vva2f& GetData() {
-        wxASSERT((int)m_data.size() >= (int)m_time.size());
-        wxASSERT(m_data.size() >= 1);
-        wxASSERT(m_data[0].size() >= 1);
-        wxASSERT(m_data[0][0].cols() > 0);
-        wxASSERT(m_data[0][0].rows() > 0);
+        wxASSERT((int)_data.size() >= (int)_time.size());
+        wxASSERT(_data.size() >= 1);
+        wxASSERT(_data[0].size() >= 1);
+        wxASSERT(_data[0][0].cols() > 0);
+        wxASSERT(_data[0][0].rows() > 0);
 
-        return m_data;
+        return _data;
     }
 
     a2f* GetData(int iTime, int iMem) {
-        wxASSERT((int)m_data.size() >= (int)m_time.size());
-        wxASSERT(m_data.size() >= iTime);
-        wxASSERT(m_data[iTime].size() >= iMem);
-        wxASSERT(m_data[iTime][iMem].cols() > 0);
-        wxASSERT(m_data[iTime][iMem].rows() > 0);
+        wxASSERT((int)_data.size() >= (int)_time.size());
+        wxASSERT(_data.size() >= iTime);
+        wxASSERT(_data[iTime].size() >= iMem);
+        wxASSERT(_data[iTime][iMem].cols() > 0);
+        wxASSERT(_data[iTime][iMem].rows() > 0);
 
-        return &m_data[iTime][iMem];
+        return &_data[iTime][iMem];
     }
 
     bool HasSingleArray() {
-        return (m_data.size() == 1) && (m_data[0].size() == 1);
+        return (_data.size() == 1) && (_data[0].size() == 1);
     }
 
     wxString GetDataId() const {
-        return m_dataId;
+        return _dataId;
     }
 
     void SetDatasetId(const wxString& datasetId) {
-        m_datasetId = datasetId;
+        _datasetId = datasetId;
     }
 
     wxString GetProduct() const {
-        return m_product;
+        return _product;
     }
 
     Parameter GetParameter() const {
-        return m_parameter;
+        return _parameter;
     }
 
     void SetDirectoryPath(wxString directoryPath) {
@@ -207,11 +207,11 @@ class asPredictor : public wxObject {
             directoryPath.Append(wxFileName::GetPathSeparator());
         }
 
-        m_directoryPath = directoryPath;
+        _directoryPath = directoryPath;
     }
 
     wxString GetDirectoryPath() const {
-        wxString directoryPath = m_directoryPath;
+        wxString directoryPath = _directoryPath;
         if (!directoryPath.IsEmpty()) {
             if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
                 directoryPath.Append(wxFileName::GetPathSeparator());
@@ -222,13 +222,13 @@ class asPredictor : public wxObject {
     }
 
     wxString GetFullDirectoryPath() const {
-        wxString directoryPath = m_directoryPath;
+        wxString directoryPath = _directoryPath;
         if (!directoryPath.IsEmpty()) {
             if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
                 directoryPath.Append(wxFileName::GetPathSeparator());
             }
 
-            directoryPath += m_product;
+            directoryPath += _product;
             if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
                 directoryPath.Append(wxFileName::GetPathSeparator());
             }
@@ -238,159 +238,159 @@ class asPredictor : public wxObject {
     }
 
     int GetTimeSize() const {
-        return (int)m_time.size();
+        return (int)_time.size();
     }
 
     int GetMembersNb() const {
-        wxASSERT(!m_data.empty());
+        wxASSERT(!_data.empty());
 
-        return (int)m_data[0].size();
+        return (int)_data[0].size();
     }
 
     int GetLatPtsnb() const {
-        return m_latPtsnb;
+        return _latPtsnb;
     }
 
     int GetLonPtsnb() const {
-        return m_lonPtsnb;
+        return _lonPtsnb;
     }
 
     void SetStandardized(bool val = true) {
-        m_standardized = val;
+        _standardized = val;
     }
 
     static bool IsLatLon(const wxString& datasetId);
 
     bool IsLatLon() const {
-        return m_isLatLon;
+        return _isLatLon;
     }
 
     bool IsPreprocessed() const {
-        return m_isPreprocessed;
+        return _isPreprocessed;
     }
 
     void SetIsPreprocessed(bool val) {
-        m_isPreprocessed = val;
+        _isPreprocessed = val;
     }
 
     bool IsEnsemble() const {
-        return m_isEnsemble;
+        return _isEnsemble;
     }
 
     bool CanBeClipped() const {
-        return m_canBeClipped;
+        return _canBeClipped;
     }
 
     void SetCanBeClipped(bool val) {
-        m_canBeClipped = val;
+        _canBeClipped = val;
     }
 
     wxString GetPreprocessMethod() const {
-        return m_preprocessMethod;
+        return _preprocessMethod;
     }
 
     void SetPreprocessMethod(const wxString& val) {
-        m_preprocessMethod = val;
+        _preprocessMethod = val;
     }
 
     void SelectFirstMember() {
-        if (!m_isEnsemble) {
+        if (!_isEnsemble) {
             throw runtime_error(_("Dataset is not an ensemble, you cannot select a member."));
         }
 
-        m_fInd.memberStart = 0;
-        m_fInd.memberCount = 1;
-        m_membersNb = 1;
+        _fInd.memberStart = 0;
+        _fInd.memberCount = 1;
+        _membersNb = 1;
     }
 
     void SelectMember(int memberNum) {
-        if (!m_isEnsemble) {
+        if (!_isEnsemble) {
             throw runtime_error(_("Dataset is not an ensemble, you cannot select a member."));
         }
 
         // memberNum is 1-based, netcdf index is 0-based
-        m_fInd.memberStart = memberNum - 1;
-        m_fInd.memberCount = 1;
-        m_membersNb = 1;
+        _fInd.memberStart = memberNum - 1;
+        _fInd.memberCount = 1;
+        _membersNb = 1;
     }
 
     void SelectMembers(int memberNb) {
-        if (!m_isEnsemble) {
+        if (!_isEnsemble) {
             throw runtime_error(_("Dataset is not an ensemble, you cannot select a member."));
         }
 
         // memberNum is 1-based, netcdf index is 0-based
-        m_fInd.memberStart = 0;
-        m_fInd.memberCount = memberNb;
-        m_membersNb = memberNb;
+        _fInd.memberStart = 0;
+        _fInd.memberCount = memberNb;
+        _membersNb = memberNb;
     }
 
     int GetMembersNb() {
-        return wxMax(m_membersNb, 1);
+        return wxMax(_membersNb, 1);
     }
 
     a1d GetLatAxis() const {
-        return m_axisLat;
+        return _axisLat;
     }
 
     a1d GetLonAxis() const {
-        return m_axisLon;
+        return _axisLon;
     }
 
     a1d* GetLatAxisPt() {
-        return &m_axisLat;
+        return &_axisLat;
     }
 
     a1d* GetLonAxisPt() {
-        return &m_axisLon;
+        return &_axisLon;
     }
 
     double GetXmin() const {
-        wxASSERT(m_axisLon.size() > 0);
+        wxASSERT(_axisLon.size() > 0);
 
-        return m_axisLon[0];
+        return _axisLon[0];
     }
 
     double GetYmin() const {
-        wxASSERT(m_axisLat.size() > 0);
+        wxASSERT(_axisLat.size() > 0);
 
-        return wxMin(m_axisLat[m_axisLat.size() - 1], m_axisLat[0]);
+        return wxMin(_axisLat[_axisLat.size() - 1], _axisLat[0]);
     }
 
     double GetXmax() const {
-        wxASSERT(m_axisLon.size() > 0);
+        wxASSERT(_axisLon.size() > 0);
 
-        return m_axisLon[m_axisLon.size() - 1];
+        return _axisLon[_axisLon.size() - 1];
     }
 
     double GetYmax() const {
-        wxASSERT(m_axisLat.size() > 0);
+        wxASSERT(_axisLat.size() > 0);
 
-        return wxMax(m_axisLat[m_axisLat.size() - 1], m_axisLat[0]);
+        return wxMax(_axisLat[_axisLat.size() - 1], _axisLat[0]);
     }
 
     void SetWarnMissingLevels(bool val) {
-        m_warnMissingLevels = val;
+        _warnMissingLevels = val;
     }
 
     void SetLevel(float val) {
-        m_level = val;
+        _level = val;
     }
 
     void SetTimeArray(const a1d& time) {
-        m_time = time;
+        _time = time;
     }
 
     void SetWasDumped(bool val) {
-        m_wasDumped = val;
+        _wasDumped = val;
     }
 
     bool WasDumped() const {
-        return m_wasDumped;
+        return _wasDumped;
     }
 
     int GetPercentMissingAllowed() const {
-        return m_percentMissingAllowed;
+        return _percentMissingAllowed;
     }
 
   protected:
@@ -431,46 +431,46 @@ class asPredictor : public wxObject {
         int memberStart;
         int memberCount;
     };
-    FileStructure m_fStr;
-    FileIndexes m_fInd;
-    asFile::FileType m_fileType;
-    bool m_initialized;
-    bool m_standardized;
-    bool m_axesChecked;
-    bool m_wasDumped;
-    wxString m_dataId;
-    wxString m_datasetId;
-    wxString m_datasetName;
-    wxString m_provider;
-    wxString m_transformedBy;
-    vd m_nanValues;
-    Parameter m_parameter;
-    wxString m_parameterName;
-    vi m_gribCode;
-    wxString m_product;
-    wxString m_fileVarName;
-    wxString m_fileNamePattern;
-    Unit m_unit;
-    bool m_strideAllowed;
-    float m_level;
-    a1d m_time;
-    vva2f m_data;
-    int m_membersNb;
-    int m_latPtsnb;
-    int m_lonPtsnb;
-    a1d m_axisLat;
-    a1d m_axisLon;
-    bool m_isLatLon;
-    bool m_isPreprocessed;
-    bool m_isEnsemble;
-    bool m_canBeClipped;
-    bool m_parseTimeReference;
-    bool m_warnMissingFiles;
-    bool m_warnMissingLevels;
-    wxString m_fileExtension;
-    wxString m_preprocessMethod;
-    vwxs m_files;
-    int m_percentMissingAllowed;
+    FileStructure _fStr;
+    FileIndexes _fInd;
+    asFile::FileType _fileType;
+    bool _initialized;
+    bool _standardized;
+    bool _axesChecked;
+    bool _wasDumped;
+    wxString _dataId;
+    wxString _datasetId;
+    wxString _datasetName;
+    wxString _provider;
+    wxString _transformedBy;
+    vd _nanValues;
+    Parameter _parameter;
+    wxString _parameterName;
+    vi _gribCode;
+    wxString _product;
+    wxString _fileVarName;
+    wxString _fileNamePattern;
+    Unit _unit;
+    bool _strideAllowed;
+    float _level;
+    a1d _time;
+    vva2f _data;
+    int _membersNb;
+    int _latPtsnb;
+    int _lonPtsnb;
+    a1d _axisLat;
+    a1d _axisLon;
+    bool _isLatLon;
+    bool _isPreprocessed;
+    bool _isEnsemble;
+    bool _canBeClipped;
+    bool _parseTimeReference;
+    bool _warnMissingFiles;
+    bool _warnMissingLevels;
+    wxString _fileExtension;
+    wxString _preprocessMethod;
+    vwxs _files;
+    int _percentMissingAllowed;
 
     virtual void ListFiles(asTimeArray& timeArray);
 
@@ -569,7 +569,7 @@ class asPredictor : public wxObject {
     bool IsPrecipitationRate() const;
 
   private:
-    wxString m_directoryPath;
+    wxString _directoryPath;
 
     bool ExtractSpatialAxes(asFileNetcdf& ncFile);
 

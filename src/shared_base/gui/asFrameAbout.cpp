@@ -40,13 +40,13 @@ asFrameAbout::asFrameAbout(wxWindow* parent)
 #endif
 
     // Set logo
-    m_logo->SetBitmap(asBitmaps::GetLogo(wxSize(128, 128)));
+    _logo->SetBitmap(asBitmaps::GetLogo(wxSize(128, 128)));
 
     // Set AtmoSwing version
-    m_staticTextVersion->SetLabel(asVersion::GetFullString());
+    _staticTextVersion->SetLabel(asVersion::GetFullString());
 
     // Set license
-    m_textCtrlLicense->SetValue(asFrameAbout::GetLicense());
+    _textCtrlLicense->SetValue(asFrameAbout::GetLicense());
 }
 
 wxString asFrameAbout::GetLicense() {

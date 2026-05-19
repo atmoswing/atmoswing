@@ -61,7 +61,7 @@ class asPanelsManagerForecasts : public asPanelsManager {
     void SetForecastsAllLedsOff();
 
   protected:
-    vector<asPanelForecast*> m_arrayPanels;
+    vector<asPanelForecast*> _arrayPanels;
 
   private:
 };

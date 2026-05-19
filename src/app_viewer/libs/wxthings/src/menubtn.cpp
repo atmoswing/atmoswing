@@ -71,11 +71,11 @@ class MenuDropButton : public wxCustomButton {
             wxPoint p = GetParent()->ScreenToClient(wxGetMousePosition());
 
             if (GetRect().Contains(p) || labelBut->GetRect().Contains(p)) {
-                m_focused = true;
+                _focused = true;
 
                 if (!labelBut->GetFocused()) labelBut->SetFocused(true);
             } else {
-                m_focused = false;
+                _focused = false;
 
                 if (labelBut->GetFocused()) labelBut->SetFocused(false);
             }
@@ -104,11 +104,11 @@ class MenuLabelButton : public wxCustomButton {
             wxPoint p = GetParent()->ScreenToClient(wxGetMousePosition());
 
             if (GetRect().Contains(p) || dropBut->GetRect().Contains(p)) {
-                m_focused = true;
+                _focused = true;
 
                 if (!dropBut->GetFocused()) dropBut->SetFocused(true);
             } else {
-                m_focused = false;
+                _focused = false;
 
                 if (dropBut->GetFocused()) dropBut->SetFocused(false);
             }
@@ -136,17 +136,17 @@ wxMenuButton::~wxMenuButton() {
 }
 
 void wxMenuButton::Init() {
-    m_labelButton = NULL;
-    m_dropdownButton = NULL;
-    m_menu = NULL;
-    m_menu_static = false;
-    m_style = 0;
+    _labelButton = NULL;
+    _dropdownButton = NULL;
+    _menu = NULL;
+    _menu_static = false;
+    _style = 0;
 }
 
 bool wxMenuButton::Create(wxWindow* parent, wxWindowID id, const wxString& label, const wxBitmap& bitmap,
                           const wxPoint& pos, const wxSize& size, long style, const wxValidator& val,
                           const wxString& name) {
-    m_style = style;
+    _style = style;
 
     long flat = style & wxMENUBUT_FLAT;
 
@@ -156,8 +156,8 @@ bool wxMenuButton::Create(wxWindow* parent, wxWindowID id, const wxString& label
     SetForegroundColour(parent->GetForegroundColour());
     SetFont(parent->GetFont());
 
-    m_labelButton = new MenuLabelButton(this, id, label, bitmap, wxCUSTBUT_BUTTON | flat);
-    m_dropdownButton = new MenuDropButton(this, IDD_DROPDOWN_BUTTON, wxCUSTBUT_BUTTON | flat);
+    _labelButton = new MenuLabelButton(this, id, label, bitmap, wxCUSTBUT_BUTTON | flat);
+    _dropdownButton = new MenuDropButton(this, IDD_DROPDOWN_BUTTON, wxCUSTBUT_BUTTON | flat);
 
     wxSize bestSize = DoGetBestSize();
     SetSize(wxSize(size.x < 0 ? bestSize.x : size.x, size.y < 0 ? bestSize.y : size.y));
@@ -171,8 +171,8 @@ bool wxMenuButton::Create(wxWindow* parent, wxWindowID id, const wxString& label
 // FIXME - I think there was a patch to fix this
 void wxMenuButton::OnMenu(wxCommandEvent& event) {
     event.Skip();
-    wxMenuItem* mi = m_menu->FindItem(event.GetId());
-    if (mi && (mi->GetKind() == wxITEM_RADIO)) m_menu->Check(event.GetId(), true);
+    wxMenuItem* mi = _menu->FindItem(event.GetId());
+    if (mi && (mi->GetKind() == wxITEM_RADIO)) _menu->Check(event.GetId(), true);
 }
 #endif  // __WXMSW__
 
@@ -180,22 +180,22 @@ void wxMenuButton::OnButton(wxCommandEvent& event) {
     int win_id = event.GetId();
 
     if (win_id == IDD_DROPDOWN_BUTTON) {
-        if (m_menu) {
+        if (_menu) {
             wxNotifyEvent mevent(wxEVT_MENUBUTTON_OPEN, GetId());
             mevent.SetEventObject(this);
             if (GetEventHandler()->ProcessEvent(mevent) && !mevent.IsAllowed()) return;
 
-            if (!m_menu) return;
+            if (!_menu) return;
 
-            PopupMenu(m_menu, wxPoint(0, GetSize().y));
+            PopupMenu(_menu, wxPoint(0, GetSize().y));
 
-            m_labelButton->Refresh(false);
-            m_dropdownButton->Refresh(false);
+            _labelButton->Refresh(false);
+            _dropdownButton->Refresh(false);
         }
-    } else if (win_id == m_labelButton->GetId()) {
-        if (!m_menu) return;
+    } else if (win_id == _labelButton->GetId()) {
+        if (!_menu) return;
 
-        const wxMenuItemList& items = m_menu->GetMenuItems();
+        const wxMenuItemList& items = _menu->GetMenuItems();
         int first_radio_id = -1;
         int checked_id = -1;
         bool check_next = false;
@@ -219,10 +219,10 @@ void wxMenuButton::OnButton(wxCommandEvent& event) {
         if (check_next && (first_radio_id != -1)) checked_id = first_radio_id;
 
         if (checked_id != -1) {
-            m_menu->Check(checked_id, true);
+            _menu->Check(checked_id, true);
 
             wxCommandEvent mevent(wxEVT_COMMAND_MENU_SELECTED, checked_id);
-            mevent.SetEventObject(m_menu);
+            mevent.SetEventObject(_menu);
             mevent.SetInt(1);
             GetEventHandler()->ProcessEvent(mevent);
         }
@@ -230,9 +230,9 @@ void wxMenuButton::OnButton(wxCommandEvent& event) {
 }
 
 int wxMenuButton::GetSelection() const {
-    wxCHECK_MSG(m_menu != NULL, wxNOT_FOUND, wxT("No attached menu in wxMenuButton::GetSelection"));
+    wxCHECK_MSG(_menu != NULL, wxNOT_FOUND, wxT("No attached menu in wxMenuButton::GetSelection"));
 
-    const wxMenuItemList& items = m_menu->GetMenuItems();
+    const wxMenuItemList& items = _menu->GetMenuItems();
 
     wxMenuItemList::compatibility_iterator node;
     for (node = items.GetFirst(); node; node = node->GetNext()) {
@@ -246,22 +246,22 @@ int wxMenuButton::GetSelection() const {
 }
 
 void wxMenuButton::AssignMenu(wxMenu* menu, bool static_menu) {
-    if (!m_menu_static && m_menu) delete m_menu;
+    if (!_menu_static && _menu) delete _menu;
 
-    m_menu = menu;
-    m_menu_static = static_menu;
+    _menu = menu;
+    _menu_static = static_menu;
 }
 
 void wxMenuButton::SetToolTip(const wxString& tip) {
     wxWindow::SetToolTip(tip);
-    ((wxWindow*)m_labelButton)->SetToolTip(tip);
-    ((wxWindow*)m_dropdownButton)->SetToolTip(tip);
+    ((wxWindow*)_labelButton)->SetToolTip(tip);
+    ((wxWindow*)_dropdownButton)->SetToolTip(tip);
 }
 
 void wxMenuButton::SetToolTip(wxToolTip* tip) {
     wxWindow::SetToolTip(tip);
-    ((wxWindow*)m_labelButton)->SetToolTip(tip);
-    ((wxWindow*)m_dropdownButton)->SetToolTip(tip);
+    ((wxWindow*)_labelButton)->SetToolTip(tip);
+    ((wxWindow*)_dropdownButton)->SetToolTip(tip);
 }
 
 void wxMenuButton::DoSetSize(int x, int y, int width, int height, int sizeFlags) {
@@ -276,16 +276,16 @@ void wxMenuButton::DoSetSize(int x, int y, int width, int height, int sizeFlags)
 
     wxWindow::DoSetSize(x, y, width, height, sizeFlags);
 
-    if (m_labelButton) m_labelButton->SetSize(0, 0, width - wxMENUBUTTON_DROP_WIDTH, height);
-    if (m_dropdownButton)
-        m_dropdownButton->SetSize(width - wxMENUBUTTON_DROP_WIDTH, 0, wxMENUBUTTON_DROP_WIDTH, height);
+    if (_labelButton) _labelButton->SetSize(0, 0, width - wxMENUBUTTON_DROP_WIDTH, height);
+    if (_dropdownButton)
+        _dropdownButton->SetSize(width - wxMENUBUTTON_DROP_WIDTH, 0, wxMENUBUTTON_DROP_WIDTH, height);
 }
 
 wxSize wxMenuButton::DoGetBestSize() {
-    if (!m_labelButton || !m_dropdownButton)
+    if (!_labelButton || !_dropdownButton)
         return wxSize(wxMENUBUTTON_DROP_WIDTH + wxMENUBUTTON_DROP_HEIGHT, wxMENUBUTTON_DROP_HEIGHT);
 
-    wxSize size = m_labelButton->GetBestSize();
+    wxSize size = _labelButton->GetBestSize();
     size.x += wxMENUBUTTON_DROP_WIDTH;
     return size;
 }

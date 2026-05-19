@@ -30,7 +30,7 @@
 
 asCriteriaMD::asCriteriaMD()
     : asCriteria("MD", _("Mean Absolute Difference"), Asc) {
-    m_canUseInline = true;
+    _canUseInline = true;
 }
 
 asCriteriaMD::~asCriteriaMD() = default;
@@ -39,7 +39,7 @@ float asCriteriaMD::Assess(const a2f& refData, const a2f& evalData, int rowsNb, 
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
 
-    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+    if (!_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
         return (evalData - refData).abs().sum() / (float)refData.size();
 
     } else {

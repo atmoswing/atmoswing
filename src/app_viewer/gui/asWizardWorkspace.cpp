@@ -39,12 +39,12 @@ asWizardWorkspace::asWizardWorkspace(wxWindow* parent, wxWindowID id)
 asWizardWorkspace::~asWizardWorkspace() {}
 
 void asWizardWorkspace::OnWizardFinished(wxWizardEvent& event) {
-    wxString filePath = m_filePickerWorkspaceFile->GetPath();
-    m_workspace.SetFilePath(filePath);
-    wxString dirPath = m_dirPickerForecastResults->GetPath();
-    m_workspace.SetForecastsDirectory(dirPath);
+    wxString filePath = _filePickerWorkspaceFile->GetPath();
+    _workspace.SetFilePath(filePath);
+    wxString dirPath = _dirPickerForecastResults->GetPath();
+    _workspace.SetForecastsDirectory(dirPath);
 
-    int baseMapSlct = m_choiceBaseMap->GetSelection();
+    int baseMapSlct = _choiceBaseMap->GetSelection();
     wxString baseMapPath = wxEmptyString;
     wxString wmsDir = asConfig::GetShareDir() + DS + "atmoswing" + DS + "gis" + DS + "wms" + DS;
     switch (baseMapSlct) {
@@ -75,17 +75,17 @@ void asWizardWorkspace::OnWizardFinished(wxWizardEvent& event) {
 
     if (wxFileExists(baseMapPath)) {
         if (!baseMapPath.IsEmpty()) {
-            m_workspace.AddLayer();
-            m_workspace.SetLayerPath(0, baseMapPath);
-            m_workspace.SetLayerTransparency(0, 0);
-            m_workspace.SetLayerType(0, "wms");
-            m_workspace.SetLayerVisibility(0, true);
+            _workspace.AddLayer();
+            _workspace.SetLayerPath(0, baseMapPath);
+            _workspace.SetLayerTransparency(0, 0);
+            _workspace.SetLayerType(0, "wms");
+            _workspace.SetLayerVisibility(0, true);
         }
     } else {
         wxLogError(_("Cannot find file %s"), baseMapPath);
     }
 
-    m_workspace.Save();
+    _workspace.Save();
 
     if (!filePath.IsEmpty()) {
         wxConfigBase* pConfig = wxFileConfig::Get();

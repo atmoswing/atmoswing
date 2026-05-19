@@ -29,9 +29,9 @@
 
 asCriteriaS2::asCriteriaS2()
     : asCriteria("S2", _("Derivative of Teweles-Wobus score"), Asc) {
-    m_minPointsNb = 3;
-    m_scaleWorst = 200;
-    m_canUseInline = false;
+    _minPointsNb = 3;
+    _scaleWorst = 200;
+    _canUseInline = false;
 }
 
 asCriteriaS2::~asCriteriaS2() = default;
@@ -42,7 +42,7 @@ float asCriteriaS2::Assess(const a2f& refData, const a2f& evalData, int rowsNb, 
     wxASSERT(refData.rows() > 2);
     wxASSERT(refData.cols() > 2);
 
-    if (m_checkNaNs && (refData.hasNaN() || evalData.hasNaN())) {
+    if (_checkNaNs && (refData.hasNaN() || evalData.hasNaN())) {
         wxLogWarning(_("NaNs are not handled in with S2 without preprocessing."));
         return NAN;
     }
@@ -81,11 +81,11 @@ float asCriteriaS2::Assess(const a2f& refData, const a2f& evalData, int rowsNb, 
     } else {
         if (dividend == 0) {
             wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
-            return m_scaleWorst;
+            return _scaleWorst;
         } else if (isnan(divisor) || isnan(dividend)) {
             return NAN;
         } else {
-            return m_scaleWorst;
+            return _scaleWorst;
         }
     }
 }

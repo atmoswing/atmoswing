@@ -54,7 +54,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout : public wxPrintout {
     bool ShowPrintPageSetupDialog();
 
     wxPlotCtrl* GetPlotCtrl() const {
-        return m_plotCtrl;
+        return _plotCtrl;
     }
 
     // Get/Set the wxPrintData/wxPageSetupData that will be used
@@ -77,7 +77,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout : public wxPrintout {
     static void SetPageSetupData(wxPageSetupData* pageSetupData, bool is_static);
 
   protected:
-    wxPlotCtrl* m_plotCtrl;
+    wxPlotCtrl* _plotCtrl;
 
     static wxPrintData* s_wxPlotPrintData;
     static wxPageSetupData* s_wxPlotPageSetupData;

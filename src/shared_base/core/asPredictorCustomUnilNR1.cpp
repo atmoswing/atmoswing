@@ -34,105 +34,105 @@
 asPredictorCustomUnilNR1::asPredictorCustomUnilNR1(const wxString& dataId)
     : asPredictor(dataId) {
     // Set the basic properties.
-    m_datasetId = "Custom_Unil_NR1";
-    m_provider = "NCEP/NCAR";
-    m_transformedBy = "Pascal Horton";
-    m_datasetName = "Reanalysis 1 subset";
-    m_fileType = asFile::Netcdf;
-    m_strideAllowed = true;
-    m_nanValues.push_back(32767);
-    m_nanValues.push_back(936 * std::pow(10.f, 34.f));
-    m_fStr.dimLatName = "lat";
-    m_fStr.dimLonName = "lon";
-    m_fStr.dimTimeName = "time";
-    m_fStr.dimLevelName = "level";
+    _datasetId = "Custom_Unil_NR1";
+    _provider = "NCEP/NCAR";
+    _transformedBy = "Pascal Horton";
+    _datasetName = "Reanalysis 1 subset";
+    _fileType = asFile::Netcdf;
+    _strideAllowed = true;
+    _nanValues.push_back(32767);
+    _nanValues.push_back(936 * std::pow(10.f, 34.f));
+    _fStr.dimLatName = "lat";
+    _fStr.dimLonName = "lon";
+    _fStr.dimTimeName = "time";
+    _fStr.dimLevelName = "level";
 }
 
 bool asPredictorCustomUnilNR1::Init() {
     // Identify data ID and set the corresponding properties.
     if (IsGeopotentialHeight()) {
-        m_fStr.hasLevelDim = true;
-        m_parameter = GeopotentialHeight;
-        m_parameterName = "Geopotential height";
-        m_fileNamePattern = "hgt.nc";
-        m_fileVarName = "hgt";
-        m_unit = m;
+        _fStr.hasLevelDim = true;
+        _parameter = GeopotentialHeight;
+        _parameterName = "Geopotential height";
+        _fileNamePattern = "hgt.nc";
+        _fileVarName = "hgt";
+        _unit = m;
     } else if (IsAirTemperature()) {
-        m_fStr.hasLevelDim = true;
-        m_parameter = AirTemperature;
-        m_parameterName = "Air Temperature";
-        m_fileNamePattern = "air.nc";
-        m_fileVarName = "air";
-        m_unit = degK;
+        _fStr.hasLevelDim = true;
+        _parameter = AirTemperature;
+        _parameterName = "Air Temperature";
+        _fileNamePattern = "air.nc";
+        _fileVarName = "air";
+        _unit = degK;
     } else if (IsVerticalVelocity()) {
-        m_fStr.hasLevelDim = true;
-        m_parameter = VerticalVelocity;
-        m_parameterName = "Vertical velocity";
-        m_fileNamePattern = "omega.nc";
-        m_fileVarName = "omega";
-        m_unit = Pa_s;
+        _fStr.hasLevelDim = true;
+        _parameter = VerticalVelocity;
+        _parameterName = "Vertical velocity";
+        _fileNamePattern = "omega.nc";
+        _fileVarName = "omega";
+        _unit = Pa_s;
     } else if (IsRelativeHumidity()) {
-        m_fStr.hasLevelDim = true;
-        m_parameter = RelativeHumidity;
-        m_parameterName = "Relative Humidity";
-        m_fileNamePattern = "rhum.nc";
-        m_fileVarName = "rhum";
-        m_unit = percent;
+        _fStr.hasLevelDim = true;
+        _parameter = RelativeHumidity;
+        _parameterName = "Relative Humidity";
+        _fileNamePattern = "rhum.nc";
+        _fileVarName = "rhum";
+        _unit = percent;
     } else if (IsSpecificHumidity()) {
-        m_fStr.hasLevelDim = true;
-        m_parameter = SpecificHumidity;
-        m_parameterName = "Specific Humidity";
-        m_fileNamePattern = "shum.nc";
-        m_fileVarName = "shum";
-        m_unit = kg_kg;
+        _fStr.hasLevelDim = true;
+        _parameter = SpecificHumidity;
+        _parameterName = "Specific Humidity";
+        _fileNamePattern = "shum.nc";
+        _fileVarName = "shum";
+        _unit = kg_kg;
     } else if (IsUwindComponent()) {
-        m_fStr.hasLevelDim = true;
-        m_parameter = Uwind;
-        m_parameterName = "U-Wind";
-        m_fileNamePattern = "uwnd.nc";
-        m_fileVarName = "uwnd";
-        m_unit = m_s;
+        _fStr.hasLevelDim = true;
+        _parameter = Uwind;
+        _parameterName = "U-Wind";
+        _fileNamePattern = "uwnd.nc";
+        _fileVarName = "uwnd";
+        _unit = _s;
     } else if (IsVwindComponent()) {
-        m_fStr.hasLevelDim = true;
-        m_parameter = Vwind;
-        m_parameterName = "V-Wind";
-        m_fileNamePattern = "vwnd.nc";
-        m_fileVarName = "vwnd";
-        m_unit = m_s;
+        _fStr.hasLevelDim = true;
+        _parameter = Vwind;
+        _parameterName = "V-Wind";
+        _fileNamePattern = "vwnd.nc";
+        _fileVarName = "vwnd";
+        _unit = _s;
     } else if (IsPrecipitableWater()) {
-        m_fStr.hasLevelDim = false;
-        m_parameter = PrecipitableWater;
-        m_parameterName = "Precipitable water";
-        m_fileNamePattern = "pr_wtr.nc";
-        m_fileVarName = "pr_wtr";
-        m_unit = mm;
+        _fStr.hasLevelDim = false;
+        _parameter = PrecipitableWater;
+        _parameterName = "Precipitable water";
+        _fileNamePattern = "pr_wtr.nc";
+        _fileVarName = "pr_wtr";
+        _unit = mm;
     } else {
-        wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+        wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), _dataId, _product);
         return false;
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
-                   m_datasetName);
+    if (_fileNamePattern.IsEmpty() || _fileVarName.IsEmpty()) {
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), _dataId,
+                   _datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
-                   m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), _dataId,
+                   _datasetName);
         return false;
     }
 
     // Set to initialized
-    m_initialized = true;
+    _initialized = true;
 
     return true;
 }
 
 void asPredictorCustomUnilNR1::ListFiles(asTimeArray& timeArray) {
-    m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
+    _files.push_back(GetFullDirectoryPath() + _fileNamePattern);
 }
 
 void asPredictorCustomUnilNR1::ConvertToMjd(a1d& time, double refValue) const {

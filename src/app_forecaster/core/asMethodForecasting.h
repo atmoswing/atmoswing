@@ -55,15 +55,15 @@ class asMethodForecasting : public asMethodStandard {
     bool Forecast(asParametersForecast& params);
 
     double GetForecastDate() const {
-        return m_forecastDate;
+        return _forecastDate;
     }
 
     void SetForecastDate(double val) {
-        m_forecastDate = val;
+        _forecastDate = val;
     }
 
     vwxs GetResultsFilePaths() const {
-        return m_resultsFilePaths;
+        return _resultsFilePaths;
     }
 
   protected:
@@ -90,16 +90,16 @@ class asMethodForecasting : public asMethodStandard {
     void Cleanup();
 
   private:
-    asBatchForecasts* m_batchForecasts;
-    double m_forecastDate;
-    asResultsForecastAggregator m_aggregator;
-    vwxs m_resultsFilePaths;
-    wxWindow* m_parent;
-    vector<asPredictor*> m_storagePredictorsArchivePreprocess;
-    vector<asPredictorOper*> m_storagePredictorsRealtimePreprocess;
-    vector<asPredictor*> m_storagePredictorsArchive;
-    vector<asPredictor*> m_storagePredictorsRealtime;
-    vector<asCriteria*> m_storageCriteria;
+    asBatchForecasts* _batchForecasts;
+    double _forecastDate;
+    asResultsForecastAggregator _aggregator;
+    vwxs _resultsFilePaths;
+    wxWindow* _parent;
+    vector<asPredictor*> _storagePredictorsArchivePreprocess;
+    vector<asPredictorOper*> _storagePredictorsRealtimePreprocess;
+    vector<asPredictor*> _storagePredictorsArchive;
+    vector<asPredictor*> _storagePredictorsRealtime;
+    vector<asCriteria*> _storageCriteria;
 
     bool HasEnoughMemory(const asParametersForecast& params, int iStep, const asTimeArray& timeArrayArchive) const;
 };

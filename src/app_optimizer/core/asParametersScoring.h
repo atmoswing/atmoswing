@@ -128,77 +128,77 @@ class asParametersScoring : public asParameters {
     bool GetValuesFromString(wxString stringVals) override;  // We copy the string as we'll modify it.
 
     void SetCalibrationYearStart(int val) {
-        m_calibrationStart = asTime::GetMJD(val, 1, 1);
+        _calibrationStart = asTime::GetMJD(val, 1, 1);
     }
 
     void SetCalibrationYearEnd(int val) {
-        m_calibrationEnd = asTime::GetMJD(val, 12, 31);
+        _calibrationEnd = asTime::GetMJD(val, 12, 31);
     }
 
     double GetCalibrationStart() const {
-        return m_calibrationStart;
+        return _calibrationStart;
     }
 
     void SetCalibrationStart(const wxString& val) {
-        m_calibrationStart = asTime::GetTimeFromString(val);
+        _calibrationStart = asTime::GetTimeFromString(val);
     }
 
     double GetCalibrationEnd() const {
-        return m_calibrationEnd;
+        return _calibrationEnd;
     }
 
     void SetCalibrationEnd(const wxString& val) {
-        m_calibrationEnd = asTime::GetTimeFromString(val);
+        _calibrationEnd = asTime::GetTimeFromString(val);
     }
 
     vi GetValidationYearsVector() const {
-        return m_validationYears;
+        return _validationYears;
     }
 
     void SetValidationYearsVector(const vi& val) {
         wxASSERT(!val.empty());
-        m_validationYears = val;
+        _validationYears = val;
     }
 
     bool HasValidationPeriod() const {
-        return !m_validationYears.empty();
+        return !_validationYears.empty();
     }
 
     ParamsScore GetScore() const {
-        return m_score;
+        return _score;
     }
 
     wxString GetScoreName() const {
-        return m_score.name;
+        return _score.name;
     }
 
     void SetScoreName(const wxString& val) {
         wxASSERT(!val.IsEmpty());
-        m_score.name = val;
+        _score.name = val;
     }
 
     float GetScoreThreshold() const {
-        return m_score.threshold;
+        return _score.threshold;
     }
 
     void SetScoreThreshold(float val) {
-        m_score.threshold = val;
+        _score.threshold = val;
     }
 
     bool GetOnMean() const {
-        return m_score.onMean;
+        return _score.onMean;
     }
 
     void SetOnMean(bool val) {
-        m_score.onMean = val;
+        _score.onMean = val;
     }
 
     float GetScoreQuantile() const {
-        return m_score.quantile;
+        return _score.quantile;
     }
 
     void SetScoreQuantile(float val) {
-        m_score.quantile = val;
+        _score.quantile = val;
     }
 
     int GetScoreAnalogsNumber() const {
@@ -206,96 +206,96 @@ class asParametersScoring : public asParameters {
     }
 
     wxString GetScoreTimeArrayMode() const {
-        return m_score.timeArrayMode;
+        return _score.timeArrayMode;
     }
 
     void SetScoreTimeArrayMode(const wxString& val) {
         wxASSERT(!val.IsEmpty());
-        m_score.timeArrayMode = val;
+        _score.timeArrayMode = val;
     }
 
     bool ScoreNeedsPostprocessing() const {
-        return m_score.postprocess;
+        return _score.postprocess;
     }
 
     /* Vector elements */
 
     vi GetAnalogsNumberVector(int iStep) const {
-        return m_stepsVect[iStep].analogsNumber;
+        return _stepsVect[iStep].analogsNumber;
     }
 
     void SetAnalogsNumberVector(int iStep, const vi& val) {
         wxASSERT(!val.empty());
-        m_stepsVect[iStep].analogsNumber = val;
+        _stepsVect[iStep].analogsNumber = val;
     }
 
     void SetPreprocessHourVector(int iStep, int iPtor, int iPre, const vd& val) {
         wxASSERT(!val.empty());
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
-            m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].clear();
-            m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre] = val;
+        if (_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
+            _stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].clear();
+            _stepsVect[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
-            m_stepsVect[iStep].predictors[iPtor].preprocessHours.push_back(val);
+            _stepsVect[iStep].predictors[iPtor].preprocessHours.push_back(val);
         }
     }
 
     vd GetPredictorXminVector(int iStep, int iPtor) const {
-        return m_stepsVect[iStep].predictors[iPtor].xMin;
+        return _stepsVect[iStep].predictors[iPtor].xMin;
     }
 
     void SetPredictorXminVector(int iStep, int iPtor, const vd& val) {
         wxASSERT(!val.empty());
-        m_stepsVect[iStep].predictors[iPtor].xMin = val;
+        _stepsVect[iStep].predictors[iPtor].xMin = val;
     }
 
     vi GetPredictorXptsnbVector(int iStep, int iPtor) const {
-        return m_stepsVect[iStep].predictors[iPtor].xPtsNb;
+        return _stepsVect[iStep].predictors[iPtor].xPtsNb;
     }
 
     void SetPredictorXptsnbVector(int iStep, int iPtor, const vi& val) {
         wxASSERT(!val.empty());
-        m_stepsVect[iStep].predictors[iPtor].xPtsNb = val;
+        _stepsVect[iStep].predictors[iPtor].xPtsNb = val;
     }
 
     vd GetPredictorYminVector(int iStep, int iPtor) const {
-        return m_stepsVect[iStep].predictors[iPtor].yMin;
+        return _stepsVect[iStep].predictors[iPtor].yMin;
     }
 
     void SetPredictorYminVector(int iStep, int iPtor, const vd& val) {
         wxASSERT(!val.empty());
-        m_stepsVect[iStep].predictors[iPtor].yMin = val;
+        _stepsVect[iStep].predictors[iPtor].yMin = val;
     }
 
     vi GetPredictorYptsnbVector(int iStep, int iPtor) const {
-        return m_stepsVect[iStep].predictors[iPtor].yPtsNb;
+        return _stepsVect[iStep].predictors[iPtor].yPtsNb;
     }
 
     void SetPredictorYptsnbVector(int iStep, int iPtor, const vi& val) {
         wxASSERT(!val.empty());
-        m_stepsVect[iStep].predictors[iPtor].yPtsNb = val;
+        _stepsVect[iStep].predictors[iPtor].yPtsNb = val;
     }
 
     vd GetPredictorHourVector(int iStep, int iPtor) const {
-        return m_stepsVect[iStep].predictors[iPtor].hours;
+        return _stepsVect[iStep].predictors[iPtor].hours;
     }
 
     void SetPredictorHoursVector(int iStep, int iPtor, const vd& val) {
         wxASSERT(!val.empty());
-        m_stepsVect[iStep].predictors[iPtor].hours = val;
+        _stepsVect[iStep].predictors[iPtor].hours = val;
     }
 
     vf GetPredictorWeightVector(int iStep, int iPtor) const {
-        return m_stepsVect[iStep].predictors[iPtor].weight;
+        return _stepsVect[iStep].predictors[iPtor].weight;
     }
 
     void SetPredictorWeightVector(int iStep, int iPtor, const vf& val) {
         wxASSERT(!val.empty());
-        m_stepsVect[iStep].predictors[iPtor].weight = val;
+        _stepsVect[iStep].predictors[iPtor].weight = val;
     }
 
     vwxs GetPreprocessDataIdVector(int iStep, int iPtor, int iPre) const {
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= iPre + 1) {
-            return m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre];
+        if (_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= iPre + 1) {
+            return _stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre];
         } else {
             wxLogError(_("Trying to access to an element outside of preprocessDataId in the parameters object."));
             vwxs empty;
@@ -305,17 +305,17 @@ class asParametersScoring : public asParameters {
 
     void SetPreprocessDataIdVector(int iStep, int iPtor, int iPre, const vwxs& val) {
         wxASSERT(!val.empty());
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= iPre + 1) {
-            m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre].clear();
-            m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre] = val;
+        if (_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= iPre + 1) {
+            _stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre].clear();
+            _stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre] = val;
         } else {
-            m_stepsVect[iStep].predictors[iPtor].preprocessDataId.push_back(val);
+            _stepsVect[iStep].predictors[iPtor].preprocessDataId.push_back(val);
         }
     }
 
     vf GetPreprocessLevelVector(int iStep, int iPtor, int iPre) const {
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
-            return m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre];
+        if (_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
+            return _stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre];
         } else {
             wxLogError(_("Trying to access to an element outside of preprocessLevels in the parameters object."));
             vf empty;
@@ -325,19 +325,19 @@ class asParametersScoring : public asParameters {
 
     void SetPreprocessLevelVector(int iStep, int iPtor, int iPre, const vf& val) {
         wxASSERT(!val.empty());
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
-            m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre].clear();
-            m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre] = val;
+        if (_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
+            _stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre].clear();
+            _stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre] = val;
         } else {
-            m_stepsVect[iStep].predictors[iPtor].preprocessLevels.push_back(val);
+            _stepsVect[iStep].predictors[iPtor].preprocessLevels.push_back(val);
         }
     }
 
     vd GetPreprocessHourVector(int iStep, int iPtor, int iPre) const {
-        wxASSERT(m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() > iPre);
+        wxASSERT(_stepsVect[iStep].predictors[iPtor].preprocessHours.size() > iPre);
 
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
-            return m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre];
+        if (_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
+            return _stepsVect[iStep].predictors[iPtor].preprocessHours[iPre];
         } else {
             wxLogError(_("Trying to access to an element outside of preprocessHours (vect) in the parameters object."));
             vd empty;
@@ -346,44 +346,44 @@ class asParametersScoring : public asParameters {
     }
 
     vwxs GetPredictorDataIdVector(int iStep, int iPtor) const {
-        return m_stepsVect[iStep].predictors[iPtor].dataId;
+        return _stepsVect[iStep].predictors[iPtor].dataId;
     }
 
     int GetPredictorDataIdNb(int iStep, int iPtor) const override {
-        return (int)m_stepsVect[iStep].predictors[iPtor].dataId.size();
+        return (int)_stepsVect[iStep].predictors[iPtor].dataId.size();
     }
 
     void SetPredictorDataIdVector(int iStep, int iPtor, const vwxs& val) {
         wxASSERT(!val.empty());
-        m_stepsVect[iStep].predictors[iPtor].dataId = val;
+        _stepsVect[iStep].predictors[iPtor].dataId = val;
     }
 
     vf GetPredictorLevelVector(int iStep, int iPtor) const {
-        return m_stepsVect[iStep].predictors[iPtor].level;
+        return _stepsVect[iStep].predictors[iPtor].level;
     }
 
     void SetPredictorLevelVector(int iStep, int iPtor, const vf& val) {
         wxASSERT(!val.empty());
-        m_stepsVect[iStep].predictors[iPtor].level = val;
+        _stepsVect[iStep].predictors[iPtor].level = val;
     }
 
     vwxs GetPredictorCriteriaVector(int iStep, int iPtor) const {
-        return m_stepsVect[iStep].predictors[iPtor].criteria;
+        return _stepsVect[iStep].predictors[iPtor].criteria;
     }
 
     void SetPredictorCriteriaVector(int iStep, int iPtor, const vwxs& val) {
         wxASSERT(!val.empty());
-        m_stepsVect[iStep].predictors[iPtor].criteria = val;
+        _stepsVect[iStep].predictors[iPtor].criteria = val;
     }
 
   protected:
-    double m_calibrationStart;
-    double m_calibrationEnd;
-    vi m_validationYears;
-    VectorParamsStepVect m_stepsVect;
+    double _calibrationStart;
+    double _calibrationEnd;
+    vi _validationYears;
+    VectorParamsStepVect _stepsVect;
 
   private:
-    ParamsScore m_score;
+    ParamsScore _score;
 };
 
 #endif

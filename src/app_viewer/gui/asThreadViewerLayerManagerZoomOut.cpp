@@ -31,16 +31,16 @@ asThreadViewerLayerManagerZoomOut::asThreadViewerLayerManagerZoomOut(vrViewerLay
                                                                      wxCriticalSection* critSectionViewerLayerManager,
                                                                      const vrRealRect& fittedRect)
     : asThread(),
-      m_viewerLayerManager(viewerLayerManager),
-      m_critSectionViewerLayerManager(critSectionViewerLayerManager),
-      m_rect(fittedRect) {
-    wxASSERT(m_viewerLayerManager);
+      _viewerLayerManager(viewerLayerManager),
+      _critSectionViewerLayerManager(critSectionViewerLayerManager),
+      _rect(fittedRect) {
+    wxASSERT(_viewerLayerManager);
 }
 
 wxThread::ExitCode asThreadViewerLayerManagerZoomOut::Entry() {
-    m_critSectionViewerLayerManager->Enter();
-    m_viewerLayerManager->ZoomOut(m_rect);
-    m_critSectionViewerLayerManager->Leave();
+    _critSectionViewerLayerManager->Enter();
+    _viewerLayerManager->ZoomOut(_rect);
+    _critSectionViewerLayerManager->Leave();
 
     return (wxThread::ExitCode)0;
 }

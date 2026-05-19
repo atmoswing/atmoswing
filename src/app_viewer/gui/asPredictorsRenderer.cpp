@@ -43,27 +43,27 @@ asPredictorsRenderer::asPredictorsRenderer(wxWindow* parent, vrLayerManager* lay
                                            asPredictorsManager* predictorsManagerAnalog,
                                            vrViewerLayerManager* viewerLayerManagerTarget,
                                            vrViewerLayerManager* viewerLayerManagerAnalog)
-    : m_parent(parent),
-      m_layerManager(layerManager),
-      m_predictorsManagerTarget(predictorsManagerTarget),
-      m_predictorsManagerAnalog(predictorsManagerAnalog),
-      m_viewerLayerManagerTarget(viewerLayerManagerTarget),
-      m_viewerLayerManagerAnalog(viewerLayerManagerAnalog) {}
+    : _parent(parent),
+      _layerManager(layerManager),
+      _predictorsManagerTarget(predictorsManagerTarget),
+      _predictorsManagerAnalog(predictorsManagerAnalog),
+      _viewerLayerManagerTarget(viewerLayerManagerTarget),
+      _viewerLayerManagerAnalog(viewerLayerManagerAnalog) {}
 
 asPredictorsRenderer::~asPredictorsRenderer() = default;
 
 void asPredictorsRenderer::LinkToColorbars(asPanelPredictorsColorbar* colorbarTarget,
                                            asPanelPredictorsColorbar* colorbarAnalog) {
-    m_colorbarTarget = colorbarTarget;
-    m_colorbarAnalog = colorbarAnalog;
+    _colorbarTarget = colorbarTarget;
+    _colorbarAnalog = colorbarAnalog;
 }
 
 void asPredictorsRenderer::Redraw(vf& domain, Coo& location, int predictorSelection) {
     bool targetDataLoaded = false;
     bool analogDataLoaded = false;
     try {
-        targetDataLoaded = m_predictorsManagerTarget->LoadData(predictorSelection);
-        analogDataLoaded = m_predictorsManagerAnalog->LoadData(predictorSelection);
+        targetDataLoaded = _predictorsManagerTarget->LoadData(predictorSelection);
+        analogDataLoaded = _predictorsManagerAnalog->LoadData(predictorSelection);
     } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught during data loading: %s"), msg);
@@ -76,60 +76,60 @@ void asPredictorsRenderer::Redraw(vf& domain, Coo& location, int predictorSelect
     double maxVal = -99999999999;
 
     if (targetDataLoaded) {
-        minVal = wxMin(m_predictorsManagerTarget->GetDataMin(), minVal);
-        maxVal = wxMax(m_predictorsManagerTarget->GetDataMax(), maxVal);
+        minVal = wxMin(_predictorsManagerTarget->GetDataMin(), minVal);
+        maxVal = wxMax(_predictorsManagerTarget->GetDataMax(), maxVal);
     }
     if (analogDataLoaded) {
-        minVal = wxMin(m_predictorsManagerAnalog->GetDataMin(), minVal);
-        maxVal = wxMax(m_predictorsManagerAnalog->GetDataMax(), maxVal);
+        minVal = wxMin(_predictorsManagerAnalog->GetDataMin(), minVal);
+        maxVal = wxMax(_predictorsManagerAnalog->GetDataMax(), maxVal);
     }
 
     double step = ComputeStep(minVal, maxVal);
 
     // Set range and step to colorbar
-    wxASSERT(m_colorbarTarget);
-    wxASSERT(m_colorbarAnalog);
-    m_colorbarTarget->SetRange(minVal, maxVal);
-    m_colorbarAnalog->SetRange(minVal, maxVal);
-    m_colorbarTarget->SetStep(step);
-    m_colorbarAnalog->SetStep(step);
+    wxASSERT(_colorbarTarget);
+    wxASSERT(_colorbarAnalog);
+    _colorbarTarget->SetRange(minVal, maxVal);
+    _colorbarAnalog->SetRange(minVal, maxVal);
+    _colorbarTarget->SetStep(step);
+    _colorbarAnalog->SetStep(step);
 
     if (targetDataLoaded) {
-        m_viewerLayerManagerTarget->FreezeBegin();
+        _viewerLayerManagerTarget->FreezeBegin();
         wxString rasterPredictorName = _("Predictor - target");
         wxString contoursName = _("Contours - target");
         wxString spatialWindowName = _("Spatial window (left)");
         wxString locationName = _("Location (left)");
-        CloseLayerIfPresent(m_viewerLayerManagerTarget, wxFileName("", rasterPredictorName, "memory"));
-        CloseLayerIfPresent(m_viewerLayerManagerTarget, wxFileName("", contoursName, "memory"));
-        CloseLayerIfPresent(m_viewerLayerManagerTarget, wxFileName("", spatialWindowName, "memory"));
-        CloseLayerIfPresent(m_viewerLayerManagerTarget, wxFileName("", locationName, "memory"));
-        vrLayerRasterPredictor* layerTarget = RedrawRasterPredictor(rasterPredictorName, m_viewerLayerManagerTarget,
-                                                                    m_predictorsManagerTarget, minVal, maxVal);
-        RedrawContourLines(contoursName, m_viewerLayerManagerTarget, layerTarget, step);
-        RedrawSpatialWindow(spatialWindowName, m_viewerLayerManagerTarget, domain);
-        RedrawLocation(locationName, m_viewerLayerManagerTarget, location);
-        m_viewerLayerManagerTarget->FreezeEnd();
-        m_colorbarTarget->Refresh();
+        CloseLayerIfPresent(_viewerLayerManagerTarget, wxFileName("", rasterPredictorName, "memory"));
+        CloseLayerIfPresent(_viewerLayerManagerTarget, wxFileName("", contoursName, "memory"));
+        CloseLayerIfPresent(_viewerLayerManagerTarget, wxFileName("", spatialWindowName, "memory"));
+        CloseLayerIfPresent(_viewerLayerManagerTarget, wxFileName("", locationName, "memory"));
+        vrLayerRasterPredictor* layerTarget = RedrawRasterPredictor(rasterPredictorName, _viewerLayerManagerTarget,
+                                                                    _predictorsManagerTarget, minVal, maxVal);
+        RedrawContourLines(contoursName, _viewerLayerManagerTarget, layerTarget, step);
+        RedrawSpatialWindow(spatialWindowName, _viewerLayerManagerTarget, domain);
+        RedrawLocation(locationName, _viewerLayerManagerTarget, location);
+        _viewerLayerManagerTarget->FreezeEnd();
+        _colorbarTarget->Refresh();
     }
 
     if (analogDataLoaded) {
-        m_viewerLayerManagerAnalog->FreezeBegin();
+        _viewerLayerManagerAnalog->FreezeBegin();
         wxString rasterPredictorName = _("Predictor - analog");
         wxString contoursName = _("Contours - analog");
         wxString spatialWindowName = _("Spatial window (right)");
         wxString locationName = _("Location (right)");
-        CloseLayerIfPresent(m_viewerLayerManagerAnalog, wxFileName("", rasterPredictorName, "memory"));
-        CloseLayerIfPresent(m_viewerLayerManagerAnalog, wxFileName("", contoursName, "memory"));
-        CloseLayerIfPresent(m_viewerLayerManagerAnalog, wxFileName("", spatialWindowName, "memory"));
-        CloseLayerIfPresent(m_viewerLayerManagerAnalog, wxFileName("", locationName, "memory"));
-        vrLayerRasterPredictor* layerAnalog = RedrawRasterPredictor(rasterPredictorName, m_viewerLayerManagerAnalog,
-                                                                    m_predictorsManagerAnalog, minVal, maxVal);
-        RedrawContourLines(contoursName, m_viewerLayerManagerAnalog, layerAnalog, step);
-        RedrawSpatialWindow(spatialWindowName, m_viewerLayerManagerAnalog, domain);
-        RedrawLocation(locationName, m_viewerLayerManagerAnalog, location);
-        m_viewerLayerManagerAnalog->FreezeEnd();
-        m_colorbarAnalog->Refresh();
+        CloseLayerIfPresent(_viewerLayerManagerAnalog, wxFileName("", rasterPredictorName, "memory"));
+        CloseLayerIfPresent(_viewerLayerManagerAnalog, wxFileName("", contoursName, "memory"));
+        CloseLayerIfPresent(_viewerLayerManagerAnalog, wxFileName("", spatialWindowName, "memory"));
+        CloseLayerIfPresent(_viewerLayerManagerAnalog, wxFileName("", locationName, "memory"));
+        vrLayerRasterPredictor* layerAnalog = RedrawRasterPredictor(rasterPredictorName, _viewerLayerManagerAnalog,
+                                                                    _predictorsManagerAnalog, minVal, maxVal);
+        RedrawContourLines(contoursName, _viewerLayerManagerAnalog, layerAnalog, step);
+        RedrawSpatialWindow(spatialWindowName, _viewerLayerManagerAnalog, domain);
+        RedrawLocation(locationName, _viewerLayerManagerAnalog, location);
+        _viewerLayerManagerAnalog->FreezeEnd();
+        _colorbarAnalog->Refresh();
     }
 }
 
@@ -150,15 +150,15 @@ vrLayerRasterPredictor* asPredictorsRenderer::RedrawRasterPredictor(const wxStri
     }
 
     // Add layers to the layer manager
-    m_layerManager->Add(layerRaster);
+    _layerManager->Add(layerRaster);
 
     // Create render and add to the layer managers
     auto render = new vrRenderRasterPredictor();
     render->SetTransparency(20);
     viewerLayerManager->Add(1, layerRaster, render, nullptr, true);
 
-    m_colorbarTarget->SetRender(render);
-    m_colorbarAnalog->SetRender(render);
+    _colorbarTarget->SetRender(render);
+    _colorbarAnalog->SetRender(render);
 
     return layerRaster;
 }
@@ -196,7 +196,7 @@ void asPredictorsRenderer::RedrawContourLines(const wxString& name, vrViewerLaye
     CSLDestroy(options);
 
     // Add layers to the layer manager
-    m_layerManager->Add(layerVector);
+    _layerManager->Add(layerVector);
 
     // Create render and add to the layer managers
     auto render = new vrRenderVector();
@@ -234,7 +234,7 @@ void asPredictorsRenderer::RedrawSpatialWindow(const wxString& name, vrViewerLay
     layerVector->AddFeature(domainPoly);
 
     // Add layers to the layer manager
-    m_layerManager->Add(layerVector);
+    _layerManager->Add(layerVector);
 
     // Create render and add to the layer managers
     auto render = new vrRenderVector();
@@ -267,7 +267,7 @@ void asPredictorsRenderer::RedrawLocation(const wxString& name, vrViewerLayerMan
     layerVector->AddFeature(point, nullptr);
 
     // Add layers to the layer manager
-    m_layerManager->Add(layerVector);
+    _layerManager->Add(layerVector);
 
     // Create render and add to the layer managers
     auto render = new vrRenderVector();
@@ -285,7 +285,7 @@ void asPredictorsRenderer::CloseLayerIfPresent(vrViewerLayerManager* viewerLayer
             wxASSERT(renderer);
             viewerLayerManager->Remove(renderer);
             // Close layer
-            m_layerManager->Close(layer);
+            _layerManager->Close(layer);
         }
     }
 }

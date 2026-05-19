@@ -42,8 +42,8 @@ class asFrameDownscaler : public asFrameDownscalerVirtual {
     void OnInit();
 
   protected:
-    asLogWindow* m_logWindow;
-    asMethodDownscaler* m_methodDownscaler;
+    asLogWindow* _logWindow;
+    asMethodDownscaler* _methodDownscaler;
 
     void Update() override;
 

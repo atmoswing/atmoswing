@@ -46,19 +46,19 @@ void DeleteLog() {
 }
 
 asLog::asLog()
-    : m_logFile(nullptr),
-      m_logChain(nullptr) {}
+    : _logFile(nullptr),
+      _logChain(nullptr) {}
 
 asLog::~asLog() {
-    delete wxLog::SetActiveTarget(nullptr);  // Instead of deleting m_logChain
+    delete wxLog::SetActiveTarget(nullptr);  // Instead of deleting _logChain
     ClearCurrentTarget();
 }
 
 void asLog::ClearCurrentTarget() {
-    if (m_logFile) {
-        m_logFile->Close();
-        m_logFile->Detach();
-        wxDELETE(m_logFile);
+    if (_logFile) {
+        _logFile->Close();
+        _logFile->Detach();
+        wxDELETE(_logFile);
     }
 }
 
@@ -68,24 +68,24 @@ void asLog::CreateFile(const wxString& fileName) {
     wxString logpath = asConfig::GetLogDir();
     logpath.Append(wxFileName::GetPathSeparator());
     logpath.Append(fileName);
-    m_logFile = new wxFFile(logpath, "w");
+    _logFile = new wxFFile(logpath, "w");
 
-    if (m_logChain) {
-        m_logChain->SetLog(new wxLogStderr(m_logFile->fp()));
+    if (_logChain) {
+        _logChain->SetLog(new wxLogStderr(_logFile->fp()));
     } else {
-        m_logChain = new wxLogChain(new wxLogStderr(m_logFile->fp()));
+        _logChain = new wxLogChain(new wxLogStderr(_logFile->fp()));
     }
 }
 
 void asLog::CreateFileAtPath(const wxString& fullPath) {
     // Create the log file
     ClearCurrentTarget();
-    m_logFile = new wxFFile(fullPath, "w");
+    _logFile = new wxFFile(fullPath, "w");
 
-    if (m_logChain) {
-        m_logChain->SetLog(new wxLogStderr(m_logFile->fp()));
+    if (_logChain) {
+        _logChain->SetLog(new wxLogStderr(_logFile->fp()));
     } else {
-        m_logChain = new wxLogChain(new wxLogStderr(m_logFile->fp()));
+        _logChain = new wxLogChain(new wxLogStderr(_logFile->fp()));
     }
 }
 
@@ -95,15 +95,15 @@ void asLog::CreateFileOnly(const wxString& fileName) {
     wxString logPath = asConfig::GetLogDir();
     logPath.Append(wxFileName::GetPathSeparator());
     logPath.Append(fileName);
-    m_logFile = new wxFFile(logPath, "w");
-    delete wxLog::SetActiveTarget(new wxLogStderr(m_logFile->fp()));
+    _logFile = new wxFFile(logPath, "w");
+    delete wxLog::SetActiveTarget(new wxLogStderr(_logFile->fp()));
 }
 
 void asLog::CreateFileOnlyAtPath(const wxString& fullPath) {
     // Create the log file
     ClearCurrentTarget();
-    m_logFile = new wxFFile(fullPath, "w");
-    delete wxLog::SetActiveTarget(new wxLogStderr(m_logFile->fp()));
+    _logFile = new wxFFile(fullPath, "w");
+    delete wxLog::SetActiveTarget(new wxLogStderr(_logFile->fp()));
 }
 
 void asLog::SetLevel(int val) {

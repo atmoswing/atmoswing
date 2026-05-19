@@ -24,41 +24,41 @@
 class WXDLLIMPEXP_THINGS wxRay2DDouble : public wxPoint2DDouble {
   public:
     inline wxRay2DDouble(wxDouble x = 0, wxDouble y = 0, wxDouble slope = 0) {
-        m_x = x;
-        m_y = y;
-        m_slope = slope;
+        _x = x;
+        _y = y;
+        _slope = slope;
     }
 
     inline wxRay2DDouble(const wxPoint2DDouble& pt, wxDouble slope) {
-        m_x = pt.m_x;
-        m_y = pt.m_y;
-        m_slope = slope;
+        _x = pt._x;
+        _y = pt._y;
+        _slope = slope;
     }
 
     inline wxRay2DDouble(wxDouble x1, wxDouble y1, wxDouble x2, wxDouble y2) {
-        m_x = x1;
-        m_y = y1;
-        m_slope = GetSlope(x1, y1, x2, y2);
+        _x = x1;
+        _y = y1;
+        _slope = GetSlope(x1, y1, x2, y2);
     }
 
     inline wxRay2DDouble(const wxPoint2DDouble& pt1, const wxPoint2DDouble& pt2) {
-        m_x = pt1.m_x;
-        m_y = pt1.m_y;
-        m_slope = GetSlope(pt1, pt2);
+        _x = pt1._x;
+        _y = pt1._y;
+        _slope = GetSlope(pt1, pt2);
     }
 
     inline wxRay2DDouble(const wxRay2DDouble& line) {
-        m_x = line.m_x;
-        m_y = line.m_y;
-        m_slope = line.m_slope;
+        _x = line._x;
+        _y = line._y;
+        _slope = line._slope;
     }
 
     inline wxDouble GetX() const {
-        return m_x;
+        return _x;
     }
 
     inline wxDouble GetY() const {
-        return m_y;
+        return _y;
     }
 
     inline wxPoint2DDouble GetPoint() const {
@@ -66,32 +66,32 @@ class WXDLLIMPEXP_THINGS wxRay2DDouble : public wxPoint2DDouble {
     }
 
     inline wxDouble GetSlope() const {
-        return m_slope;
+        return _slope;
     }
 
     inline void SetX(wxDouble x) {
-        m_x = x;
+        _x = x;
     }
 
     inline void SetY(wxDouble y) {
-        m_y = y;
+        _y = y;
     }
 
     inline void SetPoint(const wxPoint2DDouble& pt) {
-        m_x = pt.m_x;
-        m_y = pt.m_y;
+        _x = pt._x;
+        _y = pt._y;
     }
 
     inline void SetSlope(wxDouble slope) {
-        m_slope = slope;
+        _slope = slope;
     }
 
     inline wxDouble GetYFromX(wxDouble x) const {
-        return m_slope * (x - m_x) + m_y;
+        return _slope * (x - _x) + _y;
     }
 
     inline wxDouble GetXFromY(wxDouble y) const {
-        return (y - m_y) / m_slope + m_x;
+        return (y - _y) / _slope + _x;
     }
 
     // Get a point along the line at pos x or y
@@ -100,32 +100,32 @@ class WXDLLIMPEXP_THINGS wxRay2DDouble : public wxPoint2DDouble {
     }
 
     inline wxPoint2DDouble GetPointOnRayFromY(wxDouble y) const {
-        if (m_slope == 0) return (*this);
+        if (_slope == 0) return (*this);
         return wxPoint2DDouble(GetXFromY(y), y);
     }
 
-    // Translate the point m_pt along the line to pos x or y
+    // Translate the point _pt along the line to pos x or y
     inline void TranslatePointByX(wxDouble x) {
-        m_y = GetYFromX(x);
-        m_x = x;
+        _y = GetYFromX(x);
+        _x = x;
     }
 
     inline void TranslatePointByY(wxDouble y) {
-        m_x = GetXFromY(y);
-        m_y = y;
+        _x = GetXFromY(y);
+        _y = y;
     }
 
     inline wxRay2DDouble GetTranslatedLineByX(wxDouble x) const {
-        return wxRay2DDouble(x, GetYFromX(x), m_slope);
+        return wxRay2DDouble(x, GetYFromX(x), _slope);
     }
 
     inline wxRay2DDouble GetTranslatedLineByY(wxDouble y) const {
-        return wxRay2DDouble(GetXFromY(y), y, m_slope);
+        return wxRay2DDouble(GetXFromY(y), y, _slope);
     }
 
     inline wxDouble GetDistanceToPoint(const wxPoint2DDouble& pt, wxPoint2DDouble* closestPt = NULL) const {
-        wxPoint2DDouble l1(m_x, m_y);
-        wxPoint2DDouble l2(GetPointOnRayFromX(m_x + pt.m_x));
+        wxPoint2DDouble l1(_x, _y);
+        wxPoint2DDouble l2(GetPointOnRayFromX(_x + pt._x));
         wxPoint2DDouble v = l2 - l1;
         wxPoint2DDouble w = pt - l1;
         wxDouble c1 = w.GetDotProduct(v);
@@ -138,26 +138,26 @@ class WXDLLIMPEXP_THINGS wxRay2DDouble : public wxPoint2DDouble {
         /*
                 wxPoint2DDouble ll2 = l2;
                 double l = ll2.GetDistanceSquare(l1);
-                double u = ((p.m_x-l1.m_x)*(l2.m_x-l1.m_x)+(p.m_y-l1.m_y)*(l2.m_y-l1.m_y))/l;
+                double u = ((p._x-l1._x)*(l2._x-l1._x)+(p._y-l1._y)*(l2._y-l1._y))/l;
                 wxPoint2DDouble i = l1 + u*(l2-l1);
 
                 //printf("distance %.9lf %.9lf %d\n\n", i.GetDistance(p), pb.GetDistance(p), int(pb==i));
         */
 
         //                   this x for y on this line
-        // y(on this line) = m_slope*(x-m_pt.m_x) + m_pt.m_y
-        //                 = (-1/m_slope)(x-pt.m_x) + pt.m_y
+        // y(on this line) = _slope*(x-_pt._x) + _pt._y
+        //                 = (-1/_slope)(x-pt._x) + pt._y
         // so
-        // x(on this line) = (y-m_pt.m_y)/m_slope + m_pt.m_x
-        //                 = (y-pt.m_y)/(-1/m_slope) + m_pt.m_x
+        // x(on this line) = (y-_pt._y)/_slope + _pt._x
+        //                 = (y-pt._y)/(-1/_slope) + _pt._x
 
-        //(y-m_pt.m_y)/m_slope + m_pt.m_x = (y-pt.m_y)(-1/m_slope) + m_pt.m_x
-        //(y-m_pt.m_y)/m_slope - m_slope*(y-pt.m_y) = + m_pt.m_x - m_pt.m_x
-        // y*(1/m_slope - m_slope) = + m_pt.m_x - m_pt.m_x +m_slope*pt.m_y + m_slope*m_pt.m_y
-        // y = (m_pt.m_x - m_pt.m_x +m_slope*pt.m_y + m_slope*m_pt.m_y)/(1/m_slope - m_slope)
+        //(y-_pt._y)/_slope + _pt._x = (y-pt._y)(-1/_slope) + _pt._x
+        //(y-_pt._y)/_slope - _slope*(y-pt._y) = + _pt._x - _pt._x
+        // y*(1/_slope - _slope) = + _pt._x - _pt._x +_slope*pt._y + _slope*_pt._y
+        // y = (_pt._x - _pt._x +_slope*pt._y + _slope*_pt._y)/(1/_slope - _slope)
         /*
-                wxDouble x = (m_x + m_slope*m_slope*m_x - m_slope*(m_y - m_y))/(m_slope*m_slope+1.0);
-                wxPoint2DDouble pl(x, m_slope*(x-m_x) + m_y);
+                wxDouble x = (_x + _slope*_slope*_x - _slope*(_y - _y))/(_slope*_slope+1.0);
+                wxPoint2DDouble pl(x, _slope*(x-_x) + _y);
                 if (closestPt) *closestPt = pl;
                 return pl.GetDistance(pt);
         */
@@ -165,13 +165,13 @@ class WXDLLIMPEXP_THINGS wxRay2DDouble : public wxPoint2DDouble {
 
     inline wxDouble GetDistanceToRay(const wxRay2DDouble& ray) const {
         // FIXME - unchecked, just quickly translated from some other code
-        if (m_slope != ray.m_slope) return 0;
-        if (m_slope == 0) return fabs(m_y - ray.m_y);
+        if (_slope != ray._slope) return 0;
+        if (_slope == 0) return fabs(_y - ray._y);
         wxPoint2DDouble p1 = GetPointOnRayFromX(0);
         wxPoint2DDouble p2 = ray.GetPointOnRayFromX(0);
-        // y = (-1/s1)*x+p1.m_y = s2*x + p2.m_y
-        wxDouble dx = (p1.m_y - p2.m_y) / (m_slope + (1.0 / m_slope));
-        wxDouble dy = (m_slope * dx + p2.m_y) - p1.m_y;
+        // y = (-1/s1)*x+p1._y = s2*x + p2._y
+        wxDouble dx = (p1._y - p2._y) / (_slope + (1.0 / _slope));
+        wxDouble dy = (_slope * dx + p2._y) - p1._y;
         return sqrt(dx * dx + dy * dy);
     }
 
@@ -180,29 +180,29 @@ class WXDLLIMPEXP_THINGS wxRay2DDouble : public wxPoint2DDouble {
     }
 
     inline static wxDouble GetSlope(const wxPoint2DDouble& pt1, const wxPoint2DDouble& pt2) {
-        return (pt2.m_y - pt1.m_y) / (pt2.m_x - pt1.m_x);
+        return (pt2._y - pt1._y) / (pt2._x - pt1._x);
     }
 
     // find the point where the two rays meet, return false if parallel
     bool Intersect(const wxRay2DDouble& other, wxPoint2DDouble& pt) const {
         // (y1-y0)/(x1-x0)=m for both lines, equate y1's first
-        if (m_slope == other.m_slope) return false;
-        pt.m_x = (m_slope * m_x - other.m_slope * other.m_x + other.m_y - m_y) / (m_slope - other.m_slope);
-        pt.m_y = GetYFromX(pt.m_x);
+        if (_slope == other._slope) return false;
+        pt._x = (_slope * _x - other._slope * other._x + other._y - _y) / (_slope - other._slope);
+        pt._y = GetYFromX(pt._x);
         return true;
     }
 
     // Operators
 
     inline wxRay2DDouble operator=(const wxRay2DDouble& r) {
-        m_x = r.m_x;
-        m_y = r.m_y;
-        m_slope = r.m_slope;
+        _x = r._x;
+        _y = r._y;
+        _slope = r._slope;
         return *this;
     }
 
     inline bool operator==(const wxRay2DDouble& r) const {
-        return (m_x == r.m_x) && (m_y == r.m_y) && (m_slope == r.m_slope);
+        return (_x == r._x) && (_y == r._y) && (_slope == r._slope);
     }
 
     inline bool operator!=(const wxRay2DDouble& r) const {
@@ -210,82 +210,82 @@ class WXDLLIMPEXP_THINGS wxRay2DDouble : public wxPoint2DDouble {
     }
 
     inline wxRay2DDouble operator+(const wxPoint2DDouble& rel_pos) const {
-        return wxRay2DDouble(m_x + rel_pos.m_x, m_y + rel_pos.m_y, m_slope);
+        return wxRay2DDouble(_x + rel_pos._x, _y + rel_pos._y, _slope);
     }
 
     inline wxRay2DDouble operator-(const wxPoint2DDouble& rel_pos) const {
-        return wxRay2DDouble(m_x - rel_pos.m_x, m_y - rel_pos.m_y, m_slope);
+        return wxRay2DDouble(_x - rel_pos._x, _y - rel_pos._y, _slope);
     }
 
     inline wxRay2DDouble operator*(const wxPoint2DDouble& rel_pos) const {
-        return wxRay2DDouble(m_x * rel_pos.m_x, m_y * rel_pos.m_y, m_slope);
+        return wxRay2DDouble(_x * rel_pos._x, _y * rel_pos._y, _slope);
     }
 
     inline wxRay2DDouble operator/(const wxPoint2DDouble& rel_pos) const {
-        return wxRay2DDouble(m_x / rel_pos.m_x, m_y / rel_pos.m_y, m_slope);
+        return wxRay2DDouble(_x / rel_pos._x, _y / rel_pos._y, _slope);
     }
 
     inline wxRay2DDouble& operator+=(const wxPoint2DDouble& rel_pos) {
-        m_x += rel_pos.m_x;
-        m_y += rel_pos.m_y;
+        _x += rel_pos._x;
+        _y += rel_pos._y;
         return *this;
     }
 
     inline wxRay2DDouble& operator-=(const wxPoint2DDouble& rel_pos) {
-        m_x -= rel_pos.m_x;
-        m_y -= rel_pos.m_y;
+        _x -= rel_pos._x;
+        _y -= rel_pos._y;
         return *this;
     }
 
     inline wxRay2DDouble& operator*=(const wxPoint2DDouble& rel_pos) {
-        m_x *= rel_pos.m_x;
-        m_y *= rel_pos.m_y;
+        _x *= rel_pos._x;
+        _y *= rel_pos._y;
         return *this;
     }
 
     inline wxRay2DDouble& operator/=(const wxPoint2DDouble& rel_pos) {
-        m_x /= rel_pos.m_x;
-        m_y /= rel_pos.m_y;
+        _x /= rel_pos._x;
+        _y /= rel_pos._y;
         return *this;
     }
 
     inline wxRay2DDouble operator+(const wxDouble& rel_slope) const {
-        return wxRay2DDouble(m_x, m_y, m_slope + rel_slope);
+        return wxRay2DDouble(_x, _y, _slope + rel_slope);
     }
 
     inline wxRay2DDouble operator-(const wxDouble& rel_slope) const {
-        return wxRay2DDouble(m_x, m_y, m_slope - rel_slope);
+        return wxRay2DDouble(_x, _y, _slope - rel_slope);
     }
 
     inline wxRay2DDouble operator*(const wxDouble& rel_slope) const {
-        return wxRay2DDouble(m_x, m_y, m_slope * rel_slope);
+        return wxRay2DDouble(_x, _y, _slope * rel_slope);
     }
 
     inline wxRay2DDouble operator/(const wxDouble& rel_slope) const {
-        return wxRay2DDouble(m_x, m_y, m_slope / rel_slope);
+        return wxRay2DDouble(_x, _y, _slope / rel_slope);
     }
 
     inline wxRay2DDouble& operator+=(const wxDouble& rel_slope) {
-        m_slope += rel_slope;
+        _slope += rel_slope;
         return *this;
     }
 
     inline wxRay2DDouble& operator-=(const wxDouble& rel_slope) {
-        m_slope -= rel_slope;
+        _slope -= rel_slope;
         return *this;
     }
 
     inline wxRay2DDouble& operator*=(const wxDouble& rel_slope) {
-        m_slope *= rel_slope;
+        _slope *= rel_slope;
         return *this;
     }
 
     inline wxRay2DDouble& operator/=(const wxDouble& rel_slope) {
-        m_slope /= rel_slope;
+        _slope /= rel_slope;
         return *this;
     }
 
-    wxDouble m_slope;
+    wxDouble _slope;
 };
 
 //-----------------------------------------------------------------------------
@@ -299,29 +299,29 @@ class WXDLLIMPEXP_THINGS wxLine2DInt : wxRect2DInt
 public :
 
     inline wxLine2DInt(wxInt32 x1=0, wxInt32 y1=0, wxInt32 x2=0, wxInt32 y2=0)
-        { m_x = x1; m_y = y1; m_width = x2 - x1; m_height = y2 - y1; }
+        { _x = x1; _y = y1; _width = x2 - x1; _height = y2 - y1; }
     inline wxLine2DInt(const wxPoint2DInt &pt1, const wxPoint2DInt &pt2)
-        { m_x = pt1.m_x; m_y = pt1.m_y; m_width = pt2.m_x - pt1.m_x; m_height = pt2.m_y - pt1.m_y; }
+        { _x = pt1._x; _y = pt1._y; _width = pt2._x - pt1._x; _height = pt2._y - pt1._y; }
     inline wxLine2DInt(const wxLine2DInt &line)
-        { m_x = line.m_x; m_y = line.m_y; m_width = line.m_width; m_height = line.m_height; }
+        { _x = line._x; _y = line._y; _width = line._width; _height = line._height; }
 
-    inline wxInt32 GetX1() const { return m_x; }
-    inline wxInt32 GetY1() const { return m_y; }
-    inline wxInt32 GetX2() const { return m_x + m_width; }
-    inline wxInt32 GetY2() const { return m_y + m_height; }
+    inline wxInt32 GetX1() const { return _x; }
+    inline wxInt32 GetY1() const { return _y; }
+    inline wxInt32 GetX2() const { return _x + _width; }
+    inline wxInt32 GetY2() const { return _y + _height; }
     inline wxPoint2DInt Get1Point() const { return GetTopLeft(); }
     inline wxPoint2DInt Get2Point() const { return GetBottomRight(); }
-    inline wxDouble GetSlope() const { return wxDouble(m_height)/wxDouble(m_width); }
+    inline wxDouble GetSlope() const { return wxDouble(_height)/wxDouble(_width); }
 
-    inline void SetX1(wxInt32 x) { m_x = x; }
-    inline void SetY1(wxInt32 y) { m_y = y; }
-    inline void SetX2(wxInt32 x) { m_width = m_x - x; }
-    inline void SetY2(wxInt32 y) { m_height = m_y - y; }
+    inline void SetX1(wxInt32 x) { _x = x; }
+    inline void SetY1(wxInt32 y) { _y = y; }
+    inline void SetX2(wxInt32 x) { _width = _x - x; }
+    inline void SetY2(wxInt32 y) { _height = _y - y; }
     inline void SetPoint1(const wxPoint2DInt &pt ) { SetTopLeft(pt); }
     inline void SetPoint2(const wxPoint2DInt &pt ) { SetBottomRight(pt); }
 
-    inline wxDouble GetYFromX(wxDouble x) const {return (wxDouble(m_height)/m_width)*(x-m_x) + m_y;}
-    inline wxDouble GetXFromY(wxDouble y) const {return (y-m_y)*(wxDouble(m_height)/m_width) + m_x;}
+    inline wxDouble GetYFromX(wxDouble x) const {return (wxDouble(_height)/_width)*(x-_x) + _y;}
+    inline wxDouble GetXFromY(wxDouble y) const {return (y-_y)*(wxDouble(_height)/_width) + _x;}
 
     // Get a point along the line at pos x or y
     inline wxPoint2DInt GetPointOnLineFromX(wxInt32 x) const
@@ -329,20 +329,20 @@ public :
     inline wxPoint2DInt GetPointOnLineFromY(wxInt32 y) const
         { return wxPoint2DInt(GetXFromY(y), y); }
 
-    // Translate the point m_pt along the line to pos x or y
+    // Translate the point _pt along the line to pos x or y
     inline void TranslatePointByX(wxDouble x)
-        { m_pt.m_y = GetYFromX(x); m_pt.m_x = x; }
+        { _pt._y = GetYFromX(x); _pt._x = x; }
     inline void TranslatePointByY(wxDouble y)
-        { m_pt.m_x = GetXFromY(y); m_pt.m_y = y; }
+        { _pt._x = GetXFromY(y); _pt._y = y; }
     inline wxLine2DInt GetTranslatedLineByX(wxDouble x)
-        { return wxLine2DInt(x, GetYFromX(x), m_slope); }
+        { return wxLine2DInt(x, GetYFromX(x), _slope); }
     inline wxLine2DInt GetTranslatedLineByY(wxDouble y)
-        { return wxLine2DInt(GetXFromY(y), y, m_slope); }
+        { return wxLine2DInt(GetXFromY(y), y, _slope); }
 
     inline wxDouble GetDistanceToPoint(const wxPoint2DDouble &pt, wxPoint2DDouble *closestPt=NULL) const
     {
-        wxPoint2DDouble l1(m_pt);
-        wxPoint2DDouble l2(GetPointOnLineFromX(m_pt.m_x+pt.m_x));
+        wxPoint2DDouble l1(_pt);
+        wxPoint2DDouble l2(GetPointOnLineFromX(_pt._x+pt._x));
         wxPoint2DDouble v = l2 - l1;
         wxPoint2DDouble w = pt - l1;
         double c1 = w.GetDotProduct(v);
@@ -358,95 +358,95 @@ public :
     inline static wxDouble GetSlope(wxDouble x1, wxDouble y1, wxDouble x2, wxDouble y2)
         { return (y2 - y1)/(x2 - x1); }
     inline static wxDouble GetSlope(const wxPoint2DDouble &pt1, const wxPoint2DDouble &pt2)
-        { return (pt2.m_y-pt1.m_y)/(pt2.m_x-pt1.m_x); }
+        { return (pt2._y-pt1._y)/(pt2._x-pt1._x); }
 
 
     // Default copy operator is ok
 
-    wxPoint2DDouble m_pt;
-    wxDouble m_slope;
+    wxPoint2DDouble _pt;
+    wxDouble _slope;
 };
 */
 
 //-----------------------------------------------------------------------------
-// wxCircleDouble   m_r*m_r = (x-m_origin.m_x)^2 + (y-m_origin.m_y)^2
+// wxCircleDouble   _r*_r = (x-_origin._x)^2 + (y-_origin._y)^2
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxCircleDouble : public wxPoint2DDouble {
   public:
     inline wxCircleDouble(const wxCircleDouble& circle) {
-        m_x = circle.m_x;
-        m_y = circle.m_y;
-        m_r = circle.m_r;
+        _x = circle._x;
+        _y = circle._y;
+        _r = circle._r;
     }
 
     inline wxCircleDouble(wxDouble x = 0, wxDouble y = 0, wxDouble r = 0) {
-        m_x = x;
-        m_y = y;
-        m_r = r;
+        _x = x;
+        _y = y;
+        _r = r;
     }
 
     inline wxCircleDouble(const wxPoint2DDouble& origin, wxDouble r) {
-        m_x = origin.m_x;
-        m_y = origin.m_y;
-        m_r = r;
+        _x = origin._x;
+        _y = origin._y;
+        _r = r;
     }
 
     inline wxCircleDouble(const wxPoint2DDouble& p1, const wxPoint2DDouble& p2, const wxPoint2DDouble& p3);
 
     inline bool IsEmpty() const {
-        return m_r <= 0;
+        return _r <= 0;
     }
 
     inline wxDouble GetX() const {
-        return m_x;
+        return _x;
     }
 
     inline wxDouble GetY() const {
-        return m_y;
+        return _y;
     }
 
     inline wxPoint2DDouble GetOrigin() const {
-        return wxPoint2DDouble(m_x, m_y);
+        return wxPoint2DDouble(_x, _y);
     }
 
     inline wxDouble GetRadius() const {
-        return m_r;
+        return _r;
     }
 
     // Get a bounding rect
     inline wxRect2DDouble GetRect() const {
-        return wxRect2DDouble(m_x - m_r, m_y - m_r, 2.0 * m_r, 2.0 * m_r);
+        return wxRect2DDouble(_x - _r, _y - _r, 2.0 * _r, 2.0 * _r);
     }
 
     inline void SetX(wxDouble x) {
-        m_x = x;
+        _x = x;
     }
 
     inline void SetY(wxDouble y) {
-        m_y = y;
+        _y = y;
     }
 
     inline void SetOrigin(const wxPoint2DDouble& origin) {
-        m_x = origin.m_x;
-        m_y = origin.m_y;
+        _x = origin._x;
+        _y = origin._y;
     }
 
     inline void SetRadius(wxDouble r) {
-        m_r = r;
+        _r = r;
     }
 
     inline bool GetPointInCircle(wxDouble x, wxDouble y) const {
         if (IsEmpty()) return false;
-        return ((x - m_x) * (x - m_x) + (y - m_y) * (y - m_y) <= m_r * m_r);
+        return ((x - _x) * (x - _x) + (y - _y) * (y - _y) <= _r * _r);
     }
 
     inline bool GetPointInCircle(const wxPoint2DDouble& pt) const {
-        return GetPointInCircle(pt.m_x, pt.m_y);
+        return GetPointInCircle(pt._x, pt._y);
     }
 
     inline bool Intersects(const wxCircleDouble& circle) const {
-        return GetDistance(circle) <= m_r + circle.m_r;
+        return GetDistance(circle) <= _r + circle._r;
     }
 
     int IntersectLine(const wxRay2DDouble& line, wxPoint2DDouble* pt1 = NULL, wxPoint2DDouble* pt2 = NULL) const;
@@ -454,14 +454,14 @@ class WXDLLIMPEXP_THINGS wxCircleDouble : public wxPoint2DDouble {
     // Operators
 
     inline wxCircleDouble operator=(const wxCircleDouble& c) {
-        m_x = c.m_x;
-        m_y = c.m_y;
-        m_r = c.m_r;
+        _x = c._x;
+        _y = c._y;
+        _r = c._r;
         return *this;
     }
 
     inline bool operator==(const wxCircleDouble& c) const {
-        return (m_x == c.m_x) && (m_y == c.m_y) && (m_r == c.m_r);
+        return (_x == c._x) && (_y == c._y) && (_r == c._r);
     }
 
     inline bool operator!=(const wxCircleDouble& c) const {
@@ -469,161 +469,161 @@ class WXDLLIMPEXP_THINGS wxCircleDouble : public wxPoint2DDouble {
     }
 
     inline wxCircleDouble operator+(const wxPoint2DDouble& rel_origin) const {
-        return wxCircleDouble(m_x + rel_origin.m_x, m_y + rel_origin.m_y, m_r);
+        return wxCircleDouble(_x + rel_origin._x, _y + rel_origin._y, _r);
     }
 
     inline wxCircleDouble operator-(const wxPoint2DDouble& rel_origin) const {
-        return wxCircleDouble(m_x - rel_origin.m_x, m_y - rel_origin.m_y, m_r);
+        return wxCircleDouble(_x - rel_origin._x, _y - rel_origin._y, _r);
     }
 
     inline wxCircleDouble operator*(const wxPoint2DDouble& rel_origin) const {
-        return wxCircleDouble(m_x * rel_origin.m_x, m_y * rel_origin.m_y, m_r);
+        return wxCircleDouble(_x * rel_origin._x, _y * rel_origin._y, _r);
     }
 
     inline wxCircleDouble operator/(const wxPoint2DDouble& rel_origin) const {
-        return wxCircleDouble(m_x / rel_origin.m_x, m_y / rel_origin.m_y, m_r);
+        return wxCircleDouble(_x / rel_origin._x, _y / rel_origin._y, _r);
     }
 
     inline wxCircleDouble& operator+=(const wxPoint2DDouble& rel_origin) {
-        m_x += rel_origin.m_x;
-        m_y += rel_origin.m_y;
+        _x += rel_origin._x;
+        _y += rel_origin._y;
         return *this;
     }
 
     inline wxCircleDouble& operator-=(const wxPoint2DDouble& rel_origin) {
-        m_x -= rel_origin.m_x;
-        m_y -= rel_origin.m_y;
+        _x -= rel_origin._x;
+        _y -= rel_origin._y;
         return *this;
     }
 
     inline wxCircleDouble& operator*=(const wxPoint2DDouble& rel_origin) {
-        m_x *= rel_origin.m_x;
-        m_y *= rel_origin.m_y;
+        _x *= rel_origin._x;
+        _y *= rel_origin._y;
         return *this;
     }
 
     inline wxCircleDouble& operator/=(const wxPoint2DDouble& rel_origin) {
-        m_x /= rel_origin.m_x;
-        m_y /= rel_origin.m_y;
+        _x /= rel_origin._x;
+        _y /= rel_origin._y;
         return *this;
     }
 
     inline wxCircleDouble operator+(const wxDouble& rel_radius) const {
-        return wxCircleDouble(m_x, m_y, m_r + rel_radius);
+        return wxCircleDouble(_x, _y, _r + rel_radius);
     }
 
     inline wxCircleDouble operator-(const wxDouble& rel_radius) const {
-        return wxCircleDouble(m_x, m_y, m_r - rel_radius);
+        return wxCircleDouble(_x, _y, _r - rel_radius);
     }
 
     inline wxCircleDouble operator*(const wxDouble& rel_radius) const {
-        return wxCircleDouble(m_x, m_y, m_r * rel_radius);
+        return wxCircleDouble(_x, _y, _r * rel_radius);
     }
 
     inline wxCircleDouble operator/(const wxDouble& rel_radius) const {
-        return wxCircleDouble(m_x, m_y, m_r / rel_radius);
+        return wxCircleDouble(_x, _y, _r / rel_radius);
     }
 
     inline wxCircleDouble& operator+=(const wxDouble& rel_radius) {
-        m_r += rel_radius;
+        _r += rel_radius;
         return *this;
     }
 
     inline wxCircleDouble& operator-=(const wxDouble& rel_radius) {
-        m_r -= rel_radius;
+        _r -= rel_radius;
         return *this;
     }
 
     inline wxCircleDouble& operator*=(const wxDouble& rel_radius) {
-        m_r *= rel_radius;
+        _r *= rel_radius;
         return *this;
     }
 
     inline wxCircleDouble& operator/=(const wxDouble& rel_radius) {
-        m_r /= rel_radius;
+        _r /= rel_radius;
         return *this;
     }
 
-    wxDouble m_r;
+    wxDouble _r;
 };
 
 //-----------------------------------------------------------------------------
-// wxCircleInt   m_r*m_r = (x-m_origin.m_x)^2 + (y-m_origin.m_y)^2
+// wxCircleInt   _r*_r = (x-_origin._x)^2 + (y-_origin._y)^2
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxCircleInt : public wxPoint2DInt {
   public:
     inline wxCircleInt(wxInt32 x = 0, wxInt32 y = 0, wxInt32 r = 0) {
-        m_x = x;
-        m_y = y;
-        m_r = r;
+        _x = x;
+        _y = y;
+        _r = r;
     }
 
     inline wxCircleInt(const wxPoint2DInt& origin, wxInt32 r) {
-        m_x = origin.m_x;
-        m_y = origin.m_y;
-        m_r = r;
+        _x = origin._x;
+        _y = origin._y;
+        _r = r;
     }
 
     inline wxCircleInt(const wxCircleInt& circle) {
-        m_x = circle.m_x;
-        m_y = circle.m_y;
-        m_r = circle.m_r;
+        _x = circle._x;
+        _y = circle._y;
+        _r = circle._r;
     }
 
     inline bool IsEmpty() const {
-        return m_r <= 0;
+        return _r <= 0;
     }
 
     inline wxInt32 GetX() const {
-        return m_x;
+        return _x;
     }
 
     inline wxInt32 GetY() const {
-        return m_y;
+        return _y;
     }
 
     inline wxPoint2DInt GetOrigin() const {
-        return wxPoint2DInt(m_x, m_y);
+        return wxPoint2DInt(_x, _y);
     }
 
     inline wxInt32 GetRadius() const {
-        return m_r;
+        return _r;
     }
 
     // Get a bounding rect
     inline wxRect2DInt GetRect() const {
-        return wxRect2DInt(m_x - m_r, m_y - m_r, 2 * m_r, 2 * m_r);
+        return wxRect2DInt(_x - _r, _y - _r, 2 * _r, 2 * _r);
     }
 
     inline void SetX(wxInt32 x) {
-        m_x = x;
+        _x = x;
     }
 
     inline void SetY(wxInt32 y) {
-        m_y = y;
+        _y = y;
     }
 
     inline void SetOrigin(const wxPoint2DInt& origin) {
-        m_x = origin.m_x;
-        m_y = origin.m_y;
+        _x = origin._x;
+        _y = origin._y;
     }
 
     inline void SetRadius(wxInt32 r) {
-        m_r = r;
+        _r = r;
     }
 
     inline bool GetPointInCircle(wxInt32 x, wxInt32 y) const {
         if (IsEmpty()) return false;
-        return ((x - m_x) * (x - m_x) + (y - m_y) * (y - m_y) <= m_r * m_r);
+        return ((x - _x) * (x - _x) + (y - _y) * (y - _y) <= _r * _r);
     }
 
     inline bool GetPointInCircle(const wxPoint2DInt& pt) const {
-        return GetPointInCircle(pt.m_x, pt.m_y);
+        return GetPointInCircle(pt._x, pt._y);
     }
 
     inline bool Intersects(const wxCircleInt& circle) const {
-        return GetDistance(circle) <= m_r + circle.m_r;
+        return GetDistance(circle) <= _r + circle._r;
     }
 
     //  int IntersectLine( const wxRay2DDouble &line,
@@ -633,14 +633,14 @@ class WXDLLIMPEXP_THINGS wxCircleInt : public wxPoint2DInt {
     // Operators
 
     inline wxCircleInt operator=(const wxCircleInt& c) {
-        m_x = c.m_x;
-        m_y = c.m_y;
-        m_r = c.m_r;
+        _x = c._x;
+        _y = c._y;
+        _r = c._r;
         return *this;
     }
 
     inline bool operator==(const wxCircleInt& c) const {
-        return (m_x == c.m_x) && (m_y == c.m_y) && (m_r == c.m_r);
+        return (_x == c._x) && (_y == c._y) && (_r == c._r);
     }
 
     inline bool operator!=(const wxCircleInt& c) const {
@@ -648,174 +648,174 @@ class WXDLLIMPEXP_THINGS wxCircleInt : public wxPoint2DInt {
     }
 
     inline wxCircleInt operator+(const wxPoint2DInt& rel_origin) const {
-        return wxCircleInt(m_x + rel_origin.m_x, m_y + rel_origin.m_y, m_r);
+        return wxCircleInt(_x + rel_origin._x, _y + rel_origin._y, _r);
     }
 
     inline wxCircleInt operator-(const wxPoint2DInt& rel_origin) const {
-        return wxCircleInt(m_x - rel_origin.m_x, m_y - rel_origin.m_y, m_r);
+        return wxCircleInt(_x - rel_origin._x, _y - rel_origin._y, _r);
     }
 
     inline wxCircleInt operator*(const wxPoint2DInt& rel_origin) const {
-        return wxCircleInt(m_x * rel_origin.m_x, m_y * rel_origin.m_y, m_r);
+        return wxCircleInt(_x * rel_origin._x, _y * rel_origin._y, _r);
     }
 
     inline wxCircleInt operator/(const wxPoint2DInt& rel_origin) const {
-        return wxCircleInt(m_x / rel_origin.m_x, m_y / rel_origin.m_y, m_r);
+        return wxCircleInt(_x / rel_origin._x, _y / rel_origin._y, _r);
     }
 
     inline wxCircleInt& operator+=(const wxPoint2DInt& rel_origin) {
-        m_x += rel_origin.m_x;
-        m_y += rel_origin.m_y;
+        _x += rel_origin._x;
+        _y += rel_origin._y;
         return *this;
     }
 
     inline wxCircleInt& operator-=(const wxPoint2DInt& rel_origin) {
-        m_x -= rel_origin.m_x;
-        m_y -= rel_origin.m_y;
+        _x -= rel_origin._x;
+        _y -= rel_origin._y;
         return *this;
     }
 
     inline wxCircleInt& operator*=(const wxPoint2DInt& rel_origin) {
-        m_x *= rel_origin.m_x;
-        m_y *= rel_origin.m_y;
+        _x *= rel_origin._x;
+        _y *= rel_origin._y;
         return *this;
     }
 
     inline wxCircleInt& operator/=(const wxPoint2DInt& rel_origin) {
-        m_x /= rel_origin.m_x;
-        m_y /= rel_origin.m_y;
+        _x /= rel_origin._x;
+        _y /= rel_origin._y;
         return *this;
     }
 
     inline wxCircleInt operator+(const wxInt32& rel_radius) const {
-        return wxCircleInt(m_x, m_y, m_r + rel_radius);
+        return wxCircleInt(_x, _y, _r + rel_radius);
     }
 
     inline wxCircleInt operator-(const wxInt32& rel_radius) const {
-        return wxCircleInt(m_x, m_y, m_r - rel_radius);
+        return wxCircleInt(_x, _y, _r - rel_radius);
     }
 
     inline wxCircleInt operator*(const wxInt32& rel_radius) const {
-        return wxCircleInt(m_x, m_y, m_r * rel_radius);
+        return wxCircleInt(_x, _y, _r * rel_radius);
     }
 
     inline wxCircleInt operator/(const wxInt32& rel_radius) const {
-        return wxCircleInt(m_x, m_y, m_r / rel_radius);
+        return wxCircleInt(_x, _y, _r / rel_radius);
     }
 
     inline wxCircleInt& operator+=(const wxInt32& rel_radius) {
-        m_r += rel_radius;
+        _r += rel_radius;
         return *this;
     }
 
     inline wxCircleInt& operator-=(const wxInt32& rel_radius) {
-        m_r -= rel_radius;
+        _r -= rel_radius;
         return *this;
     }
 
     inline wxCircleInt& operator*=(const wxInt32& rel_radius) {
-        m_r *= rel_radius;
+        _r *= rel_radius;
         return *this;
     }
 
     inline wxCircleInt& operator/=(const wxInt32& rel_radius) {
-        m_r /= rel_radius;
+        _r /= rel_radius;
         return *this;
     }
 
-    wxInt32 m_r;
+    wxInt32 _r;
 };
 
 //-----------------------------------------------------------------------------
-// wxEllipseInt   m_r*m_r = (x-m_origin.m_x)^2 + (y-m_origin.m_y)^2
+// wxEllipseInt   _r*_r = (x-_origin._x)^2 + (y-_origin._y)^2
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxEllipseInt {
   public:
     inline wxEllipseInt(wxInt32 x = 0, wxInt32 y = 0, wxInt32 r_x = 0, wxInt32 r_y = 0) {
-        m_origin.m_x = x;
-        m_origin.m_y = y;
-        m_radius.m_x = r_x;
-        m_radius.m_y = r_y;
+        _origin._x = x;
+        _origin._y = y;
+        _radius._x = r_x;
+        _radius._y = r_y;
     }
 
     inline wxEllipseInt(const wxPoint2DInt& origin, const wxPoint2DInt radius) {
-        m_origin = origin;
-        m_radius = radius;
+        _origin = origin;
+        _radius = radius;
     }
 
     inline wxEllipseInt(const wxEllipseInt& ellipse) {
-        m_origin = ellipse.m_origin;
-        m_radius = ellipse.m_radius;
+        _origin = ellipse._origin;
+        _radius = ellipse._radius;
     }
 
     inline bool IsEmpty() const {
-        return m_radius.m_x <= 0 || m_radius.m_y <= 0;
+        return _radius._x <= 0 || _radius._y <= 0;
     }
 
     inline wxInt32 GetX() const {
-        return m_origin.m_x;
+        return _origin._x;
     }
 
     inline wxInt32 GetY() const {
-        return m_origin.m_y;
+        return _origin._y;
     }
 
     inline wxPoint2DInt GetOrigin() const {
-        return m_origin;
+        return _origin;
     }
 
     inline wxInt32 GetXRadius() const {
-        return m_radius.m_x;
+        return _radius._x;
     }
 
     inline wxInt32 GetYRadius() const {
-        return m_radius.m_y;
+        return _radius._y;
     }
 
     inline wxPoint2DInt GetRadius() const {
-        return m_radius;
+        return _radius;
     }
 
     // Get a bounding rect
     inline wxRect2DInt GetRect() const {
-        return wxRect2DInt(m_origin.m_x - m_radius.m_x, m_origin.m_y - m_radius.m_y, 2 * m_radius.m_x,
-                           2 * m_radius.m_y);
+        return wxRect2DInt(_origin._x - _radius._x, _origin._y - _radius._y, 2 * _radius._x,
+                           2 * _radius._y);
     }
 
     inline void SetX(wxInt32 x) {
-        m_origin.m_x = x;
+        _origin._x = x;
     }
 
     inline void SetY(wxInt32 y) {
-        m_origin.m_y = y;
+        _origin._y = y;
     }
 
     inline void SetOrigin(const wxPoint2DInt& origin) {
-        m_origin = origin;
+        _origin = origin;
     }
 
     inline void SetXRadius(wxInt32 r_x) {
-        m_radius.m_x = r_x;
+        _radius._x = r_x;
     }
 
     inline void SetYRadius(wxInt32 r_y) {
-        m_radius.m_y = r_y;
+        _radius._y = r_y;
     }
 
     inline void SetRadius(const wxPoint2DInt& radius) {
-        m_radius = radius;
+        _radius = radius;
     }
 
     inline bool GetPointInEllipse(wxInt32 x, wxInt32 y) const {
         if (IsEmpty()) return false;
-        return (((x - m_origin.m_x) * (x - m_origin.m_x)) / m_radius.m_x +
-                    ((y - m_origin.m_y) * (y - m_origin.m_y)) / m_radius.m_y <=
+        return (((x - _origin._x) * (x - _origin._x)) / _radius._x +
+                    ((y - _origin._y) * (y - _origin._y)) / _radius._y <=
                 1);
     }
 
     inline bool GetPointInEllipse(const wxPoint2DInt& pt) const {
-        return GetPointInEllipse(pt.m_x, pt.m_y);
+        return GetPointInEllipse(pt._x, pt._y);
     }
 
     //  int IntersectLine( const wxRay2DDouble &line,
@@ -823,7 +823,7 @@ class WXDLLIMPEXP_THINGS wxEllipseInt {
     //                     wxPoint2DInt *pt2=NULL ) const;
 
     inline bool operator==(const wxEllipseInt& c) const {
-        return (m_origin == c.m_origin) && (m_radius == c.m_radius);
+        return (_origin == c._origin) && (_radius == c._radius);
     }
 
     inline bool operator!=(const wxEllipseInt& c) const {
@@ -831,25 +831,25 @@ class WXDLLIMPEXP_THINGS wxEllipseInt {
     }
 
     inline wxEllipseInt operator+(const wxPoint2DInt& rel_origin) const {
-        return wxEllipseInt(m_origin + rel_origin, m_radius);
+        return wxEllipseInt(_origin + rel_origin, _radius);
     }
 
     inline wxEllipseInt& operator+=(const wxPoint2DInt& rel_origin) {
-        m_origin += rel_origin;
+        _origin += rel_origin;
         return *this;
     }
 
     inline wxEllipseInt operator-(const wxPoint2DInt& rel_origin) const {
-        return wxEllipseInt(m_origin - rel_origin, m_radius);
+        return wxEllipseInt(_origin - rel_origin, _radius);
     }
 
     inline wxEllipseInt& operator-=(const wxPoint2DInt& rel_origin) {
-        m_origin -= rel_origin;
+        _origin -= rel_origin;
         return *this;
     }
 
-    wxPoint2DInt m_radius;
-    wxPoint2DInt m_origin;
+    wxPoint2DInt _radius;
+    wxPoint2DInt _origin;
 };
 
 #endif  // __WXIMAGER_GEOMETRY_H__

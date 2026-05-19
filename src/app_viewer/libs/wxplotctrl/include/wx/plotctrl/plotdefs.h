@@ -91,7 +91,7 @@
 
 #if !wxCHECK_VERSION(2, 5, 0)
 bool WXRECT2DDOUBLE_EQUAL(const wxRect2DDouble& r1, const wxRect2DDouble& r2) {
-    return (r1.m_x == r1.m_x) && (r1.m_y == r1.m_y) && (r1.m_width == r1.m_width) && (r1.m_height == r1.m_height);
+    return (r1._x == r1._x) && (r1._y == r1._y) && (r1._width == r1._width) && (r1._height == r1._height);
 }
 #else
 #define WXRECT2DDOUBLE_EQUAL(r1, r2) ((r1) == (r2))

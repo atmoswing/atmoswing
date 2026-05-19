@@ -70,9 +70,9 @@ class asTimeArray : public asTime {
               float maxThreshold);
 
     double operator[](unsigned int i) {
-        wxASSERT(m_initialized);
+        wxASSERT(_initialized);
         wxASSERT(i < (unsigned)GetSize());
-        return m_timeArray[i];
+        return _timeArray[i];
     }
 
     void Pop(int index);
@@ -91,11 +91,11 @@ class asTimeArray : public asTime {
     bool IsYearForbidden(int year) const;
 
     vi GetForbiddenYears() const {
-        return m_forbiddenYears;
+        return _forbiddenYears;
     }
 
     void SetForbiddenYears(const vi& years) {
-        m_forbiddenYears = years;
+        _forbiddenYears = years;
     }
 
     bool RemoveYears(vi years);
@@ -103,69 +103,69 @@ class asTimeArray : public asTime {
     bool KeepOnlyYears(vi years);
 
     double GetStart() const {
-        return m_start;
+        return _start;
     }
 
     int GetStartingYear() const {
-        return GetYear(m_start);
+        return GetYear(_start);
     }
 
     int GetStartingMonth() const {
-        return GetMonth(m_start);
+        return GetMonth(_start);
     }
 
     int GetStartingDay() const {
-        return GetDay(m_start);
+        return GetDay(_start);
     }
 
     double GetStartingHour() const {
         double fractpart, intpart;
-        fractpart = modf(m_start, &intpart);
+        fractpart = modf(_start, &intpart);
         return fractpart * 24;
     }
 
     double GetEnd() const {
-        return m_end;
+        return _end;
     }
 
     int GetEndingYear() const {
-        return GetYear(m_end);
+        return GetYear(_end);
     }
 
     int GetEndingMonth() const {
-        return GetMonth(m_end);
+        return GetMonth(_end);
     }
 
     double GetEndingHour() const {
         double fractpart, intpart;
-        fractpart = modf(m_end, &intpart);
+        fractpart = modf(_end, &intpart);
         return fractpart * 24;
     }
 
     double GetTimeStepHours() const {
-        return m_timeStepDays * 24;
+        return _timeStepDays * 24;
     }
 
     double GetTimeStepDays() const {
-        return m_timeStepDays;
+        return _timeStepDays;
     }
 
     a1d GetTimeArray() const {
-        return m_timeArray;
+        return _timeArray;
     }
 
     int GetSize() const {
-        return (int)m_timeArray.size();
+        return (int)_timeArray.size();
     }
 
     double GetFirst() const {
-        wxASSERT(m_initialized);
-        return m_timeArray(0);
+        wxASSERT(_initialized);
+        return _timeArray(0);
     }
 
     double GetLast() const {
-        wxASSERT(m_initialized);
-        return m_timeArray(m_timeArray.rows() - 1);
+        wxASSERT(_initialized);
+        return _timeArray(_timeArray.rows() - 1);
     }
 
     int GetClosestIndex(double date) const;
@@ -178,14 +178,14 @@ class asTimeArray : public asTime {
 
   protected:
   private:
-    bool m_initialized;
-    Mode m_mode;
-    a1d m_timeArray;
-    double m_start;
-    double m_end;
-    double m_timeStepDays;
-    vi m_forbiddenYears;
-    wxString m_modeStr;
+    bool _initialized;
+    Mode _mode;
+    a1d _timeArray;
+    double _start;
+    double _end;
+    double _timeStepDays;
+    vi _forbiddenYears;
+    wxString _modeStr;
 
     void fixStartIfForbidden(double& currentStart) const;
 

@@ -43,76 +43,76 @@
 
 asMethodOptimizerGAs::asMethodOptimizerGAs()
     : asMethodOptimizer(),
-      m_scoreCalibBest(NAN),
-      m_generationNb(0),
-      m_assessmentCounter(0),
-      m_popSize(0),
-      m_naturalSelectionType(0),
-      m_couplesSelectionType(0),
-      m_crossoverType(0),
-      m_mutationsModeType(0),
-      m_allowElitismForTheBest(true),
-      m_reassessBatchBests(true),
-      m_batchSize(912),
-      m_batchSizeMax(0),
-      m_epoch(1),
-      m_epochMax(10) {
-    m_warnFailedLoadingData = false;
+      _scoreCalibBest(NAN),
+      _generationNb(0),
+      _assessmentCounter(0),
+      _popSize(0),
+      _naturalSelectionType(0),
+      _couplesSelectionType(0),
+      _crossoverType(0),
+      _mutationsModeType(0),
+      _allowElitismForTheBest(true),
+      _reassessBatchBests(true),
+      _batchSize(912),
+      _batchSizeMax(0),
+      _epoch(1),
+      _epochMax(10) {
+    _warnFailedLoadingData = false;
 }
 
 asMethodOptimizerGAs::~asMethodOptimizerGAs() = default;
 
 void asMethodOptimizerGAs::ClearAll() {
-    m_parameters.clear();
-    m_parametersBatchBests.clear();
-    m_scoresCalib.clear();
-    m_scoreCalibBest = NAN;
-    m_scoreValid = NAN;
-    m_bestScores.clear();
-    m_meanScores.clear();
+    _parameters.clear();
+    _parametersBatchBests.clear();
+    _scoresCalib.clear();
+    _scoreCalibBest = NAN;
+    _scoreValid = NAN;
+    _bestScores.clear();
+    _meanScores.clear();
 }
 
 void asMethodOptimizerGAs::SortScoresAndParameters() {
-    wxASSERT(m_scoresCalib.size() == m_parameters.size());
-    wxASSERT(m_scoresCalib.size() >= 1);
-    wxASSERT(m_parameters.size() >= 1);
+    wxASSERT(_scoresCalib.size() == _parameters.size());
+    wxASSERT(_scoresCalib.size() >= 1);
+    wxASSERT(_parameters.size() >= 1);
 
-    if (m_parameters.size() == 1) return;
+    if (_parameters.size() == 1) return;
 
-    int paramsNb = m_scoresCalib.size();
+    int paramsNb = _scoresCalib.size();
 
     // Sort according to the score
     a1f vIndices = a1f::LinSpaced(paramsNb, 0, paramsNb - 1);
-    asSortArrays(&m_scoresCalib[0], &m_scoresCalib[paramsNb - 1], &vIndices[0], &vIndices[paramsNb - 1], m_scoreOrder);
+    asSortArrays(&_scoresCalib[0], &_scoresCalib[paramsNb - 1], &vIndices[0], &vIndices[paramsNb - 1], _scoreOrder);
 
     // Sort the parameters sets as the scores
     vector<asParametersOptimizationGAs> copyParameters;
     for (int i = 0; i < paramsNb; i++) {
-        copyParameters.push_back(m_parameters[i]);
+        copyParameters.push_back(_parameters[i]);
     }
     for (int i = 0; i < paramsNb; i++) {
         int index = vIndices(i);
-        m_parameters[i] = copyParameters[index];
+        _parameters[i] = copyParameters[index];
     }
 }
 
 bool asMethodOptimizerGAs::Manager() {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase* pConfig = wxFileConfig::Get();
-    m_popSize = pConfig->ReadLong("/GAs/PopulationSize", 500);
-    m_paramsNb = m_popSize;
-    m_allowElitismForTheBest = pConfig->ReadBool("/GAs/AllowElitismForTheBest", true);
-    m_naturalSelectionType = (int)pConfig->ReadLong("/GAs/NaturalSelectionOperator", 0l);
-    m_couplesSelectionType = (int)pConfig->ReadLong("/GAs/CouplesSelectionOperator", 0l);
-    m_crossoverType = (int)pConfig->ReadLong("/GAs/CrossoverOperator", 0l);
-    m_mutationsModeType = (int)pConfig->ReadLong("/GAs/MutationOperator", 0l);
-    m_useBatches = pConfig->ReadBool("/GAs/UseBatches", false);
-    m_batchSize = (int)pConfig->ReadLong("/GAs/BatchSize", 912l);
-    m_epochMax = (int)pConfig->ReadLong("/GAs/NumberOfEpochs", 10l);
+    _popSize = pConfig->ReadLong("/GAs/PopulationSize", 500);
+    _paramsNb = _popSize;
+    _allowElitismForTheBest = pConfig->ReadBool("/GAs/AllowElitismForTheBest", true);
+    _naturalSelectionType = (int)pConfig->ReadLong("/GAs/NaturalSelectionOperator", 0l);
+    _couplesSelectionType = (int)pConfig->ReadLong("/GAs/CouplesSelectionOperator", 0l);
+    _crossoverType = (int)pConfig->ReadLong("/GAs/CrossoverOperator", 0l);
+    _mutationsModeType = (int)pConfig->ReadLong("/GAs/MutationOperator", 0l);
+    _useBatches = pConfig->ReadBool("/GAs/UseBatches", false);
+    _batchSize = (int)pConfig->ReadLong("/GAs/BatchSize", 912l);
+    _epochMax = (int)pConfig->ReadLong("/GAs/NumberOfEpochs", 10l);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Reset the score of the climatology
-    m_scoreClimatology.clear();
+    _scoreClimatology.clear();
 
     try {
         ClearAll();
@@ -157,19 +157,19 @@ int asMethodOptimizerGAs::GetGpusNb() {
 
 bool asMethodOptimizerGAs::ManageOneRun() {
     // Reset some data members
-    m_iterator = 0;
-    m_assessmentCounter = 0;
-    m_generationNb = 1;
-    m_epoch = 1;
+    _iterator = 0;
+    _assessmentCounter = 0;
+    _generationNb = 1;
+    _epoch = 1;
 
     // Seeds the random generator
     asInitRandom();
 
     // Load parameters
     asParametersOptimizationGAs params;
-    if (!params.LoadFromFile(m_paramsFilePath)) return false;
-    if (!m_predictandStationIds.empty()) {
-        params.SetPredictandStationIds(m_predictandStationIds);
+    if (!params.LoadFromFile(_paramsFilePath)) return false;
+    if (!_predictandStationIds.empty()) {
+        params.SetPredictandStationIds(_predictandStationIds);
     }
 
     // Create a result object to save the parameters sets
@@ -179,7 +179,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     resFinalPopulation.Init(asStrF(_("station_%s_final_population"), GetStationIdsList(stationId)));
     asResultsParametersArray resBestIndividual;
     resBestIndividual.Init(asStrF(_("station_%s_best_individual"), GetStationIdsList(stationId)));
-    m_resGenerations.Init(asStrF(_("station_%s_generations"), GetStationIdsList(stationId)));
+    _resGenerations.Init(asStrF(_("station_%s_generations"), GetStationIdsList(stationId)));
     wxString resXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     resXmlFilePath.Append(asStrF("/%s_station_%s_best_parameters.xml", time, GetStationIdsList(stationId)));
     wxString operatorsFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
@@ -236,14 +236,14 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     SetScoreOrder(scoreOrder);
 
     // Load the Predictand DB
-    if (!LoadPredictandDB(m_predictandDBFilePath)) return false;
+    if (!LoadPredictandDB(_predictandDBFilePath)) return false;
 
     // Define time range if using batches
-    if (m_useBatches) {
+    if (_useBatches) {
         // Create the target time array as reference for batches
         asTimeArray timeArrayTarget(GetTimeStartCalibration(&params), GetTimeEndCalibration(&params),
                                     params.GetTargetTimeStepHours(), params.GetTimeArrayTargetMode());
-        if (!m_validationMode && params.HasValidationPeriod()) {
+        if (!_validationMode && params.HasValidationPeriod()) {
             timeArrayTarget.SetForbiddenYears(params.GetValidationYearsVector());
         }
 
@@ -252,9 +252,9 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             return false;
         }
 
-        m_batchSizeMax = timeArrayTarget.GetSize();
-        m_batchStart = 0;
-        m_batchEnd = wxMin(m_batchStart + m_batchSize, m_batchSizeMax) - 1;
+        _batchSizeMax = timeArrayTarget.GetSize();
+        _batchStart = 0;
+        _batchEnd = wxMin(_batchStart + _batchSize, _batchSizeMax) - 1;
     }
 
     // Watch
@@ -273,8 +273,8 @@ bool asMethodOptimizerGAs::ManageOneRun() {
     // Optimizer
     while (true) {
         // Reassess the best parameter if batch as the period has changed
-        if (m_useBatches && !firstRun) {
-            auto thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
+        if (_useBatches && !firstRun) {
+            auto thread = new asThreadGAs(this, &_parameterBest, &_scoreCalibBest, &_scoreClimatology);
 #ifdef USE_CUDA
             if (method == asCUDA) {
                 device = ThreadsManager().GetFreeDevice(gpusNb);
@@ -285,11 +285,11 @@ bool asMethodOptimizerGAs::ManageOneRun() {
         }
 
         // Add threads when they become available
-        while (m_iterator < m_paramsNb) {
+        while (_iterator < _paramsNb) {
 #ifndef UNIT_TESTING
             if (g_responsive) wxTheApp->Yield();
 #endif
-            if (m_cancel) {
+            if (_cancel) {
                 return false;
             }
 
@@ -306,7 +306,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 
             if (nextParams) {
                 // Add it to the threads
-                auto thread = new asThreadGAs(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                auto thread = new asThreadGAs(this, nextParams, &_scoresCalib[_iterator], &_scoreClimatology);
 #ifdef USE_CUDA
                 if (method == asCUDA) {
                     thread->SetDevice(device);
@@ -323,11 +323,11 @@ bool asMethodOptimizerGAs::ManageOneRun() {
                     if (g_responsive) wxTheApp->Yield();
 #endif
 
-                    if (m_cancel) return false;
+                    if (_cancel) return false;
                 }
             }
 
-            wxASSERT(m_scoresCalib.size() <= m_paramsNb);
+            wxASSERT(_scoresCalib.size() <= _paramsNb);
 
             // Increment iterator
             IncrementIterator();
@@ -339,11 +339,11 @@ bool asMethodOptimizerGAs::ManageOneRun() {
         wxLog::FlushActive();
 
         // Check results
-        for (int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
-            if (isnan(m_scoresCalib[iCheck])) {
-                wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int)iCheck + 1,
-                           (int)m_scoresCalib.size());
-                wxString paramsContent = m_parameters[iCheck].Print();
+        for (int iCheck = 0; iCheck < _scoresCalib.size(); iCheck++) {
+            if (isnan(_scoresCalib[iCheck])) {
+                wxLogError(_("NaN found in the scores (element %d on %d in _scoresCalib)."), (int)iCheck + 1,
+                           (int)_scoresCalib.size());
+                wxString paramsContent = _parameters[iCheck].Print();
                 wxLogError(_("Parameters #%d: %s"), (int)iCheck + 1, paramsContent);
                 return false;
             }
@@ -351,7 +351,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 
         wxLog::FlushActive();
 
-        wxASSERT(m_iterator == m_paramsNb);
+        wxASSERT(_iterator == _paramsNb);
 
         // Different operators consider that the scores are sorted !
         SortScoresAndParameters();
@@ -359,90 +359,90 @@ bool asMethodOptimizerGAs::ManageOneRun() {
         // Elitism after mutation must occur after evaluation
         ElitismAfterMutation();
 
-        if (m_assessmentCounter > 0) {  // Skip if is resuming
+        if (_assessmentCounter > 0) {  // Skip if is resuming
 
-            m_resGenerations.Clear();
+            _resGenerations.Clear();
 
             // Save the full generation
-            for (int i = 0; i < m_parameters.size(); i++) {
-                m_resGenerations.Add(m_parameters[i], m_scoresCalib[i]);
+            for (int i = 0; i < _parameters.size(); i++) {
+                _resGenerations.Add(_parameters[i], _scoresCalib[i]);
             }
 
             // Save operators status
             SaveOperators(operatorsFilePath);
 
             // Print results
-            m_resGenerations.Print(m_resGenerations.GetCount() - m_parameters.size());
+            _resGenerations.Print(_resGenerations.GetCount() - _parameters.size());
         }
 
         // Display stats
-        float meanScore = asMean(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
+        float meanScore = asMean(&_scoresCalib[0], &_scoresCalib[_scoresCalib.size() - 1]);
         float bestScore = 0;
-        switch (m_scoreOrder) {
+        switch (_scoreOrder) {
             case (Asc): {
-                bestScore = asMinArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
+                bestScore = asMinArray(&_scoresCalib[0], &_scoresCalib[_scoresCalib.size() - 1]);
                 break;
             }
             case (Desc): {
-                bestScore = asMaxArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
+                bestScore = asMaxArray(&_scoresCalib[0], &_scoresCalib[_scoresCalib.size() - 1]);
                 break;
             }
         }
-        m_bestScores.push_back(bestScore);
-        m_meanScores.push_back(meanScore);
+        _bestScores.push_back(bestScore);
+        _meanScores.push_back(meanScore);
 
         wxLogMessage(_("Mean %g, best %g"), meanScore, bestScore);
 
         // Update best
-        if (m_useBatches) {
-            if (isnan(m_scoreCalibBest)) {
-                m_parameterBest = m_parameters[0];
-                m_scoreCalibBest = m_scoresCalib[0];
-                if (m_reassessBatchBests) {
-                    m_parametersBatchBests.push_back(m_parameterBest);
+        if (_useBatches) {
+            if (isnan(_scoreCalibBest)) {
+                _parameterBest = _parameters[0];
+                _scoreCalibBest = _scoresCalib[0];
+                if (_reassessBatchBests) {
+                    _parametersBatchBests.push_back(_parameterBest);
                 }
             } else {
-                if (m_scoreOrder == Asc && m_scoresCalib[0] < m_scoreCalibBest) {
-                    m_scoreCalibBest = m_scoresCalib[0];
-                    m_parameterBest = m_parameters[0];
-                    if (m_reassessBatchBests) {
-                        m_parametersBatchBests.push_back(m_parameterBest);
+                if (_scoreOrder == Asc && _scoresCalib[0] < _scoreCalibBest) {
+                    _scoreCalibBest = _scoresCalib[0];
+                    _parameterBest = _parameters[0];
+                    if (_reassessBatchBests) {
+                        _parametersBatchBests.push_back(_parameterBest);
                     }
-                } else if (m_scoreOrder == Desc && m_scoresCalib[0] > m_scoreCalibBest) {
-                    m_scoreCalibBest = m_scoresCalib[0];
-                    m_parameterBest = m_parameters[0];
-                    if (m_reassessBatchBests) {
-                        m_parametersBatchBests.push_back(m_parameterBest);
+                } else if (_scoreOrder == Desc && _scoresCalib[0] > _scoreCalibBest) {
+                    _scoreCalibBest = _scoresCalib[0];
+                    _parameterBest = _parameters[0];
+                    if (_reassessBatchBests) {
+                        _parametersBatchBests.push_back(_parameterBest);
                     }
                 }
             }
         } else {
-            m_parameterBest = m_parameters[0];
-            m_scoreCalibBest = m_scoresCalib[0];
+            _parameterBest = _parameters[0];
+            _scoreCalibBest = _scoresCalib[0];
         }
 
         // Update batches
-        if (m_useBatches) {
-            m_batchStart += m_batchSize;
+        if (_useBatches) {
+            _batchStart += _batchSize;
             int minNbDays = 32;
-            if (m_batchStart + minNbDays >= m_batchSizeMax) {
-                m_batchStart = 0;
-                m_epoch++;
-                wxLogMessage(_("Epoch number %d"), m_epoch);
+            if (_batchStart + minNbDays >= _batchSizeMax) {
+                _batchStart = 0;
+                _epoch++;
+                wxLogMessage(_("Epoch number %d"), _epoch);
             }
-            m_batchEnd = wxMin(m_batchStart + m_batchSize, m_batchSizeMax) - 1;
+            _batchEnd = wxMin(_batchStart + _batchSize, _batchSizeMax) - 1;
         }
 
         // Check if we should end
         if (HasConverged()) {
             // If finished, reassess all parameters on the full period
-            if (m_useBatches) {
+            if (_useBatches) {
                 // Disable the batch mode.
-                m_useBatches = false;
+                _useBatches = false;
 
                 // Clear previous results.
-                for (int i = 0; i < m_parameters.size(); i++) {
-                    m_scoresCalib[i] = NAN;
+                for (int i = 0; i < _parameters.size(); i++) {
+                    _scoresCalib[i] = NAN;
                 }
 
                 // Reassess on the whole period.
@@ -452,21 +452,21 @@ bool asMethodOptimizerGAs::ManageOneRun() {
                 SortScoresAndParameters();
 
                 // The current best parameter might not be in the population !
-                if (m_scoreOrder == Asc && m_scoresCalib[0] < m_scoreCalibBest) {
-                    m_scoreCalibBest = m_scoresCalib[0];
-                    m_parameterBest = m_parameters[0];
-                } else if (m_scoreOrder == Desc && m_scoresCalib[0] > m_scoreCalibBest) {
-                    m_scoreCalibBest = m_scoresCalib[0];
-                    m_parameterBest = m_parameters[0];
+                if (_scoreOrder == Asc && _scoresCalib[0] < _scoreCalibBest) {
+                    _scoreCalibBest = _scoresCalib[0];
+                    _parameterBest = _parameters[0];
+                } else if (_scoreOrder == Desc && _scoresCalib[0] > _scoreCalibBest) {
+                    _scoreCalibBest = _scoresCalib[0];
+                    _parameterBest = _parameters[0];
                 }
             }
             wxLogVerbose(_("Optimization process over."));
             break;
         } else {
             // Always reset the score values for the batch approach as the sample changes.
-            if (m_useBatches) {
-                for (int i = 0; i < m_parameters.size(); i++) {
-                    m_scoresCalib[i] = NAN;
+            if (_useBatches) {
+                for (int i = 0; i < _parameters.size(); i++) {
+                    _scoresCalib[i] = NAN;
                 }
             }
             if (!Optimize()) {
@@ -488,30 +488,30 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 #endif
 
     // Validate
-    SaveDetails(m_parameterBest);
-    Validate(m_parameterBest);
+    SaveDetails(_parameterBest);
+    Validate(_parameterBest);
 
     // Sort according to level and time
-    m_parameterBest.SortLevelsAndTime();
+    _parameterBest.SortLevelsAndTime();
 
     // Print parameters in a text file
-    for (int i = 0; i < m_parameters.size(); i++) {
-        resFinalPopulation.Add(m_parameters[i], m_scoresCalib[i]);
+    for (int i = 0; i < _parameters.size(); i++) {
+        resFinalPopulation.Add(_parameters[i], _scoresCalib[i]);
     }
     if (!resFinalPopulation.Print()) {
         wxLogError(_("The file containing the final population could not be generated."));
         return false;
     }
-    resBestIndividual.Add(m_parameterBest, m_scoreCalibBest, m_scoreValid);
+    resBestIndividual.Add(_parameterBest, _scoreCalibBest, _scoreValid);
 
     if (!resBestIndividual.Print()) {
         wxLogError(_("The file containing the best individual could not be generated."));
         return false;
     }
-    if (!m_resGenerations.Print(m_resGenerations.GetCount() - m_parameters.size())) return false;
+    if (!_resGenerations.Print(_resGenerations.GetCount() - _parameters.size())) return false;
 
     // Generate xml file with the best parameters set
-    if (!m_parameterBest.GenerateSimpleParametersFile(resXmlFilePath)) {
+    if (!_parameterBest.GenerateSimpleParametersFile(resXmlFilePath)) {
         wxLogError(_("The output xml parameters file could not be generated."));
     }
 
@@ -526,14 +526,14 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 }
 
 float asMethodOptimizerGAs::ComputeScoreFullPeriod(asParametersOptimizationGAs& param) {
-    int batchStart = m_batchStart;
-    int batchEnd = m_batchEnd;
+    int batchStart = _batchStart;
+    int batchEnd = _batchEnd;
 
-    m_batchStart = 0;
-    m_batchEnd = m_batchSizeMax - 1;
+    _batchStart = 0;
+    _batchEnd = _batchSizeMax - 1;
 
     float scoreFullPeriod = NAN;
-    auto thread = new asThreadGAs(this, &param, &scoreFullPeriod, &m_scoreClimatology);
+    auto thread = new asThreadGAs(this, &param, &scoreFullPeriod, &_scoreClimatology);
 #ifdef USE_CUDA
     int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
     if (method == asCUDA) {
@@ -545,15 +545,15 @@ float asMethodOptimizerGAs::ComputeScoreFullPeriod(asParametersOptimizationGAs& 
     ThreadsManager().AddThread(thread);
     ThreadsManager().Wait(asThread::MethodOptimizerGAs);
 
-    m_batchStart = batchStart;
-    m_batchEnd = batchEnd;
+    _batchStart = batchStart;
+    _batchEnd = batchEnd;
 
     return scoreFullPeriod;
 }
 
 bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
     // Reassess the best parameter if batch as the period has changed
-    auto thread = new asThreadGAs(this, &m_parameterBest, &m_scoreCalibBest, &m_scoreClimatology);
+    auto thread = new asThreadGAs(this, &_parameterBest, &_scoreCalibBest, &_scoreClimatology);
 #ifdef USE_CUDA
     int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
     int device = 0;
@@ -566,21 +566,21 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
     ThreadsManager().AddThread(thread);
 
     // Restore all previously-selected best ones
-    if (m_reassessBatchBests) {
-        for (const auto& param : m_parametersBatchBests) {
-            m_parameters.push_back(param);
+    if (_reassessBatchBests) {
+        for (const auto& param : _parametersBatchBests) {
+            _parameters.push_back(param);
         }
-        m_paramsNb = m_parameters.size();
-        m_scoresCalib.resize(m_paramsNb);
+        _paramsNb = _parameters.size();
+        _scoresCalib.resize(_paramsNb);
     }
 
     // Add threads when they become available
-    m_iterator = 0;
-    while (m_iterator < m_paramsNb) {
+    _iterator = 0;
+    while (_iterator < _paramsNb) {
 #ifndef UNIT_TESTING
         if (g_responsive) wxTheApp->Yield();
 #endif
-        if (m_cancel) {
+        if (_cancel) {
             return false;
         }
 
@@ -593,7 +593,7 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
 #endif
 
         // Add it to the threads
-        thread = new asThreadGAs(this, &m_parameters[m_iterator], &m_scoresCalib[m_iterator], &m_scoreClimatology);
+        thread = new asThreadGAs(this, &_parameters[_iterator], &_scoresCalib[_iterator], &_scoreClimatology);
 #ifdef USE_CUDA
         if (method == asCUDA) {
             thread->SetDevice(device);
@@ -601,7 +601,7 @@ bool asMethodOptimizerGAs::ComputeAllScoresOnFullPeriod() {
 #endif
         ThreadsManager().AddThread(thread);
 
-        wxASSERT(m_scoresCalib.size() <= m_paramsNb);
+        wxASSERT(_scoresCalib.size() <= _paramsNb);
 
         // Increment iterator
         IncrementIterator();
@@ -648,8 +648,8 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
 
     // Check that the length is consistent with the population size
     int nLines = asFileText::CountLines(filePath) - 1;
-    if (nLines % m_popSize != 0) {
-        wxLogError(_("The number of former results is not consistent with the population size (%d)."), m_popSize);
+    if (nLines % _popSize != 0) {
+        wxLogError(_("The number of former results is not consistent with the population size (%d)."), _popSize);
         return false;
     }
 
@@ -723,8 +723,8 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
         currentParamsPrint.Replace("Level", wxEmptyString, false);
     }
 
-    int genNb = nLines / m_popSize;
-    int iLastGen = (genNb - 1) * m_popSize;
+    int genNb = nLines / _popSize;
+    int iLastGen = (genNb - 1) * _popSize;
 
     asParametersOptimizationGAs prevParams;
 
@@ -747,24 +747,24 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
 
         // Get the parameters
         if (iLine >= iLastGen) {
-            prevParams = m_parameters[0];
+            prevParams = _parameters[0];
             if (!prevParams.GetValuesFromString(fileLine)) {
                 return false;
             }
-            m_resGenerations.AddWithoutProcessingMedian(prevParams, prevScoresCalib);
+            _resGenerations.AddWithoutProcessingMedian(prevParams, prevScoresCalib);
 
             // Restore the last generation
-            m_parameters[iVar] = prevParams;
-            m_scoresCalib[iVar] = prevScoresCalib;
+            _parameters[iVar] = prevParams;
+            _scoresCalib[iVar] = prevScoresCalib;
             iVar++;
-        } else if (m_useBatches && m_reassessBatchBests && iLine % m_popSize == 0) {
+        } else if (_useBatches && _reassessBatchBests && iLine % _popSize == 0) {
             // Keep the best ones from previous generations
-            prevParams = m_parameters[0];
+            prevParams = _parameters[0];
             if (!prevParams.GetValuesFromString(fileLine)) {
                 return false;
             }
 
-            m_parametersBatchBests.push_back(prevParams);
+            _parametersBatchBests.push_back(prevParams);
         }
 
         // Get next line
@@ -773,34 +773,34 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
     } while (!prevResults.EndOfFile());
     prevResults.Close();
 
-    wxLogMessage(_("%d former results have been reloaded."), m_resGenerations.GetCount());
-    asLog::PrintToConsole(asStrF(_("%d former results have been reloaded.\n"), m_resGenerations.GetCount()));
+    wxLogMessage(_("%d former results have been reloaded."), _resGenerations.GetCount());
+    asLog::PrintToConsole(asStrF(_("%d former results have been reloaded.\n"), _resGenerations.GetCount()));
 
-    if (m_useBatches && m_reassessBatchBests) {
-        wxLogMessage(_("%d generation bests have been reloaded."), int(m_parametersBatchBests.size()));
-        asLog::PrintToConsole(asStrF(_("%d generation bests have been reloaded.\n"), int(m_parametersBatchBests.size())));
+    if (_useBatches && _reassessBatchBests) {
+        wxLogMessage(_("%d generation bests have been reloaded."), int(_parametersBatchBests.size()));
+        asLog::PrintToConsole(asStrF(_("%d generation bests have been reloaded.\n"), int(_parametersBatchBests.size())));
     }
 
     // Restore best and mean scores
-    m_bestScores.resize(genNb);
-    m_meanScores.resize(genNb);
+    _bestScores.resize(genNb);
+    _meanScores.resize(genNb);
     for (int iGen = 0; iGen < genNb; iGen++) {
-        int iBest = iGen * m_popSize;
-        m_bestScores[iGen] = vectScores[iBest];
+        int iBest = iGen * _popSize;
+        _bestScores[iGen] = vectScores[iBest];
 
         float mean = 0;
-        for (int iNext = 0; iNext < m_popSize; iNext++) {
+        for (int iNext = 0; iNext < _popSize; iNext++) {
             mean += vectScores[iNext];
         }
 
-        m_meanScores[iGen] = mean / float(m_popSize);
+        _meanScores[iGen] = mean / float(_popSize);
     }
 
-    m_iterator = m_paramsNb;
-    m_generationNb = genNb;
+    _iterator = _paramsNb;
+    _generationNb = genNb;
 
     // Update the epoch
-    if (m_useBatches) {
+    if (_useBatches) {
         wxString parentDirStr(dir.GetName());
         parentDirStr = parentDirStr.Mid(0, parentDirStr.Len() - 7);
         wxDir parentDir(parentDirStr);
@@ -813,7 +813,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
         wxArrayString logFiles;
         wxDir::GetAllFiles(parentDir.GetName(), &logFiles, logFilePattern, wxDIR_FILES);
 
-        m_epoch = 1;
+        _epoch = 1;
         for (const auto& logFilePath : logFiles) {
             asFileText logContent(logFilePath, asFile::ReadOnly);
             if (!logContent.Open()) {
@@ -833,7 +833,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
                     epochNbStr.ToLong(&epochNb);
 
                     // Overwrite to the last value
-                    m_epoch = wxMax(m_epoch, int(epochNb));
+                    _epoch = wxMax(_epoch, int(epochNb));
                 }
 
                 // Get next line
@@ -842,11 +842,11 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
             logContent.Close();
         }
 
-        wxLogMessage(_("Starting again from epoch %d."), m_epoch);
+        wxLogMessage(_("Starting again from epoch %d."), _epoch);
     }
 
     // Copy file to the new target
-    wxCopyFile(filePath, m_resGenerations.GetFilePath());
+    wxCopyFile(filePath, _resGenerations.GetFilePath());
 
     // Restore operators
     wxString operatorsFilePattern = asStrF("*_station_%s_operators.txt", GetStationIdsList(stationId));
@@ -880,19 +880,19 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
     }
 
     // Extract file content for the last generation
-    prevOperators.SkipLines((genNb - 1) * m_popSize);
+    prevOperators.SkipLines((genNb - 1) * _popSize);
     wxString fileLineOper = prevOperators.GetNextLine();
     iVar = 0;
     do {
         if (fileLineOper.IsEmpty()) break;
 
-        if (iVar >= m_parameters.size()) {
-            wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."), (int)m_parameters.size(),
+        if (iVar >= _parameters.size()) {
+            wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."), (int)_parameters.size(),
                        iVar + 1);
             return false;
         }
 
-        switch (m_mutationsModeType) {
+        switch (_mutationsModeType) {
             case (RandomUniformConstant):
             case (RandomUniformVariable):
             case (RandomNormalConstant):
@@ -909,7 +909,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
                 wxString strMutationRate = fileLineOper.Mid(indexMutationRate + 13);
                 double mutationRate;
                 strMutationRate.ToDouble(&mutationRate);
-                m_parameters[iVar].SetAdaptMutationRate((float)mutationRate);
+                _parameters[iVar].SetAdaptMutationRate((float)mutationRate);
                 break;
             }
 
@@ -919,11 +919,11 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
                 wxString strMutationRate = fileLineOper.SubString(indexMutationRate + 13, indexMutationRadius - 2);
                 double mutationRate;
                 strMutationRate.ToDouble(&mutationRate);
-                m_parameters[iVar].SetAdaptMutationRate((float)mutationRate);
+                _parameters[iVar].SetAdaptMutationRate((float)mutationRate);
                 wxString strMutationRadius = fileLineOper.Mid(indexMutationRadius + 15);
                 double mutationRadius;
                 strMutationRadius.ToDouble(&mutationRadius);
-                m_parameters[iVar].SetAdaptMutationRadius((float)mutationRadius);
+                _parameters[iVar].SetAdaptMutationRadius((float)mutationRadius);
                 break;
             }
 
@@ -931,7 +931,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
                 int indexMutationRate = fileLineOper.Find("ChromosomeMutationRate");
                 wxString strMutationRate = fileLineOper.Mid(indexMutationRate + 23);
                 vf mutationRate = asExtractVectorFrom(strMutationRate);
-                m_parameters[iVar].SetChromosomeMutationRate(mutationRate);
+                _parameters[iVar].SetChromosomeMutationRate(mutationRate);
                 break;
             }
 
@@ -940,10 +940,10 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
                 int indexMutationRadius = fileLineOper.Find("ChromosomeMutationRadius");
                 wxString strMutationRate = fileLineOper.SubString(indexMutationRate + 23, indexMutationRadius - 2);
                 vf mutationRate = asExtractVectorFrom(strMutationRate);
-                m_parameters[iVar].SetChromosomeMutationRate(mutationRate);
+                _parameters[iVar].SetChromosomeMutationRate(mutationRate);
                 wxString strMutationRadius = fileLineOper.Mid(indexMutationRadius + 25);
                 vf mutationRadius = asExtractVectorFrom(strMutationRadius);
-                m_parameters[iVar].SetChromosomeMutationRadius(mutationRadius);
+                _parameters[iVar].SetChromosomeMutationRadius(mutationRadius);
                 break;
             }
 
@@ -987,8 +987,8 @@ bool asMethodOptimizerGAs::SaveOperators(const wxString& filePath) {
     wxString content = wxEmptyString;
 
     // Write every parameter one after the other
-    for (auto& parameter : m_parameters) {
-        switch (m_mutationsModeType) {
+    for (auto& parameter : _parameters) {
+        switch (_mutationsModeType) {
             case (RandomUniformConstant):
             case (RandomUniformVariable):
             case (RandomNormalConstant):
@@ -1052,19 +1052,19 @@ bool asMethodOptimizerGAs::SaveOperators(const wxString& filePath) {
 void asMethodOptimizerGAs::InitParameters(asParametersOptimizationGAs& params) {
     // Get a first parameters set to get the number of unknown variables
     params.InitRandomValues();
-    wxLogVerbose(_("The population is made of %d individuals."), m_popSize);
+    wxLogVerbose(_("The population is made of %d individuals."), _popSize);
 
     // Create the corresponding number of parameters
-    m_scoresCalib.resize(m_popSize);
-    m_parameters.resize(m_popSize);
-    for (int iVar = 0; iVar < m_popSize; iVar++) {
+    _scoresCalib.resize(_popSize);
+    _parameters.resize(_popSize);
+    for (int iVar = 0; iVar < _popSize; iVar++) {
         asParametersOptimizationGAs paramsCopy;
         paramsCopy = params;
         paramsCopy.InitRandomValues();
         paramsCopy.BuildChromosomes();
 
         // Create arrays for the self-adaptation methods
-        switch (m_mutationsModeType) {
+        switch (_mutationsModeType) {
             case (SelfAdaptationRate): {
                 paramsCopy.InitIndividualSelfAdaptationMutationRate();
                 break;
@@ -1092,27 +1092,27 @@ void asMethodOptimizerGAs::InitParameters(asParametersOptimizationGAs& params) {
             }
         }
 
-        m_parameters[iVar] = paramsCopy;
-        m_scoresCalib[iVar] = NAN;
+        _parameters[iVar] = paramsCopy;
+        _scoresCalib[iVar] = NAN;
     }
-    m_scoreValid = NAN;
+    _scoreValid = NAN;
 }
 
 asParametersOptimizationGAs* asMethodOptimizerGAs::GetNextParameters() {
-    wxASSERT(m_iterator <= m_paramsNb);
+    wxASSERT(_iterator <= _paramsNb);
 
-    while (m_iterator < m_paramsNb) {
+    while (_iterator < _paramsNb) {
         // Parameters did not change
-        if (!isnan(m_scoresCalib[m_iterator])) {
-            m_iterator++;
+        if (!isnan(_scoresCalib[_iterator])) {
+            _iterator++;
             continue;
         }
 
-        m_assessmentCounter++;
+        _assessmentCounter++;
 
-        wxLogVerbose(_("m_parameters[%d] = %s"), m_iterator, m_parameters[m_iterator].Print());
+        wxLogVerbose(_("_parameters[%d] = %s"), _iterator, _parameters[_iterator].Print());
 
-        return &m_parameters[m_iterator];
+        return &_parameters[_iterator];
     }
 
     return nullptr;
@@ -1130,10 +1130,10 @@ bool asMethodOptimizerGAs::Optimize() {
         return false;
     }
 
-    m_iterator = 0;
-    m_generationNb++;
+    _iterator = 0;
+    _generationNb++;
 
-    wxLogMessage(_("Generation number %d"), m_generationNb);
+    wxLogMessage(_("Generation number %d"), _generationNb);
 
     return true;
 }
@@ -1141,8 +1141,8 @@ bool asMethodOptimizerGAs::Optimize() {
 bool asMethodOptimizerGAs::HasConverged() {
     // NB: The parameters and scores are already sorted !
 
-    if (m_useBatches) {
-        if (m_epoch > m_epochMax) {
+    if (_useBatches) {
+        if (_epoch > _epochMax) {
             return true;
         }
         return false;
@@ -1155,21 +1155,21 @@ bool asMethodOptimizerGAs::HasConverged() {
     ThreadsManager().CritSectionConfig().Leave();
 
     // Check if enough generations
-    if (m_bestScores.size() < convergenceStepsNb) {
+    if (_bestScores.size() < convergenceStepsNb) {
         return false;
     }
 
     // Check the best convergenceStepsNb scores
-    for (int i = m_bestScores.size() - 1; i > m_bestScores.size() - convergenceStepsNb; i--)  // Checked
+    for (int i = _bestScores.size() - 1; i > _bestScores.size() - convergenceStepsNb; i--)  // Checked
     {
-        float lastScore = m_bestScores[m_bestScores.size() - 1];
+        float lastScore = _bestScores[_bestScores.size() - 1];
 
         if (lastScore == 0) {
-            if (m_bestScores[i] != m_bestScores[i - 1]) {
+            if (_bestScores[i] != _bestScores[i - 1]) {
                 return false;
             }
         } else {
-            float relDiff = std::abs((lastScore - m_bestScores[i - 1]) / lastScore);
+            float relDiff = std::abs((lastScore - _bestScores[i - 1]) / lastScore);
             if (relDiff > 0.001) {
                 return false;
             }
@@ -1182,27 +1182,27 @@ bool asMethodOptimizerGAs::HasConverged() {
 bool asMethodOptimizerGAs::ElitismAfterMutation() {
     // Apply elitism: If the best has been degraded during previous mutations, replace a random individual by the
     // previous best.
-    if (m_allowElitismForTheBest && !isnan(m_scoreCalibBest)) {
-        float actualBest = m_scoresCalib[0];
-        switch (m_scoreOrder) {
+    if (_allowElitismForTheBest && !isnan(_scoreCalibBest)) {
+        float actualBest = _scoresCalib[0];
+        switch (_scoreOrder) {
             case (Asc): {
-                if (m_scoreCalibBest < actualBest) {
+                if (_scoreCalibBest < actualBest) {
                     wxLogMessage(_("Application of elitism after mutation."));
                     // Randomly select a row to replace
-                    int randomRow = asRandom(0, m_scoresCalib.size() - 1, 1);
-                    m_parameters[randomRow] = m_parameterBest;
-                    m_scoresCalib[randomRow] = m_scoreCalibBest;
+                    int randomRow = asRandom(0, _scoresCalib.size() - 1, 1);
+                    _parameters[randomRow] = _parameterBest;
+                    _scoresCalib[randomRow] = _scoreCalibBest;
                     SortScoresAndParameters();
                 }
                 break;
             }
             case (Desc): {
-                if (m_scoreCalibBest > actualBest) {
+                if (_scoreCalibBest > actualBest) {
                     wxLogMessage(_("Application of elitism after mutation."));
                     // Randomly select a row to replace
-                    int randomRow = asRandom(0, m_scoresCalib.size() - 1, 1);
-                    m_parameters[randomRow] = m_parameterBest;
-                    m_scoresCalib[randomRow] = m_scoreCalibBest;
+                    int randomRow = asRandom(0, _scoresCalib.size() - 1, 1);
+                    _parameters[randomRow] = _parameterBest;
+                    _scoresCalib[randomRow] = _scoreCalibBest;
                     SortScoresAndParameters();
                 }
                 break;
@@ -1219,27 +1219,27 @@ bool asMethodOptimizerGAs::ElitismAfterMutation() {
 
 bool asMethodOptimizerGAs::ElitismAfterSelection() {
     // Apply elitism: If the best has not been selected, replace a random individual by the best.
-    if (m_allowElitismForTheBest && !isnan(m_scoreCalibBest)) {
+    if (_allowElitismForTheBest && !isnan(_scoreCalibBest)) {
         SortScoresAndParameters();
-        float actualBest = m_scoresCalib[0];
-        switch (m_scoreOrder) {
+        float actualBest = _scoresCalib[0];
+        switch (_scoreOrder) {
             case (Asc): {
-                if (m_scoreCalibBest < actualBest) {
+                if (_scoreCalibBest < actualBest) {
                     wxLogMessage(_("Application of elitism in the natural selection."));
                     // Randomly select a row to replace
-                    int randomRow = asRandom(0, m_scoresCalib.size() - 1, 1);
-                    m_parameters[randomRow] = m_parameterBest;
-                    m_scoresCalib[randomRow] = m_scoreCalibBest;
+                    int randomRow = asRandom(0, _scoresCalib.size() - 1, 1);
+                    _parameters[randomRow] = _parameterBest;
+                    _scoresCalib[randomRow] = _scoreCalibBest;
                 }
                 break;
             }
             case (Desc): {
-                if (m_scoreCalibBest > actualBest) {
+                if (_scoreCalibBest > actualBest) {
                     wxLogMessage(_("Application of elitism in the natural selection."));
                     // Randomly select a row to replace
-                    int randomRow = asRandom(0, m_scoresCalib.size() - 1, 1);
-                    m_parameters[randomRow] = m_parameterBest;
-                    m_scoresCalib[randomRow] = m_scoreCalibBest;
+                    int randomRow = asRandom(0, _scoresCalib.size() - 1, 1);
+                    _parameters[randomRow] = _parameterBest;
+                    _scoresCalib[randomRow] = _scoreCalibBest;
                 }
                 break;
             }
@@ -1258,10 +1258,10 @@ bool asMethodOptimizerGAs::NaturalSelection() {
 
     wxLogVerbose(_("Applying natural selection."));
 
-    vector<asParametersOptimizationGAs> parameters = m_parameters;
-    vf scores = m_scoresCalib;
-    m_parameters.clear();
-    m_scoresCalib.clear();
+    vector<asParametersOptimizationGAs> parameters = _parameters;
+    vf scores = _scoresCalib;
+    _parameters.clear();
+    _scoresCalib.clear();
 
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase* pConfig = wxFileConfig::Get();
@@ -1270,15 +1270,15 @@ bool asMethodOptimizerGAs::NaturalSelection() {
     ThreadsManager().CritSectionConfig().Leave();
 
     // Get intermediate generation size
-    int intermediateGenerationSize = ratioIntermediateGeneration * m_popSize;
+    int intermediateGenerationSize = ratioIntermediateGeneration * _popSize;
 
-    switch (m_naturalSelectionType) {
+    switch (_naturalSelectionType) {
         case (RatioElitism): {
             wxLogVerbose(_("Natural selection: ratio elitism"));
 
             for (int i = 0; i < intermediateGenerationSize; i++) {
-                m_parameters.push_back(parameters[i]);
-                m_scoresCalib.push_back(scores[i]);
+                _parameters.push_back(parameters[i]);
+                _scoresCalib.push_back(scores[i]);
             }
             break;
         }
@@ -1319,7 +1319,7 @@ bool asMethodOptimizerGAs::NaturalSelection() {
                 }
 
                 // If both scores are equal, select randomly and overwrite previous selection
-                if (m_scoresCalib[candidate1] == scores[candidate2]) {
+                if (_scoresCalib[candidate1] == scores[candidate2]) {
                     double randomIndex = asRandom(0.0, 1.0);
                     if (randomIndex <= 0.5) {
                         candidateFinal = candidate1;
@@ -1328,8 +1328,8 @@ bool asMethodOptimizerGAs::NaturalSelection() {
                     }
                 }
 
-                m_parameters.push_back(parameters[candidateFinal]);
-                m_scoresCalib.push_back(scores[candidateFinal]);
+                _parameters.push_back(parameters[candidateFinal]);
+                _scoresCalib.push_back(scores[candidateFinal]);
             }
             break;
         }
@@ -1349,7 +1349,7 @@ bool asMethodOptimizerGAs::Mating() {
     // Different operators consider that the scores are sorted !
     SortScoresAndParameters();
 
-    wxASSERT(m_parameters.size() == m_scoresCalib.size());
+    wxASSERT(_parameters.size() == _scoresCalib.size());
 
     wxLogVerbose(_("Applying mating."));
 
@@ -1357,17 +1357,17 @@ bool asMethodOptimizerGAs::Mating() {
     wxConfigBase* pConfig = wxFileConfig::Get();
     ThreadsManager().CritSectionConfig().Leave();
 
-    int sizeParents = int(m_parameters.size());
+    int sizeParents = int(_parameters.size());
     int counter = 0;
     int counterSame = 0;
     bool initialized = false;
     vd probabilities;
 
-    while (m_parameters.size() < m_popSize) {
+    while (_parameters.size() < _popSize) {
         // Couples selection only in the parents pool
         wxLogVerbose(_("Selecting couples."));
         int partner1 = 0, partner2 = 0;
-        switch (m_couplesSelectionType) {
+        switch (_couplesSelectionType) {
             case (RankPairing): {
                 wxLogVerbose(_("Couples selection: rank pairing"));
 
@@ -1430,11 +1430,11 @@ bool asMethodOptimizerGAs::Mating() {
                     double sum = 0;
                     probabilities.push_back(0.0);
                     for (int i = 0; i < sizeParents; i++) {
-                        sum += m_scoresCalib[i] - m_scoresCalib[sizeParents - 1] + 0.001;  // 0.001 to avoid null probs
+                        sum += _scoresCalib[i] - _scoresCalib[sizeParents - 1] + 0.001;  // 0.001 to avoid null probs
                     }
                     for (int i = 0; i < sizeParents; i++) {
                         if (sum > 0) {
-                            double currentScore = m_scoresCalib[i] - m_scoresCalib[sizeParents - 1] + 0.001;
+                            double currentScore = _scoresCalib[i] - _scoresCalib[sizeParents - 1] + 0.001;
                             double prob = currentScore / sum;
                             double probCumul = prob + probabilities[probabilities.size() - 1];
                             probabilities.push_back(probCumul);
@@ -1528,7 +1528,7 @@ bool asMethodOptimizerGAs::Mating() {
             counterSame++;
             if (counterSame >= 100) {
                 for (int i = 0; i < sizeParents; i++) {
-                    wxLogWarning(_("m_scoresCalib[%d] = %f"), i, m_scoresCalib[i]);
+                    wxLogWarning(_("_scoresCalib[%d] = %f"), i, _scoresCalib[i]);
                 }
 
                 for (int i = 0; i < probabilities.size(); i++) {
@@ -1544,7 +1544,7 @@ bool asMethodOptimizerGAs::Mating() {
 
         // Chromosomes crossings
         wxLogVerbose(_("Crossing chromosomes."));
-        switch (m_crossoverType) {
+        switch (_crossoverType) {
             case (SinglePointCrossover): {
                 wxLogVerbose(_("Crossing: single point crossover"));
 
@@ -1553,7 +1553,7 @@ bool asMethodOptimizerGAs::Mating() {
 
                 // Get points
                 wxASSERT(partner1 >= 0);
-                int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                int chromosomeLength = _parameters[partner1].GetChromosomeLength();
                 wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
@@ -1563,24 +1563,24 @@ bool asMethodOptimizerGAs::Mating() {
                 }
 
                 // Proceed to crossover
-                wxASSERT(m_parameters.size() > partner1);
-                wxASSERT(m_parameters.size() > partner2);
+                wxASSERT(_parameters.size() > partner1);
+                wxASSERT(_parameters.size() > partner2);
                 asParametersOptimizationGAs param1;
-                param1 = m_parameters[partner1];
+                param1 = _parameters[partner1];
                 asParametersOptimizationGAs param2;
-                param2 = m_parameters[partner2];
+                param2 = _parameters[partner2];
                 param1.SimpleCrossover(param2, crossingPoints);
 
                 param1.CheckRange();
 
                 // Add the new parameters if ther is enough room
-                m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NAN);
-                if (m_popSize - m_parameters.size() > 0) {
+                _parameters.push_back(param1);
+                _scoresCalib.push_back(NAN);
+                if (_popSize - _parameters.size() > 0) {
                     param2.CheckRange();
 
-                    m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NAN);
+                    _parameters.push_back(param2);
+                    _scoresCalib.push_back(NAN);
                 }
 
                 break;
@@ -1593,7 +1593,7 @@ bool asMethodOptimizerGAs::Mating() {
                 int crossoverNbPoints = 2;
 
                 // Get points
-                int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                int chromosomeLength = _parameters[partner1].GetChromosomeLength();
                 wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
@@ -1618,24 +1618,24 @@ bool asMethodOptimizerGAs::Mating() {
                 }
 
                 // Proceed to crossover
-                wxASSERT(m_parameters.size() > partner1);
-                wxASSERT(m_parameters.size() > partner2);
+                wxASSERT(_parameters.size() > partner1);
+                wxASSERT(_parameters.size() > partner2);
                 asParametersOptimizationGAs param1;
-                param1 = m_parameters[partner1];
+                param1 = _parameters[partner1];
                 asParametersOptimizationGAs param2;
-                param2 = m_parameters[partner2];
+                param2 = _parameters[partner2];
                 param1.SimpleCrossover(param2, crossingPoints);
 
                 param1.CheckRange();
 
                 // Add the new parameters if ther is enough room
-                m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NAN);
-                if (m_popSize - m_parameters.size() > 0) {
+                _parameters.push_back(param1);
+                _scoresCalib.push_back(NAN);
+                if (_popSize - _parameters.size() > 0) {
                     param2.CheckRange();
 
-                    m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NAN);
+                    _parameters.push_back(param2);
+                    _scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -1650,7 +1650,7 @@ bool asMethodOptimizerGAs::Mating() {
                 ThreadsManager().CritSectionConfig().Leave();
 
                 // Get points
-                int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                int chromosomeLength = _parameters[partner1].GetChromosomeLength();
                 wxASSERT(chromosomeLength > 0);
 
                 if (crossoverNbPoints >= chromosomeLength) {
@@ -1675,24 +1675,24 @@ bool asMethodOptimizerGAs::Mating() {
                 }
 
                 // Proceed to crossover
-                wxASSERT(m_parameters.size() > partner1);
-                wxASSERT(m_parameters.size() > partner2);
+                wxASSERT(_parameters.size() > partner1);
+                wxASSERT(_parameters.size() > partner2);
                 asParametersOptimizationGAs param1;
-                param1 = m_parameters[partner1];
+                param1 = _parameters[partner1];
                 asParametersOptimizationGAs param2;
-                param2 = m_parameters[partner2];
+                param2 = _parameters[partner2];
                 param1.SimpleCrossover(param2, crossingPoints);
 
                 param1.CheckRange();
 
                 // Add the new parameters if ther is enough room
-                m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NAN);
-                if (m_popSize - m_parameters.size() > 0) {
+                _parameters.push_back(param1);
+                _scoresCalib.push_back(NAN);
+                if (_popSize - _parameters.size() > 0) {
                     param2.CheckRange();
 
-                    m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NAN);
+                    _parameters.push_back(param2);
+                    _scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -1701,7 +1701,7 @@ bool asMethodOptimizerGAs::Mating() {
                 wxLogVerbose(_("Crossing: uniform crossover"));
 
                 // Get points
-                int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                int chromosomeLength = _parameters[partner1].GetChromosomeLength();
                 wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
@@ -1728,12 +1728,12 @@ bool asMethodOptimizerGAs::Mating() {
                 }
 
                 // Proceed to crossover
-                wxASSERT(m_parameters.size() > partner1);
-                wxASSERT(m_parameters.size() > partner2);
+                wxASSERT(_parameters.size() > partner1);
+                wxASSERT(_parameters.size() > partner2);
                 asParametersOptimizationGAs param1;
-                param1 = m_parameters[partner1];
+                param1 = _parameters[partner1];
                 asParametersOptimizationGAs param2;
-                param2 = m_parameters[partner2];
+                param2 = _parameters[partner2];
                 if (!crossingPoints.empty()) {
                     param1.SimpleCrossover(param2, crossingPoints);
                 }
@@ -1741,13 +1741,13 @@ bool asMethodOptimizerGAs::Mating() {
                 param1.CheckRange();
 
                 // Add the new parameters if there is enough room
-                m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NAN);
-                if (m_popSize - m_parameters.size() > 0) {
+                _parameters.push_back(param1);
+                _scoresCalib.push_back(NAN);
+                if (_popSize - _parameters.size() > 0) {
                     param2.CheckRange();
 
-                    m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NAN);
+                    _parameters.push_back(param2);
+                    _scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -1766,7 +1766,7 @@ bool asMethodOptimizerGAs::Mating() {
                 ThreadsManager().CritSectionConfig().Leave();
 
                 // Get points
-                int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                int chromosomeLength = _parameters[partner1].GetChromosomeLength();
                 wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
@@ -1791,24 +1791,24 @@ bool asMethodOptimizerGAs::Mating() {
                 }
 
                 // Proceed to crossover
-                wxASSERT(m_parameters.size() > partner1);
-                wxASSERT(m_parameters.size() > partner2);
+                wxASSERT(_parameters.size() > partner1);
+                wxASSERT(_parameters.size() > partner2);
                 asParametersOptimizationGAs param1;
-                param1 = m_parameters[partner1];
+                param1 = _parameters[partner1];
                 asParametersOptimizationGAs param2;
-                param2 = m_parameters[partner2];
+                param2 = _parameters[partner2];
                 param1.BlendingCrossover(param2, crossingPoints, shareBeta);
 
                 param1.CheckRange();
 
                 // Add the new parameters if ther is enough room
-                m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NAN);
-                if (m_popSize - m_parameters.size() > 0) {
+                _parameters.push_back(param1);
+                _scoresCalib.push_back(NAN);
+                if (_popSize - _parameters.size() > 0) {
                     param2.CheckRange();
 
-                    m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NAN);
+                    _parameters.push_back(param2);
+                    _scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -1823,7 +1823,7 @@ bool asMethodOptimizerGAs::Mating() {
                 ThreadsManager().CritSectionConfig().Leave();
 
                 // Get points
-                int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                int chromosomeLength = _parameters[partner1].GetChromosomeLength();
                 wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
@@ -1848,38 +1848,38 @@ bool asMethodOptimizerGAs::Mating() {
                 }
 
                 // Proceed to crossover
-                wxASSERT(m_parameters.size() > partner1);
-                wxASSERT(m_parameters.size() > partner2);
+                wxASSERT(_parameters.size() > partner1);
+                wxASSERT(_parameters.size() > partner2);
                 asParametersOptimizationGAs param1;
-                param1 = m_parameters[partner1];
+                param1 = _parameters[partner1];
                 asParametersOptimizationGAs param2;
-                param2 = m_parameters[partner2];
+                param2 = _parameters[partner2];
                 asParametersOptimizationGAs param3;
-                param3 = m_parameters[partner2];
+                param3 = _parameters[partner2];
                 param1.LinearCrossover(param2, param3, crossingPoints);
 
                 if (param1.IsInRange()) {
                     param1.CheckRange();
 
-                    m_parameters.push_back(param1);
-                    m_scoresCalib.push_back(NAN);
+                    _parameters.push_back(param1);
+                    _scoresCalib.push_back(NAN);
                 }
 
                 // Add the other parameters if ther is enough room
-                if (m_popSize - m_parameters.size() > 0) {
+                if (_popSize - _parameters.size() > 0) {
                     if (param2.IsInRange()) {
                         param2.CheckRange();
 
-                        m_parameters.push_back(param2);
-                        m_scoresCalib.push_back(NAN);
+                        _parameters.push_back(param2);
+                        _scoresCalib.push_back(NAN);
                     }
                 }
-                if (m_popSize - m_parameters.size() > 0) {
+                if (_popSize - _parameters.size() > 0) {
                     if (param3.IsInRange()) {
                         param3.CheckRange();
 
-                        m_parameters.push_back(param3);
-                        m_scoresCalib.push_back(NAN);
+                        _parameters.push_back(param3);
+                        _scoresCalib.push_back(NAN);
                     }
                 }
 
@@ -1900,7 +1900,7 @@ bool asMethodOptimizerGAs::Mating() {
                 ThreadsManager().CritSectionConfig().Leave();
 
                 // Get points
-                int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                int chromosomeLength = _parameters[partner1].GetChromosomeLength();
                 wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
@@ -1925,24 +1925,24 @@ bool asMethodOptimizerGAs::Mating() {
                 }
 
                 // Proceed to crossover
-                wxASSERT(m_parameters.size() > partner1);
-                wxASSERT(m_parameters.size() > partner2);
+                wxASSERT(_parameters.size() > partner1);
+                wxASSERT(_parameters.size() > partner2);
                 asParametersOptimizationGAs param1;
-                param1 = m_parameters[partner1];
+                param1 = _parameters[partner1];
                 asParametersOptimizationGAs param2;
-                param2 = m_parameters[partner2];
+                param2 = _parameters[partner2];
                 param1.HeuristicCrossover(param2, crossingPoints, shareBeta);
 
                 param1.CheckRange();
 
                 // Add the new parameters if ther is enough room
-                m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NAN);
-                if (m_popSize - m_parameters.size() > 0) {
+                _parameters.push_back(param1);
+                _scoresCalib.push_back(NAN);
+                if (_popSize - _parameters.size() > 0) {
                     param2.CheckRange();
 
-                    m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NAN);
+                    _parameters.push_back(param2);
+                    _scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -1961,7 +1961,7 @@ bool asMethodOptimizerGAs::Mating() {
                 ThreadsManager().CritSectionConfig().Leave();
 
                 // Get points
-                int chromosomeLength = m_parameters[partner1].GetChromosomeLength();
+                int chromosomeLength = _parameters[partner1].GetChromosomeLength();
                 wxASSERT(chromosomeLength > 0);
 
                 vi crossingPoints;
@@ -1986,24 +1986,24 @@ bool asMethodOptimizerGAs::Mating() {
                 }
 
                 // Proceed to crossover
-                wxASSERT(m_parameters.size() > partner1);
-                wxASSERT(m_parameters.size() > partner2);
+                wxASSERT(_parameters.size() > partner1);
+                wxASSERT(_parameters.size() > partner2);
                 asParametersOptimizationGAs param1;
-                param1 = m_parameters[partner1];
+                param1 = _parameters[partner1];
                 asParametersOptimizationGAs param2;
-                param2 = m_parameters[partner2];
+                param2 = _parameters[partner2];
                 param1.BinaryLikeCrossover(param2, crossingPoints, shareBeta);
 
                 param1.CheckRange();
 
                 // Add the new parameters if ther is enough room
-                m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NAN);
-                if (m_popSize - m_parameters.size() > 0) {
+                _parameters.push_back(param1);
+                _scoresCalib.push_back(NAN);
+                if (_popSize - _parameters.size() > 0) {
                     param2.CheckRange();
 
-                    m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NAN);
+                    _parameters.push_back(param2);
+                    _scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -2012,24 +2012,24 @@ bool asMethodOptimizerGAs::Mating() {
                 wxLogVerbose(_("Crossing: linear interpolation"));
 
                 // Proceed to crossover
-                wxASSERT(m_parameters.size() > partner1);
-                wxASSERT(m_parameters.size() > partner2);
+                wxASSERT(_parameters.size() > partner1);
+                wxASSERT(_parameters.size() > partner2);
                 asParametersOptimizationGAs param1;
-                param1 = m_parameters[partner1];
+                param1 = _parameters[partner1];
                 asParametersOptimizationGAs param2;
-                param2 = m_parameters[partner2];
+                param2 = _parameters[partner2];
                 param1.LinearInterpolation(param2, true);
 
                 param1.CheckRange();
 
                 // Add the new parameters if ther is enough room
-                m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NAN);
-                if (m_popSize - m_parameters.size() > 0) {
+                _parameters.push_back(param1);
+                _scoresCalib.push_back(NAN);
+                if (_popSize - _parameters.size() > 0) {
                     param2.CheckRange();
 
-                    m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NAN);
+                    _parameters.push_back(param2);
+                    _scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -2038,24 +2038,24 @@ bool asMethodOptimizerGAs::Mating() {
                 wxLogVerbose(_("Crossing: free interpolation"));
 
                 // Proceed to crossover
-                wxASSERT(m_parameters.size() > partner1);
-                wxASSERT(m_parameters.size() > partner2);
+                wxASSERT(_parameters.size() > partner1);
+                wxASSERT(_parameters.size() > partner2);
                 asParametersOptimizationGAs param1;
-                param1 = m_parameters[partner1];
+                param1 = _parameters[partner1];
                 asParametersOptimizationGAs param2;
-                param2 = m_parameters[partner2];
+                param2 = _parameters[partner2];
                 param1.LinearInterpolation(param2, false);
 
                 param1.CheckRange();
 
                 // Add the new parameters if there is enough room
-                m_parameters.push_back(param1);
-                m_scoresCalib.push_back(NAN);
-                if (m_popSize - m_parameters.size() > 0) {
+                _parameters.push_back(param1);
+                _scoresCalib.push_back(NAN);
+                if (_popSize - _parameters.size() > 0) {
                     param2.CheckRange();
 
-                    m_parameters.push_back(param2);
-                    m_scoresCalib.push_back(NAN);
+                    _parameters.push_back(param2);
+                    _scoresCalib.push_back(NAN);
                 }
                 break;
             }
@@ -2068,9 +2068,9 @@ bool asMethodOptimizerGAs::Mating() {
         counter++;
     }
 
-    wxASSERT_MSG(m_parameters.size() == m_popSize,
-                 asStrF("m_parameters.size() = %d, m_popSize = %d", (int)m_parameters.size(), m_popSize));
-    wxASSERT(m_parameters.size() == m_scoresCalib.size());
+    wxASSERT_MSG(_parameters.size() == _popSize,
+                 asStrF("_parameters.size() = %d, _popSize = %d", (int)_parameters.size(), _popSize));
+    wxASSERT(_parameters.size() == _scoresCalib.size());
 
     return true;
 }
@@ -2084,23 +2084,23 @@ bool asMethodOptimizerGAs::Mutation() {
     wxConfigBase* pConfig = wxFileConfig::Get();
     ThreadsManager().CritSectionConfig().Leave();
 
-    switch (m_mutationsModeType) {
+    switch (_mutationsModeType) {
         case (RandomUniformConstant): {
             double mutationsProbability;
             ThreadsManager().CritSectionConfig().Enter();
             pConfig->Read("/GAs/MutationsUniformConstantProbability", &mutationsProbability, 0.2);
             ThreadsManager().CritSectionConfig().Leave();
 
-            for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
+            for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[iInd].MutateUniformDistribution(mutationsProbability, hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NAN;
+                _parameters[iInd].MutateUniformDistribution(mutationsProbability, hasMutated);
+                if (hasMutated) _scoresCalib[iInd] = NAN;
 
-                m_parameters[iInd].FixWeights();
-                m_parameters[iInd].FixCoordinates();
-                m_parameters[iInd].CheckRange();
-                m_parameters[iInd].FixAnalogsNb();
+                _parameters[iInd].FixWeights();
+                _parameters[iInd].FixCoordinates();
+                _parameters[iInd].CheckRange();
+                _parameters[iInd].FixAnalogsNb();
             }
             break;
         }
@@ -2115,18 +2115,18 @@ bool asMethodOptimizerGAs::Mutation() {
             ThreadsManager().CritSectionConfig().Leave();
 
             double probIncrease = (probStart - probEnd) / (double)nbGenMax;
-            double mutationsProbability = probStart + probIncrease * wxMin(m_generationNb - 1, nbGenMax);
+            double mutationsProbability = probStart + probIncrease * wxMin(_generationNb - 1, nbGenMax);
 
-            for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
+            for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[iInd].MutateUniformDistribution(mutationsProbability, hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NAN;
+                _parameters[iInd].MutateUniformDistribution(mutationsProbability, hasMutated);
+                if (hasMutated) _scoresCalib[iInd] = NAN;
 
-                m_parameters[iInd].FixWeights();
-                m_parameters[iInd].FixCoordinates();
-                m_parameters[iInd].CheckRange();
-                m_parameters[iInd].FixAnalogsNb();
+                _parameters[iInd].FixWeights();
+                _parameters[iInd].FixCoordinates();
+                _parameters[iInd].CheckRange();
+                _parameters[iInd].FixAnalogsNb();
             }
             break;
         }
@@ -2139,16 +2139,16 @@ bool asMethodOptimizerGAs::Mutation() {
             pConfig->Read("/GAs/MutationsNormalConstantStdDevRatioRange", &stdDevRatioRange, 0.10);
             ThreadsManager().CritSectionConfig().Leave();
 
-            for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
+            for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[iInd].MutateNormalDistribution(mutationsProbability, stdDevRatioRange, hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NAN;
+                _parameters[iInd].MutateNormalDistribution(mutationsProbability, stdDevRatioRange, hasMutated);
+                if (hasMutated) _scoresCalib[iInd] = NAN;
 
-                m_parameters[iInd].FixWeights();
-                m_parameters[iInd].FixCoordinates();
-                m_parameters[iInd].CheckRange();
-                m_parameters[iInd].FixAnalogsNb();
+                _parameters[iInd].FixWeights();
+                _parameters[iInd].FixCoordinates();
+                _parameters[iInd].CheckRange();
+                _parameters[iInd].FixAnalogsNb();
             }
             break;
         }
@@ -2167,21 +2167,21 @@ bool asMethodOptimizerGAs::Mutation() {
             ThreadsManager().CritSectionConfig().Leave();
 
             double probIncrease = (probStart - probEnd) / (double)nbGenMaxProb;
-            double mutationsProbability = probStart + probIncrease * wxMin(m_generationNb - 1, nbGenMaxProb);
+            double mutationsProbability = probStart + probIncrease * wxMin(_generationNb - 1, nbGenMaxProb);
 
             double stdDevIncrease = (stdDevStart - stdDevEnd) / (double)nbGenMaxStdDev;
-            double stdDevRatioRange = stdDevStart + stdDevIncrease * wxMin(m_generationNb - 1, nbGenMaxStdDev);
+            double stdDevRatioRange = stdDevStart + stdDevIncrease * wxMin(_generationNb - 1, nbGenMaxStdDev);
 
-            for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
+            for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[iInd].MutateNormalDistribution(mutationsProbability, stdDevRatioRange, hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NAN;
+                _parameters[iInd].MutateNormalDistribution(mutationsProbability, stdDevRatioRange, hasMutated);
+                if (hasMutated) _scoresCalib[iInd] = NAN;
 
-                m_parameters[iInd].FixWeights();
-                m_parameters[iInd].FixCoordinates();
-                m_parameters[iInd].CheckRange();
-                m_parameters[iInd].FixAnalogsNb();
+                _parameters[iInd].FixWeights();
+                _parameters[iInd].FixCoordinates();
+                _parameters[iInd].CheckRange();
+                _parameters[iInd].FixAnalogsNb();
             }
             break;
         }
@@ -2195,77 +2195,77 @@ bool asMethodOptimizerGAs::Mutation() {
             pConfig->Read("/GAs/MutationsNonUniformMinRate", &minRate, 0.10);
             ThreadsManager().CritSectionConfig().Leave();
 
-            for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
+            for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[iInd].MutateNonUniform(mutationsProbability, m_generationNb, nbGenMax, minRate,
+                _parameters[iInd].MutateNonUniform(mutationsProbability, _generationNb, nbGenMax, minRate,
                                                     hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NAN;
+                if (hasMutated) _scoresCalib[iInd] = NAN;
 
-                m_parameters[iInd].FixWeights();
-                m_parameters[iInd].FixCoordinates();
-                m_parameters[iInd].CheckRange();
-                m_parameters[iInd].FixAnalogsNb();
+                _parameters[iInd].FixWeights();
+                _parameters[iInd].FixCoordinates();
+                _parameters[iInd].CheckRange();
+                _parameters[iInd].FixAnalogsNb();
             }
             break;
         }
 
         case (SelfAdaptationRate): {
-            for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
+            for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[iInd].MutateSelfAdaptationRate(hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NAN;
+                _parameters[iInd].MutateSelfAdaptationRate(hasMutated);
+                if (hasMutated) _scoresCalib[iInd] = NAN;
 
-                m_parameters[iInd].FixWeights();
-                m_parameters[iInd].FixCoordinates();
-                m_parameters[iInd].CheckRange();
-                m_parameters[iInd].FixAnalogsNb();
+                _parameters[iInd].FixWeights();
+                _parameters[iInd].FixCoordinates();
+                _parameters[iInd].CheckRange();
+                _parameters[iInd].FixAnalogsNb();
             }
             break;
         }
 
         case (SelfAdaptationRadius): {
-            for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
+            for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[iInd].MutateSelfAdaptationRadius(hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NAN;
+                _parameters[iInd].MutateSelfAdaptationRadius(hasMutated);
+                if (hasMutated) _scoresCalib[iInd] = NAN;
 
-                m_parameters[iInd].FixWeights();
-                m_parameters[iInd].FixCoordinates();
-                m_parameters[iInd].CheckRange();
-                m_parameters[iInd].FixAnalogsNb();
+                _parameters[iInd].FixWeights();
+                _parameters[iInd].FixCoordinates();
+                _parameters[iInd].CheckRange();
+                _parameters[iInd].FixAnalogsNb();
             }
             break;
         }
 
         case (SelfAdaptationRateChromosome): {
-            for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
+            for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[iInd].MutateSelfAdaptationRateChromosome(hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NAN;
+                _parameters[iInd].MutateSelfAdaptationRateChromosome(hasMutated);
+                if (hasMutated) _scoresCalib[iInd] = NAN;
 
-                m_parameters[iInd].FixWeights();
-                m_parameters[iInd].FixCoordinates();
-                m_parameters[iInd].CheckRange();
-                m_parameters[iInd].FixAnalogsNb();
+                _parameters[iInd].FixWeights();
+                _parameters[iInd].FixCoordinates();
+                _parameters[iInd].CheckRange();
+                _parameters[iInd].FixAnalogsNb();
             }
             break;
         }
 
         case (SelfAdaptationRadiusChromosome): {
-            for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
+            for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[iInd].MutateSelfAdaptationRadiusChromosome(hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NAN;
+                _parameters[iInd].MutateSelfAdaptationRadiusChromosome(hasMutated);
+                if (hasMutated) _scoresCalib[iInd] = NAN;
 
-                m_parameters[iInd].FixWeights();
-                m_parameters[iInd].FixCoordinates();
-                m_parameters[iInd].CheckRange();
-                m_parameters[iInd].FixAnalogsNb();
+                _parameters[iInd].FixWeights();
+                _parameters[iInd].FixCoordinates();
+                _parameters[iInd].CheckRange();
+                _parameters[iInd].FixAnalogsNb();
             }
             break;
         }
@@ -2276,16 +2276,16 @@ bool asMethodOptimizerGAs::Mutation() {
             pConfig->Read("/GAs/MutationsMultiScaleProbability", &mutationsProbability, 0.1);
             ThreadsManager().CritSectionConfig().Leave();
 
-            for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
+            for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[iInd].MutateMultiScale(mutationsProbability, hasMutated);
-                if (hasMutated) m_scoresCalib[iInd] = NAN;
+                _parameters[iInd].MutateMultiScale(mutationsProbability, hasMutated);
+                if (hasMutated) _scoresCalib[iInd] = NAN;
 
-                m_parameters[iInd].FixWeights();
-                m_parameters[iInd].FixCoordinates();
-                m_parameters[iInd].CheckRange();
-                m_parameters[iInd].FixAnalogsNb();
+                _parameters[iInd].FixWeights();
+                _parameters[iInd].FixCoordinates();
+                _parameters[iInd].CheckRange();
+                _parameters[iInd].FixAnalogsNb();
             }
             break;
         }
@@ -2300,7 +2300,7 @@ bool asMethodOptimizerGAs::Mutation() {
         }
     }
 
-    wxASSERT(m_parameters.size() == m_scoresCalib.size());
+    wxASSERT(_parameters.size() == _scoresCalib.size());
 
     return true;
 }

@@ -41,57 +41,57 @@ class asResultsValues : public asResults {
     void Init(asParameters* arams);
 
     a1f& GetTargetDates() {
-        return m_targetDates;
+        return _targetDates;
     }
 
     void SetTargetDates(a1f& refDates) {
-        m_targetDates.resize(refDates.rows());
-        m_targetDates = refDates;
+        _targetDates.resize(refDates.rows());
+        _targetDates = refDates;
     }
 
     va1f& GetTargetValues() {
-        return m_targetValuesNorm;
+        return _targetValuesNorm;
     }
 
     void SetTargetValuesNorm(va1f& targetValuesNorm) {
-        m_targetValuesNorm = targetValuesNorm;
+        _targetValuesNorm = targetValuesNorm;
     }
 
     void SetTargetValuesRaw(va1f& targetValuesRaw) {
-        m_targetValuesRaw = targetValuesRaw;
+        _targetValuesRaw = targetValuesRaw;
     }
 
     a2f& GetAnalogsCriteria() {
-        return m_analogsCriteria;
+        return _analogsCriteria;
     }
 
     void SetAnalogsCriteria(a2f& analogsCriteria) {
-        m_analogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
-        m_analogsCriteria = analogsCriteria;
+        _analogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
+        _analogsCriteria = analogsCriteria;
     }
 
     va2f& GetAnalogsValues() {
-        return m_analogsValuesNorm;
+        return _analogsValuesNorm;
     }
 
     va2f& GetAnalogsValuesNorm() {
-        return m_analogsValuesNorm;
+        return _analogsValuesNorm;
     }
 
     void SetAnalogsValuesNorm(va2f& analogsValuesNorm) {
-        m_analogsValuesNorm = analogsValuesNorm;
+        _analogsValuesNorm = analogsValuesNorm;
     }
 
     va2f GetAnalogsValuesRaw() const {
-        return m_analogsValuesRaw;
+        return _analogsValuesRaw;
     }
 
     void SetAnalogsValuesRaw(va2f& analogsValuesRaw) {
-        m_analogsValuesRaw = analogsValuesRaw;
+        _analogsValuesRaw = analogsValuesRaw;
     }
 
     int GetTargetDatesLength() const {
-        return m_targetDates.size();
+        return _targetDates.size();
     }
 
     bool Save();
@@ -102,12 +102,12 @@ class asResultsValues : public asResults {
     void BuildFileName();
 
   private:
-    a1f m_targetDates;         // Dimensions: time
-    va1f m_targetValuesNorm;   // Dimensions: stations x time
-    va1f m_targetValuesRaw;    // Dimensions: stations x time
-    a2f m_analogsCriteria;     // Dimensions: time x analogs
-    va2f m_analogsValuesNorm;  // Dimensions: stations x time x analogs
-    va2f m_analogsValuesRaw;   // Dimensions: stations x time x analogs
+    a1f _targetDates;         // Dimensions: time
+    va1f _targetValuesNorm;   // Dimensions: stations x time
+    va1f _targetValuesRaw;    // Dimensions: stations x time
+    a2f _analogsCriteria;     // Dimensions: time x analogs
+    va2f _analogsValuesNorm;  // Dimensions: stations x time x analogs
+    va2f _analogsValuesRaw;   // Dimensions: stations x time x analogs
 };
 
 #endif

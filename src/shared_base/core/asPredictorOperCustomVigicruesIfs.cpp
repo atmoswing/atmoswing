@@ -33,18 +33,18 @@
 asPredictorOperCustomVigicruesIfs::asPredictorOperCustomVigicruesIfs(const wxString& dataId)
     : asPredictorOperEcmwfIfs(dataId) {
     // Set the basic properties.
-    m_datasetId = "Custom_Vigicrues_IFS";
-    m_datasetName = "Integrated Forecasting System (IFS) grib files for the Vigicrues network";
-    m_fStr.hasLevelDim = true;
-    m_leadTimeStep = 6;
-    m_runHourStart = 0;
-    m_runUpdate = 12;
-    m_percentMissingAllowed = 70;
-    m_fileExtension = "grb";
+    _datasetId = "Custom_Vigicrues_IFS";
+    _datasetName = "Integrated Forecasting System (IFS) grib files for the Vigicrues network";
+    _fStr.hasLevelDim = true;
+    _leadTimeStep = 6;
+    _runHourStart = 0;
+    _runUpdate = 12;
+    _percentMissingAllowed = 70;
+    _fileExtension = "grb";
 }
 
 wxString asPredictorOperCustomVigicruesIfs::GetFileName(const double date, const int) {
     wxString dateStr = asTime::GetStringTime(date, "YYYYMMDDhhmm");
 
-    return asStrF("CEP_%s_%s.%s", m_dataId.Upper(), dateStr, m_fileExtension);
+    return asStrF("CEP_%s_%s.%s", _dataId.Upper(), dateStr, _fileExtension);
 }

@@ -85,12 +85,12 @@ bool AtmoSwingAppViewer::OnInit() {
     InitLanguageSupport();
 
     // Check that it is the unique instance
-    m_singleInstanceChecker = nullptr;
+    _singleInstanceChecker = nullptr;
 
     if (!pConfig->ReadBool("/General/MultiInstances", false)) {
         const wxString instanceName = asStrF(wxT("atmoswing-viewer-%s"), wxGetUserId());
-        m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-        if (m_singleInstanceChecker->IsAnotherRunning()) {
+        _singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+        if (_singleInstanceChecker->IsAnotherRunning()) {
             // wxLogError(_("Program already running, aborting."));
             wxMessageBox(_("Program already running, aborting."));
             return false;
@@ -232,7 +232,7 @@ void AtmoSwingAppViewer::InitLanguageSupport() {
 
 int AtmoSwingAppViewer::OnExit() {
     // Instance checker
-    wxDELETE(m_singleInstanceChecker);
+    wxDELETE(_singleInstanceChecker);
 
     // Config file (from wxWidgets samples)
     delete wxFileConfig::Set((wxFileConfig*)nullptr);

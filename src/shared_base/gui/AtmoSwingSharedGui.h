@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
+// C++ code generated with wxFormBuilder (version 4.2.1-0-g80c4cb6)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -33,7 +33,6 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asDialogFilePickerVirtual
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,11 +41,11 @@ class asDialogFilePickerVirtual : public wxDialog
 	private:
 
 	protected:
-		wxStaticText* m_staticTextDescription;
-		wxFilePickerCtrl* m_filePicker;
-		wxStdDialogButtonSizer* m_buttonsConfirmation;
-		wxButton* m_buttonsConfirmationOK;
-		wxButton* m_buttonsConfirmationCancel;
+		wxStaticText* _staticTextDescription;
+		wxFilePickerCtrl* _filePicker;
+		wxStdDialogButtonSizer* _buttonsConfirmation;
+		wxButton* _buttonsConfirmationOK;
+		wxButton* _buttonsConfirmationCancel;
 
 	public:
 
@@ -64,11 +63,11 @@ class asDialogFileSaverVirtual : public wxDialog
 	private:
 
 	protected:
-		wxStaticText* m_staticTextDescription;
-		wxFilePickerCtrl* m_filePicker;
-		wxStdDialogButtonSizer* m_buttonsConfirmation;
-		wxButton* m_buttonsConfirmationSave;
-		wxButton* m_buttonsConfirmationCancel;
+		wxStaticText* _staticTextDescription;
+		wxFilePickerCtrl* _filePicker;
+		wxStdDialogButtonSizer* _buttonsConfirmation;
+		wxButton* _buttonsConfirmationSave;
+		wxButton* _buttonsConfirmationCancel;
 
 	public:
 
@@ -86,27 +85,27 @@ class asFramePredictandDBVirtual : public wxFrame
 	private:
 
 	protected:
-		wxBoxSizer* m_sizerMain;
-		wxPanel* m_panelMain;
-		wxBoxSizer* m_sizerMainPanel;
-		wxStaticText* m_staticTextDataParam;
-		wxChoice* m_choiceDataParam;
-		wxStaticText* m_staticTextDataTempResol;
-		wxChoice* m_choiceDataTempResol;
-		wxStaticText* m_staticTextDataSpatAggreg;
-		wxChoice* m_choiceDataSpatAggreg;
-		wxBoxSizer* m_sizerProcessing;
-		wxStaticText* m_staticTextCatalogPath;
-		wxFilePickerCtrl* m_filePickerCatalogPath;
-		wxStaticText* m_staticTextDataDir;
-		wxDirPickerCtrl* m_dirPickerDataDir;
-		wxStaticText* m_staticTextPatternsDir;
-		wxDirPickerCtrl* m_dirPickerPatternsDir;
-		wxStaticText* m_staticDestinationDir;
-		wxDirPickerCtrl* m_dirPickerDestinationDir;
-		wxStdDialogButtonSizer* m_buttonsConfirmation;
-		wxButton* m_buttonsConfirmationOK;
-		wxButton* m_buttonsConfirmationCancel;
+		wxBoxSizer* _sizerMain;
+		wxPanel* _panelMain;
+		wxBoxSizer* _sizerMainPanel;
+		wxStaticText* _staticTextDataParam;
+		wxChoice* _choiceDataParam;
+		wxStaticText* _staticTextDataTempResol;
+		wxChoice* _choiceDataTempResol;
+		wxStaticText* _staticTextDataSpatAggreg;
+		wxChoice* _choiceDataSpatAggreg;
+		wxBoxSizer* _sizerProcessing;
+		wxStaticText* _staticTextCatalogPath;
+		wxFilePickerCtrl* _filePickerCatalogPath;
+		wxStaticText* _staticTextDataDir;
+		wxDirPickerCtrl* _dirPickerDataDir;
+		wxStaticText* _staticTextPatternsDir;
+		wxDirPickerCtrl* _dirPickerPatternsDir;
+		wxStaticText* _staticDestinationDir;
+		wxDirPickerCtrl* _dirPickerDestinationDir;
+		wxStdDialogButtonSizer* _buttonsConfirmation;
+		wxButton* _buttonsConfirmationOK;
+		wxButton* _buttonsConfirmationCancel;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnDataSelection( wxCommandEvent& event ) { event.Skip(); }
@@ -130,13 +129,13 @@ class asPanelProcessingPrecipitation : public wxPanel
 	private:
 
 	protected:
-		wxStaticText* m_staticText22;
-		wxStaticText* m_staticTextYears;
+		wxStaticText* _staticText22;
+		wxStaticText* _staticTextYears;
 
 	public:
-		wxCheckBox* m_checkBoxReturnPeriod;
-		wxTextCtrl* m_textCtrlReturnPeriod;
-		wxCheckBox* m_checkBoxSqrt;
+		wxCheckBox* _checkBoxReturnPeriod;
+		wxTextCtrl* _textCtrlReturnPeriod;
+		wxCheckBox* _checkBoxSqrt;
 
 		asPanelProcessingPrecipitation( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
@@ -152,10 +151,10 @@ class asPanelProcessingLightning : public wxPanel
 	private:
 
 	protected:
-		wxStaticText* m_staticText23;
+		wxStaticText* _staticText23;
 
 	public:
-		wxCheckBox* m_checkBoxLog;
+		wxCheckBox* _checkBoxLog;
 
 		asPanelProcessingLightning( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
@@ -171,20 +170,20 @@ class asFrameAboutVirtual : public wxFrame
 	private:
 
 	protected:
-		wxPanel* m_Panel;
-		wxStaticBitmap* m_logo;
-		wxStaticText* m_staticTextVersion;
-		wxNotebook* m_notebook;
-		wxPanel* m_panelCredits;
-		wxStaticText* m_staticTextDevelopers;
-		wxStaticText* m_staticTextDevelopersList;
-		wxStaticText* m_staticTextSupervision;
-		wxStaticText* m_staticTextSupervisionList;
-		wxStaticText* m_staticTextThanks;
-		wxStaticText* m_staticTextThanksList;
-		wxStaticText* m_staticTextSpacer;
-		wxPanel* m_panelLicense;
-		wxTextCtrl* m_textCtrlLicense;
+		wxPanel* _panel;
+		wxStaticBitmap* _logo;
+		wxStaticText* _staticTextVersion;
+		wxNotebook* _notebook;
+		wxPanel* _panelCredits;
+		wxStaticText* _staticTextDevelopers;
+		wxStaticText* _staticTextDevelopersList;
+		wxStaticText* _staticTextSupervision;
+		wxStaticText* _staticTextSupervisionList;
+		wxStaticText* _staticTextThanks;
+		wxStaticText* _staticTextThanksList;
+		wxStaticText* _staticTextSpacer;
+		wxPanel* _panelLicense;
+		wxTextCtrl* _textCtrlLicense;
 
 	public:
 

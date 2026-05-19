@@ -43,9 +43,9 @@ class asThreadViewerLayerManagerZoomIn : public asThread {
 
   protected:
   private:
-    vrViewerLayerManager* m_viewerLayerManager;
-    wxCriticalSection* m_critSectionViewerLayerManager;
-    vrRealRect m_rect;
+    vrViewerLayerManager* _viewerLayerManager;
+    wxCriticalSection* _critSectionViewerLayerManager;
+    vrRealRect _rect;
 };
 
 #endif

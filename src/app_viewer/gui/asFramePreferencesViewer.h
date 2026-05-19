@@ -51,7 +51,7 @@ class asFramePreferencesViewer : public asFramePreferencesViewerVirtual {
     void ApplyChanges(wxCommandEvent& event) override;
 
   private:
-    asWorkspace* m_workspace;
+    asWorkspace* _workspace;
 };
 
 #endif

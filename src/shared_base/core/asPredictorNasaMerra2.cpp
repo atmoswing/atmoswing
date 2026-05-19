@@ -34,49 +34,49 @@ asPredictorNasaMerra2::asPredictorNasaMerra2(const wxString& dataId)
     : asPredictor(dataId) {
     // Downloaded from http://disc.sci.gsfc.nasa.gov/daac-bin/FTPSubset2.pl
     // Set the basic properties.
-    m_datasetId = "NASA_MERRA_2";
-    m_provider = "NASA";
-    m_datasetName = "Modern-Era Retrospective analysis for Research and Applications, Version 2";
-    m_fileType = asFile::Netcdf;
-    m_strideAllowed = true;
-    m_parseTimeReference = true;
-    m_nanValues.push_back(std::pow(10.f, 15.f));
-    m_nanValues.push_back(std::pow(10.f, 15.f) - 1);
-    m_fStr.dimLatName = "lat";
-    m_fStr.dimLonName = "lon";
-    m_fStr.dimTimeName = "time";
-    m_fStr.dimLevelName = "lev";
+    _datasetId = "NASA_MERRA_2";
+    _provider = "NASA";
+    _datasetName = "Modern-Era Retrospective analysis for Research and Applications, Version 2";
+    _fileType = asFile::Netcdf;
+    _strideAllowed = true;
+    _parseTimeReference = true;
+    _nanValues.push_back(std::pow(10.f, 15.f));
+    _nanValues.push_back(std::pow(10.f, 15.f) - 1);
+    _fStr.dimLatName = "lat";
+    _fStr.dimLonName = "lon";
+    _fStr.dimTimeName = "time";
+    _fStr.dimLevelName = "lev";
 }
 
 bool asPredictorNasaMerra2::Init() {
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("inst6_3d_ana_Np", false) || m_product.IsSameAs("ana", false) ||
-        m_product.IsSameAs("M2I6NPANA", false)) {
-        m_fStr.hasLevelDim = true;
+    if (_product.IsSameAs("inst6_3d_ana_Np", false) || _product.IsSameAs("ana", false) ||
+        _product.IsSameAs("M2I6NPANA", false)) {
+        _fStr.hasLevelDim = true;
         if (IsGeopotentialHeight()) {
-            m_parameter = GeopotentialHeight;
-            m_parameterName = "Geopotential height";
-            m_fileVarName = "H";
-            m_unit = m;
+            _parameter = GeopotentialHeight;
+            _parameterName = "Geopotential height";
+            _fileVarName = "H";
+            _unit = m;
         } else if (IsAirTemperature()) {
-            m_parameter = AirTemperature;
-            m_parameterName = "Air temperature";
-            m_fileVarName = "T";
-            m_unit = degK;
+            _parameter = AirTemperature;
+            _parameterName = "Air temperature";
+            _fileVarName = "T";
+            _unit = degK;
         } else if (IsSeaLevelPressure()) {
-            m_parameter = Pressure;
-            m_parameterName = "Sea-level pressure";
-            m_fileVarName = "SLP";
-            m_unit = Pa;
+            _parameter = Pressure;
+            _parameterName = "Sea-level pressure";
+            _fileVarName = "SLP";
+            _unit = Pa;
         } else {
-            m_parameter = ParameterUndefined;
-            m_parameterName = "Undefined";
-            m_fileVarName = m_dataId;
-            m_unit = UnitUndefined;
+            _parameter = ParameterUndefined;
+            _parameterName = "Undefined";
+            _fileVarName = _dataId;
+            _unit = UnitUndefined;
         }
-        m_fileNamePattern = "%4d/%02d/MERRA2_*00.inst6_3d_ana_Np.%4d%02d%02d.nc4";
+        _fileNamePattern = "%4d/%02d/MERRA2_*00.inst6_3d_ana_Np.%4d%02d%02d.nc4";
 
     } else {
         wxLogError(_("level type not implemented for this reanalysis dataset."));
@@ -84,21 +84,21 @@ bool asPredictorNasaMerra2::Init() {
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
-                   m_datasetName);
+    if (_fileNamePattern.IsEmpty() || _fileVarName.IsEmpty()) {
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), _dataId,
+                   _datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
-                   m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), _dataId,
+                   _datasetName);
         return false;
     }
 
     // Set to initialized
-    m_initialized = true;
+    _initialized = true;
 
     return true;
 }
@@ -111,7 +111,7 @@ void asPredictorNasaMerra2::ListFiles(asTimeArray& timeArray) {
     for (int i = 0; i < tArray.size(); i++) {
         Time t = asTime::GetTimeStruct(tArray[i]);
         if (tLast.year != t.year || tLast.month != t.month || tLast.day != t.day) {
-            wxString path = GetFullDirectoryPath() + asStrF(m_fileNamePattern, t.year, t.month, t.year, t.month, t.day);
+            wxString path = GetFullDirectoryPath() + asStrF(_fileNamePattern, t.year, t.month, t.year, t.month, t.day);
             if (t.year < 1992) {
                 path.Replace("MERRA2_*00", "MERRA2_100");
             } else if (t.year < 2001) {
@@ -122,7 +122,7 @@ void asPredictorNasaMerra2::ListFiles(asTimeArray& timeArray) {
                 path.Replace("MERRA2_*00", "MERRA2_400");
             }
 
-            m_files.push_back(path);
+            _files.push_back(path);
             tLast = t;
         }
     }

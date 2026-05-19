@@ -38,18 +38,18 @@
 
 asPredictand::asPredictand(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                            SpatialAggregation dataSpatialAggregation)
-    : m_fileVersion(1.4f),
-      m_parameter(dataParameter),
-      m_temporalResolution(dataTemporalResolution),
-      m_spatialAggregation(dataSpatialAggregation),
-      m_timeStepDays(0.0),
-      m_timeLength(0),
-      m_stationsNb(0),
-      m_dateProcessed(0.0),
-      m_dateStart(0.0),
-      m_dateEnd(0.0),
-      m_hasNormalizedData(false),
-      m_hasReferenceValues(false) {}
+    : _fileVersion(1.4f),
+      _parameter(dataParameter),
+      _temporalResolution(dataTemporalResolution),
+      _spatialAggregation(dataSpatialAggregation),
+      _timeStepDays(0.0),
+      _timeLength(0),
+      _stationsNb(0),
+      _dateProcessed(0.0),
+      _dateStart(0.0),
+      _dateEnd(0.0),
+      _hasNormalizedData(false),
+      _hasReferenceValues(false) {}
 
 asPredictand::Parameter asPredictand::StringToParameterEnum(const wxString& parameterStr) {
     if (parameterStr.CmpNoCase("Precipitation") == 0) {
@@ -247,10 +247,10 @@ asPredictand* asPredictand::GetInstance(const wxString& filePath) {
 }
 
 wxString asPredictand::GetDBFilePathSaving(const wxString& destinationDir) const {
-    wxString parameter = ParameterEnumToString(m_parameter);
-    wxString temporalResolution = asPredictand::TemporalResolutionEnumToString(m_temporalResolution);
-    wxString spatialAggregation = asPredictand::SpatialAggregationEnumToString(m_spatialAggregation);
-    wxString fileName = parameter + "-" + temporalResolution + "-" + spatialAggregation + "-" + m_datasetId;
+    wxString parameter = ParameterEnumToString(_parameter);
+    wxString temporalResolution = asPredictand::TemporalResolutionEnumToString(_temporalResolution);
+    wxString spatialAggregation = asPredictand::SpatialAggregationEnumToString(_spatialAggregation);
+    wxString fileName = parameter + "-" + temporalResolution + "-" + spatialAggregation + "-" + _datasetId;
 
     wxString predictandDBFilePath = destinationDir + DS + fileName + ".nc";
 
@@ -259,57 +259,57 @@ wxString asPredictand::GetDBFilePathSaving(const wxString& destinationDir) const
 
 bool asPredictand::InitMembers(const wxString& catalogFilePath) {
     // Starting and ending date of the DB, to be overwritten
-    m_dateStart = asTime::GetMJD(2100, 1, 1);
-    m_dateEnd = asTime::GetMJD(1800, 1, 1);
+    _dateStart = asTime::GetMJD(2100, 1, 1);
+    _dateEnd = asTime::GetMJD(1800, 1, 1);
 
     // Get the catalog information
     asCatalogPredictands catalog(catalogFilePath);
     if (!catalog.Load()) return false;
 
     // Get first and last date
-    if (catalog.GetStart() < m_dateStart) m_dateStart = catalog.GetStart();
-    if (catalog.GetEnd() > m_dateEnd) m_dateEnd = catalog.GetEnd();
+    if (catalog.GetStart() < _dateStart) _dateStart = catalog.GetStart();
+    if (catalog.GetEnd() > _dateEnd) _dateEnd = catalog.GetEnd();
 
     // Get other catalog data
-    m_datasetId = catalog.GetSetId();
-    m_coordSys = catalog.GetCoordSys();
-    m_stationsNb = catalog.GetStationsNb();
-    m_timeStepDays = catalog.GetTimeStepDays();
+    _datasetId = catalog.GetSetId();
+    _coordSys = catalog.GetCoordSys();
+    _stationsNb = catalog.GetStationsNb();
+    _timeStepDays = catalog.GetTimeStepDays();
 
     // Get the time length
-    m_timeLength = ((m_dateEnd - m_dateStart) / m_timeStepDays) + 1;
+    _timeLength = ((_dateEnd - _dateStart) / _timeStepDays) + 1;
 
     // Get time array
-    asTimeArray timeArray(m_dateStart, m_dateEnd, m_timeStepDays * 24.0, asTimeArray::Simple);
+    asTimeArray timeArray(_dateStart, _dateEnd, _timeStepDays * 24.0, asTimeArray::Simple);
     timeArray.Init();
-    m_time = timeArray.GetTimeArray();
+    _time = timeArray.GetTimeArray();
 
     return true;
 }
 
 bool asPredictand::InitBaseContainers() {
-    if (m_stationsNb < 1) {
+    if (_stationsNb < 1) {
         wxLogError(_("The stations number is inferior to 1."));
         return false;
     }
-    if (m_timeLength < 1) {
+    if (_timeLength < 1) {
         wxLogError(_("The time length is inferior to 1."));
         return false;
     }
-    m_stationNames.resize(m_stationsNb);
-    m_stationIds.resize(m_stationsNb);
-    m_stationOfficialIds.resize(m_stationsNb);
-    m_stationXCoords.resize(m_stationsNb);
-    m_stationYCoords.resize(m_stationsNb);
-    m_stationHeights.resize(m_stationsNb);
-    m_stationStarts.resize(m_stationsNb);
-    m_stationEnds.resize(m_stationsNb);
-    m_time.resize(m_timeLength);
-    m_dataRaw.resize(m_timeLength, m_stationsNb);
-    m_dataRaw.fill(NAN);
-    if (m_hasNormalizedData) {
-        m_dataNormalized.resize(m_timeLength, m_stationsNb);
-        m_dataNormalized.fill(NAN);
+    _stationNames.resize(_stationsNb);
+    _stationIds.resize(_stationsNb);
+    _stationOfficialIds.resize(_stationsNb);
+    _stationXCoords.resize(_stationsNb);
+    _stationYCoords.resize(_stationsNb);
+    _stationHeights.resize(_stationsNb);
+    _stationStarts.resize(_stationsNb);
+    _stationEnds.resize(_stationsNb);
+    _time.resize(_timeLength);
+    _dataRaw.resize(_timeLength, _stationsNb);
+    _dataRaw.fill(NAN);
+    if (_hasNormalizedData) {
+        _dataNormalized.resize(_timeLength, _stationsNb);
+        _dataNormalized.fill(NAN);
     }
 
     return true;
@@ -326,69 +326,69 @@ bool asPredictand::LoadCommonData(asFileNetcdf& ncFile) {
     }
 
     // Get global attributes
-    m_parameter = (Parameter)ncFile.GetAttInt("data_parameter");
-    m_temporalResolution = (TemporalResolution)ncFile.GetAttInt("data_temporal_resolution");
-    m_spatialAggregation = (SpatialAggregation)ncFile.GetAttInt("data_spatial_aggregation");
-    m_datasetId = ncFile.GetAttString("dataset_id");
-    m_hasNormalizedData = ncFile.HasVariable("data_normalized");
-    m_hasReferenceValues = m_hasNormalizedData;
+    _parameter = (Parameter)ncFile.GetAttInt("data_parameter");
+    _temporalResolution = (TemporalResolution)ncFile.GetAttInt("data_temporal_resolution");
+    _spatialAggregation = (SpatialAggregation)ncFile.GetAttInt("data_spatial_aggregation");
+    _datasetId = ncFile.GetAttString("dataset_id");
+    _hasNormalizedData = ncFile.HasVariable("data_normalized");
+    _hasReferenceValues = _hasNormalizedData;
     if (ncFile.HasAttribute("coordinate_system")) {
-        m_coordSys = ncFile.GetAttString("coordinate_system");
+        _coordSys = ncFile.GetAttString("coordinate_system");
     }
 
     // Get time
-    m_timeLength = ncFile.GetDimLength("time");
-    m_time.resize(m_timeLength);
-    ncFile.GetVar("time", &m_time[0]);
+    _timeLength = ncFile.GetDimLength("time");
+    _time.resize(_timeLength);
+    ncFile.GetVar("time", &_time[0]);
 
     // Get stations properties
-    m_stationsNb = ncFile.GetDimLength("stations");
-    wxASSERT(m_stationsNb > 0);
-    m_stationNames.resize(m_stationsNb);
-    m_stationIds.resize(m_stationsNb);
-    m_stationOfficialIds.resize(m_stationsNb);
-    m_stationHeights.resize(m_stationsNb);
-    m_stationXCoords.resize(m_stationsNb);
-    m_stationYCoords.resize(m_stationsNb);
-    m_stationStarts.resize(m_stationsNb);
-    m_stationEnds.resize(m_stationsNb);
+    _stationsNb = ncFile.GetDimLength("stations");
+    wxASSERT(_stationsNb > 0);
+    _stationNames.resize(_stationsNb);
+    _stationIds.resize(_stationsNb);
+    _stationOfficialIds.resize(_stationsNb);
+    _stationHeights.resize(_stationsNb);
+    _stationXCoords.resize(_stationsNb);
+    _stationYCoords.resize(_stationsNb);
+    _stationStarts.resize(_stationsNb);
+    _stationEnds.resize(_stationsNb);
 
     if (version <= 1.2) {
-        ncFile.GetVar("stations_name", &m_stationNames[0], m_stationsNb);
-        ncFile.GetVar("stations_ids", &m_stationIds[0]);
-        ncFile.GetVar("stations_height", &m_stationHeights[0]);
-        ncFile.GetVar("loc_coord_u", &m_stationXCoords[0]);
-        ncFile.GetVar("loc_coord_v", &m_stationYCoords[0]);
-        ncFile.GetVar("start", &m_stationStarts[0]);
-        ncFile.GetVar("end", &m_stationEnds[0]);
+        ncFile.GetVar("stations_name", &_stationNames[0], _stationsNb);
+        ncFile.GetVar("stations_ids", &_stationIds[0]);
+        ncFile.GetVar("stations_height", &_stationHeights[0]);
+        ncFile.GetVar("loc_coord_u", &_stationXCoords[0]);
+        ncFile.GetVar("loc_coord_v", &_stationYCoords[0]);
+        ncFile.GetVar("start", &_stationStarts[0]);
+        ncFile.GetVar("end", &_stationEnds[0]);
     } else if (version <= 1.3) {
-        ncFile.GetVar("stations_name", &m_stationNames[0], m_stationsNb);
-        ncFile.GetVar("stations_ids", &m_stationIds[0]);
-        ncFile.GetVar("stations_height", &m_stationHeights[0]);
-        ncFile.GetVar("loc_coord_x", &m_stationXCoords[0]);
-        ncFile.GetVar("loc_coord_y", &m_stationYCoords[0]);
-        ncFile.GetVar("start", &m_stationStarts[0]);
-        ncFile.GetVar("end", &m_stationEnds[0]);
+        ncFile.GetVar("stations_name", &_stationNames[0], _stationsNb);
+        ncFile.GetVar("stations_ids", &_stationIds[0]);
+        ncFile.GetVar("stations_height", &_stationHeights[0]);
+        ncFile.GetVar("loc_coord_x", &_stationXCoords[0]);
+        ncFile.GetVar("loc_coord_y", &_stationYCoords[0]);
+        ncFile.GetVar("start", &_stationStarts[0]);
+        ncFile.GetVar("end", &_stationEnds[0]);
     } else {
-        ncFile.GetVar("station_names", &m_stationNames[0], m_stationsNb);
-        ncFile.GetVar("station_ids", &m_stationIds[0]);
-        ncFile.GetVar("station_official_ids", &m_stationOfficialIds[0], m_stationsNb);
-        ncFile.GetVar("station_heights", &m_stationHeights[0]);
-        ncFile.GetVar("station_x_coords", &m_stationXCoords[0]);
-        ncFile.GetVar("station_y_coords", &m_stationYCoords[0]);
-        ncFile.GetVar("station_starts", &m_stationStarts[0]);
-        ncFile.GetVar("station_ends", &m_stationEnds[0]);
+        ncFile.GetVar("station_names", &_stationNames[0], _stationsNb);
+        ncFile.GetVar("station_ids", &_stationIds[0]);
+        ncFile.GetVar("station_official_ids", &_stationOfficialIds[0], _stationsNb);
+        ncFile.GetVar("station_heights", &_stationHeights[0]);
+        ncFile.GetVar("station_x_coords", &_stationXCoords[0]);
+        ncFile.GetVar("station_y_coords", &_stationYCoords[0]);
+        ncFile.GetVar("station_starts", &_stationStarts[0]);
+        ncFile.GetVar("station_ends", &_stationEnds[0]);
     }
 
     // Get data
     size_t indexStart[2] = {0, 0};
-    size_t indexCount[2] = {size_t(m_timeLength), size_t(m_stationsNb)};
-    m_dataRaw.resize(m_timeLength, m_stationsNb);
+    size_t indexCount[2] = {size_t(_timeLength), size_t(_stationsNb)};
+    _dataRaw.resize(_timeLength, _stationsNb);
 
     if (isnan(version) || version <= 1.3) {
-        ncFile.GetVarArray("data_gross", indexStart, indexCount, &m_dataRaw(0, 0));
+        ncFile.GetVarArray("data_gross", indexStart, indexCount, &_dataRaw(0, 0));
     } else {
-        ncFile.GetVarArray("data", indexStart, indexCount, &m_dataRaw(0, 0));
+        ncFile.GetVarArray("data", indexStart, indexCount, &_dataRaw(0, 0));
     }
 
     return true;
@@ -396,7 +396,7 @@ bool asPredictand::LoadCommonData(asFileNetcdf& ncFile) {
 
 void asPredictand::SetCommonDefinitions(asFileNetcdf& ncFile) const {
     // Define dimensions. Time is the unlimited dimension.
-    ncFile.DefDim("stations", m_stationsNb);
+    ncFile.DefDim("stations", _stationsNb);
     ncFile.DefDim("time");
 
     // The dimensions name array is used to pass the dimensions to the variable.
@@ -409,15 +409,15 @@ void asPredictand::SetCommonDefinitions(asFileNetcdf& ncFile) const {
     dimNames2D.push_back("stations");
 
     // Put general attributes
-    ncFile.PutAtt("version", &m_fileVersion);
-    auto dataParameter = (int)m_parameter;
+    ncFile.PutAtt("version", &_fileVersion);
+    auto dataParameter = (int)_parameter;
     ncFile.PutAtt("data_parameter", &dataParameter);
-    auto dataTemporalResolution = (int)m_temporalResolution;
+    auto dataTemporalResolution = (int)_temporalResolution;
     ncFile.PutAtt("data_temporal_resolution", &dataTemporalResolution);
-    auto dataSpatialAggregation = (int)m_spatialAggregation;
+    auto dataSpatialAggregation = (int)_spatialAggregation;
     ncFile.PutAtt("data_spatial_aggregation", &dataSpatialAggregation);
-    ncFile.PutAtt("dataset_id", m_datasetId);
-    ncFile.PutAtt("coordinate_system", m_coordSys);
+    ncFile.PutAtt("dataset_id", _datasetId);
+    ncFile.PutAtt("coordinate_system", _coordSys);
 
     // Define variables: the scores and the corresponding dates
     ncFile.DefVar("time", NC_DOUBLE, 1, dimNameTime);
@@ -482,37 +482,37 @@ void asPredictand::SetCommonDefinitions(asFileNetcdf& ncFile) const {
 bool asPredictand::SaveCommonData(asFileNetcdf& ncFile) const {
     // Provide sizes for variables
     size_t startTime[] = {0};
-    size_t countTime[] = {size_t(m_timeLength)};
+    size_t countTime[] = {size_t(_timeLength)};
     size_t startStations[] = {0};
-    size_t countStations[] = {size_t(m_stationsNb)};
+    size_t countStations[] = {size_t(_stationsNb)};
     size_t start2[] = {0, 0};
-    size_t count2[] = {size_t(m_timeLength), size_t(m_stationsNb)};
+    size_t count2[] = {size_t(_timeLength), size_t(_stationsNb)};
 
     // Write data
-    ncFile.PutVarArray("time", startTime, countTime, &m_time(0));
-    ncFile.PutVarArray("station_names", startStations, countStations, &m_stationNames[0], m_stationNames.size());
-    ncFile.PutVarArray("station_official_ids", startStations, countStations, &m_stationOfficialIds[0],
-                       m_stationOfficialIds.size());
-    ncFile.PutVarArray("station_ids", startStations, countStations, &m_stationIds(0));
-    ncFile.PutVarArray("station_heights", startStations, countStations, &m_stationHeights(0));
-    ncFile.PutVarArray("station_x_coords", startStations, countStations, &m_stationXCoords(0));
-    ncFile.PutVarArray("station_y_coords", startStations, countStations, &m_stationYCoords(0));
-    ncFile.PutVarArray("station_starts", startStations, countStations, &m_stationStarts(0));
-    ncFile.PutVarArray("station_ends", startStations, countStations, &m_stationEnds(0));
-    ncFile.PutVarArray("data", start2, count2, &m_dataRaw(0, 0));
+    ncFile.PutVarArray("time", startTime, countTime, &_time(0));
+    ncFile.PutVarArray("station_names", startStations, countStations, &_stationNames[0], _stationNames.size());
+    ncFile.PutVarArray("station_official_ids", startStations, countStations, &_stationOfficialIds[0],
+                       _stationOfficialIds.size());
+    ncFile.PutVarArray("station_ids", startStations, countStations, &_stationIds(0));
+    ncFile.PutVarArray("station_heights", startStations, countStations, &_stationHeights(0));
+    ncFile.PutVarArray("station_x_coords", startStations, countStations, &_stationXCoords(0));
+    ncFile.PutVarArray("station_y_coords", startStations, countStations, &_stationYCoords(0));
+    ncFile.PutVarArray("station_starts", startStations, countStations, &_stationStarts(0));
+    ncFile.PutVarArray("station_ends", startStations, countStations, &_stationEnds(0));
+    ncFile.PutVarArray("data", start2, count2, &_dataRaw(0, 0));
 
     return true;
 }
 
 bool asPredictand::SetStationProperties(asCatalogPredictands& currentData, size_t stationIndex) {
-    m_stationNames[stationIndex] = currentData.GetStationName(stationIndex);
-    m_stationIds(stationIndex) = currentData.GetStationId(stationIndex);
-    m_stationOfficialIds[stationIndex] = currentData.GetStationOfficialId(stationIndex);
-    m_stationXCoords(stationIndex) = currentData.GetStationCoord(stationIndex).x;
-    m_stationYCoords(stationIndex) = currentData.GetStationCoord(stationIndex).y;
-    m_stationHeights(stationIndex) = currentData.GetStationHeight(stationIndex);
-    m_stationStarts(stationIndex) = currentData.GetStationStart(stationIndex);
-    m_stationEnds(stationIndex) = currentData.GetStationEnd(stationIndex);
+    _stationNames[stationIndex] = currentData.GetStationName(stationIndex);
+    _stationIds(stationIndex) = currentData.GetStationId(stationIndex);
+    _stationOfficialIds[stationIndex] = currentData.GetStationOfficialId(stationIndex);
+    _stationXCoords(stationIndex) = currentData.GetStationCoord(stationIndex).x;
+    _stationYCoords(stationIndex) = currentData.GetStationCoord(stationIndex).y;
+    _stationHeights(stationIndex) = currentData.GetStationHeight(stationIndex);
+    _stationStarts(stationIndex) = currentData.GetStationStart(stationIndex);
+    _stationEnds(stationIndex) = currentData.GetStationEnd(stationIndex);
 
     return true;
 }
@@ -520,7 +520,7 @@ bool asPredictand::SetStationProperties(asCatalogPredictands& currentData, size_
 bool asPredictand::ParseData(const wxString& catalogFile, const wxString& directory, const wxString& patternDir) {
 #if USE_GUI
     // The progress bar
-    asDialogProgressBar ProgressBar(_("Loading data from files.\n"), m_stationsNb);
+    asDialogProgressBar ProgressBar(_("Loading data from files.\n"), _stationsNb);
 #endif
 
     // Get catalog
@@ -573,7 +573,7 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, int station
     datFile.SkipLines(filePattern.headerLines);
 
     // Get first index on the tima axis
-    int startIndex = asFind(&m_time[0], &m_time[m_time.size() - 1], currentData.GetStationStart(stationIndex));
+    int startIndex = asFind(&_time[0], &_time[_time.size() - 1], currentData.GetStationStart(stationIndex));
     if (startIndex == asOUT_OF_RANGE || startIndex == asNOT_FOUND) {
         wxLogError(_("The given start date for \"%s\" is out of the catalog range."),
                    currentData.GetStationName(stationIndex));
@@ -597,9 +597,9 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, int station
         }
 
         // Check the size of the array
-        if (timeIndex >= m_timeLength) {
-            wxLogError(_("The time index is larger than the matrix (timeIndex = %d, m_timeLength = %d)."), timeIndex,
-                       m_timeLength);
+        if (timeIndex >= _timeLength) {
+            wxLogError(_("The time index is larger than the matrix (timeIndex = %d, _timeLength = %d)."), timeIndex,
+                       _timeLength);
             return false;
         }
 
@@ -621,7 +621,7 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, int station
     datFile.Close();
 
     // Get end index
-    int endIndex = asFind(&m_time[0], &m_time[m_time.size() - 1], currentData.GetStationEnd(stationIndex));
+    int endIndex = asFind(&_time[0], &_time[_time.size() - 1], currentData.GetStationEnd(stationIndex));
     if (endIndex == asOUT_OF_RANGE || endIndex == asNOT_FOUND) {
         wxLogError(_("The given end date for \"%s\" is out of the catalog range."),
                    currentData.GetStationName(stationIndex));
@@ -694,7 +694,7 @@ bool asPredictand::ParseTabsDelimitedContent(int stationIndex, const asFileDat::
         double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour, valTimeMinute, 0);
 
         // Find matching date
-        while (dateData - m_time(timeIndex) > 0.0001) {
+        while (dateData - _time(timeIndex) > 0.0001) {
             timeIndex++;
         }
     }
@@ -703,7 +703,7 @@ bool asPredictand::ParseTabsDelimitedContent(int stationIndex, const asFileDat::
     wxString dataStr = vColumns[pattern.dataBegin - 1];
 
     // Put value in the matrix
-    m_dataRaw(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
+    _dataRaw(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
 
     timeIndex++;
 
@@ -741,7 +741,7 @@ bool asPredictand::ParseConstantWidthContent(int stationIndex, const asFileDat::
         double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour, valTimeMinute, 0);
 
         // Find matching date
-        while (dateData - m_time(timeIndex) > 0.0001) {
+        while (dateData - _time(timeIndex) > 0.0001) {
             timeIndex++;
         }
     }
@@ -750,7 +750,7 @@ bool asPredictand::ParseConstantWidthContent(int stationIndex, const asFileDat::
     wxString dataStr = lineContent.Mid(pattern.dataBegin - 1, pattern.dataEnd - pattern.dataBegin + 1);
 
     // Put value in the matrix
-    m_dataRaw(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
+    _dataRaw(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
 
     timeIndex++;
 
@@ -777,15 +777,15 @@ float asPredictand::ParseAndCheckDataValue(asCatalogPredictands& currentData, wx
 }
 
 a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const {
-    // Flag to check the need of aggregation (timeStepDays>m_timeStepDays)
+    // Flag to check the need of aggregation (timeStepDays>_timeStepDays)
     bool aggregate = false;
     int indexTimeSpanUp = 0;
     int indexTimeSpanDown = 0;
 
-    if (timeStepDays == m_timeStepDays) {
+    if (timeStepDays == _timeStepDays) {
         aggregate = false;
-    } else if (timeStepDays > m_timeStepDays) {
-        if (std::fmod(timeStepDays, m_timeStepDays) > 0.0000001) {
+    } else if (timeStepDays > _timeStepDays) {
+        if (std::fmod(timeStepDays, _timeStepDays) > 0.0000001) {
             wxLogError(
                 _("The timestep for the extraction of the predictands maximums has to be a multiple of the data "
                   "timestep."));
@@ -798,8 +798,8 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const {
         aggregate = true;
 
         // indices to add or substract around the mid value
-        indexTimeSpanUp = floor((timeStepDays / m_timeStepDays) / 2);
-        indexTimeSpanDown = ceil((timeStepDays / m_timeStepDays) / 2) - 1;
+        indexTimeSpanUp = floor((timeStepDays / _timeStepDays) / 2);
+        indexTimeSpanDown = ceil((timeStepDays / _timeStepDays) / 2) - 1;
     } else {
         wxLogError(
             _("The timestep for the extraction of the predictands maximums cannot be lower than the data timestep."));
@@ -813,35 +813,35 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const {
     int indYearEnd = 0;
 
     // Get catalog beginning and end
-    int yearStart = asTime::GetYear(m_dateStart);
-    if (asTime::GetMonth(m_dateStart) != 1 || asTime::GetDay(m_dateStart) != 1) {
+    int yearStart = asTime::GetYear(_dateStart);
+    if (asTime::GetMonth(_dateStart) != 1 || asTime::GetDay(_dateStart) != 1) {
         yearStart++;
         indYearStart++;
     }
-    int yearEnd = asTime::GetYear(m_dateEnd);
+    int yearEnd = asTime::GetYear(_dateEnd);
     indYearEnd = yearEnd - yearStart + indYearStart;
-    if (asTime::GetMonth(m_dateEnd) != 12 || asTime::GetDay(m_dateEnd) != 31) {
+    if (asTime::GetMonth(_dateEnd) != 12 || asTime::GetDay(_dateEnd) != 31) {
         yearEnd--;
     }
 
     // Create the container
-    a2f maxMatrix = a2f::Constant(m_stationsNb, indYearEnd + 1, NAN);
+    a2f maxMatrix = a2f::Constant(_stationsNb, indYearEnd + 1, NAN);
 
     // Look for maximums
-    for (int iStat = 0; iStat < m_stationsNb; iStat++) {
+    for (int iStat = 0; iStat < _stationsNb; iStat++) {
         for (int iYear = yearStart; iYear <= yearEnd; iYear++) {
             // The maximum value and a flag for accepted NaNs
             float annualmax = -99999;
             int nansNb = 0;
 
             // Find begining and end of the year
-            int rowstart = asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 1, 1),
+            int rowstart = asFindFloor(&_time[0], &_time[_timeLength - 1], asTime::GetMJD(iYear, 1, 1),
                                        asHIDE_WARNINGS);
-            int rowend = asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 12, 31, 59, 59),
+            int rowend = asFindFloor(&_time[0], &_time[_timeLength - 1], asTime::GetMJD(iYear, 12, 31, 59, 59),
                                      asHIDE_WARNINGS);
             if ((rowend == asOUT_OF_RANGE) | (rowend == asNOT_FOUND)) {
                 if (iYear == yearEnd) {
-                    rowend = m_timeLength - 1;
+                    rowend = _timeLength - 1;
                 } else {
                     annualmax = NAN;
                 }
@@ -851,8 +851,8 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const {
             // Get max
             if (!aggregate) {
                 for (int iRow = rowstart; iRow <= rowend; iRow++) {
-                    if (!isnan(m_dataRaw(iRow, iStat))) {
-                        annualmax = wxMax(m_dataRaw(iRow, iStat), annualmax);
+                    if (!isnan(_dataRaw(iRow, iStat))) {
+                        annualmax = wxMax(_dataRaw(iRow, iStat), annualmax);
                     } else {
                         nansNb++;
                     }
@@ -864,15 +864,15 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const {
                 // Correction for both extremes
                 rowstart = wxMax(rowstart - indexTimeSpanDown, 0);
                 rowstart += indexTimeSpanDown;
-                rowend = wxMin(rowend + indexTimeSpanUp, (int)m_dataRaw.rows() - 1);
+                rowend = wxMin(rowend + indexTimeSpanUp, (int)_dataRaw.rows() - 1);
                 rowend -= indexTimeSpanUp;
 
                 // Loop within the new limits
                 for (int iRow = rowstart; iRow <= rowend; iRow++) {
                     float timeStepSum = 0;
                     for (int iEl = iRow - indexTimeSpanDown; iEl <= iRow + indexTimeSpanUp; iEl++) {
-                        if (!isnan(m_dataRaw(iEl, iStat))) {
-                            timeStepSum += m_dataRaw(iEl, iStat);
+                        if (!isnan(_dataRaw(iEl, iStat))) {
+                            timeStepSum += _dataRaw(iEl, iStat);
                         } else {
                             timeStepSum = NAN;
                             break;
@@ -898,5 +898,5 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const {
 }
 
 int asPredictand::GetStationIndex(int stationId) const {
-    return asFind(&m_stationIds[0], &m_stationIds[m_stationsNb - 1], stationId);
+    return asFind(&_stationIds[0], &_stationIds[_stationsNb - 1], stationId);
 }

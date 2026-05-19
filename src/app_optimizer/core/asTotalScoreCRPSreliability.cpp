@@ -30,7 +30,7 @@
 
 asTotalScoreCRPSreliability::asTotalScoreCRPSreliability(const wxString& periodString)
     : asTotalScore(periodString) {
-    m_has2DArrayArgument = true;
+    _has2DArrayArgument = true;
 }
 
 float asTotalScoreCRPSreliability::Assess(const a1f& targetDates, const a2f& scores,

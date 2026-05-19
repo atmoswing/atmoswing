@@ -43,7 +43,7 @@ class asPanelSidebarAnalogDates : public asPanelSidebar {
     void SetChoices(a1f& arrayDate, a1f& arrayCriteria, const wxString& dateFormat);
 
   private:
-    wxListCtrl* m_listCtrl;
+    wxListCtrl* _listCtrl;
 
     void OnDateSelection(wxListEvent& event);
 };

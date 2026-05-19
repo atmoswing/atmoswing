@@ -171,23 +171,23 @@ class asFileNetcdf : public asFile {
     nc_type GetVarType(const wxString& varName);
 
     size_t GetVarsNb() const {
-        return m_struct.vars.size();
+        return _struct.vars.size();
     }
 
     size_t GetDimsNb() const {
-        return m_struct.dims.size();
+        return _struct.dims.size();
     }
 
     size_t GetGlobAttsNb() const {
-        return m_struct.atts.size();
+        return _struct.atts.size();
     }
 
     size_t GetVarAttsNb(int varId) const {
-        return m_struct.vars[varId].atts.size();
+        return _struct.vars[varId].atts.size();
     }
 
     size_t GetVarDimsNb(int varId) const {
-        return m_struct.vars[varId].dimIds.size();
+        return _struct.vars[varId].dimIds.size();
     }
 
   protected:
@@ -224,10 +224,10 @@ class asFileNetcdf : public asFile {
         vector<NcAttStruct> atts;
     };
 
-    NcStruct m_struct;
-    int m_fileId;
-    int m_status;
-    bool m_defineMode;
+    NcStruct _struct;
+    int _fileId;
+    int _status;
+    bool _defineMode;
 
     void HandleErrorNetcdf();
 

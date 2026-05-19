@@ -40,7 +40,7 @@ class asPanelSidebar : public asPanelSidebarVirtual {
     void ReducePanel();
 
     bool IsReduced() const {
-        return !m_sizerMain->IsShown(m_sizerContent);
+        return !_sizerMain->IsShown(_sizerContent);
     }
 
   protected:

@@ -71,7 +71,7 @@ class AtmoSwingAppViewer : public wxApp {
     static void InitLanguageSupport();
 
   private:
-    wxSingleInstanceChecker* m_singleInstanceChecker; /**< The single instance checker. */
+    wxSingleInstanceChecker* _singleInstanceChecker; /**< The single instance checker. */
 };
 
 DECLARE_APP(AtmoSwingAppViewer);

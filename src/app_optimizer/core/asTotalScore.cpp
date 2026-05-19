@@ -47,24 +47,24 @@
 #include "asTotalScoreTS.h"
 
 asTotalScore::asTotalScore(const wxString& periodString)
-    : m_singleValue(true),
-      m_has2DArrayArgument(false),
-      m_ranksNb(0) {
+    : _singleValue(true),
+      _has2DArrayArgument(false),
+      _ranksNb(0) {
     if (periodString.CmpNoCase("Total") == 0) {
-        m_period = asTotalScore::Total;
+        _period = asTotalScore::Total;
     } else if (periodString.CmpNoCase("SpecificPeriod") == 0) {
-        m_period = asTotalScore::SpecificPeriod;
+        _period = asTotalScore::SpecificPeriod;
     } else if (periodString.CmpNoCase("Summer") == 0) {
-        m_period = asTotalScore::Summer;
+        _period = asTotalScore::Summer;
     } else if (periodString.CmpNoCase("Fall") == 0) {
-        m_period = asTotalScore::Fall;
+        _period = asTotalScore::Fall;
     } else if (periodString.CmpNoCase("Winter") == 0) {
-        m_period = asTotalScore::Winter;
+        _period = asTotalScore::Winter;
     } else if (periodString.CmpNoCase("Spring") == 0) {
-        m_period = asTotalScore::Spring;
+        _period = asTotalScore::Spring;
     } else {
         wxLogError(_("The total score period was not correctly set."));
-        m_period = asTotalScore::Total;
+        _period = asTotalScore::Total;
     }
 }
 

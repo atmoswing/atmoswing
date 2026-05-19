@@ -32,28 +32,28 @@ wxDEFINE_EVENT(asEVT_ACTION_ANALOG_DATE_SELECTION_CHANGED, wxCommandEvent);
 asPanelSidebarAnalogDates::asPanelSidebarAnalogDates(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                                                      const wxSize& size, long style)
     : asPanelSidebar(parent, id, pos, size, style) {
-    m_header->SetLabelText(_("Analog dates"));
+    _header->SetLabelText(_("Analog dates"));
 
     wxSize listSize = wxSize();
     listSize.SetHeight(120);
-    m_listCtrl = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, listSize,
+    _listCtrl = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, listSize,
                                 wxLC_REPORT | wxNO_BORDER | wxLC_SINGLE_SEL);
-    m_listCtrl->InsertColumn(0l, _("Analog"), wxLIST_FORMAT_RIGHT, 50);
-    m_listCtrl->InsertColumn(1l, _("Date"), wxLIST_FORMAT_LEFT, 100);
-    m_listCtrl->InsertColumn(2l, _("Criteria"), wxLIST_FORMAT_LEFT, 80);
-    m_listCtrl->Layout();
+    _listCtrl->InsertColumn(0l, _("Analog"), wxLIST_FORMAT_RIGHT, 50);
+    _listCtrl->InsertColumn(1l, _("Date"), wxLIST_FORMAT_LEFT, 100);
+    _listCtrl->InsertColumn(2l, _("Criteria"), wxLIST_FORMAT_LEFT, 80);
+    _listCtrl->Layout();
 
-    m_sizerContent->Add(m_listCtrl, 0, wxEXPAND, 0);
+    _sizerContent->Add(_listCtrl, 0, wxEXPAND, 0);
 
-    m_listCtrl->Connect(wxEVT_COMMAND_LIST_ITEM_SELECTED,
+    _listCtrl->Connect(wxEVT_COMMAND_LIST_ITEM_SELECTED,
                         wxListEventHandler(asPanelSidebarAnalogDates::OnDateSelection), nullptr, this);
 
     Layout();
-    m_sizerContent->Fit(this);
+    _sizerContent->Fit(this);
 }
 
 asPanelSidebarAnalogDates::~asPanelSidebarAnalogDates() {
-    m_listCtrl->Disconnect(wxEVT_COMMAND_LIST_ITEM_SELECTED,
+    _listCtrl->Disconnect(wxEVT_COMMAND_LIST_ITEM_SELECTED,
                            wxListEventHandler(asPanelSidebarAnalogDates::OnDateSelection), nullptr, this);
 }
 
@@ -66,21 +66,21 @@ void asPanelSidebarAnalogDates::OnDateSelection(wxListEvent& event) {
 }
 
 void asPanelSidebarAnalogDates::SetChoices(a1f& arrayDate, a1f& arrayCriteria, const wxString& dateFormat) {
-    m_listCtrl->Freeze();
-    m_listCtrl->DeleteAllItems();
+    _listCtrl->Freeze();
+    _listCtrl->DeleteAllItems();
 
     for (int i = 0; i < arrayDate.size(); i++) {
         wxString buf;
         buf.Printf("%d", i + 1);
-        long tmp = m_listCtrl->InsertItem(i, buf, 0);
-        m_listCtrl->SetItemData(tmp, i);
+        long tmp = _listCtrl->InsertItem(i, buf, 0);
+        _listCtrl->SetItemData(tmp, i);
 
         buf.Printf("%s", asTime::GetStringTime(arrayDate[i], dateFormat));
-        m_listCtrl->SetItem(tmp, 1, buf);
+        _listCtrl->SetItem(tmp, 1, buf);
 
         buf.Printf("%g", arrayCriteria[i]);
-        m_listCtrl->SetItem(tmp, 2, buf);
+        _listCtrl->SetItem(tmp, 2, buf);
     }
 
-    m_listCtrl->Thaw();
+    _listCtrl->Thaw();
 }

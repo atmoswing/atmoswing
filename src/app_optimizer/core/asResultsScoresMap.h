@@ -54,14 +54,14 @@ class asResultsScoresMap : public asResults {
     void BuildFileName();
 
   private:
-    a1f m_mapLon;
-    a1f m_mapLat;
-    a1f m_mapLevel;
-    va2f m_mapScores;
-    vf m_scores;
-    vf m_lon;
-    vf m_lat;
-    vf m_level;
+    a1f _mapLon;
+    a1f _mapLat;
+    a1f _mapLevel;
+    va2f _mapScores;
+    vf _scores;
+    vf _lon;
+    vf _lat;
+    vf _level;
 };
 
 #endif

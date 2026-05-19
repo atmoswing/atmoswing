@@ -36,72 +36,72 @@
 
 asResultsForecast::asResultsForecast()
     : asResults(),
-      m_predictandParameter(asPredictand::Precipitation),
-      m_predictandTemporalResolution(asPredictand::Daily),
-      m_predictandSpatialAggregation(asPredictand::Station),
-      m_hasReferenceValues(false),
-      m_leadTimeOrigin(0.0) {}
+      _predictandParameter(asPredictand::Precipitation),
+      _predictandTemporalResolution(asPredictand::Daily),
+      _predictandSpatialAggregation(asPredictand::Station),
+      _hasReferenceValues(false),
+      _leadTimeOrigin(0.0) {}
 
 void asResultsForecast::Init(asParametersForecast& params, double leadTimeOrigin) {
     // Resize to 0 to avoid keeping old results
-    m_targetDates.resize(0);
-    m_stationNames.resize(0);
-    m_stationOfficialIds.resize(0);
-    m_stationIds.resize(0);
-    m_stationHeights.resize(0);
-    m_analogsNb.resize(0);
-    m_analogsCriteria.resize(0);
-    m_analogsDates.resize(0);
-    m_analogsValuesRaw.resize(0);
-    m_analogsValuesNorm.resize(0);
-    m_stationXCoords.resize(0);
-    m_stationYCoords.resize(0);
-    m_referenceAxis.resize(0);
-    m_referenceValues.resize(0, 0);
-    m_predictorDatasetIdsOper.resize(0);
-    m_predictorDatasetIdsArchive.resize(0);
-    m_predictorDataIdsOper.resize(0);
-    m_predictorDataIdsArchive.resize(0);
-    m_predictorLevels.resize(0);
-    m_predictorHours.resize(0);
-    m_predictorLonMin.resize(0);
-    m_predictorLonMax.resize(0);
-    m_predictorLatMin.resize(0);
-    m_predictorLatMax.resize(0);
+    _targetDates.resize(0);
+    _stationNames.resize(0);
+    _stationOfficialIds.resize(0);
+    _stationIds.resize(0);
+    _stationHeights.resize(0);
+    _analogsNb.resize(0);
+    _analogsCriteria.resize(0);
+    _analogsDates.resize(0);
+    _analogsValuesRaw.resize(0);
+    _analogsValuesNorm.resize(0);
+    _stationXCoords.resize(0);
+    _stationYCoords.resize(0);
+    _referenceAxis.resize(0);
+    _referenceValues.resize(0, 0);
+    _predictorDatasetIdsOper.resize(0);
+    _predictorDatasetIdsArchive.resize(0);
+    _predictorDataIdsOper.resize(0);
+    _predictorDataIdsArchive.resize(0);
+    _predictorLevels.resize(0);
+    _predictorHours.resize(0);
+    _predictorLonMin.resize(0);
+    _predictorLonMax.resize(0);
+    _predictorLatMin.resize(0);
+    _predictorLatMax.resize(0);
 
-    m_methodId = params.GetMethodId();
-    m_methodIdDisplay = params.GetMethodIdDisplay();
-    m_specificTag = params.GetSpecificTag();
-    m_specificTagDisplay = params.GetSpecificTagDisplay();
-    m_description = params.GetDescription();
-    m_predictandDatabase = params.GetPredictandDatabase();
-    m_predictandStationIds = params.GetPredictandStationIds();
+    _methodId = params.GetMethodId();
+    _methodIdDisplay = params.GetMethodIdDisplay();
+    _specificTag = params.GetSpecificTag();
+    _specificTagDisplay = params.GetSpecificTagDisplay();
+    _description = params.GetDescription();
+    _predictandDatabase = params.GetPredictandDatabase();
+    _predictandStationIds = params.GetPredictandStationIds();
 
-    m_leadTimeOrigin = leadTimeOrigin;
-    m_dateProcessed = asTime::NowMJD(asUTM);
+    _leadTimeOrigin = leadTimeOrigin;
+    _dateProcessed = asTime::NowMJD(asUTM);
 
     // Set the analogs number
-    m_analogsNb.resize(params.GetLeadTimeNb());
+    _analogsNb.resize(params.GetLeadTimeNb());
     for (int i = 0; i < params.GetLeadTimeNb(); i++) {
-        m_analogsNb[i] = params.GetAnalogsNumberLeadTime(m_currentStep, i);
+        _analogsNb[i] = params.GetAnalogsNumberLeadTime(_currentStep, i);
     }
 
     BuildFileName();
 }
 
 void asResultsForecast::BuildFileName() {
-    wxASSERT(!m_forecastsDir.IsEmpty());
+    wxASSERT(!_forecastsDir.IsEmpty());
 
-    if (m_methodId.IsEmpty() || m_specificTag.IsEmpty()) {
+    if (_methodId.IsEmpty() || _specificTag.IsEmpty()) {
         wxLogError(_("The provided ID or the tag is empty, which isn't allowed !"));
     }
 
     // Base directory
-    m_filePath = m_forecastsDir;
-    m_filePath.Append(DS);
-    if (!m_subFolder.IsEmpty()) {
-        m_filePath.Append(DS);
-        m_filePath.Append(m_subFolder);
+    _filePath = _forecastsDir;
+    _filePath.Append(DS);
+    if (!_subFolder.IsEmpty()) {
+        _filePath.Append(DS);
+        _filePath.Append(_subFolder);
     }
 
     // Directory
@@ -110,76 +110,76 @@ void asResultsForecast::BuildFileName() {
     dirstructure.Append("MM");
     dirstructure.Append(DS);
     dirstructure.Append("DD");
-    wxString directory = asTime::GetStringTime(m_leadTimeOrigin, dirstructure);
-    m_filePath.Append(directory);
-    m_filePath.Append(DS);
+    wxString directory = asTime::GetStringTime(_leadTimeOrigin, dirstructure);
+    _filePath.Append(directory);
+    _filePath.Append(DS);
 
     // Filename
-    wxString forecastname = m_methodId + '.' + m_specificTag;
-    wxString nowstr = asTime::GetStringTime(m_leadTimeOrigin, "YYYY-MM-DD_hh");
+    wxString forecastname = _methodId + '.' + _specificTag;
+    wxString nowstr = asTime::GetStringTime(_leadTimeOrigin, "YYYY-MM-DD_hh");
     wxString ext = "nc";
     wxString filename = asStrF("%s.%s.%s", nowstr, forecastname, ext);
-    m_filePath.Append(filename);
+    _filePath.Append(filename);
 }
 
 bool asResultsForecast::Save() {
-    wxASSERT(!m_filePath.IsEmpty());
-    wxASSERT(m_targetDates.size() > 0);
-    wxASSERT(m_analogsNb.size() > 0);
-    wxASSERT(!m_stationNames.empty());
-    wxASSERT(!m_stationOfficialIds.empty());
-    wxASSERT(m_stationHeights.size() > 0);
-    wxASSERT(m_stationIds.size() > 0);
-    wxASSERT(!m_analogsCriteria.empty());
-    wxASSERT(!m_analogsDates.empty());
-    wxASSERT(!m_analogsValuesRaw.empty());
-    wxASSERT(!m_analogsValuesNorm.empty());
-    wxASSERT(m_stationXCoords.size() > 0);
-    wxASSERT(m_stationYCoords.size() > 0);
+    wxASSERT(!_filePath.IsEmpty());
+    wxASSERT(_targetDates.size() > 0);
+    wxASSERT(_analogsNb.size() > 0);
+    wxASSERT(!_stationNames.empty());
+    wxASSERT(!_stationOfficialIds.empty());
+    wxASSERT(_stationHeights.size() > 0);
+    wxASSERT(_stationIds.size() > 0);
+    wxASSERT(!_analogsCriteria.empty());
+    wxASSERT(!_analogsDates.empty());
+    wxASSERT(!_analogsValuesRaw.empty());
+    wxASSERT(!_analogsValuesNorm.empty());
+    wxASSERT(_stationXCoords.size() > 0);
+    wxASSERT(_stationYCoords.size() > 0);
 
-    if (m_hasReferenceValues) {
-        wxASSERT(m_referenceAxis.size() > 0);
-        wxASSERT(m_referenceValues.cols() > 0);
-        wxASSERT(m_referenceValues.rows() > 0);
+    if (_hasReferenceValues) {
+        wxASSERT(_referenceAxis.size() > 0);
+        wxASSERT(_referenceValues.cols() > 0);
+        wxASSERT(_referenceValues.rows() > 0);
     }
 
     // Get the elements size
-    size_t nLeadtime = m_targetDates.size();
-    size_t nAnalogsTot = m_analogsNb.sum();
-    size_t nStations = m_stationIds.size();
-    size_t nReferenceAxis = m_referenceAxis.size();
-    size_t nPredictors = m_predictorDatasetIdsOper.size();
+    size_t nLeadtime = _targetDates.size();
+    size_t nAnalogsTot = _analogsNb.sum();
+    size_t nStations = _stationIds.size();
+    size_t nReferenceAxis = _referenceAxis.size();
+    size_t nPredictors = _predictorDatasetIdsOper.size();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
     // Create netCDF dataset: enter define mode
-    asFileNetcdf ncFile(m_filePath, asFileNetcdf::Replace);
+    asFileNetcdf ncFile(_filePath, asFileNetcdf::Replace);
     if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
 
     // Set general attributes
-    ncFile.PutAtt("version_major", &m_fileVersionMajor);
-    ncFile.PutAtt("version_minor", &m_fileVersionMinor);
-    ncFile.PutAtt("predictand_parameter", asPredictand::ParameterEnumToString(m_predictandParameter));
+    ncFile.PutAtt("version_major", &_fileVersionMajor);
+    ncFile.PutAtt("version_minor", &_fileVersionMinor);
+    ncFile.PutAtt("predictand_parameter", asPredictand::ParameterEnumToString(_predictandParameter));
     ncFile.PutAtt("predictand_temporal_resolution",
-                  asPredictand::TemporalResolutionEnumToString(m_predictandTemporalResolution));
+                  asPredictand::TemporalResolutionEnumToString(_predictandTemporalResolution));
     ncFile.PutAtt("predictand_spatial_aggregation",
-                  asPredictand::SpatialAggregationEnumToString(m_predictandSpatialAggregation));
-    ncFile.PutAtt("predictand_dataset_id", m_predictandDatasetId);
-    ncFile.PutAtt("predictand_database", m_predictandDatabase);
+                  asPredictand::SpatialAggregationEnumToString(_predictandSpatialAggregation));
+    ncFile.PutAtt("predictand_dataset_id", _predictandDatasetId);
+    ncFile.PutAtt("predictand_database", _predictandDatabase);
     ncFile.PutAtt("predictand_station_ids", GetPredictandStationIdsString());
-    ncFile.PutAtt("method_id", m_methodId);
-    ncFile.PutAtt("method_id_display", m_methodIdDisplay);
-    ncFile.PutAtt("specific_tag", m_specificTag);
-    ncFile.PutAtt("specific_tag_display", m_specificTagDisplay);
-    ncFile.PutAtt("description", m_description);
-    ncFile.PutAtt("date_processed", &m_dateProcessed);
-    ncFile.PutAtt("lead_time_origin", &m_leadTimeOrigin);
-    ncFile.PutAtt("coordinate_system", m_coordinateSystem);
+    ncFile.PutAtt("method_id", _methodId);
+    ncFile.PutAtt("method_id_display", _methodIdDisplay);
+    ncFile.PutAtt("specific_tag", _specificTag);
+    ncFile.PutAtt("specific_tag_display", _specificTagDisplay);
+    ncFile.PutAtt("description", _description);
+    ncFile.PutAtt("date_processed", &_dateProcessed);
+    ncFile.PutAtt("lead_time_origin", &_leadTimeOrigin);
+    ncFile.PutAtt("coordinate_system", _coordinateSystem);
     short hasReferenceValues = 0;
-    if (m_hasReferenceValues) {
+    if (_hasReferenceValues) {
         hasReferenceValues = 1;
     }
     ncFile.PutAtt("has_reference_values", &hasReferenceValues);
@@ -188,7 +188,7 @@ bool asResultsForecast::Save() {
     ncFile.DefDim("lead_time", nLeadtime);
     ncFile.DefDim("analogs_tot", nAnalogsTot);
     ncFile.DefDim("stations", nStations);
-    if (m_hasReferenceValues) {
+    if (_hasReferenceValues) {
         ncFile.DefDim("reference_axis", nReferenceAxis);
     }
     ncFile.DefDim("predictors", nPredictors);
@@ -205,7 +205,7 @@ bool asResultsForecast::Save() {
     dimNamesAnalogsStations.emplace_back("analogs_tot");
     vstds dimNameReferenceAxis;
     vstds dimNameReferenceValues;
-    if (m_hasReferenceValues) {
+    if (_hasReferenceValues) {
         dimNameReferenceAxis.emplace_back("reference_axis");
         dimNameReferenceValues.emplace_back("stations");
         dimNameReferenceValues.emplace_back("reference_axis");
@@ -228,7 +228,7 @@ bool asResultsForecast::Save() {
     ncFile.DefVar("analog_values_norm", NC_FLOAT, 2, dimNamesAnalogsStations);
     ncFile.DefVarDeflate("analog_values_raw");
     ncFile.DefVarDeflate("analog_values_norm");
-    if (m_hasReferenceValues) {
+    if (_hasReferenceValues) {
         ncFile.DefVar("reference_axis", NC_FLOAT, 1, dimNameReferenceAxis);
         ncFile.DefVar("reference_values", NC_FLOAT, 2, dimNameReferenceValues);
     }
@@ -264,7 +264,7 @@ bool asResultsForecast::Save() {
     ncFile.PutAtt("long_name", "Y coordinate", "station_y_coords");
     ncFile.PutAtt("var_desc", "Y coordinate (west-east)", "station_y_coords");
     ncFile.PutAtt("units", "m", "station_y_coords");
-    if (m_hasReferenceValues) {
+    if (_hasReferenceValues) {
         ncFile.PutAtt("long_name", "Reference axis", "reference_axis");
         ncFile.PutAtt("var_desc", "Reference axis", "reference_axis");
         ncFile.PutAtt("long_name", "Reference values", "reference_values");
@@ -317,9 +317,9 @@ bool asResultsForecast::Save() {
 
     int ind = 0;
     for (int iTime = 0; iTime < nLeadtime; iTime++) {
-        for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
-            analogsCriteria[ind] = m_analogsCriteria[iTime][iAnalog];
-            analogsDates[ind] = m_analogsDates[iTime][iAnalog];
+        for (int iAnalog = 0; iAnalog < _analogsNb[iTime]; iAnalog++) {
+            analogsCriteria[ind] = _analogsCriteria[iTime][iAnalog];
+            analogsDates[ind] = _analogsDates[iTime][iAnalog];
             ind++;
         }
     }
@@ -327,49 +327,49 @@ bool asResultsForecast::Save() {
     int indVal = 0;
     for (int iStat = 0; iStat < nStations; iStat++) {
         for (int iTime = 0; iTime < nLeadtime; iTime++) {
-            for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
-                analogsValuesRaw[indVal] = m_analogsValuesRaw[iTime](iStat, iAnalog);
-                analogsValuesNorm[indVal] = m_analogsValuesNorm[iTime](iStat, iAnalog);
+            for (int iAnalog = 0; iAnalog < _analogsNb[iTime]; iAnalog++) {
+                analogsValuesRaw[indVal] = _analogsValuesRaw[iTime](iStat, iAnalog);
+                analogsValuesNorm[indVal] = _analogsValuesNorm[iTime](iStat, iAnalog);
                 indVal++;
             }
         }
     }
 
     // Write data
-    ncFile.PutVarArray("target_dates", startLeadTime, countLeadTime, &m_targetDates[0]);
-    ncFile.PutVarArray("analogs_nb", startLeadTime, countLeadTime, &m_analogsNb[0]);
-    ncFile.PutVarArray("station_names", startStations, countStations, &m_stationNames[0], nStations);
-    ncFile.PutVarArray("station_official_ids", startStations, countStations, &m_stationOfficialIds[0], nStations);
-    ncFile.PutVarArray("station_ids", startStations, countStations, &m_stationIds[0]);
-    ncFile.PutVarArray("station_heights", startStations, countStations, &m_stationHeights[0]);
-    ncFile.PutVarArray("station_x_coords", startStations, countStations, &m_stationXCoords(0));
-    ncFile.PutVarArray("station_y_coords", startStations, countStations, &m_stationYCoords(0));
+    ncFile.PutVarArray("target_dates", startLeadTime, countLeadTime, &_targetDates[0]);
+    ncFile.PutVarArray("analogs_nb", startLeadTime, countLeadTime, &_analogsNb[0]);
+    ncFile.PutVarArray("station_names", startStations, countStations, &_stationNames[0], nStations);
+    ncFile.PutVarArray("station_official_ids", startStations, countStations, &_stationOfficialIds[0], nStations);
+    ncFile.PutVarArray("station_ids", startStations, countStations, &_stationIds[0]);
+    ncFile.PutVarArray("station_heights", startStations, countStations, &_stationHeights[0]);
+    ncFile.PutVarArray("station_x_coords", startStations, countStations, &_stationXCoords(0));
+    ncFile.PutVarArray("station_y_coords", startStations, countStations, &_stationYCoords(0));
     ncFile.PutVarArray("analog_criteria", startAnalogsTot, countAnalogsTot, &analogsCriteria[0]);
     ncFile.PutVarArray("analog_dates", startAnalogsTot, countAnalogsTot, &analogsDates[0]);
     ncFile.PutVarArray("analog_values_raw", startAnalogsStations, countAnalogsStations, &analogsValuesRaw[0]);
     ncFile.PutVarArray("analog_values_norm", startAnalogsStations, countAnalogsStations, &analogsValuesNorm[0]);
-    if (m_hasReferenceValues) {
+    if (_hasReferenceValues) {
         size_t startReferenceAxis[] = {0};
         size_t countReferenceAxis[] = {nReferenceAxis};
         size_t startReferenceValues[] = {0, 0};
         size_t countReferenceValues[] = {nStations, nReferenceAxis};
-        ncFile.PutVarArray("reference_axis", startReferenceAxis, countReferenceAxis, &m_referenceAxis(0));
-        ncFile.PutVarArray("reference_values", startReferenceValues, countReferenceValues, &m_referenceValues(0, 0));
+        ncFile.PutVarArray("reference_axis", startReferenceAxis, countReferenceAxis, &_referenceAxis(0));
+        ncFile.PutVarArray("reference_values", startReferenceValues, countReferenceValues, &_referenceValues(0, 0));
     }
     ncFile.PutVarArray("predictor_dataset_ids_realtime", startPredictors, countPredictors,
-                       &m_predictorDatasetIdsOper[0], nPredictors);
+                       &_predictorDatasetIdsOper[0], nPredictors);
     ncFile.PutVarArray("predictor_dataset_ids_archive", startPredictors, countPredictors,
-                       &m_predictorDatasetIdsArchive[0], nPredictors);
-    ncFile.PutVarArray("predictor_data_ids_realtime", startPredictors, countPredictors, &m_predictorDataIdsOper[0],
+                       &_predictorDatasetIdsArchive[0], nPredictors);
+    ncFile.PutVarArray("predictor_data_ids_realtime", startPredictors, countPredictors, &_predictorDataIdsOper[0],
                        nPredictors);
-    ncFile.PutVarArray("predictor_data_ids_archive", startPredictors, countPredictors, &m_predictorDataIdsArchive[0],
+    ncFile.PutVarArray("predictor_data_ids_archive", startPredictors, countPredictors, &_predictorDataIdsArchive[0],
                        nPredictors);
-    ncFile.PutVarArray("predictor_levels", startPredictors, countPredictors, &m_predictorLevels[0]);
-    ncFile.PutVarArray("predictor_hours", startPredictors, countPredictors, &m_predictorHours[0]);
-    ncFile.PutVarArray("predictor_lon_min", startPredictors, countPredictors, &m_predictorLonMin[0]);
-    ncFile.PutVarArray("predictor_lon_max", startPredictors, countPredictors, &m_predictorLonMax[0]);
-    ncFile.PutVarArray("predictor_lat_min", startPredictors, countPredictors, &m_predictorLatMin[0]);
-    ncFile.PutVarArray("predictor_lat_max", startPredictors, countPredictors, &m_predictorLatMax[0]);
+    ncFile.PutVarArray("predictor_levels", startPredictors, countPredictors, &_predictorLevels[0]);
+    ncFile.PutVarArray("predictor_hours", startPredictors, countPredictors, &_predictorHours[0]);
+    ncFile.PutVarArray("predictor_lon_min", startPredictors, countPredictors, &_predictorLonMin[0]);
+    ncFile.PutVarArray("predictor_lon_max", startPredictors, countPredictors, &_predictorLonMax[0]);
+    ncFile.PutVarArray("predictor_lat_min", startPredictors, countPredictors, &_predictorLatMin[0]);
+    ncFile.PutVarArray("predictor_lat_max", startPredictors, countPredictors, &_predictorLatMax[0]);
 
     // Close:save new netCDF dataset
     ncFile.Close();
@@ -381,7 +381,7 @@ bool asResultsForecast::Save() {
 
 bool asResultsForecast::Load() {
     if (!Exists()) return false;
-    if (m_currentStep != 0) return false;
+    if (_currentStep != 0) return false;
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
@@ -391,7 +391,7 @@ bool asResultsForecast::Load() {
     int versionMajor, versionMinor;
     vf analogsCriteria, analogsDates, analogsValuesRaw, analogsValuesNorm;
 
-    asFileNetcdf ncFile(m_filePath, asFileNetcdf::ReadOnly);
+    asFileNetcdf ncFile(_filePath, asFileNetcdf::ReadOnly);
 
     try {
         // Open the NetCDF file
@@ -411,8 +411,8 @@ bool asResultsForecast::Load() {
             }
         }
 
-        if (versionMajor > m_fileVersionMajor ||
-            (versionMajor >= m_fileVersionMajor && versionMinor > m_fileVersionMinor)) {
+        if (versionMajor > _fileVersionMajor ||
+            (versionMajor >= _fileVersionMajor && versionMinor > _fileVersionMinor)) {
             wxLogError(
                 _("The forecast file was made with more recent version of AtmoSwing (file version %d.%d). It cannot "
                   "be opened here."),
@@ -422,69 +422,69 @@ bool asResultsForecast::Load() {
 
         if (versionMajor == 1 && versionMinor == 0) {
             wxLogWarning(_("The forecast file was made with an older version of AtmoSwing."));
-            m_predictandParameter = asPredictand::Precipitation;
-            m_predictandTemporalResolution = asPredictand::Daily;
-            m_predictandSpatialAggregation = asPredictand::Station;
-            m_predictandDatasetId = "MeteoSwiss-Rhone";
-            m_methodId = ncFile.GetAttString("modelName");
-            m_methodIdDisplay = ncFile.GetAttString("modelName");
-            m_specificTag = wxEmptyString;
-            m_specificTagDisplay = wxEmptyString;
-            m_description = wxEmptyString;
-            m_dateProcessed = ncFile.GetAttDouble("dateProcessed");
-            m_leadTimeOrigin = ncFile.GetAttDouble("leadTimeOrigin");
-            m_hasReferenceValues = true;
+            _predictandParameter = asPredictand::Precipitation;
+            _predictandTemporalResolution = asPredictand::Daily;
+            _predictandSpatialAggregation = asPredictand::Station;
+            _predictandDatasetId = "MeteoSwiss-Rhone";
+            _methodId = ncFile.GetAttString("modelName");
+            _methodIdDisplay = ncFile.GetAttString("modelName");
+            _specificTag = wxEmptyString;
+            _specificTagDisplay = wxEmptyString;
+            _description = wxEmptyString;
+            _dateProcessed = ncFile.GetAttDouble("dateProcessed");
+            _leadTimeOrigin = ncFile.GetAttDouble("leadTimeOrigin");
+            _hasReferenceValues = true;
         } else {
             if (versionMajor == 1 && versionMinor <= 4) {
-                m_methodId = ncFile.GetAttString("model_name");
-                m_methodIdDisplay = ncFile.GetAttString("model_name");
-                m_specificTag = wxEmptyString;
-                m_specificTagDisplay = wxEmptyString;
-                m_description = wxEmptyString;
+                _methodId = ncFile.GetAttString("model_name");
+                _methodIdDisplay = ncFile.GetAttString("model_name");
+                _specificTag = wxEmptyString;
+                _specificTagDisplay = wxEmptyString;
+                _description = wxEmptyString;
             } else {
-                m_methodId = ncFile.GetAttString("method_id");
-                m_methodIdDisplay = ncFile.GetAttString("method_id_display");
-                m_specificTag = ncFile.GetAttString("specific_tag");
-                m_specificTagDisplay = ncFile.GetAttString("specific_tag_display");
-                m_description = ncFile.GetAttString("description");
+                _methodId = ncFile.GetAttString("method_id");
+                _methodIdDisplay = ncFile.GetAttString("method_id_display");
+                _specificTag = ncFile.GetAttString("specific_tag");
+                _specificTagDisplay = ncFile.GetAttString("specific_tag_display");
+                _description = ncFile.GetAttString("description");
             }
 
             if (versionMajor == 1 && versionMinor <= 7) {
-                m_predictandParameter = asPredictand::Precipitation;
-                m_predictandTemporalResolution = asPredictand::Daily;
+                _predictandParameter = asPredictand::Precipitation;
+                _predictandTemporalResolution = asPredictand::Daily;
                 if (ncFile.GetAttInt("predictand_spatial_aggregation") == 0) {
-                    m_predictandSpatialAggregation = asPredictand::Station;
+                    _predictandSpatialAggregation = asPredictand::Station;
                 } else if (ncFile.GetAttInt("predictand_spatial_aggregation") == 1) {
-                    m_predictandSpatialAggregation = asPredictand::Groupment;
+                    _predictandSpatialAggregation = asPredictand::Groupment;
                 } else {
                     wxLogError(_("The spatial aggregation could not be converted."));
                     return false;
                 }
             } else {
-                m_predictandParameter = asPredictand::StringToParameterEnum(
+                _predictandParameter = asPredictand::StringToParameterEnum(
                     ncFile.GetAttString("predictand_parameter"));
-                m_predictandTemporalResolution = asPredictand::StringToTemporalResolutionEnum(
+                _predictandTemporalResolution = asPredictand::StringToTemporalResolutionEnum(
                     ncFile.GetAttString("predictand_temporal_resolution"));
-                m_predictandSpatialAggregation = asPredictand::StringToSpatialAggregationEnum(
+                _predictandSpatialAggregation = asPredictand::StringToSpatialAggregationEnum(
                     ncFile.GetAttString("predictand_spatial_aggregation"));
             }
 
-            m_predictandDatasetId = ncFile.GetAttString("predictand_dataset_id");
+            _predictandDatasetId = ncFile.GetAttString("predictand_dataset_id");
 
             if (versionMajor > 1 || (versionMajor == 1 && versionMinor >= 5)) {
-                m_predictandDatabase = ncFile.GetAttString("predictand_database");
+                _predictandDatabase = ncFile.GetAttString("predictand_database");
                 SetPredictandStationIds(ncFile.GetAttString("predictand_station_ids"));
             }
 
-            m_dateProcessed = ncFile.GetAttDouble("date_processed");
-            m_leadTimeOrigin = ncFile.GetAttDouble("lead_time_origin");
-            m_hasReferenceValues = false;
+            _dateProcessed = ncFile.GetAttDouble("date_processed");
+            _leadTimeOrigin = ncFile.GetAttDouble("lead_time_origin");
+            _hasReferenceValues = false;
             if (ncFile.GetAttShort("has_reference_values") == 1) {
-                m_hasReferenceValues = true;
+                _hasReferenceValues = true;
             }
 
             if (ncFile.HasAttribute("coordinate_system")) {
-                m_coordinateSystem = ncFile.GetAttString("coordinate_system");
+                _coordinateSystem = ncFile.GetAttString("coordinate_system");
             }
         }
 
@@ -504,65 +504,65 @@ bool asResultsForecast::Load() {
         }
 
         // Get lead time data
-        m_targetDates.resize(nLeadtime);
-        m_analogsNb.resize(nLeadtime);
-        m_stationNames.resize(nStations);
-        m_stationOfficialIds.resize(nStations);
-        m_stationIds.resize(nStations);
-        m_stationHeights.resize(nStations);
-        m_stationXCoords.resize(nStations);
-        m_stationYCoords.resize(nStations);
+        _targetDates.resize(nLeadtime);
+        _analogsNb.resize(nLeadtime);
+        _stationNames.resize(nStations);
+        _stationOfficialIds.resize(nStations);
+        _stationIds.resize(nStations);
+        _stationHeights.resize(nStations);
+        _stationXCoords.resize(nStations);
+        _stationYCoords.resize(nStations);
 
         if (versionMajor == 1 && versionMinor == 0) {
-            ncFile.GetVar("targetdates", &m_targetDates[0]);
-            ncFile.GetVar("analogsnb", &m_analogsNb[0]);
-            ncFile.GetVar("stationsnames", &m_stationNames[0], nStations);
-            ncFile.GetVar("stationsids", &m_stationIds[0]);
-            ncFile.GetVar("stationsheights", &m_stationHeights[0]);
-            ncFile.GetVar("loccoordu", &m_stationXCoords[0]);
-            ncFile.GetVar("loccoordv", &m_stationYCoords[0]);
+            ncFile.GetVar("targetdates", &_targetDates[0]);
+            ncFile.GetVar("analogsnb", &_analogsNb[0]);
+            ncFile.GetVar("stationsnames", &_stationNames[0], nStations);
+            ncFile.GetVar("stationsids", &_stationIds[0]);
+            ncFile.GetVar("stationsheights", &_stationHeights[0]);
+            ncFile.GetVar("loccoordu", &_stationXCoords[0]);
+            ncFile.GetVar("loccoordv", &_stationYCoords[0]);
         } else if (versionMajor == 1 && versionMinor <= 3) {
-            ncFile.GetVar("target_dates", &m_targetDates[0]);
-            ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
-            ncFile.GetVar("stations_names", &m_stationNames[0], nStations);
-            ncFile.GetVar("stations_ids", &m_stationIds[0]);
-            ncFile.GetVar("stations_heights", &m_stationHeights[0]);
-            ncFile.GetVar("loc_coord_u", &m_stationXCoords[0]);
-            ncFile.GetVar("loc_coord_v", &m_stationYCoords[0]);
+            ncFile.GetVar("target_dates", &_targetDates[0]);
+            ncFile.GetVar("analogs_nb", &_analogsNb[0]);
+            ncFile.GetVar("stations_names", &_stationNames[0], nStations);
+            ncFile.GetVar("stations_ids", &_stationIds[0]);
+            ncFile.GetVar("stations_heights", &_stationHeights[0]);
+            ncFile.GetVar("loc_coord_u", &_stationXCoords[0]);
+            ncFile.GetVar("loc_coord_v", &_stationYCoords[0]);
         } else if (versionMajor == 1 && versionMinor <= 5) {
-            ncFile.GetVar("target_dates", &m_targetDates[0]);
-            ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
-            ncFile.GetVar("stations_names", &m_stationNames[0], nStations);
-            ncFile.GetVar("stations_ids", &m_stationIds[0]);
-            ncFile.GetVar("stations_heights", &m_stationHeights[0]);
-            ncFile.GetVar("loc_coord_x", &m_stationXCoords[0]);
-            ncFile.GetVar("loc_coord_y", &m_stationYCoords[0]);
+            ncFile.GetVar("target_dates", &_targetDates[0]);
+            ncFile.GetVar("analogs_nb", &_analogsNb[0]);
+            ncFile.GetVar("stations_names", &_stationNames[0], nStations);
+            ncFile.GetVar("stations_ids", &_stationIds[0]);
+            ncFile.GetVar("stations_heights", &_stationHeights[0]);
+            ncFile.GetVar("loc_coord_x", &_stationXCoords[0]);
+            ncFile.GetVar("loc_coord_y", &_stationYCoords[0]);
         } else {
-            ncFile.GetVar("target_dates", &m_targetDates[0]);
-            ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
-            ncFile.GetVar("station_names", &m_stationNames[0], nStations);
-            ncFile.GetVar("station_official_ids", &m_stationOfficialIds[0], nStations);
-            ncFile.GetVar("station_ids", &m_stationIds[0]);
-            ncFile.GetVar("station_heights", &m_stationHeights[0]);
-            ncFile.GetVar("station_x_coords", &m_stationXCoords[0]);
-            ncFile.GetVar("station_y_coords", &m_stationYCoords[0]);
+            ncFile.GetVar("target_dates", &_targetDates[0]);
+            ncFile.GetVar("analogs_nb", &_analogsNb[0]);
+            ncFile.GetVar("station_names", &_stationNames[0], nStations);
+            ncFile.GetVar("station_official_ids", &_stationOfficialIds[0], nStations);
+            ncFile.GetVar("station_ids", &_stationIds[0]);
+            ncFile.GetVar("station_heights", &_stationHeights[0]);
+            ncFile.GetVar("station_x_coords", &_stationXCoords[0]);
+            ncFile.GetVar("station_y_coords", &_stationYCoords[0]);
         }
 
         // Get return periods properties
-        if (m_hasReferenceValues) {
+        if (_hasReferenceValues) {
             if (versionMajor == 1 && versionMinor == 0) {
                 int referenceAxisLength = ncFile.GetDimLength("returnperiods");
-                m_referenceAxis.resize(referenceAxisLength);
-                ncFile.GetVar("returnperiods", &m_referenceAxis[0]);
+                _referenceAxis.resize(referenceAxisLength);
+                ncFile.GetVar("returnperiods", &_referenceAxis[0]);
                 size_t startReferenceValues[2] = {0, 0};
                 size_t countReferenceValues[2] = {size_t(referenceAxisLength), size_t(nStations)};
-                m_referenceValues.resize(nStations, referenceAxisLength);
+                _referenceValues.resize(nStations, referenceAxisLength);
                 ncFile.GetVarArray("dailyprecipitationsforreturnperiods", startReferenceValues, countReferenceValues,
-                                   &m_referenceValues(0, 0));
+                                   &_referenceValues(0, 0));
             } else {
                 int referenceAxisLength = ncFile.GetDimLength("reference_axis");
-                m_referenceAxis.resize(referenceAxisLength);
-                ncFile.GetVar("reference_axis", &m_referenceAxis[0]);
+                _referenceAxis.resize(referenceAxisLength);
+                ncFile.GetVar("reference_axis", &_referenceAxis[0]);
                 size_t startReferenceValues[2] = {0, 0};
                 size_t countReferenceValues[2] = {0, 0};
                 if (versionMajor == 1 && versionMinor == 1) {
@@ -572,35 +572,35 @@ bool asResultsForecast::Load() {
                     countReferenceValues[0] = size_t(nStations);
                     countReferenceValues[1] = size_t(referenceAxisLength);
                 }
-                m_referenceValues.resize(nStations, referenceAxisLength);
+                _referenceValues.resize(nStations, referenceAxisLength);
                 ncFile.GetVarArray("reference_values", startReferenceValues, countReferenceValues,
-                                   &m_referenceValues(0, 0));
+                                   &_referenceValues(0, 0));
             }
         }
 
         // Get predictors info
         if (versionMajor >= 3) {
-            m_predictorDatasetIdsOper.resize(nPredictors);
-            m_predictorDatasetIdsArchive.resize(nPredictors);
-            m_predictorDataIdsOper.resize(nPredictors);
-            m_predictorDataIdsArchive.resize(nPredictors);
-            m_predictorLevels.resize(nPredictors);
-            m_predictorHours.resize(nPredictors);
-            m_predictorLonMin.resize(nPredictors);
-            m_predictorLonMax.resize(nPredictors);
-            m_predictorLatMin.resize(nPredictors);
-            m_predictorLatMax.resize(nPredictors);
+            _predictorDatasetIdsOper.resize(nPredictors);
+            _predictorDatasetIdsArchive.resize(nPredictors);
+            _predictorDataIdsOper.resize(nPredictors);
+            _predictorDataIdsArchive.resize(nPredictors);
+            _predictorLevels.resize(nPredictors);
+            _predictorHours.resize(nPredictors);
+            _predictorLonMin.resize(nPredictors);
+            _predictorLonMax.resize(nPredictors);
+            _predictorLatMin.resize(nPredictors);
+            _predictorLatMax.resize(nPredictors);
 
-            ncFile.GetVar("predictor_dataset_ids_realtime", &m_predictorDatasetIdsOper[0], nPredictors);
-            ncFile.GetVar("predictor_dataset_ids_archive", &m_predictorDatasetIdsArchive[0], nPredictors);
-            ncFile.GetVar("predictor_data_ids_realtime", &m_predictorDataIdsOper[0], nPredictors);
-            ncFile.GetVar("predictor_data_ids_archive", &m_predictorDataIdsArchive[0], nPredictors);
-            ncFile.GetVar("predictor_levels", &m_predictorLevels[0]);
-            ncFile.GetVar("predictor_hours", &m_predictorHours[0]);
-            ncFile.GetVar("predictor_lon_min", &m_predictorLonMin[0]);
-            ncFile.GetVar("predictor_lon_max", &m_predictorLonMax[0]);
-            ncFile.GetVar("predictor_lat_min", &m_predictorLatMin[0]);
-            ncFile.GetVar("predictor_lat_max", &m_predictorLatMax[0]);
+            ncFile.GetVar("predictor_dataset_ids_realtime", &_predictorDatasetIdsOper[0], nPredictors);
+            ncFile.GetVar("predictor_dataset_ids_archive", &_predictorDatasetIdsArchive[0], nPredictors);
+            ncFile.GetVar("predictor_data_ids_realtime", &_predictorDataIdsOper[0], nPredictors);
+            ncFile.GetVar("predictor_data_ids_archive", &_predictorDataIdsArchive[0], nPredictors);
+            ncFile.GetVar("predictor_levels", &_predictorLevels[0]);
+            ncFile.GetVar("predictor_hours", &_predictorHours[0]);
+            ncFile.GetVar("predictor_lon_min", &_predictorLonMin[0]);
+            ncFile.GetVar("predictor_lon_max", &_predictorLonMax[0]);
+            ncFile.GetVar("predictor_lat_min", &_predictorLatMin[0]);
+            ncFile.GetVar("predictor_lat_max", &_predictorLatMax[0]);
         }
 
         // Create vectors for matrices data
@@ -650,26 +650,26 @@ bool asResultsForecast::Load() {
     // Set data into the matrices
     int ind = 0;
     for (int iTime = 0; iTime < (int)nLeadtime; iTime++) {
-        a1f analogsCriteriaLeadTime(m_analogsNb[iTime]);
-        a1f analogsDatesLeadTime(m_analogsNb[iTime]);
+        a1f analogsCriteriaLeadTime(_analogsNb[iTime]);
+        a1f analogsDatesLeadTime(_analogsNb[iTime]);
 
-        for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < _analogsNb[iTime]; iAnalog++) {
             analogsCriteriaLeadTime(iAnalog) = analogsCriteria[ind];
             analogsDatesLeadTime(iAnalog) = analogsDates[ind];
             ind++;
         }
 
-        m_analogsCriteria.push_back(analogsCriteriaLeadTime);
-        m_analogsDates.push_back(analogsDatesLeadTime);
+        _analogsCriteria.push_back(analogsCriteriaLeadTime);
+        _analogsDates.push_back(analogsDatesLeadTime);
     }
 
     int indVal = 0;
     if (versionMajor == 1 && versionMinor == 0) {
         for (int iTime = 0; iTime < nLeadtime; iTime++) {
-            a2f analogsValuesRawLeadTime(nStations, m_analogsNb[iTime]);
-            a2f analogsValuesNormLeadTime(nStations, m_analogsNb[iTime]);
+            a2f analogsValuesRawLeadTime(nStations, _analogsNb[iTime]);
+            a2f analogsValuesNormLeadTime(nStations, _analogsNb[iTime]);
 
-            for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
+            for (int iAnalog = 0; iAnalog < _analogsNb[iTime]; iAnalog++) {
                 for (int iStat = 0; iStat < nStations; iStat++) {
                     analogsValuesRawLeadTime(iStat, iAnalog) = analogsValuesRaw[indVal];
                     analogsValuesNormLeadTime(iStat, iAnalog) = analogsValuesNorm[indVal];
@@ -677,45 +677,45 @@ bool asResultsForecast::Load() {
                 }
             }
 
-            m_analogsValuesRaw.push_back(analogsValuesRawLeadTime);
-            m_analogsValuesNorm.push_back(analogsValuesNormLeadTime);
+            _analogsValuesRaw.push_back(analogsValuesRawLeadTime);
+            _analogsValuesNorm.push_back(analogsValuesNormLeadTime);
         }
     } else {
         // Create containers
         for (int iTime = 0; iTime < nLeadtime; iTime++) {
-            a2f analogsValuesLeadTime(nStations, m_analogsNb[iTime]);
+            a2f analogsValuesLeadTime(nStations, _analogsNb[iTime]);
             analogsValuesLeadTime.fill(NAN);
-            m_analogsValuesRaw.push_back(analogsValuesLeadTime);
-            m_analogsValuesNorm.push_back(analogsValuesLeadTime);
+            _analogsValuesRaw.push_back(analogsValuesLeadTime);
+            _analogsValuesNorm.push_back(analogsValuesLeadTime);
         }
 
         for (int iStat = 0; iStat < nStations; iStat++) {
             for (int iTime = 0; iTime < nLeadtime; iTime++) {
-                for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
-                    m_analogsValuesRaw[iTime](iStat, iAnalog) = analogsValuesRaw[indVal];
-                    m_analogsValuesNorm[iTime](iStat, iAnalog) = analogsValuesNorm[indVal];
+                for (int iAnalog = 0; iAnalog < _analogsNb[iTime]; iAnalog++) {
+                    _analogsValuesRaw[iTime](iStat, iAnalog) = analogsValuesRaw[indVal];
+                    _analogsValuesNorm[iTime](iStat, iAnalog) = analogsValuesNorm[indVal];
                     indVal++;
                 }
             }
         }
     }
 
-    wxASSERT(!m_filePath.IsEmpty());
-    wxASSERT(!m_predictandDatasetId.IsEmpty());
-    wxASSERT(m_targetDates.size() > 0);
-    wxASSERT(m_analogsNb.size() > 0);
-    wxASSERT(m_stationIds.size() > 0);
-    wxASSERT(!m_stationNames.empty());
-    wxASSERT(m_stationHeights.size() > 0);
-    wxASSERT(!m_analogsCriteria.empty());
-    wxASSERT(!m_analogsDates.empty());
-    wxASSERT(!m_analogsValuesRaw.empty());
-    wxASSERT(m_stationXCoords.size() > 0);
-    wxASSERT(m_stationYCoords.size() > 0);
-    if (m_hasReferenceValues) {
-        wxASSERT(m_referenceAxis.size() > 0);
-        wxASSERT(m_referenceValues.cols() > 0);
-        wxASSERT(m_referenceValues.rows() > 0);
+    wxASSERT(!_filePath.IsEmpty());
+    wxASSERT(!_predictandDatasetId.IsEmpty());
+    wxASSERT(_targetDates.size() > 0);
+    wxASSERT(_analogsNb.size() > 0);
+    wxASSERT(_stationIds.size() > 0);
+    wxASSERT(!_stationNames.empty());
+    wxASSERT(_stationHeights.size() > 0);
+    wxASSERT(!_analogsCriteria.empty());
+    wxASSERT(!_analogsDates.empty());
+    wxASSERT(!_analogsValuesRaw.empty());
+    wxASSERT(_stationXCoords.size() > 0);
+    wxASSERT(_stationYCoords.size() > 0);
+    if (_hasReferenceValues) {
+        wxASSERT(_referenceAxis.size() > 0);
+        wxASSERT(_referenceValues.cols() > 0);
+        wxASSERT(_referenceValues.rows() > 0);
     }
 
     return true;
@@ -723,7 +723,7 @@ bool asResultsForecast::Load() {
 
 wxArrayString asResultsForecast::GetStationNamesWxArray() const {
     wxArrayString stationsNames;
-    for (const auto& stationName : m_stationNames) {
+    for (const auto& stationName : _stationNames) {
         stationsNames.Add(stationName);
     }
     return stationsNames;
@@ -731,12 +731,12 @@ wxArrayString asResultsForecast::GetStationNamesWxArray() const {
 
 wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArray() const {
     wxArrayString stationsNames;
-    for (int i = 0; i < m_stationNames.size(); i++) {
+    for (int i = 0; i < _stationNames.size(); i++) {
         wxString label;
-        if (std::isfinite(m_stationHeights[i]) && m_stationHeights[i] != 0 && m_stationHeights[i] != -1) {
-            label = asStrF("%s (%4.0fm)", m_stationNames[i], m_stationHeights[i]);
+        if (std::isfinite(_stationHeights[i]) && _stationHeights[i] != 0 && _stationHeights[i] != -1) {
+            label = asStrF("%s (%4.0fm)", _stationNames[i], _stationHeights[i]);
         } else {
-            label = asStrF("%s", m_stationNames[i]);
+            label = asStrF("%s", _stationNames[i]);
         }
         stationsNames.Add(label);
     }
@@ -752,15 +752,15 @@ void asResultsForecast::LimitDataToDays(int days) {
 }
 
 void asResultsForecast::LimitDataToNbTimeSteps(int length) {
-    if (length >= m_targetDates.size()) return;
+    if (length >= _targetDates.size()) return;
 
-    m_targetDates = m_targetDates.head(length);
-    m_analogsNb = m_analogsNb.head(length);
+    _targetDates = _targetDates.head(length);
+    _analogsNb = _analogsNb.head(length);
 
-    m_analogsDates = va1f(m_analogsDates.begin(), m_analogsDates.begin() + length);
-    m_analogsCriteria = va1f(m_analogsCriteria.begin(), m_analogsCriteria.begin() + length);
-    m_analogsValuesRaw = va2f(m_analogsValuesRaw.begin(), m_analogsValuesRaw.begin() + length);
-    m_analogsValuesNorm = va2f(m_analogsValuesNorm.begin(), m_analogsValuesNorm.begin() + length);
+    _analogsDates = va1f(_analogsDates.begin(), _analogsDates.begin() + length);
+    _analogsCriteria = va1f(_analogsCriteria.begin(), _analogsCriteria.begin() + length);
+    _analogsValuesRaw = va2f(_analogsValuesRaw.begin(), _analogsValuesRaw.begin() + length);
+    _analogsValuesNorm = va2f(_analogsValuesNorm.begin(), _analogsValuesNorm.begin() + length);
 }
 
 wxString asResultsForecast::GetDateFormatting() const {
@@ -787,7 +787,7 @@ bool asResultsForecast::IsSubDaily() const {
 wxArrayString asResultsForecast::GetTargetDatesWxArray() const {
     wxArrayString dates;
     wxString format = GetDateFormatting();
-    for (float date : m_targetDates) {
+    for (float date : _targetDates) {
         dates.Add(asTime::GetStringTime(date, format));
     }
 
@@ -796,10 +796,10 @@ wxArrayString asResultsForecast::GetTargetDatesWxArray() const {
 
 wxString asResultsForecast::GetStationNameAndHeight(int iStat) const {
     wxString stationName;
-    if (std::isfinite(m_stationHeights[iStat]) && m_stationHeights[iStat] != 0 && m_stationHeights[iStat] != -1) {
-        stationName = asStrF("%s (%4.0fm)", m_stationNames[iStat], m_stationHeights[iStat]);
+    if (std::isfinite(_stationHeights[iStat]) && _stationHeights[iStat] != 0 && _stationHeights[iStat] != -1) {
+        stationName = asStrF("%s (%4.0fm)", _stationNames[iStat], _stationHeights[iStat]);
     } else {
-        stationName = asStrF("%s", m_stationNames[iStat]);
+        stationName = asStrF("%s", _stationNames[iStat]);
     }
     return stationName;
 }
@@ -807,10 +807,10 @@ wxString asResultsForecast::GetStationNameAndHeight(int iStat) const {
 wxString asResultsForecast::GetPredictandStationIdsString() const {
     wxString ids;
 
-    for (int i = 0; i < (int)m_predictandStationIds.size(); i++) {
-        ids << m_predictandStationIds[i];
+    for (int i = 0; i < (int)_predictandStationIds.size(); i++) {
+        ids << _predictandStationIds[i];
 
-        if (i < (int)m_predictandStationIds.size() - 1) {
+        if (i < (int)_predictandStationIds.size() - 1) {
             ids.Append(",");
         }
     }
@@ -824,7 +824,7 @@ void asResultsForecast::SetPredictandStationIds(const wxString& val) {
         wxString token = tokenizer.GetNextToken();
         long stationId;
         if (token.ToLong(&stationId)) {
-            m_predictandStationIds.push_back(int(stationId));
+            _predictandStationIds.push_back(int(stationId));
         }
     }
 }
@@ -832,46 +832,46 @@ void asResultsForecast::SetPredictandStationIds(const wxString& val) {
 bool asResultsForecast::IsCompatibleWith(asResultsForecast* otherForecast) const {
     bool compatible = true;
 
-    if (!m_methodId.IsSameAs(otherForecast->GetMethodId(), false)) compatible = false;
-    if (m_predictandParameter != otherForecast->GetPredictandParameter()) compatible = false;
-    if (m_predictandTemporalResolution != otherForecast->GetPredictandTemporalResolution()) compatible = false;
-    if (m_predictandSpatialAggregation != otherForecast->GetPredictandSpatialAggregation()) compatible = false;
-    if (!m_predictandDatasetId.IsSameAs(otherForecast->GetPredictandDatasetId(), false)) compatible = false;
-    if (!m_predictandDatabase.IsSameAs(otherForecast->GetPredictandDatabase(), false)) compatible = false;
-    if (m_hasReferenceValues != otherForecast->HasReferenceValues()) compatible = false;
-    if (m_leadTimeOrigin != otherForecast->GetLeadTimeOrigin()) compatible = false;
+    if (!_methodId.IsSameAs(otherForecast->GetMethodId(), false)) compatible = false;
+    if (_predictandParameter != otherForecast->GetPredictandParameter()) compatible = false;
+    if (_predictandTemporalResolution != otherForecast->GetPredictandTemporalResolution()) compatible = false;
+    if (_predictandSpatialAggregation != otherForecast->GetPredictandSpatialAggregation()) compatible = false;
+    if (!_predictandDatasetId.IsSameAs(otherForecast->GetPredictandDatasetId(), false)) compatible = false;
+    if (!_predictandDatabase.IsSameAs(otherForecast->GetPredictandDatabase(), false)) compatible = false;
+    if (_hasReferenceValues != otherForecast->HasReferenceValues()) compatible = false;
+    if (_leadTimeOrigin != otherForecast->GetLeadTimeOrigin()) compatible = false;
 
     a1f targetDates = otherForecast->GetTargetDates();
-    if (m_targetDates.size() != targetDates.size()) {
+    if (_targetDates.size() != targetDates.size()) {
         compatible = false;
     } else {
-        for (int i = 0; i < m_targetDates.size(); i++) {
-            if (m_targetDates[i] != targetDates[i]) compatible = false;
+        for (int i = 0; i < _targetDates.size(); i++) {
+            if (_targetDates[i] != targetDates[i]) compatible = false;
         }
     }
 
     a1i stationsIds = otherForecast->GetStationIds();
-    if (m_stationIds.size() != stationsIds.size()) {
+    if (_stationIds.size() != stationsIds.size()) {
         compatible = false;
     } else {
-        for (int i = 0; i < m_stationIds.size(); i++) {
-            if (m_stationIds[i] != stationsIds[i]) compatible = false;
+        for (int i = 0; i < _stationIds.size(); i++) {
+            if (_stationIds[i] != stationsIds[i]) compatible = false;
         }
     }
 
     a1f referenceAxis = otherForecast->GetReferenceAxis();
-    if (m_referenceAxis.size() != referenceAxis.size()) {
+    if (_referenceAxis.size() != referenceAxis.size()) {
         compatible = false;
     } else {
-        for (int i = 0; i < m_referenceAxis.size(); i++) {
-            if (!isnan(m_referenceAxis[i]) && m_referenceAxis[i] != referenceAxis[i]) {
+        for (int i = 0; i < _referenceAxis.size(); i++) {
+            if (!isnan(_referenceAxis[i]) && _referenceAxis[i] != referenceAxis[i]) {
                 compatible = false;
             }
         }
     }
 
     if (!compatible) {
-        wxLogError(_("The forecasts \"%s\" and \"%s\" are not compatible"), m_specificTagDisplay,
+        wxLogError(_("The forecasts \"%s\" and \"%s\" are not compatible"), _specificTagDisplay,
                    otherForecast->GetSpecificTagDisplay());
         return false;
     }
@@ -882,41 +882,41 @@ bool asResultsForecast::IsCompatibleWith(asResultsForecast* otherForecast) const
 bool asResultsForecast::IsSameAs(asResultsForecast* otherForecast) const {
     if (!IsCompatibleWith(otherForecast)) return false;
 
-    if (!m_specificTag.IsSameAs(otherForecast->GetSpecificTag(), false)) return false;
+    if (!_specificTag.IsSameAs(otherForecast->GetSpecificTag(), false)) return false;
 
     vi predictandStationIds = otherForecast->GetPredictandStationIds();
-    if (m_predictandStationIds.size() != predictandStationIds.size()) {
+    if (_predictandStationIds.size() != predictandStationIds.size()) {
         return false;
     }
 
-    for (int i = 0; i < m_predictandStationIds.size(); i++) {
-        if (m_predictandStationIds[i] != predictandStationIds[i]) return false;
+    for (int i = 0; i < _predictandStationIds.size(); i++) {
+        if (_predictandStationIds[i] != predictandStationIds[i]) return false;
     }
 
     a1f targetDates = otherForecast->GetTargetDates();
-    if (m_targetDates.size() != targetDates.size()) {
+    if (_targetDates.size() != targetDates.size()) {
         return false;
     }
 
-    for (int i = 0; i < m_targetDates.size(); i++) {
-        if (m_targetDates[i] != targetDates[i]) return false;
-        if (m_analogsNb[i] != otherForecast->GetAnalogsNumber(i)) return false;
-        if (m_analogsCriteria[i].size() != otherForecast->GetAnalogsCriteria(i).size()) return false;
-        if (m_analogsDates[i].size() != otherForecast->GetAnalogsDates(i).size()) return false;
-        if (m_analogsValuesRaw[i].size() != otherForecast->GetAnalogsValuesRaw(i).size()) return false;
+    for (int i = 0; i < _targetDates.size(); i++) {
+        if (_targetDates[i] != targetDates[i]) return false;
+        if (_analogsNb[i] != otherForecast->GetAnalogsNumber(i)) return false;
+        if (_analogsCriteria[i].size() != otherForecast->GetAnalogsCriteria(i).size()) return false;
+        if (_analogsDates[i].size() != otherForecast->GetAnalogsDates(i).size()) return false;
+        if (_analogsValuesRaw[i].size() != otherForecast->GetAnalogsValuesRaw(i).size()) return false;
 
-        for (int j = 0; j < m_analogsCriteria[i].size(); j++) {
-            if (m_analogsCriteria[i][j] != otherForecast->GetAnalogsCriteria(i)[j]) return false;
+        for (int j = 0; j < _analogsCriteria[i].size(); j++) {
+            if (_analogsCriteria[i][j] != otherForecast->GetAnalogsCriteria(i)[j]) return false;
         }
-        for (int j = 0; j < m_analogsDates[i].size(); j++) {
-            if (m_analogsDates[i][j] != otherForecast->GetAnalogsDates(i)[j]) return false;
+        for (int j = 0; j < _analogsDates[i].size(); j++) {
+            if (_analogsDates[i][j] != otherForecast->GetAnalogsDates(i)[j]) return false;
         }
-        for (int j = 0; j < m_analogsDates[i].size(); j++) {
-            if (m_analogsDates[i][j] != otherForecast->GetAnalogsDates(i)[j]) return false;
+        for (int j = 0; j < _analogsDates[i].size(); j++) {
+            if (_analogsDates[i][j] != otherForecast->GetAnalogsDates(i)[j]) return false;
         }
-        for (int j = 0; j < m_analogsValuesRaw[i].size(); j++) {
-            if (m_analogsValuesRaw[i].rows() != otherForecast->GetAnalogsValuesRaw(i).rows()) return false;
-            if (m_analogsValuesRaw[i].cols() != otherForecast->GetAnalogsValuesRaw(i).cols()) return false;
+        for (int j = 0; j < _analogsValuesRaw[i].size(); j++) {
+            if (_analogsValuesRaw[i].rows() != otherForecast->GetAnalogsValuesRaw(i).rows()) return false;
+            if (_analogsValuesRaw[i].cols() != otherForecast->GetAnalogsValuesRaw(i).cols()) return false;
         }
     }
 
@@ -924,7 +924,7 @@ bool asResultsForecast::IsSameAs(asResultsForecast* otherForecast) const {
 }
 
 bool asResultsForecast::IsSpecificForStationId(int stationId) const {
-    for (int predictandStationId : m_predictandStationIds) {
+    for (int predictandStationId : _predictandStationIds) {
         if (predictandStationId == stationId) {
             return true;
         }
@@ -933,8 +933,8 @@ bool asResultsForecast::IsSpecificForStationId(int stationId) const {
 }
 
 int asResultsForecast::GetStationRowFromId(int stationId) const {
-    for (int i = 0; i < m_stationIds.size(); i++) {
-        if (m_stationIds[i] == stationId) {
+    for (int i = 0; i < _stationIds.size(); i++) {
+        if (_stationIds[i] == stationId) {
             return i;
         }
     }
@@ -946,11 +946,11 @@ int asResultsForecast::GetStationRowFromId(int stationId) const {
 
 Coo asResultsForecast::GetStationsMeanCoordinates() {
     vd xs, ys;
-    for (int id : m_predictandStationIds) {
+    for (int id : _predictandStationIds) {
         int i = GetStationRowFromId(id);
         wxASSERT(i >= 0);
-        xs.push_back(m_stationXCoords[i]);
-        ys.push_back(m_stationYCoords[i]);
+        xs.push_back(_stationXCoords[i]);
+        ys.push_back(_stationYCoords[i]);
     }
 
     return {std::reduce(xs.begin(), xs.end()) / xs.size(), std::reduce(ys.begin(), ys.end()) / ys.size()};

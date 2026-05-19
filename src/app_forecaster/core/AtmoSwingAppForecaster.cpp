@@ -97,13 +97,13 @@ bool AtmoSwingAppForecaster::OnInit() {
     wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir());
     userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
-    m_doConfig = false;
-    m_doForecast = false;
-    m_doForecastPast = false;
-    m_forecastDate = 0.0;
-    m_forecastPastDays = 0;
+    _doConfig = false;
+    _doForecast = false;
+    _doForecastPast = false;
+    _forecastDate = 0.0;
+    _forecastPastDays = 0;
 #if USE_GUI
-    m_singleInstanceChecker = nullptr;
+    _singleInstanceChecker = nullptr;
 #endif
 
     wxString configFilePath = asConfig::GetConfigFilePath("AtmoSwingForecaster.ini");
@@ -127,15 +127,15 @@ bool AtmoSwingAppForecaster::OnInit() {
     // Check that it is the unique instance
     if (!pConfig->ReadBool("/General/MultiInstances", false)) {
         const wxString instanceName = asStrF(wxT("AtmoSwingForecaster-%s"), wxGetUserId());
-        m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-        if (m_singleInstanceChecker->IsAnotherRunning()) {
+        _singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+        if (_singleInstanceChecker->IsAnotherRunning()) {
             wxMessageBox(_("Program already running, aborting."));
 
             // Cleanup
             delete wxFileConfig::Set((wxFileConfig*)nullptr);
             DeleteThreadsManager();
             DeleteLog();
-            delete m_singleInstanceChecker;
+            delete _singleInstanceChecker;
 
             return false;
         }
@@ -234,7 +234,7 @@ bool AtmoSwingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Check if the user asked to configure
     if (parser.Found("config")) {
 #ifndef USE_GUI
-        m_doConfig = true;
+        _doConfig = true;
 #endif
         return true;
     }
@@ -307,8 +307,8 @@ bool AtmoSwingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
 
     // Check for a present forecast
     if (parser.Found("forecast-now")) {
-        m_doForecast = true;
-        m_forecastDate = asTime::NowMJD();
+        _doForecast = true;
+        _forecastDate = asTime::NowMJD();
 
         return true;
     }
@@ -322,8 +322,8 @@ bool AtmoSwingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
             return false;
         }
 
-        m_doForecastPast = true;
-        m_forecastPastDays = (int)numberOfDays;
+        _doForecastPast = true;
+        _forecastPastDays = (int)numberOfDays;
 
         return true;
     }
@@ -335,8 +335,8 @@ bool AtmoSwingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser) {
             asLog::PrintToConsole(_("Wrong date format.\n"));
             return false;
         }
-        m_doForecast = true;
-        m_forecastDate = asTime::GetTimeFromString(dateForecastStr, YYYY_MM_DD_hh);
+        _doForecast = true;
+        _forecastDate = asTime::GetTimeFromString(dateForecastStr, YYYY_MM_DD_hh);
 
         return true;
     }
@@ -406,7 +406,7 @@ int AtmoSwingAppForecaster::OnRun() {
         return wxApp::OnRun();
     }
 
-    if (m_doConfig) {
+    if (_doConfig) {
         asBatchForecasts batchForecasts;
 
         // Load batch file if exists
@@ -554,9 +554,9 @@ int AtmoSwingAppForecaster::OnRun() {
         }
     }
 
-    if (m_doForecast) {
+    if (_doForecast) {
         // Log message
-        wxString forecastDateStr = asTime::GetStringTime(m_forecastDate, "DD.MM.YYYY hh:mm");
+        wxString forecastDateStr = asTime::GetStringTime(_forecastDate, "DD.MM.YYYY hh:mm");
         wxLogMessage(_("Forecast started for the %s UTC"), forecastDateStr);
         asLog::PrintToConsole(asStrF("Forecast started for the %s UTC\n", forecastDateStr));
 
@@ -580,7 +580,7 @@ int AtmoSwingAppForecaster::OnRun() {
 
         // Launch forecasting
         asMethodForecasting forecaster = asMethodForecasting(&batchForecasts);
-        forecaster.SetForecastDate(m_forecastDate);
+        forecaster.SetForecastDate(_forecastDate);
         if (!forecaster.Manager()) {
             wxLogError(_("Failed processing the forecast."));
             asLog::PrintToConsole(_("Failed processing the forecast.\n"));
@@ -606,8 +606,8 @@ int AtmoSwingAppForecaster::OnRun() {
         filePaths.Close();
     }
 
-    if (m_doForecastPast) {
-        asLog::PrintToConsole(asStrF("Forecast started for the last %d days\n", m_forecastPastDays));
+    if (_doForecastPast) {
+        asLog::PrintToConsole(asStrF("Forecast started for the last %d days\n", _forecastPastDays));
 
         // Open last batch file
         wxConfigBase* pConfig = wxFileConfig::Get();
@@ -629,7 +629,7 @@ int AtmoSwingAppForecaster::OnRun() {
 
         double now = asTime::NowMJD();
         double startDate = floor(now) + 23.0 / 24.0;
-        double endDate = floor(now) - m_forecastPastDays;
+        double endDate = floor(now) - _forecastPastDays;
         double increment = 1.0 / 24.0;
 
         for (double date = startDate; date >= endDate; date -= increment) {
@@ -667,7 +667,7 @@ int AtmoSwingAppForecaster::OnRun() {
 int AtmoSwingAppForecaster::OnExit() {
 #if USE_GUI
     // Instance checker
-    wxDELETE(m_singleInstanceChecker);
+    wxDELETE(_singleInstanceChecker);
 #endif
 
     // Config file (from wxWidgets samples)

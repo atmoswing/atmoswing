@@ -47,7 +47,7 @@ bool asFileParametersCalibration::CheckRootElement() const {
     if ((!GetRoot()->GetAttribute("target").IsSameAs("optimizer", false)) &
         (!GetRoot()->GetAttribute("target").IsSameAs("calibrator", false))) {
         wxLogError(_("The file %s is not a parameters file for the Optimizer in calibration mode."),
-                   m_fileName.GetFullName());
+                   _fileName.GetFullName());
         return false;
     }
     return true;

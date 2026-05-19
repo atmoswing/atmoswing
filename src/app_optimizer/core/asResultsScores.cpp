@@ -37,39 +37,39 @@ asResultsScores::asResultsScores()
 asResultsScores::~asResultsScores() {}
 
 void asResultsScores::Init(asParametersScoring* params) {
-    m_predictandStationIds = params->GetPredictandStationIds();
+    _predictandStationIds = params->GetPredictandStationIds();
 
     // Resize to 0 to avoid keeping old results
-    m_targetDates.resize(0);
-    m_scores.resize(0);
-    m_scores2DArray.resize(0, 0);
+    _targetDates.resize(0);
+    _scores.resize(0);
+    _scores2DArray.resize(0, 0);
 }
 
 void asResultsScores::BuildFileName() {
     ThreadsManager().CritSectionConfig().Enter();
-    m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+    _filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
-    if (!m_subFolder.IsEmpty()) {
-        m_filePath.Append(DS);
-        m_filePath.Append(m_subFolder);
+    if (!_subFolder.IsEmpty()) {
+        _filePath.Append(DS);
+        _filePath.Append(_subFolder);
     }
-    m_filePath.Append(DS);
-    m_filePath.Append(asStrF("Scores_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
-    m_filePath.Append(".nc");
+    _filePath.Append(DS);
+    _filePath.Append(asStrF("Scores_id_%s_step_%d", GetPredictandStationIdsList(), _currentStep));
+    _filePath.Append(".nc");
 }
 
 bool asResultsScores::Save() {
     BuildFileName();
 
-    wxLogVerbose(_("Saving intermediate file: %s"), m_filePath);
+    wxLogVerbose(_("Saving intermediate file: %s"), _filePath);
 
     // Get the elements size
-    size_t nTime = (size_t)m_scores.rows();
+    size_t nTime = (size_t)_scores.rows();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
     // Create netCDF dataset: enter define mode
-    asFileNetcdf ncFile(m_filePath, asFileNetcdf::Replace);
+    asFileNetcdf ncFile(_filePath, asFileNetcdf::Replace);
     if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
@@ -98,8 +98,8 @@ bool asResultsScores::Save() {
     size_t count1D[] = {nTime};
 
     // Write data
-    ncFile.PutVarArray("target_dates", start1D, count1D, &m_targetDates(0));
-    ncFile.PutVarArray("scores", start1D, count1D, &m_scores(0));
+    ncFile.PutVarArray("target_dates", start1D, count1D, &_targetDates(0));
+    ncFile.PutVarArray("scores", start1D, count1D, &_scores(0));
 
     // Close:save new netCDF dataset
     ncFile.Close();
@@ -117,7 +117,7 @@ bool asResultsScores::Load() {
     ThreadsManager().CritSectionNetCDF().Enter();
 
     // Open the NetCDF file
-    asFileNetcdf ncFile(m_filePath, asFileNetcdf::ReadOnly);
+    asFileNetcdf ncFile(_filePath, asFileNetcdf::ReadOnly);
     if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
@@ -127,12 +127,12 @@ bool asResultsScores::Load() {
     size_t TimeLength = ncFile.GetDimLength("time");
 
     // Resize
-    m_targetDates.resize(TimeLength);
-    m_scores.resize(TimeLength);
+    _targetDates.resize(TimeLength);
+    _scores.resize(TimeLength);
 
     // Get time and data
-    ncFile.GetVar("target_dates", &m_targetDates[0]);
-    ncFile.GetVar("scores", &m_scores[0]);
+    ncFile.GetVar("target_dates", &_targetDates[0]);
+    ncFile.GetVar("scores", &_scores[0]);
 
     ncFile.Close();
 

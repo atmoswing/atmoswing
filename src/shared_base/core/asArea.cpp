@@ -30,50 +30,50 @@
 
 asArea::asArea(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR, int flatAllowed,
                bool isLatLon)
-    : m_cornerUL(cornerUL),
-      m_cornerUR(cornerUR),
-      m_cornerLL(cornerLL),
-      m_cornerLR(cornerLR),
-      m_flatAllowed(flatAllowed),
-      m_isLatLon(isLatLon) {
+    : _cornerUL(cornerUL),
+      _cornerUR(cornerUR),
+      _cornerLL(cornerLL),
+      _cornerLR(cornerLR),
+      _flatAllowed(flatAllowed),
+      _isLatLon(isLatLon) {
     Init();
 }
 
 asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed, bool isLatLon)
-    : m_flatAllowed(flatAllowed),
-      m_isLatLon(isLatLon) {
+    : _flatAllowed(flatAllowed),
+      _isLatLon(isLatLon) {
     if (flatAllowed == asFLAT_ALLOWED) {
         yWidth = wxMax(yWidth, 0.0);
         xWidth = wxMax(xWidth, 0.0);
     }
 
-    m_cornerUL = {xMin, yMin + yWidth};
-    m_cornerUR = {xMin + xWidth, yMin + yWidth};
-    m_cornerLL = {xMin, yMin};
-    m_cornerLR = {xMin + xWidth, yMin};
+    _cornerUL = {xMin, yMin + yWidth};
+    _cornerUR = {xMin + xWidth, yMin + yWidth};
+    _cornerLL = {xMin, yMin};
+    _cornerLR = {xMin + xWidth, yMin};
 
     Init();
 }
 
 asArea::asArea()
-    : m_cornerUL({0, 0}),
-      m_cornerUR({0, 0}),
-      m_cornerLL({0, 0}),
-      m_cornerLR({0, 0}),
-      m_flatAllowed(asFLAT_ALLOWED),
-      m_isLatLon(true) {}
+    : _cornerUL({0, 0}),
+      _cornerUR({0, 0}),
+      _cornerLL({0, 0}),
+      _cornerLR({0, 0}),
+      _flatAllowed(asFLAT_ALLOWED),
+      _isLatLon(true) {}
 
 void asArea::Init() {
-    if (m_isLatLon) DoCheckPoints();
+    if (_isLatLon) DoCheckPoints();
     if (!CheckConsistency()) throw runtime_error(_("Unable to build a consistent area with the given coordinates."));
     if (!IsRectangle()) throw runtime_error(_("The provided area is not rectangle."));
 }
 
 void asArea::DoCheckPoints() {
-    CheckPoint(m_cornerUL);
-    CheckPoint(m_cornerUR);
-    CheckPoint(m_cornerLL);
-    CheckPoint(m_cornerLR);
+    CheckPoint(_cornerUL);
+    CheckPoint(_cornerUR);
+    CheckPoint(_cornerLL);
+    CheckPoint(_cornerLR);
 }
 
 void asArea::CheckPoint(Coo& point) {
@@ -88,66 +88,66 @@ void asArea::CheckPoint(Coo& point) {
 bool asArea::CheckConsistency() {
     Coo cootmp;
 
-    if (m_flatAllowed == asFLAT_FORBIDDEN) {
-        if ((m_cornerUL.x == m_cornerUR.x) || (m_cornerLL.x == m_cornerLR.x) || (m_cornerLL.y == m_cornerUL.y) ||
-            (m_cornerLR.y == m_cornerUR.y)) {
+    if (_flatAllowed == asFLAT_FORBIDDEN) {
+        if ((_cornerUL.x == _cornerUR.x) || (_cornerLL.x == _cornerLR.x) || (_cornerLL.y == _cornerUL.y) ||
+            (_cornerLR.y == _cornerUR.y)) {
             return false;
         }
     }
 
-    if (m_cornerUL.x > m_cornerUR.x) {
-        cootmp = m_cornerUR;
-        m_cornerUR = m_cornerUL;
-        m_cornerUL = cootmp;
+    if (_cornerUL.x > _cornerUR.x) {
+        cootmp = _cornerUR;
+        _cornerUR = _cornerUL;
+        _cornerUL = cootmp;
     }
 
-    if (m_cornerLL.x > m_cornerLR.x) {
-        cootmp = m_cornerLR;
-        m_cornerLR = m_cornerLL;
-        m_cornerLL = cootmp;
+    if (_cornerLL.x > _cornerLR.x) {
+        cootmp = _cornerLR;
+        _cornerLR = _cornerLL;
+        _cornerLL = cootmp;
     }
 
-    if (m_cornerLL.y > m_cornerUL.y) {
-        cootmp = m_cornerUL;
-        m_cornerUL = m_cornerLL;
-        m_cornerLL = cootmp;
+    if (_cornerLL.y > _cornerUL.y) {
+        cootmp = _cornerUL;
+        _cornerUL = _cornerLL;
+        _cornerLL = cootmp;
     }
 
-    if (m_cornerLR.y > m_cornerUR.y) {
-        cootmp = m_cornerUR;
-        m_cornerUR = m_cornerLR;
-        m_cornerLR = cootmp;
+    if (_cornerLR.y > _cornerUR.y) {
+        cootmp = _cornerUR;
+        _cornerUR = _cornerLR;
+        _cornerLR = cootmp;
     }
 
     return true;
 }
 
 double asArea::GetXmin() const {
-    return wxMin(m_cornerUL.x, m_cornerLL.x);
+    return wxMin(_cornerUL.x, _cornerLL.x);
 }
 
 double asArea::GetXmax() const {
-    return wxMax(m_cornerUR.x, m_cornerLR.x);
+    return wxMax(_cornerUR.x, _cornerLR.x);
 }
 
 double asArea::GetXwidth() const {
-    return std::abs(m_cornerUR.x - m_cornerUL.x);
+    return std::abs(_cornerUR.x - _cornerUL.x);
 }
 
 double asArea::GetYmin() const {
-    return wxMin(wxMin(m_cornerUL.y, m_cornerLL.y), wxMin(m_cornerUR.y, m_cornerLR.y));
+    return wxMin(wxMin(_cornerUL.y, _cornerLL.y), wxMin(_cornerUR.y, _cornerLR.y));
 }
 
 double asArea::GetYmax() const {
-    return wxMax(wxMax(m_cornerUL.y, m_cornerLL.y), wxMax(m_cornerUR.y, m_cornerLR.y));
+    return wxMax(wxMax(_cornerUL.y, _cornerLL.y), wxMax(_cornerUR.y, _cornerLR.y));
 }
 
 double asArea::GetYwidth() const {
-    return std::abs(m_cornerUR.y - m_cornerLR.y);
+    return std::abs(_cornerUR.y - _cornerLR.y);
 }
 
 bool asArea::IsRectangle() const {
     // Check that the area is a square
-    return !((m_cornerUL.x != m_cornerLL.x) | (m_cornerUL.y != m_cornerUR.y) | (m_cornerUR.x != m_cornerLR.x) |
-             (m_cornerLL.y != m_cornerLR.y));
+    return !((_cornerUL.x != _cornerLL.x) | (_cornerUL.y != _cornerUR.y) | (_cornerUR.x != _cornerLR.x) |
+             (_cornerLL.y != _cornerLR.y));
 }

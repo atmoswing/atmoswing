@@ -24,7 +24,7 @@ You need to override these function in DropDownBase
 DoGetBestSize() let wxWidgets know how big this control wants to be
 DoGetBestDropHeight(max) - max is the # pixels to bottom of screen, you probably want
     it smaller so return that height, return -1 if you don't want the popup shown.
-DoShowPopup() - this is called from ShowPopup after creating the m_popupWin.
+DoShowPopup() - this is called from ShowPopup after creating the _popupWin.
     Create your child window with the popup as the parent and call
     GetPopupWindow()->SetChild(win). Make sure you call
     DropDownBase::DoShowPopup() to have the popup window shown.
@@ -84,12 +84,12 @@ class WXDLLIMPEXP_THINGS DropDownBase : public wxControl {
     void OnDropButton(wxCommandEvent& event);
 
     wxCustomButton* GetDropDownButton() {
-        return m_dropdownButton;
+        return _dropdownButton;
     }
 
     // Get the popup window, NULL when not shown
     DropDownPopup* GetPopupWindow() {
-        return m_popupWin;
+        return _popupWin;
     }
 
   protected:
@@ -108,8 +108,8 @@ class WXDLLIMPEXP_THINGS DropDownBase : public wxControl {
         return max_height;
     }
 
-    wxCustomButton* m_dropdownButton;
-    DropDownPopup* m_popupWin;
+    wxCustomButton* _dropdownButton;
+    DropDownPopup* _popupWin;
 
   private:
     void Init();
@@ -149,10 +149,10 @@ class WXDLLIMPEXP_THINGS DropDownPopup : public wxPopupTransientWindow {
     virtual void SetChild(wxWindow* child);
 
     virtual wxWindow* GetChild() const {
-        return m_childWin;
+        return _childWin;
     }
 
-    bool m_ignore_popup;
+    bool _ignore_popup;
 
   protected:
     // start/stop timer shat pushes and pops handler when the mouse goes over
@@ -173,11 +173,11 @@ class WXDLLIMPEXP_THINGS DropDownPopup : public wxPopupTransientWindow {
 
     void OnIdle(wxIdleEvent& event);
 
-    wxPoint m_mouse;       // last/current mouse position
-    wxWindow* m_childWin;  // store our own child pointer
-    DropDownBase* m_owner;
-    wxTimer* m_timer;       // timer for tracking mouse position
-    bool m_popped_handler;  // state of the event handler
+    wxPoint _mouse;       // last/current mouse position
+    wxWindow* _childWin;  // store our own child pointer
+    DropDownBase* _owner;
+    wxTimer* _timer;       // timer for tracking mouse position
+    bool _popped_handler;  // state of the event handler
 
   private:
     void Init();

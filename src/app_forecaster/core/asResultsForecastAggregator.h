@@ -107,8 +107,8 @@ class asResultsForecastAggregator : public wxObject {
 
   protected:
   private:
-    vector<vector<asResultsForecast*> > m_forecasts;
-    vector<vector<vector<asResultsForecast*> > > m_pastForecasts;
+    vector<vector<asResultsForecast*> > _forecasts;
+    vector<vector<vector<asResultsForecast*> > > _pastForecasts;
 };
 
 #endif

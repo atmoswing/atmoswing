@@ -98,16 +98,16 @@ bool AtmoSwingAppDownscaler::OnInit() {
     wxApp::SetAppName(appName);
 
     g_local = false;
-    m_downscalingParamsFile = wxEmptyString;
-    m_predictandDB = wxEmptyString;
-    m_predictandStationIds = vi(0);
-    m_predictorsArchiveDir = wxEmptyString;
-    m_predictorsScenarioDir = wxEmptyString;
-    m_downscalingMethod = wxEmptyString;
-    m_doProcessing = false;
+    _downscalingParamsFile = wxEmptyString;
+    _predictandDB = wxEmptyString;
+    _predictandStationIds = vi(0);
+    _predictorsArchiveDir = wxEmptyString;
+    _predictorsScenarioDir = wxEmptyString;
+    _downscalingMethod = wxEmptyString;
+    _doProcessing = false;
 #if USE_GUI
     g_guiMode = true;
-    m_singleInstanceChecker = nullptr;
+    _singleInstanceChecker = nullptr;
 #else
     g_guiMode = false;
 #endif
@@ -128,13 +128,13 @@ bool AtmoSwingAppDownscaler::OnInit() {
     wxSize ppiDC = dcTestPpi.GetPPI();
     g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
 
-    m_singleInstanceChecker = nullptr;
+    _singleInstanceChecker = nullptr;
 
     // Check that it is the unique instance
     if (!wxFileConfig::Get()->ReadBool("/General/MultiInstances", false)) {
         const wxString instanceName = asStrF(wxT("atmoswing-downscaler-%s"), wxGetUserId());
-        m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-        if (m_singleInstanceChecker->IsAnotherRunning()) {
+        _singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+        if (_singleInstanceChecker->IsAnotherRunning()) {
             wxMessageBox(_("Program already running, aborting."));
             return false;
         }
@@ -355,49 +355,49 @@ bool AtmoSwingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
     }
 
     // Check for a downscaling params file
-    if (parser.Found("file-parameters", &m_downscalingParamsFile)) {
+    if (parser.Found("file-parameters", &_downscalingParamsFile)) {
         if (g_local) {
-            m_downscalingParamsFile = wxFileName::GetCwd() + DS + m_downscalingParamsFile;
+            _downscalingParamsFile = wxFileName::GetCwd() + DS + _downscalingParamsFile;
         }
 
-        if (!wxFileName::FileExists(m_downscalingParamsFile)) {
-            wxLogError(_("The given downscaling file (%s) couldn't be found."), m_downscalingParamsFile);
+        if (!wxFileName::FileExists(_downscalingParamsFile)) {
+            wxLogError(_("The given downscaling file (%s) couldn't be found."), _downscalingParamsFile);
             return false;
         }
     }
 
     // Check for a downscaling predictand DB
-    if (parser.Found("predictand-db", &m_predictandDB)) {
+    if (parser.Found("predictand-db", &_predictandDB)) {
         if (g_local) {
-            m_predictandDB = wxFileName::GetCwd() + DS + m_predictandDB;
+            _predictandDB = wxFileName::GetCwd() + DS + _predictandDB;
         }
 
-        if (!wxFileName::FileExists(m_predictandDB)) {
-            wxLogError(_("The given predictand DB (%s) couldn't be found."), m_predictandDB);
+        if (!wxFileName::FileExists(_predictandDB)) {
+            wxLogError(_("The given predictand DB (%s) couldn't be found."), _predictandDB);
             return false;
         }
     }
 
     // Check for archive predictors directory
-    if (parser.Found("dir-archive-predictors", &m_predictorsArchiveDir)) {
-        if (g_local && wxFileName::Exists(wxFileName::GetCwd() + DS + m_predictorsArchiveDir)) {
-            m_predictorsArchiveDir = wxFileName::GetCwd() + DS + m_predictorsArchiveDir;
+    if (parser.Found("dir-archive-predictors", &_predictorsArchiveDir)) {
+        if (g_local && wxFileName::Exists(wxFileName::GetCwd() + DS + _predictorsArchiveDir)) {
+            _predictorsArchiveDir = wxFileName::GetCwd() + DS + _predictorsArchiveDir;
         }
 
-        if (!wxFileName::DirExists(m_predictorsArchiveDir)) {
-            wxLogError(_("The given archive predictors directory (%s) couldn't be found."), m_predictorsArchiveDir);
+        if (!wxFileName::DirExists(_predictorsArchiveDir)) {
+            wxLogError(_("The given archive predictors directory (%s) couldn't be found."), _predictorsArchiveDir);
             return false;
         }
     }
 
     // Check for scenario predictors directory
-    if (parser.Found("dir-scenario-predictors", &m_predictorsScenarioDir)) {
-        if (g_local && wxFileName::Exists(wxFileName::GetCwd() + DS + m_predictorsScenarioDir)) {
-            m_predictorsScenarioDir = wxFileName::GetCwd() + DS + m_predictorsScenarioDir;
+    if (parser.Found("dir-scenario-predictors", &_predictorsScenarioDir)) {
+        if (g_local && wxFileName::Exists(wxFileName::GetCwd() + DS + _predictorsScenarioDir)) {
+            _predictorsScenarioDir = wxFileName::GetCwd() + DS + _predictorsScenarioDir;
         }
 
-        if (!wxFileName::DirExists(m_predictorsScenarioDir)) {
-            wxLogError(_("The given scenario predictors directory (%s) couldn't be found."), m_predictorsScenarioDir);
+        if (!wxFileName::DirExists(_predictorsScenarioDir)) {
+            wxLogError(_("The given scenario predictors directory (%s) couldn't be found."), _predictorsScenarioDir);
             return false;
         }
     }
@@ -405,7 +405,7 @@ bool AtmoSwingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
     // Station ID
     wxString stationIdStr = wxEmptyString;
     if (parser.Found("station-id", &stationIdStr)) {
-        m_predictandStationIds = asParameters::GetFileStationIds(stationIdStr);
+        _predictandStationIds = asParameters::GetFileStationIds(stationIdStr);
     }
 
     /*
@@ -413,13 +413,13 @@ bool AtmoSwingAppDownscaler::OnCmdLineParsed(wxCmdLineParser& parser) {
      */
 
     // Check for a downscaling method option
-    if (parser.Found("downscaling-method", &m_downscalingMethod)) {
+    if (parser.Found("downscaling-method", &_downscalingMethod)) {
         if (!InitForCmdLineOnly()) {
             wxLogError(_("Initialization for command-line interface failed."));
             return false;
         }
-        m_doProcessing = true;
-        wxLogVerbose(_("Given downscaling method: %s"), m_downscalingMethod);
+        _doProcessing = true;
+        wxLogVerbose(_("Given downscaling method: %s"), _downscalingMethod);
         return true;
     }
 
@@ -488,35 +488,35 @@ int AtmoSwingAppDownscaler::OnRun() {
         return wxApp::OnRun();
     }
 
-    if (!m_doProcessing) {
+    if (!_doProcessing) {
         return 0;
     }
 
-    if (m_downscalingParamsFile.IsEmpty()) {
+    if (_downscalingParamsFile.IsEmpty()) {
         wxLogError(_("The parameters file is not given."));
         return 1;
     }
 
-    if (m_predictandDB.IsEmpty()) {
+    if (_predictandDB.IsEmpty()) {
         wxLogError(_("The predictand DB is not given."));
         return 1;
     }
 
-    if (m_predictorsArchiveDir.IsEmpty()) {
+    if (_predictorsArchiveDir.IsEmpty()) {
         wxLogError(_("The predictors directory is not given."));
         return 1;
     }
 
     try {
-        if (m_downscalingMethod.IsSameAs("classic", false)) {
+        if (_downscalingMethod.IsSameAs("classic", false)) {
             asMethodDownscalerClassic downscaler;
-            downscaler.SetParamsFilePath(m_downscalingParamsFile);
-            downscaler.SetPredictandDBFilePath(m_predictandDB);
-            downscaler.SetPredictandStationIds(m_predictandStationIds);
-            downscaler.SetPredictorDataDir(m_predictorsArchiveDir);
+            downscaler.SetParamsFilePath(_downscalingParamsFile);
+            downscaler.SetPredictandDBFilePath(_predictandDB);
+            downscaler.SetPredictandStationIds(_predictandStationIds);
+            downscaler.SetPredictorDataDir(_predictorsArchiveDir);
             downscaler.Manager();
         } else {
-            asLog::PrintToConsole(asStrF("Wrong downscaling method selection (%s).\n", m_downscalingMethod));
+            asLog::PrintToConsole(asStrF("Wrong downscaling method selection (%s).\n", _downscalingMethod));
         }
     } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
@@ -543,7 +543,7 @@ int AtmoSwingAppDownscaler::OnExit() {
 void AtmoSwingAppDownscaler::CleanUp() {
 #if USE_GUI
     // Instance checker
-    wxDELETE(m_singleInstanceChecker);
+    wxDELETE(_singleInstanceChecker);
 #endif
 
     // Config file (from wxWidgets samples)

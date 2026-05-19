@@ -50,18 +50,18 @@ wxDEFINE_EVENT(asEVT_STATUS_PROCESSING, wxCommandEvent);
 wxDEFINE_EVENT(asEVT_STATUS_PROCESSED, wxCommandEvent);
 
 asMethodStandard::asMethodStandard()
-    : m_cancel(false),
-      m_preloaded(false),
-      m_warnFailedLoadingData(true),
-      m_predictandDB(nullptr) {
+    : _cancel(false),
+      _preloaded(false),
+      _warnFailedLoadingData(true),
+      _predictandDB(nullptr) {
     ThreadsManager().CritSectionConfig().Enter();
-    m_dumpPredictorData = wxFileConfig::Get()->ReadBool("/General/DumpPredictorData", false);
-    m_loadFromDumpedData = wxFileConfig::Get()->ReadBool("/General/LoadDumpedData", false);
+    _dumpPredictorData = wxFileConfig::Get()->ReadBool("/General/DumpPredictorData", false);
+    _loadFromDumpedData = wxFileConfig::Get()->ReadBool("/General/LoadDumpedData", false);
     ThreadsManager().CritSectionConfig().Leave();
 }
 
 asMethodStandard::~asMethodStandard() {
-    wxDELETE(m_predictandDB);
+    wxDELETE(_predictandDB);
 }
 
 bool asMethodStandard::Manager() {
@@ -69,39 +69,39 @@ bool asMethodStandard::Manager() {
 }
 
 bool asMethodStandard::LoadPredictandDB(const wxString& predictandDBFilePath) {
-    wxDELETE(m_predictandDB);
+    wxDELETE(_predictandDB);
 
     if (predictandDBFilePath.IsEmpty()) {
-        if (m_predictandDBFilePath.IsEmpty()) {
+        if (_predictandDBFilePath.IsEmpty()) {
             wxLogError(_("There is no predictand database file selected."));
             return false;
         }
 
-        m_predictandDB = asPredictand::GetInstance(m_predictandDBFilePath);
-        if (!m_predictandDB) return false;
+        _predictandDB = asPredictand::GetInstance(_predictandDBFilePath);
+        if (!_predictandDB) return false;
 
-        if (!m_predictandDB->Load(m_predictandDBFilePath)) {
+        if (!_predictandDB->Load(_predictandDBFilePath)) {
             wxLogError(_("Couldn't load the predictand database."));
             return false;
         }
     } else {
-        m_predictandDB = asPredictand::GetInstance(predictandDBFilePath);
-        if (!m_predictandDB) return false;
+        _predictandDB = asPredictand::GetInstance(predictandDBFilePath);
+        if (!_predictandDB) return false;
 
-        if (!m_predictandDB->Load(predictandDBFilePath)) {
+        if (!_predictandDB->Load(predictandDBFilePath)) {
             wxLogError(_("Couldn't load the predictand database."));
             return false;
         }
     }
 
-    if (!m_predictandDB) return false;
-    wxASSERT(m_predictandDB);
+    if (!_predictandDB) return false;
+    wxASSERT(_predictandDB);
 
     return true;
 }
 
 void asMethodStandard::Cancel() {
-    m_cancel = true;
+    _cancel = true;
 }
 
 bool asMethodStandard::Preprocess(vector<asPredictor*> predictors, const wxString& method, asPredictor* result) {
@@ -119,12 +119,12 @@ double asMethodStandard::GetTimeEndArchive(asParameters* params) const {
 }
 
 void asMethodStandard::InitializePreloadedArchiveDataContainers(asParameters* params) {
-    if (m_preloadedArchive.empty()) {
-        m_preloadedArchive.resize((long)params->GetStepsNb());
-        m_preloadedArchivePointerCopy.resize((long)params->GetStepsNb());
+    if (_preloadedArchive.empty()) {
+        _preloadedArchive.resize((long)params->GetStepsNb());
+        _preloadedArchivePointerCopy.resize((long)params->GetStepsNb());
         for (int iStep = 0; iStep < params->GetStepsNb(); iStep++) {
-            m_preloadedArchive[iStep].resize((long)params->GetPredictorsNb(iStep));
-            m_preloadedArchivePointerCopy[iStep].resize((long)params->GetPredictorsNb(iStep));
+            _preloadedArchive[iStep].resize((long)params->GetPredictorsNb(iStep));
+            _preloadedArchivePointerCopy[iStep].resize((long)params->GetPredictorsNb(iStep));
 
             for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
                 vwxs preloadDataIds = params->GetPreloadDataIds(iStep, iPtor);
@@ -135,18 +135,18 @@ void asMethodStandard::InitializePreloadedArchiveDataContainers(asParameters* pa
                 long preloadLevelsSize = wxMax(preloadLevels.size(), 1);
                 long preloadHoursSize = wxMax(preloadHours.size(), 1);
 
-                m_preloadedArchivePointerCopy[iStep][iPtor].resize(preloadDataIdsSize);
-                m_preloadedArchive[iStep][iPtor].resize(preloadDataIdsSize);
+                _preloadedArchivePointerCopy[iStep][iPtor].resize(preloadDataIdsSize);
+                _preloadedArchive[iStep][iPtor].resize(preloadDataIdsSize);
 
                 for (int iDat = 0; iDat < preloadDataIdsSize; iDat++) {
-                    m_preloadedArchivePointerCopy[iStep][iPtor][iDat] = false;
-                    m_preloadedArchive[iStep][iPtor][iDat].resize(preloadLevelsSize);
+                    _preloadedArchivePointerCopy[iStep][iPtor][iDat] = false;
+                    _preloadedArchive[iStep][iPtor][iDat].resize(preloadLevelsSize);
 
                     // Load data for every level and every hour
                     for (int iLevel = 0; iLevel < preloadLevelsSize; iLevel++) {
-                        m_preloadedArchive[iStep][iPtor][iDat][iLevel].resize(preloadHoursSize);
+                        _preloadedArchive[iStep][iPtor][iDat][iLevel].resize(preloadHoursSize);
                         for (int iHour = 0; iHour < preloadHoursSize; iHour++) {
-                            m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = nullptr;
+                            _preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = nullptr;
                         }
                     }
                 }
@@ -156,9 +156,9 @@ void asMethodStandard::InitializePreloadedArchiveDataContainers(asParameters* pa
 }
 
 bool asMethodStandard::PreloadArchiveData(asParameters* params) {
-    if (!m_preloaded) {
+    if (!_preloaded) {
         // Set preload to true here, so cleanup is made in case of exceptions.
-        m_preloaded = true;
+        _preloaded = true;
 
         InitializePreloadedArchiveDataContainers(params);
 
@@ -255,7 +255,7 @@ bool asMethodStandard::CheckArchiveDataIsPreloaded(const asParameters* params) c
 }
 
 bool asMethodStandard::HasPreloadedArchiveData(int iStep, int iPtor) const {
-    for (const auto& datPre : m_preloadedArchive[iStep][iPtor]) {
+    for (const auto& datPre : _preloadedArchive[iStep][iPtor]) {
         for (const auto& datLevel : datPre) {
             for (auto datHour : datLevel) {
                 if (datHour != nullptr) {
@@ -269,7 +269,7 @@ bool asMethodStandard::HasPreloadedArchiveData(int iStep, int iPtor) const {
 }
 
 bool asMethodStandard::HasPreloadedArchiveData(int iStep, int iPtor, int iPre) const {
-    for (const auto& datLevel : m_preloadedArchive[iStep][iPtor][iPre]) {
+    for (const auto& datLevel : _preloadedArchive[iStep][iPtor][iPre]) {
         for (auto datHour : datLevel) {
             if (datHour != nullptr) {
                 return true;
@@ -387,19 +387,19 @@ bool asMethodStandard::PointersArchiveDataShared(asParameters* params, int iStep
         wxASSERT(!preloadLevels.empty());
         wxASSERT(!preloadHours.empty());
 
-        m_preloadedArchivePointerCopy[iStep][iPtor][iPre] = true;
+        _preloadedArchivePointerCopy[iStep][iPtor][iPre] = true;
 
-        wxASSERT(m_preloadedArchive[prev_step].size() > prev_ptor);
-        wxASSERT(m_preloadedArchive[prev_step][prev_ptor].size() > prev_dat);
-        wxASSERT(m_preloadedArchive[prev_step][prev_ptor][prev_dat].size() == preloadLevels.size());
+        wxASSERT(_preloadedArchive[prev_step].size() > prev_ptor);
+        wxASSERT(_preloadedArchive[prev_step][prev_ptor].size() > prev_dat);
+        wxASSERT(_preloadedArchive[prev_step][prev_ptor][prev_dat].size() == preloadLevels.size());
 
         // Load data for every level and every hour
         for (int iLevel = 0; iLevel < preloadLevels.size(); iLevel++) {
-            wxASSERT(m_preloadedArchive[prev_step][prev_ptor][prev_dat][iLevel].size() == preloadHours.size());
+            wxASSERT(_preloadedArchive[prev_step][prev_ptor][prev_dat][iLevel].size() == preloadHours.size());
             for (int iHour = 0; iHour < preloadHours.size(); iHour++) {
                 // Copy pointer
-                m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] =
-                    m_preloadedArchive[prev_step][prev_ptor][prev_dat][iLevel][iHour];
+                _preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] =
+                    _preloadedArchive[prev_step][prev_ptor][prev_dat][iLevel][iHour];
             }
         }
 
@@ -431,13 +431,13 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters* para
         for (int iHour = 0; iHour < preloadHours.size(); iHour++) {
             // Loading the dataset information
             asPredictor* predictor = asPredictor::GetInstance(params->GetPredictorDatasetId(iStep, iPtor),
-                                                              preloadDataIds[iDat], m_predictorDataDir);
+                                                              preloadDataIds[iDat], _predictorDataDir);
             if (!predictor) {
                 return false;
             }
 
             // Set warning option
-            predictor->SetWarnMissingLevels(m_warnFailedLoadingData);
+            predictor->SetWarnMissingLevels(_warnFailedLoadingData);
 
             // Select the number of members for ensemble data.
             if (predictor->IsEnsemble()) {
@@ -484,22 +484,22 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters* para
             area->AllowResizeFromData();
 
             // Set standardize option
-            if ((m_dumpPredictorData || m_loadFromDumpedData) && params->GetStandardize(iStep, iPtor)) {
+            if ((_dumpPredictorData || _loadFromDumpedData) && params->GetStandardize(iStep, iPtor)) {
                 predictor->SetStandardized(true);
             }
 
-            if (m_dumpPredictorData) {
+            if (_dumpPredictorData) {
                 predictor->SetLevel(preloadLevels[iLevel]);
                 predictor->SetTimeArray(timeArray.GetTimeArray());
                 if (predictor->DumpFileExists()) {
                     predictor->SetWasDumped(true);
-                    m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
+                    _preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
                     wxDELETE(area);
                     continue;
                 }
             }
 
-            if (m_loadFromDumpedData) {
+            if (_loadFromDumpedData) {
                 predictor->SetLevel(preloadLevels[iLevel]);
                 predictor->SetTimeArray(timeArray.GetTimeArray());
                 if (predictor->DumpFileExists()) {
@@ -509,7 +509,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters* para
                         wxDELETE(predictor);
                         return false;
                     }
-                    m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
+                    _preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
                     wxDELETE(area);
                     continue;
                 }
@@ -520,7 +520,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters* para
                          preloadHours[iHour]);
             try {
                 if (!predictor->Load(area, timeArray, preloadLevels[iLevel])) {
-                    if (m_warnFailedLoadingData) {
+                    if (_warnFailedLoadingData) {
                         wxLogWarning(_("The data (%s for level %d, at %gh) could not be loaded."), preloadDataIds[iDat],
                                      (int)preloadLevels[iLevel], preloadHours[iHour]);
                     } else {
@@ -566,19 +566,19 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters* para
                 return false;
             }
 
-            if (m_dumpPredictorData || m_loadFromDumpedData) {
+            if (_dumpPredictorData || _loadFromDumpedData) {
                 // Dumped files do not exist here.
                 if (!predictor->SaveDumpFile()) {
                     return false;
                 }
                 wxLogMessage(_("File dumbed for %s (level %d, %gh)."), preloadDataIds[iDat], (int)preloadLevels[iLevel],
                              preloadHours[iHour]);
-                if (m_dumpPredictorData) {
+                if (_dumpPredictorData) {
                     predictor->DumpData();
                 }
             }
 
-            m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
+            _preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
         }
     }
 
@@ -680,14 +680,14 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters* params,
                 // Loading the datasets information
                 asPredictor* predictorPreprocess = asPredictor::GetInstance(
                     params->GetPreprocessDatasetId(iStep, iPtor, iPre), params->GetPreprocessDataId(iStep, iPtor, iPre),
-                    m_predictorDataDir);
+                    _predictorDataDir);
                 if (!predictorPreprocess) {
                     Cleanup(predictorsPreprocess);
                     return false;
                 }
 
                 // Set warning option
-                predictorPreprocess->SetWarnMissingLevels(m_warnFailedLoadingData);
+                predictorPreprocess->SetWarnMissingLevels(_warnFailedLoadingData);
 
                 // Select the number of members for ensemble data.
                 if (predictorPreprocess->IsEnsemble()) {
@@ -756,7 +756,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters* params,
                     return false;
                 }
 
-                m_preloadedArchive[iStep][iPtor][0][iLevel][iHour] = predictor;
+                _preloadedArchive[iStep][iPtor][0][iLevel][iHour] = predictor;
 
             } catch (std::bad_alloc& ba) {
                 wxString msg(ba.what(), wxConvUTF8);
@@ -906,12 +906,12 @@ bool asMethodStandard::ExtractPreloadedArchiveData(vector<asPredictor*>& predict
     }
 
     // Get data on the desired domain
-    wxASSERT(iStep < m_preloadedArchive.size());
-    wxASSERT(iPtor < m_preloadedArchive[iStep].size());
-    wxASSERT(iPre < m_preloadedArchive[iStep][iPtor].size());
-    wxASSERT(iLevel < m_preloadedArchive[iStep][iPtor][iPre].size());
-    wxASSERT(iHour < m_preloadedArchive[iStep][iPtor][iPre][iLevel].size());
-    if (!m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]) {
+    wxASSERT(iStep < _preloadedArchive.size());
+    wxASSERT(iPtor < _preloadedArchive[iStep].size());
+    wxASSERT(iPre < _preloadedArchive[iStep][iPtor].size());
+    wxASSERT(iLevel < _preloadedArchive[iStep][iPtor][iPre].size());
+    wxASSERT(iHour < _preloadedArchive[iStep][iPtor][iPre][iLevel].size());
+    if (!_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]) {
         if (!GetRandomLevelValidData(params, iStep, iPtor, iPre, iHour)) {
             if (!GetRandomValidData(params, iStep, iPtor, iPre)) {
                 wxLogError(_("The pointer to preloaded data is null."));
@@ -930,11 +930,11 @@ bool asMethodStandard::ExtractPreloadedArchiveData(vector<asPredictor*>& predict
     }
 
     // Copy the data
-    wxASSERT(m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
-    auto desiredPredictor = new asPredictor(*m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
+    wxASSERT(_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
+    auto desiredPredictor = new asPredictor(*_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
 
     // Load dumped data
-    if (m_dumpPredictorData) {
+    if (_dumpPredictorData) {
         if (desiredPredictor->WasDumped()) {
             if (!desiredPredictor->LoadDumpedData()) {
                 wxLogError(_("Failed loading dumped data."));
@@ -1047,13 +1047,13 @@ bool asMethodStandard::ExtractArchiveData(vector<asPredictor*>& predictors, asPa
 
     // Loading the datasets information
     asPredictor* predictor = asPredictor::GetInstance(params->GetPredictorDatasetId(iStep, iPtor),
-                                                      params->GetPredictorDataId(iStep, iPtor), m_predictorDataDir);
+                                                      params->GetPredictorDataId(iStep, iPtor), _predictorDataDir);
     if (!predictor) {
         return false;
     }
 
     // Set warning option
-    predictor->SetWarnMissingLevels(m_warnFailedLoadingData);
+    predictor->SetWarnMissingLevels(_warnFailedLoadingData);
 
     // Select the number of members for ensemble data.
     if (predictor->IsEnsemble()) {
@@ -1125,14 +1125,14 @@ bool asMethodStandard::PreprocessArchiveData(vector<asPredictor*>& predictors, a
         // Loading the dataset information
         asPredictor* predictorPreprocess = asPredictor::GetInstance(params->GetPreprocessDatasetId(iStep, iPtor, iPre),
                                                                     params->GetPreprocessDataId(iStep, iPtor, iPre),
-                                                                    m_predictorDataDir);
+                                                                    _predictorDataDir);
         if (!predictorPreprocess) {
             Cleanup(predictorsPreprocess);
             return false;
         }
 
         // Set warning option
-        predictorPreprocess->SetWarnMissingLevels(m_warnFailedLoadingData);
+        predictorPreprocess->SetWarnMissingLevels(_warnFailedLoadingData);
 
         // Select the number of members for ensemble data.
         if (predictorPreprocess->IsEnsemble()) {
@@ -1203,13 +1203,13 @@ void asMethodStandard::Cleanup(vector<asCriteria*> criteria) {
 }
 
 void asMethodStandard::DeletePreloadedArchiveData() {
-    if (!m_preloaded) return;
+    if (!_preloaded) return;
 
-    for (int i = 0; i < m_preloadedArchive.size(); i++) {
-        for (int j = 0; j < m_preloadedArchive[i].size(); j++) {
-            for (int k = 0; k < m_preloadedArchive[i][j].size(); k++) {
-                if (!m_preloadedArchivePointerCopy[i][j][k]) {
-                    for (auto& l : m_preloadedArchive[i][j][k]) {
+    for (int i = 0; i < _preloadedArchive.size(); i++) {
+        for (int j = 0; j < _preloadedArchive[i].size(); j++) {
+            for (int k = 0; k < _preloadedArchive[i][j].size(); k++) {
+                if (!_preloadedArchivePointerCopy[i][j][k]) {
+                    for (auto& l : _preloadedArchive[i][j][k]) {
                         for (auto& m : l) {
                             wxDELETE(m);
                         }
@@ -1219,15 +1219,15 @@ void asMethodStandard::DeletePreloadedArchiveData() {
         }
     }
 
-    m_preloaded = false;
+    _preloaded = false;
 }
 
 bool asMethodStandard::GetRandomLevelValidData(asParameters* params, int iStep, int iPtor, int iPre, int iHour) {
     vi levels;
 
-    for (int iLevel = 0; iLevel < m_preloadedArchive[iStep][iPtor][iPre].size(); iLevel++) {
-        wxASSERT(m_preloadedArchive[iStep][iPtor][iPre][iLevel].size() > iHour);
-        if (m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] != nullptr) {
+    for (int iLevel = 0; iLevel < _preloadedArchive[iStep][iPtor][iPre].size(); iLevel++) {
+        wxASSERT(_preloadedArchive[iStep][iPtor][iPre][iLevel].size() > iHour);
+        if (_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] != nullptr) {
             levels.push_back(iLevel);
         }
     }
@@ -1247,9 +1247,9 @@ bool asMethodStandard::GetRandomLevelValidData(asParameters* params, int iStep, 
 bool asMethodStandard::GetRandomValidData(asParameters* params, int iStep, int iPtor, int iPre) {
     vi levels, hours;
 
-    for (int iLevel = 0; iLevel < m_preloadedArchive[iStep][iPtor][iPre].size(); iLevel++) {
-        for (int iHour = 0; iHour < m_preloadedArchive[iStep][iPtor][iPre][iLevel].size(); iHour++) {
-            if (m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] != nullptr) {
+    for (int iLevel = 0; iLevel < _preloadedArchive[iStep][iPtor][iPre].size(); iLevel++) {
+        for (int iHour = 0; iHour < _preloadedArchive[iStep][iPtor][iPre][iLevel].size(); iHour++) {
+            if (_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] != nullptr) {
                 levels.push_back(iLevel);
                 hours.push_back(iHour);
             }

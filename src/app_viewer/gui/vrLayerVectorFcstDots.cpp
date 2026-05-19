@@ -32,18 +32,18 @@
 #include "vrrender.h"
 
 vrLayerVectorFcstDots::vrLayerVectorFcstDots() {
-    wxASSERT(!m_dataset);
-    wxASSERT(!m_layer);
-    m_driverType = vrDRIVER_VECTOR_MEMORY;
-    m_valueMax = 1;
+    wxASSERT(!_dataset);
+    wxASSERT(!_layer);
+    _driverType = vrDRIVER_VECTOR_MEMORY;
+    _valueMax = 1;
 }
 
 vrLayerVectorFcstDots::~vrLayerVectorFcstDots() = default;
 
 long vrLayerVectorFcstDots::AddFeature(OGRGeometry* geometry, void* data) {
-    wxASSERT(m_layer);
-    OGRFeature* feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
-    wxASSERT(m_layer);
+    wxASSERT(_layer);
+    OGRFeature* feature = OGRFeature::CreateFeature(_layer->GetLayerDefn());
+    wxASSERT(_layer);
     feature->SetGeometry(geometry);
 
     if (data != nullptr) {
@@ -55,7 +55,7 @@ long vrLayerVectorFcstDots::AddFeature(OGRGeometry* geometry, void* data) {
         }
     }
 
-    if (m_layer->CreateFeature(feature) != OGRERR_NONE) {
+    if (_layer->CreateFeature(feature) != OGRERR_NONE) {
         wxLogError(_("Error creating feature"));
         OGRFeature::DestroyFeature(feature);
         return wxNOT_FOUND;
@@ -145,17 +145,17 @@ void vrLayerVectorFcstDots::Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, 
     } else if (value == 0)  // No rain -> white
     {
         colour.Set(255, 255, 255);
-    } else if (value / m_valueMax <= 0.5)  // Light green to yellow
+    } else if (value / _valueMax <= 0.5)  // Light green to yellow
     {
         int baseVal = 200;
-        int valColour = ((value / (0.5 * m_valueMax))) * baseVal;
-        int valColourCompl = ((value / (0.5 * m_valueMax))) * (255 - baseVal);
+        int valColour = ((value / (0.5 * _valueMax))) * baseVal;
+        int valColourCompl = ((value / (0.5 * _valueMax))) * (255 - baseVal);
         if (valColour > baseVal) valColour = baseVal;
         if (valColourCompl + baseVal > 255) valColourCompl = 255 - baseVal;
         colour.Set((baseVal + valColourCompl), 255, (baseVal - valColour));
     } else  // Yellow to red
     {
-        int valColour = ((value - 0.5 * m_valueMax) / (0.5 * m_valueMax)) * 255;
+        int valColour = ((value - 0.5 * _valueMax) / (0.5 * _valueMax)) * 255;
         if (valColour > 255) valColour = 255;
         colour.Set(255, (255 - valColour), 0);
     }

@@ -42,11 +42,11 @@ class asPanelSidebarStationsList : public asPanelSidebar {
     void SetChoices(wxArrayString& arrayStation);
 
     wxChoice* GetChoiceCtrl() const {
-        return m_choiceStationSelection;
+        return _choiceStationSelection;
     }
 
   private:
-    wxChoice* m_choiceStationSelection;
+    wxChoice* _choiceStationSelection;
 
     void OnStationSelection(wxCommandEvent& event);
 };

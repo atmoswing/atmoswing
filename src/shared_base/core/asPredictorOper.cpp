@@ -41,13 +41,13 @@
 
 asPredictorOper::asPredictorOper(const wxString& dataId)
     : asPredictor(dataId),
-      m_leadTimeStart(0),
-      m_leadTimeStep(0),
-      m_runHourStart(0),
-      m_runUpdate(0),
-      m_runDateInUse(0.0),
-      m_commandDownload(),
-      m_shouldDownload(false) {}
+      _leadTimeStart(0),
+      _leadTimeStep(0),
+      _runHourStart(0),
+      _runUpdate(0),
+      _runDateInUse(0.0),
+      _commandDownload(),
+      _shouldDownload(false) {}
 
 void asPredictorOper::SetDefaultPredictorsUrls() {
     wxConfigBase* pConfig = wxFileConfig::Get();
@@ -137,9 +137,9 @@ asPredictorOper* asPredictorOper::GetInstance(const wxString& datasetId, const w
 }
 
 int asPredictorOper::Download() {
-    wxASSERT(!m_predictorsRealtimeDir.IsEmpty());
+    wxASSERT(!_predictorsRealtimeDir.IsEmpty());
 
-    return asInternet::Download(GetUrls(), GetFileNames(), m_predictorsRealtimeDir);
+    return asInternet::Download(GetUrls(), GetFileNames(), _predictorsRealtimeDir);
 }
 
 bool asPredictorOper::CheckTimeArray(asTimeArray& timeArray) {
@@ -147,21 +147,21 @@ bool asPredictorOper::CheckTimeArray(asTimeArray& timeArray) {
 }
 
 double asPredictorOper::UpdateRunDateInUse() {
-    m_fileNames.clear();
-    m_urls.clear();
+    _fileNames.clear();
+    _urls.clear();
 
     // Round time to the last available data
-    double runHourStart = m_runHourStart;
-    double runUpdate = m_runUpdate;
-    double hourNow = (m_runDateInUse - floor(m_runDateInUse)) * 24;
+    double runHourStart = _runHourStart;
+    double runUpdate = _runUpdate;
+    double hourNow = (_runDateInUse - floor(_runDateInUse)) * 24;
     if (runUpdate > 0) {
         double factorUpdate = floor((hourNow - runHourStart) / runUpdate);
-        m_runDateInUse = floor(m_runDateInUse) + (factorUpdate * runUpdate) / (double)24;
+        _runDateInUse = floor(_runDateInUse) + (factorUpdate * runUpdate) / (double)24;
     } else {
-        m_runDateInUse = floor(m_runDateInUse) + runHourStart / (double)24;
+        _runDateInUse = floor(_runDateInUse) + runHourStart / (double)24;
     }
 
-    return m_runDateInUse;
+    return _runDateInUse;
 }
 
 double asPredictorOper::SetRunDateInUse(double val) {
@@ -170,51 +170,51 @@ double asPredictorOper::SetRunDateInUse(double val) {
         val = asTime::NowMJD(asUTM);
     }
 
-    m_runDateInUse = val;
+    _runDateInUse = val;
     UpdateRunDateInUse();
 
-    return m_runDateInUse;
+    return _runDateInUse;
 }
 
 double asPredictorOper::DecrementRunDateInUse() {
-    m_fileNames.clear();
-    m_urls.clear();
-    m_runDateInUse -= m_runUpdate / (double)24;
+    _fileNames.clear();
+    _urls.clear();
+    _runDateInUse -= _runUpdate / (double)24;
 
-    return m_runDateInUse;
+    return _runDateInUse;
 }
 
 bool asPredictorOper::BuildFilenamesAndUrls(double predictorHour, double forecastTimeStepHours, int leadTimeNb) {
-    m_dataDates.clear();
-    m_fileNames.clear();
-    m_urls.clear();
+    _dataDates.clear();
+    _fileNames.clear();
+    _urls.clear();
 
     // Restrict to used data
     if (forecastTimeStepHours >= 24) {
         // Get the real lead time
-        double dayRun = floor(m_runDateInUse);
+        double dayRun = floor(_runDateInUse);
         double desiredTime = dayRun + predictorHour / 24.0;
-        double diff = desiredTime - m_runDateInUse;
-        m_leadTimeStart = (int)(diff * 24.0);
-        m_leadTimeStep = forecastTimeStepHours;
+        double diff = desiredTime - _runDateInUse;
+        _leadTimeStart = (int)(diff * 24.0);
+        _leadTimeStep = forecastTimeStepHours;
     } else {
-        m_leadTimeStart = (int)predictorHour;
+        _leadTimeStart = (int)predictorHour;
     }
 
-    wxASSERT(m_leadTimeStep > 0);
+    wxASSERT(_leadTimeStep > 0);
 
     // Change the lead times
     for (int iLeadTime = 0; iLeadTime < leadTimeNb; iLeadTime++) {
-        int currentLeadtime = m_leadTimeStart + iLeadTime * m_leadTimeStep;
-        double runDateInUse = m_runDateInUse;
+        int currentLeadtime = _leadTimeStart + iLeadTime * _leadTimeStep;
+        double runDateInUse = _runDateInUse;
 
         // Manage if lead time if negative -> get previous download
         while (currentLeadtime < 0) {
-            currentLeadtime += m_runUpdate;
-            runDateInUse -= m_runUpdate / 24.0;
+            currentLeadtime += _runUpdate;
+            runDateInUse -= _runUpdate / 24.0;
         }
 
-        wxString thisCommand = m_commandDownload;
+        wxString thisCommand = _commandDownload;
 
         // Replace time in the command
         while (thisCommand.Find("CURRENTDATE") != wxNOT_FOUND) {
@@ -257,45 +257,45 @@ bool asPredictorOper::BuildFilenamesAndUrls(double predictorHour, double forecas
         double dataDate = runDateInUse + currentLeadtime / 24.0;
 
         // Save resulting strings
-        m_urls.push_back(thisCommand);
-        m_fileNames.push_back(filePath);
-        m_dataDates.push_back(dataDate);
+        _urls.push_back(thisCommand);
+        _fileNames.push_back(filePath);
+        _dataDates.push_back(dataDate);
     }
 
-    wxASSERT(m_dataDates.size() == m_urls.size());
-    wxASSERT(m_dataDates.size() == m_fileNames.size());
+    wxASSERT(_dataDates.size() == _urls.size());
+    wxASSERT(_dataDates.size() == _fileNames.size());
 
     return true;
 }
 
 void asPredictorOper::ListFiles(asTimeArray& timeArray) {
-    for (const auto& currfileName : m_fileNames) {
+    for (const auto& currfileName : _fileNames) {
         wxString filePath = wxEmptyString;
 
         // Check if the volume is present
         wxFileName fileName(currfileName);
-        if (!fileName.HasVolume() && !m_predictorsRealtimeDir.IsEmpty()) {
-            filePath = m_predictorsRealtimeDir;
+        if (!fileName.HasVolume() && !_predictorsRealtimeDir.IsEmpty()) {
+            filePath = _predictorsRealtimeDir;
             filePath.Append(DS);
         }
         filePath.Append(currfileName);
 
-        m_files.push_back(filePath);
+        _files.push_back(filePath);
     }
 }
 
 bool asPredictorOper::ExtractFromFiles(asAreaGrid*& dataArea, asTimeArray& timeArray) {
-    if (m_files.size() != timeArray.GetSize()) {
+    if (_files.size() != timeArray.GetSize()) {
         wxLogError(_("Issue extracting operational predictor data: number of files and time steps do not match."));
         return false;
     }
 
-    for (int i = 0; i < m_files.size(); ++i) {
-        wxString fileName = m_files[i];
+    for (int i = 0; i < _files.size(); ++i) {
+        wxString fileName = _files[i];
         asTimeArray newTimeArray(timeArray[i]);
         newTimeArray.Init();
 
-        switch (m_fileType) {
+        switch (_fileType) {
             case (asFile::Netcdf): {
                 if (!ExtractFromNetcdfFile(fileName, dataArea, newTimeArray)) {
                     return false;
@@ -335,5 +335,5 @@ wxString asPredictorOper::GetFileName(const double date, const int leadTime) {
 
     wxString dateStr = asTime::GetStringTime(date, "YYYYMMDDhh");
 
-    return asStrF("%s.%s.%s.%s.%s", dateStr, m_datasetId, m_dataId, timeStr, m_fileExtension);
+    return asStrF("%s.%s.%s.%s.%s", dateStr, _datasetId, _dataId, timeStr, _fileExtension);
 }

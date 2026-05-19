@@ -109,8 +109,8 @@ class asPredictorsManager {
      * @param date The desired forecast date.
      */
     void SetForecastDate(double date) {
-        m_forecastDate = date;
-        m_needsDataReload = true;
+        _forecastDate = date;
+        _needsDataReload = true;
     }
 
     /**
@@ -119,7 +119,7 @@ class asPredictorsManager {
      * @param forecastTimeStepHours The forecast time step.
      */
     void SetForecastTimeStepHours(double forecastTimeStepHours) {
-        m_forecastTimeStepHours = forecastTimeStepHours;
+        _forecastTimeStepHours = forecastTimeStepHours;
     }
 
     /**
@@ -128,8 +128,8 @@ class asPredictorsManager {
      * @param predictorDatasetIds The dataset IDs.
      */
     void SetDatasetIds(const vwxs& predictorDatasetIds) {
-        m_datasetIds = predictorDatasetIds;
-        m_needsDataReload = true;
+        _datasetIds = predictorDatasetIds;
+        _needsDataReload = true;
     }
 
     /**
@@ -138,8 +138,8 @@ class asPredictorsManager {
      * @param predictorDataIds The data IDs.
      */
     void SetDataIds(const vwxs& predictorDataIds) {
-        m_dataIds = predictorDataIds;
-        m_needsDataReload = true;
+        _dataIds = predictorDataIds;
+        _needsDataReload = true;
     }
 
     /**
@@ -148,8 +148,8 @@ class asPredictorsManager {
      * @param predictorLevels The vertical levels.
      */
     void SetLevels(const vf& predictorLevels) {
-        m_levels = predictorLevels;
-        m_needsDataReload = true;
+        _levels = predictorLevels;
+        _needsDataReload = true;
     }
 
     /**
@@ -158,8 +158,8 @@ class asPredictorsManager {
      * @param predictorHours The hours.
      */
     void SetHours(const vf& predictorHours) {
-        m_hours = predictorHours;
-        m_needsDataReload = true;
+        _hours = predictorHours;
+        _needsDataReload = true;
     }
 
     /**
@@ -168,7 +168,7 @@ class asPredictorsManager {
      * @return The number of longitude points.
      */
     int GetLongitudesNb() {
-        return int(m_longitudes->size());
+        return int(_longitudes->size());
     }
 
     /**
@@ -177,7 +177,7 @@ class asPredictorsManager {
      * @return The number of latitude points.
      */
     int GetLatitudesNb() {
-        return int(m_latitudes->size());
+        return int(_latitudes->size());
     }
 
     /**
@@ -186,7 +186,7 @@ class asPredictorsManager {
      * @return The minimum longitude value.
      */
     double GetLongitudeMin() {
-        return m_longitudes->minCoeff();
+        return _longitudes->minCoeff();
     }
 
     /**
@@ -195,7 +195,7 @@ class asPredictorsManager {
      * @return The minimum latitude value.
      */
     double GetLatitudeMin() {
-        return m_latitudes->minCoeff();
+        return _latitudes->minCoeff();
     }
 
     /**
@@ -204,7 +204,7 @@ class asPredictorsManager {
      * @return The maximum latitude value.
      */
     double GetLatitudeMax() {
-        return m_latitudes->maxCoeff();
+        return _latitudes->maxCoeff();
     }
 
     /**
@@ -213,8 +213,8 @@ class asPredictorsManager {
      * @return The resolution of the longitude grid.
      */
     double GetLongitudeResol() {
-        wxASSERT(m_longitudes->size() > 1);
-        return (*m_longitudes)(1) - (*m_longitudes)(0);
+        wxASSERT(_longitudes->size() > 1);
+        return (*_longitudes)(1) - (*_longitudes)(0);
     }
 
     /**
@@ -223,33 +223,33 @@ class asPredictorsManager {
      * @return The resolution of the latitude grid.
      */
     double GetLatitudeResol() {
-        wxASSERT(m_latitudes->size() > 1);
-        return (*m_latitudes)(1) - (*m_latitudes)(0);
+        wxASSERT(_latitudes->size() > 1);
+        return (*_latitudes)(1) - (*_latitudes)(0);
     }
 
     /**
      * Flag the need to reload the data.
      */
     void NeedsDataReload() {
-        m_needsDataReload = true;
+        _needsDataReload = true;
     }
 
   protected:
   private:
-    asWorkspace* m_workspace; /**< The Viewer workspace. */
-    asPredictor* m_predictor; /**< The selected predictor. */
-    bool m_isTargetPredictor; /**< A boolean indicating if the predictor is the target. */
-    double m_forecastDate; /**< The forecast date as MJD. */
-    double m_date; /**< The data date as MJD. */
-    double m_forecastTimeStepHours;  /**< The forecast time step in hours. */
-    vwxs m_datasetIds; /**< The dataset IDs. */
-    vwxs m_dataIds; /**< The data IDs. */
-    vf m_levels; /**< The vertical levels. */
-    vf m_hours; /**< The hours. */
-    bool m_needsDataReload; /**< A boolean indicating if the data needs to be reloaded. */
-    a2f* m_data; /**< The loaded data. */
-    a1d* m_longitudes; /**< The longitudes. */
-    a1d* m_latitudes; /**< The latitudes. */
+    asWorkspace* _workspace; /**< The Viewer workspace. */
+    asPredictor* _predictor; /**< The selected predictor. */
+    bool _isTargetPredictor; /**< A boolean indicating if the predictor is the target. */
+    double _forecastDate; /**< The forecast date as MJD. */
+    double _date; /**< The data date as MJD. */
+    double _forecastTimeStepHours;  /**< The forecast time step in hours. */
+    vwxs _datasetIds; /**< The dataset IDs. */
+    vwxs _dataIds; /**< The data IDs. */
+    vf _levels; /**< The vertical levels. */
+    vf _hours; /**< The hours. */
+    bool _needsDataReload; /**< A boolean indicating if the data needs to be reloaded. */
+    a2f* _data; /**< The loaded data. */
+    a1d* _longitudes; /**< The longitudes. */
+    a1d* _latitudes; /**< The latitudes. */
 };
 
 #endif

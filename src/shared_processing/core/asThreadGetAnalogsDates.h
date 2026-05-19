@@ -54,26 +54,26 @@ class asThreadGetAnalogsDates : public asThread {
 
   protected:
   private:
-    vector<asPredictor*> m_pPredictorsArchive;
-    vector<asPredictor*> m_pPredictorsTarget;
-    asTimeArray* m_pTimeArrayArchiveData;
-    asTimeArray* m_pTimeArrayArchiveSelection;
-    asTimeArray* m_pTimeArrayTargetData;
-    asTimeArray* m_pTimeArrayTargetSelection;
-    vector<asCriteria*> m_criteria;
-    asParameters* m_params;
-    int m_step;
-    vpa2f m_vTargData;
-    vpa2f m_vArchData;
-    a1i m_vRowsNb;
-    a1i m_vColsNb;
-    int m_start;
-    int m_end;
-    a2f* m_pFinalAnalogsCriteria;
-    a2f* m_pFinalAnalogsDates;
-    bool* m_pContainsNaNs;
-    bool m_allowDuplicateDates;
-    bool* m_success;
+    vector<asPredictor*> _pPredictorsArchive;
+    vector<asPredictor*> _pPredictorsTarget;
+    asTimeArray* _pTimeArrayArchiveData;
+    asTimeArray* _pTimeArrayArchiveSelection;
+    asTimeArray* _pTimeArrayTargetData;
+    asTimeArray* _pTimeArrayTargetSelection;
+    vector<asCriteria*> _criteria;
+    asParameters* _params;
+    int _step;
+    vpa2f _vTargData;
+    vpa2f _vArchData;
+    a1i _vRowsNb;
+    a1i _vColsNb;
+    int _start;
+    int _end;
+    a2f* _pFinalAnalogsCriteria;
+    a2f* _pFinalAnalogsDates;
+    bool* _pContainsNaNs;
+    bool _allowDuplicateDates;
+    bool* _success;
 };
 
 #endif

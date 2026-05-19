@@ -76,33 +76,33 @@ asAreaGrid* asAreaGrid::GetInstance(double xMin, int xPtsNb, double xStep, doubl
 asAreaGrid::asAreaGrid(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR,
                        int flatAllowed, bool isLatLon)
     : asArea(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon),
-      m_isRegular(false),
-      m_isFull(false),
-      m_isInitialized(false),
-      m_allowResizeFromData(false),
-      m_xPtsNb(0),
-      m_yPtsNb(0) {}
+      _isRegular(false),
+      _isFull(false),
+      _isInitialized(false),
+      _allowResizeFromData(false),
+      _xPtsNb(0),
+      _yPtsNb(0) {}
 
 asAreaGrid::asAreaGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed, bool isLatLon)
     : asArea(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon),
-      m_isRegular(false),
-      m_isFull(false),
-      m_isInitialized(false),
-      m_allowResizeFromData(false),
-      m_xPtsNb(0),
-      m_yPtsNb(0) {}
+      _isRegular(false),
+      _isFull(false),
+      _isInitialized(false),
+      _allowResizeFromData(false),
+      _xPtsNb(0),
+      _yPtsNb(0) {}
 
 asAreaGrid::asAreaGrid()
     : asArea(),
-      m_isRegular(false),
-      m_isFull(false),
-      m_isInitialized(false),
-      m_allowResizeFromData(false),
-      m_xPtsNb(0),
-      m_yPtsNb(0) {}
+      _isRegular(false),
+      _isFull(false),
+      _isInitialized(false),
+      _allowResizeFromData(false),
+      _xPtsNb(0),
+      _yPtsNb(0) {}
 
 bool asAreaGrid::InitializeAxes(const a1d& lons, const a1d& lats, bool strideAllowed, bool getLarger) {
-    m_isInitialized = true;
+    _isInitialized = true;
 
     if (AreaDefinedByPointsNb(lons, lats)) return HandleAreaDefinedByPointsNb(lons, lats);
 
@@ -110,26 +110,26 @@ bool asAreaGrid::InitializeAxes(const a1d& lons, const a1d& lats, bool strideAll
 }
 
 void asAreaGrid::CorrectCornersWithAxes() {
-    if (GetXmin() != m_xAxis[0]) {
+    if (GetXmin() != _xAxis[0]) {
         Coo cornerLL = GetCornerLL();
-        cornerLL.x = m_xAxis[0];
+        cornerLL.x = _xAxis[0];
         SetCornerLL(cornerLL, true);
         Coo cornerUL = GetCornerUL();
-        cornerUL.x = m_xAxis[0];
+        cornerUL.x = _xAxis[0];
         SetCornerUL(cornerUL, true);
     }
 
-    if (GetXmax() != m_xAxis.tail(1)[0]) {
+    if (GetXmax() != _xAxis.tail(1)[0]) {
         Coo cornerLR = GetCornerLR();
-        cornerLR.x = m_xAxis.tail(1)[0];
+        cornerLR.x = _xAxis.tail(1)[0];
         SetCornerLR(cornerLR, true);
         Coo cornerUR = GetCornerUR();
-        cornerUR.x = m_xAxis.tail(1)[0];
+        cornerUR.x = _xAxis.tail(1)[0];
         SetCornerUR(cornerUR, true);
     }
 
     if (GetCornerLL().x > GetCornerLR().x || GetCornerUL().x > GetCornerUR().x) {
-        if (m_isLatLon) {
+        if (_isLatLon) {
             Coo cornerLR = GetCornerLR();
             cornerLR.x += 360;
             SetCornerLR(cornerLR, true);
@@ -141,21 +141,21 @@ void asAreaGrid::CorrectCornersWithAxes() {
         }
     }
 
-    if (GetYmin() != m_yAxis[0]) {
+    if (GetYmin() != _yAxis[0]) {
         Coo cornerLL = GetCornerLL();
-        cornerLL.y = m_yAxis[0];
+        cornerLL.y = _yAxis[0];
         SetCornerLL(cornerLL, true);
         Coo cornerLR = GetCornerLR();
-        cornerLR.y = m_yAxis[0];
+        cornerLR.y = _yAxis[0];
         SetCornerLR(cornerLR, true);
     }
 
-    if (GetYmax() != m_yAxis.tail(1)[0]) {
+    if (GetYmax() != _yAxis.tail(1)[0]) {
         Coo cornerUL = GetCornerUL();
-        cornerUL.y = m_yAxis.tail(1)[0];
+        cornerUL.y = _yAxis.tail(1)[0];
         SetCornerUL(cornerUL, true);
         Coo cornerUR = GetCornerUR();
-        cornerUR.y = m_yAxis.tail(1)[0];
+        cornerUR.y = _yAxis.tail(1)[0];
         SetCornerUR(cornerUR, true);
     }
 }
@@ -210,7 +210,7 @@ bool asAreaGrid::CreateAxes(const a1d& lons, const a1d& lats, bool getLarger) {
         }
     }
 
-    if (m_allowResizeFromData) {
+    if (_allowResizeFromData) {
         if (indexXmin != asOUT_OF_RANGE && indexXmax == asOUT_OF_RANGE) {
             indexXmax = nlons;
         }
@@ -238,7 +238,7 @@ bool asAreaGrid::CreateAxes(const a1d& lons, const a1d& lats, bool getLarger) {
         indexYmin = asFindFloor(&lats[0], &lats[nlats], GetYmin(), asHIDE_WARNINGS);
         indexYmax = asFindCeil(&lats[0], &lats[nlats], GetYmax(), asHIDE_WARNINGS);
 
-        if (m_allowResizeFromData) {
+        if (_allowResizeFromData) {
             if (indexYmin != asOUT_OF_RANGE && indexYmax == asOUT_OF_RANGE) {
                 if (lats[nlats] > lats[0]) {
                     indexYmax = nlats;
@@ -252,7 +252,7 @@ bool asAreaGrid::CreateAxes(const a1d& lons, const a1d& lats, bool getLarger) {
             indexYmin = asFindCeil(&lats[0], &lats[nlats], GetYmax(), asHIDE_WARNINGS);
             indexYmax = asFindFloor(&lats[0], &lats[nlats], GetYmin(), asHIDE_WARNINGS);
 
-            if (m_allowResizeFromData) {
+            if (_allowResizeFromData) {
                 if (indexYmin == asOUT_OF_RANGE && indexYmax != asOUT_OF_RANGE) {
                     if (lats[nlats] > lats[0]) {
                         indexYmax = nlats;
@@ -267,7 +267,7 @@ bool asAreaGrid::CreateAxes(const a1d& lons, const a1d& lats, bool getLarger) {
         indexYmin = asFindClosest(&lats[0], &lats[nlats], GetYmin(), asHIDE_WARNINGS);
         indexYmax = asFindClosest(&lats[0], &lats[nlats], GetYmax(), asHIDE_WARNINGS);
 
-        if (m_allowResizeFromData) {
+        if (_allowResizeFromData) {
             if (indexYmin != asOUT_OF_RANGE && indexYmax == asOUT_OF_RANGE) {
                 if (lats[nlats] > lats[0]) {
                     indexYmax = nlats;
@@ -321,14 +321,14 @@ bool asAreaGrid::CreateAxes(const a1d& lons, const a1d& lats, bool getLarger) {
     wxASSERT(indexYmax >= 0);
     wxASSERT(indexYmin <= indexYmax);
 
-    m_xAxis = lons.segment(indexXmin, indexXmax - indexXmin + 1);
-    m_yAxis = lats.segment(indexYmin, indexYmax - indexYmin + 1);
+    _xAxis = lons.segment(indexXmin, indexXmax - indexXmin + 1);
+    _yAxis = lats.segment(indexYmin, indexYmax - indexYmin + 1);
 
     return true;
 }
 
 bool asAreaGrid::AreaDefinedByPointsNb(const a1d& lons, const a1d& lats) {
-    return m_xPtsNb > 0 && m_yPtsNb > 0 && GetXmin() == GetXmax() && GetYmin() == GetYmax();
+    return _xPtsNb > 0 && _yPtsNb > 0 && GetXmin() == GetXmax() && GetYmin() == GetYmax();
 }
 
 bool asAreaGrid::HandleAreaDefinedByPointsNb(const a1d& lons, const a1d& lats) {
@@ -340,19 +340,19 @@ bool asAreaGrid::HandleAreaDefinedByPointsNb(const a1d& lons, const a1d& lats) {
     wxASSERT(lats.size() > 1);
 
     if (lats[1] > lats[0]) {  // Increasing
-        if (indexYmin + m_yPtsNb > lats.size()) {
+        if (indexYmin + _yPtsNb > lats.size()) {
             wxLogMessage(_("The number of points on the latitude axis was reduced to fit the data."));
-            m_yPtsNb = (int)lats.size() - indexYmin;
+            _yPtsNb = (int)lats.size() - indexYmin;
         }
-        indexYmax = indexYmin + m_yPtsNb - 1;
-        latsAxis = lats.segment(indexYmin, m_yPtsNb);
+        indexYmax = indexYmin + _yPtsNb - 1;
+        latsAxis = lats.segment(indexYmin, _yPtsNb);
     } else {  // Decreasing
-        if (indexYmin - m_yPtsNb + 1 < 0) {
+        if (indexYmin - _yPtsNb + 1 < 0) {
             wxLogMessage(_("The number of points on the latitude axis was reduced to fit the data."));
-            m_yPtsNb = indexYmin + 1;
+            _yPtsNb = indexYmin + 1;
         }
-        indexYmax = indexYmin - m_yPtsNb + 1;
-        latsAxis = lats.segment(indexYmax, m_yPtsNb);
+        indexYmax = indexYmin - _yPtsNb + 1;
+        latsAxis = lats.segment(indexYmax, _yPtsNb);
     }
 
     int indexXmin = asFindClosest(&lons[0], &lons[lons.size() - 1], GetXmin(), asHIDE_WARNINGS);
@@ -369,60 +369,60 @@ bool asAreaGrid::HandleAreaDefinedByPointsNb(const a1d& lons, const a1d& lats) {
         return false;
     }
 
-    if (indexXmin + m_xPtsNb > lons.size()) {
+    if (indexXmin + _xPtsNb > lons.size()) {
         wxLogMessage(_("The number of points on the longitude axis was reduced to fit the data."));
-        m_xPtsNb = (int)lons.size() - indexXmin;
+        _xPtsNb = (int)lons.size() - indexXmin;
     }
 
-    m_xAxis = lons.segment(indexXmin, m_xPtsNb);
-    m_yAxis = latsAxis;
+    _xAxis = lons.segment(indexXmin, _xPtsNb);
+    _yAxis = latsAxis;
 
-    m_cornerLL = {lons[indexXmin], m_cornerLR.y};
-    m_cornerUL = {lons[indexXmin], lats[indexYmax]};
-    m_cornerUR = {lons[indexXmin + m_xPtsNb - 1], lats[indexYmax]};
-    m_cornerLR = {lons[indexXmin + m_xPtsNb - 1], m_cornerLR.y};
+    _cornerLL = {lons[indexXmin], _cornerLR.y};
+    _cornerUL = {lons[indexXmin], lats[indexYmax]};
+    _cornerUR = {lons[indexXmin + _xPtsNb - 1], lats[indexYmax]};
+    _cornerLR = {lons[indexXmin + _xPtsNb - 1], _cornerLR.y};
 
     return true;
 }
 
 a1d asAreaGrid::GetXaxis() {
-    wxASSERT(m_isInitialized);
-    return m_xAxis;
+    wxASSERT(_isInitialized);
+    return _xAxis;
 }
 
 a1d asAreaGrid::GetYaxis() {
-    wxASSERT(m_isInitialized);
-    return m_yAxis;
+    wxASSERT(_isInitialized);
+    return _yAxis;
 }
 
 int asAreaGrid::GetXaxisPtsnb() {
-    wxASSERT(m_isInitialized);
-    return (int)m_xAxis.size();
+    wxASSERT(_isInitialized);
+    return (int)_xAxis.size();
 }
 
 int asAreaGrid::GetYaxisPtsnb() {
-    wxASSERT(m_isInitialized);
-    return (int)m_yAxis.size();
+    wxASSERT(_isInitialized);
+    return (int)_yAxis.size();
 }
 
 double asAreaGrid::GetXaxisStart() const {
-    wxASSERT(m_isInitialized);
-    return m_xAxis[0];
+    wxASSERT(_isInitialized);
+    return _xAxis[0];
 }
 
 double asAreaGrid::GetYaxisStart() const {
-    wxASSERT(m_isInitialized);
-    return m_yAxis[0];
+    wxASSERT(_isInitialized);
+    return _yAxis[0];
 }
 
 double asAreaGrid::GetXaxisEnd() const {
-    wxASSERT(m_isInitialized);
-    return m_xAxis[m_xAxis.size() - 1];
+    wxASSERT(_isInitialized);
+    return _xAxis[_xAxis.size() - 1];
 }
 
 double asAreaGrid::GetYaxisEnd() const {
-    wxASSERT(m_isInitialized);
-    return m_yAxis[m_yAxis.size() - 1];
+    wxASSERT(_isInitialized);
+    return _yAxis[_yAxis.size() - 1];
 }
 
 int asAreaGrid::GetXptsNb() {

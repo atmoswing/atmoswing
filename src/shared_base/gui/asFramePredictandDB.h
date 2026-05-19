@@ -47,7 +47,7 @@ class asFramePredictandDB : public asFramePredictandDBVirtual {
     void BuildDatabase(wxCommandEvent& event) override;
 
   private:
-    wxPanel* m_panelProcessing;
+    wxPanel* _panelProcessing;
 };
 
 #endif

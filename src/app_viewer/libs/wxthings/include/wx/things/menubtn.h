@@ -113,16 +113,16 @@ class WXDLLIMPEXP_THINGS wxMenuButton : public wxControl {
     void AssignMenu(wxMenu* menu, bool static_menu = false);
 
     wxMenu* GetMenu() const {
-        return m_menu;
+        return _menu;
     }
 
     // get a pointer to the label button, for turning it into a toggle perhaps
     wxCustomButton* GetLabelButton() const {
-        return m_labelButton;
+        return _labelButton;
     }
 
     wxCustomButton* GetDropDownButton() const {
-        return m_dropdownButton;
+        return _dropdownButton;
     }
 
     void SetToolTip(const wxString& tip);
@@ -141,12 +141,12 @@ class WXDLLIMPEXP_THINGS wxMenuButton : public wxControl {
     void OnMenu(wxCommandEvent& event);
 #endif
 
-    wxCustomButton* m_labelButton;
-    wxCustomButton* m_dropdownButton;
+    wxCustomButton* _labelButton;
+    wxCustomButton* _dropdownButton;
 
-    wxMenu* m_menu;
-    bool m_menu_static;
-    long m_style;
+    wxMenu* _menu;
+    bool _menu_static;
+    long _style;
 
   private:
     void Init();

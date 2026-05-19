@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
+// C++ code generated with wxFormBuilder (version 4.2.1-0-g80c4cb6)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -46,7 +46,6 @@ WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 
 ///////////////////////////////////////////////////////////////////////////
 
-
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFrameViewerVirtual
 ///////////////////////////////////////////////////////////////////////////////
@@ -55,34 +54,34 @@ class asFrameViewerVirtual : public wxFrame
 	private:
 
 	protected:
-		wxPanel* m_panelMain;
-		wxSplitterWindow* m_splitterGIS;
-		wxScrolledWindow* m_scrolledWindowOptions;
-		wxBoxSizer* m_sizerScrolledWindow;
-		wxPanel* m_panelContent;
-		wxBoxSizer* m_sizerContent;
-		wxPanel* m_panelTop;
-		wxBoxSizer* m_sizerTop;
-		wxBoxSizer* m_sizerTopLeft;
-		wxStaticText* m_staticTextForecastDate;
-		wxButton* m_button51;
-		wxButton* m_button5;
-		wxButton* m_button6;
-		wxButton* m_button61;
-		wxStaticText* m_staticTextForecast;
-		wxBoxSizer* m_sizerTopRight;
-		wxBoxSizer* m_sizerLeadTimeSwitch;
-		wxPanel* m_panelGIS;
-		wxBoxSizer* m_sizerGIS;
-		wxMenuBar* m_menuBar;
-		wxMenu* m_menuFile;
-		wxMenu* m_menuOptions;
-		wxMenu* m_menuTools;
-		wxMenu* m_menuLog;
-		wxMenu* m_menuLogLevel;
-		wxMenu* m_menuHelp;
-		wxToolBar* m_toolBar;
-		wxStatusBar* m_statusBar;
+		wxPanel* _panelMain;
+		wxSplitterWindow* _splitterGIS;
+		wxScrolledWindow* _scrolledWindowOptions;
+		wxBoxSizer* _sizerScrolledWindow;
+		wxPanel* _panelContent;
+		wxBoxSizer* _sizerContent;
+		wxPanel* _panelTop;
+		wxBoxSizer* _sizerTop;
+		wxBoxSizer* _sizerTopLeft;
+		wxStaticText* _staticTextForecastDate;
+		wxButton* _button51;
+		wxButton* _button5;
+		wxButton* _button6;
+		wxButton* _button61;
+		wxStaticText* _staticTextForecast;
+		wxBoxSizer* _sizerTopRight;
+		wxBoxSizer* _sizerLeadTimeSwitch;
+		wxPanel* _panelGIS;
+		wxBoxSizer* _sizerGIS;
+		wxMenuBar* _menuBar;
+		wxMenu* _menuFile;
+		wxMenu* _menuOptions;
+		wxMenu* _menuTools;
+		wxMenu* _menuLog;
+		wxMenu* _menuLogLevel;
+		wxMenu* _menuHelp;
+		wxToolBar* _toolBar;
+		wxStatusBar* _statusBar;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnLoadPreviousDay( wxCommandEvent& event ) { event.Skip(); }
@@ -113,10 +112,10 @@ class asFrameViewerVirtual : public wxFrame
 
 		~asFrameViewerVirtual();
 
-		void m_splitterGISOnIdle( wxIdleEvent& )
+		void _splitterGISOnIdle( wxIdleEvent& )
 		{
-			m_splitterGIS->SetSashPosition( 270 );
-			m_splitterGIS->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFrameViewerVirtual::m_splitterGISOnIdle ), NULL, this );
+			_splitterGIS->SetSashPosition( 270 );
+			_splitterGIS->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFrameViewerVirtual::_splitterGISOnIdle ), NULL, this );
 		}
 
 };
@@ -129,21 +128,21 @@ class asWizardWorkspaceVirtual : public wxWizard
 	private:
 
 	protected:
-		wxStaticText* m_staticText37;
-		wxStaticText* m_staticText35;
-		wxButton* m_button4;
-		wxStaticText* m_staticText46;
-		wxStaticText* m_staticText36;
-		wxStaticText* m_staticText43;
-		wxFilePickerCtrl* m_filePickerWorkspaceFile;
-		wxStaticText* m_staticText44;
-		wxStaticText* m_staticTextForecastResultsDir;
-		wxDirPickerCtrl* m_dirPickerForecastResults;
-		wxStaticText* m_staticText42;
-		wxStaticText* m_staticText45;
-		wxStaticText* m_staticText40;
-		wxChoice* m_choiceBaseMap;
-		wxStaticText* m_staticText41;
+		wxStaticText* _staticText37;
+		wxStaticText* _staticText35;
+		wxButton* _button4;
+		wxStaticText* _staticText46;
+		wxStaticText* _staticText36;
+		wxStaticText* _staticText43;
+		wxFilePickerCtrl* _filePickerWorkspaceFile;
+		wxStaticText* _staticText44;
+		wxStaticText* _staticTextForecastResultsDir;
+		wxDirPickerCtrl* _dirPickerForecastResults;
+		wxStaticText* _staticText42;
+		wxStaticText* _staticText45;
+		wxStaticText* _staticText40;
+		wxChoice* _choiceBaseMap;
+		wxStaticText* _staticText41;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnWizardFinished( wxWizardEvent& event ) { event.Skip(); }
@@ -167,12 +166,12 @@ class asPanelSidebarVirtual : public wxPanel
 	private:
 
 	protected:
-		wxBoxSizer* m_sizerMain;
-		wxPanel* m_panel28;
-		wxPanel* m_panelHeader;
-		wxStaticText* m_header;
-		wxStaticBitmap* m_bitmapCaret;
-		wxBoxSizer* m_sizerContent;
+		wxBoxSizer* _sizerMain;
+		wxPanel* _panel28;
+		wxPanel* _panelHeader;
+		wxStaticText* _header;
+		wxStaticBitmap* _bitmapCaret;
+		wxBoxSizer* _sizerContent;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnReducePanel( wxMouseEvent& event ) { event.Skip(); }
@@ -194,18 +193,18 @@ class asFramePlotTimeSeriesVirtual : public wxFrame
 	private:
 
 	protected:
-		wxPanel* m_panelStationName;
-		wxStaticText* m_staticTextStationName;
-		wxButton* m_buttonSaveTxt;
-		wxButton* m_buttonPreview;
-		wxButton* m_buttonPrint;
-		wxButton* m_buttonReset;
-		wxSplitterWindow* m_splitter;
-		wxPanel* m_panelLeft;
-		wxCheckListBox* m_checkListToc;
-		wxCheckListBox* m_checkListPast;
-		wxPanel* m_panelRight;
-		wxBoxSizer* m_sizerPlot;
+		wxPanel* _panelStationName;
+		wxStaticText* _staticTextStationName;
+		wxButton* _buttonSaveTxt;
+		wxButton* _buttonPreview;
+		wxButton* _buttonPrint;
+		wxButton* _buttonReset;
+		wxSplitterWindow* _splitter;
+		wxPanel* _panelLeft;
+		wxCheckListBox* _checkListToc;
+		wxCheckListBox* _checkListPast;
+		wxPanel* _panelRight;
+		wxBoxSizer* _sizerPlot;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnExportTXT( wxCommandEvent& event ) { event.Skip(); }
@@ -221,10 +220,10 @@ class asFramePlotTimeSeriesVirtual : public wxFrame
 
 		~asFramePlotTimeSeriesVirtual();
 
-		void m_splitterOnIdle( wxIdleEvent& )
+		void _splitterOnIdle( wxIdleEvent& )
 		{
-			m_splitter->SetSashPosition( 150 );
-			m_splitter->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePlotTimeSeriesVirtual::m_splitterOnIdle ), NULL, this );
+			_splitter->SetSashPosition( 150 );
+			_splitter->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePlotTimeSeriesVirtual::_splitterOnIdle ), NULL, this );
 		}
 
 };
@@ -237,23 +236,23 @@ class asFramePlotDistributionsVirutal : public wxFrame
 	private:
 
 	protected:
-		wxPanel* m_panelOptions;
-		wxStaticText* m_staticTextForecast;
-		wxStaticText* m_staticTextStation;
-		wxStaticText* m_staticTextDate;
-		wxChoice* m_choiceForecast;
-		wxChoice* m_choiceStation;
-		wxChoice* m_choiceDate;
-		wxNotebook* m_notebook;
-		wxPanel* m_panelPredictands;
-		wxSplitterWindow* m_splitter4;
-		wxPanel* m_panelPredictandsLeft;
-		wxCheckListBox* m_checkListTocPredictands;
-		wxButton* m_buttonResetZoom;
-		wxPanel* m_panelPredictandsRight;
-		wxBoxSizer* m_sizerPlotPredictands;
-		wxPanel* m_panelCriteria;
-		wxBoxSizer* m_sizerPlotCriteria;
+		wxPanel* _panelOptions;
+		wxStaticText* _staticTextForecast;
+		wxStaticText* _staticTextStation;
+		wxStaticText* _staticTextDate;
+		wxChoice* _choiceForecast;
+		wxChoice* _choiceStation;
+		wxChoice* _choiceDate;
+		wxNotebook* _notebook;
+		wxPanel* _panelPredictands;
+		wxSplitterWindow* _splitter4;
+		wxPanel* _panelPredictandsLeft;
+		wxCheckListBox* _checkListTocPredictands;
+		wxButton* _buttonResetZoom;
+		wxPanel* _panelPredictandsRight;
+		wxBoxSizer* _sizerPlotPredictands;
+		wxPanel* _panelCriteria;
+		wxBoxSizer* _sizerPlotCriteria;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnChoiceForecastChange( wxCommandEvent& event ) { event.Skip(); }
@@ -269,10 +268,10 @@ class asFramePlotDistributionsVirutal : public wxFrame
 
 		~asFramePlotDistributionsVirutal();
 
-		void m_splitter4OnIdle( wxIdleEvent& )
+		void _splitter4OnIdle( wxIdleEvent& )
 		{
-			m_splitter4->SetSashPosition( 178 );
-			m_splitter4->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePlotDistributionsVirutal::m_splitter4OnIdle ), NULL, this );
+			_splitter4->SetSashPosition( 178 );
+			_splitter4->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePlotDistributionsVirutal::_splitter4OnIdle ), NULL, this );
 		}
 
 };
@@ -285,14 +284,14 @@ class asFrameGridAnalogsValuesVirtual : public wxFrame
 	private:
 
 	protected:
-		wxPanel* m_panelOptions;
-		wxStaticText* m_staticTextForecast;
-		wxChoice* m_choiceForecast;
-		wxStaticText* m_staticTextStation;
-		wxChoice* m_choiceStation;
-		wxStaticText* m_staticTextDate;
-		wxChoice* m_choiceDate;
-		wxGrid* m_grid;
+		wxPanel* _panelOptions;
+		wxStaticText* _staticTextForecast;
+		wxChoice* _choiceForecast;
+		wxStaticText* _staticTextStation;
+		wxChoice* _choiceStation;
+		wxStaticText* _staticTextDate;
+		wxChoice* _choiceDate;
+		wxGrid* _grid;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnChoiceForecastChange( wxCommandEvent& event ) { event.Skip(); }
@@ -317,41 +316,41 @@ class asFramePredictorsVirtual : public wxFrame
 	private:
 
 	protected:
-		wxPanel* m_panel15;
-		wxSplitterWindow* m_splitterToc;
-		wxScrolledWindow* m_scrolledWindowOptions;
-		wxBoxSizer* m_sizerScrolledWindow;
-		wxStaticText* m_staticTextChoiceMethod;
-		wxChoice* m_choiceMethod;
-		wxStaticText* m_staticTextChoiceForecast;
-		wxChoice* m_choiceForecast;
-		wxStaticText* m_staticTextCheckListPredictors;
-		wxListBox* m_listPredictors;
-		wxStaticText* m_staticTextTocLeft;
-		wxStaticText* m_staticTextTocRight;
-		wxPanel* m_panelGIS;
-		wxBoxSizer* m_sizerGIS;
-		wxPanel* m_panelLeft;
-		wxStaticText* m_staticTextTargetDates;
-		wxChoice* m_choiceTargetDates;
-		wxPanel* m_panelGISLeft;
-		wxBoxSizer* m_sizerGISLeft;
-		wxPanel* m_panelColorbarLeft;
-		wxBoxSizer* m_sizerColorbarLeft;
-		wxPanel* m_panelSwitch;
-		wxBitmapButton* m_bpButtonSwitchRight;
-		wxBitmapButton* m_bpButtonSwitchLeft;
-		wxPanel* m_panelRight;
-		wxStaticText* m_staticTextAnalogDates;
-		wxChoice* m_choiceAnalogDates;
-		wxPanel* m_panelGISRight;
-		wxBoxSizer* m_sizerGISRight;
-		wxPanel* m_panelColorbarRight;
-		wxBoxSizer* m_sizerColorbarRight;
-		wxMenuBar* m_menubar;
-		wxMenu* m_menuFile;
-		wxMenu* m_menuTools;
-		wxToolBar* m_toolBar;
+		wxPanel* _panel15;
+		wxSplitterWindow* _splitterToc;
+		wxScrolledWindow* _scrolledWindowOptions;
+		wxBoxSizer* _sizerScrolledWindow;
+		wxStaticText* _staticTextChoiceMethod;
+		wxChoice* _choiceMethod;
+		wxStaticText* _staticTextChoiceForecast;
+		wxChoice* _choiceForecast;
+		wxStaticText* _staticTextCheckListPredictors;
+		wxListBox* _listPredictors;
+		wxStaticText* _staticTextTocLeft;
+		wxStaticText* _staticTextTocRight;
+		wxPanel* _panelGIS;
+		wxBoxSizer* _sizerGIS;
+		wxPanel* _panelLeft;
+		wxStaticText* _staticTextTargetDates;
+		wxChoice* _choiceTargetDates;
+		wxPanel* _panelGISLeft;
+		wxBoxSizer* _sizerGISLeft;
+		wxPanel* _panelColorbarLeft;
+		wxBoxSizer* _sizerColorbarLeft;
+		wxPanel* _panelSwitch;
+		wxBitmapButton* _bpButtonSwitchRight;
+		wxBitmapButton* _bpButtonSwitchLeft;
+		wxPanel* _panelRight;
+		wxStaticText* _staticTextAnalogDates;
+		wxChoice* _choiceAnalogDates;
+		wxPanel* _panelGISRight;
+		wxBoxSizer* _sizerGISRight;
+		wxPanel* _panelColorbarRight;
+		wxBoxSizer* _sizerColorbarRight;
+		wxMenuBar* _menubar;
+		wxMenu* _menuFile;
+		wxMenu* _menuTools;
+		wxToolBar* _toolBar;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnMethodChange( wxCommandEvent& event ) { event.Skip(); }
@@ -370,10 +369,10 @@ class asFramePredictorsVirtual : public wxFrame
 
 		~asFramePredictorsVirtual();
 
-		void m_splitterTocOnIdle( wxIdleEvent& )
+		void _splitterTocOnIdle( wxIdleEvent& )
 		{
-			m_splitterToc->SetSashPosition( 220 );
-			m_splitterToc->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePredictorsVirtual::m_splitterTocOnIdle ), NULL, this );
+			_splitterToc->SetSashPosition( 220 );
+			_splitterToc->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePredictorsVirtual::_splitterTocOnIdle ), NULL, this );
 		}
 
 };
@@ -386,84 +385,84 @@ class asFramePreferencesViewerVirtual : public wxFrame
 	private:
 
 	protected:
-		wxPanel* m_panelBase;
-		wxNotebook* m_notebookBase;
-		wxPanel* m_panelWorkspace;
-		wxStaticText* m_staticTextForecastResultsDir;
-		wxDirPickerCtrl* m_dirPickerForecastResults;
-		wxStaticText* m_staticTextColorbarMaxValue;
-		wxTextCtrl* m_textCtrlColorbarMaxValue;
-		wxStaticText* m_staticTextColorbarMaxUnit;
-		wxStaticText* m_staticTextPastDaysNb;
-		wxTextCtrl* m_textCtrlPastDaysNb;
-		wxStaticText* m_staticTextAlarmsReturnPeriod;
-		wxChoice* m_choiceAlarmsReturnPeriod;
-		wxStaticText* m_staticTextAlarmsReturnPeriodYears;
-		wxStaticText* m_staticTextAlarmsQuantile;
-		wxTextCtrl* m_textCtrlAlarmsQuantile;
-		wxStaticText* m_staticTextAlarmsQuantileRange;
-		wxStaticText* m_staticText581;
-		wxStaticText* m_staticText541;
-		wxTextCtrl* m_textCtrlMaxLengthDaily;
-		wxStaticText* m_staticText56;
-		wxStaticText* m_staticText55;
-		wxTextCtrl* m_textCtrlMaxLengthSubDaily;
-		wxStaticText* m_staticText571;
-		wxPanel* m_panelPaths;
-		wxStaticText* m_staticPredictorID;
-		wxStaticText* m_staticPredictorPaths;
-		wxTextCtrl* m_textCtrlDatasetId1;
-		wxDirPickerCtrl* m_dirPickerDataset1;
-		wxTextCtrl* m_textCtrlDatasetId2;
-		wxDirPickerCtrl* m_dirPickerDataset2;
-		wxTextCtrl* m_textCtrlDatasetId3;
-		wxDirPickerCtrl* m_dirPickerDataset3;
-		wxTextCtrl* m_textCtrlDatasetId4;
-		wxDirPickerCtrl* m_dirPickerDataset4;
-		wxTextCtrl* m_textCtrlDatasetId5;
-		wxDirPickerCtrl* m_dirPickerDataset5;
-		wxTextCtrl* m_textCtrlDatasetId6;
-		wxDirPickerCtrl* m_dirPickerDataset6;
-		wxTextCtrl* m_textCtrlDatasetId7;
-		wxDirPickerCtrl* m_dirPickerDataset7;
-		wxPanel* m_panelColors;
-		wxStaticText* m_staticText54;
-		wxFilePickerCtrl* m_filePickerColorZ;
+		wxPanel* _panelBase;
+		wxNotebook* _notebookBase;
+		wxPanel* _panelWorkspace;
+		wxStaticText* _staticTextForecastResultsDir;
+		wxDirPickerCtrl* _dirPickerForecastResults;
+		wxStaticText* _staticTextColorbarMaxValue;
+		wxTextCtrl* _textCtrlColorbarMaxValue;
+		wxStaticText* _staticTextColorbarMaxUnit;
+		wxStaticText* _staticTextPastDaysNb;
+		wxTextCtrl* _textCtrlPastDaysNb;
+		wxStaticText* _staticTextAlarmsReturnPeriod;
+		wxChoice* _choiceAlarmsReturnPeriod;
+		wxStaticText* _staticTextAlarmsReturnPeriodYears;
+		wxStaticText* _staticTextAlarmsQuantile;
+		wxTextCtrl* _textCtrlAlarmsQuantile;
+		wxStaticText* _staticTextAlarmsQuantileRange;
+		wxStaticText* _staticText581;
+		wxStaticText* _staticText541;
+		wxTextCtrl* _textCtrlMaxLengthDaily;
+		wxStaticText* _staticText56;
+		wxStaticText* _staticText55;
+		wxTextCtrl* _textCtrlMaxLengthSubDaily;
+		wxStaticText* _staticText571;
+		wxPanel* _panelPaths;
+		wxStaticText* _staticPredictorID;
+		wxStaticText* _staticPredictorPaths;
+		wxTextCtrl* _textCtrlDatasetId1;
+		wxDirPickerCtrl* _dirPickerDataset1;
+		wxTextCtrl* _textCtrlDatasetId2;
+		wxDirPickerCtrl* _dirPickerDataset2;
+		wxTextCtrl* _textCtrlDatasetId3;
+		wxDirPickerCtrl* _dirPickerDataset3;
+		wxTextCtrl* _textCtrlDatasetId4;
+		wxDirPickerCtrl* _dirPickerDataset4;
+		wxTextCtrl* _textCtrlDatasetId5;
+		wxDirPickerCtrl* _dirPickerDataset5;
+		wxTextCtrl* _textCtrlDatasetId6;
+		wxDirPickerCtrl* _dirPickerDataset6;
+		wxTextCtrl* _textCtrlDatasetId7;
+		wxDirPickerCtrl* _dirPickerDataset7;
+		wxPanel* _panelColors;
+		wxStaticText* _staticText54;
+		wxFilePickerCtrl* _filePickerColorZ;
 		wxStaticText* RelativeHumidity;
-		wxFilePickerCtrl* m_filePickerColorPwat;
-		wxStaticText* m_staticText57;
-		wxFilePickerCtrl* m_filePickerColorRh;
-		wxStaticText* m_staticText58;
-		wxFilePickerCtrl* m_filePickerColorSh;
-		wxPanel* m_panelGeneralCommon;
-		wxChoice* m_choiceLocale;
-		wxStaticText* m_staticText53;
-		wxRadioButton* m_radioBtnLogLevel1;
-		wxRadioButton* m_radioBtnLogLevel2;
-		wxRadioButton* m_radioBtnLogLevel3;
-		wxCheckBox* m_checkBoxDisplayLogWindow;
-		wxCheckBox* m_checkBoxSaveLogFile;
-		wxCheckBox* m_checkBoxProxy;
-		wxStaticText* m_staticTextProxyAddress;
-		wxTextCtrl* m_textCtrlProxyAddress;
-		wxStaticText* m_staticTextProxyPort;
-		wxTextCtrl* m_textCtrlProxyPort;
-		wxStaticText* m_staticTextProxyUser;
-		wxTextCtrl* m_textCtrlProxyUser;
-		wxStaticText* m_staticTextProxyPasswd;
-		wxTextCtrl* m_textCtrlProxyPasswd;
-		wxPanel* m_panelAdvanced;
-		wxCheckBox* m_checkBoxMultiInstancesViewer;
-		wxStaticText* m_staticTextUserDirLabel;
-		wxStaticText* m_staticTextUserDir;
-		wxStaticText* m_staticTextLogFileLabel;
-		wxStaticText* m_staticTextLogFile;
-		wxStaticText* m_staticTextPrefFileLabel;
-		wxStaticText* m_staticTextPrefFile;
-		wxStdDialogButtonSizer* m_buttonsConfirmation;
-		wxButton* m_buttonsConfirmationOK;
-		wxButton* m_buttonsConfirmationApply;
-		wxButton* m_buttonsConfirmationCancel;
+		wxFilePickerCtrl* _filePickerColorPwat;
+		wxStaticText* _staticText57;
+		wxFilePickerCtrl* _filePickerColorRh;
+		wxStaticText* _staticText58;
+		wxFilePickerCtrl* _filePickerColorSh;
+		wxPanel* _panelGeneralCommon;
+		wxChoice* _choiceLocale;
+		wxStaticText* _staticText53;
+		wxRadioButton* _radioBtnLogLevel1;
+		wxRadioButton* _radioBtnLogLevel2;
+		wxRadioButton* _radioBtnLogLevel3;
+		wxCheckBox* _checkBoxDisplayLogWindow;
+		wxCheckBox* _checkBoxSaveLogFile;
+		wxCheckBox* _checkBoxProxy;
+		wxStaticText* _staticTextProxyAddress;
+		wxTextCtrl* _textCtrlProxyAddress;
+		wxStaticText* _staticTextProxyPort;
+		wxTextCtrl* _textCtrlProxyPort;
+		wxStaticText* _staticTextProxyUser;
+		wxTextCtrl* _textCtrlProxyUser;
+		wxStaticText* _staticTextProxyPasswd;
+		wxTextCtrl* _textCtrlProxyPasswd;
+		wxPanel* _panelAdvanced;
+		wxCheckBox* _checkBoxMultiInstancesViewer;
+		wxStaticText* _staticTextUserDirLabel;
+		wxStaticText* _staticTextUserDir;
+		wxStaticText* _staticTextLogFileLabel;
+		wxStaticText* _staticTextLogFile;
+		wxStaticText* _staticTextPrefFileLabel;
+		wxStaticText* _staticTextPrefFile;
+		wxStdDialogButtonSizer* _buttonsConfirmation;
+		wxButton* _buttonsConfirmationOK;
+		wxButton* _buttonsConfirmationApply;
+		wxButton* _buttonsConfirmationCancel;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void ApplyChanges( wxCommandEvent& event ) { event.Skip(); }

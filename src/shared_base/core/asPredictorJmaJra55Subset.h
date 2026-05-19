@@ -42,7 +42,7 @@ class asPredictorJmaJra55Subset : public asPredictor {
     bool Init() override;
 
   protected:
-    bool m_monthlyFiles;
+    bool _monthlyFiles;
 
     void ListFiles(asTimeArray& timeArray) override;
 

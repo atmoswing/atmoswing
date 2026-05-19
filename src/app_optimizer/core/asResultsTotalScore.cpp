@@ -33,28 +33,28 @@
 
 asResultsTotalScore::asResultsTotalScore()
     : asResults(),
-      m_hasSingleValue(true),
-      m_score(NAN) {}
+      _hasSingleValue(true),
+      _score(NAN) {}
 
 asResultsTotalScore::~asResultsTotalScore() {}
 
 void asResultsTotalScore::Init() {
     // Set to nan to avoid keeping old results
-    m_score = NAN;
-    m_scoreArray.resize(0);
+    _score = NAN;
+    _scoreArray.resize(0);
 }
 
 void asResultsTotalScore::BuildFileName() {
     ThreadsManager().CritSectionConfig().Enter();
-    m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+    _filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
-    if (!m_subFolder.IsEmpty()) {
-        m_filePath.Append(DS);
-        m_filePath.Append(m_subFolder);
+    if (!_subFolder.IsEmpty()) {
+        _filePath.Append(DS);
+        _filePath.Append(_subFolder);
     }
-    m_filePath.Append(DS);
-    m_filePath.Append(asStrF("TotalScore_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
-    m_filePath.Append(".nc");
+    _filePath.Append(DS);
+    _filePath.Append(asStrF("TotalScore_id_%s_step_%d", GetPredictandStationIdsList(), _currentStep));
+    _filePath.Append(".nc");
 }
 
 bool asResultsTotalScore::Save() {
@@ -63,7 +63,7 @@ bool asResultsTotalScore::Save() {
     ThreadsManager().CritSectionNetCDF().Enter();
 
     // Create netCDF dataset: enter define mode
-    asFileNetcdf ncFile(m_filePath, asFileNetcdf::Replace);
+    asFileNetcdf ncFile(_filePath, asFileNetcdf::Replace);
     if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
@@ -90,7 +90,7 @@ bool asResultsTotalScore::Save() {
     size_t count1D[] = {1};
 
     // Write data
-    ncFile.PutVarArray("score", start1D, count1D, &m_score);
+    ncFile.PutVarArray("score", start1D, count1D, &_score);
 
     // Close:save new netCDF dataset
     ncFile.Close();

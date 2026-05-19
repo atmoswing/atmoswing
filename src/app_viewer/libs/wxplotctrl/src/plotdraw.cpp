@@ -75,8 +75,8 @@ extern "C" {
     GdkWindow* window = NULL;                                                                  \
     GdkGC* pen = NULL;                                                                         \
     if (winDC && (dc_scale_x == 1.0) && (dc_scale_y == 1.0) && (dc_origin == wxPoint(0, 0))) { \
-        window = winDC->m_window;                                                              \
-        pen = winDC->m_penGC;                                                                  \
+        window = winDC->_window;                                                              \
+        pen = winDC->_penGC;                                                                  \
     }
 
 // inline void wxPLOTCTRL_DRAW_LINE(wxGraphicsContext *gc, GdkWindow *win, GdkGC *pen, int x0, int y0, int x1, int y1)
@@ -140,26 +140,26 @@ extern "C" {
 
 // differs from wxRect2DDouble::Intersects by allowing for 0 width or height
 inline bool wxPlotRect2DDoubleIntersects(const wxRect2DDouble& a, const wxRect2DDouble& b) {
-    return (wxMax(a.m_x, b.m_x) <= wxMin(a.GetRight(), b.GetRight())) &&
-           (wxMax(a.m_y, b.m_y) <= wxMin(a.GetBottom(), b.GetBottom()));
+    return (wxMax(a._x, b._x) <= wxMin(a.GetRight(), b.GetRight())) &&
+           (wxMax(a._y, b._y) <= wxMin(a.GetBottom(), b.GetBottom()));
 }
 
 // same as wxPlotRect2DDouble::Contains, but doesn't convert to wxPoint2DDouble
 inline bool wxPlotRect2DDoubleContains(double x, double y, const wxRect2DDouble& rect) {
-    return ((x >= rect.m_x) && (y >= rect.m_y) && (x <= rect.GetRight()) && (y <= rect.GetBottom()));
+    return ((x >= rect._x) && (y >= rect._y) && (x <= rect.GetRight()) && (y <= rect.GetBottom()));
 }
 
 // differs from wxRect2DDouble::GetOutCode by swaping top and bottom for plot origin
 // inline wxOutCode wxPlotRect2DDoubleOutCode( double x, double y, const wxRect2DDouble &rect )
 //{
-//    return wxOutCode((x < rect.m_x         ? wxOutLeft   :
+//    return wxOutCode((x < rect._x         ? wxOutLeft   :
 //                     (x > rect.GetRight()  ? wxOutRight  : wxInside )) +
-//                     (y < rect.m_y         ? wxOutTop    :
+//                     (y < rect._y         ? wxOutTop    :
 //                     (y > rect.GetBottom() ? wxOutBottom : wxInside )) );
 //}
 #define wxPlotRect2DDoubleOutCode(x, y, rect)                                                  \
-    wxOutCode(((x) < rect.m_x ? wxOutLeft : ((x) > rect.GetRight() ? wxOutRight : wxInside)) + \
-              ((y) < rect.m_y ? wxOutTop : ((y) > rect.GetBottom() ? wxOutBottom : wxInside)))
+    wxOutCode(((x) < rect._x ? wxOutLeft : ((x) > rect.GetRight() ? wxOutRight : wxInside)) + \
+              ((y) < rect._y ? wxOutTop : ((y) > rect.GetBottom() ? wxOutBottom : wxInside)))
 
 // modified Cohen-Sutherland Algorithm for line clipping in at most two passes
 //   the the original endless loop is too unstable
@@ -306,11 +306,11 @@ int ClipLineToRect(double& x0, double& y0, double& x1, double& y1, const wxRect2
     stack_top->x4 = x4_;                                    \
     stack_top->y4 = y4_;                                    \
     stack_top++;                                            \
-    m_stack_count++;
+    _stack_count++;
 
 #define SPLINE_POP(x1_, y1_, x2_, y2_, x3_, y3_, x4_, y4_) \
     stack_top--;                                           \
-    m_stack_count--;                                       \
+    _stack_count--;                                       \
     x1_ = stack_top->x1;                                   \
     y1_ = stack_top->y1;                                   \
     x2_ = stack_top->x2;                                   \
@@ -323,35 +323,35 @@ int ClipLineToRect(double& x0, double& y0, double& x1, double& y1, const wxRect2
 class SplineDrawer {
   public:
     SplineDrawer()
-        : m_gc(NULL) {}
+        : _gc(NULL) {}
 
     // the wxRect2DDouble rect is the allowed dc area in pixel coords
     // wxRangeDoubleSelection is the ranges to use selPen, also in pixel coords
     // x1_, y1_, x2_, y2_ are the first 2 points to draw
     void Create(wxGraphicsContext* gc, const wxPen& curPen, const wxPen& selPen, const wxRect2DDouble& rect,
                 wxRangeDoubleSelection* rangeSel, double x1_, double y1_, double x2_, double y2_) {
-        m_gc = gc;
+        _gc = gc;
         wxCHECK_RET(gc, wxT("invalid graphics context"));
 
-        m_selPen = selPen;
-        m_curPen = curPen;
-        m_rangeSel = rangeSel;
+        _selPen = selPen;
+        _curPen = curPen;
+        _rangeSel = rangeSel;
 
-        m_rect = rect;
+        _rect = rect;
 
-        m_stack_count = 0;
+        _stack_count = 0;
 
-        m_x1 = x1_;
-        m_y1 = y1_;
-        m_x2 = x2_;
-        m_y2 = y2_;
-        m_cx1 = (m_x1 + m_x2) / 2.0;
-        m_cy1 = (m_y1 + m_y2) / 2.0;
-        m_cx2 = (m_cx1 + m_x2) / 2.0;
-        m_cy2 = (m_cy1 + m_y2) / 2.0;
+        _x1 = x1_;
+        _y1 = y1_;
+        _x2 = x2_;
+        _y2 = y2_;
+        _cx1 = (_x1 + _x2) / 2.0;
+        _cy1 = (_y1 + _y2) / 2.0;
+        _cx2 = (_cx1 + _x2) / 2.0;
+        _cy2 = (_cy1 + _y2) / 2.0;
 
-        m_last_x = m_x1;
-        m_last_y = m_y1;
+        _last_x = _x1;
+        _last_y = _y1;
     }
 
     // actually do the drawing here
@@ -359,12 +359,12 @@ class SplineDrawer {
 
     // After the last point call this to finish the drawing
     void EndSpline() {
-        wxCHECK_RET(m_gc, wxT("invalid graphics context"));
-        if (ClipLineToRect(m_cx1, m_cy1, m_x2, m_y2, m_rect) != ClippedOut) {
-            wxGraphicsPath path = m_gc->CreatePath();
-            path.MoveToPoint(m_cx1, m_cy1);
-            path.AddLineToPoint(m_x2, m_y2);
-            m_gc->StrokePath(path);
+        wxCHECK_RET(_gc, wxT("invalid graphics context"));
+        if (ClipLineToRect(_cx1, _cy1, _x2, _y2, _rect) != ClippedOut) {
+            wxGraphicsPath path = _gc->CreatePath();
+            path.MoveToPoint(_cx1, _cy1);
+            path.AddLineToPoint(_x2, _y2);
+            _gc->StrokePath(path);
         }
     }
 
@@ -373,49 +373,49 @@ class SplineDrawer {
         double x1, y1, x2, y2, x3, y3, x4, y4;
     } SplineStack;
 
-    wxGraphicsContext* m_gc;
-    wxRect2DDouble m_rect;
+    wxGraphicsContext* _gc;
+    wxRect2DDouble _rect;
 
-    SplineStack m_splineStack[SPLINE_STACK_DEPTH];
-    int m_stack_count;
+    SplineStack _splineStack[SPLINE_STACK_DEPTH];
+    int _stack_count;
 
-    double m_cx1, m_cy1, m_cx2, m_cy2, m_cx3, m_cy3, m_cx4, m_cy4;
-    double m_x1, m_y1, m_x2, m_y2;
-    double m_last_x, m_last_y;
+    double _cx1, _cy1, _cx2, _cy2, _cx3, _cy3, _cx4, _cy4;
+    double _x1, _y1, _x2, _y2;
+    double _last_x, _last_y;
 
-    wxPen m_selPen, m_curPen;
-    wxRangeDoubleSelection* m_rangeSel;
+    wxPen _selPen, _curPen;
+    wxRangeDoubleSelection* _rangeSel;
 };
 
 void SplineDrawer::DrawSpline(double x, double y) {
-    wxCHECK_RET(m_gc, wxT("invalid window dc"));
+    wxCHECK_RET(_gc, wxT("invalid window dc"));
     // FIXME (Pascal#9#): Re-implement if needed.
-    /*wxPen oldPen = m_gc->GetPen();
-    bool is_selected = (oldPen == m_selPen);*/
+    /*wxPen oldPen = _gc->GetPen();
+    bool is_selected = (oldPen == _selPen);*/
     bool is_selected = false;
 
-    m_x1 = m_x2;
-    m_y1 = m_y2;
-    m_x2 = x;
-    m_y2 = y;
-    m_cx4 = (m_x1 + m_x2) / 2.0;
-    m_cy4 = (m_y1 + m_y2) / 2.0;
-    m_cx3 = (m_x1 + m_cx4) / 2.0;
-    m_cy3 = (m_y1 + m_cy4) / 2.0;
+    _x1 = _x2;
+    _y1 = _y2;
+    _x2 = x;
+    _y2 = y;
+    _cx4 = (_x1 + _x2) / 2.0;
+    _cy4 = (_y1 + _y2) / 2.0;
+    _cx3 = (_x1 + _cx4) / 2.0;
+    _cy3 = (_y1 + _cy4) / 2.0;
 
     double xmid, ymid;
     double xx1, yy1, xx2, yy2, xx3, yy3, xx4, yy4;
 
-    SplineStack* stack_top = m_splineStack;
-    m_stack_count = 0;
+    SplineStack* stack_top = _splineStack;
+    _stack_count = 0;
 
-    SPLINE_PUSH(m_cx1, m_cy1, m_cx2, m_cy2, m_cx3, m_cy3, m_cx4, m_cy4);
+    SPLINE_PUSH(_cx1, _cy1, _cx2, _cy2, _cx3, _cy3, _cx4, _cy4);
 
     // Create graphics path
-    wxGraphicsPath path = m_gc->CreatePath();
+    wxGraphicsPath path = _gc->CreatePath();
     bool firstPoint = true;
 
-    while (m_stack_count > 0) {
+    while (_stack_count > 0) {
         SPLINE_POP(xx1, yy1, xx2, yy2, xx3, yy3, xx4, yy4);
 
         xmid = (xx2 + xx3) / 2.0;
@@ -423,17 +423,17 @@ void SplineDrawer::DrawSpline(double x, double y) {
         if ((fabs(xx1 - xmid) < THRESHOLD) && (fabs(yy1 - ymid) < THRESHOLD) && (fabs(xmid - xx4) < THRESHOLD) &&
             (fabs(ymid - yy4) < THRESHOLD)) {
             // FIXME - is this really necessary, better safe than sorry?
-            double t1_last_x = m_last_x;
-            double t1_last_y = m_last_y;
+            double t1_last_x = _last_x;
+            double t1_last_y = _last_y;
             double t1_xx1 = xx1;
             double t1_yy1 = yy1;
-            if (ClipLineToRect(t1_last_x, t1_last_y, t1_xx1, t1_yy1, m_rect) != ClippedOut) {
-                if (m_rangeSel && (m_rangeSel->Contains((m_last_x + xx1) / 2) != is_selected)) {
+            if (ClipLineToRect(t1_last_x, t1_last_y, t1_xx1, t1_yy1, _rect) != ClippedOut) {
+                if (_rangeSel && (_rangeSel->Contains((_last_x + xx1) / 2) != is_selected)) {
                     is_selected = is_selected ? false : true;
                     if (is_selected)
-                        m_gc->SetPen(m_selPen);
+                        _gc->SetPen(_selPen);
                     else
-                        m_gc->SetPen(m_curPen);
+                        _gc->SetPen(_curPen);
                 }
 
                 if (firstPoint) {
@@ -448,13 +448,13 @@ void SplineDrawer::DrawSpline(double x, double y) {
             double t2_yy1 = yy1;
             double t2_xmid = xmid;
             double t2_ymid = ymid;
-            if (ClipLineToRect(t2_xx1, t2_yy1, t2_xmid, t2_ymid, m_rect) != ClippedOut) {
-                if (m_rangeSel && (m_rangeSel->Contains((xx1 + xmid) / 2) != is_selected)) {
+            if (ClipLineToRect(t2_xx1, t2_yy1, t2_xmid, t2_ymid, _rect) != ClippedOut) {
+                if (_rangeSel && (_rangeSel->Contains((xx1 + xmid) / 2) != is_selected)) {
                     is_selected = is_selected ? false : true;
                     if (is_selected)
-                        m_gc->SetPen(m_selPen);
+                        _gc->SetPen(_selPen);
                     else
-                        m_gc->SetPen(m_curPen);
+                        _gc->SetPen(_curPen);
                 }
 
                 if (firstPoint) {
@@ -465,10 +465,10 @@ void SplineDrawer::DrawSpline(double x, double y) {
                 }
             }
 
-            m_last_x = xmid;
-            m_last_y = ymid;
+            _last_x = xmid;
+            _last_y = ymid;
         } else {
-            wxCHECK_RET(m_stack_count < SPLINE_STACK_DEPTH - 2, wxT("Spline stack overflow"));
+            wxCHECK_RET(_stack_count < SPLINE_STACK_DEPTH - 2, wxT("Spline stack overflow"));
             SPLINE_PUSH(xmid, ymid, (xmid + xx3) / 2.0, (ymid + yy3) / 2.0, (xx3 + xx4) / 2.0, (yy3 + yy4) / 2.0, xx4,
                         yy4);
             SPLINE_PUSH(xx1, yy1, (xx1 + xx2) / 2.0, (yy1 + yy2) / 2.0, (xx2 + xmid) / 2.0, (yy2 + ymid) / 2.0, xmid,
@@ -476,13 +476,13 @@ void SplineDrawer::DrawSpline(double x, double y) {
         }
     }
 
-    m_cx1 = m_cx4;
-    m_cy1 = m_cy4;
-    m_cx2 = (m_cx1 + m_x2) / 2.0;
-    m_cy2 = (m_cy1 + m_y2) / 2.0;
+    _cx1 = _cx4;
+    _cy1 = _cy4;
+    _cx2 = (_cx1 + _x2) / 2.0;
+    _cy2 = (_cy1 + _y2) / 2.0;
 
-    m_gc->StrokePath(path);
-    m_gc->SetPen(wxNullPen);
+    _gc->StrokePath(path);
+    _gc->SetPen(wxNullPen);
 }
 
 //***************************************************************************
@@ -494,13 +494,13 @@ IMPLEMENT_ABSTRACT_CLASS(wxPlotDrawerBase, wxObject)
 
 wxPlotDrawerAxisBase::wxPlotDrawerAxisBase(wxPlotCtrl* owner)
     : wxPlotDrawerBase(owner) {
-    m_tickFont = *wxNORMAL_FONT;
-    m_labelFont = *wxSWISS_FONT;
-    m_tickColour = wxGenericColour(0, 0, 0);
-    m_labelColour = wxGenericColour(0, 0, 0);
+    _tickFont = *wxNORMAL_FONT;
+    _labelFont = *wxSWISS_FONT;
+    _tickColour = wxGenericColour(0, 0, 0);
+    _labelColour = wxGenericColour(0, 0, 0);
 
-    m_tickPen = wxGenericPen(m_tickColour, wxPENSTYLE_SOLID);
-    m_backgroundBrush = wxGenericBrush(wxGenericColour(255, 255, 255), wxBRUSHSTYLE_SOLID);
+    _tickPen = wxGenericPen(_tickColour, wxPENSTYLE_SOLID);
+    _backgroundBrush = wxGenericBrush(wxGenericColour(255, 255, 255), wxBRUSHSTYLE_SOLID);
 }
 
 //-----------------------------------------------------------------------------
@@ -527,15 +527,15 @@ void wxPlotDrawerXAxis::Draw(wxDC* dc, bool refresh) {
 
     // Draw background
     if (refresh) {
-        dc->SetBrush(m_backgroundBrush.GetBrush());
+        dc->SetBrush(_backgroundBrush.GetBrush());
         dc->SetPen(*wxTRANSPARENT_PEN);
         dc->DrawRectangle(dcRect);
     }
 
-    wxFont tickFont = m_tickFont;
-    if (m_font_scale != 1) tickFont.SetPointSize(wxMax(2, RINT(tickFont.GetPointSize() * m_font_scale)));
+    wxFont tickFont = _tickFont;
+    if (_font_scale != 1) tickFont.SetPointSize(wxMax(2, RINT(tickFont.GetPointSize() * _font_scale)));
 
-    dc->SetTextForeground(m_tickColour.GetColour());
+    dc->SetTextForeground(_tickColour.GetColour());
     dc->SetFont(tickFont);
 
     wxString label;
@@ -544,16 +544,16 @@ void wxPlotDrawerXAxis::Draw(wxDC* dc, bool refresh) {
     int x, y;
     dc->GetTextExtent(wxT("5"), &x, &y);
     int y_pos = (GetDCRect().height - y) / 2 + 2;  // FIXME I want to center this
-    // double current = ceil(m_viewRect.GetLeft() / m_xAxisTick_step) * m_xAxisTick_step;
-    int i, count = m_tickPositions.GetCount();
+    // double current = ceil(_viewRect.GetLeft() / _xAxisTick_step) * _xAxisTick_step;
+    int i, count = _tickPositions.GetCount();
     for (i = 0; i < count; i++) {
-        dc->DrawText(m_tickLabels[i], m_tickPositions[i], y_pos);
+        dc->DrawText(_tickLabels[i], _tickPositions[i], y_pos);
 
         //        if (!IsFinite(current, wxT("axis label is not finite")))
         //            break;
-        //        label.Printf( m_xAxisTickFormat.c_str(), current );
-        //        dc->DrawText(label, m_xAxisTicks[i], y_pos);
-        //        current += m_xAxisTick_step;
+        //        label.Printf( _xAxisTickFormat.c_str(), current );
+        //        dc->DrawText(label, _xAxisTicks[i], y_pos);
+        //        current += _xAxisTick_step;
     }
 
 #ifdef DRAW_BORDERS
@@ -576,28 +576,28 @@ void wxPlotDrawerYAxis::Draw(wxDC* dc, bool refresh) {
 
     // Draw background
     if (refresh) {
-        dc->SetBrush(m_backgroundBrush.GetBrush());
+        dc->SetBrush(_backgroundBrush.GetBrush());
         dc->SetPen(*wxTRANSPARENT_PEN);
         dc->DrawRectangle(dcRect);
     }
 
-    wxFont tickFont = m_tickFont;
-    if (m_font_scale != 1) tickFont.SetPointSize(wxMax(2, RINT(tickFont.GetPointSize() * m_font_scale)));
+    wxFont tickFont = _tickFont;
+    if (_font_scale != 1) tickFont.SetPointSize(wxMax(2, RINT(tickFont.GetPointSize() * _font_scale)));
 
-    dc->SetTextForeground(m_tickColour.GetColour());
+    dc->SetTextForeground(_tickColour.GetColour());
     dc->SetFont(tickFont);
 
     wxString label;
-    // double current = ceil(m_viewRect.GetTop() / m_yAxisTick_step) * m_yAxisTick_step;
-    int i, count = m_tickLabels.GetCount();
+    // double current = ceil(_viewRect.GetTop() / _yAxisTick_step) * _yAxisTick_step;
+    int i, count = _tickLabels.GetCount();
     for (i = 0; i < count; i++) {
-        dc->DrawText(m_tickLabels[i], 2, m_tickPositions[i]);
+        dc->DrawText(_tickLabels[i], 2, _tickPositions[i]);
 
         //        if (!IsFinite(current, wxT("axis label is not finite")))
         //            break;
-        //        label.Printf( m_yAxisTickFormat.c_str(), current);
-        //        dc->DrawText( label, 2, m_yAxisTicks[i] );
-        //        current += m_yAxisTick_step;
+        //        label.Printf( _yAxisTickFormat.c_str(), current);
+        //        dc->DrawText( label, 2, _yAxisTicks[i] );
+        //        current += _yAxisTick_step;
     }
 
 #ifdef DRAW_BORDERS
@@ -615,18 +615,18 @@ IMPLEMENT_ABSTRACT_CLASS(wxPlotDrawerKey, wxPlotDrawerBase)
 
 wxPlotDrawerKey::wxPlotDrawerKey(wxPlotCtrl* owner)
     : wxPlotDrawerBase(owner) {
-    m_font = *wxNORMAL_FONT;
-    m_fontColour = wxGenericColour(0, 0, 0);
-    m_keyPosition = wxPoint(100, 100);
-    m_border = 5;
-    m_key_inside = true;
-    m_key_bottom = false;
-    m_key_line_width = 20;
-    m_key_line_margin = 5;
+    _font = *wxNORMAL_FONT;
+    _fontColour = wxGenericColour(0, 0, 0);
+    _keyPosition = wxPoint(100, 100);
+    _border = 5;
+    _key_inside = true;
+    _key_bottom = false;
+    _key_line_width = 20;
+    _key_line_margin = 5;
 }
 
 void wxPlotDrawerKey::Draw(wxDC* dc, const wxString& keyString_) {
-    wxCHECK_RET(dc && m_owner, wxT("Invalid dc"));
+    wxCHECK_RET(dc && _owner, wxT("Invalid dc"));
 
     if (keyString_.IsEmpty()) return;
 
@@ -637,7 +637,7 @@ void wxPlotDrawerKey::Draw(wxDC* dc, const wxString& keyString_) {
         double x_scale = 1, y_scale = 1;
         dc->GetUserScale( &x_scale, &y_scale );
 
-        wxFont font = m_owner->GetKeyFont();
+        wxFont font = _owner->GetKeyFont();
         if (0 && x_scale != 1)
         {
             font.SetPointSize(wxMax(int(font.GetPointSize()/x_scale), 4));
@@ -646,14 +646,14 @@ void wxPlotDrawerKey::Draw(wxDC* dc, const wxString& keyString_) {
         }
     */
 
-    wxFont keyFont = m_font;
-    if (m_font_scale != 1) keyFont.SetPointSize(wxMax(2, RINT(keyFont.GetPointSize() * m_font_scale)));
+    wxFont keyFont = _font;
+    if (_font_scale != 1) keyFont.SetPointSize(wxMax(2, RINT(keyFont.GetPointSize() * _font_scale)));
 
-    int key_line_width = RINT(m_key_line_width * m_pen_scale);
-    int key_line_margin = RINT(m_key_line_margin * m_pen_scale);
+    int key_line_width = RINT(_key_line_width * _pen_scale);
+    int key_line_margin = RINT(_key_line_margin * _pen_scale);
 
     dc->SetFont(keyFont);
-    dc->SetTextForeground(m_fontColour.GetColour());
+    dc->SetTextForeground(_fontColour.GetColour());
 
     wxRect keyRect;
     int heightLine = 0;
@@ -663,7 +663,7 @@ void wxPlotDrawerKey::Draw(wxDC* dc, const wxString& keyString_) {
     wxRect dcRect(GetDCRect());
     wxSize areaSize = dcRect.GetSize();
 
-    if (m_key_bottom) {
+    if (_key_bottom) {
         // Count the number of elements
         wxString keyStringCopy = keyString;
         int counter = 0;
@@ -676,23 +676,23 @@ void wxPlotDrawerKey::Draw(wxDC* dc, const wxString& keyString_) {
         }
 
         // Set position
-        keyRect.x = 30 + int((m_keyPosition.x * .01) * areaSize.x);
-        keyRect.y = areaSize.y - counter * heightLine - m_border;
+        keyRect.x = 30 + int((_keyPosition.x * .01) * areaSize.x);
+        keyRect.y = areaSize.y - counter * heightLine - _border;
 
-        if (m_key_inside) {
+        if (_key_inside) {
             keyRect.x = wxMax(30, keyRect.x);
-            keyRect.x = wxMin(areaSize.x - keyRect.width - m_border, keyRect.GetRight());
+            keyRect.x = wxMin(areaSize.x - keyRect.width - _border, keyRect.GetRight());
         }
     } else {
-        keyRect.x = 30 + int((m_keyPosition.x * .01) * areaSize.x);
-        keyRect.y = areaSize.y - int((m_keyPosition.y * .01) * areaSize.y);
+        keyRect.x = 30 + int((_keyPosition.x * .01) * areaSize.x);
+        keyRect.y = areaSize.y - int((_keyPosition.y * .01) * areaSize.y);
 
-        if (m_key_inside) {
+        if (_key_inside) {
             keyRect.x = wxMax(30, keyRect.x);
-            keyRect.x = wxMin(areaSize.x - keyRect.width - m_border, keyRect.GetRight());
+            keyRect.x = wxMin(areaSize.x - keyRect.width - _border, keyRect.GetRight());
 
-            keyRect.y = wxMax(m_border, keyRect.y);
-            // keyRect.y = wxMin(areaSize.y - keyRect.height - m_border, keyRect.y);
+            keyRect.y = wxMax(_border, keyRect.y);
+            // keyRect.y = wxMin(areaSize.y - keyRect.height - _border, keyRect.y);
         }
     }
 
@@ -714,9 +714,9 @@ void wxPlotDrawerKey::Draw(wxDC* dc, const wxString& keyString_) {
         dc->DrawRectangle(keyRect.x - (key_line_width + key_line_margin) - bgMargin, h,
                           key_line_width + key_line_margin + keyRect.width + 2 * bgMargin, heightLine + bgMargin);
 
-        if (m_owner && m_owner->GetCurve(i)) {
-            wxPen keyPen = m_owner->GetCurve(i)->GetPen(wxPLOTPEN_NORMAL).GetPen();
-            if (m_pen_scale != 1) keyPen.SetWidth(int(keyPen.GetWidth() * m_pen_scale));
+        if (_owner && _owner->GetCurve(i)) {
+            wxPen keyPen = _owner->GetCurve(i)->GetPen(wxPLOTPEN_NORMAL).GetPen();
+            if (_pen_scale != 1) keyPen.SetWidth(int(keyPen.GetWidth() * _pen_scale));
 
             if (keyPen.GetWidth() < 3) keyPen.SetWidth(3);
             dc->SetPen(keyPen);
@@ -740,27 +740,27 @@ void wxPlotDrawerKey::Draw(wxDC* dc, const wxString& keyString_) {
 IMPLEMENT_ABSTRACT_CLASS(wxPlotDrawerCurve, wxPlotDrawerBase)
 
 void wxPlotDrawerCurve::Draw(wxGraphicsContext* gc, wxPlotCurve* curve, int curve_index) {
-    wxCHECK_RET(gc && m_owner && curve && curve->Ok(), wxT("invalid curve"));
+    wxCHECK_RET(gc && _owner && curve && curve->Ok(), wxT("invalid curve"));
     INITIALIZE_FAST_GRAPHICS
 
     wxRect dcRect(GetDCRect());
 
     int i, j0, j1;
     double x0, y0, x1, y1, yy0, yy1;
-    x0 = m_owner->GetPlotCoordFromClientX(0);
+    x0 = _owner->GetPlotCoordFromClientX(0);
     y0 = yy0 = curve->GetY(x0);
 
-    wxRect2DDouble subViewRect = m_owner->GetPlotRectFromClientRect(dcRect);
+    wxRect2DDouble subViewRect = _owner->GetPlotRectFromClientRect(dcRect);
 
     int right = dcRect.GetRight();
 
-    wxPen currentPen = (curve_index == m_owner->GetActiveIndex()) ? curve->GetPen(wxPLOTPEN_ACTIVE).GetPen()
+    wxPen currentPen = (curve_index == _owner->GetActiveIndex()) ? curve->GetPen(wxPLOTPEN_ACTIVE).GetPen()
                                                                   : curve->GetPen(wxPLOTPEN_NORMAL).GetPen();
     wxPen selectedPen = curve->GetPen(wxPLOTPEN_SELECTED).GetPen();
 
-    if (m_pen_scale != 1) {
-        currentPen.SetWidth(int(currentPen.GetWidth() * m_pen_scale));
-        selectedPen.SetWidth(int(selectedPen.GetWidth() * m_pen_scale));
+    if (_pen_scale != 1) {
+        currentPen.SetWidth(int(currentPen.GetWidth() * _pen_scale));
+        selectedPen.SetWidth(int(selectedPen.GetWidth() * _pen_scale));
     }
 
     gc->SetPen(currentPen);
@@ -768,7 +768,7 @@ void wxPlotDrawerCurve::Draw(wxGraphicsContext* gc, wxPlotCurve* curve, int curv
     wxBrush brush = curve->GetBrush();
     gc->SetBrush(brush);
 
-    const wxRangeDoubleSelection* ranges = m_owner->GetCurveSelection(curve_index);
+    const wxRangeDoubleSelection* ranges = _owner->GetCurveSelection(curve_index);
     bool selected = false;
 
     int clipped = ClippedNeither;
@@ -778,7 +778,7 @@ void wxPlotDrawerCurve::Draw(wxGraphicsContext* gc, wxPlotCurve* curve, int curv
     bool firstPoint = true;
 
     for (i = dcRect.x; i < right; i++) {
-        x1 = m_owner->GetPlotCoordFromClientX(i);
+        x1 = _owner->GetPlotCoordFromClientX(i);
         y1 = yy1 = curve->GetY(x1);
 
         clipped = ClipLineToRect(x0, yy0, x1, yy1, subViewRect);
@@ -793,8 +793,8 @@ void wxPlotDrawerCurve::Draw(wxGraphicsContext* gc, wxPlotCurve* curve, int curv
         }
 
         if (clipped != ClippedOut) {
-            j0 = m_owner->GetClientCoordFromPlotY(yy0);
-            j1 = m_owner->GetClientCoordFromPlotY(yy1);
+            j0 = _owner->GetClientCoordFromPlotY(yy0);
+            j1 = _owner->GetClientCoordFromPlotY(yy1);
 
             if (firstPoint) {
                 path.MoveToPoint(i - 1, j0);
@@ -817,27 +817,27 @@ void wxPlotDrawerCurve::Draw(wxGraphicsContext* gc, wxPlotCurve* curve, int curv
 }
 
 void wxPlotDrawerCurve::Draw(wxDC* dc, wxPlotCurve* curve, int curve_index) {
-    wxCHECK_RET(dc && m_owner && curve && curve->Ok(), wxT("invalid curve"));
+    wxCHECK_RET(dc && _owner && curve && curve->Ok(), wxT("invalid curve"));
     INITIALIZE_FAST_GRAPHICS
 
     wxRect dcRect(GetDCRect());
 
     int i, j0, j1;
     double x0, y0, x1, y1, yy0, yy1;
-    x0 = m_owner->GetPlotCoordFromClientX(0);
+    x0 = _owner->GetPlotCoordFromClientX(0);
     y0 = yy0 = curve->GetY(x0);
 
-    wxRect2DDouble subViewRect = m_owner->GetPlotRectFromClientRect(dcRect);
+    wxRect2DDouble subViewRect = _owner->GetPlotRectFromClientRect(dcRect);
 
     int right = dcRect.GetRight();
 
-    wxPen currentPen = (curve_index == m_owner->GetActiveIndex()) ? curve->GetPen(wxPLOTPEN_ACTIVE).GetPen()
+    wxPen currentPen = (curve_index == _owner->GetActiveIndex()) ? curve->GetPen(wxPLOTPEN_ACTIVE).GetPen()
                                                                   : curve->GetPen(wxPLOTPEN_NORMAL).GetPen();
     wxPen selectedPen = curve->GetPen(wxPLOTPEN_SELECTED).GetPen();
 
-    if (m_pen_scale != 1) {
-        currentPen.SetWidth(int(currentPen.GetWidth() * m_pen_scale));
-        selectedPen.SetWidth(int(selectedPen.GetWidth() * m_pen_scale));
+    if (_pen_scale != 1) {
+        currentPen.SetWidth(int(currentPen.GetWidth() * _pen_scale));
+        selectedPen.SetWidth(int(selectedPen.GetWidth() * _pen_scale));
     }
 
     dc->SetPen(currentPen);
@@ -845,13 +845,13 @@ void wxPlotDrawerCurve::Draw(wxDC* dc, wxPlotCurve* curve, int curve_index) {
     wxBrush brush = curve->GetBrush();
     dc->SetBrush(brush);
 
-    const wxRangeDoubleSelection* ranges = m_owner->GetCurveSelection(curve_index);
+    const wxRangeDoubleSelection* ranges = _owner->GetCurveSelection(curve_index);
     bool selected = false;
 
     int clipped = ClippedNeither;
 
     for (i = dcRect.x; i < right; i++) {
-        x1 = m_owner->GetPlotCoordFromClientX(i);
+        x1 = _owner->GetPlotCoordFromClientX(i);
         y1 = yy1 = curve->GetY(x1);
 
         clipped = ClipLineToRect(x0, yy0, x1, yy1, subViewRect);
@@ -866,8 +866,8 @@ void wxPlotDrawerCurve::Draw(wxDC* dc, wxPlotCurve* curve, int curve_index) {
         }
 
         if (clipped != ClippedOut) {
-            j0 = m_owner->GetClientCoordFromPlotY(yy0);
-            j1 = m_owner->GetClientCoordFromPlotY(yy1);
+            j0 = _owner->GetClientCoordFromPlotY(yy0);
+            j1 = _owner->GetClientCoordFromPlotY(yy1);
 
             wxPLOTCTRL_DRAW_LINE(dc, window, pen, i - 1, j0, i, j1);
 
@@ -889,26 +889,26 @@ void wxPlotDrawerCurve::Draw(wxDC* dc, wxPlotCurve* curve, int curve_index) {
 IMPLEMENT_ABSTRACT_CLASS(wxPlotDrawerDataCurve, wxPlotDrawerBase)
 
 void wxPlotDrawerDataCurve::Draw(wxGraphicsContext* gc, wxPlotData* curve, int curve_index) {
-    wxCHECK_RET(gc && m_owner && curve && curve->Ok(), wxT("invalid curve"));
+    wxCHECK_RET(gc && _owner && curve && curve->Ok(), wxT("invalid curve"));
     INITIALIZE_FAST_GRAPHICS
 
     wxRect dcRect(GetDCRect());
 
-    wxRect2DDouble viewRect(GetPlotViewRect());  // m_viewRect );
-    wxRect2DDouble subViewRect(m_owner->GetPlotRectFromClientRect(dcRect));
+    wxRect2DDouble viewRect(GetPlotViewRect());  // _viewRect );
+    wxRect2DDouble subViewRect(_owner->GetPlotRectFromClientRect(dcRect));
     wxRect2DDouble curveRect(curve->GetBoundingRect());
 
     if (!wxPlotRect2DDoubleIntersects(curveRect, subViewRect)) return;
 
     // FIXME - drawing symbol bitmaps in MSW is very slow
     wxBitmap bitmap;
-    if (curve_index == m_owner->GetActiveIndex())
+    if (curve_index == _owner->GetActiveIndex())
         bitmap = curve->GetSymbol(wxPLOTPEN_ACTIVE);
     else
         bitmap = curve->GetSymbol(wxPLOTPEN_NORMAL);
 
     if (!bitmap.Ok()) {
-        if (curve_index == m_owner->GetActiveIndex())
+        if (curve_index == _owner->GetActiveIndex())
             bitmap = wxBitmap(1, 1);
         else
             bitmap = wxBitmap(1, 1);
@@ -935,12 +935,12 @@ void wxPlotDrawerDataCurve::Draw(wxGraphicsContext* gc, wxPlotData* curve, int c
     }
 
     // set the pens to draw with
-    wxPen currentPen = (curve_index == m_owner->GetActiveIndex()) ? curve->GetPen(wxPLOTPEN_ACTIVE).GetPen()
+    wxPen currentPen = (curve_index == _owner->GetActiveIndex()) ? curve->GetPen(wxPLOTPEN_ACTIVE).GetPen()
                                                                   : curve->GetPen(wxPLOTPEN_NORMAL).GetPen();
     wxPen selectedPen = curve->GetPen(wxPLOTPEN_SELECTED).GetPen();
-    if (m_pen_scale != 1) {
-        currentPen.SetWidth(int(currentPen.GetWidth() * m_pen_scale));
-        selectedPen.SetWidth(int(selectedPen.GetWidth() * m_pen_scale));
+    if (_pen_scale != 1) {
+        currentPen.SetWidth(int(currentPen.GetWidth() * _pen_scale));
+        selectedPen.SetWidth(int(selectedPen.GetWidth() * _pen_scale));
     }
 
     gc->SetPen(currentPen);
@@ -949,14 +949,14 @@ void wxPlotDrawerDataCurve::Draw(wxGraphicsContext* gc, wxPlotData* curve, int c
     gc->SetBrush(brush);
 
     // handle the selected ranges and initialize the starting range
-    const wxArrayRangeInt& ranges = m_owner->GetDataCurveSelection(curve_index)->GetRangeArray();
+    const wxArrayRangeInt& ranges = _owner->GetDataCurveSelection(curve_index)->GetRangeArray();
     int n_range = 0, range_count = ranges.GetCount();
     int min_sel = -1, max_sel = -1;
     for (n_range = 0; n_range < range_count; n_range++) {
         const wxRangeInt& range = ranges[n_range];
-        if ((range.m_max >= n_start) || (range.m_min >= n_start)) {
-            min_sel = range.m_min;
-            max_sel = range.m_max;
+        if ((range._max >= n_start) || (range._min >= n_start)) {
+            min_sel = range._min;
+            max_sel = range._max;
             if (range.Contains(n_start)) gc->SetPen(selectedPen);
 
             break;
@@ -977,9 +977,9 @@ void wxPlotDrawerDataCurve::Draw(wxGraphicsContext* gc, wxPlotData* curve, int c
     int clipped = ClippedNeither;
 
     // Lines and symbols drawing is now defined in the curve object and not the wxPlotCtrl (PH)
-    bool draw_lines = curve->GetDrawLines();      // m_owner->GetDrawLines();
-    bool draw_symbols = curve->GetDrawSymbols();  // m_owner->GetDrawSymbols();
-    bool draw_spline = curve->GetDrawSpline();    // m_owner->GetDrawSpline();
+    bool draw_lines = curve->GetDrawLines();      // _owner->GetDrawLines();
+    bool draw_symbols = curve->GetDrawSymbols();  // _owner->GetDrawSymbols();
+    bool draw_spline = curve->GetDrawSpline();    // _owner->GetDrawSpline();
     bool draw_polygon = curve->GetDrawPolygon();
 
     SplineDrawer sd;
@@ -1001,10 +1001,10 @@ void wxPlotDrawerDataCurve::Draw(wxGraphicsContext* gc, wxPlotData* curve, int c
             yy0 = y0;
             xx1 = x1;
             yy1 = y1;
-            i0 = m_owner->GetClientCoordFromPlotX(xx0);
-            j0 = m_owner->GetClientCoordFromPlotY(yy0);
-            i1 = m_owner->GetClientCoordFromPlotX(xx1);
-            j1 = m_owner->GetClientCoordFromPlotY(yy1);
+            i0 = _owner->GetClientCoordFromPlotX(xx0);
+            j0 = _owner->GetClientCoordFromPlotY(yy0);
+            i1 = _owner->GetClientCoordFromPlotX(xx1);
+            j1 = _owner->GetClientCoordFromPlotY(yy1);
 
             path.AddLineToPoint(i1, j1);
 
@@ -1020,15 +1020,15 @@ void wxPlotDrawerDataCurve::Draw(wxGraphicsContext* gc, wxPlotData* curve, int c
     }
 
     if (draw_spline) {
-        wxRangeDouble viewRange(viewRect.m_x, viewRect.GetRight());
+        wxRangeDouble viewRange(viewRect._x, viewRect.GetRight());
         wxRangeDouble dcRange(dcRect.x, dcRect.GetRight());
 
         for (int r = n_range; r < range_count; r++) {
-            wxRangeDouble plotRange(curve->GetXValue(ranges[r].m_min), curve->GetXValue(ranges[r].m_max));
+            wxRangeDouble plotRange(curve->GetXValue(ranges[r]._min), curve->GetXValue(ranges[r]._max));
 
             if (viewRange.Intersects(plotRange)) {
-                double min_x = m_owner->GetClientCoordFromPlotX(plotRange.m_min);
-                double max_x = m_owner->GetClientCoordFromPlotX(plotRange.m_max);
+                double min_x = _owner->GetClientCoordFromPlotX(plotRange._min);
+                double max_x = _owner->GetClientCoordFromPlotX(plotRange._max);
                 dblRangeSel.SelectRange(wxRangeDouble(min_x, max_x));
             } else
                 break;
@@ -1037,10 +1037,10 @@ void wxPlotDrawerDataCurve::Draw(wxGraphicsContext* gc, wxPlotData* curve, int c
         // spline starts 2 points back for smoothness
         int s_start = n_start > 1 ? -2 : n_start > 0 ? -1 : 0;
         sd.Create(gc, currentPen, selectedPen, wxRect2DDouble(dcRect.x, dcRect.y, dcRect.width, dcRect.height),
-                  &dblRangeSel, m_owner->GetClientCoordFromPlotX(x_data[s_start]),
-                  m_owner->GetClientCoordFromPlotY(y_data[s_start]),
-                  m_owner->GetClientCoordFromPlotX(x_data[s_start + 1]),
-                  m_owner->GetClientCoordFromPlotY(y_data[s_start + 1]));
+                  &dblRangeSel, _owner->GetClientCoordFromPlotX(x_data[s_start]),
+                  _owner->GetClientCoordFromPlotY(y_data[s_start]),
+                  _owner->GetClientCoordFromPlotX(x_data[s_start + 1]),
+                  _owner->GetClientCoordFromPlotY(y_data[s_start + 1]));
     }
 
     bool firstPointLine = true;
@@ -1049,7 +1049,7 @@ void wxPlotDrawerDataCurve::Draw(wxGraphicsContext* gc, wxPlotData* curve, int c
         x1 = *x_data++;
         y1 = *y_data++;
 
-        if (draw_spline) sd.DrawSpline(m_owner->GetClientCoordFromPlotX(x1), m_owner->GetClientCoordFromPlotY(y1));
+        if (draw_spline) sd.DrawSpline(_owner->GetClientCoordFromPlotX(x1), _owner->GetClientCoordFromPlotY(y1));
 
         xx0 = x0;
         yy0 = y0;
@@ -1057,10 +1057,10 @@ void wxPlotDrawerDataCurve::Draw(wxGraphicsContext* gc, wxPlotData* curve, int c
         yy1 = y1;
         clipped = ClipLineToRect(xx0, yy0, xx1, yy1, viewRect);
         if (clipped != ClippedOut) {
-            i0 = m_owner->GetClientCoordFromPlotX(xx0);
-            j0 = m_owner->GetClientCoordFromPlotY(yy0);
-            i1 = m_owner->GetClientCoordFromPlotX(xx1);
-            j1 = m_owner->GetClientCoordFromPlotY(yy1);
+            i0 = _owner->GetClientCoordFromPlotX(xx0);
+            j0 = _owner->GetClientCoordFromPlotY(yy0);
+            i1 = _owner->GetClientCoordFromPlotX(xx1);
+            j1 = _owner->GetClientCoordFromPlotY(yy1);
 
             if (draw_lines && ((i0 != i1) || (j0 != j1))) {
                 if (firstPointLine) {
@@ -1084,8 +1084,8 @@ void wxPlotDrawerDataCurve::Draw(wxGraphicsContext* gc, wxPlotData* curve, int c
             gc->SetPen(currentPen);
             if (n_range < range_count - 1) {
                 n_range++;
-                min_sel = ranges[n_range].m_min;
-                max_sel = ranges[n_range].m_max;
+                min_sel = ranges[n_range]._min;
+                max_sel = ranges[n_range]._max;
             }
         }
 
@@ -1096,7 +1096,7 @@ void wxPlotDrawerDataCurve::Draw(wxGraphicsContext* gc, wxPlotData* curve, int c
     if (draw_spline) {
         // want an extra point at the end to smooth it out
         if (n_end < (int)curve->GetCount() - 1)
-            sd.DrawSpline(m_owner->GetClientCoordFromPlotX(*x_data), m_owner->GetClientCoordFromPlotY(*y_data));
+            sd.DrawSpline(_owner->GetClientCoordFromPlotX(*x_data), _owner->GetClientCoordFromPlotY(*y_data));
 
         sd.EndSpline();
     }
@@ -1108,26 +1108,26 @@ void wxPlotDrawerDataCurve::Draw(wxGraphicsContext* gc, wxPlotData* curve, int c
 }
 
 void wxPlotDrawerDataCurve::Draw(wxDC* dc, wxPlotData* curve, int curve_index) {
-    wxCHECK_RET(dc && m_owner && curve && curve->Ok(), wxT("invalid curve"));
+    wxCHECK_RET(dc && _owner && curve && curve->Ok(), wxT("invalid curve"));
     INITIALIZE_FAST_GRAPHICS
 
     wxRect dcRect(GetDCRect());
 
-    wxRect2DDouble viewRect(GetPlotViewRect());  // m_viewRect );
-    wxRect2DDouble subViewRect(m_owner->GetPlotRectFromClientRect(dcRect));
+    wxRect2DDouble viewRect(GetPlotViewRect());  // _viewRect );
+    wxRect2DDouble subViewRect(_owner->GetPlotRectFromClientRect(dcRect));
     wxRect2DDouble curveRect(curve->GetBoundingRect());
 
     if (!wxPlotRect2DDoubleIntersects(curveRect, subViewRect)) return;
 
     // FIXME - drawing symbol bitmaps in MSW is very slow
     wxBitmap bitmap;
-    if (curve_index == m_owner->GetActiveIndex())
+    if (curve_index == _owner->GetActiveIndex())
         bitmap = curve->GetSymbol(wxPLOTPEN_ACTIVE);
     else
         bitmap = curve->GetSymbol(wxPLOTPEN_NORMAL);
 
     if (!bitmap.Ok()) {
-        if (curve_index == m_owner->GetActiveIndex())
+        if (curve_index == _owner->GetActiveIndex())
             bitmap = wxBitmap(1, 1);
         else
             bitmap = wxBitmap(1, 1);
@@ -1154,12 +1154,12 @@ void wxPlotDrawerDataCurve::Draw(wxDC* dc, wxPlotData* curve, int curve_index) {
     }
 
     // set the pens to draw with
-    wxPen currentPen = (curve_index == m_owner->GetActiveIndex()) ? curve->GetPen(wxPLOTPEN_ACTIVE).GetPen()
+    wxPen currentPen = (curve_index == _owner->GetActiveIndex()) ? curve->GetPen(wxPLOTPEN_ACTIVE).GetPen()
                                                                   : curve->GetPen(wxPLOTPEN_NORMAL).GetPen();
     wxPen selectedPen = curve->GetPen(wxPLOTPEN_SELECTED).GetPen();
-    if (m_pen_scale != 1) {
-        currentPen.SetWidth(int(currentPen.GetWidth() * m_pen_scale));
-        selectedPen.SetWidth(int(selectedPen.GetWidth() * m_pen_scale));
+    if (_pen_scale != 1) {
+        currentPen.SetWidth(int(currentPen.GetWidth() * _pen_scale));
+        selectedPen.SetWidth(int(selectedPen.GetWidth() * _pen_scale));
     }
 
     dc->SetPen(currentPen);
@@ -1168,14 +1168,14 @@ void wxPlotDrawerDataCurve::Draw(wxDC* dc, wxPlotData* curve, int curve_index) {
     dc->SetBrush(brush);
 
     // handle the selected ranges and initialize the starting range
-    const wxArrayRangeInt& ranges = m_owner->GetDataCurveSelection(curve_index)->GetRangeArray();
+    const wxArrayRangeInt& ranges = _owner->GetDataCurveSelection(curve_index)->GetRangeArray();
     int n_range = 0, range_count = ranges.GetCount();
     int min_sel = -1, max_sel = -1;
     for (n_range = 0; n_range < range_count; n_range++) {
         const wxRangeInt& range = ranges[n_range];
-        if ((range.m_max >= n_start) || (range.m_min >= n_start)) {
-            min_sel = range.m_min;
-            max_sel = range.m_max;
+        if ((range._max >= n_start) || (range._min >= n_start)) {
+            min_sel = range._min;
+            max_sel = range._max;
             if (range.Contains(n_start)) dc->SetPen(selectedPen);
 
             break;
@@ -1196,9 +1196,9 @@ void wxPlotDrawerDataCurve::Draw(wxDC* dc, wxPlotData* curve, int curve_index) {
     int clipped = ClippedNeither;
 
     // Lines and symbols drawing is now defined in the curve object and not the wxPlotCtrl (PH)
-    bool draw_lines = curve->GetDrawLines();      // m_owner->GetDrawLines();
-    bool draw_symbols = curve->GetDrawSymbols();  // m_owner->GetDrawSymbols();
-    bool draw_spline = curve->GetDrawSpline();    // m_owner->GetDrawSpline();
+    bool draw_lines = curve->GetDrawLines();      // _owner->GetDrawLines();
+    bool draw_symbols = curve->GetDrawSymbols();  // _owner->GetDrawSymbols();
+    bool draw_spline = curve->GetDrawSpline();    // _owner->GetDrawSpline();
     bool draw_polygon = curve->GetDrawPolygon();
 
     SplineDrawer sd;
@@ -1216,10 +1216,10 @@ void wxPlotDrawerDataCurve::Draw(wxDC* dc, wxPlotData* curve, int curve_index) {
             x1 = *x_data++;
             y1 = *y_data++;
             xx0 = x0; yy0 = y0; xx1 = x1; yy1 = y1;
-            i0 = m_owner->GetClientCoordFromPlotX(xx0);
-            j0 = m_owner->GetClientCoordFromPlotY(yy0);
-            i1 = m_owner->GetClientCoordFromPlotX(xx1);
-            j1 = m_owner->GetClientCoordFromPlotY(yy1);
+            i0 = _owner->GetClientCoordFromPlotX(xx0);
+            j0 = _owner->GetClientCoordFromPlotY(yy0);
+            i1 = _owner->GetClientCoordFromPlotX(xx1);
+            j1 = _owner->GetClientCoordFromPlotY(yy1);
 
             path.AddLineToPoint(i1, j1);
 
@@ -1237,18 +1237,18 @@ void wxPlotDrawerDataCurve::Draw(wxDC* dc, wxPlotData* curve, int curve_index) {
     if (draw_spline) {
         wxLogMessage(_("Splines temporarly desactivated for export."));
         /*
-        wxRangeDouble viewRange(viewRect.m_x, viewRect.GetRight());
+        wxRangeDouble viewRange(viewRect._x, viewRect.GetRight());
         wxRangeDouble dcRange(dcRect.x, dcRect.GetRight());
 
         for (int r = n_range; r < range_count; r++)
         {
-            wxRangeDouble plotRange(curve->GetXValue(ranges[r].m_min),
-                                    curve->GetXValue(ranges[r].m_max));
+            wxRangeDouble plotRange(curve->GetXValue(ranges[r]._min),
+                                    curve->GetXValue(ranges[r]._max));
 
             if (viewRange.Intersects(plotRange))
             {
-                double min_x = m_owner->GetClientCoordFromPlotX(plotRange.m_min);
-                double max_x = m_owner->GetClientCoordFromPlotX(plotRange.m_max);
+                double min_x = _owner->GetClientCoordFromPlotX(plotRange._min);
+                double max_x = _owner->GetClientCoordFromPlotX(plotRange._max);
                 dblRangeSel.SelectRange(wxRangeDouble(min_x, max_x));
             }
             else
@@ -1260,10 +1260,10 @@ void wxPlotDrawerDataCurve::Draw(wxDC* dc, wxPlotData* curve, int curve_index) {
         sd.Create(dc, currentPen, selectedPen,
                   wxRect2DDouble(dcRect.x, dcRect.y, dcRect.width, dcRect.height),
                   &dblRangeSel,
-                  m_owner->GetClientCoordFromPlotX(x_data[s_start]),
-                  m_owner->GetClientCoordFromPlotY(y_data[s_start]),
-                  m_owner->GetClientCoordFromPlotX(x_data[s_start+1]),
-                  m_owner->GetClientCoordFromPlotY(y_data[s_start+1]));*/
+                  _owner->GetClientCoordFromPlotX(x_data[s_start]),
+                  _owner->GetClientCoordFromPlotY(y_data[s_start]),
+                  _owner->GetClientCoordFromPlotX(x_data[s_start+1]),
+                  _owner->GetClientCoordFromPlotY(y_data[s_start+1]));*/
     }
 
     // bool firstPointLine = true;
@@ -1272,7 +1272,7 @@ void wxPlotDrawerDataCurve::Draw(wxDC* dc, wxPlotData* curve, int curve_index) {
         x1 = *x_data++;
         y1 = *y_data++;
 
-        if (draw_spline) sd.DrawSpline(m_owner->GetClientCoordFromPlotX(x1), m_owner->GetClientCoordFromPlotY(y1));
+        if (draw_spline) sd.DrawSpline(_owner->GetClientCoordFromPlotX(x1), _owner->GetClientCoordFromPlotY(y1));
 
         xx0 = x0;
         yy0 = y0;
@@ -1280,10 +1280,10 @@ void wxPlotDrawerDataCurve::Draw(wxDC* dc, wxPlotData* curve, int curve_index) {
         yy1 = y1;
         clipped = ClipLineToRect(xx0, yy0, xx1, yy1, viewRect);
         if (clipped != ClippedOut) {
-            i0 = m_owner->GetClientCoordFromPlotX(xx0);
-            j0 = m_owner->GetClientCoordFromPlotY(yy0);
-            i1 = m_owner->GetClientCoordFromPlotX(xx1);
-            j1 = m_owner->GetClientCoordFromPlotY(yy1);
+            i0 = _owner->GetClientCoordFromPlotX(xx0);
+            j0 = _owner->GetClientCoordFromPlotY(yy0);
+            i1 = _owner->GetClientCoordFromPlotX(xx1);
+            j1 = _owner->GetClientCoordFromPlotY(yy1);
 
             if (draw_lines && ((i0 != i1) || (j0 != j1))) {
                 wxPLOTCTRL_DRAW_LINE(dc, window, pen, i0, j0, i1, j1);
@@ -1307,8 +1307,8 @@ void wxPlotDrawerDataCurve::Draw(wxDC* dc, wxPlotData* curve, int curve_index) {
             dc->SetPen(currentPen);
             if (n_range < range_count - 1) {
                 n_range++;
-                min_sel = ranges[n_range].m_min;
-                max_sel = ranges[n_range].m_max;
+                min_sel = ranges[n_range]._min;
+                max_sel = ranges[n_range]._max;
             }
         }
 
@@ -1319,7 +1319,7 @@ void wxPlotDrawerDataCurve::Draw(wxDC* dc, wxPlotData* curve, int curve_index) {
     if (draw_spline) {
         // want an extra point at the end to smooth it out
         if (n_end < (int)curve->GetCount() - 1)
-            sd.DrawSpline(m_owner->GetClientCoordFromPlotX(*x_data), m_owner->GetClientCoordFromPlotY(*y_data));
+            sd.DrawSpline(_owner->GetClientCoordFromPlotX(*x_data), _owner->GetClientCoordFromPlotY(*y_data));
 
         sd.EndSpline();
     }
@@ -1340,11 +1340,11 @@ void wxPlotDrawerMarker::Draw(wxDC* dc, const wxPlotMarker& marker) {
 }
 
 void wxPlotDrawerMarker::Draw(wxDC* dc, const wxArrayPlotMarker& markers) {
-    wxCHECK_RET(dc && m_owner, wxT("dc or owner"));
+    wxCHECK_RET(dc && _owner, wxT("dc or owner"));
     INITIALIZE_FAST_GRAPHICS
 
     wxRect dcRect(GetDCRect());
-    wxRect2DDouble subViewRect = m_owner->GetPlotRectFromClientRect(dcRect);
+    wxRect2DDouble subViewRect = _owner->GetPlotRectFromClientRect(dcRect);
 
     double x0 = 0, y0 = 0, x1 = 0, y1 = 0;
     int n, count = markers.GetCount();
@@ -1353,8 +1353,8 @@ void wxPlotDrawerMarker::Draw(wxDC* dc, const wxArrayPlotMarker& markers) {
         wxCHECK_RET(marker.Ok(), wxT("Invalid marker"));
 
         wxRect2DDouble r(marker.GetPlotRect());
-        x0 = r.m_x;
-        y0 = r.m_y;
+        x0 = r._x;
+        y0 = r._y;
         x1 = r.GetRight();
         y1 = r.GetBottom();
 
@@ -1369,33 +1369,33 @@ void wxPlotDrawerMarker::Draw(wxDC* dc, const wxArrayPlotMarker& markers) {
             wxBitmap bmp(marker.GetBitmap());
             int w = bmp.GetWidth(), h = bmp.GetHeight();
             // FIXME - add scaling and shifting later - maybe
-            int i0 = m_owner->GetClientCoordFromPlotX(x0);
-            int j0 = m_owner->GetClientCoordFromPlotY(y0);
+            int i0 = _owner->GetClientCoordFromPlotX(x0);
+            int j0 = _owner->GetClientCoordFromPlotY(y0);
             dc->DrawBitmap(bmp, RINT(i0 - w / 2.0), RINT(j0 - h / 2.0), true);
         } else if (marker_type == wxPLOTMARKER_LINE) {
             if (ClipLineToRect(x0, y0, x1, y1, subViewRect) != ClippedOut) {
-                int i0 = m_owner->GetClientCoordFromPlotX(x0);
-                int j0 = m_owner->GetClientCoordFromPlotY(y0);
-                int i1 = m_owner->GetClientCoordFromPlotX(x1);
-                int j1 = m_owner->GetClientCoordFromPlotY(y1);
+                int i0 = _owner->GetClientCoordFromPlotX(x0);
+                int j0 = _owner->GetClientCoordFromPlotY(y0);
+                int i1 = _owner->GetClientCoordFromPlotX(x1);
+                int j1 = _owner->GetClientCoordFromPlotY(y1);
                 wxPLOTCTRL_DRAW_LINE(dc, window, pen, i0, j0, i1, j1);
             }
         } else if (marker_type == wxPLOTMARKER_ELLIPSE) {
             // fixed pixel size
             if ((size.x > 0) && (size.y > 0)) {
                 if (ClipLineToRect(x0, y0, x1, y1, subViewRect) != ClippedOut) {
-                    int i0 = m_owner->GetClientCoordFromPlotX(x0);
-                    int j0 = m_owner->GetClientCoordFromPlotY(y0);
+                    int i0 = _owner->GetClientCoordFromPlotX(x0);
+                    int j0 = _owner->GetClientCoordFromPlotY(y0);
                     wxPLOTCTRL_DRAW_ELLIPSE(dc, window, pen, i0, j0, size.x, size.y);
                 }
             }
             /*
                         else if (ClipLineToRect(x0, y0, x1, y1, subViewRect) != ClippedOut)
                         {
-                            int i0 = m_owner->GetClientCoordFromPlotX(x0);
-                            int j0 = m_owner->GetClientCoordFromPlotY(y0);
-                            int i1 = m_owner->GetClientCoordFromPlotX(x1);
-                            int j1 = m_owner->GetClientCoordFromPlotY(y1);
+                            int i0 = _owner->GetClientCoordFromPlotX(x0);
+                            int j0 = _owner->GetClientCoordFromPlotY(y0);
+                            int i1 = _owner->GetClientCoordFromPlotX(x1);
+                            int j1 = _owner->GetClientCoordFromPlotY(y1);
                             wxPLOTCTRL_DRAW_ELLIPSE(dc, window, pen, i0, j0, i1, j1);
                         }
             */
@@ -1403,55 +1403,55 @@ void wxPlotDrawerMarker::Draw(wxDC* dc, const wxArrayPlotMarker& markers) {
         {
             // we may ignore type if rect is in certain states
 
-            bool is_horiz = r.m_width < 0;
-            bool is_vert = r.m_height < 0;
+            bool is_horiz = r._width < 0;
+            bool is_vert = r._height < 0;
 
             bool cross = (is_horiz && is_vert) || (marker_type == wxPLOTMARKER_CROSS);
 
             // find the limits of the edges of the lines
             if (is_horiz || cross) {
-                x0 = subViewRect.m_x - subViewRect.m_width;  // push outside win
-                x1 = subViewRect.GetRight() + subViewRect.m_width;
+                x0 = subViewRect._x - subViewRect._width;  // push outside win
+                x1 = subViewRect.GetRight() + subViewRect._width;
             }
             if (is_vert || cross) {
-                y0 = subViewRect.m_y - subViewRect.m_height;
-                y1 = subViewRect.GetBottom() + subViewRect.m_height;
+                y0 = subViewRect._y - subViewRect._height;
+                y1 = subViewRect.GetBottom() + subViewRect._height;
             }
 
             if ((marker_type == wxPLOTMARKER_POINT) || ((x0 == x1) && (y0 == y1))) {
                 if (ClipLineToRect(x0, y0, x0, y0, subViewRect) != ClippedOut) {
-                    int i0 = m_owner->GetClientCoordFromPlotX(x0);
-                    int j0 = m_owner->GetClientCoordFromPlotY(y0);
+                    int i0 = _owner->GetClientCoordFromPlotX(x0);
+                    int j0 = _owner->GetClientCoordFromPlotY(y0);
                     dc->DrawPoint(i0, j0);
                 }
             } else if ((marker_type == wxPLOTMARKER_VERT_LINE) || ((x0 == x1) && (y0 != y1))) {
                 if (ClipLineToRect(x0, y0, x0, y1, subViewRect) != ClippedOut) {
-                    int i0 = m_owner->GetClientCoordFromPlotX(x0);
-                    int j0 = m_owner->GetClientCoordFromPlotY(y0);
-                    int j1 = m_owner->GetClientCoordFromPlotY(y1);
+                    int i0 = _owner->GetClientCoordFromPlotX(x0);
+                    int j0 = _owner->GetClientCoordFromPlotY(y0);
+                    int j1 = _owner->GetClientCoordFromPlotY(y1);
                     wxPLOTCTRL_DRAW_LINE(dc, window, pen, i0, j0, i0, j1);
                 }
             } else if ((marker_type == wxPLOTMARKER_HORIZ_LINE) || ((y0 == y1) && (x0 != x1))) {
                 if (ClipLineToRect(x0, y0, x1, y0, subViewRect) != ClippedOut) {
-                    int i0 = m_owner->GetClientCoordFromPlotX(x0);
-                    int i1 = m_owner->GetClientCoordFromPlotX(x1);
-                    int j0 = m_owner->GetClientCoordFromPlotY(y0);
+                    int i0 = _owner->GetClientCoordFromPlotX(x0);
+                    int i1 = _owner->GetClientCoordFromPlotX(x1);
+                    int j0 = _owner->GetClientCoordFromPlotY(y0);
                     wxPLOTCTRL_DRAW_LINE(dc, window, pen, i0, j0, i1, j0);
                 }
             } else if ((marker_type == wxPLOTMARKER_CROSS) || cross) {
-                if (wxPlotRect2DDoubleContains(r.m_x, r.m_y, subViewRect)) {
-                    double y = r.m_y;
+                if (wxPlotRect2DDoubleContains(r._x, r._y, subViewRect)) {
+                    double y = r._y;
                     ClipLineToRect(x0, y, x1, y, subViewRect);
-                    int i0 = m_owner->GetClientCoordFromPlotX(x0);
-                    int i1 = m_owner->GetClientCoordFromPlotX(x1);
-                    int j0 = m_owner->GetClientCoordFromPlotY(y);
+                    int i0 = _owner->GetClientCoordFromPlotX(x0);
+                    int i1 = _owner->GetClientCoordFromPlotX(x1);
+                    int j0 = _owner->GetClientCoordFromPlotY(y);
                     wxPLOTCTRL_DRAW_LINE(dc, window, pen, i0, j0, i1, j0);
 
-                    double x = r.m_x;
+                    double x = r._x;
                     ClipLineToRect(x, y0, x, y1, subViewRect);
-                    i0 = m_owner->GetClientCoordFromPlotX(x);
-                    j0 = m_owner->GetClientCoordFromPlotY(y0);
-                    int j1 = m_owner->GetClientCoordFromPlotY(y1);
+                    i0 = _owner->GetClientCoordFromPlotX(x);
+                    j0 = _owner->GetClientCoordFromPlotY(y0);
+                    int j1 = _owner->GetClientCoordFromPlotY(y1);
                     wxPLOTCTRL_DRAW_LINE(dc, window, pen, i0, j0, i0, j1);
                 }
             } else  // rectangle
@@ -1460,12 +1460,12 @@ void wxPlotDrawerMarker::Draw(wxDC* dc, const wxArrayPlotMarker& markers) {
                 clippedRect.Intersect(subViewRect);
                 int pen_width = dc->GetPen().GetWidth() + 2;
 
-                int i0 = m_owner->GetClientCoordFromPlotX(clippedRect.m_x);
-                int i1 = m_owner->GetClientCoordFromPlotX(clippedRect.GetRight());
-                int j0 = m_owner->GetClientCoordFromPlotY(clippedRect.m_y);
-                int j1 = m_owner->GetClientCoordFromPlotY(clippedRect.GetBottom());
-                if (r.m_x < subViewRect.m_x) i0 -= pen_width;
-                if (r.m_y < subViewRect.m_y) j0 -= pen_width;
+                int i0 = _owner->GetClientCoordFromPlotX(clippedRect._x);
+                int i1 = _owner->GetClientCoordFromPlotX(clippedRect.GetRight());
+                int j0 = _owner->GetClientCoordFromPlotY(clippedRect._y);
+                int j1 = _owner->GetClientCoordFromPlotY(clippedRect.GetBottom());
+                if (r._x < subViewRect._x) i0 -= pen_width;
+                if (r._y < subViewRect._y) j0 -= pen_width;
                 if (r.GetRight() > subViewRect.GetRight()) i1 += pen_width;
                 if (r.GetBottom() > subViewRect.GetBottom()) j1 += pen_width;
 

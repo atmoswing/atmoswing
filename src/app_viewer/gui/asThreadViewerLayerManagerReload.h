@@ -43,8 +43,8 @@ class asThreadViewerLayerManagerReload : public asThread {
 
   protected:
   private:
-    vrViewerLayerManager* m_viewerLayerManager;
-    wxCriticalSection* m_critSectionViewerLayerManager;
+    vrViewerLayerManager* _viewerLayerManager;
+    wxCriticalSection* _critSectionViewerLayerManager;
 };
 
 #endif

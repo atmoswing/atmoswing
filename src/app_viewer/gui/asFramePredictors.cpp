@@ -60,104 +60,104 @@ END_EVENT_TABLE()
 
 vroomDropFilesPredictors::vroomDropFilesPredictors(asFramePredictors* parent) {
     wxASSERT(parent);
-    m_LoaderFrame = parent;
+    _loaderFrame = parent;
 }
 
 bool vroomDropFilesPredictors::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames) {
     if (filenames.GetCount() == 0) return false;
 
-    m_LoaderFrame->OpenLayers(filenames);
+    _loaderFrame->OpenLayers(filenames);
     return true;
 }
 
 asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* forecastManager, asWorkspace* workspace,
                                      int methodRow, int forecastRow, wxWindowID id)
     : asFramePredictorsVirtual(parent, id),
-      m_forecastManager(forecastManager),
-      m_workspace(workspace),
-      m_selectedMethod(methodRow),
-      m_selectedForecast(forecastRow),
-      m_selectedTargetDate(-1),
-      m_selectedAnalogDate(-1),
-      m_selectedPredictor(-1),
-      m_syncroTool(true),
-      m_displayPanelLeft(true),
-      m_displayPanelRight(true) {
+      _forecastManager(forecastManager),
+      _workspace(workspace),
+      _selectedMethod(methodRow),
+      _selectedForecast(forecastRow),
+      _selectedTargetDate(-1),
+      _selectedAnalogDate(-1),
+      _selectedPredictor(-1),
+      _syncroTool(true),
+      _displayPanelLeft(true),
+      _displayPanelRight(true) {
     this->SetLabel(_("Predictors overview"));
 
-    m_selectedForecast = wxMax(m_selectedForecast, 0);
+    _selectedForecast = wxMax(_selectedForecast, 0);
 
     // Toolbar
-    m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN), wxNullBitmap,
+    _toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN), wxNullBitmap,
                        wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT),
+    _toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_OUT),
                        wxNullBitmap, wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), nullptr);
-    m_toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_MOVE), wxNullBitmap,
+    _toolBar->AddTool(asID_PAN, wxT("Pan"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_MOVE), wxNullBitmap,
                        wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), nullptr);
-    m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_FIT), wxNullBitmap,
+    _toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_FIT), wxNullBitmap,
                        wxITEM_NORMAL, _("Zoom to visible layers"),
                        _("Zoom view to the full extent of all visible layers"), nullptr);
-    m_toolBar->AddTool(asID_CROSS_MARKER, wxT("Marker overlay"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_CROSS),
+    _toolBar->AddTool(asID_CROSS_MARKER, wxT("Marker overlay"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_CROSS),
                        wxNullBitmap, wxITEM_NORMAL, _("Display a cross marker overlay"),
                        _("Display a cross marker overlay on both frames"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
+    _toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
                        wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
-    m_toolBar->Realize();
+    _toolBar->Realize();
 
     // VroomGIS controls
-    m_displayCtrlLeft = new vrViewerDisplay(m_panelGISLeft, wxID_ANY, wxColour(255, 255, 255));
-    m_displayCtrlRight = new vrViewerDisplay(m_panelGISRight, wxID_ANY, wxColour(255, 255, 255));
-    m_sizerGISLeft->Add(m_displayCtrlLeft, 1, wxEXPAND | wxALL, 0);
-    m_sizerGISRight->Add(m_displayCtrlRight, 1, wxEXPAND | wxALL, 0);
-    m_panelGIS->Layout();
-    m_tocCtrlLeft = new vrViewerTOCList(m_scrolledWindowOptions, wxID_ANY);
-    m_tocCtrlRight = new vrViewerTOCList(m_scrolledWindowOptions, wxID_ANY);
-    m_sizerScrolledWindow->Insert(7, m_tocCtrlLeft->GetControl(), 1, wxEXPAND, 0);
-    m_sizerScrolledWindow->Add(m_tocCtrlRight->GetControl(), 1, wxEXPAND, 0);
-    m_sizerScrolledWindow->Fit(m_scrolledWindowOptions);
+    _displayCtrlLeft = new vrViewerDisplay(_panelGISLeft, wxID_ANY, wxColour(255, 255, 255));
+    _displayCtrlRight = new vrViewerDisplay(_panelGISRight, wxID_ANY, wxColour(255, 255, 255));
+    _sizerGISLeft->Add(_displayCtrlLeft, 1, wxEXPAND | wxALL, 0);
+    _sizerGISRight->Add(_displayCtrlRight, 1, wxEXPAND | wxALL, 0);
+    _panelGIS->Layout();
+    _tocCtrlLeft = new vrViewerTOCList(_scrolledWindowOptions, wxID_ANY);
+    _tocCtrlRight = new vrViewerTOCList(_scrolledWindowOptions, wxID_ANY);
+    _sizerScrolledWindow->Insert(7, _tocCtrlLeft->GetControl(), 1, wxEXPAND, 0);
+    _sizerScrolledWindow->Add(_tocCtrlRight->GetControl(), 1, wxEXPAND, 0);
+    _sizerScrolledWindow->Fit(_scrolledWindowOptions);
 
-    m_layerManager = new vrLayerManager();
-    m_viewerLayerManagerLeft = new vrViewerLayerManager(m_layerManager, this, m_displayCtrlLeft, m_tocCtrlLeft);
-    m_viewerLayerManagerRight = new vrViewerLayerManager(m_layerManager, this, m_displayCtrlRight, m_tocCtrlRight);
+    _layerManager = new vrLayerManager();
+    _viewerLayerManagerLeft = new vrViewerLayerManager(_layerManager, this, _displayCtrlLeft, _tocCtrlLeft);
+    _viewerLayerManagerRight = new vrViewerLayerManager(_layerManager, this, _displayCtrlRight, _tocCtrlRight);
 
     // Colorbars
-    m_panelPredictorsColorbarLeft = new asPanelPredictorsColorbar(m_panelColorbarLeft, wxID_ANY, wxDefaultPosition,
+    _panelPredictorsColorbarLeft = new asPanelPredictorsColorbar(_panelColorbarLeft, wxID_ANY, wxDefaultPosition,
                                                                   wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
-    m_panelPredictorsColorbarLeft->Layout();
-    m_sizerColorbarLeft->Add(m_panelPredictorsColorbarLeft, 1, wxEXPAND, 0);
-    m_panelColorbarLeft->Layout();
+    _panelPredictorsColorbarLeft->Layout();
+    _sizerColorbarLeft->Add(_panelPredictorsColorbarLeft, 1, wxEXPAND, 0);
+    _panelColorbarLeft->Layout();
 
-    m_panelPredictorsColorbarRight = new asPanelPredictorsColorbar(m_panelColorbarRight, wxID_ANY, wxDefaultPosition,
+    _panelPredictorsColorbarRight = new asPanelPredictorsColorbar(_panelColorbarRight, wxID_ANY, wxDefaultPosition,
                                                                    wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
-    m_panelPredictorsColorbarRight->Layout();
-    m_sizerColorbarRight->Add(m_panelPredictorsColorbarRight, 1, wxEXPAND, 0);
-    m_panelColorbarRight->Layout();
+    _panelPredictorsColorbarRight->Layout();
+    _sizerColorbarRight->Add(_panelPredictorsColorbarRight, 1, wxEXPAND, 0);
+    _panelColorbarRight->Layout();
 
     // Viewer
-    m_predictorsManagerTarget = new asPredictorsManager(m_workspace, true);
-    m_predictorsManagerAnalog = new asPredictorsManager(m_workspace);
-    m_predictorsRenderer = new asPredictorsRenderer(this, m_layerManager, m_predictorsManagerTarget,
-                                                    m_predictorsManagerAnalog, m_viewerLayerManagerLeft,
-                                                    m_viewerLayerManagerRight);
-    m_predictorsRenderer->LinkToColorbars(m_panelPredictorsColorbarLeft, m_panelPredictorsColorbarRight);
+    _predictorsManagerTarget = new asPredictorsManager(_workspace, true);
+    _predictorsManagerAnalog = new asPredictorsManager(_workspace);
+    _predictorsRenderer = new asPredictorsRenderer(this, _layerManager, _predictorsManagerTarget,
+                                                    _predictorsManagerAnalog, _viewerLayerManagerLeft,
+                                                    _viewerLayerManagerRight);
+    _predictorsRenderer->LinkToColorbars(_panelPredictorsColorbarLeft, _panelPredictorsColorbarRight);
 
     // Menus
-    m_menuTools->AppendCheckItem(asID_SET_SYNCRO_MODE, _("Synchronize tools"),
+    _menuTools->AppendCheckItem(asID_SET_SYNCRO_MODE, _("Synchronize tools"),
                                  _("When set to true, browsing is synchronized on all display"));
-    m_menuTools->Check(asID_SET_SYNCRO_MODE, m_syncroTool);
+    _menuTools->Check(asID_SET_SYNCRO_MODE, _syncroTool);
 
     // Connect Events
-    m_displayCtrlLeft->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFramePredictors::OnRightClick), nullptr, this);
-    m_displayCtrlLeft->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFramePredictors::OnKeyDown), nullptr, this);
-    m_displayCtrlLeft->Connect(wxEVT_KEY_UP, wxKeyEventHandler(asFramePredictors::OnKeyUp), nullptr, this);
+    _displayCtrlLeft->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFramePredictors::OnRightClick), nullptr, this);
+    _displayCtrlLeft->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFramePredictors::OnKeyDown), nullptr, this);
+    _displayCtrlLeft->Connect(wxEVT_KEY_UP, wxKeyEventHandler(asFramePredictors::OnKeyUp), nullptr, this);
     Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFramePredictors::OpenFramePreferences, this, asID_PREFERENCES);
 
     // DND
-    m_scrolledWindowOptions->SetDropTarget(new vroomDropFilesPredictors(this));
+    _scrolledWindowOptions->SetDropTarget(new vroomDropFilesPredictors(this));
 
     // Bitmap
-    m_bpButtonSwitchRight->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::ARROW_RIGHT, wxSize(10, 20)));
-    m_bpButtonSwitchLeft->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::ARROW_LEFT, wxSize(10, 20)));
+    _bpButtonSwitchRight->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::ARROW_RIGHT, wxSize(10, 20)));
+    _bpButtonSwitchLeft->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::ARROW_LEFT, wxSize(10, 20)));
 
     // Icon
 #ifdef __WXMSW__
@@ -167,18 +167,18 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
 
 asFramePredictors::~asFramePredictors() {
     // Disconnect Events
-    m_displayCtrlLeft->Disconnect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFramePredictors::OnRightClick), nullptr, this);
-    m_displayCtrlLeft->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFramePredictors::OnKeyDown), nullptr, this);
-    m_displayCtrlLeft->Disconnect(wxEVT_KEY_UP, wxKeyEventHandler(asFramePredictors::OnKeyUp), nullptr, this);
+    _displayCtrlLeft->Disconnect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFramePredictors::OnRightClick), nullptr, this);
+    _displayCtrlLeft->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFramePredictors::OnKeyDown), nullptr, this);
+    _displayCtrlLeft->Disconnect(wxEVT_KEY_UP, wxKeyEventHandler(asFramePredictors::OnKeyUp), nullptr, this);
     Unbind(wxEVT_COMMAND_TOOL_CLICKED, &asFramePredictors::OpenFramePreferences, this, asID_PREFERENCES);
 
-    wxDELETE(m_layerManager);
+    wxDELETE(_layerManager);
 }
 
 void asFramePredictors::Init() {
-    if (m_forecastManager->GetMethodsNb() > 0) {
-        m_selectedTargetDate = 0;
-        m_selectedAnalogDate = 0;
+    if (_forecastManager->GetMethodsNb() > 0) {
+        _selectedTargetDate = 0;
+        _selectedAnalogDate = 0;
         UpdateMethodsList();
     }
 
@@ -188,26 +188,26 @@ void asFramePredictors::Init() {
 }
 
 void asFramePredictors::UpdateMethodsList() {
-    wxArrayString methods = m_forecastManager->GetMethodNamesWxArray();
-    m_choiceMethod->Set(methods);
-    m_selectedMethod = wxMin(m_selectedMethod, int(methods.Count()) - 1);
-    m_choiceMethod->Select(m_selectedMethod);
+    wxArrayString methods = _forecastManager->GetMethodNamesWxArray();
+    _choiceMethod->Set(methods);
+    _selectedMethod = wxMin(_selectedMethod, int(methods.Count()) - 1);
+    _choiceMethod->Select(_selectedMethod);
     UpdateForecastList();
 }
 
 void asFramePredictors::UpdateForecastList() {
-    wxArrayString forecasts = m_forecastManager->GetForecastNamesWxArray(m_selectedMethod);
-    m_choiceForecast->Set(forecasts);
-    m_selectedForecast = wxMin(m_selectedForecast, int(forecasts.Count()) - 1);
-    m_choiceForecast->Select(m_selectedForecast);
-    m_selectedPredictor = 0;
+    wxArrayString forecasts = _forecastManager->GetForecastNamesWxArray(_selectedMethod);
+    _choiceForecast->Set(forecasts);
+    _selectedForecast = wxMin(_selectedForecast, int(forecasts.Count()) - 1);
+    _choiceForecast->Select(_selectedForecast);
+    _selectedPredictor = 0;
     UpdatePredictorsProperties();
     UpdatePredictorsList();
     UpdateTargetDatesList();
 }
 
 void asFramePredictors::UpdatePredictorsList() {
-    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast* forecast = _forecastManager->GetForecast(_selectedMethod, _selectedForecast);
     vwxs predictorDataIds = forecast->GetPredictorDataIdsOper();
     vf predictorLevels = forecast->GetPredictorLevels();
     vf predictorHours = forecast->GetPredictorHours();
@@ -223,37 +223,37 @@ void asFramePredictors::UpdatePredictorsList() {
         }
     }
 
-    m_listPredictors->Clear();
-    m_listPredictors->Set(dataListString);
-    m_listPredictors->Layout();
+    _listPredictors->Clear();
+    _listPredictors->Set(dataListString);
+    _listPredictors->Layout();
 }
 
 void asFramePredictors::UpdatePredictorsProperties() {
-    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast* forecast = _forecastManager->GetForecast(_selectedMethod, _selectedForecast);
 
-    m_predictorsManagerTarget->SetForecastDate(forecast->GetLeadTimeOrigin());
-    m_predictorsManagerTarget->SetForecastTimeStepHours(forecast->GetForecastTimeStepHours());
-    m_predictorsManagerTarget->SetDatasetIds(forecast->GetPredictorDatasetIdsOper());
-    m_predictorsManagerTarget->SetDataIds(forecast->GetPredictorDataIdsOper());
-    m_predictorsManagerTarget->SetLevels(forecast->GetPredictorLevels());
-    m_predictorsManagerTarget->SetHours(forecast->GetPredictorHours());
-    m_predictorsManagerAnalog->SetDatasetIds(forecast->GetPredictorDatasetIdsArchive());
-    m_predictorsManagerAnalog->SetDataIds(forecast->GetPredictorDataIdsArchive());
-    m_predictorsManagerAnalog->SetLevels(forecast->GetPredictorLevels());
-    m_predictorsManagerAnalog->SetHours(forecast->GetPredictorHours());
+    _predictorsManagerTarget->SetForecastDate(forecast->GetLeadTimeOrigin());
+    _predictorsManagerTarget->SetForecastTimeStepHours(forecast->GetForecastTimeStepHours());
+    _predictorsManagerTarget->SetDatasetIds(forecast->GetPredictorDatasetIdsOper());
+    _predictorsManagerTarget->SetDataIds(forecast->GetPredictorDataIdsOper());
+    _predictorsManagerTarget->SetLevels(forecast->GetPredictorLevels());
+    _predictorsManagerTarget->SetHours(forecast->GetPredictorHours());
+    _predictorsManagerAnalog->SetDatasetIds(forecast->GetPredictorDatasetIdsArchive());
+    _predictorsManagerAnalog->SetDataIds(forecast->GetPredictorDataIdsArchive());
+    _predictorsManagerAnalog->SetLevels(forecast->GetPredictorLevels());
+    _predictorsManagerAnalog->SetHours(forecast->GetPredictorHours());
 }
 
 void asFramePredictors::UpdateTargetDatesList() {
-    wxArrayString dates = m_forecastManager->GetTargetDatesWxArray(m_selectedMethod, m_selectedForecast);
-    m_choiceTargetDates->Set(dates);
-    m_selectedTargetDate = wxMin(m_selectedTargetDate, int(dates.Count()) - 1);
-    m_choiceTargetDates->Select(m_selectedTargetDate);
+    wxArrayString dates = _forecastManager->GetTargetDatesWxArray(_selectedMethod, _selectedForecast);
+    _choiceTargetDates->Set(dates);
+    _selectedTargetDate = wxMin(_selectedTargetDate, int(dates.Count()) - 1);
+    _choiceTargetDates->Select(_selectedTargetDate);
     UpdateAnalogDatesList();
 }
 
 void asFramePredictors::UpdateAnalogDatesList() {
-    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
-    a1f analogDates = forecast->GetAnalogsDates(m_selectedTargetDate);
+    asResultsForecast* forecast = _forecastManager->GetForecast(_selectedMethod, _selectedForecast);
+    a1f analogDates = forecast->GetAnalogsDates(_selectedTargetDate);
     wxArrayString arrayAnalogDates;
     wxString format = forecast->GetDateFormatting();
     int rank = 0;
@@ -262,42 +262,42 @@ void asFramePredictors::UpdateAnalogDatesList() {
         wxString label = asStrF("%d - %s", rank, asTime::GetStringTime(analogDate, format));
         arrayAnalogDates.Add(label);
     }
-    m_choiceAnalogDates->Set(arrayAnalogDates);
-    m_selectedAnalogDate = wxMin(m_selectedAnalogDate, int(arrayAnalogDates.Count()) - 1);
-    m_choiceAnalogDates->Select(m_selectedAnalogDate);
+    _choiceAnalogDates->Set(arrayAnalogDates);
+    _selectedAnalogDate = wxMin(_selectedAnalogDate, int(arrayAnalogDates.Count()) - 1);
+    _choiceAnalogDates->Select(_selectedAnalogDate);
 }
 
 void asFramePredictors::InitExtent() {
     vrRealRect desiredExtent = GetDesiredExtent();
 
-    m_viewerLayerManagerLeft->InitializeExtent(desiredExtent);
-    m_viewerLayerManagerRight->InitializeExtent(desiredExtent);
+    _viewerLayerManagerLeft->InitializeExtent(desiredExtent);
+    _viewerLayerManagerRight->InitializeExtent(desiredExtent);
 }
 
 void asFramePredictors::OpenFramePreferences(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    auto frame = new asFramePreferencesViewer(this, m_workspace, asWINDOW_PREFERENCES);
+    auto frame = new asFramePreferencesViewer(this, _workspace, asWINDOW_PREFERENCES);
     frame->Fit();
     frame->Show();
 }
 
 void asFramePredictors::SwitchPanelRight() {
-    if (!m_displayPanelRight) return;
+    if (!_displayPanelRight) return;
 
     Freeze();
 
-    if (m_displayPanelLeft) {
-        m_sizerGIS->Hide(m_panelRight, true);
-        m_displayPanelRight = false;
+    if (_displayPanelLeft) {
+        _sizerGIS->Hide(_panelRight, true);
+        _displayPanelRight = false;
     } else {
-        m_sizerGIS->Show(m_panelLeft, true);
-        m_sizerGIS->Show(m_panelRight, true);
-        m_displayPanelLeft = true;
-        m_displayPanelRight = true;
+        _sizerGIS->Show(_panelLeft, true);
+        _sizerGIS->Show(_panelRight, true);
+        _displayPanelLeft = true;
+        _displayPanelRight = true;
     }
 
-    m_sizerGIS->Fit(m_panelGIS);
+    _sizerGIS->Fit(_panelGIS);
     Layout();
     Refresh();
     Thaw();
@@ -308,21 +308,21 @@ void asFramePredictors::OnSwitchRight(wxCommandEvent& event) {
 }
 
 void asFramePredictors::SwitchPanelLeft() {
-    if (!m_displayPanelLeft) return;
+    if (!_displayPanelLeft) return;
 
     Freeze();
 
-    if (m_displayPanelRight) {
-        m_sizerGIS->Hide(m_panelLeft, true);
-        m_displayPanelLeft = false;
+    if (_displayPanelRight) {
+        _sizerGIS->Hide(_panelLeft, true);
+        _displayPanelLeft = false;
     } else {
-        m_sizerGIS->Show(m_panelLeft, true);
-        m_sizerGIS->Show(m_panelRight, true);
-        m_displayPanelLeft = true;
-        m_displayPanelRight = true;
+        _sizerGIS->Show(_panelLeft, true);
+        _sizerGIS->Show(_panelRight, true);
+        _displayPanelLeft = true;
+        _displayPanelRight = true;
     }
 
-    m_sizerGIS->Fit(m_panelGIS);
+    _sizerGIS->Fit(_panelGIS);
     Layout();
     Refresh();
     Thaw();
@@ -333,40 +333,40 @@ void asFramePredictors::OnSwitchLeft(wxCommandEvent& event) {
 }
 
 void asFramePredictors::OnPredictorSelectionChange(wxCommandEvent& event) {
-    m_selectedPredictor = event.GetInt();
-    m_predictorsManagerTarget->NeedsDataReload();
-    m_predictorsManagerAnalog->NeedsDataReload();
+    _selectedPredictor = event.GetInt();
+    _predictorsManagerTarget->NeedsDataReload();
+    _predictorsManagerAnalog->NeedsDataReload();
     UpdateLayers();
 }
 
 void asFramePredictors::OnMethodChange(wxCommandEvent& event) {
-    m_selectedMethod = event.GetInt();
-    m_predictorsManagerTarget->NeedsDataReload();
-    m_predictorsManagerAnalog->NeedsDataReload();
+    _selectedMethod = event.GetInt();
+    _predictorsManagerTarget->NeedsDataReload();
+    _predictorsManagerAnalog->NeedsDataReload();
     UpdateForecastList();
     UpdateLayers();
 }
 
 void asFramePredictors::OnForecastChange(wxCommandEvent& event) {
-    m_selectedForecast = event.GetInt();
-    m_predictorsManagerTarget->NeedsDataReload();
-    m_predictorsManagerAnalog->NeedsDataReload();
+    _selectedForecast = event.GetInt();
+    _predictorsManagerTarget->NeedsDataReload();
+    _predictorsManagerAnalog->NeedsDataReload();
     UpdateTargetDatesList();
     UpdateLayers();
 }
 
 void asFramePredictors::OnTargetDateChange(wxCommandEvent& event) {
-    m_selectedTargetDate = event.GetInt();
-    m_predictorsManagerTarget->NeedsDataReload();
-    m_predictorsManagerAnalog->NeedsDataReload();
+    _selectedTargetDate = event.GetInt();
+    _predictorsManagerTarget->NeedsDataReload();
+    _predictorsManagerAnalog->NeedsDataReload();
     UpdateAnalogDatesList();
     UpdateLayers();
 }
 
 void asFramePredictors::OnAnalogDateChange(wxCommandEvent& event) {
-    m_selectedAnalogDate = event.GetInt();
-    m_predictorsManagerTarget->NeedsDataReload();
-    m_predictorsManagerAnalog->NeedsDataReload();
+    _selectedAnalogDate = event.GetInt();
+    _predictorsManagerTarget->NeedsDataReload();
+    _predictorsManagerAnalog->NeedsDataReload();
     UpdateLayers();
 }
 
@@ -382,13 +382,13 @@ void asFramePredictors::OpenDefaultLayers() {
     wxString geogridFilePath = pConfig->Read("/GIS/LayerGeogridFilePath", gisData + DS + "geogrid.shp");
 
     // Try to open layers
-    m_viewerLayerManagerLeft->FreezeBegin();
-    m_viewerLayerManagerRight->FreezeBegin();
+    _viewerLayerManagerLeft->FreezeBegin();
+    _viewerLayerManagerRight->FreezeBegin();
     vrLayer* layer;
 
     // Continents
     if (wxFileName::FileExists(continentsFilePath)) {
-        if (m_layerManager->Open(wxFileName(continentsFilePath))) {
+        if (_layerManager->Open(wxFileName(continentsFilePath))) {
             long continentsTransp = pConfig->ReadLong("/GIS/LayerContinentsTransp", 50);
             long continentsColor = pConfig->ReadLong("/GIS/LayerContinentsColor", (long)0x99999999);
             wxColour colorContinents;
@@ -409,10 +409,10 @@ void asFramePredictors::OpenDefaultLayers() {
             renderContinents2->SetBrushStyle(wxBRUSHSTYLE_SOLID);
             renderContinents2->SetSize(continentsSize);
 
-            layer = m_layerManager->GetLayer(wxFileName(continentsFilePath));
+            layer = _layerManager->GetLayer(wxFileName(continentsFilePath));
             wxASSERT(layer);
-            m_viewerLayerManagerLeft->Add(-1, layer, renderContinents1, nullptr, continentsVisibility);
-            m_viewerLayerManagerRight->Add(-1, layer, renderContinents2, nullptr, continentsVisibility);
+            _viewerLayerManagerLeft->Add(-1, layer, renderContinents1, nullptr, continentsVisibility);
+            _viewerLayerManagerRight->Add(-1, layer, renderContinents2, nullptr, continentsVisibility);
         } else {
             wxLogError(_("The Continents layer file %s cound not be opened."), continentsFilePath.c_str());
         }
@@ -422,7 +422,7 @@ void asFramePredictors::OpenDefaultLayers() {
 
     // LatLong
     if (wxFileName::FileExists(latLongFilePath)) {
-        if (m_layerManager->Open(wxFileName(latLongFilePath))) {
+        if (_layerManager->Open(wxFileName(latLongFilePath))) {
             long latLongTransp = pConfig->ReadLong("/GIS/LayerLatLongTransp", 80);
             long latLongColor = pConfig->ReadLong("/GIS/LayerLatLongColor", (long)0xff999999);
             wxColour colorLatLong;
@@ -441,10 +441,10 @@ void asFramePredictors::OpenDefaultLayers() {
             renderLatLong2->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
             renderLatLong2->SetSize(latLongSize);
 
-            layer = m_layerManager->GetLayer(wxFileName(latLongFilePath));
+            layer = _layerManager->GetLayer(wxFileName(latLongFilePath));
             wxASSERT(layer);
-            m_viewerLayerManagerLeft->Add(-1, layer, renderLatLong1, nullptr, latLongVisibility);
-            m_viewerLayerManagerRight->Add(-1, layer, renderLatLong2, nullptr, latLongVisibility);
+            _viewerLayerManagerLeft->Add(-1, layer, renderLatLong1, nullptr, latLongVisibility);
+            _viewerLayerManagerRight->Add(-1, layer, renderLatLong2, nullptr, latLongVisibility);
         } else {
             wxLogError(_("The LatLong layer file %s cound not be opened."), latLongFilePath.c_str());
         }
@@ -454,7 +454,7 @@ void asFramePredictors::OpenDefaultLayers() {
 
     // Geogrid
     if (wxFileName::FileExists(geogridFilePath)) {
-        if (m_layerManager->Open(wxFileName(geogridFilePath))) {
+        if (_layerManager->Open(wxFileName(geogridFilePath))) {
             long geogridTransp = pConfig->ReadLong("/GIS/LayerGeogridTransp", 80);
             long geogridColor = pConfig->ReadLong("/GIS/LayerGeogridColor", (long)0xff999999);
             wxColour colorGeogrid;
@@ -473,10 +473,10 @@ void asFramePredictors::OpenDefaultLayers() {
             renderGeogrid2->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
             renderGeogrid2->SetSize(geogridSize);
 
-            layer = m_layerManager->GetLayer(wxFileName(geogridFilePath));
+            layer = _layerManager->GetLayer(wxFileName(geogridFilePath));
             wxASSERT(layer);
-            m_viewerLayerManagerLeft->Add(-1, layer, renderGeogrid1, nullptr, geogridVisibility);
-            m_viewerLayerManagerRight->Add(-1, layer, renderGeogrid2, nullptr, geogridVisibility);
+            _viewerLayerManagerLeft->Add(-1, layer, renderGeogrid1, nullptr, geogridVisibility);
+            _viewerLayerManagerRight->Add(-1, layer, renderGeogrid2, nullptr, geogridVisibility);
         } else {
             wxLogError(_("The Geogrid layer file %s cound not be opened."), geogridFilePath.c_str());
         }
@@ -486,7 +486,7 @@ void asFramePredictors::OpenDefaultLayers() {
 
     // Countries
     if (wxFileName::FileExists(countriesFilePath)) {
-        if (m_layerManager->Open(wxFileName(countriesFilePath))) {
+        if (_layerManager->Open(wxFileName(countriesFilePath))) {
             long countriesTransp = pConfig->ReadLong("/GIS/LayerCountriesTransp", 0);
             long countriesColor = pConfig->ReadLong("/GIS/LayerCountriesColor", (long)0x77999999);
             wxColour colorCountries;
@@ -505,10 +505,10 @@ void asFramePredictors::OpenDefaultLayers() {
             renderCountries2->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
             renderCountries2->SetSize(countriesSize);
 
-            layer = m_layerManager->GetLayer(wxFileName(countriesFilePath));
+            layer = _layerManager->GetLayer(wxFileName(countriesFilePath));
             wxASSERT(layer);
-            m_viewerLayerManagerLeft->Add(-1, layer, renderCountries1, nullptr, countriesVisibility);
-            m_viewerLayerManagerRight->Add(-1, layer, renderCountries2, nullptr, countriesVisibility);
+            _viewerLayerManagerLeft->Add(-1, layer, renderCountries1, nullptr, countriesVisibility);
+            _viewerLayerManagerRight->Add(-1, layer, renderCountries2, nullptr, countriesVisibility);
         } else {
             wxLogError(_("The Countries layer file %s cound not be opened."), countriesFilePath.c_str());
         }
@@ -516,14 +516,14 @@ void asFramePredictors::OpenDefaultLayers() {
         wxLogError(_("The Countries layer file %s cound not be found."), countriesFilePath.c_str());
     }
 
-    m_viewerLayerManagerLeft->FreezeEnd();
-    m_viewerLayerManagerRight->FreezeEnd();
+    _viewerLayerManagerLeft->FreezeEnd();
+    _viewerLayerManagerRight->FreezeEnd();
 }
 
 bool asFramePredictors::OpenLayers(const wxArrayString& names) {
     // Open files
     for (unsigned int i = 0; i < names.GetCount(); i++) {
-        if (!m_layerManager->Open(wxFileName(names.Item(i)))) {
+        if (!_layerManager->Open(wxFileName(names.Item(i)))) {
             wxLogError(_("The layer could not be opened."));
             return false;
         }
@@ -531,22 +531,22 @@ bool asFramePredictors::OpenLayers(const wxArrayString& names) {
 
 // Get files
 #if defined(__WIN32__)
-    m_critSectionViewerLayerManager.Enter();
+    _critSectionViewerLayerManager.Enter();
 #endif
-    m_viewerLayerManagerLeft->FreezeBegin();
-    m_viewerLayerManagerRight->FreezeBegin();
+    _viewerLayerManagerLeft->FreezeBegin();
+    _viewerLayerManagerRight->FreezeBegin();
     for (unsigned int i = 0; i < names.GetCount(); i++) {
-        vrLayer* layer = m_layerManager->GetLayer(wxFileName(names.Item(i)));
+        vrLayer* layer = _layerManager->GetLayer(wxFileName(names.Item(i)));
         wxASSERT(layer);
 
         // Add files to the viewer
-        m_viewerLayerManagerLeft->Add(1, layer, nullptr);
-        m_viewerLayerManagerRight->Add(1, layer, nullptr);
+        _viewerLayerManagerLeft->Add(1, layer, nullptr);
+        _viewerLayerManagerRight->Add(1, layer, nullptr);
     }
-    m_viewerLayerManagerLeft->FreezeEnd();
-    m_viewerLayerManagerRight->FreezeEnd();
+    _viewerLayerManagerLeft->FreezeEnd();
+    _viewerLayerManagerRight->FreezeEnd();
 #if defined(__WIN32__)
-    m_critSectionViewerLayerManager.Leave();
+    _critSectionViewerLayerManager.Leave();
 #endif
     return true;
 }
@@ -568,93 +568,93 @@ void asFramePredictors::OnOpenLayer(wxCommandEvent& event) {
 }
 
 void asFramePredictors::OnKeyDown(wxKeyEvent& event) {
-    m_KeyBoardState = wxKeyboardState(event.ControlDown(), event.ShiftDown(), event.AltDown(), event.MetaDown());
-    if (m_KeyBoardState.GetModifiers() != wxMOD_CMD) {
+    _keyBoardState = wxKeyboardState(event.ControlDown(), event.ShiftDown(), event.AltDown(), event.MetaDown());
+    if (_keyBoardState.GetModifiers() != wxMOD_CMD) {
         event.Skip();
         return;
     }
 
-    const vrDisplayTool* tool = m_displayCtrlLeft->GetTool();
+    const vrDisplayTool* tool = _displayCtrlLeft->GetTool();
     if (!tool) {
         event.Skip();
         return;
     }
 
     if (tool->GetID() == wxID_ZOOM_IN) {
-        m_displayCtrlLeft->SetToolZoomOut();
-        m_displayCtrlRight->SetToolZoomOut();
+        _displayCtrlLeft->SetToolZoomOut();
+        _displayCtrlRight->SetToolZoomOut();
     }
     event.Skip();
 }
 
 void asFramePredictors::OnKeyUp(wxKeyEvent& event) {
-    if (m_KeyBoardState.GetModifiers() != wxMOD_CMD) {
+    if (_keyBoardState.GetModifiers() != wxMOD_CMD) {
         event.Skip();
         return;
     }
 
-    const vrDisplayTool* tool = m_displayCtrlLeft->GetTool();
+    const vrDisplayTool* tool = _displayCtrlLeft->GetTool();
     if (!tool) {
         event.Skip();
         return;
     }
 
     if (tool->GetID() == wxID_ZOOM_OUT || tool->GetID() == wxID_ZOOM_IN) {
-        m_displayCtrlLeft->SetToolZoom();
-        m_displayCtrlRight->SetToolZoom();
+        _displayCtrlLeft->SetToolZoom();
+        _displayCtrlRight->SetToolZoom();
     }
     event.Skip();
 }
 
 void asFramePredictors::OnSyncroToolSwitch(wxCommandEvent& event) {
-    m_syncroTool = GetMenuBar()->IsChecked(asID_SET_SYNCRO_MODE);
+    _syncroTool = GetMenuBar()->IsChecked(asID_SET_SYNCRO_MODE);
 }
 
 void asFramePredictors::OnToolZoomIn(wxCommandEvent& event) {
-    m_displayCtrlLeft->SetToolZoom();
-    m_displayCtrlRight->SetToolZoom();
+    _displayCtrlLeft->SetToolZoom();
+    _displayCtrlRight->SetToolZoom();
 }
 
 void asFramePredictors::OnToolZoomOut(wxCommandEvent& event) {
-    m_displayCtrlLeft->SetToolZoomOut();
-    m_displayCtrlRight->SetToolZoomOut();
+    _displayCtrlLeft->SetToolZoomOut();
+    _displayCtrlRight->SetToolZoomOut();
 }
 
 void asFramePredictors::OnToolPan(wxCommandEvent& event) {
-    m_displayCtrlLeft->SetToolPan();
-    m_displayCtrlRight->SetToolPan();
+    _displayCtrlLeft->SetToolPan();
+    _displayCtrlRight->SetToolPan();
 }
 
 void asFramePredictors::OnToolSight(wxCommandEvent& event) {
-    m_displayCtrlLeft->SetToolSight();
-    m_displayCtrlRight->SetToolSight();
+    _displayCtrlLeft->SetToolSight();
+    _displayCtrlRight->SetToolSight();
 }
 
 void asFramePredictors::OnToolZoomToFit(wxCommandEvent& event) {
     vrRealRect desiredExtent = GetDesiredExtent();
 
-    if (m_displayPanelLeft) {
-        m_viewerLayerManagerLeft->InitializeExtent(desiredExtent);
+    if (_displayPanelLeft) {
+        _viewerLayerManagerLeft->InitializeExtent(desiredExtent);
         ReloadViewerLayerManagerLeft();
     }
-    if (m_displayPanelRight) {
-        m_viewerLayerManagerRight->InitializeExtent(desiredExtent);
+    if (_displayPanelRight) {
+        _viewerLayerManagerRight->InitializeExtent(desiredExtent);
         ReloadViewerLayerManagerRight();
     }
 }
 
 vrRealRect asFramePredictors::GetDesiredExtent() const {
-    vf extent = m_forecastManager->GetMaxExtent();
+    vf extent = _forecastManager->GetMaxExtent();
     float width = extent[1] - extent[0];
     float height = extent[2] - extent[3];
     float marginWidth = 0.5f * width;
     float marginHeight = 0.5f * height;
 
     vrRealRect desiredExtent;
-    desiredExtent.m_x = extent[0] - marginWidth;
-    desiredExtent.m_width = width + 2 * marginWidth;
-    desiredExtent.m_y = extent[3] + marginHeight;
-    desiredExtent.m_height = height - 2 * marginHeight;
+    desiredExtent._x = extent[0] - marginWidth;
+    desiredExtent._width = width + 2 * marginWidth;
+    desiredExtent._y = extent[3] + marginHeight;
+    desiredExtent._height = height - 2 * marginHeight;
 
     return desiredExtent;
 }
@@ -665,86 +665,86 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
 
     vrRealRect realRect;
 
-    if (msg->m_evtType == vrEVT_TOOL_ZOOM) {
+    if (msg->_evtType == vrEVT_TOOL_ZOOM) {
         // Get rectangle
-        vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
+        vrCoordinate* coord = msg->_parentManager->GetDisplay()->GetCoordinate();
 
         // Get real rectangle
-        coord->ConvertFromPixels(msg->m_rect, realRect);
+        coord->ConvertFromPixels(msg->_rect, realRect);
 
         // Get fitted rectangle
         vrRealRect fittedRect = coord->GetRectFitted(realRect);
 
-        if (!m_syncroTool) {
+        if (!_syncroTool) {
 #if defined(__WIN32__)
-            auto thread = new asThreadViewerLayerManagerZoomIn(msg->m_parentManager, &m_critSectionViewerLayerManager,
+            auto thread = new asThreadViewerLayerManagerZoomIn(msg->_parentManager, &_critSectionViewerLayerManager,
                                                                fittedRect);
             ThreadsManager().AddThread(thread);
 #else
-            msg->m_parentManager->Zoom(fittedRect);
+            msg->_parentManager->Zoom(fittedRect);
 #endif
         } else {
-            if (m_displayPanelLeft) {
+            if (_displayPanelLeft) {
 #if defined(__WIN32__)
-                auto thread = new asThreadViewerLayerManagerZoomIn(m_viewerLayerManagerLeft,
-                                                                   &m_critSectionViewerLayerManager, fittedRect);
+                auto thread = new asThreadViewerLayerManagerZoomIn(_viewerLayerManagerLeft,
+                                                                   &_critSectionViewerLayerManager, fittedRect);
                 ThreadsManager().AddThread(thread);
 #else
-                m_viewerLayerManagerLeft->Zoom(fittedRect);
+                _viewerLayerManagerLeft->Zoom(fittedRect);
 #endif
             }
-            if (m_displayPanelRight) {
+            if (_displayPanelRight) {
 #if defined(__WIN32__)
-                auto thread = new asThreadViewerLayerManagerZoomIn(m_viewerLayerManagerRight,
-                                                                   &m_critSectionViewerLayerManager, fittedRect);
+                auto thread = new asThreadViewerLayerManagerZoomIn(_viewerLayerManagerRight,
+                                                                   &_critSectionViewerLayerManager, fittedRect);
                 ThreadsManager().AddThread(thread);
 #else
-                m_viewerLayerManagerRight->Zoom(fittedRect);
+                _viewerLayerManagerRight->Zoom(fittedRect);
 #endif
             }
         }
-    } else if (msg->m_evtType == vrEVT_TOOL_ZOOMOUT) {
+    } else if (msg->_evtType == vrEVT_TOOL_ZOOMOUT) {
         // Getting rectangle
-        vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
+        vrCoordinate* coord = msg->_parentManager->GetDisplay()->GetCoordinate();
 
         // Get real rectangle
-        coord->ConvertFromPixels(msg->m_rect, realRect);
+        coord->ConvertFromPixels(msg->_rect, realRect);
 
         // Get fitted rectangle
         vrRealRect fittedRect = coord->GetRectFitted(realRect);
 
-        if (!m_syncroTool) {
+        if (!_syncroTool) {
 #if defined(__WIN32__)
-            auto thread = new asThreadViewerLayerManagerZoomOut(msg->m_parentManager, &m_critSectionViewerLayerManager,
+            auto thread = new asThreadViewerLayerManagerZoomOut(msg->_parentManager, &_critSectionViewerLayerManager,
                                                                 fittedRect);
             ThreadsManager().AddThread(thread);
 #else
-            msg->m_parentManager->ZoomOut(fittedRect);
+            msg->_parentManager->ZoomOut(fittedRect);
 #endif
         } else {
-            if (m_displayPanelLeft) {
+            if (_displayPanelLeft) {
 #if defined(__WIN32__)
-                auto thread = new asThreadViewerLayerManagerZoomOut(m_viewerLayerManagerLeft,
-                                                                    &m_critSectionViewerLayerManager, fittedRect);
+                auto thread = new asThreadViewerLayerManagerZoomOut(_viewerLayerManagerLeft,
+                                                                    &_critSectionViewerLayerManager, fittedRect);
                 ThreadsManager().AddThread(thread);
 #else
-                m_viewerLayerManagerLeft->ZoomOut(fittedRect);
+                _viewerLayerManagerLeft->ZoomOut(fittedRect);
 #endif
             }
-            if (m_displayPanelRight) {
+            if (_displayPanelRight) {
 #if defined(__WIN32__)
-                auto thread = new asThreadViewerLayerManagerZoomOut(m_viewerLayerManagerRight,
-                                                                    &m_critSectionViewerLayerManager, fittedRect);
+                auto thread = new asThreadViewerLayerManagerZoomOut(_viewerLayerManagerRight,
+                                                                    &_critSectionViewerLayerManager, fittedRect);
                 ThreadsManager().AddThread(thread);
 #else
-                m_viewerLayerManagerRight->ZoomOut(fittedRect);
+                _viewerLayerManagerRight->ZoomOut(fittedRect);
 #endif
             }
         }
-    } else if (msg->m_evtType == vrEVT_TOOL_PAN) {
-        vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
+    } else if (msg->_evtType == vrEVT_TOOL_PAN) {
+        vrCoordinate* coord = msg->_parentManager->GetDisplay()->GetCoordinate();
 
-        wxPoint movedPos = msg->m_position;
+        wxPoint movedPos = msg->_position;
         wxPoint2DDouble myMovedRealPt;
         if (!coord->ConvertFromPixels(movedPos, myMovedRealPt)) {
             wxLogError("Error converting point : %d, %d to real coordinate", movedPos.x, movedPos.y);
@@ -755,43 +755,43 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
         realRect = coord->GetExtent();
         realRect.MoveLeftTopTo(myMovedRealPt);
 
-        if (!m_syncroTool) {
+        if (!_syncroTool) {
             coord->SetExtent(realRect);
-            msg->m_parentManager->Reload();
+            msg->_parentManager->Reload();
             ReloadViewerLayerManagerLeft();
             ReloadViewerLayerManagerRight();
         } else {
-            if (m_displayPanelLeft) {
-                m_viewerLayerManagerLeft->GetDisplay()->GetCoordinate()->SetExtent(realRect);
+            if (_displayPanelLeft) {
+                _viewerLayerManagerLeft->GetDisplay()->GetCoordinate()->SetExtent(realRect);
                 ReloadViewerLayerManagerLeft();
             }
-            if (m_displayPanelRight) {
-                m_viewerLayerManagerRight->GetDisplay()->GetCoordinate()->SetExtent(realRect);
+            if (_displayPanelRight) {
+                _viewerLayerManagerRight->GetDisplay()->GetCoordinate()->SetExtent(realRect);
                 ReloadViewerLayerManagerRight();
             }
         }
 
-    } else if (msg->m_evtType == vrEVT_TOOL_SIGHT) {
-        vrViewerLayerManager* invertedMgr = m_viewerLayerManagerLeft;
-        if (invertedMgr == msg->m_parentManager) {
-            invertedMgr = m_viewerLayerManagerRight;
+    } else if (msg->_evtType == vrEVT_TOOL_SIGHT) {
+        vrViewerLayerManager* invertedMgr = _viewerLayerManagerLeft;
+        if (invertedMgr == msg->_parentManager) {
+            invertedMgr = _viewerLayerManagerRight;
         }
 
-        switch (msg->m_mouseStatus) {
+        switch (msg->_mouseStatus) {
             case vrMOUSE_DOWN:
             case vrMOUSE_MOVE: {
                 wxClientDC dc(invertedMgr->GetDisplay());
-                wxDCOverlay overlayDc(m_overlay, &dc);
+                wxDCOverlay overlayDc(_overlay, &dc);
                 overlayDc.Clear();
                 dc.SetPen(*wxRED_PEN);
-                dc.CrossHair(msg->m_position);
+                dc.CrossHair(msg->_position);
             } break;
             case vrMOUSE_UP: {
                 wxClientDC dc(invertedMgr->GetDisplay());
-                wxDCOverlay overlayDc(m_overlay, &dc);
+                wxDCOverlay overlayDc(_overlay, &dc);
                 overlayDc.Clear();
             }
-                m_overlay.Reset();
+                _overlay.Reset();
                 break;
             case vrMOUSE_UNKNOWN:
                 wxLogError("Operation not recognized.");
@@ -806,17 +806,17 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
 
 void asFramePredictors::UpdateLayers() {
     // Check that elements are selected
-    if ((m_selectedMethod == -1) || (m_selectedForecast == -1) || (m_selectedTargetDate == -1) ||
-        (m_selectedAnalogDate == -1) || (m_selectedPredictor == -1)) {
+    if ((_selectedMethod == -1) || (_selectedForecast == -1) || (_selectedTargetDate == -1) ||
+        (_selectedAnalogDate == -1) || (_selectedPredictor == -1)) {
         return;
     }
 
     // Get dates
-    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast* forecast = _forecastManager->GetForecast(_selectedMethod, _selectedForecast);
     a1f targetDates = forecast->GetTargetDates();
-    double targetDate = targetDates[m_selectedTargetDate];
-    a1f analogDates = forecast->GetAnalogsDates(m_selectedTargetDate);
-    double analogDate = analogDates[m_selectedAnalogDate];
+    double targetDate = targetDates[_selectedTargetDate];
+    a1f analogDates = forecast->GetAnalogsDates(_selectedTargetDate);
+    double analogDate = analogDates[_selectedAnalogDate];
 
     // Get domain
     if (forecast->GetPredictorLonMin().size() == 0) {
@@ -824,16 +824,16 @@ void asFramePredictors::UpdateLayers() {
         return;
     }
     vf domain;
-    domain.push_back(forecast->GetPredictorLonMin()[m_selectedPredictor]);
-    domain.push_back(forecast->GetPredictorLonMax()[m_selectedPredictor]);
-    domain.push_back(forecast->GetPredictorLatMin()[m_selectedPredictor]);
-    domain.push_back(forecast->GetPredictorLatMax()[m_selectedPredictor]);
+    domain.push_back(forecast->GetPredictorLonMin()[_selectedPredictor]);
+    domain.push_back(forecast->GetPredictorLonMax()[_selectedPredictor]);
+    domain.push_back(forecast->GetPredictorLatMin()[_selectedPredictor]);
+    domain.push_back(forecast->GetPredictorLatMax()[_selectedPredictor]);
 
     Coo location = GetStationsMeanCoordinatesWgs84(forecast);
 
-    m_predictorsManagerTarget->SetDate(targetDate);
-    m_predictorsManagerAnalog->SetDate(analogDate);
-    m_predictorsRenderer->Redraw(domain, location, m_listPredictors->GetSelection());
+    _predictorsManagerTarget->SetDate(targetDate);
+    _predictorsManagerAnalog->SetDate(analogDate);
+    _predictorsRenderer->Redraw(domain, location, _listPredictors->GetSelection());
 }
 
 Coo asFramePredictors::GetStationsMeanCoordinatesWgs84(asResultsForecast* forecast) {
@@ -869,18 +869,18 @@ Coo asFramePredictors::GetStationsMeanCoordinatesWgs84(asResultsForecast* foreca
 
 void asFramePredictors::ReloadViewerLayerManagerLeft() {
 #if defined(__WIN32__)
-    auto thread = new asThreadViewerLayerManagerReload(m_viewerLayerManagerLeft, &m_critSectionViewerLayerManager);
+    auto thread = new asThreadViewerLayerManagerReload(_viewerLayerManagerLeft, &_critSectionViewerLayerManager);
     ThreadsManager().AddThread(thread);
 #else
-    m_viewerLayerManagerLeft->Reload();
+    _viewerLayerManagerLeft->Reload();
 #endif
 }
 
 void asFramePredictors::ReloadViewerLayerManagerRight() {
 #if defined(__WIN32__)
-    auto thread = new asThreadViewerLayerManagerReload(m_viewerLayerManagerRight, &m_critSectionViewerLayerManager);
+    auto thread = new asThreadViewerLayerManagerReload(_viewerLayerManagerRight, &_critSectionViewerLayerManager);
     ThreadsManager().AddThread(thread);
 #else
-    m_viewerLayerManagerRight->Reload();
+    _viewerLayerManagerRight->Reload();
 #endif
 }

@@ -32,8 +32,8 @@
 
 asParametersScoring::asParametersScoring()
     : asParameters(),
-      m_calibrationStart(NAN),
-      m_calibrationEnd(NAN) {}
+      _calibrationStart(NAN),
+      _calibrationEnd(NAN) {}
 
 asParametersScoring::~asParametersScoring() {}
 

@@ -30,7 +30,7 @@
 
 asCriteriaRSE::asCriteriaRSE()
     : asCriteria("RSE", _("Root Squared Error"), Asc) {
-    m_canUseInline = true;
+    _canUseInline = true;
 }
 
 asCriteriaRSE::~asCriteriaRSE() = default;
@@ -41,7 +41,7 @@ float asCriteriaRSE::Assess(const a2f& refData, const a2f& evalData, int rowsNb,
 
     float se = 0;
 
-    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+    if (!_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
         se = (evalData - refData).pow(2).sum();
 
     } else {

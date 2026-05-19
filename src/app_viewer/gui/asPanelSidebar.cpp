@@ -32,22 +32,22 @@
 
 asPanelSidebar::asPanelSidebar(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
     : asPanelSidebarVirtual(parent, id, pos, size, style) {
-    m_bitmapCaret->SetBitmap(asBitmaps::Get(asBitmaps::ID_MISC::SHOWN, wxSize(16, 16)));
+    _bitmapCaret->SetBitmap(asBitmaps::Get(asBitmaps::ID_MISC::SHOWN, wxSize(16, 16)));
 }
 
 void asPanelSidebar::OnReducePanel(wxMouseEvent& event) {
     GetParent()->Freeze();
 
-    if (m_sizerMain->IsShown(m_sizerContent)) {
-        m_sizerMain->Hide(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(asBitmaps::Get(asBitmaps::ID_MISC::HIDDEN, wxSize(16, 16)));
+    if (_sizerMain->IsShown(_sizerContent)) {
+        _sizerMain->Hide(_sizerContent, true);
+        _bitmapCaret->SetBitmap(asBitmaps::Get(asBitmaps::ID_MISC::HIDDEN, wxSize(16, 16)));
     } else {
-        m_sizerMain->Show(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(asBitmaps::Get(asBitmaps::ID_MISC::SHOWN, wxSize(16, 16)));
+        _sizerMain->Show(_sizerContent, true);
+        _bitmapCaret->SetBitmap(asBitmaps::Get(asBitmaps::ID_MISC::SHOWN, wxSize(16, 16)));
     }
 
     // Refresh elements
-    m_sizerMain->Layout();
+    _sizerMain->Layout();
     Layout();
 
     GetParent()->FitInside();
@@ -56,12 +56,12 @@ void asPanelSidebar::OnReducePanel(wxMouseEvent& event) {
 }
 
 void asPanelSidebar::ReducePanel() {
-    if (m_sizerMain->IsShown(m_sizerContent)) {
-        m_sizerMain->Hide(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(asBitmaps::Get(asBitmaps::ID_MISC::HIDDEN, wxSize(16, 16)));
+    if (_sizerMain->IsShown(_sizerContent)) {
+        _sizerMain->Hide(_sizerContent, true);
+        _bitmapCaret->SetBitmap(asBitmaps::Get(asBitmaps::ID_MISC::HIDDEN, wxSize(16, 16)));
     } else {
-        m_sizerMain->Show(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(asBitmaps::Get(asBitmaps::ID_MISC::SHOWN, wxSize(16, 16)));
+        _sizerMain->Show(_sizerContent, true);
+        _bitmapCaret->SetBitmap(asBitmaps::Get(asBitmaps::ID_MISC::SHOWN, wxSize(16, 16)));
     }
 }
 

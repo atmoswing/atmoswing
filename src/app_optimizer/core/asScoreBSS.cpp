@@ -36,7 +36,7 @@ asScoreBSS::asScoreBSS()
 float asScoreBSS::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(m_scoreClimatology != 0);
+    wxASSERT(_scoreClimatology != 0);
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
@@ -53,7 +53,7 @@ float asScoreBSS::Assess(float obs, const a1f& values, int nbElements) const {
     scoreBS.SetQuantile(GetQuantile());
     scoreBS.SetOnMean(GetOnMean());
     float score = scoreBS.Assess(obs, values, nbElements);
-    float skillScore = (score - m_scoreClimatology) / ((float)0 - m_scoreClimatology);
+    float skillScore = (score - _scoreClimatology) / ((float)0 - _scoreClimatology);
 
     return skillScore;
 }
@@ -81,9 +81,9 @@ bool asScoreBSS::ProcessScoreClimatology(const a1f& refVals, const a1f& climatol
 
     wxDELETE(score);
 
-    m_scoreClimatology = asMean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
+    _scoreClimatology = asMean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
 
-    wxLogVerbose(_("Score of the climatology: %g."), m_scoreClimatology);
+    wxLogVerbose(_("Score of the climatology: %g."), _scoreClimatology);
 
     return true;
 }

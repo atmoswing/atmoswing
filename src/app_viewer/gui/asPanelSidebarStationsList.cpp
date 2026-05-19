@@ -32,24 +32,24 @@ wxDEFINE_EVENT(asEVT_ACTION_STATION_SELECTION_CHANGED, wxCommandEvent);
 asPanelSidebarStationsList::asPanelSidebarStationsList(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                                                        const wxSize& size, long style)
     : asPanelSidebar(parent, id, pos, size, style) {
-    m_header->SetLabelText(_("Station selection"));
+    _header->SetLabelText(_("Station selection"));
 
     wxArrayString stationSelectionChoices;
-    m_choiceStationSelection = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, stationSelectionChoices,
+    _choiceStationSelection = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, stationSelectionChoices,
                                             0);
-    m_choiceStationSelection->SetSelection(0);
-    m_sizerContent->Add(m_choiceStationSelection, 0, wxALL | wxEXPAND, 5);
+    _choiceStationSelection->SetSelection(0);
+    _sizerContent->Add(_choiceStationSelection, 0, wxALL | wxEXPAND, 5);
 
-    m_choiceStationSelection->Connect(wxEVT_COMMAND_CHOICE_SELECTED,
+    _choiceStationSelection->Connect(wxEVT_COMMAND_CHOICE_SELECTED,
                                       wxCommandEventHandler(asPanelSidebarStationsList::OnStationSelection), nullptr,
                                       this);
 
     Layout();
-    m_sizerContent->Fit(this);
+    _sizerContent->Fit(this);
 }
 
 asPanelSidebarStationsList::~asPanelSidebarStationsList() {
-    m_choiceStationSelection->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED,
+    _choiceStationSelection->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED,
                                          wxCommandEventHandler(asPanelSidebarStationsList::OnStationSelection), nullptr,
                                          this);
 }
@@ -63,5 +63,5 @@ void asPanelSidebarStationsList::OnStationSelection(wxCommandEvent& event) {
 }
 
 void asPanelSidebarStationsList::SetChoices(wxArrayString& arrayStation) {
-    m_choiceStationSelection->Set(arrayStation);
+    _choiceStationSelection->Set(arrayStation);
 }

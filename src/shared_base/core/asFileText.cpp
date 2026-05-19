@@ -33,65 +33,65 @@ asFileText::asFileText(const wxString& fileName, const FileMode& fileMode)
 bool asFileText::Open() {
     if (!Find()) return false;
 
-    switch (m_fileMode) {
+    switch (_fileMode) {
         case (ReadOnly):
-            m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::in);
+            _file.open(_fileName.GetFullPath().mb_str(), std::fstream::in);
             break;
 
         case (Write):
-            m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::out);
+            _file.open(_fileName.GetFullPath().mb_str(), std::fstream::out);
             break;
 
         case (Replace):
-            m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::trunc | std::fstream::out);
+            _file.open(_fileName.GetFullPath().mb_str(), std::fstream::trunc | std::fstream::out);
             break;
 
         case (New):
-            m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::out);
+            _file.open(_fileName.GetFullPath().mb_str(), std::fstream::out);
             break;
 
         case (Append):
-            m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::app | std::fstream::out);
+            _file.open(_fileName.GetFullPath().mb_str(), std::fstream::app | std::fstream::out);
             break;
     }
 
-    if (!m_file.is_open()) return false;
+    if (!_file.is_open()) return false;
 
-    m_opened = true;
+    _opened = true;
 
     return true;
 }
 
 bool asFileText::Close() {
-    wxASSERT(m_opened);
+    wxASSERT(_opened);
 
-    m_file.close();
+    _file.close();
     return true;
 }
 
 void asFileText::AddContent(const wxString& lineContent) {
-    wxASSERT(m_opened);
+    wxASSERT(_opened);
 
-    m_file << lineContent.mb_str();
+    _file << lineContent.mb_str();
 
     // Check the state flags
-    if (m_file.fail())
-        throw runtime_error(asStrF(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
+    if (_file.fail())
+        throw runtime_error(asStrF(_("An error occured while trying to write in file %s"), _fileName.GetFullPath()));
 }
 
 wxString asFileText::GetNextLine() {
-    wxASSERT(m_opened);
+    wxASSERT(_opened);
 
     std::string tmpLineContent;
 
-    if (!m_file.eof()) {
-        getline(m_file, tmpLineContent);
+    if (!_file.eof()) {
+        getline(_file, tmpLineContent);
 
         // Check the state flags
-        if ((!m_file.eof()) && (m_file.fail()))
-            throw runtime_error(asStrF(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
+        if ((!_file.eof()) && (_file.fail()))
+            throw runtime_error(asStrF(_("An error occured while trying to write in file %s"), _fileName.GetFullPath()));
     } else {
-        throw runtime_error(asStrF(_("You are trying to read a line after the end of the file %s"), m_fileName.GetFullPath()));
+        throw runtime_error(asStrF(_("You are trying to read a line after the end of the file %s"), _fileName.GetFullPath()));
     }
 
     wxString lineContent = wxString(tmpLineContent.c_str(), wxConvUTF8);
@@ -110,34 +110,34 @@ wxString asFileText::GetContent() {
 }
 
 int asFileText::GetInt() {
-    wxASSERT(m_opened);
+    wxASSERT(_opened);
 
     int tmp;
-    m_file >> tmp;
+    _file >> tmp;
     return tmp;
 }
 
 float asFileText::GetFloat() {
-    wxASSERT(m_opened);
+    wxASSERT(_opened);
 
     float tmp;
-    m_file >> tmp;
+    _file >> tmp;
     return tmp;
 }
 
 double asFileText::GetDouble() {
-    wxASSERT(m_opened);
+    wxASSERT(_opened);
 
     double tmp;
-    m_file >> tmp;
+    _file >> tmp;
     return tmp;
 }
 
 bool asFileText::SkipLines(int linesNb) {
-    wxASSERT(m_opened);
+    wxASSERT(_opened);
 
     for (int iLine = 0; iLine < linesNb; iLine++) {
-        if (!m_file.eof()) {
+        if (!_file.eof()) {
             GetNextLine();
         } else {
             wxLogError(_("Reached the end of the file while skipping lines."));
@@ -149,13 +149,13 @@ bool asFileText::SkipLines(int linesNb) {
 }
 
 bool asFileText::SkipElements(int elementNb) {
-    wxASSERT(m_opened);
+    wxASSERT(_opened);
 
     float tmp;
 
     for (int iEl = 0; iEl < elementNb; iEl++) {
-        if (!m_file.eof()) {
-            m_file >> tmp;
+        if (!_file.eof()) {
+            _file >> tmp;
         } else {
             wxLogError(_("Reached the end of the file while skipping lines."));
             return false;
@@ -166,9 +166,9 @@ bool asFileText::SkipElements(int elementNb) {
 }
 
 bool asFileText::EndOfFile() const {
-    wxASSERT(m_opened);
+    wxASSERT(_opened);
 
-    return m_file.eof();
+    return _file.eof();
 }
 
 int asFileText::CountLines(const wxString& filePath) {

@@ -52,62 +52,62 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerBase : public wxObject {
   public:
     wxPlotDrawerBase(wxPlotCtrl* owner)
         : wxObject(),
-          m_owner(owner),
-          m_pen_scale(1),
-          m_font_scale(1) {}
+          _owner(owner),
+          _pen_scale(1),
+          _font_scale(1) {}
 
     virtual void Draw(wxDC* dc, bool refresh) = 0;
 
     // Get/Set the owner plotctrl
     wxPlotCtrl* GetOwner() const {
-        return m_owner;
+        return _owner;
     }
 
     void SetOwner(wxPlotCtrl* owner) {
-        m_owner = owner;
+        _owner = owner;
     }
 
     // Get/Set the rect in the DC to draw on
     void SetDCRect(const wxRect& rect) {
-        m_dcRect = rect;
+        _dcRect = rect;
     }
 
     const wxRect& GetDCRect() const {
-        return m_dcRect;
+        return _dcRect;
     }
 
     // Get/Set the rect of the visible area in the plot window
     void SetPlotViewRect(const wxRect2DDouble& rect) {
-        m_plotViewRect = rect;
+        _plotViewRect = rect;
     }
 
     const wxRect2DDouble& GetPlotViewRect() const {
-        return m_plotViewRect;
+        return _plotViewRect;
     }
 
     // Get/Set the scaling for drawing, fonts, pens, etc are scaled
     void SetPenScale(double scale) {
-        m_pen_scale = scale;
+        _pen_scale = scale;
     }
 
     double GetPenScale() const {
-        return m_pen_scale;
+        return _pen_scale;
     }
 
     void SetFontScale(double scale) {
-        m_font_scale = scale;
+        _font_scale = scale;
     }
 
     double GetFontScale() const {
-        return m_font_scale;
+        return _font_scale;
     }
 
   protected:
-    wxPlotCtrl* m_owner;
-    wxRect m_dcRect;
-    wxRect2DDouble m_plotViewRect;
-    double m_pen_scale;   // width scaling factor for pens
-    double m_font_scale;  // scaling factor for font sizes
+    wxPlotCtrl* _owner;
+    wxRect _dcRect;
+    wxRect2DDouble _plotViewRect;
+    double _pen_scale;   // width scaling factor for pens
+    double _font_scale;  // scaling factor for font sizes
 
   private:
     DECLARE_ABSTRACT_CLASS(wxPlotDrawerBase)
@@ -139,54 +139,54 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerAxisBase : public wxPlotDrawerBase {
     virtual void Draw(wxDC* dc, bool refresh) = 0;
 
     void SetTickFont(const wxFont& font) {
-        m_tickFont = font;
+        _tickFont = font;
     }
 
     void SetLabelFont(const wxFont& font) {
-        m_labelFont = font;
+        _labelFont = font;
     }
 
     void SetTickColour(const wxGenericColour& colour) {
-        m_tickColour = colour;
+        _tickColour = colour;
     }
 
     void SetLabelColour(const wxGenericColour& colour) {
-        m_labelColour = colour;
+        _labelColour = colour;
     }
 
     void SetTickPen(const wxGenericPen& pen) {
-        m_tickPen = pen;
+        _tickPen = pen;
     }
 
     void SetBackgroundBrush(const wxGenericBrush& brush) {
-        m_backgroundBrush = brush;
+        _backgroundBrush = brush;
     }
 
     void SetTickPositions(const wxArrayInt& pos) {
-        m_tickPositions = pos;
+        _tickPositions = pos;
     }
 
     void SetTickLabels(const wxArrayString& labels) {
-        m_tickLabels = labels;
+        _tickLabels = labels;
     }
 
     void SetLabel(const wxString& label) {
-        m_label = label;
+        _label = label;
     }
 
     // implementation
-    wxArrayInt m_tickPositions;
-    wxArrayString m_tickLabels;
+    wxArrayInt _tickPositions;
+    wxArrayString _tickLabels;
 
-    wxString m_label;
+    wxString _label;
 
-    wxFont m_tickFont;
-    wxFont m_labelFont;
-    wxGenericColour m_tickColour;
-    wxGenericColour m_labelColour;
+    wxFont _tickFont;
+    wxFont _labelFont;
+    wxGenericColour _tickColour;
+    wxGenericColour _labelColour;
 
-    wxGenericPen m_tickPen;
-    wxGenericBrush m_backgroundBrush;
+    wxGenericPen _tickPen;
+    wxGenericBrush _backgroundBrush;
 
   private:
     DECLARE_ABSTRACT_CLASS(wxPlotDrawerAxisBase)
@@ -234,27 +234,27 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerKey : public wxPlotDrawerBase {
     virtual void Draw(wxDC* dc, const wxString& keyString);
 
     void SetFont(const wxFont& font) {
-        m_font = font;
+        _font = font;
     }
 
     void SetFontColour(const wxGenericColour& colour) {
-        m_fontColour = colour;
+        _fontColour = colour;
     }
 
     void SetKeyPosition(const wxPoint& pos) {
-        m_keyPosition = pos;
+        _keyPosition = pos;
     }
 
     // implementation
-    wxFont m_font;
-    wxGenericColour m_fontColour;
+    wxFont _font;
+    wxGenericColour _fontColour;
 
-    wxPoint m_keyPosition;
-    bool m_key_inside;
-    bool m_key_bottom;
-    int m_border;
-    int m_key_line_width;   // length of line to draw for curve
-    int m_key_line_margin;  // margin between line and key text
+    wxPoint _keyPosition;
+    bool _key_inside;
+    bool _key_bottom;
+    int _border;
+    int _key_line_width;   // length of line to draw for curve
+    int _key_line_margin;  // margin between line and key text
 
   private:
     DECLARE_ABSTRACT_CLASS(wxPlotDrawerKey)

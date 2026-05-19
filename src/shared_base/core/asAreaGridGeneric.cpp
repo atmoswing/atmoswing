@@ -39,8 +39,8 @@ asAreaGridGeneric::asAreaGridGeneric(double xMin, double xWidth, double yMin, do
 
 asAreaGridGeneric::asAreaGridGeneric(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
     : asAreaGrid(xMin, 0, yMin, 0, flatAllowed, isLatLon) {
-    m_xPtsNb = xPtsNb;
-    m_yPtsNb = yPtsNb;
+    _xPtsNb = xPtsNb;
+    _yPtsNb = yPtsNb;
 }
 
 bool asAreaGridGeneric::GridsOverlay(asAreaGrid* otherArea) const {

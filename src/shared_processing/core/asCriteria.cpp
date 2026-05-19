@@ -45,14 +45,14 @@
 #include "asPredictor.h"
 
 asCriteria::asCriteria(const wxString& name, const wxString& fullname, Order order)
-    : m_name(name),
-      m_fullName(fullname),
-      m_order(order),
-      m_minPointsNb(1),
-      m_scaleBest(0),
-      m_scaleWorst(INFINITY),
-      m_canUseInline(false),
-      m_checkNaNs(true) {}
+    : _name(name),
+      _fullName(fullname),
+      _order(order),
+      _minPointsNb(1),
+      _scaleBest(0),
+      _scaleWorst(INFINITY),
+      _canUseInline(false),
+      _checkNaNs(true) {}
 
 asCriteria::~asCriteria() = default;
 
@@ -107,12 +107,12 @@ asCriteria* asCriteria::GetInstance(const wxString& criteriaString) {
 
 void asCriteria::CheckNaNs(const asPredictor* ptor1, const asPredictor* ptor2) {
     if (wxFileConfig::Get()->ReadBool("/General/SkipNansCheck", false)) {
-        m_checkNaNs = false;
+        _checkNaNs = false;
         return;
     }
 
     if (!ptor1->HasNaN() && !ptor2->HasNaN()) {
-        m_checkNaNs = false;
+        _checkNaNs = false;
     }
 }
 

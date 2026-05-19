@@ -123,21 +123,21 @@ class asFileGrib : public asFile {
 
   protected:
   private:
-    FILE* m_filtPtr;
-    int m_version;
-    int m_index;
-    vi m_parameterCode1;
-    vi m_parameterCode2;
-    vi m_parameterCode3;
-    vi m_levelTypes;
-    vwxs m_levelTypesStr;
-    vd m_refDates;
-    vd m_refTimes;
-    vd m_times;
-    vd m_forecastTimes;
-    vd m_levels;
-    va1d m_xAxes;
-    va1d m_yAxes;
+    FILE* _filtPtr;
+    int _version;
+    int _index;
+    vi _parameterCode1;
+    vi _parameterCode2;
+    vi _parameterCode3;
+    vi _levelTypes;
+    vwxs _levelTypesStr;
+    vd _refDates;
+    vd _refTimes;
+    vd _times;
+    vd _forecastTimes;
+    vd _levels;
+    va1d _xAxes;
+    va1d _yAxes;
 
     bool OpenDataset();
 

@@ -31,12 +31,12 @@
 #include "asFileNetcdf.h"
 
 asResults::asResults()
-    : m_fileVersionMajor(3),
-      m_fileVersionMinor(0),
-      m_currentStep(0),
-      m_dateProcessed(0),
-      m_subFolder(wxEmptyString),
-      m_filePath(wxEmptyString) {}
+    : _fileVersionMajor(3),
+      _fileVersionMinor(0),
+      _currentStep(0),
+      _dateProcessed(0),
+      _subFolder(wxEmptyString),
+      _filePath(wxEmptyString) {}
 
 bool asResults::Load() {
     return false;
@@ -47,23 +47,23 @@ bool asResults::Save() {
 }
 
 bool asResults::Exists() const {
-    return asFile::Exists(m_filePath);
+    return asFile::Exists(_filePath);
 }
 
 wxString asResults::GetPredictandStationIdsList() const {
     wxString id;
 
-    if (m_predictandStationIds.size() == 1) {
-        id << m_predictandStationIds[0];
-    } else if (m_predictandStationIds.size() > 10) {
-        id << m_predictandStationIds[0];
+    if (_predictandStationIds.size() == 1) {
+        id << _predictandStationIds[0];
+    } else if (_predictandStationIds.size() > 10) {
+        id << _predictandStationIds[0];
         id << '-';
-        id << m_predictandStationIds[m_predictandStationIds.size() - 1];
+        id << _predictandStationIds[_predictandStationIds.size() - 1];
     } else {
-        for (int i = 0; i < (int)m_predictandStationIds.size(); i++) {
-            id << m_predictandStationIds[i];
+        for (int i = 0; i < (int)_predictandStationIds.size(); i++) {
+            id << _predictandStationIds[i];
 
-            if (i < (int)m_predictandStationIds.size() - 1) {
+            if (i < (int)_predictandStationIds.size() - 1) {
                 id << ",";
             }
         }

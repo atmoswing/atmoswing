@@ -45,8 +45,8 @@ class asPanelSidebarCaptionForecastDotsDrawing : public wxPanel {
     void DrawColorbar(double maxval);
 
   private:
-    wxBitmap* m_bmpColorbar;
-    wxGraphicsContext* m_gdc;
+    wxBitmap* _bmpColorbar;
+    wxGraphicsContext* _gdc;
 
     void CreateColorbarPath(wxGraphicsPath& path);
 
@@ -70,7 +70,7 @@ class asPanelSidebarCaptionForecastDots : public asPanelSidebar {
     void SetColorbarMax(double maxval);
 
   private:
-    asPanelSidebarCaptionForecastDotsDrawing* m_panelDrawing;
+    asPanelSidebarCaptionForecastDotsDrawing* _panelDrawing;
 
     void OnPaint(wxPaintEvent& event);
 };

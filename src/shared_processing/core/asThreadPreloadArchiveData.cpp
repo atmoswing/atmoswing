@@ -33,21 +33,21 @@
 asThreadPreloadArchiveData::asThreadPreloadArchiveData(asMethodStandard* method, asParameters* params, int iStep,
                                                        int iPtor, int i)
     : asThread(asThread::PreloadData),
-      m_method(method),  // copy pointer
-      m_params(params),
-      m_iStep(iStep),
-      m_iProt(iPtor),
-      m_iDat(i) {}
+      _method(method),  // copy pointer
+      _params(params),
+      _iStep(iStep),
+      _iProt(iPtor),
+      _iDat(i) {}
 
 asThreadPreloadArchiveData::~asThreadPreloadArchiveData() {}
 
 wxThread::ExitCode asThreadPreloadArchiveData::Entry() {
-    if (!m_params->NeedsPreprocessing(m_iStep, m_iProt)) {
-        if (!m_method->PreloadArchiveDataWithoutPreprocessing(m_params, m_iStep, m_iProt, m_iDat)) {
+    if (!_params->NeedsPreprocessing(_iStep, _iProt)) {
+        if (!_method->PreloadArchiveDataWithoutPreprocessing(_params, _iStep, _iProt, _iDat)) {
             return (wxThread::ExitCode)-1;
         }
     } else {
-        if (!m_method->PreloadArchiveDataWithPreprocessing(m_params, m_iStep, m_iProt)) {
+        if (!_method->PreloadArchiveDataWithPreprocessing(_params, _iStep, _iProt)) {
             return (wxThread::ExitCode)-1;
         }
     }

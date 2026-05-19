@@ -43,13 +43,13 @@ class asDialogProgressBar : public wxObject {
 
   protected:
   private:
-    wxProgressDialog* m_progressBar;
-    bool m_initiated;
-    int m_steps;
-    int m_delayUpdate;
-    int m_valueMax;
-    vi m_vectorSteps;
-    int m_currentStepIndex;
+    wxProgressDialog* _progressBar;
+    bool _initiated;
+    int _steps;
+    int _delayUpdate;
+    int _valueMax;
+    vi _vectorSteps;
+    int _currentStepIndex;
 };
 
 #endif

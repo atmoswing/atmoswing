@@ -26,36 +26,36 @@ Simplified by Jim Ward.
 */
 
 wxCircleDouble::wxCircleDouble(const wxPoint2DDouble& p1, const wxPoint2DDouble& p2, const wxPoint2DDouble& p3) {
-    wxDouble A = p2.m_x - p1.m_x, B = p2.m_y - p1.m_y, C = p3.m_x - p1.m_x, D = p3.m_y - p1.m_y;
+    wxDouble A = p2._x - p1._x, B = p2._y - p1._y, C = p3._x - p1._x, D = p3._y - p1._y;
 
-    wxDouble E = A * (p1.m_x + p2.m_x) + B * (p1.m_y + p2.m_y), F = C * (p1.m_x + p3.m_x) + D * (p1.m_y + p3.m_y),
-             G = 2.0 * (A * (p3.m_y - p2.m_y) - B * (p3.m_x - p2.m_x));
+    wxDouble E = A * (p1._x + p2._x) + B * (p1._y + p2._y), F = C * (p1._x + p3._x) + D * (p1._y + p3._y),
+             G = 2.0 * (A * (p3._y - p2._y) - B * (p3._x - p2._x));
 
     if (G == 0) {
-        m_x = m_y = m_r = 0;
+        _x = _y = _r = 0;
         return;
     }
 
-    m_x = (D * E - B * F) / G, m_y = (A * F - C * E) / G;
-    m_r = sqrt((p1.m_x - m_x) * (p1.m_x - m_x) + (p1.m_y - m_y) * (p1.m_y - m_y));
+    _x = (D * E - B * F) / G, _y = (A * F - C * E) / G;
+    _r = sqrt((p1._x - _x) * (p1._x - _x) + (p1._y - _y) * (p1._y - _y));
 }
 
 int wxCircleDouble::IntersectLine(const wxRay2DDouble& line, wxPoint2DDouble* pt1, wxPoint2DDouble* pt2) const {
-    // if (line.GetDistanceToPoint(m_origin) > m_r) return 0;
+    // if (line.GetDistanceToPoint(_origin) > _r) return 0;
 
-    wxDouble l1_x = m_x - m_r, l1_y = line.GetYFromX(l1_x);
-    wxDouble l2_x = m_x + m_r, l2_y = line.GetYFromX(l2_x);
+    wxDouble l1_x = _x - _r, l1_y = line.GetYFromX(l1_x);
+    wxDouble l2_x = _x + _r, l2_y = line.GetYFromX(l2_x);
 
     // quick check to see it it intersects at all
-    // wxDouble top = m_origin.m_y-m_r, bot = m_origin.m_y+m_r;
+    // wxDouble top = _origin._y-_r, bot = _origin._y+_r;
     // if (((l1_y < top)&&(l2_y < top))||((l1_y > bot)&&(l2_y > bot))) return 0;
 
     wxDouble l2_l1_x = l2_x - l1_x, l2_l1_y = l2_y - l1_y;
 
     wxDouble a = l2_l1_x * l2_l1_x + l2_l1_y * l2_l1_y;
-    wxDouble b = 2.0 * (l2_l1_x * (l1_x - m_x) + l2_l1_y * (l1_y - m_y));
+    wxDouble b = 2.0 * (l2_l1_x * (l1_x - _x) + l2_l1_y * (l1_y - _y));
 
-    wxDouble c = m_x * m_x + m_y * m_y + l1_x * l1_x + l1_y * l1_y - 2.0 * (m_x * l1_x + m_y * l1_y) - m_r * m_r;
+    wxDouble c = _x * _x + _y * _y + l1_x * l1_x + l1_y * l1_y - 2.0 * (_x * l1_x + _y * l1_y) - _r * _r;
     wxDouble det = b * b - 4.0 * a * c;
 
     if (det < 0) {
@@ -63,8 +63,8 @@ int wxCircleDouble::IntersectLine(const wxRay2DDouble& line, wxPoint2DDouble* pt
     } else if (det == 0) {
         if (pt1) {
             wxDouble u = -b / (2.0 * a);
-            pt1->m_x = l2_x + u * l2_l1_x;
-            pt1->m_y = l2_y + u * l2_l1_y;
+            pt1->_x = l2_x + u * l2_l1_x;
+            pt1->_y = l2_y + u * l2_l1_y;
         }
         return 1;
     }
@@ -73,13 +73,13 @@ int wxCircleDouble::IntersectLine(const wxRay2DDouble& line, wxPoint2DDouble* pt
 
     if (pt1) {
         wxDouble u1 = (-b - e) / (2.0 * a);
-        pt1->m_x = l1_x + u1 * l2_l1_x;
-        pt1->m_y = l1_y + u1 * l2_l1_y;
+        pt1->_x = l1_x + u1 * l2_l1_x;
+        pt1->_y = l1_y + u1 * l2_l1_y;
     }
     if (pt2) {
         wxDouble u2 = (-b + e) / (2.0 * a);
-        pt2->m_x = l1_x + u2 * l2_l1_x;
-        pt2->m_y = l1_y + u2 * l2_l1_y;
+        pt2->_x = l1_x + u2 * l2_l1_x;
+        pt2->_y = l1_y + u2 * l2_l1_y;
     }
 
     return 2;
@@ -93,21 +93,21 @@ int wxEllipseInt::IntersectLine( const wxLine2DInt &line,
 
     //Intersection.intersectEllipseLine = function(c, rx, ry, a1, a2) {
     //var result;
-    //line.m_pt    // var origin = new Vector2D(a1.x, a1.y);
+    //line._pt    // var origin = new Vector2D(a1.x, a1.y);
     wxPoint2DInt dir = pt2 - p21;   // var dir = Vector2D.fromPoints(a1, a2);
-    //m_origin   //var center = new Vector2D(c.x, c.y);
-    wxPoint2DInt diff = line.m_pt - m_origin; //var diff   = origin.subtract(center);
+    //_origin   //var center = new Vector2D(c.x, c.y);
+    wxPoint2DInt diff = line._pt - _origin; //var diff   = origin.subtract(center);
 
     //var mDir   = new Vector2D( dir.x/(rx*rx),  dir.y/(ry*ry)  );
-    wxPoint2DDouble mDir = wxPoint2DDouble(wxDouble(dir.m_x)/(m_radius.m_x*m_radius.m_x),
-                                           wxDouble(dir.m_y)/(m_radius.m_y*m_radius.m_y));
+    wxPoint2DDouble mDir = wxPoint2DDouble(wxDouble(dir._x)/(_radius._x*_radius._x),
+                                           wxDouble(dir._y)/(_radius._y*_radius._y));
     //var mDiff  = new Vector2D( diff.x/(rx*rx), diff.y/(ry*ry) );
-    wxPoint2DDouble mDiff = wxPoint2DDouble(wxDouble(diff.m_x)/(m_radius.m_x*m_radius.m_x),
-                                            wxDouble(diff.m_y)/(m_radius.m_y*m_radius.m_y));
+    wxPoint2DDouble mDiff = wxPoint2DDouble(wxDouble(diff._x)/(_radius._x*_radius._x),
+                                            wxDouble(diff._y)/(_radius._y*_radius._y));
 
     wxDouble a = dir.GetDotProduct(mDir);    //var a = dir.dot(mDir);
     wxDouble b = dir.GetDotProduct(mDiff);   //var b = dir.dot(mDiff);
-    wxDouble c = diff.GetDotProduct(m_diff); //var c = diff.dot(mDiff) - 1.0;
+    wxDouble c = diff.GetDotProduct(_diff); //var c = diff.dot(mDiff) - 1.0;
     wxDouble d = b*b - a*c;                  //var d = b*b - a*c;
 
     if ( d < 0 )

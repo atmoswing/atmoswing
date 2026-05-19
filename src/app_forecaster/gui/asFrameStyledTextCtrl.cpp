@@ -33,7 +33,7 @@ asFrameStyledTextCtrl::asFrameStyledTextCtrl(wxWindow* parent, wxWindowID id, co
     : asFrameStyledTextCtrlVirtual(parent, id, title, pos) {}
 
 void asFrameStyledTextCtrl::SetContent(const wxString& content) {
-    m_scintilla->SetText(content);
+    _scintilla->SetText(content);
     SetLexerXml();
 }
 
@@ -41,21 +41,21 @@ void asFrameStyledTextCtrl::SetLexerXml() {
     const wxColour colTag = *wxBLUE;
     const wxColour colAttr = *wxRED;
 
-    m_scintilla->SetLexer(wxSTC_LEX_XML);
+    _scintilla->SetLexer(wxSTC_LEX_XML);
 
-    m_scintilla->StyleClearAll();
+    _scintilla->StyleClearAll();
 
-    m_scintilla->StyleSetForeground(wxSTC_H_TAG, colTag);
-    m_scintilla->StyleSetForeground(wxSTC_H_TAGUNKNOWN, colTag);
-    m_scintilla->StyleSetForeground(wxSTC_H_ATTRIBUTE, colAttr);
-    m_scintilla->StyleSetForeground(wxSTC_H_ATTRIBUTEUNKNOWN, colAttr);
-    m_scintilla->StyleSetBold(wxSTC_H_ATTRIBUTEUNKNOWN, true);
-    m_scintilla->StyleSetForeground(wxSTC_H_OTHER, colTag);
-    m_scintilla->StyleSetForeground(wxSTC_H_COMMENT, wxColour("GREY"));
-    m_scintilla->StyleSetForeground(wxSTC_H_ENTITY, colAttr);
-    m_scintilla->StyleSetBold(wxSTC_H_ENTITY, true);
-    m_scintilla->StyleSetForeground(wxSTC_H_TAGEND, colTag);
-    m_scintilla->StyleSetForeground(wxSTC_H_XMLSTART, colTag);
-    m_scintilla->StyleSetForeground(wxSTC_H_XMLEND, colTag);
-    m_scintilla->StyleSetForeground(wxSTC_H_CDATA, colAttr);
+    _scintilla->StyleSetForeground(wxSTC_H_TAG, colTag);
+    _scintilla->StyleSetForeground(wxSTC_H_TAGUNKNOWN, colTag);
+    _scintilla->StyleSetForeground(wxSTC_H_ATTRIBUTE, colAttr);
+    _scintilla->StyleSetForeground(wxSTC_H_ATTRIBUTEUNKNOWN, colAttr);
+    _scintilla->StyleSetBold(wxSTC_H_ATTRIBUTEUNKNOWN, true);
+    _scintilla->StyleSetForeground(wxSTC_H_OTHER, colTag);
+    _scintilla->StyleSetForeground(wxSTC_H_COMMENT, wxColour("GREY"));
+    _scintilla->StyleSetForeground(wxSTC_H_ENTITY, colAttr);
+    _scintilla->StyleSetBold(wxSTC_H_ENTITY, true);
+    _scintilla->StyleSetForeground(wxSTC_H_TAGEND, colTag);
+    _scintilla->StyleSetForeground(wxSTC_H_XMLSTART, colTag);
+    _scintilla->StyleSetForeground(wxSTC_H_XMLEND, colTag);
+    _scintilla->StyleSetForeground(wxSTC_H_CDATA, colAttr);
 }

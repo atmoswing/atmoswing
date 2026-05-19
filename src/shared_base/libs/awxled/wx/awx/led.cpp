@@ -22,124 +22,124 @@ END_EVENT_TABLE()
 awxLed::awxLed(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, awxLedColour color, long style,
                int timerInterval)
     : wxWindow(parent, id, pos, size, wxNO_FULL_REPAINT_ON_RESIZE | style),
-      m_bitmap(new wxBitmap(16 * g_ppiScaleDc, 16 * g_ppiScaleDc)),
-      m_state(awxLED_OFF),
-      m_blink(0),
-      m_x(0),
-      m_y(0),
-      m_timerInterval(timerInterval),
-      m_on(false) {
+      _bitmap(new wxBitmap(16 * g_ppiScaleDc, 16 * g_ppiScaleDc)),
+      _state(awxLED_OFF),
+      _blink(0),
+      _x(0),
+      _y(0),
+      _timerInterval(timerInterval),
+      _on(false) {
     int imgSize = 16 * g_ppiScaleDc;
-    m_timer = new BlinkTimer(this);
-    m_icons[awxLED_OFF] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_WHITE);
-    m_icons[awxLED_ON] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_WHITE);
+    _timer = new BlinkTimer(this);
+    _icons[awxLED_OFF] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_WHITE);
+    _icons[awxLED_ON] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_WHITE);
     SetInitialSize(wxSize(imgSize, imgSize));
     SetMinSize(wxSize(imgSize, imgSize));
     SetColour(color);
 }
 
 awxLed::~awxLed() {
-    if (m_timer) {
-        m_timer->Stop();
-        delete m_timer;
+    if (_timer) {
+        _timer->Stop();
+        delete _timer;
     }
-    delete m_bitmap;
+    delete _bitmap;
 }
 
 void awxLed::Blink() {
-    m_blink ^= 1;
+    _blink ^= 1;
     Redraw();
 }
 
 void awxLed::DrawOnBitmap() {
     /*
     wxSize s = GetClientSize();
-    if ((m_bitmap->GetWidth() != s.GetWidth()) || (m_bitmap->GetHeight() != s.GetHeight())) {
-        m_bitmap->Create(s.x, s.y);
+    if ((_bitmap->GetWidth() != s.GetWidth()) || (_bitmap->GetHeight() != s.GetHeight())) {
+        _bitmap->Create(s.x, s.y);
     }*/
     wxMemoryDC dc;
-    dc.SelectObject(*m_bitmap);
+    dc.SelectObject(*_bitmap);
 
-    wxBrush brush(m_parent->GetBackgroundColour(), wxBRUSHSTYLE_SOLID);
+    wxBrush brush(_parent->GetBackgroundColour(), wxBRUSHSTYLE_SOLID);
     dc.SetBackground(brush);
     dc.Clear();
 
-    if (m_state == awxLED_BLINK)
-        dc.DrawBitmap(m_icons[m_blink], m_x, m_y, true);
+    if (_state == awxLED_BLINK)
+        dc.DrawBitmap(_icons[_blink], _x, _y, true);
     else
-        dc.DrawBitmap(m_icons[m_state & 1], m_x, m_y, true);
+        dc.DrawBitmap(_icons[_state & 1], _x, _y, true);
 
     dc.SelectObject(wxNullBitmap);
 }
 
 void awxLed::SetColour(awxLedColour colour) {
-    // if(m_icons[awxLED_ON]) delete m_icons[awxLED_ON];
+    // if(_icons[awxLED_ON]) delete _icons[awxLED_ON];
     switch (colour) {
         case awxLED_LUCID:
-            m_icons[awxLED_ON] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_WHITE);
+            _icons[awxLED_ON] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_WHITE);
             break;
         case awxLED_GREEN:
-            m_icons[awxLED_ON] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_GREEN);
+            _icons[awxLED_ON] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_GREEN);
             break;
         case awxLED_YELLOW:
-            m_icons[awxLED_ON] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_YELLOW);
+            _icons[awxLED_ON] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_YELLOW);
             break;
         default:
-            m_icons[awxLED_ON] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_RED);
+            _icons[awxLED_ON] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_RED);
     }
 }
 
 void awxLed::SetState(awxLedState state) {
-    m_state = state;
-    if (m_timer->IsRunning()) {
-        m_timer->Stop();
+    _state = state;
+    if (_timer->IsRunning()) {
+        _timer->Stop();
     }
-    if (m_state == awxLED_BLINK) {
-        m_timer->Start(m_timerInterval);
+    if (_state == awxLED_BLINK) {
+        _timer->Start(_timerInterval);
     }
     Redraw();
 }
 
 void awxLed::SetOn(awxLedColour colour, awxLedState state) {
-    m_onColour = colour;
-    m_onState = state;
+    _onColour = colour;
+    _onState = state;
 }
 
 void awxLed::SetOff(awxLedColour colour, awxLedState state) {
-    m_offColour = colour;
-    m_offState = state;
+    _offColour = colour;
+    _offState = state;
 }
 
 void awxLed::TurnOn(bool on) {
-    m_on = on;
+    _on = on;
     if (on) {
-        SetColour(m_onColour);
-        SetState(m_onState);
+        SetColour(_onColour);
+        SetState(_onState);
     } else {
-        SetColour(m_offColour);
-        SetState(m_offState);
+        SetColour(_offColour);
+        SetState(_offState);
     }
 }
 
 void awxLed::TurnOff() {
-    m_on = false;
-    SetColour(m_offColour);
-    SetState(m_offState);
+    _on = false;
+    SetColour(_offColour);
+    SetState(_offState);
 }
 
 void awxLed::Toggle() {
-    TurnOn(!m_on);
+    TurnOn(!_on);
 }
 
 bool awxLed::IsOn() {
-    return m_on;
+    return _on;
 }
 
 void awxLed::SetTimerInterval(unsigned int timerInterval) {
-    m_timerInterval = timerInterval;
-    SetState(m_state);
+    _timerInterval = timerInterval;
+    SetState(_state);
 }
 
 unsigned int awxLed::GetTimerInterval() {
-    return m_timerInterval;
+    return _timerInterval;
 }

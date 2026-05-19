@@ -46,31 +46,31 @@
 #include "asScoreSEEPS.h"
 
 asScore::asScore()
-    : m_score(Undefined),
-      m_order(Asc),
-      m_scaleBest(NAN),
-      m_scaleWorst(NAN),
-      m_usesClimatology(false),
-      m_singleValue(true),
-      m_onMean(false),
-      m_scoreClimatology(0),
-      m_threshold(NAN),
-      m_quantile(NAN) {}
+    : _score(Undefined),
+      _order(Asc),
+      _scaleBest(NAN),
+      _scaleWorst(NAN),
+      _usesClimatology(false),
+      _singleValue(true),
+      _onMean(false),
+      _scoreClimatology(0),
+      _threshold(NAN),
+      _quantile(NAN) {}
 
 asScore::asScore(Score score, const wxString& name, const wxString& fullname, Order order, float scaleBest,
                  float scaleWorst, bool usesClimatology, bool singleValue)
-    : m_score(score),
-      m_name(name),
-      m_fullName(fullname),
-      m_order(order),
-      m_scaleBest(scaleBest),
-      m_scaleWorst(scaleWorst),
-      m_usesClimatology(usesClimatology),
-      m_singleValue(singleValue),
-      m_onMean(false),
-      m_scoreClimatology(0),
-      m_threshold(NAN),
-      m_quantile(NAN) {}
+    : _score(score),
+      _name(name),
+      _fullName(fullname),
+      _order(order),
+      _scaleBest(scaleBest),
+      _scaleWorst(scaleWorst),
+      _usesClimatology(usesClimatology),
+      _singleValue(singleValue),
+      _onMean(false),
+      _scoreClimatology(0),
+      _threshold(NAN),
+      _quantile(NAN) {}
 
 asScore* asScore::GetInstance(Score scoreEnum) {
     switch (scoreEnum) {

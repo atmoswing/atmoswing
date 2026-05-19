@@ -79,7 +79,7 @@ class asFileText : public asFile {
 
   protected:
   private:
-    std::fstream m_file; /**< The file stream (not using wxTextFile because it's not optimized for files > 1Mb). */
+    std::fstream _file; /**< The file stream (not using wxTextFile because it's not optimized for files > 1Mb). */
 };
 
 #endif

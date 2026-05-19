@@ -68,57 +68,57 @@ class asThreadsManager : public wxObject {
     int GetAvailableThreadsNb();
 
     bool Cancelled() {
-        wxCriticalSectionLocker lock(m_critSectionManager);
-        return m_cancelled;
+        wxCriticalSectionLocker lock(_critSectionManager);
+        return _cancelled;
     }
 
     void Cancel() {
-        wxCriticalSectionLocker lock(m_critSectionManager);
-        m_cancelled = true;
+        wxCriticalSectionLocker lock(_critSectionManager);
+        _cancelled = true;
     }
 
     wxCriticalSection& CritSectionNetCDF() {
-        return m_critSectionNetCDF;
+        return _critSectionNetCDF;
     }
 
     wxCriticalSection& CritSectionGrib() {
-        return m_critSectionGrib;
+        return _critSectionGrib;
     }
 
     wxCriticalSection& CritSectionConfig() {
-        return m_critSectionConfig;
+        return _critSectionConfig;
     }
 
     wxCriticalSection& CritSectionPreloadedData() {
-        return m_critSectionPreloadedData;
+        return _critSectionPreloadedData;
     }
 
     wxSemaphore& SemAllDone() {
-        return m_semAllDone;
+        return _semAllDone;
     }
 
     bool GetWaitingUntilAllDone() {
-        return m_waitingUntilAllDone;
+        return _waitingUntilAllDone;
     }
 
     void SetWaitingUntilAllDone(bool val) {
-        m_waitingUntilAllDone = val;
+        _waitingUntilAllDone = val;
     }
 
   protected:
   private:
-    int m_idCounter;
-    vector<asThread*> m_threads;
-    wxCriticalSection m_critSectionManager;
-    wxCriticalSection m_critSectionPreloadedData;
-    wxCriticalSection m_critSectionNetCDF;
-    wxCriticalSection m_critSectionGrib;
-    wxCriticalSection m_critSectionConfig;
-    wxSemaphore m_semAllDone;
-    bool m_waitingUntilAllDone;
-    bool m_cancelled;
-    int m_maxThreadsNb;
-    int m_priority;
+    int _idCounter;
+    vector<asThread*> _threads;
+    wxCriticalSection _critSectionManager;
+    wxCriticalSection _critSectionPreloadedData;
+    wxCriticalSection _critSectionNetCDF;
+    wxCriticalSection _critSectionGrib;
+    wxCriticalSection _critSectionConfig;
+    wxSemaphore _semAllDone;
+    bool _waitingUntilAllDone;
+    bool _cancelled;
+    int _maxThreadsNb;
+    int _priority;
 };
 
 #endif

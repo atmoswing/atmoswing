@@ -31,9 +31,9 @@
 #include "vrrender.h"
 
 vrLayerVectorContours::vrLayerVectorContours() {
-    wxASSERT(!m_dataset);
-    wxASSERT(!m_layer);
-    m_driverType = vrDRIVER_VECTOR_MEMORY;
+    wxASSERT(!_dataset);
+    wxASSERT(!_layer);
+    _driverType = vrDRIVER_VECTOR_MEMORY;
 }
 
 vrLayerVectorContours::~vrLayerVectorContours() = default;

@@ -61,14 +61,14 @@ class asFile : public wxObject {
     virtual bool Close();
 
     bool Exists() const {
-        return m_exists;
+        return _exists;
     }
 
   protected:
-    wxFileName m_fileName;
-    FileMode m_fileMode;
-    bool m_exists;
-    bool m_opened;
+    wxFileName _fileName;
+    FileMode _fileMode;
+    bool _exists;
+    bool _opened;
 
   private:
 };

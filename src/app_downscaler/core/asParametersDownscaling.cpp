@@ -32,15 +32,15 @@
 
 asParametersDownscaling::asParametersDownscaling()
     : asParameters(),
-      m_downscalingStart(NAN),
-      m_downscalingEnd(NAN) {}
+      _downscalingStart(NAN),
+      _downscalingEnd(NAN) {}
 
 asParametersDownscaling::~asParametersDownscaling() {}
 
 void asParametersDownscaling::AddStep() {
     asParameters::AddStep();
     ParamsStepProj stepVect;
-    m_stepsProj.push_back(stepVect);
+    _stepsProj.push_back(stepVect);
 }
 
 void asParametersDownscaling::AddPredictorProj(ParamsStepProj& step) {
@@ -212,7 +212,7 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
             SetAnalogsNumber(iStep, asFileParametersDownscaling::GetInt(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "predictor") {
             AddPredictor(iStep);
-            AddPredictorProj(m_stepsProj[iStep]);
+            AddPredictorProj(_stepsProj[iStep]);
             SetPreprocess(iStep, iPtor, false);
             SetPreload(iStep, iPtor, false);
             wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
@@ -511,17 +511,17 @@ bool asParametersDownscaling::FixTimeLimits() {
         }
     }
 
-    m_timeMinHours = minHour;
-    m_timeMaxHours = maxHour;
+    _timeMinHours = minHour;
+    _timeMaxHours = maxHour;
 
     return true;
 }
 
 void asParametersDownscaling::InitValues() {
-    wxASSERT(!m_predictandStationIdsVect.empty());
+    wxASSERT(!_predictandStationIdsVect.empty());
 
     // Initialize the parameters values with the first values of the vectors
-    m_predictandStationIds = m_predictandStationIdsVect[0];
+    _predictandStationIds = _predictandStationIdsVect[0];
 
     // Fixes and checks
     FixWeights();
@@ -548,24 +548,24 @@ bool asParametersDownscaling::SetPredictandStationIdsVector(vvi val) {
         }
     }
 
-    m_predictandStationIdsVect = val;
+    _predictandStationIdsVect = val;
 
     return true;
 }
 
 void asParametersDownscaling::SetPredictorProjDatasetId(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_stepsProj[iStep].predictors[iPtor].datasetId = val;
+    _stepsProj[iStep].predictors[iPtor].datasetId = val;
 }
 
 void asParametersDownscaling::SetPredictorProjDataId(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_stepsProj[iStep].predictors[iPtor].dataId = val;
+    _stepsProj[iStep].predictors[iPtor].dataId = val;
 }
 
 wxString asParametersDownscaling::GetPreprocessProjDatasetId(int iStep, int iPtor, int iPre) const {
-    if (m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
-        return m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds[iPre];
+    if (_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
+        return _stepsProj[iStep].predictors[iPtor].preprocessDatasetIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
         return wxEmptyString;
@@ -574,16 +574,16 @@ wxString asParametersDownscaling::GetPreprocessProjDatasetId(int iStep, int iPto
 
 void asParametersDownscaling::SetPreprocessProjDatasetId(int iStep, int iPtor, int iPre, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    if (m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
-        m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val;
+    if (_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
+        _stepsProj[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val;
     } else {
-        m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val);
+        _stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val);
     }
 }
 
 wxString asParametersDownscaling::GetPreprocessProjDataId(int iStep, int iPtor, int iPre) const {
-    if (m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
-        return m_stepsProj[iStep].predictors[iPtor].preprocessDataIds[iPre];
+    if (_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
+        return _stepsProj[iStep].predictors[iPtor].preprocessDataIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
         return wxEmptyString;
@@ -592,9 +592,9 @@ wxString asParametersDownscaling::GetPreprocessProjDataId(int iStep, int iPtor, 
 
 void asParametersDownscaling::SetPreprocessProjDataId(int iStep, int iPtor, int iPre, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    if (m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
-        m_stepsProj[iStep].predictors[iPtor].preprocessDataIds[iPre] = val;
+    if (_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
+        _stepsProj[iStep].predictors[iPtor].preprocessDataIds[iPre] = val;
     } else {
-        m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.push_back(val);
+        _stepsProj[iStep].predictors[iPtor].preprocessDataIds.push_back(val);
     }
 }

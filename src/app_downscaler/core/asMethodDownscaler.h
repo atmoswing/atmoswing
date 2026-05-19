@@ -57,25 +57,25 @@ class asMethodDownscaler : public asMethodStandard {
     bool Manager() override;
 
     bool IsArchivePointerCopy(int iStep, int iPtor, int iPre) const {
-        return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
+        return _preloadedArchivePointerCopy[iStep][iPtor][iPre];
     }
 
     bool IsProjectionPointerCopy(int iStep, int iPtor, int iPre) const {
-        return m_preloadedProjectionPointerCopy[iStep][iPtor][iPre];
+        return _preloadedProjectionPointerCopy[iStep][iPtor][iPre];
     }
 
     void SetPredictandStationIds(const vi& val) {
-        m_predictandStationIds = val;
+        _predictandStationIds = val;
     }
 
     void SetPredictorProjectionDataDir(const wxString& val) {
-        m_predictorProjectionDataDir = val;
+        _predictorProjectionDataDir = val;
     }
 
   protected:
-    wxString m_predictorProjectionDataDir;
-    vi m_predictandStationIds;
-    vector<asParametersDownscaling> m_parameters;
+    wxString _predictorProjectionDataDir;
+    vi _predictandStationIds;
+    vector<asParametersDownscaling> _parameters;
 
     virtual bool Downscale(asParametersDownscaling& params) = 0;
 
@@ -99,10 +99,10 @@ class asMethodDownscaler : public asMethodStandard {
     void Cleanup(vector<asCriteria*> criteria) override;
 
   private:
-    vector<vector<vector<vector<vector<asPredictor*> > > > > m_preloadedArchive;
-    vector<vector<vector<vector<vector<asPredictorProj*> > > > > m_preloadedProjection;
-    vector<vvb> m_preloadedArchivePointerCopy;
-    vector<vvb> m_preloadedProjectionPointerCopy;
+    vector<vector<vector<vector<vector<asPredictor*> > > > > _preloadedArchive;
+    vector<vector<vector<vector<vector<asPredictorProj*> > > > > _preloadedProjection;
+    vector<vvb> _preloadedArchivePointerCopy;
+    vector<vvb> _preloadedProjectionPointerCopy;
 
     double GetTimeStartDownscaling(asParametersDownscaling* params) const;
 

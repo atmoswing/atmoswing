@@ -85,7 +85,7 @@ class WXDLLIMPEXP_THINGS wxGenericColour : public wxObject {
 
     // Is this colour valid, has refed data
     bool Ok() const {
-        return m_refData != NULL;
+        return _refData != NULL;
     }
 
     // -----------------------------------------------------------------------
@@ -180,11 +180,11 @@ class WXDLLIMPEXP_THINGS wxGenericColour : public wxObject {
 
     // operators
     bool operator==(const wxGenericColour& c) const {
-        return m_refData == c.m_refData;
+        return _refData == c._refData;
     }
 
     bool operator!=(const wxGenericColour& c) const {
-        return m_refData != c.m_refData;
+        return _refData != c._refData;
     }
 
     wxGenericColour& operator=(const wxGenericColour& c) {
@@ -242,7 +242,7 @@ class WXDLLIMPEXP_THINGS wxGenericPen : public wxObject {
 
     // Is this colour valid, has refed data
     bool Ok() const {
-        return m_refData != NULL;
+        return _refData != NULL;
     }
 
     // -----------------------------------------------------------------------
@@ -315,11 +315,11 @@ class WXDLLIMPEXP_THINGS wxGenericPen : public wxObject {
 
     // operators
     bool operator==(const wxGenericPen& pen) const {
-        return m_refData == pen.m_refData;
+        return _refData == pen._refData;
     }
 
     bool operator!=(const wxGenericPen& pen) const {
-        return m_refData != pen.m_refData;
+        return _refData != pen._refData;
     }
 
     wxGenericPen& operator=(const wxGenericPen& pen) {
@@ -379,7 +379,7 @@ class WXDLLIMPEXP_THINGS wxGenericBrush : public wxObject {
 
     // Is this colour valid, has refed data
     bool Ok() const {
-        return m_refData != NULL;
+        return _refData != NULL;
     }
 
     // -----------------------------------------------------------------------
@@ -432,11 +432,11 @@ class WXDLLIMPEXP_THINGS wxGenericBrush : public wxObject {
 
     // operators
     bool operator==(const wxGenericBrush& brush) const {
-        return m_refData == brush.m_refData;
+        return _refData == brush._refData;
     }
 
     bool operator!=(const wxGenericBrush& brush) const {
-        return m_refData != brush.m_refData;
+        return _refData != brush._refData;
     }
 
     wxGenericBrush& operator=(const wxGenericBrush& brush) {

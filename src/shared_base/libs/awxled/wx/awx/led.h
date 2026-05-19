@@ -33,19 +33,19 @@ class BlinkTimer;
 class awxLed : public wxWindow {
   protected:
     // bitmap for double buffering
-    wxBitmap* m_bitmap;
-    wxBitmap m_icons[2];
-    awxLedState m_state;
-    BlinkTimer* m_timer;
-    int m_blink;
-    int m_x;
-    int m_y;
-    unsigned int m_timerInterval;
-    bool m_on;
-    awxLedState m_onState;
-    awxLedState m_offState;
-    awxLedColour m_onColour;
-    awxLedColour m_offColour;
+    wxBitmap* _bitmap;
+    wxBitmap _icons[2];
+    awxLedState _state;
+    BlinkTimer* _timer;
+    int _blink;
+    int _x;
+    int _y;
+    unsigned int _timerInterval;
+    bool _on;
+    awxLedState _onState;
+    awxLedState _offState;
+    awxLedColour _onColour;
+    awxLedColour _offColour;
 
   protected:
     // protected member functions
@@ -66,22 +66,22 @@ class awxLed : public wxWindow {
 
     void OnPaint(wxPaintEvent&) {
         wxPaintDC dc(this);
-        dc.DrawBitmap(*m_bitmap, 0, 0, false);
+        dc.DrawBitmap(*_bitmap, 0, 0, false);
     };
 
     void OnSizeEvent(wxSizeEvent& event) {
         wxSize size = event.GetSize();
-        m_x = (size.GetX() - m_icons[0].GetWidth()) >> 1;
-        m_y = (size.GetY() - m_icons[0].GetHeight()) >> 1;
-        if (m_x < 0) m_x = 0;
-        if (m_y < 0) m_y = 0;
+        _x = (size.GetX() - _icons[0].GetWidth()) >> 1;
+        _y = (size.GetY() - _icons[0].GetHeight()) >> 1;
+        if (_x < 0) _x = 0;
+        if (_y < 0) _y = 0;
         DrawOnBitmap();
     };
 
     void Redraw() {
         wxClientDC dc(this);
         DrawOnBitmap();
-        dc.DrawBitmap(*m_bitmap, 0, 0, false);
+        dc.DrawBitmap(*_bitmap, 0, 0, false);
     };
 
     void SetTimerInterval(unsigned int timerInterval);
@@ -109,16 +109,16 @@ class awxLed : public wxWindow {
 
 class BlinkTimer : public wxTimer {
   protected:
-    awxLed* m_led;
+    awxLed* _led;
 
   public:
     BlinkTimer(awxLed* led)
         : wxTimer() {
-        m_led = led;
+        _led = led;
     };
 
     void Notify() {
-        m_led->Blink();
+        _led->Blink();
     };
 };
 

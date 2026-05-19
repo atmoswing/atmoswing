@@ -33,115 +33,115 @@
 asPredictorCustomMFvgSynop::asPredictorCustomMFvgSynop(const wxString& dataId)
     : asPredictorEcmwfIfs(dataId) {
     // Set the basic properties.
-    m_datasetId = "Custom_MeteoFVG_Synop";
-    m_provider = "ECMWF";
-    m_transformedBy = "Meteo FVG";
-    m_datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
-    m_fStr.hasLevelDim = true;
-    m_fStr.singleTimeStep = true;
-    m_warnMissingFiles = false;
+    _datasetId = "Custom_MeteoFVG_Synop";
+    _provider = "ECMWF";
+    _transformedBy = "Meteo FVG";
+    _datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
+    _fStr.hasLevelDim = true;
+    _fStr.singleTimeStep = true;
+    _warnMissingFiles = false;
 }
 
 bool asPredictorCustomMFvgSynop::Init() {
-    if (m_product.IsEmpty()) {
-        m_product = "data";
+    if (_product.IsEmpty()) {
+        _product = "data";
     }
 
-    if (m_product.IsSameAs("data", false)) {
-        if (m_dataId.Contains("gh")) {
-            m_parameter = GeopotentialHeight;
-            m_gribCode = {0, 128, 156, 100};
-            m_unit = m;
-        } else if (m_dataId.Contains("t")) {
-            m_parameter = AirTemperature;
-            m_gribCode = {0, 128, 130, 100};
-            m_unit = degK;
-        } else if (m_dataId.Contains("w")) {
-            m_parameter = VerticalVelocity;
-            m_gribCode = {0, 128, 135, 100};
-            m_unit = Pa_s;
-        } else if (m_dataId.Contains("r")) {
-            m_parameter = RelativeHumidity;
-            m_gribCode = {0, 128, 157, 100};
-            m_unit = percent;
-        } else if (m_dataId.Contains("u")) {
-            m_parameter = Uwind;
-            m_gribCode = {0, 128, 131, 100};
-            m_unit = m_s;
-        } else if (m_dataId.Contains("v")) {
-            m_parameter = Vwind;
-            m_gribCode = {0, 128, 132, 100};
-            m_unit = m_s;
+    if (_product.IsSameAs("data", false)) {
+        if (_dataId.Contains("gh")) {
+            _parameter = GeopotentialHeight;
+            _gribCode = {0, 128, 156, 100};
+            _unit = m;
+        } else if (_dataId.Contains("t")) {
+            _parameter = AirTemperature;
+            _gribCode = {0, 128, 130, 100};
+            _unit = degK;
+        } else if (_dataId.Contains("w")) {
+            _parameter = VerticalVelocity;
+            _gribCode = {0, 128, 135, 100};
+            _unit = Pa_s;
+        } else if (_dataId.Contains("r")) {
+            _parameter = RelativeHumidity;
+            _gribCode = {0, 128, 157, 100};
+            _unit = percent;
+        } else if (_dataId.Contains("u")) {
+            _parameter = Uwind;
+            _gribCode = {0, 128, 131, 100};
+            _unit = _s;
+        } else if (_dataId.Contains("v")) {
+            _parameter = Vwind;
+            _gribCode = {0, 128, 132, 100};
+            _unit = _s;
         } else {
-            if (m_datasetId.IsSameAs("Custom_MeteoFVG_meso", false) ||
-                m_datasetId.IsSameAs("Custom_MeteoFVG_meso_packed", false)) {
+            if (_datasetId.IsSameAs("Custom_MeteoFVG_meso", false) ||
+                _datasetId.IsSameAs("Custom_MeteoFVG_meso_packed", false)) {
                 return true;
             }
-            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), _dataId, _product);
             return false;
         }
 
-        m_fileNamePattern = m_dataId + ".%4d%02d%02d%02d.grib";
+        _fileNamePattern = _dataId + ".%4d%02d%02d%02d.grib";
 
-    } else if (m_product.IsSameAs("datader", false)) {
-        if (m_dataId.Contains("thetaES")) {
-            m_parameter = PotentialTemperature;
-            m_gribCode = {0, 3, 114, 100};
-            m_unit = W_m2;
-        } else if (m_dataId.Contains("thetaE")) {
-            m_parameter = PotentialTemperature;
-            m_gribCode = {0, 3, 113, 100};
-            m_unit = W_m2;
-        } else if (m_dataId.Contains("vflux")) {
-            m_parameter = MomentumFlux;
-            m_gribCode = {0, 3, 125, 100};
-            m_unit = kg_m2_s;
-        } else if (m_dataId.Contains("uflux")) {
-            m_parameter = MomentumFlux;
-            m_gribCode = {0, 3, 124, 100};
-            m_unit = kg_m2_s;
-        } else if (m_dataId.Contains("q")) {
-            m_parameter = SpecificHumidity;
-            m_gribCode = {0, 128, 133, 100};
-            m_unit = percent;
+    } else if (_product.IsSameAs("datader", false)) {
+        if (_dataId.Contains("thetaES")) {
+            _parameter = PotentialTemperature;
+            _gribCode = {0, 3, 114, 100};
+            _unit = W_m2;
+        } else if (_dataId.Contains("thetaE")) {
+            _parameter = PotentialTemperature;
+            _gribCode = {0, 3, 113, 100};
+            _unit = W_m2;
+        } else if (_dataId.Contains("vflux")) {
+            _parameter = MomentumFlux;
+            _gribCode = {0, 3, 125, 100};
+            _unit = kg_m2_s;
+        } else if (_dataId.Contains("uflux")) {
+            _parameter = MomentumFlux;
+            _gribCode = {0, 3, 124, 100};
+            _unit = kg_m2_s;
+        } else if (_dataId.Contains("q")) {
+            _parameter = SpecificHumidity;
+            _gribCode = {0, 128, 133, 100};
+            _unit = percent;
         } else {
-            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), _dataId, _product);
             return false;
         }
 
-        m_fileNamePattern = m_dataId + ".%4d%02d%02d%02d.grib";
+        _fileNamePattern = _dataId + ".%4d%02d%02d%02d.grib";
 
-    } else if (m_product.IsSameAs("vertdiff", false)) {
-        m_parameter = Other;
+    } else if (_product.IsSameAs("vertdiff", false)) {
+        _parameter = Other;
 
-        if (m_dataId.IsSameAs("DP500925", false)) {
-            m_gribCode = {0, 3, 113, 100};
-        } else if (m_dataId.IsSameAs("LRT700500", false)) {
-            m_gribCode = {0, 128, 130, 100};
-        } else if (m_dataId.IsSameAs("LRT850500", false)) {
-            m_gribCode = {0, 128, 130, 100};
-        } else if (m_dataId.IsSameAs("LRTE700500", false)) {
-            m_gribCode = {0, 3, 113, 100};
-        } else if (m_dataId.IsSameAs("LRTE850500", false)) {
-            m_gribCode = {0, 3, 113, 100};
-        } else if (m_dataId.IsSameAs("MB500850", false)) {
-            m_parameter = MaximumBuoyancy;
-            m_gribCode = {0, 3, 114, 100};
-        } else if (m_dataId.IsSameAs("MB500925", false)) {
-            m_parameter = MaximumBuoyancy;
-            m_gribCode = {0, 3, 114, 100};
-        } else if (m_dataId.IsSameAs("MB700925", false)) {
-            m_parameter = MaximumBuoyancy;
-            m_gribCode = {0, 3, 114, 100};
-        } else if (m_dataId.IsSameAs("MB850500", false)) {
-            m_parameter = MaximumBuoyancy;
-            m_gribCode = {0, 3, 114, 100};
+        if (_dataId.IsSameAs("DP500925", false)) {
+            _gribCode = {0, 3, 113, 100};
+        } else if (_dataId.IsSameAs("LRT700500", false)) {
+            _gribCode = {0, 128, 130, 100};
+        } else if (_dataId.IsSameAs("LRT850500", false)) {
+            _gribCode = {0, 128, 130, 100};
+        } else if (_dataId.IsSameAs("LRTE700500", false)) {
+            _gribCode = {0, 3, 113, 100};
+        } else if (_dataId.IsSameAs("LRTE850500", false)) {
+            _gribCode = {0, 3, 113, 100};
+        } else if (_dataId.IsSameAs("MB500850", false)) {
+            _parameter = MaximumBuoyancy;
+            _gribCode = {0, 3, 114, 100};
+        } else if (_dataId.IsSameAs("MB500925", false)) {
+            _parameter = MaximumBuoyancy;
+            _gribCode = {0, 3, 114, 100};
+        } else if (_dataId.IsSameAs("MB700925", false)) {
+            _parameter = MaximumBuoyancy;
+            _gribCode = {0, 3, 114, 100};
+        } else if (_dataId.IsSameAs("MB850500", false)) {
+            _parameter = MaximumBuoyancy;
+            _gribCode = {0, 3, 114, 100};
         } else {
-            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), _dataId, _product);
             return false;
         }
 
-        m_fileNamePattern = m_dataId + ".%4d%02d%02d%02d.grib";
+        _fileNamePattern = _dataId + ".%4d%02d%02d%02d.grib";
     }
 
     return true;
@@ -173,7 +173,7 @@ void asPredictorCustomMFvgSynop::ListFiles(asTimeArray& timeArray) {
             } else {
                 path = GetFullDirectoryPath() + asStrF("%4d/", t.year);
             }
-            m_files.push_back(path + asStrF(m_fileNamePattern, t.year, t.month, t.day, t.hour));
+            _files.push_back(path + asStrF(_fileNamePattern, t.year, t.month, t.day, t.hour));
         } else {
             Time t2 = asTime::GetTimeStruct(timeArray[i] - timeArray.GetTimeStepDays());
             if (!skipMonthDayInPath) {
@@ -181,7 +181,7 @@ void asPredictorCustomMFvgSynop::ListFiles(asTimeArray& timeArray) {
             } else {
                 path = GetFullDirectoryPath() + asStrF("%4d/", t2.year);
             }
-            m_files.push_back(path + asStrF(m_fileNamePattern, t2.year, t2.month, t2.day, 24));
+            _files.push_back(path + asStrF(_fileNamePattern, t2.year, t2.month, t2.day, 24));
         }
     }
 }

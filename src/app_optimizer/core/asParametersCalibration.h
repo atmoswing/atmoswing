@@ -59,39 +59,39 @@ class asParametersCalibration : public asParametersScoring {
     }
 
     vvi GetPredictandStationIdsVector() const {
-        return m_predictandStationIdsVect;
+        return _predictandStationIdsVect;
     }
 
     bool SetPredictandStationIdsVector(const vvi& val);
 
     vi GetTimeArrayAnalogsIntervalDaysVector() const {
-        return m_timeArrayAnalogsIntervalDaysVect;
+        return _timeArrayAnalogsIntervalDaysVect;
     }
 
     void SetTimeArrayAnalogsIntervalDaysVector(const vi& val);
 
     vwxs GetScoreNameVector() const {
-        return m_scoreVect.name;
+        return _scoreVect.name;
     }
 
     bool SetScoreNameVector(vwxs val);
 
     vwxs GetScoreTimeArrayModeVector() const {
-        return m_scoreVect.timeArrayMode;
+        return _scoreVect.timeArrayMode;
     }
 
     void SetScoreTimeArrayModeVector(const vwxs& val);
 
     vd GetScoreTimeArrayDateVector() const {
-        return m_scoreVect.timeArrayDate;
+        return _scoreVect.timeArrayDate;
     }
 
     vi GetScoreTimeArrayIntervalDaysVector() const {
-        return m_scoreVect.timeArrayIntervalDays;
+        return _scoreVect.timeArrayIntervalDays;
     }
 
     vf GetScorePostprocessDupliExpVector() const {
-        return m_scoreVect.postprocessDupliExp;
+        return _scoreVect.postprocessDupliExp;
     }
 
     double GetPreprocessHoursLowerLimit(int iStep, int iPtor, int iPre) const;
@@ -124,9 +124,9 @@ class asParametersCalibration : public asParametersScoring {
 
   protected:
   private:
-    vvi m_predictandStationIdsVect;
-    vi m_timeArrayAnalogsIntervalDaysVect;
-    ParamsScoreVect m_scoreVect;
+    vvi _predictandStationIdsVect;
+    vi _timeArrayAnalogsIntervalDaysVect;
+    ParamsScoreVect _scoreVect;
 
     void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf& preprocLevels, vd& preprocHours) const;
 

@@ -54,7 +54,7 @@ class asFramePreferencesForecaster : public asFramePreferencesForecasterVirtual 
     void OnChangeMultithreadingCheckBox(wxCommandEvent& event) override;
 
   private:
-    asBatchForecasts* m_batchForecasts;
+    asBatchForecasts* _batchForecasts;
 };
 
 #endif

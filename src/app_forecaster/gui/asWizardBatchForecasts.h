@@ -39,11 +39,11 @@ class asWizardBatchForecasts : public asWizardBatchForecastsVirtual {
     ~asWizardBatchForecasts() override = default;
 
     wxWizardPage* GetFirstPage() const {
-        return m_pages.Item(0);
+        return _pages.Item(0);
     }
 
     wxWizardPage* GetSecondPage() const {
-        return m_pages.Item(1);
+        return _pages.Item(1);
     }
 
   protected:
@@ -52,7 +52,7 @@ class asWizardBatchForecasts : public asWizardBatchForecastsVirtual {
     void OnLoadExistingBatchForecasts(wxCommandEvent& event) override;
 
   private:
-    asBatchForecasts* m_batchForecasts;
+    asBatchForecasts* _batchForecasts;
 };
 
 #endif

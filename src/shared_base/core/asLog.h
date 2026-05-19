@@ -62,8 +62,8 @@ class asLog : public wxObject {
 
   protected:
   private:
-    wxFFile* m_logFile;
-    wxLogChain* m_logChain;
+    wxFFile* _logFile;
+    wxLogChain* _logChain;
 };
 
 #if USE_GUI

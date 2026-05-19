@@ -40,9 +40,9 @@ asResultsForecastAggregator::~asResultsForecastAggregator() {
 bool asResultsForecastAggregator::Add(asResultsForecast* forecast) {
     bool createNewMethodRow = true;
 
-    for (int methodRow = 0; methodRow < (int)m_forecasts.size(); methodRow++) {
-        wxASSERT(!m_forecasts[methodRow].empty());
-        asResultsForecast* refForecast = m_forecasts[methodRow][0];
+    for (int methodRow = 0; methodRow < (int)_forecasts.size(); methodRow++) {
+        wxASSERT(!_forecasts[methodRow].empty());
+        asResultsForecast* refForecast = _forecasts[methodRow][0];
 
         bool compatible = true;
 
@@ -61,16 +61,16 @@ bool asResultsForecastAggregator::Add(asResultsForecast* forecast) {
             // Detailed checks
             if (forecast->IsCompatibleWith(refForecast)) {
                 // Check that it is not the exact same forecast
-                for (int forecastRow = 0; forecastRow < (int)m_forecasts[methodRow].size(); forecastRow++) {
-                    asResultsForecast* otherForecast = m_forecasts[methodRow][forecastRow];
+                for (int forecastRow = 0; forecastRow < (int)_forecasts[methodRow].size(); forecastRow++) {
+                    asResultsForecast* otherForecast = _forecasts[methodRow][forecastRow];
                     if (forecast->IsSameAs(otherForecast)) {
                         wxLogVerbose(_("This forecast has already been loaded."));
                         return false;
                     }
                 }
 
-                m_forecasts[methodRow].push_back(forecast);
-                m_pastForecasts[methodRow].resize(m_forecasts[methodRow].size());
+                _forecasts[methodRow].push_back(forecast);
+                _pastForecasts[methodRow].resize(_forecasts[methodRow].size());
                 createNewMethodRow = false;
                 break;
             } else {
@@ -83,10 +83,10 @@ bool asResultsForecastAggregator::Add(asResultsForecast* forecast) {
     }
 
     if (createNewMethodRow) {
-        m_forecasts.resize(m_forecasts.size() + 1);
-        m_pastForecasts.resize(m_pastForecasts.size() + 1);
-        m_forecasts[m_forecasts.size() - 1].push_back(forecast);
-        m_pastForecasts[m_pastForecasts.size() - 1].resize(1);
+        _forecasts.resize(_forecasts.size() + 1);
+        _pastForecasts.resize(_pastForecasts.size() + 1);
+        _forecasts[_forecasts.size() - 1].push_back(forecast);
+        _pastForecasts[_pastForecasts.size() - 1].resize(1);
     }
 
     return true;
@@ -95,12 +95,12 @@ bool asResultsForecastAggregator::Add(asResultsForecast* forecast) {
 bool asResultsForecastAggregator::AddPastForecast(int methodRow, int forecastRow, asResultsForecast* forecast) {
     bool compatible = true;
 
-    wxASSERT((int)m_forecasts.size() > methodRow);
-    wxASSERT((int)m_pastForecasts.size() > methodRow);
-    wxASSERT((int)m_forecasts[methodRow].size() > forecastRow);
-    wxASSERT((int)m_pastForecasts[methodRow].size() > forecastRow);
+    wxASSERT((int)_forecasts.size() > methodRow);
+    wxASSERT((int)_pastForecasts.size() > methodRow);
+    wxASSERT((int)_forecasts[methodRow].size() > forecastRow);
+    wxASSERT((int)_pastForecasts[methodRow].size() > forecastRow);
 
-    asResultsForecast* refForecast = m_forecasts[methodRow][forecastRow];
+    asResultsForecast* refForecast = _forecasts[methodRow][forecastRow];
 
     if (!refForecast->GetMethodId().IsSameAs(forecast->GetMethodId(), false)) compatible = false;
     if (!refForecast->GetSpecificTag().IsSameAs(forecast->GetSpecificTag(), false)) compatible = false;
@@ -113,7 +113,7 @@ bool asResultsForecastAggregator::AddPastForecast(int methodRow, int forecastRow
     if (!refForecast->GetPredictandDatabase().IsSameAs(forecast->GetPredictandDatabase(), false)) compatible = false;
 
     if (compatible) {
-        m_pastForecasts[methodRow][forecastRow].push_back(forecast);
+        _pastForecasts[methodRow][forecastRow].push_back(forecast);
     } else {
         wxLogError(_("The past forecast \"%s\" (%s) is not fully compatible with the current version of \"%s\" (%s)"),
                    forecast->GetSpecificTagDisplay(), forecast->GetMethodIdDisplay(),
@@ -125,76 +125,76 @@ bool asResultsForecastAggregator::AddPastForecast(int methodRow, int forecastRow
 }
 
 void asResultsForecastAggregator::ClearArrays() {
-    for (int i = 0; i < m_forecasts.size(); i++) {
-        for (int j = 0; j < m_forecasts[i].size(); j++) {
-            wxDELETE(m_forecasts[i][j]);
+    for (int i = 0; i < _forecasts.size(); i++) {
+        for (int j = 0; j < _forecasts[i].size(); j++) {
+            wxDELETE(_forecasts[i][j]);
         }
     }
-    m_forecasts.clear();
+    _forecasts.clear();
 
-    for (int i = 0; i < m_pastForecasts.size(); i++) {
-        for (int j = 0; j < m_pastForecasts[i].size(); j++) {
-            for (int k = 0; k < m_pastForecasts[i][j].size(); k++) {
-                wxDELETE(m_pastForecasts[i][j][k]);
+    for (int i = 0; i < _pastForecasts.size(); i++) {
+        for (int j = 0; j < _pastForecasts[i].size(); j++) {
+            for (int k = 0; k < _pastForecasts[i][j].size(); k++) {
+                wxDELETE(_pastForecasts[i][j][k]);
             }
         }
     }
-    m_pastForecasts.clear();
+    _pastForecasts.clear();
 }
 
 int asResultsForecastAggregator::GetMethodsNb() const {
-    return (int)m_forecasts.size();
+    return (int)_forecasts.size();
 }
 
 int asResultsForecastAggregator::GetForecastsNb(int methodRow) const {
-    wxASSERT((int)m_forecasts.size() > methodRow);
-    return (int)m_forecasts[methodRow].size();
+    wxASSERT((int)_forecasts.size() > methodRow);
+    return (int)_forecasts[methodRow].size();
 }
 
 int asResultsForecastAggregator::GetPastMethodsNb() const {
-    return (int)m_pastForecasts.size();
+    return (int)_pastForecasts.size();
 }
 
 int asResultsForecastAggregator::GetPastForecastsNb(int methodRow) const {
-    wxASSERT((int)m_pastForecasts.size() > methodRow);
-    return (int)m_pastForecasts[methodRow].size();
+    wxASSERT((int)_pastForecasts.size() > methodRow);
+    return (int)_pastForecasts[methodRow].size();
 }
 
 int asResultsForecastAggregator::GetPastForecastsNb(int methodRow, int forecastRow) const {
-    wxASSERT(m_pastForecasts.size() > methodRow);
-    wxASSERT(m_pastForecasts[methodRow].size() > forecastRow);
-    return (int)m_pastForecasts[methodRow][forecastRow].size();
+    wxASSERT(_pastForecasts.size() > methodRow);
+    wxASSERT(_pastForecasts[methodRow].size() > forecastRow);
+    return (int)_pastForecasts[methodRow][forecastRow].size();
 }
 
 asResultsForecast* asResultsForecastAggregator::GetForecast(int methodRow, int forecastRow) const {
-    wxASSERT(m_forecasts.size() > methodRow);
-    wxASSERT(m_forecasts[methodRow].size() > forecastRow);
-    return m_forecasts[methodRow][forecastRow];
+    wxASSERT(_forecasts.size() > methodRow);
+    wxASSERT(_forecasts[methodRow].size() > forecastRow);
+    return _forecasts[methodRow][forecastRow];
 }
 
 asResultsForecast* asResultsForecastAggregator::GetPastForecast(int methodRow, int forecastRow, int leadTimeRow) const {
-    wxASSERT(m_pastForecasts.size() > methodRow);
-    wxASSERT(m_pastForecasts[methodRow].size() > forecastRow);
-    return m_pastForecasts[methodRow][forecastRow][leadTimeRow];
+    wxASSERT(_pastForecasts.size() > methodRow);
+    wxASSERT(_pastForecasts[methodRow].size() > forecastRow);
+    return _pastForecasts[methodRow][forecastRow][leadTimeRow];
 }
 
 wxString asResultsForecastAggregator::GetForecastName(int methodRow, int forecastRow) const {
     wxString name = wxEmptyString;
 
-    if (m_forecasts.empty()) return wxEmptyString;
+    if (_forecasts.empty()) return wxEmptyString;
 
-    wxASSERT(m_forecasts.size() > methodRow);
+    wxASSERT(_forecasts.size() > methodRow);
 
-    if (m_forecasts.size() > methodRow && m_forecasts[methodRow].size() > forecastRow) {
-        name = m_forecasts[methodRow][forecastRow]->GetMethodIdDisplay();
+    if (_forecasts.size() > methodRow && _forecasts[methodRow].size() > forecastRow) {
+        name = _forecasts[methodRow][forecastRow]->GetMethodIdDisplay();
 
-        if (!name.IsSameAs(m_forecasts[methodRow][forecastRow]->GetMethodId())) {
-            name.Append(asStrF(" (%s)", m_forecasts[methodRow][forecastRow]->GetMethodId()));
+        if (!name.IsSameAs(_forecasts[methodRow][forecastRow]->GetMethodId())) {
+            name.Append(asStrF(" (%s)", _forecasts[methodRow][forecastRow]->GetMethodId()));
         }
 
-        if (!m_forecasts[methodRow][forecastRow]->GetSpecificTag().IsEmpty()) {
+        if (!_forecasts[methodRow][forecastRow]->GetSpecificTag().IsEmpty()) {
             name.Append(" - ");
-            name.Append(m_forecasts[methodRow][forecastRow]->GetSpecificTagDisplay());
+            name.Append(_forecasts[methodRow][forecastRow]->GetSpecificTagDisplay());
         }
     }
 
@@ -206,15 +206,15 @@ wxString asResultsForecastAggregator::GetForecastName(int methodRow, int forecas
 wxString asResultsForecastAggregator::GetMethodName(int methodRow) const {
     wxString name = wxEmptyString;
 
-    if (m_forecasts.empty()) return wxEmptyString;
+    if (_forecasts.empty()) return wxEmptyString;
 
-    wxASSERT(m_forecasts.size() > methodRow);
+    wxASSERT(_forecasts.size() > methodRow);
 
-    if (m_forecasts.size() > methodRow && !m_forecasts[methodRow].empty()) {
-        name = m_forecasts[methodRow][0]->GetMethodIdDisplay();
+    if (_forecasts.size() > methodRow && !_forecasts[methodRow].empty()) {
+        name = _forecasts[methodRow][0]->GetMethodIdDisplay();
 
-        if (!name.IsSameAs(m_forecasts[methodRow][0]->GetMethodId())) {
-            name.Append(asStrF(" (%s)", m_forecasts[methodRow][0]->GetMethodId()));
+        if (!name.IsSameAs(_forecasts[methodRow][0]->GetMethodId())) {
+            name.Append(asStrF(" (%s)", _forecasts[methodRow][0]->GetMethodId()));
         }
     }
 
@@ -226,12 +226,12 @@ wxString asResultsForecastAggregator::GetMethodName(int methodRow) const {
 vwxs asResultsForecastAggregator::GetMethodNames() const {
     vwxs names;
 
-    for (int methodRow = 0; methodRow < m_forecasts.size(); methodRow++) {
-        wxASSERT(!m_forecasts[methodRow].empty());
+    for (int methodRow = 0; methodRow < _forecasts.size(); methodRow++) {
+        wxASSERT(!_forecasts[methodRow].empty());
 
-        wxString methodName = m_forecasts[methodRow][0]->GetMethodIdDisplay();
-        if (!methodName.IsSameAs(m_forecasts[methodRow][0]->GetMethodId())) {
-            methodName.Append(asStrF(" (%s)", m_forecasts[methodRow][0]->GetMethodId()));
+        wxString methodName = _forecasts[methodRow][0]->GetMethodIdDisplay();
+        if (!methodName.IsSameAs(_forecasts[methodRow][0]->GetMethodId())) {
+            methodName.Append(asStrF(" (%s)", _forecasts[methodRow][0]->GetMethodId()));
         }
         names.push_back(methodName);
     }
@@ -244,12 +244,12 @@ vwxs asResultsForecastAggregator::GetMethodNames() const {
 wxArrayString asResultsForecastAggregator::GetMethodNamesWxArray() const {
     wxArrayString names;
 
-    for (int methodRow = 0; methodRow < m_forecasts.size(); methodRow++) {
-        wxASSERT(!m_forecasts[methodRow].empty());
+    for (int methodRow = 0; methodRow < _forecasts.size(); methodRow++) {
+        wxASSERT(!_forecasts[methodRow].empty());
 
-        wxString methodName = m_forecasts[methodRow][0]->GetMethodIdDisplay();
-        if (!methodName.IsSameAs(m_forecasts[methodRow][0]->GetMethodId())) {
-            methodName.Append(asStrF(" (%s)", m_forecasts[methodRow][0]->GetMethodId()));
+        wxString methodName = _forecasts[methodRow][0]->GetMethodIdDisplay();
+        if (!methodName.IsSameAs(_forecasts[methodRow][0]->GetMethodId())) {
+            methodName.Append(asStrF(" (%s)", _forecasts[methodRow][0]->GetMethodId()));
         }
         names.Add(methodName);
     }
@@ -260,10 +260,10 @@ wxArrayString asResultsForecastAggregator::GetMethodNamesWxArray() const {
 }
 
 wxArrayString asResultsForecastAggregator::GetForecastNamesWxArray(int methodRow) const {
-    wxASSERT(m_forecasts.size() > methodRow);
+    wxASSERT(_forecasts.size() > methodRow);
     wxArrayString names;
 
-    for (auto forecast : m_forecasts[methodRow]) {
+    for (auto forecast : _forecasts[methodRow]) {
         if (!forecast->GetSpecificTagDisplay().IsEmpty()) {
             names.Add(forecast->GetSpecificTagDisplay());
         } else {
@@ -279,7 +279,7 @@ wxArrayString asResultsForecastAggregator::GetForecastNamesWxArray(int methodRow
 wxArrayString asResultsForecastAggregator::GetCombinedForecastNamesWxArray() const {
     wxArrayString names;
 
-    for (const auto& method : m_forecasts) {
+    for (const auto& method : _forecasts) {
         wxASSERT(!method.empty());
 
         wxString methodName = method[0]->GetMethodIdDisplay();
@@ -308,7 +308,7 @@ wxString asResultsForecastAggregator::GetFilePath(int methodRow, int forecastRow
         forecastRow = 0;
     }
 
-    return m_forecasts[methodRow][forecastRow]->GetFilePath();
+    return _forecasts[methodRow][forecastRow]->GetFilePath();
 }
 
 a1f asResultsForecastAggregator::GetTargetDates(int methodRow) const {
@@ -316,8 +316,8 @@ a1f asResultsForecastAggregator::GetTargetDates(int methodRow) const {
 
     wxASSERT(methodRow >= 0);
 
-    for (int forecastRow = 0; forecastRow < m_forecasts[methodRow].size(); forecastRow++) {
-        a1f fcastDates = m_forecasts[methodRow][forecastRow]->GetTargetDates();
+    for (int forecastRow = 0; forecastRow < _forecasts[methodRow].size(); forecastRow++) {
+        a1f fcastDates = _forecasts[methodRow][forecastRow]->GetTargetDates();
         if (fcastDates[0] < firstDate) {
             firstDate = fcastDates[0];
         }
@@ -333,13 +333,13 @@ a1f asResultsForecastAggregator::GetTargetDates(int methodRow) const {
 }
 
 a1f asResultsForecastAggregator::GetTargetDates(int methodRow, int forecastRow) const {
-    return m_forecasts[methodRow][forecastRow]->GetTargetDates();
+    return _forecasts[methodRow][forecastRow]->GetTargetDates();
 }
 
 a1f asResultsForecastAggregator::GetFullTargetDates() const {
     float firstDate = 1.0E+9, lastDate = 0;
 
-    for (const auto& forecastGroup : m_forecasts) {
+    for (const auto& forecastGroup : _forecasts) {
         for (auto forecast : forecastGroup) {
             a1f fcastDates = forecast->GetTargetDates();
             firstDate = wxMin(fcastDates[0], firstDate);
@@ -358,7 +358,7 @@ int asResultsForecastAggregator::GetForecastRowSpecificForStationId(int methodRo
 
     // Pick up the most relevant forecast for the station
     for (int i = 0; i < GetForecastsNb(methodRow); i++) {
-        asResultsForecast* forecast = m_forecasts[methodRow][i];
+        asResultsForecast* forecast = _forecasts[methodRow][i];
         if (forecast->IsSpecificForStationId(stationId)) {
             return i;
         }
@@ -374,7 +374,7 @@ int asResultsForecastAggregator::GetForecastRowSpecificForStationRow(int methodR
 
     // Pick up the most relevant forecast for the station
     for (int i = 0; i < GetForecastsNb(methodRow); i++) {
-        asResultsForecast* forecast = m_forecasts[methodRow][i];
+        asResultsForecast* forecast = _forecasts[methodRow][i];
         int stationId = forecast->GetStationId(stationRow);
         if (forecast->IsSpecificForStationId(stationId)) {
             return i;
@@ -389,12 +389,12 @@ int asResultsForecastAggregator::GetForecastRowSpecificForStationRow(int methodR
 wxArrayString asResultsForecastAggregator::GetStationNames(int methodRow, int forecastRow) const {
     wxArrayString stationNames;
 
-    if (m_forecasts.empty()) return stationNames;
+    if (_forecasts.empty()) return stationNames;
 
-    wxASSERT(m_forecasts.size() > methodRow);
-    wxASSERT(m_forecasts[methodRow].size() > forecastRow);
+    wxASSERT(_forecasts.size() > methodRow);
+    wxASSERT(_forecasts[methodRow].size() > forecastRow);
 
-    stationNames = m_forecasts[methodRow][forecastRow]->GetStationNamesWxArray();
+    stationNames = _forecasts[methodRow][forecastRow]->GetStationNamesWxArray();
 
     return stationNames;
 }
@@ -402,12 +402,12 @@ wxArrayString asResultsForecastAggregator::GetStationNames(int methodRow, int fo
 wxString asResultsForecastAggregator::GetStationName(int methodRow, int forecastRow, int stationRow) const {
     wxString stationName;
 
-    if (m_forecasts.empty()) return wxEmptyString;
+    if (_forecasts.empty()) return wxEmptyString;
 
-    wxASSERT(m_forecasts.size() > methodRow);
-    wxASSERT(m_forecasts[methodRow].size() > forecastRow);
+    wxASSERT(_forecasts.size() > methodRow);
+    wxASSERT(_forecasts[methodRow].size() > forecastRow);
 
-    stationName = m_forecasts[methodRow][forecastRow]->GetStationName(stationRow);
+    stationName = _forecasts[methodRow][forecastRow]->GetStationName(stationRow);
 
     return stationName;
 }
@@ -415,12 +415,12 @@ wxString asResultsForecastAggregator::GetStationName(int methodRow, int forecast
 wxArrayString asResultsForecastAggregator::GetStationNamesWithHeights(int methodRow, int forecastRow) const {
     wxArrayString stationNames;
 
-    if (m_forecasts.empty()) return stationNames;
+    if (_forecasts.empty()) return stationNames;
 
-    wxASSERT(m_forecasts.size() > methodRow);
-    wxASSERT(m_forecasts[methodRow].size() > forecastRow);
+    wxASSERT(_forecasts.size() > methodRow);
+    wxASSERT(_forecasts[methodRow].size() > forecastRow);
 
-    stationNames = m_forecasts[methodRow][forecastRow]->GetStationNamesAndHeightsWxArray();
+    stationNames = _forecasts[methodRow][forecastRow]->GetStationNamesAndHeightsWxArray();
 
     return stationNames;
 }
@@ -428,23 +428,23 @@ wxArrayString asResultsForecastAggregator::GetStationNamesWithHeights(int method
 wxString asResultsForecastAggregator::GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow) const {
     wxString stationName;
 
-    if (m_forecasts.empty()) return wxEmptyString;
+    if (_forecasts.empty()) return wxEmptyString;
 
-    wxASSERT(m_forecasts.size() > methodRow);
-    wxASSERT(m_forecasts[methodRow].size() > forecastRow);
+    wxASSERT(_forecasts.size() > methodRow);
+    wxASSERT(_forecasts[methodRow].size() > forecastRow);
 
-    stationName = m_forecasts[methodRow][forecastRow]->GetStationNameAndHeight(stationRow);
+    stationName = _forecasts[methodRow][forecastRow]->GetStationNameAndHeight(stationRow);
 
     return stationName;
 }
 
 int asResultsForecastAggregator::GetLeadTimeLength(int methodRow, int forecastRow) const {
-    if (m_forecasts.empty()) return 0;
+    if (_forecasts.empty()) return 0;
 
-    wxASSERT(m_forecasts.size() > methodRow);
-    wxASSERT(m_forecasts[methodRow].size() > forecastRow);
+    wxASSERT(_forecasts.size() > methodRow);
+    wxASSERT(_forecasts[methodRow].size() > forecastRow);
 
-    int length = m_forecasts[methodRow][forecastRow]->GetTargetDatesLength();
+    int length = _forecasts[methodRow][forecastRow]->GetTargetDatesLength();
 
     wxASSERT(length > 0);
 
@@ -454,24 +454,24 @@ int asResultsForecastAggregator::GetLeadTimeLength(int methodRow, int forecastRo
 wxArrayString asResultsForecastAggregator::GetTargetDatesWxArray(int methodRow, int forecastRow) const {
     wxArrayString leadTimes;
 
-    if (m_forecasts.empty()) return leadTimes;
+    if (_forecasts.empty()) return leadTimes;
 
-    wxASSERT(m_forecasts.size() > methodRow);
-    wxASSERT(m_forecasts[methodRow].size() > forecastRow);
+    wxASSERT(_forecasts.size() > methodRow);
+    wxASSERT(_forecasts[methodRow].size() > forecastRow);
 
-    return m_forecasts[methodRow][forecastRow]->GetTargetDatesWxArray();
+    return _forecasts[methodRow][forecastRow]->GetTargetDatesWxArray();
 }
 
 vf asResultsForecastAggregator::GetMaxExtent() const {
-    if (m_forecasts.empty() || m_forecasts[0].empty()) {
+    if (_forecasts.empty() || _forecasts[0].empty()) {
         return {0, 0, 0, 0};
     }
 
-    wxASSERT(m_forecasts[0][0]);
-    vf vecLonMin = m_forecasts[0][0]->GetPredictorLonMin();
-    vf vecLonMax = m_forecasts[0][0]->GetPredictorLonMax();
-    vf vecLatMin = m_forecasts[0][0]->GetPredictorLatMin();
-    vf vecLatMax = m_forecasts[0][0]->GetPredictorLatMax();
+    wxASSERT(_forecasts[0][0]);
+    vf vecLonMin = _forecasts[0][0]->GetPredictorLonMin();
+    vf vecLonMax = _forecasts[0][0]->GetPredictorLonMax();
+    vf vecLatMin = _forecasts[0][0]->GetPredictorLatMin();
+    vf vecLatMax = _forecasts[0][0]->GetPredictorLatMax();
 
     if (vecLonMin.empty() || vecLonMax.empty() || vecLatMin.empty() || vecLatMax.empty()) {
         return {0, 0, 0, 0};
@@ -483,7 +483,7 @@ vf asResultsForecastAggregator::GetMaxExtent() const {
         *std::min_element(vecLatMin.begin(), vecLatMin.end()),
         *std::max_element(vecLatMax.begin(), vecLatMax.end())};
 
-    for (const auto& method : m_forecasts) {
+    for (const auto& method : _forecasts) {
         for (const auto& forecast : method) {
             vecLonMin = forecast->GetPredictorLonMin();
             vecLonMax = forecast->GetPredictorLonMax();
@@ -508,10 +508,10 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
     if (quantileThreshold <= 0) quantileThreshold = (float)0.9;
     if (quantileThreshold > 1) quantileThreshold = (float)0.9;
 
-    wxASSERT((int)m_forecasts.size() > methodRow);
+    wxASSERT((int)_forecasts.size() > methodRow);
 
     double timeStep = 1;
-    for (auto forecast : m_forecasts[methodRow]) {
+    for (auto forecast : _forecasts[methodRow]) {
         timeStep = wxMin(timeStep, forecast->GetForecastTimeStepHours() / 24.0);
     }
 
@@ -528,7 +528,7 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
 
     bool singleMethod = (GetForecastsNb(methodRow) == 1);
 
-    for (auto forecast : m_forecasts[methodRow]) {
+    for (auto forecast : _forecasts[methodRow]) {
         // Get return period index
         int indexReferenceAxis = asNOT_FOUND;
         if (forecast->HasReferenceValues()) {
@@ -618,9 +618,9 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
 }
 
 a1f asResultsForecastAggregator::GetOverallMaxValues(a1f& dates, int returnPeriodRef, float quantileThreshold) const {
-    a2f allMax = a2f::Zero(dates.size(), m_forecasts.size());
+    a2f allMax = a2f::Zero(dates.size(), _forecasts.size());
 
-    for (int iMethod = 0; iMethod < (int)m_forecasts.size(); iMethod++) {
+    for (int iMethod = 0; iMethod < (int)_forecasts.size(); iMethod++) {
         a1f values = GetMethodMaxValues(dates, iMethod, returnPeriodRef, quantileThreshold);
         if (values.size() == dates.size()) {
             allMax.col(iMethod) = values;
@@ -651,16 +651,16 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
     quantiles << 20, 60, 90;
 
     // Create 1 file per method
-    for (int methodRow = 0; methodRow < (int)m_forecasts.size(); methodRow++) {
+    for (int methodRow = 0; methodRow < (int)_forecasts.size(); methodRow++) {
         // Filename
         wxString filePath = dirPath;
         filePath.Append(DS);
         wxString dirStructure = "YYYY";
         dirStructure.Append(DS).Append("MM").Append(DS).Append("DD");
-        wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirStructure);
+        wxString directory = asTime::GetStringTime(_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirStructure);
         filePath.Append(directory).Append(DS);
-        wxString forecastName = m_forecasts[methodRow][0]->GetMethodId();
-        wxString nowStr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
+        wxString forecastName = _forecasts[methodRow][0]->GetMethodId();
+        wxString nowStr = asTime::GetStringTime(_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
         wxString ext = "xml";
         wxString filename = asStrF("%s.%s.%s", nowStr, forecastName, ext);
         filePath.Append(filename);
@@ -674,14 +674,14 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
 
         // Method description
         auto nodeMethod = new wxXmlNode(wxXML_ELEMENT_NODE, "method");
-        nodeMethod->AddChild(fileExport.CreateNode("id", m_forecasts[methodRow][0]->GetMethodId()));
-        nodeMethod->AddChild(fileExport.CreateNode("name", m_forecasts[methodRow][0]->GetMethodIdDisplay()));
-        nodeMethod->AddChild(fileExport.CreateNode("description", m_forecasts[methodRow][0]->GetDescription()));
+        nodeMethod->AddChild(fileExport.CreateNode("id", _forecasts[methodRow][0]->GetMethodId()));
+        nodeMethod->AddChild(fileExport.CreateNode("name", _forecasts[methodRow][0]->GetMethodIdDisplay()));
+        nodeMethod->AddChild(fileExport.CreateNode("description", _forecasts[methodRow][0]->GetDescription()));
         fileExport.AddChild(nodeMethod);
 
         // Reference axis
-        if (m_forecasts[methodRow][0]->HasReferenceValues()) {
-            a1f refAxis = m_forecasts[methodRow][0]->GetReferenceAxis();
+        if (_forecasts[methodRow][0]->HasReferenceValues()) {
+            a1f refAxis = _forecasts[methodRow][0]->GetReferenceAxis();
             auto nodeReferenceAxis = new wxXmlNode(wxXML_ELEMENT_NODE, "reference_axis");
             for (float axis : refAxis) {
                 nodeReferenceAxis->AddChild(fileExport.CreateNode("reference", asStrF("%.2f", axis)));
@@ -690,14 +690,14 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
         }
 
         // Target dates
-        a1f targetDates = m_forecasts[methodRow][0]->GetTargetDates();
+        a1f targetDates = _forecasts[methodRow][0]->GetTargetDates();
         auto nodeTargetDates = new wxXmlNode(wxXML_ELEMENT_NODE, "target_dates");
         for (int i = 0; i < targetDates.size(); i++) {
             auto nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
             nodeTargetDate->AddChild(
                 fileExport.CreateNode("date", asTime::GetStringTime(targetDates[i], "DD.MM.YYYY HH")));
             nodeTargetDate->AddChild(
-                fileExport.CreateNode("analogs_nb", m_forecasts[methodRow][0]->GetAnalogsNumber(i)));
+                fileExport.CreateNode("analogs_nb", _forecasts[methodRow][0]->GetAnalogsNumber(i)));
             nodeTargetDates->AddChild(nodeTargetDate);
         }
         fileExport.AddChild(nodeTargetDates);
@@ -710,17 +710,17 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
         fileExport.AddChild(nodeQuantiles);
 
         // Results per station
-        a1i stationIds = m_forecasts[methodRow][0]->GetStationIds();
+        a1i stationIds = _forecasts[methodRow][0]->GetStationIds();
         a2f referenceValues;
-        if (m_forecasts[methodRow][0]->HasReferenceValues()) {
-            referenceValues = m_forecasts[methodRow][0]->GetReferenceValues();
+        if (_forecasts[methodRow][0]->HasReferenceValues()) {
+            referenceValues = _forecasts[methodRow][0]->GetReferenceValues();
             wxASSERT(referenceValues.rows() == stationIds.size());
         }
         auto nodeStations = new wxXmlNode(wxXML_ELEMENT_NODE, "stations");
         for (int i = 0; i < stationIds.size(); i++) {
             // Get specific forecast
             int forecastRow = GetForecastRowSpecificForStationId(methodRow, stationIds[i]);
-            asResultsForecast* forecast = m_forecasts[methodRow][forecastRow];
+            asResultsForecast* forecast = _forecasts[methodRow][forecastRow];
 
             // Set station properties
             auto nodeStation = new wxXmlNode(wxXML_ELEMENT_NODE, "station");
@@ -806,16 +806,16 @@ bool asResultsForecastAggregator::ExportSyntheticSmallCsv(const wxString& dirPat
     quantiles << 0, 25, 50, 75, 90, 100;
 
     // Create 1 file per method
-    for (int methodRow = 0; methodRow < (int)m_forecasts.size(); methodRow++) {
+    for (int methodRow = 0; methodRow < (int)_forecasts.size(); methodRow++) {
         // Filename
         wxString filePath = dirPath;
         filePath.Append(DS);
         wxString dirStructure = "YYYY";
         dirStructure.Append(DS).Append("MM").Append(DS).Append("DD");
-        wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirStructure);
+        wxString directory = asTime::GetStringTime(_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirStructure);
         filePath.Append(directory).Append(DS);
-        wxString forecastName = m_forecasts[methodRow][0]->GetMethodId();
-        wxString nowStr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
+        wxString forecastName = _forecasts[methodRow][0]->GetMethodId();
+        wxString nowStr = asTime::GetStringTime(_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
         wxString filename = asStrF("%s.%s.%s", nowStr, forecastName, "txt");
         filePath.Append(filename);
 
@@ -824,16 +824,16 @@ bool asResultsForecastAggregator::ExportSyntheticSmallCsv(const wxString& dirPat
         if (!fileExport.Open()) return false;
 
         // Method description
-        fileExport.AddContent(asStrF("method: %s | %s\n", m_forecasts[methodRow][0]->GetMethodId(),
-                                     m_forecasts[methodRow][0]->GetMethodIdDisplay()));
+        fileExport.AddContent(asStrF("method: %s | %s\n", _forecasts[methodRow][0]->GetMethodId(),
+                                     _forecasts[methodRow][0]->GetMethodIdDisplay()));
 
         // Results per station
-        a1i stationIds = m_forecasts[methodRow][0]->GetStationIds();
+        a1i stationIds = _forecasts[methodRow][0]->GetStationIds();
 
         for (int i = 0; i < stationIds.size(); i++) {
             // Get specific forecast
             int forecastRow = GetForecastRowSpecificForStationId(methodRow, stationIds[i]);
-            asResultsForecast* forecast = m_forecasts[methodRow][forecastRow];
+            asResultsForecast* forecast = _forecasts[methodRow][forecastRow];
 
             // Set station properties
             fileExport.AddContent(asStrF("station %d: %s (%s)\n", stationIds[i], forecast->GetStationName(i),
@@ -854,7 +854,7 @@ bool asResultsForecastAggregator::ExportSyntheticSmallCsv(const wxString& dirPat
         for (int i = 0; i < stationIds.size(); i++) {
             // Get specific forecast
             int forecastRow = GetForecastRowSpecificForStationId(methodRow, stationIds[i]);
-            asResultsForecast* forecast = m_forecasts[methodRow][forecastRow];
+            asResultsForecast* forecast = _forecasts[methodRow][forecastRow];
 
             // Target dates
             a1f targetDates = forecast->GetTargetDates();
@@ -888,15 +888,15 @@ bool asResultsForecastAggregator::ExportSyntheticCustomCsvFVG(const wxString& di
     quantiles << 0, 25, 50, 75, 90, 100;
 
     // Create 1 file per method
-    for (int methodRow = 0; methodRow < (int)m_forecasts.size(); methodRow++) {
+    for (int methodRow = 0; methodRow < (int)_forecasts.size(); methodRow++) {
         // Filename
         wxString filePath = dirPath;
         filePath.Append(DS);
         wxString dirStructure = "YYYYMMDD";
-        wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirStructure);
+        wxString directory = asTime::GetStringTime(_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirStructure);
         filePath.Append(directory).Append(DS);
-        wxString forecastName = m_forecasts[methodRow][0]->GetMethodId();
-        wxString nowStr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
+        wxString forecastName = _forecasts[methodRow][0]->GetMethodId();
+        wxString nowStr = asTime::GetStringTime(_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYY_MM_DD_hh");
         wxString filename = asStrF("%s.%s.%s", nowStr, forecastName, "txt");
         filePath.Append(filename);
 
@@ -905,7 +905,7 @@ bool asResultsForecastAggregator::ExportSyntheticCustomCsvFVG(const wxString& di
         if (!fileExport.Open()) return false;
 
         // Results per station
-        a1i stationIds = m_forecasts[methodRow][0]->GetStationIds();
+        a1i stationIds = _forecasts[methodRow][0]->GetStationIds();
 
         // Quantiles
         wxString headerQuantiles;
@@ -920,7 +920,7 @@ bool asResultsForecastAggregator::ExportSyntheticCustomCsvFVG(const wxString& di
         for (int i = 0; i < stationIds.size(); i++) {
             // Get specific forecast
             int forecastRow = GetForecastRowSpecificForStationId(methodRow, stationIds[i]);
-            asResultsForecast* forecast = m_forecasts[methodRow][forecastRow];
+            asResultsForecast* forecast = _forecasts[methodRow][forecastRow];
 
             // Target dates
             a1f targetDates = forecast->GetTargetDates();

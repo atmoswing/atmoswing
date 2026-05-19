@@ -33,13 +33,13 @@
 asPredictorCustomMFvgMeso::asPredictorCustomMFvgMeso(const wxString& dataId)
     : asPredictorCustomMFvgSynop(dataId) {
     // Set the basic properties.
-    m_datasetId = "Custom_MeteoFVG_Meso";
-    m_provider = "ECMWF";
-    m_transformedBy = "Meteo FVG";
-    m_datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
-    m_fStr.hasLevelDim = true;
-    m_fStr.singleTimeStep = true;
-    m_warnMissingFiles = false;
+    _datasetId = "Custom_MeteoFVG_Meso";
+    _provider = "ECMWF";
+    _transformedBy = "Meteo FVG";
+    _datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
+    _fStr.hasLevelDim = true;
+    _fStr.singleTimeStep = true;
+    _warnMissingFiles = false;
 }
 
 bool asPredictorCustomMFvgMeso::Init() {
@@ -47,39 +47,39 @@ bool asPredictorCustomMFvgMeso::Init() {
         return false;
     }
 
-    if (m_product.IsSameAs("data", false)) {
-        if (m_dataId.Contains("2t_sfc")) {
-            m_parameter = AirTemperature;
-            m_gribCode = {0, 128, 167, 1};
-            m_unit = degK;
-        } else if (m_dataId.Contains("10u_sfc")) {
-            m_parameter = Uwind;
-            m_gribCode = {0, 128, 165, 1};
-            m_unit = m_s;
-        } else if (m_dataId.Contains("10v_sfc")) {
-            m_parameter = Vwind;
-            m_gribCode = {0, 128, 166, 1};
-            m_unit = m_s;
-        } else if (m_dataId.Contains("cp_sfc")) {
-            m_parameter = Precipitation;
-            m_gribCode = {0, 128, 143, 1};
-            m_unit = m;
-        } else if (m_dataId.Contains("msl_sfc")) {
-            m_parameter = Pressure;
-            m_gribCode = {0, 128, 151, 1};
-            m_unit = Pa;
-        } else if (m_dataId.Contains("tp_sfc")) {
-            m_parameter = AirTemperature;
-            m_gribCode = {0, 128, 228, 1};
-            m_unit = degK;
+    if (_product.IsSameAs("data", false)) {
+        if (_dataId.Contains("2t_sfc")) {
+            _parameter = AirTemperature;
+            _gribCode = {0, 128, 167, 1};
+            _unit = degK;
+        } else if (_dataId.Contains("10u_sfc")) {
+            _parameter = Uwind;
+            _gribCode = {0, 128, 165, 1};
+            _unit = _s;
+        } else if (_dataId.Contains("10v_sfc")) {
+            _parameter = Vwind;
+            _gribCode = {0, 128, 166, 1};
+            _unit = _s;
+        } else if (_dataId.Contains("cp_sfc")) {
+            _parameter = Precipitation;
+            _gribCode = {0, 128, 143, 1};
+            _unit = m;
+        } else if (_dataId.Contains("msl_sfc")) {
+            _parameter = Pressure;
+            _gribCode = {0, 128, 151, 1};
+            _unit = Pa;
+        } else if (_dataId.Contains("tp_sfc")) {
+            _parameter = AirTemperature;
+            _gribCode = {0, 128, 228, 1};
+            _unit = degK;
         } else {
-            if (m_parameter == ParameterUndefined) {
-                wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            if (_parameter == ParameterUndefined) {
+                wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), _dataId, _product);
                 return false;
             }
         }
 
-        m_fileNamePattern = m_dataId + ".%4d%02d%02d%02d.grib";
+        _fileNamePattern = _dataId + ".%4d%02d%02d%02d.grib";
     }
 
     return true;
@@ -111,7 +111,7 @@ void asPredictorCustomMFvgMeso::ListFiles(asTimeArray& timeArray) {
             } else {
                 path = GetFullDirectoryPath() + asStrF("%4d/", t.year);
             }
-            m_files.push_back(path + asStrF(m_fileNamePattern, t.year, t.month, t.day, t.hour));
+            _files.push_back(path + asStrF(_fileNamePattern, t.year, t.month, t.day, t.hour));
         } else {
             Time t2 = asTime::GetTimeStruct(timeArray[i] - timeArray.GetTimeStepDays());
             if (!skipMonthDayInPath) {
@@ -119,7 +119,7 @@ void asPredictorCustomMFvgMeso::ListFiles(asTimeArray& timeArray) {
             } else {
                 path = GetFullDirectoryPath() + asStrF("%4d/", t2.year);
             }
-            m_files.push_back(path + asStrF(m_fileNamePattern, t2.year, t2.month, t2.day, 24));
+            _files.push_back(path + asStrF(_fileNamePattern, t2.year, t2.month, t2.day, 24));
         }
     }
 }

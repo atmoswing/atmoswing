@@ -62,22 +62,22 @@ class asFrameForecaster : public asFrameForecasterVirtual {
     bool OpenBatchForecasts();
 
     void SetBatchForecasts(asBatchForecasts& batchForecasts) {
-        m_batchForecasts = batchForecasts;
+        _batchForecasts = batchForecasts;
     }
 
     asPanelsManagerForecasts* GetPanelsManager() const {
-        return m_panelsManager;
+        return _panelsManager;
     }
 
   protected:
-    asLogWindow* m_logWindow; /**< The log window. */
-    asMethodForecasting* m_forecaster; /**< The forecasting method. */
-    awxLed* m_ledDownloading; /**< The LED for downloading. */
-    awxLed* m_ledLoading; /**< The LED for loading. */
-    awxLed* m_ledProcessing; /**< The LED for processing. */
-    awxLed* m_ledSaving; /**< The LED for saving. */
-    asBatchForecasts m_batchForecasts; /**< The batch forecasts object. */
-    wxFileHistory* m_fileHistory; /**< The file history. */
+    asLogWindow* _logWindow; /**< The log window. */
+    asMethodForecasting* _forecaster; /**< The forecasting method. */
+    awxLed* _ledDownloading; /**< The LED for downloading. */
+    awxLed* _ledLoading; /**< The LED for loading. */
+    awxLed* _ledProcessing; /**< The LED for processing. */
+    awxLed* _ledSaving; /**< The LED for saving. */
+    asBatchForecasts _batchForecasts; /**< The batch forecasts object. */
+    wxFileHistory* _fileHistory; /**< The file history. */
 
     void OnOpenBatchForecasts(wxCommandEvent& event) override;
 
@@ -150,7 +150,7 @@ class asFrameForecaster : public asFrameForecasterVirtual {
     void IncrementOverallProgress();
 
   private:
-    asPanelsManagerForecasts* m_panelsManager; /**< The panels manager. */
+    asPanelsManagerForecasts* _panelsManager; /**< The panels manager. */
 
     DECLARE_EVENT_TABLE()
 };

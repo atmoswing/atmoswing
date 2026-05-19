@@ -81,37 +81,37 @@ class asMethodStandard : public wxObject {
     bool GetRandomValidData(asParameters* params, int iStep, int iPtor, int iPre);
 
     void SetParamsFilePath(const wxString& val) {
-        m_paramsFilePath = val;
+        _paramsFilePath = val;
     }
 
     void SetPredictandDBFilePath(const wxString& val) {
-        m_predictandDBFilePath = val;
+        _predictandDBFilePath = val;
     }
 
     void SetPredictandDB(asPredictand* pDB) {
-        m_predictandDB = pDB;
+        _predictandDB = pDB;
     }
 
     void SetPredictorDataDir(const wxString& val) {
-        m_predictorDataDir = val;
+        _predictorDataDir = val;
     }
 
     bool IsArchiveDataPointerCopy(int iStep, int iPtor, int iPre) const {
-        return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
+        return _preloadedArchivePointerCopy[iStep][iPtor][iPre];
     }
 
   protected:
-    bool m_cancel;
-    bool m_preloaded;
-    bool m_warnFailedLoadingData;
-    bool m_dumpPredictorData;
-    bool m_loadFromDumpedData;
-    wxString m_paramsFilePath;
-    wxString m_predictandDBFilePath;
-    wxString m_predictorDataDir;
-    asPredictand* m_predictandDB;
-    vector<vector<vector<vector<vector<asPredictor*> > > > > m_preloadedArchive;
-    vector<vvb> m_preloadedArchivePointerCopy;
+    bool _cancel;
+    bool _preloaded;
+    bool _warnFailedLoadingData;
+    bool _dumpPredictorData;
+    bool _loadFromDumpedData;
+    wxString _paramsFilePath;
+    wxString _predictandDBFilePath;
+    wxString _predictorDataDir;
+    asPredictand* _predictandDB;
+    vector<vector<vector<vector<vector<asPredictor*> > > > > _preloadedArchive;
+    vector<vvb> _preloadedArchivePointerCopy;
 
     bool Preprocess(vector<asPredictor*> predictors, const wxString& method, asPredictor* result);
 

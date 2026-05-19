@@ -50,106 +50,106 @@ class asResultsForecast : public asResults {
     int GetStationRowFromId(int stationId) const;
 
     void SetForecastsDirectory(const wxString& val) {
-        m_forecastsDir = val;
+        _forecastsDir = val;
     }
 
     wxString GetPredictandDatasetId() const {
-        return m_predictandDatasetId;
+        return _predictandDatasetId;
     }
 
     void SetPredictandDatasetId(const wxString& val) {
-        m_predictandDatasetId = val;
+        _predictandDatasetId = val;
     }
 
     wxString GetPredictandDatabase() const {
-        return m_predictandDatabase;
+        return _predictandDatabase;
     }
 
     vi GetPredictandStationIds() const {
-        return m_predictandStationIds;
+        return _predictandStationIds;
     }
 
     void SetPredictandStationIds(const vi& val) {
-        m_predictandStationIds = val;
+        _predictandStationIds = val;
     }
 
     void SetPredictandStationIds(const wxString& val);
 
     asPredictand::Parameter GetPredictandParameter() const {
-        return m_predictandParameter;
+        return _predictandParameter;
     }
 
     void SetPredictandParameter(const asPredictand::Parameter val) {
-        m_predictandParameter = val;
+        _predictandParameter = val;
     }
 
     asPredictand::TemporalResolution GetPredictandTemporalResolution() const {
-        return m_predictandTemporalResolution;
+        return _predictandTemporalResolution;
     }
 
     void SetPredictandTemporalResolution(const asPredictand::TemporalResolution val) {
-        m_predictandTemporalResolution = val;
+        _predictandTemporalResolution = val;
     }
 
     asPredictand::SpatialAggregation GetPredictandSpatialAggregation() const {
-        return m_predictandSpatialAggregation;
+        return _predictandSpatialAggregation;
     }
 
     void SetPredictandSpatialAggregation(const asPredictand::SpatialAggregation val) {
-        m_predictandSpatialAggregation = val;
+        _predictandSpatialAggregation = val;
     }
 
     bool HasReferenceValues() const {
-        return m_hasReferenceValues;
+        return _hasReferenceValues;
     }
 
     wxString GetMethodId() const {
-        return m_methodId;
+        return _methodId;
     }
 
     wxString GetMethodIdDisplay() const {
-        return m_methodIdDisplay;
+        return _methodIdDisplay;
     }
 
     wxString GetSpecificTag() const {
-        return m_specificTag;
+        return _specificTag;
     }
 
     wxString GetSpecificTagDisplay() const {
-        return m_specificTagDisplay;
+        return _specificTagDisplay;
     }
 
     wxString GetDescription() const {
-        return m_description;
+        return _description;
     }
 
     double GetLeadTimeOrigin() const {
-        return m_leadTimeOrigin;
+        return _leadTimeOrigin;
     }
 
     wxString GetLeadTimeOriginString() {
-        wxString leadTimeStr = asTime::GetStringTime(m_leadTimeOrigin, "DD.MM.YYYY hh:mm");
+        wxString leadTimeStr = asTime::GetStringTime(_leadTimeOrigin, "DD.MM.YYYY hh:mm");
         return leadTimeStr;
     }
 
     int GetStationsNb() const {
-        return (int)m_stationIds.size();
+        return (int)_stationIds.size();
     }
 
     a1i GetStationIds() const {
-        return m_stationIds;
+        return _stationIds;
     }
 
     wxString GetStationOfficialId(int i) const {
         wxASSERT(i >= 0);
-        wxASSERT(i < m_stationOfficialIds.size());
-        return m_stationOfficialIds[i];
+        wxASSERT(i < _stationOfficialIds.size());
+        return _stationOfficialIds[i];
     }
 
     wxString GetStationName(int i) const {
         wxASSERT(i >= 0);
-        wxASSERT(i < m_stationNames.size());
-        return m_stationNames[i];
+        wxASSERT(i < _stationNames.size());
+        return _stationNames[i];
     }
 
     wxArrayString GetStationNamesWxArray() const;
@@ -159,183 +159,183 @@ class asResultsForecast : public asResults {
     wxString GetStationNameAndHeight(int iStat) const;
 
     void SetStationNames(const vwxs& stationsNames) {
-        m_stationNames = stationsNames;
+        _stationNames = stationsNames;
     }
 
     int GetStationId(int i) const {
         wxASSERT(i >= 0);
-        wxASSERT(i < m_stationIds.size());
-        return m_stationIds[i];
+        wxASSERT(i < _stationIds.size());
+        return _stationIds[i];
     }
 
     void SetStationIds(const a1i& stationsIds) {
-        m_stationIds = stationsIds;
+        _stationIds = stationsIds;
     }
 
     void SetStationOfficialIds(const vwxs& stationsOfficialIds) {
-        m_stationOfficialIds = stationsOfficialIds;
+        _stationOfficialIds = stationsOfficialIds;
     }
 
     float GetStationHeight(int i) const {
         wxASSERT(i >= 0);
-        wxASSERT(i < m_stationHeights.size());
-        return m_stationHeights[i];
+        wxASSERT(i < _stationHeights.size());
+        return _stationHeights[i];
     }
 
     void SetStationHeights(const a1f& stationsHeights) {
-        m_stationHeights = stationsHeights;
+        _stationHeights = stationsHeights;
     }
 
     double GetStationXCoord(int i) const {
         wxASSERT(i >= 0);
-        wxASSERT(i < m_stationXCoords.size());
-        return m_stationXCoords[i];
+        wxASSERT(i < _stationXCoords.size());
+        return _stationXCoords[i];
     }
 
     void SetStationXCoords(const a1d& stationsXCoords) {
-        m_stationXCoords = stationsXCoords;
+        _stationXCoords = stationsXCoords;
     }
 
     double GetStationYCoord(int i) const {
         wxASSERT(i >= 0);
-        wxASSERT(i < m_stationYCoords.size());
-        return m_stationYCoords[i];
+        wxASSERT(i < _stationYCoords.size());
+        return _stationYCoords[i];
     }
 
     void SetStationYCoords(const a1d& stationsYCoords) {
-        m_stationYCoords = stationsYCoords;
+        _stationYCoords = stationsYCoords;
     }
 
     wxString GetCoordinateSystem() const {
-        return m_coordinateSystem;
+        return _coordinateSystem;
     }
 
     void SetCoordinateSystem(const wxString& val) {
-        m_coordinateSystem = val;
+        _coordinateSystem = val;
     }
 
     a1f GetReferenceAxis() const {
-        return m_referenceAxis;
+        return _referenceAxis;
     }
 
     void SetReferenceAxis(const a1f& referenceAxis) {
-        m_referenceAxis = referenceAxis;
-        m_hasReferenceValues = true;
+        _referenceAxis = referenceAxis;
+        _hasReferenceValues = true;
     }
 
     float GetReferenceValue(int iStat, int iRef) const {
-        if (!m_hasReferenceValues) {
+        if (!_hasReferenceValues) {
             wxLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
             return NAN;
         }
 
         wxASSERT(iStat >= 0);
         wxASSERT(iRef >= 0);
-        wxASSERT(iStat < m_referenceValues.rows());
-        wxASSERT(iRef < m_referenceValues.cols());
-        return m_referenceValues(iStat, iRef);
+        wxASSERT(iStat < _referenceValues.rows());
+        wxASSERT(iRef < _referenceValues.cols());
+        return _referenceValues(iStat, iRef);
     }
 
     a2f GetReferenceValues() const {
-        if (!m_hasReferenceValues) {
+        if (!_hasReferenceValues) {
             wxLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
             a2f nodata(0, 0);
             return nodata;
         }
 
-        return m_referenceValues;
+        return _referenceValues;
     }
 
     void SetReferenceValues(const a2f& referenceValues) {
-        m_referenceValues = referenceValues;
+        _referenceValues = referenceValues;
     }
 
     void SetPredictorDatasetIdsOper(const vwxs& predictorDatasetIdsOper) {
-        m_predictorDatasetIdsOper = predictorDatasetIdsOper;
+        _predictorDatasetIdsOper = predictorDatasetIdsOper;
     }
 
     vwxs GetPredictorDatasetIdsOper() {
-        return m_predictorDatasetIdsOper;
+        return _predictorDatasetIdsOper;
     }
 
     void SetPredictorDatasetIdsArchive(const vwxs& predictorDatasetIdsArchive) {
-        m_predictorDatasetIdsArchive = predictorDatasetIdsArchive;
+        _predictorDatasetIdsArchive = predictorDatasetIdsArchive;
     }
 
     vwxs GetPredictorDatasetIdsArchive() {
-        return m_predictorDatasetIdsArchive;
+        return _predictorDatasetIdsArchive;
     }
 
     void SetPredictorDataIdsOper(const vwxs& predictorDataIdsOper) {
-        m_predictorDataIdsOper = predictorDataIdsOper;
+        _predictorDataIdsOper = predictorDataIdsOper;
     }
 
     vwxs GetPredictorDataIdsOper() {
-        return m_predictorDataIdsOper;
+        return _predictorDataIdsOper;
     }
 
     void SetPredictorDataIdsArchive(const vwxs& predictorDataIdsArchive) {
-        m_predictorDataIdsArchive = predictorDataIdsArchive;
+        _predictorDataIdsArchive = predictorDataIdsArchive;
     }
 
     vwxs GetPredictorDataIdsArchive() {
-        return m_predictorDataIdsArchive;
+        return _predictorDataIdsArchive;
     }
 
     void SetPredictorLevels(const vf& predictorLevels) {
-        m_predictorLevels = predictorLevels;
+        _predictorLevels = predictorLevels;
     }
 
     vf GetPredictorLevels() {
-        return m_predictorLevels;
+        return _predictorLevels;
     }
 
     void SetPredictorHours(const vf& predictorHours) {
-        m_predictorHours = predictorHours;
+        _predictorHours = predictorHours;
     }
 
     vf GetPredictorHours() {
-        return m_predictorHours;
+        return _predictorHours;
     }
 
     void SetPredictorLonMin(const vf& predictorLonMin) {
-        m_predictorLonMin = predictorLonMin;
+        _predictorLonMin = predictorLonMin;
     }
 
     vf GetPredictorLonMin() {
-        return m_predictorLonMin;
+        return _predictorLonMin;
     }
 
     void SetPredictorLonMax(const vf& predictorLonMax) {
-        m_predictorLonMax = predictorLonMax;
+        _predictorLonMax = predictorLonMax;
     }
 
     vf GetPredictorLonMax() {
-        return m_predictorLonMax;
+        return _predictorLonMax;
     }
 
     void SetPredictorLatMin(const vf& predictorLatMin) {
-        m_predictorLatMin = predictorLatMin;
+        _predictorLatMin = predictorLatMin;
     }
 
     vf GetPredictorLatMin() {
-        return m_predictorLatMin;
+        return _predictorLatMin;
     }
 
     void SetPredictorLatMax(const vf& predictorLatMax) {
-        m_predictorLatMax = predictorLatMax;
+        _predictorLatMax = predictorLatMax;
     }
 
     vf GetPredictorLatMax() {
-        return m_predictorLatMax;
+        return _predictorLatMax;
     }
 
     int GetTargetDatesLength() const {
-        return (int)m_targetDates.size();
+        return (int)_targetDates.size();
     }
 
     a1f& GetTargetDates() {
-        return m_targetDates;
+        return _targetDates;
     }
 
     void LimitDataToHours(int hours);
@@ -353,106 +353,106 @@ class asResultsForecast : public asResults {
     wxArrayString GetTargetDatesWxArray() const;
 
     void SetTargetDates(const a1d& refDates) {
-        m_targetDates.resize(refDates.rows());
+        _targetDates.resize(refDates.rows());
         for (int i = 0; i < refDates.size(); i++) {
-            m_targetDates[i] = (float)refDates[i];
-            wxASSERT_MSG(m_targetDates[i] > 1, _("The target time array has inconsistent values"));
+            _targetDates[i] = (float)refDates[i];
+            wxASSERT_MSG(_targetDates[i] > 1, _("The target time array has inconsistent values"));
         }
     }
 
     void SetTargetDates(const a1f& refDates) {
-        m_targetDates.resize(refDates.rows());
-        m_targetDates = refDates;
+        _targetDates.resize(refDates.rows());
+        _targetDates = refDates;
     }
 
     a1f& GetAnalogsCriteria(int i) {
-        wxASSERT(m_analogsCriteria.size() > i);
-        return m_analogsCriteria[i];
+        wxASSERT(_analogsCriteria.size() > i);
+        return _analogsCriteria[i];
     }
 
     void SetAnalogsCriteria(int i, const a1f& analogsCriteria) {
-        if (m_analogsCriteria.size() >= i + 1) {
-            m_analogsCriteria[i] = analogsCriteria;
-        } else if (m_analogsCriteria.size() == i) {
-            m_analogsCriteria.push_back(analogsCriteria);
+        if (_analogsCriteria.size() >= i + 1) {
+            _analogsCriteria[i] = analogsCriteria;
+        } else if (_analogsCriteria.size() == i) {
+            _analogsCriteria.push_back(analogsCriteria);
         } else {
             throw runtime_error(_("The size of the criteria array does not fit with the required index."));
         }
     }
 
     a2f& GetAnalogsValuesRaw(int iLead) {
-        wxASSERT(m_analogsValuesRaw.size() > iLead);
-        return m_analogsValuesRaw[iLead];
+        wxASSERT(_analogsValuesRaw.size() > iLead);
+        return _analogsValuesRaw[iLead];
     }
 
     a1f GetAnalogsValuesRaw(int iLead, int iStat) const {
-        wxASSERT(m_analogsValuesRaw.size() > iLead);
-        wxASSERT(m_analogsValuesRaw[iLead].rows() > iStat);
-        a1f vals = m_analogsValuesRaw[iLead].row(iStat);
+        wxASSERT(_analogsValuesRaw.size() > iLead);
+        wxASSERT(_analogsValuesRaw[iLead].rows() > iStat);
+        a1f vals = _analogsValuesRaw[iLead].row(iStat);
         return vals;
     }
 
     void SetAnalogsValuesRaw(int iLead, int iStat, const a1f& analogsValuesRaw) {
-        if (m_analogsValuesRaw.size() >= iLead + 1) {
-            wxASSERT(m_analogsValuesRaw[iLead].rows() > iStat);
-            wxASSERT(m_analogsValuesRaw[iLead].cols() == analogsValuesRaw.size());
-            m_analogsValuesRaw[iLead].row(iStat) = analogsValuesRaw;
-        } else if (m_analogsValuesRaw.size() == iLead) {
-            a2f emptyBlock(m_stationIds.size(), m_analogsNb[iLead]);
-            m_analogsValuesRaw.push_back(emptyBlock);
+        if (_analogsValuesRaw.size() >= iLead + 1) {
+            wxASSERT(_analogsValuesRaw[iLead].rows() > iStat);
+            wxASSERT(_analogsValuesRaw[iLead].cols() == analogsValuesRaw.size());
+            _analogsValuesRaw[iLead].row(iStat) = analogsValuesRaw;
+        } else if (_analogsValuesRaw.size() == iLead) {
+            a2f emptyBlock(_stationIds.size(), _analogsNb[iLead]);
+            _analogsValuesRaw.push_back(emptyBlock);
 
-            wxASSERT(m_analogsValuesRaw[iLead].rows() > iStat);
-            wxASSERT(m_analogsValuesRaw[iLead].cols() == analogsValuesRaw.size());
-            m_analogsValuesRaw[iLead].row(iStat) = analogsValuesRaw;
+            wxASSERT(_analogsValuesRaw[iLead].rows() > iStat);
+            wxASSERT(_analogsValuesRaw[iLead].cols() == analogsValuesRaw.size());
+            _analogsValuesRaw[iLead].row(iStat) = analogsValuesRaw;
         } else {
             throw runtime_error(_("The size of the values array does not fit with the required index."));
         }
     }
 
     a2f& GetAnalogsValuesNorm(int iLead) {
-        wxASSERT(m_analogsValuesNorm.size() > iLead);
-        return m_analogsValuesNorm[iLead];
+        wxASSERT(_analogsValuesNorm.size() > iLead);
+        return _analogsValuesNorm[iLead];
     }
 
     a1f GetAnalogsValuesNorm(int iLead, int iStat) const {
-        wxASSERT(m_analogsValuesNorm.size() > iLead);
-        wxASSERT(m_analogsValuesNorm[iLead].rows() > iStat);
-        a1f vals = m_analogsValuesNorm[iLead].row(iStat);
+        wxASSERT(_analogsValuesNorm.size() > iLead);
+        wxASSERT(_analogsValuesNorm[iLead].rows() > iStat);
+        a1f vals = _analogsValuesNorm[iLead].row(iStat);
         return vals;
     }
 
     void SetAnalogsValuesNorm(int iLead, int iStat, const a1f& analogsValuesNorm) {
-        if (m_analogsValuesNorm.size() >= iLead + 1) {
-            wxASSERT(m_analogsValuesNorm[iLead].rows() > iStat);
-            wxASSERT(m_analogsValuesNorm[iLead].cols() == analogsValuesNorm.size());
-            m_analogsValuesNorm[iLead].row(iStat) = analogsValuesNorm;
-        } else if (m_analogsValuesNorm.size() == iLead) {
-            a2f emptyBlock(m_stationIds.size(), m_analogsNb[iLead]);
-            m_analogsValuesNorm.push_back(emptyBlock);
+        if (_analogsValuesNorm.size() >= iLead + 1) {
+            wxASSERT(_analogsValuesNorm[iLead].rows() > iStat);
+            wxASSERT(_analogsValuesNorm[iLead].cols() == analogsValuesNorm.size());
+            _analogsValuesNorm[iLead].row(iStat) = analogsValuesNorm;
+        } else if (_analogsValuesNorm.size() == iLead) {
+            a2f emptyBlock(_stationIds.size(), _analogsNb[iLead]);
+            _analogsValuesNorm.push_back(emptyBlock);
 
-            wxASSERT(m_analogsValuesNorm[iLead].rows() > iStat);
-            wxASSERT(m_analogsValuesNorm[iLead].cols() == analogsValuesNorm.size());
-            m_analogsValuesNorm[iLead].row(iStat) = analogsValuesNorm;
+            wxASSERT(_analogsValuesNorm[iLead].rows() > iStat);
+            wxASSERT(_analogsValuesNorm[iLead].cols() == analogsValuesNorm.size());
+            _analogsValuesNorm[iLead].row(iStat) = analogsValuesNorm;
         } else {
             throw runtime_error(_("The size of the values array does not fit with the required index."));
         }
     }
 
     int GetAnalogsNumber(int i) const {
-        wxASSERT(m_analogsDates.size() > i);
-        return (int)m_analogsDates[i].size();
+        wxASSERT(_analogsDates.size() > i);
+        return (int)_analogsDates[i].size();
     }
 
     a1f& GetAnalogsDates(int i) {
-        wxASSERT(m_analogsDates.size() > i);
-        return m_analogsDates[i];
+        wxASSERT(_analogsDates.size() > i);
+        return _analogsDates[i];
     }
 
     void SetAnalogsDates(int i, const a1f& analogsDates) {
-        if (m_analogsDates.size() >= i + 1) {
-            m_analogsDates[i] = analogsDates;
-        } else if (m_analogsDates.size() == i) {
-            m_analogsDates.push_back(analogsDates);
+        if (_analogsDates.size() >= i + 1) {
+            _analogsDates[i] = analogsDates;
+        } else if (_analogsDates.size() == i) {
+            _analogsDates.push_back(analogsDates);
         } else {
             throw runtime_error(_("The size of the dates array does not fit with the required index."));
         }
@@ -470,45 +470,45 @@ class asResultsForecast : public asResults {
     void BuildFileName();
 
   private:
-    wxString m_methodId;
-    wxString m_methodIdDisplay;
-    wxString m_specificTag;
-    wxString m_specificTagDisplay;
-    wxString m_description;
-    asPredictand::Parameter m_predictandParameter;
-    asPredictand::TemporalResolution m_predictandTemporalResolution;
-    asPredictand::SpatialAggregation m_predictandSpatialAggregation;
-    wxString m_predictandDatasetId;
-    wxString m_predictandDatabase;
-    wxString m_coordinateSystem;
-    vi m_predictandStationIds;
-    wxString m_forecastsDir;
-    bool m_hasReferenceValues;
-    double m_leadTimeOrigin;
-    a1f m_targetDates;
-    a1i m_analogsNb;
-    vwxs m_stationNames;
-    vwxs m_stationOfficialIds;
-    a1i m_stationIds;
-    a1f m_stationHeights;
-    a1d m_stationXCoords;
-    a1d m_stationYCoords;
-    a1f m_referenceAxis;
-    a2f m_referenceValues;
-    vwxs m_predictorDatasetIdsOper;
-    vwxs m_predictorDatasetIdsArchive;
-    vwxs m_predictorDataIdsOper;
-    vwxs m_predictorDataIdsArchive;
-    vf m_predictorLevels;
-    vf m_predictorHours;
-    vf m_predictorLonMin;
-    vf m_predictorLonMax;
-    vf m_predictorLatMin;
-    vf m_predictorLatMax;
-    va1f m_analogsCriteria;
-    va2f m_analogsValuesRaw;
-    va2f m_analogsValuesNorm;
-    va1f m_analogsDates;
+    wxString _methodId;
+    wxString _methodIdDisplay;
+    wxString _specificTag;
+    wxString _specificTagDisplay;
+    wxString _description;
+    asPredictand::Parameter _predictandParameter;
+    asPredictand::TemporalResolution _predictandTemporalResolution;
+    asPredictand::SpatialAggregation _predictandSpatialAggregation;
+    wxString _predictandDatasetId;
+    wxString _predictandDatabase;
+    wxString _coordinateSystem;
+    vi _predictandStationIds;
+    wxString _forecastsDir;
+    bool _hasReferenceValues;
+    double _leadTimeOrigin;
+    a1f _targetDates;
+    a1i _analogsNb;
+    vwxs _stationNames;
+    vwxs _stationOfficialIds;
+    a1i _stationIds;
+    a1f _stationHeights;
+    a1d _stationXCoords;
+    a1d _stationYCoords;
+    a1f _referenceAxis;
+    a2f _referenceValues;
+    vwxs _predictorDatasetIdsOper;
+    vwxs _predictorDatasetIdsArchive;
+    vwxs _predictorDataIdsOper;
+    vwxs _predictorDataIdsArchive;
+    vf _predictorLevels;
+    vf _predictorHours;
+    vf _predictorLonMin;
+    vf _predictorLonMax;
+    vf _predictorLatMin;
+    vf _predictorLatMax;
+    va1f _analogsCriteria;
+    va2f _analogsValuesRaw;
+    va2f _analogsValuesNorm;
+    va1f _analogsDates;
 };
 
 #endif

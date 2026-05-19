@@ -45,10 +45,10 @@ class asThreadGAs : public asThread {
 
   protected:
   private:
-    asMethodOptimizerGAs* m_optimizer;
-    asParametersOptimization* m_params;
-    float* m_finalScoreCalib;
-    vf* m_scoreClimatology;
+    asMethodOptimizerGAs* _optimizer;
+    asParametersOptimization* _params;
+    float* _finalScoreCalib;
+    vf* _scoreClimatology;
 };
 
 #endif

@@ -32,5 +32,5 @@
 
 asPredictorOperNwsGfsLocal::asPredictorOperNwsGfsLocal(const wxString& dataId)
     : asPredictorOperNwsGfs(dataId) {
-    m_shouldDownload = false;
+    _shouldDownload = false;
 }

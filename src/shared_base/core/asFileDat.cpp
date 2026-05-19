@@ -34,7 +34,7 @@ asFileDat::asFileDat(const wxString& fileName, const FileMode& fileMode)
     : asFileText(fileName, fileMode) {}
 
 bool asFileDat::Close() {
-    wxASSERT(m_opened);
+    wxASSERT(_opened);
 
     return true;
 }

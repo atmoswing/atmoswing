@@ -29,9 +29,9 @@
 
 asCriteriaS0obs::asCriteriaS0obs()
     : asCriteria("S0obs", _("S0 with division by actual value"), Asc) {
-    m_minPointsNb = 1;
-    m_scaleWorst = 200;
-    m_canUseInline = true;
+    _minPointsNb = 1;
+    _scaleWorst = 200;
+    _canUseInline = true;
 }
 
 asCriteriaS0obs::~asCriteriaS0obs() = default;
@@ -44,7 +44,7 @@ float asCriteriaS0obs::Assess(const a2f& refData, const a2f& evalData, int rowsN
 
     float dividend = 0, divisor = 0;
 
-    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+    if (!_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
         dividend = ((refData - evalData).abs()).sum();
         divisor = (refData.abs()).sum();
 
@@ -61,11 +61,11 @@ float asCriteriaS0obs::Assess(const a2f& refData, const a2f& evalData, int rowsN
     } else {
         if (dividend == 0) {
             wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
-            return m_scaleWorst;
+            return _scaleWorst;
         } else if (isnan(divisor) || isnan(dividend)) {
             return NAN;
         } else {
-            return m_scaleWorst;
+            return _scaleWorst;
         }
     }
 }

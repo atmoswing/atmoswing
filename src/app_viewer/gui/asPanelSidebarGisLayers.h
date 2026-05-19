@@ -41,11 +41,11 @@ class asPanelSidebarGisLayers : public asPanelSidebar {
     ~asPanelSidebarGisLayers() override = default;
 
     vrViewerTOCList* GetTocCtrl() const {
-        return m_tocCtrl;
+        return _tocCtrl;
     }
 
   private:
-    vrViewerTOCList* m_tocCtrl;
+    vrViewerTOCList* _tocCtrl;
 };
 
 #endif

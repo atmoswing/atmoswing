@@ -42,8 +42,8 @@ class asMethodOptimizer : public asMethodCalibrator {
     bool Manager() override = 0;
 
   protected:
-    int m_paramsNb;
-    int m_iterator;
+    int _paramsNb;
+    int _iterator;
 
     bool Calibrate(asParametersCalibration& params) override {
         wxLogError(_("asMethodOptimizer do optimize, not calibrate..."));
@@ -55,7 +55,7 @@ class asMethodOptimizer : public asMethodCalibrator {
     bool Validate(asParametersOptimization& params);
 
     void IncrementIterator() {
-        m_iterator++;
+        _iterator++;
     }
 
   private:

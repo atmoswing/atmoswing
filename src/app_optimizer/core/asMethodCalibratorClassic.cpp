@@ -30,11 +30,11 @@
 
 asMethodCalibratorClassic::asMethodCalibratorClassic()
     : asMethodCalibrator(),
-      m_plus(false),
-      m_stepsLatPertinenceMap(1),
-      m_stepsLonPertinenceMap(1),
-      m_resizingIterations(1),
-      m_proceedSequentially(true) {}
+      _plus(false),
+      _stepsLatPertinenceMap(1),
+      _stepsLonPertinenceMap(1),
+      _resizingIterations(1),
+      _proceedSequentially(true) {}
 
 asMethodCalibratorClassic::~asMethodCalibratorClassic() = default;
 
@@ -59,7 +59,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration& params) {
     if (!DoPreloadData(params)) return false;
 
     // Copy of the original parameters set.
-    m_originalParams = params;
+    _originalParams = params;
 
     // Create result object to save the final parameters sets
     asResultsParametersArray resultsAll;
@@ -72,7 +72,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration& params) {
         wxLogVerbose(_("Calibrating station %s."), GetStationIdsList(stationId));
 
         // Reset the score of the climatology
-        m_scoreClimatology.clear();
+        _scoreClimatology.clear();
 
         // Clear previous results
         ClearAll();
@@ -91,7 +91,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration& params) {
         wxLogVerbose(_("Creating the complete relevance map for a given predictor."));
 
         // Get a copy of the original parameters
-        params = m_originalParams;
+        params = _originalParams;
 
         // Set the next station ID
         params.SetPredictandStationIds(stationId);
@@ -100,7 +100,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration& params) {
         for (int iStep = 0; iStep < params.GetStepsNb(); iStep++) {
             // Restore previous best parameters
             if (iStep > 0) {
-                params = m_parameters[0];
+                params = _parameters[0];
             }
 
             // Clear previous results
@@ -126,32 +126,32 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration& params) {
                 if (!EvaluateRelevanceMap(params, anaDatesPrevious, resultsTested, iStep)) return false;
 
                 // Keep the best parameter set
-                wxASSERT(!m_parametersTemp.empty());
+                wxASSERT(!_parametersTemp.empty());
                 RemoveNaNsInTemp();
                 if (!PushBackBestTemp()) return false;
 
-                wxASSERT(m_parameters.size() == 1);
+                wxASSERT(_parameters.size() == 1);
                 ClearTemp();
 
                 wxLogMessage(_("Best point on relevance map: %.2f lat, %.2f lon"),
-                             m_parameters[m_parameters.size() - 1].GetPredictorYmin(iStep, 0),
-                             m_parameters[m_parameters.size() - 1].GetPredictorXmin(iStep, 0));
+                             _parameters[_parameters.size() - 1].GetPredictorYmin(iStep, 0),
+                             _parameters[_parameters.size() - 1].GetPredictorXmin(iStep, 0));
 
                 // Resize domain
                 if (!AssessDomainResizing(params, anaDatesPrevious, resultsTested, iStep, explo)) return false;
 
                 // Resize domain (plus)
-                if (m_plus) {
+                if (_plus) {
                     if (!AssessDomainResizingPlus(params, anaDatesPrevious, resultsTested, iStep, explo)) return false;
                 }
 
                 // Consider the best point in previous iteration
-                params = m_parameters[0];
+                params = _parameters[0];
             } else {
                 // Fixes and checks
                 params.FixWeights();
                 params.FixCoordinates();
-                m_parameters.push_back(params);
+                _parameters.push_back(params);
             }
 
             // Keep the analogs dates of the best parameters set
@@ -165,44 +165,44 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration& params) {
         if (!SubProcessAnalogsNumber(params, tempDates)) return false;
 
         // Extract intermediate results from temporary vectors
-        for (int iRes = 0; iRes < m_parametersTemp.size(); iRes++) {
-            resultsTested.Add(m_parametersTemp[iRes], m_scoresCalibTemp[iRes]);
+        for (int iRes = 0; iRes < _parametersTemp.size(); iRes++) {
+            resultsTested.Add(_parametersTemp[iRes], _scoresCalibTemp[iRes]);
         }
         resultsTested.Print();
 
         // Keep the best parameter set
-        wxASSERT(!m_parameters.empty());
-        wxASSERT(!m_parametersTemp.empty());
-        wxASSERT(!m_scoresCalibTemp.empty());
+        wxASSERT(!_parameters.empty());
+        wxASSERT(!_parametersTemp.empty());
+        wxASSERT(!_scoresCalibTemp.empty());
         KeepBestTemp();
         ClearTemp();
 
         // Validate
-        SaveDetails(&m_parameters[0]);
-        Validate(&m_parameters[0]);
+        SaveDetails(&_parameters[0]);
+        Validate(&_parameters[0]);
 
         // Keep the best parameters set
         SetBestParameters(resultsBest);
         if (!resultsBest.Print()) return false;
-        resultsAll.Add(m_parameters[0], m_scoresCalib[0], m_scoreValid);
+        resultsAll.Add(_parameters[0], _scoresCalib[0], _scoreValid);
         if (!resultsAll.Print()) return false;
-        if (!m_parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
+        if (!_parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
     }
 
     return true;
 }
 
 void asMethodCalibratorClassic::GetPlusOptions() {
-    if (m_plus) {
+    if (_plus) {
         ThreadsManager().CritSectionConfig().Enter();
         wxConfigBase* pConfig = wxConfigBase::Get();
-        pConfig->Read("/ClassicPlus/StepsLatPertinenceMap", &m_stepsLatPertinenceMap, 2);
-        if (m_stepsLatPertinenceMap < 1) m_stepsLatPertinenceMap = 1;
-        pConfig->Read("/ClassicPlus/StepsLonPertinenceMap", &m_stepsLonPertinenceMap, 2);
-        if (m_stepsLonPertinenceMap < 1) m_stepsLonPertinenceMap = 1;
-        pConfig->Read("/ClassicPlus/ResizingIterations", &m_resizingIterations, 1);
-        if (m_resizingIterations < 1) m_resizingIterations = 1;
-        pConfig->Read("/ClassicPlus/ProceedSequentially", &m_proceedSequentially, true);
+        pConfig->Read("/ClassicPlus/StepsLatPertinenceMap", &_stepsLatPertinenceMap, 2);
+        if (_stepsLatPertinenceMap < 1) _stepsLatPertinenceMap = 1;
+        pConfig->Read("/ClassicPlus/StepsLonPertinenceMap", &_stepsLonPertinenceMap, 2);
+        if (_stepsLonPertinenceMap < 1) _stepsLonPertinenceMap = 1;
+        pConfig->Read("/ClassicPlus/ResizingIterations", &_resizingIterations, 1);
+        if (_resizingIterations < 1) _resizingIterations = 1;
+        pConfig->Read("/ClassicPlus/ProceedSequentially", &_proceedSequentially, true);
         ThreadsManager().CritSectionConfig().Leave();
     }
 }
@@ -276,7 +276,7 @@ void asMethodCalibratorClassic::GetInitialAnalogNumber(asParametersCalibration& 
     // For the current step
     params.SetAnalogsNumber(iStep, initalAnalogsNb);
     // And the next ones
-    if (m_proceedSequentially) {
+    if (_proceedSequentially) {
         for (int i = iStep; i < params.GetStepsNb(); i++) {
             params.SetAnalogsNumber(i, initalAnalogsNb);
         }
@@ -300,9 +300,9 @@ void asMethodCalibratorClassic::SetMinimalArea(asParametersCalibration& params, 
 void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration& params, int iStep,
                                                const asMethodCalibrator::ParamExploration& explo, a1d& xAxis,
                                                a1d& yAxis) const {
-    wxASSERT(m_preloadedArchive[iStep][0][0][0][0]);
+    wxASSERT(_preloadedArchive[iStep][0][0][0][0]);
 
-    xAxis = m_preloadedArchive[iStep][0][0][0][0]->GetLonAxis();
+    xAxis = _preloadedArchive[iStep][0][0][0][0]->GetLonAxis();
 
     // Check longitude range
     if (xAxis[0] >= params.GetPredictorXminUpperLimit(iStep, 0) &&
@@ -313,7 +313,7 @@ void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration& pa
         }
     }
 
-    yAxis = m_preloadedArchive[iStep][0][0][0][0]->GetLatAxis();
+    yAxis = _preloadedArchive[iStep][0][0][0][0]->GetLatAxis();
     asSortArray(&yAxis[0], &yAxis[yAxis.size() - 1], Asc);
 }
 
@@ -325,8 +325,8 @@ void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalib
     a1d yAxis;
     GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
 
-    for (int iX = 0; iX < xAxis.size() - m_stepsLonPertinenceMap; iX += m_stepsLonPertinenceMap) {
-        for (int iY = 0; iY < yAxis.size() - m_stepsLatPertinenceMap; iY += m_stepsLatPertinenceMap) {
+    for (int iX = 0; iX < xAxis.size() - _stepsLonPertinenceMap; iX += _stepsLonPertinenceMap) {
+        for (int iY = 0; iY < yAxis.size() - _stepsLatPertinenceMap; iY += _stepsLatPertinenceMap) {
             if (xAxis[iX] >= params.GetPredictorXminLowerLimit(iStep, 0) &&
                 xAxis[iX] <= params.GetPredictorXminUpperLimit(iStep, 0) &&
                 yAxis[iY] >= params.GetPredictorYminLowerLimit(iStep, 0) &&
@@ -340,7 +340,7 @@ void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalib
                     params.FixCoordinates();
                 }
 
-                m_parametersTemp.push_back(params);
+                _parametersTemp.push_back(params);
             }
         }
     }
@@ -365,8 +365,8 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
 
     wxStopWatch swMap;
 
-    for (auto& param : m_parametersTemp) {
-        if (m_proceedSequentially) {
+    for (auto& param : _parametersTemp) {
+        if (_proceedSequentially) {
             bool containsNaNs = false;
             if (iStep == 0) {
                 if (!GetAnalogsDates(anaDates, &param, iStep, containsNaNs)) return false;
@@ -374,7 +374,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
                 if (!GetAnalogsSubDates(anaDates, &param, anaDatesPrevious, iStep, containsNaNs)) return false;
             }
             if (containsNaNs) {
-                m_scoresCalibTemp.push_back(NAN);
+                _scoresCalibTemp.push_back(NAN);
                 continue;
             }
             if (!GetAnalogsValues(anaValues, &param, anaDates, iStep)) return false;
@@ -394,7 +394,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
                 }
                 if (containsNaNs) {
                     continueLoop = false;
-                    m_scoresCalibTemp.push_back(NAN);
+                    _scoresCalibTemp.push_back(NAN);
                     continue;
                 }
                 anaDatesPreviousSubRuns = anaDates;
@@ -407,7 +407,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
         }
 
         // Store the result
-        m_scoresCalibTemp.push_back(anaScoreFinal.GetScore());
+        _scoresCalibTemp.push_back(anaScoreFinal.GetScore());
         resultsTested.Add(param, anaScoreFinal.GetScore());
     }
 
@@ -436,7 +436,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration& pa
 
         for (int iResizing = 0; iResizing < 4; iResizing++) {
             // Consider the best point in previous iteration
-            params = m_parameters[0];
+            params = _parameters[0];
 
             for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
                 switch (iResizing) {
@@ -478,7 +478,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration& pa
             asResultsScores anaScores;
             asResultsTotalScore anaScoreFinal;
 
-            if (m_proceedSequentially) {
+            if (_proceedSequentially) {
                 bool containsNaNs = false;
                 if (iStep == 0) {
                     if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs)) return false;
@@ -526,7 +526,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration& pa
         }
 
         // Apply the resizing that provides the best improvement
-        if (!m_parametersTemp.empty()) {
+        if (!_parametersTemp.empty()) {
             KeepBestTemp();
         }
     }
@@ -552,10 +552,10 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
     GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
 
     // Try other moves. No while loop but reinitialize the for loops
-    for (int multipleFactor = 1; multipleFactor <= m_resizingIterations; multipleFactor++) {
+    for (int multipleFactor = 1; multipleFactor <= _resizingIterations; multipleFactor++) {
         for (int iResizing = 0; iResizing < 22; iResizing++) {
             // Consider the best point in previous iteration
-            params = m_parameters[0];
+            params = _parameters[0];
 
             for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
                 switch (iResizing) {
@@ -705,7 +705,7 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
             asResultsScores anaScores;
             asResultsTotalScore anaScoreFinal;
 
-            if (m_proceedSequentially) {
+            if (_proceedSequentially) {
                 bool containsNaNs = false;
                 if (iStep == 0) {
                     if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs)) return false;
@@ -845,10 +845,10 @@ bool asMethodCalibratorClassic::GetDatesOfBestParameters(asParametersCalibration
     if (containsNaNs) {
         wxLogError(_("The final dates selection contains NaNs"));
 
-        double tmpYmin = m_parameters[m_parameters.size() - 1].GetPredictorYmin(iStep, 0);
-        double tmpXmin = m_parameters[m_parameters.size() - 1].GetPredictorXmin(iStep, 0);
-        int tmpYptsnb = m_parameters[m_parameters.size() - 1].GetPredictorYptsnb(iStep, 0);
-        int tmpXptsnb = m_parameters[m_parameters.size() - 1].GetPredictorXptsnb(iStep, 0);
+        double tmpYmin = _parameters[_parameters.size() - 1].GetPredictorYmin(iStep, 0);
+        double tmpXmin = _parameters[_parameters.size() - 1].GetPredictorXmin(iStep, 0);
+        int tmpYptsnb = _parameters[_parameters.size() - 1].GetPredictorYptsnb(iStep, 0);
+        int tmpXptsnb = _parameters[_parameters.size() - 1].GetPredictorXptsnb(iStep, 0);
         wxLogMessage(_("Area: yMin = %.2f, yPtsNb = %d, xMin = %.2f, xPtsNb = %d"), tmpYmin, tmpYptsnb, tmpXmin,
                      tmpXptsnb);
 

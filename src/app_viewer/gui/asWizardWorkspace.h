@@ -39,11 +39,11 @@ class asWizardWorkspace : public asWizardWorkspaceVirtual {
     ~asWizardWorkspace();
 
     wxWizardPage* GetFirstPage() const {
-        return m_pages.Item(0);
+        return _pages.Item(0);
     }
 
     wxWizardPage* GetSecondPage() const {
-        return m_pages.Item(1);
+        return _pages.Item(1);
     }
 
   protected:
@@ -52,7 +52,7 @@ class asWizardWorkspace : public asWizardWorkspaceVirtual {
     void OnLoadExistingWorkspace(wxCommandEvent& event);
 
   private:
-    asWorkspace m_workspace;
+    asWorkspace _workspace;
 };
 
 #endif

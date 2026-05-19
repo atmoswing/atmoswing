@@ -35,17 +35,17 @@
 asPanelSidebarAlarms::asPanelSidebarAlarms(wxWindow* parent, asWorkspace* workspace, asForecastManager* forecastManager,
                                            wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
     : asPanelSidebar(parent, id, pos, size, style),
-      m_workspace(workspace),
-      m_forecastManager(forecastManager),
-      m_panelDrawing(nullptr),
-      m_mode(1) {
-    m_header->SetLabelText(_("Alarms"));
-    m_sizerContent->Fit(this);
+      _workspace(workspace),
+      _forecastManager(forecastManager),
+      _panelDrawing(nullptr),
+      _mode(1) {
+    _header->SetLabelText(_("Alarms"));
+    _sizerContent->Fit(this);
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarms::OnPaint), nullptr, this);
 
     Layout();
-    m_sizerMain->Fit(this);
+    _sizerMain->Fit(this);
 }
 
 asPanelSidebarAlarms::~asPanelSidebarAlarms() {
@@ -57,16 +57,16 @@ void asPanelSidebarAlarms::OnPaint(wxPaintEvent& event) {
 }
 
 void asPanelSidebarAlarms::Update() {
-    int returnPeriodRef = m_workspace->GetAlarmsPanelReturnPeriod();
-    float quantileThreshold = m_workspace->GetAlarmsPanelQuantile();
+    int returnPeriodRef = _workspace->GetAlarmsPanelReturnPeriod();
+    float quantileThreshold = _workspace->GetAlarmsPanelQuantile();
 
-    m_header->SetLabelText(asStrF(_("Alarms (T=%d, q=%g)"), returnPeriodRef, quantileThreshold));
+    _header->SetLabelText(asStrF(_("Alarms (T=%d, q=%g)"), returnPeriodRef, quantileThreshold));
 
-    a1f dates = m_forecastManager->GetFullTargetDates();
+    a1f dates = _forecastManager->GetFullTargetDates();
 
     CreateGrid(dates);
 
-    switch (m_mode) {
+    switch (_mode) {
         case (1): {
             wxASSERT(returnPeriodRef >= 2);
             wxASSERT(quantileThreshold > 0);
@@ -75,8 +75,8 @@ void asPanelSidebarAlarms::Update() {
             if (quantileThreshold <= 0) quantileThreshold = (float)0.9;
             if (quantileThreshold > 1) quantileThreshold = (float)0.9;
 
-            for (int iMethod = 0; iMethod < m_forecastManager->GetMethodsNb(); iMethod++) {
-                a1f methodMaxValues = m_forecastManager->GetAggregator()->GetMethodMaxValues(
+            for (int iMethod = 0; iMethod < _forecastManager->GetMethodsNb(); iMethod++) {
+                a1f methodMaxValues = _forecastManager->GetAggregator()->GetMethodMaxValues(
                     dates, iMethod, returnPeriodRef, quantileThreshold);
                 AddRow(dates, methodMaxValues, iMethod);
             }
@@ -89,11 +89,11 @@ void asPanelSidebarAlarms::Update() {
         }
     }
 
-    m_panelDrawing->Refresh();
+    _panelDrawing->Refresh();
 }
 
 void asPanelSidebarAlarms::CreateGrid(a1f& dates) {
-    vwxs names = m_forecastManager->GetMethodNames();
+    vwxs names = _forecastManager->GetMethodNames();
 
     // Required size
     int rows = names.size();
@@ -102,22 +102,22 @@ void asPanelSidebarAlarms::CreateGrid(a1f& dates) {
     int width = 240 * g_ppiScaleDc;
 
     // Delete and recreate the panel.
-    wxDELETE(m_panelDrawing);
-    m_panelDrawing = new asPanelSidebarAlarmsDrawing(this, wxID_ANY, wxDefaultPosition, wxSize(width, totHeight),
+    wxDELETE(_panelDrawing);
+    _panelDrawing = new asPanelSidebarAlarmsDrawing(this, wxID_ANY, wxDefaultPosition, wxSize(width, totHeight),
                                                      wxTAB_TRAVERSAL);
-    m_panelDrawing->SetParent(this);
-    m_panelDrawing->Layout();
+    _panelDrawing->SetParent(this);
+    _panelDrawing->Layout();
 
-    m_panelDrawing->CreateGrid(dates, names);
+    _panelDrawing->CreateGrid(dates, names);
 
-    m_sizerContent->Add(m_panelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
-    m_sizerContent->Fit(this);
+    _sizerContent->Add(_panelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
+    _sizerContent->Fit(this);
 
     GetParent()->FitInside();
 }
 
 void asPanelSidebarAlarms::AddRow(a1f& dates, a1f& values, int row) {
-    m_panelDrawing->AddRow(dates, values, row);
+    _panelDrawing->AddRow(dates, values, row);
 }
 
 /*
@@ -127,20 +127,20 @@ void asPanelSidebarAlarms::AddRow(a1f& dates, a1f& values, int row) {
 asPanelSidebarAlarmsDrawing::asPanelSidebarAlarmsDrawing(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                                                          const wxSize& size, long style)
     : wxPanel(parent, id, pos, size, style) {
-    m_bmpAlarms = nullptr;
-    m_gdc = nullptr;
-    m_parent = nullptr;
+    _bmpAlarms = nullptr;
+    _gdc = nullptr;
+    _parent = nullptr;
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarmsDrawing::OnPaint), nullptr, this);
 }
 
 asPanelSidebarAlarmsDrawing::~asPanelSidebarAlarmsDrawing() {
     Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarmsDrawing::OnPaint), nullptr, this);
-    wxDELETE(m_bmpAlarms);
+    wxDELETE(_bmpAlarms);
 }
 
 void asPanelSidebarAlarmsDrawing::SetParent(asPanelSidebarAlarms* parent) {
-    m_parent = parent;
+    _parent = parent;
 }
 
 void asPanelSidebarAlarmsDrawing::CreateGrid(a1f& dates, const vwxs& names) {
@@ -153,13 +153,13 @@ void asPanelSidebarAlarmsDrawing::CreateGrid(a1f& dates, const vwxs& names) {
     int width = 240 * g_ppiScaleDc;
 
     // Create bitmap
-    wxDELETE(m_bmpAlarms);
+    wxDELETE(_bmpAlarms);
     int totHeight = cellHeight * rows + cellHeight;
-    m_bmpAlarms = new wxBitmap(width, totHeight);
-    wxASSERT(m_bmpAlarms);
+    _bmpAlarms = new wxBitmap(width, totHeight);
+    wxASSERT(_bmpAlarms);
 
     // Create device context
-    wxMemoryDC dc(*m_bmpAlarms);
+    wxMemoryDC dc(*_bmpAlarms);
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
 
@@ -205,7 +205,7 @@ void asPanelSidebarAlarmsDrawing::AddRow(a1f& dates, a1f& values, int row) {
     }
 
     // Create device context
-    wxMemoryDC dc(*m_bmpAlarms);
+    wxMemoryDC dc(*_bmpAlarms);
 
     // Create graphics context
     wxGraphicsContext* gc = wxGraphicsContext::Create(dc);
@@ -247,9 +247,9 @@ void asPanelSidebarAlarmsDrawing::AddRow(a1f& dates, a1f& values, int row) {
 }
 
 void asPanelSidebarAlarmsDrawing::OnPaint(wxPaintEvent& event) {
-    if (m_bmpAlarms != nullptr) {
+    if (_bmpAlarms != nullptr) {
         wxPaintDC dc(this);
-        dc.DrawBitmap(*m_bmpAlarms, 0, 0, true);
+        dc.DrawBitmap(*_bmpAlarms, 0, 0, true);
     }
 
     Layout();
@@ -275,7 +275,7 @@ void asPanelSidebarAlarmsDrawing::CreatePath(wxGraphicsPath& path, const wxPoint
 void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext* gc, wxGraphicsPath& path, float value) {
     wxColour colour;
 
-    switch (m_parent->GetMode()) {
+    switch (_parent->GetMode()) {
         case (1): {
             if (isnan(value))  // NaN -> gray
             {

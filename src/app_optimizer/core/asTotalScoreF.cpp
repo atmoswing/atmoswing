@@ -37,7 +37,7 @@ float asTotalScoreF::Assess(const a1f& targetDates, const a1f& scores, const asT
 
     int countB = 0, countD = 0, countTot = 0;
 
-    switch (m_period) {
+    switch (_period) {
         case (asTotalScore::Total): {
             for (int i = 0; i < scores.size(); i++) {
                 countTot++;

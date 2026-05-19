@@ -40,7 +40,7 @@ class AtmoSwingFrameViewer : public asFrameViewer {
     ~AtmoSwingFrameViewer() override = default;
 
   private:
-    asLogWindow* m_logWindow;
+    asLogWindow* _logWindow;
 
     virtual void OnClose(wxCloseEvent& event);
 

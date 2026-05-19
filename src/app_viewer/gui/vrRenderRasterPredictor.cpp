@@ -36,12 +36,12 @@
 
 vrRenderRasterPredictor::vrRenderRasterPredictor()
     : vrRenderRaster(),
-      m_parameter(asPredictor::GeopotentialHeight) {}
+      _parameter(asPredictor::GeopotentialHeight) {}
 
 vrRenderRasterPredictor::~vrRenderRasterPredictor() = default;
 
 void vrRenderRasterPredictor::Init(asPredictor::Parameter parameter) {
-    m_parameter = parameter;
+    _parameter = parameter;
 
     SelectColorTable();
     ParseColorTable();
@@ -49,9 +49,9 @@ void vrRenderRasterPredictor::Init(asPredictor::Parameter parameter) {
 }
 
 bool vrRenderRasterPredictor::IsOk() const {
-    if (m_colorTable.rows() < 255) return false;
-    if (m_colorTable.rows() > 256) return false;
-    if (m_colorTable.cols() != 3) return false;
+    if (_colorTable.rows() < 255) return false;
+    if (_colorTable.rows() > 256) return false;
+    if (_colorTable.cols() != 3) return false;
 
     return true;
 }
@@ -62,7 +62,7 @@ void vrRenderRasterPredictor::SelectColorTable() {
     wxString colorFilesDir = dirData + DS + "atmoswing" + DS + "color_tables";
     wxString filePath;
 
-    switch (m_parameter) {
+    switch (_parameter) {
         case asPredictor::GeopotentialHeight:
             filePath = pConfig->Read("/ColorTable/GeopotentialHeight", colorFilesDir + DS + "NEO_grav_anom.act");
             break;
@@ -80,11 +80,11 @@ void vrRenderRasterPredictor::SelectColorTable() {
             filePath = colorFilesDir + DS + "MPL_viridis.rgb";
     }
 
-    m_colorTableFile = wxFileName(filePath);
+    _colorTableFile = wxFileName(filePath);
 }
 
 wxImage::RGBValue vrRenderRasterPredictor::GetColorFromTable(double pxVal, double minVal, double range) {
-    int nColors = int(m_colorTable.rows());
+    int nColors = int(_colorTable.rows());
 
     if (nColors == 0) {
         return {255, 255, 255};
@@ -94,13 +94,13 @@ wxImage::RGBValue vrRenderRasterPredictor::GetColorFromTable(double pxVal, doubl
     if (index < 0) index = 0;
     if (index >= nColors) index = nColors - 1;
 
-    wxImage::RGBValue valRGB(int(m_colorTable(index, 0)), int(m_colorTable(index, 1)), int(m_colorTable(index, 2)));
+    wxImage::RGBValue valRGB(int(_colorTable(index, 0)), int(_colorTable(index, 1)), int(_colorTable(index, 2)));
 
     return valRGB;
 }
 
 bool vrRenderRasterPredictor::ParseColorTable() {
-    wxString extension = m_colorTableFile.GetExt();
+    wxString extension = _colorTableFile.GetExt();
     if (extension == "act") {
         return ParseACTfile();
     } else if (extension == "rgb") {
@@ -118,9 +118,9 @@ bool vrRenderRasterPredictor::ParseACTfile() {
     uint8_t palette[255][3];
 
     // Open the ACT file
-    f = fopen(m_colorTableFile.GetFullPath(), "rb");
+    f = fopen(_colorTableFile.GetFullPath(), "rb");
     if (!f) {
-        wxLogError(_("Color table file %s could not be opened..."), m_colorTableFile.GetFullPath());
+        wxLogError(_("Color table file %s could not be opened..."), _colorTableFile.GetFullPath());
         return false;
     }
 
@@ -128,24 +128,24 @@ bool vrRenderRasterPredictor::ParseACTfile() {
     size_t nRows = fread(palette, 3, 255, f);
     fclose(f);
     if (nRows == 0) {
-        wxLogError(_("Color table file %s is empty..."), m_colorTableFile.GetFullPath());
+        wxLogError(_("Color table file %s is empty..."), _colorTableFile.GetFullPath());
         return false;
     }
 
     // Copy the palette values to the color table array
     for (int i = 0; i < 255; i++) {
-        m_colorTable(i, 0) = palette[i][0];
-        m_colorTable(i, 1) = palette[i][1];
-        m_colorTable(i, 2) = palette[i][2];
+        _colorTable(i, 0) = palette[i][0];
+        _colorTable(i, 1) = palette[i][1];
+        _colorTable(i, 2) = palette[i][2];
     }
 
     return true;
 }
 
 bool vrRenderRasterPredictor::ParseRGBfile() {
-    asFileText file(m_colorTableFile.GetFullPath(), asFile::ReadOnly);
+    asFileText file(_colorTableFile.GetFullPath(), asFile::ReadOnly);
     if (!file.Open()) {
-        wxLogError(_("Color table file %s could not be opened..."), m_colorTableFile.GetFullPath());
+        wxLogError(_("Color table file %s could not be opened..."), _colorTableFile.GetFullPath());
         return false;
     }
 
@@ -154,13 +154,13 @@ bool vrRenderRasterPredictor::ParseRGBfile() {
 
     int indexNColors = fileLine.Find("ncolors=");
     if (indexNColors == wxNOT_FOUND) {
-        wxLogError(_("Color table format not supported (file %s)..."), m_colorTableFile.GetFullPath());
+        wxLogError(_("Color table format not supported (file %s)..."), _colorTableFile.GetFullPath());
         return false;
     }
     wxString strNColors = fileLine.SubString(indexNColors + 8, fileLine.Len() - 1);
     long nColorsVal;
     if (!strNColors.ToLong(&nColorsVal)) {
-        wxLogError(_("Color table format not supported (file %s)..."), m_colorTableFile.GetFullPath());
+        wxLogError(_("Color table format not supported (file %s)..."), _colorTableFile.GetFullPath());
         return false;
     }
     wxASSERT(nColorsVal > 0);
@@ -181,11 +181,11 @@ bool vrRenderRasterPredictor::ParseRGBfile() {
             wxString token = tokenizer.GetNextToken();
             double val;
             if (!token.ToDouble(&val)) {
-                wxLogError(_("Color table format not supported (file %s)..."), m_colorTableFile.GetFullPath());
+                wxLogError(_("Color table format not supported (file %s)..."), _colorTableFile.GetFullPath());
                 return false;
             }
 
-            m_colorTable(i, n) = float(val);
+            _colorTable(i, n) = float(val);
 
             if (n == 2) break;
             n++;
@@ -199,12 +199,12 @@ bool vrRenderRasterPredictor::ParseRGBfile() {
 }
 
 void vrRenderRasterPredictor::ResizeColorTable(int size) {
-    m_colorTable.resize(size, 3);
-    m_colorTable.fill(0);
+    _colorTable.resize(size, 3);
+    _colorTable.fill(0);
 }
 
 void vrRenderRasterPredictor::ScaleColors() {
-    if (m_colorTable.maxCoeff() <= 1) {
-        m_colorTable *= 255;
+    if (_colorTable.maxCoeff() <= 1) {
+        _colorTable *= 255;
     }
 }

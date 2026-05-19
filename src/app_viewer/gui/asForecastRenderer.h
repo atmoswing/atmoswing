@@ -66,60 +66,60 @@ class asForecastRenderer {
     void FixMethodSelection();
 
     wxArrayString GetForecastDisplayStringArray() const {
-        return m_displayForecast;
+        return _displayForecast;
     }
 
     wxArrayString GetQuantilesStringArray() const {
-        return m_displayQuantiles;
+        return _displayQuantiles;
     }
 
     int GetMethodSelection() const {
-        return m_methodSelection;
+        return _methodSelection;
     }
 
     int GetForecastSelection() const {
-        return m_forecastSelection;
+        return _forecastSelection;
     }
 
     int GetForecastDisplaySelection() const {
-        return m_forecastDisplaySelection;
+        return _forecastDisplaySelection;
     }
 
     int GetQuantileSelection() const {
-        return m_quantileSelection;
+        return _quantileSelection;
     }
 
     float GetLayerMaxValue() const {
-        return m_layerMaxValue;
+        return _layerMaxValue;
     }
 
     int GetLeadTimeIndex() const {
-        return m_leadTimeIndex;
+        return _leadTimeIndex;
     }
 
     float GetLeadTimeDate() const {
-        return m_leadTimeDate;
+        return _leadTimeDate;
     }
 
   protected:
   private:
-    asFrameViewer* m_parent;
-    asForecastManager* m_forecastManager;
-    vrLayerManager* m_layerManager;
-    vrViewerLayerManager* m_viewerLayerManager;
-    wxArrayString m_displayForecast;
-    wxArrayString m_displayQuantiles;
-    vf m_returnPeriods;
-    vf m_quantiles;
-    int m_leadTimeIndex;
-    float m_leadTimeDate;
-    float m_leadTimeStep;
-    float m_layerMaxValue;
-    int m_forecastDisplaySelection;
-    int m_quantileSelection;
-    int m_methodSelection;
-    int m_forecastSelection;
-    bool m_opened;
+    asFrameViewer* _parent;
+    asForecastManager* _forecastManager;
+    vrLayerManager* _layerManager;
+    vrViewerLayerManager* _viewerLayerManager;
+    wxArrayString _displayForecast;
+    wxArrayString _displayQuantiles;
+    vf _returnPeriods;
+    vf _quantiles;
+    int _leadTimeIndex;
+    float _leadTimeDate;
+    float _leadTimeStep;
+    float _layerMaxValue;
+    int _forecastDisplaySelection;
+    int _quantileSelection;
+    int _methodSelection;
+    int _forecastSelection;
+    bool _opened;
 
     void AdaptLeadTimeIndex();
 };

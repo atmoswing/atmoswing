@@ -45,10 +45,10 @@ class asThreadMC : public asThread {
 
   protected:
   private:
-    asMethodOptimizerMC* m_optimizer;
-    asParametersOptimization* m_params;
-    float* m_finalScoreCalib;
-    vf* m_scoreClimatology;
+    asMethodOptimizerMC* _optimizer;
+    asParametersOptimization* _params;
+    float* _finalScoreCalib;
+    vf* _scoreClimatology;
 };
 
 #endif

@@ -47,9 +47,9 @@ END_EVENT_TABLE()
 
 wxBmpComboPopupChild::wxBmpComboPopupChild(wxWindow* parent, wxBmpComboBox* owner)
     : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL) {
-    m_bmpCombo = owner;
-    m_last_selection = -1;
-    SetBackgroundColour(m_bmpCombo->GetBackgroundColour());
+    _bmpCombo = owner;
+    _last_selection = -1;
+    SetBackgroundColour(_bmpCombo->GetBackgroundColour());
 }
 
 void wxBmpComboPopupChild::OnPaint(wxPaintEvent& WXUNUSED(event)) {
@@ -58,16 +58,16 @@ void wxBmpComboPopupChild::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     // dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID));
     // dc.Clear();
 
-    dc.SetFont(m_bmpCombo->GetFont());
+    dc.SetFont(_bmpCombo->GetFont());
 
-    int y = 0, dy = m_bmpCombo->GetItemSize().y;
+    int y = 0, dy = _bmpCombo->GetItemSize().y;
     wxPoint origin = dc.GetDeviceOrigin();
     wxSize clientSize = GetClientSize();
 
-    for (int n = 0; n < m_bmpCombo->GetCount(); n++) {
+    for (int n = 0; n < _bmpCombo->GetCount(); n++) {
         if (y + dy > -origin.y) {
             dc.SetDeviceOrigin(origin.x, origin.y + y + 1);
-            m_bmpCombo->DrawItem(dc, n);
+            _bmpCombo->DrawItem(dc, n);
         }
 
         y += dy;
@@ -77,10 +77,10 @@ void wxBmpComboPopupChild::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     dc.SetDeviceOrigin(0, 0);
     PrepareDC(dc);  // reset back
 
-    if (m_bmpCombo->GetSelection() >= 0) {
-        if (m_last_selection < 0) m_last_selection = m_bmpCombo->GetSelection();
+    if (_bmpCombo->GetSelection() >= 0) {
+        if (_last_selection < 0) _last_selection = _bmpCombo->GetSelection();
 
-        DrawSelection(m_last_selection, dc);
+        DrawSelection(_last_selection, dc);
     }
 }
 
@@ -91,40 +91,40 @@ void wxBmpComboPopupChild::OnMouse(wxMouseEvent& event) {
     // wxPrintf(wxT("bmpcombo mouse %d %d\n"), mouse.x, mouse.y); fflush(stdout);
 
     // Get selection from mouse pos, force valid
-    int sel = m_bmpCombo->GetItemSize().y != 0 ? mouse.y / m_bmpCombo->GetItemSize().y : -1;
+    int sel = _bmpCombo->GetItemSize().y != 0 ? mouse.y / _bmpCombo->GetItemSize().y : -1;
     if (sel < 0)
         sel = 0;
-    else if (sel >= m_bmpCombo->GetCount())
-        sel = m_bmpCombo->GetCount() - 1;
+    else if (sel >= _bmpCombo->GetCount())
+        sel = _bmpCombo->GetCount() - 1;
 
     if (event.LeftDown()) {
         // quickly show user what they selected before hiding it
-        if (sel != m_last_selection) {
+        if (sel != _last_selection) {
             wxClientDC dc(this);
             PrepareDC(dc);
-            if (m_last_selection >= 0) DrawSelection(m_last_selection, dc);
+            if (_last_selection >= 0) DrawSelection(_last_selection, dc);
             if (sel >= 0) DrawSelection(sel, dc);
 
-            m_last_selection = sel;
+            _last_selection = sel;
         }
 
-        m_bmpCombo->SetSelection(sel, true);
-        m_bmpCombo->HidePopup();
+        _bmpCombo->SetSelection(sel, true);
+        _bmpCombo->HidePopup();
         return;
     }
 }
 
 void wxBmpComboPopupChild::OnKeyDown(wxKeyEvent& event) {
-    int sel = m_last_selection;
+    int sel = _last_selection;
 
     switch (event.GetKeyCode()) {
         case WXK_ESCAPE: {
-            m_bmpCombo->HidePopup();
+            _bmpCombo->HidePopup();
             return;
         }
         case WXK_RETURN: {
-            m_bmpCombo->SetSelection(sel, true);
-            m_bmpCombo->HidePopup();
+            _bmpCombo->SetSelection(sel, true);
+            _bmpCombo->HidePopup();
             return;
         }
         case WXK_UP:
@@ -139,16 +139,16 @@ void wxBmpComboPopupChild::OnKeyDown(wxKeyEvent& event) {
     }
 
     if (sel < 0) sel = 0;
-    if (sel >= m_bmpCombo->GetCount()) sel = m_bmpCombo->GetCount() - 1;
+    if (sel >= _bmpCombo->GetCount()) sel = _bmpCombo->GetCount() - 1;
 
-    if (sel != m_last_selection) {
+    if (sel != _last_selection) {
         wxClientDC dc(this);
         PrepareDC(dc);
-        if (m_last_selection >= 0) DrawSelection(m_last_selection, dc);
+        if (_last_selection >= 0) DrawSelection(_last_selection, dc);
 
         if (sel >= 0) DrawSelection(sel, dc);
 
-        m_last_selection = sel;
+        _last_selection = sel;
     }
 }
 
@@ -156,7 +156,7 @@ void wxBmpComboPopupChild::DrawSelection(int n, wxDC& dc) {
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
     dc.SetPen(*wxBLACK_PEN);
     dc.SetLogicalFunction(wxINVERT);
-    int height = m_bmpCombo->GetItemSize().y;
+    int height = _bmpCombo->GetItemSize().y;
     dc.DrawRectangle(0, wxMax(0, height * n - 1), GetClientSize().x, height + 2);
     dc.SetLogicalFunction(wxCOPY);
 }
@@ -174,10 +174,10 @@ END_EVENT_TABLE()
 void wxBmpComboLabel::OnChar(wxKeyEvent& event) {
     switch (event.GetKeyCode()) {
         case WXK_UP:
-            m_bmpCombo->SetNextSelection(false, true);
+            _bmpCombo->SetNextSelection(false, true);
             break;
         case WXK_DOWN:
-            m_bmpCombo->SetNextSelection(true, true);
+            _bmpCombo->SetNextSelection(true, true);
             break;
         default:
             break;
@@ -186,15 +186,15 @@ void wxBmpComboLabel::OnChar(wxKeyEvent& event) {
 
 void wxBmpComboLabel::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     wxPaintDC dc(this);
-    dc.SetFont(m_bmpCombo->GetFont());
+    dc.SetFont(_bmpCombo->GetFont());
     // dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID));
     // dc.Clear();
     dc.SetBrush(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID));
     dc.SetPen(*wxTRANSPARENT_PEN);
     dc.DrawRectangle(wxRect(wxPoint(0, 0), GetClientSize()));
 
-    const int sel = m_bmpCombo->GetSelection();
-    if ((sel >= 0) && (sel < m_bmpCombo->GetCount())) m_bmpCombo->DrawItem(dc, sel);
+    const int sel = _bmpCombo->GetSelection();
+    if ((sel >= 0) && (sel < _bmpCombo->GetCount())) _bmpCombo->DrawItem(dc, sel);
 }
 
 // ============================================================================
@@ -207,31 +207,31 @@ EVT_SIZE(wxBmpComboBox::OnSize)
 END_EVENT_TABLE()
 
 wxBmpComboBox::~wxBmpComboBox() {
-    while (m_bitmaps.GetCount() > 0u) {
-        wxBitmap* bmp = (wxBitmap*)m_bitmaps.Item(0);
-        m_bitmaps.RemoveAt(0);
+    while (_bitmaps.GetCount() > 0u) {
+        wxBitmap* bmp = (wxBitmap*)_bitmaps.Item(0);
+        _bitmaps.RemoveAt(0);
         delete bmp;
     }
 }
 
 void wxBmpComboBox::Init() {
-    m_labelWin = NULL;
-    m_frozen = true;
-    m_selection = 0;
-    m_win_border = 0;
-    m_label_style = wxBMPCOMBO_LEFT;
+    _labelWin = NULL;
+    _frozen = true;
+    _selection = 0;
+    _win_border = 0;
+    _label_style = wxBMPCOMBO_LEFT;
 }
 
 bool wxBmpComboBox::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style,
                            const wxValidator& val, const wxString& name) {
     if (!DropDownBase::Create(parent, id, pos, size, wxNO_BORDER | wxCLIP_CHILDREN, val, name)) return false;
 
-    m_labelWin = new wxBmpComboLabel(this);
-    m_win_border = m_labelWin->GetSize().x - m_labelWin->GetClientSize().x;
+    _labelWin = new wxBmpComboLabel(this);
+    _win_border = _labelWin->GetSize().x - _labelWin->GetClientSize().x;
 
     SetBackgroundColour(*wxWHITE);
 
-    m_frozen = false;
+    _frozen = false;
     CalcLayout();
 
     wxSize bestSize = DoGetBestSize();
@@ -249,11 +249,11 @@ bool wxBmpComboBox::SetButtonStyle(long style) {
     if (style & wxBMPCOMBO_LEFT) n_styles++;
     if (style & wxBMPCOMBO_RIGHT) n_styles++;
     wxCHECK_MSG(n_styles < 2, false, wxT("Only one wxBmpComboBox label position allowed"));
-    if (n_styles < 1) style |= (m_label_style & BMPCOMBO_LABEL_MASK);
+    if (n_styles < 1) style |= (_label_style & BMPCOMBO_LABEL_MASK);
 
-    m_label_style = style;
+    _label_style = style;
 
-    m_labelWin->Refresh(true);
+    _labelWin->Refresh(true);
 
     return true;
 }
@@ -261,12 +261,12 @@ bool wxBmpComboBox::SetButtonStyle(long style) {
 void wxBmpComboBox::OnSize(wxSizeEvent& event) {
     event.Skip();
 
-    if (!m_labelWin || !m_dropdownButton) return;
+    if (!_labelWin || !_dropdownButton) return;
 
     wxSize size = GetClientSize();
     // wxPrintf(wxT("ComboOnSize %d %d\n"), size.x, size.y);
-    int width = size.x - ((wxWindow*)m_dropdownButton)->GetSize().x;
-    m_labelWin->SetSize(0, 0, width, size.y);
+    int width = size.x - ((wxWindow*)_dropdownButton)->GetSize().x;
+    _labelWin->SetSize(0, 0, width, size.y);
 }
 
 void wxBmpComboBox::DoSetSize(int x, int y, int width, int height, int sizeFlags) {
@@ -280,8 +280,8 @@ void wxBmpComboBox::DoSetSize(int x, int y, int width, int height, int sizeFlags
     */
     DropDownBase::DoSetSize(x, y, width, height, sizeFlags);
     /*
-        width = width - ((wxWindow*)m_dropdownButton)->GetSize().x;
-        m_labelWin->SetSize(0, 0, width, height);
+        width = width - ((wxWindow*)_dropdownButton)->GetSize().x;
+        _labelWin->SetSize(0, 0, width, height);
     */
 }
 
@@ -289,10 +289,10 @@ wxSize wxBmpComboBox::DoGetBestSize() const {
     if (GetCount() == 0) return DropDownBase::DoGetBestSize();
 
     wxSize size(0, 0);
-    size.x = m_labelSize.x + m_bitmapSize.x + (m_labelSize.x != 0 ? BORDER * 2 : 0);
-    size.y = wxMax(m_labelSize.y, m_bitmapSize.y) + m_win_border;
+    size.x = _labelSize.x + _bitmapSize.x + (_labelSize.x != 0 ? BORDER * 2 : 0);
+    size.y = wxMax(_labelSize.y, _bitmapSize.y) + _win_border;
 
-    size.x += m_win_border + DROPDOWN_DROP_WIDTH;
+    size.x += _win_border + DROPDOWN_DROP_WIDTH;
     if (size.y < DROPDOWN_DROP_HEIGHT) size.y = DROPDOWN_DROP_HEIGHT;
 
     return size;
@@ -303,20 +303,20 @@ int wxBmpComboBox::DoGetBestDropHeight(int max_height) {
     if (count < 1) return -1;
 
     // add one for drawing selection rect
-    return wxMin(m_itemSize.y * count + m_win_border + 1, max_height);
+    return wxMin(_itemSize.y * count + _win_border + 1, max_height);
 }
 
 bool wxBmpComboBox::DoShowPopup() {
-    if (m_popupWin) {
-        wxBmpComboPopupChild* popChild = new wxBmpComboPopupChild(m_popupWin, this);
-        m_popupWin->SetChild(popChild);
+    if (_popupWin) {
+        wxBmpComboPopupChild* popChild = new wxBmpComboPopupChild(_popupWin, this);
+        _popupWin->SetChild(popChild);
 
         if (popChild) {
-            popChild->m_last_selection = GetSelection();
+            popChild->_last_selection = GetSelection();
             int count = GetCount();
-            int scr_pos = m_selection > 0 ? m_selection * m_itemSize.y - 1 : 0;
-            if (m_popupWin->GetClientSize().GetHeight() >= m_itemSize.y * count + 1) scr_pos = 0;
-            popChild->SetScrollbars(1, 1, m_itemSize.x, m_itemSize.y * count + 1, 0, scr_pos);
+            int scr_pos = _selection > 0 ? _selection * _itemSize.y - 1 : 0;
+            if (_popupWin->GetClientSize().GetHeight() >= _itemSize.y * count + 1) scr_pos = 0;
+            popChild->SetScrollbars(1, 1, _itemSize.x, _itemSize.y * count + 1, 0, scr_pos);
         }
     }
 
@@ -331,16 +331,16 @@ void wxBmpComboBox::HidePopup() {
 }
 
 void wxBmpComboBox::Thaw() {
-    m_frozen = false;
+    _frozen = false;
     CalcLayout();
-    if (m_labelWin) m_labelWin->Refresh();
+    if (_labelWin) _labelWin->Refresh();
 }
 
 void wxBmpComboBox::CalcLayout() {
-    if (m_frozen) return;
+    if (_frozen) return;
 
     int height = 0, width = 0;
-    m_itemSize = m_labelSize = m_bitmapSize = wxSize(0, 0);
+    _itemSize = _labelSize = _bitmapSize = wxSize(0, 0);
     int count = GetCount();
     wxBitmap bmp;
 
@@ -350,19 +350,19 @@ void wxBmpComboBox::CalcLayout() {
             width = bmp.GetWidth();
             height = bmp.GetHeight();
 
-            if (width > m_bitmapSize.x) m_bitmapSize.x = width;
-            if (height > m_bitmapSize.y) m_bitmapSize.y = height;
+            if (width > _bitmapSize.x) _bitmapSize.x = width;
+            if (height > _bitmapSize.y) _bitmapSize.y = height;
         }
-        if (!m_labels[n].IsEmpty()) {
-            GetTextExtent(m_labels[n], &width, &height);
+        if (!_labels[n].IsEmpty()) {
+            GetTextExtent(_labels[n], &width, &height);
 
-            if (width > m_labelSize.x) m_labelSize.x = width;
-            if (height > m_labelSize.y) m_labelSize.y = height;
+            if (width > _labelSize.x) _labelSize.x = width;
+            if (height > _labelSize.y) _labelSize.y = height;
         }
     }
 
-    m_itemSize.x = m_labelSize.x + m_bitmapSize.x + m_win_border;
-    m_itemSize.y = wxMax(m_labelSize.y, m_bitmapSize.y) + m_win_border;
+    _itemSize.x = _labelSize.x + _bitmapSize.x + _win_border;
+    _itemSize.y = wxMax(_labelSize.y, _bitmapSize.y) + _win_border;
 }
 
 void wxBmpComboBox::CalcLabelBitmapPos(int n, const wxSize& area, wxPoint& labelPos, wxPoint& bitmapPos) const {
@@ -375,23 +375,23 @@ void wxBmpComboBox::CalcLabelBitmapPos(int n, const wxSize& area, wxPoint& label
         bw = GetItemBitmap(n).GetWidth();
         bh = GetItemBitmap(n).GetHeight();
     }
-    if (!m_labels[n].IsEmpty()) {
-        GetTextExtent(m_labels[n], &lw, &lh);
+    if (!_labels[n].IsEmpty()) {
+        GetTextExtent(_labels[n], &lw, &lh);
     }
 
-    if (m_bitmapSize.x == 0)  // There aren't any bitmaps, left align label
+    if (_bitmapSize.x == 0)  // There aren't any bitmaps, left align label
     {
         labelPos = wxPoint(BORDER, (area.y - lh) / 2);
-    } else if (m_labelSize.x == 0)  // There aren't any labels, center bitmap
+    } else if (_labelSize.x == 0)  // There aren't any labels, center bitmap
     {
         bitmapPos = wxPoint((area.x - bw) / 2, (area.y - bh) / 2);
-    } else if ((m_label_style & wxBMPCOMBO_RIGHT) != 0) {
-        labelPos = wxPoint(m_bitmapSize.x + BORDER, (area.y - lh) / 2);
-        bitmapPos = wxPoint((m_bitmapSize.x - bw) / 2, (area.y - bh) / 2);
-    } else  // if ((m_label_style & wxBMPCOMBO_LEFT) != 0)
+    } else if ((_label_style & wxBMPCOMBO_RIGHT) != 0) {
+        labelPos = wxPoint(_bitmapSize.x + BORDER, (area.y - lh) / 2);
+        bitmapPos = wxPoint((_bitmapSize.x - bw) / 2, (area.y - bh) / 2);
+    } else  // if ((_label_style & wxBMPCOMBO_LEFT) != 0)
     {
         labelPos = wxPoint(BORDER, (area.y - lh) / 2);
-        bitmapPos = wxPoint(BORDER * 2 + m_labelSize.x + (area.x - BORDER * 2 - m_labelSize.x - bw) / 2,
+        bitmapPos = wxPoint(BORDER * 2 + _labelSize.x + (area.x - BORDER * 2 - _labelSize.x - bw) / 2,
                             (area.y - bh) / 2);
     }
 }
@@ -407,8 +407,8 @@ void wxBmpComboBox::DrawItem(wxDC& dc, int n) const {
 }
 
 int wxBmpComboBox::Append(const wxString& label, const wxBitmap& bitmap) {
-    m_labels.Add(label);
-    m_bitmaps.Add(new wxBitmap(bitmap));
+    _labels.Add(label);
+    _bitmaps.Add(new wxBitmap(bitmap));
     CalcLayout();
     return GetCount() - 1;
 }
@@ -416,17 +416,17 @@ int wxBmpComboBox::Append(const wxString& label, const wxBitmap& bitmap) {
 int wxBmpComboBox::Insert(const wxString& label, const wxBitmap& bitmap, unsigned int n) {
     wxCHECK_MSG(int(n) < GetCount(), wxNOT_FOUND, wxT("invalid index"));
 
-    m_labels.Insert(label, n);
-    m_bitmaps.Insert(new wxBitmap(bitmap), n);
+    _labels.Insert(label, n);
+    _bitmaps.Insert(new wxBitmap(bitmap), n);
     CalcLayout();
     return n;
 }
 
 void wxBmpComboBox::Clear() {
-    m_labels.Clear();
-    while (m_bitmaps.GetCount() > 0u) {
-        wxBitmap* bmp = (wxBitmap*)m_bitmaps.Item(0);
-        m_bitmaps.RemoveAt(0);
+    _labels.Clear();
+    while (_bitmaps.GetCount() > 0u) {
+        wxBitmap* bmp = (wxBitmap*)_bitmaps.Item(0);
+        _bitmaps.RemoveAt(0);
         delete bmp;
     }
     CalcLayout();
@@ -436,9 +436,9 @@ void wxBmpComboBox::Delete(unsigned int n, unsigned int count) {
     wxCHECK_RET(int(n + count) <= GetCount(), wxT("invalid index"));
 
     for (unsigned int i = 0; i < count; i++) {
-        m_labels.RemoveAt(n);
-        wxBitmap* bmp = (wxBitmap*)m_bitmaps.Item(n);
-        m_bitmaps.RemoveAt(n);
+        _labels.RemoveAt(n);
+        wxBitmap* bmp = (wxBitmap*)_bitmaps.Item(n);
+        _bitmaps.RemoveAt(n);
         delete bmp;
     }
     CalcLayout();
@@ -446,22 +446,22 @@ void wxBmpComboBox::Delete(unsigned int n, unsigned int count) {
 
 wxString wxBmpComboBox::GetLabel(int n) const {
     wxCHECK_MSG((n >= 0) && (n < GetCount()), wxEmptyString, wxT("invalid index"));
-    return m_labels[n];
+    return _labels[n];
 }
 
 wxBitmap wxBmpComboBox::GetItemBitmap(int n) const {
     wxCHECK_MSG((n >= 0) && (n < GetCount()), wxNullBitmap, wxT("invalid index"));
-    return *(wxBitmap*)m_bitmaps.Item(n);
+    return *(wxBitmap*)_bitmaps.Item(n);
 }
 
 void wxBmpComboBox::SetSelection(int n, bool send_event) {
     wxCHECK_RET((n >= 0) && (n < GetCount()), wxT("invalid index"));
-    m_selection = n;
-    m_labelWin->Refresh(true);
+    _selection = n;
+    _labelWin->Refresh(true);
 
     if (send_event) {
         wxCommandEvent event(wxEVT_COMMAND_COMBOBOX_SELECTED, GetId());
-        event.SetInt(m_selection);
+        event.SetInt(_selection);
         event.SetEventObject(this);
         GetEventHandler()->ProcessEvent(event);
     }
@@ -471,7 +471,7 @@ void wxBmpComboBox::SetNextSelection(bool foward, bool send_event) {
     const int count = GetCount();
     if (count == 0) return;
 
-    int sel = m_selection;
+    int sel = _selection;
 
     if (foward) {
         if ((sel < 0) || (sel == count - 1))
@@ -490,26 +490,26 @@ void wxBmpComboBox::SetNextSelection(bool foward, bool send_event) {
 
 void wxBmpComboBox::SetLabel(int n, const wxString& label) {
     wxCHECK_RET((n >= 0) && (n < GetCount()), wxT("invalid index"));
-    m_labels[n] = label;
+    _labels[n] = label;
     CalcLayout();
 
-    if (n == m_selection) m_labelWin->Refresh(false);
+    if (n == _selection) _labelWin->Refresh(false);
 }
 
 void wxBmpComboBox::SetItemBitmap(int n, const wxBitmap& bitmap) {
     wxCHECK_RET((n >= 0) && (n < GetCount()), wxT("invalid index"));
-    *((wxBitmap*)m_bitmaps.Item(n)) = bitmap;
+    *((wxBitmap*)_bitmaps.Item(n)) = bitmap;
     CalcLayout();
 
-    if (n == m_selection) m_labelWin->Refresh(false);
+    if (n == _selection) _labelWin->Refresh(false);
 }
 
 bool wxBmpComboBox::SetBackgroundColour(const wxColour& colour) {
     // not a failure for wx 2.5.x since InheritAttributes calls this
     // from wxWindow::Create
-    if (m_labelWin) {
-        m_labelWin->SetBackgroundColour(colour);
-        m_labelWin->Refresh();
+    if (_labelWin) {
+        _labelWin->SetBackgroundColour(colour);
+        _labelWin->Refresh();
     }
     return DropDownBase::SetBackgroundColour(colour);
 }

@@ -37,27 +37,27 @@ END_EVENT_TABLE()
 asFramePlotDistributions::asFramePlotDistributions(wxWindow* parent, int methodRow, int forecastRow,
                                                    asForecastManager* forecastManager, wxWindowID id)
     : asFramePlotDistributionsVirutal(parent, id),
-      m_forecastManager(forecastManager),
-      m_selectedMethod(methodRow),
-      m_selectedForecast(forecastRow),
-      m_selectedStation(0),
-      m_selectedDate(0),
-      m_xmaxPredictands(0) {
+      _forecastManager(forecastManager),
+      _selectedMethod(methodRow),
+      _selectedForecast(forecastRow),
+      _selectedStation(0),
+      _selectedDate(0),
+      _xmaxPredictands(0) {
     SetLabel(_("Distribution plots"));
 
     forecastRow = wxMax(forecastRow, 0);
 
-    m_panelPlotPredictands = new asPanelPlot(m_panelPredictandsRight);
-    m_panelPlotPredictands->GetPlotCtrl()->HideScrollBars();
-    m_panelPlotPredictands->Layout();
-    m_sizerPlotPredictands->Add(m_panelPlotPredictands, 1, wxALL | wxEXPAND, 0);
-    m_sizerPlotPredictands->Fit(m_panelPredictandsRight);
+    _panelPlotPredictands = new asPanelPlot(_panelPredictandsRight);
+    _panelPlotPredictands->GetPlotCtrl()->HideScrollBars();
+    _panelPlotPredictands->Layout();
+    _sizerPlotPredictands->Add(_panelPlotPredictands, 1, wxALL | wxEXPAND, 0);
+    _sizerPlotPredictands->Fit(_panelPredictandsRight);
 
-    m_panelPlotCriteria = new asPanelPlot(m_panelCriteria);
-    m_panelPlotCriteria->GetPlotCtrl()->HideScrollBars();
-    m_panelPlotCriteria->Layout();
-    m_sizerPlotCriteria->Add(m_panelPlotCriteria, 1, wxALL | wxEXPAND, 0);
-    m_sizerPlotCriteria->Fit(m_panelCriteria);
+    _panelPlotCriteria = new asPanelPlot(_panelCriteria);
+    _panelPlotCriteria->GetPlotCtrl()->HideScrollBars();
+    _panelPlotCriteria->Layout();
+    _sizerPlotCriteria->Add(_panelPlotCriteria, 1, wxALL | wxEXPAND, 0);
+    _sizerPlotCriteria->Fit(_panelCriteria);
 
     // Icon
 #ifdef __WXMSW__
@@ -72,45 +72,45 @@ asFramePlotDistributions::~asFramePlotDistributions() {}
 void asFramePlotDistributions::OnClose(wxCloseEvent& evt) {
     // Save checked layers
     wxConfigBase* pConfig = wxFileConfig::Get();
-    bool doPlotAllAnalogsPoints = m_checkListTocPredictands->IsChecked(AllAnalogsPoints);
+    bool doPlotAllAnalogsPoints = _checkListTocPredictands->IsChecked(AllAnalogsPoints);
     pConfig->Write("/PlotsDistributionsPredictands/DoPlotAllAnalogsPoints", doPlotAllAnalogsPoints);
-    bool doPlotAllAnalogsCurve = m_checkListTocPredictands->IsChecked(AllAnalogsCurve);
+    bool doPlotAllAnalogsCurve = _checkListTocPredictands->IsChecked(AllAnalogsCurve);
     pConfig->Write("/PlotsDistributionsPredictands/DoPlotAllAnalogsCurve", doPlotAllAnalogsCurve);
-    bool doPlotBestAnalogs10Points = m_checkListTocPredictands->IsChecked(BestAnalogs10Points);
+    bool doPlotBestAnalogs10Points = _checkListTocPredictands->IsChecked(BestAnalogs10Points);
     pConfig->Write("/PlotsDistributionsPredictands/DoPlotBestAnalogs10Points", doPlotBestAnalogs10Points);
-    bool doPlotBestAnalogs10Curve = m_checkListTocPredictands->IsChecked(BestAnalogs10Curve);
+    bool doPlotBestAnalogs10Curve = _checkListTocPredictands->IsChecked(BestAnalogs10Curve);
     pConfig->Write("/PlotsDistributionsPredictands/DoPlotBestAnalogs10Curve", doPlotBestAnalogs10Curve);
-    bool doPlotBestAnalogs5Points = m_checkListTocPredictands->IsChecked(BestAnalogs5Points);
+    bool doPlotBestAnalogs5Points = _checkListTocPredictands->IsChecked(BestAnalogs5Points);
     pConfig->Write("/PlotsDistributionsPredictands/DoPlotBestAnalogs5Points", doPlotBestAnalogs5Points);
-    bool doPlotBestAnalogs5Curve = m_checkListTocPredictands->IsChecked(BestAnalogs5Curve);
+    bool doPlotBestAnalogs5Curve = _checkListTocPredictands->IsChecked(BestAnalogs5Curve);
     pConfig->Write("/PlotsDistributionsPredictands/DoPlotBestAnalogs5Curve", doPlotBestAnalogs5Curve);
-    bool doPlotAllReturnPeriods = m_checkListTocPredictands->IsChecked(AllReturnPeriods);
+    bool doPlotAllReturnPeriods = _checkListTocPredictands->IsChecked(AllReturnPeriods);
     pConfig->Write("/PlotsDistributionsPredictands/DoPlotAllReturnPeriods", doPlotAllReturnPeriods);
-    bool doPlotClassicReturnPeriod = m_checkListTocPredictands->IsChecked(ClassicReturnPeriod);
+    bool doPlotClassicReturnPeriod = _checkListTocPredictands->IsChecked(ClassicReturnPeriod);
     pConfig->Write("/PlotsDistributionsPredictands/DoPlotClassicReturnPeriod", doPlotClassicReturnPeriod);
-    bool doPlotClassicQuantiles = m_checkListTocPredictands->IsChecked(ClassicQuantiles);
+    bool doPlotClassicQuantiles = _checkListTocPredictands->IsChecked(ClassicQuantiles);
     pConfig->Write("/PlotsDistributionsPredictands/DoPlotClassicQuantiles", doPlotClassicQuantiles);
 
     evt.Skip();
 }
 
 void asFramePlotDistributions::Init() {
-    if (m_selectedForecast < 0) {
-        m_selectedForecast = 0;
+    if (_selectedForecast < 0) {
+        _selectedForecast = 0;
     }
 
     // Forecast list
     RebuildChoiceForecast();
 
     // Dates list
-    wxArrayString arrayDates = m_forecastManager->GetTargetDatesWxArray(m_selectedMethod, m_selectedForecast);
-    m_choiceDate->Set(arrayDates);
-    m_choiceDate->Select(m_selectedDate);
+    wxArrayString arrayDates = _forecastManager->GetTargetDatesWxArray(_selectedMethod, _selectedForecast);
+    _choiceDate->Set(arrayDates);
+    _choiceDate->Select(_selectedDate);
 
     // Stations list
-    wxArrayString arrayStation = m_forecastManager->GetStationNamesWithHeights(m_selectedMethod, m_selectedForecast);
-    m_choiceStation->Set(arrayStation);
-    m_choiceStation->Select(m_selectedStation);
+    wxArrayString arrayStation = _forecastManager->GetStationNamesWithHeights(_selectedMethod, _selectedForecast);
+    _choiceStation->Set(arrayStation);
+    _choiceStation->Select(_selectedStation);
 
     InitPredictandsCheckListBox();
     InitPredictandsPlotCtrl();
@@ -119,48 +119,48 @@ void asFramePlotDistributions::Init() {
 
 void asFramePlotDistributions::RebuildChoiceForecast() {
     // Reset forecast list
-    wxArrayString arrayForecasts = m_forecastManager->GetCombinedForecastNamesWxArray();
-    m_choiceForecast->Set(arrayForecasts);
-    int linearIndex = m_forecastManager->GetLinearIndex(m_selectedMethod, m_selectedForecast);
-    m_choiceForecast->Select(linearIndex);
+    wxArrayString arrayForecasts = _forecastManager->GetCombinedForecastNamesWxArray();
+    _choiceForecast->Set(arrayForecasts);
+    int linearIndex = _forecastManager->GetLinearIndex(_selectedMethod, _selectedForecast);
+    _choiceForecast->Select(linearIndex);
 
     // Highlight the specific forecasts
-    for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++) {
+    for (int methodRow = 0; methodRow < _forecastManager->GetMethodsNb(); methodRow++) {
         int stationId =
-            m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetStationId(m_selectedStation);
-        int forecastRow = m_forecastManager->GetForecastRowSpecificForStationId(methodRow, stationId);
-        int index = m_forecastManager->GetLinearIndex(methodRow, forecastRow);
-        wxString val = "* " + m_choiceForecast->GetString(index) + " *";
-        m_choiceForecast->SetString(index, val);
+            _forecastManager->GetForecast(_selectedMethod, _selectedForecast)->GetStationId(_selectedStation);
+        int forecastRow = _forecastManager->GetForecastRowSpecificForStationId(methodRow, stationId);
+        int index = _forecastManager->GetLinearIndex(methodRow, forecastRow);
+        wxString val = "* " + _choiceForecast->GetString(index) + " *";
+        _choiceForecast->SetString(index, val);
     }
 }
 
 void asFramePlotDistributions::OnChoiceForecastChange(wxCommandEvent& event) {
     int linearIndex = event.GetInt();
-    m_selectedMethod = m_forecastManager->GetMethodRowFromLinearIndex(linearIndex);
-    m_selectedForecast = m_forecastManager->GetForecastRowFromLinearIndex(linearIndex);
+    _selectedMethod = _forecastManager->GetMethodRowFromLinearIndex(linearIndex);
+    _selectedForecast = _forecastManager->GetForecastRowFromLinearIndex(linearIndex);
 
     // Dates list
-    wxArrayString arrayDates = m_forecastManager->GetTargetDatesWxArray(m_selectedMethod, m_selectedForecast);
-    m_choiceDate->Set(arrayDates);
-    if (arrayDates.size() <= m_selectedDate) {
-        m_selectedDate = 0;
+    wxArrayString arrayDates = _forecastManager->GetTargetDatesWxArray(_selectedMethod, _selectedForecast);
+    _choiceDate->Set(arrayDates);
+    if (arrayDates.size() <= _selectedDate) {
+        _selectedDate = 0;
     }
-    m_choiceDate->Select(m_selectedDate);
+    _choiceDate->Select(_selectedDate);
 
     // Stations list
-    wxArrayString arrayStation = m_forecastManager->GetStationNamesWithHeights(m_selectedMethod, m_selectedForecast);
-    m_choiceStation->Set(arrayStation);
-    if (arrayStation.size() <= m_selectedStation) {
-        m_selectedStation = 0;
+    wxArrayString arrayStation = _forecastManager->GetStationNamesWithHeights(_selectedMethod, _selectedForecast);
+    _choiceStation->Set(arrayStation);
+    if (arrayStation.size() <= _selectedStation) {
+        _selectedStation = 0;
     }
-    m_choiceStation->Select(m_selectedStation);
+    _choiceStation->Select(_selectedStation);
 
     Plot();
 }
 
 void asFramePlotDistributions::OnChoiceStationChange(wxCommandEvent& event) {
-    m_selectedStation = event.GetInt();
+    _selectedStation = event.GetInt();
 
     RebuildChoiceForecast();
 
@@ -168,7 +168,7 @@ void asFramePlotDistributions::OnChoiceStationChange(wxCommandEvent& event) {
 }
 
 void asFramePlotDistributions::OnChoiceDateChange(wxCommandEvent& event) {
-    m_selectedDate = event.GetInt();
+    _selectedDate = event.GetInt();
 
     Plot();
 }
@@ -186,12 +186,12 @@ void asFramePlotDistributions::InitPredictandsCheckListBox() {
     checkList.Add(_("10 year return period"));
     checkList.Add(_("All return periods"));
 
-    m_checkListTocPredictands->Set(checkList);
+    _checkListTocPredictands->Set(checkList);
 }
 
 void asFramePlotDistributions::InitPredictandsPlotCtrl() {
     // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlotPredictands->GetPlotCtrl();
+    wxPlotCtrl* plotctrl = _panelPlotPredictands->GetPlotCtrl();
 
     // Set the axis lables
     plotctrl->SetShowXAxisLabel(true);
@@ -217,28 +217,28 @@ void asFramePlotDistributions::InitPredictandsPlotCtrl() {
     // Open layers defined in the preferences
     wxConfigBase* pConfig = wxFileConfig::Get();
     if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotAllAnalogsPoints", false))
-        m_checkListTocPredictands->Check(AllAnalogsPoints);
+        _checkListTocPredictands->Check(AllAnalogsPoints);
     if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotAllAnalogsCurve", true))
-        m_checkListTocPredictands->Check(AllAnalogsCurve);
+        _checkListTocPredictands->Check(AllAnalogsCurve);
     if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotBestAnalogs10Points", false))
-        m_checkListTocPredictands->Check(BestAnalogs10Points);
+        _checkListTocPredictands->Check(BestAnalogs10Points);
     if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotBestAnalogs10Curve", true))
-        m_checkListTocPredictands->Check(BestAnalogs10Curve);
+        _checkListTocPredictands->Check(BestAnalogs10Curve);
     if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotBestAnalogs5Points", true))
-        m_checkListTocPredictands->Check(BestAnalogs5Points);
+        _checkListTocPredictands->Check(BestAnalogs5Points);
     if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotBestAnalogs5Curve", false))
-        m_checkListTocPredictands->Check(BestAnalogs5Curve);
+        _checkListTocPredictands->Check(BestAnalogs5Curve);
     if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotAllReturnPeriods", false))
-        m_checkListTocPredictands->Check(AllReturnPeriods);
+        _checkListTocPredictands->Check(AllReturnPeriods);
     if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotClassicReturnPeriod", true))
-        m_checkListTocPredictands->Check(ClassicReturnPeriod);
+        _checkListTocPredictands->Check(ClassicReturnPeriod);
     if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotClassicQuantiles", true))
-        m_checkListTocPredictands->Check(ClassicQuantiles);
+        _checkListTocPredictands->Check(ClassicQuantiles);
 }
 
 void asFramePlotDistributions::InitCriteriaPlotCtrl() {
     // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlotCriteria->GetPlotCtrl();
+    wxPlotCtrl* plotctrl = _panelPlotCriteria->GetPlotCtrl();
 
     // Set the axis lables
     plotctrl->SetShowXAxisLabel(true);
@@ -264,7 +264,7 @@ void asFramePlotDistributions::OnTocSelectionChange(wxCommandEvent& event) {
 }
 
 bool asFramePlotDistributions::Plot() {
-    if (m_forecastManager->GetMethodsNb() < 1) return false;
+    if (_forecastManager->GetMethodsNb() < 1) return false;
     if (!PlotPredictands()) return false;
 
     return PlotCriteria();
@@ -273,14 +273,14 @@ bool asFramePlotDistributions::Plot() {
 bool asFramePlotDistributions::PlotPredictands() {
     wxBusyCursor wait;
 
-    if (m_forecastManager->GetMethodsNb() < 1) return false;
+    if (_forecastManager->GetMethodsNb() < 1) return false;
 
     // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlotPredictands->GetPlotCtrl();
+    wxPlotCtrl* plotctrl = _panelPlotPredictands->GetPlotCtrl();
 
     // Check that there is no NaNs
-    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
-    a1f analogs = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
+    asResultsForecast* forecast = _forecastManager->GetForecast(_selectedMethod, _selectedForecast);
+    a1f analogs = forecast->GetAnalogsValuesRaw(_selectedDate, _selectedStation);
     if (asHasNaN(&analogs[0], &analogs[analogs.size() - 1])) {
         wxLogError(_("The forecast contains NaNs. Plotting has been canceled."));
         return false;
@@ -299,7 +299,7 @@ bool asFramePlotDistributions::PlotPredictands() {
     plotctrl->ClearMarkers();
 
     // Set a first threshold for the zoom
-    m_xmaxPredictands = 50;
+    _xmaxPredictands = 50;
 
     // Get curves to plot
     bool DoPlotAllAnalogsPoints = false;
@@ -313,7 +313,7 @@ bool asFramePlotDistributions::PlotPredictands() {
     bool DoPlotClassicQuantiles = false;
 
     for (int curve = 0; curve <= 8; curve++) {
-        if (m_checkListTocPredictands->IsChecked(curve)) {
+        if (_checkListTocPredictands->IsChecked(curve)) {
             switch (curve) {
                 case (AllAnalogsPoints):
                     DoPlotAllAnalogsPoints = true;
@@ -361,7 +361,7 @@ bool asFramePlotDistributions::PlotPredictands() {
     }
 
     // Set the view rectangle (wxRect2DDouble(x, y, w, h))
-    wxRect2DDouble currentView(0, 0, m_xmaxPredictands * 1.1, 1);
+    wxRect2DDouble currentView(0, 0, _xmaxPredictands * 1.1, 1);
     plotctrl->SetViewRect(currentView);
 
     // Redraw
@@ -372,24 +372,24 @@ bool asFramePlotDistributions::PlotPredictands() {
 
 void asFramePlotDistributions::ResetExtent(wxCommandEvent& event) {
     // Set the view rectangle (wxRect2DDouble(x, y, w, h))
-    wxRect2DDouble currentView(0, 0, m_xmaxPredictands * 1.1, 1);
-    m_panelPlotPredictands->GetPlotCtrl()->SetViewRect(currentView);
+    wxRect2DDouble currentView(0, 0, _xmaxPredictands * 1.1, 1);
+    _panelPlotPredictands->GetPlotCtrl()->SetViewRect(currentView);
 
     // Redraw
-    m_panelPlotPredictands->GetPlotCtrl()->Redraw(wxPLOTCTRL_REDRAW_PLOT);
+    _panelPlotPredictands->GetPlotCtrl()->Redraw(wxPLOTCTRL_REDRAW_PLOT);
 }
 
 bool asFramePlotDistributions::PlotCriteria() {
     wxBusyCursor wait;
 
-    if (m_forecastManager->GetMethodsNb() < 1) return false;
+    if (_forecastManager->GetMethodsNb() < 1) return false;
 
     // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlotCriteria->GetPlotCtrl();
+    wxPlotCtrl* plotctrl = _panelPlotCriteria->GetPlotCtrl();
 
     // Check that there is no NaNs
-    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
-    a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);
+    asResultsForecast* forecast = _forecastManager->GetForecast(_selectedMethod, _selectedForecast);
+    a1f criteria = forecast->GetAnalogsCriteria(_selectedDate);
     if (asHasNaN(&criteria[0], &criteria[criteria.size() - 1])) {
         wxLogError(_("The forecast criteria contains NaNs. Plotting has been canceled."));
         return false;
@@ -419,7 +419,7 @@ bool asFramePlotDistributions::PlotCriteria() {
     }
 
     // Set the view rectangle (wxRect2DDouble(x, y, w, h))
-    wxRect2DDouble currentView(1, critMin, forecast->GetAnalogsNumber(m_selectedDate) - 1, critMax - critMin);
+    wxRect2DDouble currentView(1, critMin, forecast->GetAnalogsNumber(_selectedDate) - 1, critMax - critMin);
     plotctrl->SetViewRect(currentView);
 
     // Redraw
@@ -430,17 +430,17 @@ bool asFramePlotDistributions::PlotCriteria() {
 
 void asFramePlotDistributions::PlotAllReturnPeriods() {
     // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlotPredictands->GetPlotCtrl();
+    wxPlotCtrl* plotctrl = _panelPlotPredictands->GetPlotCtrl();
 
     // Get return periods
-    a1f retPeriods = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetReferenceAxis();
+    a1f retPeriods = _forecastManager->GetForecast(_selectedMethod, _selectedForecast)->GetReferenceAxis();
 
     for (int i = retPeriods.size() - 1; i >= 0; i--) {
         if (std::abs(retPeriods[i] - 2.33) < 0.1) continue;
 
         // Get precipitation value
-        float val = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)
-                        ->GetReferenceValue(m_selectedStation, i);
+        float val = _forecastManager->GetForecast(_selectedMethod, _selectedForecast)
+                        ->GetReferenceValue(_selectedStation, i);
 
         // Color (from yellow to red)
         float ratio = (float)i / (float)(retPeriods.size() - 1);
@@ -452,7 +452,7 @@ void asFramePlotDistributions::PlotAllReturnPeriods() {
         // plotctrl->AddMarker(marker);
 
         // Store max val
-        if (val > m_xmaxPredictands) m_xmaxPredictands = val;
+        if (val > _xmaxPredictands) _xmaxPredictands = val;
 
         // Create plot data
         wxPlotData plotData;
@@ -488,18 +488,18 @@ void asFramePlotDistributions::PlotAllReturnPeriods() {
 
 void asFramePlotDistributions::PlotReturnPeriod(int returnPeriod) {
     // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlotPredictands->GetPlotCtrl();
+    wxPlotCtrl* plotctrl = _panelPlotPredictands->GetPlotCtrl();
 
     // Get return periods
-    a1f retPeriods = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetReferenceAxis();
+    a1f retPeriods = _forecastManager->GetForecast(_selectedMethod, _selectedForecast)->GetReferenceAxis();
 
     // Find the value 10
     int index = asFind(&retPeriods[0], &retPeriods[retPeriods.size() - 1], returnPeriod);
 
     if ((index != asNOT_FOUND) && (index != asOUT_OF_RANGE)) {
         // Get precipitation value
-        float val = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)
-                        ->GetReferenceValue(m_selectedStation, index);
+        float val = _forecastManager->GetForecast(_selectedMethod, _selectedForecast)
+                        ->GetReferenceValue(_selectedStation, index);
 
         // Color (red)
         wxGenericPen pen(wxGenericColour(255, 0, 0), 2);
@@ -510,7 +510,7 @@ void asFramePlotDistributions::PlotReturnPeriod(int returnPeriod) {
         plotctrl->AddMarker(marker);
 
         // Store max val
-        if (val > m_xmaxPredictands) m_xmaxPredictands = val;
+        if (val > _xmaxPredictands) _xmaxPredictands = val;
     } else {
         wxLogError(_("The 10 year return period was not found in the data."));
     }
@@ -518,13 +518,13 @@ void asFramePlotDistributions::PlotReturnPeriod(int returnPeriod) {
 
 void asFramePlotDistributions::PlotAllAnalogsPoints() {
     // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlotPredictands->GetPlotCtrl();
+    wxPlotCtrl* plotctrl = _panelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast* forecast = _forecastManager->GetForecast(_selectedMethod, _selectedForecast);
 
     // Get the total number of points
-    a1f analogs = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
+    a1f analogs = forecast->GetAnalogsValuesRaw(_selectedDate, _selectedStation);
     asSortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
     int nbPoints = analogs.size();
 
@@ -540,7 +540,7 @@ void asFramePlotDistributions::PlotAllAnalogsPoints() {
         counter++;
 
         // Store max val
-        if (analogs[iAnalog] > m_xmaxPredictands) m_xmaxPredictands = analogs[iAnalog];
+        if (analogs[iAnalog] > _xmaxPredictands) _xmaxPredictands = analogs[iAnalog];
     }
 
     // Check and add to the plot
@@ -569,13 +569,13 @@ void asFramePlotDistributions::PlotAllAnalogsPoints() {
 
 void asFramePlotDistributions::PlotAllAnalogsCurve() {
     // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlotPredictands->GetPlotCtrl();
+    wxPlotCtrl* plotctrl = _panelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast* forecast = _forecastManager->GetForecast(_selectedMethod, _selectedForecast);
 
     // Get the total number of points
-    a1f analogs = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
+    a1f analogs = forecast->GetAnalogsValuesRaw(_selectedDate, _selectedStation);
     asSortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
     int nbPoints = analogs.size();
 
@@ -591,7 +591,7 @@ void asFramePlotDistributions::PlotAllAnalogsCurve() {
         counter++;
 
         // Store max val
-        if (analogs[iAnalog] > m_xmaxPredictands) m_xmaxPredictands = analogs[iAnalog];
+        if (analogs[iAnalog] > _xmaxPredictands) _xmaxPredictands = analogs[iAnalog];
     }
 
     // Check and add to the plot
@@ -618,13 +618,13 @@ void asFramePlotDistributions::PlotAllAnalogsCurve() {
 
 void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb) {
     // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlotPredictands->GetPlotCtrl();
+    wxPlotCtrl* plotctrl = _panelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast* forecast = _forecastManager->GetForecast(_selectedMethod, _selectedForecast);
 
     // Extract best analogs
-    a1f analogsAll = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
+    a1f analogsAll = forecast->GetAnalogsValuesRaw(_selectedDate, _selectedStation);
     int nbPoints = wxMin((int)analogsAll.size(), analogsNb);
     a1f analogs = analogsAll.head(nbPoints);
     a1f ranks = a1f::LinSpaced(nbPoints, 0, nbPoints - 1);
@@ -666,19 +666,19 @@ void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb) {
         plotData.Destroy();
 
         // Store max val
-        if (analogs[iAnalog] > m_xmaxPredictands) m_xmaxPredictands = analogs[iAnalog];
+        if (analogs[iAnalog] > _xmaxPredictands) _xmaxPredictands = analogs[iAnalog];
     }
 }
 
 void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb) {
     // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlotPredictands->GetPlotCtrl();
+    wxPlotCtrl* plotctrl = _panelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast* forecast = _forecastManager->GetForecast(_selectedMethod, _selectedForecast);
 
     // Extract best analogs
-    a1f analogsAll = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
+    a1f analogsAll = forecast->GetAnalogsValuesRaw(_selectedDate, _selectedStation);
     int nbPoints = wxMin((int)analogsAll.size(), analogsNb);
     a1f analogs = analogsAll.head(nbPoints);
     asSortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
@@ -695,7 +695,7 @@ void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb) {
         counter++;
 
         // Store max val
-        if (analogs[iAnalog] > m_xmaxPredictands) m_xmaxPredictands = analogs[iAnalog];
+        if (analogs[iAnalog] > _xmaxPredictands) _xmaxPredictands = analogs[iAnalog];
     }
 
     // Check and add to the plot
@@ -733,11 +733,11 @@ void asFramePlotDistributions::PlotClassicQuantiles() {
     pc << 0.2f, 0.6f, 0.9f;
 
     // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlotPredictands->GetPlotCtrl();
+    wxPlotCtrl* plotctrl = _panelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
-    a1f analogs = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
+    asResultsForecast* forecast = _forecastManager->GetForecast(_selectedMethod, _selectedForecast);
+    a1f analogs = forecast->GetAnalogsValuesRaw(_selectedDate, _selectedStation);
 
     // Loop over the quantiles
     for (int iPc = 0; iPc < pc.size(); iPc++) {
@@ -750,7 +750,7 @@ void asFramePlotDistributions::PlotClassicQuantiles() {
         plotData.SetValue(0, pcVal, thisQuantile);
 
         // Store max val
-        if (pcVal > m_xmaxPredictands) m_xmaxPredictands = pcVal;
+        if (pcVal > _xmaxPredictands) _xmaxPredictands = pcVal;
 
         // Check and add to the plot
         if (plotData.Ok()) {
@@ -777,13 +777,13 @@ void asFramePlotDistributions::PlotClassicQuantiles() {
 
 void asFramePlotDistributions::PlotCriteriaCurve() {
     // Get a pointer to the plotctrl
-    wxPlotCtrl* plotctrl = m_panelPlotCriteria->GetPlotCtrl();
+    wxPlotCtrl* plotctrl = _panelPlotCriteria->GetPlotCtrl();
 
     // Get forecast
-    asResultsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast* forecast = _forecastManager->GetForecast(_selectedMethod, _selectedForecast);
 
     // Get the criteria
-    a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);
+    a1f criteria = forecast->GetAnalogsCriteria(_selectedDate);
     a1f indices = a1f::LinSpaced(criteria.size(), 1, criteria.size());  // LinSpaced(size, low, high)
 
     // Create plot data

@@ -61,18 +61,18 @@ bool asMethodDownscaler::Manager() {
 
     // Load parameters
     asParametersDownscaling params;
-    if (!params.LoadFromFile(m_paramsFilePath)) {
+    if (!params.LoadFromFile(_paramsFilePath)) {
         return false;
     }
-    if (!m_predictandStationIds.empty()) {
+    if (!_predictandStationIds.empty()) {
         vvi idsVect;
-        idsVect.push_back(m_predictandStationIds);
+        idsVect.push_back(_predictandStationIds);
         params.SetPredictandStationIdsVector(idsVect);
     }
     params.InitValues();
 
     // Load the Predictand DB
-    if (!LoadPredictandDB(m_predictandDBFilePath)) {
+    if (!LoadPredictandDB(_predictandDBFilePath)) {
         return false;
     }
 
@@ -97,7 +97,7 @@ bool asMethodDownscaler::Manager() {
 }
 
 void asMethodDownscaler::ClearAll() {
-    m_parameters.clear();
+    _parameters.clear();
 }
 
 double asMethodDownscaler::GetTimeStartDownscaling(asParametersDownscaling* params) const {
@@ -269,8 +269,8 @@ bool asMethodDownscaler::GetAnalogsValues(asResultsValues& results, asParameters
     results.Init(params);
 
     // Set the predictand values to the corresponding analog dates
-    wxASSERT(m_predictandDB);
-    if (!asProcessor::GetAnalogsValues(*m_predictandDB, anaDates, params, results)) {
+    wxASSERT(_predictandDB);
+    if (!asProcessor::GetAnalogsValues(*_predictandDB, anaDates, params, results)) {
         wxLogError(_("Failed setting the predictand values to the corresponding analog dates."));
         return false;
     }
@@ -355,7 +355,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(vector<asPred
     // Loading the datasets information
     asPredictorProj* predictor = asPredictorProj::GetInstance(
         params->GetPredictorProjDatasetId(iStep, iPtor), params->GetModel(), params->GetScenario(),
-        params->GetPredictorProjDataId(iStep, iPtor), m_predictorProjectionDataDir);
+        params->GetPredictorProjDataId(iStep, iPtor), _predictorProjectionDataDir);
     if (!predictor) {
         return false;
     }
@@ -410,7 +410,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(vector<asPredict
         // Loading the dataset information
         asPredictorProj* predictorPreprocess = asPredictorProj::GetInstance(
             params->GetPreprocessProjDatasetId(iStep, iPtor, iPre), params->GetModel(), params->GetScenario(),
-            params->GetPreprocessProjDataId(iStep, iPtor, iPre), m_predictorProjectionDataDir);
+            params->GetPreprocessProjDataId(iStep, iPtor, iPre), _predictorProjectionDataDir);
         if (!predictorPreprocess) {
             Cleanup(predictorsPreprocess);
             return false;

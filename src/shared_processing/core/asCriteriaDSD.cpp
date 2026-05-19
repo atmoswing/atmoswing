@@ -29,8 +29,8 @@
 
 asCriteriaDSD::asCriteriaDSD()
     : asCriteria("DSD", _("Difference in standard deviation (nonspatial)"), Asc) {
-    m_minPointsNb = 2;
-    m_canUseInline = true;
+    _minPointsNb = 2;
+    _canUseInline = true;
 }
 
 asCriteriaDSD::~asCriteriaDSD() = default;
@@ -43,7 +43,7 @@ float asCriteriaDSD::Assess(const a2f& refData, const a2f& evalData, int rowsNb,
     wxASSERT(evalData.rows() == rowsNb);
     wxASSERT(evalData.cols() == colsNb);
 
-    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+    if (!_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
         float refStdDev = std::sqrt((refData - refData.mean()).square().sum() / (float)(refData.size() - 1));
         float evalStdDev = std::sqrt((evalData - evalData.mean()).square().sum() / (float)(evalData.size() - 1));
 

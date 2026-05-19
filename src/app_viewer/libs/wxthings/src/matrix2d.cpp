@@ -49,24 +49,24 @@ class wxMatrix2DRefData : public wxObjectRefData {
 
     ~wxMatrix2DRefData();
 
-    int m_width;
-    int m_height;
-    double* m_data;
-    bool m_static;
+    int _width;
+    int _height;
+    double* _data;
+    bool _static;
 };
 
 wxMatrix2DRefData::wxMatrix2DRefData() {
-    m_width = 0;
-    m_height = 0;
-    m_data = (double*)NULL;
-    m_static = false;
+    _width = 0;
+    _height = 0;
+    _data = (double*)NULL;
+    _static = false;
 }
 
 wxMatrix2DRefData::~wxMatrix2DRefData() {
-    if (m_data && !m_static) free(m_data);
+    if (_data && !_static) free(_data);
 }
 
-#define M_MATRIXDATA ((wxMatrix2DRefData*)m_refData)
+#define M_MATRIXDATA ((wxMatrix2DRefData*)_refData)
 
 //----------------------------------------------------------------------------
 //  wxMatrix2D
@@ -93,14 +93,14 @@ bool wxThingsMatrix2D::Create(int width, int height, bool zero) {
     wxCHECK_MSG((width > 0) && (height > 0), false, wxT("Invalid matrix size"));
 
     UnRef();
-    m_refData = new wxMatrix2DRefData();
+    _refData = new wxMatrix2DRefData();
 
-    M_MATRIXDATA->m_data = (double*)malloc(width * height * sizeof(double));
-    if (M_MATRIXDATA->m_data) {
-        M_MATRIXDATA->m_width = width;
-        M_MATRIXDATA->m_height = height;
+    M_MATRIXDATA->_data = (double*)malloc(width * height * sizeof(double));
+    if (M_MATRIXDATA->_data) {
+        M_MATRIXDATA->_width = width;
+        M_MATRIXDATA->_height = height;
 
-        if (zero) memset(M_MATRIXDATA->m_data, 0, width * height * sizeof(double));
+        if (zero) memset(M_MATRIXDATA->_data, 0, width * height * sizeof(double));
 
         return true;
     }
@@ -115,14 +115,14 @@ bool wxThingsMatrix2D::Create(int width, int height, const double* data) {
 
     UnRef();
 
-    m_refData = new wxMatrix2DRefData();
+    _refData = new wxMatrix2DRefData();
 
-    M_MATRIXDATA->m_data = (double*)malloc(width * height * sizeof(double));
+    M_MATRIXDATA->_data = (double*)malloc(width * height * sizeof(double));
 
-    if (M_MATRIXDATA->m_data) {
-        memcpy(M_MATRIXDATA->m_data, data, width * height * sizeof(double));
-        M_MATRIXDATA->m_width = width;
-        M_MATRIXDATA->m_height = height;
+    if (M_MATRIXDATA->_data) {
+        memcpy(M_MATRIXDATA->_data, data, width * height * sizeof(double));
+        M_MATRIXDATA->_width = width;
+        M_MATRIXDATA->_height = height;
         return true;
     }
 
@@ -136,13 +136,13 @@ bool wxThingsMatrix2D::Create(int width, int height, double* data, bool static_d
 
     UnRef();
 
-    m_refData = new wxMatrix2DRefData();
-    M_MATRIXDATA->m_data = data;
+    _refData = new wxMatrix2DRefData();
+    M_MATRIXDATA->_data = data;
 
-    if (M_MATRIXDATA->m_data) {
-        M_MATRIXDATA->m_width = width;
-        M_MATRIXDATA->m_height = height;
-        M_MATRIXDATA->m_static = static_data;
+    if (M_MATRIXDATA->_data) {
+        M_MATRIXDATA->_width = width;
+        M_MATRIXDATA->_height = height;
+        M_MATRIXDATA->_static = static_data;
         return true;
     }
 
@@ -154,7 +154,7 @@ bool wxThingsMatrix2D::CreateIdentity(int size) {
     wxCHECK_MSG(size > 0, false, wxT("Invalid matrix size"));
     if (!Create(size, size, true)) return false;
 
-    double* data = M_MATRIXDATA->m_data;
+    double* data = M_MATRIXDATA->_data;
     for (int i = 0; i < size; ++i) data[i + i * size] = 1.0;
 
     return true;
@@ -163,12 +163,12 @@ bool wxThingsMatrix2D::CreateIdentity(int size) {
 bool wxThingsMatrix2D::Copy(const wxThingsMatrix2D& matrix) {
     wxCHECK_MSG(matrix.Ok(), false, wxT("Invalid matrix"));
 
-    if (!Ok() || (M_MATRIXDATA->m_width != matrix.GetWidth()) || (M_MATRIXDATA->m_height != matrix.GetHeight())) {
+    if (!Ok() || (M_MATRIXDATA->_width != matrix.GetWidth()) || (M_MATRIXDATA->_height != matrix.GetHeight())) {
         Create(matrix.GetWidth(), matrix.GetHeight());
         if (!Ok()) return false;
     }
 
-    memcpy(M_MATRIXDATA->m_data, matrix.GetData(), M_MATRIXDATA->m_width * M_MATRIXDATA->m_height * sizeof(double));
+    memcpy(M_MATRIXDATA->_data, matrix.GetData(), M_MATRIXDATA->_width * M_MATRIXDATA->_height * sizeof(double));
 
     return true;
 }
@@ -185,45 +185,45 @@ bool wxThingsMatrix2D::IsEqual(const wxThingsMatrix2D& matrix) const {
     if (!Ok() || !matrix.Ok()) return false;
     if (GetSize() != matrix.GetSize()) return false;
 
-    return memcmp(M_MATRIXDATA->m_data, matrix.GetData(),
-                  M_MATRIXDATA->m_width * M_MATRIXDATA->m_height * sizeof(double)) == 0;
+    return memcmp(M_MATRIXDATA->_data, matrix.GetData(),
+                  M_MATRIXDATA->_width * M_MATRIXDATA->_height * sizeof(double)) == 0;
 }
 
 int wxThingsMatrix2D::GetWidth() const {
     wxCHECK_MSG(Ok(), 0, wxT("invalid matrix, wxThingsMatrix2D::GetWidth()"));
-    return M_MATRIXDATA->m_width;
+    return M_MATRIXDATA->_width;
 }
 
 int wxThingsMatrix2D::GetHeight() const {
     wxCHECK_MSG(Ok(), 0, wxT("invalid matrix, wxThingsMatrix2D::GetHeight()"));
-    return M_MATRIXDATA->m_height;
+    return M_MATRIXDATA->_height;
 }
 
 wxSize wxThingsMatrix2D::GetSize() const {
     wxCHECK_MSG(Ok(), wxSize(0, 0), wxT("invalid matrix, wxThingsMatrix2D::GetSize()"));
-    return wxSize(M_MATRIXDATA->m_width, M_MATRIXDATA->m_height);
+    return wxSize(M_MATRIXDATA->_width, M_MATRIXDATA->_height);
 }
 
 bool wxThingsMatrix2D::PointInMatrix(int x, int y) const {
     wxCHECK_MSG(Ok(), false, wxT("Invalid wxThingsMatrix2D"));
-    return (x >= 0) && (y >= 0) && (x < M_MATRIXDATA->m_width) && (y < M_MATRIXDATA->m_height);
+    return (x >= 0) && (y >= 0) && (x < M_MATRIXDATA->_width) && (y < M_MATRIXDATA->_height);
 }
 
 double wxThingsMatrix2D::GetValue(int x, int y) const {
     wxCHECK_MSG(PointInMatrix(x, y), 0.0, wxT("Invalid wxThingsMatrix2D"));
-    return M_MATRIXDATA->m_data[x + y * M_MATRIXDATA->m_width];
+    return M_MATRIXDATA->_data[x + y * M_MATRIXDATA->_width];
 }
 
 void wxThingsMatrix2D::SetValue(int x, int y, double value) {
     wxCHECK_RET(PointInMatrix(x, y), wxT("Invalid wxThingsMatrix2D or point in matrix"));
-    M_MATRIXDATA->m_data[x + y * M_MATRIXDATA->m_width] = value;
+    M_MATRIXDATA->_data[x + y * M_MATRIXDATA->_width] = value;
 }
 
 wxThingsMatrix2D wxThingsMatrix2D::InsertRows(int row, const wxThingsMatrix2D& matrix) const {
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok() && matrix.Ok(), temp, wxT("Invalid wxThingsMatrix2D"));
 
-    int width = M_MATRIXDATA->m_width, height = M_MATRIXDATA->m_height;
+    int width = M_MATRIXDATA->_width, height = M_MATRIXDATA->_height;
 
     wxCHECK_MSG(width == matrix.GetWidth(), temp, wxT("Number of cols must match in InsertRows"));
     wxCHECK_MSG((row >= -1) && (row <= height), temp, wxT("Invalid wxThingsMatrix2D"));
@@ -260,7 +260,7 @@ wxThingsMatrix2D wxThingsMatrix2D::InsertCols(int col, const wxThingsMatrix2D& m
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok() && matrix.Ok(), temp, wxT("Invalid wxThingsMatrix2D"));
 
-    int j, width = M_MATRIXDATA->m_width, height = M_MATRIXDATA->m_height;
+    int j, width = M_MATRIXDATA->_width, height = M_MATRIXDATA->_height;
 
     wxCHECK_MSG(height == matrix.GetHeight(), temp, wxT("Number of rows must match in InsertRows"));
     wxCHECK_MSG((col >= -1) && (col <= width), temp, wxT("Invalid wxThingsMatrix2D"));
@@ -301,7 +301,7 @@ wxThingsMatrix2D wxThingsMatrix2D::SubMatrix(const wxRect& rect) const {
     wxCHECK_MSG(Ok(), temp, wxT("Invalid wxThingsMatrix2D"));
     wxCHECK_MSG((rect.width > 0) && (rect.height > 0), temp, wxT("Invalid sub matrix rect"));
 
-    int width = M_MATRIXDATA->m_width, height = M_MATRIXDATA->m_height;
+    int width = M_MATRIXDATA->_width, height = M_MATRIXDATA->_height;
     const wxRect r(0, 0, width, height);
     wxCHECK_MSG(r.Intersect(rect) == rect, temp, wxT("Invalid sub matrix"));
 
@@ -320,34 +320,34 @@ wxThingsMatrix2D wxThingsMatrix2D::SubMatrix(const wxRect& rect) const {
 
 wxThingsMatrix2D wxThingsMatrix2D::SubRows(int start_row, int end_row) const {
     wxCHECK_MSG(Ok(), wxThingsMatrix2D(), wxT("Invalid wxThingsMatrix2D"));
-    return SubMatrix(wxRect(0, start_row, M_MATRIXDATA->m_width, end_row - start_row + 1));
+    return SubMatrix(wxRect(0, start_row, M_MATRIXDATA->_width, end_row - start_row + 1));
 }
 
 wxThingsMatrix2D wxThingsMatrix2D::SubCols(int start_col, int end_col) const {
     wxCHECK_MSG(Ok(), wxThingsMatrix2D(), wxT("Invalid wxThingsMatrix2D"));
-    return SubMatrix(wxRect(start_col, 0, end_col - start_col + 1, M_MATRIXDATA->m_height));
+    return SubMatrix(wxRect(start_col, 0, end_col - start_col + 1, M_MATRIXDATA->_height));
 }
 
 bool wxThingsMatrix2D::Reshape(int width, int height) {
     wxCHECK_MSG(Ok(), false, wxT("Invalid wxThingsMatrix2D"));
-    wxCHECK_MSG(width * height == M_MATRIXDATA->m_width * M_MATRIXDATA->m_height, false,
+    wxCHECK_MSG(width * height == M_MATRIXDATA->_width * M_MATRIXDATA->_height, false,
                 wxT("Reshape is not the same size as original"));
 
-    M_MATRIXDATA->m_width = width;
-    M_MATRIXDATA->m_height = height;
+    M_MATRIXDATA->_width = width;
+    M_MATRIXDATA->_height = height;
     return true;
 }
 
 double* wxThingsMatrix2D::GetData() const {
     wxCHECK_MSG(Ok(), (double*)NULL, wxT("invalid matrix, wxThingsMatrix2D::GetData()"));
-    return M_MATRIXDATA->m_data;
+    return M_MATRIXDATA->_data;
 }
 
 bool wxThingsMatrix2D::Fill(double value) {
     wxCHECK_MSG(Ok(), false, wxT("Invalid wxThingsMatrix2D"));
 
-    double* data = M_MATRIXDATA->m_data;
-    int i, size = M_MATRIXDATA->m_width * M_MATRIXDATA->m_height;
+    double* data = M_MATRIXDATA->_data;
+    int i, size = M_MATRIXDATA->_width * M_MATRIXDATA->_height;
 
     if (value == 0)
         memset(data, 0, size * sizeof(double));
@@ -362,13 +362,13 @@ wxThingsMatrix2D wxThingsMatrix2D::Add(const wxThingsMatrix2D& B) const {
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok() && B.Ok() && (GetWidth() == B.GetWidth()) && (GetHeight() == B.GetHeight()), temp,
                 wxT("Invalid wxThingsMatrix2D"));
-    if (!temp.Create(M_MATRIXDATA->m_width, M_MATRIXDATA->m_height, false)) return temp;
+    if (!temp.Create(M_MATRIXDATA->_width, M_MATRIXDATA->_height, false)) return temp;
 
     double* data = GetData();
     double* b_data = B.GetData();
     double* temp_data = temp.GetData();
 
-    int i, size = M_MATRIXDATA->m_width * M_MATRIXDATA->m_height;
+    int i, size = M_MATRIXDATA->_width * M_MATRIXDATA->_height;
 
     for (i = 0; i < size; ++i) {
         *temp_data++ = (*data++) + (*b_data++);
@@ -380,11 +380,11 @@ wxThingsMatrix2D wxThingsMatrix2D::Add(const wxThingsMatrix2D& B) const {
 wxThingsMatrix2D wxThingsMatrix2D::Add(double scalar) const {
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok(), temp, wxT("Invalid matrix"));
-    if (!temp.Create(M_MATRIXDATA->m_width, M_MATRIXDATA->m_height, false)) return temp;
+    if (!temp.Create(M_MATRIXDATA->_width, M_MATRIXDATA->_height, false)) return temp;
 
     double* data = GetData();
     double* temp_data = temp.GetData();
-    int i, size = M_MATRIXDATA->m_width * M_MATRIXDATA->m_height;
+    int i, size = M_MATRIXDATA->_width * M_MATRIXDATA->_height;
 
     for (i = 0; i < size; ++i) *temp_data++ = scalar + *data++;
 
@@ -397,7 +397,7 @@ wxThingsMatrix2D wxThingsMatrix2D::Mult(const wxThingsMatrix2D& B) const {
     wxCHECK_MSG(GetWidth() == B.GetHeight(), temp, wxT("Invalid matrix dimensions for mult"));
 
     int b_width = B.GetWidth();
-    int i, j, k, width = M_MATRIXDATA->m_width, height = M_MATRIXDATA->m_height;
+    int i, j, k, width = M_MATRIXDATA->_width, height = M_MATRIXDATA->_height;
 
     if (!temp.Create(b_width, height, true)) return temp;
 
@@ -421,9 +421,9 @@ wxThingsMatrix2D wxThingsMatrix2D::MultElement(const wxThingsMatrix2D& B) const 
     wxCHECK_MSG(Ok() && B.Ok(), temp, wxT("Invalid matrix"));
     wxCHECK_MSG(GetSize() == B.GetSize(), temp, wxT("Invalid matrix dimensions"));
 
-    int i, size = M_MATRIXDATA->m_width * M_MATRIXDATA->m_height;
+    int i, size = M_MATRIXDATA->_width * M_MATRIXDATA->_height;
 
-    if (!temp.Create(M_MATRIXDATA->m_width, M_MATRIXDATA->m_height, false)) return temp;
+    if (!temp.Create(M_MATRIXDATA->_width, M_MATRIXDATA->_height, false)) return temp;
 
     double* data = GetData();
     double* b_data = B.GetData();
@@ -437,11 +437,11 @@ wxThingsMatrix2D wxThingsMatrix2D::MultElement(const wxThingsMatrix2D& B) const 
 wxThingsMatrix2D wxThingsMatrix2D::Mult(double scalar) const {
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok(), temp, wxT("Invalid matrix"));
-    if (!temp.Create(M_MATRIXDATA->m_width, M_MATRIXDATA->m_height, false)) return temp;
+    if (!temp.Create(M_MATRIXDATA->_width, M_MATRIXDATA->_height, false)) return temp;
 
     double* data = GetData();
     double* temp_data = temp.GetData();
-    int i, size = M_MATRIXDATA->m_width * M_MATRIXDATA->m_height;
+    int i, size = M_MATRIXDATA->_width * M_MATRIXDATA->_height;
 
     for (i = 0; i < size; ++i) *temp_data++ = scalar * *data++;
 
@@ -451,11 +451,11 @@ wxThingsMatrix2D wxThingsMatrix2D::Mult(double scalar) const {
 wxThingsMatrix2D wxThingsMatrix2D::Pow(double p) const {
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok(), temp, wxT("Invalid matrix"));
-    if (!temp.Create(M_MATRIXDATA->m_width, M_MATRIXDATA->m_height, false)) return temp;
+    if (!temp.Create(M_MATRIXDATA->_width, M_MATRIXDATA->_height, false)) return temp;
 
     double* data = GetData();
     double* temp_data = temp.GetData();
-    int i, size = M_MATRIXDATA->m_width * M_MATRIXDATA->m_height;
+    int i, size = M_MATRIXDATA->_width * M_MATRIXDATA->_height;
 
     for (i = 0; i < size; ++i) *temp_data++ = pow(*data++, p);
 
@@ -465,11 +465,11 @@ wxThingsMatrix2D wxThingsMatrix2D::Pow(double p) const {
 wxThingsMatrix2D wxThingsMatrix2D::PowN(double n) const {
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok(), temp, wxT("Invalid matrix"));
-    if (!temp.Create(M_MATRIXDATA->m_width, M_MATRIXDATA->m_height, false)) return temp;
+    if (!temp.Create(M_MATRIXDATA->_width, M_MATRIXDATA->_height, false)) return temp;
 
     double* data = GetData();
     double* temp_data = temp.GetData();
-    int i, size = M_MATRIXDATA->m_width * M_MATRIXDATA->m_height;
+    int i, size = M_MATRIXDATA->_width * M_MATRIXDATA->_height;
 
     for (i = 0; i < size; ++i) *temp_data++ = pow(n, *data++);
 
@@ -479,11 +479,11 @@ wxThingsMatrix2D wxThingsMatrix2D::PowN(double n) const {
 wxThingsMatrix2D wxThingsMatrix2D::Log() const {
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok(), temp, wxT("Invalid matrix"));
-    if (!temp.Create(M_MATRIXDATA->m_width, M_MATRIXDATA->m_height, false)) return temp;
+    if (!temp.Create(M_MATRIXDATA->_width, M_MATRIXDATA->_height, false)) return temp;
 
     double* data = GetData();
     double* temp_data = temp.GetData();
-    int i, size = M_MATRIXDATA->m_width * M_MATRIXDATA->m_height;
+    int i, size = M_MATRIXDATA->_width * M_MATRIXDATA->_height;
 
     for (i = 0; i < size; ++i) *temp_data++ = log(*data++);
 
@@ -493,11 +493,11 @@ wxThingsMatrix2D wxThingsMatrix2D::Log() const {
 wxThingsMatrix2D wxThingsMatrix2D::Log10() const {
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok(), temp, wxT("Invalid matrix"));
-    if (!temp.Create(M_MATRIXDATA->m_width, M_MATRIXDATA->m_height, false)) return temp;
+    if (!temp.Create(M_MATRIXDATA->_width, M_MATRIXDATA->_height, false)) return temp;
 
     double* data = GetData();
     double* temp_data = temp.GetData();
-    int i, size = M_MATRIXDATA->m_width * M_MATRIXDATA->m_height;
+    int i, size = M_MATRIXDATA->_width * M_MATRIXDATA->_height;
 
     for (i = 0; i < size; ++i) *temp_data++ = log10(*data++);
 
@@ -507,11 +507,11 @@ wxThingsMatrix2D wxThingsMatrix2D::Log10() const {
 wxThingsMatrix2D wxThingsMatrix2D::Exp() const {
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok(), temp, wxT("Invalid matrix"));
-    if (!temp.Create(M_MATRIXDATA->m_width, M_MATRIXDATA->m_height, false)) return temp;
+    if (!temp.Create(M_MATRIXDATA->_width, M_MATRIXDATA->_height, false)) return temp;
 
     double* data = GetData();
     double* temp_data = temp.GetData();
-    int i, size = M_MATRIXDATA->m_width * M_MATRIXDATA->m_height;
+    int i, size = M_MATRIXDATA->_width * M_MATRIXDATA->_height;
 
     for (i = 0; i < size; ++i) *temp_data++ = exp(*data++);
 
@@ -523,7 +523,7 @@ double wxThingsMatrix2D::Sum() const {
 
     double sum = 0;
     double* data = GetData();
-    int i, size = M_MATRIXDATA->m_width * M_MATRIXDATA->m_height;
+    int i, size = M_MATRIXDATA->_width * M_MATRIXDATA->_height;
 
     for (i = 0; i < size; ++i) sum += *data++;
     return sum;
@@ -535,7 +535,7 @@ double wxThingsMatrix2D::Trace() const {
     double sum = 0;
     double* data = GetData();
     int width = GetWidth();
-    int i, size = wxMin(width, M_MATRIXDATA->m_height);
+    int i, size = wxMin(width, M_MATRIXDATA->_height);
 
     for (i = 0; i < size; ++i) sum += data[i + i * width];
     return sum;
@@ -544,11 +544,11 @@ double wxThingsMatrix2D::Trace() const {
 wxThingsMatrix2D wxThingsMatrix2D::Transpose() const {
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok(), temp, wxT("Invalid matrix"));
-    if (!temp.Create(M_MATRIXDATA->m_height, M_MATRIXDATA->m_width, false)) return temp;
+    if (!temp.Create(M_MATRIXDATA->_height, M_MATRIXDATA->_width, false)) return temp;
 
     double* data = GetData();
     double* temp_data = temp.GetData();
-    int i, j, width = M_MATRIXDATA->m_width, height = M_MATRIXDATA->m_height;
+    int i, j, width = M_MATRIXDATA->_width, height = M_MATRIXDATA->_height;
 
     for (j = 0; j < height; ++j) {
         for (i = 0; i < width; ++i) temp_data[j + i * height] = *data++;
@@ -571,15 +571,15 @@ wxThingsMatrix2D wxThingsMatrix2D::Rotate90(int clockwise) const {
     }
 
     if (clockwise == 2)
-        temp.Create(M_MATRIXDATA->m_width, M_MATRIXDATA->m_height, false);
+        temp.Create(M_MATRIXDATA->_width, M_MATRIXDATA->_height, false);
     else  // == 1 or 3
-        temp.Create(M_MATRIXDATA->m_height, M_MATRIXDATA->m_width, false);
+        temp.Create(M_MATRIXDATA->_height, M_MATRIXDATA->_width, false);
 
     if (!temp.Ok()) return temp;
 
     double* data = GetData();
     double* temp_data = temp.GetData();
-    int i, j, width = M_MATRIXDATA->m_width, height = M_MATRIXDATA->m_height;
+    int i, j, width = M_MATRIXDATA->_width, height = M_MATRIXDATA->_height;
 
     for (j = 0; j < height; ++j) {
         for (i = 0; i < width; ++i) {
@@ -600,11 +600,11 @@ wxThingsMatrix2D wxThingsMatrix2D::Rotate90(int clockwise) const {
 wxThingsMatrix2D wxThingsMatrix2D::Mirror(bool horizontally) const {
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok(), temp, wxT("Invalid matrix"));
-    if (!temp.Create(M_MATRIXDATA->m_width, M_MATRIXDATA->m_height, false)) return temp;
+    if (!temp.Create(M_MATRIXDATA->_width, M_MATRIXDATA->_height, false)) return temp;
 
     double* data = GetData();
     double* temp_data = temp.GetData();
-    int i, j, width = M_MATRIXDATA->m_width, height = M_MATRIXDATA->m_height;
+    int i, j, width = M_MATRIXDATA->_width, height = M_MATRIXDATA->_height;
 
     if (horizontally) {
         for (j = 0; j < height; ++j) {
@@ -629,7 +629,7 @@ wxThingsMatrix2D wxThingsMatrix2D::RotateSquare45(bool clockwise) const {
     wxThingsMatrix2D temp;
     wxCHECK_MSG(Ok(), temp, wxT("Invalid matrix"));
 
-    int width = M_MATRIXDATA->m_width, height = M_MATRIXDATA->m_height;
+    int width = M_MATRIXDATA->_width, height = M_MATRIXDATA->_height;
     wxCHECK_MSG((width == height) || (width % 2 == 1), temp, wxT("Non square or odd sided matrix"));
 
     if (!temp.Create(height, width, false)) return temp;
@@ -707,7 +707,7 @@ void wxThingsMatrix2D::Normalize(double sum) {
     wxCHECK_RET(Ok() && (sum != 0.0), wxT("Invalid matrix"));
 
     double* data = GetData();
-    int i, size = M_MATRIXDATA->m_width * M_MATRIXDATA->m_height;
+    int i, size = M_MATRIXDATA->_width * M_MATRIXDATA->_height;
 
     double current_sum = 0.0;
     for (i = 0; i < size; ++i) current_sum += data[i];
@@ -731,8 +731,8 @@ bool wxThingsMatrix2D::LoadFile(const wxString& filename, const wxArrayInt* cols
 
     if (!loadfile.IsOpened()) return false;
 
-    m_file_comments.Clear();
-    //  m_file_comments_positions.Clear();
+    _file_comments.Clear();
+    //  _file_comments_positions.Clear();
 
     wxFileInputStream filestream(loadfile);
     wxTextInputStream textstream(filestream);
@@ -762,8 +762,8 @@ bool wxThingsMatrix2D::LoadFile(const wxString& filename, const wxArrayInt* cols
         line_str.Trim(true);
 
         if (line_str.Left(1) == wxT("#")) {
-            m_file_comments.Add(line_str);
-            // m_file_comments_positions.Add(num_lines);
+            _file_comments.Add(line_str);
+            // _file_comments_positions.Add(num_lines);
         } else {
             ++num_rows;
 
@@ -851,7 +851,7 @@ wxString wxThingsMatrix2D::ToString(const wxString& colSep, const wxString& rowS
     wxCHECK_MSG(Ok(), wxEmptyString, wxT("Invalid wxThingsMatrix2D"));
 
     double* data = GetData();
-    int i, j, width = M_MATRIXDATA->m_width, height = M_MATRIXDATA->m_height;
+    int i, j, width = M_MATRIXDATA->_width, height = M_MATRIXDATA->_height;
     wxString str;
 
     for (j = 0; j < height; ++j) {

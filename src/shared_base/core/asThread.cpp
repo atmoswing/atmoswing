@@ -29,8 +29,8 @@
 
 asThread::asThread(Type type)
     : wxThread(wxTHREAD_DETACHED),
-      m_type(type),
-      m_device(0) {}
+      _type(type),
+      _device(0) {}
 
 wxThread::ExitCode asThread::Entry() {
     return nullptr;

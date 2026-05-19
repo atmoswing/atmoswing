@@ -111,11 +111,11 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
     void Delete(unsigned int n, unsigned int count = 1);
 
     int GetCount() const {
-        return m_labels.GetCount();
+        return _labels.GetCount();
     }
 
     int GetSelection() const {
-        return m_selection;
+        return _selection;
     }
 
     void SetSelection(int n, bool send_event = false);
@@ -141,27 +141,27 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
 
     // When adding/deleting many items freeze it and thaw when done
     void Freeze() {
-        m_frozen = true;
+        _frozen = true;
     }
 
     void Thaw();
 
     // implementation
     wxBmpComboLabel* GetLabelWindow() {
-        return m_labelWin;
+        return _labelWin;
     }
 
     // Get the largest label, bitmap, item=(label+bitmap) size
     wxSize GetLabelSize() const {
-        return m_labelSize;
+        return _labelSize;
     }
 
     wxSize GetBitmapSize() const {
-        return m_bitmapSize;
+        return _bitmapSize;
     }
 
     wxSize GetItemSize() const {
-        return m_itemSize;
+        return _itemSize;
     }
 
     void CalcLabelBitmapPos(int n, const wxSize& area, wxPoint& labelPos, wxPoint& bitmapPos) const;
@@ -181,19 +181,19 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
 
     virtual bool DoShowPopup();
 
-    wxBmpComboLabel* m_labelWin;
+    wxBmpComboLabel* _labelWin;
 
-    wxArrayPtrVoid m_bitmaps;  // the individual bitmaps
-    wxArrayString m_labels;    // the individual labels
+    wxArrayPtrVoid _bitmaps;  // the individual bitmaps
+    wxArrayString _labels;    // the individual labels
 
-    wxSize m_labelSize;   // the max size of all the labels
-    wxSize m_bitmapSize;  // the max size of all the bitmaps
-    wxSize m_itemSize;    // the max size of all the items
+    wxSize _labelSize;   // the max size of all the labels
+    wxSize _bitmapSize;  // the max size of all the bitmaps
+    wxSize _itemSize;    // the max size of all the items
 
-    int m_selection;
-    int m_win_border;  // the wxSUNKEN_BORDER size
-    long m_label_style;
-    bool m_frozen;
+    int _selection;
+    int _win_border;  // the wxSUNKEN_BORDER size
+    long _label_style;
+    bool _frozen;
 
   private:
     void Init();
@@ -210,14 +210,14 @@ class WXDLLIMPEXP_THINGS wxBmpComboLabel : public wxWindow {
   public:
     wxBmpComboLabel(wxBmpComboBox* parent = NULL, int style = wxSUNKEN_BORDER)
         : wxWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, style),
-          m_bmpCombo(parent) {}
+          _bmpCombo(parent) {}
 
   protected:
     void OnPaint(wxPaintEvent& event);
 
     void OnChar(wxKeyEvent& event);
 
-    wxBmpComboBox* m_bmpCombo;
+    wxBmpComboBox* _bmpCombo;
 
   private:
     DECLARE_ABSTRACT_CLASS(wxBmpComboLabel)
@@ -241,8 +241,8 @@ class WXDLLIMPEXP_THINGS wxBmpComboPopupChild : public wxScrolledWindow {
 
     void OnKeyDown(wxKeyEvent& event);
 
-    wxBmpComboBox* m_bmpCombo;
-    int m_last_selection;
+    wxBmpComboBox* _bmpCombo;
+    int _last_selection;
 
   private:
     DECLARE_ABSTRACT_CLASS(wxBmpComboPopupChild)

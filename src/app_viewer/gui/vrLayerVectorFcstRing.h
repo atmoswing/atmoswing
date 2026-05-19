@@ -78,11 +78,11 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
                   "increased."));
             val = 0.1;
         }
-        m_valueMax = val;
+        _valueMax = val;
     }
 
   protected:
-    double m_valueMax; /**< The maximum value of the forecast. */
+    double _valueMax; /**< The maximum value of the forecast. */
 
     /**
      * Draw the point (vroomgis function).

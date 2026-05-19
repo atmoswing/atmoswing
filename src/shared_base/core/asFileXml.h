@@ -52,8 +52,8 @@ class asFileXml : public asFile {
     bool Save();
 
     wxXmlNode* GetRoot() const {
-        wxASSERT(m_document.GetRoot());
-        return m_document.GetRoot();
+        wxASSERT(_document.GetRoot());
+        return _document.GetRoot();
     }
 
     void AddChild(wxXmlNode* node);
@@ -99,7 +99,7 @@ class asFileXml : public asFile {
 
   protected:
   private:
-    wxXmlDocument m_document;
+    wxXmlDocument _document;
 };
 
 #endif

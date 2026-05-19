@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
+// C++ code generated with wxFormBuilder (version 4.2.1-0-g80c4cb6)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -46,7 +46,6 @@ WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 
 ///////////////////////////////////////////////////////////////////////////
 
-
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFrameForecasterVirtual
 ///////////////////////////////////////////////////////////////////////////////
@@ -55,32 +54,32 @@ class asFrameForecasterVirtual : public wxFrame
 	private:
 
 	protected:
-		wxPanel* m_panelMain;
-		wxStaticText* m_staticText41;
-		wxCalendarCtrl* m_calendarForecastDate;
-		wxStaticText* m_staticTextForecastHour;
-		wxTextCtrl* m_textCtrlForecastHour;
-		wxBitmapButton* m_bpButtonNow;
-		wxGauge* m_gauge;
-		wxStaticText* m_staticTextProgressActual;
-		wxStaticText* m_staticText38;
-		wxStaticText* m_staticTextProgressTot;
-		wxFlexGridSizer* m_sizerLeds;
-		wxButton* m_button2;
-		wxStaticText* m_staticText34;
-		wxStaticText* m_staticTextbatchFile;
-		wxScrolledWindow* m_scrolledWindowForecasts;
-		wxBoxSizer* m_sizerForecasts;
-		wxBitmapButton* m_bpButtonAdd;
-		wxMenuBar* m_menuBar;
-		wxMenu* m_menuFile;
-		wxMenu* m_menuOptions;
-		wxMenu* m_menuTools;
-		wxMenu* m_menuLog;
-		wxMenu* m_menuLogLevel;
-		wxMenu* m_menuHelp;
-		wxStatusBar* m_statusBar1;
-		wxToolBar* m_toolBar;
+		wxPanel* _panelMain;
+		wxStaticText* _staticText41;
+		wxCalendarCtrl* _calendarForecastDate;
+		wxStaticText* _staticTextForecastHour;
+		wxTextCtrl* _textCtrlForecastHour;
+		wxBitmapButton* _bpButtonNow;
+		wxGauge* _gauge;
+		wxStaticText* _staticTextProgressActual;
+		wxStaticText* _staticText38;
+		wxStaticText* _staticTextProgressTot;
+		wxFlexGridSizer* _sizerLeds;
+		wxButton* _button2;
+		wxStaticText* _staticText34;
+		wxStaticText* _staticTextbatchFile;
+		wxScrolledWindow* _scrolledWindowForecasts;
+		wxBoxSizer* _sizerForecasts;
+		wxBitmapButton* _bpButtonAdd;
+		wxMenuBar* _menuBar;
+		wxMenu* _menuFile;
+		wxMenu* _menuOptions;
+		wxMenu* _menuTools;
+		wxMenu* _menuLog;
+		wxMenu* _menuLogLevel;
+		wxMenu* _menuHelp;
+		wxStatusBar* _statusBar1;
+		wxToolBar* _toolBar;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnSetPresentDate( wxCommandEvent& event ) { event.Skip(); }
@@ -115,14 +114,14 @@ class asPanelForecastVirtual : public wxPanel
 	private:
 
 	protected:
-		wxBoxSizer* m_sizerPanel;
-		wxBoxSizer* m_sizerHeader;
-		wxStaticText* m_textParametersFileName;
-		wxBitmapButton* m_bpButtonWarning;
-		wxBitmapButton* m_bpButtonEdit;
-		wxBitmapButton* m_bpButtonInfo;
-		wxBitmapButton* m_bpButtonDetails;
-		wxBitmapButton* m_bpButtonClose;
+		wxBoxSizer* _sizerPanel;
+		wxBoxSizer* _sizerHeader;
+		wxStaticText* _textParametersFileName;
+		wxBitmapButton* _bpButtonWarning;
+		wxBitmapButton* _bpButtonEdit;
+		wxBitmapButton* _bpButtonInfo;
+		wxBitmapButton* _bpButtonDetails;
+		wxBitmapButton* _bpButtonClose;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnEditForecastFile( wxCommandEvent& event ) { event.Skip(); }
@@ -146,70 +145,70 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 	private:
 
 	protected:
-		wxPanel* m_panelBase;
-		wxNotebook* m_notebookBase;
-		wxPanel* m_panelPathsCommon;
-		wxBoxSizer* m_sizerPanelPaths;
-		wxStaticText* m_staticTextParametersDir;
-		wxDirPickerCtrl* m_dirPickerParameters;
-		wxStaticText* m_staticTextPredictandDBDir;
-		wxDirPickerCtrl* m_dirPickerPredictandDB;
-		wxStaticText* m_staticTextArchivePredictorsDir;
-		wxDirPickerCtrl* m_dirPickerArchivePredictors;
-		wxStaticText* m_staticTextRealtimePredictorSavingDir;
-		wxDirPickerCtrl* m_dirPickerRealtimePredictorSaving;
-		wxStaticText* m_staticTextForecastResultsDir;
-		wxDirPickerCtrl* m_dirPickerForecastResults;
-		wxStaticText* m_staticTextForecastResultsExportsDir;
-		wxDirPickerCtrl* m_dirPickerForecastResultsExports;
-		wxStaticText* m_staticTextExport;
-		wxChoice* m_choiceExports;
-		wxPanel* m_panelGeneralCommon;
-		wxChoice* m_choiceLocale;
-		wxStaticText* m_staticText34;
-		wxRadioButton* m_radioBtnLogLevel1;
-		wxRadioButton* m_radioBtnLogLevel2;
-		wxRadioButton* m_radioBtnLogLevel3;
-		wxCheckBox* m_checkBoxDisplayLogWindow;
-		wxCheckBox* m_checkBoxSaveLogFile;
-		wxCheckBox* m_checkBoxProxy;
-		wxStaticText* m_staticTextProxyAddress;
-		wxTextCtrl* m_textCtrlProxyAddress;
-		wxStaticText* m_staticTextProxyPort;
-		wxTextCtrl* m_textCtrlProxyPort;
-		wxStaticText* m_staticTextProxyUser;
-		wxTextCtrl* m_textCtrlProxyUser;
-		wxStaticText* m_staticTextProxyPasswd;
-		wxTextCtrl* m_textCtrlProxyPasswd;
-		wxStaticText* m_staticTextEcCodesDefs;
-		wxTextCtrl* m_textCtrlEcCodesDefs;
-		wxPanel* m_panelAdvanced;
-		wxNotebook* m_notebookAdvanced;
-		wxPanel* m_panelGeneral;
-		wxRadioBox* m_radioBoxGui;
-		wxStaticText* m_staticTextNumberFails;
-		wxTextCtrl* m_textCtrlMaxPrevStepsNb;
-		wxCheckBox* m_checkBoxRestrictDownloads;
-		wxCheckBox* m_checkBoxResponsiveness;
-		wxCheckBox* m_checkBoxMultiInstancesForecaster;
-		wxPanel* m_panelProcessing;
-		wxCheckBox* m_checkBoxAllowMultithreading;
-		wxStaticText* m_staticTextThreadsNb;
-		wxTextCtrl* m_textCtrlThreadsNb;
-		wxStaticText* m_staticTextThreadsPriority;
-		wxSlider* m_sliderThreadsPriority;
-		wxRadioBox* m_radioBoxProcessingMethods;
-		wxPanel* m_panelUserDirectories;
-		wxStaticText* m_staticTextUserDirLabel;
-		wxStaticText* m_staticTextUserDir;
-		wxStaticText* m_staticTextLogFileLabel;
-		wxStaticText* m_staticTextLogFile;
-		wxStaticText* m_staticTextPrefFileLabel;
-		wxStaticText* m_staticTextPrefFile;
-		wxStdDialogButtonSizer* m_buttonsConfirmation;
-		wxButton* m_buttonsConfirmationOK;
-		wxButton* m_buttonsConfirmationApply;
-		wxButton* m_buttonsConfirmationCancel;
+		wxPanel* _panelBase;
+		wxNotebook* _notebookBase;
+		wxPanel* _panelPathsCommon;
+		wxBoxSizer* _sizerPanelPaths;
+		wxStaticText* _staticTextParametersDir;
+		wxDirPickerCtrl* _dirPickerParameters;
+		wxStaticText* _staticTextPredictandDBDir;
+		wxDirPickerCtrl* _dirPickerPredictandDB;
+		wxStaticText* _staticTextArchivePredictorsDir;
+		wxDirPickerCtrl* _dirPickerArchivePredictors;
+		wxStaticText* _staticTextRealtimePredictorSavingDir;
+		wxDirPickerCtrl* _dirPickerRealtimePredictorSaving;
+		wxStaticText* _staticTextForecastResultsDir;
+		wxDirPickerCtrl* _dirPickerForecastResults;
+		wxStaticText* _staticTextForecastResultsExportsDir;
+		wxDirPickerCtrl* _dirPickerForecastResultsExports;
+		wxStaticText* _staticTextExport;
+		wxChoice* _choiceExports;
+		wxPanel* _panelGeneralCommon;
+		wxChoice* _choiceLocale;
+		wxStaticText* _staticText34;
+		wxRadioButton* _radioBtnLogLevel1;
+		wxRadioButton* _radioBtnLogLevel2;
+		wxRadioButton* _radioBtnLogLevel3;
+		wxCheckBox* _checkBoxDisplayLogWindow;
+		wxCheckBox* _checkBoxSaveLogFile;
+		wxCheckBox* _checkBoxProxy;
+		wxStaticText* _staticTextProxyAddress;
+		wxTextCtrl* _textCtrlProxyAddress;
+		wxStaticText* _staticTextProxyPort;
+		wxTextCtrl* _textCtrlProxyPort;
+		wxStaticText* _staticTextProxyUser;
+		wxTextCtrl* _textCtrlProxyUser;
+		wxStaticText* _staticTextProxyPasswd;
+		wxTextCtrl* _textCtrlProxyPasswd;
+		wxStaticText* _staticTextEcCodesDefs;
+		wxTextCtrl* _textCtrlEcCodesDefs;
+		wxPanel* _panelAdvanced;
+		wxNotebook* _notebookAdvanced;
+		wxPanel* _panelGeneral;
+		wxRadioBox* _radioBoxGui;
+		wxStaticText* _staticTextNumberFails;
+		wxTextCtrl* _textCtrlMaxPrevStepsNb;
+		wxCheckBox* _checkBoxRestrictDownloads;
+		wxCheckBox* _checkBoxResponsiveness;
+		wxCheckBox* _checkBoxMultiInstancesForecaster;
+		wxPanel* _panelProcessing;
+		wxCheckBox* _checkBoxAllowMultithreading;
+		wxStaticText* _staticTextThreadsNb;
+		wxTextCtrl* _textCtrlThreadsNb;
+		wxStaticText* _staticTextThreadsPriority;
+		wxSlider* _sliderThreadsPriority;
+		wxRadioBox* _radioBoxProcessingMethods;
+		wxPanel* _panelUserDirectories;
+		wxStaticText* _staticTextUserDirLabel;
+		wxStaticText* _staticTextUserDir;
+		wxStaticText* _staticTextLogFileLabel;
+		wxStaticText* _staticTextLogFile;
+		wxStaticText* _staticTextPrefFileLabel;
+		wxStaticText* _staticTextPrefFile;
+		wxStdDialogButtonSizer* _buttonsConfirmation;
+		wxButton* _buttonsConfirmationOK;
+		wxButton* _buttonsConfirmationApply;
+		wxButton* _buttonsConfirmationCancel;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnChangeMultithreadingCheckBox( wxCommandEvent& event ) { event.Skip(); }
@@ -234,14 +233,14 @@ class asWizardBatchForecastsVirtual : public wxWizard
 	private:
 
 	protected:
-		wxStaticText* m_staticText37;
-		wxStaticText* m_staticText35;
-		wxButton* m_button4;
-		wxStaticText* m_staticText46;
-		wxStaticText* m_staticText36;
-		wxStaticText* m_staticText43;
-		wxFilePickerCtrl* m_filePickerBatchFile;
-		wxStaticText* m_staticText45;
+		wxStaticText* _staticText37;
+		wxStaticText* _staticText35;
+		wxButton* _button4;
+		wxStaticText* _staticText46;
+		wxStaticText* _staticText36;
+		wxStaticText* _staticText43;
+		wxFilePickerCtrl* _filePickerBatchFile;
+		wxStaticText* _staticText45;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnWizardFinished( wxWizardEvent& event ) { event.Skip(); }
@@ -265,7 +264,7 @@ class asFrameStyledTextCtrlVirtual : public wxFrame
 	private:
 
 	protected:
-		wxStyledTextCtrl* m_scintilla;
+		wxStyledTextCtrl* _scintilla;
 
 	public:
 

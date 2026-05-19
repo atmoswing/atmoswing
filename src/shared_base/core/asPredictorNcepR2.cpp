@@ -34,17 +34,17 @@
 asPredictorNcepR2::asPredictorNcepR2(const wxString& dataId)
     : asPredictor(dataId) {
     // Set the basic properties.
-    m_datasetId = "NCEP_R2";
-    m_provider = "NCEP/DOE";
-    m_datasetName = "Reanalysis 2";
-    m_fileType = asFile::Netcdf;
-    m_strideAllowed = true;
-    m_nanValues.push_back(32767);
-    m_nanValues.push_back(936 * std::pow(10.f, 34.f));
-    m_fStr.dimLatName = "lat";
-    m_fStr.dimLonName = "lon";
-    m_fStr.dimTimeName = "time";
-    m_fStr.dimLevelName = "level";
+    _datasetId = "NCEP_R2";
+    _provider = "NCEP/DOE";
+    _datasetName = "Reanalysis 2";
+    _fileType = asFile::Netcdf;
+    _strideAllowed = true;
+    _nanValues.push_back(32767);
+    _nanValues.push_back(936 * std::pow(10.f, 34.f));
+    _fStr.dimLatName = "lat";
+    _fStr.dimLonName = "lon";
+    _fStr.dimTimeName = "time";
+    _fStr.dimLevelName = "level";
 }
 
 bool asPredictorNcepR2::Init() {
@@ -52,257 +52,257 @@ bool asPredictorNcepR2::Init() {
 
     // Identify data ID and set the corresponding properties.
     if (IsPressureLevel()) {
-        m_fStr.hasLevelDim = true;
+        _fStr.hasLevelDim = true;
         if (IsAirTemperature()) {
-            m_parameter = AirTemperature;
-            m_parameterName = "Air Temperature";
-            m_fileVarName = "air";
-            m_unit = degK;
+            _parameter = AirTemperature;
+            _parameterName = "Air Temperature";
+            _fileVarName = "air";
+            _unit = degK;
         } else if (IsGeopotentialHeight()) {
-            m_parameter = GeopotentialHeight;
-            m_parameterName = "Geopotential height";
-            m_fileVarName = "hgt";
-            m_unit = m;
+            _parameter = GeopotentialHeight;
+            _parameterName = "Geopotential height";
+            _fileVarName = "hgt";
+            _unit = m;
         } else if (IsRelativeHumidity()) {
-            m_parameter = RelativeHumidity;
-            m_parameterName = "Relative Humidity";
-            m_fileVarName = "rhum";
-            m_unit = percent;
+            _parameter = RelativeHumidity;
+            _parameterName = "Relative Humidity";
+            _fileVarName = "rhum";
+            _unit = percent;
         } else if (IsVerticalVelocity()) {
-            m_parameter = VerticalVelocity;
-            m_parameterName = "Vertical velocity";
-            m_fileVarName = "omega";
-            m_unit = Pa_s;
+            _parameter = VerticalVelocity;
+            _parameterName = "Vertical velocity";
+            _fileVarName = "omega";
+            _unit = Pa_s;
         } else if (IsUwindComponent()) {
-            m_parameter = Uwind;
-            m_parameterName = "U-Wind";
-            m_fileVarName = "uwnd";
-            m_unit = m_s;
+            _parameter = Uwind;
+            _parameterName = "U-Wind";
+            _fileVarName = "uwnd";
+            _unit = _s;
         } else if (IsVwindComponent()) {
-            m_parameter = Vwind;
-            m_parameterName = "V-Wind";
-            m_fileVarName = "vwnd";
-            m_unit = m_s;
+            _parameter = Vwind;
+            _parameterName = "V-Wind";
+            _fileVarName = "vwnd";
+            _unit = _s;
         } else {
-            m_parameter = ParameterUndefined;
-            m_parameterName = "Undefined";
-            m_fileVarName = m_dataId;
-            m_unit = UnitUndefined;
+            _parameter = ParameterUndefined;
+            _parameterName = "Undefined";
+            _fileVarName = _dataId;
+            _unit = UnitUndefined;
         }
-        m_fileNamePattern = m_fileVarName + ".%d.nc";
+        _fileNamePattern = _fileVarName + ".%d.nc";
 
     } else if (IsSurfaceLevel()) {
-        m_fStr.hasLevelDim = false;
+        _fStr.hasLevelDim = false;
         if (IsPrecipitableWater()) {
-            m_parameter = PrecipitableWater;
-            m_parameterName = "Precipitable water";
-            m_fileNamePattern = "pr_wtr.eatm.%d.nc";
-            m_fileVarName = "pr_wtr";
-            m_unit = mm;
+            _parameter = PrecipitableWater;
+            _parameterName = "Precipitable water";
+            _fileNamePattern = "pr_wtr.eatm.%d.nc";
+            _fileVarName = "pr_wtr";
+            _unit = mm;
         } else if (IsPressure()) {
-            m_parameter = Pressure;
-            m_parameterName = "Pressure";
-            m_fileNamePattern = "pres.sfc.%d.nc";
-            m_fileVarName = "pres";
-            m_unit = Pa;
+            _parameter = Pressure;
+            _parameterName = "Pressure";
+            _fileNamePattern = "pres.sfc.%d.nc";
+            _fileVarName = "pres";
+            _unit = Pa;
         } else if (IsSeaLevelPressure()) {
-            m_parameter = Pressure;
-            m_parameterName = "Mean Sea level pressure";
-            m_fileNamePattern = "mslp.%d.nc";
-            m_fileVarName = "mslp";
-            m_unit = Pa;
+            _parameter = Pressure;
+            _parameterName = "Mean Sea level pressure";
+            _fileNamePattern = "mslp.%d.nc";
+            _fileVarName = "mslp";
+            _unit = Pa;
         } else {
-            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), _dataId, _product);
             return false;
         }
 
-    } else if (IsSurfaceFluxesLevel() || m_product.IsSameAs("surface_gauss", false) ||
-               m_product.IsSameAs("gaussian_grid", false) || m_product.IsSameAs("gauss", false)) {
-        m_fStr.hasLevelDim = false;
+    } else if (IsSurfaceFluxesLevel() || _product.IsSameAs("surface_gauss", false) ||
+               _product.IsSameAs("gaussian_grid", false) || _product.IsSameAs("gauss", false)) {
+        _fStr.hasLevelDim = false;
         if (IsAirTemperature()) {
-            m_fStr.hasLevelDim = true;
-            m_fStr.singleLevel = true;
-            m_parameter = AirTemperature;
-            m_parameterName = "Air Temperature 2m";
-            m_fileNamePattern = "air.2m.gauss.%d.nc";
-            m_fileVarName = "air";
-            m_unit = degK;
+            _fStr.hasLevelDim = true;
+            _fStr.singleLevel = true;
+            _parameter = AirTemperature;
+            _parameterName = "Air Temperature 2m";
+            _fileNamePattern = "air.2m.gauss.%d.nc";
+            _fileVarName = "air";
+            _unit = degK;
         } else if (IsSpecificHumidity()) {
-            m_fStr.hasLevelDim = true;
-            m_fStr.singleLevel = true;
-            m_parameter = SpecificHumidity;
-            m_parameterName = "Specific humidity at 2m";
-            m_fileNamePattern = "shum.2m.gauss.%d.nc";
-            m_fileVarName = "shum";
-            m_unit = kg_kg;
-        } else if (m_dataId.IsSameAs("tmax2m", false)) {
-            m_fStr.hasLevelDim = true;
-            m_fStr.singleLevel = true;
-            m_parameter = AirTemperature;
-            m_parameterName = "Maximum temperature at 2m";
-            m_fileNamePattern = "tmax.2m.gauss.%d.nc";
-            m_fileVarName = "tmax";
-            m_unit = degK;
-        } else if (m_dataId.IsSameAs("tmin2m", false)) {
-            m_fStr.hasLevelDim = true;
-            m_fStr.singleLevel = true;
-            m_parameter = AirTemperature;
-            m_parameterName = "Minimum temperature at 2m";
-            m_fileNamePattern = "tmin.2m.gauss.%d.nc";
-            m_fileVarName = "tmin";
-            m_unit = degK;
-        } else if (m_dataId.IsSameAs("sktmp", false)) {
-            m_parameter = SoilTemperature;
-            m_parameterName = "Skin Temperature";
-            m_fileNamePattern = "skt.sfc.gauss.%d.nc";
-            m_fileVarName = "skt";
-            m_unit = degK;
-        } else if (m_dataId.IsSameAs("soilw0-10", false)) {
-            m_fStr.hasLevelDim = true;
-            m_fStr.singleLevel = true;
-            m_parameter = SoilMoisture;
-            m_parameterName = "Soil moisture (0-10cm)";
-            m_fileNamePattern = "soilw.0-10cm.gauss.%d.nc";
-            m_fileVarName = "soilw";
-            m_unit = fraction;
-        } else if (m_dataId.IsSameAs("soilw10-200", false)) {
-            m_fStr.hasLevelDim = true;
-            m_fStr.singleLevel = true;
-            m_parameter = SoilMoisture;
-            m_parameterName = "Soil moisture (10-200cm)";
-            m_fileNamePattern = "soilw.10-200cm.gauss.%d.nc";
-            m_fileVarName = "soilw";
-            m_unit = fraction;
-        } else if (m_dataId.IsSameAs("tmp0-10", false)) {
-            m_fStr.hasLevelDim = true;
-            m_fStr.singleLevel = true;
-            m_parameter = SoilTemperature;
-            m_parameterName = "Temperature of 0-10cm layer";
-            m_fileNamePattern = "tmp.0-10cm.gauss.%d.nc";
-            m_fileVarName = "tmp";
-            m_unit = degK;
-        } else if (m_dataId.IsSameAs("tmp10-200", false)) {
-            m_fStr.hasLevelDim = true;
-            m_fStr.singleLevel = true;
-            m_parameter = SoilTemperature;
-            m_parameterName = "Temperature of 10-200cm layer";
-            m_fileNamePattern = "tmp.10-200cm.gauss.%d.nc";
-            m_fileVarName = "tmp";
-            m_unit = degK;
+            _fStr.hasLevelDim = true;
+            _fStr.singleLevel = true;
+            _parameter = SpecificHumidity;
+            _parameterName = "Specific humidity at 2m";
+            _fileNamePattern = "shum.2m.gauss.%d.nc";
+            _fileVarName = "shum";
+            _unit = kg_kg;
+        } else if (_dataId.IsSameAs("tmax2m", false)) {
+            _fStr.hasLevelDim = true;
+            _fStr.singleLevel = true;
+            _parameter = AirTemperature;
+            _parameterName = "Maximum temperature at 2m";
+            _fileNamePattern = "tmax.2m.gauss.%d.nc";
+            _fileVarName = "tmax";
+            _unit = degK;
+        } else if (_dataId.IsSameAs("tmin2m", false)) {
+            _fStr.hasLevelDim = true;
+            _fStr.singleLevel = true;
+            _parameter = AirTemperature;
+            _parameterName = "Minimum temperature at 2m";
+            _fileNamePattern = "tmin.2m.gauss.%d.nc";
+            _fileVarName = "tmin";
+            _unit = degK;
+        } else if (_dataId.IsSameAs("sktmp", false)) {
+            _parameter = SoilTemperature;
+            _parameterName = "Skin Temperature";
+            _fileNamePattern = "skt.sfc.gauss.%d.nc";
+            _fileVarName = "skt";
+            _unit = degK;
+        } else if (_dataId.IsSameAs("soilw0-10", false)) {
+            _fStr.hasLevelDim = true;
+            _fStr.singleLevel = true;
+            _parameter = SoilMoisture;
+            _parameterName = "Soil moisture (0-10cm)";
+            _fileNamePattern = "soilw.0-10cm.gauss.%d.nc";
+            _fileVarName = "soilw";
+            _unit = fraction;
+        } else if (_dataId.IsSameAs("soilw10-200", false)) {
+            _fStr.hasLevelDim = true;
+            _fStr.singleLevel = true;
+            _parameter = SoilMoisture;
+            _parameterName = "Soil moisture (10-200cm)";
+            _fileNamePattern = "soilw.10-200cm.gauss.%d.nc";
+            _fileVarName = "soilw";
+            _unit = fraction;
+        } else if (_dataId.IsSameAs("tmp0-10", false)) {
+            _fStr.hasLevelDim = true;
+            _fStr.singleLevel = true;
+            _parameter = SoilTemperature;
+            _parameterName = "Temperature of 0-10cm layer";
+            _fileNamePattern = "tmp.0-10cm.gauss.%d.nc";
+            _fileVarName = "tmp";
+            _unit = degK;
+        } else if (_dataId.IsSameAs("tmp10-200", false)) {
+            _fStr.hasLevelDim = true;
+            _fStr.singleLevel = true;
+            _parameter = SoilTemperature;
+            _parameterName = "Temperature of 10-200cm layer";
+            _fileNamePattern = "tmp.10-200cm.gauss.%d.nc";
+            _fileVarName = "tmp";
+            _unit = degK;
         } else if (IsUwindComponent()) {
-            m_fStr.hasLevelDim = true;
-            m_fStr.singleLevel = true;
-            m_parameter = Uwind;
-            m_parameterName = "U-wind at 10 m";
-            m_fileNamePattern = "uwnd.10m.gauss.%d.nc";
-            m_fileVarName = "uwnd";
-            m_unit = m_s;
+            _fStr.hasLevelDim = true;
+            _fStr.singleLevel = true;
+            _parameter = Uwind;
+            _parameterName = "U-wind at 10 m";
+            _fileNamePattern = "uwnd.10m.gauss.%d.nc";
+            _fileVarName = "uwnd";
+            _unit = _s;
         } else if (IsVwindComponent()) {
-            m_fStr.hasLevelDim = true;
-            m_fStr.singleLevel = true;
-            m_parameter = Vwind;
-            m_parameterName = "V-wind at 10 m";
-            m_fileNamePattern = "vwnd.10m.gauss.%d.nc";
-            m_fileVarName = "vwnd";
-            m_unit = m_s;
-        } else if (m_dataId.IsSameAs("weasd", false)) {
-            m_parameter = SnowWaterEquivalent;
-            m_parameterName = "Water equiv. of snow dept";
-            m_fileNamePattern = "weasd.sfc.gauss.%d.nc";
-            m_fileVarName = "weasd";
-            m_unit = kg_m2;
-        } else if (m_dataId.IsSameAs("cprat", false)) {
-            m_parameter = PrecipitationRate;
-            m_parameterName = "Convective precipitation rate";
-            m_fileNamePattern = "cprat.sfc.gauss.%d.nc";
-            m_fileVarName = "cprat";
-            m_unit = kg_m2_s;
-        } else if (m_dataId.IsSameAs("dlwrf", false)) {
-            m_parameter = Radiation;
-            m_parameterName = "Downward longwave radiation flux";
-            m_fileNamePattern = "dlwrf.sfc.gauss.%d.nc";
-            m_fileVarName = "dlwrf";
-            m_unit = W_m2;
-        } else if (m_dataId.IsSameAs("dswrf", false)) {
-            m_parameter = Radiation;
-            m_parameterName = "Downward solar radiation flux";
-            m_fileNamePattern = "dswrf.sfc.gauss.%d.nc";
-            m_fileVarName = "dswrf";
-            m_unit = W_m2;
-        } else if (m_dataId.IsSameAs("gflux", false)) {
-            m_parameter = Radiation;
-            m_parameterName = "Ground heat flux";
-            m_fileNamePattern = "gflux.sfc.gauss.%d.nc";
-            m_fileVarName = "gflux";
-            m_unit = W_m2;
-        } else if (m_dataId.IsSameAs("lhtfl", false)) {
-            m_parameter = Radiation;
-            m_parameterName = "Latent heat net flux";
-            m_fileNamePattern = "lhtfl.sfc.gauss.%d.nc";
-            m_fileVarName = "lhtfl";
-            m_unit = W_m2;
-        } else if (m_dataId.IsSameAs("pevpr", false)) {
-            m_parameter = PotentialEvaporation;
-            m_parameterName = "Potential evaporation rate";
-            m_fileNamePattern = "pevpr.sfc.gauss.%d.nc";
-            m_fileVarName = "pevpr";
-            m_unit = W_m2;
+            _fStr.hasLevelDim = true;
+            _fStr.singleLevel = true;
+            _parameter = Vwind;
+            _parameterName = "V-wind at 10 m";
+            _fileNamePattern = "vwnd.10m.gauss.%d.nc";
+            _fileVarName = "vwnd";
+            _unit = _s;
+        } else if (_dataId.IsSameAs("weasd", false)) {
+            _parameter = SnowWaterEquivalent;
+            _parameterName = "Water equiv. of snow dept";
+            _fileNamePattern = "weasd.sfc.gauss.%d.nc";
+            _fileVarName = "weasd";
+            _unit = kg_m2;
+        } else if (_dataId.IsSameAs("cprat", false)) {
+            _parameter = PrecipitationRate;
+            _parameterName = "Convective precipitation rate";
+            _fileNamePattern = "cprat.sfc.gauss.%d.nc";
+            _fileVarName = "cprat";
+            _unit = kg_m2_s;
+        } else if (_dataId.IsSameAs("dlwrf", false)) {
+            _parameter = Radiation;
+            _parameterName = "Downward longwave radiation flux";
+            _fileNamePattern = "dlwrf.sfc.gauss.%d.nc";
+            _fileVarName = "dlwrf";
+            _unit = W_m2;
+        } else if (_dataId.IsSameAs("dswrf", false)) {
+            _parameter = Radiation;
+            _parameterName = "Downward solar radiation flux";
+            _fileNamePattern = "dswrf.sfc.gauss.%d.nc";
+            _fileVarName = "dswrf";
+            _unit = W_m2;
+        } else if (_dataId.IsSameAs("gflux", false)) {
+            _parameter = Radiation;
+            _parameterName = "Ground heat flux";
+            _fileNamePattern = "gflux.sfc.gauss.%d.nc";
+            _fileVarName = "gflux";
+            _unit = W_m2;
+        } else if (_dataId.IsSameAs("lhtfl", false)) {
+            _parameter = Radiation;
+            _parameterName = "Latent heat net flux";
+            _fileNamePattern = "lhtfl.sfc.gauss.%d.nc";
+            _fileVarName = "lhtfl";
+            _unit = W_m2;
+        } else if (_dataId.IsSameAs("pevpr", false)) {
+            _parameter = PotentialEvaporation;
+            _parameterName = "Potential evaporation rate";
+            _fileNamePattern = "pevpr.sfc.gauss.%d.nc";
+            _fileVarName = "pevpr";
+            _unit = W_m2;
         } else if (IsPrecipitationRate()) {
-            m_parameter = PrecipitationRate;
-            m_parameterName = "Precipitation rate";
-            m_fileNamePattern = "prate.sfc.gauss.%d.nc";
-            m_fileVarName = "prate";
-            m_unit = kg_m2_s;
-        } else if (m_dataId.IsSameAs("shtfl", false)) {
-            m_parameter = Radiation;
-            m_parameterName = "Sensible heat net flux";
-            m_fileNamePattern = "shtfl.sfc.gauss.%d.nc";
-            m_fileVarName = "shtfl";
-            m_unit = W_m2;
-        } else if (m_dataId.IsSameAs("tcdc", false)) {
-            m_parameter = CloudCover;
-            m_parameterName = "Total cloud cover";
-            m_fileNamePattern = "tcdc.eatm.gauss.%d.nc";
-            m_fileVarName = "tcdc";
-            m_unit = percent;
-        } else if (m_dataId.IsSameAs("uflx", false)) {
-            m_parameter = MomentumFlux;
-            m_parameterName = "Momentum flux (zonal)";
-            m_fileNamePattern = "uflx.sfc.gauss.%d.nc";
-            m_fileVarName = "uflx";
-            m_unit = N_m2;
-        } else if (m_dataId.IsSameAs("ugwd", false)) {
-            m_parameter = GravityWaveStress;
-            m_parameterName = "Zonal gravity wave stress";
-            m_fileNamePattern = "ugwd.sfc.gauss.%d.nc";
-            m_fileVarName = "ugwd";
-            m_unit = N_m2;
-        } else if (m_dataId.IsSameAs("ulwrf", false)) {
-            m_parameter = Radiation;
-            m_parameterName = "Upward Longwave Radiation Flux";
-            m_fileNamePattern = "ulwrf.sfc.gauss.%d.nc";
-            m_fileVarName = "ulwrf";
-            m_unit = W_m2;
-        } else if (m_dataId.IsSameAs("uswrf", false)) {
-            m_parameter = Radiation;
-            m_parameterName = "Upward Solar Radiation Flux";
-            m_fileNamePattern = "uswrf.sfc.gauss.%d.nc";
-            m_fileVarName = "uswrf";
-            m_unit = W_m2;
-        } else if (m_dataId.IsSameAs("vflx", false)) {
-            m_parameter = MomentumFlux;
-            m_parameterName = "Momentum Flux (meridional)";
-            m_fileNamePattern = "vflx.sfc.gauss.%d.nc";
-            m_fileVarName = "vflx";
-            m_unit = N_m2;
-        } else if (m_dataId.IsSameAs("vgwd", false)) {
-            m_parameter = GravityWaveStress;
-            m_parameterName = "Meridional Gravity Wave Stress";
-            m_fileNamePattern = "vgwd.sfc.gauss.%d.nc";
-            m_fileVarName = "vgwd";
-            m_unit = N_m2;
+            _parameter = PrecipitationRate;
+            _parameterName = "Precipitation rate";
+            _fileNamePattern = "prate.sfc.gauss.%d.nc";
+            _fileVarName = "prate";
+            _unit = kg_m2_s;
+        } else if (_dataId.IsSameAs("shtfl", false)) {
+            _parameter = Radiation;
+            _parameterName = "Sensible heat net flux";
+            _fileNamePattern = "shtfl.sfc.gauss.%d.nc";
+            _fileVarName = "shtfl";
+            _unit = W_m2;
+        } else if (_dataId.IsSameAs("tcdc", false)) {
+            _parameter = CloudCover;
+            _parameterName = "Total cloud cover";
+            _fileNamePattern = "tcdc.eatm.gauss.%d.nc";
+            _fileVarName = "tcdc";
+            _unit = percent;
+        } else if (_dataId.IsSameAs("uflx", false)) {
+            _parameter = MomentumFlux;
+            _parameterName = "Momentum flux (zonal)";
+            _fileNamePattern = "uflx.sfc.gauss.%d.nc";
+            _fileVarName = "uflx";
+            _unit = N_m2;
+        } else if (_dataId.IsSameAs("ugwd", false)) {
+            _parameter = GravityWaveStress;
+            _parameterName = "Zonal gravity wave stress";
+            _fileNamePattern = "ugwd.sfc.gauss.%d.nc";
+            _fileVarName = "ugwd";
+            _unit = N_m2;
+        } else if (_dataId.IsSameAs("ulwrf", false)) {
+            _parameter = Radiation;
+            _parameterName = "Upward Longwave Radiation Flux";
+            _fileNamePattern = "ulwrf.sfc.gauss.%d.nc";
+            _fileVarName = "ulwrf";
+            _unit = W_m2;
+        } else if (_dataId.IsSameAs("uswrf", false)) {
+            _parameter = Radiation;
+            _parameterName = "Upward Solar Radiation Flux";
+            _fileNamePattern = "uswrf.sfc.gauss.%d.nc";
+            _fileVarName = "uswrf";
+            _unit = W_m2;
+        } else if (_dataId.IsSameAs("vflx", false)) {
+            _parameter = MomentumFlux;
+            _parameterName = "Momentum Flux (meridional)";
+            _fileNamePattern = "vflx.sfc.gauss.%d.nc";
+            _fileVarName = "vflx";
+            _unit = N_m2;
+        } else if (_dataId.IsSameAs("vgwd", false)) {
+            _parameter = GravityWaveStress;
+            _parameterName = "Meridional Gravity Wave Stress";
+            _fileNamePattern = "vgwd.sfc.gauss.%d.nc";
+            _fileVarName = "vgwd";
+            _unit = N_m2;
         } else {
-            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), _dataId, _product);
             return false;
         }
 
@@ -312,28 +312,28 @@ bool asPredictorNcepR2::Init() {
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
-                   m_datasetName);
+    if (_fileNamePattern.IsEmpty() || _fileVarName.IsEmpty()) {
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), _dataId,
+                   _datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
-                   m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), _dataId,
+                   _datasetName);
         return false;
     }
 
     // Set to initialized
-    m_initialized = true;
+    _initialized = true;
 
     return true;
 }
 
 void asPredictorNcepR2::ListFiles(asTimeArray& timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
-        m_files.push_back(GetFullDirectoryPath() + asStrF(m_fileNamePattern, iYear));
+        _files.push_back(GetFullDirectoryPath() + asStrF(_fileNamePattern, iYear));
     }
 }
 

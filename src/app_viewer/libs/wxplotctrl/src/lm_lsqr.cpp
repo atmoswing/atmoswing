@@ -91,56 +91,56 @@ LM_LeastSquare::LM_LeastSquare() {
 void LM_LeastSquare::Init() {
     ReInit();
 
-    m_init_value = 0.1;
+    _init_value = 0.1;
 
-    m_eps = 1.2e-16;
-    m_dwarf = 1.0e-38;
-    m_ftol = 1.0e-14;
-    m_xtol = 1.0e-14;
-    m_gtol = 1.0e-14;
-    m_epsfcn = 1.0e-15;
-    m_factor = 0.1;
+    _eps = 1.2e-16;
+    _dwarf = 1.0e-38;
+    _ftol = 1.0e-14;
+    _xtol = 1.0e-14;
+    _gtol = 1.0e-14;
+    _epsfcn = 1.0e-15;
+    _factor = 0.1;
 }
 
 void LM_LeastSquare::ReInit() {
-    m_plotData = NULL;
-    m_plotFunc = NULL;
-    m_resultMsg.Clear();
-    m_ok = false;
-    m_fitting = false;
-    m_abort_fitting = false;
+    _plotData = NULL;
+    _plotFunc = NULL;
+    _resultMsg.Clear();
+    _ok = false;
+    _fitting = false;
+    _abort_fitting = false;
 
-    m_vars = NULL;
-    m_x = NULL;
-    m_fvec = NULL;
-    m_diag = NULL;
-    m_fjac = NULL;
-    m_qtf = NULL;
-    m_ipvt = NULL;
+    _vars = NULL;
+    _x = NULL;
+    _fvec = NULL;
+    _diag = NULL;
+    _fjac = NULL;
+    _qtf = NULL;
+    _ipvt = NULL;
 
-    m_nan = 0;
-    m_n = 0;
-    m_m = 0;
-    m_info = -1;
-    m_fnorm = 0;
-    m_mode = 1;
+    _nan = 0;
+    _n = 0;
+    _m = 0;
+    _info = -1;
+    _fnorm = 0;
+    _mode = 1;
 
-    m_nfev = 0;
-    m_ldfjac = 0;
+    _nfev = 0;
+    _ldfjac = 0;
 }
 
 void LM_LeastSquare::Destroy() {
     wxCHECK_RET(!IsFitting(), wxT("Cannot Destroy Least Square when currently fitting"));
-    if (m_plotData) delete m_plotData;
-    if (m_plotFunc) delete m_plotFunc;
+    if (_plotData) delete _plotData;
+    if (_plotFunc) delete _plotFunc;
 
-    if (m_vars) free(m_vars);
-    if (m_x) free(m_x);
-    if (m_fvec) free(m_fvec);
-    if (m_diag) free(m_diag);
-    if (m_fjac) free(m_fjac);
-    if (m_qtf) free(m_qtf);
-    if (m_ipvt) free(m_ipvt);
+    if (_vars) free(_vars);
+    if (_x) free(_x);
+    if (_fvec) free(_fvec);
+    if (_diag) free(_diag);
+    if (_fjac) free(_fjac);
+    if (_qtf) free(_qtf);
+    if (_ipvt) free(_ipvt);
 
     ReInit();
 }
@@ -153,78 +153,78 @@ bool LM_LeastSquare::Create(const wxPlotData& plotData, const wxPlotFunction& pl
     wxCHECK_MSG((plotData.GetCount() > 1) && (plotData.GetCount() >= plotFunc.GetNumberVariables() - 1), false,
                 wxT("invalid dimensions"));
 
-    m_plotData = new wxPlotData(plotData);
-    m_plotFunc = new wxPlotFunction(plotFunc);
+    _plotData = new wxPlotData(plotData);
+    _plotFunc = new wxPlotFunction(plotFunc);
 
-    double* x_data = m_plotData->GetXData();
-    double* y_data = m_plotData->GetYData();
-    int data_count = m_plotData->GetCount();
+    double* x_data = _plotData->GetXData();
+    double* y_data = _plotData->GetYData();
+    int data_count = _plotData->GetCount();
     for (int i = 0; i < data_count; i++, x_data++, y_data++) {
         if (!wxFinite(*x_data) && !wxFinite(*y_data)) {
             Destroy();
-            m_resultMsg.Printf(wxT("Unable to fit data since some values are NaN"));
+            _resultMsg.Printf(wxT("Unable to fit data since some values are NaN"));
             return false;
         }
     }
 
-    m_n = plotFunc.GetNumberVariables() - 1;
-    m_m = plotData.GetCount();
+    _n = plotFunc.GetNumberVariables() - 1;
+    _m = plotData.GetCount();
 
-    m_ldfjac = m_m;
+    _ldfjac = _m;
 
-    m_vars = (double*)malloc((m_n + 1) * sizeof(double));
-    m_x = (double*)malloc(m_n * sizeof(double));
-    m_fvec = (double*)malloc(m_m * sizeof(double));
-    m_diag = (double*)malloc(m_n * sizeof(double));
-    m_fjac = (double*)malloc(m_m * m_n * sizeof(double));
-    m_qtf = (double*)malloc(m_n * sizeof(double));
-    m_ipvt = (int*)malloc(m_n * sizeof(int));
-    m_maxfev = 200 * (m_n + 1);
+    _vars = (double*)malloc((_n + 1) * sizeof(double));
+    _x = (double*)malloc(_n * sizeof(double));
+    _fvec = (double*)malloc(_m * sizeof(double));
+    _diag = (double*)malloc(_n * sizeof(double));
+    _fjac = (double*)malloc(_m * _n * sizeof(double));
+    _qtf = (double*)malloc(_n * sizeof(double));
+    _ipvt = (int*)malloc(_n * sizeof(int));
+    _maxfev = 200 * (_n + 1);
 
-    if (!(m_plotData && m_plotFunc && m_vars && m_x && m_fvec && m_diag && m_fjac && m_qtf && m_ipvt)) {
+    if (!(_plotData && _plotFunc && _vars && _x && _fvec && _diag && _fjac && _qtf && _ipvt)) {
         Destroy();
         wxFAIL_MSG(wxT("can't allocate memory for LM_LeastSquare::Create"));
         return false;
     }
 
-    memset(m_x, 0, m_n * sizeof(double));
+    memset(_x, 0, _n * sizeof(double));
 
-    m_ok = true;
+    _ok = true;
     return true;
 }
 
 int LM_LeastSquare::Fit(const double* x0, int init_count) {
     wxCHECK_MSG(Ok() && !IsFitting(), 0, wxT("invalid functions"));
 
-    m_nan = 0;
-    m_info = -1;
-    m_fnorm = 0;
-    m_nfev = 0;
+    _nan = 0;
+    _info = -1;
+    _fnorm = 0;
+    _nfev = 0;
 
     int i;
 
     if (x0 && (init_count > 0)) {
-        wxCHECK_MSG(init_count <= m_n, 0, wxT("Invalid initializer count"));
+        wxCHECK_MSG(init_count <= _n, 0, wxT("Invalid initializer count"));
 
         // initialize the variables
         for (i = 0; i < init_count; i++) {
             if (!wxFinite(x0[i])) {
-                m_x[i] = m_init_value;
+                _x[i] = _init_value;
                 wxLogWarning(wxT("Initial value is NaN in LM_LeastSquare::Fit"));
             } else
-                m_x[i] = x0[i];
+                _x[i] = x0[i];
         }
 
         // initialize the rest, if any
-        for (i = init_count; i < m_n; i++) m_x[i] = m_init_value;
+        for (i = init_count; i < _n; i++) _x[i] = _init_value;
     } else {
-        for (i = 0; i < m_n; i++) m_x[i] = m_init_value;
+        for (i = 0; i < _n; i++) _x[i] = _init_value;
     }
 
-    double* wa1 = (double*)malloc(m_n * sizeof(double));
-    double* wa2 = (double*)malloc(m_n * sizeof(double));
-    double* wa3 = (double*)malloc(m_n * sizeof(double));
-    double* wa4 = (double*)malloc(m_m * sizeof(double));
+    double* wa1 = (double*)malloc(_n * sizeof(double));
+    double* wa2 = (double*)malloc(_n * sizeof(double));
+    double* wa3 = (double*)malloc(_n * sizeof(double));
+    double* wa4 = (double*)malloc(_m * sizeof(double));
 
     if (!(wa1 && wa2 && wa3 && wa4)) {
         if (wa1) free(wa1);
@@ -236,31 +236,31 @@ int LM_LeastSquare::Fit(const double* x0, int init_count) {
         return 0;
     }
 
-    m_fitting = true;         // start fitting here, just before it starts
-    m_abort_fitting = false;  // reset abort flag
+    _fitting = true;         // start fitting here, just before it starts
+    _abort_fitting = false;  // reset abort flag
 
 #if BUG
     int iflag = 1;
-    fcn(m_m, m_n, m_x, m_fvec, &iflag);
+    fcn(_m, _n, _x, _fvec, &iflag);
     printf("initial x\n");
-    pmat(1, m_n, m_x);  // display 1 by n matrix
+    pmat(1, _n, _x);  // display 1 by n matrix
                         // printf( "initial function\n" ); pmat( 1, m, fvec );
 #endif
 
-    lmdif(m_m, m_n, m_x, m_fvec, m_ftol, m_xtol, m_gtol, m_maxfev, m_epsfcn, m_diag, m_mode, m_factor, s_nprint,
-          &m_info, &m_nfev, m_fjac, m_ldfjac, m_ipvt, m_qtf, wa1, wa2, wa3, wa4);
+    lmdif(_m, _n, _x, _fvec, _ftol, _xtol, _gtol, _maxfev, _epsfcn, _diag, _mode, _factor, s_nprint,
+          &_info, &_nfev, _fjac, _ldfjac, _ipvt, _qtf, wa1, wa2, wa3, wa4);
 
-    m_fnorm = enorm(m_m, m_fvec);
+    _fnorm = enorm(_m, _fvec);
 
 #if BUG
-    printf("%d function evaluations\n", m_nfev);
+    printf("%d function evaluations\n", _nfev);
     // display solution and function vector
 
-    // printf( "fvec\n" ); pmat( 1, m_m, m_fvec );
+    // printf( "fvec\n" ); pmat( 1, _m, _fvec );
     printf("x\n");
-    pmat(1, m_n, m_x);
-    printf("function norm = %.15e\n", m_fnorm);
-    // display m_info returned by lmdif
+    pmat(1, _n, _x);
+    printf("function norm = %.15e\n", _fnorm);
+    // display _info returned by lmdif
     printf("%s\n", GetResultMessage().c_str());
 #endif
 
@@ -269,66 +269,66 @@ int LM_LeastSquare::Fit(const double* x0, int init_count) {
     if (wa3) free(wa3);
     if (wa4) free(wa4);
 
-    m_fitting = false;
-    return m_nfev;
+    _fitting = false;
+    return _nfev;
 }
 
 wxString LM_LeastSquare::GetResultMessage() const {
     wxString msg;
 
-    switch (m_info) {
+    switch (_info) {
         case -1:
-            return m_resultMsg;  // error before fitting
+            return _resultMsg;  // error before fitting
         case 0:
             msg.Printf(wxT("Improper input parameters."));
             break;
         case 1:
             msg.Printf(
                 wxT("Both actual and predicted relative reductions in the sum of squares are at most ftol (%lg)."),
-                m_ftol);
+                _ftol);
             break;
         case 2:
-            msg.Printf(wxT("Relative error between two consecutive iterates is at most xtol (%lg)."), m_xtol);
+            msg.Printf(wxT("Relative error between two consecutive iterates is at most xtol (%lg)."), _xtol);
             break;
         case 3:
             msg.Printf(
                 wxT("Both actual and predicted relative reductions in the sum of squares are at most ftol (%lg)."),
-                m_ftol);
+                _ftol);
             msg += wxString::Format(wxT("Relative error between two consecutive iterates is at most xtol (%lg)."),
-                                    m_xtol);
+                                    _xtol);
             break;
         case 4:
             msg.Printf(wxT("The cosine of the angle between fvec and any column of the jacobian is at most gtol (%lg) "
                            "in absolute value."),
-                       m_gtol);
+                       _gtol);
             break;
         case 5:
-            msg.Printf(wxT("Number of iterations has reached or exceeded %d, try adjusting initial values."), m_maxfev);
+            msg.Printf(wxT("Number of iterations has reached or exceeded %d, try adjusting initial values."), _maxfev);
             break;
         case 6:
-            msg.Printf(wxT("ftol (%lg) is too small. no further reduction in the sum of squares is possible"), m_ftol);
+            msg.Printf(wxT("ftol (%lg) is too small. no further reduction in the sum of squares is possible"), _ftol);
             break;
         case 7:
-            msg.Printf(wxT("xtol (%lg) too small. no further improvement in approximate solution x possible"), m_xtol);
+            msg.Printf(wxT("xtol (%lg) too small. no further improvement in approximate solution x possible"), _xtol);
             break;
         case 8:
             msg.Printf(
                 wxT("gtol (%lg) is too small. fvec is orthogonal to the columns of the jacobian to machine precision."),
-                m_gtol);
+                _gtol);
             break;
         default:
             break;
     }
 
-    if (m_nan) msg += wxString::Format(wxT(" %ld values were skipped since they were NaN"), m_nan);
+    if (_nan) msg += wxString::Format(wxT(" %ld values were skipped since they were NaN"), _nan);
 
     return msg;
 }
 
 double LM_LeastSquare::GetVariable(int n) {
-    wxCHECK_MSG(m_x, 0.0, wxT("LM_LeastSquare not created"));
-    wxCHECK_MSG((n >= 0) && (n < m_n), 0.0, wxT("Invalid variable index"));
-    return m_x[n];
+    wxCHECK_MSG(_x, 0.0, wxT("LM_LeastSquare not created"));
+    wxCHECK_MSG((n >= 0) && (n < _n), 0.0, wxT("Invalid variable index"));
+    return _x[n];
 }
 
 /*
@@ -372,38 +372,38 @@ double LM_LeastSquare::GetVariable(int n) {
  */
 
 void LM_LeastSquare::fcn(int m, int n, double x[], double fvec[], int* iflag) {
-    wxCHECK_RET(m_plotData && m_plotFunc, wxT("invalid functions"));
+    wxCHECK_RET(_plotData && _plotFunc, wxT("invalid functions"));
 
     if (*iflag == 0) {
-        if (m_abort_fitting)
+        if (_abort_fitting)
             *iflag = -1;
         else if (s_lm_leastsquarehandler) {
             // exit if handler returns false
-            if (!((*s_lm_leastsquarehandler)(m_plotFunc->GetFunctionString(), m_nfev, m_maxfev))) *iflag = -1;
+            if (!((*s_lm_leastsquarehandler)(_plotFunc->GetFunctionString(), _nfev, _maxfev))) *iflag = -1;
         }
 
         return;
     }
 
-    double* x_data = m_plotData->GetXData();
-    double* y_data = m_plotData->GetYData();
+    double* x_data = _plotData->GetXData();
+    double* y_data = _plotData->GetYData();
     double f = 0;
-    memcpy(m_vars, x, n * sizeof(double));
+    memcpy(_vars, x, n * sizeof(double));
 
     for (int i = 0; i < m; i++, x_data++, y_data++) {
         /*      // this is checked in Create now
                 if (!wxFinite(*x_data) && !wxFinite(*y_data))
                 {
-                    m_nan++;
+                    _nan++;
                     fvec[i] = 0;
                     continue;
                 }
         */
-        m_vars[n] = *x_data;
+        _vars[n] = *x_data;
 
-        f = m_plotFunc->GetValue(m_vars);
+        f = _plotFunc->GetValue(_vars);
         if (!wxFinite(f)) {
-            m_nan++;
+            _nan++;
             fvec[i] = 0;
             continue;
         }
@@ -866,9 +866,9 @@ L200:
     // tests for termination and stringent tolerances.
 
     if (*nfev >= maxfev) *info = 5;
-    if ((fabs(actred) <= m_eps) && (prered <= m_eps) && (p5 * ratio <= one)) *info = 6;
-    if (delta <= m_eps * xnorm) *info = 7;
-    if (gnorm <= m_eps) *info = 8;
+    if ((fabs(actred) <= _eps) && (prered <= _eps) && (p5 * ratio <= one)) *info = 6;
+    if (delta <= _eps * xnorm) *info = 7;
+    if (gnorm <= _eps) *info = 8;
     if (*info != 0) goto L300;
 
     // end of the inner loop. repeat if iteration unsuccessful.
@@ -1094,7 +1094,7 @@ void LM_LeastSquare::lmpar(int n, double r[], int ldr, int ipvt[], double diag[]
     }
     gnorm = enorm(n, wa1);
     paru = gnorm / delta;
-    if (paru == zero) paru = m_dwarf / dmin1(delta, p1);
+    if (paru == zero) paru = _dwarf / dmin1(delta, p1);
 
     // if the input par lies outside of the interval (parl,paru),
     // set par to the closer endpoint.
@@ -1113,7 +1113,7 @@ L150:
 
     // evaluate the function at the current value of par.
 
-    if (*par == zero) *par = dmax1(m_dwarf, p001 * paru);
+    if (*par == zero) *par = dmax1(_dwarf, p001 * paru);
     temp = sqrt(*par);
     for (j = 0; j < n; j++) wa1[j] = temp * diag[j];
     qrsolv(n, r, ldr, ipvt, wa1, qtb, x, sdiag, wa2);
@@ -1345,7 +1345,7 @@ void LM_LeastSquare::qrfac(int m, int n, double a[], int WXUNUSED(lda), int pivo
                     temp = dmax1(zero, one - temp * temp);
                     rdiag[k] *= sqrt(temp);
                     temp = rdiag[k] / wa[k];
-                    if ((p05 * temp * temp) <= m_eps) {
+                    if ((p05 * temp * temp) <= _eps) {
                         rdiag[k] = enorm(m - j - 1, &a[jp1 + m * k]);
                         wa[k] = rdiag[k];
                     }
@@ -1762,7 +1762,7 @@ void LM_LeastSquare::fdjac2(int m, int n, double x[], double fvec[], double fjac
     double eps, h, temp;
     static double zero = 0.0;
 
-    temp = dmax1(epsfcn, m_eps);
+    temp = dmax1(epsfcn, _eps);
     eps = sqrt(temp);
 #if BUG
     printf("fdjac2\n");

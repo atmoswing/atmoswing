@@ -100,14 +100,14 @@ class asFramePlotDistributions : public asFramePlotDistributionsVirutal {
         AllReturnPeriods
     };
 
-    asPanelPlot* m_panelPlotPredictands; /**< The panel for the predictands plot. */
-    asPanelPlot* m_panelPlotCriteria; /**< The panel for the criteria plot. */
-    asForecastManager* m_forecastManager; /**< The forecast manager. */
-    int m_selectedMethod; /**< The selected method (index). */
-    int m_selectedForecast; /**< The selected forecast (index). */
-    int m_selectedStation; /**< The selected station (index). */
-    int m_selectedDate;  /**< The selected date (index). */
-    int m_xmaxPredictands; /**< The maximum value for the x-axis of the predictands plot. */
+    asPanelPlot* _panelPlotPredictands; /**< The panel for the predictands plot. */
+    asPanelPlot* _panelPlotCriteria; /**< The panel for the criteria plot. */
+    asForecastManager* _forecastManager; /**< The forecast manager. */
+    int _selectedMethod; /**< The selected method (index). */
+    int _selectedForecast; /**< The selected forecast (index). */
+    int _selectedStation; /**< The selected station (index). */
+    int _selectedDate;  /**< The selected date (index). */
+    int _xmaxPredictands; /**< The maximum value for the x-axis of the predictands plot. */
 
     /**
      * Rebuild the choice of the forecast.

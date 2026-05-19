@@ -34,7 +34,7 @@ float asTotalScoreMeanWithClim::Assess(const a1f& targetDates, const a1f& scores
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(scores.rows() > 1);
 
-    switch (m_period) {
+    switch (_period) {
         case (asTotalScore::Total): {
             int targetDatesLength = targetDates.rows();
 

@@ -45,7 +45,7 @@ bool asFileParametersForecast::CheckRootElement() const {
     if (!FileVersionIsOrAbove(1.0)) return false;
 
     if (!GetRoot()->GetAttribute("target").IsSameAs("forecaster", false)) {
-        wxLogError(_("The file %s is not a parameters file for the Forecaster."), m_fileName.GetFullName());
+        wxLogError(_("The file %s is not a parameters file for the Forecaster."), _fileName.GetFullName());
         return false;
     }
     return true;
