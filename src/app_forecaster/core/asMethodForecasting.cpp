@@ -913,9 +913,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast& results, asParamete
 
         wxLogVerbose(_("Data loaded"));
 
-        // Instantiate a score object
-        asCriteria* criterion = asCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor));
-        _storageCriteria.push_back(criterion);
+        // Instantiate a score object. _storageCriteria takes ownership of the raw pointer.
+        _storageCriteria.push_back(asCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor)).release());
     }
 
 #if USE_GUI
@@ -1330,10 +1329,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast& results, asParam
 
         wxLogVerbose(_("Data loaded"));
 
-        // Instantiate a score object
+        // Instantiate a score object. _storageCriteria takes ownership of the raw pointer.
         wxLogVerbose(_("Creating a criterion object."));
-        asCriteria* criterion = asCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor));
-        _storageCriteria.push_back(criterion);
+        _storageCriteria.push_back(asCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor)).release());
         wxLogVerbose(_("Criterion object created."));
     }
 

@@ -50,17 +50,17 @@ class asFile : public wxObject {
 
     ~asFile() override;
 
-    static bool Exists(const wxString& filePath);
+    [[nodiscard]] static bool Exists(const wxString& filePath);
 
-    bool Find();
+    [[nodiscard]] bool Find();
 
     bool DoClose();
 
-    virtual bool Open();
+    [[nodiscard]] virtual bool Open();
 
-    virtual bool Close();
+    [[nodiscard]] virtual bool Close();
 
-    bool Exists() const {
+    [[nodiscard]] bool Exists() const {
         return _exists;
     }
 

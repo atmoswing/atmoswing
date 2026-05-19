@@ -117,7 +117,7 @@ TEST(Criteria, S1) {
     critS1[9] = 61.8f;
 
     // Instantiate the criteria
-    asCriteria* criteria = asCriteria::GetInstance("S1");
+    auto criteria = asCriteria::GetInstance("S1");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -155,8 +155,6 @@ TEST(Criteria, S1) {
         res = (resZ500 + resZ1000) / 2;
         EXPECT_NEAR(critS1[iCand], res, 0.05);
     }
-
-    wxDELETE(criteria);
 }
 
 TEST(Criteria, S1preprocessed) {
@@ -208,8 +206,8 @@ TEST(Criteria, S1preprocessed) {
     EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
-    asCriteria* criteria = asCriteria::GetInstance("S1");
-    asCriteria* criteriaGrads = asCriteria::GetInstance("S1grads");
+    auto criteria = asCriteria::GetInstance("S1");
+    auto criteriaGrads = asCriteria::GetInstance("S1grads");
 
     // Loop on every candidate
     for (int iCand = 1; iCand < candidatesNb; iCand++) {
@@ -226,8 +224,6 @@ TEST(Criteria, S1preprocessed) {
 
     wxDELETE(predictor);
     wxDELETE(gradients);
-    wxDELETE(criteria);
-    wxDELETE(criteriaGrads);
 }
 
 TEST(Criteria, S2preprocessed) {
@@ -279,8 +275,8 @@ TEST(Criteria, S2preprocessed) {
     EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
-    asCriteria* criteria = asCriteria::GetInstance("S2");
-    asCriteria* criteriaGrads = asCriteria::GetInstance("S2grads");
+    auto criteria = asCriteria::GetInstance("S2");
+    auto criteriaGrads = asCriteria::GetInstance("S2grads");
 
     // Loop on every candidate
     for (int iCand = 1; iCand < candidatesNb; iCand++) {
@@ -297,8 +293,6 @@ TEST(Criteria, S2preprocessed) {
 
     wxDELETE(predictor);
     wxDELETE(curv);
-    wxDELETE(criteria);
-    wxDELETE(criteriaGrads);
 }
 
 TEST(Criteria, RSE) {
@@ -408,7 +402,7 @@ TEST(Criteria, RSE) {
     critRMSE[6] = 1791.5f;
 
     // Instantiate the criteria
-    asCriteria* criteria = asCriteria::GetInstance("RSE");
+    auto criteria = asCriteria::GetInstance("RSE");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -471,8 +465,6 @@ TEST(Criteria, RSE) {
         res = criteria->Assess(refMulti, candMulti, refMulti.rows(), refMulti.cols());
         EXPECT_NEAR(critRMSE[iCand], res, 0.05);
     }
-
-    wxDELETE(criteria);
 }
 
 TEST(Criteria, RMSE) {
@@ -579,7 +571,7 @@ TEST(Criteria, RMSE) {
     critRMSE[6] = 632.32f;
 
     // Instantiate the criteria
-    asCriteria* criteria = asCriteria::GetInstance("RMSE");
+    auto criteria = asCriteria::GetInstance("RMSE");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -641,8 +633,6 @@ TEST(Criteria, RMSE) {
         res = (res12h + res24h) / 2;
         EXPECT_NEAR(critRMSE[iCand], res, 0.05);
     }
-
-    wxDELETE(criteria);
 }
 
 TEST(Criteria, RMSEwithNaNs) {
@@ -656,13 +646,11 @@ TEST(Criteria, RMSEwithNaNs) {
     candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
         0.9309f, 0.3185f, 0.2835f, 0.5472f, NAN;
 
-    asCriteria* criteria = asCriteria::GetInstance("RMSE");
+    auto criteria = asCriteria::GetInstance("RMSE");
 
     float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
 
     EXPECT_FLOAT_EQ(0.3766817f, res);
-
-    wxDELETE(criteria);
 }
 
 TEST(Criteria, Differences) {
@@ -797,15 +785,13 @@ TEST(Criteria, Differences) {
     results[9] = 1354;
     results[10] = 908;
 
-    asCriteria* criteriaSAD = asCriteria::GetInstance("SAD");
+    auto criteriaSAD = asCriteria::GetInstance("SAD");
 
     float res;
     for (int i = 0; i < 11; i++) {
         res = criteriaSAD->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
         EXPECT_FLOAT_EQ(results[i], res);
     }
-
-    wxDELETE(criteriaSAD);
 
     // MD
 
@@ -821,14 +807,12 @@ TEST(Criteria, Differences) {
     results[9] = 338.5;
     results[10] = 227;
 
-    asCriteria* criteriaMD = asCriteria::GetInstance("MD");
+    auto criteriaMD = asCriteria::GetInstance("MD");
 
     for (int i = 0; i < 11; i++) {
         res = criteriaMD->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
         EXPECT_FLOAT_EQ(results[i], res);
     }
-
-    wxDELETE(criteriaMD);
 }
 
 TEST(Criteria, DMV) {
@@ -848,15 +832,13 @@ TEST(Criteria, DMV) {
     candDataNaN << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
         0.9309f, 0.3185f, 0.2835f, 0.5472f, NAN;
 
-    asCriteria* criteria = asCriteria::GetInstance("DMV");
+    auto criteria = asCriteria::GetInstance("DMV");
 
     float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
     float resNaN = criteria->Assess(refDataNaN, candDataNaN, refDataNaN.rows(), refDataNaN.cols());
 
     EXPECT_NEAR(0.1243563f, res, 0.00000015f);
     EXPECT_FLOAT_EQ(0.09395714f, resNaN);
-
-    wxDELETE(criteria);
 }
 
 TEST(Criteria, DSD) {
@@ -876,15 +858,13 @@ TEST(Criteria, DSD) {
     candDataNaN << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
         0.9309f, 0.3185f, 0.2835f, 0.5472f, NAN;
 
-    asCriteria* criteria = asCriteria::GetInstance("DSD");
+    auto criteria = asCriteria::GetInstance("DSD");
 
     float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
     float resNaN = criteria->Assess(refDataNaN, candDataNaN, refDataNaN.rows(), refDataNaN.cols());
 
     EXPECT_FLOAT_EQ(0.10311281f, res);
     EXPECT_FLOAT_EQ(0.108632276f, resNaN);
-
-    wxDELETE(criteria);
 }
 
 TEST(Criteria, Gauss2D) {

@@ -36,7 +36,7 @@ class asWizardWorkspace : public asWizardWorkspaceVirtual {
   public:
     asWizardWorkspace(wxWindow* parent, wxWindowID id = wxID_ANY);
 
-    ~asWizardWorkspace();
+    ~asWizardWorkspace() override;
 
     wxWizardPage* GetFirstPage() const {
         return _pages.Item(0);
@@ -47,9 +47,9 @@ class asWizardWorkspace : public asWizardWorkspaceVirtual {
     }
 
   protected:
-    void OnWizardFinished(wxWizardEvent& event);
+    void OnWizardFinished(wxWizardEvent& event) override;
 
-    void OnLoadExistingWorkspace(wxCommandEvent& event);
+    void OnLoadExistingWorkspace(wxCommandEvent& event) override;
 
   private:
     asWorkspace _workspace;

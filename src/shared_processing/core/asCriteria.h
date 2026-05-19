@@ -28,6 +28,8 @@
 #ifndef AS_CRITERIA_H
 #define AS_CRITERIA_H
 
+#include <memory>
+
 #include "asIncludes.h"
 
 class asPredictor;
@@ -36,7 +38,11 @@ class asCriteria : public wxObject {
   public:
     asCriteria(const wxString& name, const wxString& fullname, Order order);
 
-    static asCriteria* GetInstance(const wxString& criteriaString);
+    /**
+     * Factory: returns a heap-allocated criterion owned by the caller via unique_ptr.
+     * On unknown criteria name, logs an error and returns nullptr.
+     */
+    static std::unique_ptr<asCriteria> GetInstance(const wxString& criteriaString);
 
     ~asCriteria() override;
 

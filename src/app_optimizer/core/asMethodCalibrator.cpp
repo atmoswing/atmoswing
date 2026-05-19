@@ -570,9 +570,9 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
     // Create the criterion
     vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
-        // Instantiate a score object
-        asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
-        criteria.push_back(criterion);
+        // Instantiate a score object. The vector takes ownership; Cleanup() deletes the
+        // raw pointers below, so release the unique_ptr at the boundary.
+        criteria.push_back(asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor)).release());
     }
 
     // Check time sizes
@@ -629,11 +629,11 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates& results, asParameter
         return false;
     }
 
-    // Create the score objects
+    // Create the score objects. The vector takes ownership; Cleanup() deletes the
+    // raw pointers below, so release the unique_ptr at the boundary.
     vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
-        asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
-        criteria.push_back(criterion);
+        criteria.push_back(asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor)).release());
     }
 
     // Inline the data when possible

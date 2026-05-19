@@ -63,11 +63,11 @@ class asFileDat : public asFileText {
 
     ~asFileDat() override = default;
 
-    bool Close() override;
+    [[nodiscard]] bool Close() override;
 
-    static Pattern GetPattern(const wxString& fileName, const wxString& directory = wxEmptyString);
+    [[nodiscard]] static Pattern GetPattern(const wxString& fileName, const wxString& directory = wxEmptyString);
 
-    static int GetPatternLineMaxCharWidth(const Pattern& pattern);
+    [[nodiscard]] static int GetPatternLineMaxCharWidth(const Pattern& pattern);
 
   protected:
   private:

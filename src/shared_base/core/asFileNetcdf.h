@@ -61,11 +61,11 @@ class asFileNetcdf : public asFile {
 
     ~asFileNetcdf() override;
 
-    bool Open() override;
+    [[nodiscard]] bool Open() override;
 
-    bool Close() override;
+    [[nodiscard]] bool Close() override;
 
-    bool ForceClose();
+    [[nodiscard]] bool ForceClose();
 
     void DefDim(const wxString& dimName, const size_t& dimSize = 0);
 
@@ -104,27 +104,27 @@ class asFileNetcdf : public asFile {
 
     void EndDef();
 
-    int GetDimId(const wxString& dimName);
+    [[nodiscard]] int GetDimId(const wxString& dimName);
 
-    bool HasVariable(const wxString& varName);
+    [[nodiscard]] bool HasVariable(const wxString& varName);
 
-    int GetVarId(const wxString& varName);
+    [[nodiscard]] int GetVarId(const wxString& varName);
 
-    bool HasAttribute(const wxString& attName, const wxString& varName = wxEmptyString);
+    [[nodiscard]] bool HasAttribute(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    int GetAttId(const wxString& attName, const wxString& varName = wxEmptyString);
+    [[nodiscard]] int GetAttId(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    short GetAttShort(const wxString& attName, const wxString& varName = wxEmptyString);
+    [[nodiscard]] short GetAttShort(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    int GetAttInt(const wxString& attName, const wxString& varName = wxEmptyString);
+    [[nodiscard]] int GetAttInt(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    float GetAttFloat(const wxString& attName, const wxString& varName = wxEmptyString);
+    [[nodiscard]] float GetAttFloat(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    double GetAttDouble(const wxString& attName, const wxString& varName = wxEmptyString);
+    [[nodiscard]] double GetAttDouble(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    char GetAttChar(const wxString& attName, const wxString& varName = wxEmptyString);
+    [[nodiscard]] char GetAttChar(const wxString& attName, const wxString& varName = wxEmptyString);
 
-    wxString GetAttString(const wxString& attName, const wxString& varName = wxEmptyString);
+    [[nodiscard]] wxString GetAttString(const wxString& attName, const wxString& varName = wxEmptyString);
 
     void GetVar(const wxString& varName, short* pValue);
 
@@ -136,13 +136,13 @@ class asFileNetcdf : public asFile {
 
     void GetVar(const wxString& varName, wxString* pValue, size_t totSize);
 
-    short GetVarOneShort(const wxString& varName, size_t arrIndex = 0);
+    [[nodiscard]] short GetVarOneShort(const wxString& varName, size_t arrIndex = 0);
 
-    int GetVarOneInt(const wxString& varName, size_t arrIndex = 0);
+    [[nodiscard]] int GetVarOneInt(const wxString& varName, size_t arrIndex = 0);
 
-    float GetVarOneFloat(const wxString& varName, size_t arrIndex = 0);
+    [[nodiscard]] float GetVarOneFloat(const wxString& varName, size_t arrIndex = 0);
 
-    double GetVarOneDouble(const wxString& varName, size_t arrIndex = 0);
+    [[nodiscard]] double GetVarOneDouble(const wxString& varName, size_t arrIndex = 0);
 
     void GetVarArray(const wxString& varName, const size_t indexStart[], const size_t indexCount[], short* pValue);
 
@@ -164,29 +164,29 @@ class asFileNetcdf : public asFile {
     void GetVarSample(const wxString& varName, const size_t indexStart[], const size_t indexCount[],
                       const ptrdiff_t indexStride[], double* pValue);
 
-    size_t GetDimLength(const wxString& dimName);
+    [[nodiscard]] size_t GetDimLength(const wxString& dimName);
 
-    size_t GetVarLength(const wxString& varName);
+    [[nodiscard]] size_t GetVarLength(const wxString& varName);
 
-    nc_type GetVarType(const wxString& varName);
+    [[nodiscard]] nc_type GetVarType(const wxString& varName);
 
-    size_t GetVarsNb() const {
+    [[nodiscard]] size_t GetVarsNb() const {
         return _struct.vars.size();
     }
 
-    size_t GetDimsNb() const {
+    [[nodiscard]] size_t GetDimsNb() const {
         return _struct.dims.size();
     }
 
-    size_t GetGlobAttsNb() const {
+    [[nodiscard]] size_t GetGlobAttsNb() const {
         return _struct.atts.size();
     }
 
-    size_t GetVarAttsNb(int varId) const {
+    [[nodiscard]] size_t GetVarAttsNb(int varId) const {
         return _struct.vars[varId].atts.size();
     }
 
-    size_t GetVarDimsNb(int varId) const {
+    [[nodiscard]] size_t GetVarDimsNb(int varId) const {
         return _struct.vars[varId].dimIds.size();
     }
 

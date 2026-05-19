@@ -64,21 +64,21 @@ class asFileGrib : public asFile {
      *
      * @return The ecCodes definitions path.
      */
-    static wxString GetDefinitionsPath();
+    [[nodiscard]] static wxString GetDefinitionsPath();
 
     /**
      * Find and open the file.
      *
      * @return True if successful.
      */
-    bool Open() override;
+    [[nodiscard]] bool Open() override;
 
     /**
      * Close the file.
      *
      * @return True if successful.
      */
-    bool Close() override;
+    [[nodiscard]] bool Close() override;
 
     /**
      * Set the index at the desired position in the file.
@@ -88,38 +88,38 @@ class asFileGrib : public asFile {
      * @param useWarnings True to use warnings.
      * @return True if successful.
      */
-    bool SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings = true);
+    [[nodiscard]] bool SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings = true);
 
     /**
      * Set the index at the desired position in the file without filtering by the vertical level value.
      *
      * @param gribCode The GRIB code of the desired variable.
      */
-    bool SetIndexPositionAnyLevel(vi gribCode);
+    [[nodiscard]] bool SetIndexPositionAnyLevel(vi gribCode);
 
-    bool GetVarArray(const int IndexStart[], const int IndexCount[], float* pValue);
+    [[nodiscard]] bool GetVarArray(const int IndexStart[], const int IndexCount[], float* pValue);
 
-    bool GetXaxis(a1d& uaxis) const;
+    [[nodiscard]] bool GetXaxis(a1d& uaxis) const;
 
-    bool GetYaxis(a1d& vaxis) const;
+    [[nodiscard]] bool GetYaxis(a1d& vaxis) const;
 
-    bool GetLevels(a1d& levels) const;
+    [[nodiscard]] bool GetLevels(a1d& levels) const;
 
-    vd GetRealTimeArray() const;
+    [[nodiscard]] vd GetRealTimeArray() const;
 
-    double GetTimeStart() const;
+    [[nodiscard]] double GetTimeStart() const;
 
-    double GetTimeEnd() const;
+    [[nodiscard]] double GetTimeEnd() const;
 
-    int GetTimeLength() const;
+    [[nodiscard]] int GetTimeLength() const;
 
-    double GetTimeStepHours() const;
+    [[nodiscard]] double GetTimeStepHours() const;
 
-    vd GetRealReferenceDateArray() const;
+    [[nodiscard]] vd GetRealReferenceDateArray() const;
 
-    vd GetRealReferenceTimeArray() const;
+    [[nodiscard]] vd GetRealReferenceTimeArray() const;
 
-    vd GetRealForecastTimeArray() const;
+    [[nodiscard]] vd GetRealForecastTimeArray() const;
 
   protected:
   private:

@@ -945,14 +945,13 @@ bool asMethodStandard::ExtractPreloadedArchiveData(vector<asPredictor*>& predict
     }
 
     // Check minimum number of points
-    asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
+    auto criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
     if (params->GetPredictorXptsnb(iStep, iPtor) < criterion->GetMinPointsNb()) {
         params->SetPredictorXptsnb(iStep, iPtor, criterion->GetMinPointsNb());
     }
     if (params->GetPredictorYptsnb(iStep, iPtor) < criterion->GetMinPointsNb()) {
         params->SetPredictorYptsnb(iStep, iPtor, criterion->GetMinPointsNb());
     }
-    wxDELETE(criterion);
 
     // Area object instantiation
     asAreaGrid* desiredArea = asAreaGrid::GetInstance(params, iStep, iPtor);
