@@ -24,7 +24,7 @@ list(APPEND src_app_viewer
         ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asResultsForecastAggregator.cpp
         ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asFileParametersForecast.h
         ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asFileParametersForecast.cpp
-        )
+)
 
 # wxPlotCtrl library (and dependences)
 file(GLOB src_lib_wxmathplot_h libs/wxmathplot/*.h)
@@ -52,7 +52,7 @@ list(APPEND inc_dirs
         "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/"
         "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/include/"
         "${PROJECT_SOURCE_DIR}/libs/wxthings/include/"
-        )
+)
 include_directories(${inc_dirs})
 
 

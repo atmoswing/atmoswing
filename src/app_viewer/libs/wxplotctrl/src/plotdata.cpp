@@ -1280,9 +1280,9 @@ int wxPlotData::GetMinMaxAve(const wxRangeIntSelection& rangeSel, wxPoint2DDoubl
 
     for (i = 0; i < sel_count; i++) {
         wxRangeInt r = rangeSel.GetRange(i);
-        wxCHECK_MSG((r._min >= 0) && (r._min < (int)M_PLOTDATA->_count) && (r._max >= 0) &&
-                        (r._max < (int)M_PLOTDATA->_count),
-                    0, wxT("Invalid range selection index in data curve"));
+        wxCHECK_MSG(
+            (r._min >= 0) && (r._min < (int)M_PLOTDATA->_count) && (r._max >= 0) && (r._max < (int)M_PLOTDATA->_count),
+            0, wxT("Invalid range selection index in data curve"));
 
         for (j = r._min; j <= r._max; j++)  // yes we duplicate first point
         {

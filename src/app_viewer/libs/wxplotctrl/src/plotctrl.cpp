@@ -152,41 +152,41 @@ wxString wxPlotCtrl_GetEventName(wxEventType eventType) {
     aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_ADD_CURVE) aDEFINE_LOCAL_EVENT_TYPE(
         wxEVT_PLOTCTRL_DELETING_CURVE) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_DELETED_CURVE)
 
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_CURVE_SEL_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(
-        wxEVT_PLOTCTRL_CURVE_SEL_CHANGED)
+        aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_CURVE_SEL_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(
+            wxEVT_PLOTCTRL_CURVE_SEL_CHANGED)
 
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_MOUSE_MOTION) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_CLICKED)
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_DOUBLECLICKED) aDEFINE_LOCAL_EVENT_TYPE(
-        wxEVT_PLOTCTRL_POINT_CLICKED) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_POINT_DOUBLECLICKED)
+            aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_MOUSE_MOTION) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_CLICKED)
+                aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_DOUBLECLICKED) aDEFINE_LOCAL_EVENT_TYPE(
+                    wxEVT_PLOTCTRL_POINT_CLICKED) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_POINT_DOUBLECLICKED)
 
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_AREA_SEL_CREATING) aDEFINE_LOCAL_EVENT_TYPE(
-        wxEVT_PLOTCTRL_AREA_SEL_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_AREA_SEL_CREATED)
+                    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_AREA_SEL_CREATING) aDEFINE_LOCAL_EVENT_TYPE(
+                        wxEVT_PLOTCTRL_AREA_SEL_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_AREA_SEL_CREATED)
 
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_VIEW_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(
-        wxEVT_PLOTCTRL_VIEW_CHANGED)
+                        aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_VIEW_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(
+                            wxEVT_PLOTCTRL_VIEW_CHANGED)
 
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_CURSOR_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(
-        wxEVT_PLOTCTRL_CURSOR_CHANGED)
+                            aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_CURSOR_CHANGING) aDEFINE_LOCAL_EVENT_TYPE(
+                                wxEVT_PLOTCTRL_CURSOR_CHANGED)
 
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_ERROR)
+                                aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_ERROR)
 
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_BEGIN_TITLE_EDIT) aDEFINE_LOCAL_EVENT_TYPE(
-        wxEVT_PLOTCTRL_END_TITLE_EDIT)
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_BEGIN_X_LABEL_EDIT)
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_END_X_LABEL_EDIT)
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_BEGIN_Y_LABEL_EDIT)
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_END_Y_LABEL_EDIT)
+                                    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_BEGIN_TITLE_EDIT) aDEFINE_LOCAL_EVENT_TYPE(
+                                        wxEVT_PLOTCTRL_END_TITLE_EDIT)
+                                        aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_BEGIN_X_LABEL_EDIT)
+                                            aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_END_X_LABEL_EDIT)
+                                                aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_BEGIN_Y_LABEL_EDIT)
+                                                    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_END_Y_LABEL_EDIT)
 
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGING)
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGED)
+                                                        aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGING)
+                                                            aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGED)
 
-    // wxPlotCtrlSelEvent
-    // DEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CREATING)
-    // DEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CREATED)
-    // DEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CHANGING)
-    aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CHANGED)
+        // wxPlotCtrlSelEvent
+        // DEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CREATING)
+        // DEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CREATED)
+        // DEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CHANGING)
+        aDEFINE_LOCAL_EVENT_TYPE(wxEVT_PLOTCTRL_RANGE_SEL_CHANGED)
 
-        return wxT("Unknown Event Type");
+            return wxT("Unknown Event Type");
 }
 
 //-----------------------------------------------------------------------------
@@ -465,8 +465,7 @@ bool wxPlotCtrl::Create(wxWindow* parent, wxWindowID win_id, const wxPoint& pos,
     _xAxis = new wxPlotCtrlAxis(wxPLOTCTRL_X_AXIS, this, ID_PLOTCTRL_X_AXIS);
     _yAxis = new wxPlotCtrlAxis(wxPLOTCTRL_Y_AXIS, this, ID_PLOTCTRL_Y_AXIS);
     _area = new wxPlotCtrlArea(this, ID_PLOTCTRL_AREA);
-    _xAxisScrollbar = new wxScrollBar(this, ID_PLOTCTRL_X_SCROLLBAR, wxDefaultPosition, wxDefaultSize,
-                                       wxSB_HORIZONTAL);
+    _xAxisScrollbar = new wxScrollBar(this, ID_PLOTCTRL_X_SCROLLBAR, wxDefaultPosition, wxDefaultSize, wxSB_HORIZONTAL);
     _yAxisScrollbar = new wxScrollBar(this, ID_PLOTCTRL_Y_SCROLLBAR, wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
 
     _area->SetCursor(wxCURSOR_CROSS);
@@ -583,8 +582,7 @@ void wxPlotCtrl::ShowTextCtrl(wxPlotCtrlTextCtrl_Type type, bool send_event) {
             }
 
             _textCtrl = new wxTextCtrl(this, wxEVT_PLOTCTRL_END_TITLE_EDIT, GetPlotTitle(), wxPoint(_areaRect.x, 0),
-                                        wxSize(_areaRect.width, _titleRect.height + 2 * _border),
-                                        wxTE_PROCESS_ENTER);
+                                       wxSize(_areaRect.width, _titleRect.height + 2 * _border), wxTE_PROCESS_ENTER);
 
             _textCtrl->SetFont(GetPlotTitleFont());
             _textCtrl->SetForegroundColour(GetPlotTitleColour());
@@ -605,9 +603,9 @@ void wxPlotCtrl::ShowTextCtrl(wxPlotCtrlTextCtrl_Type type, bool send_event) {
                 if (!DoSendEvent(pevent)) return;
             }
 
-            _textCtrl = new wxTextCtrl(
-                this, wxEVT_PLOTCTRL_END_X_LABEL_EDIT, GetXAxisLabel(), wxPoint(_areaRect.x, _xAxisRect.GetBottom()),
-                wxSize(_areaRect.width, _xLabelRect.height + 2 * _border), wxTE_PROCESS_ENTER);
+            _textCtrl = new wxTextCtrl(this, wxEVT_PLOTCTRL_END_X_LABEL_EDIT, GetXAxisLabel(),
+                                       wxPoint(_areaRect.x, _xAxisRect.GetBottom()),
+                                       wxSize(_areaRect.width, _xLabelRect.height + 2 * _border), wxTE_PROCESS_ENTER);
 
             _textCtrl->SetFont(GetAxisLabelFont());
             _textCtrl->SetForegroundColour(GetAxisLabelColour());
@@ -629,10 +627,8 @@ void wxPlotCtrl::ShowTextCtrl(wxPlotCtrlTextCtrl_Type type, bool send_event) {
             }
 
             _textCtrl = new wxTextCtrl(
-                this, wxEVT_PLOTCTRL_END_Y_LABEL_EDIT, GetYAxisLabel(),
-                wxPoint(0, _areaRect.y + _areaRect.height / 2),
-                wxSize(_clientRect.width - _axisFontSize.y / 2, _yLabelRect.width + 2 * _border),
-                wxTE_PROCESS_ENTER);
+                this, wxEVT_PLOTCTRL_END_Y_LABEL_EDIT, GetYAxisLabel(), wxPoint(0, _areaRect.y + _areaRect.height / 2),
+                wxSize(_clientRect.width - _axisFontSize.y / 2, _yLabelRect.width + 2 * _border), wxTE_PROCESS_ENTER);
 
             _textCtrl->SetFont(GetAxisLabelFont());
             _textCtrl->SetForegroundColour(GetAxisLabelColour());
@@ -1137,8 +1133,7 @@ void wxPlotCtrl::ClearMarkers() {
 }
 
 wxPlotMarker wxPlotCtrl::GetMarker(int marker) const {
-    wxCHECK_MSG((marker >= 0) && (marker < (int)_plotMarkers.GetCount()), wxPlotMarker(),
-                wxT("Invalid marker number"));
+    wxCHECK_MSG((marker >= 0) && (marker < (int)_plotMarkers.GetCount()), wxPlotMarker(), wxT("Invalid marker number"));
     return _plotMarkers[marker];
 }
 
@@ -1510,8 +1505,7 @@ bool wxPlotCtrl::DoSelectDataRange(int curve_index, const wxRangeInt& range, boo
     if (_selection_type == wxPLOTCTRL_SELECT_NONE) return false;
 
     wxPlotData* plotData = GetDataCurve(curve_index);
-    wxCHECK_MSG(plotData && (range._min >= 0) && (range._max < (int)plotData->GetCount()), false,
-                wxT("invalid index"));
+    wxCHECK_MSG(plotData && (range._min >= 0) && (range._max < (int)plotData->GetCount()), false, wxT("invalid index"));
 
     // check the selection type and clear previous selections if necessary
     if (select) UpdateSelectionState(curve_index, send_event);
@@ -1801,8 +1795,7 @@ void wxPlotCtrl::SetDefaultBoundingRect(const wxRect2DDouble& rect, bool send_ev
     wxCHECK_RET((rect._width > 0) && (rect._height > 0), wxT("Plot Size < 0"));
     _defaultPlotRect = rect;
     CalcBoundingPlotRect();
-    SetZoom(_areaClientRect.width / rect._width, _areaClientRect.height / rect._height, rect._x, rect._y,
-            send_event);
+    SetZoom(_areaClientRect.width / rect._width, _areaClientRect.height / rect._height, rect._x, rect._y, send_event);
 }
 
 void wxPlotCtrl::AddHistoryView() {
@@ -1958,11 +1951,10 @@ void wxPlotCtrl::DoSize(const wxRect& boundingRect, bool set_window_sizes) {
 
     _yAxisRect = wxRect(yLabelRect.GetRight(), titleRect.GetBottom(), yaxis_width, area_height + 2 * area_border);
 
-    _xAxisRect = wxRect(_yAxisRect.GetRight(), _yAxisRect.GetBottom() - area_border + 1,
-                         area_width + 2 * area_border, xaxis_height);
+    _xAxisRect = wxRect(_yAxisRect.GetRight(), _yAxisRect.GetBottom() - area_border + 1, area_width + 2 * area_border,
+                        xaxis_height);
 
-    _areaRect = wxRect(_yAxisRect.GetRight() + area_border, _yAxisRect.GetTop() + area_border, area_width,
-                        area_height);
+    _areaRect = wxRect(_yAxisRect.GetRight() + area_border, _yAxisRect.GetTop() + area_border, area_width, area_height);
 
     // scrollbar to right and bottom
     if (set_window_sizes) {
@@ -2023,8 +2015,7 @@ void wxPlotCtrl::CalcBoundingPlotRect() {
         if (IsFinite(rect._x, wxT("left curve boundary is NaN")) &&
             IsFinite(rect._y, wxT("bottom curve boundary is NaN")) &&
             IsFinite(rect.GetRight(), wxT("right curve boundary is NaN")) &&
-            IsFinite(rect.GetBottom(), wxT("top curve boundary is NaN")) && (rect._width >= 0) &&
-            (rect._height >= 0)) {
+            IsFinite(rect.GetBottom(), wxT("top curve boundary is NaN")) && (rect._width >= 0) && (rect._height >= 0)) {
             valid_rect = true;
         } else
             rect = wxNullPlotBounds;
@@ -2505,7 +2496,7 @@ void wxPlotCtrl::DrawWholePlot(wxDC* dc, const wxRect& boundingRect, double dpi)
 
     // reload the original zoom and view rect in case it was changed by any of the font changes
     _zoom = wxPoint2DDouble(old_zoom._x * double(_areaClientRect.width) / old_areaClientRect.width,
-                             old_zoom._y * double(_areaClientRect.height) / old_areaClientRect.height);
+                            old_zoom._y * double(_areaClientRect.height) / old_areaClientRect.height);
 
     // wxPrintf(wxT("DPI %g, font %g pen%g\n"), dpi, fontScale, penScale);
     // PRINT_WXRECT(wxT("Whole plot"), boundingRect);
@@ -3580,8 +3571,7 @@ bool wxPlotCtrl::FindCurve(const wxPoint2DDouble& pt, const wxPoint2DDouble& dpt
             // check if curve has BoundingRect
             wxRect2DDouble rect = plotData->GetBoundingRect();
             if (((rect._width > 0) && ((pt._x + dpt._x < rect.GetLeft()) || (pt._x - dpt._x > rect.GetRight()))) ||
-                ((rect._height > 0) &&
-                 ((pt._y + dpt._y < rect.GetTop()) || (pt._y - dpt._y > rect.GetBottom())))) {
+                ((rect._height > 0) && ((pt._y + dpt._y < rect.GetTop()) || (pt._y - dpt._y > rect.GetBottom())))) {
                 if ((n == _active_index) && (n > 0)) n = -1;  // start back at 0
                 continue;
             }
@@ -3600,8 +3590,7 @@ bool wxPlotCtrl::FindCurve(const wxPoint2DDouble& pt, const wxPoint2DDouble& dpt
         } else  // not a data curve, just find y at this x pos
         {
             wxRect2DDouble rect = plotCurve->GetBoundingRect();
-            if ((rect._width <= 0) ||
-                ((pt._x + dpt._x >= rect.GetLeft()) && (pt._x - dpt._x <= rect.GetRight()))) {
+            if ((rect._width <= 0) || ((pt._x + dpt._x >= rect.GetLeft()) && (pt._x - dpt._x <= rect.GetRight()))) {
                 if ((rect._height <= 0) || ((pt._y >= rect.GetTop()) && (pt._y - dpt._y <= rect.GetBottom()))) {
                     double y = plotCurve->GetY(pt._x);
                     if (fabs(y - pt._y) <= dpt._y) {

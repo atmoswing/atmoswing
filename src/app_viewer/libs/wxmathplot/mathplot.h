@@ -157,7 +157,7 @@ class WXDLLIMPEXP_MATHPLOT mpLayer : public wxObject {
   public:
     mpLayer();
 
-    virtual ~mpLayer(){};
+    virtual ~mpLayer() {};
 
     /** Check whether this layer has a bounding box.
         The default implementation returns \a TRUE. Override and return
@@ -453,7 +453,7 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLayer : public mpLayer {
     wxRect _dim;         //!< The bounding rectangle of the box. It may be resized dynamically by the Plot method.
     wxPoint _reference;  //!< Holds the reference point for movements
     wxBrush _brush;      //!< The brush to be used for the background
-    int _winX, _winY;   //!< Holds the mpWindow size. Used to rescale position when window is resized.
+    int _winX, _winY;    //!< Holds the mpWindow size. Used to rescale position when window is resized.
 
     DECLARE_DYNAMIC_CLASS(mpInfoLayer)
 };
@@ -797,7 +797,7 @@ class WXDLLIMPEXP_MATHPLOT mpScaleX : public mpLayer {
     int _flags;               //!< Flag for axis alignment
     bool _ticks;              //!< Flag to toggle between ticks or grid
     unsigned int _labelType;  //!< Select labels mode: mpX_NORMAL for normal labels, mpX_TIME for time axis in hours,
-                               //!< minutes, seconds
+                              //!< minutes, seconds
     wxString _labelFormat;    //!< Format string used to print labels
 
     DECLARE_DYNAMIC_CLASS(mpScaleX)
@@ -1428,7 +1428,7 @@ class WXDLLIMPEXP_MATHPLOT mpWindow : public wxWindow {
 
     int _marginTop, _marginRight, _marginBottom, _marginLeft;
 
-    int _last_lx, _last_ly;      //!< For double buffering
+    int _last_lx, _last_ly;       //!< For double buffering
     wxMemoryDC _buff_dc;          //!< For double buffering
     wxBitmap* _buff_bmp;          //!< For double buffering
     bool _enableDoubleBuffer;     //!< For double buffering
@@ -1585,7 +1585,7 @@ class WXDLLIMPEXP_MATHPLOT mpPrintout : public wxPrintout {
   public:
     mpPrintout(mpWindow* drawWindow, const wxChar* title = _T("wxMathPlot print output"));
 
-    virtual ~mpPrintout(){};
+    virtual ~mpPrintout() {};
 
     void SetDrawState(bool drawState) {
         drawn = drawState;
@@ -1622,7 +1622,7 @@ class WXDLLIMPEXP_MATHPLOT mpMovableObject : public mpLayer {
         _type = mpLAYER_PLOT;
     }
 
-    virtual ~mpMovableObject(){};
+    virtual ~mpMovableObject() {};
 
     /** Get the current coordinate transformation.
      */
@@ -1842,7 +1842,7 @@ class WXDLLIMPEXP_MATHPLOT mpBitmapLayer : public mpLayer {
         _type = mpLAYER_BITMAP;
     }
 
-    virtual ~mpBitmapLayer(){};
+    virtual ~mpBitmapLayer() {};
 
     /** Returns a copy of the current bitmap assigned to the layer.
      */

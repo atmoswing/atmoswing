@@ -168,9 +168,10 @@ BEGIN_DECLARE_EVENT_TYPES()
 DECLARE_EXPORTED_EVENT_TYPE(WXDLLIMPEXP_THINGS, wxEVT_MENUBUTTON_OPEN, 0)
 END_DECLARE_EVENT_TYPES()
 
-#define EVT_MENUBUTTON_OPEN(id, fn)          \
-    DECLARE_EVENT_TABLE_ENTRY(               \
-        wxEVT_MENUBUTTON_OPEN, id, wxID_ANY, \
-        (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)(wxNotifyEventFunction)&fn, (wxObject*)NULL),
+#define EVT_MENUBUTTON_OPEN(id, fn)                                                                   \
+    DECLARE_EVENT_TABLE_ENTRY(                                                                        \
+        wxEVT_MENUBUTTON_OPEN, id, wxID_ANY,                                                          \
+        (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)(wxNotifyEventFunction) & fn, \
+        (wxObject*)NULL),
 
 #endif  // _WX_MENUBTN_H_

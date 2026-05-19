@@ -30,13 +30,13 @@ list(APPEND inc_dirs
         "${CMAKE_SOURCE_DIR}/src/shared_base/core/"
         "${CMAKE_SOURCE_DIR}/src/shared_processing/core/"
         "${PROJECT_SOURCE_DIR}/core/"
-        )
+)
 if (USE_GUI)
     list(APPEND inc_dirs
             "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
             "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
             "${PROJECT_SOURCE_DIR}/gui/"
-            )
+    )
 endif (USE_GUI)
 include_directories(${inc_dirs})
 

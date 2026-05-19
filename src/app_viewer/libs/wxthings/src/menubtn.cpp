@@ -277,8 +277,7 @@ void wxMenuButton::DoSetSize(int x, int y, int width, int height, int sizeFlags)
     wxWindow::DoSetSize(x, y, width, height, sizeFlags);
 
     if (_labelButton) _labelButton->SetSize(0, 0, width - wxMENUBUTTON_DROP_WIDTH, height);
-    if (_dropdownButton)
-        _dropdownButton->SetSize(width - wxMENUBUTTON_DROP_WIDTH, 0, wxMENUBUTTON_DROP_WIDTH, height);
+    if (_dropdownButton) _dropdownButton->SetSize(width - wxMENUBUTTON_DROP_WIDTH, 0, wxMENUBUTTON_DROP_WIDTH, height);
 }
 
 wxSize wxMenuButton::DoGetBestSize() {

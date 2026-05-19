@@ -185,8 +185,8 @@ unsigned char wxGenericColour::GetAlpha() const {
 bool wxGenericColour::IsSameAs(const wxGenericColour& c) const {
     wxCHECK_MSG(Ok() && c.Ok(), false, wxT("Invalid generic colour"));
     wxGenericColourRefData* cData = (wxGenericColourRefData*)c.GetRefData();
-    return (M_GCOLOURDATA->_r == cData->_r) && (M_GCOLOURDATA->_g == cData->_g) &&
-           (M_GCOLOURDATA->_b == cData->_b) && (M_GCOLOURDATA->_a == cData->_a);
+    return (M_GCOLOURDATA->_r == cData->_r) && (M_GCOLOURDATA->_g == cData->_g) && (M_GCOLOURDATA->_b == cData->_b) &&
+           (M_GCOLOURDATA->_a == cData->_a);
 }
 
 bool wxGenericColour::IsSameAs(const wxColour& c) const {
@@ -220,7 +220,6 @@ wxGenericColour wxGenericColour::GetHotColdColour(double v) const {
 
     return c;
 }
-
 
 //----------------------------------------------------------------------------
 // wxGenericPen
@@ -458,7 +457,6 @@ bool wxGenericPen::IsSameAs(const wxPen& pen) const {
     gp.GetGenericColour().SetAlpha(M_GPENDATA->_colour.GetAlpha());
     return IsSameAs(gp);
 }
-
 
 //----------------------------------------------------------------------------
 // wxGenericBrush

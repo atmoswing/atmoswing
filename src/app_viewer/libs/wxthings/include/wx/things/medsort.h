@@ -170,7 +170,7 @@
     elem_type name(elem_type* arr, int n, elem_type& median) WIRTHS_MEDIAN(elem_type, arr, n, median)
 
 #define IMPLEMENT_WIRTHS_MEDIAN(elem_type, arr, n, median) \
-    IMPLEMENT_WIRTHS_KTH_SMALLEST(elem_type, arr, n, (((n)&1) ? ((n) / 2) : (((n) / 2) - 1)), median)
+    IMPLEMENT_WIRTHS_KTH_SMALLEST(elem_type, arr, n, (((n) & 1) ? ((n) / 2) : (((n) / 2) - 1)), median)
 
 #define DECLARE_WIRTHS_KTH_SMALLEST(name, elem_type) elem_type name(elem_type* arr, int n, elem_type& median);
 

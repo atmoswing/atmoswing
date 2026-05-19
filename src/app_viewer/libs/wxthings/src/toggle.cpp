@@ -496,23 +496,23 @@ void wxCustomButton::CalcLayout(bool refresh) {
     } else if ((_button_style & wxCUSTBUT_LEFT) != 0) {
         int mid_margin = wxMax(_labelMargin.x, _bitmapMargin.x);
         _labelPos = wxPoint((w - (bw + lw + _labelMargin.x + _bitmapMargin.x + mid_margin)) / 2 + _labelMargin.x,
-                             (h - lh) / 2);
+                            (h - lh) / 2);
         _bitmapPos = wxPoint(_labelPos.x + lw + mid_margin, (h - bh) / 2);
     } else if ((_button_style & wxCUSTBUT_RIGHT) != 0) {
         int mid_margin = wxMax(_labelMargin.x, _bitmapMargin.x);
         _bitmapPos = wxPoint((w - (bw + lw + _labelMargin.x + _bitmapMargin.x + mid_margin)) / 2 + _bitmapMargin.x,
-                              (h - bh) / 2);
+                             (h - bh) / 2);
         _labelPos = wxPoint(_bitmapPos.x + bw + mid_margin, (h - lh) / 2);
     } else if ((_button_style & wxCUSTBUT_TOP) != 0) {
         int mid_margin = wxMax(_labelMargin.y, _bitmapMargin.y);
         _labelPos = wxPoint((w - lw) / 2,
-                             (h - (bh + lh + _labelMargin.y + _bitmapMargin.y + mid_margin)) / 2 + _labelMargin.y);
+                            (h - (bh + lh + _labelMargin.y + _bitmapMargin.y + mid_margin)) / 2 + _labelMargin.y);
         _bitmapPos = wxPoint((w - bw) / 2, _labelPos.y + lh + mid_margin);
     } else  // if ((_button_style & wxCUSTBUT_BOTTOM) != 0)  DEFAULT
     {
         int mid_margin = wxMax(_labelMargin.y, _bitmapMargin.y);
         _bitmapPos = wxPoint((w - bw) / 2,
-                              (h - (bh + lh + _labelMargin.y + _bitmapMargin.y + mid_margin)) / 2 + _bitmapMargin.y);
+                             (h - (bh + lh + _labelMargin.y + _bitmapMargin.y + mid_margin)) / 2 + _bitmapMargin.y);
         _labelPos = wxPoint((w - lw) / 2, _bitmapPos.y + bh + mid_margin);
     }
 
