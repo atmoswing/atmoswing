@@ -33,7 +33,6 @@
 #include "asPredictand.h"
 
 class asPredictor;
-class asPredictor;
 class asParameters;
 class asCriteria;
 

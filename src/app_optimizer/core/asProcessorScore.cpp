@@ -29,7 +29,6 @@
 #include "asProcessorScore.h"
 
 #include "asParametersCalibration.h"
-#include "asPostprocessor.h"
 #include "asResultsScores.h"
 #include "asResultsScoresMap.h"
 #include "asResultsTotalScore.h"
