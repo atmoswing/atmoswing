@@ -148,32 +148,7 @@ using std::runtime_error;
 #include "asGlobVarsOptimizer.h"
 #endif
 
+// Custom wxEvent declarations live in their own header.
+#include "asEvents.h"
+
 #endif  // AS_INC_H
-
-//---------------------------------
-// Event definition.
-//---------------------------------
-
-wxDECLARE_EVENT(asEVT_STATUS_STARTING, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_RUNNING, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_FAILED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_SUCCESS, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_DOWNLOADING, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_DOWNLOADED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_LOADING, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_LOADED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_SAVING, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_SAVED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_PROCESSING, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_PROCESSED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_FORECAST_CLEAR, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_FORECAST_NEW_ADDED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_FORECAST_SELECTION_CHANGED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_FORECAST_SELECT_FIRST, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_STATION_SELECTION_CHANGED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_ANALOG_DATE_SELECTION_CHANGED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_OPEN_WORKSPACE, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_OPEN_BATCHFORECASTS, wxCommandEvent);

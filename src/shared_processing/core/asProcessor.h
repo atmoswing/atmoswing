@@ -47,37 +47,37 @@ class asPredictand;
 
 struct CudaCallbackParams;
 
-class asProcessor : public wxObject {
-  public:
-    static bool GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
-                                asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayArchiveSelection,
-                                asTimeArray& timeArrayTargetData, asTimeArray& timeArrayTargetSelection,
-                                vector<asCriteria*> criteria, asParameters* params, int step, asResultsDates& results,
-                                bool& containsNaNs);
+// Was previously `class asProcessor : public wxObject` with all-static methods and no instance
+// state. Converted to a namespace — the call-site syntax `asProcessor::Foo(...)` works identically
+// for both. Verified: no derivations, no instantiations.
+// Internal helpers (CheckArchiveTimeArray, CheckTargetTimeArray) live in an anonymous
+// namespace inside asProcessor.cpp rather than being declared here.
+namespace asProcessor {
 
-    static bool GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
-                                   asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayTargetData,
-                                   asResultsDates& anaDates, vector<asCriteria*> criteria, asParameters* params,
-                                   int step, asResultsDates& results, bool& containsNaNs);
+bool GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
+                     asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayArchiveSelection,
+                     asTimeArray& timeArrayTargetData, asTimeArray& timeArrayTargetSelection,
+                     vector<asCriteria*> criteria, asParameters* params, int step, asResultsDates& results,
+                     bool& containsNaNs);
 
-    static bool GetAnalogsValues(asPredictand& predictand, asResultsDates& anaDates, asParameters* params,
-                                 asResultsValues& results);
+bool GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
+                        asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayTargetData,
+                        asResultsDates& anaDates, vector<asCriteria*> criteria, asParameters* params,
+                        int step, asResultsDates& results, bool& containsNaNs);
 
-    static void InsertInArrays(bool isAsc, int analogsNb, float analogDate, float score, int counter,
+bool GetAnalogsValues(asPredictand& predictand, asResultsDates& anaDates, asParameters* params,
+                      asResultsValues& results);
+
+void InsertInArrays(bool isAsc, int analogsNb, float analogDate, float score, int counter,
+                    a1f& scoreArrayOneDay, a1f& dateArrayOneDay);
+
+void InsertInArraysNoDuplicate(bool isAsc, int analogsNb, float analogDate, float score,
                                a1f& scoreArrayOneDay, a1f& dateArrayOneDay);
 
-    static void InsertInArraysNoDuplicate(bool isAsc, int analogsNb, float analogDate, float score,
-                                          a1f& scoreArrayOneDay, a1f& dateArrayOneDay);
+int FindNextDate(asTimeArray& dateArray, a1d& timeData, int iTimeStart, int iDate);
 
-    static int FindNextDate(asTimeArray& dateArray, a1d& timeData, int iTimeStart, int iDate);
+int FindNextDate(a1d& dateArray, a1d& timeData, int iTimeStart, int iDate);
 
-    static int FindNextDate(a1d& dateArray, a1d& timeData, int iTimeStart, int iDate);
-
-  protected:
-  private:
-    static bool CheckArchiveTimeArray(const vector<asPredictor*>& predictorsArchive, const a1d& timeArchiveData);
-
-    static bool CheckTargetTimeArray(const vector<asPredictor*>& predictorsTarget, const a1d& timeTargetData);
-};
+}  // namespace asProcessor
 
 #endif

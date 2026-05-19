@@ -49,6 +49,41 @@
 #include "asProcessorCuda.cuh"
 #endif
 
+// File-local helpers (formerly private static methods of class asProcessor).
+namespace {
+
+bool CheckTargetTimeArray(const vector<asPredictor*>& predictorsTarget, const a1d& timeTargetData) {
+    wxASSERT(predictorsTarget[0]);
+    wxASSERT(timeTargetData.size() == predictorsTarget[0]->GetData().size());
+    if ((size_t)timeTargetData.size() != predictorsTarget[0]->GetData().size()) {
+        wxLogError(_("The size of the time array and the target data are not equal (%d != %d)."),
+                   (int)timeTargetData.size(), (int)predictorsTarget[0]->GetData().size());
+        wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(timeTargetData[0], ISOdateTime),
+                   asTime::GetStringTime(timeTargetData[timeTargetData.size() - 1], ISOdateTime));
+        return false;
+    }
+
+    return true;
+}
+
+bool CheckArchiveTimeArray(const vector<asPredictor*>& predictorsArchive, const a1d& timeArchiveData) {
+    wxASSERT(timeArchiveData.size() > 0);
+    wxASSERT(!predictorsArchive.empty());
+    wxASSERT(!predictorsArchive[0]->GetData().empty());
+    wxASSERT(timeArchiveData.size() == predictorsArchive[0]->GetData().size());
+    if ((size_t)timeArchiveData.size() != predictorsArchive[0]->GetData().size()) {
+        wxLogError(_("The size of the time array and the archive data are not equal (%d != %d)."),
+                   (int)timeArchiveData.size(), (int)predictorsArchive[0]->GetData().size());
+        wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(timeArchiveData[0], ISOdateTime),
+                   asTime::GetStringTime(timeArchiveData[timeArchiveData.size() - 1], ISOdateTime));
+        return false;
+    }
+
+    return true;
+}
+
+}  // namespace
+
 bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
                                   asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayArchiveSelection,
                                   asTimeArray& timeArrayTargetData, asTimeArray& timeArrayTargetSelection,
@@ -626,36 +661,6 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
 
     // Display the time the function took
     wxLogVerbose(_("The function asProcessor::GetAnalogsDates took %.3f s to execute"), float(sw.Time()) / 1000.0f);
-
-    return true;
-}
-
-bool asProcessor::CheckTargetTimeArray(const vector<asPredictor*>& predictorsTarget, const a1d& timeTargetData) {
-    wxASSERT(predictorsTarget[0]);
-    wxASSERT(timeTargetData.size() == predictorsTarget[0]->GetData().size());
-    if ((size_t)timeTargetData.size() != predictorsTarget[0]->GetData().size()) {
-        wxLogError(_("The size of the time array and the target data are not equal (%d != %d)."),
-                   (int)timeTargetData.size(), (int)predictorsTarget[0]->GetData().size());
-        wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(timeTargetData[0], ISOdateTime),
-                   asTime::GetStringTime(timeTargetData[timeTargetData.size() - 1], ISOdateTime));
-        return false;
-    }
-
-    return true;
-}
-
-bool asProcessor::CheckArchiveTimeArray(const vector<asPredictor*>& predictorsArchive, const a1d& timeArchiveData) {
-    wxASSERT(timeArchiveData.size() > 0);
-    wxASSERT(!predictorsArchive.empty());
-    wxASSERT(!predictorsArchive[0]->GetData().empty());
-    wxASSERT(timeArchiveData.size() == predictorsArchive[0]->GetData().size());
-    if ((size_t)timeArchiveData.size() != predictorsArchive[0]->GetData().size()) {
-        wxLogError(_("The size of the time array and the archive data are not equal (%d != %d)."),
-                   (int)timeArchiveData.size(), (int)predictorsArchive[0]->GetData().size());
-        wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(timeArchiveData[0], ISOdateTime),
-                   asTime::GetStringTime(timeArchiveData[timeArchiveData.size() - 1], ISOdateTime));
-        return false;
-    }
 
     return true;
 }
