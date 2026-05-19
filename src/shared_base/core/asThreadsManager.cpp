@@ -155,7 +155,8 @@ bool asThreadsManager::AddThread(asThread* thread) {
         CleanArray();
     }
 
-    // Create
+    // Create. Failure here means the thread was never spawned — direct `delete` is safe
+    // (no race with thread teardown; the thread is not yet in `_threads`).
     if (thread->Create() != wxTHREAD_NO_ERROR) {
         wxLogError(_("Cannot create the thread !"));
         delete thread;
@@ -180,9 +181,21 @@ bool asThreadsManager::AddThread(asThread* thread) {
     wxASSERT(thread->GetId() >= 1);
     _critSectionManager.Leave();
 
-    // Run
+    // Run. If Run() fails after the thread was inserted into `_threads`, we need to clear
+    // the dangling pointer under the critical section *before* deleting it — otherwise
+    // SetNull/GetRunningThreadsNb/etc. could observe a freed pointer.
+    // asThread is detached (wxTHREAD_DETACHED); for the Run-failed case the OS-level thread
+    // typically did not start, so direct `delete` of the wxThread object is the cleanup.
     if (thread->Run() != wxTHREAD_NO_ERROR) {
         wxLogError(_("Can't run the thread!"));
+        _critSectionManager.Enter();
+        for (auto& t : _threads) {
+            if (t == thread) {
+                t = nullptr;
+                break;
+            }
+        }
+        _critSectionManager.Leave();
         delete thread;
         return false;
     }

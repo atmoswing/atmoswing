@@ -240,7 +240,10 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
                 totDataSize += timeArchData.size() * ptsNb;
             }
 
-            // Alloc space for predictor data
+            // Alloc space for predictor data. Pairings (verified):
+            //   hData/currentDates: malloc / free
+            //   indicesArch/hRes:   cudaMallocHost / cudaFreeHost
+            //   dData/dIdxArch/dRes: cudaMalloc / cudaFree
             float *hData, *dData = nullptr;
             hData = static_cast<float*>(malloc(totDataSize * sizeof(float)));
             checkCudaErrors(cudaMalloc((void**)&dData, totDataSize * sizeof(float)));
@@ -921,7 +924,10 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vec
                 totDataSize += timeArchData.size() * ptsNb;
             }
 
-            // Alloc space for predictor data
+            // Alloc space for predictor data. Pairings (verified):
+            //   hData/currentDates: malloc / free
+            //   indicesArch/hRes:   cudaMallocHost / cudaFreeHost
+            //   dData/dIdxArch/dRes: cudaMalloc / cudaFree
             float *hData, *dData = nullptr;
             hData = static_cast<float*>(malloc(totDataSize * sizeof(float)));
             checkCudaErrors(cudaMalloc((void**)&dData, totDataSize * sizeof(float)));
