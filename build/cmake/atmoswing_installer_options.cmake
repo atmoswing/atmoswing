@@ -1,4 +1,6 @@
 
+include(GNUInstallDirs)  # defines CMAKE_INSTALL_{DATADIR,BINDIR,...} for relocatable installs
+
 install(FILES ${CMAKE_SOURCE_DIR}/license.txt ${CMAKE_SOURCE_DIR}/notice.txt DESTINATION share/atmoswing)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/ DESTINATION share/atmoswing)
 install(DIRECTORY ${CMAKE_BINARY_DIR}/share DESTINATION .)
@@ -110,18 +112,21 @@ if (WIN32)
 endif (WIN32)
 
 if (UNIX AND NOT APPLE)
-    install(FILES art/logo/atmoswing.png DESTINATION /usr/share/icons)
+    # Use GNUInstallDirs-derived paths so staged / sandbox / non-standard CMAKE_INSTALL_PREFIX
+    # builds (e.g. DEB packaging) place files under the right prefix instead of the hard-coded
+    # /usr/share. CMAKE_INSTALL_DATADIR defaults to "share" → final paths are <prefix>/share/...
+    install(FILES art/logo/atmoswing.png DESTINATION ${CMAKE_INSTALL_DATADIR}/icons)
     if (BUILD_FORECASTER)
-        install(FILES build/cpack/linux/atmoswing-forecaster.desktop DESTINATION /usr/share/applications)
+        install(FILES build/cpack/linux/atmoswing-forecaster.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     endif (BUILD_FORECASTER)
     if (BUILD_VIEWER)
-        install(FILES build/cpack/linux/atmoswing-viewer.desktop DESTINATION /usr/share/applications)
+        install(FILES build/cpack/linux/atmoswing-viewer.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     endif (BUILD_VIEWER)
     if (BUILD_OPTIMIZER)
-        install(FILES build/cpack/linux/atmoswing-optimizer.desktop DESTINATION /usr/share/applications)
+        install(FILES build/cpack/linux/atmoswing-optimizer.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     endif (BUILD_OPTIMIZER)
     if (BUILD_DOWNSCALER)
-        install(FILES build/cpack/linux/atmoswing-downscaler.desktop DESTINATION /usr/share/applications)
+        install(FILES build/cpack/linux/atmoswing-downscaler.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     endif (BUILD_DOWNSCALER)
     set(CPACK_GENERATOR "DEB")
     set(CPACK_DEBIAN_PACKAGE_NAME "AtmoSwing")

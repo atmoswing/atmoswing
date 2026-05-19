@@ -30,6 +30,20 @@ if (WIN32)
                 COMMENT "Staging runtime DLLs next to ${targetName}"
                 VERBATIM)
     endfunction()
+elseif (APPLE)
+    # macOS: set rpath so the executable finds dylibs that vcpkg / FetchContent install
+    # under the install prefix's lib/ directory. Defaults match a typical "<prefix>/bin/<exe>
+    # → <prefix>/lib/<libfoo.dylib>" layout. Untested in CI — macOS isn't in the active matrix
+    # but the option is enabled here so any future macOS build picks it up automatically.
+    function(atmoswing_stage_runtime_dlls targetName)
+        if (NOT TARGET ${targetName})
+            return()
+        endif ()
+        set_target_properties(${targetName} PROPERTIES
+                MACOSX_RPATH ON
+                BUILD_WITH_INSTALL_RPATH ON
+                INSTALL_RPATH "@executable_path/../lib")
+    endfunction()
 else ()
     function(atmoswing_stage_runtime_dlls targetName)
     endfunction()
