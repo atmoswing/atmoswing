@@ -342,8 +342,8 @@ a1f asResultsForecastAggregator::GetFullTargetDates() const {
     for (const auto& forecastGroup : _forecasts) {
         for (auto forecast : forecastGroup) {
             a1f fcastDates = forecast->GetTargetDates();
-            firstDate = wxMin(fcastDates[0], firstDate);
-            lastDate = wxMax(fcastDates[fcastDates.size() - 1], lastDate);
+            firstDate = std::min(fcastDates[0], firstDate);
+            lastDate = std::max(fcastDates[fcastDates.size() - 1], lastDate);
         }
     }
 
@@ -487,10 +487,10 @@ vf asResultsForecastAggregator::GetMaxExtent() const {
             vecLonMax = forecast->GetPredictorLonMax();
             vecLatMin = forecast->GetPredictorLatMin();
             vecLatMax = forecast->GetPredictorLatMax();
-            extent[0] = wxMin(extent[0], *std::min_element(vecLonMin.begin(), vecLonMin.end()));
-            extent[1] = wxMax(extent[1], *std::max_element(vecLonMax.begin(), vecLonMax.end()));
-            extent[2] = wxMin(extent[2], *std::min_element(vecLatMin.begin(), vecLatMin.end()));
-            extent[3] = wxMax(extent[3], *std::max_element(vecLatMax.begin(), vecLatMax.end()));
+            extent[0] = std::min(extent[0], *std::min_element(vecLonMin.begin(), vecLonMin.end()));
+            extent[1] = std::max(extent[1], *std::max_element(vecLonMax.begin(), vecLonMax.end()));
+            extent[2] = std::min(extent[2], *std::min_element(vecLatMin.begin(), vecLatMin.end()));
+            extent[3] = std::max(extent[3], *std::max_element(vecLatMax.begin(), vecLatMax.end()));
         }
     }
 
@@ -510,7 +510,7 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f& dates, int methodRow, i
 
     double timeStep = 1;
     for (auto forecast : _forecasts[methodRow]) {
-        timeStep = wxMin(timeStep, forecast->GetForecastTimeStepHours() / 24.0);
+        timeStep = std::min(timeStep, forecast->GetForecastTimeStepHours() / 24.0);
     }
 
     a1f datesForecast = dates;
@@ -627,7 +627,7 @@ a1f asResultsForecastAggregator::GetOverallMaxValues(a1f& dates, int returnPerio
             for (int iDate = 0; iDate < dates.size(); ++iDate) {
                 float maxVal = 0;
                 for (int i = 0; i < subDailySteps; ++i) {
-                    maxVal = wxMax(maxVal, values(iDate * subDailySteps + i));
+                    maxVal = std::max(maxVal, values(iDate * subDailySteps + i));
                 }
                 allMax(iDate, iMethod) = maxVal;
             }
@@ -750,7 +750,7 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
                 wxASSERT(analogValues.size() == analogCriteria.size());
 
                 auto nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
-                for (int k = 0; k < wxMin(10, analogValues.size()); k++) {
+                for (int k = 0; k < std::min(10, (int)analogValues.size()); k++) {
                     auto nodeAnalog = new wxXmlNode(wxXML_ELEMENT_NODE, "analog");
                     nodeAnalog->AddChild(
                         fileExport.CreateNode("date", asTime::GetStringTime(analogDates[k], "DD.MM.YYYY HH")));
@@ -769,7 +769,7 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
                 a1f analogValues = forecast->GetAnalogsValuesRaw(j, i);
 
                 auto nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
-                for (int k = 0; k < wxMin(10, quantiles.size()); k++) {
+                for (int k = 0; k < std::min(10, (int)quantiles.size()); k++) {
                     float pcVal = asGetValueForQuantile(analogValues, quantiles[k] / 100);
                     nodeTargetDate->AddChild(fileExport.CreateNode("quantile", asStrF("%.1f", pcVal)));
                 }

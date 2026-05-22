@@ -35,7 +35,7 @@ asFrameGridAnalogsValues::asFrameGridAnalogsValues(wxWindow* parent, int methodR
     : asFrameGridAnalogsValuesVirtual(parent),
       _forecastManager(forecastManager),
       _selectedMethod(methodRow),
-      _selectedForecast(wxMax(forecastRow, 0)),
+      _selectedForecast(std::max(forecastRow, 0)),
       _selectedStation(0),
       _selectedDate(0),
       _sortAfterCol(0),

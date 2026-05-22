@@ -854,7 +854,7 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const {
             if (!aggregate) {
                 for (int iRow = rowstart; iRow <= rowend; iRow++) {
                     if (!isnan(_dataRaw(iRow, iStat))) {
-                        annualmax = wxMax(_dataRaw(iRow, iStat), annualmax);
+                        annualmax = std::max(_dataRaw(iRow, iStat), annualmax);
                     } else {
                         nansNb++;
                     }
@@ -864,9 +864,9 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const {
                 }
             } else {
                 // Correction for both extremes
-                rowstart = wxMax(rowstart - indexTimeSpanDown, 0);
+                rowstart = std::max(rowstart - indexTimeSpanDown, 0);
                 rowstart += indexTimeSpanDown;
-                rowend = wxMin(rowend + indexTimeSpanUp, (int)_dataRaw.rows() - 1);
+                rowend = std::min(rowend + indexTimeSpanUp, (int)_dataRaw.rows() - 1);
                 rowend -= indexTimeSpanUp;
 
                 // Loop within the new limits
@@ -882,7 +882,7 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const {
                     }
 
                     if (!isnan(timeStepSum)) {
-                        annualmax = wxMax(timeStepSum, annualmax);
+                        annualmax = std::max(timeStepSum, annualmax);
                     } else {
                         nansNb++;
                     }

@@ -698,12 +698,12 @@ bool asParametersCalibration::FixTimeLimits() {
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    minHour = wxMin(GetPreprocessHoursLowerLimit(i, j, k), minHour);
-                    maxHour = wxMax(GetPreprocessHoursUpperLimit(i, j, k), maxHour);
+                    minHour = std::min(GetPreprocessHoursLowerLimit(i, j, k), minHour);
+                    maxHour = std::max(GetPreprocessHoursUpperLimit(i, j, k), maxHour);
                 }
             } else {
-                minHour = wxMin(GetPredictorHoursLowerLimit(i, j), minHour);
-                maxHour = wxMax(GetPredictorHoursUpperLimit(i, j), maxHour);
+                minHour = std::min(GetPredictorHoursLowerLimit(i, j), minHour);
+                maxHour = std::max(GetPredictorHoursUpperLimit(i, j), maxHour);
             }
         }
     }

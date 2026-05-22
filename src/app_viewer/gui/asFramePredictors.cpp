@@ -85,7 +85,7 @@ asFramePredictors::asFramePredictors(wxWindow* parent, asForecastManager* foreca
       _displayPanelRight(true) {
     this->SetLabel(_("Predictors overview"));
 
-    _selectedForecast = wxMax(_selectedForecast, 0);
+    _selectedForecast = std::max(_selectedForecast, 0);
 
     // Toolbar
     _toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::MAP_ZOOM_IN), wxNullBitmap,
@@ -190,7 +190,7 @@ void asFramePredictors::Init() {
 void asFramePredictors::UpdateMethodsList() {
     wxArrayString methods = _forecastManager->GetMethodNamesWxArray();
     _choiceMethod->Set(methods);
-    _selectedMethod = wxMin(_selectedMethod, int(methods.Count()) - 1);
+    _selectedMethod = std::min(_selectedMethod, int(methods.Count()) - 1);
     _choiceMethod->Select(_selectedMethod);
     UpdateForecastList();
 }
@@ -198,7 +198,7 @@ void asFramePredictors::UpdateMethodsList() {
 void asFramePredictors::UpdateForecastList() {
     wxArrayString forecasts = _forecastManager->GetForecastNamesWxArray(_selectedMethod);
     _choiceForecast->Set(forecasts);
-    _selectedForecast = wxMin(_selectedForecast, int(forecasts.Count()) - 1);
+    _selectedForecast = std::min(_selectedForecast, int(forecasts.Count()) - 1);
     _choiceForecast->Select(_selectedForecast);
     _selectedPredictor = 0;
     UpdatePredictorsProperties();
@@ -247,7 +247,7 @@ void asFramePredictors::UpdatePredictorsProperties() {
 void asFramePredictors::UpdateTargetDatesList() {
     wxArrayString dates = _forecastManager->GetTargetDatesWxArray(_selectedMethod, _selectedForecast);
     _choiceTargetDates->Set(dates);
-    _selectedTargetDate = wxMin(_selectedTargetDate, int(dates.Count()) - 1);
+    _selectedTargetDate = std::min(_selectedTargetDate, int(dates.Count()) - 1);
     _choiceTargetDates->Select(_selectedTargetDate);
     UpdateAnalogDatesList();
 }
@@ -264,7 +264,7 @@ void asFramePredictors::UpdateAnalogDatesList() {
         arrayAnalogDates.Add(label);
     }
     _choiceAnalogDates->Set(arrayAnalogDates);
-    _selectedAnalogDate = wxMin(_selectedAnalogDate, int(arrayAnalogDates.Count()) - 1);
+    _selectedAnalogDate = std::min(_selectedAnalogDate, int(arrayAnalogDates.Count()) - 1);
     _choiceAnalogDates->Select(_selectedAnalogDate);
 }
 

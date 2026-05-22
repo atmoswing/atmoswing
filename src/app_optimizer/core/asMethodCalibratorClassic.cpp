@@ -245,16 +245,16 @@ asMethodCalibrator::ParamExploration asMethodCalibratorClassic::GetSpatialBounda
     explo.yPtsNbEnd = params.GetPredictorYptsnbUpperLimit(iStep, 0);
 
     for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-        explo.xMinStart = wxMax(explo.xMinStart, params.GetPredictorXminLowerLimit(iStep, iPtor));
-        explo.xMinEnd = wxMin(explo.xMinEnd, params.GetPredictorXminUpperLimit(iStep, iPtor));
-        explo.xPtsNbIter = wxMin(explo.xPtsNbIter, params.GetPredictorXptsnbIteration(iStep, iPtor));
-        explo.xPtsNbStart = wxMax(explo.xPtsNbStart, params.GetPredictorXptsnbLowerLimit(iStep, iPtor));
-        explo.xPtsNbEnd = wxMin(explo.xPtsNbEnd, params.GetPredictorXptsnbUpperLimit(iStep, iPtor));
-        explo.yMinStart = wxMax(explo.yMinStart, params.GetPredictorYminLowerLimit(iStep, iPtor));
-        explo.yMinEnd = wxMin(explo.yMinEnd, params.GetPredictorYminUpperLimit(iStep, iPtor));
-        explo.yPtsNbIter = wxMin(explo.yPtsNbIter, params.GetPredictorYptsnbIteration(iStep, iPtor));
-        explo.yPtsNbStart = wxMax(explo.yPtsNbStart, params.GetPredictorYptsnbLowerLimit(iStep, iPtor));
-        explo.yPtsNbEnd = wxMax(explo.yPtsNbEnd, params.GetPredictorYptsnbUpperLimit(iStep, iPtor));
+        explo.xMinStart = std::max(explo.xMinStart, params.GetPredictorXminLowerLimit(iStep, iPtor));
+        explo.xMinEnd = std::min(explo.xMinEnd, params.GetPredictorXminUpperLimit(iStep, iPtor));
+        explo.xPtsNbIter = std::min(explo.xPtsNbIter, params.GetPredictorXptsnbIteration(iStep, iPtor));
+        explo.xPtsNbStart = std::max(explo.xPtsNbStart, params.GetPredictorXptsnbLowerLimit(iStep, iPtor));
+        explo.xPtsNbEnd = std::min(explo.xPtsNbEnd, params.GetPredictorXptsnbUpperLimit(iStep, iPtor));
+        explo.yMinStart = std::max(explo.yMinStart, params.GetPredictorYminLowerLimit(iStep, iPtor));
+        explo.yMinEnd = std::min(explo.yMinEnd, params.GetPredictorYminUpperLimit(iStep, iPtor));
+        explo.yPtsNbIter = std::min(explo.yPtsNbIter, params.GetPredictorYptsnbIteration(iStep, iPtor));
+        explo.yPtsNbStart = std::max(explo.yPtsNbStart, params.GetPredictorYptsnbLowerLimit(iStep, iPtor));
+        explo.yPtsNbEnd = std::max(explo.yPtsNbEnd, params.GetPredictorYptsnbUpperLimit(iStep, iPtor));
     }
 
     if ((explo.xMinStart != explo.xMinEnd) && explo.xPtsNbIter == 0) explo.xPtsNbIter = 1;
@@ -765,8 +765,8 @@ void asMethodCalibratorClassic::MoveEast(asParametersCalibration& params,
                                          int iPtor, int multipleFactor) const {
     double xtmp = params.GetPredictorXmin(iStep, iPtor);
     int ix = asFind(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
-    ix = wxMin(ix + multipleFactor * explo.xPtsNbIter, (int)xAxis.size() - 1);
-    xtmp = wxMax(wxMin(xAxis[ix], explo.xMinEnd), explo.xMinStart);
+    ix = std::min(ix + multipleFactor * explo.xPtsNbIter, (int)xAxis.size() - 1);
+    xtmp = std::max(std::min(xAxis[ix], explo.xMinEnd), explo.xMinStart);
     params.SetPredictorXmin(iStep, iPtor, xtmp);
 }
 
@@ -775,8 +775,8 @@ void asMethodCalibratorClassic::MoveSouth(asParametersCalibration& params,
                                           int iStep, int iPtor, int multipleFactor) const {
     double ytmp = params.GetPredictorYmin(iStep, iPtor);
     int iy = asFind(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
-    iy = wxMax(iy - multipleFactor * explo.yPtsNbIter, 0);
-    ytmp = wxMax(wxMin(yAxis[iy], explo.yMinEnd), explo.yMinStart);
+    iy = std::max(iy - multipleFactor * explo.yPtsNbIter, 0);
+    ytmp = std::max(std::min(yAxis[iy], explo.yMinEnd), explo.yMinStart);
     params.SetPredictorYmin(iStep, iPtor, ytmp);
 }
 
@@ -785,8 +785,8 @@ void asMethodCalibratorClassic::MoveWest(asParametersCalibration& params,
                                          int iPtor, int multipleFactor) const {
     double xtmp = params.GetPredictorXmin(iStep, iPtor);
     int ix = asFind(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
-    ix = wxMax(ix - multipleFactor * explo.xPtsNbIter, 0);
-    xtmp = wxMax(wxMin(xAxis[ix], explo.xMinEnd), explo.xMinStart);
+    ix = std::max(ix - multipleFactor * explo.xPtsNbIter, 0);
+    xtmp = std::max(std::min(xAxis[ix], explo.xMinEnd), explo.xMinStart);
     params.SetPredictorXmin(iStep, iPtor, xtmp);
 }
 
@@ -795,8 +795,8 @@ void asMethodCalibratorClassic::MoveNorth(asParametersCalibration& params,
                                           int iStep, int iPtor, int multipleFactor) const {
     double ytmp = params.GetPredictorYmin(iStep, iPtor);
     int iy = asFind(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
-    iy = wxMin(iy + multipleFactor * explo.yPtsNbIter, (int)yAxis.size() - 2);
-    ytmp = wxMax(wxMin(yAxis[iy], explo.yMinEnd), explo.yMinStart);
+    iy = std::min(iy + multipleFactor * explo.yPtsNbIter, (int)yAxis.size() - 2);
+    ytmp = std::max(std::min(yAxis[iy], explo.yMinEnd), explo.yMinStart);
     params.SetPredictorYmin(iStep, iPtor, ytmp);
 }
 
@@ -804,7 +804,7 @@ void asMethodCalibratorClassic::WidenEast(asParametersCalibration& params,
                                           const asMethodCalibrator::ParamExploration& explo, int iStep, int iPtor,
                                           int multipleFactor) const {
     int xptsnbtmp = params.GetPredictorXptsnb(iStep, iPtor) + multipleFactor * explo.xPtsNbIter;
-    xptsnbtmp = wxMax(wxMin(xptsnbtmp, explo.xPtsNbEnd), explo.xPtsNbStart);
+    xptsnbtmp = std::max(std::min(xptsnbtmp, explo.xPtsNbEnd), explo.xPtsNbStart);
     params.SetPredictorXptsnb(iStep, iPtor, xptsnbtmp);
 }
 
@@ -812,7 +812,7 @@ void asMethodCalibratorClassic::WidenNorth(asParametersCalibration& params,
                                            const asMethodCalibrator::ParamExploration& explo, int iStep, int iPtor,
                                            int multipleFactor) const {
     int yptsnbtmp = params.GetPredictorYptsnb(iStep, iPtor) + multipleFactor * explo.yPtsNbIter;
-    yptsnbtmp = wxMax(wxMin(yptsnbtmp, explo.yPtsNbEnd), explo.yPtsNbStart);
+    yptsnbtmp = std::max(std::min(yptsnbtmp, explo.yPtsNbEnd), explo.yPtsNbStart);
     params.SetPredictorYptsnb(iStep, iPtor, yptsnbtmp);
 }
 
@@ -820,7 +820,7 @@ void asMethodCalibratorClassic::ReduceEast(asParametersCalibration& params,
                                            const asMethodCalibrator::ParamExploration& explo, int iStep, int iPtor,
                                            int multipleFactor) const {
     int xptsnbtmp = params.GetPredictorXptsnb(iStep, iPtor) - multipleFactor * explo.xPtsNbIter;
-    xptsnbtmp = wxMax(wxMin(xptsnbtmp, explo.xPtsNbEnd), explo.xPtsNbStart);
+    xptsnbtmp = std::max(std::min(xptsnbtmp, explo.xPtsNbEnd), explo.xPtsNbStart);
     params.SetPredictorXptsnb(iStep, iPtor, xptsnbtmp);
 }
 
@@ -828,7 +828,7 @@ void asMethodCalibratorClassic::ReduceNorth(asParametersCalibration& params,
                                             const asMethodCalibrator::ParamExploration& explo, int iStep, int iPtor,
                                             int multipleFactor) const {
     int yptsnbtmp = params.GetPredictorYptsnb(iStep, iPtor) - multipleFactor * explo.yPtsNbIter;
-    yptsnbtmp = wxMax(wxMin(yptsnbtmp, explo.yPtsNbEnd), explo.yPtsNbStart);
+    yptsnbtmp = std::max(std::min(yptsnbtmp, explo.yPtsNbEnd), explo.yPtsNbStart);
     params.SetPredictorYptsnb(iStep, iPtor, yptsnbtmp);
 }
 

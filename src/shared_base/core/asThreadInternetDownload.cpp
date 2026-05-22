@@ -43,7 +43,7 @@ asThreadInternetDownload::asThreadInternetDownload(const vwxs& urls, const vwxs&
       _proxyUser(proxyUser),
       _proxyPasswd(proxyPasswd),
       _start(start),
-      _end(wxMin(end, (int)fileNames.size() - 1)) {
+      _end(std::min(end, (int)fileNames.size() - 1)) {
     wxASSERT(_end < urls.size());
     wxASSERT(_end < fileNames.size());
 }

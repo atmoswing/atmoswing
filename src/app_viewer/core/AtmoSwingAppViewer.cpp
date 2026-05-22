@@ -67,7 +67,7 @@ bool AtmoSwingAppViewer::OnInit() {
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
-    g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
+    g_ppiScaleDc = std::max(double(ppiDC.x) / 96.0, 1.0);
 
     // Set application name and create user directory
     wxString appName = "AtmoSwing Viewer";

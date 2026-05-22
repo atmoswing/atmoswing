@@ -45,7 +45,7 @@ asFramePlotDistributions::asFramePlotDistributions(wxWindow* parent, int methodR
       _xmaxPredictands(0) {
     SetLabel(_("Distribution plots"));
 
-    forecastRow = wxMax(forecastRow, 0);
+    forecastRow = std::max(forecastRow, 0);
 
     _panelPlotPredictands = new asPanelPlot(_panelPredictandsRight);
     _panelPlotPredictands->GetPlotCtrl()->HideScrollBars();
@@ -625,7 +625,7 @@ void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb) {
 
     // Extract best analogs
     a1f analogsAll = forecast->GetAnalogsValuesRaw(_selectedDate, _selectedStation);
-    int nbPoints = wxMin((int)analogsAll.size(), analogsNb);
+    int nbPoints = std::min((int)analogsAll.size(), analogsNb);
     a1f analogs = analogsAll.head(nbPoints);
     a1f ranks = a1f::LinSpaced(nbPoints, 0, nbPoints - 1);
     asSortArrays(&analogs[0], &analogs[analogs.size() - 1], &ranks[0], &ranks[ranks.size() - 1], Asc);
@@ -679,7 +679,7 @@ void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb) {
 
     // Extract best analogs
     a1f analogsAll = forecast->GetAnalogsValuesRaw(_selectedDate, _selectedStation);
-    int nbPoints = wxMin((int)analogsAll.size(), analogsNb);
+    int nbPoints = std::min((int)analogsAll.size(), analogsNb);
     a1f analogs = analogsAll.head(nbPoints);
     asSortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
 

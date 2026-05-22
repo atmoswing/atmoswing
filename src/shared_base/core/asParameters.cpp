@@ -807,15 +807,15 @@ bool asParameters::FixTimeLimits() {
                 double minHourPredictor = 1000.0, maxHourPredictor = -1000.0;
 
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    minHour = wxMin(_steps[i].predictors[j].preprocessHours[k], minHour);
-                    maxHour = wxMax(_steps[i].predictors[j].preprocessHours[k], maxHour);
-                    minHourPredictor = wxMin(_steps[i].predictors[j].preprocessHours[k], minHourPredictor);
-                    maxHourPredictor = wxMax(_steps[i].predictors[j].preprocessHours[k], maxHourPredictor);
+                    minHour = std::min(_steps[i].predictors[j].preprocessHours[k], minHour);
+                    maxHour = std::max(_steps[i].predictors[j].preprocessHours[k], maxHour);
+                    minHourPredictor = std::min(_steps[i].predictors[j].preprocessHours[k], minHourPredictor);
+                    maxHourPredictor = std::max(_steps[i].predictors[j].preprocessHours[k], maxHourPredictor);
                     _steps[i].predictors[j].hour = minHourPredictor;
                 }
             } else {
-                minHour = wxMin(_steps[i].predictors[j].hour, minHour);
-                maxHour = wxMax(_steps[i].predictors[j].hour, maxHour);
+                minHour = std::min(_steps[i].predictors[j].hour, minHour);
+                maxHour = std::max(_steps[i].predictors[j].hour, maxHour);
             }
         }
     }
@@ -1635,5 +1635,5 @@ void asParameters::SetPredictorCriteria(int iStep, int iPtor, const wxString& va
 
 void asParameters::SetPredictorWeight(int iStep, int iPtor, float val) {
     wxASSERT(!isnan(val));
-    _steps[iStep].predictors[iPtor].weight = wxMax(val, 0);
+    _steps[iStep].predictors[iPtor].weight = std::max(val, 0.0f);
 }

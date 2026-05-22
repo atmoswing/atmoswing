@@ -121,7 +121,7 @@ void asForecastRenderer::SetForecast(int methodRow, int forecastRow) {
 void asForecastRenderer::AdaptLeadTimeIndex() {
     if (_methodSelection < 0) return;
 
-    int forecast = wxMax(_forecastSelection, 0);
+    int forecast = std::max(_forecastSelection, 0);
     float timeStep = _forecastManager->GetForecast(_methodSelection, forecast)->GetForecastTimeStepHours();
 
     if (_leadTimeIndex == -1) {
@@ -140,7 +140,7 @@ float asForecastRenderer::GetSelectedTargetDate() {
         return 0;
     }
 
-    a1f targetDates = _forecastManager->GetTargetDates(wxMax(_methodSelection, 0), wxMax(_forecastSelection, 0));
+    a1f targetDates = _forecastManager->GetTargetDates(std::max(_methodSelection, 0), std::max(_forecastSelection, 0));
 
     if (_leadTimeIndex >= targetDates.size()) {
         return 0;
@@ -150,7 +150,7 @@ float asForecastRenderer::GetSelectedTargetDate() {
 
 void asForecastRenderer::SetLeadTimeDate(float date) {
     if (date > 0 && (_methodSelection > 0)) {
-        a1f targetDates = _forecastManager->GetTargetDates(_methodSelection, wxMax(_forecastSelection, 0));
+        a1f targetDates = _forecastManager->GetTargetDates(_methodSelection, std::max(_forecastSelection, 0));
 
         int index = asFindClosest(&targetDates[0], &targetDates[targetDates.size() - 1], date);
         if (index >= 0) {

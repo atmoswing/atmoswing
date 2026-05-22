@@ -1346,8 +1346,8 @@ bool asProcessor::GetAnalogsValues(asPredictand& predictand, asResultsDates& ana
 
     // Get start and end dates
     double timeStart, timeEnd;
-    timeStart = wxMax(predictandTime[0], params->GetArchiveStart());
-    timeEnd = wxMin(predictandTime[predictandTimeLength - 1], params->GetArchiveEnd());
+    timeStart = std::max(predictandTime[0], params->GetArchiveStart());
+    timeEnd = std::min(predictandTime[predictandTimeLength - 1], params->GetArchiveEnd());
 
     // Check if data are effectively available for this period
     int indexPredictandTimeStart = asFindCeil(&predictandTime[0], &predictandTime[predictandTimeLength - 1], timeStart);
@@ -1380,8 +1380,8 @@ bool asProcessor::GetAnalogsValues(asPredictand& predictand, asResultsDates& ana
     }
 
     // Get start and end indices for the analogs dates
-    double timeStartTarg = wxMax(timeStart, (double)timeTargetSelection[0]);
-    double timeEndTarg = wxMin(timeEnd, (double)timeTargetSelection[timeTargetSelectionLength - 1]);
+    double timeStartTarg = std::max(timeStart, (double)timeTargetSelection[0]);
+    double timeEndTarg = std::min(timeEnd, (double)timeTargetSelection[timeTargetSelectionLength - 1]);
     int indexTargDatesStart = asFindCeil(&timeTargetSelection[0], &timeTargetSelection[timeTargetSelectionLength - 1],
                                          timeStartTarg);
     int indexTargDatesEnd = asFindFloor(&timeTargetSelection[0], &timeTargetSelection[timeTargetSelectionLength - 1],

@@ -193,7 +193,7 @@ bool AtmoSwingAppOptimizer::OnInit() {
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
-    g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
+    g_ppiScaleDc = std::max(double(ppiDC.x) / 96.0, 1.0);
 
     _singleInstanceChecker = nullptr;
 

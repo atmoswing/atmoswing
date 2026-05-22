@@ -71,8 +71,8 @@ asLeadTimeSwitcher::~asLeadTimeSwitcher() {
 }
 
 void asLeadTimeSwitcher::SetForecastSelection(int iMethod, int iForecast) {
-    int i = wxMax(iMethod, 0);
-    int j = wxMax(iForecast, 0);
+    int i = std::max(iMethod, 0);
+    int j = std::max(iForecast, 0);
 
     if (_forecastManager->GetMethodsNb() < i) return;
     if (_forecastManager->GetForecastsNb(i) < j) return;

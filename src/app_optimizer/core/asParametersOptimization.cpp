@@ -850,14 +850,14 @@ void asParametersOptimization::InitRandomValues() {
 void asParametersOptimization::CheckRange() {
     // Check that the actual parameters values are within ranges
     if (!_timeArrayAnalogsIntervalDaysLocks) {
-        _analogsIntervalDays = wxMax(wxMin(_analogsIntervalDays, _timeArrayAnalogsIntervalDaysUpperLimit),
+        _analogsIntervalDays = std::max(std::min(_analogsIntervalDays, _timeArrayAnalogsIntervalDaysUpperLimit),
                                      _timeArrayAnalogsIntervalDaysLowerLimit);
     }
     wxASSERT(_analogsIntervalDays > 0);
 
     for (int i = 0; i < GetStepsNb(); i++) {
         if (!_stepsLocks[i].analogsNumber) {
-            SetAnalogsNumber(i, wxMax(wxMin(GetAnalogsNumber(i), _stepsUpperLimit[i].analogsNumber),
+            SetAnalogsNumber(i, std::max(std::min(GetAnalogsNumber(i), _stepsUpperLimit[i].analogsNumber),
                                       _stepsLowerLimit[i].analogsNumber));
         }
 
@@ -872,7 +872,7 @@ void asParametersOptimization::CheckRange() {
                 for (int k = 0; k < preprocessSize; k++) {
                     if (!_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         SetPreprocessHour(i, j, k,
-                                          wxMax(wxMin(GetPreprocessHour(i, j, k),
+                                          std::max(std::min(GetPreprocessHour(i, j, k),
                                                       _stepsUpperLimit[i].predictors[j].preprocessHours[k]),
                                                 _stepsLowerLimit[i].predictors[j].preprocessHours[k]));
                     }
@@ -881,7 +881,7 @@ void asParametersOptimization::CheckRange() {
             } else {
                 if (!_stepsLocks[i].predictors[j].hours) {
                     SetPredictorHour(i, j,
-                                     wxMax(wxMin(GetPredictorHour(i, j), _stepsUpperLimit[i].predictors[j].hour),
+                                     std::max(std::min(GetPredictorHour(i, j), _stepsUpperLimit[i].predictors[j].hour),
                                            _stepsLowerLimit[i].predictors[j].hour));
                 }
             }
@@ -889,28 +889,28 @@ void asParametersOptimization::CheckRange() {
             // Check ranges
             if (!_stepsLocks[i].predictors[j].xMin) {
                 SetPredictorXmin(i, j,
-                                 wxMax(wxMin(GetPredictorXmin(i, j), _stepsUpperLimit[i].predictors[j].xMin),
+                                 std::max(std::min(GetPredictorXmin(i, j), _stepsUpperLimit[i].predictors[j].xMin),
                                        _stepsLowerLimit[i].predictors[j].xMin));
             }
             if (!_stepsLocks[i].predictors[j].xPtsNb) {
                 SetPredictorXptsnb(i, j,
-                                   wxMax(wxMin(GetPredictorXptsnb(i, j), _stepsUpperLimit[i].predictors[j].xPtsNb),
+                                   std::max(std::min(GetPredictorXptsnb(i, j), _stepsUpperLimit[i].predictors[j].xPtsNb),
                                          _stepsLowerLimit[i].predictors[j].xPtsNb));
             }
 
             if (!_stepsLocks[i].predictors[j].yMin) {
                 SetPredictorYmin(i, j,
-                                 wxMax(wxMin(GetPredictorYmin(i, j), _stepsUpperLimit[i].predictors[j].yMin),
+                                 std::max(std::min(GetPredictorYmin(i, j), _stepsUpperLimit[i].predictors[j].yMin),
                                        _stepsLowerLimit[i].predictors[j].yMin));
             }
             if (!_stepsLocks[i].predictors[j].yPtsNb) {
                 SetPredictorYptsnb(i, j,
-                                   wxMax(wxMin(GetPredictorYptsnb(i, j), _stepsUpperLimit[i].predictors[j].yPtsNb),
+                                   std::max(std::min(GetPredictorYptsnb(i, j), _stepsUpperLimit[i].predictors[j].yPtsNb),
                                          _stepsLowerLimit[i].predictors[j].yPtsNb));
             }
             if (!_stepsLocks[i].predictors[j].weight) {
                 SetPredictorWeight(i, j,
-                                   wxMax(wxMin(GetPredictorWeight(i, j), _stepsUpperLimit[i].predictors[j].weight),
+                                   std::max(std::min(GetPredictorWeight(i, j), _stepsUpperLimit[i].predictors[j].weight),
                                          _stepsLowerLimit[i].predictors[j].weight));
             }
 
@@ -1035,12 +1035,12 @@ bool asParametersOptimization::FixTimeLimits() {
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    minHour = wxMin(GetPreprocessHoursLowerLimit(i, j, k), minHour);
-                    maxHour = wxMax(GetPreprocessHoursUpperLimit(i, j, k), maxHour);
+                    minHour = std::min(GetPreprocessHoursLowerLimit(i, j, k), minHour);
+                    maxHour = std::max(GetPreprocessHoursUpperLimit(i, j, k), maxHour);
                 }
             } else {
-                minHour = wxMin(GetPredictorHoursLowerLimit(i, j), minHour);
-                maxHour = wxMax(GetPredictorHoursUpperLimit(i, j), maxHour);
+                minHour = std::min(GetPredictorHoursLowerLimit(i, j), minHour);
+                maxHour = std::max(GetPredictorHoursUpperLimit(i, j), maxHour);
             }
         }
     }
@@ -1116,7 +1116,7 @@ bool asParametersOptimization::FixWeights() {
             if (totWeightLocked > 1) {
                 float precision = GetPredictorWeightIteration(i, j);
                 float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                newWeight = wxMax(precision * asRound(newWeight * (1.0 / precision)),
+                newWeight = std::max(precision * asRound(newWeight * (1.0 / precision)),
                                   GetPredictorWeightLowerLimit(i, j));
                 newSum += newWeight;
 
@@ -1125,7 +1125,7 @@ bool asParametersOptimization::FixWeights() {
                 if (!IsPredictorWeightLocked(i, j)) {
                     float precision = GetPredictorWeightIteration(i, j);
                     float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                    newWeight = wxMax(precision * asRound(newWeight * (1.0 / precision)),
+                    newWeight = std::max(precision * asRound(newWeight * (1.0 / precision)),
                                       GetPredictorWeightLowerLimit(i, j));
                     newSum += newWeight;
 
@@ -1135,7 +1135,7 @@ bool asParametersOptimization::FixWeights() {
         }
 
         // Last weight: difference to 0
-        float lastWeight = wxMax(1.0f - newSum - totWeightLocked,
+        float lastWeight = std::max(1.0f - newSum - totWeightLocked,
                                  GetPredictorWeightLowerLimit(i, GetPredictorsNb(i) - 1));
         SetPredictorWeight(i, GetPredictorsNb(i) - 1, lastWeight);
     }

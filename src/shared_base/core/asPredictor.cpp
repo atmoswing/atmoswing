@@ -467,7 +467,7 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
         if (_fStr.timeStep == 0) {
             _fInd.timeStep = 1;
         } else {
-            _fInd.timeStep = wxMax(timeArray.GetTimeStepHours() / _fStr.timeStep, 1);
+            _fInd.timeStep = std::max(timeArray.GetTimeStepHours() / _fStr.timeStep, 1.0);
         }
 
         // Extract data from files
@@ -903,7 +903,7 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf& ncFile) {
 
     ConvertToMjd(_fStr.time, refValue);
 
-    _fStr.timeStep = 24.0 * (_fStr.time[wxMin(1, _fStr.time.size())] - _fStr.time[0]);
+    _fStr.timeStep = 24.0 * (_fStr.time[std::min(1, (int)_fStr.time.size())] - _fStr.time[0]);
     _fStr.firstHour = 24 * fmod(_fStr.time[0], 1);
 
     return true;
@@ -1274,7 +1274,7 @@ bool asPredictor::GetAxesIndexes(asAreaGrid*& dataArea, asTimeArray& timeArray) 
                                                  _fStr.lats[_fStr.lats.size() - 1]));
         wxASSERT_MSG(indexStartLat2 >= 0,
                      asStrF("Looking for %g in %g to %g", latMinEnd, _fStr.lats[0], _fStr.lats[_fStr.lats.size() - 1]));
-        _fInd.area.latStart = wxMin(indexStartLat1, indexStartLat2);
+        _fInd.area.latStart = std::min(indexStartLat1, indexStartLat2);
     } else {
         _fInd.area.lonStart = 0;
         _fInd.area.latStart = 0;
@@ -1803,7 +1803,7 @@ bool asPredictor::ClipToArea(asAreaGrid* desiredArea) {
         return false;
     }
 
-    int yStartIndexReal = wxMin(yStartIndex, yEndIndex);
+    int yStartIndexReal = std::min(yStartIndex, yEndIndex);
     int yLength = std::abs(yEndIndex - yStartIndex) + 1;
 
     // Check if already the correct size

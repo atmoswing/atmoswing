@@ -254,7 +254,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
 
         _batchSizeMax = timeArrayTarget.GetSize();
         _batchStart = 0;
-        _batchEnd = wxMin(_batchStart + _batchSize, _batchSizeMax) - 1;
+        _batchEnd = std::min(_batchStart + _batchSize, _batchSizeMax) - 1;
     }
 
     // Watch
@@ -430,7 +430,7 @@ bool asMethodOptimizerGAs::ManageOneRun() {
                 _epoch++;
                 wxLogMessage(_("Epoch number %d"), _epoch);
             }
-            _batchEnd = wxMin(_batchStart + _batchSize, _batchSizeMax) - 1;
+            _batchEnd = std::min(_batchStart + _batchSize, _batchSizeMax) - 1;
         }
 
         // Check if we should end
@@ -834,7 +834,7 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
                     epochNbStr.ToLong(&epochNb);
 
                     // Overwrite to the last value
-                    _epoch = wxMax(_epoch, int(epochNb));
+                    _epoch = std::max(_epoch, int(epochNb));
                 }
 
                 // Get next line
@@ -2119,7 +2119,7 @@ bool asMethodOptimizerGAs::Mutation() {
             ThreadsManager().CritSectionConfig().Leave();
 
             double probIncrease = (probStart - probEnd) / (double)nbGenMax;
-            double mutationsProbability = probStart + probIncrease * wxMin(_generationNb - 1, nbGenMax);
+            double mutationsProbability = probStart + probIncrease * std::min(_generationNb - 1, nbGenMax);
 
             for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate
@@ -2171,10 +2171,10 @@ bool asMethodOptimizerGAs::Mutation() {
             ThreadsManager().CritSectionConfig().Leave();
 
             double probIncrease = (probStart - probEnd) / (double)nbGenMaxProb;
-            double mutationsProbability = probStart + probIncrease * wxMin(_generationNb - 1, nbGenMaxProb);
+            double mutationsProbability = probStart + probIncrease * std::min(_generationNb - 1, nbGenMaxProb);
 
             double stdDevIncrease = (stdDevStart - stdDevEnd) / (double)nbGenMaxStdDev;
-            double stdDevRatioRange = stdDevStart + stdDevIncrease * wxMin(_generationNb - 1, nbGenMaxStdDev);
+            double stdDevRatioRange = stdDevStart + stdDevIncrease * std::min(_generationNb - 1, nbGenMaxStdDev);
 
             for (int iInd = 0; iInd < _parameters.size(); iInd++) {
                 // Mutate

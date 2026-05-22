@@ -328,7 +328,7 @@ class asPredictor : public wxObject {
     }
 
     int GetMembersNb() {
-        return wxMax(_membersNb, 1);
+        return std::max(_membersNb, 1);
     }
 
     a1d GetLatAxis() const {
@@ -356,7 +356,7 @@ class asPredictor : public wxObject {
     double GetYmin() const {
         wxASSERT(_axisLat.size() > 0);
 
-        return wxMin(_axisLat[_axisLat.size() - 1], _axisLat[0]);
+        return std::min(_axisLat[_axisLat.size() - 1], _axisLat[0]);
     }
 
     double GetXmax() const {
@@ -368,7 +368,7 @@ class asPredictor : public wxObject {
     double GetYmax() const {
         wxASSERT(_axisLat.size() > 0);
 
-        return wxMax(_axisLat[_axisLat.size() - 1], _axisLat[0]);
+        return std::max(_axisLat[_axisLat.size() - 1], _axisLat[0]);
     }
 
     void SetWarnMissingLevels(bool val) {

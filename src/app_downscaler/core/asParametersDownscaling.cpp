@@ -501,12 +501,12 @@ bool asParametersDownscaling::FixTimeLimits() {
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    minHour = wxMin(GetPreprocessHour(i, j, k), minHour);
-                    maxHour = wxMax(GetPreprocessHour(i, j, k), maxHour);
+                    minHour = std::min(GetPreprocessHour(i, j, k), minHour);
+                    maxHour = std::max(GetPreprocessHour(i, j, k), maxHour);
                 }
             } else {
-                minHour = wxMin(GetPredictorHour(i, j), minHour);
-                maxHour = wxMax(GetPredictorHour(i, j), maxHour);
+                minHour = std::min(GetPredictorHour(i, j), minHour);
+                maxHour = std::max(GetPredictorHour(i, j), maxHour);
             }
         }
     }

@@ -190,12 +190,12 @@ asFileDat::FileStructType asFileDat::StringToStructType(const wxString& structTy
 int asFileDat::GetPatternLineMaxCharWidth(const asFileDat::Pattern& pattern) {
     int maxwidth = 0;
 
-    maxwidth = wxMax(maxwidth, pattern.timeYearEnd);
-    maxwidth = wxMax(maxwidth, pattern.timeMonthEnd);
-    maxwidth = wxMax(maxwidth, pattern.timeDayEnd);
-    maxwidth = wxMax(maxwidth, pattern.timeHourEnd);
-    maxwidth = wxMax(maxwidth, pattern.timeMinuteEnd);
-    maxwidth = wxMax(maxwidth, pattern.dataEnd);
+    maxwidth = std::max(maxwidth, pattern.timeYearEnd);
+    maxwidth = std::max(maxwidth, pattern.timeMonthEnd);
+    maxwidth = std::max(maxwidth, pattern.timeDayEnd);
+    maxwidth = std::max(maxwidth, pattern.timeHourEnd);
+    maxwidth = std::max(maxwidth, pattern.timeMinuteEnd);
+    maxwidth = std::max(maxwidth, pattern.dataEnd);
 
     return maxwidth;
 }

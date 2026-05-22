@@ -72,7 +72,7 @@ TEST(Score, ProcessCRPSapproxRectangle) {
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000, (float)0.00001);
+        float precision = std::max(target / 1000, (float)0.00001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -122,7 +122,7 @@ TEST(Score, ProcessCRPSexactPrimitive) {
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 500, (float)0.00002);
+        float precision = std::max(target / 500, (float)0.00002);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -172,7 +172,7 @@ TEST(Score, ProcessCRPSapproxRectangle1983) {
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000, (float)0.00002);
+        float precision = std::max(target / 1000, (float)0.00002);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -222,7 +222,7 @@ TEST(Score, ProcessCRPSexactPrimitive1983) {
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 100, (float)0.00005);
+        float precision = std::max(target / 100, (float)0.00005);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -272,7 +272,7 @@ TEST(Score, ProcessCRPSapproxRectangle30Analogs1983) {
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000, (float)0.00002);
+        float precision = std::max(target / 1000, (float)0.00002);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -322,7 +322,7 @@ TEST(Score, ProcessCRPSexactPrimitive30Analogs1983) {
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 100, (float)0.0001);
+        float precision = std::max(target / 100, (float)0.0001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -373,7 +373,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle) {
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000,
+        float precision = std::max(target / 1000,
                                 (float)0.001);  // The tolerance was increased as the median in not interpolated in the
                                                 // Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
@@ -426,7 +426,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive) {
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 500,
+        float precision = std::max(target / 500,
                                 (float)0.001);  // The tolerance was increased as the median in not interpolated in the
                                                 // Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
@@ -479,7 +479,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle1983) {
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000,
+        float precision = std::max(target / 1000,
                                 (float)0.0002);  // The tolerance was increased as the median in not interpolated in the
                                                  // Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
@@ -532,7 +532,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive1983) {
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 100,
+        float precision = std::max(target / 100,
                                 (float)0.0005);  // The tolerance was increased as the median in not interpolated in the
                                                  // Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
@@ -585,7 +585,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983) {
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000,
+        float precision = std::max(target / 1000,
                                 (float)0.001);  // The tolerance was increased as the median in not interpolated in the
                                                 // Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
@@ -638,7 +638,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983) {
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 100,
+        float precision = std::max(target / 100,
                                 (float)0.001);  // The tolerance was increased as the median in not interpolated in the
                                                 // Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
@@ -691,7 +691,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle) {
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000, (float)0.0003);
+        float precision = std::max(target / 1000, (float)0.0003);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -742,7 +742,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive) {
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 500, (float)0.0003);
+        float precision = std::max(target / 500, (float)0.0003);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -793,7 +793,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle1983) {
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000, (float)0.0001);
+        float precision = std::max(target / 1000, (float)0.0001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -844,7 +844,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive1983) {
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 100, (float)0.00005);
+        float precision = std::max(target / 100, (float)0.00005);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -895,7 +895,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle30Analogs1983) {
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000, (float)0.0005);
+        float precision = std::max(target / 1000, (float)0.0005);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -946,7 +946,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983) {
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 100, (float)0.001);
+        float precision = std::max(target / 100, (float)0.001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header

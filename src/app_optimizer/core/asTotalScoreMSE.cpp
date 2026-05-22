@@ -57,8 +57,8 @@ float asTotalScoreMSE::Assess(const a1f& targetDates, const a1f& scores, const a
             int timeArrayLength = timeArray.GetSize();
 
             // Get first and last common days
-            double firstDay = wxMax((double)targetDates[0], timeArray.GetFirst());
-            double lastDay = wxMin((double)targetDates[targetDatesLength - 1], timeArray.GetLast());
+            double firstDay = std::max((double)targetDates[0], timeArray.GetFirst());
+            double lastDay = std::min((double)targetDates[targetDatesLength - 1], timeArray.GetLast());
             a1d dateTime = timeArray.GetTimeArray();
             int indexStart = asFindClosest(&dateTime(0), &dateTime(timeArrayLength - 1), firstDay);
             int indexEnd = asFindClosest(&dateTime(0), &dateTime(timeArrayLength - 1), lastDay);

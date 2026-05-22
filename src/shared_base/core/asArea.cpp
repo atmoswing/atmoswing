@@ -43,8 +43,8 @@ asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, int flatA
     : _flatAllowed(flatAllowed),
       _isLatLon(isLatLon) {
     if (flatAllowed == asFLAT_ALLOWED) {
-        yWidth = wxMax(yWidth, 0.0);
-        xWidth = wxMax(xWidth, 0.0);
+        yWidth = std::max(yWidth, 0.0);
+        xWidth = std::max(xWidth, 0.0);
     }
 
     _cornerUL = {xMin, yMin + yWidth};
@@ -123,11 +123,11 @@ bool asArea::CheckConsistency() {
 }
 
 double asArea::GetXmin() const {
-    return wxMin(_cornerUL.x, _cornerLL.x);
+    return std::min(_cornerUL.x, _cornerLL.x);
 }
 
 double asArea::GetXmax() const {
-    return wxMax(_cornerUR.x, _cornerLR.x);
+    return std::max(_cornerUR.x, _cornerLR.x);
 }
 
 double asArea::GetXwidth() const {
@@ -135,11 +135,11 @@ double asArea::GetXwidth() const {
 }
 
 double asArea::GetYmin() const {
-    return wxMin(wxMin(_cornerUL.y, _cornerLL.y), wxMin(_cornerUR.y, _cornerLR.y));
+    return std::min(std::min(_cornerUL.y, _cornerLL.y), std::min(_cornerUR.y, _cornerLR.y));
 }
 
 double asArea::GetYmax() const {
-    return wxMax(wxMax(_cornerUL.y, _cornerLL.y), wxMax(_cornerUR.y, _cornerLR.y));
+    return std::max(std::max(_cornerUL.y, _cornerLL.y), std::max(_cornerUR.y, _cornerLR.y));
 }
 
 double asArea::GetYwidth() const {

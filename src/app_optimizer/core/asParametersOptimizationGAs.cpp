@@ -1480,8 +1480,8 @@ void asParametersOptimizationGAs::MutateNormalDistribution(double probability, d
 void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen, int nbGenMax, double minRate,
                                                    bool& hasMutated) {
     double ratioGens = (double)nbGen / (double)nbGenMax;
-    double cstFactor = (1.0 - wxMin(ratioGens, 1.0) * (1.0 - minRate)) *
-                       (1.0 - wxMin(ratioGens, 1.0) * (1.0 - minRate));
+    double cstFactor = (1.0 - std::min(ratioGens, 1.0) * (1.0 - minRate)) *
+                       (1.0 - std::min(ratioGens, 1.0) * (1.0 - minRate));
 
     int counter = 0;
 

@@ -326,14 +326,14 @@ double asMethodCalibrator::GetEffectiveArchiveDataStart(asParameters* params) co
     auto paramsScoring = dynamic_cast<asParametersScoring*>(params);
     wxASSERT(paramsScoring);
 
-    return wxMin(GetTimeStartCalibration(paramsScoring), GetTimeStartArchive(paramsScoring));
+    return std::min(GetTimeStartCalibration(paramsScoring), GetTimeStartArchive(paramsScoring));
 }
 
 double asMethodCalibrator::GetEffectiveArchiveDataEnd(asParameters* params) const {
     auto paramsScoring = dynamic_cast<asParametersScoring*>(params);
     wxASSERT(paramsScoring);
 
-    return wxMax(GetTimeEndCalibration(paramsScoring), GetTimeEndArchive(paramsScoring));
+    return std::max(GetTimeEndCalibration(paramsScoring), GetTimeEndArchive(paramsScoring));
 }
 
 va1f asMethodCalibrator::GetClimatologyData(asParametersScoring* params) {
@@ -343,9 +343,9 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring* params) {
     a1d predictandTime = _predictandDB->GetTime();
     auto predictandTimeDays = float(params->GetPredictandTimeHours() / 24.0);
     double timeStart, timeEnd;
-    timeStart = wxMax(predictandTime[0], params->GetCalibrationStart());
+    timeStart = std::max(predictandTime[0], params->GetCalibrationStart());
     timeStart = floor(timeStart) + predictandTimeDays;
-    timeEnd = wxMin(predictandTime[predictandTime.size() - 1], params->GetCalibrationEnd());
+    timeEnd = std::min(predictandTime[predictandTime.size() - 1], params->GetCalibrationEnd());
     timeEnd = floor(timeEnd) + predictandTimeDays;
 
     if (predictandTime.size() < 1) {
@@ -466,8 +466,8 @@ bool asMethodCalibrator::PreloadDataOnly(asParametersScoring* params) {
     }
 
     // Data date array
-    double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params));
-    double timeEndData = wxMax(GetTimeEndCalibration(params), GetTimeEndArchive(params));
+    double timeStartData = std::min(GetTimeStartCalibration(params), GetTimeStartArchive(params));
+    double timeEndData = std::max(GetTimeEndCalibration(params), GetTimeEndArchive(params));
     wxString timeArrayMode = params->GetTimeArrayAnalogsMode();
     if (timeArrayMode.IsSameAs("days_interval")) {
         timeArrayMode = "simple";
@@ -543,8 +543,8 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates& results, asParametersSc
     }
 
     // Data date array
-    double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params));
-    double timeEndData = wxMax(GetTimeEndCalibration(params), GetTimeEndArchive(params));
+    double timeStartData = std::min(GetTimeStartCalibration(params), GetTimeStartArchive(params));
+    double timeEndData = std::max(GetTimeEndCalibration(params), GetTimeEndArchive(params));
     wxString timeArrayMode = params->GetTimeArrayAnalogsMode();
     if (timeArrayMode.IsSameAs("days_interval")) {
         timeArrayMode = "simple";

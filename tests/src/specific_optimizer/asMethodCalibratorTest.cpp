@@ -671,7 +671,7 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing) {
 
     a1f targetDatesStd = anaDatesStd.GetTargetDates();
     a1f targetDatesPreload = anaDatesPreload.GetTargetDates();
-    int targetDatesSize = (int)wxMax(targetDatesStd.cols(), targetDatesStd.rows());
+    int targetDatesSize = (int)std::max(targetDatesStd.cols(), targetDatesStd.rows());
     for (int i = 0; i < targetDatesSize; i++) {
         EXPECT_EQ(targetDatesStd[i], targetDatesPreload[i]);
     }

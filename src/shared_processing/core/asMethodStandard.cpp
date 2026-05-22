@@ -131,9 +131,9 @@ void asMethodStandard::InitializePreloadedArchiveDataContainers(asParameters* pa
                 vf preloadLevels = params->GetPreloadLevels(iStep, iPtor);
                 vd preloadHours = params->GetPreloadHours(iStep, iPtor);
 
-                long preloadDataIdsSize = wxMax(preloadDataIds.size(), 1);
-                long preloadLevelsSize = wxMax(preloadLevels.size(), 1);
-                long preloadHoursSize = wxMax(preloadHours.size(), 1);
+                long preloadDataIdsSize = std::max<long>(preloadDataIds.size(), 1);
+                long preloadLevelsSize = std::max<long>(preloadLevels.size(), 1);
+                long preloadHoursSize = std::max<long>(preloadHours.size(), 1);
 
                 _preloadedArchivePointerCopy[iStep][iPtor].resize(preloadDataIdsSize);
                 _preloadedArchive[iStep][iPtor].resize(preloadDataIdsSize);
