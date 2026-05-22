@@ -32,7 +32,6 @@
 #include <wx/xml/xml.h>
 
 #include "asFile.h"
-#include "asIncludes.h"
 
 /**
  * @brief XML file class.

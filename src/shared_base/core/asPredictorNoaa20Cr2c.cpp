@@ -26,6 +26,7 @@
  */
 
 #include "asPredictorNoaa20Cr2c.h"
+#include "asIncludes.h"
 
 #include "asAreaGrid.h"
 #include "asTimeArray.h"

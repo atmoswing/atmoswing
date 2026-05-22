@@ -26,6 +26,7 @@
  */
 
 #include "asPredictorEcmwfCera20C.h"
+#include "asIncludes.h"
 
 #include "asAreaGrid.h"
 #include "asTimeArray.h"

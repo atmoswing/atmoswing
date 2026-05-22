@@ -26,6 +26,7 @@
  */
 
 #include "asPredictorNasaMerra2Subset.h"
+#include "asIncludes.h"
 
 #include "asAreaGrid.h"
 #include "asTimeArray.h"

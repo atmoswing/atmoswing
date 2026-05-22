@@ -26,6 +26,7 @@
  */
 
 #include "asFileText.h"
+#include "asIncludes.h"
 
 asFileText::asFileText(const wxString& fileName, const FileMode& fileMode)
     : asFile(fileName, fileMode) {}

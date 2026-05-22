@@ -26,6 +26,7 @@
  */
 
 #include "asFile.h"
+#include "asIncludes.h"
 
 asFile::asFile(const wxString& fileName, const FileMode& fileMode)
     : _fileName(wxFileName(fileName)),

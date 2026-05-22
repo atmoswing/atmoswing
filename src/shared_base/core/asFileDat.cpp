@@ -27,6 +27,7 @@
  */
 
 #include "asFileDat.h"
+#include "asIncludes.h"
 
 #include "asFileXml.h"
 

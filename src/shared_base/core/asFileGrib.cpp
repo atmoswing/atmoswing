@@ -28,6 +28,7 @@
  */
 
 #include "asFileGrib.h"
+#include "asIncludes.h"
 
 #include "eccodes.h"
 

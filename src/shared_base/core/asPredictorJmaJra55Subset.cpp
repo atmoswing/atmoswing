@@ -26,6 +26,7 @@
  */
 
 #include "asPredictorJmaJra55Subset.h"
+#include "asIncludes.h"
 
 #include <wx/dir.h>
 

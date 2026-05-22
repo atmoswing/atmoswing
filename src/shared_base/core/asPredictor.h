@@ -29,9 +29,11 @@
 #ifndef AS_PREDICTOR_H
 #define AS_PREDICTOR_H
 
+#include <wx/filename.h>  // wxFileName::GetPathSeparator()
+
 #include "asFileGrib.h"
 #include "asFileNetcdf.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asTimeArray;
 

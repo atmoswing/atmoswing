@@ -31,6 +31,7 @@
 
 #include <math.h>
 
+#include "asIncludes.h"
 #include "asPredictand.h"
 
 asTimeArray::asTimeArray(double start, double end, double timeStepHours, Mode mode)

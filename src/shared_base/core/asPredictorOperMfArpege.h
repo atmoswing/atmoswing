@@ -28,7 +28,6 @@
 #ifndef AS_PREDICTOR_OPER_MF_ARPEGE_H
 #define AS_PREDICTOR_OPER_MF_ARPEGE_H
 
-#include "asIncludes.h"
 #include "asPredictorOper.h"
 
 class asArea;

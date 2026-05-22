@@ -30,7 +30,6 @@
 #define AS_FILE_DAT_H
 
 #include "asFileText.h"
-#include "asIncludes.h"
 
 /**
  * @brief Data file class.

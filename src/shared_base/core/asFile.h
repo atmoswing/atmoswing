@@ -28,7 +28,9 @@
 #ifndef AS_FILE_H
 #define AS_FILE_H
 
-#include "asIncludes.h"
+#include <wx/filename.h>  // wxFileName member
+
+#include "asHeadersBase.h"
 
 class asFile : public wxObject {
   public:

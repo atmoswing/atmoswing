@@ -29,7 +29,6 @@
 #ifndef AS_PREDICTOR_OPER_H
 #define AS_PREDICTOR_OPER_H
 
-#include "asIncludes.h"
 #include "asPredictor.h"
 
 class asPredictorOper : public asPredictor {

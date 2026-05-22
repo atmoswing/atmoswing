@@ -27,6 +27,7 @@
  */
 
 #include "asFileNetcdf.h"
+#include "asIncludes.h"
 
 asFileNetcdf::asFileNetcdf(const wxString& fileName, const FileMode& fileMode)
     : asFile(fileName, fileMode),

@@ -36,12 +36,13 @@
 // WHAT'S PROVIDED
 //   - wxObject / wxString (for class-base and member types in headers)
 //   - wxASSERT / wxFAIL_MSG (for inline header methods)
+//   - _() translation macro and runtime_error (for inline error handling)
 //   - All project type aliases via asTypeDefs.h (a1f, a2f, vi, vd, vwxs, ...)
 //   - Project enums via asGlobEnums.h (Order, TimeFormat, asSUCCESS, asNOT_FOUND, ...)
 //   - std::vector, std::unique_ptr (for class members)
 //
 // WHAT'S NOT PROVIDED (use full asIncludes.h or include directly if needed)
-//   - wxLog* / wxASSERT (only via #include "asIncludes.h" or <wx/log.h>+<wx/debug.h>)
+//   - wxLog* (only via #include "asIncludes.h" or <wx/log.h>)
 //   - wxFileConfig
 //   - asUtils.h (asFind, asStrF, asRound, ...)
 //   - asLog.h, asTime.h, asThreadsManager.h
@@ -55,11 +56,18 @@
 // =====================================================================================
 
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 #include <wx/debug.h>   // wxASSERT, wxFAIL_MSG (commonly used in inline header methods)
+#include <wx/intl.h>    // _() translation macro (used in inline error messages)
 #include <wx/object.h>  // wxObject base class
 #include <wx/string.h>  // wxString
+
+// Project-wide convenience: the codebase uses the unqualified name `runtime_error` pervasively
+// (matching the using-declaration historically in asIncludes.h). Provided here so headers
+// migrated off the omnibus keep compiling.
+using std::runtime_error;
 
 #include "asGlobEnums.h"
 #include "asTypeDefs.h"

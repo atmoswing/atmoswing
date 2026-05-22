@@ -28,6 +28,8 @@
 
 #include "asTime.h"
 
+#include "asIncludes.h"
+
 void asTime::TimeStructInit(Time& date) {
     date.year = 0;
     date.month = 0;

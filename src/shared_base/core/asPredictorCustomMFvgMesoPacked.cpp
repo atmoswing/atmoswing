@@ -26,6 +26,7 @@
  */
 
 #include "asPredictorCustomMFvgMesoPacked.h"
+#include "asIncludes.h"
 
 #include <wx/dir.h>
 #include <wx/regex.h>
