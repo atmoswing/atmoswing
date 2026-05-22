@@ -27,6 +27,7 @@
  */
 
 #include "asScoreSEEPS.h"
+#include "asIncludes.h"
 
 asScoreSEEPS::asScoreSEEPS()
     : asScore(asScore::SEEPS, _("Stable equitable error in probability space"),

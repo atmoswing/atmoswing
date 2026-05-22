@@ -322,8 +322,8 @@ void asLeadTimeSwitcher::CreatePathRing(wxGraphicsPath& path, const wxPoint& cen
 
     const wxDouble radiusRatio = ((radiusOut - radiusIn) / radiusOut);
     wxPoint2DDouble currentPoint = path.GetCurrentPoint();
-    wxDouble newPointX = currentPoint._x - (currentPoint._x - centerX) * radiusRatio;
-    wxDouble newPointY = currentPoint._y - (currentPoint._y - centerY) * radiusRatio;
+    wxDouble newPointX = currentPoint.m_x - (currentPoint.m_x - centerX) * radiusRatio;
+    wxDouble newPointY = currentPoint.m_y - (currentPoint.m_y - centerY) * radiusRatio;
 
     path.AddLineToPoint(newPointX, newPointY);
 

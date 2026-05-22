@@ -27,6 +27,7 @@
  */
 
 #include "asCriteriaSAD.h"
+#include "asIncludes.h"
 
 asCriteriaSAD::asCriteriaSAD()
     : asCriteria("SAD", _("Sum of Absolute Differences"), Asc) {

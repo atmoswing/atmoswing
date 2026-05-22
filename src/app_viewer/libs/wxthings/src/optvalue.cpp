@@ -38,22 +38,22 @@ class wxOptionValueRefData : public wxObjectRefData {
 
     wxOptionValueRefData(const wxOptionValueRefData& data)
         : wxObjectRefData() {
-        _type = data._type;
-        _optionNames = data._optionNames;
-        _optionValues = data._optionValues;
-        _children = data._children;
+        m_type = data.m_type;
+        m_optionNames = data.m_optionNames;
+        m_optionValues = data.m_optionValues;
+        m_children = data.m_children;
         ;
     }
 
     ~wxOptionValueRefData() {}
 
-    wxString _type;
-    wxArrayString _optionNames;
-    wxArrayString _optionValues;
-    wxArrayOptionValue _children;
+    wxString m_type;
+    wxArrayString m_optionNames;
+    wxArrayString m_optionValues;
+    wxArrayOptionValue m_children;
 };
 
-#define M_OPTVALUDATA ((wxOptionValueRefData*)_refData)
+#define M_OPTVALUDATA ((wxOptionValueRefData*)m_refData)
 
 //----------------------------------------------------------------------------
 // wxOptionValue - a ref counted wxString key, wxString value container
@@ -71,7 +71,7 @@ wxObjectRefData* wxOptionValue::CloneRefData(const wxObjectRefData* data) const 
 
 bool wxOptionValue::Create() {
     UnRef();
-    _refData = new wxOptionValueRefData();
+    m_refData = new wxOptionValueRefData();
     return Ok();
 }
 
@@ -85,7 +85,7 @@ bool wxOptionValue::Create(const wxOptionValue& optValue) {
 
 bool wxOptionValue::Create(const wxString& string) {
     UnRef();
-    _refData = new wxOptionValueRefData();
+    m_refData = new wxOptionValueRefData();
 
     int i, start = 0, length = string.Length();
 
@@ -118,7 +118,7 @@ bool wxOptionValue::Create(const wxString& string) {
         for (i = start; i < length; i++, s++)  // find closing ] for type
         {
             if ((*s == closebracket)) {
-                M_OPTVALUDATA->_type = buff;
+                M_OPTVALUDATA->m_type = buff;
                 s++;
                 start = i + 1;
                 break;
@@ -149,10 +149,10 @@ bool wxOptionValue::Create(const wxString& string) {
                     }
                 }
                 if (j < 0) j = 0;
-                M_OPTVALUDATA->_optionNames.Add(buff.Mid(j));
+                M_OPTVALUDATA->m_optionNames.Add(buff.Mid(j));
                 buff.Remove(j).Trim(true);
             }
-            if (!buff.IsEmpty()) M_OPTVALUDATA->_optionValues.Add(buff);
+            if (!buff.IsEmpty()) M_OPTVALUDATA->m_optionValues.Add(buff);
 
             buff.Clear();
         }
@@ -160,22 +160,22 @@ bool wxOptionValue::Create(const wxString& string) {
     }
 
     buff.Trim(false).Trim(true);
-    if (!buff.IsEmpty()) M_OPTVALUDATA->_optionValues.Add(buff);
+    if (!buff.IsEmpty()) M_OPTVALUDATA->m_optionValues.Add(buff);
 
-    if ((M_OPTVALUDATA->_optionValues.GetCount() != M_OPTVALUDATA->_optionNames.GetCount())) {
+    if ((M_OPTVALUDATA->m_optionValues.GetCount() != M_OPTVALUDATA->m_optionNames.GetCount())) {
         int i;
         wxPrintf(wxT("wxOptionValue::wxOptionValue( const wxString &string BUSTED\n"));
 
-        wxPrintf(wxT("[%s]\n"), M_OPTVALUDATA->_type.c_str());
-        for (i = 0; i < (int)M_OPTVALUDATA->_optionNames.GetCount(); i++)
-            wxPrintf(wxT("{%s}\n"), M_OPTVALUDATA->_optionNames[i].c_str());
-        for (i = 0; i < (int)M_OPTVALUDATA->_optionValues.GetCount(); i++)
-            wxPrintf(wxT("{%s}\n"), M_OPTVALUDATA->_optionValues[i].c_str());
+        wxPrintf(wxT("[%s]\n"), M_OPTVALUDATA->m_type.c_str());
+        for (i = 0; i < (int)M_OPTVALUDATA->m_optionNames.GetCount(); i++)
+            wxPrintf(wxT("{%s}\n"), M_OPTVALUDATA->m_optionNames[i].c_str());
+        for (i = 0; i < (int)M_OPTVALUDATA->m_optionValues.GetCount(); i++)
+            wxPrintf(wxT("{%s}\n"), M_OPTVALUDATA->m_optionValues[i].c_str());
         fflush(stdout);
     }
 
-    return ((M_OPTVALUDATA->_optionValues.GetCount() > 0) &&
-            (M_OPTVALUDATA->_optionValues.GetCount() != M_OPTVALUDATA->_optionNames.GetCount()));
+    return ((M_OPTVALUDATA->m_optionValues.GetCount() > 0) &&
+            (M_OPTVALUDATA->m_optionValues.GetCount() != M_OPTVALUDATA->m_optionNames.GetCount()));
 }
 
 bool wxOptionValue::Copy(const wxOptionValue& optValue) {
@@ -183,13 +183,13 @@ bool wxOptionValue::Copy(const wxOptionValue& optValue) {
 
     if (!Ok()) Create();
 
-    M_OPTVALUDATA->_type = optValue.GetType();
-    M_OPTVALUDATA->_optionNames = optValue.GetOptionNames();
-    M_OPTVALUDATA->_optionValues = optValue.GetOptionValues();
+    M_OPTVALUDATA->m_type = optValue.GetType();
+    M_OPTVALUDATA->m_optionNames = optValue.GetOptionNames();
+    M_OPTVALUDATA->m_optionValues = optValue.GetOptionValues();
     if (optValue.GetChildrenCount())
-        M_OPTVALUDATA->_children = *optValue.GetChildren();
+        M_OPTVALUDATA->m_children = *optValue.GetChildren();
     else
-        M_OPTVALUDATA->_children.Clear();
+        M_OPTVALUDATA->m_children.Clear();
 
     return true;
 }
@@ -206,94 +206,94 @@ void wxOptionValue::Destroy() {
 
 wxString wxOptionValue::GetType() const {
     wxCHECK_MSG(Ok(), wxEmptyString, wxT("Invalid wxOptionValue"));
-    return M_OPTVALUDATA->_type;
+    return M_OPTVALUDATA->m_type;
 }
 
 void wxOptionValue::SetType(const wxString& type) {
     wxCHECK_RET(Ok(), wxT("Invalid wxOptionValue"));
-    M_OPTVALUDATA->_type = type;
+    M_OPTVALUDATA->m_type = type;
 }
 
 //-----------------------------------------------------------------------------
 
 size_t wxOptionValue::GetChildrenCount() const {
     wxCHECK_MSG(Ok(), 0, wxT("Invalid wxOptionValue"));
-    return M_OPTVALUDATA->_children.GetCount();
+    return M_OPTVALUDATA->m_children.GetCount();
 }
 
 wxArrayOptionValue* wxOptionValue::GetChildren() const {
     wxCHECK_MSG(Ok(), NULL, wxT("Invalid wxOptionValue"));
-    return &M_OPTVALUDATA->_children;
+    return &M_OPTVALUDATA->m_children;
 }
 
 bool wxOptionValue::AddChild(const wxOptionValue& child) {
     wxCHECK_MSG(Ok() && child.Ok(), 0, wxT("Invalid wxOptionValue"));
-    M_OPTVALUDATA->_children.Add(child);
+    M_OPTVALUDATA->m_children.Add(child);
     return true;
 }
 
 void wxOptionValue::DeleteChildren() {
     wxCHECK_RET(Ok(), wxT("Invalid wxOptionValue"));
-    M_OPTVALUDATA->_children.Clear();
+    M_OPTVALUDATA->m_children.Clear();
 }
 
 //-----------------------------------------------------------------------------
 
 size_t wxOptionValue::GetOptionCount() const {
     wxCHECK_MSG(Ok(), 0, wxT("Invalid wxOptionValue"));
-    return M_OPTVALUDATA->_optionNames.GetCount();
+    return M_OPTVALUDATA->m_optionNames.GetCount();
 }
 
 wxArrayString wxOptionValue::GetOptionNames() const {
     wxCHECK_MSG(Ok(), wxArrayString(), wxT("Invalid wxOptionValue"));
-    return M_OPTVALUDATA->_optionNames;
+    return M_OPTVALUDATA->m_optionNames;
 }
 
 wxArrayString wxOptionValue::GetOptionValues() const {
     wxCHECK_MSG(Ok(), wxArrayString(), wxT("Invalid wxOptionValue"));
-    return M_OPTVALUDATA->_optionValues;
+    return M_OPTVALUDATA->m_optionValues;
 }
 
 wxString wxOptionValue::GetOptionName(size_t n) const {
-    wxCHECK_MSG(Ok() && (n < M_OPTVALUDATA->_optionNames.GetCount()), wxEmptyString, wxT("Invalid wxOptionValue"));
-    return M_OPTVALUDATA->_optionNames[n];
+    wxCHECK_MSG(Ok() && (n < M_OPTVALUDATA->m_optionNames.GetCount()), wxEmptyString, wxT("Invalid wxOptionValue"));
+    return M_OPTVALUDATA->m_optionNames[n];
 }
 
 wxString wxOptionValue::GetOptionValue(size_t n) const {
-    wxCHECK_MSG(Ok() && (n < M_OPTVALUDATA->_optionValues.GetCount()), wxEmptyString, wxT("Invalid wxOptionValue"));
-    return M_OPTVALUDATA->_optionValues[n];
+    wxCHECK_MSG(Ok() && (n < M_OPTVALUDATA->m_optionValues.GetCount()), wxEmptyString, wxT("Invalid wxOptionValue"));
+    return M_OPTVALUDATA->m_optionValues[n];
 }
 
 int wxOptionValue::HasOption(const wxString& name) const {
     wxCHECK_MSG(Ok(), wxNOT_FOUND, wxT("Invalid wxOptionValue"));
-    int index = M_OPTVALUDATA->_optionNames.Index(name, false);
+    int index = M_OPTVALUDATA->m_optionNames.Index(name, false);
     return index;
 }
 
 int wxOptionValue::FindOption(const wxString& part_of_option_name) const {
     wxCHECK_MSG(Ok(), wxNOT_FOUND, wxT("Invalid wxOptionValue"));
-    int i, count = M_OPTVALUDATA->_optionNames.GetCount();
+    int i, count = M_OPTVALUDATA->m_optionNames.GetCount();
 
     for (i = 0; i < count; i++) {
-        if (M_OPTVALUDATA->_optionNames[i].Contains(part_of_option_name)) return i;
+        if (M_OPTVALUDATA->m_optionNames[i].Contains(part_of_option_name)) return i;
     }
     return wxNOT_FOUND;
 }
 
 bool wxOptionValue::DeleteOption(const wxString& name) {
     wxCHECK_MSG(Ok(), false, wxT("Invalid wxOptionValue"));
-    int index = M_OPTVALUDATA->_optionNames.Index(name, false);
+    int index = M_OPTVALUDATA->m_optionNames.Index(name, false);
     if (index == wxNOT_FOUND) return false;
-    M_OPTVALUDATA->_optionNames.RemoveAt(index);
-    M_OPTVALUDATA->_optionValues.RemoveAt(index);
+    M_OPTVALUDATA->m_optionNames.RemoveAt(index);
+    M_OPTVALUDATA->m_optionValues.RemoveAt(index);
     return true;
 }
 
 bool wxOptionValue::DeleteOption(size_t n) {
     wxCHECK_MSG(Ok(), false, wxT("Invalid wxOptionValue"));
-    wxCHECK_MSG(n < M_OPTVALUDATA->_optionValues.GetCount(), false, wxT("invalid index"));
-    M_OPTVALUDATA->_optionNames.RemoveAt(n);
-    M_OPTVALUDATA->_optionValues.RemoveAt(n);
+    wxCHECK_MSG(n < M_OPTVALUDATA->m_optionValues.GetCount(), false, wxT("invalid index"));
+    M_OPTVALUDATA->m_optionNames.RemoveAt(n);
+    M_OPTVALUDATA->m_optionValues.RemoveAt(n);
     return true;
 }
 
@@ -304,13 +304,13 @@ bool wxOptionValue::DeleteOption(size_t n) {
 void wxOptionValue::SetOption(const wxString& name, const wxString& value, bool force) {
     wxCHECK_RET(Ok() && (name.Length() > 0), wxT("Invalid wxOptionValue or option"));
 
-    int idx = M_OPTVALUDATA->_optionNames.Index(name, false);
+    int idx = M_OPTVALUDATA->m_optionNames.Index(name, false);
     if (idx == wxNOT_FOUND) {
-        M_OPTVALUDATA->_optionNames.Add(name);
-        M_OPTVALUDATA->_optionValues.Add(value);
+        M_OPTVALUDATA->m_optionNames.Add(name);
+        M_OPTVALUDATA->m_optionValues.Add(value);
     } else if (force) {
-        M_OPTVALUDATA->_optionNames[idx] = name;
-        M_OPTVALUDATA->_optionValues[idx] = value;
+        M_OPTVALUDATA->m_optionNames[idx] = name;
+        M_OPTVALUDATA->m_optionValues[idx] = value;
     }
 }
 
@@ -329,8 +329,8 @@ void wxOptionValue::SetOption(const wxString& name, bool update, const wxChar* f
 wxString wxOptionValue::GetOption(const wxString& name) const {
     wxCHECK_MSG(Ok(), wxEmptyString, wxT("Invalid wxOptionValue"));
 
-    int idx = M_OPTVALUDATA->_optionNames.Index(name, false);
-    if (idx != wxNOT_FOUND) return M_OPTVALUDATA->_optionValues[idx];
+    int idx = M_OPTVALUDATA->m_optionNames.Index(name, false);
+    if (idx != wxNOT_FOUND) return M_OPTVALUDATA->m_optionValues[idx];
 
     return wxEmptyString;
 }

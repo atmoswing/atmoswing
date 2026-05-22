@@ -27,6 +27,7 @@
  */
 
 #include "asCriteriaMD.h"
+#include "asIncludes.h"
 
 asCriteriaMD::asCriteriaMD()
     : asCriteria("MD", _("Mean Absolute Difference"), Asc) {

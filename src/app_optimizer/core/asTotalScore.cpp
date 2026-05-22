@@ -27,6 +27,7 @@
  */
 
 #include "asTotalScore.h"
+#include "asIncludes.h"
 
 #include "asTotalScoreB.h"
 #include "asTotalScoreCRPSpotential.h"

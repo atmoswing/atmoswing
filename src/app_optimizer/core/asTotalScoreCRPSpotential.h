@@ -29,7 +29,6 @@
 #ifndef AS_TOTAL_SCORE_CRPS_POTENTIAL_H
 #define AS_TOTAL_SCORE_CRPS_POTENTIAL_H
 
-#include "asIncludes.h"
 #include "asTotalScore.h"
 
 class asTotalScoreCRPSpotential : public asTotalScore {

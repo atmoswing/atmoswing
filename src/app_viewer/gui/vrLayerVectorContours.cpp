@@ -33,7 +33,7 @@
 vrLayerVectorContours::vrLayerVectorContours() {
     wxASSERT(!_dataset);
     wxASSERT(!_layer);
-    _driverType = vrDRIVER_VECTOR_MEMORY;
+    m_driverType = vrDRIVER_VECTOR_MEMORY;
 }
 
 vrLayerVectorContours::~vrLayerVectorContours() = default;

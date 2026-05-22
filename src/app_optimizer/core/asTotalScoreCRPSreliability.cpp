@@ -27,6 +27,7 @@
  */
 
 #include "asTotalScoreCRPSreliability.h"
+#include "asIncludes.h"
 
 asTotalScoreCRPSreliability::asTotalScoreCRPSreliability(const wxString& periodString)
     : asTotalScore(periodString) {

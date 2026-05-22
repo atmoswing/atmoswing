@@ -27,6 +27,7 @@
  */
 
 #include "asScoreBS.h"
+#include "asIncludes.h"
 
 asScoreBS::asScoreBS()
     : asScore(asScore::BS, _("Brier score"), _("Brier score"), Asc, 0, NAN) {}

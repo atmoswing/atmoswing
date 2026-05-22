@@ -140,21 +140,21 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
                 const wxValidator& val = wxDefaultValidator, const wxString& name = wxT("wxCustomButton"));
 
     bool GetValue() const {
-        return _down % 2 != 0;
+        return m_down % 2 != 0;
     }
 
     void SetValue(bool depressed);
 
     // Use combinations of wxCustomButton_Style(s)
     long GetButtonStyle() const {
-        return _button_style;
+        return m_button_style;
     }
 
     bool SetButtonStyle(long style);
 
     // Get/Set the text label, wxEmptyString for none
     wxString GetLabel() const {
-        return _labelString;
+        return m_labelString;
     }
 
     void SetLabel(const wxString& label);
@@ -165,17 +165,17 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
     void SetBitmapLabel(const wxBitmap& bitmap);
 
     void SetBitmapSelected(const wxBitmap& sel) {
-        _bmpSelected = sel;
+        m_bmpSelected = sel;
         CalcLayout(true);
     };
 
     void SetBitmapFocus(const wxBitmap& focus) {
-        _bmpFocus = focus;
+        m_bmpFocus = focus;
         CalcLayout(true);
     };
 
     void SetBitmapDisabled(const wxBitmap& disabled) {
-        _bmpDisabled = disabled;
+        m_bmpDisabled = disabled;
         CalcLayout(true);
     };
 
@@ -186,19 +186,19 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
 
     // retrieve the bitmaps
     const wxBitmap& GetBitmapLabel() const {
-        return _bmpLabel;
+        return m_bmpLabel;
     }
 
     const wxBitmap& GetBitmapSelected() const {
-        return _bmpSelected;
+        return m_bmpSelected;
     }
 
     const wxBitmap& GetBitmapFocus() const {
-        return _bmpFocus;
+        return m_bmpFocus;
     }
 
     const wxBitmap& GetBitmapDisabled() const {
-        return _bmpDisabled;
+        return m_bmpDisabled;
     }
 
     // Creates a "disabled" bitmap by dithering it with the background colour
@@ -213,7 +213,7 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
     void SetLabelMargin(const wxSize& margin, bool fit = false);
 
     wxSize GetLabelMargin() const {
-        return _labelMargin;
+        return m_labelMargin;
     }
 
     // set/get the margins around the bitmap
@@ -221,17 +221,17 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
     void SetBitmapMargin(const wxSize& margin, bool fit = false);
 
     wxSize GetBitmapMargin() const {
-        return _bitmapMargin;
+        return m_bitmapMargin;
     }
 
     // can be used to activate the focused behavior (see MenuButton)
     void SetFocused(bool focused) {
-        _focused = focused;
+        m_focused = focused;
         Refresh(false);
     }
 
     bool GetFocused() const {
-        return _focused;
+        return m_focused;
     }
 
   protected:
@@ -257,23 +257,23 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
 
     virtual void CalcLayout(bool refresh);
 
-    int _down;      // toggle state if _down%2 then depressed
-    bool _focused;  // mouse in window
-    long _button_style;
+    int m_down;      // toggle state if m_down%2 then depressed
+    bool m_focused;  // mouse in window
+    long m_button_style;
 
-    wxString _labelString;
+    wxString m_labelString;
 
     // the bitmaps for various states
-    wxBitmap _bmpLabel, _bmpSelected, _bmpFocus, _bmpDisabled;
+    wxBitmap m_bmpLabel, m_bmpSelected, m_bmpFocus, m_bmpDisabled;
 
     // the margins around the label/bitmap
-    wxSize _labelMargin, _bitmapMargin;
+    wxSize m_labelMargin, m_bitmapMargin;
 
-    wxPoint _bitmapPos, _labelPos;
+    wxPoint m_bitmapPos, m_labelPos;
 
-    wxTimer* _timer;
+    wxTimer* m_timer;
 
-    wxEventType _eventType;  // store the mouse event type
+    wxEventType m_eventType;  // store the mouse event type
 
   private:
     void Init();

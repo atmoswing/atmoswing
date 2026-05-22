@@ -28,9 +28,7 @@
 #ifndef AS_CRITERIA_H
 #define AS_CRITERIA_H
 
-#include <memory>
-
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asPredictor;
 

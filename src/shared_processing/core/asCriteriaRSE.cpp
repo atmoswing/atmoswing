@@ -27,6 +27,7 @@
  */
 
 #include "asCriteriaRSE.h"
+#include "asIncludes.h"
 
 asCriteriaRSE::asCriteriaRSE()
     : asCriteria("RSE", _("Root Squared Error"), Asc) {

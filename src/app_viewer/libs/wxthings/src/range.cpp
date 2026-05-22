@@ -42,19 +42,19 @@ WX_DEFINE_OBJARRAY(wxArrayRangeDoubleSelection);
 
 bool wxRangeInt::Combine(int i, bool only_if_touching) {
     if (only_if_touching) {
-        if (i == _min - 1) {
-            _min = i;
+        if (i == m_min - 1) {
+            m_min = i;
             return true;
-        } else if (i == _max + 1) {
-            _max = i;
+        } else if (i == m_max + 1) {
+            m_max = i;
             return true;
         }
     } else {
-        if (i < _min) {
-            _min = i;
+        if (i < m_min) {
+            m_min = i;
             return true;
-        } else if (i > _max) {
-            _max = i;
+        } else if (i > m_max) {
+            m_max = i;
             return true;
         }
     }
@@ -69,12 +69,12 @@ bool wxRangeInt::Combine(const wxRangeInt& r, bool only_if_touching) {
         }
     } else if (!IsEmpty() && !r.IsEmpty()) {
         bool added = false;
-        if (r._min < _min) {
-            _min = r._min;
+        if (r.m_min < m_min) {
+            m_min = r.m_min;
             added = true;
         }
-        if (r._max > _max) {
-            _max = r._max;
+        if (r.m_max > m_max) {
+            m_max = r.m_max;
             added = true;
         }
         return added;
@@ -87,24 +87,24 @@ bool wxRangeInt::Delete(const wxRangeInt& r, wxRangeInt* right) {
 
     if (right) *right = wxEmptyRangeInt;
 
-    if (r._min <= _min) {
-        if (r._max >= _max) {
+    if (r.m_min <= m_min) {
+        if (r.m_max >= m_max) {
             *this = wxEmptyRangeInt;
             return true;
         }
 
-        _min = r._max + 1;
+        m_min = r.m_max + 1;
         return true;
     }
 
-    if (r._max >= _max) {
-        _max = r._min - 1;
+    if (r.m_max >= m_max) {
+        m_max = r.m_min - 1;
         return true;
     }
 
-    if (right) *right = wxRangeInt(r._max + 1, _max);
+    if (right) *right = wxRangeInt(r.m_max + 1, m_max);
 
-    _max = r._min - 1;
+    m_max = r.m_min - 1;
     return true;
 }
 
@@ -112,28 +112,28 @@ bool wxRangeInt::Delete(const wxRangeInt& r, wxRangeInt* right) {
 // wxRangeIntSelection
 //=============================================================================
 const wxRangeInt& wxRangeIntSelection::GetRange(int index) const {
-    wxCHECK_MSG((index >= 0) && (index < int(_ranges.GetCount())), wxEmptyRangeInt, wxT("Invalid index"));
-    return _ranges[index];
+    wxCHECK_MSG((index >= 0) && (index < int(m_ranges.GetCount())), wxEmptyRangeInt, wxT("Invalid index"));
+    return m_ranges[index];
 }
 
 wxRangeInt wxRangeIntSelection::GetBoundingRange() const {
-    if (int(_ranges.GetCount()) < 1) return wxEmptyRangeInt;
-    return wxRangeInt(_ranges[0]._min, _ranges[_ranges.GetCount() - 1]._max);
+    if (int(m_ranges.GetCount()) < 1) return wxEmptyRangeInt;
+    return wxRangeInt(m_ranges[0].m_min, m_ranges[m_ranges.GetCount() - 1].m_max);
 }
 
 int wxRangeIntSelection::Index(int i) const {
-    int count = _ranges.GetCount();
+    int count = m_ranges.GetCount();
     if (count < 1) return wxNOT_FOUND;
 
-    if (i < _ranges[0]._min) return wxNOT_FOUND;
-    if (i > _ranges[count - 1]._max) return wxNOT_FOUND;
+    if (i < m_ranges[0].m_min) return wxNOT_FOUND;
+    if (i > m_ranges[count - 1].m_max) return wxNOT_FOUND;
 
     // Binary search
     int res, tmp, lo = 0, hi = count;
 
     while (lo < hi) {
         tmp = (lo + hi) / 2;
-        res = _ranges[tmp].Position(i);
+        res = m_ranges[tmp].Position(i);
 
         if (res == 0)
             return tmp;
@@ -147,29 +147,29 @@ int wxRangeIntSelection::Index(int i) const {
 }
 
 int wxRangeIntSelection::Index(const wxRangeInt& r) const {
-    int i, count = _ranges.GetCount();
+    int i, count = m_ranges.GetCount();
     for (i = 0; i < count; i++)
-        if (_ranges[i].Contains(r)) return i;
+        if (m_ranges[i].Contains(r)) return i;
     return wxNOT_FOUND;
 }
 
 int wxRangeIntSelection::NearestIndex(int i) const {
-    int count = _ranges.GetCount();
+    int count = m_ranges.GetCount();
     if (count < 1) return -1;
 
-    if (i < _ranges[0]._min) return -1;
-    if (i > _ranges[count - 1]._max) return count;
+    if (i < m_ranges[0].m_min) return -1;
+    if (i > m_ranges[count - 1].m_max) return count;
 
     // Binary search
     int res, tmp, lo = 0, hi = count;
 
     while (lo < hi) {
         tmp = (lo + hi) / 2;
-        res = _ranges[tmp].Position(i);
+        res = m_ranges[tmp].Position(i);
 
         if (res == 0)
             return tmp;
-        else if ((i >= _ranges[tmp]._max) && (i < _ranges[wxMin(tmp + 1, count - 1)]._min))
+        else if ((i >= m_ranges[tmp].m_max) && (i < m_ranges[wxMin(tmp + 1, count - 1)].m_min))
             return tmp;
         else if (res < 0)
             hi = tmp;
@@ -182,8 +182,8 @@ int wxRangeIntSelection::NearestIndex(int i) const {
 }
 
 int wxRangeIntSelection::GetItemCount() const {
-    int i, items = 0, count = _ranges.GetCount();
-    for (i = 0; i < count; i++) items += _ranges[i].GetRange();
+    int i, items = 0, count = m_ranges.GetCount();
+    for (i = 0; i < count; i++) items += m_ranges[i].GetRange();
     return items;
 }
 
@@ -191,21 +191,21 @@ bool wxRangeIntSelection::DeselectRange(const wxRangeInt& range) {
     wxCHECK_MSG(!range.IsEmpty(), false, wxT("Invalid Selection Range"));
 
     bool done = false;
-    int i, count = _ranges.GetCount();
-    int nearest = count > 0 ? NearestIndex(range._min) : -1;
+    int i, count = m_ranges.GetCount();
+    int nearest = count > 0 ? NearestIndex(range.m_min) : -1;
 
     if ((nearest < 0) || (nearest == count)) return false;
 
     wxRangeInt r;
-    for (i = nearest; i < int(_ranges.GetCount()); i++) {
-        if (range._max < _ranges[i]._min)
+    for (i = nearest; i < int(m_ranges.GetCount()); i++) {
+        if (range.m_max < m_ranges[i].m_min)
             break;
-        else if (_ranges[i].Delete(range, &r)) {
-            if (_ranges[i].IsEmpty()) {
-                _ranges.RemoveAt(i);
+        else if (m_ranges[i].Delete(range, &r)) {
+            if (m_ranges[i].IsEmpty()) {
+                m_ranges.RemoveAt(i);
                 i = (i > 0) ? i - 1 : -1;
             } else if (!r.IsEmpty())
-                _ranges.Insert(r, i + 1);
+                m_ranges.Insert(r, i + 1);
 
             done = true;
         }
@@ -219,34 +219,34 @@ bool wxRangeIntSelection::SelectRange(const wxRangeInt& range) {
 
     // Try to find a range that includes this one and combine it, else insert it, else append it
     bool done = false;
-    int i, count = _ranges.GetCount();
-    int nearest = count > 0 ? NearestIndex(range._min) : -1;
+    int i, count = m_ranges.GetCount();
+    int nearest = count > 0 ? NearestIndex(range.m_min) : -1;
 
     if (nearest < 0) {
-        if (!((count > 0) && _ranges[0].Combine(range, true))) _ranges.Insert(range, 0);
+        if (!((count > 0) && m_ranges[0].Combine(range, true))) m_ranges.Insert(range, 0);
         return true;
     } else if (nearest == count) {
-        if (!((count > 0) && _ranges[count - 1].Combine(range, true))) _ranges.Add(range);
+        if (!((count > 0) && m_ranges[count - 1].Combine(range, true))) m_ranges.Add(range);
         return true;
     } else {
-        if (_ranges[nearest].Contains(range)) return false;
+        if (m_ranges[nearest].Contains(range)) return false;
 
         for (i = nearest; i < count; i++) {
-            if (_ranges[i].Combine(range, true)) {
+            if (m_ranges[i].Combine(range, true)) {
                 done = true;
                 break;
-            } else if (range._max < _ranges[i]._min) {
-                _ranges.Insert(range, i);
+            } else if (range.m_max < m_ranges[i].m_min) {
+                m_ranges.Insert(range, i);
                 return true;
             }
         }
 
-        count = _ranges.GetCount();
+        count = m_ranges.GetCount();
         for (i = wxMax(nearest - 1, 1); i < count; i++) {
-            if (range._max + 1 < _ranges[i - 1]._min)
+            if (range.m_max + 1 < m_ranges[i - 1].m_min)
                 break;
-            else if (_ranges[i - 1].Combine(_ranges[i], true)) {
-                _ranges.RemoveAt(i);
+            else if (m_ranges[i - 1].Combine(m_ranges[i], true)) {
+                m_ranges.RemoveAt(i);
                 count--;
                 i--;
             }
@@ -254,15 +254,15 @@ bool wxRangeIntSelection::SelectRange(const wxRangeInt& range) {
     }
 
 #ifdef CHECK_RANGES
-    printf("Selecting ranges %d %d count %d\n", range._min, range._max, _ranges.GetCount());
+    printf("Selecting ranges %d %d count %d\n", range.m_min, range.m_max, m_ranges.GetCount());
 
-    for (i = 1; i < int(_ranges.GetCount()); i++) {
-        if (_ranges[i - 1].Contains(_ranges[i]))
-            printf("Error in Selecting ranges %d %d, %d %d count %d\n", _ranges[i - 1]._min, _ranges[i - 1]._max,
-                   _ranges[i]._min, _ranges[i]._max, _ranges.GetCount());
-        if (_ranges[i - 1].Touches(_ranges[i]))
-            printf("Could have minimzed ranges %d %d, %d %d count %d\n", _ranges[i - 1]._min, _ranges[i - 1]._max,
-                   _ranges[i]._min, _ranges[i]._max, _ranges.GetCount());
+    for (i = 1; i < int(m_ranges.GetCount()); i++) {
+        if (m_ranges[i - 1].Contains(m_ranges[i]))
+            printf("Error in Selecting ranges %d %d, %d %d count %d\n", m_ranges[i - 1].m_min, m_ranges[i - 1].m_max,
+                   m_ranges[i].m_min, m_ranges[i].m_max, m_ranges.GetCount());
+        if (m_ranges[i - 1].Touches(m_ranges[i]))
+            printf("Could have minimzed ranges %d %d, %d %d count %d\n", m_ranges[i - 1].m_min, m_ranges[i - 1].m_max,
+                   m_ranges[i].m_min, m_ranges[i].m_max, m_ranges.GetCount());
     }
     fflush(stdout);
 #endif  // CHECK_RANGES
@@ -272,35 +272,35 @@ bool wxRangeIntSelection::SelectRange(const wxRangeInt& range) {
 
 bool wxRangeIntSelection::BoundRanges(const wxRangeInt& range) {
     wxCHECK_MSG(!range.IsEmpty(), false, wxT("Invalid Bounding Range"));
-    int i, count = _ranges.GetCount();
+    int i, count = m_ranges.GetCount();
     bool done = false;
 
     for (i = 0; i < count; i++) {
-        if (_ranges[i]._min >= range._min) break;
+        if (m_ranges[i].m_min >= range.m_min) break;
 
-        if (_ranges[i]._max < range._min)  // range is out of bounds
+        if (m_ranges[i].m_max < range.m_min)  // range is out of bounds
         {
             done = true;
-            _ranges.RemoveAt(i);
+            m_ranges.RemoveAt(i);
             count--;
             i--;
         } else {
             done = true;
-            _ranges[i]._min = range._min;
+            m_ranges[i].m_min = range.m_min;
             break;
         }
     }
 
-    for (i = _ranges.GetCount() - 1; i >= 0; i--) {
-        if (_ranges[i]._max <= range._max) break;
+    for (i = m_ranges.GetCount() - 1; i >= 0; i--) {
+        if (m_ranges[i].m_max <= range.m_max) break;
 
-        if (_ranges[i]._min > range._max)  // range is out of bounds
+        if (m_ranges[i].m_min > range.m_max)  // range is out of bounds
         {
             done = true;
-            _ranges.RemoveAt(i);
+            m_ranges.RemoveAt(i);
         } else {
             done = true;
-            _ranges[i]._max = range._max;
+            m_ranges[i].m_max = range.m_max;
             break;
         }
     }
@@ -313,11 +313,11 @@ bool wxRangeIntSelection::BoundRanges(const wxRangeInt& range) {
 //=============================================================================
 
 bool wxRangeDouble::Combine(double i) {
-    if (i < _min) {
-        _min = i;
+    if (i < m_min) {
+        m_min = i;
         return true;
-    } else if (i > _max) {
-        _max = i;
+    } else if (i > m_max) {
+        m_max = i;
         return true;
     }
     return false;
@@ -325,19 +325,19 @@ bool wxRangeDouble::Combine(double i) {
 
 bool wxRangeDouble::Combine(const wxRangeDouble& r, bool only_if_touching) {
     if (only_if_touching) {
-        if ((r._min <= _max) && (r._max >= _min))  // Contains(r))
+        if ((r.m_min <= m_max) && (r.m_max >= m_min))  // Contains(r))
         {
             *this += r;
             return true;
         }
     } else if (!IsEmpty() && !r.IsEmpty()) {
         bool added = false;
-        if (r._min < _min) {
-            _min = r._min;
+        if (r.m_min < m_min) {
+            m_min = r.m_min;
             added = true;
         }
-        if (r._max > _max) {
-            _max = r._max;
+        if (r.m_max > m_max) {
+            m_max = r.m_max;
             added = true;
         }
         return added;
@@ -350,24 +350,24 @@ bool wxRangeDouble::Delete(const wxRangeDouble& r, wxRangeDouble* right) {
 
     if (right) *right = wxEmptyRangeDouble;
 
-    if (r._min <= _min) {
-        if (r._max >= _max) {
+    if (r.m_min <= m_min) {
+        if (r.m_max >= m_max) {
             *this = wxEmptyRangeDouble;
             return true;
         }
 
-        _min = r._max;
+        m_min = r.m_max;
         return true;
     }
 
-    if (r._max >= _max) {
-        _max = r._min;
+    if (r.m_max >= m_max) {
+        m_max = r.m_min;
         return true;
     }
 
-    if (right) *right = wxRangeDouble(r._max, _max);
+    if (right) *right = wxRangeDouble(r.m_max, m_max);
 
-    _max = r._min;
+    m_max = r.m_min;
     return true;
 }
 
@@ -375,28 +375,28 @@ bool wxRangeDouble::Delete(const wxRangeDouble& r, wxRangeDouble* right) {
 // wxRangeDoubleSelection
 //=============================================================================
 const wxRangeDouble& wxRangeDoubleSelection::GetRange(int index) const {
-    wxCHECK_MSG((index >= 0) && (index < int(_ranges.GetCount())), wxEmptyRangeDouble, wxT("Invalid index"));
-    return _ranges[index];
+    wxCHECK_MSG((index >= 0) && (index < int(m_ranges.GetCount())), wxEmptyRangeDouble, wxT("Invalid index"));
+    return m_ranges[index];
 }
 
 wxRangeDouble wxRangeDoubleSelection::GetBoundingRange() const {
-    if (int(_ranges.GetCount()) < 1) return wxEmptyRangeDouble;
-    return wxRangeDouble(_ranges[0]._min, _ranges[_ranges.GetCount() - 1]._max);
+    if (int(m_ranges.GetCount()) < 1) return wxEmptyRangeDouble;
+    return wxRangeDouble(m_ranges[0].m_min, m_ranges[m_ranges.GetCount() - 1].m_max);
 }
 
 int wxRangeDoubleSelection::Index(wxDouble i) const {
-    int count = _ranges.GetCount();
+    int count = m_ranges.GetCount();
     if (count < 1) return wxNOT_FOUND;
 
-    if (i < _ranges[0]._min) return wxNOT_FOUND;
-    if (i > _ranges[count - 1]._max) return wxNOT_FOUND;
+    if (i < m_ranges[0].m_min) return wxNOT_FOUND;
+    if (i > m_ranges[count - 1].m_max) return wxNOT_FOUND;
 
     // Binary search
     int res, tmp, lo = 0, hi = count;
 
     while (lo < hi) {
         tmp = (lo + hi) / 2;
-        res = _ranges[tmp].Position(i);
+        res = m_ranges[tmp].Position(i);
 
         if (res == 0)
             return tmp;
@@ -411,35 +411,35 @@ int wxRangeDoubleSelection::Index(wxDouble i) const {
     /*
         for (int j=0; j<count; j++)
         {
-            if (_ranges[j].Contains(i)) return j;
+            if (m_ranges[j].Contains(i)) return j;
         }
     */
 }
 
 int wxRangeDoubleSelection::Index(const wxRangeDouble& r) const {
-    int i, count = _ranges.GetCount();
+    int i, count = m_ranges.GetCount();
     for (i = 0; i < count; i++)
-        if (_ranges[i].Contains(r)) return i;
+        if (m_ranges[i].Contains(r)) return i;
     return wxNOT_FOUND;
 }
 
 int wxRangeDoubleSelection::NearestIndex(wxDouble i) const {
-    int count = _ranges.GetCount();
+    int count = m_ranges.GetCount();
     if (count < 1) return -1;
 
-    if (i < _ranges[0]._min) return -1;
-    if (i > _ranges[count - 1]._max) return count;
+    if (i < m_ranges[0].m_min) return -1;
+    if (i > m_ranges[count - 1].m_max) return count;
 
     // Binary search
     int res, tmp, lo = 0, hi = count;
 
     while (lo < hi) {
         tmp = (lo + hi) / 2;
-        res = _ranges[tmp].Position(i);
+        res = m_ranges[tmp].Position(i);
 
         if (res == 0)
             return tmp;
-        else if ((i >= _ranges[tmp]._max) && (i < _ranges[wxMin(tmp + 1, count - 1)]._min))
+        else if ((i >= m_ranges[tmp].m_max) && (i < m_ranges[wxMin(tmp + 1, count - 1)].m_min))
             return tmp;
         else if (res < 0)
             hi = tmp;
@@ -456,47 +456,47 @@ bool wxRangeDoubleSelection::SelectRange(const wxRangeDouble& range) {
 
     // Try to find a range that includes this one and combine it, else insert it, else append it
     bool done = false;
-    int i, count = _ranges.GetCount();
-    int nearest = count > 0 ? NearestIndex(range._min) : -1;
+    int i, count = m_ranges.GetCount();
+    int nearest = count > 0 ? NearestIndex(range.m_min) : -1;
 
     if (nearest < 0) {
-        if (!((count > 0) && _ranges[0].Combine(range, true))) _ranges.Insert(range, 0);
+        if (!((count > 0) && m_ranges[0].Combine(range, true))) m_ranges.Insert(range, 0);
         return true;
     } else if (nearest == count) {
-        if (!((count > 0) && _ranges[count - 1].Combine(range, true))) _ranges.Add(range);
+        if (!((count > 0) && m_ranges[count - 1].Combine(range, true))) m_ranges.Add(range);
         return true;
     } else {
-        if (_ranges[nearest].Contains(range)) return false;
+        if (m_ranges[nearest].Contains(range)) return false;
 
         for (i = nearest; i < count; i++) {
-            if (_ranges[i].Combine(range, true)) {
+            if (m_ranges[i].Combine(range, true)) {
                 done = true;
                 break;
-            } else if (range._max < _ranges[i]._min) {
-                _ranges.Insert(range, i);
+            } else if (range.m_max < m_ranges[i].m_min) {
+                m_ranges.Insert(range, i);
                 return true;
             }
         }
-        for (i = wxMax(nearest - 1, 1); i < int(_ranges.GetCount()); i++) {
-            if (range._max + 1 < _ranges[i - 1]._min)
+        for (i = wxMax(nearest - 1, 1); i < int(m_ranges.GetCount()); i++) {
+            if (range.m_max + 1 < m_ranges[i - 1].m_min)
                 break;
-            else if (_ranges[i - 1].Combine(_ranges[i], true)) {
-                _ranges.RemoveAt(i);
+            else if (m_ranges[i - 1].Combine(m_ranges[i], true)) {
+                m_ranges.RemoveAt(i);
                 i--;
             }
         }
     }
 
 #ifdef CHECK_RANGES
-    printf("Selecting ranges %g %g count %d\n", range._min, range._max, _ranges.GetCount());
+    printf("Selecting ranges %g %g count %d\n", range.m_min, range.m_max, m_ranges.GetCount());
 
-    for (i = 1; i < int(_ranges.GetCount()); i++) {
-        if (_ranges[i - 1].Contains(_ranges[i]))
-            printf("Error in Selecting ranges %g %g, %g %g count %d\n", _ranges[i - 1]._min, _ranges[i - 1]._max,
-                   _ranges[i]._min, _ranges[i]._max, _ranges.GetCount());
-        // if (_ranges[i-1].Touches(_ranges[i]))
-        //    printf("Could have minimzed ranges %g %g, %g %g count %d\n", _ranges[i-1]._min, _ranges[i-1]._max,
-        //    _ranges[i]._min, _ranges[i]._max, _ranges.GetCount());
+    for (i = 1; i < int(m_ranges.GetCount()); i++) {
+        if (m_ranges[i - 1].Contains(m_ranges[i]))
+            printf("Error in Selecting ranges %g %g, %g %g count %d\n", m_ranges[i - 1].m_min, m_ranges[i - 1].m_max,
+                   m_ranges[i].m_min, m_ranges[i].m_max, m_ranges.GetCount());
+        // if (m_ranges[i-1].Touches(m_ranges[i]))
+        //    printf("Could have minimzed ranges %g %g, %g %g count %d\n", m_ranges[i-1].m_min, m_ranges[i-1].m_max,
+        //    m_ranges[i].m_min, m_ranges[i].m_max, m_ranges.GetCount());
     }
     fflush(stdout);
 #endif  // CHECK_RANGES
@@ -508,21 +508,21 @@ bool wxRangeDoubleSelection::DeselectRange(const wxRangeDouble& range) {
     wxCHECK_MSG(!range.IsEmpty(), false, wxT("Invalid Selection Range"));
 
     bool done = false;
-    int i, count = _ranges.GetCount();
-    int nearest = count > 0 ? NearestIndex(range._min) : -1;
+    int i, count = m_ranges.GetCount();
+    int nearest = count > 0 ? NearestIndex(range.m_min) : -1;
 
     if ((nearest < 0) || (nearest == count)) return false;
 
     wxRangeDouble r;
-    for (i = nearest; i < int(_ranges.GetCount()); i++) {
-        if (range._max < _ranges[i]._min)
+    for (i = nearest; i < int(m_ranges.GetCount()); i++) {
+        if (range.m_max < m_ranges[i].m_min)
             break;
-        else if (_ranges[i].Delete(range, &r)) {
-            if (_ranges[i].IsEmpty()) {
-                _ranges.RemoveAt(i);
+        else if (m_ranges[i].Delete(range, &r)) {
+            if (m_ranges[i].IsEmpty()) {
+                m_ranges.RemoveAt(i);
                 i = (i > 0) ? i - 1 : -1;
             } else if (!r.IsEmpty())
-                _ranges.Insert(r, i + 1);
+                m_ranges.Insert(r, i + 1);
 
             done = true;
         }
@@ -533,35 +533,35 @@ bool wxRangeDoubleSelection::DeselectRange(const wxRangeDouble& range) {
 
 bool wxRangeDoubleSelection::BoundRanges(const wxRangeDouble& range) {
     wxCHECK_MSG(!range.IsEmpty(), false, wxT("Invalid Bounding Range"));
-    int i, count = _ranges.GetCount();
+    int i, count = m_ranges.GetCount();
     bool done = false;
 
     for (i = 0; i < count; i++) {
-        if (_ranges[i]._min >= range._min) break;
+        if (m_ranges[i].m_min >= range.m_min) break;
 
-        if (_ranges[i]._max < range._min)  // range is out of bounds
+        if (m_ranges[i].m_max < range.m_min)  // range is out of bounds
         {
             done = true;
-            _ranges.RemoveAt(i);
+            m_ranges.RemoveAt(i);
             count--;
             i--;
         } else {
             done = true;
-            _ranges[i]._min = range._min;
+            m_ranges[i].m_min = range.m_min;
             break;
         }
     }
 
-    for (i = _ranges.GetCount() - 1; i >= 0; i--) {
-        if (_ranges[i]._max <= range._max) break;
+    for (i = m_ranges.GetCount() - 1; i >= 0; i--) {
+        if (m_ranges[i].m_max <= range.m_max) break;
 
-        if (_ranges[i]._min > range._max)  // range is out of bounds
+        if (m_ranges[i].m_min > range.m_max)  // range is out of bounds
         {
             done = true;
-            _ranges.RemoveAt(i);
+            m_ranges.RemoveAt(i);
         } else {
             done = true;
-            _ranges[i]._max = range._max;
+            m_ranges[i].m_max = range.m_max;
             break;
         }
     }

@@ -26,6 +26,7 @@
  */
 
 #include "asCriteriaDSD.h"
+#include "asIncludes.h"
 
 asCriteriaDSD::asCriteriaDSD()
     : asCriteria("DSD", _("Difference in standard deviation (nonspatial)"), Asc) {

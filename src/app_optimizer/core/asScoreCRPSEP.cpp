@@ -27,6 +27,7 @@
  */
 
 #include "asScoreCRPSEP.h"
+#include "asIncludes.h"
 
 asScoreCRPSEP::asScoreCRPSEP()
     : asScore(asScore::CRPSEP, _("CRPS Exact Primitive"), _("Continuous Ranked Probability Score exact solution"), Asc,

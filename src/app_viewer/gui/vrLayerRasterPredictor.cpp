@@ -38,18 +38,18 @@ vrLayerRasterPredictor::vrLayerRasterPredictor(asPredictorsManager* predictorsMa
       _predictorsManager(predictorsManager),
       _minVal(minVal),
       _maxVal(maxVal) {
-    _driverType = vrDRIVER_RASTER_MEMORY;
+    m_driverType = vrDRIVER_RASTER_MEMORY;
 }
 
 vrLayerRasterPredictor::~vrLayerRasterPredictor() = default;
 
 bool vrLayerRasterPredictor::Close() {
-    if (_dataset == nullptr) {
+    if (m_dataset == nullptr) {
         return false;
     }
 
-    GDALClose(_dataset);
-    _dataset = nullptr;
+    GDALClose(m_dataset);
+    m_dataset = nullptr;
     return true;
 }
 
@@ -59,7 +59,7 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName& name) {
     wxASSERT(_dataset == nullptr);
 
     // Init filename
-    _fileName = name;
+    m_fileName = name;
 
     // Get driver
     GDALDriver* poDriver = GetGDALDriverManager()->GetDriverByName("MEM");
@@ -69,16 +69,16 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName& name) {
     }
 
     // Create dataset
-    _dataset = poDriver->Create((const char*)_fileName.GetFullPath().mb_str(wxConvUTF8),
+    m_dataset = poDriver->Create((const char*)m_fileName.GetFullPath().mb_str(wxConvUTF8),
                                 _predictorsManager->GetLongitudesNb(), _predictorsManager->GetLatitudesNb(), 1,
                                 GDT_Float32, nullptr);
-    if (_dataset == nullptr) {
+    if (m_dataset == nullptr) {
         wxLogError(_("Creation of memory dataset failed."));
         return false;
     }
 
     // Set projection
-    if (_dataset->SetProjection("EPSG:4326") != CE_None) {
+    if (m_dataset->SetProjection("EPSG:4326") != CE_None) {
         wxLogError(_("Setting projection to predictor layer failed."));
         return false;
     }
@@ -91,13 +91,13 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName& name) {
     adfGeoTransform[3] = _predictorsManager->GetLatitudeMax();     // top left y
     adfGeoTransform[4] = 0;                                        // rotation, 0 if image is "north up"
     adfGeoTransform[5] = _predictorsManager->GetLatitudeResol();   // n-s pixel resolution
-    if (_dataset->SetGeoTransform(adfGeoTransform) != CE_None) {
+    if (m_dataset->SetGeoTransform(adfGeoTransform) != CE_None) {
         wxLogError(_("Setting geotransform to predictor layer failed."));
         return false;
     }
 
     // Set data
-    GDALRasterBand* band = _dataset->GetRasterBand(1);
+    GDALRasterBand* band = m_dataset->GetRasterBand(1);
 
 #if UseRasterIO
     if (band->RasterIO(GF_Write, 0, 0, _predictorsManager->GetLongitudesNb(), _predictorsManager->GetLatitudesNb(),
@@ -133,7 +133,7 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName& name) {
 }
 
 wxFileName vrLayerRasterPredictor::GetDisplayName() {
-    wxFileName myName(_fileName);
+    wxFileName myName(m_fileName);
     myName.SetExt(wxEmptyString);
     return myName;
 }
@@ -141,7 +141,7 @@ wxFileName vrLayerRasterPredictor::GetDisplayName() {
 bool vrLayerRasterPredictor::_GetRasterData(unsigned char** imgData, const wxSize& outImgPxSize,
                                             const wxRect& readImgPxInfo, const vrRender* render) {
     wxASSERT(_dataset);
-    _dataset->FlushCache();
+    m_dataset->FlushCache();
 
     // Create array for image data
     unsigned int imgRGBLen = outImgPxSize.GetWidth() * outImgPxSize.GetHeight() * 3;
@@ -152,7 +152,7 @@ bool vrLayerRasterPredictor::_GetRasterData(unsigned char** imgData, const wxSiz
     }
 
     // Read band
-    GDALRasterBand* band = _dataset->GetRasterBand(1);
+    GDALRasterBand* band = m_dataset->GetRasterBand(1);
     int dataSize = GDALGetDataTypeSize(GDT_Float32) / 8;
     void* rasterData = CPLMalloc(dataSize * outImgPxSize.GetWidth() * outImgPxSize.GetHeight());
     if (band->RasterIO(GF_Read, readImgPxInfo.GetX(), readImgPxInfo.GetY(), readImgPxInfo.GetWidth(),

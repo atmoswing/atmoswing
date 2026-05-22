@@ -34,7 +34,7 @@
 vrLayerVectorFcstRing::vrLayerVectorFcstRing() {
     wxASSERT(!_dataset);
     wxASSERT(!_layer);
-    _driverType = vrDRIVER_VECTOR_MEMORY;
+    m_driverType = vrDRIVER_VECTOR_MEMORY;
     _valueMax = 1;
 }
 
@@ -42,7 +42,7 @@ vrLayerVectorFcstRing::~vrLayerVectorFcstRing() = default;
 
 long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
     wxASSERT(_layer);
-    OGRFeature* feature = OGRFeature::CreateFeature(_layer->GetLayerDefn());
+    OGRFeature* feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
     wxASSERT(_layer);
     feature->SetGeometry(geometry);
 
@@ -55,7 +55,7 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
         }
     }
 
-    if (_layer->CreateFeature(feature) != OGRERR_NONE) {
+    if (m_layer->CreateFeature(feature) != OGRERR_NONE) {
         wxLogError(_("Error creating feature"));
         OGRFeature::DestroyFeature(feature);
         return wxNOT_FOUND;
@@ -183,8 +183,8 @@ void vrLayerVectorFcstRing::CreatePathPatch(wxGraphicsPath& path, const wxPoint&
 
     const wxDouble radiusRatio = ((radiusOut - radiusIn) / radiusOut);
     wxPoint2DDouble currentPoint = path.GetCurrentPoint();
-    wxDouble newPointX = currentPoint._x - (currentPoint._x - centerX) * radiusRatio;
-    wxDouble newPointY = currentPoint._y - (currentPoint._y - centerY) * radiusRatio;
+    wxDouble newPointX = currentPoint.m_x - (currentPoint.m_x - centerX) * radiusRatio;
+    wxDouble newPointY = currentPoint.m_y - (currentPoint.m_y - centerY) * radiusRatio;
 
     path.AddLineToPoint(newPointX, newPointY);
 
@@ -233,8 +233,8 @@ void vrLayerVectorFcstRing::CreatePathAround(wxGraphicsPath& path, const wxPoint
 
     const wxDouble radiusRatio = ((radiusOut - radiusIn) / radiusOut);
     wxPoint2DDouble currentPoint = path.GetCurrentPoint();
-    wxDouble newPointX = currentPoint._x - (currentPoint._x - centerX) * radiusRatio;
-    wxDouble newPointY = currentPoint._y - (currentPoint._y - centerY) * radiusRatio;
+    wxDouble newPointX = currentPoint.m_x - (currentPoint.m_x - centerX) * radiusRatio;
+    wxDouble newPointY = currentPoint.m_y - (currentPoint.m_y - centerY) * radiusRatio;
 
     path.AddLineToPoint(newPointX, newPointY);
 

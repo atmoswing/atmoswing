@@ -27,6 +27,7 @@
  */
 
 #include "asTotalScoreHSS.h"
+#include "asIncludes.h"
 
 asTotalScoreHSS::asTotalScoreHSS(const wxString& periodString)
     : asTotalScore(periodString) {}

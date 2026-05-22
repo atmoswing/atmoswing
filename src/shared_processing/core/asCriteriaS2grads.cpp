@@ -26,6 +26,7 @@
  */
 
 #include "asCriteriaS2grads.h"
+#include "asIncludes.h"
 
 asCriteriaS2grads::asCriteriaS2grads()
     : asCriteriaS1grads() {

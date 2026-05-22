@@ -34,7 +34,7 @@
 vrLayerVectorFcstDots::vrLayerVectorFcstDots() {
     wxASSERT(!_dataset);
     wxASSERT(!_layer);
-    _driverType = vrDRIVER_VECTOR_MEMORY;
+    m_driverType = vrDRIVER_VECTOR_MEMORY;
     _valueMax = 1;
 }
 
@@ -42,7 +42,7 @@ vrLayerVectorFcstDots::~vrLayerVectorFcstDots() = default;
 
 long vrLayerVectorFcstDots::AddFeature(OGRGeometry* geometry, void* data) {
     wxASSERT(_layer);
-    OGRFeature* feature = OGRFeature::CreateFeature(_layer->GetLayerDefn());
+    OGRFeature* feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
     wxASSERT(_layer);
     feature->SetGeometry(geometry);
 
@@ -55,7 +55,7 @@ long vrLayerVectorFcstDots::AddFeature(OGRGeometry* geometry, void* data) {
         }
     }
 
-    if (_layer->CreateFeature(feature) != OGRERR_NONE) {
+    if (m_layer->CreateFeature(feature) != OGRERR_NONE) {
         wxLogError(_("Error creating feature"));
         OGRFeature::DestroyFeature(feature);
         return wxNOT_FOUND;

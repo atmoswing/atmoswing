@@ -29,7 +29,6 @@
 #ifndef AS_SCORE_CONTINGENCY_TABLE_H
 #define AS_SCORE_CONTINGENCY_TABLE_H
 
-#include "asIncludes.h"
 #include "asScore.h"
 
 class asScoreContingencyTable : public asScore {

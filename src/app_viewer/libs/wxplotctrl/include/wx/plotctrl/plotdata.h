@@ -245,7 +245,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotData : public wxPlotCurve {
     void SetValue(int index, double x, double y);
 
     void SetPoint(int index, const wxPoint2DDouble& pt) {
-        SetValue(index, pt._x, pt._y);
+        SetValue(index, pt.m_x, pt.m_y);
     }
 
     // Set a range of values starting at start_index for count points.
@@ -479,11 +479,11 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotData : public wxPlotCurve {
     // Operators
 
     bool operator==(const wxPlotData& plotData) const {
-        return _refData == plotData._refData;
+        return m_refData == plotData.m_refData;
     }
 
     bool operator!=(const wxPlotData& plotData) const {
-        return _refData != plotData._refData;
+        return m_refData != plotData.m_refData;
     }
 
     wxPlotData& operator=(const wxPlotData& plotData) {

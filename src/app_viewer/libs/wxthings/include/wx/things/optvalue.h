@@ -215,11 +215,11 @@ class WXDLLIMPEXP_THINGS wxOptionValue : public wxObject {
     }
 
     bool operator==(const wxOptionValue& optValue) const {
-        return _refData == optValue._refData;
+        return m_refData == optValue.m_refData;
     }
 
     bool operator!=(const wxOptionValue& optValue) const {
-        return _refData != optValue._refData;
+        return m_refData != optValue.m_refData;
     }
 
   private:

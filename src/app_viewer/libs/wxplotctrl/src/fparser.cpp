@@ -114,78 +114,78 @@ using namespace FUNCTIONPARSERTYPES;
 // wxFunctionParser - a thin wrapper around FunctionParser
 // ----------------------------------------------------------------------------
 wxFunctionParser::wxFunctionParser()
-    : _ok(false) {
-    _functionParser = new FunctionParser;
+    : m_ok(false) {
+    m_functionParser = new FunctionParser;
 }
 
 wxFunctionParser::wxFunctionParser(const wxFunctionParser& fP) {
-    _functionParser = new FunctionParser(*fP.GetFunctionParser());
-    _function = fP.GetFunctionString();
-    _variables = fP.GetVariableString();
-    _ok = fP.Ok();
+    m_functionParser = new FunctionParser(*fP.GetFunctionParser());
+    m_function = fP.GetFunctionString();
+    m_variables = fP.GetVariableString();
+    m_ok = fP.Ok();
 }
 
 wxFunctionParser::~wxFunctionParser() {
-    delete _functionParser;
+    delete m_functionParser;
 }
 
 int wxFunctionParser::Parse(const wxString& function, const wxString& vars, bool useDegrees) {
-    _function = function;
-    _variables = vars;
+    m_function = function;
+    m_variables = vars;
 
     std::string Function = (const char*)wxConvUTF8.cWX2MB(function.c_str());
     std::string Vars = (const char*)wxConvUTF8.cWX2MB(vars.c_str());
 
-    int ret = _functionParser->Parse(Function, Vars, useDegrees);
-    _ok = (ret == -1) && ErrorMsg().IsEmpty();
+    int ret = m_functionParser->Parse(Function, Vars, useDegrees);
+    m_ok = (ret == -1) && ErrorMsg().IsEmpty();
 
     return ret;
 }
 
 wxString wxFunctionParser::ErrorMsg() const {
-    const char* msg = _functionParser->ErrorMsg();
+    const char* msg = m_functionParser->ErrorMsg();
     if (!msg) return wxEmptyString;
 
     return wxConvUTF8.cMB2WX(msg);
 }
 
 wxFunctionParser::ParseErrorType wxFunctionParser::GetParseErrorType() const {
-    return (wxFunctionParser::ParseErrorType)_functionParser->GetParseErrorType();
+    return (wxFunctionParser::ParseErrorType)m_functionParser->GetParseErrorType();
 }
 
 double wxFunctionParser::Eval(const double* Vars) {
-    return _functionParser->Eval(Vars);
+    return m_functionParser->Eval(Vars);
 }
 
 int wxFunctionParser::EvalError() const {
-    return _functionParser->EvalError();
+    return m_functionParser->EvalError();
 }
 
 bool wxFunctionParser::AddConstant(const wxString& name, double value) {
     std::string Name = (const char*)wxConvUTF8.cWX2MB(name.c_str());
-    return _functionParser->AddConstant(Name, value);
+    return m_functionParser->AddConstant(Name, value);
 }
 
 bool wxFunctionParser::AddFunction(const wxString& name, FunctionPtr fP, unsigned paramsAmount) {
     std::string Name = (const char*)wxConvUTF8.cWX2MB(name.c_str());
-    return _functionParser->AddFunction(Name, fP, paramsAmount);
+    return m_functionParser->AddFunction(Name, fP, paramsAmount);
 }
 
 bool wxFunctionParser::AddFunction(const wxString& name, wxFunctionParser& fP) {
     std::string Name = (const char*)wxConvUTF8.cWX2MB(name.c_str());
-    return _functionParser->AddFunction(Name, *fP.GetFunctionParser());
+    return m_functionParser->AddFunction(Name, *fP.GetFunctionParser());
 }
 
 void wxFunctionParser::Optimize() {
-    _functionParser->Optimize();
+    m_functionParser->Optimize();
 }
 
 int wxFunctionParser::GetNumberVariables() const {
-    return _functionParser->GetNumberVariables();
+    return m_functionParser->GetNumberVariables();
 }
 
 bool wxFunctionParser::GetUseDegrees() const {
-    return _functionParser->GetUseDegrees();
+    return m_functionParser->GetUseDegrees();
 }
 
 wxString wxFunctionParser::GetVariableName(size_t n) const {
@@ -202,10 +202,10 @@ wxString wxFunctionParser::GetVariableName(size_t n) const {
 }
 
 wxFunctionParser& wxFunctionParser::operator=(const wxFunctionParser& cpy) {
-    *_functionParser = *cpy.GetFunctionParser();
-    _function = cpy.GetFunctionString();
-    _variables = cpy.GetVariableString();
-    _ok = cpy.Ok();
+    *m_functionParser = *cpy.GetFunctionParser();
+    m_function = cpy.GetFunctionString();
+    m_variables = cpy.GetVariableString();
+    m_ok = cpy.Ok();
     return *this;
 }
 

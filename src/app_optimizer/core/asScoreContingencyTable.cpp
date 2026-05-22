@@ -27,6 +27,7 @@
  */
 
 #include "asScoreContingencyTable.h"
+#include "asIncludes.h"
 
 asScoreContingencyTable::asScoreContingencyTable()
     : asScore(asScore::ContingencyTable, _("Contingency table"), _("Contingency table"), Asc, NAN, NAN) {}

@@ -26,6 +26,7 @@
  */
 
 #include "asScoreRankHistogram.h"
+#include "asIncludes.h"
 
 asScoreRankHistogram::asScoreRankHistogram()
     : asScore(asScore::RankHistogram, _("Rank Histogram"), _("Verification Rank Histogram (Talagrand Diagram)"), Asc,

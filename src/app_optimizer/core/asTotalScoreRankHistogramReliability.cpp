@@ -26,6 +26,7 @@
  */
 
 #include "asTotalScoreRankHistogramReliability.h"
+#include "asIncludes.h"
 
 asTotalScoreRankHistogramReliability::asTotalScoreRankHistogramReliability(const wxString& periodString)
     : asTotalScore(periodString) {}

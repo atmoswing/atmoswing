@@ -27,6 +27,7 @@
  */
 
 #include "asCriteriaRMSE.h"
+#include "asIncludes.h"
 
 asCriteriaRMSE::asCriteriaRMSE()
     : asCriteria("RMSE", _("Root Mean Square Error"), Asc) {

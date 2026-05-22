@@ -27,6 +27,7 @@
  */
 
 #include "asTotalScoreRMSE.h"
+#include "asIncludes.h"
 
 asTotalScoreRMSE::asTotalScoreRMSE(const wxString& periodString)
     : asTotalScoreMSE(periodString) {}

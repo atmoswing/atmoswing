@@ -33,18 +33,18 @@
 vrLayerVectorLocation::vrLayerVectorLocation() {
     wxASSERT(!_dataset);
     wxASSERT(!_layer);
-    _driverType = vrDRIVER_VECTOR_MEMORY;
+    m_driverType = vrDRIVER_VECTOR_MEMORY;
 }
 
 vrLayerVectorLocation::~vrLayerVectorLocation() = default;
 
 long vrLayerVectorLocation::AddFeature(OGRGeometry* geometry, void* data) {
     wxASSERT(_layer);
-    OGRFeature* feature = OGRFeature::CreateFeature(_layer->GetLayerDefn());
+    OGRFeature* feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
     wxASSERT(_layer);
     feature->SetGeometry(geometry);
 
-    if (_layer->CreateFeature(feature) != OGRERR_NONE) {
+    if (m_layer->CreateFeature(feature) != OGRERR_NONE) {
         wxLogError(_("Error creating feature"));
         OGRFeature::DestroyFeature(feature);
         return wxNOT_FOUND;

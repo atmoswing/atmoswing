@@ -27,6 +27,7 @@
  */
 
 #include "asScoreCRPSS.h"
+#include "asIncludes.h"
 
 #include "asScoreCRPSAR.h"
 

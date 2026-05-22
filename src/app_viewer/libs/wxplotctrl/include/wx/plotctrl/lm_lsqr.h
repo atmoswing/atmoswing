@@ -99,7 +99,7 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
 
     // Has this been sucessfully created and is ready to be Fit()
     bool Ok() const {
-        return _ok;
+        return m_ok;
     }
 
     // After creation fit the plotFunc's vars to the plotData, returns # iterations
@@ -109,48 +109,48 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
 
     // returns true if this is currently fitting
     bool IsFitting() const {
-        return _fitting;
+        return m_fitting;
     }
 
     // abort a currently running fit, this may take a cycle or two so check
     //   IsFitting to determine when it is done.
     void AbortFitting() {
-        _abort_fitting = true;
+        m_abort_fitting = true;
     }
 
     // was the last fit aborted, reset when Create or Fit is called again
     bool GetAbortFitting() const {
-        return _abort_fitting;
+        return m_abort_fitting;
     }
 
     // If you don't cal Fit(some_vars, count) then the variables are all
     // initialized with this value, default = 0.1
     double GetInitValue() const {
-        return _init_value;
+        return m_init_value;
     }
 
     void SetInitValue(double init_val) {
-        _init_value = init_val;
+        m_init_value = init_val;
     }
 
     // Get the number of evaluations performed to find best fit
     int GetNumberIterations() const {
-        return _nfev;
+        return m_nfev;
     }
 
     // Get the euclidean norm of errors between data and function points
     double GetEuclideanNorm() const {
-        return _fnorm;
+        return m_fnorm;
     }
 
     // Get the number of variables, i.e. (plotFunc.GetNumberVars() - 1, x is excluded)
     int GetNumberVariables() const {
-        return _n;
+        return m_n;
     }
 
     // Get the evaluated variables, size is (plotFunc.GetNumberVars() - 1, x is excluded)
     double* GetVariables() const {
-        return _x;
+        return m_x;
     }
 
     // Get a single evaluated variable, 0 to GetNumberVariables()-1
@@ -163,13 +163,13 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
     void ReInit();  // only after a call to destroy - reset the vars
     void Destroy();
 
-    wxPlotData* _plotData;
-    wxPlotFunction* _plotFunc;
-    double _init_value;
-    wxString _resultMsg;
-    bool _ok;
-    bool _fitting;
-    bool _abort_fitting;
+    wxPlotData* m_plotData;
+    wxPlotFunction* m_plotFunc;
+    double m_init_value;
+    wxString m_resultMsg;
+    bool m_ok;
+    bool m_fitting;
+    bool m_abort_fitting;
 
     // this is the function to calculate the difference
     virtual void fcn(int m, int n, double x[], double fvec[], int* iflag);
@@ -194,29 +194,29 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
     void fdjac2(int m, int n, double x[], double fvec[], double fjac[], int ldfjac, int* iflag, double epsfcn,
                 double wa[]);
 
-    int _n;              // # of variables of plotFunc
-    int _m;              // # of functions = points in plotData
-    int _info;           // index of info message strings
-    double _fnorm;       // euclidean norm of errors
-    double _eps;         // resolution of arithmetic
-    double _dwarf;       // smallest nonzero number
-    int _nfev;           // # iterations completed
-    unsigned long _nan;  // # if times function evaluation had a NaN
-    double _ftol;        // relative error in the sum of the squares, if less done
-    double _xtol;        // relative error between two iterations, if less done
-    double _gtol;        // cosine of the angle between fvec and any column of the jacobian, if less done
-    double _epsfcn;      // step length for the forward-difference approximation
-    double _factor;      // initial step bound
-    double* _vars;       // variables + 1, where last is var 'x' for wxPlotFunction
-    double* _x;          // variables (size _n)
-    double* _fvec;       // output of evaluated functions (size _m)
-    double* _diag;       // multiplicative scale factors for the variables, see _mode
-    int _mode;           // =1 the vars scaled internally. if 2, scaling specified by _diag.
-    double* _fjac;       // output m by n array
-    int _ldfjac;         // the leading dimension of the array fjac >= _m
-    double* _qtf;        // output array the first n elements of the vector (q transpose)*fvec
-    int* _ipvt;          // integer output array of length n
-    int _maxfev;         // maximum number of iterations to try
+    int m_n;              // # of variables of plotFunc
+    int m_m;              // # of functions = points in plotData
+    int m_info;           // index of info message strings
+    double m_fnorm;       // euclidean norm of errors
+    double m_eps;         // resolution of arithmetic
+    double m_dwarf;       // smallest nonzero number
+    int m_nfev;           // # iterations completed
+    unsigned long m_nan;  // # if times function evaluation had a NaN
+    double m_ftol;        // relative error in the sum of the squares, if less done
+    double m_xtol;        // relative error between two iterations, if less done
+    double m_gtol;        // cosine of the angle between fvec and any column of the jacobian, if less done
+    double m_epsfcn;      // step length for the forward-difference approximation
+    double m_factor;      // initial step bound
+    double* m_vars;       // variables + 1, where last is var 'x' for wxPlotFunction
+    double* m_x;          // variables (size m_n)
+    double* m_fvec;       // output of evaluated functions (size m_m)
+    double* m_diag;       // multiplicative scale factors for the variables, see m_mode
+    int m_mode;           // =1 the vars scaled internally. if 2, scaling specified by m_diag.
+    double* m_fjac;       // output m by n array
+    int m_ldfjac;         // the leading dimension of the array fjac >= m_m
+    double* m_qtf;        // output array the first n elements of the vector (q transpose)*fvec
+    int* m_ipvt;          // integer output array of length n
+    int m_maxfev;         // maximum number of iterations to try
 
   private:
     void Init();

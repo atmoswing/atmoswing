@@ -27,6 +27,7 @@
  */
 
 #include "asScore.h"
+#include "asIncludes.h"
 
 #include "asScoreBS.h"
 #include "asScoreBSS.h"

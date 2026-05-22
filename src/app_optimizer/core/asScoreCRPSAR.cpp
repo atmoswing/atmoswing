@@ -28,6 +28,7 @@
  */
 
 #include "asScoreCRPSAR.h"
+#include "asIncludes.h"
 
 asScoreCRPSAR::asScoreCRPSAR()
     : asScore(asScore::CRPSAR, _("CRPS Approx Rectangle"),

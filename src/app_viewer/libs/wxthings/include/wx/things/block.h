@@ -19,7 +19,7 @@
 #include "wx/things/range.h"
 #endif
 
-// Note: Why are these not just wxRect2DXXX with _x and _width?
+// Note: Why are these not just wxRect2DXXX with m_x and m_width?
 //       because the double blocks need to match up at the edges and x+width
 //       does not always exactly equal the edge of an adjoining block
 
@@ -75,81 +75,81 @@ extern void wxArrayBlockDoubleSort(wxArrayBlockDouble& blocks, wxBlockSort_Type 
 class WXDLLIMPEXP_THINGS wxBlockInt {
   public:
     inline wxBlockInt(wxInt32 x1 = 0, wxInt32 y1 = 0, wxInt32 x2 = 0, wxInt32 y2 = 0)
-        : _x1(x1),
-          _y1(y1),
-          _x2(x2),
-          _y2(y2) {}
+        : m_x1(x1),
+          m_y1(y1),
+          m_x2(x2),
+          m_y2(y2) {}
 
     inline wxBlockInt(const wxRect2DInt& rect)
-        : _x1(rect._x),
-          _y1(rect._y),
-          _x2(rect.GetRight()),
-          _y2(rect.GetBottom()) {}
+        : m_x1(rect.m_x),
+          m_y1(rect.m_y),
+          m_x2(rect.GetRight()),
+          m_y2(rect.GetBottom()) {}
 
     inline wxInt32 GetLeft() const {
-        return _x1;
+        return m_x1;
     }
 
     inline wxInt32 GetRight() const {
-        return _x2;
+        return m_x2;
     }
 
     inline wxInt32 GetTop() const {
-        return _y1;
+        return m_y1;
     }
 
     inline wxInt32 GetBottom() const {
-        return _y2;
+        return m_y2;
     }
 
     inline wxInt32 GetWidth() const {
-        return _x2 - _x1 + 1;
+        return m_x2 - m_x1 + 1;
     }
 
     inline wxInt32 GetHeight() const {
-        return _y2 - _y1 + 1;
+        return m_y2 - m_y1 + 1;
     }
 
     inline wxPoint2DInt GetLeftTop() const {
-        return wxPoint2DInt(_x1, _y1);
+        return wxPoint2DInt(m_x1, m_y1);
     }
 
     inline wxPoint2DInt GetLeftBottom() const {
-        return wxPoint2DInt(_x1, _y2);
+        return wxPoint2DInt(m_x1, m_y2);
     }
 
     inline wxPoint2DInt GetRightTop() const {
-        return wxPoint2DInt(_x2, _y1);
+        return wxPoint2DInt(m_x2, m_y1);
     }
 
     inline wxPoint2DInt GetRightBottom() const {
-        return wxPoint2DInt(_x2, _y2);
+        return wxPoint2DInt(m_x2, m_y2);
     }
 
     inline wxRect2DInt GetRect2DInt() const {
-        return wxRect2DInt(_x1, _y1, _x2 - _x1 + 1, _y2 - _y1 + 1);
+        return wxRect2DInt(m_x1, m_y1, m_x2 - m_x1 + 1, m_y2 - m_y1 + 1);
     }
 
     inline void SetRect2DInt(const wxRect2DInt& r) {
-        _x1 = r._x;
-        _y1 = r._y, _x2 = r.GetRight();
-        _y2 = r.GetBottom();
+        m_x1 = r.m_x;
+        m_y1 = r.m_y, m_x2 = r.GetRight();
+        m_y2 = r.GetBottom();
     }
 
     inline bool Contains(wxInt32 x, wxInt32 y) const {
-        return ((x >= _x1) && (x <= _x2) && (y >= _y1) && (y <= _y2));
+        return ((x >= m_x1) && (x <= m_x2) && (y >= m_y1) && (y <= m_y2));
     }
 
     inline bool Contains(const wxPoint2DInt& pt) const {
-        return Contains(pt._x, pt._y);
+        return Contains(pt.m_x, pt.m_y);
     }
 
     inline bool Contains(const wxBlockInt& b) const {
-        return ((_x1 <= b._x1) && (b._x2 <= _x2) && (_y1 <= b._y1) && (b._y2 <= _y2));
+        return ((m_x1 <= b.m_x1) && (b.m_x2 <= m_x2) && (m_y1 <= b.m_y1) && (b.m_y2 <= m_y2));
     }
 
     inline bool Intersects(const wxBlockInt& b) const {
-        return (wxMax(_x1, b._x1) <= wxMin(_x2, b._x2)) && (wxMax(_y1, b._y1) <= wxMin(_y2, b._y2));
+        return (wxMax(m_x1, b.m_x1) <= wxMin(m_x2, b.m_x2)) && (wxMax(m_y1, b.m_y1) <= wxMin(m_y2, b.m_y2));
     }
 
     inline void Intersect(const wxBlockInt& otherBlock) {
@@ -157,10 +157,10 @@ class WXDLLIMPEXP_THINGS wxBlockInt {
     }
 
     inline void Intersect(const wxBlockInt& src1, const wxBlockInt& src2, wxBlockInt* dest) const {
-        dest->_x1 = wxMax(src1._x1, src2._x1);
-        dest->_x2 = wxMin(src1._x2, src2._x2);
-        dest->_y1 = wxMax(src1._y1, src2._y1);
-        dest->_y2 = wxMin(src1._y2, src2._y2);
+        dest->m_x1 = wxMax(src1.m_x1, src2.m_x1);
+        dest->m_x2 = wxMin(src1.m_x2, src2.m_x2);
+        dest->m_y1 = wxMax(src1.m_y1, src2.m_y1);
+        dest->m_y2 = wxMin(src1.m_y2, src2.m_y2);
     }
 
     inline void Union(const wxBlockInt& otherBlock) {
@@ -168,17 +168,17 @@ class WXDLLIMPEXP_THINGS wxBlockInt {
     }
 
     inline void Union(const wxBlockInt& src1, const wxBlockInt& src2, wxBlockInt* dest) const {
-        dest->_x1 = wxMin(src1._x1, src2._x1);
-        dest->_x2 = wxMax(src1._x2, src2._x2);
-        dest->_y1 = wxMin(src1._y1, src2._y1);
-        dest->_y2 = wxMax(src1._y2, src2._y2);
+        dest->m_x1 = wxMin(src1.m_x1, src2.m_x1);
+        dest->m_x2 = wxMax(src1.m_x2, src2.m_x2);
+        dest->m_y1 = wxMin(src1.m_y1, src2.m_y1);
+        dest->m_y2 = wxMax(src1.m_y2, src2.m_y2);
     }
 
     // is this block larger than input block, return 1 = larger, 0 = equal, -1 = smaller
     int IsLarger(const wxBlockInt& b) const;
 
     bool IsEmpty() const {
-        return (_x1 > _x2) || (_y1 > _y2);
+        return (m_x1 > m_x2) || (m_y1 > m_y2);
     }
 
     // Unlike Intersects this also includes just touching the other block
@@ -209,14 +209,14 @@ class WXDLLIMPEXP_THINGS wxBlockInt {
 
     // operators
     inline bool operator==(const wxBlockInt& b) {
-        return (_x1 == b._x1) && (_y1 == b._y1) && (_x2 == b._x2) && (_y2 == b._y2);
+        return (m_x1 == b.m_x1) && (m_y1 == b.m_y1) && (m_x2 == b.m_x2) && (m_y2 == b.m_y2);
     }
 
     inline bool operator!=(const wxBlockInt& b) {
         return !(*this == b);
     }
 
-    wxInt32 _x1, _y1, _x2, _y2;
+    wxInt32 m_x1, m_y1, m_x2, m_y2;
 };
 
 //=============================================================================
@@ -226,82 +226,82 @@ class WXDLLIMPEXP_THINGS wxBlockInt {
 class WXDLLIMPEXP_THINGS wxBlockDouble {
   public:
     inline wxBlockDouble(wxDouble x1 = 0, wxDouble y1 = 0, wxDouble x2 = 0, wxDouble y2 = 0)
-        : _x1(x1),
-          _y1(y1),
-          _x2(x2),
-          _y2(y2) {}
+        : m_x1(x1),
+          m_y1(y1),
+          m_x2(x2),
+          m_y2(y2) {}
 
     inline wxBlockDouble(const wxRect2DDouble& rect) {
-        _x1 = rect._x;
-        _y1 = rect._y;
-        _x2 = rect.GetRight();
-        _y2 = rect.GetBottom();
+        m_x1 = rect.m_x;
+        m_y1 = rect.m_y;
+        m_x2 = rect.GetRight();
+        m_y2 = rect.GetBottom();
     }
 
     inline wxDouble GetLeft() const {
-        return _x1;
+        return m_x1;
     }
 
     inline wxDouble GetRight() const {
-        return _x2;
+        return m_x2;
     }
 
     inline wxDouble GetTop() const {
-        return _y1;
+        return m_y1;
     }
 
     inline wxDouble GetBottom() const {
-        return _y2;
+        return m_y2;
     }
 
     inline wxDouble GetWidth() const {
-        return _x2 - _x1;
+        return m_x2 - m_x1;
     }
 
     inline wxDouble GetHeight() const {
-        return _y2 - _y1;
+        return m_y2 - m_y1;
     }
 
     inline wxPoint2DDouble GetLeftTop() const {
-        return wxPoint2DDouble(_x1, _y1);
+        return wxPoint2DDouble(m_x1, m_y1);
     }
 
     inline wxPoint2DDouble GetLeftBottom() const {
-        return wxPoint2DDouble(_x1, _y2);
+        return wxPoint2DDouble(m_x1, m_y2);
     }
 
     inline wxPoint2DDouble GetRightTop() const {
-        return wxPoint2DDouble(_x2, _y1);
+        return wxPoint2DDouble(m_x2, m_y1);
     }
 
     inline wxPoint2DDouble GetRightBottom() const {
-        return wxPoint2DDouble(_x2, _y2);
+        return wxPoint2DDouble(m_x2, m_y2);
     }
 
     inline wxRect2DDouble GetRect2DDouble() const {
-        return wxRect2DDouble(_x1, _y1, _x2 - _x1, _y2 - _y1);
+        return wxRect2DDouble(m_x1, m_y1, m_x2 - m_x1, m_y2 - m_y1);
     }
 
     inline void SetRect2DDouble(const wxRect2DDouble& r) {
-        _x1 = r._x;
-        _y1 = r._y, _x2 = r.GetRight();
-        _y2 = r.GetBottom();
+        m_x1 = r.m_x;
+        m_y1 = r.m_y, m_x2 = r.GetRight();
+        m_y2 = r.GetBottom();
     }
 
     inline bool Contains(wxDouble x, wxDouble y) const {
-        return ((x >= _x1) && (x <= _x2) && (y >= _y1) && (y <= _y2));
+        return ((x >= m_x1) && (x <= m_x2) && (y >= m_y1) && (y <= m_y2));
     }
 
     inline bool Contains(const wxPoint2DDouble& pt) const {
-        return Contains(pt._x, pt._y);
+        return Contains(pt.m_x, pt.m_y);
     }
 
     inline bool Contains(const wxBlockDouble& b) const {
-        return ((_x1 <= b._x1) && (b._x2 <= _x2) && (_y1 <= b._y1) && (b._y2 <= _y2));
+        return ((m_x1 <= b.m_x1) && (b.m_x2 <= m_x2) && (m_y1 <= b.m_y1) && (b.m_y2 <= m_y2));
     }
 
     inline bool Intersects(const wxBlockDouble& b) const {
-        return (wxMax(_x1, b._x1) < wxMin(_x2, b._x2)) && (wxMax(_y1, b._y1) < wxMin(_y2, b._y2));
+        return (wxMax(m_x1, b.m_x1) < wxMin(m_x2, b.m_x2)) && (wxMax(m_y1, b.m_y1) < wxMin(m_y2, b.m_y2));
     }
 
     inline void Intersect(const wxBlockDouble& otherBlock) {
@@ -309,10 +309,10 @@ class WXDLLIMPEXP_THINGS wxBlockDouble {
     }
 
     inline void Intersect(const wxBlockDouble& src1, const wxBlockDouble& src2, wxBlockDouble* dest) const {
-        dest->_x1 = wxMax(src1._x1, src2._x1);
-        dest->_x2 = wxMin(src1._x2, src2._x2);
-        dest->_y1 = wxMax(src1._y1, src2._y1);
-        dest->_y2 = wxMin(src1._y2, src2._y2);
+        dest->m_x1 = wxMax(src1.m_x1, src2.m_x1);
+        dest->m_x2 = wxMin(src1.m_x2, src2.m_x2);
+        dest->m_y1 = wxMax(src1.m_y1, src2.m_y1);
+        dest->m_y2 = wxMin(src1.m_y2, src2.m_y2);
     }
 
     inline void Union(const wxBlockDouble& otherBlock) {
@@ -320,17 +320,17 @@ class WXDLLIMPEXP_THINGS wxBlockDouble {
     }
 
     inline void Union(const wxBlockDouble& src1, const wxBlockDouble& src2, wxBlockDouble* dest) const {
-        dest->_x1 = wxMin(src1._x1, src2._x1);
-        dest->_x2 = wxMax(src1._x2, src2._x2);
-        dest->_y1 = wxMin(src1._y1, src2._y1);
-        dest->_y2 = wxMax(src1._y2, src2._y2);
+        dest->m_x1 = wxMin(src1.m_x1, src2.m_x1);
+        dest->m_x2 = wxMax(src1.m_x2, src2.m_x2);
+        dest->m_y1 = wxMin(src1.m_y1, src2.m_y1);
+        dest->m_y2 = wxMax(src1.m_y2, src2.m_y2);
     }
 
     // is this block larger than input block, return 1 - larger, 0 = equal, -1 smaller
     int IsLarger(const wxBlockDouble& b) const;
 
     inline bool IsEmpty() const {
-        return (_x1 > _x2) || (_y1 > _y2);
+        return (m_x1 > m_x2) || (m_y1 > m_y2);
     }
 
     // Unlike Intersects this also includes just touching the other block
@@ -361,14 +361,14 @@ class WXDLLIMPEXP_THINGS wxBlockDouble {
 
     // operators
     inline bool operator==(const wxBlockDouble& b) {
-        return (_x1 == b._x1) && (_y1 == b._y1) && (_x2 == b._x2) && (_y2 == b._y2);
+        return (m_x1 == b.m_x1) && (m_y1 == b.m_y1) && (m_x2 == b.m_x2) && (m_y2 == b.m_y2);
     }
 
     inline bool operator!=(const wxBlockDouble& b) {
         return !(*this == b);
     }
 
-    wxDouble _x1, _y1, _x2, _y2;
+    wxDouble m_x1, m_y1, m_x2, m_y2;
 };
 
 //=============================================================================
@@ -379,30 +379,30 @@ class WXDLLIMPEXP_THINGS wxBlockDouble {
 class WXDLLIMPEXP_THINGS wxBlockIntSelection {
   public:
     wxBlockIntSelection(wxBlockSort_Type sort_type = wxBLOCKSORT_TOPLEFT_BOTTOMRIGHT)
-        : _sort(sort_type) {}
+        : m_sort(sort_type) {}
 
     wxBlockIntSelection(const wxBlockIntSelection& blocks, wxBlockSort_Type sort_type = wxBLOCKSORT_TOPLEFT_BOTTOMRIGHT)
-        : _sort(sort_type) {
+        : m_sort(sort_type) {
         Copy(blocks);
     }
 
     // Make a full copy of the source
     void Copy(const wxBlockIntSelection& source) {
-        _blocks.Clear();
-        WX_APPEND_ARRAY(_blocks, source.GetBlockArray());
-        _sort = source.GetSortType();
+        m_blocks.Clear();
+        WX_APPEND_ARRAY(m_blocks, source.GetBlockArray());
+        m_sort = source.GetSortType();
     }
 
     inline int GetCount() const {
-        return _blocks.GetCount();
+        return m_blocks.GetCount();
     }
 
     inline void Clear() {
-        _blocks.Clear();
+        m_blocks.Clear();
     }
 
     wxArrayBlockInt GetBlockArray() const {
-        return _blocks;
+        return m_blocks;
     }
 
 #ifdef USE_wxRANGE
@@ -437,7 +437,7 @@ class WXDLLIMPEXP_THINGS wxBlockIntSelection {
     int Index(int x, int y) const;
 
     inline int Index(const wxPoint2DInt& pt) const {
-        return Index(pt._x, pt._y);
+        return Index(pt.m_x, pt.m_y);
     }
 
     int Index(const wxBlockInt& b) const;
@@ -446,7 +446,7 @@ class WXDLLIMPEXP_THINGS wxBlockIntSelection {
     void Sort(wxBlockSort_Type type = wxBLOCKSORT_TOPRIGHT_BOTTOMLEFT);
 
     wxBlockSort_Type GetSortType() const {
-        return _sort;
+        return m_sort;
     }
 
     // Add the block to the selection, returns false if nothing was done
@@ -481,8 +481,8 @@ class WXDLLIMPEXP_THINGS wxBlockIntSelection {
     static bool DoDoMinimize(wxArrayBlockInt& blocks);
 
   protected:
-    wxArrayBlockInt _blocks;
-    wxBlockSort_Type _sort;
+    wxArrayBlockInt m_blocks;
+    wxBlockSort_Type m_sort;
 };
 
 //=============================================================================
@@ -493,31 +493,31 @@ class WXDLLIMPEXP_THINGS wxBlockIntSelection {
 class WXDLLIMPEXP_THINGS wxBlockDoubleSelection {
   public:
     wxBlockDoubleSelection(wxBlockSort_Type sort_type = wxBLOCKSORT_TOPLEFT_BOTTOMRIGHT)
-        : _sort(sort_type) {}
+        : m_sort(sort_type) {}
 
     wxBlockDoubleSelection(const wxBlockDoubleSelection& blocks,
                            wxBlockSort_Type sort_type = wxBLOCKSORT_TOPLEFT_BOTTOMRIGHT)
-        : _sort(sort_type) {
+        : m_sort(sort_type) {
         Copy(blocks);
     }
 
     // Make a full copy of the source
     void Copy(const wxBlockDoubleSelection& source) {
-        _blocks.Clear();
-        WX_APPEND_ARRAY(_blocks, source.GetBlockArray());
-        _sort = source.GetSortType();
+        m_blocks.Clear();
+        WX_APPEND_ARRAY(m_blocks, source.GetBlockArray());
+        m_sort = source.GetSortType();
     }
 
     inline int GetCount() const {
-        return _blocks.GetCount();
+        return m_blocks.GetCount();
     }
 
     inline void Clear() {
-        _blocks.Clear();
+        m_blocks.Clear();
     }
 
     wxArrayBlockDouble GetBlockArray() const {
-        return _blocks;
+        return m_blocks;
     }
 
 #ifdef USE_wxRANGE
@@ -552,7 +552,7 @@ class WXDLLIMPEXP_THINGS wxBlockDoubleSelection {
     int Index(wxDouble x, wxDouble y) const;
 
     inline int Index(const wxPoint2DDouble& pt) const {
-        return Index(pt._x, pt._y);
+        return Index(pt.m_x, pt.m_y);
     }
 
     int Index(const wxBlockDouble& b) const;
@@ -561,7 +561,7 @@ class WXDLLIMPEXP_THINGS wxBlockDoubleSelection {
     void Sort(wxBlockSort_Type type = wxBLOCKSORT_TOPRIGHT_BOTTOMLEFT);
 
     wxBlockSort_Type GetSortType() const {
-        return _sort;
+        return m_sort;
     }
 
     // Add the block to the selection, returns false if nothing was done
@@ -594,8 +594,8 @@ class WXDLLIMPEXP_THINGS wxBlockDoubleSelection {
     static bool DoDoMinimize(wxArrayBlockDouble& blocks);
 
   protected:
-    wxArrayBlockDouble _blocks;
-    wxBlockSort_Type _sort;
+    wxArrayBlockDouble m_blocks;
+    wxBlockSort_Type m_sort;
 };
 
 //=============================================================================
@@ -619,12 +619,12 @@ class WXDLLIMPEXP_THINGS wxBlockIntSelectionIterator {
     // Set the method to get the blocks, either point by point or each whole block
     //   also resets the iteration to the beginning
     void SetType(wxBLOCKINT_SELITER_Type type) {
-        _type = type;
+        m_type = type;
         Reset();
     }
 
     wxBLOCKINT_SELITER_Type GetType() const {
-        return _type;
+        return m_type;
     }
 
     // Get next selection, returns false if at end (only valid for wxBLOCKINT_SELITER_POINT)
@@ -641,10 +641,10 @@ class WXDLLIMPEXP_THINGS wxBlockIntSelectionIterator {
     }
 
   protected:
-    wxBLOCKINT_SELITER_Type _type;
-    int _block_index;
-    wxPoint2DInt _pt;
-    wxArrayBlockInt _blocks;
+    wxBLOCKINT_SELITER_Type m_type;
+    int m_block_index;
+    wxPoint2DInt m_pt;
+    wxArrayBlockInt m_blocks;
 };
 
 //=============================================================================
@@ -671,8 +671,8 @@ class WXDLLIMPEXP_THINGS wxBlockDoubleSelectionIterator {
     }
 
   protected:
-    size_t _block_index;
-    wxArrayBlockDouble _blocks;
+    size_t m_block_index;
+    wxArrayBlockDouble m_blocks;
 };
 
 #endif  // __wxBLOCK_H__

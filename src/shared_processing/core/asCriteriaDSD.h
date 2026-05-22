@@ -29,8 +29,6 @@
 #define AS_CRITERIA_DSD_H
 
 #include "asCriteria.h"
-#include "asIncludes.h"
-
 class asCriteriaDSD : public asCriteria {
   public:
     asCriteriaDSD();

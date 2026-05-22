@@ -27,6 +27,7 @@
  */
 
 #include "asCriteria.h"
+#include "asIncludes.h"
 
 #include "asCriteriaDMV.h"
 #include "asCriteriaDSD.h"

@@ -186,7 +186,7 @@ class wxThingsMatrix2D : public wxObject {
     // Load a file from disk
     bool LoadFile(const wxString& filename, const wxArrayInt* cols = NULL);
 
-    wxArrayString _file_comments;
+    wxArrayString m_file_comments;
 
     friend wxThingsMatrix2D operator+(wxThingsMatrix2D& a, wxThingsMatrix2D& b) {
         return a.Add(b);

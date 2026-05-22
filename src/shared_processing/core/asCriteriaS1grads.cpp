@@ -27,6 +27,7 @@
  */
 
 #include "asCriteriaS1grads.h"
+#include "asIncludes.h"
 
 asCriteriaS1grads::asCriteriaS1grads()
     : asCriteria("S1grads", _("Teweles-Wobus on gradients"), Asc) {

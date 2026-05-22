@@ -29,7 +29,6 @@
 #ifndef AS_SCORE_BSS_H
 #define AS_SCORE_BSS_H
 
-#include "asIncludes.h"
 #include "asScore.h"
 
 class asScoreBSS : public asScore {

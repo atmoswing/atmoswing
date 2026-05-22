@@ -47,16 +47,16 @@ class wxPlotFuncRefData : public wxPlotCurveRefData {
 
     wxPlotFuncRefData(const wxPlotFuncRefData& data);
 
-    wxFunctionParser _parser;
+    wxFunctionParser m_parser;
 };
 
 wxPlotFuncRefData::wxPlotFuncRefData(const wxPlotFuncRefData& data)
     : wxPlotCurveRefData() {
     wxPlotCurveRefData::Copy(data);
-    _parser = data._parser;
+    m_parser = data.m_parser;
 }
 
-#define M_PLOTFUNCDATA ((wxPlotFuncRefData*)_refData)
+#define M_PLOTFUNCDATA ((wxPlotFuncRefData*)m_refData)
 
 //-----------------------------------------------------------------------------
 // wxPlotFunction
@@ -83,76 +83,76 @@ void wxPlotFunction::Destroy() {
 }
 
 bool wxPlotFunction::Ok() const {
-    return _refData && M_PLOTFUNCDATA->_parser.Ok();
+    return m_refData && M_PLOTFUNCDATA->m_parser.Ok();
 }
 
 int wxPlotFunction::Create(const wxString& function, const wxString& vars, bool useDegrees) {
     UnRef();
 
-    _refData = new wxPlotFuncRefData();
-    wxCHECK_MSG(_refData, 0, wxT("can't allocate memory"));
+    m_refData = new wxPlotFuncRefData();
+    wxCHECK_MSG(m_refData, 0, wxT("can't allocate memory"));
 
-    int i = M_PLOTFUNCDATA->_parser.Parse(function, vars, useDegrees);
+    int i = M_PLOTFUNCDATA->m_parser.Parse(function, vars, useDegrees);
 
-    if (!M_PLOTFUNCDATA->_parser.ErrorMsg().IsEmpty()) return i;
+    if (!M_PLOTFUNCDATA->m_parser.ErrorMsg().IsEmpty()) return i;
 
     return -1;
 }
 
 int wxPlotFunction::Parse(const wxString& function, const wxString& vars, bool useDegrees) {
-    wxCHECK_MSG(_refData, 0, wxT("Invalid plotfunction"));
+    wxCHECK_MSG(m_refData, 0, wxT("Invalid plotfunction"));
 
-    int i = M_PLOTFUNCDATA->_parser.Parse(function, vars, useDegrees);
+    int i = M_PLOTFUNCDATA->m_parser.Parse(function, vars, useDegrees);
 
-    if (!M_PLOTFUNCDATA->_parser.ErrorMsg().IsEmpty()) return i;
+    if (!M_PLOTFUNCDATA->m_parser.ErrorMsg().IsEmpty()) return i;
 
     return -1;
 }
 
 wxString wxPlotFunction::GetFunctionString() const {
     wxCHECK_MSG(Ok(), wxEmptyString, wxT("invalid plotfunction"));
-    return M_PLOTFUNCDATA->_parser.GetFunctionString();
+    return M_PLOTFUNCDATA->m_parser.GetFunctionString();
 }
 
 wxString wxPlotFunction::GetVariableString() const {
     wxCHECK_MSG(Ok(), wxEmptyString, wxT("invalid plotfunction"));
-    return M_PLOTFUNCDATA->_parser.GetVariableString();
+    return M_PLOTFUNCDATA->m_parser.GetVariableString();
 }
 
 wxString wxPlotFunction::GetVariableName(size_t n) const {
     wxCHECK_MSG(Ok(), wxEmptyString, wxT("invalid plotfunction"));
     wxCHECK_MSG((int(n) < GetNumberVariables()), wxEmptyString, wxT("invalid variable index"));
-    return M_PLOTFUNCDATA->_parser.GetVariableName(n);
+    return M_PLOTFUNCDATA->m_parser.GetVariableName(n);
 }
 
 int wxPlotFunction::GetNumberVariables() const {
     wxCHECK_MSG(Ok(), 0, wxT("Invalid plotfunction"));
-    return M_PLOTFUNCDATA->_parser.GetNumberVariables();
+    return M_PLOTFUNCDATA->m_parser.GetNumberVariables();
 }
 
 bool wxPlotFunction::GetUseDegrees() const {
-    wxCHECK_MSG(_refData, false, wxT("Invalid plotfunction"));
-    return M_PLOTFUNCDATA->_parser.GetUseDegrees();
+    wxCHECK_MSG(m_refData, false, wxT("Invalid plotfunction"));
+    return M_PLOTFUNCDATA->m_parser.GetUseDegrees();
 }
 
 wxString wxPlotFunction::GetErrorMsg() const {
-    wxCHECK_MSG(_refData, wxEmptyString, wxT("Invalid plotfunction"));
-    return M_PLOTFUNCDATA->_parser.ErrorMsg();
+    wxCHECK_MSG(m_refData, wxEmptyString, wxT("Invalid plotfunction"));
+    return M_PLOTFUNCDATA->m_parser.ErrorMsg();
 }
 
 double wxPlotFunction::GetY(double x) const {
     wxCHECK_MSG(Ok(), 0.0, wxT("invalid plotfunction"));
-    return M_PLOTFUNCDATA->_parser.Eval(&x);
+    return M_PLOTFUNCDATA->m_parser.Eval(&x);
 }
 
 double wxPlotFunction::GetValue(double* x) const {
     wxCHECK_MSG(Ok(), 0.0, wxT("invalid plotfunction"));
-    return M_PLOTFUNCDATA->_parser.Eval(x);
+    return M_PLOTFUNCDATA->m_parser.Eval(x);
 }
 
 bool wxPlotFunction::AddConstant(const wxString& name, double value) {
     wxCHECK_MSG(Ok(), false, wxT("invalid plotfunction"));
-    return M_PLOTFUNCDATA->_parser.AddConstant(name, value);
+    return M_PLOTFUNCDATA->m_parser.AddConstant(name, value);
 }
 
 //-----------------------------------------------------------------------------

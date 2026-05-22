@@ -27,6 +27,7 @@
  */
 
 #include "asScoreMAE.h"
+#include "asIncludes.h"
 
 asScoreMAE::asScoreMAE()
     : asScore(asScore::MAE, _("Mean absolute error"), _("Mean absolute error"), Asc, 0, NAN) {}

@@ -27,6 +27,7 @@
  */
 
 #include "asTotalScoreF.h"
+#include "asIncludes.h"
 
 asTotalScoreF::asTotalScoreF(const wxString& periodString)
     : asTotalScore(periodString) {}

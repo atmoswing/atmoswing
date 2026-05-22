@@ -28,6 +28,7 @@
  */
 
 #include "asScoreMSE.h"
+#include "asIncludes.h"
 
 asScoreMSE::asScoreMSE()
     : asScore(asScore::MSE, _("Mean square error"), _("Mean square error"), Asc, 0, NAN) {}

@@ -1451,14 +1451,14 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
     auto msg = static_cast<vrDisplayToolMessage*>(event.GetClientData());
     wxASSERT(msg);
 
-    if (msg->_evtType == vrEVT_TOOL_ZOOM) {
+    if (msg->m_evtType == vrEVT_TOOL_ZOOM) {
         // Get rectangle
         vrCoordinate* coord = _viewerLayerManager->GetDisplay()->GetCoordinate();
         wxASSERT(coord);
 
         // Get real rectangle
         vrRealRect realRect;
-        coord->ConvertFromPixels(msg->_rect, realRect);
+        coord->ConvertFromPixels(msg->m_rect, realRect);
         wxASSERT(realRect.IsOk());
 
         // Get fitted rectangle
@@ -1473,14 +1473,14 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
 #else
         _viewerLayerManager->Zoom(fittedRect);
 #endif
-    } else if (msg->_evtType == vrEVT_TOOL_ZOOMOUT) {
+    } else if (msg->m_evtType == vrEVT_TOOL_ZOOMOUT) {
         // Get rectangle
         vrCoordinate* coord = _viewerLayerManager->GetDisplay()->GetCoordinate();
         wxASSERT(coord);
 
         // Get real rectangle
         vrRealRect realRect;
-        coord->ConvertFromPixels(msg->_rect, realRect);
+        coord->ConvertFromPixels(msg->m_rect, realRect);
         wxASSERT(realRect.IsOk());
 
         // Get fitted rectangle
@@ -1495,7 +1495,7 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
 #else
         _viewerLayerManager->ZoomOut(fittedRect);
 #endif
-    } else if (msg->_evtType == vrEVT_TOOL_SELECT) {
+    } else if (msg->m_evtType == vrEVT_TOOL_SELECT) {
         // If no forecast open
         if (_forecastManager->GetMethodsNb() == 0) {
             wxDELETE(msg);
@@ -1505,7 +1505,7 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
         // Transform screen coordinates to real coordinates
         vrCoordinate* coord = _viewerLayerManager->GetDisplay()->GetCoordinate();
         wxASSERT(coord);
-        wxPoint clickedPos = msg->_position;
+        wxPoint clickedPos = msg->m_position;
         if (clickedPos != wxDefaultPosition) {
             wxPoint2DDouble realClickedPos;
             coord->ConvertFromPixels(clickedPos, realClickedPos);
@@ -1520,11 +1520,11 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
             int width = actExtent.GetSize().GetWidth();
             double bufferSize = width * ratioBuffer;
 
-            linRing.addPoint(realClickedPos._x - bufferSize, realClickedPos._y - bufferSize);
-            linRing.addPoint(realClickedPos._x - bufferSize, realClickedPos._y + bufferSize);
-            linRing.addPoint(realClickedPos._x + bufferSize, realClickedPos._y + bufferSize);
-            linRing.addPoint(realClickedPos._x + bufferSize, realClickedPos._y - bufferSize);
-            linRing.addPoint(realClickedPos._x - bufferSize, realClickedPos._y - bufferSize);
+            linRing.addPoint(realClickedPos.m_x - bufferSize, realClickedPos.m_y - bufferSize);
+            linRing.addPoint(realClickedPos.m_x - bufferSize, realClickedPos.m_y + bufferSize);
+            linRing.addPoint(realClickedPos.m_x + bufferSize, realClickedPos.m_y + bufferSize);
+            linRing.addPoint(realClickedPos.m_x + bufferSize, realClickedPos.m_y - bufferSize);
+            linRing.addPoint(realClickedPos.m_x - bufferSize, realClickedPos.m_y - bufferSize);
 
             polygon.addRing(&linRing);
 
@@ -1579,12 +1579,12 @@ void asFrameViewer::OnToolAction(wxCommandEvent& event) {
             ReloadViewerLayerManager();
         }
 
-    } else if (msg->_evtType == vrEVT_TOOL_PAN) {
+    } else if (msg->m_evtType == vrEVT_TOOL_PAN) {
         // Get rectangle
         vrCoordinate* coord = _viewerLayerManager->GetDisplay()->GetCoordinate();
         wxASSERT(coord);
 
-        wxPoint movedPos = msg->_position;
+        wxPoint movedPos = msg->m_position;
         wxPoint2DDouble movedRealPt;
         if (!coord->ConvertFromPixels(movedPos, movedRealPt)) {
             wxLogError(_("Error converting point : %d, %d to real coordinate"), movedPos.x, movedPos.y);

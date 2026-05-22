@@ -26,6 +26,7 @@
  */
 
 #include "asCriteriaDMV.h"
+#include "asIncludes.h"
 
 asCriteriaDMV::asCriteriaDMV()
     : asCriteria("DMV", _("Absolute difference in mean value (nonspatial)"), Asc) {

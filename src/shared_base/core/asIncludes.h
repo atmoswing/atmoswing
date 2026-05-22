@@ -125,6 +125,12 @@ using std::runtime_error;
 // Some AtmoSwing stuff - frequently used classes
 //---------------------------------
 
+// asTypeDefs.h MUST precede the other project headers: several of them (asThreadsManager.h,
+// asTime.h, ...) use its type aliases and structs (vector, Time, a1f, ...) at namespace scope.
+// It is kept in its own include block (blank line below) so clang-format's SortIncludes does
+// not merge and re-sort it alphabetically with the block that follows.
+#include "asTypeDefs.h"
+
 #include "asConfig.h"
 #include "asGlobEnums.h"
 #include "asGlobVars.h"
@@ -132,7 +138,6 @@ using std::runtime_error;
 #include "asThreadsManager.h"
 #include "asThreadsManagerGlobalFunctions.h"
 #include "asTime.h"
-#include "asTypeDefs.h"  // Must be first
 #include "asUtils.h"
 #include "asVersion.h"
 

@@ -26,6 +26,7 @@
  */
 
 #include "asTotalScoreMeanWithClim.h"
+#include "asIncludes.h"
 
 asTotalScoreMeanWithClim::asTotalScoreMeanWithClim(const wxString& periodString)
     : asTotalScore(periodString) {}

@@ -652,10 +652,10 @@ vrRealRect asFramePredictors::GetDesiredExtent() const {
     float marginHeight = 0.5f * height;
 
     vrRealRect desiredExtent;
-    desiredExtent._x = extent[0] - marginWidth;
-    desiredExtent._width = width + 2 * marginWidth;
-    desiredExtent._y = extent[3] + marginHeight;
-    desiredExtent._height = height - 2 * marginHeight;
+    desiredExtent.m_x = extent[0] - marginWidth;
+    desiredExtent.m_width = width + 2 * marginWidth;
+    desiredExtent.m_y = extent[3] + marginHeight;
+    desiredExtent.m_height = height - 2 * marginHeight;
 
     return desiredExtent;
 }
@@ -666,19 +666,19 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
 
     vrRealRect realRect;
 
-    if (msg->_evtType == vrEVT_TOOL_ZOOM) {
+    if (msg->m_evtType == vrEVT_TOOL_ZOOM) {
         // Get rectangle
-        vrCoordinate* coord = msg->_parentManager->GetDisplay()->GetCoordinate();
+        vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
 
         // Get real rectangle
-        coord->ConvertFromPixels(msg->_rect, realRect);
+        coord->ConvertFromPixels(msg->m_rect, realRect);
 
         // Get fitted rectangle
         vrRealRect fittedRect = coord->GetRectFitted(realRect);
 
         if (!_syncroTool) {
 #if defined(__WIN32__)
-            auto thread = new asThreadViewerLayerManagerZoomIn(msg->_parentManager, &_critSectionViewerLayerManager,
+            auto thread = new asThreadViewerLayerManagerZoomIn(msg->m_parentManager, &_critSectionViewerLayerManager,
                                                                fittedRect);
             ThreadsManager().AddThread(thread);
 #else
@@ -704,19 +704,19 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
 #endif
             }
         }
-    } else if (msg->_evtType == vrEVT_TOOL_ZOOMOUT) {
+    } else if (msg->m_evtType == vrEVT_TOOL_ZOOMOUT) {
         // Getting rectangle
-        vrCoordinate* coord = msg->_parentManager->GetDisplay()->GetCoordinate();
+        vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
 
         // Get real rectangle
-        coord->ConvertFromPixels(msg->_rect, realRect);
+        coord->ConvertFromPixels(msg->m_rect, realRect);
 
         // Get fitted rectangle
         vrRealRect fittedRect = coord->GetRectFitted(realRect);
 
         if (!_syncroTool) {
 #if defined(__WIN32__)
-            auto thread = new asThreadViewerLayerManagerZoomOut(msg->_parentManager, &_critSectionViewerLayerManager,
+            auto thread = new asThreadViewerLayerManagerZoomOut(msg->m_parentManager, &_critSectionViewerLayerManager,
                                                                 fittedRect);
             ThreadsManager().AddThread(thread);
 #else
@@ -742,10 +742,10 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
 #endif
             }
         }
-    } else if (msg->_evtType == vrEVT_TOOL_PAN) {
-        vrCoordinate* coord = msg->_parentManager->GetDisplay()->GetCoordinate();
+    } else if (msg->m_evtType == vrEVT_TOOL_PAN) {
+        vrCoordinate* coord = msg->m_parentManager->GetDisplay()->GetCoordinate();
 
-        wxPoint movedPos = msg->_position;
+        wxPoint movedPos = msg->m_position;
         wxPoint2DDouble myMovedRealPt;
         if (!coord->ConvertFromPixels(movedPos, myMovedRealPt)) {
             wxLogError("Error converting point : %d, %d to real coordinate", movedPos.x, movedPos.y);
@@ -758,7 +758,7 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
 
         if (!_syncroTool) {
             coord->SetExtent(realRect);
-            msg->_parentManager->Reload();
+            msg->m_parentManager->Reload();
             ReloadViewerLayerManagerLeft();
             ReloadViewerLayerManagerRight();
         } else {
@@ -772,20 +772,20 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
             }
         }
 
-    } else if (msg->_evtType == vrEVT_TOOL_SIGHT) {
+    } else if (msg->m_evtType == vrEVT_TOOL_SIGHT) {
         vrViewerLayerManager* invertedMgr = _viewerLayerManagerLeft;
-        if (invertedMgr == msg->_parentManager) {
+        if (invertedMgr == msg->m_parentManager) {
             invertedMgr = _viewerLayerManagerRight;
         }
 
-        switch (msg->_mouseStatus) {
+        switch (msg->m_mouseStatus) {
             case vrMOUSE_DOWN:
             case vrMOUSE_MOVE: {
                 wxClientDC dc(invertedMgr->GetDisplay());
                 wxDCOverlay overlayDc(_overlay, &dc);
                 overlayDc.Clear();
                 dc.SetPen(*wxRED_PEN);
-                dc.CrossHair(msg->_position);
+                dc.CrossHair(msg->m_position);
             } break;
             case vrMOUSE_UP: {
                 wxClientDC dc(invertedMgr->GetDisplay());

@@ -29,8 +29,8 @@
 #ifndef AS_TOTAL_SCORE_H
 #define AS_TOTAL_SCORE_H
 
-#include "asIncludes.h"
-#include "asTimeArray.h"
+#include "asHeadersBase.h"
+#include "asTimeArray.h"  // NOTE: still transitively brings asIncludes.h until asTimeArray.h is migrated
 
 class asTotalScore : public wxObject {
   public:

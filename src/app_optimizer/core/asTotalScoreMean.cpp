@@ -27,6 +27,7 @@
  */
 
 #include "asTotalScoreMean.h"
+#include "asIncludes.h"
 
 asTotalScoreMean::asTotalScoreMean(const wxString& periodString)
     : asTotalScore(periodString) {}

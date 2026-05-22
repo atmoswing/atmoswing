@@ -29,8 +29,6 @@
 #define AS_CRITERIA_S1OBS_H
 
 #include "asCriteria.h"
-#include "asIncludes.h"
-
 class asCriteriaS1obs : public asCriteria {
   public:
     asCriteriaS1obs();

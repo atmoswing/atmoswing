@@ -26,6 +26,7 @@
  */
 
 #include "asCriteriaS0obs.h"
+#include "asIncludes.h"
 
 asCriteriaS0obs::asCriteriaS0obs()
     : asCriteria("S0obs", _("S0 with division by actual value"), Asc) {

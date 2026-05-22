@@ -26,6 +26,7 @@
  */
 
 #include "asTotalScoreRankHistogram.h"
+#include "asIncludes.h"
 
 asTotalScoreRankHistogram::asTotalScoreRankHistogram(const wxString& periodString)
     : asTotalScore(periodString) {

@@ -27,6 +27,7 @@
  */
 
 #include "asCriteriaS1.h"
+#include "asIncludes.h"
 
 asCriteriaS1::asCriteriaS1()
     : asCriteria("S1", _("Teweles-Wobus score"), Asc) {

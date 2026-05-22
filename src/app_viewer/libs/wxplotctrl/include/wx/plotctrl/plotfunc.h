@@ -90,11 +90,11 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotFunction : public wxPlotCurve {
     bool AddConstant(const wxString& name, double value);
 
     bool operator==(const wxPlotFunction& plotFunc) const {
-        return _refData == plotFunc._refData;
+        return m_refData == plotFunc.m_refData;
     }
 
     bool operator!=(const wxPlotFunction& plotFunc) const {
-        return _refData != plotFunc._refData;
+        return m_refData != plotFunc.m_refData;
     }
 
     wxPlotFunction& operator=(const wxPlotFunction& plotFunc) {

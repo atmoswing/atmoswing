@@ -26,6 +26,7 @@
  */
 
 #include "asCriteriaS1G.h"
+#include "asIncludes.h"
 
 asCriteriaS1G::asCriteriaS1G()
     : asCriteria("S1", _("Teweles-Wobus score with a Gaussian weighting"), Asc) {

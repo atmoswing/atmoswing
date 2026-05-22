@@ -27,6 +27,7 @@
  */
 
 #include "asTotalScoreCRPSpotential.h"
+#include "asIncludes.h"
 
 asTotalScoreCRPSpotential::asTotalScoreCRPSpotential(const wxString& periodString)
     : asTotalScore(periodString) {

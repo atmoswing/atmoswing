@@ -26,6 +26,7 @@
  */
 
 #include "asCriteriaS2.h"
+#include "asIncludes.h"
 
 asCriteriaS2::asCriteriaS2()
     : asCriteria("S2", _("Derivative of Teweles-Wobus score"), Asc) {

@@ -76,7 +76,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotMarker : public wxObject {
     wxPlotMarker(int marker_type, const wxPoint2DDouble& pt, const wxSize& size, const wxGenericPen& pen,
                  const wxGenericBrush& brush = wxNullGenericBrush)
         : wxObject() {
-        Create(marker_type, wxRect2DDouble(pt._x, pt._y, 0, 0), size, pen, brush);
+        Create(marker_type, wxRect2DDouble(pt.m_x, pt.m_y, 0, 0), size, pen, brush);
     }
 
     // Create a bitmap marker
@@ -89,7 +89,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotMarker : public wxObject {
 
     // is the marker created
     bool Ok() const {
-        return _refData != NULL;
+        return m_refData != NULL;
     }
 
     // Generic create function
@@ -101,7 +101,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotMarker : public wxObject {
 
     // Create a wxPLOTMARKER_POINT
     void CreatePointMarker(const wxPoint2DDouble& pt, const wxGenericPen& pen) {
-        Create(wxPLOTMARKER_POINT, wxRect2DDouble(pt._x, pt._y, 0, 0), wxSize(-1, -1), pen);
+        Create(wxPLOTMARKER_POINT, wxRect2DDouble(pt.m_x, pt.m_y, 0, 0), wxSize(-1, -1), pen);
     }
 
     // Create a wxPLOTMARKER_LINE
@@ -121,7 +121,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotMarker : public wxObject {
 
     // Create a wxPLOTMARKER_CROSS
     void CreateCrossMarker(const wxPoint2DDouble& pt, const wxGenericPen& pen) {
-        Create(wxPLOTMARKER_CROSS, wxRect2DDouble(pt._x, pt._y, -1, -1), wxSize(-1, -1), pen);
+        Create(wxPLOTMARKER_CROSS, wxRect2DDouble(pt.m_x, pt.m_y, -1, -1), wxSize(-1, -1), pen);
     }
 
     // Create a wxPLOTMARKER_RECT
@@ -133,7 +133,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotMarker : public wxObject {
     // Create a wxPLOTMARKER_RECT
     void CreateRectMarker(const wxPoint2DDouble& pt, const wxSize& size, const wxGenericPen& pen,
                           const wxGenericBrush& brush = wxNullGenericBrush) {
-        Create(wxPLOTMARKER_RECT, wxRect2DDouble(pt._x, pt._y, 0, 0), size, pen, brush);
+        Create(wxPLOTMARKER_RECT, wxRect2DDouble(pt.m_x, pt.m_y, 0, 0), size, pen, brush);
     }
 
     //    void CreateEllipseMarker(const wxRect2DDouble& rect,
@@ -144,12 +144,12 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotMarker : public wxObject {
     // Create a wxPLOTMARKER_ELLIPSE
     void CreateEllipseMarker(const wxPoint2DDouble& pt, const wxSize& size, const wxGenericPen& pen,
                              const wxGenericBrush& brush = wxNullGenericBrush) {
-        Create(wxPLOTMARKER_ELLIPSE, wxRect2DDouble(pt._x, pt._y, 0, 0), size, pen, brush);
+        Create(wxPLOTMARKER_ELLIPSE, wxRect2DDouble(pt.m_x, pt.m_y, 0, 0), size, pen, brush);
     }
 
     // Create a wxPLOTMARKER_BITMAP
     void CreateBitmapMarker(const wxPoint2DDouble& pt, const wxBitmap& bitmap) {
-        Create(wxPLOTMARKER_BITMAP, wxRect2DDouble(pt._x, pt._y, 0, 0), wxSize(-1, -1), wxNullGenericPen,
+        Create(wxPLOTMARKER_BITMAP, wxRect2DDouble(pt.m_x, pt.m_y, 0, 0), wxSize(-1, -1), wxNullGenericPen,
                wxNullGenericBrush, bitmap);
     }
 
@@ -206,11 +206,11 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotMarker : public wxObject {
 
     // operators
     bool operator==(const wxPlotMarker& pm) const {
-        return _refData == pm._refData;
+        return m_refData == pm.m_refData;
     }
 
     bool operator!=(const wxPlotMarker& pm) const {
-        return _refData != pm._refData;
+        return m_refData != pm.m_refData;
     }
 
     wxPlotMarker& operator=(const wxPlotMarker& pm) {

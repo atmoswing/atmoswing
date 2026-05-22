@@ -26,6 +26,7 @@
  */
 
 #include "asCriteriaS0.h"
+#include "asIncludes.h"
 
 asCriteriaS0::asCriteriaS0()
     : asCriteria("S0", _("Teweles-Wobus on raw data"), Asc) {
