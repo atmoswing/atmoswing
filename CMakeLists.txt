@@ -254,6 +254,8 @@ set(ENABLE_EXTRA_TESTS OFF)
 set(ENABLE_EXAMPLES OFF)
 set(ENABLE_SAMPLES OFF)
 set(ENABLE_SYMLINKS OFF)
+set(ENABLE_JPG_LIBJASPER ON)
+set(ENABLE_JPG_LIBOPENJPEG OFF) # Prefer JasPer backend; avoids Linux CI link failures on opj_* symbols
 set(ECBUILD_LOG_LEVEL "OFF")  # Disable all logging
 set(ECBUILD_LOG_FILE "${CMAKE_BINARY_DIR}/ecbuild.log")  # Set proper log file location
 if (WIN32)

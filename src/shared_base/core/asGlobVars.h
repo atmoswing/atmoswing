@@ -44,10 +44,6 @@ extern wxString g_cmdFileName;
 extern bool g_local;
 extern int g_runNb;
 
-// Constants
-extern const double g_cst_Euler;
-extern const double g_cst_Pi;
-
 // Useful variables
 extern const wxString DS;
 extern double g_ppiScaleDc;

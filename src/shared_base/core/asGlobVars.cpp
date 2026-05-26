@@ -41,10 +41,6 @@ wxString g_cmdFileName = wxEmptyString;
 bool g_local = false;
 int g_runNb = 0;
 
-// Constants
-const double g_cst_Euler = 0.5772156649;  // Euler-Mascheroni
-const double g_cst_Pi = 3.1415926535;
-
 // Useful variables
 #if defined(__WIN32__)
 const wxString DS = "\\";

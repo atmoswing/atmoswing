@@ -29,6 +29,8 @@
 #include "asPredictandPrecipitation.h"
 #include "asIncludes.h"
 
+#include <numbers>  // std::numbers::pi, std::numbers::egamma
+
 #include "asCatalogPredictands.h"
 #include "asFileNetcdf.h"
 #include "asTimeArray.h"
@@ -256,7 +258,7 @@ bool asPredictandPrecipitation::MakeGumbelAdjustment() {
     }
 
     // Preprocess cste
-    float b_cst = std::sqrt(6.0) / g_cst_Pi;
+    float b_cst = std::sqrt(6.0) / std::numbers::pi;
 
     // Resize containers
     _gumbelDuration.resize(_stationsNb, duration.size());
@@ -300,7 +302,7 @@ bool asPredictandPrecipitation::MakeGumbelAdjustment() {
             float stdev = asStDev(&currentAnnualMax(0), &currentAnnualMax(arrayEnd), asSAMPLE);
 
             float b = b_cst * stdev;
-            float a = mean - b * g_cst_Euler;  // EUCON: Euler-Mascheroni constant in math.h
+            float a = mean - b * std::numbers::egamma;  // Euler-Mascheroni constant
 
             _gumbelDuration(iStat, iDuration) = duration[iDuration];
             _gumbelParamA(iStat, iDuration) = a;
