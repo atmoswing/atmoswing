@@ -30,7 +30,7 @@
 #define AS_PREDICTAND_H
 
 #include "asFileDat.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asCatalogPredictands;
 
@@ -115,7 +115,7 @@ class asPredictand : public wxObject {
         return nodata;
     }
 
-    virtual float GetReferenceValue(int iStat, double duration, float reference) const {
+    virtual float GetReferenceValue(int /*iStat*/, double /*duration*/, float /*reference*/) const {
         return NAN;
     }
 

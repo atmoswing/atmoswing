@@ -27,6 +27,7 @@
  */
 
 #include "asPredictandTemperature.h"
+#include "asIncludes.h"
 
 #include "asCatalogPredictands.h"
 #include "asFileNetcdf.h"

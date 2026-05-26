@@ -27,6 +27,7 @@
  */
 
 #include "asParametersScoring.h"
+#include "asIncludes.h"
 
 #include "asFileParametersCalibration.h"
 

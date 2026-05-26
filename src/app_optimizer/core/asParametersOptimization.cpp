@@ -27,6 +27,7 @@
  */
 
 #include "asParametersOptimization.h"
+#include "asIncludes.h"
 
 #include "asFileParametersOptimization.h"
 
@@ -1116,7 +1117,7 @@ bool asParametersOptimization::FixWeights() {
             if (totWeightLocked > 1) {
                 float precision = GetPredictorWeightIteration(i, j);
                 float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                newWeight = std::max(precision * asRound(newWeight * (1.0 / precision)),
+                newWeight = std::max((float)(precision * asRound(newWeight * (1.0 / precision))),
                                   GetPredictorWeightLowerLimit(i, j));
                 newSum += newWeight;
 
@@ -1125,7 +1126,7 @@ bool asParametersOptimization::FixWeights() {
                 if (!IsPredictorWeightLocked(i, j)) {
                     float precision = GetPredictorWeightIteration(i, j);
                     float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                    newWeight = std::max(precision * asRound(newWeight * (1.0 / precision)),
+                    newWeight = std::max((float)(precision * asRound(newWeight * (1.0 / precision))),
                                       GetPredictorWeightLowerLimit(i, j));
                     newSum += newWeight;
 

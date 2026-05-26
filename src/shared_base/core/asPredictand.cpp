@@ -27,6 +27,7 @@
  */
 
 #include "asPredictand.h"
+#include "asIncludes.h"
 
 #include "asCatalogPredictands.h"
 #include "asFileDat.h"

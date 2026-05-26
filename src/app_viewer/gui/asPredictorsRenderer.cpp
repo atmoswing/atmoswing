@@ -76,12 +76,12 @@ void asPredictorsRenderer::Redraw(vf& domain, Coo& location, int predictorSelect
     double maxVal = -99999999999;
 
     if (targetDataLoaded) {
-        minVal = std::min(_predictorsManagerTarget->GetDataMin(), minVal);
-        maxVal = std::max(_predictorsManagerTarget->GetDataMax(), maxVal);
+        minVal = std::min(static_cast<double>(_predictorsManagerTarget->GetDataMin()), minVal);
+        maxVal = std::max(static_cast<double>(_predictorsManagerTarget->GetDataMax()), maxVal);
     }
     if (analogDataLoaded) {
-        minVal = std::min(_predictorsManagerAnalog->GetDataMin(), minVal);
-        maxVal = std::max(_predictorsManagerAnalog->GetDataMax(), maxVal);
+        minVal = std::min(static_cast<double>(_predictorsManagerAnalog->GetDataMin()), minVal);
+        maxVal = std::max(static_cast<double>(_predictorsManagerAnalog->GetDataMax()), maxVal);
     }
 
     double step = ComputeStep(minVal, maxVal);

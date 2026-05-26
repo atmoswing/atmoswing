@@ -27,6 +27,7 @@
  */
 
 #include "asParametersForecast.h"
+#include "asIncludes.h"
 
 #include "asFileParametersForecast.h"
 

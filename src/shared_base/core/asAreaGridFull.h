@@ -29,7 +29,6 @@
 #define AS_AREA_GRID_FULL_H
 
 #include "asAreaGrid.h"
-#include "asIncludes.h"
 
 class asAreaGridFull : public asAreaGrid {
   public:

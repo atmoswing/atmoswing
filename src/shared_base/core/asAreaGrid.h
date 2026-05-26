@@ -30,7 +30,6 @@
 #define AS_AREA_GRID_H
 
 #include "asArea.h"
-#include "asIncludes.h"
 
 class asParameters;
 

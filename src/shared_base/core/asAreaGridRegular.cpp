@@ -27,6 +27,7 @@
  */
 
 #include "asAreaGridRegular.h"
+#include "asIncludes.h"
 
 #include <cmath>
 

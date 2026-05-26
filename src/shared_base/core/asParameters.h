@@ -33,7 +33,7 @@
 
 #include <utility>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPredictand.h"
 
 class asFileParameters;
@@ -203,29 +203,21 @@ class asParameters : public wxObject {
         _dateProcessed = val;
     }
 
-    void SetArchiveYearStart(int val) {
-        _archiveStart = asTime::GetMJD(val, 1, 1);
-    }
+    void SetArchiveYearStart(int val);
 
-    void SetArchiveYearEnd(int val) {
-        _archiveEnd = asTime::GetMJD(val, 12, 31);
-    }
+    void SetArchiveYearEnd(int val);
 
     double GetArchiveStart() const {
         return _archiveStart;
     }
 
-    void SetArchiveStart(const wxString& val) {
-        _archiveStart = asTime::GetTimeFromString(val);
-    }
+    void SetArchiveStart(const wxString& val);
 
     double GetArchiveEnd() const {
         return _archiveEnd;
     }
 
-    void SetArchiveEnd(const wxString& val) {
-        _archiveEnd = asTime::GetTimeFromString(val);
-    }
+    void SetArchiveEnd(const wxString& val);
 
     double GetTimeShiftDays() const {
         if (_timeMinHours >= 0) {

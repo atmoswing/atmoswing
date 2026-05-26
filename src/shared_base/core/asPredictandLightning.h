@@ -29,7 +29,6 @@
 #ifndef AS_PREDICTAND_LIGHTNING_H
 #define AS_PREDICTAND_LIGHTNING_H
 
-#include "asIncludes.h"
 #include "asPredictand.h"
 
 class asPredictandLightning : public asPredictand {

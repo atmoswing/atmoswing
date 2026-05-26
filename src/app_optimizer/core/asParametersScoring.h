@@ -29,7 +29,6 @@
 #ifndef AS_PARAMETERS_SCORING_H
 #define AS_PARAMETERS_SCORING_H
 
-#include "asIncludes.h"
 #include "asParameters.h"
 
 class asFileParameters;

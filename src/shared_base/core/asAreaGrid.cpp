@@ -27,6 +27,7 @@
  */
 
 #include "asAreaGrid.h"
+#include "asIncludes.h"
 
 #include <iostream>
 

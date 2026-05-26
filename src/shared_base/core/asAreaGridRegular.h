@@ -30,7 +30,6 @@
 #define AS_AREA_GRID_REGULAR_H
 
 #include "asAreaGrid.h"
-#include "asIncludes.h"
 
 class asAreaGridRegular : public asAreaGrid {
   public:

@@ -27,6 +27,7 @@
  */
 
 #include "asParameters.h"
+#include "asIncludes.h"
 
 #include <wx/tokenzr.h>
 
@@ -52,6 +53,22 @@ asParameters::asParameters()
       _predictandTemporalResolution(asPredictand::Daily),
       _predictandSpatialAggregation(asPredictand::Station),
       _predictandTimeHours(0) {}
+
+void asParameters::SetArchiveYearStart(int val) {
+    _archiveStart = asTime::GetMJD(val, 1, 1);
+}
+
+void asParameters::SetArchiveYearEnd(int val) {
+    _archiveEnd = asTime::GetMJD(val, 12, 31);
+}
+
+void asParameters::SetArchiveStart(const wxString& val) {
+    _archiveStart = asTime::GetTimeFromString(val);
+}
+
+void asParameters::SetArchiveEnd(const wxString& val) {
+    _archiveEnd = asTime::GetTimeFromString(val);
+}
 
 void asParameters::AddStep() {
     ParamsStep step;
@@ -1105,9 +1122,7 @@ bool asParameters::PrintAndSaveTemp(const wxString& filePath) const {
     header = _("AtmoSwing current parameters\n");
     fileRes.AddContent(header);
     fileRes.AddContent(content);
-    fileRes.Close();
-
-    return true;
+    return fileRes.Close();
 }
 
 bool asParameters::GetValuesFromString(wxString stringVals) {

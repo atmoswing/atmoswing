@@ -29,7 +29,6 @@
 #ifndef AS_PARAMETERS_CALIBRATION_H
 #define AS_PARAMETERS_CALIBRATION_H
 
-#include "asIncludes.h"
 #include "asParametersScoring.h"
 
 class asFileParametersCalibration;

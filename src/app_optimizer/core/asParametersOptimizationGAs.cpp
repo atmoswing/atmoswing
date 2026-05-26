@@ -27,6 +27,7 @@
  */
 
 #include "asParametersOptimizationGAs.h"
+#include "asIncludes.h"
 
 #include "asFileParametersOptimization.h"
 

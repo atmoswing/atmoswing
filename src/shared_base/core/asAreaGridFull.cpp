@@ -26,6 +26,7 @@
  */
 
 #include "asAreaGridFull.h"
+#include "asIncludes.h"
 
 #include "asTypeDefs.h"
 

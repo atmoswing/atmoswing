@@ -29,7 +29,6 @@
 #ifndef AS_PARAMETERS_OPTIMIZATION_H
 #define AS_PARAMETERS_OPTIMIZATION_H
 
-#include "asIncludes.h"
 #include "asParameters.h"
 #include "asParametersScoring.h"
 

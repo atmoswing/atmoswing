@@ -27,6 +27,7 @@
  */
 
 #include "asPredictandLightning.h"
+#include "asIncludes.h"
 
 #include "asCatalogPredictands.h"
 #include "asFileNetcdf.h"

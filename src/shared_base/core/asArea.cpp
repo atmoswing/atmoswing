@@ -27,6 +27,7 @@
  */
 
 #include "asArea.h"
+#include "asIncludes.h"
 
 asArea::asArea(const Coo& cornerUL, const Coo& cornerUR, const Coo& cornerLL, const Coo& cornerLR, int flatAllowed,
                bool isLatLon)
