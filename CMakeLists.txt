@@ -70,6 +70,12 @@ project(AtmoSwing)
 # global add_definitions / include_directories leaking into FetchContent sub-projects (wxWidgets,
 # eccodes, vroomgis).
 add_library(atmoswing_compile_options INTERFACE)
+set(ATMOSWING_PROJECT_CXX_STANDARD "23" CACHE STRING
+        "C++ standard for AtmoSwing project targets (dependencies use CMAKE_CXX_STANDARD)")
+set_property(CACHE ATMOSWING_PROJECT_CXX_STANDARD PROPERTY STRINGS 23)
+if (NOT ATMOSWING_PROJECT_CXX_STANDARD STREQUAL "23")
+    message(FATAL_ERROR "AtmoSwing currently supports project targets only with C++23.")
+endif ()
 target_compile_features(atmoswing_compile_options INTERFACE cxx_std_23)
 
 
@@ -176,6 +182,8 @@ endif (WIN32)
 # wxbase would be compiled with wxDEBUG_LEVEL=1 (the wx default) while AtmoSwing release objects
 # use wxDEBUG_LEVEL=0, causing an LNK2005 duplicate-symbol error for wxFormatString::Validate.
 include(atmoswing_definitions_and_flags)
+message(STATUS "AtmoSwing target C++ standard = ${ATMOSWING_PROJECT_CXX_STANDARD}")
+message(STATUS "FetchContent default C++ standard = ${ATMOSWING_THIRD_PARTY_CXX_STANDARD}")
 
 
 ##### DEPENDENCIES

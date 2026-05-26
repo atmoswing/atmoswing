@@ -34,22 +34,22 @@ class asFileParametersDownscaling;
 
 class asParametersDownscaling : public asParameters {
   public:
-    typedef struct ParamsPredictorProj {
+    struct ParamsPredictorProj {
         wxString datasetId;
         wxString dataId;
         int membersNb = 0;
         vwxs preprocessDatasetIds;
         vwxs preprocessDataIds;
         int preprocessMembersNb = 0;
-    } ParamsPredictorProj;
+    };
 
-    typedef vector<ParamsPredictorProj> VectorParamsPredictorsProj;
+    using VectorParamsPredictorsProj = vector<ParamsPredictorProj>;
 
-    typedef struct ParamsStepProj {
+    struct ParamsStepProj {
         VectorParamsPredictorsProj predictors;
-    } ParamsStepProj;
+    };
 
-    typedef vector<ParamsStepProj> VectorParamsStepProj;
+    using VectorParamsStepProj = vector<ParamsStepProj>;
 
     asParametersDownscaling();
 

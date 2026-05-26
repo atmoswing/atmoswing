@@ -35,7 +35,7 @@ class asFileParameters;
 
 class asParametersScoring : public asParameters {
   public:
-    typedef struct ParamsScore {
+    struct ParamsScore {
         wxString name;
         wxString timeArrayMode;
         double timeArrayDate = 0;
@@ -46,10 +46,10 @@ class asParametersScoring : public asParameters {
         bool onMean = false;
         float threshold = NAN;
         float quantile = NAN;
-    } ParamsScore;
+    };
 
     /** Vectors */
-    typedef struct ParamsPredictorVect {
+    struct ParamsPredictorVect {
         vvwxs preprocessDataId;
         vvf preprocessLevels;
         vvd preprocessHours;
@@ -62,27 +62,27 @@ class asParametersScoring : public asParameters {
         vd hours;
         vwxs criteria;
         vf weight;
-    } ParamsPredictorVect;
+    };
 
-    typedef vector<ParamsPredictorVect> VectorParamsPredictorsVect;
+    using VectorParamsPredictorsVect = vector<ParamsPredictorVect>;
 
-    typedef struct ParamsStepVect {
+    struct ParamsStepVect {
         vi analogsNumber;
         VectorParamsPredictorsVect predictors;
-    } ParamsStepVect;
+    };
 
-    typedef vector<ParamsStepVect> VectorParamsStepVect;
+    using VectorParamsStepVect = vector<ParamsStepVect>;
 
-    typedef struct ParamsScoreVect {
+    struct ParamsScoreVect {
         vwxs name;
         vwxs timeArrayMode;
         vd timeArrayDate;
         vi timeArrayIntervalDays;
         vf postprocessDupliExp;
-    } ParamsScoreVect;
+    };
 
     /** Booleans */
-    typedef struct ParamsPredictorBool {
+    struct ParamsPredictorBool {
         vb preprocessDataId;
         vb preprocessLevels;
         vb preprocessHours;
@@ -95,16 +95,16 @@ class asParametersScoring : public asParameters {
         bool hours = true;
         bool weight = true;
         bool criteria = true;
-    } ParamsPredictorBool;
+    };
 
-    typedef vector<ParamsPredictorBool> VectorParamsPredictorsBool;
+    using VectorParamsPredictorsBool = vector<ParamsPredictorBool>;
 
-    typedef struct ParamsStepBool {
+    struct ParamsStepBool {
         bool analogsNumber = false;
         VectorParamsPredictorsBool predictors;
-    } ParamsStepBool;
+    };
 
-    typedef vector<ParamsStepBool> VectorParamsStepBool;
+    using VectorParamsStepBool = vector<ParamsStepBool>;
 
     asParametersScoring();
 

@@ -28,11 +28,14 @@ elseif (WIN32)
     endif ()
 endif ()
 
-# Keep CMAKE_CXX_STANDARD set globally so FetchContent dependencies (wxWidgets, eccodes,
-# vroomgis) build with C++17 as well — the per-target cxx_std_17 on atmoswing_compile_options
-# applies only to project targets that link to it.
-set(CMAKE_CXX_STANDARD 17)
+# Keep CMAKE_CXX_STANDARD set globally for FetchContent dependencies (wxWidgets, eccodes,
+# vroomgis). AtmoSwing project targets are set separately to C++23 via atmoswing_compile_options.
+set(ATMOSWING_THIRD_PARTY_CXX_STANDARD "17" CACHE STRING
+        "Default C++ standard for third-party FetchContent dependencies")
+set_property(CACHE ATMOSWING_THIRD_PARTY_CXX_STANDARD PROPERTY STRINGS 17 20 23)
+set(CMAKE_CXX_STANDARD ${ATMOSWING_THIRD_PARTY_CXX_STANDARD})
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Shared compile definitions are attached to atmoswing_compile_options (declared at top-level
 # CMakeLists.txt). Every project target links to this INTERFACE library, so it picks up these

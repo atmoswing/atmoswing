@@ -35,7 +35,7 @@ class asFileParametersForecast;
 
 class asParametersForecast : public asParameters {
   public:
-    typedef struct ParamsPredictorForecast {
+    struct ParamsPredictorForecast {
         wxString archiveDatasetId;
         wxString archiveDataId;
         bool archiveStandardize = false;
@@ -54,16 +54,16 @@ class asParametersForecast : public asParameters {
         vwxs preprocessRealtimeDatasetIds;
         vwxs preprocessRealtimeDataIds;
         int preprocessRealtimeMembersNb = 0;
-    } ParamsPredictorForecast;
+    };
 
-    typedef vector<ParamsPredictorForecast> VectorParamsPredictorsForecast;
+    using VectorParamsPredictorsForecast = vector<ParamsPredictorForecast>;
 
-    typedef struct ParamsStepForecast {
+    struct ParamsStepForecast {
         vi analogsNumberLeadTime;
         VectorParamsPredictorsForecast predictors;
-    } ParamsStepForecast;
+    };
 
-    typedef vector<ParamsStepForecast> VectorParamsStepForecast;
+    using VectorParamsStepForecast = vector<ParamsStepForecast>;
 
     asParametersForecast();
 
