@@ -15,8 +15,18 @@ jobs:
 
     runs-on: ubuntu-22.04
 
+    env:
+      FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/linux-coverity-make-relwithdebinfo
+      FETCHCONTENT_CACHE_KEY: linux-coverity-make-relwithdebinfo
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Cache FetchContent dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.FETCHCONTENT_BASE_DIR }}
+          key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
 
       - name: Install system build dependencies for vcpkg
         run: |
@@ -36,6 +46,7 @@ jobs:
       - name: Configure
         run: cmake -B build -G "Unix Makefiles"
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+             -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
              -DBUILD_OPTIMIZER=ON
              -DBUILD_DOWNSCALER=ON

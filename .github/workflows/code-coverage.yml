@@ -20,9 +20,17 @@ jobs:
       ECCODES_DEFINITION_PATH: ${{github.workspace}}/build/share/eccodes/definitions
       PROJ_DATA: ${{github.workspace}}/build/share/proj
       PROJ_LIB: ${{github.workspace}}/build/share/proj
+      FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/linux-code-coverage-ninja-relwithdebinfo
+      FETCHCONTENT_CACHE_KEY: linux-code-coverage-ninja-relwithdebinfo
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Cache FetchContent dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.FETCHCONTENT_BASE_DIR }}
+          key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
 
       - name: Install system libraries
         run: |
@@ -44,6 +52,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/ci/coverage-gui' }}
         run: cmake -B build -G Ninja
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+             -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
              -DBUILD_OPTIMIZER=ON
              -DBUILD_DOWNSCALER=ON
@@ -57,6 +66,7 @@ jobs:
         if: ${{ github.ref != 'refs/heads/ci/coverage-gui' }}
         run: cmake -B build -G Ninja
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+             -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
              -DBUILD_OPTIMIZER=ON
              -DBUILD_DOWNSCALER=ON

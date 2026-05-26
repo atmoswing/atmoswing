@@ -12,8 +12,18 @@ jobs:
   build-server-version:
     runs-on: windows-2022
 
+    env:
+      FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/windows-server-vs2022-release
+      FETCHCONTENT_CACHE_KEY: windows-server-vs2022-release
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Cache FetchContent dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.FETCHCONTENT_BASE_DIR }}
+          key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
 
       - name: Export GitHub Actions cache env (for vcpkg x-gha)
         uses: actions/github-script@v7
@@ -29,6 +39,7 @@ jobs:
       - name: Configure
         run: cmake -B build -G "Visual Studio 17 2022" -A x64
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+             -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
              -DBUILD_OPTIMIZER=ON
              -DBUILD_DOWNSCALER=ON
@@ -60,8 +71,18 @@ jobs:
   build-desktop-version:
     runs-on: windows-2022
 
+    env:
+      FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/windows-desktop-vs2022-release
+      FETCHCONTENT_CACHE_KEY: windows-desktop-vs2022-release
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Cache FetchContent dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.FETCHCONTENT_BASE_DIR }}
+          key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
 
       - name: Export GitHub Actions cache env (for vcpkg x-gha)
         uses: actions/github-script@v7
@@ -77,6 +98,7 @@ jobs:
       - name: Configure
         run: cmake -B build -G "Visual Studio 17 2022" -A x64
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+             -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
              -DBUILD_OPTIMIZER=ON
              -DBUILD_DOWNSCALER=ON
