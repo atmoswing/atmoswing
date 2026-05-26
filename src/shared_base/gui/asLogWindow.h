@@ -28,7 +28,9 @@
 #ifndef AS_LOG_WINDOW_H
 #define AS_LOG_WINDOW_H
 
-#include "asIncludes.h"
+#include <wx/frame.h>
+
+#include "asHeadersBase.h"
 #include "wx/log.h"
 
 class asLogWindow : public wxLogWindow {

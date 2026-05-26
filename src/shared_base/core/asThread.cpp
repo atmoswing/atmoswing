@@ -27,6 +27,8 @@
 
 #include "asThread.h"
 
+#include "asIncludes.h"
+
 asThread::asThread(Type type)
     : wxThread(wxTHREAD_DETACHED),
       _type(type),

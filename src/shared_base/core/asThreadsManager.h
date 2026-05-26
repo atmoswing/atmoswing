@@ -29,7 +29,10 @@
 #ifndef AS_THREADS_MANAGER_H
 #define AS_THREADS_MANAGER_H
 
-#include "asIncludes.h"
+#include <wx/event.h>   // wxCloseEvent
+#include <wx/thread.h>  // wxCriticalSection, wxSemaphore, wxThreadIdType
+
+#include "asHeadersBase.h"
 
 class asThread;
 

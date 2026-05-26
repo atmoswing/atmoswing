@@ -29,6 +29,7 @@
 
 #include "asFileText.h"
 #include "asFileXml.h"
+#include "asIncludes.h"
 
 asResultsForecastAggregator::asResultsForecastAggregator()
     : wxObject() {}
@@ -792,7 +793,10 @@ bool asResultsForecastAggregator::ExportSyntheticFullXml(const wxString& dirPath
         }
         fileExport.AddChild(nodeStations);
 
-        fileExport.Save();
+        if (!fileExport.Save()) {
+            wxLogError(_("Could not save export file %s."), filePath);
+            return false;
+        }
     }
 
     return true;
@@ -874,7 +878,10 @@ bool asResultsForecastAggregator::ExportSyntheticSmallCsv(const wxString& dirPat
             }
         }
 
-        fileExport.Close();
+        if (!fileExport.Close()) {
+            wxLogError(_("Could not close export file %s."), filePath);
+            return false;
+        }
     }
 
     return true;
@@ -952,7 +959,10 @@ bool asResultsForecastAggregator::ExportSyntheticCustomCsvFVG(const wxString& di
             }
         }
 
-        fileExport.Close();
+        if (!fileExport.Close()) {
+            wxLogError(_("Could not close export file %s."), filePath);
+            return false;
+        }
     }
 
     return true;

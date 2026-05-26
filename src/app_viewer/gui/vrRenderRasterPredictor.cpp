@@ -27,6 +27,7 @@
 
 #include "vrRenderRasterPredictor.h"
 
+#include <wx/fileconf.h>
 #include <wx/tokenzr.h>
 
 #include <fstream>
@@ -168,7 +169,10 @@ bool vrRenderRasterPredictor::ParseRGBfile() {
     ResizeColorTable(nColorsVal);
 
     // Skipping header
-    file.SkipLines(1);
+    if (!file.SkipLines(1)) {
+        wxLogError(_("Color table format not supported (file %s)..."), _colorTableFile.GetFullPath());
+        return false;
+    }
 
     for (int i = 0; i < nColorsVal; ++i) {
         // Get next line
@@ -193,7 +197,10 @@ bool vrRenderRasterPredictor::ParseRGBfile() {
         if (file.EndOfFile()) break;
     }
 
-    file.Close();
+    if (!file.Close()) {
+        wxLogError(_("Color table file %s could not be closed..."), _colorTableFile.GetFullPath());
+        return false;
+    }
 
     return false;
 }

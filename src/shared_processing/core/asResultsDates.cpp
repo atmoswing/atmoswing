@@ -29,6 +29,7 @@
 #include "asResultsDates.h"
 
 #include "asFileNetcdf.h"
+#include "asIncludes.h"
 
 asResultsDates::asResultsDates()
     : asResults() {}

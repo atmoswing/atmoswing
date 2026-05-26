@@ -28,7 +28,7 @@
 #ifndef AS_PREDICTORS_MANAGER_H
 #define AS_PREDICTORS_MANAGER_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPredictor.h"
 #include "asWorkspace.h"
 

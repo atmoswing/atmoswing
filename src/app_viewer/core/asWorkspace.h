@@ -29,7 +29,7 @@
 #define AS_WORKSPACE_H
 
 #include "asFileWorkspace.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 #if USE_GUI
 

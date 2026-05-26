@@ -30,6 +30,8 @@
 #include "asFileGrib.h"
 #include "asIncludes.h"
 
+#include <wx/fileconf.h>
+
 #include "eccodes.h"
 
 asFileGrib::asFileGrib(const wxString& fileName, const FileMode& fileMode)
@@ -51,7 +53,9 @@ asFileGrib::asFileGrib(const wxString& fileName, const FileMode& fileMode)
 }
 
 asFileGrib::~asFileGrib() {
-    Close();
+    if (!Close()) {
+        wxLogVerbose(_("Failed to close grib file in destructor."));
+    }
 }
 
 void asFileGrib::SetContext() {
@@ -90,7 +94,10 @@ bool asFileGrib::Open() {
 
 bool asFileGrib::Close() {
     if (_filtPtr) {
-        fclose(_filtPtr);
+        if (fclose(_filtPtr) != 0) {
+            _filtPtr = nullptr;
+            return false;
+        }
         _filtPtr = nullptr;
     }
 

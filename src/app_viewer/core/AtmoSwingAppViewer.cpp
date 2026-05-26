@@ -36,9 +36,11 @@
 
 #include "AtmoSwingAppViewer.h"
 #include "AtmoSwingMainViewer.h"
+#include "asIncludes.h"
 
 IMPLEMENT_APP(AtmoSwingAppViewer);
 
+#include <wx/fileconf.h>
 #include <wx/stdpaths.h>
 
 #include "asBitmaps.h"

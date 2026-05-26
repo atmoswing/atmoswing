@@ -31,6 +31,8 @@
 #include <wx/dir.h>
 #include <wx/stdpaths.h>  // wxStandardPaths returns the standard locations in the file system
 
+#include "asIncludes.h"
+
 wxString asConfig::GetLogDir() {
 #ifdef ON_DOCKER
     wxString tempDir = "/app/config/";

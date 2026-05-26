@@ -27,6 +27,8 @@
 
 #include "asDialogFileSaver.h"
 
+#include "asIncludes.h"
+
 asDialogFileSaver::asDialogFileSaver(wxWindow* parent, const wxString& description)
     : asDialogFileSaverVirtual(parent) {
     SetLabel(_("Save to a file"));

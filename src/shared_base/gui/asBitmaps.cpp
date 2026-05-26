@@ -27,6 +27,8 @@
 
 #include "asBitmaps.h"
 
+#include "asIncludes.h"
+
 wxString
     asBitmaps::SvgToolbar
         [] =

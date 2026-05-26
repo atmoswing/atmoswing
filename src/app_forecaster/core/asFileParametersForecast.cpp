@@ -28,6 +28,8 @@
 
 #include "asFileParametersForecast.h"
 
+#include "asIncludes.h"
+
 asFileParametersForecast::asFileParametersForecast(const wxString& fileName, const FileMode& fileMode)
     : asFileParameters(fileName, fileMode) {}  // FindAndOpen() processed by asFileXml
 

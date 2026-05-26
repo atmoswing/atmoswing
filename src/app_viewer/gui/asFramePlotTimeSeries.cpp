@@ -28,6 +28,8 @@
 
 #include "asFramePlotTimeSeries.h"
 
+#include <wx/fileconf.h>
+
 #include "asFileText.h"
 #include "asForecastManager.h"
 
@@ -201,7 +203,10 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
     }
 
     asFileText file(dialog.GetPath(), asFile::Write);
-    file.Open();
+    if (!file.Open()) {
+        wxLogError(_("Cannot open file %s for writing."), dialog.GetPath());
+        return;
+    }
 
     // Add header
     file.AddContent(
@@ -279,7 +284,9 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
 
     // All traces
     if (_forecastManager->GetPastForecastsNb(_selectedMethod, _selectedForecast) == 0) {
-        file.Close();
+        if (!file.Close()) {
+            wxLogError(_("Cannot close file %s."), dialog.GetPath());
+        }
         return;
     }
 
@@ -334,7 +341,9 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent& event) {
         }
     }
 
-    file.Close();
+    if (!file.Close()) {
+        wxLogError(_("Cannot close file %s."), dialog.GetPath());
+    }
 }
 
 void asFramePlotTimeSeries::OnExportSVG(wxCommandEvent& event) {

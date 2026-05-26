@@ -31,6 +31,7 @@
 #include <geodesic.h>
 
 #include "asCriteria.h"
+#include "asIncludes.h"
 #include "asPredictor.h"
 
 bool asPreprocessor::Preprocess(const vector<asPredictor*>& predictors, const wxString& method, asPredictor* result) {

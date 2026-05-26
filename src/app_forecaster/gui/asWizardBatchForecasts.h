@@ -30,7 +30,7 @@
 
 #include "AtmoSwingForecasterGui.h"
 #include "asBatchForecasts.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asWizardBatchForecasts : public asWizardBatchForecastsVirtual {
   public:

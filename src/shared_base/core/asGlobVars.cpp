@@ -28,6 +28,8 @@
 
 #include "asGlobVars.h"
 
+#include "asIncludes.h"
+
 bool g_silentMode = false;
 bool g_verboseMode = true;
 bool g_responsive = true;

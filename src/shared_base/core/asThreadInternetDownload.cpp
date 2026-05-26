@@ -28,6 +28,8 @@
 
 #include "asThreadInternetDownload.h"
 
+#include "asIncludes.h"
+
 asThreadInternetDownload::asThreadInternetDownload(const vwxs& urls, const vwxs& fileNames,
                                                    const wxString& destinationDir, bool usesProxy,
                                                    const wxString& proxyAddress, const long proxyPort,
@@ -43,7 +45,7 @@ asThreadInternetDownload::asThreadInternetDownload(const vwxs& urls, const vwxs&
       _proxyUser(proxyUser),
       _proxyPasswd(proxyPasswd),
       _start(start),
-      _end(std::min(end, (int)fileNames.size() - 1)) {
+      _end((std::min)(end, static_cast<int>(fileNames.size()) - 1)) {
     wxASSERT(_end < urls.size());
     wxASSERT(_end < fileNames.size());
 }
@@ -57,8 +59,8 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
     // Do the job
     if (curl) {
         // Set a buffer for the error messages
-        auto errorbuffer = new char[CURL_ERROR_SIZE];
-        curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorbuffer);
+        auto errorBuffer = new char[CURL_ERROR_SIZE];
+        curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
         // Some servers don't like requests that are made without a user-agent field, so we provide one
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
         // Fail if the HTTP code returned is equal to or larger than 400
@@ -79,7 +81,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
                 if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL)) {
                     wxLogError(_("The directory to save real-time predictors data cannot be created."));
                     curl_easy_cleanup(curl);
-                    wxDELETEA(errorbuffer);
+                    wxDELETEA(errorBuffer);
                     return (wxThread::ExitCode)-1;
                 }
             }
@@ -125,10 +127,10 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
                 // Log in case of failure
                 if (CURLE_OK != res) {
                     wxLogError(_("Failed downloading file. Curl error code: %d"), int(res));
-                    wxLogError(_("Curl error message: %s"), errorbuffer);
+                    wxLogError(_("Curl error message: %s"), errorBuffer);
                     wxLogError(_("URL: %s"), url);
                     curl_easy_cleanup(curl);
-                    wxDELETEA(errorbuffer);
+                    wxDELETEA(errorBuffer);
                     return (wxThread::ExitCode)-1;
                 } else {
                     wxLogVerbose(_("File %s downloaded successfully."), fileName);
@@ -138,7 +140,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
 
         // Always cleanup
         curl_easy_cleanup(curl);
-        wxDELETEA(errorbuffer);
+        wxDELETEA(errorBuffer);
     }
 
     return (wxThread::ExitCode)0;

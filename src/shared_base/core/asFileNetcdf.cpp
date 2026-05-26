@@ -38,7 +38,9 @@ asFileNetcdf::asFileNetcdf(const wxString& fileName, const FileMode& fileMode)
 }
 
 asFileNetcdf::~asFileNetcdf() {
-    Close();
+    if (!Close()) {
+        wxLogVerbose(_("Failed to close NetCDF file in destructor."));
+    }
     wxASSERT(_fileId == 0);
 }
 

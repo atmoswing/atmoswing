@@ -27,6 +27,8 @@
 
 #include "asFileWorkspace.h"
 
+#include "asIncludes.h"
+
 asFileWorkspace::asFileWorkspace(const wxString& fileName, const FileMode& fileMode)
     : asFileXml(fileName, fileMode) {
     // FindAndOpen() processed by asFileXml

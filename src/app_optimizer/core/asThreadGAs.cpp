@@ -28,6 +28,8 @@
 
 #include "asThreadGAs.h"
 
+#include "asIncludes.h"
+
 #ifdef USE_CUDA
 #include "asProcessorCuda.cuh"
 #endif

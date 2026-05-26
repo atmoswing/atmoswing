@@ -29,7 +29,7 @@
 #ifndef AS_LOG_H
 #define AS_LOG_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "wx/log.h"
 
 class wxFFile;
@@ -48,7 +48,7 @@ class asLog : public wxObject {
 
     void ClearCurrentTarget();
 
-    void CreateFile(const wxString& fileName);
+    void CreateLogFile(const wxString& fileName);
 
     void CreateFileAtPath(const wxString& fullPath);
 

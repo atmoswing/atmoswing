@@ -31,6 +31,7 @@
 #include <utility>
 
 #include "asCriteria.h"
+#include "asIncludes.h"
 #include "asPredictor.h"
 #include "asProcessor.h"
 #include "asTimeArray.h"

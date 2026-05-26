@@ -90,7 +90,10 @@ bool asPredictandPrecipitation::Load(const wxString& filePath) {
     }
 
     // Close the netCDF file
-    ncFile.Close();
+    if (!ncFile.Close()) {
+        wxLogError(_("Couldn't close file %s"), filePath);
+        return false;
+    }
 
     return true;
 }
@@ -173,7 +176,10 @@ bool asPredictandPrecipitation::Save(const wxString& destinationDir) const {
     }
 
     // Close:save new netCDF dataset
-    ncFile.Close();
+    if (!ncFile.Close()) {
+        wxLogError(_("Couldn't close file %s"), predictandDBFilePath);
+        return false;
+    }
 
     return true;
 }

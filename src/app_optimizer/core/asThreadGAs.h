@@ -29,7 +29,7 @@
 #ifndef AS_THREAD_METHOD_OPTIMIZER_GAS_H
 #define AS_THREAD_METHOD_OPTIMIZER_GAS_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asMethodOptimizerGAs.h"
 #include "asParametersOptimization.h"
 #include "asThread.h"

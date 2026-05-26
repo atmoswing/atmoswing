@@ -27,6 +27,8 @@
 
 #include "asPanelsManager.h"
 
+#include "asIncludes.h"
+
 void asPanelsManager::LayoutFrame(wxWindow* element) {
     // Get parent frame for layout
     wxWindow* parent = element;

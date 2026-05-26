@@ -29,7 +29,7 @@
 #define AS_BATCH_FORECASTS_H
 
 #include "asFileBatchForecasts.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asBatchForecasts : public wxObject {
   public:

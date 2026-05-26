@@ -28,7 +28,7 @@
 #ifndef AS_DIALOG_PROGRESS_BAR_H
 #define AS_DIALOG_PROGRESS_BAR_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "wx/progdlg.h"
 
 class asDialogProgressBar : public wxObject {

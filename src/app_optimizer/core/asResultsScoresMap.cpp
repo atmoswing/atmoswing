@@ -29,6 +29,7 @@
 #include "asResultsScoresMap.h"
 
 #include "asFileNetcdf.h"
+#include "asIncludes.h"
 #include "asParametersCalibration.h"
 
 asResultsScoresMap::asResultsScoresMap()

@@ -28,6 +28,7 @@
 
 #include "asMethodCalibrator.h"
 
+#include "asIncludes.h"
 #include "asThreadPreloadArchiveData.h"
 
 #ifndef UNIT_TESTING

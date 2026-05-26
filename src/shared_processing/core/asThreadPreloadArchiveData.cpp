@@ -28,6 +28,7 @@
 
 #include "asThreadPreloadArchiveData.h"
 
+#include "asIncludes.h"
 #include "asParameters.h"
 
 asThreadPreloadArchiveData::asThreadPreloadArchiveData(asMethodStandard* method, asParameters* params, int iStep,

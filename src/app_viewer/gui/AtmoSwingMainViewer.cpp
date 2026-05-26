@@ -36,6 +36,8 @@
 
 #include "AtmoSwingMainViewer.h"
 
+#include <wx/fileconf.h>
+
 AtmoSwingFrameViewer::AtmoSwingFrameViewer(wxFrame* frame)
     : asFrameViewer(frame) {
 #if wxUSE_STATUSBAR
@@ -48,7 +50,7 @@ AtmoSwingFrameViewer::AtmoSwingFrameViewer(wxFrame* frame)
     // Create log window and file
     delete wxLog::SetActiveTarget(new asLogGui());
     _logWindow = new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
-    Log()->CreateFile("AtmoSwingViewer.log");
+    Log()->CreateLogFile("AtmoSwingViewer.log");
 }
 
 void AtmoSwingFrameViewer::OnClose(wxCloseEvent& event) {

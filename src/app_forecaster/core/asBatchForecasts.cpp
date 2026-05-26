@@ -27,6 +27,8 @@
 
 #include "asBatchForecasts.h"
 
+#include "asIncludes.h"
+
 asBatchForecasts::asBatchForecasts()
     : wxObject(),
       _hasChanged(false),

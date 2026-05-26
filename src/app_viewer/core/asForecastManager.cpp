@@ -28,6 +28,8 @@
 
 #include "asForecastManager.h"
 
+#include "asIncludes.h"
+
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_CLEAR, wxCommandEvent);
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_NEW_ADDED, wxCommandEvent);
 

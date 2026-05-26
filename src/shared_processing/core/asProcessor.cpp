@@ -30,6 +30,7 @@
 #include "asProcessor.h"
 
 #include "asCriteria.h"
+#include "asIncludes.h"
 #include "asParameters.h"
 #include "asPredictor.h"
 #include "asPreprocessor.h"

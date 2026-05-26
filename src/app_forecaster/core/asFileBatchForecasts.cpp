@@ -28,6 +28,8 @@
 
 #include "asFileBatchForecasts.h"
 
+#include "asIncludes.h"
+
 asFileBatchForecasts::asFileBatchForecasts(const wxString& fileName, const FileMode& fileMode)
     : asFileXml(fileName, fileMode) {
     // FindAndOpen() processed by asFileXml

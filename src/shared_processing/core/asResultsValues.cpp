@@ -29,6 +29,7 @@
 #include "asResultsValues.h"
 
 #include "asFileNetcdf.h"
+#include "asIncludes.h"
 
 asResultsValues::asResultsValues()
     : asResults() {}

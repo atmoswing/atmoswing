@@ -29,7 +29,7 @@
 #ifndef AS_GLOB_VARS_OPTIMIZER_H
 #define AS_GLOB_VARS_OPTIMIZER_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 // g_local and g_runNb are shared with the Downscaler; they live in asGlobVars.h.
 extern bool g_resumePreviousRun;

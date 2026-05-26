@@ -158,8 +158,7 @@ bool asFile::Find() {
 }
 
 bool asFile::DoClose() {
-    Close();
-    return true;
+    return Close();
 }
 
 bool asFile::Open() {

@@ -29,7 +29,7 @@
 #ifndef AS_RESULTS_VALUES_H
 #define AS_RESULTS_VALUES_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asResults.h"
 
 class asResultsValues : public asResults {

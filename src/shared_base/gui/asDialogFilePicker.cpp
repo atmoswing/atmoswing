@@ -28,6 +28,8 @@
 
 #include "asDialogFilePicker.h"
 
+#include "asIncludes.h"
+
 asDialogFilePicker::asDialogFilePicker(wxWindow* parent, const wxString& description)
     : asDialogFilePickerVirtual(parent) {
     SetLabel(_("Select a file"));

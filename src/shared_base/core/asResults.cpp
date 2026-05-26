@@ -29,6 +29,7 @@
 #include "asResults.h"
 
 #include "asFileNetcdf.h"
+#include "asIncludes.h"
 
 asResults::asResults()
     : _fileVersionMajor(3),

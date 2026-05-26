@@ -29,6 +29,8 @@
 #include "asPredictorOper.h"
 #include "asIncludes.h"
 
+#include <wx/fileconf.h>
+
 #include "asAreaGrid.h"
 #include "asInternet.h"
 #include "asPredictorOperCustomFvg.h"

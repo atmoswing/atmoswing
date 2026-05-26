@@ -34,7 +34,7 @@
 #include <wx/snglinst.h>
 #include <wx/socket.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 #if USE_GUI
 

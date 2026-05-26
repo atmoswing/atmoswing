@@ -28,6 +28,8 @@
 
 #include "asMethodOptimizer.h"
 
+#include "asIncludes.h"
+
 asMethodOptimizer::asMethodOptimizer()
     : asMethodCalibrator(),
       _paramsNb(0),

@@ -29,7 +29,7 @@
 #ifndef AS_RESULTS_PARAMETERS_ARRAY_H
 #define AS_RESULTS_PARAMETERS_ARRAY_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asParametersScoring.h"
 #include "asResults.h"
 

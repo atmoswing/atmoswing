@@ -28,6 +28,8 @@
 
 #include "asThreadMC.h"
 
+#include "asIncludes.h"
+
 asThreadMC::asThreadMC(asMethodOptimizerMC* optimizer, asParametersOptimization* params, float* finalScoreCalib,
                        vf* scoreClimatology)
     : asThread(asThread::MethodOptimizerMC),

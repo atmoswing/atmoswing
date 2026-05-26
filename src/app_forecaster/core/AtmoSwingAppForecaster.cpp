@@ -36,6 +36,7 @@
 
 #include "AtmoSwingAppForecaster.h"
 #include "asBatchForecasts.h"
+#include "asIncludes.h"
 
 #if USE_GUI
 

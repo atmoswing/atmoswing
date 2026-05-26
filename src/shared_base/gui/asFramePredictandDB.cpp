@@ -27,6 +27,9 @@
 
 #include "asFramePredictandDB.h"
 
+#include <wx/fileconf.h>
+
+#include "asIncludes.h"
 #include "asPredictandLightning.h"
 #include "asPredictandPrecipitation.h"
 #include "asPredictandTemperature.h"

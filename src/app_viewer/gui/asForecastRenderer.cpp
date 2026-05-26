@@ -28,6 +28,8 @@
 
 #include "asForecastRenderer.h"
 
+#include <wx/fileconf.h>
+
 #include "asForecastManager.h"
 #include "asFrameViewer.h"
 #include "vrLayerVectorFcstDots.h"

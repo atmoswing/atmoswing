@@ -30,6 +30,7 @@
 #include "asPredictor.h"
 #include "asIncludes.h"
 
+#include <wx/fileconf.h>
 #include <wx/dir.h>
 #include <wx/ffile.h>
 
@@ -500,7 +501,7 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
 
         // Check the data container length
         wxLogVerbose(_("Loading forecast data (predictorRealtime->Load)."));
-        if (_time.size() > _data.size()) {
+        if (_time.size() > static_cast<decltype(_time.size())>(_data.size())) {
             wxLogError(_("The date and the data array lengths do not match (time = %d and data = %d)."),
                        (int)_time.size(), (int)_data.size());
             wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(_time[0], ISOdateTime),
@@ -637,14 +638,20 @@ bool asPredictor::EnquireNetcdfFileStructure() {
 
     // Parse file structure
     if (!ParseFileStructure(ncFile)) {
-        ncFile.Close();
+        if (!ncFile.Close()) {
+            wxLogVerbose(_("Failed to close NetCDF file after structure parsing error."));
+        }
         ThreadsManager().CritSectionNetCDF().Leave();
         wxFAIL;
         return false;
     }
 
     // Close the nc file
-    ncFile.Close();
+    if (!ncFile.Close()) {
+        ThreadsManager().CritSectionNetCDF().Leave();
+        wxLogError(_("Failed to close NetCDF file %s."), _files[0]);
+        return false;
+    }
     ThreadsManager().CritSectionNetCDF().Leave();
 
     return true;
@@ -662,7 +669,9 @@ bool asPredictor::ExtractFromNetcdfFile(const wxString& fileName, asAreaGrid*& d
 
     // Parse file structure
     if (!ParseFileStructure(ncFile)) {
-        ncFile.Close();
+        if (!ncFile.Close()) {
+            wxLogVerbose(_("Failed to close NetCDF file after structure parsing error."));
+        }
         ThreadsManager().CritSectionNetCDF().Leave();
         wxFAIL;
         return false;
@@ -670,21 +679,29 @@ bool asPredictor::ExtractFromNetcdfFile(const wxString& fileName, asAreaGrid*& d
 
     // Get indexes
     if (!GetAxesIndexes(dataArea, timeArray)) {
-        ncFile.Close();
+        if (!ncFile.Close()) {
+            wxLogVerbose(_("Failed to close NetCDF file after axes indexing error."));
+        }
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
 
     // Load data
     if (!GetDataFromFile(ncFile)) {
-        ncFile.Close();
+        if (!ncFile.Close()) {
+            wxLogVerbose(_("Failed to close NetCDF file after data extraction error."));
+        }
         ThreadsManager().CritSectionNetCDF().Leave();
         wxFAIL;
         return false;
     }
 
     // Close the nc file
-    ncFile.Close();
+    if (!ncFile.Close()) {
+        ThreadsManager().CritSectionNetCDF().Leave();
+        wxLogError(_("Failed to close NetCDF file %s."), fileName);
+        return false;
+    }
     ThreadsManager().CritSectionNetCDF().Leave();
 
     return true;
@@ -709,7 +726,9 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
     // Set index position
     wxLogVerbose(_("Setting index position in the grib file."));
     if (!gbFile0.SetIndexPositionAnyLevel(_gribCode)) {
-        gbFile0.Close();
+        if (!gbFile0.Close()) {
+            wxLogVerbose(_("Failed to close grib file after indexing error."));
+        }
         ThreadsManager().CritSectionGrib().Leave();
         return false;
     }
@@ -723,7 +742,9 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
 
         wxLogVerbose(_("Opening grib file to enquire the structure (2nd file)."));
         if (!gbFile1.Open()) {
-            gbFile0.Close();
+            if (!gbFile0.Close()) {
+                wxLogVerbose(_("Failed to close grib file after opening error on second file."));
+            }
             ThreadsManager().CritSectionGrib().Leave();
             wxFAIL;
             return false;
@@ -731,8 +752,12 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
 
         wxLogVerbose(_("Setting index position in the grib file (2nd file)."));
         if (!gbFile1.SetIndexPositionAnyLevel(_gribCode)) {
-            gbFile0.Close();
-            gbFile1.Close();
+            if (!gbFile0.Close()) {
+                wxLogVerbose(_("Failed to close first grib file after second indexing error."));
+            }
+            if (!gbFile1.Close()) {
+                wxLogVerbose(_("Failed to close second grib file after second indexing error."));
+            }
             ThreadsManager().CritSectionGrib().Leave();
             wxFAIL;
             return false;
@@ -740,19 +765,29 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
 
         wxLogVerbose(_("Parsing the grib structure."));
         if (!ParseFileStructure(&gbFile0, &gbFile1)) {
-            gbFile0.Close();
-            gbFile1.Close();
+            if (!gbFile0.Close()) {
+                wxLogVerbose(_("Failed to close first grib file after structure parsing error."));
+            }
+            if (!gbFile1.Close()) {
+                wxLogVerbose(_("Failed to close second grib file after structure parsing error."));
+            }
             ThreadsManager().CritSectionGrib().Leave();
             wxFAIL;
             return false;
         }
 
-        gbFile1.Close();
+        if (!gbFile1.Close()) {
+            ThreadsManager().CritSectionGrib().Leave();
+            wxLogError(_("Failed to close grib file %s."), _files[1]);
+            return false;
+        }
 
     } else {
         wxLogVerbose(_("Parsing the grib structure (single file)."));
         if (!ParseFileStructure(&gbFile0)) {
-            gbFile0.Close();
+            if (!gbFile0.Close()) {
+                wxLogVerbose(_("Failed to close grib file after structure parsing error."));
+            }
             ThreadsManager().CritSectionGrib().Leave();
             wxFAIL;
             return false;
@@ -760,7 +795,11 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
     }
 
     // Close the nc file
-    gbFile0.Close();
+    if (!gbFile0.Close()) {
+        ThreadsManager().CritSectionGrib().Leave();
+        wxLogError(_("Failed to close grib file %s."), _files[0]);
+        return false;
+    }
     ThreadsManager().CritSectionGrib().Leave();
 
     return true;
@@ -789,7 +828,9 @@ bool asPredictor::ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dat
     // Set index position
     wxLogVerbose(_("Setting index position in grib file."));
     if (!gbFile.SetIndexPosition(_gribCode, _level, _warnMissingLevels)) {
-        gbFile.Close();
+        if (!gbFile.Close()) {
+            wxLogVerbose(_("Failed to close grib file after indexing error."));
+        }
         ThreadsManager().CritSectionGrib().Leave();
         return false;
     }
@@ -797,7 +838,9 @@ bool asPredictor::ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dat
     // Parse file structure
     wxLogVerbose(_("Parsing grib file structure."));
     if (!ParseFileStructure(&gbFile)) {
-        gbFile.Close();
+        if (!gbFile.Close()) {
+            wxLogVerbose(_("Failed to close grib file after structure parsing error."));
+        }
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
         return false;
@@ -805,7 +848,9 @@ bool asPredictor::ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dat
 
     // Get indexes
     if (!GetAxesIndexes(dataArea, timeArray)) {
-        gbFile.Close();
+        if (!gbFile.Close()) {
+            wxLogVerbose(_("Failed to close grib file after axes indexing error."));
+        }
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
         return false;
@@ -813,14 +858,20 @@ bool asPredictor::ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dat
 
     // Load data
     if (!GetDataFromFile(gbFile)) {
-        gbFile.Close();
+        if (!gbFile.Close()) {
+            wxLogVerbose(_("Failed to close grib file after data extraction error."));
+        }
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
         return false;
     }
 
     // Close the nc file
-    gbFile.Close();
+    if (!gbFile.Close()) {
+        ThreadsManager().CritSectionGrib().Leave();
+        wxLogError(_("Failed to close grib file %s."), fileName);
+        return false;
+    }
     ThreadsManager().CritSectionGrib().Leave();
 
     return true;
@@ -1016,9 +1067,10 @@ bool asPredictor::ExtractSpatialAxes(asFileNetcdf& ncFile) {
 
 bool asPredictor::ParseFileStructure(asFileGrib* gbFile0) {
     // Get full axes from the file
-    gbFile0->GetXaxis(_fStr.lons);
-    gbFile0->GetYaxis(_fStr.lats);
-    gbFile0->GetLevels(_fStr.levels);
+    if (!gbFile0->GetXaxis(_fStr.lons) || !gbFile0->GetYaxis(_fStr.lats) || !gbFile0->GetLevels(_fStr.levels)) {
+        wxLogError(_("Failed to read grib axes or levels."));
+        return false;
+    }
 
     // Time properties
     vd timeArray = gbFile0->GetRealTimeArray();
@@ -1037,9 +1089,10 @@ bool asPredictor::ParseFileStructure(asFileGrib* gbFile0) {
 
 bool asPredictor::ParseFileStructure(asFileGrib* gbFile0, asFileGrib* gbFile1) {
     // Get full axes from the file
-    gbFile0->GetXaxis(_fStr.lons);
-    gbFile0->GetYaxis(_fStr.lats);
-    gbFile0->GetLevels(_fStr.levels);
+    if (!gbFile0->GetXaxis(_fStr.lons) || !gbFile0->GetYaxis(_fStr.lats) || !gbFile0->GetLevels(_fStr.levels)) {
+        wxLogError(_("Failed to read grib axes or levels."));
+        return false;
+    }
 
     // Time properties
     vd timeArray = gbFile0->GetRealTimeArray();

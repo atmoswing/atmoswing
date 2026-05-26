@@ -29,7 +29,7 @@
 #define AS_FILE_PARAMETERS_DOWNSCALING_H
 
 #include "asFileParameters.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asFileParametersDownscaling : public asFileParameters {
   public:

@@ -35,6 +35,8 @@
 
 #include "AtmoSwingAppDownscaler.h"
 
+#include "asIncludes.h"
+
 #if USE_GUI
 
 #include "AtmoSwingMainDownscaler.h"

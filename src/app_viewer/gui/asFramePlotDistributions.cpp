@@ -28,6 +28,8 @@
 
 #include "asFramePlotDistributions.h"
 
+#include <wx/fileconf.h>
+
 #include "asForecastManager.h"
 
 BEGIN_EVENT_TABLE(asFramePlotDistributions, wxFrame)

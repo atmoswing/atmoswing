@@ -28,12 +28,10 @@
 #ifndef AS_BITMAPS_H
 #define AS_BITMAPS_H
 
-#include "wx/wxprec.h"
-#ifndef WX_PRECOMP
-#include <wx/wx.h>
-#endif
+#include <wx/bitmap.h>
+#include <wx/gdicmn.h>  // wxSize
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asBitmaps {
   public:

@@ -39,6 +39,7 @@
 #endif
 
 #include <wx/dir.h>
+#include <wx/fileconf.h>
 
 #include "asBitmaps.h"
 #include "asFileText.h"
@@ -1038,7 +1039,9 @@ void asFrameViewer::OpenForecastsFromTmpList() {
             filePathsVect.Add(path);
         }
     }
-    filePaths.Close();
+    if (!filePaths.Close()) {
+        wxLogWarning(_("List of the forecasts could not be properly closed."));
+    }
 
     OpenForecast(filePathsVect);
 }

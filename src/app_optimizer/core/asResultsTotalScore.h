@@ -29,7 +29,7 @@
 #ifndef AS_RESULTS_SCORE_FINAL_H
 #define AS_RESULTS_SCORE_FINAL_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asResults.h"
 
 class asParametersScoring;

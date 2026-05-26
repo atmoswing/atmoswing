@@ -29,7 +29,7 @@
 #ifndef AS_GLOB_VARS_H
 #define AS_GLOB_VARS_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 extern bool g_silentMode;
 extern bool g_verboseMode;

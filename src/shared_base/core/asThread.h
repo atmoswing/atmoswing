@@ -30,7 +30,7 @@
 
 #include <wx/thread.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asThread : public wxThread {
   public:

@@ -39,6 +39,7 @@
 #include <proj.h>
 #include <wx/colour.h>
 #include <wx/filename.h>
+#include <wx/fileconf.h>
 
 #include "asPredictorsManager.h"
 

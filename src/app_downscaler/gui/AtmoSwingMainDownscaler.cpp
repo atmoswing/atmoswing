@@ -50,7 +50,7 @@ AtmoSwingFrameDownscaler::AtmoSwingFrameDownscaler(wxFrame* frame)
     // Create log window and file
     delete wxLog::SetActiveTarget(new asLogGui());
     _logWindow = new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
-    Log()->CreateFile("AtmoSwingDownscaler.log");
+    Log()->CreateLogFile("AtmoSwingDownscaler.log");
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;

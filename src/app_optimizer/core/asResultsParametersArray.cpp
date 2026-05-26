@@ -30,6 +30,7 @@
 #include "asResultsParametersArray.h"
 
 #include "asFileText.h"
+#include "asIncludes.h"
 
 asResultsParametersArray::asResultsParametersArray()
     : asResults(),

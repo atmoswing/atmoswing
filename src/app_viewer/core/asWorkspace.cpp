@@ -27,6 +27,8 @@
 
 #include "asWorkspace.h"
 
+#include "asIncludes.h"
+
 asWorkspace::asWorkspace()
     : wxObject(),
       _hasChanged(false),
@@ -222,7 +224,10 @@ bool asWorkspace::Save() const {
     }
     file.AddChild(nodeLayers);
 
-    file.Save();
+    if (!file.Save()) {
+        wxLogError(_("Could not save workspace file %s."), _filePath);
+        return false;
+    }
 
     return true;
 }

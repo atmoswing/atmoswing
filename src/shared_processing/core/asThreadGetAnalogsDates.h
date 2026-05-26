@@ -29,7 +29,7 @@
 #ifndef AS_THREAD_PROCESSOR_GET_ANALOGS_DATES_H
 #define AS_THREAD_PROCESSOR_GET_ANALOGS_DATES_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asParameters.h"
 #include "asThread.h"
 

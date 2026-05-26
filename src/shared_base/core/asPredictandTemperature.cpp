@@ -57,7 +57,10 @@ bool asPredictandTemperature::Load(const wxString& filePath) {
     LoadCommonData(ncFile);
 
     // Close the netCDF file
-    ncFile.Close();
+    if (!ncFile.Close()) {
+        wxLogError(_("Couldn't close file %s"), filePath);
+        return false;
+    }
 
     return true;
 }
@@ -80,7 +83,10 @@ bool asPredictandTemperature::Save(const wxString& destinationDir) const {
     SaveCommonData(ncFile);
 
     // Close:save new netCDF dataset
-    ncFile.Close();
+    if (!ncFile.Close()) {
+        wxLogError(_("Couldn't close file %s"), predictandDBFilePath);
+        return false;
+    }
 
     return true;
 }

@@ -29,7 +29,7 @@
 #define AS_FRAME_PREDICTAND_DB_H__
 
 #include "AtmoSwingSharedGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asFramePredictandDB : public asFramePredictandDBVirtual {
   public:

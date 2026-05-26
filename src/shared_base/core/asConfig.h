@@ -29,8 +29,10 @@
 #ifndef AS_CONFIG_H
 #define AS_CONFIG_H
 
-#include "asIncludes.h"
-#include "wx/fileconf.h"  // wxFileConfig
+#include "asHeadersBase.h"
+#if USE_GUI
+#include "wx/colour.h"  // wxColour
+#endif
 
 class asConfig : public wxObject {
   public:

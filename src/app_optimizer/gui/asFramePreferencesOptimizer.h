@@ -30,7 +30,7 @@
 #define AS_FRAME_PREFERENCES_OPTIMIZER
 
 #include "AtmoSwingOptimizerGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asFramePreferencesOptimizer : public asFramePreferencesOptimizerVirtual {
   public:

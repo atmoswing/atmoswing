@@ -239,7 +239,10 @@ asPredictand* asPredictand::GetInstance(const wxString& filePath) {
     SpatialAggregation dataSpatialAggregation = (SpatialAggregation)ncFile.GetAttInt("data_spatial_aggregation");
 
     // Close the netCDF file
-    ncFile.Close();
+    if (!ncFile.Close()) {
+        wxLogError(_("Couldn't close file %s"), filePath);
+        return nullptr;
+    }
 
     // Get instance
     asPredictand* db = asPredictand::GetInstance(dataParameter, dataTemporalResolution, dataSpatialAggregation);
@@ -525,7 +528,10 @@ bool asPredictand::ParseData(const wxString& catalogFile, const wxString& direct
 
     // Get catalog
     asCatalogPredictands catalog(catalogFile);
-    catalog.Load();
+    if (!catalog.Load()) {
+        wxLogError(_("Cannot load catalog file %s"), catalogFile);
+        return false;
+    }
 
     // Get the stations list
     for (int iStat = 0; iStat < catalog.GetStationsNb(); iStat++) {
@@ -570,7 +576,10 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, int station
     size_t maxCharWidth = asFileDat::GetPatternLineMaxCharWidth(filePattern);
 
     // Jump the header
-    datFile.SkipLines(filePattern.headerLines);
+    if (!datFile.SkipLines(filePattern.headerLines)) {
+        wxLogError(_("Cannot skip header lines in %s"), fileFullPath);
+        return false;
+    }
 
     // Get first index on the tima axis
     int startIndex = asFind(&_time[0], &_time[_time.size() - 1], currentData.GetStationStart(stationIndex));
@@ -618,7 +627,10 @@ bool asPredictand::GetFileContent(asCatalogPredictands& currentData, int station
             }
         }
     }
-    datFile.Close();
+    if (!datFile.Close()) {
+        wxLogError(_("Cannot close file %s"), fileFullPath);
+        return false;
+    }
 
     // Get end index
     int endIndex = asFind(&_time[0], &_time[_time.size() - 1], currentData.GetStationEnd(stationIndex));

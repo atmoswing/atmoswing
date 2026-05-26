@@ -28,6 +28,7 @@
 #include "asPredictorsManager.h"
 
 #include "asAreaGridFull.h"
+#include "asIncludes.h"
 #include "asPredictorOper.h"
 
 asPredictorsManager::asPredictorsManager(asWorkspace* workspace, bool isTargetPredictor)

@@ -30,7 +30,7 @@
 #define AS_FILE_PARAMETERS_FORECAST_H
 
 #include "asFileParameters.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asFileParametersForecast : public asFileParameters {
   public:

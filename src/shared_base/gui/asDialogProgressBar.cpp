@@ -27,6 +27,8 @@
 
 #include "asDialogProgressBar.h"
 
+#include "asIncludes.h"
+
 asDialogProgressBar::asDialogProgressBar(const wxString& dialogMessage, int valueMax)
     : _progressBar(nullptr),
       _initiated(false),

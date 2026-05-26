@@ -29,6 +29,7 @@
 #include "asResultsTotalScore.h"
 
 #include "asFileNetcdf.h"
+#include "asIncludes.h"
 #include "asParametersScoring.h"
 
 asResultsTotalScore::asResultsTotalScore()

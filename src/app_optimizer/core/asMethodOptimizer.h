@@ -29,7 +29,9 @@
 #ifndef AS_METHOD_OPTIMIZER_H
 #define AS_METHOD_OPTIMIZER_H
 
-#include "asIncludes.h"
+#include <wx/log.h>  // wxLogError (inline Calibrate)
+
+#include "asHeadersBase.h"
 #include "asMethodCalibrator.h"
 #include "asParametersOptimization.h"
 

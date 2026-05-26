@@ -28,6 +28,8 @@
 
 #include "asUtils.h"
 
+#include "asIncludes.h"
+
 bool asRemoveDir(const wxString& path) {
     wxString f = wxFindFirstFile(path + DS + "*.*");
     while (!f.empty()) {

@@ -29,7 +29,7 @@
 #ifndef AS_RESULTS_SCORES_MAP_H
 #define AS_RESULTS_SCORES_MAP_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asResults.h"
 
 class asParametersCalibration;

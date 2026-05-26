@@ -36,6 +36,8 @@
 
 #include "AtmoSwingAppOptimizer.h"
 
+#include "asIncludes.h"
+
 #if USE_GUI
 
 #include "AtmoSwingMainOptimizer.h"

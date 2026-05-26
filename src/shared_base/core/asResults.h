@@ -29,7 +29,7 @@
 #ifndef AS_RESULTS_H
 #define AS_RESULTS_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asParameters.h"
 
 class asFileNetcdf;

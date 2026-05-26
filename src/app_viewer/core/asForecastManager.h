@@ -29,7 +29,10 @@
 #ifndef AS_FORECAST_MANAGER_H
 #define AS_FORECAST_MANAGER_H
 
-#include "asIncludes.h"
+#include <wx/arrstr.h>  // wxArrayString
+#include <wx/window.h>  // wxWindow
+
+#include "asHeadersBase.h"
 #include "asResultsForecastAggregator.h"
 #include "asWorkspace.h"
 

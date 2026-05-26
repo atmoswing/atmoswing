@@ -28,7 +28,9 @@
 #ifndef AS_RESULTS_FORECAST_AGGREGATOR_H
 #define AS_RESULTS_FORECAST_AGGREGATOR_H
 
-#include "asIncludes.h"
+#include <wx/arrstr.h>  // wxArrayString
+
+#include "asHeadersBase.h"
 #include "asResultsForecast.h"
 
 class asResultsForecastAggregator : public wxObject {

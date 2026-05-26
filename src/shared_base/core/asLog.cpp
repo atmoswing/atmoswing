@@ -30,6 +30,8 @@
 
 #include <wx/ffile.h>
 
+#include "asIncludes.h"
+
 // Global log functions
 asLog* g_pLog = new asLog();
 
@@ -62,7 +64,7 @@ void asLog::ClearCurrentTarget() {
     }
 }
 
-void asLog::CreateFile(const wxString& fileName) {
+void asLog::CreateLogFile(const wxString& fileName) {
     // Create the log file
     ClearCurrentTarget();
     wxString logpath = asConfig::GetLogDir();

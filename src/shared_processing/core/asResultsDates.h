@@ -29,7 +29,7 @@
 #ifndef AS_RESULTS_DATES_H
 #define AS_RESULTS_DATES_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asResults.h"
 
 class asResultsDates : public asResults {

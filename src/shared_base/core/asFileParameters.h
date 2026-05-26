@@ -30,7 +30,7 @@
 #define AS_FILE_PARAMETERS_H
 
 #include "asFileXml.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asFileParameters : public asFileXml {
   public:

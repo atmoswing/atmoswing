@@ -34,7 +34,7 @@
 
 #include "AtmoSwingForecasterGui.h"
 #include "asBatchForecasts.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asLogWindow.h"
 #include "asMethodForecasting.h"
 #include "asPanelsManagerForecasts.h"

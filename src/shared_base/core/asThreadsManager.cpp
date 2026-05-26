@@ -28,6 +28,9 @@
 
 #include "asThreadsManager.h"
 
+#include <wx/fileconf.h>
+
+#include "asIncludes.h"
 #include "asThread.h"
 
 // Safe: Critical section defined within

@@ -29,6 +29,7 @@
 #include "asCatalogPredictands.h"
 
 #include "asFileXml.h"
+#include "asIncludes.h"
 
 asCatalogPredictands::asCatalogPredictands(const wxString& filePath)
     : wxObject(),
@@ -193,7 +194,10 @@ bool asCatalogPredictands::Load() {
             _timeStepHours = 0;
     }
 
-    xmlFile.Close();
+    if (!xmlFile.Close()) {
+        wxLogError(_("Failed closing the catalog XML file."));
+        return false;
+    }
 
     return true;
 }

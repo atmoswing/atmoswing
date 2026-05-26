@@ -29,7 +29,10 @@
 #ifndef AS_RESULTS_FORECAST_H
 #define AS_RESULTS_FORECAST_H
 
-#include "asIncludes.h"
+#include <wx/arrstr.h>  // wxArrayString
+#include <wx/log.h>     // wxLogWarning (inline methods below)
+
+#include "asHeadersBase.h"
 #include "asParametersForecast.h"
 #include "asResults.h"
 
@@ -127,10 +130,7 @@ class asResultsForecast : public asResults {
         return _leadTimeOrigin;
     }
 
-    wxString GetLeadTimeOriginString() {
-        wxString leadTimeStr = asTime::GetStringTime(_leadTimeOrigin, "DD.MM.YYYY hh:mm");
-        return leadTimeStr;
-    }
+    wxString GetLeadTimeOriginString() const;
 
     int GetStationsNb() const {
         return (int)_stationIds.size();

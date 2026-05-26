@@ -564,6 +564,8 @@ class asParameters : public wxObject {
     }
 
     virtual int GetPredictorDataIdNb(int iStep, int iPtor) const {
+        (void)iStep;
+        (void)iPtor;
         return 1;
     }
 

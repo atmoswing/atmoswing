@@ -34,6 +34,11 @@
 #include <vector>
 
 #include "asFileNetcdf.h"
+#include "asIncludes.h"
+
+wxString asResultsForecast::GetLeadTimeOriginString() const {
+    return asTime::GetStringTime(_leadTimeOrigin, "DD.MM.YYYY hh:mm");
+}
 
 asResultsForecast::asResultsForecast()
     : asResults(),
@@ -373,7 +378,11 @@ bool asResultsForecast::Save() {
     ncFile.PutVarArray("predictor_lat_max", startPredictors, countPredictors, &_predictorLatMax[0]);
 
     // Close:save new netCDF dataset
-    ncFile.Close();
+    if (!ncFile.Close()) {
+        ThreadsManager().CritSectionNetCDF().Leave();
+        wxLogError(_("Could not close forecast file %s."), _filePath);
+        return false;
+    }
 
     ThreadsManager().CritSectionNetCDF().Leave();
 
@@ -633,13 +642,19 @@ bool asResultsForecast::Load() {
             ncFile.GetVarArray("analog_values_norm", indexStart2D, indexCount2D, &analogsValuesNorm[0]);
         }
 
-        ncFile.Close();
+        if (!ncFile.Close()) {
+            ThreadsManager().CritSectionNetCDF().Leave();
+            wxLogError(_("Could not close forecast file %s."), _filePath);
+            return false;
+        }
 
     } catch (runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
 
-        ncFile.ForceClose();
+        if (!ncFile.ForceClose()) {
+            wxLogVerbose(_("Force closing forecast file %s failed."), _filePath);
+        }
         ThreadsManager().CritSectionNetCDF().Leave();
 
         return false;

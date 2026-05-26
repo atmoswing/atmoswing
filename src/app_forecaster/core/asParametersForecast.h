@@ -209,10 +209,12 @@ class asParametersForecast : public asParameters {
     }
 
     int GetPreprocessArchiveMembersNb(int iStep, int iPtor, int iPre) const {
+        (void)iPre;
         return _stepsForecast[iStep].predictors[iPtor].preprocessArchiveMembersNb;
     }
 
     int GetPreprocessRealtimeMembersNb(int iStep, int iPtor, int iPre) const {
+        (void)iPre;
         return _stepsForecast[iStep].predictors[iPtor].preprocessRealtimeMembersNb;
     }
 

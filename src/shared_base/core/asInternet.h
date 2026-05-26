@@ -31,7 +31,7 @@
 
 #include <curl/curl.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asInternet : public wxObject {
   public:

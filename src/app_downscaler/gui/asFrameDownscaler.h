@@ -29,7 +29,7 @@
 #define AS_FRAME_DOWNSCALER
 
 #include "AtmoSwingDownscalerGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asLogWindow.h"
 #include "asMethodDownscaler.h"
 
