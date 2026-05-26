@@ -30,6 +30,7 @@
 
 #include "asBatchForecasts.h"
 #include "asFrameStyledTextCtrl.h"
+#include "asIncludes.h"
 #include "asPanelsManagerForecasts.h"
 #include "asParametersForecast.h"
 
