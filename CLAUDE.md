@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AtmoSwing (Analog Techniques for Statistical Weather forecastING) is a C++17 application suite implementing Analog Methods for meteorological forecasting and downscaling. It consists of four standalone tools: **Forecaster**, **Optimizer**, **Downscaler**, and **Viewer**.
+AtmoSwing (Analog Techniques for Statistical Weather forecastING) is a C++23 application suite implementing Analog Methods for meteorological forecasting and downscaling. It consists of four standalone tools: **Forecaster**, **Optimizer**, **Downscaler**, and **Viewer**.
 
 ## Build System
 
-The project uses **CMake 3.18+** with **vcpkg** for dependency management. The `VCPKG_ROOT` environment variable must be defined before running CMake (it is enforced via `FATAL_ERROR`).
+The project uses **CMake 3.20+** with **vcpkg** for dependency management. The `VCPKG_ROOT` environment variable must be defined before running CMake (it is enforced via `FATAL_ERROR`).
 
 ```bash
 # Configure (all targets, with tests)

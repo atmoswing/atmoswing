@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18) # To support FetchContent / FetchContent_MakeAvailable / SOURCE_SUBDIR
+cmake_minimum_required(VERSION 3.20) # cxx_std_23 + FetchContent / FetchContent_MakeAvailable / SOURCE_SUBDIR
 
 include(FetchContent)
 
@@ -70,7 +70,7 @@ project(AtmoSwing)
 # global add_definitions / include_directories leaking into FetchContent sub-projects (wxWidgets,
 # eccodes, vroomgis).
 add_library(atmoswing_compile_options INTERFACE)
-target_compile_features(atmoswing_compile_options INTERFACE cxx_std_17)
+target_compile_features(atmoswing_compile_options INTERFACE cxx_std_23)
 
 
 ##### OPTIONS
