@@ -59,7 +59,7 @@ float asTotalScorePSS::Assess(const a1f& targetDates, const a1f& scores, const a
         }
 
         default: {
-            throw runtime_error(_("Period not yet implemented in asTotalScorePSS."));
+            throw std::runtime_error(_("Period not yet implemented in asTotalScorePSS."));
         }
     }
 

@@ -28,31 +28,18 @@
 // asHeadersBase.h — minimum-dependency header for project HEADERS.
 //
 // PURPOSE
-//   Reduce the cost of `#include "asIncludes.h"` propagating through ~200 project
-//   headers. Use THIS header in .h files that only need the small set below.
-//   .cpp files should continue to include "asIncludes.h" (the omnibus) for the
-//   full wxWidgets / asUtils / asLog / asThreadsManager surface.
+//   Project .h files include THIS header (not "asIncludes.h"), which keeps the wx/wx.h
+//   omnibus from cascading through ~200 project headers and inflating compile times.
+//   .cpp files include "asIncludes.h" for the full wxWidgets / asUtils / asLog /
+//   asThreadsManager / Eigen surface — paid once per translation unit, not propagated.
 //
 // WHAT'S PROVIDED
 //   - wxObject / wxString (for class-base and member types in headers)
 //   - wxASSERT / wxFAIL_MSG (for inline header methods)
-//   - _() translation macro and runtime_error (for inline error handling)
+//   - _() translation macro (used in inline error messages)
 //   - All project type aliases via asTypeDefs.h (a1f, a2f, vi, vd, vwxs, ...)
 //   - Project enums via asGlobEnums.h (Order, TimeFormat, asSUCCESS, asNOT_FOUND, ...)
 //   - std::vector, std::unique_ptr (for class members)
-//
-// WHAT'S NOT PROVIDED (use full asIncludes.h or include directly if needed)
-//   - wxLog* (only via #include "asIncludes.h" or <wx/log.h>)
-//   - wxFileConfig
-//   - asUtils.h (asFind, asStrF, asRound, ...)
-//   - asLog.h, asTime.h, asThreadsManager.h
-//   - Eigen Core math (only the aliases via asTypeDefs.h)
-//
-// WX OMNIBUS NOT PULLED IN
-//   asGlobEnums.h only includes <wx/defs.h> (and only when USE_GUI=1), so including
-//   asHeadersBase.h does NOT drag in wx/wx.h's ~40 transitive headers. If a consumer
-//   header needs wxLog/wxFrame/etc., it must include the appropriate wx headers directly
-//   (or fall back to "asIncludes.h" if it really needs the full surface).
 // =====================================================================================
 
 #include <memory>
@@ -63,11 +50,6 @@
 #include <wx/intl.h>    // _() translation macro (used in inline error messages)
 #include <wx/object.h>  // wxObject base class
 #include <wx/string.h>  // wxString
-
-// Project-wide convenience: the codebase uses the unqualified name `runtime_error` pervasively
-// (matching the using-declaration historically in asIncludes.h). Provided here so headers
-// migrated off the omnibus keep compiling.
-using std::runtime_error;
 
 #include "asGlobEnums.h"
 #include "asTypeDefs.h"

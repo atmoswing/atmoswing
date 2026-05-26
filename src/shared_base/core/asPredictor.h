@@ -297,7 +297,7 @@ class asPredictor : public wxObject {
 
     void SelectFirstMember() {
         if (!_isEnsemble) {
-            throw runtime_error(_("Dataset is not an ensemble, you cannot select a member."));
+            throw std::runtime_error(_("Dataset is not an ensemble, you cannot select a member."));
         }
 
         _fInd.memberStart = 0;
@@ -307,7 +307,7 @@ class asPredictor : public wxObject {
 
     void SelectMember(int memberNum) {
         if (!_isEnsemble) {
-            throw runtime_error(_("Dataset is not an ensemble, you cannot select a member."));
+            throw std::runtime_error(_("Dataset is not an ensemble, you cannot select a member."));
         }
 
         // memberNum is 1-based, netcdf index is 0-based
@@ -318,7 +318,7 @@ class asPredictor : public wxObject {
 
     void SelectMembers(int memberNb) {
         if (!_isEnsemble) {
-            throw runtime_error(_("Dataset is not an ensemble, you cannot select a member."));
+            throw std::runtime_error(_("Dataset is not an ensemble, you cannot select a member."));
         }
 
         // memberNum is 1-based, netcdf index is 0-based

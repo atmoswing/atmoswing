@@ -376,7 +376,7 @@ class asResultsForecast : public asResults {
         } else if (_analogsCriteria.size() == i) {
             _analogsCriteria.push_back(analogsCriteria);
         } else {
-            throw runtime_error(_("The size of the criteria array does not fit with the required index."));
+            throw std::runtime_error(_("The size of the criteria array does not fit with the required index."));
         }
     }
 
@@ -405,7 +405,7 @@ class asResultsForecast : public asResults {
             wxASSERT(_analogsValuesRaw[iLead].cols() == analogsValuesRaw.size());
             _analogsValuesRaw[iLead].row(iStat) = analogsValuesRaw;
         } else {
-            throw runtime_error(_("The size of the values array does not fit with the required index."));
+            throw std::runtime_error(_("The size of the values array does not fit with the required index."));
         }
     }
 
@@ -434,7 +434,7 @@ class asResultsForecast : public asResults {
             wxASSERT(_analogsValuesNorm[iLead].cols() == analogsValuesNorm.size());
             _analogsValuesNorm[iLead].row(iStat) = analogsValuesNorm;
         } else {
-            throw runtime_error(_("The size of the values array does not fit with the required index."));
+            throw std::runtime_error(_("The size of the values array does not fit with the required index."));
         }
     }
 
@@ -454,7 +454,7 @@ class asResultsForecast : public asResults {
         } else if (_analogsDates.size() == i) {
             _analogsDates.push_back(analogsDates);
         } else {
-            throw runtime_error(_("The size of the dates array does not fit with the required index."));
+            throw std::runtime_error(_("The size of the dates array does not fit with the required index."));
         }
     }
 

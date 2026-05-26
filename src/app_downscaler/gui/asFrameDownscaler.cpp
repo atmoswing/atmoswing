@@ -264,7 +264,7 @@ void asFrameDownscaler::Launch(wxCommandEvent& event) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught: %s"), msg);
         wxLogError(_("Failed to process the downscaling."));
-    } catch (runtime_error& e) {
+    } catch (std::runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         wxLogError(_("Failed to process the downscaling."));

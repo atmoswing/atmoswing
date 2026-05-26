@@ -48,7 +48,7 @@ asFileGrib::asFileGrib(const wxString& fileName, const FileMode& fileMode)
         case (New):
         case (Append):
         default:
-            throw runtime_error(_("Grib files edition is not implemented."));
+            throw std::runtime_error(_("Grib files edition is not implemented."));
     }
 }
 
@@ -149,7 +149,7 @@ bool asFileGrib::ParseStructure() {
 
             codes_handle_delete(h);
         }
-    } catch (runtime_error& e) {
+    } catch (std::runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         wxLogError(_("Failed to parse grib file (exception)."));
@@ -203,7 +203,7 @@ void asFileGrib::ExtractTime(codes_handle* h) {
     } else if (timeUnit == 2) {
         // Days -> nothing to do
     } else {
-        throw runtime_error(_("Error reading grib file: unlisted time unit."));
+        throw std::runtime_error(_("Error reading grib file: unlisted time unit."));
     }
 
     if (refTime > 100) {
@@ -234,7 +234,7 @@ void asFileGrib::ExtractLevel(codes_handle* h) {
         wxASSERT(codes_is_defined(h, "indicatorOfTypeOfLevel"));
         CODES_CHECK(codes_get_long(h, "indicatorOfTypeOfLevel", &typeCode), 0);
     } else {
-        throw runtime_error(_("Error reading grib file: type of level not found."));
+        throw std::runtime_error(_("Error reading grib file: type of level not found."));
     }
     _levelTypes.push_back((int)typeCode);
 

@@ -515,7 +515,7 @@ bool asPredictor::Load(asAreaGrid* desiredArea, asTimeArray& timeArray, float le
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation (%s) caught when loading data %s (%s)."), msg, _dataId, _datasetName);
         return false;
-    } catch (runtime_error& e) {
+    } catch (std::runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         wxLogError(_("Failed to load data (exception)."));
@@ -1173,7 +1173,7 @@ asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
 
         auto dataArea = new asAreaGridRegular(xMin, xPtsNb, yMin, yPtsNb, true, desiredArea->FlatsAllowed());
         if (!dataArea->InitializeAxes(_fStr.lons, _fStr.lats, strideAllowed)) {
-            throw runtime_error(_("Failed at initializing the axes."));
+            throw std::runtime_error(_("Failed at initializing the axes."));
         }
 
         _fInd.lonStep = 1;
@@ -1191,7 +1191,7 @@ asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
     }
 
     if (!desiredArea->InitializeAxes(_fStr.lons, _fStr.lats, true)) {
-        throw runtime_error(_("Failed at initializing the axes."));
+        throw std::runtime_error(_("Failed at initializing the axes."));
     }
 
     if (desiredArea->IsRegular()) {
@@ -1207,7 +1207,7 @@ asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
 
         auto dataArea = new asAreaGridRegular(*desiredAreaReg);
         if (!dataArea->InitializeAxes(_fStr.lons, _fStr.lats, strideAllowed)) {
-            throw runtime_error(_("Failed at initializing the axes."));
+            throw std::runtime_error(_("Failed at initializing the axes."));
         }
 
         dataArea->CorrectCornersWithAxes();
@@ -1232,7 +1232,7 @@ asAreaGrid* asPredictor::CreateMatchingArea(asAreaGrid* desiredArea) {
         _fInd.latStep = 1;
         auto dataArea = new asAreaGridGeneric(*desiredAreaGen);
         if (!dataArea->InitializeAxes(_fStr.lons, _fStr.lats, strideAllowed)) {
-            throw runtime_error(_("Failed at initializing the axes."));
+            throw std::runtime_error(_("Failed at initializing the axes."));
         }
 
         _lonPtsnb = dataArea->GetXptsNb();
@@ -2377,7 +2377,7 @@ bool asPredictor::IsLatLon(const wxString& datasetId) {
 
 void asPredictor::CheckLevelTypeIsDefined() {
     if (_product.IsEmpty()) {
-        throw runtime_error(
+        throw std::runtime_error(
             _("The type of product must be defined for this dataset (prefix to the variable name. Ex: press/hgt)."));
     }
 }

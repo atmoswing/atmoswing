@@ -387,7 +387,7 @@ int asParametersOptimizationGAs::GetParamType(int index) {
                  asStrF("The counter (%d) did not match the number of parameters (%d).", counter, _allParametersCount));
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
-    throw runtime_error(_("We should never reach that point..."));
+    throw std::runtime_error(_("We should never reach that point..."));
 }
 
 double asParametersOptimizationGAs::GetParameterValue(int index) {

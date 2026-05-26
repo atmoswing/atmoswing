@@ -98,7 +98,7 @@ bool asFileNetcdf::Open() {
             break;
         }
         default: {
-            throw runtime_error(_("No valid NetCdf FileMode has been selected"));
+            throw std::runtime_error(_("No valid NetCdf FileMode has been selected"));
         }
     }
 
@@ -140,7 +140,7 @@ void asFileNetcdf::HandleErrorNetcdf() {
         std::string tmpmessage = nc_strerror(_status);
         wxString wxtmpmessage(tmpmessage.c_str(), wxConvUTF8);
         wxString errorMessage = asStrF(_("NetCDF error in file %s: %s"), _fileName.GetName(), wxtmpmessage);
-        throw runtime_error(errorMessage);
+        throw std::runtime_error(errorMessage);
     }
 }
 
@@ -602,7 +602,7 @@ short asFileNetcdf::GetAttShort(const wxString& attName, const wxString& varName
     if (varName.IsEmpty()) {  // Global attribute
         int attId = GetAttId(attName);
         if (attId == asNOT_FOUND) {
-            throw runtime_error(_("Cannot find the desired attribute in the netCDF file."));
+            throw std::runtime_error(_("Cannot find the desired attribute in the netCDF file."));
         }
         nc_type nctype = _struct.atts[attId].type;
 
@@ -610,7 +610,7 @@ short asFileNetcdf::GetAttShort(const wxString& attName, const wxString& varName
         if (nctype == NC_INT) {
             return (short)*static_cast<int*>(_struct.atts[attId].pValue);
         } else if (nctype != NC_SHORT) {
-            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+            throw std::runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
                                        attName, (int)nctype, (int)NC_SHORT));
         }
 
@@ -620,11 +620,11 @@ short asFileNetcdf::GetAttShort(const wxString& attName, const wxString& varName
     } else {  // Variable attribute
         int varId = GetVarId(varName);
         if (varId == asNOT_FOUND) {
-            throw runtime_error(_("Cannot find the desired variable in the netCDF file."));
+            throw std::runtime_error(_("Cannot find the desired variable in the netCDF file."));
         }
         int attId = GetAttId(attName, varName);
         if (attId == asNOT_FOUND) {
-            throw runtime_error(_("Cannot find the desired attribute in the netCDF file."));
+            throw std::runtime_error(_("Cannot find the desired attribute in the netCDF file."));
         }
         nc_type nctype = _struct.vars[varId].atts[attId].type;
 
@@ -632,7 +632,7 @@ short asFileNetcdf::GetAttShort(const wxString& attName, const wxString& varName
         if (nctype == NC_INT) {
             return (short)*static_cast<int*>(_struct.vars[varId].atts[attId].pValue);
         } else if (nctype != NC_SHORT) {
-            throw runtime_error(
+            throw std::runtime_error(
                 asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
                        attName, (int)nctype, (int)NC_SHORT));
         }
@@ -658,7 +658,7 @@ int asFileNetcdf::GetAttInt(const wxString& attName, const wxString& varName) {
         if (nctype == NC_SHORT) {
             return *static_cast<short*>(_struct.atts[attId].pValue);
         } else if (nctype != NC_INT) {
-            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+            throw std::runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
                                        attName, (int)nctype, (int)NC_INT));
         }
 
@@ -676,7 +676,7 @@ int asFileNetcdf::GetAttInt(const wxString& attName, const wxString& varName) {
         if (nctype == NC_SHORT) {
             return *static_cast<short*>(_struct.vars[varId].atts[attId].pValue);
         } else if (nctype != NC_INT) {
-            throw runtime_error(
+            throw std::runtime_error(
                 asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
                        attName, (int)nctype, (int)NC_INT));
         }
@@ -702,7 +702,7 @@ float asFileNetcdf::GetAttFloat(const wxString& attName, const wxString& varName
         if (nctype == NC_DOUBLE) {
             return (float)*static_cast<double*>(_struct.atts[attId].pValue);
         } else if (nctype != NC_FLOAT) {
-            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+            throw std::runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
                                        attName, (int)nctype, (int)NC_FLOAT));
         }
 
@@ -720,7 +720,7 @@ float asFileNetcdf::GetAttFloat(const wxString& attName, const wxString& varName
         if (nctype == NC_DOUBLE) {
             return (float)*static_cast<double*>(_struct.vars[varId].atts[attId].pValue);
         } else if (nctype != NC_FLOAT) {
-            throw runtime_error(
+            throw std::runtime_error(
                 asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
                        attName, (int)nctype, (int)NC_FLOAT));
         }
@@ -746,7 +746,7 @@ double asFileNetcdf::GetAttDouble(const wxString& attName, const wxString& varNa
         if (nctype == NC_FLOAT) {
             return (double)*static_cast<float*>(_struct.atts[attId].pValue);
         } else if (nctype != NC_DOUBLE) {
-            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+            throw std::runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
                                        attName, (int)nctype, (int)NC_DOUBLE));
         }
 
@@ -764,7 +764,7 @@ double asFileNetcdf::GetAttDouble(const wxString& attName, const wxString& varNa
         if (nctype == NC_FLOAT) {
             return (double)*static_cast<float*>(_struct.vars[varId].atts[attId].pValue);
         } else if (nctype != NC_DOUBLE) {
-            throw runtime_error(
+            throw std::runtime_error(
                 asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
                        attName, (int)nctype, (int)NC_DOUBLE));
         }
@@ -786,13 +786,13 @@ char asFileNetcdf::GetAttChar(const wxString& attName, const wxString& varName) 
     if (varName.IsEmpty()) {  // Global attribute
         int attId = GetAttId(attName);
         if (attId == asNOT_FOUND) {
-            throw runtime_error(_("Cannot find the desired attribute in the netCDF file."));
+            throw std::runtime_error(_("Cannot find the desired attribute in the netCDF file."));
         }
         nc_type nctype = _struct.atts[attId].type;
 
         // Check the given type
         if (nctype != NC_CHAR) {
-            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+            throw std::runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
                                        attName, (int)nctype, (int)NC_CHAR));
         }
 
@@ -802,17 +802,17 @@ char asFileNetcdf::GetAttChar(const wxString& attName, const wxString& varName) 
     } else {  // Variable attribute
         int varId = GetVarId(varName);
         if (varId == asNOT_FOUND) {
-            throw runtime_error(_("Cannot find the desired variable in the netCDF file."));
+            throw std::runtime_error(_("Cannot find the desired variable in the netCDF file."));
         }
         int attId = GetAttId(attName, varName);
         if (attId == asNOT_FOUND) {
-            throw runtime_error(_("Cannot find the desired attribute in the netCDF file."));
+            throw std::runtime_error(_("Cannot find the desired attribute in the netCDF file."));
         }
         nc_type nctype = _struct.vars[varId].atts[attId].type;
 
         // Check the given type
         if (nctype != NC_CHAR) {
-            throw runtime_error(
+            throw std::runtime_error(
                 asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
                        attName, (int)nctype, (int)NC_CHAR));
         }
@@ -846,7 +846,7 @@ wxString asFileNetcdf::GetAttString(const wxString& attName, const wxString& var
         nc_type nctype = _struct.atts[attId].type;
         if (nctype != NC_CHAR) {
             wxDELETEA(text);
-            throw runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+            throw std::runtime_error(asStrF(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
                                        attName, (int)nctype, (int)NC_CHAR));
         }
 
@@ -877,7 +877,7 @@ wxString asFileNetcdf::GetAttString(const wxString& attName, const wxString& var
         nc_type nctype = _struct.vars[varId].atts[attId].type;
         if (nctype != NC_CHAR) {
             wxDELETEA(text);
-            throw runtime_error(
+            throw std::runtime_error(
                 asStrF(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), varName,
                        attName, (int)nctype, (int)NC_CHAR));
         }
@@ -932,7 +932,7 @@ nc_type asFileNetcdf::GetVarType(const wxString& varName) {
 
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Variable name not found in the file."));
+        throw std::runtime_error(_("Variable name not found in the file."));
     }
 
     return _struct.vars[varId].type;
@@ -947,13 +947,13 @@ void asFileNetcdf::GetVar(const wxString& varName, short* pValue) {
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_SHORT)
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
                                    varName, (int)nctype, (int)NC_SHORT));
 
     // Get value
@@ -970,13 +970,13 @@ void asFileNetcdf::GetVar(const wxString& varName, int* pValue) {
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_INT) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
                                    varName, (int)nctype, (int)NC_INT));
     }
 
@@ -994,13 +994,13 @@ void asFileNetcdf::GetVar(const wxString& varName, float* pValue) {
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_FLOAT) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
                                    varName, (int)nctype, (int)NC_FLOAT));
     }
 
@@ -1018,13 +1018,13 @@ void asFileNetcdf::GetVar(const wxString& varName, double* pValue) {
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_DOUBLE) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
                                    varName, (int)nctype, (int)NC_DOUBLE));
     }
 
@@ -1042,13 +1042,13 @@ void asFileNetcdf::GetVar(const wxString& varName, wxString* pValue, const size_
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_STRING) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
                                    varName, (int)nctype, (int)NC_STRING));
     }
 
@@ -1073,13 +1073,13 @@ short asFileNetcdf::GetVarOneShort(const wxString& varName, size_t arrIndex) {
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_SHORT) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
                                    varName, (int)nctype, (int)NC_SHORT));
     }
 
@@ -1100,13 +1100,13 @@ int asFileNetcdf::GetVarOneInt(const wxString& varName, size_t arrIndex) {
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_INT) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
                                    varName, (int)nctype, (int)NC_INT));
     }
 
@@ -1127,13 +1127,13 @@ float asFileNetcdf::GetVarOneFloat(const wxString& varName, size_t arrIndex) {
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_FLOAT) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
                                    varName, (int)nctype, (int)NC_FLOAT));
     }
 
@@ -1154,13 +1154,13 @@ double asFileNetcdf::GetVarOneDouble(const wxString& varName, size_t arrIndex) {
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_DOUBLE) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
                                    varName, (int)nctype, (int)NC_DOUBLE));
     }
 
@@ -1182,13 +1182,13 @@ void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
                                    varName, (int)nctype));
     }
 
@@ -1215,13 +1215,13 @@ void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
                                    varName, (int)nctype));
     }
 
@@ -1248,13 +1248,13 @@ void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
                                    varName, (int)nctype));
     }
 
@@ -1281,13 +1281,13 @@ void asFileNetcdf::GetVarArray(const wxString& varName, const size_t indexStart[
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
                                    varName, (int)nctype));
     }
 
@@ -1314,13 +1314,13 @@ void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
                                    varName, (int)nctype));
     }
 
@@ -1348,13 +1348,13 @@ void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
                                    varName, (int)nctype));
     }
 
@@ -1382,13 +1382,13 @@ void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type. Allow the short type here.
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
                                    varName, (int)nctype));
     }
 
@@ -1416,13 +1416,13 @@ void asFileNetcdf::GetVarSample(const wxString& varName, const size_t indexStart
     // Get the variable value
     int varId = GetVarId(varName);
     if (varId == asNOT_FOUND) {
-        throw runtime_error(_("Cannot get the desired variable from the netCDF file."));
+        throw std::runtime_error(_("Cannot get the desired variable from the netCDF file."));
     }
 
     // Check the given type
     nc_type nctype = _struct.vars[varId].type;
     if (nctype != NC_FLOAT && nctype != NC_SHORT && nctype != NC_DOUBLE && nctype != NC_INT && nctype != NC_INT64) {
-        throw runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
+        throw std::runtime_error(asStrF(_("The variable (%s) type (%d) in file doesn't match the desired type (numeric)."),
                                    varName, (int)nctype));
     }
 
@@ -1486,7 +1486,7 @@ void asFileNetcdf::ClearStruct() {
                     }
 
                     default:
-                        throw runtime_error(asStrF(
+                        throw std::runtime_error(asStrF(
                             _("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
                             nctype, att.name));
                 }
@@ -1538,7 +1538,7 @@ void asFileNetcdf::ClearStruct() {
                 }
 
                 default:
-                    throw runtime_error(
+                    throw std::runtime_error(
                         asStrF(_("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
                                nctype, att.name));
             }

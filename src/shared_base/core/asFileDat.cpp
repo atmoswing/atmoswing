@@ -77,10 +77,10 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString& fileName, const wxStrin
 
     asFileXml xmlFile(filePath, asFile::ReadOnly);
     if (!xmlFile.Open()) {
-        throw runtime_error(_("Cannot open the pattern file."));
+        throw std::runtime_error(_("Cannot open the pattern file."));
     }
     if (!xmlFile.CheckRootElement()) {
-        throw runtime_error(_("Errors were found in the pattern file."));
+        throw std::runtime_error(_("Errors were found in the pattern file."));
     }
 
     // Get data
@@ -105,7 +105,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString& fileName, const wxStrin
                         attributeEnd = "column";
                         break;
                     default:
-                        throw runtime_error(_("The file structure type in unknown"));
+                        throw std::runtime_error(_("The file structure type in unknown"));
                 }
             } else if (nodeParam->GetName() == "header_lines") {
                 pattern.headerLines = asFileXml::GetInt(nodeParam);
@@ -113,7 +113,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString& fileName, const wxStrin
                 pattern.parseTime = asFileXml::GetBool(nodeParam);
             } else if (nodeParam->GetName() == "time") {
                 if (attributeStart.IsEmpty() || attributeEnd.IsEmpty()) {
-                    throw runtime_error(_("The file structure type in undefined"));
+                    throw std::runtime_error(_("The file structure type in undefined"));
                 }
 
                 wxXmlNode* nodeTime = nodeParam->GetChildren();
@@ -146,7 +146,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString& fileName, const wxStrin
                 }
             } else if (nodeParam->GetName() == "data") {
                 if (attributeStart.IsEmpty() || attributeEnd.IsEmpty()) {
-                    throw runtime_error(_("The file structure type in undefined"));
+                    throw std::runtime_error(_("The file structure type in undefined"));
                 }
 
                 wxXmlNode* nodeData = nodeParam->GetChildren();
@@ -173,7 +173,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString& fileName, const wxStrin
         }
 
     } else {
-        throw runtime_error(_("Expecting the tag pattern in the pattern file..."));
+        throw std::runtime_error(_("Expecting the tag pattern in the pattern file..."));
     }
 
     return pattern;
@@ -185,7 +185,7 @@ asFileDat::FileStructType asFileDat::StringToStructType(const wxString& structTy
     } else if (structTypeStr.CmpNoCase("constant_width") == 0) {
         return asFileDat::ConstantWidth;
     } else {
-        throw runtime_error(_("The file structure type in unknown"));
+        throw std::runtime_error(_("The file structure type in unknown"));
     }
 }
 

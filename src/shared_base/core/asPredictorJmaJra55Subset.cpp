@@ -228,9 +228,9 @@ void asPredictorJmaJra55Subset::ListFiles(asTimeArray& timeArray) {
                 size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, filePattern);
 
                 if (nbFiles == 0) {
-                    throw runtime_error(asStrF(_("No JRA-55 file found for this pattern : %s."), filePattern));
+                    throw std::runtime_error(asStrF(_("No JRA-55 file found for this pattern : %s."), filePattern));
                 } else if (nbFiles > 1) {
-                    throw runtime_error(asStrF(_("Multiple JRA-55 files found for this pattern : %s."), filePattern));
+                    throw std::runtime_error(asStrF(_("Multiple JRA-55 files found for this pattern : %s."), filePattern));
                 }
 
                 _files.push_back(wxString(listFiles.Item(0)));
@@ -241,9 +241,9 @@ void asPredictorJmaJra55Subset::ListFiles(asTimeArray& timeArray) {
             size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, filePattern);
 
             if (nbFiles == 0) {
-                throw runtime_error(asStrF(_("No JRA-55 file found for this pattern : %s."), filePattern));
+                throw std::runtime_error(asStrF(_("No JRA-55 file found for this pattern : %s."), filePattern));
             } else if (nbFiles > 1) {
-                throw runtime_error(asStrF(_("Multiple JRA-55 files found for this pattern : %s."), filePattern));
+                throw std::runtime_error(asStrF(_("Multiple JRA-55 files found for this pattern : %s."), filePattern));
             }
 
             _files.push_back(wxString(listFiles.Item(0)));

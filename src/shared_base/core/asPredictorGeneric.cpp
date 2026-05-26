@@ -202,7 +202,7 @@ void asPredictorGeneric::ListFiles(asTimeArray& timeArray) {
     size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, "*.nc");
 
     if (nbFiles == 0) {
-        throw runtime_error(_("No file found for the generic archive."));
+        throw std::runtime_error(_("No file found for the generic archive."));
     }
 
     listFiles.Sort();

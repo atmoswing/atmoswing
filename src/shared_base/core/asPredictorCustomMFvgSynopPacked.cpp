@@ -62,7 +62,7 @@ void asPredictorCustomMFvgSynopPacked::ListFiles(asTimeArray& timeArray) {
     if (nbFiles == 0) {
         nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, _dataId + ".*.grib");
         if (nbFiles == 0) {
-            throw runtime_error(asStrF(_("No file found for the FVG packed archive (%s/%s)."), _product, _dataId));
+            throw std::runtime_error(asStrF(_("No file found for the FVG packed archive (%s/%s)."), _product, _dataId));
         }
     }
 

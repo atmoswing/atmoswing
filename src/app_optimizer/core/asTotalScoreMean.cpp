@@ -85,7 +85,7 @@ float asTotalScoreMean::Assess(const a1f& targetDates, const a1f& scores, const 
         }
 
         default: {
-            throw runtime_error(_("Period not yet implemented in asTotalScoreMean."));
+            throw std::runtime_error(_("Period not yet implemented in asTotalScoreMean."));
         }
     }
 }

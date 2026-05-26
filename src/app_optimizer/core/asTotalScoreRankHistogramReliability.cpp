@@ -52,7 +52,7 @@ float asTotalScoreRankHistogramReliability::Assess(const a1f& targetDates, const
         }
 
         default: {
-            throw runtime_error(_("Period not yet implemented in asTotalScoreRankHistogramReliability."));
+            throw std::runtime_error(_("Period not yet implemented in asTotalScoreRankHistogramReliability."));
         }
     }
 

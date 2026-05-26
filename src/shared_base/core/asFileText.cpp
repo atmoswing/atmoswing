@@ -77,7 +77,7 @@ void asFileText::AddContent(const wxString& lineContent) {
 
     // Check the state flags
     if (_file.fail())
-        throw runtime_error(asStrF(_("An error occured while trying to write in file %s"), _fileName.GetFullPath()));
+        throw std::runtime_error(asStrF(_("An error occured while trying to write in file %s"), _fileName.GetFullPath()));
 }
 
 wxString asFileText::GetNextLine() {
@@ -90,10 +90,10 @@ wxString asFileText::GetNextLine() {
 
         // Check the state flags
         if ((!_file.eof()) && (_file.fail()))
-            throw runtime_error(
+            throw std::runtime_error(
                 asStrF(_("An error occured while trying to write in file %s"), _fileName.GetFullPath()));
     } else {
-        throw runtime_error(
+        throw std::runtime_error(
             asStrF(_("You are trying to read a line after the end of the file %s"), _fileName.GetFullPath()));
     }
 
@@ -141,7 +141,8 @@ bool asFileText::SkipLines(int linesNb) {
 
     for (int iLine = 0; iLine < linesNb; iLine++) {
         if (!_file.eof()) {
-            GetNextLine();
+            const wxString skippedLine = GetNextLine();
+            (void)skippedLine;
         } else {
             wxLogError(_("Reached the end of the file while skipping lines."));
             return false;
@@ -189,7 +190,9 @@ int asFileText::CountLines(const wxString& filePath) {
             lines++;
         }
     } while (!file.EndOfFile());
-    file.Close();
+    if (!file.Close()) {
+        wxLogVerbose(_("Couldn't properly close the file %s after counting lines."), filePath);
+    }
 
     return lines;
 }

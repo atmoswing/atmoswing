@@ -648,7 +648,7 @@ bool asResultsForecast::Load() {
             return false;
         }
 
-    } catch (runtime_error& e) {
+    } catch (std::runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
 

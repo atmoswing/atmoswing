@@ -69,7 +69,7 @@ void asPredictorsRenderer::Redraw(vf& domain, Coo& location, int predictorSelect
     } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught during data loading: %s"), msg);
-    } catch (runtime_error& e) {
+    } catch (std::runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught during data loading: %s"), msg);
     }

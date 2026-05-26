@@ -524,7 +524,7 @@ int AtmoSwingAppDownscaler::OnRun() {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught: %s"), msg);
         return 1;
-    } catch (runtime_error& e) {
+    } catch (std::runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         return 1;

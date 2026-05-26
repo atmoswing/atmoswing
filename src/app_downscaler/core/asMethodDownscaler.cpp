@@ -332,7 +332,7 @@ bool asMethodDownscaler::LoadProjectionData(vector<asPredictor*>& predictors, as
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation during scenario data loading: %s"), msg);
         return false;
-    } catch (runtime_error& e) {
+    } catch (std::runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception during scenario data loading: %s"), msg);
         return false;

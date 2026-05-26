@@ -66,8 +66,8 @@ asArea::asArea()
 
 void asArea::Init() {
     if (_isLatLon) DoCheckPoints();
-    if (!CheckConsistency()) throw runtime_error(_("Unable to build a consistent area with the given coordinates."));
-    if (!IsRectangle()) throw runtime_error(_("The provided area is not rectangle."));
+    if (!CheckConsistency()) throw std::runtime_error(_("Unable to build a consistent area with the given coordinates."));
+    if (!IsRectangle()) throw std::runtime_error(_("The provided area is not rectangle."));
 }
 
 void asArea::DoCheckPoints() {

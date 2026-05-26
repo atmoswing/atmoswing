@@ -29,6 +29,21 @@
 #ifndef AS_INC_H
 #define AS_INC_H
 
+// =====================================================================================
+// asIncludes.h — implementation-side omnibus header (use from .cpp files only).
+//
+// SCOPE
+//   Pulls in the project's full surface (wx/wx.h, Eigen, asUtils, asTime, asLog, asConfig,
+//   asThreadsManager, asEvents, GUI dialogs, ...) for .cpp translation units. The cost is
+//   paid once per .cpp; it does NOT cascade through other headers because no project .h
+//   should include this file.
+//
+//   HEADERS must NOT include this file. Use "asHeadersBase.h" instead (small, ~6 wx
+//   headers + project type aliases + enums) and add any extra direct includes (e.g.
+//   <wx/log.h>, <wx/fileconf.h>, "asTime.h") only when needed. asHeadersBase.h is
+//   pulled in below so the shared baseline lives in a single place.
+// =====================================================================================
+
 //---------------------------------
 // Disable some MSVC warnings
 //---------------------------------
@@ -38,6 +53,15 @@
 #pragma warning(disable : 4100)  // C4100: unreferenced formal parameter
 #pragma warning(disable : 4515)  // C4515: namespace uses itself
 #endif
+
+//---------------------------------
+// Shared baseline (wxObject/wxString, project type aliases, project enums, ...)
+// Pulled in from asHeadersBase.h so the .h and .cpp sides share one source of truth.
+// asTypeDefs.h must come before the other project headers, and asHeadersBase.h
+// already ensures that ordering.
+//---------------------------------
+
+#include "asHeadersBase.h"
 
 //---------------------------------
 // Standard wxWidgets headers
@@ -90,14 +114,12 @@
 
 //---------------------------------
 // Standard library
+// (std::vector and `using std::runtime_error` come from asHeadersBase.h)
 //---------------------------------
 
 #include <algorithm>
 #include <cmath>
 #include <exception>
-#include <vector>
-
-using std::runtime_error;
 
 //---------------------------------
 // Automatic leak detection with Microsoft VisualC++
@@ -123,16 +145,10 @@ using std::runtime_error;
 
 //---------------------------------
 // Some AtmoSwing stuff - frequently used classes
+// (asTypeDefs.h and asGlobEnums.h are pulled in by asHeadersBase.h above.)
 //---------------------------------
 
-// asTypeDefs.h MUST precede the other project headers: several of them (asThreadsManager.h,
-// asTime.h, ...) use its type aliases and structs (vector, Time, a1f, ...) at namespace scope.
-// It is kept in its own include block (blank line below) so clang-format's SortIncludes does
-// not merge and re-sort it alphabetically with the block that follows.
-#include "asTypeDefs.h"
-
 #include "asConfig.h"
-#include "asGlobEnums.h"
 #include "asGlobVars.h"
 #include "asLog.h"
 #include "asThreadsManager.h"
