@@ -28,6 +28,8 @@
 
 #include "asMethodStandard.h"
 
+#include <wx/fileconf.h>
+
 #include "asAreaGrid.h"
 #include "asCriteria.h"
 #include "asIncludes.h"

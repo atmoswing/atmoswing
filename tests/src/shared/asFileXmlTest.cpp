@@ -66,7 +66,7 @@ TEST(FileXml, SaveAndLoadXmlFileWxStyle) {
 
     doc.SetRoot(nodeBase);
 
-    doc.Save(filePath);
+    (void)doc.Save(filePath);
 
     // Read
     wxXmlDocument doc2;
@@ -116,7 +116,7 @@ TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle) {
 
     fileXml.AddChild(nodeBuilding);
 
-    fileXml.Save();
+    (void)fileXml.Save();
 
     // Read
     asFileXml fileXml2(filePath, asFile::ReadOnly);

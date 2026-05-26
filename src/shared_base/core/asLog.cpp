@@ -29,6 +29,7 @@
 #include "asLog.h"
 
 #include <wx/ffile.h>
+#include <wx/filename.h>
 
 #include "asIncludes.h"
 

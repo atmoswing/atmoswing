@@ -28,6 +28,8 @@
 
 #include "asThreadInternetDownload.h"
 
+#include <wx/filename.h>
+
 #include "asIncludes.h"
 
 asThreadInternetDownload::asThreadInternetDownload(const vwxs& urls, const vwxs& fileNames,

@@ -28,6 +28,8 @@
 
 #include "asMethodForecasting.h"
 
+#include <wx/fileconf.h>
+
 #include "asAreaGrid.h"
 #include "asIncludes.h"
 #include "asPreprocessor.h"

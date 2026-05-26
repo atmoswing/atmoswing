@@ -30,11 +30,12 @@
 #define AS_FORECAST_MANAGER_H
 
 #include <wx/arrstr.h>  // wxArrayString
-#include <wx/window.h>  // wxWindow
 
 #include "asHeadersBase.h"
 #include "asResultsForecastAggregator.h"
 #include "asWorkspace.h"
+
+class wxWindow;
 
 class asForecastManager {
   public:

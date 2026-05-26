@@ -29,8 +29,6 @@
 #ifndef AS_METHOD_FORECASTING_H
 #define AS_METHOD_FORECASTING_H
 
-#include <wx/window.h>
-
 #include "asBatchForecasts.h"
 #include "asCriteria.h"
 #include "asHeadersBase.h"
@@ -39,6 +37,8 @@
 #include "asPredictor.h"
 #include "asPredictorOper.h"
 #include "asResultsForecastAggregator.h"
+
+class wxWindow;
 
 class asResultsDates;
 

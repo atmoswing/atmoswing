@@ -29,7 +29,8 @@
 #include "asConfig.h"
 
 #include <wx/dir.h>
-#include <wx/stdpaths.h>  // wxStandardPaths returns the standard locations in the file system
+#include <wx/stdpaths.h>
+#include <wx/filename.h>
 
 #include "asIncludes.h"
 

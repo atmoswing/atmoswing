@@ -29,11 +29,12 @@
 
 #include "asProcessor.h"
 
+#include <wx/fileconf.h>
+
 #include "asCriteria.h"
 #include "asIncludes.h"
 #include "asParameters.h"
 #include "asPredictor.h"
-#include "asPreprocessor.h"
 #include "asResultsDates.h"
 #include "asResultsValues.h"
 #include "asThreadGetAnalogsDates.h"

@@ -30,6 +30,9 @@
 #define AS_PARAMETERS_SCORING_H
 
 #include "asParameters.h"
+#include "asTime.h"
+
+#include <wx/log.h>
 
 class asFileParameters;
 

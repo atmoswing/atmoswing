@@ -263,14 +263,14 @@ set(ENABLE_EXAMPLES OFF)
 set(ENABLE_SAMPLES OFF)
 set(ENABLE_SYMLINKS OFF)
 if (BUILD_VIEWER)
-    set(ENABLE_JPG ON)
-    set(ENABLE_JPG_LIBJASPER ON)
-    set(ENABLE_JPG_LIBOPENJPEG OFF) # Prefer JasPer backend; avoids Linux CI link failures on opj_* symbols
+    set(ENABLE_JPG ON CACHE BOOL "ecCodes JPEG support" FORCE)
+    set(ENABLE_JPG_LIBJASPER ON CACHE BOOL "ecCodes JPEG backend: JasPer" FORCE)
+    set(ENABLE_JPG_LIBOPENJPEG OFF CACHE BOOL "ecCodes JPEG backend: OpenJPEG" FORCE) # Prefer JasPer backend; avoids Linux CI link failures on opj_* symbols
 else ()
     # Server/headless builds do not pull the vcpkg "viewer" feature, so JasPer is unavailable.
-    set(ENABLE_JPG OFF)
-    set(ENABLE_JPG_LIBJASPER OFF)
-    set(ENABLE_JPG_LIBOPENJPEG OFF)
+    set(ENABLE_JPG OFF CACHE BOOL "ecCodes JPEG support" FORCE)
+    set(ENABLE_JPG_LIBJASPER OFF CACHE BOOL "ecCodes JPEG backend: JasPer" FORCE)
+    set(ENABLE_JPG_LIBOPENJPEG OFF CACHE BOOL "ecCodes JPEG backend: OpenJPEG" FORCE)
 endif ()
 set(ECBUILD_LOG_LEVEL "OFF")  # Disable all logging
 set(ECBUILD_LOG_FILE "${CMAKE_BINARY_DIR}/ecbuild.log")  # Set proper log file location

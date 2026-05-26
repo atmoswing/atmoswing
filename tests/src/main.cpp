@@ -31,6 +31,7 @@
 
 #include "asIncludes.h"
 #include <wx/init.h>
+#include <wx/fileconf.h>
 
 #include "asGlobVars.h"
 
@@ -61,7 +62,7 @@ int main(int argc, char** argv) {
         wxEntryStart(argcApp, argvApp);
 
         // Set the log
-        Log()->CreateFile("AtmoSwingTests.log");
+        Log()->CreateLogFile("AtmoSwingTests.log");
         Log()->SetLevel(2);
         wxLogNull logNo;
 

@@ -27,6 +27,8 @@
  */
 
 #include <gtest/gtest.h>
+#include <wx/filename.h>
+#include <wx/fileconf.h>
 
 
 #include "asIncludes.h"
@@ -34,7 +36,6 @@
 #include "asPredictor.h"
 #include "asPreprocessor.h"
 #include "asTimeArray.h"
-#include "wx/filename.h"
 
 TEST(Preprocessor, Gradients) {
     wxConfigBase* pConfig = wxFileConfig::Get();

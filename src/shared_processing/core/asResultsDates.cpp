@@ -28,6 +28,8 @@
 
 #include "asResultsDates.h"
 
+#include <wx/fileconf.h>
+
 #include "asFileNetcdf.h"
 #include "asIncludes.h"
 
@@ -111,7 +113,7 @@ bool asResultsDates::Save() {
     ncFile.PutVarArray("analog_dates", start2D, count2D, &_analogsDates(0));
 
     // Close:save new netCDF dataset
-    ncFile.Close();
+    (void)ncFile.Close();
 
     ThreadsManager().CritSectionNetCDF().Leave();
     return true;
@@ -158,7 +160,7 @@ bool asResultsDates::Load() {
     ncFile.GetVarArray("analog_criteria", startTA, countTA, &_analogsCriteria(0));
     ncFile.GetVarArray("analog_dates", startTA, countTA, &_analogsDates(0));
 
-    ncFile.Close();
+    (void)ncFile.Close();
 
     ThreadsManager().CritSectionNetCDF().Leave();
     return true;

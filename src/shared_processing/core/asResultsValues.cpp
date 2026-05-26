@@ -28,6 +28,8 @@
 
 #include "asResultsValues.h"
 
+#include <wx/fileconf.h>
+
 #include "asFileNetcdf.h"
 #include "asIncludes.h"
 
@@ -144,7 +146,7 @@ bool asResultsValues::Save() {
     ncFile.PutVarArray("analog_values_raw", startSTA, countSTA, &_analogsValuesRaw[0](0));
 
     // Close:save new netCDF dataset
-    ncFile.Close();
+    (void)ncFile.Close();
 
     ThreadsManager().CritSectionNetCDF().Leave();
 
@@ -200,7 +202,7 @@ bool asResultsValues::Load() {
 
     ThreadsManager().CritSectionNetCDF().Leave();
 
-    ncFile.Close();
+    (void)ncFile.Close();
 
     return true;
 }

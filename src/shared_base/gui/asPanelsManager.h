@@ -28,9 +28,9 @@
 #ifndef AS_PANELS_MANAGER_H
 #define AS_PANELS_MANAGER_H
 
-#include <wx/window.h>
-
 #include "asHeadersBase.h"
+
+class wxWindow;
 
 class asPanelsManager : public wxObject {
   public:

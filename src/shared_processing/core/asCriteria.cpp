@@ -29,6 +29,8 @@
 #include "asCriteria.h"
 #include "asIncludes.h"
 
+#include <wx/fileconf.h>
+
 #include "asCriteriaDMV.h"
 #include "asCriteriaDSD.h"
 #include "asCriteriaMD.h"

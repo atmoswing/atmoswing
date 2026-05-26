@@ -28,7 +28,6 @@
 
 #include <gtest/gtest.h>
 
-
 #include "asIncludes.h"
 #include "asAreaGridRegular.h"
 #include "asCriteria.h"
@@ -43,7 +42,7 @@ TEST(Criteria, S1) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append(_T("/files/criteria_S1.txt"));
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Create the containers
     int lons = 9;
@@ -52,7 +51,7 @@ TEST(Criteria, S1) {
     a2f refZ500(lats, lons), candZ500(lats, lons);
 
     // Skip the header
-    file.SkipLines(9);
+    (void)(void)file.SkipLines(9);
 
     // Get target data Z1000
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -67,7 +66,7 @@ TEST(Criteria, S1) {
     EXPECT_FLOAT_EQ(137, refZ1000(4, 8));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)(void)file.SkipLines(3);
 
     // Get target data Z500
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -124,7 +123,7 @@ TEST(Criteria, S1) {
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
         // Skip coasent
-        file.SkipLines(6);
+        (void)file.SkipLines(6);
 
         // Get candidate data Z1000
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -137,7 +136,7 @@ TEST(Criteria, S1) {
         EXPECT_FLOAT_EQ(checkZ1000[iCand], candZ1000(4, 8));
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data Z500
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -312,7 +311,7 @@ TEST(Criteria, RSE) {
     a2f refMulti(lats, 2 * lons), candMulti(lats, 2 * lons);
 
     // Skip the header
-    file.SkipLines(9);
+    (void)file.SkipLines(9);
 
     // Get target data PRWTR12h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -326,7 +325,7 @@ TEST(Criteria, RSE) {
     EXPECT_FLOAT_EQ(20.4f, refPRWTR(1, 1));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)file.SkipLines(3);
 
     // Get target data PRWTR24h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -340,7 +339,7 @@ TEST(Criteria, RSE) {
     EXPECT_FLOAT_EQ(18.1f, refPRWTR(1, 3));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)file.SkipLines(3);
 
     // Get target data RHUM85012h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -354,7 +353,7 @@ TEST(Criteria, RSE) {
     EXPECT_FLOAT_EQ(100, refRHUM850(1, 1));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)file.SkipLines(3);
 
     // Get target data RHUM85024h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -409,7 +408,7 @@ TEST(Criteria, RSE) {
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
         // Skip coasent
-        file.SkipLines(6);
+        (void)file.SkipLines(6);
 
         // Get candidate data PRWTR12h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -422,7 +421,7 @@ TEST(Criteria, RSE) {
         EXPECT_FLOAT_EQ(checkPRWTR[iCand], candPRWTR(1, 1));
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data PRWTR24h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -432,7 +431,7 @@ TEST(Criteria, RSE) {
         }
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data RHUM85012h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -445,7 +444,7 @@ TEST(Criteria, RSE) {
         EXPECT_FLOAT_EQ(checkRHUM850[iCand], candRHUM850(1, 1));
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data RHUM85024h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -474,7 +473,7 @@ TEST(Criteria, RMSE) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append(_T("/files/criteria_RMSE.txt"));
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Create the containers
     int lons = 2;
@@ -484,7 +483,7 @@ TEST(Criteria, RMSE) {
     a2f refMulti12h(lats, lons), refMulti24h(lats, lons), candMulti12h(lats, lons), candMulti24h(lats, lons);
 
     // Skip the header
-    file.SkipLines(9);
+    (void)file.SkipLines(9);
 
     // Get target data PRWTR12h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -498,7 +497,7 @@ TEST(Criteria, RMSE) {
     EXPECT_FLOAT_EQ(20.4f, refPRWTR12h(1, 1));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)file.SkipLines(3);
 
     // Get target data PRWTR24h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -512,7 +511,7 @@ TEST(Criteria, RMSE) {
     EXPECT_FLOAT_EQ(18.1f, refPRWTR24h(1, 1));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)file.SkipLines(3);
 
     // Get target data RHUM85012h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -526,7 +525,7 @@ TEST(Criteria, RMSE) {
     EXPECT_FLOAT_EQ(100, refRHUM85012h(1, 1));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)file.SkipLines(3);
 
     // Get target data RHUM85024h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -578,7 +577,7 @@ TEST(Criteria, RMSE) {
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
         // Skip coasent
-        file.SkipLines(6);
+        (void)file.SkipLines(6);
 
         // Get candidate data PRWTR12h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -591,7 +590,7 @@ TEST(Criteria, RMSE) {
         EXPECT_FLOAT_EQ(checkPRWTR12h[iCand], candPRWTR12h(1, 1));
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data PRWTR24h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -601,7 +600,7 @@ TEST(Criteria, RMSE) {
         }
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data RHUM85012h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -614,7 +613,7 @@ TEST(Criteria, RMSE) {
         EXPECT_FLOAT_EQ(checkRHUM85012h[iCand], candRHUM85012h(1, 1));
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data RHUM85024h
         for (int iLat = 0; iLat < lats; iLat++) {
