@@ -195,6 +195,7 @@ set(wxBUILD_INSTALL OFF)
 set(wxBUILD_SAMPLES OFF)
 set(wxBUILD_TESTS OFF)
 set(wxBUILD_SHARED OFF)
+set(wxUSE_XML ON)
 
 FetchContent_Declare(wxWidgets
         GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
