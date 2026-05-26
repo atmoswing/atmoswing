@@ -26,6 +26,8 @@
  */
 
 #include "asGlobVars.h"
+
+#include "asIncludes.h"
 #include "asMethodCalibratorSingle.h"
 #include "asThread.h"
 #include "gtest/gtest.h"

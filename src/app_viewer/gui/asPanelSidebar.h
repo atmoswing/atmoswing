@@ -30,7 +30,7 @@
 #define AS_PANEL_SIDEBAR_H
 
 #include "AtmoSwingViewerGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asPanelSidebar : public asPanelSidebarVirtual {
   public:

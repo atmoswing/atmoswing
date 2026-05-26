@@ -29,7 +29,7 @@
 #define AS_WIZARD_WORKSPACE_H
 
 #include "AtmoSwingViewerGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asWorkspace.h"
 
 class asWizardWorkspace : public asWizardWorkspaceVirtual {

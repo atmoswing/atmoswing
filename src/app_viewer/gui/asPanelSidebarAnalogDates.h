@@ -30,7 +30,7 @@
 
 #include <wx/listctrl.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelSidebar.h"
 
 class asPanelSidebarAnalogDates : public asPanelSidebar {

@@ -28,6 +28,8 @@
 
 #include <gtest/gtest.h>
 
+
+#include "asIncludes.h"
 #include "asAreaGridRegular.h"
 
 TEST(AreaGrid, CheckConsistency) {

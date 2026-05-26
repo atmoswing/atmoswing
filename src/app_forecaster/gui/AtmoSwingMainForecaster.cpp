@@ -36,6 +36,8 @@
 
 #include "AtmoSwingMainForecaster.h"
 
+#include "asIncludes.h"
+
 AtmoSwingFrameForecaster::AtmoSwingFrameForecaster(wxFrame* frame)
     : asFrameForecaster(frame) {
 #if wxUSE_STATUSBAR

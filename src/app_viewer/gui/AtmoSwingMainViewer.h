@@ -31,7 +31,7 @@
 
 #include "AtmoSwingAppViewer.h"
 #include "asFrameViewer.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class AtmoSwingFrameViewer : public asFrameViewer {
   public:

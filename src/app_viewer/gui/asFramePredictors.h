@@ -28,9 +28,12 @@
 #ifndef AS_FRAME_PREDICTORS_H
 #define AS_FRAME_PREDICTORS_H
 
+#include <wx/overlay.h>  // wxOverlay
+#include <wx/thread.h>   // wxCriticalSection (windows)
+
 #include "AtmoSwingViewerGui.h"
 #include "asForecastManager.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelPredictorsColorbar.h"
 #include "asPredictorsRenderer.h"
 #include "vroomgis.h"

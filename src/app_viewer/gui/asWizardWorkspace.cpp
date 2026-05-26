@@ -27,6 +27,8 @@
 
 #include "asWizardWorkspace.h"
 
+#include "asIncludes.h"
+
 #include <wx/fileconf.h>
 #include <wx/stdpaths.h>
 

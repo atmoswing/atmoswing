@@ -27,6 +27,8 @@
 
 #include <gtest/gtest.h>
 
+
+#include "asIncludes.h"
 #include "asFileXml.h"
 
 TEST(FileXml, SaveAndLoadXmlFileWxStyle) {

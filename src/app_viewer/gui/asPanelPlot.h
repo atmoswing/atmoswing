@@ -31,7 +31,7 @@
 #include <wx/plotctrl/plotctrl.h>
 
 #include "AtmoSwingViewerGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asPanelPlot : public wxPanel {
   public:

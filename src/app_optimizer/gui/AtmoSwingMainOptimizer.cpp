@@ -36,6 +36,8 @@
 
 #include "AtmoSwingMainOptimizer.h"
 
+#include "asIncludes.h"
+
 AtmoSwingFrameOptimizer::AtmoSwingFrameOptimizer(wxFrame* frame)
     : asFrameOptimizer(frame) {
 #if wxUSE_STATUSBAR

@@ -28,6 +28,8 @@
 
 #include "asFrameGridAnalogsValues.h"
 
+#include "asIncludes.h"
+
 #include "asForecastManager.h"
 
 asFrameGridAnalogsValues::asFrameGridAnalogsValues(wxWindow* parent, int methodRow, int forecastRow,

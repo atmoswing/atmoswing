@@ -28,6 +28,8 @@
 
 #include "asPanelSidebar.h"
 
+#include "asIncludes.h"
+
 #include "asBitmaps.h"
 
 asPanelSidebar::asPanelSidebar(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)

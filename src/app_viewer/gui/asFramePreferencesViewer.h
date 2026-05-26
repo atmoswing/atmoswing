@@ -30,7 +30,7 @@
 #define AS_FRAME_PREFERENCES_VIEWER_H
 
 #include "AtmoSwingViewerGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asWorkspace.h"
 
 class asFramePreferencesViewer : public asFramePreferencesViewerVirtual {

@@ -28,9 +28,10 @@
 #ifndef VR_RENDER_RASTER_PREDICTOR_H
 #define VR_RENDER_RASTER_PREDICTOR_H
 
+#include <wx/filename.h>  // wxFileName
 #include <wx/image.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPredictor.h"
 #include "vrrender.h"
 

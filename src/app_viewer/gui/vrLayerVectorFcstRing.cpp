@@ -28,6 +28,8 @@
 
 #include "vrLayerVectorFcstRing.h"
 
+#include "asIncludes.h"
+
 #include "vrlabel.h"
 #include "vrrender.h"
 

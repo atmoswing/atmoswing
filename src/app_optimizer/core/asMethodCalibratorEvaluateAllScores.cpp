@@ -28,6 +28,8 @@
 
 #include "asMethodCalibratorEvaluateAllScores.h"
 
+#include "asIncludes.h"
+
 #include "asTotalScore.h"
 #include "asTotalScoreRankHistogramReliability.h"
 

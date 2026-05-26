@@ -35,6 +35,8 @@
 
 #include "AtmoSwingMainDownscaler.h"
 
+#include "asIncludes.h"
+
 AtmoSwingFrameDownscaler::AtmoSwingFrameDownscaler(wxFrame* frame)
     : asFrameDownscaler(frame) {
 #if wxUSE_STATUSBAR

@@ -27,6 +27,8 @@
 
 #include "asFrameDownscaler.h"
 
+#include "asIncludes.h"
+
 #include "asBitmaps.h"
 #include "asFrameAbout.h"
 #include "asFramePredictandDB.h"

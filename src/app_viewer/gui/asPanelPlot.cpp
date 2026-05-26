@@ -27,6 +27,8 @@
 
 #include "asPanelPlot.h"
 
+#include "asIncludes.h"
+
 #include <wx/dcsvg.h>
 
 #include "wx/plotctrl/plotprnt.h"

@@ -28,6 +28,8 @@
 
 #include "asMethodCalibratorClassic.h"
 
+#include "asIncludes.h"
+
 asMethodCalibratorClassic::asMethodCalibratorClassic()
     : asMethodCalibrator(),
       _plus(false),

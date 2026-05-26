@@ -30,6 +30,8 @@
 
 #include <gtest/gtest.h>
 
+
+#include "asIncludes.h"
 #include "asCuda.cuh"
 #include "asThread.h"
 

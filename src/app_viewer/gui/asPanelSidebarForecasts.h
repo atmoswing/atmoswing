@@ -30,7 +30,7 @@
 #define AS_PANEL_SIDEBAR_FORECASTS_H
 
 #include "asForecastManager.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asListBoxForecastDisplay.h"
 #include "asListBoxForecasts.h"
 #include "asListBoxQuantiles.h"

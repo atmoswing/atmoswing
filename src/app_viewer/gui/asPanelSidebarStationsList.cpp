@@ -27,6 +27,8 @@
 
 #include "asPanelSidebarStationsList.h"
 
+#include "asIncludes.h"
+
 wxDEFINE_EVENT(asEVT_ACTION_STATION_SELECTION_CHANGED, wxCommandEvent);
 
 asPanelSidebarStationsList::asPanelSidebarStationsList(wxWindow* parent, wxWindowID id, const wxPoint& pos,

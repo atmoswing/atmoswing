@@ -28,6 +28,8 @@
 
 #include "asFrameViewer.h"
 
+#include "asIncludes.h"
+
 #include "AtmoSwingAppViewer.h"
 #include "asFramePredictandDB.h"
 

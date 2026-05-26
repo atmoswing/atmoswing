@@ -28,6 +28,8 @@
 
 #include "asFramePreferencesViewer.h"
 
+#include "asIncludes.h"
+
 #include <wx/fileconf.h>
 
 

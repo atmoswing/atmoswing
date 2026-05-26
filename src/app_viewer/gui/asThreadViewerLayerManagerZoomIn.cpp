@@ -27,6 +27,8 @@
 
 #include "asThreadViewerLayerManagerZoomIn.h"
 
+#include "asIncludes.h"
+
 asThreadViewerLayerManagerZoomIn::asThreadViewerLayerManagerZoomIn(vrViewerLayerManager* viewerLayerManager,
                                                                    wxCriticalSection* critSectionViewerLayerManager,
                                                                    const vrRealRect& fittedRect)

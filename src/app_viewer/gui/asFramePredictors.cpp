@@ -27,6 +27,8 @@
 
 #include "asFramePredictors.h"
 
+#include "asIncludes.h"
+
 #include "asBitmaps.h"
 #include "asFramePreferencesViewer.h"
 #if defined(__WIN32__)

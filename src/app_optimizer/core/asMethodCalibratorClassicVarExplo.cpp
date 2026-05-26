@@ -28,6 +28,8 @@
 
 #include "asMethodCalibratorClassicVarExplo.h"
 
+#include "asIncludes.h"
+
 asMethodCalibratorClassicVarExplo::asMethodCalibratorClassicVarExplo()
     : asMethodCalibratorClassic() {}
 

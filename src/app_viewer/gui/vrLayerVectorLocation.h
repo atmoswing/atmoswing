@@ -28,16 +28,7 @@
 #ifndef VR_LAYER_VECTORS_LOCATION_H
 #define VR_LAYER_VECTORS_LOCATION_H
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-// Include wxWidgets' headers
-#ifndef WX_PRECOMP
-
-#include <wx/wx.h>
-
-#endif
-
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "vrlayervector.h"
 
 class vrRender;

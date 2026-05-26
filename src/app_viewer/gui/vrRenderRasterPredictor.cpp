@@ -27,6 +27,8 @@
 
 #include "vrRenderRasterPredictor.h"
 
+#include "asIncludes.h"
+
 #include <wx/fileconf.h>
 #include <wx/tokenzr.h>
 

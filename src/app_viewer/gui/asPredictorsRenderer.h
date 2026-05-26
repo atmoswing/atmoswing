@@ -28,7 +28,7 @@
 #ifndef AS_PREDICTORS_VIEWER_H
 #define AS_PREDICTORS_VIEWER_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelPredictorsColorbar.h"
 #include "vroomgis.h"
 

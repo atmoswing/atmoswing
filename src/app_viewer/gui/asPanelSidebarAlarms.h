@@ -32,7 +32,7 @@
 #include <wx/graphics.h>
 
 #include "asForecastManager.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelSidebar.h"
 #include "asWorkspace.h"
 

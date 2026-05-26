@@ -36,6 +36,8 @@
 
 #include "AtmoSwingMainViewer.h"
 
+#include "asIncludes.h"
+
 #include <wx/fileconf.h>
 
 AtmoSwingFrameViewer::AtmoSwingFrameViewer(wxFrame* frame)

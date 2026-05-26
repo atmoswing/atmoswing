@@ -28,6 +28,8 @@
 
 #include "asPanelsManagerForecasts.h"
 
+#include "asIncludes.h"
+
 #include "asPanelForecast.h"
 
 asPanelsManagerForecasts::asPanelsManagerForecasts()

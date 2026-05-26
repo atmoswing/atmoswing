@@ -26,6 +26,8 @@
  */
 
 #include <gtest/gtest.h>
+
+#include "asIncludes.h"
 #include <wx/filename.h>
 
 #include "asAreaGridGeneric.h"

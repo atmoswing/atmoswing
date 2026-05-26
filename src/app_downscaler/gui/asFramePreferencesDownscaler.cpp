@@ -27,6 +27,8 @@
 
 #include "asFramePreferencesDownscaler.h"
 
+#include "asIncludes.h"
+
 asFramePreferencesDownscaler::asFramePreferencesDownscaler(wxWindow* parent, wxWindowID id)
     : asFramePreferencesDownscalerVirtual(parent, id) {
     SetLabel(_("Preferences"));

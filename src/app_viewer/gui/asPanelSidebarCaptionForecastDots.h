@@ -31,7 +31,7 @@
 
 #include <wx/graphics.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelSidebar.h"
 
 class asPanelSidebarCaptionForecastDotsDrawing : public wxPanel {

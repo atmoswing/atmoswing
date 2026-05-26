@@ -28,6 +28,8 @@
 
 #include "asFramePreferencesOptimizer.h"
 
+#include "asIncludes.h"
+
 asFramePreferencesOptimizer::asFramePreferencesOptimizer(wxWindow* parent, wxWindowID id)
     : asFramePreferencesOptimizerVirtual(parent, id) {
     SetLabel(_("Preferences"));

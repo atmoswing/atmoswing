@@ -27,6 +27,8 @@
 
 #include "asPanelSidebarAnalogDates.h"
 
+#include "asIncludes.h"
+
 wxDEFINE_EVENT(asEVT_ACTION_ANALOG_DATE_SELECTION_CHANGED, wxCommandEvent);
 
 asPanelSidebarAnalogDates::asPanelSidebarAnalogDates(wxWindow* parent, wxWindowID id, const wxPoint& pos,

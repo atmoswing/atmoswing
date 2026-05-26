@@ -28,6 +28,8 @@
 
 #include "asMethodOptimizerGAs.h"
 
+#include "asIncludes.h"
+
 #include <wx/dir.h>
 
 #include "asFileText.h"

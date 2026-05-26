@@ -29,8 +29,10 @@
 #define AS_PANEL_PREDICTORS_COLORBAR_H
 
 #include <wx/graphics.h>
+#include <wx/panel.h>
+#include <wx/sizer.h>  // wxBoxSizer
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "vrRenderRasterPredictor.h"
 
 /**

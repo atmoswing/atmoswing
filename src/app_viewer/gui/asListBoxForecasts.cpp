@@ -28,6 +28,8 @@
 
 #include "asListBoxForecasts.h"
 
+#include "asIncludes.h"
+
 #include "asBitmaps.h"
 #include "asForecastRenderer.h"
 

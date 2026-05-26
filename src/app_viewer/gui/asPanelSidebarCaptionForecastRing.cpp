@@ -28,6 +28,8 @@
 
 #include "asPanelSidebarCaptionForecastRing.h"
 
+#include "asIncludes.h"
+
 /*
  * asPanelSidebarCaptionForecastRing
  */

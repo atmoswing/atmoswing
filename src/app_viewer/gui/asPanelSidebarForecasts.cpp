@@ -28,6 +28,8 @@
 
 #include "asPanelSidebarForecasts.h"
 
+#include "asIncludes.h"
+
 #include <wx/statline.h>
 
 asPanelSidebarForecasts::asPanelSidebarForecasts(wxWindow* parent, asForecastManager* forecastManager, wxWindowID id,

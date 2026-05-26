@@ -28,6 +28,8 @@
 
 #include "asFramePlotTimeSeries.h"
 
+#include "asIncludes.h"
+
 #include <wx/fileconf.h>
 
 #include "asFileText.h"

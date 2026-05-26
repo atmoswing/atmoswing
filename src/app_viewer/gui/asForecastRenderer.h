@@ -29,7 +29,7 @@
 #ifndef AS_FORECAST_RENDERER_H
 #define AS_FORECAST_RENDERER_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "vroomgis.h"
 
 class asForecastManager;

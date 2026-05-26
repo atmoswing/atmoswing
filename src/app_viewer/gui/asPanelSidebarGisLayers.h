@@ -29,7 +29,7 @@
 #ifndef AS_PANEL_SIDEBAR_GIS_LAYERS_H
 #define AS_PANEL_SIDEBAR_GIS_LAYERS_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelSidebar.h"
 #include "vroomgis.h"
 

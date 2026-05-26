@@ -27,6 +27,8 @@
  */
 
 #include <gtest/gtest.h>
+
+#include "asIncludes.h"
 #include <wx/dir.h>
 #include <wx/filename.h>
 

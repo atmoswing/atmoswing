@@ -28,6 +28,8 @@
 
 #include "asPanelSidebarGisLayers.h"
 
+#include "asIncludes.h"
+
 asPanelSidebarGisLayers::asPanelSidebarGisLayers(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                                                  const wxSize& size, long style)
     : asPanelSidebar(parent, id, pos, size, style) {

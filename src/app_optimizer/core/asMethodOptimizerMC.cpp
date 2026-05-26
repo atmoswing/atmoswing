@@ -28,6 +28,8 @@
 
 #include "asMethodOptimizerMC.h"
 
+#include "asIncludes.h"
+
 #include "asThreadMC.h"
 
 #ifndef UNIT_TESTING

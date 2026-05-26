@@ -28,6 +28,8 @@
 
 #include "asFramePreferencesForecaster.h"
 
+#include "asIncludes.h"
+
 #include "asFileGrib.h"
 
 asFramePreferencesForecaster::asFramePreferencesForecaster(wxWindow* parent, asBatchForecasts* batchForecasts,

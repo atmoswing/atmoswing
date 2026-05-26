@@ -28,6 +28,8 @@
 
 #include "asForecastRenderer.h"
 
+#include "asIncludes.h"
+
 #include <wx/fileconf.h>
 
 #include "asForecastManager.h"

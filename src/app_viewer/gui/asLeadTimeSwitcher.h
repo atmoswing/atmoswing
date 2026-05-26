@@ -33,7 +33,7 @@
 #include <wx/panel.h>
 
 #include "asForecastManager.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asWorkspace.h"
 
 class asLeadTimeSwitcher : public wxPanel {

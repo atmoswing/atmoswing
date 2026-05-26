@@ -27,6 +27,8 @@
 
 #include "asPredictorsRenderer.h"
 
+#include "asIncludes.h"
+
 #include <gdal_alg.h>
 
 #include "asPredictorsManager.h"

@@ -27,6 +27,8 @@
 
 #include "vrLayerRasterPredictor.h"
 
+#include "asIncludes.h"
+
 #include "vrRenderRasterPredictor.h"
 #include "vrlabel.h"
 #include "vrrealrect.h"

@@ -28,6 +28,8 @@
 
 #include "asPanelSidebarCaptionForecastDots.h"
 
+#include "asIncludes.h"
+
 /*
  * asPanelSidebarCaptionForecastDots
  */

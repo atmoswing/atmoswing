@@ -28,6 +28,8 @@
 
 #include <gtest/gtest.h>
 
+
+#include "asIncludes.h"
 #include "asArea.h"
 
 TEST(Area, CheckPointWGS84USup360) {

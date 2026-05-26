@@ -28,15 +28,7 @@
 #ifndef VR_LAYER_VECTORS_DOMAIN_H
 #define VR_LAYER_VECTORS_DOMAIN_H
 
-#include "wx/wxprec.h"
-
-#ifndef WX_PRECOMP
-
-#include <wx/wx.h>
-
-#endif
-
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "vrlayervector.h"
 
 /**
