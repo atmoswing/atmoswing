@@ -235,14 +235,16 @@ message(STATUS "wxWidgets lib dir = ${wxWidgets_BINARY_DIR}/lib")
 #set(wxWidgets_DIR "${wxWidgets_BINARY_DIR}" CACHE PATH "Path to wxWidgets config files")
 #set(wxWidgets_FOUND TRUE CACHE BOOL "wxWidgets found via FetchContent")
 
-# vroomgis
-set(BUILD_VROOMGIS_WITH_CONAN OFF)
-FetchContent_Declare(vroomgis
-        GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
-        GIT_TAG        c87215c9d9fb086eefe75d6efbd10b98ac8b7290
-        SOURCE_SUBDIR  vroomgis
-        UPDATE_DISCONNECTED TRUE)
-FetchContent_MakeAvailable(vroomgis)
+# vroomgis (only needed by the Viewer; GDAL/GEOS are not available in server builds)
+if (BUILD_VIEWER)
+    set(BUILD_VROOMGIS_WITH_CONAN OFF)
+    FetchContent_Declare(vroomgis
+            GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
+            GIT_TAG        c87215c9d9fb086eefe75d6efbd10b98ac8b7290
+            SOURCE_SUBDIR  vroomgis
+            UPDATE_DISCONNECTED TRUE)
+    FetchContent_MakeAvailable(vroomgis)
+endif ()
 
 # eccodes
 set(ENABLE_FORTRAN OFF)
