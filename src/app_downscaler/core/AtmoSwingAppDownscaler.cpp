@@ -64,14 +64,14 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
     {wxCMD_LINE_OPTION, "n", "threads-nb", "Number of threads to use"},
     {wxCMD_LINE_OPTION, "r", "run-number", "Choice of number associated with the run"},
     {wxCMD_LINE_OPTION, "f", "file-parameters", "File containing the downscaling parameters"},
-    {wxCMD_LINE_OPTION, NULL, "predictand-db", "The predictand DB"},
-    {wxCMD_LINE_OPTION, NULL, "station-id", "The predictand station ID"},
-    {wxCMD_LINE_OPTION, NULL, "dir-archive-predictors", "The archive predictors directory"},
-    {wxCMD_LINE_OPTION, NULL, "dir-scenario-predictors", "The scenario predictors directory"},
-    {wxCMD_LINE_OPTION, NULL, "downscaling-method",
+    {wxCMD_LINE_OPTION, nullptr, "predictand-db", "The predictand DB"},
+    {wxCMD_LINE_OPTION, nullptr, "station-id", "The predictand station ID"},
+    {wxCMD_LINE_OPTION, nullptr, "dir-archive-predictors", "The archive predictors directory"},
+    {wxCMD_LINE_OPTION, nullptr, "dir-scenario-predictors", "The scenario predictors directory"},
+    {wxCMD_LINE_OPTION, nullptr, "downscaling-method",
      "Choice of the downscaling method"
      "\n \t\t\t\t\t - classic: classic downscaling"},
-    {wxCMD_LINE_OPTION, NULL, "log-level",
+    {wxCMD_LINE_OPTION, nullptr, "log-level",
      "Set a log level"
      "\n \t\t\t\t\t - 1: errors"
      "\n \t\t\t\t\t - 2: warnings"

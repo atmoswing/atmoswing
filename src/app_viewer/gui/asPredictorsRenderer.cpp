@@ -189,7 +189,7 @@ void asPredictorsRenderer::RedrawContourLines(const wxString& name, vrViewerLaye
     }
 
     // Specify the contour intervals
-    char** options = NULL;
+    char** options = nullptr;
     options = CSLSetNameValue(options, "LEVEL_INTERVAL", asStrF("%g", step));
 
     // Generate the contours

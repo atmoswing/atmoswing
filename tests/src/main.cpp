@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
         wxApp::SetInstance(new wxApp);
 #endif
         int argcApp = 0;
-        wxChar** argvApp = NULL;
+        wxChar** argvApp = nullptr;
         wxEntryStart(argcApp, argvApp);
 
         // Set the log

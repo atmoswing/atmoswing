@@ -71,37 +71,37 @@ wxThread::ExitCode asThreadGAs::Entry() {
         if (iStep == 0) {
             if (!_optimizer->GetAnalogsDates(anaDates, _params, iStep, containsNaNs)) {
                 wxLogError(_("Failed processing the analogs dates"));
-                return NULL;
+                return nullptr;
             }
             anaDatesPrevious = anaDates;
         } else {
             if (!_optimizer->GetAnalogsSubDates(anaDates, _params, anaDatesPrevious, iStep, containsNaNs)) {
                 wxLogError(_("Failed processing the analogs sub dates"));
-                return NULL;
+                return nullptr;
             }
             anaDatesPrevious = anaDates;
         }
         if (containsNaNs) {
             wxLogError(_("The dates selection contains NaNs"));
-            return NULL;
+            return nullptr;
         }
         if (anaDates.GetTargetDates().size() == 0 || anaDates.GetAnalogsDates().size() == 0 ||
             anaDates.GetAnalogsCriteria().size() == 0) {
             wxLogError(_("The asResultsDates object is empty in asThreadGAs."));
-            return NULL;
+            return nullptr;
         }
     }
     if (!_optimizer->GetAnalogsValues(anaValues, _params, anaDates, stepsNb - 1)) {
         wxLogError(_("Failed processing the analogs values"));
-        return NULL;
+        return nullptr;
     }
     if (!_optimizer->GetAnalogsScores(anaScores, _params, anaValues, stepsNb - 1)) {
         wxLogError(_("Failed processing the scores"));
-        return NULL;
+        return nullptr;
     }
     if (!_optimizer->GetAnalogsTotalScore(anaScoreFinal, _params, anaScores, stepsNb - 1)) {
         wxLogError(_("Failed processing the total score"));
-        return NULL;
+        return nullptr;
     }
     *_finalScoreCalib = anaScoreFinal.GetScore();
 

@@ -35,7 +35,7 @@ asPanelSidebarGisLayers::asPanelSidebarGisLayers(wxWindow* parent, wxWindowID id
     : asPanelSidebar(parent, id, pos, size, style) {
     _header->SetLabelText(_("GIS layers"));
 
-    _tocCtrl = new vrViewerTOCList(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxNO_BORDER);
+    _tocCtrl = new vrViewerTOCList(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxNO_BORDER);
     _sizerContent->Add(_tocCtrl->GetControl(), 1, wxEXPAND, 5);
 
     Layout();

@@ -71,9 +71,9 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
      "\n \t\t\t\t\t - 1: errors"
      "\n \t\t\t\t\t - 2: warnings"
      "\n \t\t\t\t\t - 3: verbose"},
-    {wxCMD_LINE_OPTION, NULL, "proxy", "HOST[:PORT] Use proxy on given port"},
-    {wxCMD_LINE_OPTION, NULL, "proxy-user", "USER[:PASSWORD] Proxy user and password"},
-    {wxCMD_LINE_PARAM, NULL, NULL, "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+    {wxCMD_LINE_OPTION, nullptr, "proxy", "HOST[:PORT] Use proxy on given port"},
+    {wxCMD_LINE_OPTION, nullptr, "proxy-user", "USER[:PASSWORD] Proxy user and password"},
+    {wxCMD_LINE_PARAM, nullptr, nullptr, "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
     {wxCMD_LINE_NONE}};
 
 static const wxString cmdLineLogo = wxT(

@@ -42,7 +42,7 @@ static const char* _cudaGetErrorEnum(cudaError_t error) {
 // CUDA Driver API errors
 static const char* _cudaGetErrorEnum(CUresult error) {
     static char unknown[] = "<unknown>";
-    const char* ret = NULL;
+    const char* ret = nullptr;
     cuGetErrorName(error, &ret);
     return ret ? ret : unknown;
 }

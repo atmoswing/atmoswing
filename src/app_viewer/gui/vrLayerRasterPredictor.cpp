@@ -104,7 +104,7 @@ bool vrLayerRasterPredictor::CreateInMemory(const wxFileName& name) {
 #if UseRasterIO
     if (band->RasterIO(GF_Write, 0, 0, _predictorsManager->GetLongitudesNb(), _predictorsManager->GetLatitudesNb(),
                        _predictorsManager->GetData(), _predictorsManager->GetLongitudesNb(),
-                       _predictorsManager->GetLatitudesNb(), GDT_Float32, 0, 0, NULL) != CE_None) {
+                       _predictorsManager->GetLatitudesNb(), GDT_Float32, 0, 0, nullptr) != CE_None) {
         wxLogError(_("Setting data to predictor layer failed."));
         return false;
     }

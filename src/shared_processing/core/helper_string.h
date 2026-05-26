@@ -63,7 +63,7 @@
 #define FOPEN(fHandle, filename, mode) (fHandle = fopen(filename, mode))
 #endif
 #ifndef FOPEN_FAIL
-#define FOPEN_FAIL(result) (result == NULL)
+#define FOPEN_FAIL(result) (result == nullptr)
 #endif
 #ifndef SSCANF
 #define SSCANF sscanf
@@ -102,7 +102,7 @@ inline int getFileExtension(char* filename, char** extension) {
     if (string_length > 0) string_length += 2;
 
     if (string_length == 0)
-        *extension = NULL;
+        *extension = nullptr;
     else
         *extension = &filename[string_length];
 
@@ -238,7 +238,7 @@ inline bool getCmdLineArgumentString(const int argc, const char** argv, const ch
     }
 
     if (!bFound) {
-        *string_retval = NULL;
+        *string_retval = nullptr;
     }
 
     return bFound;
@@ -653,7 +653,7 @@ inline char* sdkFindFilePath(const char* filename, const char* executable_path) 
         FILE* fp;
         FOPEN(fp, path.c_str(), "rb");
 
-        if (fp != NULL) {
+        if (fp != nullptr) {
             fclose(fp);
             // File found
             // returning an allocated array here for backwards compatibility reasons

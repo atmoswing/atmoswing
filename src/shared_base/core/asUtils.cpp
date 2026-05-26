@@ -41,7 +41,7 @@ bool asRemoveDir(const wxString& path) {
 }
 
 void asInitRandom() {
-    srand(time(NULL));
+    srand(time(nullptr));
 }
 
 int asRandom(const int min, const int max, const int step) {

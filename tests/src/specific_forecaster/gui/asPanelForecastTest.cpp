@@ -67,7 +67,7 @@ void ProcessEvents() {
         wxMilliSleep(10);
     }
 
-    wxEventLoop::SetActive(NULL);  // Stop the event loop
+    wxEventLoop::SetActive(nullptr);  // Stop the event loop
 }
 
 TEST_F(PanelForecast, Initialises) {

@@ -129,7 +129,7 @@ bool asFileGrib::ParseStructure() {
     wxLogVerbose(_("Creating handle from file %s"), _fileName.GetFullPath());
     try {
         codes_handle* h;
-        while ((h = codes_handle_new_from_file(NULL, _filtPtr, PRODUCT_GRIB, &err)) != nullptr) {
+        while ((h = codes_handle_new_from_file(nullptr, _filtPtr, PRODUCT_GRIB, &err)) != nullptr) {
             wxLogVerbose(_("Check if Grib error"));
             if (!CheckGribErrorCode(err)) {
                 return false;
@@ -164,7 +164,7 @@ void asFileGrib::ExtractTime(codes_handle* h) {
 
     // Get reference date
     size_t dataDateLength = 20;
-    char* buffer1 = NULL;
+    char* buffer1 = nullptr;
     buffer1 = static_cast<char*>(malloc(dataDateLength * sizeof(char)));
     CODES_CHECK(codes_get_string(h, "dataDate", &buffer1[0], &dataDateLength), 0);
     wxString dataDate(buffer1, wxConvUTF8);
@@ -173,7 +173,7 @@ void asFileGrib::ExtractTime(codes_handle* h) {
     _refDates.push_back(refDate);
 
     size_t dataTimeLength = 20;
-    char* buffer2 = NULL;
+    char* buffer2 = nullptr;
     buffer2 = static_cast<char*>(malloc(dataTimeLength * sizeof(char)));
     CODES_CHECK(codes_get_string(h, "dataTime", &buffer2[0], &dataTimeLength), 0);
     wxString dataTime(buffer2, wxConvUTF8);
@@ -218,7 +218,7 @@ void asFileGrib::ExtractLevel(codes_handle* h) {
 
     // Get level type
     size_t typeLength = 255;
-    char* typeVal = NULL;
+    char* typeVal = nullptr;
     typeVal = static_cast<char*>(malloc(typeLength * sizeof(char)));
     CODES_CHECK(codes_get_string(h, "typeOfLevel", &typeVal[0], &typeLength), 0);
     wxString type(typeVal, wxConvUTF8);
@@ -549,9 +549,9 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
 
         if (_version == 2) {
             index = codes_index_new(
-                NULL, "discipline,parameterCategory,parameterNumber,level,dataDate,dataTime,endStep", &err);
+                nullptr, "discipline,parameterCategory,parameterNumber,level,dataDate,dataTime,endStep", &err);
         } else if (_version == 1) {
-            index = codes_index_new(NULL, "table2Version,indicatorOfParameter,level,dataDate,dataTime,endStep", &err);
+            index = codes_index_new(nullptr, "table2Version,indicatorOfParameter,level,dataDate,dataTime,endStep", &err);
         }
 
         if (!CheckGribErrorCode(err)) {
@@ -619,7 +619,7 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
             }
         }
 
-        while ((h = codes_handle_new_from_index(index, &err)) != NULL) {
+        while ((h = codes_handle_new_from_index(index, &err)) != nullptr) {
             if (!CheckGribErrorCode(err)) {
                 return false;
             }
