@@ -33,8 +33,8 @@
 #include "vrrender.h"
 
 vrLayerVectorContours::vrLayerVectorContours() {
-    wxASSERT(!_dataset);
-    wxASSERT(!_layer);
+    wxASSERT(!m_dataset);
+    wxASSERT(!m_layer);
     m_driverType = vrDRIVER_VECTOR_MEMORY;
 }
 

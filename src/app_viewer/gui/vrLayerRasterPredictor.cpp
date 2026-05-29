@@ -58,7 +58,7 @@ bool vrLayerRasterPredictor::Close() {
 bool vrLayerRasterPredictor::CreateInMemory(const wxFileName& name) {
     // Try to close
     Close();
-    wxASSERT(_dataset == nullptr);
+    wxASSERT(m_dataset == nullptr);
 
     // Init filename
     m_fileName = name;
@@ -142,7 +142,7 @@ wxFileName vrLayerRasterPredictor::GetDisplayName() {
 
 bool vrLayerRasterPredictor::_GetRasterData(unsigned char** imgData, const wxSize& outImgPxSize,
                                             const wxRect& readImgPxInfo, const vrRender* render) {
-    wxASSERT(_dataset);
+    wxASSERT(m_dataset);
     m_dataset->FlushCache();
 
     // Create array for image data

@@ -34,8 +34,8 @@
 #include "vrrender.h"
 
 vrLayerVectorFcstRing::vrLayerVectorFcstRing() {
-    wxASSERT(!_dataset);
-    wxASSERT(!_layer);
+    wxASSERT(!m_dataset);
+    wxASSERT(!m_layer);
     m_driverType = vrDRIVER_VECTOR_MEMORY;
     _valueMax = 1;
 }
@@ -43,9 +43,9 @@ vrLayerVectorFcstRing::vrLayerVectorFcstRing() {
 vrLayerVectorFcstRing::~vrLayerVectorFcstRing() = default;
 
 long vrLayerVectorFcstRing::AddFeature(OGRGeometry* geometry, void* data) {
-    wxASSERT(_layer);
+    wxASSERT(m_layer);
     OGRFeature* feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
-    wxASSERT(_layer);
+    wxASSERT(m_layer);
     feature->SetGeometry(geometry);
 
     if (data != nullptr) {

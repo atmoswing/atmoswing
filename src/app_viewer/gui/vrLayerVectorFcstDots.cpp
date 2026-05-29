@@ -34,8 +34,8 @@
 #include "vrrender.h"
 
 vrLayerVectorFcstDots::vrLayerVectorFcstDots() {
-    wxASSERT(!_dataset);
-    wxASSERT(!_layer);
+    wxASSERT(!m_dataset);
+    wxASSERT(!m_layer);
     m_driverType = vrDRIVER_VECTOR_MEMORY;
     _valueMax = 1;
 }
@@ -43,9 +43,9 @@ vrLayerVectorFcstDots::vrLayerVectorFcstDots() {
 vrLayerVectorFcstDots::~vrLayerVectorFcstDots() = default;
 
 long vrLayerVectorFcstDots::AddFeature(OGRGeometry* geometry, void* data) {
-    wxASSERT(_layer);
+    wxASSERT(m_layer);
     OGRFeature* feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
-    wxASSERT(_layer);
+    wxASSERT(m_layer);
     feature->SetGeometry(geometry);
 
     if (data != nullptr) {
