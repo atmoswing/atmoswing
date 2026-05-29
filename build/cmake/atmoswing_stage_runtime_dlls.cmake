@@ -14,6 +14,15 @@ if (WIN32)
     set(_atmoswing_stage_script
             "${CMAKE_SOURCE_DIR}/build/cmake/atmoswing_stage_runtime_dlls_runner.cmake")
 
+    # vcpkg's applocal copies direct link-time deps next to the exe but cannot
+    # see DLLs reached transitively through FetchContent libraries (e.g. eccodes
+    # → jasper). Forward the vcpkg bin dir so the runner can stage those too.
+    if (DEFINED VCPKG_INSTALLED_DIR AND DEFINED VCPKG_TARGET_TRIPLET)
+        set(_atmoswing_vcpkg_bin_dir "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin")
+    else ()
+        set(_atmoswing_vcpkg_bin_dir "")
+    endif ()
+
     function(atmoswing_stage_runtime_dlls targetName)
         if (NOT TARGET ${targetName})
             return()
@@ -25,6 +34,7 @@ if (WIN32)
                 -DWX_BUILD_DIR=${wxWidgets_BINARY_DIR}
                 -DECCODES_BUILD_DIR=${eccodes_BINARY_DIR}
                 -DBUILD_DIR=${CMAKE_BINARY_DIR}
+                -DVCPKG_BIN_DIR=${_atmoswing_vcpkg_bin_dir}
                 -DUSE_GUI=${USE_GUI}
                 -P "${_atmoswing_stage_script}"
                 COMMENT "Staging runtime DLLs next to ${targetName}"

@@ -7,6 +7,7 @@
 #   WX_BUILD_DIR      — wxWidgets_BINARY_DIR
 #   ECCODES_BUILD_DIR — eccodes_BINARY_DIR
 #   BUILD_DIR         — CMAKE_BINARY_DIR
+#   VCPKG_BIN_DIR     — ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin (may be empty)
 #   USE_GUI           — ON/OFF
 
 set(_dlls)
@@ -16,6 +17,13 @@ if (USE_GUI)
             "${WX_BUILD_DIR}/lib/*.dll"
             "${WX_BUILD_DIR}/libs/webp-build/*.dll")
     list(APPEND _dlls ${_wx_dlls})
+
+    # Pick up vcpkg DLLs that applocal misses because they're reached only
+    # through FetchContent libs (e.g. jasper, pulled in by eccodes' JPEG backend).
+    if (VCPKG_BIN_DIR AND IS_DIRECTORY "${VCPKG_BIN_DIR}")
+        file(GLOB _vcpkg_dlls "${VCPKG_BIN_DIR}/*.dll")
+        list(APPEND _dlls ${_vcpkg_dlls})
+    endif ()
 endif ()
 
 file(GLOB_RECURSE _eccodes_dlls
