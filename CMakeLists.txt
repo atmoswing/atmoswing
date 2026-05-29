@@ -294,11 +294,58 @@ FetchContent_MakeAvailable(eccodes)
 list(APPEND CMAKE_PREFIX_PATH "${eccodes_BINARY_DIR}")
 
 # Mirror ecCodes definitions into this build tree using a filtered file set (only if not already done).
+#
+# Many files in eccodes' definitions tree are git symlinks (mode 120000) — e.g.
+# definitions/mars/grib.oper.an.def → base.def. On Windows without Developer
+# Mode (or with core.symlinks=false), git materializes them as small text files
+# whose contents are the literal target name. Copying those verbatim makes
+# eccodes choke with "Parser: syntax error at line 1". Resolve them at mirror
+# time by detecting the symlink-shaped content and copying the target instead.
 set(ECCODES_SHARE_DIR "${CMAKE_BINARY_DIR}/share/eccodes")
 set(_eccodes_def_src "${eccodes_SOURCE_DIR}/definitions")
 set(_eccodes_def_dst "${ECCODES_SHARE_DIR}/definitions")
-set(_eccodes_stamp_file "${_eccodes_def_dst}/.eccodes_copied")
+# Bumped stamp suffix when the symlink-resolving logic landed so existing
+# mirrors get rebuilt rather than reused with broken fake-symlink copies.
+set(_eccodes_stamp_file "${_eccodes_def_dst}/.eccodes_copied_v2")
+
+function(_atmoswing_resolve_eccodes_symlink src_path out_var)
+    set(_current "${src_path}")
+    set(_seen "${_current}")
+    foreach (_iter RANGE 1 16)
+        if (NOT EXISTS "${_current}")
+            break()
+        endif ()
+        file(SIZE "${_current}" _size)
+        # Git symlink payloads are tiny (a single relative path). Real def files
+        # this small either contain syntax (quotes, =, ;) or newlines and won't
+        # match the path-shaped regex below.
+        if (_size EQUAL 0 OR _size GREATER 256)
+            break()
+        endif ()
+        file(READ "${_current}" _content)
+        string(STRIP "${_content}" _content)
+        if (NOT _content MATCHES "^[A-Za-z0-9._/-]+$")
+            break()
+        endif ()
+        get_filename_component(_dir "${_current}" DIRECTORY)
+        get_filename_component(_target "${_dir}/${_content}" ABSOLUTE)
+        if (NOT EXISTS "${_target}")
+            break()
+        endif ()
+        list(FIND _seen "${_target}" _seen_idx)
+        if (NOT _seen_idx EQUAL -1)
+            break()
+        endif ()
+        list(APPEND _seen "${_target}")
+        set(_current "${_target}")
+    endforeach ()
+    set(${out_var} "${_current}" PARENT_SCOPE)
+endfunction()
+
 if (EXISTS "${_eccodes_def_src}" AND NOT EXISTS "${_eccodes_stamp_file}")
+    # Wipe any prior mirror (e.g. left by v1 with unresolved fake symlinks) so
+    # we don't rely on configure_file's mtime check to overwrite stale content.
+    file(REMOVE_RECURSE "${_eccodes_def_dst}")
     file(MAKE_DIRECTORY "${_eccodes_def_dst}")
     file(GLOB_RECURSE _eccodes_def_files RELATIVE "${_eccodes_def_src}"
             "${_eccodes_def_src}/*.def"
@@ -310,7 +357,10 @@ if (EXISTS "${_eccodes_def_src}" AND NOT EXISTS "${_eccodes_stamp_file}")
         if (NOT _eccodes_rel_dir STREQUAL "")
             file(MAKE_DIRECTORY "${_eccodes_def_dst}/${_eccodes_rel_dir}")
         endif ()
-        configure_file("${_eccodes_def_src}/${_eccodes_rel_file}" "${_eccodes_def_dst}/${_eccodes_rel_file}" COPYONLY)
+        _atmoswing_resolve_eccodes_symlink(
+                "${_eccodes_def_src}/${_eccodes_rel_file}"
+                _eccodes_resolved_src)
+        configure_file("${_eccodes_resolved_src}" "${_eccodes_def_dst}/${_eccodes_rel_file}" COPYONLY)
     endforeach()
     file(TOUCH "${_eccodes_stamp_file}")
 endif ()

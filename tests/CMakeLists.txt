@@ -223,6 +223,12 @@ target_include_directories(atmoswing-tests PRIVATE ${inc_dirs})
 # UNIT_TESTING and TEST_CUDA are target-specific. USE_GUI / USE_CUDA / version macros come
 # from atmoswing_compile_options via asbase/asprocessing PUBLIC link.
 target_compile_definitions(atmoswing-tests PRIVATE UNIT_TESTING)
+
+# Pin the eccodes definitions path to this build's mirror so tests don't depend
+# on the user's ECCODES_DEFINITION_PATH env var (which may point at a stale
+# install with mismatched definitions and crash codes_handle_new_from_file).
+target_compile_definitions(atmoswing-tests PRIVATE
+        ATMOSWING_TESTS_ECCODES_DEFS_PATH="${ECCODES_SHARE_DIR}/definitions")
 if (USE_CUDA AND TEST_CUDA)
     target_compile_definitions(atmoswing-tests PRIVATE TEST_CUDA)
 endif ()
