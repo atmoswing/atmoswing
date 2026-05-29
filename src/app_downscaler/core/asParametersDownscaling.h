@@ -29,6 +29,7 @@
 #define AS_PARAMETERS_DOWNSCALING_H
 
 #include "asParameters.h"
+#include "asTime.h"
 
 class asFileParametersDownscaling;
 
@@ -117,11 +118,11 @@ class asParametersDownscaling : public asParameters {
         return _stepsProj[iStep].predictors[iPtor].membersNb;
     }
 
-    void SetPreprocessProjMembersNb(int iStep, int iPtor, int iPre, int val) {
+    void SetPreprocessProjMembersNb(int iStep, int iPtor, int /*iPre*/, int val) {
         _stepsProj[iStep].predictors[iPtor].preprocessMembersNb = val;
     }
 
-    int GetPreprocessProjMembersNb(int iStep, int iPtor, int iPre) const {
+    int GetPreprocessProjMembersNb(int iStep, int iPtor, int /*iPre*/) const {
         return _stepsProj[iStep].predictors[iPtor].preprocessMembersNb;
     }
 

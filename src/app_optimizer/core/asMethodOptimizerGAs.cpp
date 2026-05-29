@@ -28,13 +28,12 @@
 
 #include "asMethodOptimizerGAs.h"
 
-#include "asIncludes.h"
-
 #include <wx/dir.h>
+#include <wx/fileconf.h>
 
+#include "asIncludes.h"
 #include "asFileText.h"
 #include "asThreadGAs.h"
-
 #ifndef UNIT_TESTING
 #include "AtmoSwingAppOptimizer.h"
 #endif

@@ -28,6 +28,8 @@
 
 #include "asMethodCalibrator.h"
 
+#include <wx/fileconf.h>
+
 #include "asIncludes.h"
 #include "asThreadPreloadArchiveData.h"
 

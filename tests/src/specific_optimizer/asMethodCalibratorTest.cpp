@@ -30,6 +30,7 @@
 
 #include "asIncludes.h"
 #include <wx/dir.h>
+#include <wx/fileconf.h>
 #include <wx/filename.h>
 
 #include "asFileText.h"

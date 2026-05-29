@@ -29,6 +29,8 @@
 
 #include "asResultsParametersArray.h"
 
+#include <wx/fileconf.h>
+
 #include "asFileText.h"
 #include "asIncludes.h"
 

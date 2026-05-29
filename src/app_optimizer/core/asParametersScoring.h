@@ -123,7 +123,7 @@ class asParametersScoring : public asParameters {
 
     wxString Print() const override;
 
-    virtual int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre) const {
+    virtual int GetPreprocessDataIdVectorSize(int /*iStep*/, int /*iPtor*/, int /*iPre*/) const {
         return 1;
     }
 

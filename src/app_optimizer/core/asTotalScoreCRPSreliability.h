@@ -29,6 +29,8 @@
 #ifndef AS_TOTAL_SCORE_CRPS_RELIABILITY_H
 #define AS_TOTAL_SCORE_CRPS_RELIABILITY_H
 
+#include <wx/log.h>
+
 #include "asTotalScore.h"
 
 class asTotalScoreCRPSreliability : public asTotalScore {

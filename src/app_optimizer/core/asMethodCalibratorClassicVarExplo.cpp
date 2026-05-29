@@ -28,6 +28,8 @@
 
 #include "asMethodCalibratorClassicVarExplo.h"
 
+#include <wx/fileconf.h>
+
 #include "asIncludes.h"
 
 asMethodCalibratorClassicVarExplo::asMethodCalibratorClassicVarExplo()

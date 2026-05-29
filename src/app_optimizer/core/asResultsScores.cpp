@@ -28,6 +28,8 @@
 
 #include "asResultsScores.h"
 
+#include <wx/fileconf.h>
+
 #include "asFileNetcdf.h"
 #include "asIncludes.h"
 #include "asParametersScoring.h"

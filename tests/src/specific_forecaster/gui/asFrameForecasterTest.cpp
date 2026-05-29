@@ -28,6 +28,7 @@
 #include <gtest/gtest.h>
 
 #include "asIncludes.h"
+#include <wx/fileconf.h>
 #include <wx/wx.h>
 
 #include "asFrameForecaster.h"
