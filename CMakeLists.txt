@@ -204,6 +204,7 @@ set(wxBUILD_SAMPLES OFF)
 set(wxBUILD_TESTS OFF)
 set(wxBUILD_SHARED OFF)
 set(wxUSE_XML ON)
+set(wxUSE_XRC ON)  # Needed for xml
 
 FetchContent_Declare(wxWidgets
         GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
