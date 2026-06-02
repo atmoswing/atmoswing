@@ -208,6 +208,8 @@ set(wxUSE_XML ON)
 FetchContent_Declare(wxWidgets
         GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
         GIT_TAG        v3.3.2
+        GIT_SHALLOW    TRUE
+        GIT_PROGRESS   TRUE
         UPDATE_DISCONNECTED TRUE)
 FetchContent_MakeAvailable(wxWidgets)
 
@@ -247,9 +249,12 @@ message(STATUS "wxWidgets lib dir = ${wxWidgets_BINARY_DIR}/lib")
 # vroomgis (only needed by the Viewer; GDAL/GEOS are not available in server builds)
 if (BUILD_VIEWER)
     set(BUILD_VROOMGIS_WITH_CONAN OFF)
+    # GIT_SHALLOW is intentionally omitted: GIT_TAG is a commit hash, and
+    # shallow clones require a named ref (branch or tag).
     FetchContent_Declare(vroomgis
             GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
             GIT_TAG        c87215c9d9fb086eefe75d6efbd10b98ac8b7290
+            GIT_PROGRESS   TRUE
             SOURCE_SUBDIR  vroomgis
             UPDATE_DISCONNECTED TRUE)
     FetchContent_MakeAvailable(vroomgis)
@@ -281,6 +286,8 @@ endif ()
 FetchContent_Declare(eccodes
         GIT_REPOSITORY https://github.com/ecmwf/eccodes.git
         GIT_TAG 2.46.0
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
         UPDATE_DISCONNECTED TRUE
         PATCH_COMMAND ${CMAKE_COMMAND}
                       -DSOURCE_DIR=<SOURCE_DIR>
