@@ -221,15 +221,17 @@ if (WIN32)
     target_include_directories(atmoswing_compile_options INTERFACE
             ${wxWidgets_BINARY_DIR}/lib/vc_x64_dll/$<IF:$<CONFIG:Debug>,${WX_LIB_BASENAME}d,${WX_LIB_BASENAME}>)
 else ()
-    # On Unix-like systems, wxWidgets generates setup.h in lib/wx/include/<toolkit>-<configuration> Find the actual
-    # setup.h directory dynamically (version-agnostic)
+    # On Unix-like systems, wxWidgets generates setup.h in
+    # lib/wx/include/<toolkit>-unicode-static-<version>, where <toolkit> is "base" for
+    # headless builds and the GUI port (e.g. "gtk3") for GUI builds. Match any toolkit
+    # and version so both the server (base) and desktop (gtk3) builds resolve it.
     target_include_directories(atmoswing_compile_options INTERFACE ${wxWidgets_BINARY_DIR}/lib)
 
     # Try to find the setup.h directory dynamically. First try the more common non-debug variant, then fall back to
     # debug variant if needed
-    file(GLOB WX_SETUP_INCLUDE_DIR "${wxWidgets_BINARY_DIR}/lib/wx/include/base-unicode-static-*")
+    file(GLOB WX_SETUP_INCLUDE_DIR "${wxWidgets_BINARY_DIR}/lib/wx/include/*-unicode-static-*")
     if (NOT WX_SETUP_INCLUDE_DIR)
-        file(GLOB WX_SETUP_INCLUDE_DIR "${wxWidgets_BINARY_DIR}/lib/wx/include/base-unicode-debug-static-*")
+        file(GLOB WX_SETUP_INCLUDE_DIR "${wxWidgets_BINARY_DIR}/lib/wx/include/*-unicode-debug-static-*")
     endif ()
 
     if (WX_SETUP_INCLUDE_DIR)
