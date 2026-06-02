@@ -29,6 +29,7 @@
 
 #ifndef WX_PRECOMP
 
+#include "wx/wx.h"  // wx 3.3 slimmed transitive includes; pull in the common GUI classes (wxWindow, wxBitmap, wxPen, wxDC) explicitly
 #include "wx/colour.h"
 #include "wx/cursor.h"
 #include "wx/dcclient.h"
