@@ -88,12 +88,12 @@
 #ifndef WX_PRECOMP
 
 #include "wx/arrstr.h"
-#include "wx/fileconf.h"
 #include "wx/log.h"
 #include "wx/string.h"
 #include "wx/utils.h"
 
 #endif
+#include "wx/fileconf.h"
 
 #if defined(__WIN32__)
 #include "wx/msw/regconf.h"  // wxRegConfig class
