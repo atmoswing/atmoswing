@@ -7,9 +7,6 @@ project(viewer)
 
 find_package(GDAL REQUIRED)
 find_package(PNG REQUIRED)
-# PROJ is used only by the Viewer (asFramePredictors.cpp: proj_create_crs_to_crs,
-# proj_trans, ...). It used to be linked via shared_base's PUBLIC link, which
-# dead-linked proj into every server binary; it now lives where it is consumed.
 find_package(PROJ CONFIG REQUIRED)
 
 ##### SOURCE FILES
