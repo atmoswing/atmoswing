@@ -39,7 +39,7 @@ class asTotalScoreCRPSpotential : public asTotalScore {
 
     ~asTotalScoreCRPSpotential() override = default;
 
-    float Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const override {
+    float Assess(const a1f& /*targetDates*/, const a1f& /*scores*/, const asTimeArray& /*timeArray*/) const override {
         wxLogError(_("The CRPS score needs a 2D array as input !"));
         return NAN;
     }

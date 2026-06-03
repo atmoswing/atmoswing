@@ -122,7 +122,7 @@ void Ref1(const wxString& paramsFile, bool shortVersion) {
         nbtests = 20;
     }
     asFileText file(resultFilePath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Resize the containers
     int nanalogs = 50;
@@ -133,7 +133,7 @@ void Ref1(const wxString& paramsFile, bool shortVersion) {
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Get target date from file
         int day = file.GetInt();
@@ -142,11 +142,11 @@ void Ref1(const wxString& paramsFile, bool shortVersion) {
         float fileTargetDate = (float)asTime::GetMJD(year, month, day);
         float fileTargetValue = (float)sqrt(file.GetFloat() / P10);
 
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
 
         // Get analogs from file
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
-            file.SkipElements(1);
+            ASSERT_TRUE(file.SkipElements(1));
 
             day = file.GetInt();
             month = file.GetInt();
@@ -159,19 +159,19 @@ void Ref1(const wxString& paramsFile, bool shortVersion) {
             fileAnalogsValues[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             fileAnalogsCriteria[iAnalog] = file.GetFloat();
 
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float fileScoreCRPS = 0, fileScoreCRPSaccuracy = 0, fileScoreCRPSsharpness = 0;
 
         if (!shortVersion) {
-            file.SkipLines(2);
+            ASSERT_TRUE(file.SkipLines(2));
             fileScoreCRPS = file.GetFloat();
             fileScoreCRPSaccuracy = file.GetFloat();
             fileScoreCRPSsharpness = file.GetFloat();
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         } else {
-            file.SkipLines(3);
+            ASSERT_TRUE(file.SkipLines(3));
         }
 
         // Find target date in the array
@@ -202,7 +202,7 @@ void Ref1(const wxString& paramsFile, bool shortVersion) {
         EXPECT_FLOAT_EQ(asMean(&resScoreCRPS[0], &resScoreCRPS[resScoreCRPS.size() - 1]), scoreFinal);
     }
 
-    file.Close();
+    ASSERT_TRUE(file.Close());
     // predictand pointer deleted by asMethodCalibration
 }
 
@@ -394,7 +394,7 @@ void Ref2(const wxString& paramsFile, bool shortVersion) {
         nbtests = 4;
     }
     asFileText file(resultFilePath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Resize the containers
     int nanalogs = 30;
@@ -405,7 +405,7 @@ void Ref2(const wxString& paramsFile, bool shortVersion) {
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Get target date from file
         int day = file.GetInt();
@@ -414,11 +414,11 @@ void Ref2(const wxString& paramsFile, bool shortVersion) {
         float fileTargetDate = (float)asTime::GetMJD(year, month, day);
         float fileTargetValue = (float)sqrt(file.GetFloat() / P10);
 
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
 
         // Get analogs from file
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
-            file.SkipElements(1);
+            ASSERT_TRUE(file.SkipElements(1));
 
             day = file.GetInt();
             month = file.GetInt();
@@ -429,22 +429,22 @@ void Ref2(const wxString& paramsFile, bool shortVersion) {
                 fileAnalogsDates[iAnalog] = 0;
             }
             fileAnalogsValues[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipElements(1);  // Skip S1
+            ASSERT_TRUE(file.SkipElements(1));  // Skip S1
             fileAnalogsCriteria[iAnalog] = file.GetFloat();
 
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float fileScoreCRPS = 0, fileScoreCRPSaccuracy = 0, fileScoreCRPSsharpness = 0;
 
         if (!shortVersion) {
-            file.SkipLines(2);
+            ASSERT_TRUE(file.SkipLines(2));
             fileScoreCRPS = file.GetFloat();
             fileScoreCRPSaccuracy = file.GetFloat();
             fileScoreCRPSsharpness = file.GetFloat();
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         } else {
-            file.SkipLines(3);
+            ASSERT_TRUE(file.SkipLines(3));
         }
 
         // Find target date in the array
@@ -480,7 +480,7 @@ void Ref2(const wxString& paramsFile, bool shortVersion) {
         EXPECT_FLOAT_EQ(asMean(&resultsScoreCRPS[0], &resultsScoreCRPS[resultsScoreCRPS.size() - 1]), scoreFinal);
     }
 
-    file.Close();
+    ASSERT_TRUE(file.Close());
     // predictand pointer deleted by asMethodCalibration
 }
 
@@ -862,7 +862,7 @@ void Ref1Preloading() {
     wxString resultFilePath = wxFileName::GetCwd();
     resultFilePath.Append("/files/score_06.txt");
     asFileText file(resultFilePath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbtests = 20;  // 43
@@ -876,7 +876,7 @@ void Ref1Preloading() {
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Get target date from file
         int day = file.GetInt();
@@ -885,11 +885,11 @@ void Ref1Preloading() {
         float fileTargetDate = (float)asTime::GetMJD(year, month, day);
         float fileTargetValue = (float)sqrt(file.GetFloat() / P10);
 
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
 
         // Get analogs from file
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
-            file.SkipElements(1);
+            ASSERT_TRUE(file.SkipElements(1));
 
             day = file.GetInt();
             month = file.GetInt();
@@ -902,10 +902,10 @@ void Ref1Preloading() {
             fileAnalogsValues[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             fileAnalogsCriteria[iAnalog] = file.GetFloat();
 
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
-        file.SkipLines(3);
+        ASSERT_TRUE(file.SkipLines(3));
 
         // Find target date in the array
         int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
@@ -924,7 +924,7 @@ void Ref1Preloading() {
         }
     }
 
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     // predictand pointer deleted by asMethodCalibration
 }
@@ -1215,7 +1215,7 @@ void Ref2Preloading() {
     wxString resultFilePath = wxFileName::GetCwd();
     resultFilePath.Append("/files/score_07.txt");
     asFileText file(resultFilePath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbtests = 4;
@@ -1229,7 +1229,7 @@ void Ref2Preloading() {
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Get target date from file
         int day = file.GetInt();
@@ -1238,11 +1238,11 @@ void Ref2Preloading() {
         float fileTargetDate = asTime::GetMJD(year, month, day);
         float fileTargetValue = sqrt(file.GetFloat() / P10);
 
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
 
         // Get analogs from file
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
-            file.SkipElements(1);
+            ASSERT_TRUE(file.SkipElements(1));
 
             day = file.GetInt();
             month = file.GetInt();
@@ -1253,13 +1253,13 @@ void Ref2Preloading() {
                 fileAnalogsDates[iAnalog] = 0;
             }
             fileAnalogsValues[iAnalog] = sqrt(file.GetFloat() / P10);
-            file.SkipElements(1);  // Skip S1
+            ASSERT_TRUE(file.SkipElements(1));  // Skip S1
             fileAnalogsCriteria[iAnalog] = file.GetFloat();
 
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
-        file.SkipLines(3);
+        ASSERT_TRUE(file.SkipLines(3));
 
         // Find target date in the array
         int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
@@ -1277,7 +1277,7 @@ void Ref2Preloading() {
         }
     }
 
-    file.Close();
+    ASSERT_TRUE(file.Close());
     // predictand pointer deleted by asMethodCalibration
 }
 
@@ -1394,7 +1394,7 @@ void Ref2SavingIntermediateResults() {
     wxString resultFilePath = wxFileName::GetCwd();
     resultFilePath.Append("/files/score_07.txt");
     asFileText file(resultFilePath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbtests = 4;
@@ -1408,7 +1408,7 @@ void Ref2SavingIntermediateResults() {
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Get target date from file
         int day = file.GetInt();
@@ -1417,11 +1417,11 @@ void Ref2SavingIntermediateResults() {
         float fileTargetDate = asTime::GetMJD(year, month, day);
         float fileTargetValue = sqrt(file.GetFloat() / P10);
 
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
 
         // Get analogs from file
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
-            file.SkipElements(1);
+            ASSERT_TRUE(file.SkipElements(1));
 
             day = file.GetInt();
             month = file.GetInt();
@@ -1432,13 +1432,13 @@ void Ref2SavingIntermediateResults() {
                 fileAnalogsDates[iAnalog] = 0;
             }
             fileAnalogsValues[iAnalog] = sqrt(file.GetFloat() / P10);
-            file.SkipElements(1);  // Skip S1
+            ASSERT_TRUE(file.SkipElements(1));  // Skip S1
             fileAnalogsCriteria[iAnalog] = file.GetFloat();
 
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
-        file.SkipLines(3);
+        ASSERT_TRUE(file.SkipLines(3));
 
         // Find target date in the array
         int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
@@ -1456,7 +1456,7 @@ void Ref2SavingIntermediateResults() {
         }
     }
 
-    file.Close();
+    ASSERT_TRUE(file.Close());
     // predictand pointer deleted by asMethodCalibration
 }
 
@@ -1549,7 +1549,7 @@ void Ref2MergeByHalfAndMultiply() {
     wxString resultFilePath = wxFileName::GetCwd();
     resultFilePath.Append("/files/score_07.txt");
     asFileText file(resultFilePath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbtests = 4;
@@ -1563,7 +1563,7 @@ void Ref2MergeByHalfAndMultiply() {
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Get target date from file
         int day = file.GetInt();
@@ -1572,11 +1572,11 @@ void Ref2MergeByHalfAndMultiply() {
         float fileTargetDate = (float)asTime::GetMJD(year, month, day);
         float fileTargetValue = (float)sqrt(file.GetFloat() / P10);
 
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
 
         // Get analogs from file
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
-            file.SkipElements(1);
+            ASSERT_TRUE(file.SkipElements(1));
 
             day = file.GetInt();
             month = file.GetInt();
@@ -1587,13 +1587,13 @@ void Ref2MergeByHalfAndMultiply() {
                 fileAnalogsDates[iAnalog] = 0;
             }
             fileAnalogsValues[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipElements(1);  // Skip S1
+            ASSERT_TRUE(file.SkipElements(1));  // Skip S1
             fileAnalogsCriteria[iAnalog] = file.GetFloat();
 
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
-        file.SkipLines(3);
+        ASSERT_TRUE(file.SkipLines(3));
 
         // Find target date in the array
         int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
@@ -1611,7 +1611,7 @@ void Ref2MergeByHalfAndMultiply() {
         }
     }
 
-    file.Close();
+    ASSERT_TRUE(file.Close());
     // predictand pointer deleted by asMethodCalibration
 }
 

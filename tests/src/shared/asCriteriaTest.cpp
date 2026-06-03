@@ -301,7 +301,7 @@ TEST(Criteria, RSE) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append(_T("/files/criteria_RMSE.txt"));
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Create the containers
     int lons = 2;

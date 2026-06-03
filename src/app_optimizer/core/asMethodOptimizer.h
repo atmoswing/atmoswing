@@ -47,7 +47,7 @@ class asMethodOptimizer : public asMethodCalibrator {
     int _paramsNb;
     int _iterator;
 
-    bool Calibrate(asParametersCalibration& params) override {
+    bool Calibrate(asParametersCalibration& /*params*/) override {
         wxLogError(_("asMethodOptimizer do optimize, not calibrate..."));
         return false;
     }
