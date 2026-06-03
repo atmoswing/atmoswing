@@ -20,8 +20,12 @@
 #endif
 
 #ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif  // WX_PRECOMP
 
-#include "wx/wx.h"  // wx 3.3 slimmed transitive includes; pull in the common GUI classes (wxWindow, wxBitmap, wxPen, wxDC) explicitly
+// wx 3.3 slimmed transitive includes and wx/wxprec.h (PCH) no longer guarantees the
+// full definitions this translation unit needs. Include the concrete headers
+// unconditionally so the build works with or without precompiled headers.
 #include "wx/dcclient.h"
 #include "wx/dcmemory.h"
 #include "wx/dcscreen.h"
@@ -33,8 +37,7 @@
 #include "wx/sizer.h"
 #include "wx/textctrl.h"
 #include "wx/timer.h"
-
-#endif  // WX_PRECOMP
+#include "wx/window.h"
 
 #include <float.h>
 #include <limits.h>
