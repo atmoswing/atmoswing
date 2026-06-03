@@ -11,9 +11,13 @@ if (WIN32)
             FILES_MATCHING
             PATTERN "*.dll"
     )
+    # Translations: the prebuilt .mo catalogs ship in the source tree, not the
+    # build dir, so install them straight from locales/ (works for GUI and
+    # headless server builds alike).
     install(
-            DIRECTORY ${CMAKE_BINARY_DIR}/bin/fr
+            DIRECTORY ${CMAKE_SOURCE_DIR}/locales/fr
             DESTINATION .
+            FILES_MATCHING PATTERN "*.mo"
     )
 endif()
 
