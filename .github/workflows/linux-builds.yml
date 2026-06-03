@@ -37,6 +37,14 @@ jobs:
             ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-
             ${{ runner.os }}-vcpkg-downloads-
 
+      - name: Cache vcpkg installed packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/build/vcpkg_installed
+          key: ${{ runner.os }}-vcpkg-installed-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-installed-${{ env.FETCHCONTENT_CACHE_KEY }}-
+
       - name: Install system build dependencies for vcpkg
         run: |
           sudo apt-get update -y
@@ -55,7 +63,7 @@ jobs:
       - name: Configure
         run: cmake -B build -G Ninja
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-             -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
+             -DFETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
              -DBUILD_OPTIMIZER=ON
              -DBUILD_DOWNSCALER=ON
@@ -99,6 +107,14 @@ jobs:
             ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-
             ${{ runner.os }}-vcpkg-downloads-
 
+      - name: Cache vcpkg installed packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/build/vcpkg_installed
+          key: ${{ runner.os }}-vcpkg-installed-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-installed-${{ env.FETCHCONTENT_CACHE_KEY }}-
+
       - name: Install system libraries
         run: |
           sudo apt-get update -y
@@ -118,7 +134,7 @@ jobs:
       - name: Configure
         run: cmake -B build -G Ninja
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-             -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
+             -DFETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
              -DBUILD_OPTIMIZER=ON
              -DBUILD_DOWNSCALER=ON
