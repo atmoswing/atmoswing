@@ -1,17 +1,23 @@
-# Base on Ubuntu 22.07
-sudo apt-get install -y cmake
+# Base on Ubuntu 22.04
 
-conan profile new default --detect
-conan profile update settings.compiler.libcxx=libstdc++11 default
-conan remote add gitlab https://gitlab.com/api/v4/packages/conan
+# Build dependencies (vcpkg builds the libraries from source)
+sudo apt-get install -y cmake ninja-build git curl zip unzip tar \
+    build-essential pkg-config autoconf automake libtool ca-certificates
+
+# Install vcpkg (skip if already installed) and point VCPKG_ROOT to it
+if [ ! -d "$HOME/vcpkg" ]; then
+    git clone https://github.com/microsoft/vcpkg.git "$HOME/vcpkg"
+    "$HOME/vcpkg/bootstrap-vcpkg.sh" -disableMetrics
+fi
+export VCPKG_ROOT="$HOME/vcpkg"
 
 git clone https://github.com/atmoswing/atmoswing.git
 
 cd atmoswing
-mkdir bin
-cd bin
 
-conan install .. -s build_type=Release --build=missing --build=openjpeg -o enable_tests=True -o with_gui=False  \
-        -o build_forecaster=False -o build_viewer=False -o build_optimizer=True -o build_downscaler=False
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_FORECASTER=OFF -DBUILD_VIEWER=OFF \
+    -DBUILD_OPTIMIZER=ON -DBUILD_DOWNSCALER=OFF \
+    -DUSE_GUI=OFF -DBUILD_TESTS=ON
 
-conan build ..
+cmake --build build

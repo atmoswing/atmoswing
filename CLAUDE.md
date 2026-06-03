@@ -28,7 +28,7 @@ cmake --build build --target package
 
 **vcpkg manifest features** are automatically derived from `BUILD_*` options. If you change a `BUILD_*` option, run CMake twice — the first run updates the cache, the second triggers vcpkg with the new feature set.
 
-**CI pipelines** in `.github/workflows/` still use Conan v1 (migration to vcpkg in progress on `dev` branch). The local build requires vcpkg.
+**CI pipelines** in `.github/workflows/` use vcpkg (with GitHub Actions binary caching via `x-gha`), matching the local build.
 
 ## Running Tests
 

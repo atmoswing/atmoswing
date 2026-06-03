@@ -6,39 +6,41 @@
 
 FROM ubuntu:22.04 AS builder
 
-WORKDIR /app
-RUN mkdir libs
-ARG LIB_DIR=/app/libs
+ENV DEBIAN_FRONTEND=noninteractive
+ENV VCPKG_ROOT=/opt/vcpkg
 
-# Setup build environment
-RUN export DEBIAN_FRONTEND=noninteractive \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends cmake python3 python3-pip git ca-certificates build-essential
+# Setup build environment (vcpkg builds the dependencies from source)
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        cmake ninja-build git curl zip unzip tar ca-certificates \
+        build-essential pkg-config autoconf automake libtool
 
-# Setup conan
-RUN python3 -m pip install conan==1.*
-RUN conan profile new default --detect \
-    && conan remote add gitlab https://gitlab.com/api/v4/packages/conan \
-    && conan profile update settings.compiler.libcxx=libstdc++11 default
+# Install vcpkg
+RUN git clone --depth 1 https://github.com/microsoft/vcpkg.git ${VCPKG_ROOT} \
+    && ${VCPKG_ROOT}/bootstrap-vcpkg.sh -disableMetrics
 
 # Copy source code
-RUN mkdir src && mkdir src/bin
-COPY ./ src
+WORKDIR /app/src
+COPY ./ .
 
-# Build AtmoSwing
-WORKDIR /app/src/bin
-RUN conan install .. -s build_type=Release --build=missing --build=openjpeg -o enable_tests=False -o with_gui=False  \
-        -o build_forecaster=False -o build_viewer=False -o build_optimizer=False -o build_downscaler=True \
-    && conan build ..
+# Build AtmoSwing (headless server: no GUI / Viewer)
+RUN cmake -B build -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DON_DOCKER=ON \
+        -DBUILD_FORECASTER=OFF \
+        -DBUILD_VIEWER=OFF \
+        -DBUILD_OPTIMIZER=OFF \
+        -DBUILD_DOWNSCALER=ON \
+        -DUSE_GUI=OFF \
+        -DBUILD_TESTS=OFF \
+    && cmake --build build
 
 # Prepare files for deployment
-RUN mkdir /app/deploy \
-    && mkdir /app/deploy/bin \
-    && mkdir /app/deploy/share
-RUN ls /app/src/bin/ -R
-RUN cp -a /app/src/data /app/deploy/share/atmoswing \
-    && cp -a /app/src/bin/bin/* /app/deploy/bin/ \
-    && cp -a /app/src/bin/share/* /app/deploy/share/
+RUN cmake --install build --prefix /app/deploy \
+    && mkdir -p /app/deploy/lib /app/deploy/share \
+    && find /app/src/build -name 'libeccodes*.so*' -exec cp -a {} /app/deploy/lib/ \; \
+    && cp -a /app/src/data /app/deploy/share/atmoswing \
+    && cp -a /app/src/build/share/. /app/deploy/share/
 
 
 # Build final image
@@ -56,6 +58,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Copy from builder
 COPY --from=builder  /app/deploy /usr
+RUN ldconfig
 
 ENTRYPOINT ["/usr/bin/atmoswing-downscaler"]
 CMD ["--help"]
