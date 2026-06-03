@@ -29,6 +29,7 @@
 
 #ifndef WX_PRECOMP
 
+#include "wx/wx.h"  // wx 3.3 slimmed transitive includes; pull in the common GUI classes (wxWindow, wxBitmap, wxPen, wxDC) explicitly
 #include "wx/colour.h"
 #include "wx/cursor.h"
 #include "wx/dcclient.h"
@@ -321,7 +322,7 @@ void mpInfoLegend::Plot(wxDC& dc, mpWindow& w) {
                     // textY += (tmpY + mpLEGEND_MARGIN);
                     posY = m_dim.y + mpLEGEND_MARGIN + plotCount * tmpY + (tmpY >> 1);
                     dc.DrawLine(m_dim.x + mpLEGEND_MARGIN,                       // X start coord
-                                posY,                                            // Y start coord
+                                posY,                                           // Y start coord
                                 m_dim.x + mpLEGEND_LINEWIDTH + mpLEGEND_MARGIN,  // X end coord
                                 posY);
                     // dc.DrawRectangle(m_dim.x + 5, m_dim.y + 5 + plotCount*tmpY, 5, 5);
@@ -394,7 +395,7 @@ void mpFX::Plot(wxDC& dc, mpWindow& w) {
             else
                 tx = w.GetMarginLeft() + 8;
             dc.DrawText(m_name, tx, w.y2p(GetY(w.p2x(tx))));  // (wxCoord) ((w.GetPosY() - GetY( (double)tx /
-                                                              // w.GetScaleX() + w.GetPosX())) * w.GetScaleY()) );
+                                                             // w.GetScaleX() + w.GetPosX())) * w.GetScaleY()) );
         }
     }
 }
@@ -498,8 +499,7 @@ void mpFXY::Plot(wxDC& dc, mpWindow& w) {
                 while (GetNextXY(x, y)) {
                     ix = w.x2p(x);
                     iy = w.y2p(y);
-                    if (m_drawOutsideMargins ||
-                        ((ix >= startPx) && (ix <= endPx) && (iy >= minYpx) && (iy <= maxYpx))) {
+                    if (m_drawOutsideMargins || ((ix >= startPx) && (ix <= endPx) && (iy >= minYpx) && (iy <= maxYpx))) {
                         dc.DrawPoint(ix, iy);
                         UpdateViewBoundary(ix, iy);
                     };
@@ -508,8 +508,7 @@ void mpFXY::Plot(wxDC& dc, mpWindow& w) {
                 while (GetNextXY(x, y)) {
                     ix = w.x2p(x);
                     iy = w.y2p(y);
-                    if (m_drawOutsideMargins ||
-                        ((ix >= startPx) && (ix <= endPx) && (iy >= minYpx) && (iy <= maxYpx))) {
+                    if (m_drawOutsideMargins || ((ix >= startPx) && (ix <= endPx) && (iy >= minYpx) && (iy <= maxYpx))) {
                         dc.DrawLine(ix, iy, ix, iy);
                         UpdateViewBoundary(ix, iy);
                     }
@@ -654,7 +653,7 @@ void mpProfile::Plot(wxDC& dc, mpWindow& w) {
                 tx = w.GetMarginLeft() + 8;
 
             dc.DrawText(m_name, tx, w.y2p(GetY(w.p2x(tx))));  //(wxCoord) ((w.GetPosY() - GetY( (double)tx /
-                                                              // w.GetScaleX() + w.GetPosX())) * w.GetScaleY()) );
+                                                             // w.GetScaleX() + w.GetPosX())) * w.GetScaleY()) );
         }
     }
 }
@@ -684,7 +683,7 @@ void mpScaleX::Plot(wxDC& dc, mpWindow& w) {
         dc.SetFont(m_font);
         int orgy = 0;
 
-        const int extend = w.GetScrX();                  //  /2;
+        const int extend = w.GetScrX();                 //  /2;
         if (m_flags == mpALIGN_CENTER) orgy = w.y2p(0);  //(int)(w.GetPosY() * w.GetScaleY());
         if (m_flags == mpALIGN_TOP) {
             if (m_drawOutsideMargins)
@@ -925,7 +924,7 @@ void mpScaleY::Plot(wxDC& dc, mpWindow& w) {
         dc.SetFont(m_font);
 
         int orgx = 0;
-        const int extend = w.GetScrY();                  // /2;
+        const int extend = w.GetScrY();                 // /2;
         if (m_flags == mpALIGN_CENTER) orgx = w.x2p(0);  //(int)(w.GetPosX() * w.GetScaleX());
         if (m_flags == mpALIGN_LEFT) {
             if (m_drawOutsideMargins)
@@ -1095,7 +1094,8 @@ EVT_SCROLLWIN_PAGEUP(mpWindow::OnScrollPageUp)
 EVT_SCROLLWIN_PAGEDOWN(mpWindow::OnScrollPageDown)
 EVT_SCROLLWIN_LINEUP(mpWindow::OnScrollLineUp)
 EVT_SCROLLWIN_LINEDOWN(mpWindow::OnScrollLineDown)
-EVT_SCROLLWIN_TOP(mpWindow::OnScrollTop) EVT_SCROLLWIN_BOTTOM(mpWindow::OnScrollBottom)
+EVT_SCROLLWIN_TOP(mpWindow::OnScrollTop)
+EVT_SCROLLWIN_BOTTOM(mpWindow::OnScrollBottom)
 
     EVT_MIDDLE_UP(mpWindow::OnShowPopupMenu) EVT_RIGHT_DOWN(mpWindow::OnMouseRightDown)  // JLB
     EVT_RIGHT_UP(mpWindow::OnShowPopupMenu) EVT_MOUSEWHEEL(mpWindow::OnMouseWheel)       // JLB
@@ -1363,17 +1363,17 @@ void mpWindow::Fit(double xMin, double xMax, double yMin, double yMax, wxCoord* 
     //   m_posY = m_maxY;
     // But account for centering if we have lock aspect:
     m_posX = (xMin + xMax) / 2 - ((m_scrX - m_marginLeft - m_marginRight) / 2 + m_marginLeft) /
-                                     m_scaleX;  // m_posX = (xMin+xMax)/2 - (m_scrX/2)/m_scaleX;
+                                    m_scaleX;  // m_posX = (xMin+xMax)/2 - (m_scrX/2)/m_scaleX;
     //    m_posY = (yMin+yMax)/2 + ((m_scrY - m_marginTop - m_marginBottom)/2 - m_marginTop)/m_scaleY;  // m_posY =
     //    (yMin+yMax)/2 + (m_scrY/2)/m_scaleY;
     m_posY = (yMin + yMax) / 2 + ((m_scrY - m_marginTop - m_marginBottom) / 2 + m_marginTop) /
-                                     m_scaleY;  // m_posY = (yMin+yMax)/2 + (m_scrY/2)/m_scaleY;
+                                    m_scaleY;  // m_posY = (yMin+yMax)/2 + (m_scrY/2)/m_scaleY;
 
 #ifdef MATHPLOT_DO_LOGGING
     wxLogMessage(_("mpWindow::Fit() m_desiredXmin=%f m_desiredXmax=%f  m_desiredYmin=%f m_desiredYmax=%f"), xMin, xMax,
                  yMin, yMax);
-    wxLogMessage(_("mpWindow::Fit() m_scaleX = %f , m_scrX = %d,m_scrY=%d, Ax=%f, Ay=%f, m_posX=%f, m_posY=%f"),
-                 m_scaleX, m_scrX, m_scrY, Ax, Ay, m_posX, m_posY);
+    wxLogMessage(_("mpWindow::Fit() m_scaleX = %f , m_scrX = %d,m_scrY=%d, Ax=%f, Ay=%f, m_posX=%f, m_posY=%f"), m_scaleX,
+                 m_scrX, m_scrY, Ax, Ay, m_posX, m_posY);
 #endif
 
     // It is VERY IMPORTANT to DO NOT call Refresh if we are drawing to the printer!!
@@ -1387,7 +1387,7 @@ void mpWindow::DoZoomInXCalc(const int staticXpixel) {
     double staticX = p2x(staticXpixel);
     // Zoom in:
     m_scaleX = m_scaleX * zoomIncrementalFactor;
-    // Adjust the new m_posx
+    // Adjust the new _posx
     m_posX = staticX - (staticXpixel / m_scaleX);
     // Adjust desired
     m_desiredXmin = m_posX;
@@ -1403,7 +1403,7 @@ void mpWindow::DoZoomInYCalc(const int staticYpixel) {
     double staticY = p2y(staticYpixel);
     // Zoom in:
     m_scaleY = m_scaleY * zoomIncrementalFactor;
-    // Adjust the new m_posy:
+    // Adjust the new _posy:
     m_posY = staticY + (staticYpixel / m_scaleY);
     // Adjust desired
     m_desiredYmax = m_posY;
@@ -1419,7 +1419,7 @@ void mpWindow::DoZoomOutXCalc(const int staticXpixel) {
     double staticX = p2x(staticXpixel);
     // Zoom out:
     m_scaleX = m_scaleX / zoomIncrementalFactor;
-    // Adjust the new m_posx/y:
+    // Adjust the new _posx/y:
     m_posX = staticX - (staticXpixel / m_scaleX);
     // Adjust desired
     m_desiredXmin = m_posX;
@@ -1435,7 +1435,7 @@ void mpWindow::DoZoomOutYCalc(const int staticYpixel) {
     double staticY = p2y(staticYpixel);
     // Zoom out:
     m_scaleY = m_scaleY / zoomIncrementalFactor;
-    // Adjust the new m_posx/y:
+    // Adjust the new _posx/y:
     m_posY = staticY + (staticYpixel / m_scaleY);
     // Adjust desired
     m_desiredYmax = m_posY;
@@ -1462,16 +1462,14 @@ void mpWindow::ZoomIn(const wxPoint& centerPoint) {
     m_scaleX = m_scaleX * zoomIncrementalFactor;
     m_scaleY = m_scaleY * zoomIncrementalFactor;
 
-    // Adjust the new m_posx/y:
+    // Adjust the new _posx/y:
     m_posX = prior_layer_x - c.x / m_scaleX;
     m_posY = prior_layer_y + c.y / m_scaleY;
 
     m_desiredXmin = m_posX;
-    m_desiredXmax = m_posX +
-                    (m_scrX - m_marginLeft - m_marginRight) / m_scaleX;  // m_desiredXmax = m_posX + m_scrX / m_scaleX;
+    m_desiredXmax = m_posX + (m_scrX - m_marginLeft - m_marginRight) / m_scaleX;  // m_desiredXmax = m_posX + m_scrX / m_scaleX;
     m_desiredYmax = m_posY;
-    m_desiredYmin = m_posY -
-                    (m_scrY - m_marginTop - m_marginBottom) / m_scaleY;  // m_desiredYmin = m_posY - m_scrY / m_scaleY;
+    m_desiredYmin = m_posY - (m_scrY - m_marginTop - m_marginBottom) / m_scaleY;  // m_desiredYmin = m_posY - m_scrY / m_scaleY;
 
 #ifdef MATHPLOT_DO_LOGGING
     wxLogMessage(_("mpWindow::ZoomIn() prior coords: (%f,%f), new coords: (%f,%f) SHOULD BE EQUAL!!"), prior_layer_x,
@@ -1497,16 +1495,14 @@ void mpWindow::ZoomOut(const wxPoint& centerPoint) {
     m_scaleX = m_scaleX / zoomIncrementalFactor;
     m_scaleY = m_scaleY / zoomIncrementalFactor;
 
-    // Adjust the new m_posx/y:
+    // Adjust the new _posx/y:
     m_posX = prior_layer_x - c.x / m_scaleX;
     m_posY = prior_layer_y + c.y / m_scaleY;
 
     m_desiredXmin = m_posX;
-    m_desiredXmax = m_posX +
-                    (m_scrX - m_marginLeft - m_marginRight) / m_scaleX;  // m_desiredXmax = m_posX + m_scrX / m_scaleX;
+    m_desiredXmax = m_posX + (m_scrX - m_marginLeft - m_marginRight) / m_scaleX;  // m_desiredXmax = m_posX + m_scrX / m_scaleX;
     m_desiredYmax = m_posY;
-    m_desiredYmin = m_posY -
-                    (m_scrY - m_marginTop - m_marginBottom) / m_scaleY;  // m_desiredYmin = m_posY - m_scrY / m_scaleY;
+    m_desiredYmin = m_posY - (m_scrY - m_marginTop - m_marginBottom) / m_scaleY;  // m_desiredYmin = m_posY - m_scrY / m_scaleY;
 
 #ifdef MATHPLOT_DO_LOGGING
     wxLogMessage(_("mpWindow::ZoomOut() prior coords: (%f,%f), new coords: (%f,%f) SHOULD BE EQUAL!!"), prior_layer_x,
@@ -1660,7 +1656,7 @@ void mpWindow::DelAllLayers(bool alsoDeleteObject, bool refreshDisplay) {
 void mpWindow::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     wxPaintDC dc(this);
     dc.GetSize(&m_scrX, &m_scrY);  // This is the size of the visible area only!
-                                   //     DoPrepareDC(dc);
+                                 //     DoPrepareDC(dc);
 
 #ifdef MATHPLOT_DO_LOGGING
     {
@@ -1725,12 +1721,12 @@ void mpWindow::OnPaint(wxPaintEvent& WXUNUSED(event)) {
         //         int centerX = (m_scrX - m_marginLeft - m_marginRight)/2; // + m_marginLeft; // c.x = m_scrX/2;
         //     int centerY = (m_scrY - m_marginTop - m_marginBottom)/2; // - m_marginTop; // c.y = m_scrY/2;
         /*SetScrollbars(1, 1, (int) ((m_maxX - m_minX)*m_scaleX), (int) ((m_maxY - m_minY)*m_scaleY));*/  //, x2p(m_posX
-                                                                                                          //+
-                                                                                                          // centerX/m_scaleX),
-                                                                                                          // y2p(m_posY
-                                                                                                          // -
-                                                                                                          // centerY/m_scaleY),
-                                                                                                          // true);
+                                                                                                    //+
+                                                                                                    // centerX/m_scaleX),
+                                                                                                    // y2p(m_posY
+                                                                                                    // -
+                                                                                                    // centerY/m_scaleY),
+                                                                                                    // true);
     }
 }
 

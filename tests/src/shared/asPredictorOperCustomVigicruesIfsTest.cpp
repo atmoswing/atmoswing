@@ -26,6 +26,8 @@
  */
 
 #include <gtest/gtest.h>
+
+#include "asIncludes.h"
 #include <wx/filename.h>
 
 #include "asAreaGrid.h"
@@ -147,7 +149,8 @@ TEST(PredictorOperCustomVigicruesIfs, LoadThirdTimeStep) {
 TEST(PredictorOperCustomVigicruesIfs, LoadFullTimeArray) {
     vwxs filepaths;
     for (int i = 0; i < 41; ++i) {
-        filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-vigicrues-ifs/2023/02/02/CEP_Z_202302020000.grb");
+        filepaths.push_back(wxFileName::GetCwd() +
+                            "/files/data-custom-vigicrues-ifs/2023/02/02/CEP_Z_202302020000.grb");
     }
 
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 12, 00), 6, "Simple");
@@ -235,7 +238,8 @@ TEST(PredictorOperCustomVigicruesIfs, LoadFullTimeArray) {
 TEST(PredictorOperCustomVigicruesIfs, LoadTotalColumnWaterVapor) {
     vwxs filepaths;
     for (int i = 0; i < 41; ++i) {
-        filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-vigicrues-ifs/2023/02/02/CEP_TCWV_202302020000.grb");
+        filepaths.push_back(wxFileName::GetCwd() +
+                            "/files/data-custom-vigicrues-ifs/2023/02/02/CEP_TCWV_202302020000.grb");
     }
 
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 12, 00), 6, "Simple");
@@ -322,7 +326,8 @@ TEST(PredictorOperCustomVigicruesIfs, LoadTotalColumnWaterVapor) {
 TEST(PredictorOperCustomVigicruesIfs, LoadRelativeHumidity) {
     vwxs filepaths;
     for (int i = 0; i < 41; ++i) {
-        filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-vigicrues-ifs/2023/02/02/CEP_R_202302020000.grb");
+        filepaths.push_back(wxFileName::GetCwd() +
+                            "/files/data-custom-vigicrues-ifs/2023/02/02/CEP_R_202302020000.grb");
     }
 
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 12, 00), 6, "Simple");
@@ -390,7 +395,6 @@ TEST(PredictorOperCustomVigicruesIfs, LoadRelativeHumidity) {
 }
 
 TEST(PredictorOperCustomVigicruesIfs, CanFindFiles) {
-
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 12, 00), 6, "Simple");
     dates.Init();
 

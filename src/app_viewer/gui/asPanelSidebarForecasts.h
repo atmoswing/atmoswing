@@ -30,7 +30,7 @@
 #define AS_PANEL_SIDEBAR_FORECASTS_H
 
 #include "asForecastManager.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asListBoxForecastDisplay.h"
 #include "asListBoxForecasts.h"
 #include "asListBoxQuantiles.h"
@@ -49,21 +49,21 @@ class asPanelSidebarForecasts : public asPanelSidebar {
     void Update() override;
 
     asListBoxForecasts* GetForecastsCtrl() const {
-        return m_forecastsCtrl;
+        return _forecastsCtrl;
     }
 
     asListBoxQuantiles* GetQuantilesCtrl() const {
-        return m_quantilesCtrl;
+        return _quantilesCtrl;
     }
 
     asListBoxForecastDisplay* GetForecastDisplayCtrl() const {
-        return m_forecastDisplayCtrl;
+        return _forecastDisplayCtrl;
     }
 
   private:
-    asListBoxForecasts* m_forecastsCtrl;
-    asListBoxQuantiles* m_quantilesCtrl;
-    asListBoxForecastDisplay* m_forecastDisplayCtrl;
+    asListBoxForecasts* _forecastsCtrl;
+    asListBoxQuantiles* _quantilesCtrl;
+    asListBoxForecastDisplay* _forecastDisplayCtrl;
 };
 
 #endif

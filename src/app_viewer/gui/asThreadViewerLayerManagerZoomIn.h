@@ -28,7 +28,7 @@
 #ifndef AS_THREAD_VIEWER_LAYER_MANAGER_ZOOM_IN_H
 #define AS_THREAD_VIEWER_LAYER_MANAGER_ZOOM_IN_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asThread.h"
 #include "vroomgis.h"
 
@@ -43,9 +43,9 @@ class asThreadViewerLayerManagerZoomIn : public asThread {
 
   protected:
   private:
-    vrViewerLayerManager* m_viewerLayerManager;
-    wxCriticalSection* m_critSectionViewerLayerManager;
-    vrRealRect m_rect;
+    vrViewerLayerManager* _viewerLayerManager;
+    wxCriticalSection* _critSectionViewerLayerManager;
+    vrRealRect _rect;
 };
 
 #endif

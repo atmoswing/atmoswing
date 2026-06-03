@@ -29,10 +29,12 @@
 
 #include "asProcessor.h"
 
+#include <wx/fileconf.h>
+
 #include "asCriteria.h"
+#include "asIncludes.h"
 #include "asParameters.h"
 #include "asPredictor.h"
-#include "asPreprocessor.h"
 #include "asResultsDates.h"
 #include "asResultsValues.h"
 #include "asThreadGetAnalogsDates.h"
@@ -48,6 +50,41 @@
 #ifdef USE_CUDA
 #include "asProcessorCuda.cuh"
 #endif
+
+// File-local helpers (formerly private static methods of class asProcessor).
+namespace {
+
+bool CheckTargetTimeArray(const vector<asPredictor*>& predictorsTarget, const a1d& timeTargetData) {
+    wxASSERT(predictorsTarget[0]);
+    wxASSERT(timeTargetData.size() == predictorsTarget[0]->GetData().size());
+    if ((size_t)timeTargetData.size() != predictorsTarget[0]->GetData().size()) {
+        wxLogError(_("The size of the time array and the target data are not equal (%d != %d)."),
+                   (int)timeTargetData.size(), (int)predictorsTarget[0]->GetData().size());
+        wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(timeTargetData[0], ISOdateTime),
+                   asTime::GetStringTime(timeTargetData[timeTargetData.size() - 1], ISOdateTime));
+        return false;
+    }
+
+    return true;
+}
+
+bool CheckArchiveTimeArray(const vector<asPredictor*>& predictorsArchive, const a1d& timeArchiveData) {
+    wxASSERT(timeArchiveData.size() > 0);
+    wxASSERT(!predictorsArchive.empty());
+    wxASSERT(!predictorsArchive[0]->GetData().empty());
+    wxASSERT(timeArchiveData.size() == predictorsArchive[0]->GetData().size());
+    if ((size_t)timeArchiveData.size() != predictorsArchive[0]->GetData().size()) {
+        wxLogError(_("The size of the time array and the archive data are not equal (%d != %d)."),
+                   (int)timeArchiveData.size(), (int)predictorsArchive[0]->GetData().size());
+        wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(timeArchiveData[0], ISOdateTime),
+                   asTime::GetStringTime(timeArchiveData[timeArchiveData.size() - 1], ISOdateTime));
+        return false;
+    }
+
+    return true;
+}
+
+}  // namespace
 
 bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
                                   asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayArchiveSelection,
@@ -91,7 +128,8 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
     wxASSERT(criteria[0]);
     bool isAsc = (criteria[0]->GetOrder() == Asc);
     int predictorsNb = params->GetPredictorsNb(step);
-    int membersNb = predictorsTarget[0]->GetData()[0].size();
+    wxASSERT(!predictorsTarget[0]->GetData().empty());
+    int membersNb = static_cast<int>(predictorsTarget[0]->GetData()[0].size());
 
     wxASSERT(!predictorsArchive.empty());
     wxASSERT((int)predictorsArchive.size() == predictorsNb);
@@ -204,7 +242,10 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
                 totDataSize += timeArchData.size() * ptsNb;
             }
 
-            // Alloc space for predictor data
+            // Alloc space for predictor data. Pairings (verified):
+            //   hData/currentDates: malloc / free
+            //   indicesArch/hRes:   cudaMallocHost / cudaFreeHost
+            //   dData/dIdxArch/dRes: cudaMalloc / cudaFree
             float *hData, *dData = nullptr;
             hData = static_cast<float*>(malloc(totDataSize * sizeof(float)));
             checkCudaErrors(cudaMalloc((void**)&dData, totDataSize * sizeof(float)));
@@ -615,7 +656,7 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
         }
 
         default:
-            throw runtime_error(_("The processing method is not correctly defined."));
+            throw std::runtime_error(_("The processing method is not correctly defined."));
     }
 
     // Copy results to the resulting object
@@ -625,36 +666,6 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
 
     // Display the time the function took
     wxLogVerbose(_("The function asProcessor::GetAnalogsDates took %.3f s to execute"), float(sw.Time()) / 1000.0f);
-
-    return true;
-}
-
-bool asProcessor::CheckTargetTimeArray(const vector<asPredictor*>& predictorsTarget, const a1d& timeTargetData) {
-    wxASSERT(predictorsTarget[0]);
-    wxASSERT(timeTargetData.size() == predictorsTarget[0]->GetData().size());
-    if ((size_t)timeTargetData.size() != predictorsTarget[0]->GetData().size()) {
-        wxLogError(_("The size of the time array and the target data are not equal (%d != %d)."),
-                   (int)timeTargetData.size(), (int)predictorsTarget[0]->GetData().size());
-        wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(timeTargetData[0], ISOdateTime),
-                   asTime::GetStringTime(timeTargetData[timeTargetData.size() - 1], ISOdateTime));
-        return false;
-    }
-
-    return true;
-}
-
-bool asProcessor::CheckArchiveTimeArray(const vector<asPredictor*>& predictorsArchive, const a1d& timeArchiveData) {
-    wxASSERT(timeArchiveData.size() > 0);
-    wxASSERT(!predictorsArchive.empty());
-    wxASSERT(!predictorsArchive[0]->GetData().empty());
-    wxASSERT(timeArchiveData.size() == predictorsArchive[0]->GetData().size());
-    if ((size_t)timeArchiveData.size() != predictorsArchive[0]->GetData().size()) {
-        wxLogError(_("The size of the time array and the archive data are not equal (%d != %d)."),
-                   (int)timeArchiveData.size(), (int)predictorsArchive[0]->GetData().size());
-        wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(timeArchiveData[0], ISOdateTime),
-                   asTime::GetStringTime(timeArchiveData[timeArchiveData.size() - 1], ISOdateTime));
-        return false;
-    }
 
     return true;
 }
@@ -915,7 +926,10 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vec
                 totDataSize += timeArchData.size() * ptsNb;
             }
 
-            // Alloc space for predictor data
+            // Alloc space for predictor data. Pairings (verified):
+            //   hData/currentDates: malloc / free
+            //   indicesArch/hRes:   cudaMallocHost / cudaFreeHost
+            //   dData/dIdxArch/dRes: cudaMalloc / cudaFree
             float *hData, *dData = nullptr;
             hData = static_cast<float*>(malloc(totDataSize * sizeof(float)));
             checkCudaErrors(cudaMalloc((void**)&dData, totDataSize * sizeof(float)));
@@ -1278,7 +1292,7 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vec
         }
 
         default:
-            throw runtime_error(_("The processing method is not correctly defined."));
+            throw std::runtime_error(_("The processing method is not correctly defined."));
     }
 
 #if USE_GUI
@@ -1334,8 +1348,8 @@ bool asProcessor::GetAnalogsValues(asPredictand& predictand, asResultsDates& ana
 
     // Get start and end dates
     double timeStart, timeEnd;
-    timeStart = wxMax(predictandTime[0], params->GetArchiveStart());
-    timeEnd = wxMin(predictandTime[predictandTimeLength - 1], params->GetArchiveEnd());
+    timeStart = std::max(predictandTime[0], params->GetArchiveStart());
+    timeEnd = std::min(predictandTime[predictandTimeLength - 1], params->GetArchiveEnd());
 
     // Check if data are effectively available for this period
     int indexPredictandTimeStart = asFindCeil(&predictandTime[0], &predictandTime[predictandTimeLength - 1], timeStart);
@@ -1368,8 +1382,8 @@ bool asProcessor::GetAnalogsValues(asPredictand& predictand, asResultsDates& ana
     }
 
     // Get start and end indices for the analogs dates
-    double timeStartTarg = wxMax(timeStart, (double)timeTargetSelection[0]);
-    double timeEndTarg = wxMin(timeEnd, (double)timeTargetSelection[timeTargetSelectionLength - 1]);
+    double timeStartTarg = std::max(timeStart, (double)timeTargetSelection[0]);
+    double timeEndTarg = std::min(timeEnd, (double)timeTargetSelection[timeTargetSelectionLength - 1]);
     int indexTargDatesStart = asFindCeil(&timeTargetSelection[0], &timeTargetSelection[timeTargetSelectionLength - 1],
                                          timeStartTarg);
     int indexTargDatesEnd = asFindFloor(&timeTargetSelection[0], &timeTargetSelection[timeTargetSelectionLength - 1],

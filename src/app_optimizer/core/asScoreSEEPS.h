@@ -29,7 +29,6 @@
 #ifndef AS_SCORE_SEEPS_H
 #define AS_SCORE_SEEPS_H
 
-#include "asIncludes.h"
 #include "asScore.h"
 
 class asScoreSEEPS : public asScore {
@@ -43,27 +42,27 @@ class asScoreSEEPS : public asScore {
     bool ProcessScoreClimatology(const a1f& refVals, const a1f& climData) override;
 
     void SetP1(float val) {
-        m_p1 = val;
+        _p1 = val;
     }
 
     void SetP3(float val) {
-        m_p3 = val;
+        _p3 = val;
     }
 
     void SetThresNull(float val) {
-        m_thresNull = val;
+        _thresNull = val;
     }
 
     void SetThresHigh(float val) {
-        m_thresHigh = val;
+        _thresHigh = val;
     }
 
   protected:
   private:
-    float m_p1;
-    float m_p3;
-    float m_thresNull;
-    float m_thresHigh;
+    float _p1;
+    float _p3;
+    float _thresNull;
+    float _thresHigh;
 };
 
 #endif

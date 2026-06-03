@@ -30,7 +30,7 @@
 
 #include <wx/listctrl.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelSidebar.h"
 
 class asPanelSidebarAnalogDates : public asPanelSidebar {
@@ -43,7 +43,7 @@ class asPanelSidebarAnalogDates : public asPanelSidebar {
     void SetChoices(a1f& arrayDate, a1f& arrayCriteria, const wxString& dateFormat);
 
   private:
-    wxListCtrl* m_listCtrl;
+    wxListCtrl* _listCtrl;
 
     void OnDateSelection(wxListEvent& event);
 };

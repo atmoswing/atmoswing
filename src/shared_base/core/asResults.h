@@ -29,7 +29,7 @@
 #ifndef AS_RESULTS_H
 #define AS_RESULTS_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asParameters.h"
 
 class asFileNetcdf;
@@ -43,19 +43,19 @@ class asResults : public wxObject {
     wxString GetPredictandStationIdsList() const;
 
     void SetCurrentStep(int val) {
-        m_currentStep = val;
+        _currentStep = val;
     }
 
     wxString GetFilePath() const {
-        return m_filePath;
+        return _filePath;
     }
 
     void SetFilePath(const wxString& val) {
-        m_filePath = val;
+        _filePath = val;
     }
 
     void SetSubFolder(const wxString& val) {
-        m_subFolder = val;
+        _subFolder = val;
     }
 
     bool Exists() const;
@@ -65,13 +65,13 @@ class asResults : public wxObject {
     virtual bool Load();
 
   protected:
-    int m_fileVersionMajor;
-    int m_fileVersionMinor;
-    int m_currentStep;
-    vi m_predictandStationIds;
-    double m_dateProcessed;
-    wxString m_subFolder;
-    wxString m_filePath;
+    int _fileVersionMajor;
+    int _fileVersionMinor;
+    int _currentStep;
+    vi _predictandStationIds;
+    double _dateProcessed;
+    wxString _subFolder;
+    wxString _filePath;
 
     bool DefTargetDatesAttributes(asFileNetcdf& ncFile) const;
 

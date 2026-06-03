@@ -28,6 +28,10 @@
 
 #include "asForecastRenderer.h"
 
+#include "asIncludes.h"
+
+#include <wx/fileconf.h>
+
 #include "asForecastManager.h"
 #include "asFrameViewer.h"
 #include "vrLayerVectorFcstDots.h"
@@ -37,81 +41,81 @@ wxDEFINE_EVENT(asEVT_ACTION_FORECAST_SELECT_FIRST, wxCommandEvent);
 
 asForecastRenderer::asForecastRenderer(asFrameViewer* parent, asForecastManager* forecastManager,
                                        vrLayerManager* layerManager, vrViewerLayerManager* viewerLayerManager)
-    : m_parent(parent),
-      m_forecastManager(forecastManager),
-      m_layerManager(layerManager),
-      m_viewerLayerManager(viewerLayerManager),
-      m_leadTimeIndex(0),
-      m_leadTimeDate(0),
-      m_leadTimeStep(24),
-      m_layerMaxValue(1),
-      m_methodSelection(-1),
-      m_forecastSelection(-1),
-      m_opened(false) {
-    m_displayForecast.Add(_("Value"));
-    m_displayForecast.Add(_("Ratio P/P2"));
-    m_displayForecast.Add(_("Ratio P/P5"));
-    m_displayForecast.Add(_("Ratio P/P10"));
-    m_displayForecast.Add(_("Ratio P/P20"));
-    m_displayForecast.Add(_("Ratio P/P50"));
-    m_displayForecast.Add(_("Ratio P/P100"));
-    m_displayForecast.Add(_("Ratio P/P200"));
-    m_displayForecast.Add(_("Ratio P/P300"));
-    m_displayForecast.Add(_("Ratio P/P500"));
+    : _parent(parent),
+      _forecastManager(forecastManager),
+      _layerManager(layerManager),
+      _viewerLayerManager(viewerLayerManager),
+      _leadTimeIndex(0),
+      _leadTimeDate(0),
+      _leadTimeStep(24),
+      _layerMaxValue(1),
+      _methodSelection(-1),
+      _forecastSelection(-1),
+      _opened(false) {
+    _displayForecast.Add(_("Value"));
+    _displayForecast.Add(_("Ratio P/P2"));
+    _displayForecast.Add(_("Ratio P/P5"));
+    _displayForecast.Add(_("Ratio P/P10"));
+    _displayForecast.Add(_("Ratio P/P20"));
+    _displayForecast.Add(_("Ratio P/P50"));
+    _displayForecast.Add(_("Ratio P/P100"));
+    _displayForecast.Add(_("Ratio P/P200"));
+    _displayForecast.Add(_("Ratio P/P300"));
+    _displayForecast.Add(_("Ratio P/P500"));
 
-    m_returnPeriods.push_back(0);
-    m_returnPeriods.push_back(2);
-    m_returnPeriods.push_back(5);
-    m_returnPeriods.push_back(10);
-    m_returnPeriods.push_back(20);
-    m_returnPeriods.push_back(50);
-    m_returnPeriods.push_back(100);
-    m_returnPeriods.push_back(200);
-    m_returnPeriods.push_back(300);
-    m_returnPeriods.push_back(500);
+    _returnPeriods.push_back(0);
+    _returnPeriods.push_back(2);
+    _returnPeriods.push_back(5);
+    _returnPeriods.push_back(10);
+    _returnPeriods.push_back(20);
+    _returnPeriods.push_back(50);
+    _returnPeriods.push_back(100);
+    _returnPeriods.push_back(200);
+    _returnPeriods.push_back(300);
+    _returnPeriods.push_back(500);
 
-    // m_displayQuantiles.Add(_("interpretation"));
-    m_displayQuantiles.Add(_("q90"));
-    m_displayQuantiles.Add(_("q60"));
-    m_displayQuantiles.Add(_("q20"));
+    // _displayQuantiles.Add(_("interpretation"));
+    _displayQuantiles.Add(_("q90"));
+    _displayQuantiles.Add(_("q60"));
+    _displayQuantiles.Add(_("q20"));
 
-    // m_quantiles.push_back(-1);
-    m_quantiles.push_back(0.9f);
-    m_quantiles.push_back(0.6f);
-    m_quantiles.push_back(0.2f);
+    // _quantiles.push_back(-1);
+    _quantiles.push_back(0.9f);
+    _quantiles.push_back(0.6f);
+    _quantiles.push_back(0.2f);
 
     wxConfigBase* pConfig = wxFileConfig::Get();
-    pConfig->Read("/ForecastViewer/DisplaySelection", &m_forecastDisplaySelection, 3);
-    pConfig->Read("/ForecastViewer/QuantileSelection", &m_quantileSelection, 0);
-    if (m_forecastDisplaySelection >= m_returnPeriods.size()) {
-        m_forecastDisplaySelection = 1;
+    pConfig->Read("/ForecastViewer/DisplaySelection", &_forecastDisplaySelection, 3);
+    pConfig->Read("/ForecastViewer/QuantileSelection", &_quantileSelection, 0);
+    if (_forecastDisplaySelection >= _returnPeriods.size()) {
+        _forecastDisplaySelection = 1;
     }
-    if (m_quantileSelection >= m_quantiles.size()) {
-        m_quantileSelection = 0;
+    if (_quantileSelection >= _quantiles.size()) {
+        _quantileSelection = 0;
     }
 }
 
 asForecastRenderer::~asForecastRenderer() {
     wxConfigBase* pConfig = wxFileConfig::Get();
-    pConfig->Write("/ForecastViewer/DisplaySelection", m_forecastDisplaySelection);
-    pConfig->Write("/ForecastViewer/QuantileSelection", m_quantileSelection);
+    pConfig->Write("/ForecastViewer/DisplaySelection", _forecastDisplaySelection);
+    pConfig->Write("/ForecastViewer/QuantileSelection", _quantileSelection);
 }
 
 void asForecastRenderer::FixForecastSelection() {
-    if (m_methodSelection < 0) {
+    if (_methodSelection < 0) {
         wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_SELECT_FIRST);
-        m_parent->ProcessWindowEvent(eventSlct);
+        _parent->ProcessWindowEvent(eventSlct);
     }
 }
 
 void asForecastRenderer::ResetForecastSelection() {
-    m_methodSelection = -1;
-    m_forecastSelection = -1;
+    _methodSelection = -1;
+    _forecastSelection = -1;
 }
 
 void asForecastRenderer::SetForecast(int methodRow, int forecastRow) {
-    m_methodSelection = methodRow;
-    m_forecastSelection = forecastRow;
+    _methodSelection = methodRow;
+    _forecastSelection = forecastRow;
 
     AdaptLeadTimeIndex();
 
@@ -119,59 +123,59 @@ void asForecastRenderer::SetForecast(int methodRow, int forecastRow) {
 }
 
 void asForecastRenderer::AdaptLeadTimeIndex() {
-    if (m_methodSelection < 0) return;
+    if (_methodSelection < 0) return;
 
-    int forecast = wxMax(m_forecastSelection, 0);
-    float timeStep = m_forecastManager->GetForecast(m_methodSelection, forecast)->GetForecastTimeStepHours();
+    int forecast = std::max(_forecastSelection, 0);
+    float timeStep = _forecastManager->GetForecast(_methodSelection, forecast)->GetForecastTimeStepHours();
 
-    if (m_leadTimeIndex == -1) {
-        m_leadTimeStep = timeStep;
+    if (_leadTimeIndex == -1) {
+        _leadTimeStep = timeStep;
         return;
     }
 
-    if (timeStep != m_leadTimeStep) {
-        m_leadTimeIndex = int(m_leadTimeIndex * float(m_leadTimeStep) / float(timeStep));
-        m_leadTimeStep = timeStep;
+    if (timeStep != _leadTimeStep) {
+        _leadTimeIndex = int(_leadTimeIndex * float(_leadTimeStep) / float(timeStep));
+        _leadTimeStep = timeStep;
     }
 }
 
 float asForecastRenderer::GetSelectedTargetDate() {
-    if (m_leadTimeIndex < 0) {
+    if (_leadTimeIndex < 0) {
         return 0;
     }
 
-    a1f targetDates = m_forecastManager->GetTargetDates(wxMax(m_methodSelection, 0), wxMax(m_forecastSelection, 0));
+    a1f targetDates = _forecastManager->GetTargetDates(std::max(_methodSelection, 0), std::max(_forecastSelection, 0));
 
-    if (m_leadTimeIndex >= targetDates.size()) {
+    if (_leadTimeIndex >= targetDates.size()) {
         return 0;
     }
-    return targetDates[m_leadTimeIndex];
+    return targetDates[_leadTimeIndex];
 }
 
 void asForecastRenderer::SetLeadTimeDate(float date) {
-    if (date > 0 && (m_methodSelection > 0)) {
-        a1f targetDates = m_forecastManager->GetTargetDates(m_methodSelection, wxMax(m_forecastSelection, 0));
+    if (date > 0 && (_methodSelection > 0)) {
+        a1f targetDates = _forecastManager->GetTargetDates(_methodSelection, std::max(_forecastSelection, 0));
 
         int index = asFindClosest(&targetDates[0], &targetDates[targetDates.size() - 1], date);
         if (index >= 0) {
-            m_leadTimeIndex = index;
+            _leadTimeIndex = index;
         }
     }
 }
 
 void asForecastRenderer::SetForecastDisplay(int i) {
-    m_forecastDisplaySelection = i;
+    _forecastDisplaySelection = i;
 
-    wxString display = m_displayForecast.Item((size_t)m_forecastDisplaySelection);
+    wxString display = _displayForecast.Item((size_t)_forecastDisplaySelection);
     wxLogVerbose(_("Selected display : %s."), display);
 
     Redraw();
 }
 
 void asForecastRenderer::SetQuantile(int i) {
-    m_quantileSelection = i;
+    _quantileSelection = i;
 
-    wxString quantile = m_displayQuantiles.Item((size_t)m_quantileSelection);
+    wxString quantile = _displayQuantiles.Item((size_t)_quantileSelection);
     wxLogVerbose(_("Selected quantile : %s."), quantile);
 
     Redraw();
@@ -181,33 +185,33 @@ void asForecastRenderer::LoadPastForecast() {
     wxBusyCursor wait;
 
     // Check that elements are selected
-    if ((m_methodSelection == -1) || (m_forecastDisplaySelection == -1) || (m_quantileSelection == -1)) return;
-    if (m_methodSelection >= m_forecastManager->GetMethodsNb()) return;
+    if ((_methodSelection == -1) || (_forecastDisplaySelection == -1) || (_quantileSelection == -1)) return;
+    if (_methodSelection >= _forecastManager->GetMethodsNb()) return;
 
-    if (m_forecastSelection > 0) {
-        m_forecastManager->LoadPastForecast(m_methodSelection, m_forecastSelection);
+    if (_forecastSelection > 0) {
+        _forecastManager->LoadPastForecast(_methodSelection, _forecastSelection);
     } else {
-        m_forecastManager->LoadPastForecast(m_methodSelection);
+        _forecastManager->LoadPastForecast(_methodSelection);
     }
 }
 
 void asForecastRenderer::Redraw() {
     // Check that elements are selected
-    if ((m_methodSelection == -1) || (m_forecastDisplaySelection == -1) || (m_quantileSelection == -1)) return;
-    if (m_methodSelection >= m_forecastManager->GetMethodsNb()) return;
-    if (m_forecastDisplaySelection >= m_displayForecast.size()) return;
-    if (m_quantiles.size() != m_displayQuantiles.size()) return;
-    if (m_returnPeriods.size() != m_displayForecast.size()) return;
+    if ((_methodSelection == -1) || (_forecastDisplaySelection == -1) || (_quantileSelection == -1)) return;
+    if (_methodSelection >= _forecastManager->GetMethodsNb()) return;
+    if (_forecastDisplaySelection >= _displayForecast.size()) return;
+    if (_quantiles.size() != _displayQuantiles.size()) return;
+    if (_returnPeriods.size() != _displayForecast.size()) return;
 
     // Get data
     vector<asResultsForecast*> forecasts;
 
-    if (m_forecastSelection < 0) {
-        for (int i = 0; i < m_forecastManager->GetForecastsNb(m_methodSelection); i++) {
-            forecasts.push_back(m_forecastManager->GetForecast(m_methodSelection, i));
+    if (_forecastSelection < 0) {
+        for (int i = 0; i < _forecastManager->GetForecastsNb(_methodSelection); i++) {
+            forecasts.push_back(_forecastManager->GetForecast(_methodSelection, i));
         }
     } else {
-        forecasts.push_back(m_forecastManager->GetForecast(m_methodSelection, m_forecastSelection));
+        forecasts.push_back(_forecastManager->GetForecast(_methodSelection, _forecastSelection));
     }
 
     // Create a memory layer
@@ -215,31 +219,31 @@ void asForecastRenderer::Redraw() {
     wxFileName memoryLayerNameOther("", _("Forecast - other"), "memory");
 
     // Check if memory layer already added
-    m_viewerLayerManager->FreezeBegin();
-    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
-        if (m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameSpecific) {
-            vrRenderer* renderer = m_viewerLayerManager->GetRenderer(i);
+    _viewerLayerManager->FreezeBegin();
+    for (int i = 0; i < _viewerLayerManager->GetCount(); i++) {
+        if (_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameSpecific) {
+            vrRenderer* renderer = _viewerLayerManager->GetRenderer(i);
             vrLayer* layer = renderer->GetLayer();
             wxASSERT(renderer);
-            m_viewerLayerManager->Remove(renderer);
+            _viewerLayerManager->Remove(renderer);
             // Close layer
-            m_layerManager->Close(layer);
+            _layerManager->Close(layer);
         }
     }
-    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
-        if (m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameOther) {
-            vrRenderer* renderer = m_viewerLayerManager->GetRenderer(i);
+    for (int i = 0; i < _viewerLayerManager->GetCount(); i++) {
+        if (_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameOther) {
+            vrRenderer* renderer = _viewerLayerManager->GetRenderer(i);
             vrLayer* layer = renderer->GetLayer();
             wxASSERT(renderer);
-            m_viewerLayerManager->Remove(renderer);
+            _viewerLayerManager->Remove(renderer);
             // Close layer
-            m_layerManager->Close(layer);
+            _layerManager->Close(layer);
         }
     }
 
     // Get display option
-    float quantile = m_quantiles[m_quantileSelection];
-    float returnPeriod = m_returnPeriods[m_forecastDisplaySelection];
+    float quantile = _quantiles[_quantileSelection];
+    float returnPeriod = _returnPeriods[_forecastDisplaySelection];
 
     // Get reference axis index
     int indexReferenceAxis = asNOT_FOUND;
@@ -250,44 +254,44 @@ void asForecastRenderer::Redraw() {
                                     returnPeriod);
         if ((indexReferenceAxis == asNOT_FOUND) || (indexReferenceAxis == asOUT_OF_RANGE)) {
             wxLogError(_("The desired reference value is not available in the forecast file."));
-            m_viewerLayerManager->FreezeEnd();
+            _viewerLayerManager->FreezeEnd();
             return;
         }
     }
 
     // Get the maximum value
-    double colorbarMaxValue = m_parent->GetWorkspace()->GetColorbarMaxValue();
+    double colorbarMaxValue = _parent->GetWorkspace()->GetColorbarMaxValue();
 
     // Display according to the chosen display type
-    if (m_leadTimeIndex == -1) {
+    if (_leadTimeIndex == -1) {
         // Create the layers
         auto layerSpecific = new vrLayerVectorFcstRing();
         auto layerOther = new vrLayerVectorFcstRing();
         if (!layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)) {
             wxFAIL;
-            m_viewerLayerManager->FreezeEnd();
+            _viewerLayerManager->FreezeEnd();
             wxDELETE(layerSpecific);
             wxDELETE(layerOther);
             return;
         }
         if (!layerOther->Create(memoryLayerNameOther, wkbPoint)) {
             wxFAIL;
-            m_viewerLayerManager->FreezeEnd();
+            _viewerLayerManager->FreezeEnd();
             wxDELETE(layerSpecific);
             wxDELETE(layerOther);
             return;
         }
 
         // Set the maximum value
-        if (m_forecastDisplaySelection == 0)  // Only if the value option is selected, and not the ratio
+        if (_forecastDisplaySelection == 0)  // Only if the value option is selected, and not the ratio
         {
             layerSpecific->SetMaxValue(colorbarMaxValue);
             layerOther->SetMaxValue(colorbarMaxValue);
-            m_layerMaxValue = colorbarMaxValue;
+            _layerMaxValue = colorbarMaxValue;
         } else {
             layerSpecific->SetMaxValue(1.0);
             layerOther->SetMaxValue(1.0);
-            m_layerMaxValue = 1.0;
+            _layerMaxValue = 1.0;
         }
 
         // Length of the lead time
@@ -328,7 +332,7 @@ void asForecastRenderer::Redraw() {
             // Select the accurate forecast
             bool accurateForecast = false;
             asResultsForecast* forecast = nullptr;
-            if (m_forecastSelection >= 0) {
+            if (_forecastSelection >= 0) {
                 forecast = forecasts[0];
                 accurateForecast = forecast->IsSpecificForStationId(currentId);
             } else {
@@ -341,7 +345,7 @@ void asForecastRenderer::Redraw() {
                 }
             }
 
-            if (m_forecastManager->GetForecastsNb(m_methodSelection) == 1) {
+            if (_forecastManager->GetForecastsNb(_methodSelection) == 1) {
                 forecast = forecasts[0];
                 accurateForecast = true;
             }
@@ -423,21 +427,21 @@ void asForecastRenderer::Redraw() {
         wxASSERT(layerOther);
 
         if (layerOther->GetFeatureCount() > 0) {
-            m_layerManager->Add(layerOther);
+            _layerManager->Add(layerOther);
             auto renderOther = new vrRenderVector();
             renderOther->SetSize(1);
             renderOther->SetColorPen(wxColor(150, 150, 150));
-            m_viewerLayerManager->Add(-1, layerOther, renderOther);
+            _viewerLayerManager->Add(-1, layerOther, renderOther);
         } else {
             wxDELETE(layerOther);
         }
 
-        m_layerManager->Add(layerSpecific);
+        _layerManager->Add(layerSpecific);
         auto renderSpecific = new vrRenderVector();
         renderSpecific->SetSize(1);
         renderSpecific->SetColorPen(*wxBLACK);
-        m_viewerLayerManager->Add(-1, layerSpecific, renderSpecific);
-        m_viewerLayerManager->FreezeEnd();
+        _viewerLayerManager->Add(-1, layerSpecific, renderSpecific);
+        _viewerLayerManager->FreezeEnd();
 
     } else {
         // Create the layer
@@ -445,29 +449,29 @@ void asForecastRenderer::Redraw() {
         auto layerOther = new vrLayerVectorFcstDots();
         if (!layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)) {
             wxFAIL;
-            m_viewerLayerManager->FreezeEnd();
+            _viewerLayerManager->FreezeEnd();
             wxDELETE(layerSpecific);
             wxDELETE(layerOther);
             return;
         }
         if (!layerOther->Create(memoryLayerNameOther, wkbPoint)) {
             wxFAIL;
-            m_viewerLayerManager->FreezeEnd();
+            _viewerLayerManager->FreezeEnd();
             wxDELETE(layerSpecific);
             wxDELETE(layerOther);
             return;
         }
 
         // Set the maximum value
-        if (m_forecastDisplaySelection == 0)  // Only if the value option is selected, and not the ratio
+        if (_forecastDisplaySelection == 0)  // Only if the value option is selected, and not the ratio
         {
             layerSpecific->SetMaxValue(colorbarMaxValue);
             layerOther->SetMaxValue(colorbarMaxValue);
-            m_layerMaxValue = colorbarMaxValue;
+            _layerMaxValue = colorbarMaxValue;
         } else {
             layerSpecific->SetMaxValue(1.0);
             layerOther->SetMaxValue(1.0);
-            m_layerMaxValue = 1.0;
+            _layerMaxValue = 1.0;
         }
 
         // Adding fields
@@ -491,7 +495,7 @@ void asForecastRenderer::Redraw() {
             // Select the accurate forecast
             bool accurateForecast = false;
             asResultsForecast* forecast = nullptr;
-            if (m_forecastSelection >= 0) {
+            if (_forecastSelection >= 0) {
                 forecast = forecasts[0];
                 accurateForecast = forecast->IsSpecificForStationId(currentId);
             } else {
@@ -504,7 +508,7 @@ void asForecastRenderer::Redraw() {
                 }
             }
 
-            if (m_forecastManager->GetForecastsNb(m_methodSelection) == 1) {
+            if (_forecastManager->GetForecastsNb(_methodSelection) == 1) {
                 forecast = forecasts[0];
                 accurateForecast = true;
             }
@@ -534,12 +538,12 @@ void asForecastRenderer::Redraw() {
             }
 
             // Check available lead times
-            if (forecast->GetTargetDatesLength() <= m_leadTimeIndex) {
+            if (forecast->GetTargetDatesLength() <= _leadTimeIndex) {
                 wxLogError(_("Lead time not available for this forecast."));
-                m_leadTimeIndex = forecast->GetTargetDatesLength() - 1;
+                _leadTimeIndex = forecast->GetTargetDatesLength() - 1;
             }
 
-            a1f values = forecast->GetAnalogsValuesRaw(m_leadTimeIndex, iStat);
+            a1f values = forecast->GetAnalogsValuesRaw(_leadTimeIndex, iStat);
 
             if (asHasNaN(&values[0], &values[values.size() - 1])) {
                 data.Add(NAN);  // 1st real value
@@ -584,36 +588,36 @@ void asForecastRenderer::Redraw() {
         wxASSERT(layerOther);
 
         if (layerOther->GetFeatureCount() > 0) {
-            m_layerManager->Add(layerOther);
+            _layerManager->Add(layerOther);
             auto renderOther = new vrRenderVector();
             renderOther->SetSize(1);
             renderOther->SetColorPen(wxColor(150, 150, 150));
-            m_viewerLayerManager->Add(-1, layerOther, renderOther);
+            _viewerLayerManager->Add(-1, layerOther, renderOther);
         } else {
             wxDELETE(layerOther);
         }
 
-        m_layerManager->Add(layerSpecific);
+        _layerManager->Add(layerSpecific);
         auto renderSpecific = new vrRenderVector();
         renderSpecific->SetSize(1);
         renderSpecific->SetColorPen(*wxBLACK);
-        m_viewerLayerManager->Add(-1, layerSpecific, renderSpecific);
-        m_viewerLayerManager->FreezeEnd();
+        _viewerLayerManager->Add(-1, layerSpecific, renderSpecific);
+        _viewerLayerManager->FreezeEnd();
     }
 }
 
 void asForecastRenderer::ChangeLeadTime(int val) {
-    if (m_leadTimeIndex == val)  // Already selected
+    if (_leadTimeIndex == val)  // Already selected
         return;
 
-    m_leadTimeIndex = val;
-    m_leadTimeDate = GetSelectedTargetDate();
+    _leadTimeIndex = val;
+    _leadTimeDate = GetSelectedTargetDate();
 
     Redraw();
 }
 
 void asForecastRenderer::FixMethodSelection() {
-    if (m_methodSelection >= m_forecastManager->GetMethodsNb()) {
-        m_methodSelection = m_forecastManager->GetMethodsNb() - 1;
+    if (_methodSelection >= _forecastManager->GetMethodsNb()) {
+        _methodSelection = _forecastManager->GetMethodsNb() - 1;
     }
 }

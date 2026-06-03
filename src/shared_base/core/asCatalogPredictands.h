@@ -29,7 +29,7 @@
 #ifndef AS_CATALOG_PREDICTAND_H
 #define AS_CATALOG_PREDICTAND_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPredictand.h"
 
 class asCatalogPredictands : public wxObject {
@@ -54,120 +54,120 @@ class asCatalogPredictands : public wxObject {
     bool Load();
 
     wxString GetSetId() const {
-        return m_setId;
+        return _setId;
     }
 
     wxString GetName() const {
-        return m_name;
+        return _name;
     }
 
     wxString GetDescription() const {
-        return m_description;
+        return _description;
     }
 
     double GetStart() const {
-        return m_start;
+        return _start;
     }
 
     double GetEnd() const {
-        return m_end;
+        return _end;
     }
 
     float GetTimeZoneHours() const {
-        return m_timeZoneHours;
+        return _timeZoneHours;
     }
 
     double GetTimeStepHours() const {
-        return m_timeStepHours;
+        return _timeStepHours;
     }
 
     double GetTimeStepDays() const {
-        return m_timeStepHours / 24;
+        return _timeStepHours / 24;
     }
 
     double GetFirstTimeStepHours() const {
-        return m_firstTimeStepHour;
+        return _firstTimeStepHour;
     }
 
     wxString GetDataPath() const {
-        return m_dataPath;
+        return _dataPath;
     }
 
     vwxs GetNan() const {
-        return m_nan;
+        return _nan;
     }
 
     wxString GetCoordSys() const {
-        return m_coordSys;
+        return _coordSys;
     }
 
     asPredictand::Parameter GetParameter() const {
-        return m_parameter;
+        return _parameter;
     }
 
     asPredictand::Unit GetUnit() const {
-        return m_unit;
+        return _unit;
     }
 
     int GetStationId(int index) const {
-        return m_stations[index].id;
+        return _stations[index].id;
     }
 
     wxString GetStationOfficialId(int index) const {
-        return m_stations[index].officialId;
+        return _stations[index].officialId;
     }
 
     wxString GetStationName(int index) const {
-        return m_stations[index].name;
+        return _stations[index].name;
     }
 
     wxString GetStationFilename(int index) const {
-        return m_stations[index].fileName;
+        return _stations[index].fileName;
     }
 
     wxString GetStationFilepattern(int index) const {
-        return m_stations[index].filePattern;
+        return _stations[index].filePattern;
     }
 
     double GetStationStart(int index) const {
-        return m_stations[index].startDate;
+        return _stations[index].startDate;
     }
 
     double GetStationEnd(int index) const {
-        return m_stations[index].endDate;
+        return _stations[index].endDate;
     }
 
     Coo GetStationCoord(int index) const {
-        return m_stations[index].coord;
+        return _stations[index].coord;
     }
 
     float GetStationHeight(int index) const {
-        return m_stations[index].height;
+        return _stations[index].height;
     }
 
     int GetStationsNb() const {
-        return int(m_stations.size());
+        return int(_stations.size());
     }
 
   protected:
   private:
-    wxString m_catalogFilePath;
-    wxString m_setId;
-    wxString m_name;
-    wxString m_description;
-    double m_start;
-    double m_end;
-    float m_timeZoneHours;
-    double m_timeStepHours;
-    double m_firstTimeStepHour;
-    wxString m_dataPath;
-    vwxs m_nan;
-    wxString m_coordSys;
-    asPredictand::Parameter m_parameter;
-    asPredictand::Unit m_unit;
-    vector<DataStruct> m_stations;
-    asPredictand::TemporalResolution m_temporalResolution;
-    asPredictand::SpatialAggregation m_spatialAggregation;
+    wxString _catalogFilePath;
+    wxString _setId;
+    wxString _name;
+    wxString _description;
+    double _start;
+    double _end;
+    float _timeZoneHours;
+    double _timeStepHours;
+    double _firstTimeStepHour;
+    wxString _dataPath;
+    vwxs _nan;
+    wxString _coordSys;
+    asPredictand::Parameter _parameter;
+    asPredictand::Unit _unit;
+    vector<DataStruct> _stations;
+    asPredictand::TemporalResolution _temporalResolution;
+    asPredictand::SpatialAggregation _spatialAggregation;
 };
 
 #endif

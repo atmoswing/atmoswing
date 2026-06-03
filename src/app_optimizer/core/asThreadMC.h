@@ -29,7 +29,7 @@
 #ifndef AS_THREAD_METHOD_OPTIMIZER_MC_H
 #define AS_THREAD_METHOD_OPTIMIZER_MC_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asMethodOptimizerMC.h"
 #include "asParametersOptimization.h"
 #include "asThread.h"
@@ -45,10 +45,10 @@ class asThreadMC : public asThread {
 
   protected:
   private:
-    asMethodOptimizerMC* m_optimizer;
-    asParametersOptimization* m_params;
-    float* m_finalScoreCalib;
-    vf* m_scoreClimatology;
+    asMethodOptimizerMC* _optimizer;
+    asParametersOptimization* _params;
+    float* _finalScoreCalib;
+    vf* _scoreClimatology;
 };
 
 #endif

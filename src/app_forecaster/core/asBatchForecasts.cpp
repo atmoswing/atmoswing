@@ -27,25 +27,27 @@
 
 #include "asBatchForecasts.h"
 
+#include "asIncludes.h"
+
 asBatchForecasts::asBatchForecasts()
     : wxObject(),
-      m_hasChanged(false),
-      m_export(None) {
+      _hasChanged(false),
+      _export(None) {
     wxString baseDir = asConfig::GetDocumentsDir() + "AtmoSwing" + DS;
-    m_filePath = baseDir + "Parameters" + DS + "BatchForecasts.asfb";
-    m_forecastsOutputDirectory = baseDir + "Forecasts";
-    m_exportsOutputDirectory = baseDir + "Exports";
-    m_parametersFileDirectory = baseDir + "Parameters";
-    m_predictorsArchiveDirectory = baseDir + "Data" + DS + "Archive predictors";
-    m_predictorsRealtimeDirectory = baseDir + "Data" + DS + "Forecasted predictors";
-    m_predictandDBDirectory = baseDir + "Data" + DS + "Predictands";
+    _filePath = baseDir + "Parameters" + DS + "BatchForecasts.asfb";
+    _forecastsOutputDirectory = baseDir + "Forecasts";
+    _exportsOutputDirectory = baseDir + "Exports";
+    _parametersFileDirectory = baseDir + "Parameters";
+    _predictorsArchiveDirectory = baseDir + "Data" + DS + "Archive predictors";
+    _predictorsRealtimeDirectory = baseDir + "Data" + DS + "Forecasted predictors";
+    _predictandDBDirectory = baseDir + "Data" + DS + "Predictands";
 }
 
 bool asBatchForecasts::Load(const wxString& filePath) {
     ClearForecasts();
 
     // Open the file
-    m_filePath = filePath;
+    _filePath = filePath;
     asFileBatchForecasts fileBatch(filePath, asFile::ReadOnly);
     if (!fileBatch.Open()) {
         wxLogError(_("Cannot open the batch file."));
@@ -60,24 +62,24 @@ bool asBatchForecasts::Load(const wxString& filePath) {
     wxXmlNode* node = fileBatch.GetRoot()->GetChildren();
     while (node) {
         if (node->GetName() == "forecasts_output_directory") {
-            m_forecastsOutputDirectory = asFileBatchForecasts::GetString(node);
+            _forecastsOutputDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "exports_output_directory") {
-            m_exportsOutputDirectory = asFileBatchForecasts::GetString(node);
+            _exportsOutputDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "parameters_files_directory") {
-            m_parametersFileDirectory = asFileBatchForecasts::GetString(node);
+            _parametersFileDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "predictors_archive_directory") {
-            m_predictorsArchiveDirectory = asFileBatchForecasts::GetString(node);
+            _predictorsArchiveDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "predictors_realtime_directory") {
-            m_predictorsRealtimeDirectory = asFileBatchForecasts::GetString(node);
+            _predictorsRealtimeDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "predictand_db_directory") {
-            m_predictandDBDirectory = asFileBatchForecasts::GetString(node);
+            _predictandDBDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "export_synthesis") {
-            m_export = (asBatchForecasts::Export)asFileBatchForecasts::GetInt(node);
+            _export = (asBatchForecasts::Export)asFileBatchForecasts::GetInt(node);
         } else if (node->GetName() == "forecasts") {
             wxXmlNode* nodeForecast = node->GetChildren();
             while (nodeForecast) {
                 if (nodeForecast->GetName() == "filename") {
-                    m_forecastFileNames.push_back(asFileBatchForecasts::GetString(nodeForecast));
+                    _forecastFileNames.push_back(asFileBatchForecasts::GetString(nodeForecast));
                 } else {
                     fileBatch.UnknownNode(nodeForecast);
                 }
@@ -97,24 +99,24 @@ bool asBatchForecasts::Load(const wxString& filePath) {
 
 bool asBatchForecasts::Save() const {
     // Open the file
-    asFileBatchForecasts fileBatch(m_filePath, asFile::Replace);
+    asFileBatchForecasts fileBatch(_filePath, asFile::Replace);
     if (!fileBatch.Open()) return false;
 
     if (!fileBatch.EditRootElement()) return false;
 
     // Get general data
-    fileBatch.AddChild(fileBatch.CreateNode("forecasts_output_directory", m_forecastsOutputDirectory));
-    fileBatch.AddChild(fileBatch.CreateNode("exports_output_directory", m_exportsOutputDirectory));
-    fileBatch.AddChild(fileBatch.CreateNode("parameters_files_directory", m_parametersFileDirectory));
-    fileBatch.AddChild(fileBatch.CreateNode("predictors_archive_directory", m_predictorsArchiveDirectory));
-    fileBatch.AddChild(fileBatch.CreateNode("predictors_realtime_directory", m_predictorsRealtimeDirectory));
-    fileBatch.AddChild(fileBatch.CreateNode("predictand_db_directory", m_predictandDBDirectory));
-    fileBatch.AddChild(fileBatch.CreateNode("export_synthesis", m_export));
+    fileBatch.AddChild(fileBatch.CreateNode("forecasts_output_directory", _forecastsOutputDirectory));
+    fileBatch.AddChild(fileBatch.CreateNode("exports_output_directory", _exportsOutputDirectory));
+    fileBatch.AddChild(fileBatch.CreateNode("parameters_files_directory", _parametersFileDirectory));
+    fileBatch.AddChild(fileBatch.CreateNode("predictors_archive_directory", _predictorsArchiveDirectory));
+    fileBatch.AddChild(fileBatch.CreateNode("predictors_realtime_directory", _predictorsRealtimeDirectory));
+    fileBatch.AddChild(fileBatch.CreateNode("predictand_db_directory", _predictandDBDirectory));
+    fileBatch.AddChild(fileBatch.CreateNode("export_synthesis", _export));
 
     // Forecasts
     wxXmlNode* nodeForecasts = new wxXmlNode(wxXML_ELEMENT_NODE, "forecasts");
     for (int iFcst = 0; iFcst < GetForecastsNb(); iFcst++) {
-        nodeForecasts->AddChild(fileBatch.CreateNode("filename", m_forecastFileNames[iFcst]));
+        nodeForecasts->AddChild(fileBatch.CreateNode("filename", _forecastFileNames[iFcst]));
     }
     fileBatch.AddChild(nodeForecasts);
 
@@ -124,19 +126,19 @@ bool asBatchForecasts::Save() const {
 }
 
 int asBatchForecasts::GetForecastsNb() const {
-    auto forecastsNb = (int)m_forecastFileNames.size();
+    auto forecastsNb = (int)_forecastFileNames.size();
     return forecastsNb;
 }
 
 void asBatchForecasts::ClearForecasts() {
-    m_forecastFileNames.clear();
+    _forecastFileNames.clear();
 }
 
 void asBatchForecasts::AddForecast() {
-    long nb = m_forecastFileNames.size() + 1;
-    m_forecastFileNames.resize(nb);
+    long nb = _forecastFileNames.size() + 1;
+    _forecastFileNames.resize(nb);
 }
 
 bool asBatchForecasts::HasExports() const {
-    return m_export != None;
+    return _export != None;
 }

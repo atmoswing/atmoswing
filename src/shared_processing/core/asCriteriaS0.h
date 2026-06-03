@@ -29,8 +29,6 @@
 #define AS_CRITERIA_S0_H
 
 #include "asCriteria.h"
-#include "asIncludes.h"
-
 class asCriteriaS0 : public asCriteria {
   public:
     asCriteriaS0();

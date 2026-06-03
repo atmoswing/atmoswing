@@ -18,6 +18,7 @@
 
 #ifndef WX_PRECOMP
 
+#include "wx/wx.h"  // wx 3.3 slimmed transitive includes; pull in the common GUI classes (wxWindow, wxBitmap, wxPen, wxDC) explicitly
 #include "wx/bitmap.h"
 #include "wx/control.h"
 
@@ -254,7 +255,7 @@ bool DropDownBase::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, c
     if (!s_dropdownBitmap.Ok()) s_dropdownBitmap = wxBitmap(down_arrow_xpm_data);
 
     m_dropdownButton = new wxCustomButton(this, IDD_DROPDOWN_BUTTON, s_dropdownBitmap, wxDefaultPosition,
-                                          wxSize(DROPDOWN_DROP_WIDTH, wxDefaultCoord), wxCUSTBUT_BUTTON);
+                                         wxSize(DROPDOWN_DROP_WIDTH, wxDefaultCoord), wxCUSTBUT_BUTTON);
 
     return true;
 }

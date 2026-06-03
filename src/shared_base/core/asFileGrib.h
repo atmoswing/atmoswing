@@ -31,7 +31,6 @@
 #define AS_FILE_GRIB_H
 
 #include "asFile.h"
-#include "asIncludes.h"
 #include "eccodes.h"
 
 /**
@@ -64,80 +63,80 @@ class asFileGrib : public asFile {
      *
      * @return The ecCodes definitions path.
      */
-    static wxString GetDefinitionsPath();
+    [[nodiscard]] static wxString GetDefinitionsPath();
 
     /**
      * Find and open the file.
      *
      * @return True if successful.
      */
-    bool Open() override;
+    [[nodiscard]] bool Open() override;
 
     /**
      * Close the file.
      *
      * @return True if successful.
      */
-    bool Close() override;
+    [[nodiscard]] bool Close() override;
 
     /**
      * Set the index at the desired position in the file.
-     * 
+     *
      * @param gribCode The GRIB code of the desired variable.
      * @param level The desired vertical level.
      * @param useWarnings True to use warnings.
      * @return True if successful.
      */
-    bool SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings = true);
+    [[nodiscard]] bool SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings = true);
 
     /**
      * Set the index at the desired position in the file without filtering by the vertical level value.
-     * 
+     *
      * @param gribCode The GRIB code of the desired variable.
      */
-    bool SetIndexPositionAnyLevel(vi gribCode);
+    [[nodiscard]] bool SetIndexPositionAnyLevel(vi gribCode);
 
-    bool GetVarArray(const int IndexStart[], const int IndexCount[], float* pValue);
+    [[nodiscard]] bool GetVarArray(const int IndexStart[], const int IndexCount[], float* pValue);
 
-    bool GetXaxis(a1d& uaxis) const;
+    [[nodiscard]] bool GetXaxis(a1d& uaxis) const;
 
-    bool GetYaxis(a1d& vaxis) const;
+    [[nodiscard]] bool GetYaxis(a1d& vaxis) const;
 
-    bool GetLevels(a1d& levels) const;
+    [[nodiscard]] bool GetLevels(a1d& levels) const;
 
-    vd GetRealTimeArray() const;
+    [[nodiscard]] vd GetRealTimeArray() const;
 
-    double GetTimeStart() const;
+    [[nodiscard]] double GetTimeStart() const;
 
-    double GetTimeEnd() const;
+    [[nodiscard]] double GetTimeEnd() const;
 
-    int GetTimeLength() const;
+    [[nodiscard]] int GetTimeLength() const;
 
-    double GetTimeStepHours() const;
+    [[nodiscard]] double GetTimeStepHours() const;
 
-    vd GetRealReferenceDateArray() const;
+    [[nodiscard]] vd GetRealReferenceDateArray() const;
 
-    vd GetRealReferenceTimeArray() const;
+    [[nodiscard]] vd GetRealReferenceTimeArray() const;
 
-    vd GetRealForecastTimeArray() const;
+    [[nodiscard]] vd GetRealForecastTimeArray() const;
 
   protected:
   private:
-    FILE* m_filtPtr;
-    int m_version;
-    int m_index;
-    vi m_parameterCode1;
-    vi m_parameterCode2;
-    vi m_parameterCode3;
-    vi m_levelTypes;
-    vwxs m_levelTypesStr;
-    vd m_refDates;
-    vd m_refTimes;
-    vd m_times;
-    vd m_forecastTimes;
-    vd m_levels;
-    va1d m_xAxes;
-    va1d m_yAxes;
+    FILE* _filtPtr;
+    int _version;
+    int _index;
+    vi _parameterCode1;
+    vi _parameterCode2;
+    vi _parameterCode3;
+    vi _levelTypes;
+    vwxs _levelTypesStr;
+    vd _refDates;
+    vd _refTimes;
+    vd _times;
+    vd _forecastTimes;
+    vd _levels;
+    va1d _xAxes;
+    va1d _yAxes;
 
     bool OpenDataset();
 

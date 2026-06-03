@@ -29,7 +29,6 @@ list(APPEND inc_dirs
         "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/"
         "${PROJECT_SOURCE_DIR}/benchmark/src/"
         )
-include_directories(${inc_dirs})
 
 
 ##### LIBRARIES
@@ -52,6 +51,8 @@ else ()
     add_executable(atmoswing-benchmark ${src_benchmark})
 endif ()
 
+target_include_directories(atmoswing-benchmark PRIVATE ${inc_dirs})
+
 # Cppcheck
 if (USE_CPPCHECK)
     add_cppcheck(atmoswing-benchmark STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
@@ -60,37 +61,32 @@ endif ()
 
 ##### DEFINITIONS
 
-if(WIN32)
+# UNIT_TESTING is target-specific. USE_GUI / version macros come from atmoswing_compile_options.
+target_compile_definitions(atmoswing-benchmark PRIVATE UNIT_TESTING)
+if (WIN32)
     set_target_properties(atmoswing-benchmark PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
-    set_target_properties(atmoswing-benchmark PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=0; _CONSOLE")
-else()
-    set_target_properties(atmoswing-benchmark PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=0")
-endif()
+    target_compile_definitions(atmoswing-benchmark PRIVATE _CONSOLE)
+endif ()
 
 
 ##### LINKING
 
 add_dependencies(atmoswing-benchmark asbase)
 add_dependencies(atmoswing-benchmark asprocessing)
-target_link_libraries(atmoswing-benchmark asbase)
-target_link_libraries(atmoswing-benchmark asprocessing)
+target_link_libraries(atmoswing-benchmark PRIVATE asbase asprocessing)
 if(WIN32)
-    target_link_libraries(atmoswing-benchmark debug benchmarkd debug CONAN_PKG::gtest Shlwapi)
-    target_link_libraries(atmoswing-benchmark optimized benchmark optimized CONAN_PKG::gtest Shlwapi)
+    target_link_libraries(atmoswing-benchmark PRIVATE debug benchmarkd debug gtest Shlwapi)
+    target_link_libraries(atmoswing-benchmark PRIVATE optimized benchmark optimized gtest Shlwapi)
 else()
-    target_link_libraries(atmoswing-benchmark benchmark benchmark_main CONAN_PKG::gtest)
+    target_link_libraries(atmoswing-benchmark PRIVATE benchmark benchmark_main gtest)
 endif()
 if (UNIX)
-    target_link_libraries(atmoswing-benchmark pthread)
-endif ()
-if (USE_VLD)
-    target_link_libraries(atmoswing-benchmark ${VLD_LIBRARIES})
+    target_link_libraries(atmoswing-benchmark PRIVATE pthread)
 endif ()
 if (USE_CUDA)
     add_dependencies(atmoswing-benchmark ascuda)
-    target_link_libraries(ascuda ${CUDA_LIBRARIES})
-    target_link_libraries(atmoswing-benchmark ascuda)
-    add_definitions(-DUSE_CUDA)
+    target_link_libraries(ascuda PRIVATE ${CUDA_LIBRARIES})
+    target_link_libraries(atmoswing-benchmark PRIVATE ascuda)
 endif ()
 
 
@@ -118,4 +114,4 @@ endif ()
 if (NOT EXISTS "${CMAKE_BINARY_DIR}/benchmark/z.nc")
     file(DOWNLOAD https://bitbucket.org/phorton/atmoswing-benchmark-files/downloads/z.nc ${CMAKE_BINARY_DIR}/benchmark/z.nc SHOW_PROGRESS)
 endif ()
-add_definitions(-DBENCHMARK_DATA_DIR="${CMAKE_BINARY_DIR}/benchmark")
+target_compile_definitions(atmoswing-benchmark PRIVATE BENCHMARK_DATA_DIR="${CMAKE_BINARY_DIR}/benchmark")

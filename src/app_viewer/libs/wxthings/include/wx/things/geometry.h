@@ -779,8 +779,7 @@ class WXDLLIMPEXP_THINGS wxEllipseInt {
 
     // Get a bounding rect
     inline wxRect2DInt GetRect() const {
-        return wxRect2DInt(m_origin.m_x - m_radius.m_x, m_origin.m_y - m_radius.m_y, 2 * m_radius.m_x,
-                           2 * m_radius.m_y);
+        return wxRect2DInt(m_origin.m_x - m_radius.m_x, m_origin.m_y - m_radius.m_y, 2 * m_radius.m_x, 2 * m_radius.m_y);
     }
 
     inline void SetX(wxInt32 x) {

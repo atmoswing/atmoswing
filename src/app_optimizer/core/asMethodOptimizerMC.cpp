@@ -28,6 +28,9 @@
 
 #include "asMethodOptimizerMC.h"
 
+#include <wx/fileconf.h>
+
+#include "asIncludes.h"
 #include "asThreadMC.h"
 
 #ifndef UNIT_TESTING
@@ -47,13 +50,13 @@ bool asMethodOptimizerMC::Manager() {
 
     // Load parameters
     asParametersOptimization params;
-    if (!params.LoadFromFile(m_paramsFilePath)) return false;
-    if (!m_predictandStationIds.empty()) {
-        params.SetPredictandStationIds(m_predictandStationIds);
+    if (!params.LoadFromFile(_paramsFilePath)) return false;
+    if (!_predictandStationIds.empty()) {
+        params.SetPredictandStationIds(_predictandStationIds);
     }
 
     // Reset the score of the climatology
-    m_scoreClimatology.clear();
+    _scoreClimatology.clear();
 
     // Create a result object to save the parameters sets
     vi stationId = params.GetPredictandStationIds();
@@ -81,7 +84,7 @@ bool asMethodOptimizerMC::Manager() {
     SetScoreOrder(scoreOrder);
 
     // Load the Predictand DB
-    if (!LoadPredictandDB(m_predictandDBFilePath)) return false;
+    if (!LoadPredictandDB(_predictandDBFilePath)) return false;
 
     // Watch
     wxStopWatch sw;
@@ -90,11 +93,11 @@ bool asMethodOptimizerMC::Manager() {
     bool firstRun = true;
 
     // Add threads when they become available
-    while (m_iterator < m_paramsNb) {
+    while (_iterator < _paramsNb) {
 #ifndef UNIT_TESTING
         if (g_responsive) wxTheApp->Yield();
 #endif
-        if (m_cancel) {
+        if (_cancel) {
             return false;
         }
 
@@ -107,7 +110,7 @@ bool asMethodOptimizerMC::Manager() {
 
         if (nextParams) {
             // Add it to the threads
-            auto thread = new asThreadMC(this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+            auto thread = new asThreadMC(this, nextParams, &_scoresCalib[_iterator], &_scoreClimatology);
             ThreadsManager().AddThread(thread);
 
             // Wait until done to get the score of the climatology
@@ -119,11 +122,11 @@ bool asMethodOptimizerMC::Manager() {
                 if (g_responsive) wxTheApp->Yield();
 #endif
 
-                if (m_cancel) return false;
+                if (_cancel) return false;
             }
         }
 
-        wxASSERT(m_scoresCalib.size() <= m_paramsNb);
+        wxASSERT(_scoresCalib.size() <= _paramsNb);
 
         // Increment iterator
         IncrementIterator();
@@ -135,20 +138,20 @@ bool asMethodOptimizerMC::Manager() {
     wxLog::FlushActive();
 
     // Check results
-    for (int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
-        if (isnan(m_scoresCalib[iCheck])) {
-            wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int)iCheck + 1,
-                       (int)m_scoresCalib.size());
+    for (int iCheck = 0; iCheck < _scoresCalib.size(); iCheck++) {
+        if (isnan(_scoresCalib[iCheck])) {
+            wxLogError(_("NaN found in the scores (element %d on %d in _scoresCalib)."), (int)iCheck + 1,
+                       (int)_scoresCalib.size());
             return false;
         }
     }
 
-    wxASSERT(m_parameters.size() == m_scoresCalib.size());
-    for (int iRes = 0; iRes < m_scoresCalib.size(); ++iRes) {
-        results_all.Add(m_parameters[iRes], m_scoresCalib[iRes]);
+    wxASSERT(_parameters.size() == _scoresCalib.size());
+    for (int iRes = 0; iRes < _scoresCalib.size(); ++iRes) {
+        results_all.Add(_parameters[iRes], _scoresCalib[iRes]);
     }
 
-    wxASSERT(m_iterator == m_paramsNb);
+    wxASSERT(_iterator == _paramsNb);
 
     wxLogVerbose(_("Random method over."));
 
@@ -164,7 +167,7 @@ bool asMethodOptimizerMC::Manager() {
     if (!results_best.Print()) return false;
 
     // Generate xml file with the best parameters set
-    if (!m_parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
+    if (!_parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
 
     // Delete preloaded data
     DeletePreloadedArchiveData();
@@ -175,43 +178,43 @@ bool asMethodOptimizerMC::Manager() {
 void asMethodOptimizerMC::InitParameters(asParametersOptimization& params) {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase* pConfig = wxFileConfig::Get();
-    pConfig->Read("/MonteCarlo/RandomNb", &m_paramsNb, 1000);
+    pConfig->Read("/MonteCarlo/RandomNb", &_paramsNb, 1000);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Get the number of runs
     params.InitRandomValues();
 
     // Create the corresponding number of parameters
-    m_scoresCalib.resize((long)m_paramsNb);
-    for (int iVar = 0; iVar < m_paramsNb; iVar++) {
+    _scoresCalib.resize((long)_paramsNb);
+    for (int iVar = 0; iVar < _paramsNb; iVar++) {
         asParametersOptimization paramsCopy;
         paramsCopy = params;
         paramsCopy.InitRandomValues();
-        m_parameters.push_back(paramsCopy);
+        _parameters.push_back(paramsCopy);
     }
 }
 
 asParametersOptimization* asMethodOptimizerMC::GetNextParameters() {
-    return &m_parameters[m_iterator];
+    return &_parameters[_iterator];
 }
 
 bool asMethodOptimizerMC::SetBestParameters(asResultsParametersArray& results) {
-    wxASSERT(!m_parameters.empty());
-    wxASSERT(!m_scoresCalib.empty());
+    wxASSERT(!_parameters.empty());
+    wxASSERT(!_scoresCalib.empty());
 
     // Extract selected parameters & best parameters
-    float bestscore = m_scoresCalib[0];
+    float bestscore = _scoresCalib[0];
     int bestscorerow = 0;
 
-    for (int i = 0; i < m_parameters.size(); i++) {
-        if (m_scoreOrder == Asc) {
-            if (m_scoresCalib[i] < bestscore) {
-                bestscore = m_scoresCalib[i];
+    for (int i = 0; i < _parameters.size(); i++) {
+        if (_scoreOrder == Asc) {
+            if (_scoresCalib[i] < bestscore) {
+                bestscore = _scoresCalib[i];
                 bestscorerow = i;
             }
         } else {
-            if (m_scoresCalib[i] > bestscore) {
-                bestscore = m_scoresCalib[i];
+            if (_scoresCalib[i] > bestscore) {
+                bestscore = _scoresCalib[i];
                 bestscorerow = i;
             }
         }
@@ -219,15 +222,15 @@ bool asMethodOptimizerMC::SetBestParameters(asResultsParametersArray& results) {
 
     if (bestscorerow != 0) {
         // Re-validate
-        SaveDetails(m_parameters[bestscorerow]);
-        Validate(m_parameters[bestscorerow]);
+        SaveDetails(_parameters[bestscorerow]);
+        Validate(_parameters[bestscorerow]);
     }
 
     // Sort according to the level and the observation time
-    asParametersScoring sortedParams = m_parameters[bestscorerow];
+    asParametersScoring sortedParams = _parameters[bestscorerow];
     sortedParams.SortLevelsAndTime();
 
-    results.Add(sortedParams, m_scoresCalib[bestscorerow], m_scoreValid);
+    results.Add(sortedParams, _scoresCalib[bestscorerow], _scoreValid);
 
     return true;
 }

@@ -29,7 +29,6 @@
 #ifndef AS_TOTAL_SCORE_PSS_H
 #define AS_TOTAL_SCORE_PSS_H
 
-#include "asIncludes.h"
 #include "asTotalScore.h"
 
 class asTotalScorePSS : public asTotalScore {

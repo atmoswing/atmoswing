@@ -72,7 +72,7 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
     wxFileName GetDisplayName() override;
 
     asPredictor::Parameter GetParameter() {
-        return m_parameter;
+        return _parameter;
     }
 
   protected:
@@ -89,10 +89,10 @@ class vrLayerRasterPredictor : public vrLayerRasterGDAL {
                                 const vrRender* render);
 
   private:
-    asPredictorsManager* m_predictorsManager; /**< The predictors manager. */
-    asPredictor::Parameter m_parameter; /**< The meteorological parameter. */
-    double m_minVal; /**< The minimum value. */
-    double m_maxVal; /**< The maximum value. */
+    asPredictorsManager* _predictorsManager; /**< The predictors manager. */
+    asPredictor::Parameter _parameter;       /**< The meteorological parameter. */
+    double _minVal;                          /**< The minimum value. */
+    double _maxVal;                          /**< The maximum value. */
 
     /**
      * Close the layer and the dataset.

@@ -31,7 +31,7 @@
 
 #include "AtmoSwingAppViewer.h"
 #include "asFrameViewer.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class AtmoSwingFrameViewer : public asFrameViewer {
   public:
@@ -40,7 +40,7 @@ class AtmoSwingFrameViewer : public asFrameViewer {
     ~AtmoSwingFrameViewer() override = default;
 
   private:
-    asLogWindow* m_logWindow;
+    asLogWindow* _logWindow;
 
     virtual void OnClose(wxCloseEvent& event);
 

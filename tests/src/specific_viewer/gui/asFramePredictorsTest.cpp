@@ -26,6 +26,8 @@
  */
 
 #include <gtest/gtest.h>
+
+#include "asIncludes.h"
 #include <wx/wx.h>
 
 #include "asFramePredictors.h"
@@ -169,7 +171,7 @@ TEST_F(FramePredictors, TriggerPredictorSelectionChange) {
     frame->Refresh();
     wxYield();
 
-    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+    EXPECT_TRUE(frame->IsShown());  // Could not find a way to test the view update
 }
 
 TEST_F(FramePredictors, TriggerPredictorSelectionChangeWithAnalogData) {
@@ -183,7 +185,7 @@ TEST_F(FramePredictors, TriggerPredictorSelectionChangeWithAnalogData) {
     // Replace date for the analog to match existing data.
     asResultsForecast* forecast = frame->GetForecastManager()->GetForecast(0, 0);
     a1f analogDates = forecast->GetAnalogsDates(0);
-    analogDates[0] = 36934; // 1906-01-01
+    analogDates[0] = 36934;  // 1906-01-01
     forecast->SetAnalogsDates(0, analogDates);
 
     frame->Layout();
@@ -201,7 +203,7 @@ TEST_F(FramePredictors, TriggerPredictorSelectionChangeWithAnalogData) {
     frame->Refresh();
     wxYield();
 
-    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+    EXPECT_TRUE(frame->IsShown());  // Could not find a way to test the view update
 }
 
 TEST_F(FramePredictors, ChangePredictorSelection) {
@@ -228,7 +230,7 @@ TEST_F(FramePredictors, ChangePredictorSelection) {
     frame->Refresh();
     wxYield();
 
-    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+    EXPECT_TRUE(frame->IsShown());  // Could not find a way to test the view update
 }
 
 TEST_F(FramePredictors, TriggerMethodChange) {
@@ -247,7 +249,7 @@ TEST_F(FramePredictors, TriggerMethodChange) {
     frame->Refresh();
     wxYield();
 
-    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+    EXPECT_TRUE(frame->IsShown());  // Could not find a way to test the view update
 }
 
 TEST_F(FramePredictors, TriggerForecastChange) {
@@ -266,7 +268,7 @@ TEST_F(FramePredictors, TriggerForecastChange) {
     frame->Refresh();
     wxYield();
 
-    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+    EXPECT_TRUE(frame->IsShown());  // Could not find a way to test the view update
 }
 
 TEST_F(FramePredictors, TriggerTargetDateChange) {
@@ -285,7 +287,7 @@ TEST_F(FramePredictors, TriggerTargetDateChange) {
     frame->Refresh();
     wxYield();
 
-    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+    EXPECT_TRUE(frame->IsShown());  // Could not find a way to test the view update
 }
 
 TEST_F(FramePredictors, TriggerAnalogDateChange) {
@@ -304,5 +306,5 @@ TEST_F(FramePredictors, TriggerAnalogDateChange) {
     frame->Refresh();
     wxYield();
 
-    EXPECT_TRUE(frame->IsShown()); // Could not find a way to test the view update
+    EXPECT_TRUE(frame->IsShown());  // Could not find a way to test the view update
 }

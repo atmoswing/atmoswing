@@ -34,7 +34,7 @@
 #include <wx/snglinst.h>
 #include <wx/socket.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 #if USE_GUI
 
@@ -45,7 +45,7 @@ class AtmoSwingAppOptimizer : public wxAppConsole
 #endif
 {
   public:
-    virtual ~AtmoSwingAppOptimizer(){};
+    virtual ~AtmoSwingAppOptimizer() {};
 
     virtual bool OnInit();
 
@@ -76,14 +76,14 @@ class AtmoSwingAppOptimizer : public wxAppConsole
     virtual void OnUnhandledException();
 
   private:
-    wxString m_calibParamsFile;
-    wxString m_predictandDB;
-    wxString m_predictorsDir;
-    vi m_predictandStationIds;
-    wxString m_calibMethod;
-    bool m_doProcessing;
+    wxString _calibParamsFile;
+    wxString _predictandDB;
+    wxString _predictorsDir;
+    vi _predictandStationIds;
+    wxString _calibMethod;
+    bool _doProcessing;
 #if USE_GUI
-    wxSingleInstanceChecker* m_singleInstanceChecker;
+    wxSingleInstanceChecker* _singleInstanceChecker;
 #endif
 };
 

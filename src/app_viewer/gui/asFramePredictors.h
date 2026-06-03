@@ -28,9 +28,12 @@
 #ifndef AS_FRAME_PREDICTORS_H
 #define AS_FRAME_PREDICTORS_H
 
+#include <wx/overlay.h>  // wxOverlay
+#include <wx/thread.h>   // wxCriticalSection (windows)
+
 #include "AtmoSwingViewerGui.h"
 #include "asForecastManager.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelPredictorsColorbar.h"
 #include "asPredictorsRenderer.h"
 #include "vroomgis.h"
@@ -58,7 +61,7 @@ class vroomDropFilesPredictors : public wxFileDropTarget {
     bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames) override;
 
   private:
-    asFramePredictors* m_LoaderFrame;
+    asFramePredictors* _loaderFrame;
 };
 
 /**
@@ -124,7 +127,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
      * @return A pointer to the left panel.
      */
     wxPanel* GetPanelRight() {
-        return m_panelRight;
+        return _panelRight;
     }
 
     /**
@@ -132,7 +135,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
      * @return A pointer to the right panel.
      */
     wxPanel* GetPanelLeft() {
-        return m_panelLeft;
+        return _panelLeft;
     }
 
     /**
@@ -140,7 +143,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
      * @return A pointer to the list of predictors.
      */
     wxListBox* GetListPredictors() {
-        return m_listPredictors;
+        return _listPredictors;
     }
 
     /**
@@ -148,7 +151,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
      * @return A pointer to the method choice.
      */
     wxChoice* GetChoiceMethod() {
-        return m_choiceMethod;
+        return _choiceMethod;
     }
 
     /**
@@ -156,7 +159,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
      * @return A pointer to the forecast choice.
      */
     wxChoice* GetChoiceForecast() {
-        return m_choiceForecast;
+        return _choiceForecast;
     }
 
     /**
@@ -164,7 +167,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
      * @return A pointer to the target date choice.
      */
     wxChoice* GetChoiceTargetDates() {
-        return m_choiceTargetDates;
+        return _choiceTargetDates;
     }
 
     /**
@@ -172,7 +175,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
      * @return A pointer to the analog date choice.
      */
     wxChoice* GetChoiceAnalogDates() {
-        return m_choiceAnalogDates;
+        return _choiceAnalogDates;
     }
 
     /**
@@ -180,7 +183,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
      * @return A pointer to the target predictors manager.
      */
     asPredictorsManager* GetPredictorsManagerTarget() {
-        return m_predictorsManagerTarget;
+        return _predictorsManagerTarget;
     }
 
     /**
@@ -188,7 +191,7 @@ class asFramePredictors : public asFramePredictorsVirtual {
      * @return A pointer to the analog predictors manager.
      */
     asPredictorsManager* GetPredictorsManagerAnalog() {
-        return m_predictorsManagerAnalog;
+        return _predictorsManagerAnalog;
     }
 
     /**
@@ -196,15 +199,15 @@ class asFramePredictors : public asFramePredictorsVirtual {
      * @return A pointer to the forecast manager.
      */
     asForecastManager* GetForecastManager() {
-        return m_forecastManager;
+        return _forecastManager;
     }
 
   protected:
-    wxKeyboardState m_KeyBoardState; /**< Keyboard state. */
+    wxKeyboardState _keyBoardState; /**< Keyboard state. */
 
     /**
      * Handle the right click on the map.
-     * 
+     *
      * @param event The mouse event.
      */
     virtual void OnRightClick(wxMouseEvent& event) {
@@ -212,34 +215,34 @@ class asFramePredictors : public asFramePredictorsVirtual {
     }
 
   private:
-    asForecastManager* m_forecastManager; /**< The forecast manager. */
-    asPredictorsRenderer* m_predictorsRenderer; /**< The predictors renderer. */
-    asPredictorsManager* m_predictorsManagerTarget; /**< The predictors manager for the target date. */
-    asPredictorsManager* m_predictorsManagerAnalog; /**< The predictors manager for the analog date. */
-    asWorkspace* m_workspace; /**< The workspace. */
-    asPanelPredictorsColorbar* m_panelPredictorsColorbarLeft; /**< The left colorbar. */
-    asPanelPredictorsColorbar* m_panelPredictorsColorbarRight; /**< The right colorbar. */
-    int m_selectedMethod; /**< The selected method (index). */
-    int m_selectedForecast; /**< The selected forecast (index). */
-    int m_selectedTargetDate; /**< The selected target date (index). */
-    int m_selectedAnalogDate; /**< The selected analog date (index). */
-    int m_selectedPredictor; /**< The selected predictor (index). */
-    bool m_syncroTool; /**< A flag to indicate if the syncro tool is active. */
-    bool m_displayPanelLeft; /**< A flag to indicate if the left panel is displayed. */
-    bool m_displayPanelRight; /**< A flag to indicate if the right panel is displayed. */
-    wxOverlay m_overlay; /**< The overlay. */
+    asForecastManager* _forecastManager;                      /**< The forecast manager. */
+    asPredictorsRenderer* _predictorsRenderer;                /**< The predictors renderer. */
+    asPredictorsManager* _predictorsManagerTarget;            /**< The predictors manager for the target date. */
+    asPredictorsManager* _predictorsManagerAnalog;            /**< The predictors manager for the analog date. */
+    asWorkspace* _workspace;                                  /**< The workspace. */
+    asPanelPredictorsColorbar* _panelPredictorsColorbarLeft;  /**< The left colorbar. */
+    asPanelPredictorsColorbar* _panelPredictorsColorbarRight; /**< The right colorbar. */
+    int _selectedMethod;                                      /**< The selected method (index). */
+    int _selectedForecast;                                    /**< The selected forecast (index). */
+    int _selectedTargetDate;                                  /**< The selected target date (index). */
+    int _selectedAnalogDate;                                  /**< The selected analog date (index). */
+    int _selectedPredictor;                                   /**< The selected predictor (index). */
+    bool _syncroTool;                                         /**< A flag to indicate if the syncro tool is active. */
+    bool _displayPanelLeft;                                   /**< A flag to indicate if the left panel is displayed. */
+    bool _displayPanelRight; /**< A flag to indicate if the right panel is displayed. */
+    wxOverlay _overlay;      /**< The overlay. */
 #if defined(__WIN32__)
-    wxCriticalSection m_critSectionViewerLayerManager; /**< The critical section for the viewer layer manager. */
+    wxCriticalSection _critSectionViewerLayerManager; /**< The critical section for the viewer layer manager. */
 #endif
 
     // Vroomgis
-    vrLayerManager* m_layerManager; /**< The layer manager. */
-    vrViewerTOCList* m_tocCtrlLeft; /**< The left TOC control. */
-    vrViewerTOCList* m_tocCtrlRight; /**< The right TOC control. */
-    vrViewerLayerManager* m_viewerLayerManagerLeft; /**< The left viewer layer manager. */
-    vrViewerLayerManager* m_viewerLayerManagerRight; /**< The right viewer layer manager. */
-    vrViewerDisplay* m_displayCtrlLeft; /**< The left display control. */
-    vrViewerDisplay* m_displayCtrlRight; /**< The right display control. */
+    vrLayerManager* _layerManager;                  /**< The layer manager. */
+    vrViewerTOCList* _tocCtrlLeft;                  /**< The left TOC control. */
+    vrViewerTOCList* _tocCtrlRight;                 /**< The right TOC control. */
+    vrViewerLayerManager* _viewerLayerManagerLeft;  /**< The left viewer layer manager. */
+    vrViewerLayerManager* _viewerLayerManagerRight; /**< The right viewer layer manager. */
+    vrViewerDisplay* _displayCtrlLeft;              /**< The left display control. */
+    vrViewerDisplay* _displayCtrlRight;             /**< The right display control. */
 
     /**
      * Update the methods list.

@@ -28,7 +28,7 @@
 #ifndef AS_CRITERIA_H
 #define AS_CRITERIA_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asPredictor;
 
@@ -36,7 +36,11 @@ class asCriteria : public wxObject {
   public:
     asCriteria(const wxString& name, const wxString& fullname, Order order);
 
-    static asCriteria* GetInstance(const wxString& criteriaString);
+    /**
+     * Factory: returns a heap-allocated criterion owned by the caller via unique_ptr.
+     * On unknown criteria name, logs an error and returns nullptr.
+     */
+    static std::unique_ptr<asCriteria> GetInstance(const wxString& criteriaString);
 
     ~asCriteria() override;
 
@@ -51,38 +55,38 @@ class asCriteria : public wxObject {
     static a2f GetGauss2D(int nY, int nX);
 
     wxString GetName() const {
-        return m_name;
+        return _name;
     }
 
     wxString GetFullName() const {
-        return m_fullName;
+        return _fullName;
     }
 
     Order GetOrder() const {
-        return m_order;
+        return _order;
     }
 
     int GetMinPointsNb() const {
-        return m_minPointsNb;
+        return _minPointsNb;
     }
 
     bool CanUseInline() const {
-        return m_canUseInline;
+        return _canUseInline;
     }
 
     bool CheckNans() const {
-        return m_checkNaNs;
+        return _checkNaNs;
     }
 
   protected:
-    wxString m_name;
-    wxString m_fullName;
-    Order m_order;
-    int m_minPointsNb;
-    float m_scaleBest;
-    float m_scaleWorst;
-    bool m_canUseInline;
-    bool m_checkNaNs;
+    wxString _name;
+    wxString _fullName;
+    Order _order;
+    int _minPointsNb;
+    float _scaleBest;
+    float _scaleWorst;
+    bool _canUseInline;
+    bool _checkNaNs;
 
   private:
 };

@@ -36,6 +36,8 @@
 
 #include "AtmoSwingMainForecaster.h"
 
+#include "asIncludes.h"
+
 AtmoSwingFrameForecaster::AtmoSwingFrameForecaster(wxFrame* frame)
     : asFrameForecaster(frame) {
 #if wxUSE_STATUSBAR
@@ -50,9 +52,8 @@ AtmoSwingFrameForecaster::AtmoSwingFrameForecaster(wxFrame* frame)
 
     // Create log window and file
     delete wxLog::SetActiveTarget(new asLogGui());
-    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"),
-                                  pConfig->ReadBool("/General/DisplayLogWindow", true));
-    Log()->CreateFile("AtmoSwingForecaster.log");
+    _logWindow = new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
+    Log()->CreateLogFile("AtmoSwingForecaster.log");
     Log()->SetLevel(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
 
     // Restore frame position and size
@@ -130,7 +131,7 @@ AtmoSwingFrameForecaster::~AtmoSwingFrameForecaster() {
     pConfig->Write("/MainFrame/w", (long)w);
     pConfig->Write("/MainFrame/h", (long)h);
 
-    // wxDELETE(m_logWindow);
+    // wxDELETE(_logWindow);
 }
 
 void AtmoSwingFrameForecaster::OnClose(wxCloseEvent& event) {

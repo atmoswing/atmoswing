@@ -28,7 +28,7 @@
 #ifndef AS_PANEL_SIDEBAR_STATIONS_LIST_H
 #define AS_PANEL_SIDEBAR_STATIONS_LIST_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelSidebar.h"
 
 class asPanelSidebarStationsList : public asPanelSidebar {
@@ -42,11 +42,11 @@ class asPanelSidebarStationsList : public asPanelSidebar {
     void SetChoices(wxArrayString& arrayStation);
 
     wxChoice* GetChoiceCtrl() const {
-        return m_choiceStationSelection;
+        return _choiceStationSelection;
     }
 
   private:
-    wxChoice* m_choiceStationSelection;
+    wxChoice* _choiceStationSelection;
 
     void OnStationSelection(wxCommandEvent& event);
 };

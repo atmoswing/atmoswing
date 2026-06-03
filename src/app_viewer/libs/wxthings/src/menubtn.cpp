@@ -18,6 +18,7 @@
 
 #ifndef WX_PRECOMP
 
+#include "wx/wx.h"  // wx 3.3 slimmed transitive includes; pull in the common GUI classes (wxWindow, wxBitmap, wxPen, wxDC) explicitly
 #include "wx/bitmap.h"
 #include "wx/control.h"
 #include "wx/dc.h"
@@ -277,8 +278,7 @@ void wxMenuButton::DoSetSize(int x, int y, int width, int height, int sizeFlags)
     wxWindow::DoSetSize(x, y, width, height, sizeFlags);
 
     if (m_labelButton) m_labelButton->SetSize(0, 0, width - wxMENUBUTTON_DROP_WIDTH, height);
-    if (m_dropdownButton)
-        m_dropdownButton->SetSize(width - wxMENUBUTTON_DROP_WIDTH, 0, wxMENUBUTTON_DROP_WIDTH, height);
+    if (m_dropdownButton) m_dropdownButton->SetSize(width - wxMENUBUTTON_DROP_WIDTH, 0, wxMENUBUTTON_DROP_WIDTH, height);
 }
 
 wxSize wxMenuButton::DoGetBestSize() {

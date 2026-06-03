@@ -61,10 +61,10 @@
 #define wxPCHECK_MINMAX_MSG(val, min_val, max_val, ret, msg) \
     wxCHECK_MSG((int(val) >= int(min_val)) && (int(val) <= int(max_val)), ret, msg)
 
-#define RINT(x) (int((x) >= 0 ? ((x) + 0.5) : ((x)-0.5)))
+#define RINT(x) (int((x) >= 0 ? ((x) + 0.5) : ((x) - 0.5)))
 
 #define LONG_TO_WXCOLOUR(c) \
-    wxColour((unsigned char)((c >> 16) & 0xFF), (unsigned char)((c >> 8) & 0xFF), (unsigned char)((c)&0xFF))
+    wxColour((unsigned char)((c >> 16) & 0xFF), (unsigned char)((c >> 8) & 0xFF), (unsigned char)((c) & 0xFF))
 #define WXCOLOUR_TO_LONG(c) ((c.Red() << 16) | (c.Green() << 8) | (c.Blue()))
 
 #define WXPC_HASBIT(var, mask) (((var) & (mask)) != 0)

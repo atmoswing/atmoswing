@@ -29,7 +29,7 @@
 #ifndef AS_TOTAL_SCORE_H
 #define AS_TOTAL_SCORE_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asTimeArray.h"
 
 class asTotalScore : public wxObject {
@@ -57,22 +57,22 @@ class asTotalScore : public wxObject {
     virtual a1f AssessOnArray(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const;
 
     bool SingleValue() const {
-        return m_singleValue;
+        return _singleValue;
     }
 
     bool Has2DArrayArgument() const {
-        return m_has2DArrayArgument;
+        return _has2DArrayArgument;
     }
 
     void SetRanksNb(int val) {
-        m_ranksNb = val;
+        _ranksNb = val;
     }
 
   protected:
-    Period m_period;
-    bool m_singleValue;
-    bool m_has2DArrayArgument;
-    int m_ranksNb;
+    Period _period;
+    bool _singleValue;
+    bool _has2DArrayArgument;
+    int _ranksNb;
 
   private:
 };

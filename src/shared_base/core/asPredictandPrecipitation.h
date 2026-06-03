@@ -29,7 +29,6 @@
 #ifndef AS_PREDICTAND_PRECIPITATION_H
 #define AS_PREDICTAND_PRECIPITATION_H
 
-#include "asIncludes.h"
 #include "asPredictand.h"
 
 class asPredictandPrecipitation : public asPredictand {
@@ -52,7 +51,7 @@ class asPredictandPrecipitation : public asPredictand {
     }
 
     a1f GetReferenceAxis() const override {
-        return m_returnPeriods;
+        return _returnPeriods;
     }
 
     float GetReferenceValue(int iStat, double duration, float reference) const override {
@@ -60,31 +59,31 @@ class asPredictandPrecipitation : public asPredictand {
     }
 
     a2f GetReferenceValuesArray() const override {
-        return m_dailyPrecipitationsForReturnPeriods;
+        return _dailyPrecipitationsForReturnPeriods;
     }
 
     float GetPrecipitationOfReturnPeriod(int iStat, double duration, float returnPeriod) const;
 
     void SetReturnPeriodNormalization(float val) {
-        m_returnPeriodNormalization = val;
+        _returnPeriodNormalization = val;
     }
 
     void SetIsSqrt(bool val) {
-        m_isSqrt = val;
+        _isSqrt = val;
     }
 
   protected:
   private:
-    float m_returnPeriodNormalization;
-    bool m_isSqrt;
+    float _returnPeriodNormalization;
+    bool _isSqrt;
     // Vector (dim = return periods)
-    a1f m_returnPeriods;
+    a1f _returnPeriods;
     // Matrix data
-    a2f m_gumbelDuration;  // Values of the Precipitation duration
-    a2f m_gumbelParamA;    // Values of the a parameter of the Gumbel adjustment
-    a2f m_gumbelParamB;    // Values of the b parameter of the Gumbel adjustment
+    a2f _gumbelDuration;  // Values of the Precipitation duration
+    a2f _gumbelParamA;    // Values of the a parameter of the Gumbel adjustment
+    a2f _gumbelParamB;    // Values of the b parameter of the Gumbel adjustment
     // Matrix with other axes
-    a2f m_dailyPrecipitationsForReturnPeriods;
+    a2f _dailyPrecipitationsForReturnPeriods;
 
     bool InitContainers();
 

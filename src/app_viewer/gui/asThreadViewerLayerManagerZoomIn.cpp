@@ -27,20 +27,22 @@
 
 #include "asThreadViewerLayerManagerZoomIn.h"
 
+#include "asIncludes.h"
+
 asThreadViewerLayerManagerZoomIn::asThreadViewerLayerManagerZoomIn(vrViewerLayerManager* viewerLayerManager,
                                                                    wxCriticalSection* critSectionViewerLayerManager,
                                                                    const vrRealRect& fittedRect)
     : asThread(),
-      m_viewerLayerManager(viewerLayerManager),
-      m_critSectionViewerLayerManager(critSectionViewerLayerManager),
-      m_rect(fittedRect) {
-    wxASSERT(m_viewerLayerManager);
+      _viewerLayerManager(viewerLayerManager),
+      _critSectionViewerLayerManager(critSectionViewerLayerManager),
+      _rect(fittedRect) {
+    wxASSERT(_viewerLayerManager);
 }
 
 wxThread::ExitCode asThreadViewerLayerManagerZoomIn::Entry() {
-    m_critSectionViewerLayerManager->Enter();
-    m_viewerLayerManager->Zoom(m_rect);
-    m_critSectionViewerLayerManager->Leave();
+    _critSectionViewerLayerManager->Enter();
+    _viewerLayerManager->Zoom(_rect);
+    _critSectionViewerLayerManager->Leave();
 
     return (wxThread::ExitCode)0;
 }

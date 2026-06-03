@@ -1,0 +1,80 @@
+---
+# AtmoSwing clang-tidy configuration
+#
+# Run locally:
+#   cmake -B build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ...
+#   clang-tidy -p build src/path/to/file.cpp
+#
+# CI: .github/workflows/lint.yml runs `clang-tidy-diff` on lines changed in pull requests.
+#
+# Notes on the check selection:
+# - Starts deliberately narrow. Add categories as the codebase is cleaned up.
+# - cert-dcl37-c / cert-dcl51-cpp (reserved-identifier rule) are disabled because the
+#   codebase has 108 pre-existing `_<UPPER>` identifiers (e.g. `_DrawPoint`, `_GetRasterData`)
+#   that are out-of-scope for now. Re-enable once those are renamed.
+# - readability-identifier-naming is enabled with project conventions per CLAUDE.md.
+
+Checks: >
+  -*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
+  -bugprone-implicit-widening-of-multiplication-result,
+  cert-*,
+  -cert-dcl37-c,
+  -cert-dcl51-cpp,
+  -cert-err58-cpp,
+  cppcoreguidelines-narrowing-conversions,
+  cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  cppcoreguidelines-pro-type-cstyle-cast,
+  cppcoreguidelines-slicing,
+  google-build-using-namespace,
+  modernize-use-override,
+  modernize-use-nullptr,
+  modernize-use-default-member-init,
+  modernize-use-equals-default,
+  modernize-use-equals-delete,
+  performance-*,
+  -performance-avoid-endl,
+  readability-redundant-control-flow,
+  readability-redundant-declaration,
+  readability-redundant-string-init,
+  readability-redundant-smartptr-get,
+  readability-identifier-naming,
+
+WarningsAsErrors: ''
+
+# Headers in vendored libraries, FetchContent dependencies, vcpkg, and generated wxFormBuilder
+# GUI files (AtmoSwing*Gui.{h,cpp}) are excluded from header analysis.
+HeaderFilterRegex: '.*src/(shared_base|shared_processing|app_(forecaster|optimizer|downscaler|viewer))/(core|gui)/(?!AtmoSwing.*Gui\.).*\.(h|hpp)$'
+
+CheckOptions:
+  # Types and methods: CamelCase (per CLAUDE.md)
+  - { key: readability-identifier-naming.ClassCase,             value: CamelCase }
+  - { key: readability-identifier-naming.StructCase,            value: CamelCase }
+  - { key: readability-identifier-naming.EnumCase,              value: CamelCase }
+  - { key: readability-identifier-naming.UnionCase,             value: CamelCase }
+  - { key: readability-identifier-naming.TypedefCase,           value: CamelCase }
+  - { key: readability-identifier-naming.TypeAliasCase,         value: CamelCase }
+  - { key: readability-identifier-naming.FunctionCase,          value: CamelCase }
+  - { key: readability-identifier-naming.MethodCase,            value: CamelCase }
+
+  # Variables: camelCase (per CLAUDE.md)
+  - { key: readability-identifier-naming.VariableCase,          value: camelBack }
+  - { key: readability-identifier-naming.ParameterCase,         value: camelBack }
+  - { key: readability-identifier-naming.LocalVariableCase,     value: camelBack }
+
+  # Member variables: `_` prefix, camelBack (per CLAUDE.md, post-rename)
+  - { key: readability-identifier-naming.MemberCase,            value: camelBack }
+  - { key: readability-identifier-naming.MemberPrefix,          value: _ }
+  - { key: readability-identifier-naming.PrivateMemberCase,     value: camelBack }
+  - { key: readability-identifier-naming.PrivateMemberPrefix,   value: _ }
+  - { key: readability-identifier-naming.ProtectedMemberCase,   value: camelBack }
+  - { key: readability-identifier-naming.ProtectedMemberPrefix, value: _ }
+
+  # Globals: `g_` prefix
+  - { key: readability-identifier-naming.GlobalVariableCase,    value: camelBack }
+  - { key: readability-identifier-naming.GlobalVariablePrefix,  value: g_ }
+
+  # Macros
+  - { key: readability-identifier-naming.MacroDefinitionCase,   value: UPPER_CASE }

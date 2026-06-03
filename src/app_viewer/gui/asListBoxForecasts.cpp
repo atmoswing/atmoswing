@@ -28,6 +28,8 @@
 
 #include "asListBoxForecasts.h"
 
+#include "asIncludes.h"
+
 #include "asBitmaps.h"
 #include "asForecastRenderer.h"
 
@@ -39,13 +41,13 @@ wxDEFINE_EVENT(asEVT_ACTION_FORECAST_SELECTION_CHANGED, wxCommandEvent);
 
 asForecastTreeItemData::asForecastTreeItemData(int methodRow, int forecastRow)
     : wxTreeItemData(),
-      m_methodRow(methodRow),
-      m_forecastRow(forecastRow) {}
+      _methodRow(methodRow),
+      _forecastRow(forecastRow) {}
 
 asMessageForecastChoice::asMessageForecastChoice(int methodRow, int forecastRow)
     : wxObject(),
-      m_methodRow(methodRow),
-      m_forecastRow(forecastRow) {}
+      _methodRow(methodRow),
+      _forecastRow(forecastRow) {}
 
 asListBoxForecasts::asListBoxForecasts(wxWindow* parent, asForecastManager* forecastManager, wxWindowID id,
                                        const wxPoint& pos, const wxSize& size)
@@ -53,8 +55,8 @@ asListBoxForecasts::asListBoxForecasts(wxWindow* parent, asForecastManager* fore
                  wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS | wxTR_FULL_ROW_HIGHLIGHT | wxTR_NO_LINES |
                      wxNO_BORDER,
                  wxDefaultValidator),
-      m_forecastManager(forecastManager),
-      m_skipSlctChangeEvent(false) {
+      _forecastManager(forecastManager),
+      _skipSlctChangeEvent(false) {
     CreateImageList();
     int indent = GetIndent();
     if (indent > 16) SetIndent(indent - 5);
@@ -83,8 +85,8 @@ void asListBoxForecasts::Update() {
         AddRoot(_("Root"), -1, -1, new wxTreeItemData());
     }
 
-    for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++) {
-        asResultsForecast* forecastFirst = m_forecastManager->GetForecast(methodRow, 0);
+    for (int methodRow = 0; methodRow < _forecastManager->GetMethodsNb(); methodRow++) {
+        asResultsForecast* forecastFirst = _forecastManager->GetForecast(methodRow, 0);
 
         int image;
         switch (forecastFirst->GetPredictandParameter()) {
@@ -111,8 +113,8 @@ void asListBoxForecasts::Update() {
         wxTreeItemId parentItemId = AppendItem(GetRootItem(), label, image, image, itemMethod);
 
         if (parentItemId.IsOk()) {
-            for (int forecastRow = 0; forecastRow < m_forecastManager->GetForecastsNb(methodRow); forecastRow++) {
-                asResultsForecast* forecast = m_forecastManager->GetForecast(methodRow, forecastRow);
+            for (int forecastRow = 0; forecastRow < _forecastManager->GetForecastsNb(methodRow); forecastRow++) {
+                asResultsForecast* forecast = _forecastManager->GetForecast(methodRow, forecastRow);
 
                 // Create the new forecast item
                 auto itemForecast = new asForecastTreeItemData(methodRow, forecastRow);
@@ -130,7 +132,7 @@ void asListBoxForecasts::OnForecastSlctChange(wxTreeEvent& event) {
 
     wxTreeItemId itemId = event.GetItem();
 
-    if (!m_skipSlctChangeEvent && itemId.IsOk()) {
+    if (!_skipSlctChangeEvent && itemId.IsOk()) {
         auto item = (asForecastTreeItemData*)GetItemData(itemId);
 
         int methodRow = item->GetMethodRow();
@@ -148,13 +150,13 @@ void asListBoxForecasts::OnForecastSlctChange(wxTreeEvent& event) {
 }
 
 void asListBoxForecasts::Clear() {
-    m_skipSlctChangeEvent = true;
+    _skipSlctChangeEvent = true;
     DeleteAllItems();
-    m_skipSlctChangeEvent = false;
+    _skipSlctChangeEvent = false;
 }
 
 void asListBoxForecasts::SetSelection(int methodRow, int forecastRow) {
-    m_skipSlctChangeEvent = true;
+    _skipSlctChangeEvent = true;
 
     // Look for the correct entry in the treectrl
     wxTreeItemId methodItemId = GetFirstVisibleItem();
@@ -183,7 +185,7 @@ void asListBoxForecasts::SetSelection(int methodRow, int forecastRow) {
         }
     }
 
-    m_skipSlctChangeEvent = false;
+    _skipSlctChangeEvent = false;
 }
 
 void asListBoxForecasts::SelectFirst() {

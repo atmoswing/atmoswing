@@ -29,9 +29,13 @@
 #ifndef AS_FORECAST_MANAGER_H
 #define AS_FORECAST_MANAGER_H
 
-#include "asIncludes.h"
+#include <wx/arrstr.h>  // wxArrayString
+
+#include "asHeadersBase.h"
 #include "asResultsForecastAggregator.h"
 #include "asWorkspace.h"
+
+class wxWindow;
 
 class asForecastManager {
   public:
@@ -66,124 +70,124 @@ class asForecastManager {
     int GetForecastRowFromLinearIndex(int linearIndex) const;
 
     asResultsForecastAggregator* GetAggregator() const {
-        return m_aggregator;
+        return _aggregator;
     }
 
     int GetMethodsNb() const {
-        return m_aggregator->GetMethodsNb();
+        return _aggregator->GetMethodsNb();
     }
 
     int GetForecastsNb(int methodRow) const {
-        return m_aggregator->GetForecastsNb(methodRow);
+        return _aggregator->GetForecastsNb(methodRow);
     }
 
     int GetPastMethodsNb() const {
-        return m_aggregator->GetPastMethodsNb();
+        return _aggregator->GetPastMethodsNb();
     }
 
     int GetPastForecastsNb(int methodRow) const {
-        return m_aggregator->GetPastForecastsNb(methodRow);
+        return _aggregator->GetPastForecastsNb(methodRow);
     }
 
     int GetPastForecastsNb(int methodRow, int forecastRow) const {
-        return m_aggregator->GetPastForecastsNb(methodRow, forecastRow);
+        return _aggregator->GetPastForecastsNb(methodRow, forecastRow);
     }
 
     asResultsForecast* GetForecast(int methodRow, int forecastRow) const {
-        return m_aggregator->GetForecast(methodRow, forecastRow);
+        return _aggregator->GetForecast(methodRow, forecastRow);
     }
 
     asResultsForecast* GetPastForecast(int methodRow, int forecastRow, int leadtimeRow) const {
-        return m_aggregator->GetPastForecast(methodRow, forecastRow, leadtimeRow);
+        return _aggregator->GetPastForecast(methodRow, forecastRow, leadtimeRow);
     }
 
     double GetLeadTimeOrigin() const {
-        return m_leadTimeOrigin;
+        return _leadTimeOrigin;
     }
 
     void SetLeadTimeOrigin(double val) {
-        m_leadTimeOrigin = val;
+        _leadTimeOrigin = val;
     }
 
     wxString GetMethodName(int methodRow) const {
-        return m_aggregator->GetMethodName(methodRow);
+        return _aggregator->GetMethodName(methodRow);
     }
 
     vwxs GetMethodNames() const {
-        return m_aggregator->GetMethodNames();
+        return _aggregator->GetMethodNames();
     }
 
     wxArrayString GetMethodNamesWxArray() const {
-        return m_aggregator->GetMethodNamesWxArray();
+        return _aggregator->GetMethodNamesWxArray();
     }
 
     wxString GetForecastName(int methodRow, int forecastRow) const {
-        return m_aggregator->GetForecastName(methodRow, forecastRow);
+        return _aggregator->GetForecastName(methodRow, forecastRow);
     }
 
     wxArrayString GetForecastNamesWxArray(int methodRow) const {
-        return m_aggregator->GetForecastNamesWxArray(methodRow);
+        return _aggregator->GetForecastNamesWxArray(methodRow);
     }
 
     wxArrayString GetCombinedForecastNamesWxArray() const {
-        return m_aggregator->GetCombinedForecastNamesWxArray();
+        return _aggregator->GetCombinedForecastNamesWxArray();
     }
 
     wxString GetFilePath(int methodRow, int forecastRow) const {
-        return m_aggregator->GetFilePath(methodRow, forecastRow);
+        return _aggregator->GetFilePath(methodRow, forecastRow);
     }
 
     a1f GetTargetDates(int methodRow) const {
-        return m_aggregator->GetTargetDates(methodRow);
+        return _aggregator->GetTargetDates(methodRow);
     }
 
     a1f GetTargetDates(int methodRow, int forecastRow) const {
-        return m_aggregator->GetTargetDates(methodRow, forecastRow);
+        return _aggregator->GetTargetDates(methodRow, forecastRow);
     }
 
     a1f GetFullTargetDates() const {
-        return m_aggregator->GetFullTargetDates();
+        return _aggregator->GetFullTargetDates();
     }
 
     int GetForecastRowSpecificForStationId(int methodRow, int stationId) const {
-        return m_aggregator->GetForecastRowSpecificForStationId(methodRow, stationId);
+        return _aggregator->GetForecastRowSpecificForStationId(methodRow, stationId);
     }
 
     int GetForecastRowSpecificForStationRow(int methodRow, int stationRow) const {
-        return m_aggregator->GetForecastRowSpecificForStationRow(methodRow, stationRow);
+        return _aggregator->GetForecastRowSpecificForStationRow(methodRow, stationRow);
     }
 
     wxArrayString GetStationNames(int methodRow, int forecastRow) const {
-        return m_aggregator->GetStationNames(methodRow, forecastRow);
+        return _aggregator->GetStationNames(methodRow, forecastRow);
     }
 
     wxString GetStationName(int methodRow, int forecastRow, int stationRow) const {
-        return m_aggregator->GetStationName(methodRow, forecastRow, stationRow);
+        return _aggregator->GetStationName(methodRow, forecastRow, stationRow);
     }
 
     wxArrayString GetStationNamesWithHeights(int methodRow, int forecastRow) const {
-        return m_aggregator->GetStationNamesWithHeights(methodRow, forecastRow);
+        return _aggregator->GetStationNamesWithHeights(methodRow, forecastRow);
     }
 
     wxString GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow) const {
-        return m_aggregator->GetStationNameWithHeight(methodRow, forecastRow, stationRow);
+        return _aggregator->GetStationNameWithHeight(methodRow, forecastRow, stationRow);
     }
 
     wxArrayString GetTargetDatesWxArray(int methodRow, int forecastRow) const {
-        return m_aggregator->GetTargetDatesWxArray(methodRow, forecastRow);
+        return _aggregator->GetTargetDatesWxArray(methodRow, forecastRow);
     }
 
     vf GetMaxExtent() const {
-        return m_aggregator->GetMaxExtent();
+        return _aggregator->GetMaxExtent();
     }
 
   protected:
   private:
-    wxWindow* m_parent;
-    asWorkspace* m_workspace;
-    asResultsForecastAggregator* m_aggregator;
-    double m_leadTimeOrigin;
-    wxArrayString m_directoriesPastForecasts;
+    wxWindow* _parent;
+    asWorkspace* _workspace;
+    asResultsForecastAggregator* _aggregator;
+    double _leadTimeOrigin;
+    wxArrayString _directoriesPastForecasts;
 };
 
 #endif

@@ -29,7 +29,7 @@
 #ifndef AS_PANEL_SIDEBAR_GIS_LAYERS_H
 #define AS_PANEL_SIDEBAR_GIS_LAYERS_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelSidebar.h"
 #include "vroomgis.h"
 
@@ -41,11 +41,11 @@ class asPanelSidebarGisLayers : public asPanelSidebar {
     ~asPanelSidebarGisLayers() override = default;
 
     vrViewerTOCList* GetTocCtrl() const {
-        return m_tocCtrl;
+        return _tocCtrl;
     }
 
   private:
-    vrViewerTOCList* m_tocCtrl;
+    vrViewerTOCList* _tocCtrl;
 };
 
 #endif

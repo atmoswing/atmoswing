@@ -81,26 +81,26 @@ class asMethodOptimizerGAs : public asMethodOptimizer {
 
   protected:
   private:
-    vector<asParametersOptimizationGAs> m_parameters;
-    vector<asParametersOptimizationGAs> m_parametersBatchBests;
-    asParametersOptimizationGAs m_parameterBest;
-    float m_scoreCalibBest;
-    asResultsParametersArray m_resGenerations;
-    int m_generationNb;
-    int m_assessmentCounter;
-    int m_popSize;
-    int m_naturalSelectionType;
-    int m_couplesSelectionType;
-    int m_crossoverType;
-    int m_mutationsModeType;
-    bool m_allowElitismForTheBest;
-    bool m_reassessBatchBests;
-    int m_batchSize;
-    int m_batchSizeMax;
-    int m_epoch;
-    int m_epochMax;
-    vf m_bestScores;
-    vf m_meanScores;
+    vector<asParametersOptimizationGAs> _parameters;
+    vector<asParametersOptimizationGAs> _parametersBatchBests;
+    asParametersOptimizationGAs _parameterBest;
+    float _scoreCalibBest;
+    asResultsParametersArray _resGenerations;
+    int _generationNb;
+    int _assessmentCounter;
+    int _popSize;
+    int _naturalSelectionType;
+    int _couplesSelectionType;
+    int _crossoverType;
+    int _mutationsModeType;
+    bool _allowElitismForTheBest;
+    bool _reassessBatchBests;
+    int _batchSize;
+    int _batchSizeMax;
+    int _epoch;
+    int _epochMax;
+    vf _bestScores;
+    vf _meanScores;
 
     int GetGpusNb();
 

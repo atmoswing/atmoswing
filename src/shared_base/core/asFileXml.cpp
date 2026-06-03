@@ -27,6 +27,7 @@
  */
 
 #include "asFileXml.h"
+#include "asIncludes.h"
 
 asFileXml::asFileXml(const wxString& fileName, const FileMode& fileMode)
     : asFile(fileName, fileMode) {}
@@ -34,35 +35,35 @@ asFileXml::asFileXml(const wxString& fileName, const FileMode& fileMode)
 bool asFileXml::Open() {
     if (!Find()) return false;
 
-    if ((Exists()) & (m_fileMode != asFile::Replace)) {
-        if (!m_document.Load(m_fileName.GetFullPath())) {
-            wxLogError(_("Couldn't open the xml file %s"), m_fileName.GetFullPath());
+    if ((Exists()) & (_fileMode != asFile::Replace)) {
+        if (!_document.Load(_fileName.GetFullPath())) {
+            wxLogError(_("Couldn't open the xml file %s"), _fileName.GetFullPath());
             return false;
         }
     }
 
     // If new, set declaration and the root element
-    if ((m_fileMode == asFile::New) | (m_fileMode == asFile::Replace)) {
+    if ((_fileMode == asFile::New) | (_fileMode == asFile::Replace)) {
         wxXmlNode* nodeBase = new wxXmlNode(wxXML_ELEMENT_NODE, "atmoswing");
         nodeBase->AddAttribute("version", "1.0");  // AtmoSwing file version
-        m_document.SetRoot(nodeBase);
+        _document.SetRoot(nodeBase);
     }
 
-    m_opened = true;
+    _opened = true;
 
     return true;
 }
 
 bool asFileXml::Close() {
-    wxASSERT(m_opened);
+    wxASSERT(_opened);
 
     return true;
 }
 
 bool asFileXml::Save() {
-    wxASSERT(m_opened);
+    wxASSERT(_opened);
 
-    m_document.Save(m_fileName.GetFullPath());
+    _document.Save(_fileName.GetFullPath());
     return true;
 }
 
@@ -117,11 +118,11 @@ bool asFileXml::IsAnAtmoSwingFile() const {
     if (!GetRoot()) return false;
     if (GetRoot()->GetName().IsSameAs("AtmoSwingFile", false)) {
         wxLogError(_("The file %s is for an old version of AtmoSwing and is no longer supported (root: %s)."),
-                   m_fileName.GetFullName(), GetRoot()->GetName());
+                   _fileName.GetFullName(), GetRoot()->GetName());
         return false;
     }
     if (!GetRoot()->GetName().IsSameAs("atmoswing", false)) {
-        wxLogError(_("The file %s is not an AtmoSwing file (root: %s)."), m_fileName.GetFullName(),
+        wxLogError(_("The file %s is not an AtmoSwing file (root: %s)."), _fileName.GetFullName(),
                    GetRoot()->GetName());
         return false;
     }
@@ -134,7 +135,7 @@ bool asFileXml::FileVersionIsOrAbove(const float version) const {
     double fileVersion;
 
     if (!fileVersionStr.ToDouble(&fileVersion) || (float)fileVersion < version) {
-        wxLogError(_("The file version of %s is no longer supported."), m_fileName.GetFullName());
+        wxLogError(_("The file version of %s is no longer supported."), _fileName.GetFullName());
         return false;
     }
     return true;

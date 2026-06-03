@@ -26,10 +26,11 @@
  */
 
 #include "asTotalScoreRankHistogram.h"
+#include "asIncludes.h"
 
 asTotalScoreRankHistogram::asTotalScoreRankHistogram(const wxString& periodString)
     : asTotalScore(periodString) {
-    m_singleValue = false;
+    _singleValue = false;
 }
 
 float asTotalScoreRankHistogram::Assess(const a1f& targetDates, const a1f& scores, const asTimeArray& timeArray) const {
@@ -41,37 +42,37 @@ a1f asTotalScoreRankHistogram::AssessOnArray(const a1f& targetDates, const a1f& 
                                              const asTimeArray& timeArray) const {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(scores.rows() > 1);
-    wxASSERT(m_ranksNb > 1);
+    wxASSERT(_ranksNb > 1);
 
-    a1i histogram = a1i::Zero(m_ranksNb);
+    a1i histogram = a1i::Zero(_ranksNb);
     int countTot = 0;
 
-    switch (m_period) {
+    switch (_period) {
         case (asTotalScore::Total): {
             for (int i = 0; i < scores.size(); i++) {
                 countTot++;
 
                 int rank = (int)asRound(scores[i]);
-                wxASSERT(rank <= m_ranksNb);
+                wxASSERT(rank <= _ranksNb);
                 histogram[rank - 1]++;
             }
             break;
         }
 
         default: {
-            throw runtime_error(_("Period not yet implemented in asTotalScoreRankHistogram."));
+            throw std::runtime_error(_("Period not yet implemented in asTotalScoreRankHistogram."));
         }
     }
 
     // Process percentages
-    a1f histogramPercent = a1f::Zero(m_ranksNb);
+    a1f histogramPercent = a1f::Zero(_ranksNb);
 
     if (countTot <= 0) {
         wxLogError(_("Error processing the final rank histogram."));
         return histogramPercent;
     }
 
-    for (int i = 0; i < m_ranksNb; i++) {
+    for (int i = 0; i < _ranksNb; i++) {
         histogramPercent[i] = float(100 * histogram[i]) / float(countTot);
     }
 

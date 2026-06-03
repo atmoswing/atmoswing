@@ -29,52 +29,51 @@
 #ifndef AS_PREPROCESSOR_H
 #define AS_PREPROCESSOR_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asPredictor;
 
-class asPreprocessor : public wxObject {
-  public:
-    static bool Preprocess(const vector<asPredictor*>& predictors, const wxString& method, asPredictor* result);
+// Was previously `class asPreprocessor : public wxObject` with all-static methods and no instance
+// state. Converted to a namespace — the call-site syntax `asPreprocessor::Foo(...)` works
+// identically for both. Verified: no derivations, no instantiations.
+namespace asPreprocessor {
 
-    static bool PreprocessSimpleGradients(const vector<asPredictor*>& predictors, asPredictor* result);
+bool Preprocess(const vector<asPredictor*>& predictors, const wxString& method, asPredictor* result);
 
-    static bool PreprocessRealGradients(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessSimpleGradients(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessSimpleGradientsWithGaussianWeights(const vector<asPredictor*>& predictors,
-                                                             asPredictor* result);
+bool PreprocessRealGradients(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessRealGradientsWithGaussianWeights(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessSimpleGradientsWithGaussianWeights(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessSimpleCurvature(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessRealGradientsWithGaussianWeights(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessRealCurvature(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessSimpleCurvature(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessSimpleCurvatureWithGaussianWeights(const vector<asPredictor*>& predictors,
-                                                             asPredictor* result);
+bool PreprocessRealCurvature(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessRealCurvatureWithGaussianWeights(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessSimpleCurvatureWithGaussianWeights(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessAddition(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessRealCurvatureWithGaussianWeights(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessAverage(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessAddition(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessDifference(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessAverage(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessMultiplication(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessDifference(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessFormerHumidityIndex(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessMultiplication(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessMergeByHalfAndMultiply(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessFormerHumidityIndex(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessHumidityFlux(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessMergeByHalfAndMultiply(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static bool PreprocessWindSpeed(const vector<asPredictor*>& predictors, asPredictor* result);
+bool PreprocessHumidityFlux(const vector<asPredictor*>& predictors, asPredictor* result);
 
-    static void GetHorizontalDistances(const a1d& lonAxis, const a1d& latAxis, a2f& distXs, a2f& distYs);
+bool PreprocessWindSpeed(const vector<asPredictor*>& predictors, asPredictor* result);
 
-  protected:
-  private:
-};
+void GetHorizontalDistances(const a1d& lonAxis, const a1d& latAxis, a2f& distXs, a2f& distYs);
+
+}  // namespace asPreprocessor
 
 #endif

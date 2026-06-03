@@ -23,10 +23,10 @@
 // use this to check to see if there is any overlap after minimizing
 // #define CHECK_BLOCK_OVERLAP 1
 
-#define PRINT_BLOCK(msg, b)                                                                                      \
-    {                                                                                                            \
+#define PRINT_BLOCK(msg, b)                                                                                   \
+    {                                                                                                         \
         wxPrintf(wxT("Block '%s' %lg %lg %lg %lg\n"), msg, (double)(b).m_x1, (double)(b).m_y1, (double)(b).m_x2, \
-                 (double)(b).m_y2);                                                                              \
+                 (double)(b).m_y2);                                                                            \
     }
 
 wxBlockInt const wxEmptyBlockInt(0, 0, -1, -1);
@@ -181,8 +181,7 @@ void wxArrayBlockDoubleSort(wxArrayBlockDouble& blocks, wxBlockSort_Type type) {
 //=============================================================================
 
 int wxBlockInt::IsLarger(const wxBlockInt& b) const {
-    wxInt32 width = m_x2 - m_x1 + 1, height = m_y2 - m_y1 + 1, b_width = b.m_x2 - b.m_x1 + 1,
-            b_height = b.m_y2 - b.m_y1 + 1;
+    wxInt32 width = m_x2 - m_x1 + 1, height = m_y2 - m_y1 + 1, b_width = b.m_x2 - b.m_x1 + 1, b_height = b.m_y2 - b.m_y1 + 1;
 
     if ((width <= 0) || (height <= 0)) return (b_width > 0) && (b_height > 0) ? -1 : 0;
     if ((b_width <= 0) || (b_height <= 0)) return (width > 0) && (height > 0) ? 1 : 0;
@@ -302,8 +301,7 @@ int wxBlockDouble::IsLarger(const wxBlockDouble& b) const {
 
 bool wxBlockDouble::Touches(const wxBlockDouble& b) const  // see Intersects
 {
-    if (((wxMax(m_x1, b.m_x1)) <= (wxMin(m_x2, b.m_x2))) && ((wxMax(m_y1, b.m_y1)) <= (wxMin(m_y2, b.m_y2))))
-        return true;
+    if (((wxMax(m_x1, b.m_x1)) <= (wxMin(m_x2, b.m_x2))) && ((wxMax(m_y1, b.m_y1)) <= (wxMin(m_y2, b.m_y2)))) return true;
 
     return false;
 }
@@ -422,8 +420,7 @@ wxArrayRangeInt wxBlockIntSelection::GetBlockRow(int row) const {
     wxArrayRangeInt ranges;
     int n, count = m_blocks.GetCount();
     for (n = 0; n < count; n++) {
-        if ((row >= m_blocks[n].m_y1) && (row <= m_blocks[n].m_y2))
-            ranges.Add(wxRangeInt(m_blocks[n].m_x1, m_blocks[n].m_x2));
+        if ((row >= m_blocks[n].m_y1) && (row <= m_blocks[n].m_y2)) ranges.Add(wxRangeInt(m_blocks[n].m_x1, m_blocks[n].m_x2));
     }
     return ranges;
 }

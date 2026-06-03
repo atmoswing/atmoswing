@@ -38,18 +38,18 @@ class asMethodCalibratorClassic : public asMethodCalibrator {
     ~asMethodCalibratorClassic() override;
 
     void SetAsCalibrationPlus(bool val = true) {
-        m_plus = val;
+        _plus = val;
     }
 
   protected:
     bool Calibrate(asParametersCalibration& params) override;
 
   private:
-    bool m_plus;
-    int m_stepsLatPertinenceMap;
-    int m_stepsLonPertinenceMap;
-    int m_resizingIterations;
-    bool m_proceedSequentially;
+    bool _plus;
+    int _stepsLatPertinenceMap;
+    int _stepsLonPertinenceMap;
+    int _resizingIterations;
+    bool _proceedSequentially;
 
     void GetPlusOptions();
 

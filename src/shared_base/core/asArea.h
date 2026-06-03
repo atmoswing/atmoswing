@@ -29,7 +29,7 @@
 #ifndef AS_AREA_H
 #define AS_AREA_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asArea : public wxObject {
   public:
@@ -46,42 +46,42 @@ class asArea : public wxObject {
     void CheckPoint(Coo& point);
 
     bool IsLatLon() const {
-        return m_isLatLon;
+        return _isLatLon;
     }
 
     Coo GetCornerUL() const {
-        return m_cornerUL;
+        return _cornerUL;
     }
 
     void SetCornerUL(const Coo& val, bool noInit = false) {
-        m_cornerUL = val;
+        _cornerUL = val;
         if (!noInit) Init();
     }
 
     Coo GetCornerUR() const {
-        return m_cornerUR;
+        return _cornerUR;
     }
 
     void SetCornerUR(const Coo& val, bool noInit = false) {
-        m_cornerUR = val;
+        _cornerUR = val;
         if (!noInit) Init();
     }
 
     Coo GetCornerLL() const {
-        return m_cornerLL;
+        return _cornerLL;
     }
 
     void SetCornerLL(const Coo& val, bool noInit = false) {
-        m_cornerLL = val;
+        _cornerLL = val;
         if (!noInit) Init();
     }
 
     Coo GetCornerLR() const {
-        return m_cornerLR;
+        return _cornerLR;
     }
 
     void SetCornerLR(const Coo& val, bool noInit = false) {
-        m_cornerLR = val;
+        _cornerLR = val;
         if (!noInit) Init();
     }
 
@@ -100,16 +100,16 @@ class asArea : public wxObject {
     virtual bool IsRectangle() const;
 
     bool FlatsAllowed() const {
-        return m_flatAllowed;
+        return _flatAllowed;
     }
 
   protected:
-    Coo m_cornerUL;
-    Coo m_cornerUR;
-    Coo m_cornerLL;
-    Coo m_cornerLR;
-    int m_flatAllowed;
-    bool m_isLatLon;
+    Coo _cornerUL;
+    Coo _cornerUR;
+    Coo _cornerLL;
+    Coo _cornerLR;
+    int _flatAllowed;
+    bool _isLatLon;
 
     virtual void Init();
 

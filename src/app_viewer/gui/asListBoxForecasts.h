@@ -32,7 +32,7 @@
 #include <wx/treectrl.h>
 
 #include "asForecastManager.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asForecastRenderer;
 
@@ -41,16 +41,16 @@ class asForecastTreeItemData : public wxTreeItemData {
     asForecastTreeItemData(int methodRow, int forecastRow);
 
     int GetMethodRow() const {
-        return m_methodRow;
+        return _methodRow;
     }
 
     int GetForecastRow() const {
-        return m_forecastRow;
+        return _forecastRow;
     }
 
   private:
-    int m_methodRow;
-    int m_forecastRow;
+    int _methodRow;
+    int _forecastRow;
 };
 
 class asMessageForecastChoice : public wxObject {
@@ -58,16 +58,16 @@ class asMessageForecastChoice : public wxObject {
     asMessageForecastChoice(int methodRow, int forecastRow);
 
     int GetMethodRow() const {
-        return m_methodRow;
+        return _methodRow;
     }
 
     int GetForecastRow() const {
-        return m_forecastRow;
+        return _forecastRow;
     }
 
   private:
-    int m_methodRow;
-    int m_forecastRow;
+    int _methodRow;
+    int _forecastRow;
 };
 
 class asListBoxForecasts : public wxTreeCtrl {
@@ -97,8 +97,8 @@ class asListBoxForecasts : public wxTreeCtrl {
 
   protected:
   private:
-    asForecastManager* m_forecastManager;
-    bool m_skipSlctChangeEvent;
+    asForecastManager* _forecastManager;
+    bool _skipSlctChangeEvent;
 
     void OnForecastSlctChange(wxTreeEvent& event);
 

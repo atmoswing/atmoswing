@@ -29,7 +29,7 @@
 #define AS_FILE_WORKSPACE_H
 
 #include "asFileXml.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asFileWorkspace : public asFileXml {
   public:

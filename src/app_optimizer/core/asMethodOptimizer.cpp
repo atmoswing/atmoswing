@@ -28,10 +28,12 @@
 
 #include "asMethodOptimizer.h"
 
+#include "asIncludes.h"
+
 asMethodOptimizer::asMethodOptimizer()
     : asMethodCalibrator(),
-      m_paramsNb(0),
-      m_iterator(0) {
+      _paramsNb(0),
+      _iterator(0) {
     // Seeds the random generator
     asInitRandom();
 }
@@ -80,7 +82,7 @@ bool asMethodOptimizer::Validate(asParametersOptimization& params) {
         return true;
     }
 
-    m_validationMode = true;
+    _validationMode = true;
 
     asResultsDates anaDatesPrevious;
     asResultsDates anaDates;
@@ -114,9 +116,9 @@ bool asMethodOptimizer::Validate(asParametersOptimization& params) {
     anaScores.SetSubFolder("validation");
     anaScores.Save();
 
-    m_scoreValid = anaScoreFinal.GetScore();
+    _scoreValid = anaScoreFinal.GetScore();
 
-    m_validationMode = false;
+    _validationMode = false;
 
     return true;
 }

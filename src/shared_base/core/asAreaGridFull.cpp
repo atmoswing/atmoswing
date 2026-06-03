@@ -26,12 +26,13 @@
  */
 
 #include "asAreaGridFull.h"
+#include "asIncludes.h"
 
 #include "asTypeDefs.h"
 
 asAreaGridFull::asAreaGridFull(bool isLatLon)
     : asAreaGrid(0, 0, 0, 0, true, isLatLon) {
-    m_isFull = true;
+    _isFull = true;
 }
 
 bool asAreaGridFull::GridsOverlay(asAreaGrid* otherArea) const {

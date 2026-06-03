@@ -33,7 +33,7 @@
 
 #include "asAreaGrid.h"
 #include "asCriteria.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asMethodStandard.h"
 #include "asParametersCalibration.h"
 #include "asParametersOptimization.h"
@@ -103,19 +103,19 @@ class asMethodCalibrator : public asMethodStandard {
     virtual bool Validate(asParametersCalibration* params);
 
     void SetScoreOrder(Order val) {
-        m_scoreOrder = val;
+        _scoreOrder = val;
     }
 
     vf GetScoreClimatology() const {
-        return m_scoreClimatology;
+        return _scoreClimatology;
     }
 
     void SetScoreClimatology(vf val) {
-        m_scoreClimatology = std::move(val);
+        _scoreClimatology = std::move(val);
     }
 
     void SetPredictandStationIds(vi val) {
-        m_predictandStationIds = std::move(val);
+        _predictandStationIds = std::move(val);
     }
 
   protected:
@@ -131,19 +131,19 @@ class asMethodCalibrator : public asMethodStandard {
         int yPtsNbStart;
         int yPtsNbEnd;
     };
-    vi m_predictandStationIds;
-    vf m_scoresCalib;
-    vf m_scoresCalibTemp;
-    Order m_scoreOrder;
-    float m_scoreValid;
-    vf m_scoreClimatology;
-    vector<asParametersCalibration> m_parameters;
-    vector<asParametersCalibration> m_parametersTemp;
-    asParametersCalibration m_originalParams;
-    bool m_validationMode;
-    bool m_useBatches;
-    int m_batchStart;
-    int m_batchEnd;
+    vi _predictandStationIds;
+    vf _scoresCalib;
+    vf _scoresCalibTemp;
+    Order _scoreOrder;
+    float _scoreValid;
+    vf _scoreClimatology;
+    vector<asParametersCalibration> _parameters;
+    vector<asParametersCalibration> _parametersTemp;
+    asParametersCalibration _originalParams;
+    bool _validationMode;
+    bool _useBatches;
+    int _batchStart;
+    int _batchEnd;
 
     virtual bool Calibrate(asParametersCalibration& params) = 0;
 

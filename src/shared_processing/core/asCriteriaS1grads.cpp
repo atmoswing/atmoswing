@@ -27,12 +27,13 @@
  */
 
 #include "asCriteriaS1grads.h"
+#include "asIncludes.h"
 
 asCriteriaS1grads::asCriteriaS1grads()
     : asCriteria("S1grads", _("Teweles-Wobus on gradients"), Asc) {
-    m_minPointsNb = 2;
-    m_scaleWorst = 200;
-    m_canUseInline = true;
+    _minPointsNb = 2;
+    _scaleWorst = 200;
+    _canUseInline = true;
 }
 
 asCriteriaS1grads::~asCriteriaS1grads() = default;
@@ -48,7 +49,7 @@ float asCriteriaS1grads::Assess(const a2f& refData, const a2f& evalData, int row
     // Note here that the actual gradient data do not fill the entire data blocks,
     // but the rest being 0-filled, we can simplify the sum calculation !
 
-    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+    if (!_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
         dividend = ((refData - evalData).abs()).sum();
         divisor = (refData.abs().max(evalData.abs())).sum();
 
@@ -65,11 +66,11 @@ float asCriteriaS1grads::Assess(const a2f& refData, const a2f& evalData, int row
     } else {
         if (dividend == 0) {
             wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
-            return m_scaleWorst;
+            return _scaleWorst;
         } else if (isnan(divisor) || isnan(dividend)) {
             return NAN;
         } else {
-            return m_scaleWorst;
+            return _scaleWorst;
         }
     }
 }

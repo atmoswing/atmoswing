@@ -28,8 +28,12 @@
  */
 
 #include <gtest/gtest.h>
-#include <wx/init.h>
 
+#include "asIncludes.h"
+#include <wx/init.h>
+#include <wx/fileconf.h>
+
+#include "asFileGrib.h"
 #include "asGlobVars.h"
 
 #ifndef UNIT_TESTING
@@ -55,11 +59,11 @@ int main(int argc, char** argv) {
         wxApp::SetInstance(new wxApp);
 #endif
         int argcApp = 0;
-        wxChar** argvApp = NULL;
+        wxChar** argvApp = nullptr;
         wxEntryStart(argcApp, argvApp);
 
         // Set the log
-        Log()->CreateFile("AtmoSwingTests.log");
+        Log()->CreateLogFile("AtmoSwingTests.log");
         Log()->SetLevel(2);
         wxLogNull logNo;
 
@@ -67,6 +71,14 @@ int main(int argc, char** argv) {
         auto pConfig = new wxFileConfig("AtmoSwingTests", wxEmptyString, asConfig::GetTempDir() + "AtmoSwingTests.ini",
                                         asConfig::GetTempDir() + "AtmoSwingTests.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
+
+        // Pin the ecCodes definitions path to this build's mirror so the
+        // runtime eccodes version matches its definitions (avoids segfaults
+        // inside codes_handle_new_from_file when the env var points elsewhere).
+#ifdef ATMOSWING_TESTS_ECCODES_DEFS_PATH
+        pConfig->Write("/Libraries/EcCodesDefinitions", wxString(ATMOSWING_TESTS_ECCODES_DEFS_PATH));
+#endif
+        asFileGrib::SetContext();
 
         // Check path
         wxString filePath = wxFileName::GetCwd();

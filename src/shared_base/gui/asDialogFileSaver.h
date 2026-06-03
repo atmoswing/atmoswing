@@ -29,18 +29,18 @@
 #define AS_DIALOG_FILE_SAVER_H
 
 #include "AtmoSwingSharedGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asDialogFileSaver : public asDialogFileSaverVirtual {
   public:
     asDialogFileSaver(wxWindow* parent, const wxString& description);
 
     wxString GetPath() const {
-        return m_filePicker->GetPath();
+        return _filePicker->GetPath();
     }
 
     void SetPath(const wxString& path) {
-        m_filePicker->SetPath(path);
+        _filePicker->SetPath(path);
     }
 };
 

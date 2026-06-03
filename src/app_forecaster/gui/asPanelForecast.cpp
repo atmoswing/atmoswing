@@ -30,26 +30,27 @@
 
 #include "asBatchForecasts.h"
 #include "asFrameStyledTextCtrl.h"
+#include "asIncludes.h"
 #include "asPanelsManagerForecasts.h"
 #include "asParametersForecast.h"
 
 asPanelForecast::asPanelForecast(wxWindow* parent, asBatchForecasts* batch)
     : asPanelForecastVirtual(parent),
-      m_parentFrame(nullptr),
-      m_batchForecasts(batch),
-      m_panelsManager(nullptr) {
+      _parentFrame(nullptr),
+      _batchForecasts(batch),
+      _panelsManager(nullptr) {
     // Led
-    m_led = new awxLed(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0);
-    m_led->SetState(awxLED_OFF);
-    m_sizerHeader->Insert(0, m_led, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+    _led = new awxLed(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0);
+    _led->SetState(awxLED_OFF);
+    _sizerHeader->Insert(0, _led, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
     // Set the buttons bitmaps
-    m_bpButtonClose->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::CLOSE));
-    m_bpButtonInfo->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::INFO));
-    m_bpButtonDetails->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::DETAILS));
-    m_bpButtonEdit->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::EDIT));
-    m_bpButtonWarning->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::WARNING));
-    m_bpButtonWarning->Hide();
+    _bpButtonClose->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::CLOSE));
+    _bpButtonInfo->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::INFO));
+    _bpButtonDetails->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::DETAILS));
+    _bpButtonEdit->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::EDIT));
+    _bpButtonWarning->SetBitmapLabel(asBitmaps::Get(asBitmaps::ID_MISC::WARNING));
+    _bpButtonWarning->Hide();
 
     // Fix the color of the file/dir pickers
     wxColour col = parent->GetParent()->GetBackgroundColour();
@@ -59,17 +60,17 @@ asPanelForecast::asPanelForecast(wxWindow* parent, asBatchForecasts* batch)
 }
 
 void asPanelForecast::CheckFileExists() {
-    wxASSERT(m_batchForecasts);
+    wxASSERT(_batchForecasts);
     wxString fileName = GetParametersFileName();
-    wxString dirPath = m_batchForecasts->GetParametersFileDirectory();
+    wxString dirPath = _batchForecasts->GetParametersFileDirectory();
     if (wxFileExists(dirPath + DS + fileName)) {
-        m_bpButtonWarning->Hide();
+        _bpButtonWarning->Hide();
         SetToolTipContent(dirPath + DS + fileName);
     } else {
-        m_bpButtonWarning->Show();
+        _bpButtonWarning->Show();
         Layout();
         Refresh();
-        m_bpButtonInfo->SetToolTip(wxEmptyString);
+        _bpButtonInfo->SetToolTip(wxEmptyString);
     }
 }
 
@@ -77,12 +78,12 @@ void asPanelForecast::SetToolTipContent(const wxString& filePath) {
     asParametersForecast param;
     if (param.LoadFromFile(filePath)) {
         wxString description = param.GetDescription();
-        m_bpButtonInfo->SetToolTip(description);
+        _bpButtonInfo->SetToolTip(description);
     }
 }
 
 void asPanelForecast::ClosePanel(wxCommandEvent& event) {
-    m_panelsManager->RemovePanel(this);
+    _panelsManager->RemovePanel(this);
 }
 
 void asPanelForecast::OnEditForecastFile(wxCommandEvent& event) {
@@ -101,9 +102,9 @@ void asPanelForecast::OnEditForecastFile(wxCommandEvent& event) {
 }
 
 void asPanelForecast::OnDetailsForecastFile(wxCommandEvent& event) {
-    wxASSERT(m_batchForecasts);
+    wxASSERT(_batchForecasts);
     wxString fileName = GetParametersFileName();
-    wxString dirPath = m_batchForecasts->GetParametersFileDirectory();
+    wxString dirPath = _batchForecasts->GetParametersFileDirectory();
     if (wxFileExists(dirPath + DS + fileName)) {
         asFileText file(dirPath + DS + fileName);
         file.Open();

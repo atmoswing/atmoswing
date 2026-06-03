@@ -31,162 +31,163 @@
 #include <wx/regex.h>
 
 #include "asAreaGrid.h"
+#include "asIncludes.h"
 #include "asTimeArray.h"
 
 asPredictorProjCordex::asPredictorProjCordex(const wxString& dataId, const wxString& model, const wxString& scenario)
     : asPredictorProj(dataId, model, scenario) {
     // Downloaded from https://esgf-index1.ceda.ac.uk/search/cordex-ceda/
     // Set the basic properties.
-    m_datasetId = "CORDEX";
-    m_provider = "various";
-    m_datasetName = "CORDEX";
-    m_fileType = asFile::Netcdf;
-    m_strideAllowed = true;
-    m_parseTimeReference = true;
-    m_fStr.dimLatName = "rlat";  // y will be considered otherwise
-    m_fStr.dimLonName = "rlon";  // x will be considered otherwise
-    m_fStr.dimTimeName = "time";
-    m_fStr.dimLevelName = "plev";
-    m_fStr.hasLevelDim = false;
-    m_isLatLon = false;
+    _datasetId = "CORDEX";
+    _provider = "various";
+    _datasetName = "CORDEX";
+    _fileType = asFile::Netcdf;
+    _strideAllowed = true;
+    _parseTimeReference = true;
+    _fStr.dimLatName = "rlat";  // y will be considered otherwise
+    _fStr.dimLonName = "rlon";  // x will be considered otherwise
+    _fStr.dimTimeName = "time";
+    _fStr.dimLevelName = "plev";
+    _fStr.hasLevelDim = false;
+    _isLatLon = false;
 }
 
 asPredictorProjCordex::~asPredictorProjCordex() {}
 
 bool asPredictorProjCordex::Init() {
     // Identify data ID and set the corresponding properties.
-    if (m_dataId.IsSameAs("zg200", false)) {
-        m_parameter = GeopotentialHeight;
-        m_parameterName = "Geopotential height";
-        m_fileVarName = "zg200";
-        m_unit = m;
-    } else if (m_dataId.IsSameAs("zg500", false)) {
-        m_parameter = GeopotentialHeight;
-        m_parameterName = "Geopotential height";
-        m_fileVarName = "zg500";
-        m_unit = m;
-    } else if (m_dataId.IsSameAs("zg850", false)) {
-        m_parameter = GeopotentialHeight;
-        m_parameterName = "Geopotential height";
-        m_fileVarName = "zg850";
-        m_unit = m;
-    } else if (m_dataId.IsSameAs("ua200", false)) {
-        m_parameter = Uwind;
-        m_parameterName = "Eastward Wind";
-        m_fileVarName = "ua200";
-        m_unit = m_s;
-    } else if (m_dataId.IsSameAs("ua500", false)) {
-        m_parameter = Uwind;
-        m_parameterName = "Eastward Wind";
-        m_fileVarName = "ua500";
-        m_unit = m_s;
-    } else if (m_dataId.IsSameAs("ua850", false)) {
-        m_parameter = Uwind;
-        m_parameterName = "Eastward Wind";
-        m_fileVarName = "ua850";
-        m_unit = m_s;
-    } else if (m_dataId.IsSameAs("va200", false)) {
-        m_parameter = Vwind;
-        m_parameterName = "Eastward Wind";
-        m_fileVarName = "va200";
-        m_unit = m_s;
-    } else if (m_dataId.IsSameAs("va500", false)) {
-        m_parameter = Vwind;
-        m_parameterName = "Eastward Wind";
-        m_fileVarName = "va500";
-        m_unit = m_s;
-    } else if (m_dataId.IsSameAs("va850", false)) {
-        m_parameter = Vwind;
-        m_parameterName = "Eastward Wind";
-        m_fileVarName = "va850";
-        m_unit = m_s;
+    if (_dataId.IsSameAs("zg200", false)) {
+        _parameter = GeopotentialHeight;
+        _parameterName = "Geopotential height";
+        _fileVarName = "zg200";
+        _unit = m;
+    } else if (_dataId.IsSameAs("zg500", false)) {
+        _parameter = GeopotentialHeight;
+        _parameterName = "Geopotential height";
+        _fileVarName = "zg500";
+        _unit = m;
+    } else if (_dataId.IsSameAs("zg850", false)) {
+        _parameter = GeopotentialHeight;
+        _parameterName = "Geopotential height";
+        _fileVarName = "zg850";
+        _unit = m;
+    } else if (_dataId.IsSameAs("ua200", false)) {
+        _parameter = Uwind;
+        _parameterName = "Eastward Wind";
+        _fileVarName = "ua200";
+        _unit = _s;
+    } else if (_dataId.IsSameAs("ua500", false)) {
+        _parameter = Uwind;
+        _parameterName = "Eastward Wind";
+        _fileVarName = "ua500";
+        _unit = _s;
+    } else if (_dataId.IsSameAs("ua850", false)) {
+        _parameter = Uwind;
+        _parameterName = "Eastward Wind";
+        _fileVarName = "ua850";
+        _unit = _s;
+    } else if (_dataId.IsSameAs("va200", false)) {
+        _parameter = Vwind;
+        _parameterName = "Eastward Wind";
+        _fileVarName = "va200";
+        _unit = _s;
+    } else if (_dataId.IsSameAs("va500", false)) {
+        _parameter = Vwind;
+        _parameterName = "Eastward Wind";
+        _fileVarName = "va500";
+        _unit = _s;
+    } else if (_dataId.IsSameAs("va850", false)) {
+        _parameter = Vwind;
+        _parameterName = "Eastward Wind";
+        _fileVarName = "va850";
+        _unit = _s;
     } else if (IsSeaLevelPressure()) {
-        m_parameter = Pressure;
-        m_parameterName = "Sea level pressure";
-        m_fileVarName = "psl";
-        m_unit = Pa;
-    } else if (m_dataId.IsSameAs("hurs", false)) {
-        m_parameter = RelativeHumidity;
-        m_parameterName = "Near-Surface Relative Humidity";
-        m_fileVarName = "hurs";
-        m_unit = percent;
-    } else if (m_dataId.IsSameAs("hus850", false)) {
-        m_parameter = SpecificHumidity;
-        m_parameterName = "Specific humidity";
-        m_fileVarName = "hus850";
-        m_unit = g_kg;
-    } else if (m_dataId.IsSameAs("huss", false)) {
-        m_parameter = SpecificHumidity;
-        m_parameterName = "Near-Surface Specific Humidity";
-        m_fileVarName = "huss";
-        m_unit = g_kg;
-    } else if (m_dataId.IsSameAs("pr", false) || m_dataId.IsSameAs("precip", false)) {
-        m_parameter = Precipitation;
-        m_parameterName = "Precipitation";
-        m_fileVarName = "pr";
-        m_unit = kg_m2_s;
-    } else if (m_dataId.IsSameAs("prc", false)) {
-        m_parameter = Precipitation;
-        m_parameterName = "Convective Precipitation";
-        m_fileVarName = "prc";
-        m_unit = kg_m2_s;
-    } else if (m_dataId.IsSameAs("ta200", false)) {
-        m_parameter = AirTemperature;
-        m_parameterName = "Air Temperature";
-        m_fileVarName = "ta200";
-        m_unit = degK;
-    } else if (m_dataId.IsSameAs("ta500", false)) {
-        m_parameter = AirTemperature;
-        m_parameterName = "Air Temperature";
-        m_fileVarName = "ta500";
-        m_unit = degK;
-    } else if (m_dataId.IsSameAs("ta850", false)) {
-        m_parameter = AirTemperature;
-        m_parameterName = "Air Temperature";
-        m_fileVarName = "ta850";
-        m_unit = degK;
-    } else if (m_dataId.IsSameAs("tas", false)) {
-        m_parameter = AirTemperature;
-        m_parameterName = "Near-Surface Air Temperature";
-        m_fileVarName = "tas";
-        m_unit = degK;
-    } else if (m_dataId.IsSameAs("tasmax", false)) {
-        m_parameter = AirTemperature;
-        m_parameterName = "Daily Maximum Near-Surface Air Temperature";
-        m_fileVarName = "tasmax";
-        m_unit = degK;
-    } else if (m_dataId.IsSameAs("tasmin", false)) {
-        m_parameter = AirTemperature;
-        m_parameterName = "Daily Minimum Near-Surface Air Temperature";
-        m_fileVarName = "tasmin";
-        m_unit = degK;
+        _parameter = Pressure;
+        _parameterName = "Sea level pressure";
+        _fileVarName = "psl";
+        _unit = Pa;
+    } else if (_dataId.IsSameAs("hurs", false)) {
+        _parameter = RelativeHumidity;
+        _parameterName = "Near-Surface Relative Humidity";
+        _fileVarName = "hurs";
+        _unit = percent;
+    } else if (_dataId.IsSameAs("hus850", false)) {
+        _parameter = SpecificHumidity;
+        _parameterName = "Specific humidity";
+        _fileVarName = "hus850";
+        _unit = g_kg;
+    } else if (_dataId.IsSameAs("huss", false)) {
+        _parameter = SpecificHumidity;
+        _parameterName = "Near-Surface Specific Humidity";
+        _fileVarName = "huss";
+        _unit = g_kg;
+    } else if (_dataId.IsSameAs("pr", false) || _dataId.IsSameAs("precip", false)) {
+        _parameter = Precipitation;
+        _parameterName = "Precipitation";
+        _fileVarName = "pr";
+        _unit = kg_m2_s;
+    } else if (_dataId.IsSameAs("prc", false)) {
+        _parameter = Precipitation;
+        _parameterName = "Convective Precipitation";
+        _fileVarName = "prc";
+        _unit = kg_m2_s;
+    } else if (_dataId.IsSameAs("ta200", false)) {
+        _parameter = AirTemperature;
+        _parameterName = "Air Temperature";
+        _fileVarName = "ta200";
+        _unit = degK;
+    } else if (_dataId.IsSameAs("ta500", false)) {
+        _parameter = AirTemperature;
+        _parameterName = "Air Temperature";
+        _fileVarName = "ta500";
+        _unit = degK;
+    } else if (_dataId.IsSameAs("ta850", false)) {
+        _parameter = AirTemperature;
+        _parameterName = "Air Temperature";
+        _fileVarName = "ta850";
+        _unit = degK;
+    } else if (_dataId.IsSameAs("tas", false)) {
+        _parameter = AirTemperature;
+        _parameterName = "Near-Surface Air Temperature";
+        _fileVarName = "tas";
+        _unit = degK;
+    } else if (_dataId.IsSameAs("tasmax", false)) {
+        _parameter = AirTemperature;
+        _parameterName = "Daily Maximum Near-Surface Air Temperature";
+        _fileVarName = "tasmax";
+        _unit = degK;
+    } else if (_dataId.IsSameAs("tasmin", false)) {
+        _parameter = AirTemperature;
+        _parameterName = "Daily Minimum Near-Surface Air Temperature";
+        _fileVarName = "tasmin";
+        _unit = degK;
     } else {
-        m_parameter = ParameterUndefined;
-        m_parameterName = "Undefined";
-        m_fileVarName = m_dataId;
-        m_unit = UnitUndefined;
+        _parameter = ParameterUndefined;
+        _parameterName = "Undefined";
+        _fileVarName = _dataId;
+        _unit = UnitUndefined;
     }
-    m_fileNamePattern = m_fileVarName + "*" + m_model + "*" + m_scenario + "*.nc";
+    _fileNamePattern = _fileVarName + "*" + _model + "*" + _scenario + "*.nc";
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
-                   m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), _dataId,
+                   _datasetName);
         return false;
     }
 
     // Set to initialized
-    m_initialized = true;
+    _initialized = true;
 
     return true;
 }
 
 void asPredictorProjCordex::ListFiles(asTimeArray& timeArray) {
     wxArrayString listFiles;
-    size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, m_fileNamePattern);
+    size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, _fileNamePattern);
 
     if (nbFiles == 0) {
-        throw runtime_error(asStrF(_("No CORDEX file found for this pattern : %s."), m_fileNamePattern));
+        throw std::runtime_error(asStrF(_("No CORDEX file found for this pattern : %s."), _fileNamePattern));
     }
 
     // Sort the list of files
@@ -199,7 +200,8 @@ void asPredictorProjCordex::ListFiles(asTimeArray& timeArray) {
     for (int i = 0; i < listFiles.Count(); ++i) {
         wxRegEx reDates("\\d{8,}-\\d{8,}", wxRE_ADVANCED);
         if (!reDates.Matches(listFiles.Item(i))) {
-            throw runtime_error(asStrF(_("The dates sequence was not found in the CORDEX file name : %s."), listFiles.Item(i)));
+            throw std::runtime_error(
+                asStrF(_("The dates sequence was not found in the CORDEX file name : %s."), listFiles.Item(i)));
         }
 
         wxString datesSrt = reDates.GetMatch(listFiles.Item(i));
@@ -212,7 +214,7 @@ void asPredictorProjCordex::ListFiles(asTimeArray& timeArray) {
             continue;
         }
 
-        m_files.push_back(listFiles.Item(i));
+        _files.push_back(listFiles.Item(i));
     }
 }
 

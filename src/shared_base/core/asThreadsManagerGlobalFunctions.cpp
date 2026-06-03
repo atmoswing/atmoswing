@@ -27,6 +27,9 @@
 
 #include "asThreadsManagerGlobalFunctions.h"
 
+#include "asIncludes.h"
+#include "asThreadsManager.h"
+
 // Thread manager
 asThreadsManager* g_pThreadsManager = new asThreadsManager();
 

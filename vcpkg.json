@@ -1,0 +1,67 @@
+{
+  "name": "atmoswing",
+  "version": "3.0.11",
+  "builtin-baseline": "bffcbb75f71553824aa948a7e7b4f798662a6fa7",
+  "dependencies": [
+    "vcpkg-tool-ninja",
+    "eigen3",
+    "proj",
+    "sqlite3",
+    "libaec",
+    "curl",
+    "zlib",
+    {
+      "name": "netcdf-c",
+      "features": [
+        "hdf5"
+      ]
+    },
+    {
+      "name": "hdf5",
+      "default-features": false,
+      "features": [
+        "cpp",
+        "zlib"
+      ]
+    }
+  ],
+  "features": {
+    "viewer": {
+      "description": "Dependencies for AtmoSwing Viewer (BUILD_VIEWER=ON)",
+      "dependencies": [
+        "libpng",
+        "tiff",
+        "libdeflate",
+        "geos",
+        "jasper",
+        {
+          "name": "gdal",
+          "features": [
+            "recommended-features",
+            "curl",
+            "zstd"
+          ]
+        }
+      ]
+    },
+    "forecaster": {
+      "description": "Dependencies for AtmoSwing Forecaster (BUILD_FORECASTER=ON)",
+      "dependencies": [
+        "openssl"
+      ]
+    },
+    "tests": {
+      "description": "Unit test dependencies (BUILD_TESTS=ON)",
+      "dependencies": [
+        "gtest"
+      ]
+    },
+    "benchmark": {
+      "description": "Benchmark dependencies (BUILD_BENCHMARK=ON)",
+      "dependencies": [
+        "benchmark",
+        "gtest"
+      ]
+    }
+  }
+}

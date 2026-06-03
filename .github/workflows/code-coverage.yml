@@ -10,86 +10,102 @@ on:
 
 env:
   BUILD_TYPE: RelWithDebInfo
+  VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
+  VCPKG_DOWNLOADS: ${{ github.workspace }}/.vcpkg-downloads
 
 jobs:
   code-coverage:
     runs-on: ubuntu-22.04
 
     env:
-      PROJ_DATA: ${{github.workspace}}/bin/share/proj
-      PROJ_LIB: ${{github.workspace}}/bin/share/proj
+      ECCODES_DEFINITION_PATH: ${{github.workspace}}/build/share/eccodes/definitions
+      PROJ_DATA: ${{github.workspace}}/build/share/proj
+      PROJ_LIB: ${{github.workspace}}/build/share/proj
+      FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/linux-code-coverage-ninja-relwithdebinfo
+      FETCHCONTENT_CACHE_KEY: linux-code-coverage-ninja-relwithdebinfo
 
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-python@v6
+      - name: Cache FetchContent dependencies
+        uses: actions/cache@v4
         with:
-          python-version: '3.10'
+          path: ${{ env.FETCHCONTENT_BASE_DIR }}
+          key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
+
+      - name: Cache vcpkg downloads (distfiles)
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.vcpkg-downloads
+          key: ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-
+            ${{ runner.os }}-vcpkg-downloads-
 
       - name: Install system libraries
         run: |
-          sudo apt-get update
-          sudo apt-get install lcov libgtk-3-0 libgtk-3-dev libx11-dev libx11-xcb-dev xvfb
+          sudo apt-get update -y
+          sudo apt-get install -y autoconf automake libtool pkg-config \
+            lcov libgtk-3-0 libgtk-3-dev libx11-dev libx11-xcb-dev xvfb
 
-      - name: Cache Conan libs
-        id: cache-conan
-        uses: pat-s/always-upload-cache@v3.0.11
+      - name: Export GitHub Actions cache env (for vcpkg x-gha)
+        uses: actions/github-script@v7
         with:
-          path: /home/runner/.conan
-          key: conan-linux-codecover
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
-      - name: Setup Conan
-        run: |
-          pip install conan==1.*
-          conan profile new default --detect --force
-          conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
-          conan profile update settings.compiler.libcxx=libstdc++11 default
-          conan profile update conf.tools.system.package_manager:mode=install default
-          conan profile update conf.tools.system.package_manager:sudo=True default
+      - name: Set VCPKG_ROOT
+        run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
 
-      - name: Create Build Environment
-        run: cmake -E make_directory ${{github.workspace}}/bin
-
-      - name: Get dependencies with GUI testing
-        working-directory: ${{github.workspace}}/bin
-        run: conan install .. -s build_type=Release -o build_viewer=True -o with_gui=True -o enable_tests=True -o test_gui=True -o code_coverage=True --build=missing --build=openjpeg
+      - name: Configure with GUI testing
         if: ${{ github.ref == 'refs/heads/ci/coverage-gui' }}
+        run: cmake -B build -G Ninja
+             -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+             -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
+             -DBUILD_FORECASTER=ON
+             -DBUILD_OPTIMIZER=ON
+             -DBUILD_DOWNSCALER=ON
+             -DBUILD_VIEWER=ON
+             -DUSE_GUI=ON
+             -DBUILD_TESTS=ON
+             -DTEST_GUI=ON
+             -DUSE_CODECOV=ON
 
-      - name: Get dependencies without GUI testing
-        working-directory: ${{github.workspace}}/bin
-        run: conan install .. -s build_type=Release -o build_viewer=True -o with_gui=True -o enable_tests=True -o test_gui=False -o code_coverage=True --build=missing --build=openjpeg
+      - name: Configure without GUI testing
         if: ${{ github.ref != 'refs/heads/ci/coverage-gui' }}
-
-      - name: Configure with CMake with GUI testing
-        working-directory: ${{github.workspace}}/bin
-        run: cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DUSE_CODECOV=1 -DBUILD_TESTS=1 -DBUILD_VIEWER=1 -DUSE_GUI=1 -DTEST_GUI=1
-        if: ${{ github.ref == 'refs/heads/ci/coverage-gui' }}
-
-      - name: Configure with CMake without GUI testing
-        working-directory: ${{github.workspace}}/bin
-        run: cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DUSE_CODECOV=1 -DBUILD_TESTS=1 -DBUILD_VIEWER=1 -DUSE_GUI=1 -DTEST_GUI=0
-        if: ${{ github.ref != 'refs/heads/ci/coverage-gui' }}
+        run: cmake -B build -G Ninja
+             -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+             -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
+             -DBUILD_FORECASTER=ON
+             -DBUILD_OPTIMIZER=ON
+             -DBUILD_DOWNSCALER=ON
+             -DBUILD_VIEWER=ON
+             -DUSE_GUI=ON
+             -DBUILD_TESTS=ON
+             -DTEST_GUI=OFF
+             -DUSE_CODECOV=ON
 
       - name: Build and run code coverage (using xvfb)
         uses: coactions/setup-xvfb@v1
         with:
-          run: cmake --build . --config ${{env.BUILD_TYPE}} --target atmoswing-coverage
-          working-directory: ${{github.workspace}}/bin
+          run: cmake --build build --target atmoswing-coverage
+          working-directory: ${{github.workspace}}
 
       - name: Preparing coverage data
-        working-directory: ${{github.workspace}}/bin
+        working-directory: ${{github.workspace}}/build
         run: lcov --directory . --capture --output-file coverage.info
 
       - name: Cleaning up coverage data
-        working-directory: ${{github.workspace}}/bin
-        run: lcov --remove coverage.info "/usr/*" "*/_deps/*" "*/tests/*" "*/.conan/*" --output-file coverage.info
+        working-directory: ${{github.workspace}}/build
+        run: lcov --remove coverage.info "/usr/*" "*/_deps/*" "*/tests/*" "*/vcpkg_installed/*" --output-file coverage.info
 
       - name: Display code coverage report
-        working-directory: ${{github.workspace}}/bin
+        working-directory: ${{github.workspace}}/build
         run: lcov --list coverage.info
 
       - uses: codecov/codecov-action@v6
         with:
-          files: ${{github.workspace}}/bin/coverage.info
+          files: ${{github.workspace}}/build/coverage.info
           fail_ci_if_error: true
           verbose: true

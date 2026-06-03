@@ -26,6 +26,7 @@
  */
 
 #include "asPredictorEcmwfEra20C.h"
+#include "asIncludes.h"
 
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
@@ -33,15 +34,15 @@
 asPredictorEcmwfEra20C::asPredictorEcmwfEra20C(const wxString& dataId)
     : asPredictor(dataId) {
     // Set the basic properties.
-    m_datasetId = "ECMWF_ERA_20C_3h";
-    m_provider = "ECMWF";
-    m_datasetName = "ERA 20th Century";
-    m_fileType = asFile::Netcdf;
-    m_strideAllowed = true;
-    m_fStr.dimLatName = "latitude";
-    m_fStr.dimLonName = "longitude";
-    m_fStr.dimTimeName = "time";
-    m_fStr.dimLevelName = "level";
+    _datasetId = "ECMWF_ERA_20C_3h";
+    _provider = "ECMWF";
+    _datasetName = "ERA 20th Century";
+    _fileType = asFile::Netcdf;
+    _strideAllowed = true;
+    _fStr.dimLatName = "latitude";
+    _fStr.dimLonName = "longitude";
+    _fStr.dimTimeName = "time";
+    _fStr.dimLevelName = "level";
 }
 
 bool asPredictorEcmwfEra20C::Init() {
@@ -51,59 +52,59 @@ bool asPredictorEcmwfEra20C::Init() {
 
     // Identify data ID and set the corresponding properties.
     if (IsPressureLevel()) {
-        m_fStr.hasLevelDim = true;
+        _fStr.hasLevelDim = true;
         if (IsGeopotential()) {
-            m_parameter = Geopotential;
-            m_parameterName = "Geopotential";
-            m_fileVarName = "z";
-            m_unit = m2_s2;
+            _parameter = Geopotential;
+            _parameterName = "Geopotential";
+            _fileVarName = "z";
+            _unit = m2_s2;
         } else if (IsAirTemperature()) {
-            m_parameter = AirTemperature;
-            m_parameterName = "Temperature";
-            m_fileVarName = "t";
-            m_unit = degK;
+            _parameter = AirTemperature;
+            _parameterName = "Temperature";
+            _fileVarName = "t";
+            _unit = degK;
         } else if (IsRelativeHumidity()) {
-            m_parameter = RelativeHumidity;
-            m_parameterName = "Relative humidity";
-            m_fileVarName = "r";
-            m_unit = percent;
+            _parameter = RelativeHumidity;
+            _parameterName = "Relative humidity";
+            _fileVarName = "r";
+            _unit = percent;
         } else if (IsVerticalVelocity()) {
-            m_parameter = VerticalVelocity;
-            m_parameterName = "Vertical velocity";
-            m_fileVarName = "w";
-            m_unit = Pa_s;
+            _parameter = VerticalVelocity;
+            _parameterName = "Vertical velocity";
+            _fileVarName = "w";
+            _unit = Pa_s;
         } else {
-            m_parameter = ParameterUndefined;
-            m_parameterName = "Undefined";
-            m_fileVarName = m_dataId;
-            m_unit = UnitUndefined;
+            _parameter = ParameterUndefined;
+            _parameterName = "Undefined";
+            _fileVarName = _dataId;
+            _unit = UnitUndefined;
         }
-        m_fileNamePattern = m_fileVarName + ".nc";
+        _fileNamePattern = _fileVarName + ".nc";
 
     } else if (IsSurfaceLevel()) {
-        m_fStr.hasLevelDim = false;
+        _fStr.hasLevelDim = false;
         if (IsTotalColumnWater()) {
-            m_parameter = TotalColumnWater;
-            m_parameterName = "Total column water";
-            m_fileVarName = "tcw";
-            m_unit = kg_m2;
+            _parameter = TotalColumnWater;
+            _parameterName = "Total column water";
+            _fileVarName = "tcw";
+            _unit = kg_m2;
         } else if (IsTotalPrecipitation()) {
-            m_parameter = Precipitation;
-            m_parameterName = "Total precipitation";
-            m_fileVarName = "tp";
-            m_unit = m;
+            _parameter = Precipitation;
+            _parameterName = "Total precipitation";
+            _fileVarName = "tp";
+            _unit = m;
         } else if (IsSeaLevelPressure()) {
-            m_parameter = Pressure;
-            m_parameterName = "Sea level pressure";
-            m_fileVarName = "msl";
-            m_unit = Pa;
+            _parameter = Pressure;
+            _parameterName = "Sea level pressure";
+            _fileVarName = "msl";
+            _unit = Pa;
         } else {
-            m_parameter = ParameterUndefined;
-            m_parameterName = "Undefined";
-            m_fileVarName = m_dataId;
-            m_unit = UnitUndefined;
+            _parameter = ParameterUndefined;
+            _parameterName = "Undefined";
+            _fileVarName = _dataId;
+            _unit = UnitUndefined;
         }
-        m_fileNamePattern = m_fileVarName + ".nc";
+        _fileNamePattern = _fileVarName + ".nc";
 
     } else {
         wxLogError(_("level type not implemented for this reanalysis dataset."));
@@ -111,27 +112,27 @@ bool asPredictorEcmwfEra20C::Init() {
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
-                   m_datasetName);
+    if (_fileNamePattern.IsEmpty() || _fileVarName.IsEmpty()) {
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), _dataId,
+                   _datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
-                   m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), _dataId,
+                   _datasetName);
         return false;
     }
 
     // Set to initialized
-    m_initialized = true;
+    _initialized = true;
 
     return true;
 }
 
 void asPredictorEcmwfEra20C::ListFiles(asTimeArray& timeArray) {
-    m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
+    _files.push_back(GetFullDirectoryPath() + _fileNamePattern);
 }
 
 void asPredictorEcmwfEra20C::ConvertToMjd(a1d& time, double refValue) const {

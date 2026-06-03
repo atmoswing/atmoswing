@@ -36,6 +36,10 @@
 
 #include "AtmoSwingMainViewer.h"
 
+#include "asIncludes.h"
+
+#include <wx/fileconf.h>
+
 AtmoSwingFrameViewer::AtmoSwingFrameViewer(wxFrame* frame)
     : asFrameViewer(frame) {
 #if wxUSE_STATUSBAR
@@ -47,9 +51,8 @@ AtmoSwingFrameViewer::AtmoSwingFrameViewer(wxFrame* frame)
 
     // Create log window and file
     delete wxLog::SetActiveTarget(new asLogGui());
-    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"),
-                                  pConfig->ReadBool("/General/DisplayLogWindow", true));
-    Log()->CreateFile("AtmoSwingViewer.log");
+    _logWindow = new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
+    Log()->CreateLogFile("AtmoSwingViewer.log");
 }
 
 void AtmoSwingFrameViewer::OnClose(wxCloseEvent& event) {
@@ -61,6 +64,6 @@ void AtmoSwingFrameViewer::OnQuit(wxCommandEvent& event) {
 }
 
 void AtmoSwingFrameViewer::OnShowLog(wxCommandEvent& event) {
-    wxASSERT(m_logWindow);
-    m_logWindow->Show();
+    wxASSERT(_logWindow);
+    _logWindow->Show();
 }

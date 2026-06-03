@@ -29,8 +29,10 @@
 #define AS_PANEL_PREDICTORS_COLORBAR_H
 
 #include <wx/graphics.h>
+#include <wx/panel.h>
+#include <wx/sizer.h>  // wxBoxSizer
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "vrRenderRasterPredictor.h"
 
 /**
@@ -75,9 +77,9 @@ class asPanelPredictorsColorbarDrawing : public wxPanel {
     void SetRender(vrRenderRasterPredictor* render);
 
   private:
-    wxBitmap* m_bmpColorbar; /**< The bitmap for the colorbar. */
-    wxGraphicsContext* m_gdc; /**< The graphics context. */
-    vrRenderRasterPredictor* m_render; /**< The render. */
+    wxBitmap* _bmpColorbar;           /**< The bitmap for the colorbar. */
+    wxGraphicsContext* _gdc;          /**< The graphics context. */
+    vrRenderRasterPredictor* _render; /**< The render. */
 
     /**
      * Create the colorbar path.
@@ -163,11 +165,11 @@ class asPanelPredictorsColorbar : public wxPanel {
     void SetRender(vrRenderRasterPredictor* render);
 
   private:
-    wxBoxSizer* m_sizerContent; /**< The sizer for the content. */
-    asPanelPredictorsColorbarDrawing* m_panelDrawing; /**< The panel for the drawing. */
-    double m_valMin; /**< The minimum value. */
-    double m_valMax; /**< The maximum value. */
-    double m_step; /**< The step for the ticks. */
+    wxBoxSizer* _sizerContent;                       /**< The sizer for the content. */
+    asPanelPredictorsColorbarDrawing* _panelDrawing; /**< The panel for the drawing. */
+    double _valMin;                                  /**< The minimum value. */
+    double _valMax;                                  /**< The maximum value. */
+    double _step;                                    /**< The step for the ticks. */
 
     /**
      * Paint event.

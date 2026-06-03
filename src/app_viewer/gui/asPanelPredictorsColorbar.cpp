@@ -27,20 +27,22 @@
 
 #include "asPanelPredictorsColorbar.h"
 
+#include "asIncludes.h"
+
 asPanelPredictorsColorbar::asPanelPredictorsColorbar(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                                                      const wxSize& size, long style)
     : wxPanel(parent, id, pos, size, style),
-      m_valMin(0),
-      m_valMax(100),
-      m_step(10) {
-    m_sizerContent = new wxBoxSizer(wxVERTICAL);
-    m_panelDrawing = new asPanelPredictorsColorbarDrawing(this, wxID_ANY, wxDefaultPosition,
-                                                          wxSize(-1, 50 * g_ppiScaleDc), wxTAB_TRAVERSAL);
-    m_sizerContent->Add(m_panelDrawing, 1, wxEXPAND, 0);
+      _valMin(0),
+      _valMax(100),
+      _step(10) {
+    _sizerContent = new wxBoxSizer(wxVERTICAL);
+    _panelDrawing = new asPanelPredictorsColorbarDrawing(this, wxID_ANY, wxDefaultPosition,
+                                                         wxSize(-1, 50 * g_ppiScaleDc), wxTAB_TRAVERSAL);
+    _sizerContent->Add(_panelDrawing, 1, wxEXPAND, 0);
 
-    SetSizer(m_sizerContent);
+    SetSizer(_sizerContent);
     Layout();
-    m_sizerContent->Fit(this);
+    _sizerContent->Fit(this);
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelPredictorsColorbar::OnPaint), nullptr, this);
 }
@@ -50,29 +52,29 @@ asPanelPredictorsColorbar::~asPanelPredictorsColorbar() {
 }
 
 void asPanelPredictorsColorbar::OnPaint(wxPaintEvent& event) {
-    m_panelDrawing->DrawColorbar(m_valMin, m_valMax, m_step);
+    _panelDrawing->DrawColorbar(_valMin, _valMax, _step);
     event.Skip();
 }
 
 void asPanelPredictorsColorbar::SetRange(double valMin, double valMax) {
-    m_valMin = valMin;
-    m_valMax = valMax;
+    _valMin = valMin;
+    _valMax = valMax;
 }
 
 void asPanelPredictorsColorbar::SetStep(double step) {
-    m_step = step;
+    _step = step;
 }
 
 void asPanelPredictorsColorbar::SetRender(vrRenderRasterPredictor* render) {
-    m_panelDrawing->SetRender(render);
+    _panelDrawing->SetRender(render);
 }
 
 asPanelPredictorsColorbarDrawing::asPanelPredictorsColorbarDrawing(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                                                                    const wxSize& size, long style)
     : wxPanel(parent, id, pos, size, style),
-      m_bmpColorbar(nullptr),
-      m_gdc(nullptr),
-      m_render(nullptr) {
+      _bmpColorbar(nullptr),
+      _gdc(nullptr),
+      _render(nullptr) {
     Layout();
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelPredictorsColorbarDrawing::OnPaint), nullptr, this);
@@ -80,22 +82,22 @@ asPanelPredictorsColorbarDrawing::asPanelPredictorsColorbarDrawing(wxWindow* par
 
 asPanelPredictorsColorbarDrawing::~asPanelPredictorsColorbarDrawing() {
     Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelPredictorsColorbarDrawing::OnPaint), nullptr, this);
-    wxDELETE(m_bmpColorbar);
+    wxDELETE(_bmpColorbar);
 }
 
 void asPanelPredictorsColorbarDrawing::DrawColorbar(double valMin, double valMax, double step) {
-    if (!m_render) {
+    if (!_render) {
         return;
     }
 
     wxSize sizePanel = GetSize();
 
-    wxDELETE(m_bmpColorbar);
-    m_bmpColorbar = new wxBitmap(sizePanel.x, sizePanel.y);
-    wxASSERT(m_bmpColorbar);
+    wxDELETE(_bmpColorbar);
+    _bmpColorbar = new wxBitmap(sizePanel.x, sizePanel.y);
+    wxASSERT(_bmpColorbar);
 
     // Create device context
-    wxMemoryDC dc(*m_bmpColorbar);
+    wxMemoryDC dc(*_bmpColorbar);
     wxColor bg = GetBackgroundColour();
     dc.SetBackground(bg);
     dc.Clear();
@@ -124,8 +126,8 @@ void asPanelPredictorsColorbarDrawing::DrawColorbar(double valMin, double valMax
 void asPanelPredictorsColorbarDrawing::OnPaint(wxPaintEvent& event) {
     wxPaintDC dc(this);
 
-    if (m_bmpColorbar != nullptr) {
-        dc.DrawBitmap(*m_bmpColorbar, 0, 0, true);
+    if (_bmpColorbar != nullptr) {
+        dc.DrawBitmap(*_bmpColorbar, 0, 0, true);
     }
 
     Layout();
@@ -154,9 +156,9 @@ void asPanelPredictorsColorbarDrawing::FillColorbar(wxGraphicsContext* gc, wxGra
     wxDouble x, y, w, h;
     path.GetBox(&x, &y, &w, &h);
 
-    wxASSERT(m_render);
-    wxImage::RGBValue startColor = m_render->GetColorFromTable(valMin, valMin, valMax - valMin);
-    wxImage::RGBValue endColor = m_render->GetColorFromTable(valMax, valMin, valMax - valMin);
+    wxASSERT(_render);
+    wxImage::RGBValue startColor = _render->GetColorFromTable(valMin, valMin, valMax - valMin);
+    wxImage::RGBValue endColor = _render->GetColorFromTable(valMax, valMin, valMax - valMin);
 
     wxGraphicsGradientStops stops(wxColour(startColor.red, startColor.green, startColor.blue),
                                   wxColour(endColor.red, endColor.green, endColor.blue));
@@ -164,7 +166,7 @@ void asPanelPredictorsColorbarDrawing::FillColorbar(wxGraphicsContext* gc, wxGra
     for (int i = 1; i < 256; i++) {
         float ratio = float(i) / 256.0f;
         double val = valMin + ratio * (valMax - valMin);
-        wxImage::RGBValue color = m_render->GetColorFromTable(val, valMin, valMax - valMin);
+        wxImage::RGBValue color = _render->GetColorFromTable(val, valMin, valMax - valMin);
         stops.Add(wxColour(color.red, color.green, color.blue), ratio);
     }
 
@@ -199,5 +201,5 @@ void asPanelPredictorsColorbarDrawing::CreateColorbarText(wxGraphicsContext* gc,
 }
 
 void asPanelPredictorsColorbarDrawing::SetRender(vrRenderRasterPredictor* render) {
-    m_render = render;
+    _render = render;
 }

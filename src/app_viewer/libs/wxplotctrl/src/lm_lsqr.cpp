@@ -244,11 +244,11 @@ int LM_LeastSquare::Fit(const double* x0, int init_count) {
     fcn(m_m, m_n, m_x, m_fvec, &iflag);
     printf("initial x\n");
     pmat(1, m_n, m_x);  // display 1 by n matrix
-                        // printf( "initial function\n" ); pmat( 1, m, fvec );
+                      // printf( "initial function\n" ); pmat( 1, m, fvec );
 #endif
 
-    lmdif(m_m, m_n, m_x, m_fvec, m_ftol, m_xtol, m_gtol, m_maxfev, m_epsfcn, m_diag, m_mode, m_factor, s_nprint,
-          &m_info, &m_nfev, m_fjac, m_ldfjac, m_ipvt, m_qtf, wa1, wa2, wa3, wa4);
+    lmdif(m_m, m_n, m_x, m_fvec, m_ftol, m_xtol, m_gtol, m_maxfev, m_epsfcn, m_diag, m_mode, m_factor, s_nprint, &m_info, &m_nfev,
+          m_fjac, m_ldfjac, m_ipvt, m_qtf, wa1, wa2, wa3, wa4);
 
     m_fnorm = enorm(m_m, m_fvec);
 

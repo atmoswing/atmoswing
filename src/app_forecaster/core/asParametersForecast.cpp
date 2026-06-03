@@ -27,6 +27,7 @@
  */
 
 #include "asParametersForecast.h"
+#include "asIncludes.h"
 
 #include "asFileParametersForecast.h"
 
@@ -38,7 +39,7 @@ asParametersForecast::~asParametersForecast() {}
 void asParametersForecast::AddStep() {
     asParameters::AddStep();
     ParamsStepForecast stepForecast;
-    m_stepsForecast.push_back(stepForecast);
+    _stepsForecast.push_back(stepForecast);
 }
 
 void asParametersForecast::AddPredictorForecast(ParamsStepForecast& step) {
@@ -190,7 +191,7 @@ bool asParametersForecast::ParseAnalogDatesParams(asFileParametersForecast& file
             SetAnalogsNumberLeadTimeVector(iStep, fileParams.GetVectorInt(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "predictor") {
             AddPredictor(iStep);
-            AddPredictorForecast(m_stepsForecast[iStep]);
+            AddPredictorForecast(_stepsForecast[iStep]);
             SetPreprocess(iStep, iPtor, false);
             SetPreload(iStep, iPtor, false);
             wxXmlNode* nodeParam = nodeParamBlock->GetChildren();
@@ -476,7 +477,7 @@ bool asParametersForecast::InputsOK() const {
 void asParametersForecast::InitValues() {
     // Initialize the parameters values with the first values of the vectors
     for (int i = 0; i < GetStepsNb(); i++) {
-        SetAnalogsNumber(i, m_stepsForecast[i].analogsNumberLeadTime[0]);
+        SetAnalogsNumber(i, _stepsForecast[i].analogsNumberLeadTime[0]);
     }
 
     // Fixes and checks
@@ -487,13 +488,13 @@ void asParametersForecast::InitValues() {
 
 void asParametersForecast::SetLeadTimeDaysVector(const vd& val) {
     wxASSERT(val.size() > 0);
-    m_leadTimeDaysVect = val;
+    _leadTimeDaysVect = val;
 }
 
 void asParametersForecast::SetLeadTimeHoursVector(const vd& val) {
     wxASSERT(val.size() > 0);
     for (float hour : val) {
-        m_leadTimeDaysVect.push_back(hour / 24.0);
+        _leadTimeDaysVect.push_back(hour / 24.0);
     }
 }
 
@@ -501,10 +502,10 @@ void asParametersForecast::SetAnalogsNumberLeadTimeVector(int iStep, const vi& v
     wxASSERT(val.size() > 0);
 
     if (val.size() == GetLeadTimeDaysVector().size()) {
-        m_stepsForecast[iStep].analogsNumberLeadTime = val;
+        _stepsForecast[iStep].analogsNumberLeadTime = val;
     } else if (val.size() == 1) {
         for (int i = 0; i < GetLeadTimeDaysVector().size(); i++) {
-            m_stepsForecast[iStep].analogsNumberLeadTime.push_back(val[0]);
+            _stepsForecast[iStep].analogsNumberLeadTime.push_back(val[0]);
         }
     } else {
         wxLogError(_("The lengths of the lead time and the number of analogs arrays are not consistent."));
@@ -513,81 +514,81 @@ void asParametersForecast::SetAnalogsNumberLeadTimeVector(int iStep, const vi& v
 
 void asParametersForecast::SetPredictorArchiveDatasetId(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_stepsForecast[iStep].predictors[iPtor].archiveDatasetId = val;
+    _stepsForecast[iStep].predictors[iPtor].archiveDatasetId = val;
 }
 
 void asParametersForecast::SetPredictorArchiveDataId(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_stepsForecast[iStep].predictors[iPtor].archiveDataId = val;
+    _stepsForecast[iStep].predictors[iPtor].archiveDataId = val;
 }
 
 void asParametersForecast::SetPredictorRealtimeDatasetId(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_stepsForecast[iStep].predictors[iPtor].realtimeDatasetId = val;
+    _stepsForecast[iStep].predictors[iPtor].realtimeDatasetId = val;
 }
 
 void asParametersForecast::SetPredictorRealtimeDataId(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_stepsForecast[iStep].predictors[iPtor].realtimeDataId = val;
+    _stepsForecast[iStep].predictors[iPtor].realtimeDataId = val;
 }
 
 wxString asParametersForecast::GetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre) const {
-    wxASSERT(m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() > iPre);
-    return m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre];
+    wxASSERT(_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() > iPre);
+    return _stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre];
 }
 
 void asParametersForecast::SetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= iPre + 1) {
-        m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre] = val;
+    if (_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= iPre + 1) {
+        _stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre] = val;
     } else {
-        m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.push_back(val);
+        _stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.push_back(val);
     }
 }
 
 wxString asParametersForecast::GetPreprocessArchiveDataId(int iStep, int iPtor, int iPre) const {
-    wxASSERT(m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() > iPre);
-    return m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds[iPre];
+    wxASSERT(_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() > iPre);
+    return _stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds[iPre];
 }
 
 void asParametersForecast::SetPreprocessArchiveDataId(int iStep, int iPtor, int iPre, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= iPre + 1) {
-        m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds[iPre] = val;
+    if (_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= iPre + 1) {
+        _stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds[iPre] = val;
     } else {
-        m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.push_back(val);
+        _stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.push_back(val);
     }
 }
 
 wxString asParametersForecast::GetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre) const {
-    wxASSERT(m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() > iPre);
-    return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds[iPre];
+    wxASSERT(_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() > iPre);
+    return _stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds[iPre];
 }
 
 void asParametersForecast::SetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= iPre + 1) {
-        m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds[iPre] = val;
+    if (_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= iPre + 1) {
+        _stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds[iPre] = val;
     } else {
-        m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.push_back(val);
+        _stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.push_back(val);
     }
 }
 
 wxString asParametersForecast::GetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre) const {
-    wxASSERT(m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= iPre + 1);
-    return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds[iPre];
+    wxASSERT(_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= iPre + 1);
+    return _stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds[iPre];
 }
 
 void asParametersForecast::SetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= iPre + 1) {
-        m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds[iPre] = val;
+    if (_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= iPre + 1) {
+        _stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds[iPre] = val;
     } else {
-        m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.push_back(val);
+        _stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.push_back(val);
     }
 }
 
 void asParametersForecast::SetPredictandDatabase(const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_predictandDatabase = val;
+    _predictandDatabase = val;
 }

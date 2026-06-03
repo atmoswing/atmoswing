@@ -29,33 +29,34 @@
 #include "asCatalogPredictands.h"
 
 #include "asFileXml.h"
+#include "asIncludes.h"
 
 asCatalogPredictands::asCatalogPredictands(const wxString& filePath)
     : wxObject(),
-      m_catalogFilePath(filePath),
-      m_setId(wxEmptyString),
-      m_name(wxEmptyString),
-      m_description(wxEmptyString),
-      m_start(0),
-      m_end(0),
-      m_timeZoneHours(0),
-      m_timeStepHours(0),
-      m_firstTimeStepHour(0),
-      m_dataPath(wxEmptyString),
-      m_coordSys(wxEmptyString),
-      m_parameter(asPredictand::Precipitation),
-      m_unit(asPredictand::mm),
-      m_temporalResolution(asPredictand::Daily),
-      m_spatialAggregation(asPredictand::Station) {
+      _catalogFilePath(filePath),
+      _setId(wxEmptyString),
+      _name(wxEmptyString),
+      _description(wxEmptyString),
+      _start(0),
+      _end(0),
+      _timeZoneHours(0),
+      _timeStepHours(0),
+      _firstTimeStepHour(0),
+      _dataPath(wxEmptyString),
+      _coordSys(wxEmptyString),
+      _parameter(asPredictand::Precipitation),
+      _unit(asPredictand::mm),
+      _temporalResolution(asPredictand::Daily),
+      _spatialAggregation(asPredictand::Station) {
     // Get the xml file path
-    if (m_catalogFilePath.IsEmpty()) {
+    if (_catalogFilePath.IsEmpty()) {
         wxLogError(_("No path was given for the predictand catalog."));
     }
 }
 
 bool asCatalogPredictands::Load() {
     // Load xml file
-    asFileXml xmlFile(m_catalogFilePath, asFile::ReadOnly);
+    asFileXml xmlFile(_catalogFilePath, asFile::ReadOnly);
     if (!xmlFile.Open()) return false;
 
     if (!xmlFile.CheckRootElement()) return false;
@@ -67,33 +68,33 @@ bool asCatalogPredictands::Load() {
             wxXmlNode* nodeProp = nodeDataset->GetChildren();
             while (nodeProp) {
                 if (nodeProp->GetName() == "id") {
-                    m_setId = asFileXml::GetString(nodeProp);
+                    _setId = asFileXml::GetString(nodeProp);
                 } else if (nodeProp->GetName() == "name") {
-                    m_name = asFileXml::GetString(nodeProp);
+                    _name = asFileXml::GetString(nodeProp);
                 } else if (nodeProp->GetName() == "description") {
-                    m_description = asFileXml::GetString(nodeProp);
+                    _description = asFileXml::GetString(nodeProp);
                 } else if (nodeProp->GetName() == "parameter") {
-                    m_parameter = asPredictand::StringToParameterEnum(asFileXml::GetString(nodeProp));
+                    _parameter = asPredictand::StringToParameterEnum(asFileXml::GetString(nodeProp));
                 } else if (nodeProp->GetName() == "unit") {
-                    m_unit = asPredictand::StringToUnitEnum(asFileXml::GetString(nodeProp));
+                    _unit = asPredictand::StringToUnitEnum(asFileXml::GetString(nodeProp));
                 } else if (nodeProp->GetName() == "temporal_resolution") {
-                    m_temporalResolution = asPredictand::StringToTemporalResolutionEnum(asFileXml::GetString(nodeProp));
+                    _temporalResolution = asPredictand::StringToTemporalResolutionEnum(asFileXml::GetString(nodeProp));
                 } else if (nodeProp->GetName() == "spatial_aggregation") {
-                    m_spatialAggregation = asPredictand::StringToSpatialAggregationEnum(asFileXml::GetString(nodeProp));
+                    _spatialAggregation = asPredictand::StringToSpatialAggregationEnum(asFileXml::GetString(nodeProp));
                 } else if (nodeProp->GetName() == "time_zone") {
-                    m_timeZoneHours = asFileXml::GetFloat(nodeProp);
+                    _timeZoneHours = asFileXml::GetFloat(nodeProp);
                 } else if (nodeProp->GetName() == "start") {
-                    m_start = asTime::GetTimeFromString(asFileXml::GetString(nodeProp), guess);
+                    _start = asTime::GetTimeFromString(asFileXml::GetString(nodeProp), guess);
                 } else if (nodeProp->GetName() == "end") {
-                    m_end = asTime::GetTimeFromString(asFileXml::GetString(nodeProp), guess);
+                    _end = asTime::GetTimeFromString(asFileXml::GetString(nodeProp), guess);
                 } else if (nodeProp->GetName() == "first_time_step") {
-                    m_firstTimeStepHour = asFileXml::GetFloat(nodeProp);
+                    _firstTimeStepHour = asFileXml::GetFloat(nodeProp);
                 } else if (nodeProp->GetName() == "path") {
-                    m_dataPath = asFileXml::GetString(nodeProp);
+                    _dataPath = asFileXml::GetString(nodeProp);
                 } else if (nodeProp->GetName() == "nan") {
-                    m_nan.push_back(asFileXml::GetString(nodeProp));
+                    _nan.push_back(asFileXml::GetString(nodeProp));
                 } else if (nodeProp->GetName() == "coordinate_system") {
-                    m_coordSys = asFileXml::GetString(nodeProp);
+                    _coordSys = asFileXml::GetString(nodeProp);
                 } else if (nodeProp->GetName() == "stations") {
                     wxXmlNode* nodeData = nodeProp->GetChildren();
                     while (nodeData) {
@@ -142,7 +143,7 @@ bool asCatalogPredictands::Load() {
 
                                 nodeDetail = nodeDetail->GetNext();
                             }
-                            m_stations.push_back(station);
+                            _stations.push_back(station);
 
                         } else {
                             xmlFile.UnknownNode(nodeData);
@@ -166,34 +167,37 @@ bool asCatalogPredictands::Load() {
     }
 
     // Get the timestep
-    switch (m_temporalResolution) {
+    switch (_temporalResolution) {
         case (asPredictand::Daily):
-            m_timeStepHours = 24.0;
+            _timeStepHours = 24.0;
             break;
         case (asPredictand::SixHourly):
-            m_timeStepHours = 6.0;
+            _timeStepHours = 6.0;
             break;
         case (asPredictand::Hourly):
-            m_timeStepHours = 1.0;
+            _timeStepHours = 1.0;
             break;
         case (asPredictand::OneHourlyMTW):
-            m_timeStepHours = 1.0;
+            _timeStepHours = 1.0;
             break;
         case (asPredictand::ThreeHourlyMTW):
-            m_timeStepHours = 3.0;
+            _timeStepHours = 3.0;
             break;
         case (asPredictand::SixHourlyMTW):
-            m_timeStepHours = 6.0;
+            _timeStepHours = 6.0;
             break;
         case (asPredictand::TwelveHourlyMTW):
-            m_timeStepHours = 12.0;
+            _timeStepHours = 12.0;
             break;
         default:
             wxFAIL;
-            m_timeStepHours = 0;
+            _timeStepHours = 0;
     }
 
-    xmlFile.Close();
+    if (!xmlFile.Close()) {
+        wxLogError(_("Failed closing the catalog XML file."));
+        return false;
+    }
 
     return true;
 }

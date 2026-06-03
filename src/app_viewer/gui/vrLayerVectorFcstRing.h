@@ -29,16 +29,9 @@
 #ifndef VR_LAYER_VECTORS_FCST_RING_H
 #define VR_LAYER_VECTORS_FCST_RING_H
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-// Include wxWidgets' headers
-#ifndef WX_PRECOMP
+#include <wx/log.h>  // wxLogWarning (inline SetMaxValue)
 
-#include <wx/wx.h>
-
-#endif
-
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "vrlayervector.h"
 
 class vrRender;
@@ -59,7 +52,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Add a feature to the layer.
-     * 
+     *
      * @param geometry The geometry of the feature.
      * @param data The data of the feature.
      * @return The feature ID.
@@ -68,7 +61,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Set the maximum value of the forecast.
-     * 
+     *
      * @param val The maximum value.
      */
     void SetMaxValue(double val) {
@@ -78,15 +71,15 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
                   "increased."));
             val = 0.1;
         }
-        m_valueMax = val;
+        _valueMax = val;
     }
 
   protected:
-    double m_valueMax; /**< The maximum value of the forecast. */
+    double _valueMax; /**< The maximum value of the forecast. */
 
     /**
      * Draw the point (vroomgis function).
-     * 
+     *
      * @param dc The device context.
      * @param feature The feature.
      * @param geometry The geometry.
@@ -100,7 +93,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Create the path for the ring.
-     * 
+     *
      * @param path The path.
      * @param center The center of the ring.
      * @param segmentsTotNb The total number of segments.
@@ -110,7 +103,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Create the path for the tick.
-     * 
+     *
      * @param path The path.
      * @param center The center of the ring.
      * @param segmentsTotNb The total number of segments.
@@ -120,7 +113,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Create the path aroung the ring.
-     * 
+     *
      * @param path The path.
      * @param center The center of the ring.
      */
@@ -128,7 +121,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
 
     /**
      * Paint the path.
-     * 
+     *
      * @param gdc The graphics context.
      * @param path The path.
      * @param value The value.

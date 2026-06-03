@@ -28,6 +28,6 @@
 
 #include "asGlobVarsOptimizer.h"
 
-bool g_local = false;
-int g_runNb = 0;
+#include "asIncludes.h"
+
 bool g_resumePreviousRun = false;

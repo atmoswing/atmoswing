@@ -28,7 +28,9 @@
 #ifndef AS_RESULTS_FORECAST_AGGREGATOR_H
 #define AS_RESULTS_FORECAST_AGGREGATOR_H
 
-#include "asIncludes.h"
+#include <wx/arrstr.h>  // wxArrayString
+
+#include "asHeadersBase.h"
 #include "asResultsForecast.h"
 
 class asResultsForecastAggregator : public wxObject {
@@ -107,8 +109,8 @@ class asResultsForecastAggregator : public wxObject {
 
   protected:
   private:
-    vector<vector<asResultsForecast*> > m_forecasts;
-    vector<vector<vector<asResultsForecast*> > > m_pastForecasts;
+    vector<vector<asResultsForecast*> > _forecasts;
+    vector<vector<vector<asResultsForecast*> > > _pastForecasts;
 };
 
 #endif

@@ -27,6 +27,7 @@
  */
 
 #include "asScoreDF0.h"
+#include "asIncludes.h"
 
 asScoreDF0::asScoreDF0()
     : asScore(asScore::DF0, _("Difference of F(0)"), _("Absolute difference of the frequency of null precipitations."),

@@ -29,7 +29,6 @@
 #ifndef AS_TOTAL_SCORE_TS_H
 #define AS_TOTAL_SCORE_TS_H
 
-#include "asIncludes.h"
 #include "asTotalScore.h"
 
 class asTotalScoreTS : public asTotalScore {

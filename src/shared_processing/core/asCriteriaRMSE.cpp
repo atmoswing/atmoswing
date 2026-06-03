@@ -27,10 +27,11 @@
  */
 
 #include "asCriteriaRMSE.h"
+#include "asIncludes.h"
 
 asCriteriaRMSE::asCriteriaRMSE()
     : asCriteria("RMSE", _("Root Mean Square Error"), Asc) {
-    m_canUseInline = true;
+    _canUseInline = true;
 }
 
 asCriteriaRMSE::~asCriteriaRMSE() = default;
@@ -45,7 +46,7 @@ float asCriteriaRMSE::Assess(const a2f& refData, const a2f& evalData, int rowsNb
 
     float mse = 0;
 
-    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+    if (!_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
         mse = (evalData - refData).pow(2).sum() / (float)refData.size();
 
     } else {

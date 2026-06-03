@@ -28,9 +28,14 @@
 
 #include "asFramePreferencesViewer.h"
 
+#include "asIncludes.h"
+
+#include <wx/fileconf.h>
+
+
 asFramePreferencesViewer::asFramePreferencesViewer(wxWindow* parent, asWorkspace* workspace, wxWindowID id)
     : asFramePreferencesViewerVirtual(parent, id),
-      m_workspace(workspace) {
+      _workspace(workspace) {
     SetLabel(_("Preferences"));
 
     LoadPreferences();
@@ -55,9 +60,9 @@ void asFramePreferencesViewer::LoadPreferences() {
     pConfig = wxFileConfig::Get();
 
     // Fix the color of the file/dir pickers
-    wxColour col = m_notebookBase->GetThemeBackgroundColour();
+    wxColour col = _notebookBase->GetThemeBackgroundColour();
     if (col.IsOk()) {
-        m_dirPickerForecastResults->SetBackgroundColour(col);
+        _dirPickerForecastResults->SetBackgroundColour(col);
     }
 
     /*
@@ -65,74 +70,74 @@ void asFramePreferencesViewer::LoadPreferences() {
      */
 
     // Directories
-    m_dirPickerForecastResults->SetPath(m_workspace->GetForecastsDirectory());
+    _dirPickerForecastResults->SetPath(_workspace->GetForecastsDirectory());
 
     // Forecast display
-    wxString colorbarMaxValue = asStrF("%g", m_workspace->GetColorbarMaxValue());
-    m_textCtrlColorbarMaxValue->SetValue(colorbarMaxValue);
-    wxString pastDaysNb = asStrF("%d", m_workspace->GetTimeSeriesPlotPastDaysNb());
-    m_textCtrlPastDaysNb->SetValue(pastDaysNb);
+    wxString colorbarMaxValue = asStrF("%g", _workspace->GetColorbarMaxValue());
+    _textCtrlColorbarMaxValue->SetValue(colorbarMaxValue);
+    wxString pastDaysNb = asStrF("%d", _workspace->GetTimeSeriesPlotPastDaysNb());
+    _textCtrlPastDaysNb->SetValue(pastDaysNb);
 
     // Alarms panel
-    int alarmsReturnPeriod = m_workspace->GetAlarmsPanelReturnPeriod();
+    int alarmsReturnPeriod = _workspace->GetAlarmsPanelReturnPeriod();
     switch (alarmsReturnPeriod) {
         case 2:
-            m_choiceAlarmsReturnPeriod->SetSelection(0);
+            _choiceAlarmsReturnPeriod->SetSelection(0);
             break;
         case 5:
-            m_choiceAlarmsReturnPeriod->SetSelection(1);
+            _choiceAlarmsReturnPeriod->SetSelection(1);
             break;
         case 10:
-            m_choiceAlarmsReturnPeriod->SetSelection(2);
+            _choiceAlarmsReturnPeriod->SetSelection(2);
             break;
         case 20:
-            m_choiceAlarmsReturnPeriod->SetSelection(3);
+            _choiceAlarmsReturnPeriod->SetSelection(3);
             break;
         case 50:
-            m_choiceAlarmsReturnPeriod->SetSelection(4);
+            _choiceAlarmsReturnPeriod->SetSelection(4);
             break;
         case 100:
-            m_choiceAlarmsReturnPeriod->SetSelection(5);
+            _choiceAlarmsReturnPeriod->SetSelection(5);
             break;
         default:
-            m_choiceAlarmsReturnPeriod->SetSelection(2);
+            _choiceAlarmsReturnPeriod->SetSelection(2);
     }
-    wxString alarmsQuantile = asStrF("%g", m_workspace->GetAlarmsPanelQuantile());
-    m_textCtrlAlarmsQuantile->SetValue(alarmsQuantile);
+    wxString alarmsQuantile = asStrF("%g", _workspace->GetAlarmsPanelQuantile());
+    _textCtrlAlarmsQuantile->SetValue(alarmsQuantile);
 
     // Max length
-    int maxLengthDailyVal = m_workspace->GetTimeSeriesMaxLengthDaily();
+    int maxLengthDailyVal = _workspace->GetTimeSeriesMaxLengthDaily();
     wxString maxLengthDaily = wxEmptyString;
     if (maxLengthDailyVal > 0) {
         maxLengthDaily = asStrF("%d", maxLengthDailyVal);
     }
-    m_textCtrlMaxLengthDaily->SetValue(maxLengthDaily);
+    _textCtrlMaxLengthDaily->SetValue(maxLengthDaily);
 
-    int maxLengthSubDailyVal = m_workspace->GetTimeSeriesMaxLengthSubDaily();
+    int maxLengthSubDailyVal = _workspace->GetTimeSeriesMaxLengthSubDaily();
     wxString maxLengthSubDaily = wxEmptyString;
     if (maxLengthSubDailyVal > 0) {
         maxLengthSubDaily = asStrF("%d", maxLengthSubDailyVal);
     }
-    m_textCtrlMaxLengthSubDaily->SetValue(maxLengthSubDaily);
+    _textCtrlMaxLengthSubDaily->SetValue(maxLengthSubDaily);
 
     /*
      * Paths
      */
 
-    m_textCtrlDatasetId1->SetValue(m_workspace->GetPredictorId(1, "Generic_ECMWF_ERA5"));
-    m_dirPickerDataset1->SetPath(m_workspace->GetPredictorDir(1));
-    m_textCtrlDatasetId2->SetValue(m_workspace->GetPredictorId(2, "Generic_NCEP_R1"));
-    m_dirPickerDataset2->SetPath(m_workspace->GetPredictorDir(2));
-    m_textCtrlDatasetId3->SetValue(m_workspace->GetPredictorId(3, "NWS_GFS"));
-    m_dirPickerDataset3->SetPath(m_workspace->GetPredictorDir(3));
-    m_textCtrlDatasetId4->SetValue(m_workspace->GetPredictorId(4, "ECMWF_IFS"));
-    m_dirPickerDataset4->SetPath(m_workspace->GetPredictorDir(4));
-    m_textCtrlDatasetId5->SetValue(m_workspace->GetPredictorId(5));
-    m_dirPickerDataset5->SetPath(m_workspace->GetPredictorDir(5));
-    m_textCtrlDatasetId6->SetValue(m_workspace->GetPredictorId(6));
-    m_dirPickerDataset6->SetPath(m_workspace->GetPredictorDir(6));
-    m_textCtrlDatasetId7->SetValue(m_workspace->GetPredictorId(7));
-    m_dirPickerDataset7->SetPath(m_workspace->GetPredictorDir(7));
+    _textCtrlDatasetId1->SetValue(_workspace->GetPredictorId(1, "Generic_ECMWF_ERA5"));
+    _dirPickerDataset1->SetPath(_workspace->GetPredictorDir(1));
+    _textCtrlDatasetId2->SetValue(_workspace->GetPredictorId(2, "Generic_NCEP_R1"));
+    _dirPickerDataset2->SetPath(_workspace->GetPredictorDir(2));
+    _textCtrlDatasetId3->SetValue(_workspace->GetPredictorId(3, "NWS_GFS"));
+    _dirPickerDataset3->SetPath(_workspace->GetPredictorDir(3));
+    _textCtrlDatasetId4->SetValue(_workspace->GetPredictorId(4, "ECMWF_IFS"));
+    _dirPickerDataset4->SetPath(_workspace->GetPredictorDir(4));
+    _textCtrlDatasetId5->SetValue(_workspace->GetPredictorId(5));
+    _dirPickerDataset5->SetPath(_workspace->GetPredictorDir(5));
+    _textCtrlDatasetId6->SetValue(_workspace->GetPredictorId(6));
+    _dirPickerDataset6->SetPath(_workspace->GetPredictorDir(6));
+    _textCtrlDatasetId7->SetValue(_workspace->GetPredictorId(7));
+    _dirPickerDataset7->SetPath(_workspace->GetPredictorDir(7));
 
     /*
      * Colors
@@ -141,10 +146,11 @@ void asFramePreferencesViewer::LoadPreferences() {
     wxString dirData = asConfig::GetShareDir();
     wxString colorDir = dirData + DS + "atmoswing" + DS + "color_tables";
 
-    m_filePickerColorZ->SetPath(pConfig->Read("/ColorTable/GeopotentialHeight", colorDir + DS + "NEO_grav_anom.act"));
-    m_filePickerColorPwat->SetPath(pConfig->Read("/ColorTable/PrecipitableWater", colorDir + DS + "NEO_soil_moisture.act"));
-    m_filePickerColorRh->SetPath(pConfig->Read("/ColorTable/RelativeHumidity", colorDir + DS + "NEO_soil_moisture.act"));
-    m_filePickerColorSh->SetPath(pConfig->Read("/ColorTable/SpecificHumidity", colorDir + DS + "NEO_soil_moisture.act"));
+    _filePickerColorZ->SetPath(pConfig->Read("/ColorTable/GeopotentialHeight", colorDir + DS + "NEO_grav_anom.act"));
+    _filePickerColorPwat->SetPath(
+        pConfig->Read("/ColorTable/PrecipitableWater", colorDir + DS + "NEO_soil_moisture.act"));
+    _filePickerColorRh->SetPath(pConfig->Read("/ColorTable/RelativeHumidity", colorDir + DS + "NEO_soil_moisture.act"));
+    _filePickerColorSh->SetPath(pConfig->Read("/ColorTable/SpecificHumidity", colorDir + DS + "NEO_soil_moisture.act"));
 
     /*
      * General
@@ -154,49 +160,49 @@ void asFramePreferencesViewer::LoadPreferences() {
     long locale = pConfig->ReadLong("/General/Locale", (long)wxLANGUAGE_ENGLISH);
     switch (locale) {
         case (long)wxLANGUAGE_ENGLISH:
-            m_choiceLocale->SetSelection(0);
+            _choiceLocale->SetSelection(0);
             break;
         case (long)wxLANGUAGE_FRENCH:
-            m_choiceLocale->SetSelection(1);
+            _choiceLocale->SetSelection(1);
             break;
         default:
-            m_choiceLocale->SetSelection(0);
+            _choiceLocale->SetSelection(0);
     }
 
     // Log
     long logLevel = pConfig->ReadLong("/General/LogLevel", 1);
     if (logLevel == 1) {
-        m_radioBtnLogLevel1->SetValue(true);
+        _radioBtnLogLevel1->SetValue(true);
     } else if (logLevel == 2) {
-        m_radioBtnLogLevel2->SetValue(true);
+        _radioBtnLogLevel2->SetValue(true);
     } else if (logLevel == 3) {
-        m_radioBtnLogLevel3->SetValue(true);
+        _radioBtnLogLevel3->SetValue(true);
     } else {
-        m_radioBtnLogLevel1->SetValue(true);
+        _radioBtnLogLevel1->SetValue(true);
     }
-    m_checkBoxDisplayLogWindow->SetValue(pConfig->ReadBool("/General/DisplayLogWindow", false));
+    _checkBoxDisplayLogWindow->SetValue(pConfig->ReadBool("/General/DisplayLogWindow", false));
 
     // Proxy
-    m_checkBoxProxy->SetValue(pConfig->ReadBool("/Internet/UsesProxy", false));
-    m_textCtrlProxyAddress->SetValue(pConfig->Read("/Internet/ProxyAddress", wxEmptyString));
-    m_textCtrlProxyPort->SetValue(pConfig->Read("/Internet/ProxyPort", wxEmptyString));
-    m_textCtrlProxyUser->SetValue(pConfig->Read("/Internet/ProxyUser", wxEmptyString));
-    m_textCtrlProxyPasswd->SetValue(pConfig->Read("/Internet/ProxyPasswd", wxEmptyString));
+    _checkBoxProxy->SetValue(pConfig->ReadBool("/Internet/UsesProxy", false));
+    _textCtrlProxyAddress->SetValue(pConfig->Read("/Internet/ProxyAddress", wxEmptyString));
+    _textCtrlProxyPort->SetValue(pConfig->Read("/Internet/ProxyPort", wxEmptyString));
+    _textCtrlProxyUser->SetValue(pConfig->Read("/Internet/ProxyUser", wxEmptyString));
+    _textCtrlProxyPasswd->SetValue(pConfig->Read("/Internet/ProxyPasswd", wxEmptyString));
 
     /*
      * Advanced
      */
 
     // Advanced options
-    m_checkBoxMultiInstancesViewer->SetValue(pConfig->ReadBool("/General/MultiInstances", false));
+    _checkBoxMultiInstancesViewer->SetValue(pConfig->ReadBool("/General/MultiInstances", false));
 
     // User directories
     wxString userpath = asConfig::GetUserDataDir();
-    m_staticTextUserDir->SetLabel(userpath);
+    _staticTextUserDir->SetLabel(userpath);
     wxString logpathViewer = asConfig::GetLogDir();
     logpathViewer.Append("AtmoSwingViewer.log");
-    m_staticTextLogFile->SetLabel(logpathViewer);
-    m_staticTextPrefFile->SetLabel(asConfig::GetConfigFilePath("AtmoSwingViewer.ini"));
+    _staticTextLogFile->SetLabel(logpathViewer);
+    _staticTextPrefFile->SetLabel(asConfig::GetConfigFilePath("AtmoSwingViewer.ini"));
 }
 
 void asFramePreferencesViewer::SavePreferences() {
@@ -210,25 +216,25 @@ void asFramePreferencesViewer::SavePreferences() {
      */
 
     // Directories
-    wxString forecastResultsDir = m_dirPickerForecastResults->GetPath();
-    m_workspace->SetForecastsDirectory(forecastResultsDir);
+    wxString forecastResultsDir = _dirPickerForecastResults->GetPath();
+    _workspace->SetForecastsDirectory(forecastResultsDir);
 
     // Forecast display
-    wxString colorbarMaxValue = m_textCtrlColorbarMaxValue->GetValue();
+    wxString colorbarMaxValue = _textCtrlColorbarMaxValue->GetValue();
     double colorbarMaxValueDouble;
     colorbarMaxValue.ToDouble(&colorbarMaxValueDouble);
-    m_workspace->SetColorbarMaxValue(colorbarMaxValueDouble);
-    wxString pastDaysNb = m_textCtrlPastDaysNb->GetValue();
+    _workspace->SetColorbarMaxValue(colorbarMaxValueDouble);
+    wxString pastDaysNb = _textCtrlPastDaysNb->GetValue();
     long pastDaysNbLong;
     if (!pastDaysNb.ToLong(&pastDaysNbLong)) {
-        m_workspace->SetTimeSeriesPlotPastDaysNb(int(pastDaysNbLong));
+        _workspace->SetTimeSeriesPlotPastDaysNb(int(pastDaysNbLong));
     } else {
-        m_workspace->SetTimeSeriesPlotPastDaysNb(5);
+        _workspace->SetTimeSeriesPlotPastDaysNb(5);
     }
 
     // Alarms panel
     int alarmsReturnPeriod;
-    int alarmsReturnPeriodSlct = m_choiceAlarmsReturnPeriod->GetSelection();
+    int alarmsReturnPeriodSlct = _choiceAlarmsReturnPeriod->GetSelection();
     switch (alarmsReturnPeriodSlct) {
         case 0:
             alarmsReturnPeriod = 2;
@@ -251,59 +257,59 @@ void asFramePreferencesViewer::SavePreferences() {
         default:
             alarmsReturnPeriod = 10;
     }
-    m_workspace->SetAlarmsPanelReturnPeriod(alarmsReturnPeriod);
-    wxString alarmsQuantile = m_textCtrlAlarmsQuantile->GetValue();
+    _workspace->SetAlarmsPanelReturnPeriod(alarmsReturnPeriod);
+    wxString alarmsQuantile = _textCtrlAlarmsQuantile->GetValue();
     double alarmsQuantileVal;
     alarmsQuantile.ToDouble(&alarmsQuantileVal);
     if (alarmsQuantileVal > 1) alarmsQuantileVal = 0.9;
     if (alarmsQuantileVal < 0) alarmsQuantileVal = 0.9;
-    m_workspace->SetAlarmsPanelQuantile(alarmsQuantileVal);
+    _workspace->SetAlarmsPanelQuantile(alarmsQuantileVal);
 
     // Max length
-    wxString maxLengthDaily = m_textCtrlMaxLengthDaily->GetValue();
+    wxString maxLengthDaily = _textCtrlMaxLengthDaily->GetValue();
     long maxLengthDailyLong;
     if (!maxLengthDaily.IsEmpty() && maxLengthDaily.ToLong(&maxLengthDailyLong)) {
-        m_workspace->SetTimeSeriesMaxLengthDaily(int(maxLengthDailyLong));
+        _workspace->SetTimeSeriesMaxLengthDaily(int(maxLengthDailyLong));
     } else {
-        m_workspace->SetTimeSeriesMaxLengthDaily(-1);
+        _workspace->SetTimeSeriesMaxLengthDaily(-1);
     }
 
-    wxString maxLengthSubDaily = m_textCtrlMaxLengthSubDaily->GetValue();
+    wxString maxLengthSubDaily = _textCtrlMaxLengthSubDaily->GetValue();
     long maxLengthSubDailyLong;
     if (!maxLengthSubDaily.IsEmpty() && maxLengthSubDaily.ToLong(&maxLengthSubDailyLong)) {
-        m_workspace->SetTimeSeriesMaxLengthSubDaily(int(maxLengthSubDailyLong));
+        _workspace->SetTimeSeriesMaxLengthSubDaily(int(maxLengthSubDailyLong));
     } else {
-        m_workspace->SetTimeSeriesMaxLengthSubDaily(-1);
+        _workspace->SetTimeSeriesMaxLengthSubDaily(-1);
     }
 
     /*
      * Paths
      */
 
-    m_workspace->ClearPredictorDirs();
-    m_workspace->AddPredictorDir(m_textCtrlDatasetId1->GetValue(), m_dirPickerDataset1->GetPath());
-    m_workspace->AddPredictorDir(m_textCtrlDatasetId2->GetValue(), m_dirPickerDataset2->GetPath());
-    m_workspace->AddPredictorDir(m_textCtrlDatasetId3->GetValue(), m_dirPickerDataset3->GetPath());
-    m_workspace->AddPredictorDir(m_textCtrlDatasetId4->GetValue(), m_dirPickerDataset4->GetPath());
-    m_workspace->AddPredictorDir(m_textCtrlDatasetId5->GetValue(), m_dirPickerDataset5->GetPath());
-    m_workspace->AddPredictorDir(m_textCtrlDatasetId6->GetValue(), m_dirPickerDataset6->GetPath());
-    m_workspace->AddPredictorDir(m_textCtrlDatasetId7->GetValue(), m_dirPickerDataset7->GetPath());
+    _workspace->ClearPredictorDirs();
+    _workspace->AddPredictorDir(_textCtrlDatasetId1->GetValue(), _dirPickerDataset1->GetPath());
+    _workspace->AddPredictorDir(_textCtrlDatasetId2->GetValue(), _dirPickerDataset2->GetPath());
+    _workspace->AddPredictorDir(_textCtrlDatasetId3->GetValue(), _dirPickerDataset3->GetPath());
+    _workspace->AddPredictorDir(_textCtrlDatasetId4->GetValue(), _dirPickerDataset4->GetPath());
+    _workspace->AddPredictorDir(_textCtrlDatasetId5->GetValue(), _dirPickerDataset5->GetPath());
+    _workspace->AddPredictorDir(_textCtrlDatasetId6->GetValue(), _dirPickerDataset6->GetPath());
+    _workspace->AddPredictorDir(_textCtrlDatasetId7->GetValue(), _dirPickerDataset7->GetPath());
 
     /*
      * Colors
      */
 
-    pConfig->Write("/ColorTable/GeopotentialHeight", m_filePickerColorZ->GetPath());
-    pConfig->Write("/ColorTable/PrecipitableWater", m_filePickerColorPwat->GetPath());
-    pConfig->Write("/ColorTable/RelativeHumidity", m_filePickerColorRh->GetPath());
-    pConfig->Write("/ColorTable/SpecificHumidity", m_filePickerColorSh->GetPath());
+    pConfig->Write("/ColorTable/GeopotentialHeight", _filePickerColorZ->GetPath());
+    pConfig->Write("/ColorTable/PrecipitableWater", _filePickerColorPwat->GetPath());
+    pConfig->Write("/ColorTable/RelativeHumidity", _filePickerColorRh->GetPath());
+    pConfig->Write("/ColorTable/SpecificHumidity", _filePickerColorSh->GetPath());
 
     /*
      * General
      */
 
     // Locale
-    switch (m_choiceLocale->GetSelection()) {
+    switch (_choiceLocale->GetSelection()) {
         case 0:
             pConfig->Write("/General/Locale", (long)wxLANGUAGE_ENGLISH);
             break;
@@ -316,27 +322,27 @@ void asFramePreferencesViewer::SavePreferences() {
 
     // Log
     long logLevel = 1;
-    if (m_radioBtnLogLevel1->GetValue()) {
+    if (_radioBtnLogLevel1->GetValue()) {
         logLevel = 1;
-    } else if (m_radioBtnLogLevel2->GetValue()) {
+    } else if (_radioBtnLogLevel2->GetValue()) {
         logLevel = 2;
-    } else if (m_radioBtnLogLevel3->GetValue()) {
+    } else if (_radioBtnLogLevel3->GetValue()) {
         logLevel = 3;
     }
     pConfig->Write("/General/LogLevel", logLevel);
-    bool displayLogWindowViewer = m_checkBoxDisplayLogWindow->GetValue();
+    bool displayLogWindowViewer = _checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindowViewer);
 
     // Proxy
-    bool checkBoxProxy = m_checkBoxProxy->GetValue();
+    bool checkBoxProxy = _checkBoxProxy->GetValue();
     pConfig->Write("/Internet/UsesProxy", checkBoxProxy);
-    wxString proxyAddress = m_textCtrlProxyAddress->GetValue();
+    wxString proxyAddress = _textCtrlProxyAddress->GetValue();
     pConfig->Write("/Internet/ProxyAddress", proxyAddress);
-    wxString proxyPort = m_textCtrlProxyPort->GetValue();
+    wxString proxyPort = _textCtrlProxyPort->GetValue();
     pConfig->Write("/Internet/ProxyPort", proxyPort);
-    wxString proxyUser = m_textCtrlProxyUser->GetValue();
+    wxString proxyUser = _textCtrlProxyUser->GetValue();
     pConfig->Write("/Internet/ProxyUser", proxyUser);
-    wxString proxyPasswd = m_textCtrlProxyPasswd->GetValue();
+    wxString proxyPasswd = _textCtrlProxyPasswd->GetValue();
     pConfig->Write("/Internet/ProxyPasswd", proxyPasswd);
 
     /*
@@ -344,12 +350,12 @@ void asFramePreferencesViewer::SavePreferences() {
      */
 
     // Advanced options
-    bool multiViewer = m_checkBoxMultiInstancesViewer->GetValue();
+    bool multiViewer = _checkBoxMultiInstancesViewer->GetValue();
     pConfig->Write("/General/MultiInstances", multiViewer);
 
     GetParent()->Update();
     pConfig->Flush();
-    m_workspace->Save();
+    _workspace->Save();
 }
 
 void asFramePreferencesViewer::SaveAndClose(wxCommandEvent& event) {

@@ -35,7 +35,7 @@
 #include "AtmoSwingViewerGui.h"
 #include "asForecastManager.h"
 #include "asForecastRenderer.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asLeadTimeSwitcher.h"
 #include "asLogWindow.h"
 #include "asPanelSidebarAlarms.h"
@@ -64,7 +64,7 @@ class vroomDropFiles : public wxFileDropTarget {
     bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames) override;
 
   private:
-    asFrameViewer* m_loaderFrame;
+    asFrameViewer* _loaderFrame;
 };
 
 /** Implementing forecastDropFiles */
@@ -77,7 +77,7 @@ class forecastDropFiles : public wxFileDropTarget {
     bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames) override;
 
   private:
-    asFrameViewer* m_loaderFrame;
+    asFrameViewer* _loaderFrame;
 };
 
 class asFrameViewer : public asFrameViewerVirtual {
@@ -93,32 +93,32 @@ class asFrameViewer : public asFrameViewerVirtual {
     bool OpenForecast(const wxArrayString& names);
 
     asWorkspace* GetWorkspace() {
-        return &m_workspace;
+        return &_workspace;
     }
 
   protected:
   private:
-    wxProcess* m_processForecast;
-    vrLayerManager* m_layerManager;
-    vrViewerLayerManager* m_viewerLayerManager;
-    vrViewerDisplay* m_displayCtrl;
-    wxKeyboardState m_keyBoardState;
-    asForecastManager* m_forecastManager;
-    asForecastRenderer* m_forecastViewer;
-    asPanelSidebarGisLayers* m_panelSidebarGisLayers;
-    asPanelSidebarForecasts* m_panelSidebarForecasts;
-    asPanelSidebarStationsList* m_panelSidebarStationsList;
-    asPanelSidebarCaptionForecastDots* m_panelSidebarCaptionForecastDots;
-    asPanelSidebarAnalogDates* m_panelSidebarAnalogDates;
-    asPanelSidebarCaptionForecastRing* m_panelSidebarCaptionForecastRing;
-    asPanelSidebarAlarms* m_panelSidebarAlarms;
-    asLeadTimeSwitcher* m_leadTimeSwitcher;
-    asWorkspace m_workspace;
-    wxFileHistory* m_fileHistory;
-    bool m_launchedPresentForecast;
+    wxProcess* _processForecast;
+    vrLayerManager* _layerManager;
+    vrViewerLayerManager* _viewerLayerManager;
+    vrViewerDisplay* _displayCtrl;
+    wxKeyboardState _keyBoardState;
+    asForecastManager* _forecastManager;
+    asForecastRenderer* _forecastViewer;
+    asPanelSidebarGisLayers* _panelSidebarGisLayers;
+    asPanelSidebarForecasts* _panelSidebarForecasts;
+    asPanelSidebarStationsList* _panelSidebarStationsList;
+    asPanelSidebarCaptionForecastDots* _panelSidebarCaptionForecastDots;
+    asPanelSidebarAnalogDates* _panelSidebarAnalogDates;
+    asPanelSidebarCaptionForecastRing* _panelSidebarCaptionForecastRing;
+    asPanelSidebarAlarms* _panelSidebarAlarms;
+    asLeadTimeSwitcher* _leadTimeSwitcher;
+    asWorkspace _workspace;
+    wxFileHistory* _fileHistory;
+    bool _launchedPresentForecast;
 
 #if defined(__WIN32__)
-    wxCriticalSection m_critSectionViewerLayerManager;
+    wxCriticalSection _critSectionViewerLayerManager;
 #endif
 
     void OpenForecastsFromTmpList();

@@ -28,6 +28,8 @@
 
 #include "asThreadGAs.h"
 
+#include "asIncludes.h"
+
 #ifdef USE_CUDA
 #include "asProcessorCuda.cuh"
 #endif
@@ -35,10 +37,10 @@
 asThreadGAs::asThreadGAs(asMethodOptimizerGAs* optimizer, asParametersOptimization* params, float* finalScoreCalib,
                          vf* scoreClimatology)
     : asThread(asThread::MethodOptimizerGAs),
-      m_optimizer(optimizer),
-      m_params(params),
-      m_finalScoreCalib(finalScoreCalib),
-      m_scoreClimatology(scoreClimatology) {}
+      _optimizer(optimizer),
+      _params(params),
+      _finalScoreCalib(finalScoreCalib),
+      _scoreClimatology(scoreClimatology) {}
 
 asThreadGAs::~asThreadGAs() {}
 
@@ -50,61 +52,61 @@ wxThread::ExitCode asThreadGAs::Entry() {
     asResultsScores anaScores;
     asResultsTotalScore anaScoreFinal;
 
-    *m_finalScoreCalib = NAN;
+    *_finalScoreCalib = NAN;
 
     // Set the climatology score value
-    if (!m_scoreClimatology->empty()) {
-        m_optimizer->SetScoreClimatology(*m_scoreClimatology);
+    if (!_scoreClimatology->empty()) {
+        _optimizer->SetScoreClimatology(*_scoreClimatology);
     }
 
     // Process every step one after the other
-    int stepsNb = m_params->GetStepsNb();
+    int stepsNb = _params->GetStepsNb();
 
 #ifdef USE_CUDA
-    asProcessorCuda::SetDevice(m_device);
+    asProcessorCuda::SetDevice(_device);
 #endif
 
     for (int iStep = 0; iStep < stepsNb; iStep++) {
         bool containsNaNs = false;
         if (iStep == 0) {
-            if (!m_optimizer->GetAnalogsDates(anaDates, m_params, iStep, containsNaNs)) {
+            if (!_optimizer->GetAnalogsDates(anaDates, _params, iStep, containsNaNs)) {
                 wxLogError(_("Failed processing the analogs dates"));
-                return NULL;
+                return nullptr;
             }
             anaDatesPrevious = anaDates;
         } else {
-            if (!m_optimizer->GetAnalogsSubDates(anaDates, m_params, anaDatesPrevious, iStep, containsNaNs)) {
+            if (!_optimizer->GetAnalogsSubDates(anaDates, _params, anaDatesPrevious, iStep, containsNaNs)) {
                 wxLogError(_("Failed processing the analogs sub dates"));
-                return NULL;
+                return nullptr;
             }
             anaDatesPrevious = anaDates;
         }
         if (containsNaNs) {
             wxLogError(_("The dates selection contains NaNs"));
-            return NULL;
+            return nullptr;
         }
         if (anaDates.GetTargetDates().size() == 0 || anaDates.GetAnalogsDates().size() == 0 ||
             anaDates.GetAnalogsCriteria().size() == 0) {
             wxLogError(_("The asResultsDates object is empty in asThreadGAs."));
-            return NULL;
+            return nullptr;
         }
     }
-    if (!m_optimizer->GetAnalogsValues(anaValues, m_params, anaDates, stepsNb - 1)) {
+    if (!_optimizer->GetAnalogsValues(anaValues, _params, anaDates, stepsNb - 1)) {
         wxLogError(_("Failed processing the analogs values"));
-        return NULL;
+        return nullptr;
     }
-    if (!m_optimizer->GetAnalogsScores(anaScores, m_params, anaValues, stepsNb - 1)) {
+    if (!_optimizer->GetAnalogsScores(anaScores, _params, anaValues, stepsNb - 1)) {
         wxLogError(_("Failed processing the scores"));
-        return NULL;
+        return nullptr;
     }
-    if (!m_optimizer->GetAnalogsTotalScore(anaScoreFinal, m_params, anaScores, stepsNb - 1)) {
+    if (!_optimizer->GetAnalogsTotalScore(anaScoreFinal, _params, anaScores, stepsNb - 1)) {
         wxLogError(_("Failed processing the total score"));
-        return NULL;
+        return nullptr;
     }
-    *m_finalScoreCalib = anaScoreFinal.GetScore();
+    *_finalScoreCalib = anaScoreFinal.GetScore();
 
-    if (m_scoreClimatology->empty()) {
-        *m_scoreClimatology = m_optimizer->GetScoreClimatology();
+    if (_scoreClimatology->empty()) {
+        *_scoreClimatology = _optimizer->GetScoreClimatology();
     }
 
     return 0;

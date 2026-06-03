@@ -28,6 +28,7 @@
 
 #include <gtest/gtest.h>
 
+#include "asIncludes.h"
 #include "asAreaGridRegular.h"
 #include "asCriteria.h"
 #include "asFileText.h"
@@ -41,7 +42,7 @@ TEST(Criteria, S1) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append(_T("/files/criteria_S1.txt"));
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Create the containers
     int lons = 9;
@@ -50,7 +51,7 @@ TEST(Criteria, S1) {
     a2f refZ500(lats, lons), candZ500(lats, lons);
 
     // Skip the header
-    file.SkipLines(9);
+    (void)(void)file.SkipLines(9);
 
     // Get target data Z1000
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -65,7 +66,7 @@ TEST(Criteria, S1) {
     EXPECT_FLOAT_EQ(137, refZ1000(4, 8));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)(void)file.SkipLines(3);
 
     // Get target data Z500
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -117,12 +118,12 @@ TEST(Criteria, S1) {
     critS1[9] = 61.8f;
 
     // Instantiate the criteria
-    asCriteria* criteria = asCriteria::GetInstance("S1");
+    auto criteria = asCriteria::GetInstance("S1");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
         // Skip coasent
-        file.SkipLines(6);
+        (void)file.SkipLines(6);
 
         // Get candidate data Z1000
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -135,7 +136,7 @@ TEST(Criteria, S1) {
         EXPECT_FLOAT_EQ(checkZ1000[iCand], candZ1000(4, 8));
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data Z500
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -155,8 +156,6 @@ TEST(Criteria, S1) {
         res = (resZ500 + resZ1000) / 2;
         EXPECT_NEAR(critS1[iCand], res, 0.05);
     }
-
-    wxDELETE(criteria);
 }
 
 TEST(Criteria, S1preprocessed) {
@@ -208,8 +207,8 @@ TEST(Criteria, S1preprocessed) {
     EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
-    asCriteria* criteria = asCriteria::GetInstance("S1");
-    asCriteria* criteriaGrads = asCriteria::GetInstance("S1grads");
+    auto criteria = asCriteria::GetInstance("S1");
+    auto criteriaGrads = asCriteria::GetInstance("S1grads");
 
     // Loop on every candidate
     for (int iCand = 1; iCand < candidatesNb; iCand++) {
@@ -226,8 +225,6 @@ TEST(Criteria, S1preprocessed) {
 
     wxDELETE(predictor);
     wxDELETE(gradients);
-    wxDELETE(criteria);
-    wxDELETE(criteriaGrads);
 }
 
 TEST(Criteria, S2preprocessed) {
@@ -279,8 +276,8 @@ TEST(Criteria, S2preprocessed) {
     EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
-    asCriteria* criteria = asCriteria::GetInstance("S2");
-    asCriteria* criteriaGrads = asCriteria::GetInstance("S2grads");
+    auto criteria = asCriteria::GetInstance("S2");
+    auto criteriaGrads = asCriteria::GetInstance("S2grads");
 
     // Loop on every candidate
     for (int iCand = 1; iCand < candidatesNb; iCand++) {
@@ -297,8 +294,6 @@ TEST(Criteria, S2preprocessed) {
 
     wxDELETE(predictor);
     wxDELETE(curv);
-    wxDELETE(criteria);
-    wxDELETE(criteriaGrads);
 }
 
 TEST(Criteria, RSE) {
@@ -316,7 +311,7 @@ TEST(Criteria, RSE) {
     a2f refMulti(lats, 2 * lons), candMulti(lats, 2 * lons);
 
     // Skip the header
-    file.SkipLines(9);
+    (void)file.SkipLines(9);
 
     // Get target data PRWTR12h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -330,7 +325,7 @@ TEST(Criteria, RSE) {
     EXPECT_FLOAT_EQ(20.4f, refPRWTR(1, 1));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)file.SkipLines(3);
 
     // Get target data PRWTR24h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -344,7 +339,7 @@ TEST(Criteria, RSE) {
     EXPECT_FLOAT_EQ(18.1f, refPRWTR(1, 3));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)file.SkipLines(3);
 
     // Get target data RHUM85012h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -358,7 +353,7 @@ TEST(Criteria, RSE) {
     EXPECT_FLOAT_EQ(100, refRHUM850(1, 1));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)file.SkipLines(3);
 
     // Get target data RHUM85024h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -408,12 +403,12 @@ TEST(Criteria, RSE) {
     critRMSE[6] = 1791.5f;
 
     // Instantiate the criteria
-    asCriteria* criteria = asCriteria::GetInstance("RSE");
+    auto criteria = asCriteria::GetInstance("RSE");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
         // Skip coasent
-        file.SkipLines(6);
+        (void)file.SkipLines(6);
 
         // Get candidate data PRWTR12h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -426,7 +421,7 @@ TEST(Criteria, RSE) {
         EXPECT_FLOAT_EQ(checkPRWTR[iCand], candPRWTR(1, 1));
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data PRWTR24h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -436,7 +431,7 @@ TEST(Criteria, RSE) {
         }
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data RHUM85012h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -449,7 +444,7 @@ TEST(Criteria, RSE) {
         EXPECT_FLOAT_EQ(checkRHUM850[iCand], candRHUM850(1, 1));
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data RHUM85024h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -471,8 +466,6 @@ TEST(Criteria, RSE) {
         res = criteria->Assess(refMulti, candMulti, refMulti.rows(), refMulti.cols());
         EXPECT_NEAR(critRMSE[iCand], res, 0.05);
     }
-
-    wxDELETE(criteria);
 }
 
 TEST(Criteria, RMSE) {
@@ -480,7 +473,7 @@ TEST(Criteria, RMSE) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append(_T("/files/criteria_RMSE.txt"));
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Create the containers
     int lons = 2;
@@ -490,7 +483,7 @@ TEST(Criteria, RMSE) {
     a2f refMulti12h(lats, lons), refMulti24h(lats, lons), candMulti12h(lats, lons), candMulti24h(lats, lons);
 
     // Skip the header
-    file.SkipLines(9);
+    (void)file.SkipLines(9);
 
     // Get target data PRWTR12h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -504,7 +497,7 @@ TEST(Criteria, RMSE) {
     EXPECT_FLOAT_EQ(20.4f, refPRWTR12h(1, 1));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)file.SkipLines(3);
 
     // Get target data PRWTR24h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -518,7 +511,7 @@ TEST(Criteria, RMSE) {
     EXPECT_FLOAT_EQ(18.1f, refPRWTR24h(1, 1));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)file.SkipLines(3);
 
     // Get target data RHUM85012h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -532,7 +525,7 @@ TEST(Criteria, RMSE) {
     EXPECT_FLOAT_EQ(100, refRHUM85012h(1, 1));
 
     // Skip coasent
-    file.SkipLines(3);
+    (void)file.SkipLines(3);
 
     // Get target data RHUM85024h
     for (int iLat = 0; iLat < lats; iLat++) {
@@ -579,12 +572,12 @@ TEST(Criteria, RMSE) {
     critRMSE[6] = 632.32f;
 
     // Instantiate the criteria
-    asCriteria* criteria = asCriteria::GetInstance("RMSE");
+    auto criteria = asCriteria::GetInstance("RMSE");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
         // Skip coasent
-        file.SkipLines(6);
+        (void)file.SkipLines(6);
 
         // Get candidate data PRWTR12h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -597,7 +590,7 @@ TEST(Criteria, RMSE) {
         EXPECT_FLOAT_EQ(checkPRWTR12h[iCand], candPRWTR12h(1, 1));
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data PRWTR24h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -607,7 +600,7 @@ TEST(Criteria, RMSE) {
         }
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data RHUM85012h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -620,7 +613,7 @@ TEST(Criteria, RMSE) {
         EXPECT_FLOAT_EQ(checkRHUM85012h[iCand], candRHUM85012h(1, 1));
 
         // Skip coasent
-        file.SkipLines(3);
+        (void)file.SkipLines(3);
 
         // Get candidate data RHUM85024h
         for (int iLat = 0; iLat < lats; iLat++) {
@@ -641,8 +634,6 @@ TEST(Criteria, RMSE) {
         res = (res12h + res24h) / 2;
         EXPECT_NEAR(critRMSE[iCand], res, 0.05);
     }
-
-    wxDELETE(criteria);
 }
 
 TEST(Criteria, RMSEwithNaNs) {
@@ -656,13 +647,11 @@ TEST(Criteria, RMSEwithNaNs) {
     candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
         0.9309f, 0.3185f, 0.2835f, 0.5472f, NAN;
 
-    asCriteria* criteria = asCriteria::GetInstance("RMSE");
+    auto criteria = asCriteria::GetInstance("RMSE");
 
     float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
 
     EXPECT_FLOAT_EQ(0.3766817f, res);
-
-    wxDELETE(criteria);
 }
 
 TEST(Criteria, Differences) {
@@ -797,15 +786,13 @@ TEST(Criteria, Differences) {
     results[9] = 1354;
     results[10] = 908;
 
-    asCriteria* criteriaSAD = asCriteria::GetInstance("SAD");
+    auto criteriaSAD = asCriteria::GetInstance("SAD");
 
     float res;
     for (int i = 0; i < 11; i++) {
         res = criteriaSAD->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
         EXPECT_FLOAT_EQ(results[i], res);
     }
-
-    wxDELETE(criteriaSAD);
 
     // MD
 
@@ -821,14 +808,12 @@ TEST(Criteria, Differences) {
     results[9] = 338.5;
     results[10] = 227;
 
-    asCriteria* criteriaMD = asCriteria::GetInstance("MD");
+    auto criteriaMD = asCriteria::GetInstance("MD");
 
     for (int i = 0; i < 11; i++) {
         res = criteriaMD->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
         EXPECT_FLOAT_EQ(results[i], res);
     }
-
-    wxDELETE(criteriaMD);
 }
 
 TEST(Criteria, DMV) {
@@ -848,15 +833,13 @@ TEST(Criteria, DMV) {
     candDataNaN << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
         0.9309f, 0.3185f, 0.2835f, 0.5472f, NAN;
 
-    asCriteria* criteria = asCriteria::GetInstance("DMV");
+    auto criteria = asCriteria::GetInstance("DMV");
 
     float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
     float resNaN = criteria->Assess(refDataNaN, candDataNaN, refDataNaN.rows(), refDataNaN.cols());
 
     EXPECT_NEAR(0.1243563f, res, 0.00000015f);
     EXPECT_FLOAT_EQ(0.09395714f, resNaN);
-
-    wxDELETE(criteria);
 }
 
 TEST(Criteria, DSD) {
@@ -876,15 +859,13 @@ TEST(Criteria, DSD) {
     candDataNaN << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
         0.9309f, 0.3185f, 0.2835f, 0.5472f, NAN;
 
-    asCriteria* criteria = asCriteria::GetInstance("DSD");
+    auto criteria = asCriteria::GetInstance("DSD");
 
     float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
     float resNaN = criteria->Assess(refDataNaN, candDataNaN, refDataNaN.rows(), refDataNaN.cols());
 
     EXPECT_FLOAT_EQ(0.10311281f, res);
     EXPECT_FLOAT_EQ(0.108632276f, resNaN);
-
-    wxDELETE(criteria);
 }
 
 TEST(Criteria, Gauss2D) {

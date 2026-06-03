@@ -36,14 +36,15 @@
 
 #include "AtmoSwingAppViewer.h"
 #include "AtmoSwingMainViewer.h"
+#include "asIncludes.h"
 
 IMPLEMENT_APP(AtmoSwingAppViewer);
 
+#include <wx/fileconf.h>
 #include <wx/stdpaths.h>
 
 #include "asBitmaps.h"
 #include "asInternet.h"
-#include "vroomgis_bmp.h"
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
     {wxCMD_LINE_SWITCH, "h", "help", "This help text"},
@@ -55,7 +56,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
      "\n \t\t\t\t 1: errors"
      "\n \t\t\t\t 2: warnings"
      "\n \t\t\t\t 3: verbose"},
-    {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+    {wxCMD_LINE_PARAM, nullptr, nullptr, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
     {wxCMD_LINE_NONE}};
 
 bool AtmoSwingAppViewer::OnInit() {
@@ -68,7 +69,7 @@ bool AtmoSwingAppViewer::OnInit() {
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
-    g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
+    g_ppiScaleDc = std::max(double(ppiDC.x) / 96.0, 1.0);
 
     // Set application name and create user directory
     wxString appName = "AtmoSwing Viewer";
@@ -78,20 +79,20 @@ bool AtmoSwingAppViewer::OnInit() {
 
     // Set the local config object
     wxString configFilePath = asConfig::GetConfigFilePath("AtmoSwingViewer.ini");
-    auto pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, configFilePath,
-                                    configFilePath, wxCONFIG_USE_LOCAL_FILE);
+    auto pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, configFilePath, configFilePath,
+                                    wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
     // Set locale
     InitLanguageSupport();
 
     // Check that it is the unique instance
-    m_singleInstanceChecker = nullptr;
+    _singleInstanceChecker = nullptr;
 
     if (!pConfig->ReadBool("/General/MultiInstances", false)) {
         const wxString instanceName = asStrF(wxT("atmoswing-viewer-%s"), wxGetUserId());
-        m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-        if (m_singleInstanceChecker->IsAnotherRunning()) {
+        _singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+        if (_singleInstanceChecker->IsAnotherRunning()) {
             // wxLogError(_("Program already running, aborting."));
             wxMessageBox(_("Program already running, aborting."));
             return false;
@@ -99,9 +100,6 @@ bool AtmoSwingAppViewer::OnInit() {
     }
 
     wxInitAllImageHandlers();
-
-    // Initialize images
-    vroomgis_initialize_images();
 
     // Init cURL
     asInternet::Init();
@@ -236,7 +234,7 @@ void AtmoSwingAppViewer::InitLanguageSupport() {
 
 int AtmoSwingAppViewer::OnExit() {
     // Instance checker
-    wxDELETE(m_singleInstanceChecker);
+    wxDELETE(_singleInstanceChecker);
 
     // Config file (from wxWidgets samples)
     delete wxFileConfig::Set((wxFileConfig*)nullptr);
@@ -247,9 +245,6 @@ int AtmoSwingAppViewer::OnExit() {
 
     // Cleanup cURL
     asInternet::Cleanup();
-
-    // Cleanup images
-    vroomgis_clear_images();
 
     return 1;
 }

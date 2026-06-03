@@ -29,6 +29,21 @@
 #ifndef AS_INC_H
 #define AS_INC_H
 
+// =====================================================================================
+// asIncludes.h — implementation-side omnibus header (use from .cpp files only).
+//
+// SCOPE
+//   Pulls in the project's full surface (wx/wx.h, Eigen, asUtils, asTime, asLog, asConfig,
+//   asThreadsManager, asEvents, GUI dialogs, ...) for .cpp translation units. The cost is
+//   paid once per .cpp; it does NOT cascade through other headers because no project .h
+//   should include this file.
+//
+//   HEADERS must NOT include this file. Use "asHeadersBase.h" instead (small, ~6 wx
+//   headers + project type aliases + enums) and add any extra direct includes (e.g.
+//   <wx/log.h>, <wx/fileconf.h>, "asTime.h") only when needed. asHeadersBase.h is
+//   pulled in below so the shared baseline lives in a single place.
+// =====================================================================================
+
 //---------------------------------
 // Disable some MSVC warnings
 //---------------------------------
@@ -38,6 +53,15 @@
 #pragma warning(disable : 4100)  // C4100: unreferenced formal parameter
 #pragma warning(disable : 4515)  // C4515: namespace uses itself
 #endif
+
+//---------------------------------
+// Shared baseline (wxObject/wxString, project type aliases, project enums, ...)
+// Pulled in from asHeadersBase.h so the .h and .cpp sides share one source of truth.
+// asTypeDefs.h must come before the other project headers, and asHeadersBase.h
+// already ensures that ordering.
+//---------------------------------
+
+#include "asHeadersBase.h"
 
 //---------------------------------
 // Standard wxWidgets headers
@@ -64,12 +88,12 @@
 #ifndef WX_PRECOMP
 
 #include "wx/arrstr.h"
-#include "wx/fileconf.h"
 #include "wx/log.h"
 #include "wx/string.h"
 #include "wx/utils.h"
 
 #endif
+#include "wx/fileconf.h"
 
 #if defined(__WIN32__)
 #include "wx/msw/regconf.h"  // wxRegConfig class
@@ -90,14 +114,12 @@
 
 //---------------------------------
 // Standard library
+// (std::vector and `using std::runtime_error` come from asHeadersBase.h)
 //---------------------------------
 
 #include <algorithm>
 #include <cmath>
 #include <exception>
-#include <vector>
-
-using std::runtime_error;
 
 //---------------------------------
 // Automatic leak detection with Microsoft VisualC++
@@ -119,20 +141,14 @@ using std::runtime_error;
 #endif
 #endif
 
-#ifdef USE_VLD
-#include <vld.h>  // Visual Leak Detector (https://vld.codeplex.com/)
-#endif
-
 #endif
 
 //---------------------------------
 // Some AtmoSwing stuff - frequently used classes
+// (asTypeDefs.h and asGlobEnums.h are pulled in by asHeadersBase.h above.)
 //---------------------------------
 
-#include "asTypeDefs.h" // Must be first
-
 #include "asConfig.h"
-#include "asGlobEnums.h"
 #include "asGlobVars.h"
 #include "asLog.h"
 #include "asThreadsManager.h"
@@ -147,49 +163,13 @@ using std::runtime_error;
 #include "asDialogProgressBar.h"
 #endif
 
-#ifdef APP_FORECASTER
-#include "asGlobVarsForecaster.h"
-#endif
-#ifdef APP_VIEWER
-#include "asGlobVarsViewer.h"
-#endif
-#ifdef APP_OPTIMIZER
+// g_cmdFileName, g_local, g_runNb now live in asGlobVars.h (already pulled in above).
+// Only the Optimizer still has app-specific globals (g_resumePreviousRun).
+#if defined(APP_OPTIMIZER) || defined(UNIT_TESTING)
 #include "asGlobVarsOptimizer.h"
 #endif
-#ifdef APP_DOWNSCALER
-#include "asGlobVarsDownscaler.h"
-#endif
-#ifdef UNIT_TESTING
-#include "asGlobVarsOptimizer.h"
-#include "asGlobVarsViewer.h"
-#endif
+
+// Custom wxEvent declarations live in their own header.
+#include "asEvents.h"
 
 #endif  // AS_INC_H
-
-//---------------------------------
-// Event definition.
-//---------------------------------
-
-wxDECLARE_EVENT(asEVT_STATUS_STARTING, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_RUNNING, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_FAILED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_SUCCESS, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_DOWNLOADING, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_DOWNLOADED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_LOADING, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_LOADED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_SAVING, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_SAVED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_PROCESSING, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_STATUS_PROCESSED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_FORECAST_CLEAR, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_FORECAST_NEW_ADDED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_FORECAST_SELECTION_CHANGED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_FORECAST_SELECT_FIRST, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_STATION_SELECTION_CHANGED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_ANALOG_DATE_SELECTION_CHANGED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_OPEN_WORKSPACE, wxCommandEvent);
-wxDECLARE_EVENT(asEVT_ACTION_OPEN_BATCHFORECASTS, wxCommandEvent);

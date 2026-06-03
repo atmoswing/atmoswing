@@ -30,6 +30,8 @@
 
 #include <gtest/gtest.h>
 
+
+#include "asIncludes.h"
 #include "asCuda.cuh"
 #include "asThread.h"
 
@@ -43,17 +45,17 @@ class asThreadTestCuda : public asThread {
 
   protected:
   private:
-    wxString m_test;
+    wxString _test;
 };
 
 asThreadTestCuda::asThreadTestCuda(const wxString& test)
     : asThread(),
-      m_test(test) {}
+      _test(test) {}
 
 wxThread::ExitCode asThreadTestCuda::Entry() {
-    if (m_test.IsSameAs("simple")) {
+    if (_test.IsSameAs("simple")) {
         CudaProcessSum();
-    } else if (m_test.IsSameAs("streams")) {
+    } else if (_test.IsSameAs("streams")) {
         CudaProcessSumWithStreams();
     } else {
         wxLogError(_("CUDA test name not correctly defined."));

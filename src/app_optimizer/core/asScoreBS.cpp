@@ -27,6 +27,7 @@
  */
 
 #include "asScoreBS.h"
+#include "asIncludes.h"
 
 asScoreBS::asScoreBS()
     : asScore(asScore::BS, _("Brier score"), _("Brier score"), Asc, 0, NAN) {}
@@ -34,7 +35,7 @@ asScoreBS::asScoreBS()
 float asScoreBS::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(!isnan(m_threshold));
+    wxASSERT(!isnan(_threshold));
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
@@ -66,29 +67,29 @@ float asScoreBS::Assess(float obs, const a1f& values, int nbElements) const {
 
     // Search probability
     float probaOccurrence;
-    if (m_threshold < x[0]) {
+    if (_threshold < x[0]) {
         probaOccurrence = 1;
-    } else if (m_threshold > x[nbPredict - 1]) {
+    } else if (_threshold > x[nbPredict - 1]) {
         probaOccurrence = 0;
     } else {
-        int ind = asFindFloor(&x[0], &x[nbPredict - 1], m_threshold);
+        int ind = asFindFloor(&x[0], &x[nbPredict - 1], _threshold);
         if (ind < 0) {
             wxLogError(_("Error processing BS score."));
             return NAN;
         }
-        while (x[ind] <= m_threshold) {
+        while (x[ind] <= _threshold) {
             ind++;
         }
 
-        if (m_threshold > x[ind - 1]) {
-            probaOccurrence = F(ind - 1) + (F(ind) - F(ind - 1)) * (m_threshold - x(ind - 1)) / (x(ind) - x(ind - 1));
+        if (_threshold > x[ind - 1]) {
+            probaOccurrence = F(ind - 1) + (F(ind) - F(ind - 1)) * (_threshold - x(ind - 1)) / (x(ind) - x(ind - 1));
         } else {
             probaOccurrence = F[ind - 1];
         }
     }
 
     float probaObs = 0;
-    if (obs >= m_threshold) {
+    if (obs >= _threshold) {
         probaObs = 1;
     }
 

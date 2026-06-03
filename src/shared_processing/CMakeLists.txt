@@ -29,28 +29,32 @@ list(REMOVE_DUPLICATES src_shared_processing)
 list(APPEND inc_dirs
         "${CMAKE_SOURCE_DIR}/src/shared_base/core/"
         "${PROJECT_SOURCE_DIR}/core/"
-        )
+)
 if (USE_GUI)
     list(APPEND inc_dirs
             "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
-            )
+    )
 endif (USE_GUI)
-include_directories(${inc_dirs})
 
 ##### LIBRARIES
+
+# Own libraries
+add_library(asprocessing STATIC ${src_shared_processing})
+
+# PUBLIC include dirs and link so consumers (apps, tests, benchmark) inherit transitively.
+target_include_directories(asprocessing PUBLIC ${inc_dirs})
 
 # CUDA
 if (USE_CUDA)
     enable_language(CUDA)
     find_package(CUDAToolkit REQUIRED)
-    include_directories(${CUDAToolkit_INCLUDE_DIRS})
     add_library(ascuda STATIC ${src_cuda})
-    target_link_libraries(ascuda CUDA::cudart_static)
-    add_definitions(-DUSE_CUDA)
+    target_include_directories(ascuda PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
+    target_link_libraries(ascuda PRIVATE CUDA::cudart_static atmoswing_compile_options)
+    # USE_CUDA is needed by both asprocessing sources and downstream apps/tests.
+    target_compile_definitions(asprocessing PUBLIC USE_CUDA)
+    target_compile_definitions(ascuda PRIVATE USE_CUDA)
 endif (USE_CUDA)
-
-# Own libraries
-add_library(asprocessing STATIC ${src_shared_processing})
 
 
 ##### DECLARE EXECUTABLE
@@ -63,5 +67,7 @@ endif (USE_CPPCHECK)
 
 ##### LINKING
 
+# asbase PUBLIC-links to atmoswing_compile_options, so consumers of asprocessing inherit
+# the shared compile options transitively through this chain.
 add_dependencies(asprocessing asbase)
-target_link_libraries(asprocessing asbase)
+target_link_libraries(asprocessing PUBLIC asbase)

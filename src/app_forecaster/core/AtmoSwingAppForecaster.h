@@ -34,7 +34,7 @@
 #include <wx/snglinst.h>
 #include <wx/socket.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 #if USE_GUI
 
@@ -65,13 +65,13 @@ class AtmoSwingAppForecaster : public wxAppConsole
     static void InitLanguageSupport();
 
   private:
-    bool m_doConfig; /**< Do we want to configure the software? */
-    bool m_doForecast; /**< Do we want to run the forecast? */
-    bool m_doForecastPast; /**< Do we want to run the forecast for past dates? */
-    double m_forecastDate; /**< Date of the forecast. */
-    int m_forecastPastDays; /**< Number of days to forecast in the past. */
+    bool _doConfig;        /**< Do we want to configure the software? */
+    bool _doForecast;      /**< Do we want to run the forecast? */
+    bool _doForecastPast;  /**< Do we want to run the forecast for past dates? */
+    double _forecastDate;  /**< Date of the forecast. */
+    int _forecastPastDays; /**< Number of days to forecast in the past. */
 #if USE_GUI
-    wxSingleInstanceChecker* m_singleInstanceChecker; /**< The single instance checker. */
+    wxSingleInstanceChecker* _singleInstanceChecker; /**< The single instance checker. */
 #endif
 };
 

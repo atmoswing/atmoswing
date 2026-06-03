@@ -15,9 +15,10 @@
 
 #ifndef WX_PRECOMP
 
+#include "wx/wx.h"  // wx 3.3 slimmed transitive includes; pull in the common GUI classes (wxWindow, wxBitmap, wxPen, wxDC) explicitly
+#include "wx/crt.h"
 #include "wx/textctrl.h"
 #include "wx/valtext.h"  // for wxTextValidator
-#include "wx/crt.h"
 
 #endif  // WX_PRECOMP
 
@@ -159,10 +160,10 @@ bool wxSpinCtrlDbl::Create(wxWindow* parent, wxWindowID id, const wxString& valu
 #endif  // wxCHECK_VER(2, 5, 4)
 
     m_spinButton = new wxSpinButton(this, id, wxPoint(0, 0), wxSize(-1, height),
-                                    wxSP_ARROW_KEYS | wxSP_VERTICAL | wxSP_WRAP);
+                                   wxSP_ARROW_KEYS | wxSP_VERTICAL | wxSP_WRAP);
     m_textCtrl = new wxSpinCtrlDblTextCtrl(this, id, value, wxPoint(0, 0),
-                                           wxSize(width - m_spinButton->GetSize().GetWidth(), height),
-                                           wxTE_NOHIDESEL | wxTE_PROCESS_ENTER, validator);
+                                          wxSize(width - m_spinButton->GetSize().GetWidth(), height),
+                                          wxTE_NOHIDESEL | wxTE_PROCESS_ENTER, validator);
 
     DoSetSize(pos.x, pos.y, width, height);
     SetInitialSize(wxSize(width, height));
@@ -216,8 +217,8 @@ void wxSpinCtrlDbl::DoSetSize(int x, int y, int width, int height, int sizeFlags
 #ifdef __WIN95__  // humm... these used to be different
     if (m_textCtrl) m_textCtrl->SetSize(0, 0, width - spinwidth, height);
     if (m_spinButton) m_spinButton->SetSize(width - spinwidth - 2, 0, -1, height);
-        // m_textCtrl->SetSize( -3, -3, width - spinwidth, height );   // old wxWin < 2.3.2
-        // m_spinButton->SetSize( width-spinwidth-4, -3, -1, height-1 );
+    // m_textCtrl->SetSize( -3, -3, width - spinwidth, height );   // old wxWin < 2.3.2
+    // m_spinButton->SetSize( width-spinwidth-4, -3, -1, height-1 );
 #else
     if (m_textCtrl) m_textCtrl->SetSize(0, 0, width - spinwidth, height);
     if (m_spinButton) m_spinButton->SetSize(width - spinwidth, 0, -1, height);

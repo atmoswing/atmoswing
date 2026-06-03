@@ -27,6 +27,7 @@
  */
 
 #include "asScoreCRPSHersbachDecomp.h"
+#include "asIncludes.h"
 
 asScoreCRPSHersbachDecomp::asScoreCRPSHersbachDecomp()
     : asScore(asScore::CRPSHersbachDecomp, _("CRPS Hersbach decomposition"),

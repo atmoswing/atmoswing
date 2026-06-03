@@ -31,7 +31,9 @@
 
 #include <ctime>
 
-#include "asIncludes.h"
+#include <wx/datetime.h>  // wxDateTime
+
+#include "asHeadersBase.h"
 
 class asTime : public wxObject {
   public:

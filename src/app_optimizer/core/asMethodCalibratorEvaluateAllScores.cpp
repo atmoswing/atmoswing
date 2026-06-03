@@ -28,6 +28,8 @@
 
 #include "asMethodCalibratorEvaluateAllScores.h"
 
+#include "asIncludes.h"
+
 #include "asTotalScore.h"
 #include "asTotalScoreRankHistogramReliability.h"
 
@@ -152,7 +154,6 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
         return false;
     }
 
-    // TODO: Set this as an option
     bool processContingencyScores = false;
     bool processContinuousScores = true;
     bool processRankHistogramScores = true;
@@ -177,7 +178,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
         int stepsNb = params.GetStepsNb();
 
         // Reset the score of the climatology
-        m_scoreClimatology.clear();
+        _scoreClimatology.clear();
 
         /*
          * On the calibration period
@@ -204,8 +205,8 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
                 return false;
             }
         }
-        m_parameters.push_back(params);
-        wxASSERT(m_parameters.size() == 1);
+        _parameters.push_back(params);
+        wxASSERT(_parameters.size() == 1);
 
         if (!GetAnalogsValues(anaValues, &params, anaDates, stepsNb - 1)) return false;
 
@@ -222,7 +223,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
         // Get validation data
         if (params.HasValidationPeriod())  // Validate
         {
-            m_validationMode = true;
+            _validationMode = true;
 
             // Process every step one after the other
             for (int iStep = 0; iStep < stepsNb; iStep++) {
@@ -242,7 +243,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
 
             if (!GetAnalogsValues(anaValuesValid, &params, anaDatesValid, stepsNb - 1)) return false;
 
-            m_validationMode = false;
+            _validationMode = false;
         }
 
         /*
@@ -284,7 +285,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
                         if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1))
                             return false;
                         results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
-                        m_scoreClimatology.clear();
+                        _scoreClimatology.clear();
                     }
                 }
             }
@@ -304,7 +305,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
                     if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1)) return false;
                     if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1)) return false;
                     results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
-                    m_scoreClimatology.clear();
+                    _scoreClimatology.clear();
                 }
             }
 
@@ -322,7 +323,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
                     if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1)) return false;
                     if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1)) return false;
                     results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
-                    m_scoreClimatology.clear();
+                    _scoreClimatology.clear();
                 }
             }
         }
@@ -352,7 +353,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
                 if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1)) return false;
                 if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1)) return false;
                 results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
-                m_scoreClimatology.clear();
+                _scoreClimatology.clear();
             }
         }
 
@@ -365,7 +366,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
 
             int boostrapNb = 10000;
             params.SetScoreName("RankHistogram");
-            m_parameters[0] = params;
+            _parameters[0] = params;
 
             va1f histoCalib;
             va1f histoValid;
@@ -392,7 +393,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
             averageHistoValid = averageHistoValid / boostrapNb;
 
             results.Add(params, averageHistoCalib, averageHistoValid);
-            m_scoreClimatology.clear();
+            _scoreClimatology.clear();
 
             // Reliability of the Verification Rank Histogram (Talagrand Diagram)
             params.SetScoreName("RankHistogramReliability");
@@ -405,7 +406,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration& par
             float resultValid = rankHistogramReliability.AssessOnBootstrap(averageHistoValid, scoresSizeValid);
 
             results.Add(params, resultCalib, resultValid);
-            m_scoreClimatology.clear();
+            _scoreClimatology.clear();
         }
 
         if (!results.Print()) return false;

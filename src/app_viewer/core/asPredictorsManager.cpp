@@ -28,26 +28,27 @@
 #include "asPredictorsManager.h"
 
 #include "asAreaGridFull.h"
+#include "asIncludes.h"
 #include "asPredictorOper.h"
 
 asPredictorsManager::asPredictorsManager(asWorkspace* workspace, bool isTargetPredictor)
-    : m_workspace(workspace),
-      m_predictor(nullptr),
-      m_isTargetPredictor(isTargetPredictor),
-      m_date(-1),
-      m_forecastTimeStepHours(6),
-      m_needsDataReload(true) {}
+    : _workspace(workspace),
+      _predictor(nullptr),
+      _isTargetPredictor(isTargetPredictor),
+      _date(-1),
+      _forecastTimeStepHours(6),
+      _needsDataReload(true) {}
 
 asPredictorsManager::~asPredictorsManager() = default;
 
 asPredictor::Parameter asPredictorsManager::GetParameter() {
-    return m_predictor->GetParameter();
+    return _predictor->GetParameter();
 }
 
 bool asPredictorsManager::LoadData(int selection) {
-    if (!m_needsDataReload) return true;
+    if (!_needsDataReload) return true;
 
-    wxDELETE(m_predictor);
+    wxDELETE(_predictor);
 
     if (selection < 0) {
         return false;
@@ -55,86 +56,84 @@ bool asPredictorsManager::LoadData(int selection) {
 
     asAreaGridFull area = asAreaGridFull(true);
 
-    if (m_isTargetPredictor) {
-        wxString directory = m_workspace->GetPredictorDir(m_datasetIds[selection]);
-        asPredictorOper* predictor = asPredictorOper::GetInstance(m_datasetIds[selection], m_dataIds[selection]);
+    if (_isTargetPredictor) {
+        wxString directory = _workspace->GetPredictorDir(_datasetIds[selection]);
+        asPredictorOper* predictor = asPredictorOper::GetInstance(_datasetIds[selection], _dataIds[selection]);
         if (!predictor) {
-            wxLogError(_("Failed to get an instance of %s from %s."), m_dataIds[selection], m_datasetIds[selection]);
+            wxLogError(_("Failed to get an instance of %s from %s."), _dataIds[selection], _datasetIds[selection]);
             return false;
         }
         predictor->SetPredictorsRealtimeDirectory(directory);
-        predictor->SetRunDateInUse(m_forecastDate);
-        predictor->SetLevel(m_levels[selection]);
+        predictor->SetRunDateInUse(_forecastDate);
+        predictor->SetLevel(_levels[selection]);
 
         double dataHour = 0;
-        if (m_forecastTimeStepHours >= 24) {
-            dataHour = (m_date - floor(m_forecastDate)) * 24 + m_hours[selection];
+        if (_forecastTimeStepHours >= 24) {
+            dataHour = (_date - floor(_forecastDate)) * 24 + _hours[selection];
         } else {
-            dataHour = (m_date - m_forecastDate) * 24 + m_hours[selection];
+            dataHour = (_date - _forecastDate) * 24 + _hours[selection];
         }
 
-        if (!predictor->BuildFilenamesAndUrls(dataHour, m_forecastTimeStepHours, 1)) {
+        if (!predictor->BuildFilenamesAndUrls(dataHour, _forecastTimeStepHours, 1)) {
             return false;
         }
 
-        if (!predictor->Load(area, m_date + m_hours[selection] / 24, m_levels[selection])) {
-            wxLogError(_("The variable %s from %s could not be loaded."), m_dataIds[selection],
-                       m_datasetIds[selection]);
+        if (!predictor->Load(area, _date + _hours[selection] / 24, _levels[selection])) {
+            wxLogError(_("The variable %s from %s could not be loaded."), _dataIds[selection], _datasetIds[selection]);
             wxDELETE(predictor);
             return false;
         }
 
-        m_predictor = predictor;
+        _predictor = predictor;
 
     } else {
-        wxString directory = m_workspace->GetPredictorDir(m_datasetIds[selection]);
-        m_predictor = asPredictor::GetInstance(m_datasetIds[selection], m_dataIds[selection], directory);
-        if (!m_predictor) {
-            wxLogError(_("Failed to get an instance of %s from %s."), m_dataIds[selection], m_datasetIds[selection]);
+        wxString directory = _workspace->GetPredictorDir(_datasetIds[selection]);
+        _predictor = asPredictor::GetInstance(_datasetIds[selection], _dataIds[selection], directory);
+        if (!_predictor) {
+            wxLogError(_("Failed to get an instance of %s from %s."), _dataIds[selection], _datasetIds[selection]);
             return false;
         }
 
-        if (!m_predictor->Load(area, m_date + m_hours[selection] / 24, m_levels[selection])) {
-            wxLogError(_("The variable %s from %s could not be loaded."), m_dataIds[selection],
-                       m_datasetIds[selection]);
-            wxDELETE(m_predictor);
+        if (!_predictor->Load(area, _date + _hours[selection] / 24, _levels[selection])) {
+            wxLogError(_("The variable %s from %s could not be loaded."), _dataIds[selection], _datasetIds[selection]);
+            wxDELETE(_predictor);
             return false;
         }
     }
 
-    if (!m_predictor->HasSingleArray()) {
+    if (!_predictor->HasSingleArray()) {
         wxFAIL;
         return false;
     }
 
-    m_data = m_predictor->GetData(0, 0);
-    m_longitudes = m_predictor->GetLonAxisPt();
-    m_latitudes = m_predictor->GetLatAxisPt();
+    _data = _predictor->GetData(0, 0);
+    _longitudes = _predictor->GetLonAxisPt();
+    _latitudes = _predictor->GetLatAxisPt();
 
-    m_needsDataReload = false;
+    _needsDataReload = false;
 
     return true;
 }
 
 float* asPredictorsManager::GetData() {
-    return m_data->data();
+    return _data->data();
 }
 
 float* asPredictorsManager::GetDataRow(int row) {
-    wxASSERT(m_data->rows() > row);
-    return &(*m_data)(row, 0);
+    wxASSERT(_data->rows() > row);
+    return &(*_data)(row, 0);
 }
 
 float asPredictorsManager::GetDataMin() {
-    return m_data->minCoeff();
+    return _data->minCoeff();
 }
 
 float asPredictorsManager::GetDataMax() {
-    return m_data->maxCoeff();
+    return _data->maxCoeff();
 }
 
 void asPredictorsManager::SetDate(double date) {
-    if (m_date == date) return;
-    m_date = date;
-    m_needsDataReload = true;
+    if (_date == date) return;
+    _date = date;
+    _needsDataReload = true;
 }

@@ -31,7 +31,7 @@
 #include <wx/plotctrl/plotctrl.h>
 
 #include "AtmoSwingViewerGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asPanelPlot : public wxPanel {
   public:
@@ -45,12 +45,12 @@ class asPanelPlot : public wxPanel {
     void ExportSVG();
 
     wxPlotCtrl* GetPlotCtrl() const {
-        wxASSERT(m_plotCtrl);
-        return m_plotCtrl;
+        wxASSERT(_plotCtrl);
+        return _plotCtrl;
     }
 
   protected:
-    wxPlotCtrl* m_plotCtrl;
+    wxPlotCtrl* _plotCtrl;
 
   private:
     void OnPlotCtrl(wxPlotCtrlEvent& event);

@@ -29,7 +29,7 @@
 #ifndef AS_THREAD_METHOD_OPTIMIZER_GAS_H
 #define AS_THREAD_METHOD_OPTIMIZER_GAS_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asMethodOptimizerGAs.h"
 #include "asParametersOptimization.h"
 #include "asThread.h"
@@ -45,10 +45,10 @@ class asThreadGAs : public asThread {
 
   protected:
   private:
-    asMethodOptimizerGAs* m_optimizer;
-    asParametersOptimization* m_params;
-    float* m_finalScoreCalib;
-    vf* m_scoreClimatology;
+    asMethodOptimizerGAs* _optimizer;
+    asParametersOptimization* _params;
+    float* _finalScoreCalib;
+    vf* _scoreClimatology;
 };
 
 #endif

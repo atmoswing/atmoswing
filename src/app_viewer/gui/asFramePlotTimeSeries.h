@@ -38,7 +38,7 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
   public:
     /**
      * Constructor.
-     * 
+     *
      * @param parent Parent window.
      * @param selectedMethod The selected method.
      * @param selectedForecast The selected forecast.
@@ -56,12 +56,12 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
 
     /**
      * Initialize the frame.
-     */ 
+     */
     void Init();
 
     /**
      * Plot the data.
-     * 
+     *
      * @return True if plotted successfully.
      */
     bool Plot();
@@ -80,52 +80,52 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
         Interpretation
     };
 
-    asPanelPlot* m_panelPlot; /**< The plot panel. */
-    asForecastManager* m_forecastManager; /**< The forecast manager. */
-    int m_selectedStation; /**< The selected station (index). */
-    int m_selectedMethod; /**< The selected method (index). */
-    int m_selectedForecast; /**< The selected forecast (index). */
-    float m_maxVal; /**< The maximum value of the time series. */
-    vd m_leadTimes; /**< The lead times. */
+    asPanelPlot* _panelPlot;             /**< The plot panel. */
+    asForecastManager* _forecastManager; /**< The forecast manager. */
+    int _selectedStation;                /**< The selected station (index). */
+    int _selectedMethod;                 /**< The selected method (index). */
+    int _selectedForecast;               /**< The selected forecast (index). */
+    float _maxVal;                       /**< The maximum value of the time series. */
+    vd _leadTimes;                       /**< The lead times. */
 
     /**
      * Event triggered when the frame is closed.
-     * 
+     *
      * @param evt The event.
      */
     void OnClose(wxCloseEvent& evt);
 
     /**
      * Event triggered when the choice of the items to show has changed in the table of content.
-     * 
+     *
      * @param event The command event.
      */
     void OnTocSelectionChange(wxCommandEvent& event) override;
 
     /**
      * Event triggered when the export to TXT button is pressed.
-     * 
+     *
      * @param event The command event.
      */
     void OnExportTXT(wxCommandEvent& event) override;
 
     /**
      * Event triggered when the export to SVG button is pressed.
-     * 
+     *
      * @param event The command event.
      */
     void OnExportSVG(wxCommandEvent& event);
 
     /**
      * Event triggered when the preview button is pressed.
-     * 
+     *
      * @param event The command event.
      */
     void OnPreview(wxCommandEvent& event) override;
 
     /**
      * Event triggered when the print button is pressed.
-     * 
+     *
      * @param event The command event.
      */
     void OnPrint(wxCommandEvent& event) override;
@@ -176,7 +176,7 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
      */
     void PlotClassicQuantiles();
 
-    /** 
+    /**
      * Plot the past forecasts.
      */
     void PlotPastForecasts();

@@ -31,7 +31,7 @@
 
 #include <wx/graphics.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelSidebar.h"
 
 class asPanelSidebarCaptionForecastRingDrawing : public wxPanel {
@@ -47,9 +47,9 @@ class asPanelSidebarCaptionForecastRingDrawing : public wxPanel {
     void DrawColorbar(double maxval);
 
   private:
-    wxBitmap* m_bmpDates;
-    wxBitmap* m_bmpColorbar;
-    wxGraphicsContext* m_gdc;
+    wxBitmap* _bmpDates;
+    wxBitmap* _bmpColorbar;
+    wxGraphicsContext* _gdc;
 
     void CreatePathTick(wxGraphicsPath& path, const wxPoint& center, double scale, int segmentsTotNb, int segmentNb);
 
@@ -82,7 +82,7 @@ class asPanelSidebarCaptionForecastRing : public asPanelSidebar {
     void SetColorbarMax(double maxval);
 
   private:
-    asPanelSidebarCaptionForecastRingDrawing* m_panelDrawing;
+    asPanelSidebarCaptionForecastRingDrawing* _panelDrawing;
 
     void OnPaint(wxPaintEvent& event);
 };

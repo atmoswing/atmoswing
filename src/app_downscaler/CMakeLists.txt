@@ -26,15 +26,14 @@ list(APPEND inc_dirs
         "${CMAKE_SOURCE_DIR}/src/shared_processing/core/"
         "${PROJECT_SOURCE_DIR}/app/"
         "${PROJECT_SOURCE_DIR}/core/"
-        )
+)
 if (USE_GUI)
     list(APPEND inc_dirs
             "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
             "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
             "${PROJECT_SOURCE_DIR}/gui/"
-            )
+    )
 endif (USE_GUI)
-include_directories(${inc_dirs})
 
 
 ##### DECLARE EXECUTABLE
@@ -53,6 +52,8 @@ else (WIN32)
     add_executable(atmoswing-downscaler ${src_app_downscaler})
 endif (WIN32)
 
+target_include_directories(atmoswing-downscaler PRIVATE ${inc_dirs})
+
 # Cppcheck
 if (USE_CPPCHECK)
     add_cppcheck(atmoswing-downscaler STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
@@ -61,31 +62,23 @@ endif (USE_CPPCHECK)
 
 ##### DEFINITIONS
 
-# Global definitions
-if (USE_CUDA)
-    add_definitions(-DUSE_CUDA)
-endif (USE_CUDA)
-
-if (USE_GUI)
-    set_target_properties(atmoswing-downscaler PROPERTIES COMPILE_DEFINITIONS "APP_DOWNSCALER; MINIMAL_LINKS; USE_GUI=1")
-    set_target_properties(asprocessing PROPERTIES COMPILE_DEFINITIONS "USE_GUI=1")
-else (USE_GUI)
-    set_target_properties(atmoswing-downscaler PROPERTIES COMPILE_DEFINITIONS "APP_DOWNSCALER; MINIMAL_LINKS; USE_GUI=0")
-    set_target_properties(asprocessing PROPERTIES COMPILE_DEFINITIONS "USE_GUI=0")
-endif (USE_GUI)
+# APP_DOWNSCALER and MINIMAL_LINKS are target-specific. USE_GUI / USE_CUDA / version macros
+# are inherited from atmoswing_compile_options via the asbase/asprocessing PUBLIC link chain.
+target_compile_definitions(atmoswing-downscaler PRIVATE APP_DOWNSCALER MINIMAL_LINKS)
 
 
 ##### LINKING
 
-target_link_libraries(atmoswing-downscaler asbase)
-target_link_libraries(atmoswing-downscaler asprocessing)
-if (USE_VLD)
-    target_link_libraries(atmoswing-downscaler ${VLD_LIBRARIES})
-endif (USE_VLD)
+target_link_libraries(atmoswing-downscaler PRIVATE asbase asprocessing)
 if (USE_CUDA)
     add_dependencies(atmoswing-downscaler ascuda)
-    target_link_libraries(atmoswing-downscaler ascuda)
+    target_link_libraries(atmoswing-downscaler PRIVATE ascuda)
 endif (USE_CUDA)
+
+
+##### RUNTIME DLL STAGING (Windows)
+
+atmoswing_stage_runtime_dlls(atmoswing-downscaler)
 
 
 ##### INSTALLER

@@ -27,6 +27,7 @@
  */
 
 #include "asScoreCRPSaccurAR.h"
+#include "asIncludes.h"
 
 #include "asScoreCRPSAR.h"
 #include "asScoreCRPSsharpAR.h"

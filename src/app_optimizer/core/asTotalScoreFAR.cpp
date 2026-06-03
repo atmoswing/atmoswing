@@ -27,6 +27,7 @@
  */
 
 #include "asTotalScoreFAR.h"
+#include "asIncludes.h"
 
 asTotalScoreFAR::asTotalScoreFAR(const wxString& periodString)
     : asTotalScore(periodString) {}
@@ -37,7 +38,7 @@ float asTotalScoreFAR::Assess(const a1f& targetDates, const a1f& scores, const a
 
     int countA = 0, countB = 0, countTot = 0;
 
-    switch (m_period) {
+    switch (_period) {
         case (asTotalScore::Total): {
             for (int i = 0; i < scores.size(); i++) {
                 countTot++;
@@ -58,7 +59,7 @@ float asTotalScoreFAR::Assess(const a1f& targetDates, const a1f& scores, const a
         }
 
         default: {
-            throw runtime_error(_("Period not yet implemented in asTotalScoreFAR."));
+            throw std::runtime_error(_("Period not yet implemented in asTotalScoreFAR."));
         }
     }
 

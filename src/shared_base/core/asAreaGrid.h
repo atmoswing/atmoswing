@@ -30,7 +30,6 @@
 #define AS_AREA_GRID_H
 
 #include "asArea.h"
-#include "asIncludes.h"
 
 class asParameters;
 
@@ -83,26 +82,26 @@ class asAreaGrid : public asArea {
     virtual double GetYstep() const = 0;
 
     bool IsRegular() const {
-        return m_isRegular;
+        return _isRegular;
     }
 
     bool IsFull() const {
-        return m_isFull;
+        return _isFull;
     }
 
     void AllowResizeFromData() {
-        m_allowResizeFromData = true;
+        _allowResizeFromData = true;
     }
 
   protected:
-    bool m_isRegular;
-    bool m_isFull;
-    bool m_isInitialized;
-    bool m_allowResizeFromData;
-    a1d m_xAxis;
-    a1d m_yAxis;
-    int m_xPtsNb;
-    int m_yPtsNb;
+    bool _isRegular;
+    bool _isFull;
+    bool _isInitialized;
+    bool _allowResizeFromData;
+    a1d _xAxis;
+    a1d _yAxis;
+    int _xPtsNb;
+    int _yPtsNb;
 
   private:
     bool CreateAxes(const a1d& lons, const a1d& lats, bool getLarger = false);

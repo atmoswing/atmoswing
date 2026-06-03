@@ -29,7 +29,6 @@
 #define AS_CRITERIA_S2grads_H
 
 #include "asCriteriaS1grads.h"
-#include "asIncludes.h"
 
 class asCriteriaS2grads : public asCriteriaS1grads {
   public:

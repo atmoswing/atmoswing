@@ -27,6 +27,9 @@
 
 #include "asFramePredictandDB.h"
 
+#include <wx/fileconf.h>
+
+#include "asIncludes.h"
 #include "asPredictandLightning.h"
 #include "asPredictandPrecipitation.h"
 #include "asPredictandTemperature.h"
@@ -37,15 +40,15 @@ asFramePredictandDB::asFramePredictandDB(wxWindow* parent, wxWindowID id)
 
     // Set the defaults
     wxConfigBase* pConfig = wxFileConfig::Get();
-    m_choiceDataParam->SetSelection((int)0);
+    _choiceDataParam->SetSelection((int)0);
 
-    m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain);
-    m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
+    _panelProcessing = new asPanelProcessingPrecipitation(_panelMain);
+    _sizerProcessing->Add(_panelProcessing, 1, wxALL | wxEXPAND, 5);
 
-    m_filePickerCatalogPath->SetPath(pConfig->Read("/PredictandDBToolbox/CatalogPath", wxEmptyString));
-    m_dirPickerDataDir->SetPath(pConfig->Read("/PredictandDBToolbox/PredictandDataDir", wxEmptyString));
-    m_dirPickerDestinationDir->SetPath(pConfig->Read("/PredictandDBToolbox/DestinationDir", wxEmptyString));
-    m_dirPickerPatternsDir->SetPath(pConfig->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString));
+    _filePickerCatalogPath->SetPath(pConfig->Read("/PredictandDBToolbox/CatalogPath", wxEmptyString));
+    _dirPickerDataDir->SetPath(pConfig->Read("/PredictandDBToolbox/PredictandDataDir", wxEmptyString));
+    _dirPickerDestinationDir->SetPath(pConfig->Read("/PredictandDBToolbox/DestinationDir", wxEmptyString));
+    _dirPickerPatternsDir->SetPath(pConfig->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString));
 
     // Icon
 #ifdef __WXMSW__
@@ -59,13 +62,13 @@ void asFramePredictandDB::OnClose(wxCloseEvent&) {
     // Save as defaults
     wxConfigBase* pConfig = wxFileConfig::Get();
 
-    wxString catalogPath = m_filePickerCatalogPath->GetPath();
+    wxString catalogPath = _filePickerCatalogPath->GetPath();
     pConfig->Write("/PredictandDBToolbox/CatalogPath", catalogPath);
-    wxString predictandDataDir = m_dirPickerDataDir->GetPath();
+    wxString predictandDataDir = _dirPickerDataDir->GetPath();
     pConfig->Write("/PredictandDBToolbox/PredictandDataDir", predictandDataDir);
-    wxString destinationDir = m_dirPickerDestinationDir->GetPath();
+    wxString destinationDir = _dirPickerDestinationDir->GetPath();
     pConfig->Write("/PredictandDBToolbox/DestinationDir", destinationDir);
-    wxString patternsDir = m_dirPickerPatternsDir->GetPath();
+    wxString patternsDir = _dirPickerPatternsDir->GetPath();
     pConfig->Write("/PredictandDBToolbox/PatternsDir", patternsDir);
 
     pConfig->Flush();
@@ -82,10 +85,10 @@ void asFramePredictandDB::FixFrameSize() {
     SetMinSize(wxSize(w, -1));
     SetMaxSize(wxSize(w, -1));
 
-    m_panelMain->Layout();
-    m_sizerMainPanel->Fit(m_panelMain);
+    _panelMain->Layout();
+    _sizerMainPanel->Fit(_panelMain);
     Layout();
-    m_sizerMain->Fit(this);
+    _sizerMain->Fit(this);
 
     GetSize(&w, &h);
     SetMinSize(wxSize(w, h));
@@ -95,20 +98,20 @@ void asFramePredictandDB::FixFrameSize() {
 void asFramePredictandDB::OnDataSelection(wxCommandEvent& event) {
     Freeze();
 
-    m_sizerProcessing->Clear();
-    wxDELETE(m_panelProcessing);
+    _sizerProcessing->Clear();
+    wxDELETE(_panelProcessing);
 
-    switch (m_choiceDataParam->GetSelection()) {
+    switch (_choiceDataParam->GetSelection()) {
         case 0:  // precipitation
         {
-            m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain);
-            m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
+            _panelProcessing = new asPanelProcessingPrecipitation(_panelMain);
+            _sizerProcessing->Add(_panelProcessing, 1, wxALL | wxEXPAND, 5);
             break;
         }
         case 2:  // lightning
         {
-            m_panelProcessing = new asPanelProcessingLightning(m_panelMain);
-            m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
+            _panelProcessing = new asPanelProcessingLightning(_panelMain);
+            _sizerProcessing->Add(_panelProcessing, 1, wxALL | wxEXPAND, 5);
             break;
         }
         default:  // other
@@ -127,22 +130,22 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
 
     try {
         // Get paths
-        wxString catalogFilePath = m_filePickerCatalogPath->GetPath();
+        wxString catalogFilePath = _filePickerCatalogPath->GetPath();
         if (catalogFilePath.IsEmpty()) {
             wxLogError(_("The given path for the predictand catalog is empty."));
             return;
         }
-        wxString pathDataDir = m_dirPickerDataDir->GetPath();
+        wxString pathDataDir = _dirPickerDataDir->GetPath();
         if (pathDataDir.IsEmpty()) {
             wxLogError(_("The given path for the data directory is empty."));
             return;
         }
-        wxString pathDestinationDir = m_dirPickerDestinationDir->GetPath();
+        wxString pathDestinationDir = _dirPickerDestinationDir->GetPath();
         if (pathDestinationDir.IsEmpty()) {
             wxLogError(_("The given path for the output destination is empty."));
             return;
         }
-        wxString pathPatternsDir = m_dirPickerPatternsDir->GetPath();
+        wxString pathPatternsDir = _dirPickerPatternsDir->GetPath();
         if (pathPatternsDir.IsEmpty()) {
             wxLogError(_("The given path for the patterns directory is empty."));
             return;
@@ -150,7 +153,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
 
         // Get temporal resolution
         asPredictand::TemporalResolution temporalResol = asPredictand::Daily;
-        switch (m_choiceDataTempResol->GetSelection()) {
+        switch (_choiceDataTempResol->GetSelection()) {
             case wxNOT_FOUND: {
                 wxLogError(_("Wrong selection of the temporal resolution option."));
                 break;
@@ -191,7 +194,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
 
         // Get temporal resolution
         asPredictand::SpatialAggregation spatialAggr = asPredictand::Station;
-        switch (m_choiceDataSpatAggreg->GetSelection()) {
+        switch (_choiceDataSpatAggreg->GetSelection()) {
             case wxNOT_FOUND: {
                 wxLogError(_("Wrong selection of the spatial aggregation option."));
                 break;
@@ -221,23 +224,23 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
         }
 
         // Get data parameter
-        switch (m_choiceDataParam->GetSelection()) {
+        switch (_choiceDataParam->GetSelection()) {
             case wxNOT_FOUND: {
                 wxLogError(_("Wrong selection of the data parameter option."));
                 break;
             }
             case 0:  // Precipitation
             {
-                wxASSERT(m_panelProcessing);
-                auto panel = dynamic_cast<asPanelProcessingPrecipitation*>(m_panelProcessing);
-                wxASSERT(panel->m_checkBoxReturnPeriod);
-                wxASSERT(panel->m_textCtrlReturnPeriod);
-                wxASSERT(panel->m_checkBoxSqrt);
+                wxASSERT(_panelProcessing);
+                auto panel = dynamic_cast<asPanelProcessingPrecipitation*>(_panelProcessing);
+                wxASSERT(panel->_checkBoxReturnPeriod);
+                wxASSERT(panel->_textCtrlReturnPeriod);
+                wxASSERT(panel->_checkBoxSqrt);
 
                 // Return period
                 double valReturnPeriod = 0;
-                if (panel->m_checkBoxReturnPeriod->GetValue()) {
-                    wxString valReturnPeriodString = panel->m_textCtrlReturnPeriod->GetValue();
+                if (panel->_checkBoxReturnPeriod->GetValue()) {
+                    wxString valReturnPeriodString = panel->_textCtrlReturnPeriod->GetValue();
                     valReturnPeriodString.ToDouble(&valReturnPeriod);
                     if ((valReturnPeriod < 1) | (valReturnPeriod > 1000)) {
                         wxLogError(_("The given return period is not consistent."));
@@ -247,8 +250,8 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
 
                 // Instantiate a predictand object
                 asPredictandPrecipitation predictand(asPredictand::Precipitation, temporalResol, spatialAggr);
-                predictand.SetHasReferenceValues(panel->m_checkBoxReturnPeriod->GetValue());
-                predictand.SetIsSqrt(panel->m_checkBoxSqrt->GetValue());
+                predictand.SetHasReferenceValues(panel->_checkBoxReturnPeriod->GetValue());
+                predictand.SetIsSqrt(panel->_checkBoxSqrt->GetValue());
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
@@ -261,13 +264,13 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
             }
             case 2:  // Lightning
             {
-                wxASSERT(m_panelProcessing);
-                auto panel = dynamic_cast<asPanelProcessingLightning*>(m_panelProcessing);
-                wxASSERT(panel->m_checkBoxLog);
+                wxASSERT(_panelProcessing);
+                auto panel = dynamic_cast<asPanelProcessingLightning*>(_panelProcessing);
+                wxASSERT(panel->_checkBoxLog);
 
                 // Instantiate a predictand object
                 asPredictandLightning predictand(asPredictand::Lightning, temporalResol, spatialAggr);
-                predictand.SetHasReferenceValues(panel->m_checkBoxLog->GetValue());
+                predictand.SetHasReferenceValues(panel->_checkBoxLog->GetValue());
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
@@ -279,7 +282,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent& event) {
             default:
                 wxLogError(_("Wrong selection of the data parameter option."));
         }
-    } catch (runtime_error& e) {
+    } catch (std::runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
     }

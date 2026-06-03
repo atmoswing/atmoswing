@@ -29,7 +29,6 @@
 #ifndef AS_PARAMETERS_OPTIMIZATION_GAS_H
 #define AS_PARAMETERS_OPTIMIZATION_GAS_H
 
-#include "asIncludes.h"
 #include "asParametersOptimization.h"
 
 class asFileParametersOptimization;
@@ -83,56 +82,56 @@ class asParametersOptimizationGAs : public asParametersOptimization {
     void MutateMultiScale(double probability, bool& hasMutated);
 
     int GetChromosomeLength() {
-        return (int)m_chromosomeIndices.size();
+        return (int)_chromosomeIndices.size();
     }
 
     float GetAdaptMutationRate() {
-        return m_adaptMutationRate;
+        return _adaptMutationRate;
     }
 
     void SetAdaptMutationRate(float val) {
-        m_adaptMutationRate = val;
+        _adaptMutationRate = val;
     }
 
     float GetAdaptMutationRadius() {
-        return m_adaptMutationRadius;
+        return _adaptMutationRadius;
     }
 
     void SetAdaptMutationRadius(float val) {
-        m_adaptMutationRadius = val;
+        _adaptMutationRadius = val;
     }
 
     vf GetChromosomeMutationRate() {
-        return m_chromosomeMutationRate;
+        return _chromosomeMutationRate;
     }
 
     void SetChromosomeMutationRate(vf& val) {
-        m_chromosomeMutationRate = val;
+        _chromosomeMutationRate = val;
     }
 
     vf GetChromosomeMutationRadius() {
-        return m_chromosomeMutationRadius;
+        return _chromosomeMutationRadius;
     }
 
     void SetChromosomeMutationRadius(vf& val) {
-        m_chromosomeMutationRadius = val;
+        _chromosomeMutationRadius = val;
     }
 
   protected:
   private:
-    float m_adaptMutationRate;
-    float m_adaptMutationRadius;
-    vi m_chromosomeIndices;
-    vf m_chromosomeMutationRate;
-    vf m_chromosomeMutationRadius;
-    bool m_hasChromosomeMutationRate;
-    bool m_hasChromosomeMutationRadius;
-    int m_timeArrayAnalogsIntervalDaysIteration;
-    int m_timeArrayAnalogsIntervalDaysUpperLimit;
-    int m_timeArrayAnalogsIntervalDaysLowerLimit;
-    bool m_timeArrayAnalogsIntervalDaysLocks;
-    int m_allParametersCount;
-    bool m_parametersListOver;
+    float _adaptMutationRate;
+    float _adaptMutationRadius;
+    vi _chromosomeIndices;
+    vf _chromosomeMutationRate;
+    vf _chromosomeMutationRadius;
+    bool _hasChromosomeMutationRate;
+    bool _hasChromosomeMutationRadius;
+    int _timeArrayAnalogsIntervalDaysIteration;
+    int _timeArrayAnalogsIntervalDaysUpperLimit;
+    int _timeArrayAnalogsIntervalDaysLowerLimit;
+    bool _timeArrayAnalogsIntervalDaysLocks;
+    int _allParametersCount;
+    bool _parametersListOver;
 
     bool IsParamLocked(int index);
 
@@ -156,23 +155,23 @@ class asParametersOptimizationGAs : public asParametersOptimization {
     double GetParameterIteration(int index);
 
     float GetSelfAdaptationMutationRateFromChromosome(int index) {
-        wxASSERT(m_chromosomeMutationRate.size() > index);
-        return m_chromosomeMutationRate[index];
+        wxASSERT(_chromosomeMutationRate.size() > index);
+        return _chromosomeMutationRate[index];
     }
 
     void SetSelfAdaptationMutationRateFromChromosome(int index, float val) {
-        wxASSERT(m_chromosomeMutationRate.size() > index);
-        m_chromosomeMutationRate[index] = val;
+        wxASSERT(_chromosomeMutationRate.size() > index);
+        _chromosomeMutationRate[index] = val;
     }
 
     float GetSelfAdaptationMutationRadiusFromChromosome(int index) {
-        wxASSERT(m_chromosomeMutationRadius.size() > index);
-        return m_chromosomeMutationRadius[index];
+        wxASSERT(_chromosomeMutationRadius.size() > index);
+        return _chromosomeMutationRadius[index];
     }
 
     void SetSelfAdaptationMutationRadiusFromChromosome(int index, float val) {
-        wxASSERT(m_chromosomeMutationRadius.size() > index);
-        m_chromosomeMutationRadius[index] = val;
+        wxASSERT(_chromosomeMutationRadius.size() > index);
+        _chromosomeMutationRadius[index] = val;
     }
 };
 

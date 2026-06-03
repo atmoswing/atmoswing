@@ -30,7 +30,7 @@
 #define AS_FILE_BATCH_FORECASTS_H
 
 #include "asFileXml.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asFileBatchForecasts : public asFileXml {
   public:

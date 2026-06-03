@@ -28,7 +28,6 @@
 #ifndef AS_TOTAL_SCORE_RANK_HISTOGRAM_H
 #define AS_TOTAL_SCORE_RANK_HISTOGRAM_H
 
-#include "asIncludes.h"
 #include "asTotalScore.h"
 
 class asTotalScoreRankHistogram : public asTotalScore {

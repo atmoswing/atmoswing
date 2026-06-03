@@ -29,30 +29,30 @@
 #define AS_WIZARD_WORKSPACE_H
 
 #include "AtmoSwingViewerGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asWorkspace.h"
 
 class asWizardWorkspace : public asWizardWorkspaceVirtual {
   public:
     asWizardWorkspace(wxWindow* parent, wxWindowID id = wxID_ANY);
 
-    ~asWizardWorkspace();
+    ~asWizardWorkspace() override;
 
     wxWizardPage* GetFirstPage() const {
-        return m_pages.Item(0);
+        return _pages.Item(0);
     }
 
     wxWizardPage* GetSecondPage() const {
-        return m_pages.Item(1);
+        return _pages.Item(1);
     }
 
   protected:
-    void OnWizardFinished(wxWizardEvent& event);
+    void OnWizardFinished(wxWizardEvent& event) override;
 
-    void OnLoadExistingWorkspace(wxCommandEvent& event);
+    void OnLoadExistingWorkspace(wxCommandEvent& event) override;
 
   private:
-    asWorkspace m_workspace;
+    asWorkspace _workspace;
 };
 
 #endif

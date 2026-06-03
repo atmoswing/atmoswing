@@ -28,9 +28,10 @@
 #ifndef VR_RENDER_RASTER_PREDICTOR_H
 #define VR_RENDER_RASTER_PREDICTOR_H
 
+#include <wx/filename.h>  // wxFileName
 #include <wx/image.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPredictor.h"
 #include "vrrender.h"
 
@@ -77,9 +78,9 @@ class vrRenderRasterPredictor : public vrRenderRaster {
 
   protected:
   private:
-    wxFileName m_colorTableFile; /**< The color table file. */
-    a2f m_colorTable; /**< The color table. */
-    asPredictor::Parameter m_parameter; /**< The meteorological parameter. */
+    wxFileName _colorTableFile;        /**< The color table file. */
+    a2f _colorTable;                   /**< The color table. */
+    asPredictor::Parameter _parameter; /**< The meteorological parameter. */
 
     /**
      * Parse the color table file.

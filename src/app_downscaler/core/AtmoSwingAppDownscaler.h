@@ -33,7 +33,7 @@
 #include <wx/snglinst.h>
 #include <wx/socket.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 #if USE_GUI
 
@@ -44,7 +44,7 @@ class AtmoSwingAppDownscaler : public wxAppConsole
 #endif
 {
   public:
-    virtual ~AtmoSwingAppDownscaler(){};
+    virtual ~AtmoSwingAppDownscaler() {};
 
     virtual bool OnInit();
 
@@ -75,15 +75,15 @@ class AtmoSwingAppDownscaler : public wxAppConsole
     virtual void OnUnhandledException();
 
   private:
-    wxString m_downscalingParamsFile;
-    wxString m_downscalingMethod;
-    wxString m_predictandDB;
-    wxString m_predictorsArchiveDir;
-    wxString m_predictorsScenarioDir;
-    vi m_predictandStationIds;
-    bool m_doProcessing;
+    wxString _downscalingParamsFile;
+    wxString _downscalingMethod;
+    wxString _predictandDB;
+    wxString _predictorsArchiveDir;
+    wxString _predictorsScenarioDir;
+    vi _predictandStationIds;
+    bool _doProcessing;
 #if USE_GUI
-    wxSingleInstanceChecker* m_singleInstanceChecker;
+    wxSingleInstanceChecker* _singleInstanceChecker;
 #endif
 };
 

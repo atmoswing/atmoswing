@@ -27,6 +27,7 @@
  */
 
 #include "asScoreMAE.h"
+#include "asIncludes.h"
 
 asScoreMAE::asScoreMAE()
     : asScore(asScore::MAE, _("Mean absolute error"), _("Mean absolute error"), Asc, 0, NAN) {}
@@ -60,14 +61,14 @@ float asScoreMAE::Assess(float obs, const a1f& values, int nbElements) const {
     a1f cleanValues = x.head(nbPredict);
     float value = 0;
 
-    if (m_onMean) {
+    if (_onMean) {
         value = cleanValues.mean();
     } else {
         // Get value for quantile
-        wxASSERT(!isnan(m_quantile));
-        wxASSERT(m_quantile > 0);
-        wxASSERT(m_quantile < 1);
-        value = asGetValueForQuantile(cleanValues, m_quantile);
+        wxASSERT(!isnan(_quantile));
+        wxASSERT(_quantile > 0);
+        wxASSERT(_quantile < 1);
+        value = asGetValueForQuantile(cleanValues, _quantile);
     }
 
     float score = std::abs(obs - value);

@@ -36,6 +36,8 @@
 
 #include "AtmoSwingMainOptimizer.h"
 
+#include "asIncludes.h"
+
 AtmoSwingFrameOptimizer::AtmoSwingFrameOptimizer(wxFrame* frame)
     : asFrameOptimizer(frame) {
 #if wxUSE_STATUSBAR
@@ -50,9 +52,8 @@ AtmoSwingFrameOptimizer::AtmoSwingFrameOptimizer(wxFrame* frame)
 
     // Create log window and file
     delete wxLog::SetActiveTarget(new asLogGui());
-    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"),
-                                  pConfig->ReadBool("/General/DisplayLogWindow", true));
-    Log()->CreateFile("AtmoSwingOptimizer.log");
+    _logWindow = new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
+    Log()->CreateLogFile("AtmoSwingOptimizer.log");
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;

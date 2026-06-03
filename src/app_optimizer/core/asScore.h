@@ -29,7 +29,7 @@
 #ifndef AS_SCORE_H
 #define AS_SCORE_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asScore : public wxObject {
   public:
@@ -91,70 +91,70 @@ class asScore : public wxObject {
     int CleanNans(const a1f& valuesIn, a1f& valuesOut, int nbElements) const;
 
     wxString GetName() const {
-        return m_name;
+        return _name;
     }
 
     wxString GetFullName() const {
-        return m_fullName;
+        return _fullName;
     }
 
     Order GetOrder() const {
-        return m_order;
+        return _order;
     }
 
     float GetScoreClimatology() const {
-        return m_scoreClimatology;
+        return _scoreClimatology;
     }
 
     void SetScoreClimatology(float val) {
-        m_scoreClimatology = val;
+        _scoreClimatology = val;
     }
 
     bool GetOnMean() const {
-        return m_onMean;
+        return _onMean;
     }
 
     void SetOnMean(bool val) {
-        m_onMean = val;
+        _onMean = val;
     }
 
     float GetThreshold() const {
-        return m_threshold;
+        return _threshold;
     }
 
     void SetThreshold(float val) {
-        m_threshold = val;
+        _threshold = val;
     }
 
     float GetQuantile() const {
-        return m_quantile;
+        return _quantile;
     }
 
     void SetQuantile(float val) {
-        m_quantile = val;
+        _quantile = val;
     }
 
     bool UsesClimatology() const {
-        return m_usesClimatology;
+        return _usesClimatology;
     }
 
     bool SingleValue() const {
-        return m_singleValue;
+        return _singleValue;
     }
 
   protected:
-    Score m_score;
-    wxString m_name;
-    wxString m_fullName;
-    Order m_order;
-    float m_scaleBest;
-    float m_scaleWorst;
-    bool m_usesClimatology;
-    bool m_singleValue;
-    bool m_onMean;
-    float m_scoreClimatology;
-    float m_threshold;
-    float m_quantile;
+    Score _score;
+    wxString _name;
+    wxString _fullName;
+    Order _order;
+    float _scaleBest;
+    float _scaleWorst;
+    bool _usesClimatology;
+    bool _singleValue;
+    bool _onMean;
+    float _scoreClimatology;
+    float _threshold;
+    float _quantile;
 
   private:
 };

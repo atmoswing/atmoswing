@@ -32,7 +32,6 @@
 #include <iostream>
 
 #include "asFile.h"
-#include "asIncludes.h"
 
 /**
  * @brief Text file class.
@@ -50,36 +49,36 @@ class asFileText : public asFile {
 
     ~asFileText() override = default;
 
-    bool Open() override;
+    [[nodiscard]] bool Open() override;
 
-    bool Close() override;
+    [[nodiscard]] bool Close() override;
 
     void AddContent(const wxString& lineContent = wxEmptyString);
 
-    wxString GetNextLine();
+    [[nodiscard]] wxString GetNextLine();
 
     /**
      * Get the content of the file into a single string (wxString).
      */
-    wxString GetContent();
+    [[nodiscard]] wxString GetContent();
 
-    int GetInt();
+    [[nodiscard]] int GetInt();
 
-    float GetFloat();
+    [[nodiscard]] float GetFloat();
 
-    double GetDouble();
+    [[nodiscard]] double GetDouble();
 
-    bool SkipLines(int linesNb);
+    [[nodiscard]] bool SkipLines(int linesNb);
 
-    bool SkipElements(int elementNb);
+    [[nodiscard]] bool SkipElements(int elementNb);
 
-    bool EndOfFile() const;
+    [[nodiscard]] bool EndOfFile() const;
 
-    static int CountLines(const wxString& filePath);
+    [[nodiscard]] static int CountLines(const wxString& filePath);
 
   protected:
   private:
-    std::fstream m_file; /**< The file stream (not using wxTextFile because it's not optimized for files > 1Mb). */
+    std::fstream _file; /**< The file stream (not using wxTextFile because it's not optimized for files > 1Mb). */
 };
 
 #endif

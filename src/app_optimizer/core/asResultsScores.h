@@ -29,7 +29,7 @@
 #ifndef AS_RESULTS_SCORES_H
 #define AS_RESULTS_SCORES_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asResults.h"
 
 class asParametersScoring;
@@ -43,45 +43,45 @@ class asResultsScores : public asResults {
     void Init(asParametersScoring* params);
 
     a1f& GetTargetDates() {
-        return m_targetDates;
+        return _targetDates;
     }
 
     void SetTargetDates(a1d& refDates) {
-        m_targetDates.resize(refDates.rows());
+        _targetDates.resize(refDates.rows());
         for (int i = 0; i < refDates.size(); i++) {
-            m_targetDates[i] = (float)refDates[i];
-            wxASSERT_MSG(m_targetDates[i] > 1, _("The target time array has unconsistent values"));
+            _targetDates[i] = (float)refDates[i];
+            wxASSERT_MSG(_targetDates[i] > 1, _("The target time array has unconsistent values"));
         }
     }
 
     void SetTargetDates(a1f& refDates) {
-        m_targetDates.resize(refDates.rows());
-        m_targetDates = refDates;
+        _targetDates.resize(refDates.rows());
+        _targetDates = refDates;
     }
 
     a1f& GetScores() {
-        return m_scores;
+        return _scores;
     }
 
     a2f& GetScores2DArray() {
-        return m_scores2DArray;
+        return _scores2DArray;
     }
 
     void SetScores(a1d& scores) {
-        m_scores.resize(scores.rows());
+        _scores.resize(scores.rows());
         for (int i = 0; i < scores.size(); i++) {
-            m_scores[i] = (float)scores[i];
+            _scores[i] = (float)scores[i];
         }
     }
 
     void SetScores(a1f& scores) {
-        m_scores.resize(scores.rows());
-        m_scores = scores;
+        _scores.resize(scores.rows());
+        _scores = scores;
     }
 
     void SetScores2DArray(a2f& scores) {
-        m_scores2DArray.resize(scores.rows(), scores.cols());
-        m_scores2DArray = scores;
+        _scores2DArray.resize(scores.rows(), scores.cols());
+        _scores2DArray = scores;
     }
 
     bool Save();
@@ -92,9 +92,9 @@ class asResultsScores : public asResults {
     void BuildFileName();
 
   private:
-    a1f m_targetDates;
-    a1f m_scores;
-    a2f m_scores2DArray;
+    a1f _targetDates;
+    a1f _scores;
+    a2f _scores2DArray;
 };
 
 #endif

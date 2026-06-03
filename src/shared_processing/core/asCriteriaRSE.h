@@ -30,8 +30,6 @@
 #define AS_CRITERIA_RSE_H
 
 #include "asCriteria.h"
-#include "asIncludes.h"
-
 class asCriteriaRSE : public asCriteria {
   public:
     asCriteriaRSE();

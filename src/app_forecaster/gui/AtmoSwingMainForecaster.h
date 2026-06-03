@@ -31,7 +31,7 @@
 
 #include "AtmoSwingAppForecaster.h"
 #include "asFrameForecaster.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class AtmoSwingFrameForecaster : public asFrameForecaster {
   public:

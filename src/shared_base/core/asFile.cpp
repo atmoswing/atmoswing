@@ -26,12 +26,13 @@
  */
 
 #include "asFile.h"
+#include "asIncludes.h"
 
 asFile::asFile(const wxString& fileName, const FileMode& fileMode)
-    : m_fileName(wxFileName(fileName)),
-      m_fileMode(fileMode),
-      m_exists(false),
-      m_opened(false) {}
+    : _fileName(wxFileName(fileName)),
+      _fileMode(fileMode),
+      _exists(false),
+      _opened(false) {}
 
 asFile::~asFile() {
     DoClose();
@@ -44,102 +45,102 @@ bool asFile::Exists(const wxString& filePath) {
 bool asFile::Find() {
     bool missingFile = false, missingDir = false, mkDir = false, errorRights = false, errorOverwrite = false;
 
-    if (!m_fileName.IsOk()) {
-        wxLogError(_("The file path is not OK %s"), m_fileName.GetFullPath());
+    if (!_fileName.IsOk()) {
+        wxLogError(_("The file path is not OK %s"), _fileName.GetFullPath());
         return false;
     }
 
-    switch (m_fileMode) {
+    switch (_fileMode) {
         case (ReadOnly):
-            if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
+            if (!wxFileName::FileExists(_fileName.GetFullPath())) {
                 missingFile = true;
             } else {
-                m_exists = true;
-                if (!wxFileName::IsFileReadable(m_fileName.GetFullPath())) {
+                _exists = true;
+                if (!wxFileName::IsFileReadable(_fileName.GetFullPath())) {
                     errorRights = true;
                 }
             }
             break;
 
         case (Write):
-            if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
-                if (!wxFileName::DirExists(m_fileName.GetPath())) {
+            if (!wxFileName::FileExists(_fileName.GetFullPath())) {
+                if (!wxFileName::DirExists(_fileName.GetPath())) {
                     mkDir = true;
                 } else {
-                    if (!wxFileName::IsDirWritable(m_fileName.GetPath())) {
+                    if (!wxFileName::IsDirWritable(_fileName.GetPath())) {
                         missingDir = true;
                     }
                 }
             } else {
-                m_exists = true;
-                if (!wxFileName::IsFileWritable(m_fileName.GetFullPath())) {
+                _exists = true;
+                if (!wxFileName::IsFileWritable(_fileName.GetFullPath())) {
                     errorRights = true;
                 }
             }
             break;
 
         case (Replace):
-            if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
-                if (!wxFileName::DirExists(m_fileName.GetPath())) {
+            if (!wxFileName::FileExists(_fileName.GetFullPath())) {
+                if (!wxFileName::DirExists(_fileName.GetPath())) {
                     mkDir = true;
                 } else {
-                    if (!wxFileName::IsDirWritable(m_fileName.GetPath())) {
+                    if (!wxFileName::IsDirWritable(_fileName.GetPath())) {
                         missingDir = true;
                     }
                 }
             } else {
-                m_exists = true;
-                if (!wxFileName::IsFileWritable(m_fileName.GetFullPath())) {
+                _exists = true;
+                if (!wxFileName::IsFileWritable(_fileName.GetFullPath())) {
                     errorRights = true;
                 }
             }
             break;
 
         case (New):
-            if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
-                if (!wxFileName::DirExists(m_fileName.GetPath())) {
+            if (!wxFileName::FileExists(_fileName.GetFullPath())) {
+                if (!wxFileName::DirExists(_fileName.GetPath())) {
                     mkDir = true;
                 } else {
-                    if (!wxFileName::IsDirWritable(m_fileName.GetPath())) {
+                    if (!wxFileName::IsDirWritable(_fileName.GetPath())) {
                         missingDir = true;
                     }
                 }
             } else {
-                m_exists = true;
+                _exists = true;
                 errorOverwrite = true;
             }
             break;
 
         case (Append):
-            if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
+            if (!wxFileName::FileExists(_fileName.GetFullPath())) {
                 missingFile = true;
             } else {
-                m_exists = true;
-                if (!wxFileName::IsFileWritable(m_fileName.GetFullPath())) {
+                _exists = true;
+                if (!wxFileName::IsFileWritable(_fileName.GetFullPath())) {
                     errorRights = true;
                 }
             }
             break;
 
         default:
-            throw runtime_error(_("The file access is not correctly set."));
+            throw std::runtime_error(_("The file access is not correctly set."));
     }
 
     if (mkDir) {
-        if (!wxFileName::Mkdir(m_fileName.GetPath(), wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL)) {
-            wxLogError(_("The directory %s could not be created."), m_fileName.GetPath());
+        if (!wxFileName::Mkdir(_fileName.GetPath(), wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL)) {
+            wxLogError(_("The directory %s could not be created."), _fileName.GetPath());
             return false;
         }
-        m_exists = true;
+        _exists = true;
     }
 
     if (missingFile) {
-        wxLogError(_("Cannot find the file %s"), m_fileName.GetFullPath());
+        wxLogError(_("Cannot find the file %s"), _fileName.GetFullPath());
         return false;
     }
 
     if (missingDir) {
-        wxLogError(_("Cannot find the directory %s"), m_fileName.GetFullPath());
+        wxLogError(_("Cannot find the directory %s"), _fileName.GetFullPath());
         return false;
     }
 
@@ -157,8 +158,7 @@ bool asFile::Find() {
 }
 
 bool asFile::DoClose() {
-    Close();
-    return true;
+    return Close();
 }
 
 bool asFile::Open() {

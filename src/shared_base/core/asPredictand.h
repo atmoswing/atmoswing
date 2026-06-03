@@ -30,7 +30,7 @@
 #define AS_PREDICTAND_H
 
 #include "asFileDat.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asCatalogPredictands;
 
@@ -115,7 +115,7 @@ class asPredictand : public wxObject {
         return nodata;
     }
 
-    virtual float GetReferenceValue(int iStat, double duration, float reference) const {
+    virtual float GetReferenceValue(int /*iStat*/, double /*duration*/, float /*reference*/) const {
         return NAN;
     }
 
@@ -126,112 +126,112 @@ class asPredictand : public wxObject {
     }
 
     wxString GetDatasetId() const {
-        return m_datasetId;
+        return _datasetId;
     }
 
     wxString GetCoordSys() const {
-        return m_coordSys;
+        return _coordSys;
     }
 
     Parameter GetDataParameter() const {
-        return m_parameter;
+        return _parameter;
     }
 
     TemporalResolution GetDataTemporalResolution() const {
-        return m_temporalResolution;
+        return _temporalResolution;
     }
 
     SpatialAggregation GetDataSpatialAggregation() const {
-        return m_spatialAggregation;
+        return _spatialAggregation;
     }
 
     void SetHasReferenceValues(bool val) {
-        m_hasReferenceValues = val;
-        m_hasNormalizedData = val;
+        _hasReferenceValues = val;
+        _hasNormalizedData = val;
     }
 
     int GetStationsNb() const {
-        return m_stationsNb;
+        return _stationsNb;
     }
 
     int GetTimeLength() const {
-        return m_timeLength;
+        return _timeLength;
     }
 
     vwxs& GetStationNamesArray() {
-        return m_stationNames;
+        return _stationNames;
     }
 
     vwxs& GetStationOfficialIdsArray() {
-        return m_stationOfficialIds;
+        return _stationOfficialIds;
     }
 
     a1f& GetStationHeightsArray() {
-        return m_stationHeights;
+        return _stationHeights;
     }
 
     a1i& GetStationsIdArray() {
-        return m_stationIds;
+        return _stationIds;
     }
 
     a1d& GetStationXCoordsArray() {
-        return m_stationXCoords;
+        return _stationXCoords;
     }
 
     a1d& GetStationYCoordsArray() {
-        return m_stationYCoords;
+        return _stationYCoords;
     }
 
     a1f GetDataRawStation(int predictandStationId) const {
         int indexStation = GetStationIndex(predictandStationId);
-        return m_dataRaw.col(indexStation);
+        return _dataRaw.col(indexStation);
     }
 
     a1f GetDataNormalizedStation(int predictandStationId) const {
         int indexStation = GetStationIndex(predictandStationId);
-        if (m_hasNormalizedData) {
-            return m_dataNormalized.col(indexStation);
+        if (_hasNormalizedData) {
+            return _dataNormalized.col(indexStation);
         } else {
-            return m_dataRaw.col(indexStation);
+            return _dataRaw.col(indexStation);
         }
     }
 
     a1d& GetTime() {
-        return m_time;
+        return _time;
     }
 
     int GetStationIndex(int stationId) const;
 
   protected:
     // Single value
-    float m_fileVersion;
-    Parameter m_parameter;
-    TemporalResolution m_temporalResolution;
-    SpatialAggregation m_spatialAggregation;
-    wxString m_datasetId;
-    wxString m_coordSys;
-    double m_timeStepDays;
-    int m_timeLength;
-    int m_stationsNb;
-    double m_dateProcessed;
-    double m_dateStart;
-    double m_dateEnd;
-    bool m_hasNormalizedData;
-    bool m_hasReferenceValues;
+    float _fileVersion;
+    Parameter _parameter;
+    TemporalResolution _temporalResolution;
+    SpatialAggregation _spatialAggregation;
+    wxString _datasetId;
+    wxString _coordSys;
+    double _timeStepDays;
+    int _timeLength;
+    int _stationsNb;
+    double _dateProcessed;
+    double _dateStart;
+    double _dateEnd;
+    bool _hasNormalizedData;
+    bool _hasReferenceValues;
     // Matrix data
-    a2f m_dataRaw;
-    a2f m_dataNormalized;
+    a2f _dataRaw;
+    a2f _dataNormalized;
     // Vector (dim = time)
-    a1d m_time;
+    a1d _time;
     // Vector (dim = stations)
-    vwxs m_stationNames;
-    vwxs m_stationOfficialIds;
-    a1i m_stationIds;
-    a1f m_stationHeights;
-    a1d m_stationXCoords;
-    a1d m_stationYCoords;
-    a1d m_stationStarts;
-    a1d m_stationEnds;
+    vwxs _stationNames;
+    vwxs _stationOfficialIds;
+    a1i _stationIds;
+    a1f _stationHeights;
+    a1d _stationXCoords;
+    a1d _stationYCoords;
+    a1d _stationStarts;
+    a1d _stationEnds;
 
     wxString GetDBFilePathSaving(const wxString& destinationDir) const;
 

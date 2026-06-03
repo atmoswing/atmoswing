@@ -27,6 +27,7 @@
  */
 
 #include "asTotalScoreMean.h"
+#include "asIncludes.h"
 
 asTotalScoreMean::asTotalScoreMean(const wxString& periodString)
     : asTotalScore(periodString) {}
@@ -35,7 +36,7 @@ float asTotalScoreMean::Assess(const a1f& targetDates, const a1f& scores, const 
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(scores.rows() > 1);
 
-    switch (m_period) {
+    switch (_period) {
         case (asTotalScore::Total): {
             int targetDatesLength = targetDates.rows();
 
@@ -57,8 +58,8 @@ float asTotalScoreMean::Assess(const a1f& targetDates, const a1f& scores, const 
             int timeArrayLength = timeArray.GetSize();
 
             // Get first and last common days
-            double firstDay = wxMax((double)targetDates[0], timeArray.GetFirst());
-            double lastDay = wxMin((double)targetDates[targetDatesLength - 1], timeArray.GetLast());
+            double firstDay = std::max((double)targetDates[0], timeArray.GetFirst());
+            double lastDay = std::min((double)targetDates[targetDatesLength - 1], timeArray.GetLast());
             a1d dateTime = timeArray.GetTimeArray();
             int indexStart = asFindClosest(&dateTime(0), &dateTime(timeArrayLength - 1), firstDay);
             int indexEnd = asFindClosest(&dateTime(0), &dateTime(timeArrayLength - 1), lastDay);
@@ -84,7 +85,7 @@ float asTotalScoreMean::Assess(const a1f& targetDates, const a1f& scores, const 
         }
 
         default: {
-            throw runtime_error(_("Period not yet implemented in asTotalScoreMean."));
+            throw std::runtime_error(_("Period not yet implemented in asTotalScoreMean."));
         }
     }
 }

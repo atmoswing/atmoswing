@@ -26,6 +26,7 @@
  */
 
 #include "asPredictorCustomMFvgSynopPacked.h"
+#include "asIncludes.h"
 
 #include <wx/dir.h>
 #include <wx/regex.h>
@@ -36,32 +37,32 @@
 asPredictorCustomMFvgSynopPacked::asPredictorCustomMFvgSynopPacked(const wxString& dataId)
     : asPredictorCustomMFvgSynop(dataId) {
     // Set the basic properties.
-    m_datasetId = "Custom_MeteoFVG_Synop_Packed";
-    m_provider = "ECMWF";
-    m_transformedBy = "Meteo FVG";
-    m_datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
-    m_fStr.hasLevelDim = true;
-    m_fStr.singleTimeStep = false;
-    m_warnMissingFiles = true;
+    _datasetId = "Custom_MeteoFVG_Synop_Packed";
+    _provider = "ECMWF";
+    _transformedBy = "Meteo FVG";
+    _datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
+    _fStr.hasLevelDim = true;
+    _fStr.singleTimeStep = false;
+    _warnMissingFiles = true;
 }
 
 void asPredictorCustomMFvgSynopPacked::ListFiles(asTimeArray& timeArray) {
     // Case 1: single file with the variable name
-    wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".grib";
+    wxString filePath = GetFullDirectoryPath() + _fileVarName + ".grib";
 
     if (wxFileExists(filePath)) {
-        m_files.push_back(filePath);
+        _files.push_back(filePath);
         return;
     }
 
     // Case 2: yearly files
     wxArrayString listFiles;
-    size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, m_dataId + "_*.grib");
+    size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, _dataId + "_*.grib");
 
     if (nbFiles == 0) {
-        nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, m_dataId + ".*.grib");
+        nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, _dataId + ".*.grib");
         if (nbFiles == 0) {
-            throw runtime_error(asStrF(_("No file found for the FVG packed archive (%s/%s)."), m_product, m_dataId));
+            throw std::runtime_error(asStrF(_("No file found for the FVG packed archive (%s/%s)."), _product, _dataId));
         }
     }
 
@@ -85,10 +86,10 @@ void asPredictorCustomMFvgSynopPacked::ListFiles(asTimeArray& timeArray) {
             continue;
         }
 
-        m_files.push_back(listFiles.Item(i));
+        _files.push_back(listFiles.Item(i));
     }
 
-    if (!m_files.empty()) {
+    if (!_files.empty()) {
         return;
     }
 }

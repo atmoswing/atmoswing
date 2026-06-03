@@ -29,7 +29,9 @@
 #ifndef AS_METHOD_OPTIMIZER_H
 #define AS_METHOD_OPTIMIZER_H
 
-#include "asIncludes.h"
+#include <wx/log.h>  // wxLogError (inline Calibrate)
+
+#include "asHeadersBase.h"
 #include "asMethodCalibrator.h"
 #include "asParametersOptimization.h"
 
@@ -42,8 +44,8 @@ class asMethodOptimizer : public asMethodCalibrator {
     bool Manager() override = 0;
 
   protected:
-    int m_paramsNb;
-    int m_iterator;
+    int _paramsNb;
+    int _iterator;
 
     bool Calibrate(asParametersCalibration& params) override {
         wxLogError(_("asMethodOptimizer do optimize, not calibrate..."));
@@ -55,7 +57,7 @@ class asMethodOptimizer : public asMethodCalibrator {
     bool Validate(asParametersOptimization& params);
 
     void IncrementIterator() {
-        m_iterator++;
+        _iterator++;
     }
 
   private:

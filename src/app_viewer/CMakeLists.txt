@@ -3,6 +3,11 @@
 project(viewer)
 
 
+##### DEPENDENCIES
+
+find_package(GDAL REQUIRED)
+find_package(PNG REQUIRED)
+
 ##### SOURCE FILES
 
 # List source files
@@ -19,7 +24,7 @@ list(APPEND src_app_viewer
         ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asResultsForecastAggregator.cpp
         ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asFileParametersForecast.h
         ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asFileParametersForecast.cpp
-        )
+)
 
 # wxPlotCtrl library (and dependences)
 file(GLOB src_lib_wxmathplot_h libs/wxmathplot/*.h)
@@ -47,19 +52,19 @@ list(APPEND inc_dirs
         "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/"
         "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/include/"
         "${PROJECT_SOURCE_DIR}/libs/wxthings/include/"
-        )
-include_directories(${inc_dirs})
+)
 
 
 ##### LIBRARIES
 
-# vroomgis
-FetchContent_MakeAvailable(vroomgis)
-include_directories(${vroomgis_SOURCE_DIR}/vroomgis/src)
-include_directories(${vroomgis_SOURCE_DIR}/vroomgis/art)
-
-# wxplotctrl
+# wxplotctrl (uses wxWidgets headers from atmoswing_compile_options).
 add_library(wxplotctrl STATIC ${src_lib_wxplotctrl})
+target_include_directories(wxplotctrl PUBLIC
+        "${PROJECT_SOURCE_DIR}/libs/wxmathplot/"
+        "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/"
+        "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/include/"
+        "${PROJECT_SOURCE_DIR}/libs/wxthings/include/")
+target_link_libraries(wxplotctrl PRIVATE atmoswing_compile_options)
 
 
 ##### DECLARE EXECUTABLE
@@ -74,6 +79,11 @@ else (WIN32)
     add_executable(atmoswing-viewer ${src_app_viewer})
 endif (WIN32)
 
+target_include_directories(atmoswing-viewer PRIVATE
+        ${inc_dirs}
+        ${vroomgis_SOURCE_DIR}/vroomgis/src
+        ${vroomgis_SOURCE_DIR}/vroomgis/art)
+
 # Cppcheck
 if (USE_CPPCHECK)
     add_cppcheck(atmoswing-viewer STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
@@ -84,31 +94,30 @@ endif (USE_CPPCHECK)
 
 # Compilation flags
 if (MINGW OR MSYS OR UNIX AND NOT APPLE)
-    set_target_properties(vroomgis PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable")
-    set_target_properties(wxplotctrl PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable -Wno-attributes")
+    target_compile_options(vroomgis PRIVATE -Wno-unused-but-set-variable)
+    target_compile_options(wxplotctrl PRIVATE -Wno-unused-but-set-variable -Wno-attributes)
 elseif (WIN32)
-    set_target_properties(vroomgis PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} /W2")
-    set_target_properties(wxplotctrl PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} /W2")
+    target_compile_options(vroomgis PRIVATE /W2)
+    target_compile_options(wxplotctrl PRIVATE /W2)
 endif ()
 
-# Specific definitions
-set_target_properties(atmoswing-viewer PROPERTIES COMPILE_DEFINITIONS "APP_VIEWER")
+# APP_VIEWER is target-specific. USE_GUI / version macros come from atmoswing_compile_options
+# via asbase's PUBLIC link.
+target_compile_definitions(atmoswing-viewer PRIVATE APP_VIEWER)
 
 
 ##### LINKING
 
 add_dependencies(atmoswing-viewer vroomgis)
-target_link_libraries(atmoswing-viewer CONAN_PKG::libpng)
-target_link_libraries(atmoswing-viewer CONAN_PKG::gdal)
-target_link_libraries(atmoswing-viewer asbase)
-target_link_libraries(atmoswing-viewer vroomgis)
-target_link_libraries(atmoswing-viewer wxplotctrl)
-if (USE_VLD)
-    target_link_libraries(atmoswing-viewer ${VLD_LIBRARIES})
-endif (USE_VLD)
+target_link_libraries(atmoswing-viewer PRIVATE PNG::PNG GDAL::GDAL asbase vroomgis wxplotctrl)
 if (WIN32)
-    target_link_libraries(atmoswing-viewer Psapi.lib)
+    target_link_libraries(atmoswing-viewer PRIVATE Psapi.lib)
 endif (WIN32)
+
+
+##### RUNTIME DLL STAGING (Windows)
+
+atmoswing_stage_runtime_dlls(atmoswing-viewer)
 
 
 ##### INSTALLER

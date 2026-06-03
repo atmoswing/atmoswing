@@ -28,6 +28,9 @@
 
 #include "asInternet.h"
 
+#include <wx/fileconf.h>
+
+#include "asIncludes.h"
 #include "asThreadInternetDownload.h"
 
 void asInternet::Init() {

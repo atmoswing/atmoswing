@@ -28,7 +28,7 @@
 #ifndef AS_PREDICTOR_PROJ_H
 #define AS_PREDICTOR_PROJ_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPredictor.h"
 
 class asArea;
@@ -43,8 +43,8 @@ class asPredictorProj : public asPredictor {
                                         const wxString& dataId, const wxString& directory = wxEmptyString);
 
   protected:
-    wxString m_model;
-    wxString m_scenario;
+    wxString _model;
+    wxString _scenario;
 
   private:
 };

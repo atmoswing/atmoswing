@@ -29,16 +29,9 @@
 #ifndef VR_LAYER_VECTORS_FCST_DOTS_H
 #define VR_LAYER_VECTORS_FCST_DOTS_H
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-// Include wxWidgets' headers
-#ifndef WX_PRECOMP
+#include <wx/log.h>  // wxLogWarning (inline SetMaxValue)
 
-#include <wx/wx.h>
-
-#endif
-
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "vrlayervector.h"
 
 class vrRender;
@@ -59,7 +52,7 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
 
     /**
      * Add a feature to the layer.
-     * 
+     *
      * @param geometry The geometry of the feature.
      * @param data The data of the feature.
      * @return The ID of the feature.
@@ -68,7 +61,7 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
 
     /**
      * Set the maximum value of the forecast values.
-     * 
+     *
      * @param val The maximum value.
      */
     void SetMaxValue(double val) {
@@ -78,15 +71,15 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
                   "increased."));
             val = 0.1;
         }
-        m_valueMax = val;
+        _valueMax = val;
     }
 
   protected:
-    double m_valueMax; /**< The maximum value of the forecast values. */
+    double _valueMax; /**< The maximum value of the forecast values. */
 
     /**
      * Draw a point (vroomgis function).
-     * 
+     *
      * @param dc The device context.
      * @param feature The feature.
      * @param geometry The geometry.
@@ -100,7 +93,7 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
 
     /**
      * Create the path for the dot.
-     * 
+     *
      * @param path The path.
      * @param center The center of the dot.
      */
@@ -108,7 +101,7 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
 
     /**
      * Paint the dots.
-     * 
+     *
      * @param gdc The graphics context.
      * @param path The path.
      * @param value The predictand value.
@@ -117,7 +110,7 @@ class vrLayerVectorFcstDots : public vrLayerVectorOGR {
 
     /**
      * Add a label to the dot.
-     * 
+     *
      * @param gdc The graphics context.
      * @param center The center of the dot.
      * @param value The predictand value.

@@ -31,7 +31,7 @@
 // #include "version.h"
 #include "AtmoSwingAppDownscaler.h"
 #include "asFrameDownscaler.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class AtmoSwingFrameDownscaler : public asFrameDownscaler {
   public:

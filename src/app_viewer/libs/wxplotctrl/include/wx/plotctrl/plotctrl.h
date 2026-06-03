@@ -501,8 +501,8 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     bool DeselectXRange(int curve_index, const wxRangeDouble& range, bool send_event = false) {
         return DoSelectRectangle(
-            curve_index, wxRect2DDouble(range.m_min, -wxPlotCtrl_MAX_DBL, range.GetRange(), wxPlotCtrl_MAX_RANGE),
-            false, send_event);
+            curve_index, wxRect2DDouble(range.m_min, -wxPlotCtrl_MAX_DBL, range.GetRange(), wxPlotCtrl_MAX_RANGE), false,
+            send_event);
     }
 
     bool SelectYRange(int curve_index, const wxRangeDouble& range, bool send_event = false) {
@@ -513,8 +513,8 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     bool DeselectYRange(int curve_index, const wxRangeDouble& range, bool send_event = false) {
         return DoSelectRectangle(
-            curve_index, wxRect2DDouble(-wxPlotCtrl_MAX_DBL, range.m_min, wxPlotCtrl_MAX_RANGE, range.GetRange()),
-            false, send_event);
+            curve_index, wxRect2DDouble(-wxPlotCtrl_MAX_DBL, range.m_min, wxPlotCtrl_MAX_RANGE, range.GetRange()), false,
+            send_event);
     }
 
     // Select a single point wxRangeInt(pt, pt) or a range of points wxRangeInt(pt1, pt2)
@@ -643,8 +643,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     // The current plotArea position of the mouse cursor in plot coords
     wxPoint2DDouble GetAreaMousePoint() const {
-        return wxPoint2DDouble(GetPlotCoordFromClientX(m_area->m_mousePt.x),
-                               GetPlotCoordFromClientY(m_area->m_mousePt.y));
+        return wxPoint2DDouble(GetPlotCoordFromClientX(m_area->m_mousePt.x), GetPlotCoordFromClientY(m_area->m_mousePt.y));
     }
 
     // Get the rect during dragging mouse, else 0
@@ -1337,7 +1336,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
     double m_xAxisTick_step, m_yAxisTick_step;                  // step size between ticks
     double m_xAxisTick_step_fix, m_yAxisTick_step_fix;          // step size between ticks
     int m_xAxisTick_count, m_yAxisTick_count;                   // how many ticks fit?
-    bool m_correct_ticks;                                       // tick correction
+    bool m_correct_ticks;                                      // tick correction
 
     // drawers
     wxPlotDrawerArea* m_areaDrawer;

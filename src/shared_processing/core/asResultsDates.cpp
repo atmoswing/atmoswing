@@ -28,7 +28,10 @@
 
 #include "asResultsDates.h"
 
+#include <wx/fileconf.h>
+
 #include "asFileNetcdf.h"
+#include "asIncludes.h"
 
 asResultsDates::asResultsDates()
     : asResults() {}
@@ -36,38 +39,38 @@ asResultsDates::asResultsDates()
 asResultsDates::~asResultsDates() {}
 
 void asResultsDates::Init(asParameters* params) {
-    m_predictandStationIds = params->GetPredictandStationIds();
+    _predictandStationIds = params->GetPredictandStationIds();
 
     // Resize to 0 to avoid keeping old results
-    m_targetDates.resize(0);
-    m_analogsCriteria.resize(0, 0);
-    m_analogsDates.resize(0, 0);
+    _targetDates.resize(0);
+    _analogsCriteria.resize(0, 0);
+    _analogsDates.resize(0, 0);
 }
 
 void asResultsDates::BuildFileName() {
     ThreadsManager().CritSectionConfig().Enter();
-    m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+    _filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
-    if (!m_subFolder.IsEmpty()) {
-        m_filePath.Append(DS);
-        m_filePath.Append(m_subFolder);
+    if (!_subFolder.IsEmpty()) {
+        _filePath.Append(DS);
+        _filePath.Append(_subFolder);
     }
-    m_filePath.Append(DS);
-    m_filePath.Append(asStrF("AnalogDates_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
-    m_filePath.Append(".nc");
+    _filePath.Append(DS);
+    _filePath.Append(asStrF("AnalogDates_id_%s_step_%d", GetPredictandStationIdsList(), _currentStep));
+    _filePath.Append(".nc");
 }
 
 bool asResultsDates::Save() {
     BuildFileName();
 
     // Get the elements size
-    size_t nTime = (size_t)m_analogsCriteria.rows();
-    size_t nAnalogs = (size_t)m_analogsCriteria.cols();
+    size_t nTime = (size_t)_analogsCriteria.rows();
+    size_t nAnalogs = (size_t)_analogsCriteria.cols();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
     // Create netCDF dataset: enter define mode
-    asFileNetcdf ncFile(m_filePath, asFileNetcdf::Replace);
+    asFileNetcdf ncFile(_filePath, asFileNetcdf::Replace);
     if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
@@ -105,12 +108,12 @@ bool asResultsDates::Save() {
     size_t count2D[] = {nTime, nAnalogs};
 
     // Write data
-    ncFile.PutVarArray("target_dates", start1D, count1D, &m_targetDates(0));
-    ncFile.PutVarArray("analog_criteria", start2D, count2D, &m_analogsCriteria(0));
-    ncFile.PutVarArray("analog_dates", start2D, count2D, &m_analogsDates(0));
+    ncFile.PutVarArray("target_dates", start1D, count1D, &_targetDates(0));
+    ncFile.PutVarArray("analog_criteria", start2D, count2D, &_analogsCriteria(0));
+    ncFile.PutVarArray("analog_dates", start2D, count2D, &_analogsDates(0));
 
     // Close:save new netCDF dataset
-    ncFile.Close();
+    (void)ncFile.Close();
 
     ThreadsManager().CritSectionNetCDF().Leave();
     return true;
@@ -124,7 +127,7 @@ bool asResultsDates::Load() {
     ThreadsManager().CritSectionNetCDF().Enter();
 
     // Open the NetCDF file
-    asFileNetcdf ncFile(m_filePath, asFileNetcdf::ReadOnly);
+    asFileNetcdf ncFile(_filePath, asFileNetcdf::ReadOnly);
     if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
@@ -135,11 +138,11 @@ bool asResultsDates::Load() {
     size_t nAnalogs = ncFile.GetDimLength("analogs");
 
     // Get time
-    m_targetDates.resize(nTime);
-    ncFile.GetVar("target_dates", &m_targetDates[0]);
+    _targetDates.resize(nTime);
+    ncFile.GetVar("target_dates", &_targetDates[0]);
 
     // Check last value
-    if (m_targetDates[m_targetDates.size() - 1] < m_targetDates[0]) {
+    if (_targetDates[_targetDates.size() - 1] < _targetDates[0]) {
         wxLogError(_("The target date array is not consistent in the temp file (last value makes no sense)."));
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
@@ -150,14 +153,14 @@ bool asResultsDates::Load() {
     size_t countTA[] = {nTime, nAnalogs};
 
     // Resize containers
-    m_analogsCriteria.resize(nTime, nAnalogs);
-    m_analogsDates.resize(nTime, nAnalogs);
+    _analogsCriteria.resize(nTime, nAnalogs);
+    _analogsDates.resize(nTime, nAnalogs);
 
     // Get data
-    ncFile.GetVarArray("analog_criteria", startTA, countTA, &m_analogsCriteria(0));
-    ncFile.GetVarArray("analog_dates", startTA, countTA, &m_analogsDates(0));
+    ncFile.GetVarArray("analog_criteria", startTA, countTA, &_analogsCriteria(0));
+    ncFile.GetVarArray("analog_dates", startTA, countTA, &_analogsDates(0));
 
-    ncFile.Close();
+    (void)ncFile.Close();
 
     ThreadsManager().CritSectionNetCDF().Leave();
     return true;

@@ -29,7 +29,7 @@
 #ifndef AS_RESULTS_SCORE_FINAL_H
 #define AS_RESULTS_SCORE_FINAL_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asResults.h"
 
 class asParametersScoring;
@@ -43,20 +43,20 @@ class asResultsTotalScore : public asResults {
     void Init();
 
     float GetScore() const {
-        return m_score;
+        return _score;
     }
 
     void SetScore(float val) {
-        m_score = val;
+        _score = val;
     }
 
     a1f GetScoreArray() const {
-        return m_scoreArray;
+        return _scoreArray;
     }
 
     void SetScore(const a1f& val) {
-        m_scoreArray = val;
-        m_hasSingleValue = false;
+        _scoreArray = val;
+        _hasSingleValue = false;
     }
 
     bool Save();
@@ -67,9 +67,9 @@ class asResultsTotalScore : public asResults {
     void BuildFileName();
 
   private:
-    bool m_hasSingleValue;
-    float m_score;
-    a1f m_scoreArray;
+    bool _hasSingleValue;
+    float _score;
+    a1f _scoreArray;
 };
 
 #endif

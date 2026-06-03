@@ -27,6 +27,8 @@
 
 #include "vrLayerVectorLocation.h"
 
+#include "asIncludes.h"
+
 #include "vrlabel.h"
 #include "vrrender.h"
 

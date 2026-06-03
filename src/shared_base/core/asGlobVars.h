@@ -29,7 +29,7 @@
 #ifndef AS_GLOB_VARS_H
 #define AS_GLOB_VARS_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 extern bool g_silentMode;
 extern bool g_verboseMode;
@@ -37,9 +37,12 @@ extern bool g_responsive;
 extern bool g_unitTesting;
 extern bool g_guiMode;
 
-// Constants
-extern const double g_cst_Euler;
-extern const double g_cst_Pi;
+// CLI-driven state shared by Forecaster and Viewer.
+extern wxString g_cmdFileName;
+
+// CLI-driven state shared by Optimizer and Downscaler.
+extern bool g_local;
+extern int g_runNb;
 
 // Useful variables
 extern const wxString DS;

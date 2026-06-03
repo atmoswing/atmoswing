@@ -27,6 +27,10 @@
 
 #include "asLogWindow.h"
 
+#include <wx/fileconf.h>
+
+#include "asIncludes.h"
+
 asLogWindow::asLogWindow(wxFrame* parent, const wxString& title, bool show, bool passToOld)
     : wxLogWindow(parent, title, show, passToOld) {
     // Reduce the font size

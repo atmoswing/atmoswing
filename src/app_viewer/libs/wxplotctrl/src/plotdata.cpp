@@ -21,6 +21,7 @@
 
 #ifndef WX_PRECOMP
 
+#include "wx/wx.h"  // wx 3.3 slimmed transitive includes; pull in the common GUI classes (wxWindow, wxBitmap, wxPen, wxDC) explicitly
 #include "wx/bitmap.h"
 #include "wx/dcmemory.h"
 #include "wx/msgdlg.h"
@@ -1280,9 +1281,9 @@ int wxPlotData::GetMinMaxAve(const wxRangeIntSelection& rangeSel, wxPoint2DDoubl
 
     for (i = 0; i < sel_count; i++) {
         wxRangeInt r = rangeSel.GetRange(i);
-        wxCHECK_MSG((r.m_min >= 0) && (r.m_min < (int)M_PLOTDATA->m_count) && (r.m_max >= 0) &&
-                        (r.m_max < (int)M_PLOTDATA->m_count),
-                    0, wxT("Invalid range selection index in data curve"));
+        wxCHECK_MSG(
+            (r.m_min >= 0) && (r.m_min < (int)M_PLOTDATA->m_count) && (r.m_max >= 0) && (r.m_max < (int)M_PLOTDATA->m_count),
+            0, wxT("Invalid range selection index in data curve"));
 
         for (j = r.m_min; j <= r.m_max; j++)  // yes we duplicate first point
         {

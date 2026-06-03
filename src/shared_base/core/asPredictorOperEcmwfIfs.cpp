@@ -26,6 +26,7 @@
  */
 
 #include "asPredictorOperEcmwfIfs.h"
+#include "asIncludes.h"
 
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
@@ -33,78 +34,78 @@
 asPredictorOperEcmwfIfs::asPredictorOperEcmwfIfs(const wxString& dataId)
     : asPredictorOper(dataId) {
     // Set the basic properties.
-    m_datasetId = "ECMWF_IFS";
-    m_provider = "ECMWF";
-    m_datasetName = "Integrated Forecasting System (IFS) grib files";
-    m_fileType = asFile::Grib;
-    m_isEnsemble = false;
-    m_strideAllowed = false;
-    m_fStr.dimLatName = "lat";
-    m_fStr.dimLonName = "lon";
-    m_fStr.dimTimeName = "time";
-    m_fStr.dimLevelName = "level";
-    m_fStr.hasLevelDim = false;
-    m_fStr.singleTimeStep = true;
-    m_parameter = ParameterUndefined;
-    m_fileExtension = "grib";
-    m_leadTimeStart = 0;
-    m_leadTimeStep = 6;
-    m_runHourStart = 0;
-    m_runUpdate = 6;
+    _datasetId = "ECMWF_IFS";
+    _provider = "ECMWF";
+    _datasetName = "Integrated Forecasting System (IFS) grib files";
+    _fileType = asFile::Grib;
+    _isEnsemble = false;
+    _strideAllowed = false;
+    _fStr.dimLatName = "lat";
+    _fStr.dimLonName = "lon";
+    _fStr.dimTimeName = "time";
+    _fStr.dimLevelName = "level";
+    _fStr.hasLevelDim = false;
+    _fStr.singleTimeStep = true;
+    _parameter = ParameterUndefined;
+    _fileExtension = "grib";
+    _leadTimeStart = 0;
+    _leadTimeStep = 6;
+    _runHourStart = 0;
+    _runUpdate = 6;
 }
 
 bool asPredictorOperEcmwfIfs::Init() {
     // Identify data ID and set the corresponding properties.
-    if (m_dataId.IsSameAs("z", false)) {
-        m_parameter = Geopotential;
-        m_gribCode = {0, 128, 129, 100};
-        m_unit = m2_s2;
-        m_fStr.hasLevelDim = true;
-    } else if (m_dataId.IsSameAs("gh", false)) {
-        m_parameter = GeopotentialHeight;
-        m_gribCode = {0, 128, 156, 100};
-        m_unit = m;
-        m_fStr.hasLevelDim = true;
+    if (_dataId.IsSameAs("z", false)) {
+        _parameter = Geopotential;
+        _gribCode = {0, 128, 129, 100};
+        _unit = m2_s2;
+        _fStr.hasLevelDim = true;
+    } else if (_dataId.IsSameAs("gh", false)) {
+        _parameter = GeopotentialHeight;
+        _gribCode = {0, 128, 156, 100};
+        _unit = m;
+        _fStr.hasLevelDim = true;
     } else if (IsAirTemperature()) {
-        m_parameter = AirTemperature;
-        m_gribCode = {0, 128, 130, 100};
-        m_unit = degK;
-        m_fStr.hasLevelDim = true;
+        _parameter = AirTemperature;
+        _gribCode = {0, 128, 130, 100};
+        _unit = degK;
+        _fStr.hasLevelDim = true;
     } else if (IsVerticalVelocity()) {
-        m_parameter = VerticalVelocity;
-        m_gribCode = {0, 128, 135, 100};
-        m_unit = Pa_s;
-        m_fStr.hasLevelDim = true;
+        _parameter = VerticalVelocity;
+        _gribCode = {0, 128, 135, 100};
+        _unit = Pa_s;
+        _fStr.hasLevelDim = true;
     } else if (IsRelativeHumidity()) {
-        m_parameter = RelativeHumidity;
-        m_gribCode = {0, 128, 157, 100};
-        m_unit = percent;
-        m_fStr.hasLevelDim = true;
+        _parameter = RelativeHumidity;
+        _gribCode = {0, 128, 157, 100};
+        _unit = percent;
+        _fStr.hasLevelDim = true;
     } else if (IsUwindComponent()) {
-        m_parameter = Uwind;
-        m_gribCode = {0, 128, 131, 100};
-        m_unit = m_s;
-        m_fStr.hasLevelDim = true;
+        _parameter = Uwind;
+        _gribCode = {0, 128, 131, 100};
+        _unit = _s;
+        _fStr.hasLevelDim = true;
     } else if (IsVwindComponent()) {
-        m_parameter = Vwind;
-        m_gribCode = {0, 128, 132, 100};
-        m_unit = m_s;
-        m_fStr.hasLevelDim = true;
+        _parameter = Vwind;
+        _gribCode = {0, 128, 132, 100};
+        _unit = _s;
+        _fStr.hasLevelDim = true;
     } else if (IsTotalColumnWaterVapour()) {
-        m_parameter = PrecipitableWater;
-        m_gribCode = {0, 128, 137, 1};
-        m_unit = mm;
+        _parameter = PrecipitableWater;
+        _gribCode = {0, 128, 137, 1};
+        _unit = mm;
     } else if (IsPrecipitableWater()) {
-        m_parameter = PrecipitableWater;
-        m_gribCode = {0, 128, 136, 200};
-        m_unit = mm;
+        _parameter = PrecipitableWater;
+        _gribCode = {0, 128, 136, 200};
+        _unit = mm;
     } else {
-        wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+        wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), _dataId, _product);
         return false;
     }
 
     // Set to initialized
-    m_initialized = true;
+    _initialized = true;
 
     return true;
 }

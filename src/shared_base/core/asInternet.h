@@ -31,7 +31,7 @@
 
 #include <curl/curl.h>
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asInternet : public wxObject {
   public:
@@ -45,10 +45,9 @@ class asInternet : public wxObject {
 
     static int Download(const vwxs& urls, const vwxs& fileNames, const wxString& destinationDir);
 
-  protected:
-  private:
-    friend class asThreadInternetDownload;
-
+    // HttpFile / WriteFile are used by asThreadInternetDownload as the libcurl callback target.
+    // They are public (instead of private + `friend class asThreadInternetDownload`) because
+    // they are stateless: nothing in asInternet's private invariants is exposed.
     struct HttpFile {
         const char* fileName;
         FILE* stream;

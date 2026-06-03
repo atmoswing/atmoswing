@@ -30,7 +30,6 @@
 #define AS_AREA_GRID_REGULAR_H
 
 #include "asAreaGrid.h"
-#include "asIncludes.h"
 
 class asAreaGridRegular : public asAreaGrid {
   public:
@@ -50,40 +49,40 @@ class asAreaGridRegular : public asAreaGrid {
     bool InitializeAxes(const a1d& lons, const a1d& lats, bool strideAllowed = true, bool getLarger = false) override;
 
     double GetXstep() const override {
-        return m_xStep;
+        return _xStep;
     }
 
     double GetYstep() const override {
-        return m_yStep;
+        return _yStep;
     }
 
     double GetYstepData() const {
-        return m_yStepData;
+        return _yStepData;
     }
 
     int GetXstepStride() const {
-        wxASSERT(m_xStep > 0);
-        wxASSERT(fmod(m_xStep, m_xStepData) == 0);
-        return int(m_xStep / m_xStepData);
+        wxASSERT(_xStep > 0);
+        wxASSERT(fmod(_xStep, _xStepData) == 0);
+        return int(_xStep / _xStepData);
     }
 
     int GetYstepStride() const {
-        wxASSERT(m_yStep > 0);
-        wxASSERT(fmod(m_yStep, m_yStepData) == 0);
-        return int(m_yStep / m_yStepData);
+        wxASSERT(_yStep > 0);
+        wxASSERT(fmod(_yStep, _yStepData) == 0);
+        return int(_yStep / _yStepData);
     }
 
     void SetSameStepAsData() {
-        m_xStep = m_xStepData;
-        m_yStep = m_yStepData;
+        _xStep = _xStepData;
+        _yStep = _yStepData;
     }
 
   protected:
   private:
-    double m_xStep;
-    double m_yStep;
-    double m_xStepData;
-    double m_yStepData;
+    double _xStep;
+    double _yStep;
+    double _xStepData;
+    double _yStepData;
 };
 
 #endif

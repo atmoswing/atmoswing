@@ -29,7 +29,7 @@
 #ifndef AS_PANELS_MANAGER_FORECASTS_H
 #define AS_PANELS_MANAGER_FORECASTS_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelsManager.h"
 
 class asPanelForecast;
@@ -61,7 +61,7 @@ class asPanelsManagerForecasts : public asPanelsManager {
     void SetForecastsAllLedsOff();
 
   protected:
-    vector<asPanelForecast*> m_arrayPanels;
+    vector<asPanelForecast*> _arrayPanels;
 
   private:
 };

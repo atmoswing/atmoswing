@@ -29,7 +29,7 @@
 #define AS_BATCH_FORECASTS_H
 
 #include "asFileBatchForecasts.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asBatchForecasts : public wxObject {
   public:
@@ -55,101 +55,101 @@ class asBatchForecasts : public wxObject {
     void AddForecast();
 
     wxString GetFilePath() const {
-        return m_filePath;
+        return _filePath;
     }
 
     void SetFilePath(const wxString& path) {
-        m_filePath = path;
+        _filePath = path;
     }
 
     bool HasChanged() const {
-        return m_hasChanged;
+        return _hasChanged;
     }
 
     bool HasExports() const;
 
     Export GetExport() const {
-        return m_export;
+        return _export;
     }
 
     void SetExport(Export val) {
-        m_export = val;
+        _export = val;
     }
 
     void SetHasChanged(bool val) {
-        m_hasChanged = val;
+        _hasChanged = val;
     }
 
     wxString GetForecastsOutputDirectory() const {
-        return m_forecastsOutputDirectory;
+        return _forecastsOutputDirectory;
     }
 
     void SetForecastsOutputDirectory(const wxString& val) {
-        m_forecastsOutputDirectory = val;
+        _forecastsOutputDirectory = val;
     }
 
     wxString GetExportsOutputDirectory() const {
-        return m_exportsOutputDirectory;
+        return _exportsOutputDirectory;
     }
 
     void SetExportsOutputDirectory(const wxString& val) {
-        m_exportsOutputDirectory = val;
+        _exportsOutputDirectory = val;
     }
 
     wxString GetParametersFileDirectory() const {
-        return m_parametersFileDirectory;
+        return _parametersFileDirectory;
     }
 
     void SetParametersFileDirectory(const wxString& val) {
-        m_parametersFileDirectory = val;
+        _parametersFileDirectory = val;
     }
 
     wxString GetPredictorsArchiveDirectory() const {
-        return m_predictorsArchiveDirectory;
+        return _predictorsArchiveDirectory;
     }
 
     void SetPredictorsArchiveDirectory(const wxString& val) {
-        m_predictorsArchiveDirectory = val;
+        _predictorsArchiveDirectory = val;
     }
 
     wxString GetPredictorsRealtimeDirectory() const {
-        return m_predictorsRealtimeDirectory;
+        return _predictorsRealtimeDirectory;
     }
 
     void SetPredictorsRealtimeDirectory(const wxString& val) {
-        m_predictorsRealtimeDirectory = val;
+        _predictorsRealtimeDirectory = val;
     }
 
     wxString GetPredictandDBDirectory() const {
-        return m_predictandDBDirectory;
+        return _predictandDBDirectory;
     }
 
     void SetPredictandDBDirectory(const wxString& val) {
-        m_predictandDBDirectory = val;
+        _predictandDBDirectory = val;
     }
 
     wxString GetForecastFileName(int i) const {
-        wxASSERT((int)m_forecastFileNames.size() > i);
-        return m_forecastFileNames[i];
+        wxASSERT((int)_forecastFileNames.size() > i);
+        return _forecastFileNames[i];
     }
 
     void SetForecastFileName(int i, const wxString& val) {
-        wxASSERT((int)m_forecastFileNames.size() > i);
-        m_forecastFileNames[i] = val;
+        wxASSERT((int)_forecastFileNames.size() > i);
+        _forecastFileNames[i] = val;
     }
 
   protected:
   private:
-    bool m_hasChanged;
-    Export m_export;
-    wxString m_filePath;
-    wxString m_forecastsOutputDirectory;
-    wxString m_exportsOutputDirectory;
-    wxString m_parametersFileDirectory;
-    wxString m_predictorsArchiveDirectory;
-    wxString m_predictorsRealtimeDirectory;
-    wxString m_predictandDBDirectory;
-    vwxs m_forecastFileNames;
+    bool _hasChanged;
+    Export _export;
+    wxString _filePath;
+    wxString _forecastsOutputDirectory;
+    wxString _exportsOutputDirectory;
+    wxString _parametersFileDirectory;
+    wxString _predictorsArchiveDirectory;
+    wxString _predictorsRealtimeDirectory;
+    wxString _predictandDBDirectory;
+    vwxs _forecastFileNames;
 };
 
 #endif

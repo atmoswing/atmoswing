@@ -28,15 +28,18 @@
 
 #include "asGlobVars.h"
 
+#include "asIncludes.h"
+
 bool g_silentMode = false;
 bool g_verboseMode = true;
 bool g_responsive = true;
 bool g_unitTesting = false;
 bool g_guiMode = true;
 
-// Constants
-const double g_cst_Euler = 0.5772156649;  // Euler-Mascheroni
-const double g_cst_Pi = 3.1415926535;
+wxString g_cmdFileName = wxEmptyString;
+
+bool g_local = false;
+int g_runNb = 0;
 
 // Useful variables
 #if defined(__WIN32__)

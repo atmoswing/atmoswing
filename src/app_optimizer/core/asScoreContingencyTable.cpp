@@ -27,6 +27,7 @@
  */
 
 #include "asScoreContingencyTable.h"
+#include "asIncludes.h"
 
 asScoreContingencyTable::asScoreContingencyTable()
     : asScore(asScore::ContingencyTable, _("Contingency table"), _("Contingency table"), Asc, NAN, NAN) {}
@@ -34,7 +35,7 @@ asScoreContingencyTable::asScoreContingencyTable()
 float asScoreContingencyTable::Assess(float obs, const a1f& values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(!isnan(m_threshold));
+    wxASSERT(!isnan(_threshold));
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
@@ -62,30 +63,30 @@ float asScoreContingencyTable::Assess(float obs, const a1f& values, int nbElemen
     float score = NAN;
     float value = 0;
 
-    if (m_onMean) {
+    if (_onMean) {
         value = cleanValues.mean();
     } else {
         // Get value for quantile
-        wxASSERT(!isnan(m_quantile));
-        wxASSERT(m_quantile > 0);
-        wxASSERT(m_quantile < 1);
-        value = asGetValueForQuantile(cleanValues, m_quantile);
+        wxASSERT(!isnan(_quantile));
+        wxASSERT(_quantile > 0);
+        wxASSERT(_quantile < 1);
+        value = asGetValueForQuantile(cleanValues, _quantile);
     }
 
     // Predicted and observed
-    if (value >= m_threshold && obs >= m_threshold) {
+    if (value >= _threshold && obs >= _threshold) {
         score = 1;
     }
     // Predicted but not observed
-    else if (value >= m_threshold && obs < m_threshold) {
+    else if (value >= _threshold && obs < _threshold) {
         score = 2;
     }
     // Not predicted but observed
-    else if (value < m_threshold && obs >= m_threshold) {
+    else if (value < _threshold && obs >= _threshold) {
         score = 3;
     }
     // Not predicted and not observed
-    else if (value < m_threshold && obs < m_threshold) {
+    else if (value < _threshold && obs < _threshold) {
         score = 4;
     }
 

@@ -32,7 +32,6 @@
 #include <wx/xml/xml.h>
 
 #include "asFile.h"
-#include "asIncludes.h"
 
 /**
  * @brief XML file class.
@@ -45,20 +44,20 @@ class asFileXml : public asFile {
 
     ~asFileXml() override = default;
 
-    bool Open() override;
+    [[nodiscard]] bool Open() override;
 
-    bool Close() override;
+    [[nodiscard]] bool Close() override;
 
-    bool Save();
+    [[nodiscard]] bool Save();
 
-    wxXmlNode* GetRoot() const {
-        wxASSERT(m_document.GetRoot());
-        return m_document.GetRoot();
+    [[nodiscard]] wxXmlNode* GetRoot() const {
+        wxASSERT(_document.GetRoot());
+        return _document.GetRoot();
     }
 
     void AddChild(wxXmlNode* node);
 
-    virtual bool CheckRootElement() const;
+    [[nodiscard]] virtual bool CheckRootElement() const;
 
     wxXmlNode* CreateNode(const wxString& name, const bool& content);
 
@@ -70,36 +69,36 @@ class asFileXml : public asFile {
 
     wxXmlNode* CreateNode(const wxString& name, const wxString& content);
 
-    bool IsAnAtmoSwingFile() const;
+    [[nodiscard]] bool IsAnAtmoSwingFile() const;
 
-    bool FileVersionIsOrAbove(float version) const;
+    [[nodiscard]] bool FileVersionIsOrAbove(float version) const;
 
     void UnknownNode(wxXmlNode* node);
 
-    static bool GetBool(wxXmlNode* node, bool defaultValue = false);
+    [[nodiscard]] static bool GetBool(wxXmlNode* node, bool defaultValue = false);
 
-    static int GetInt(wxXmlNode* node, int defaultValue = 0);
+    [[nodiscard]] static int GetInt(wxXmlNode* node, int defaultValue = 0);
 
-    static float GetFloat(wxXmlNode* node, float defaultValue = 0.0f);
+    [[nodiscard]] static float GetFloat(wxXmlNode* node, float defaultValue = 0.0f);
 
-    static double GetDouble(wxXmlNode* node, double defaultValue = 0.0);
+    [[nodiscard]] static double GetDouble(wxXmlNode* node, double defaultValue = 0.0);
 
-    static wxString GetString(wxXmlNode* node, const wxString& defaultValue = wxEmptyString);
+    [[nodiscard]] static wxString GetString(wxXmlNode* node, const wxString& defaultValue = wxEmptyString);
 
-    bool GetAttributeBool(wxXmlNode* node, const wxString& attribute, bool defaultValue = false,
-                          bool raiseWarning = true);
+    [[nodiscard]] bool GetAttributeBool(wxXmlNode* node, const wxString& attribute, bool defaultValue = false,
+                                        bool raiseWarning = true);
 
-    int GetAttributeInt(wxXmlNode* node, const wxString& attribute);
+    [[nodiscard]] int GetAttributeInt(wxXmlNode* node, const wxString& attribute);
 
-    float GetAttributeFloat(wxXmlNode* node, const wxString& attribute);
+    [[nodiscard]] float GetAttributeFloat(wxXmlNode* node, const wxString& attribute);
 
-    double GetAttributeDouble(wxXmlNode* node, const wxString& attribute);
+    [[nodiscard]] double GetAttributeDouble(wxXmlNode* node, const wxString& attribute);
 
-    wxString GetAttributeString(wxXmlNode* node, const wxString& attribute);
+    [[nodiscard]] wxString GetAttributeString(wxXmlNode* node, const wxString& attribute);
 
   protected:
   private:
-    wxXmlDocument m_document;
+    wxXmlDocument _document;
 };
 
 #endif

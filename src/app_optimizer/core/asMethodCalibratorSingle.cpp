@@ -28,6 +28,8 @@
 
 #include "asMethodCalibratorSingle.h"
 
+#include "asIncludes.h"
+
 asMethodCalibratorSingle::asMethodCalibratorSingle()
     : asMethodCalibrator() {}
 
@@ -163,7 +165,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration& params) {
         ClearAll();
 
         // Reset the score of the climatology
-        m_scoreClimatology.clear();
+        _scoreClimatology.clear();
 
         // Create results objects
         asResultsDates anaDates;
@@ -196,7 +198,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration& params) {
             if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, iStep)) return false;
 
             // Store the result
-            results_tested.Add(params, anaScoreFinal.GetScore(), m_scoreValid);
+            results_tested.Add(params, anaScoreFinal.GetScore(), _scoreValid);
 
             // Keep the analogs dates of the best parameters set
             anaDatesPrevious = anaDates;
@@ -207,7 +209,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration& params) {
         Validate(&params);
 
         // Keep the best parameters set
-        results_all.Add(params, anaScoreFinal.GetScore(), m_scoreValid);
+        results_all.Add(params, anaScoreFinal.GetScore(), _scoreValid);
         if (!results_all.Print()) return false;
         if (!results_tested.Print()) return false;
     }

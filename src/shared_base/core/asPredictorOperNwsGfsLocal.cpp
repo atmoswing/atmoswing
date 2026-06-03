@@ -26,11 +26,12 @@
  */
 
 #include "asPredictorOperNwsGfsLocal.h"
+#include "asIncludes.h"
 
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
 
 asPredictorOperNwsGfsLocal::asPredictorOperNwsGfsLocal(const wxString& dataId)
     : asPredictorOperNwsGfs(dataId) {
-    m_shouldDownload = false;
+    _shouldDownload = false;
 }

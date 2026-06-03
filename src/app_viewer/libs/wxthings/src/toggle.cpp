@@ -18,6 +18,7 @@
 
 #ifndef WX_PRECOMP
 
+#include "wx/wx.h"  // wx 3.3 slimmed transitive includes; pull in the common GUI classes (wxWindow, wxBitmap, wxPen, wxDC) explicitly
 #include "wx/bitmap.h"
 #include "wx/control.h"
 #include "wx/dc.h"
@@ -496,23 +497,23 @@ void wxCustomButton::CalcLayout(bool refresh) {
     } else if ((m_button_style & wxCUSTBUT_LEFT) != 0) {
         int mid_margin = wxMax(m_labelMargin.x, m_bitmapMargin.x);
         m_labelPos = wxPoint((w - (bw + lw + m_labelMargin.x + m_bitmapMargin.x + mid_margin)) / 2 + m_labelMargin.x,
-                             (h - lh) / 2);
+                            (h - lh) / 2);
         m_bitmapPos = wxPoint(m_labelPos.x + lw + mid_margin, (h - bh) / 2);
     } else if ((m_button_style & wxCUSTBUT_RIGHT) != 0) {
         int mid_margin = wxMax(m_labelMargin.x, m_bitmapMargin.x);
         m_bitmapPos = wxPoint((w - (bw + lw + m_labelMargin.x + m_bitmapMargin.x + mid_margin)) / 2 + m_bitmapMargin.x,
-                              (h - bh) / 2);
+                             (h - bh) / 2);
         m_labelPos = wxPoint(m_bitmapPos.x + bw + mid_margin, (h - lh) / 2);
     } else if ((m_button_style & wxCUSTBUT_TOP) != 0) {
         int mid_margin = wxMax(m_labelMargin.y, m_bitmapMargin.y);
         m_labelPos = wxPoint((w - lw) / 2,
-                             (h - (bh + lh + m_labelMargin.y + m_bitmapMargin.y + mid_margin)) / 2 + m_labelMargin.y);
+                            (h - (bh + lh + m_labelMargin.y + m_bitmapMargin.y + mid_margin)) / 2 + m_labelMargin.y);
         m_bitmapPos = wxPoint((w - bw) / 2, m_labelPos.y + lh + mid_margin);
     } else  // if ((m_button_style & wxCUSTBUT_BOTTOM) != 0)  DEFAULT
     {
         int mid_margin = wxMax(m_labelMargin.y, m_bitmapMargin.y);
         m_bitmapPos = wxPoint((w - bw) / 2,
-                              (h - (bh + lh + m_labelMargin.y + m_bitmapMargin.y + mid_margin)) / 2 + m_bitmapMargin.y);
+                             (h - (bh + lh + m_labelMargin.y + m_bitmapMargin.y + mid_margin)) / 2 + m_bitmapMargin.y);
         m_labelPos = wxPoint((w - lw) / 2, m_bitmapPos.y + bh + mid_margin);
     }
 

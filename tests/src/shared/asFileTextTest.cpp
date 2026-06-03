@@ -33,7 +33,7 @@ TEST(FileText, GetFileContent) {
     wxString filePath = wxFileName::GetCwd();
     filePath.Append("/files/precipitation_file.txt");
     asFileText file(filePath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     wxString content = file.GetContent();
 

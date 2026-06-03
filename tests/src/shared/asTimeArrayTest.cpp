@@ -27,6 +27,8 @@
 
 #include <gtest/gtest.h>
 
+
+#include "asIncludes.h"
 #include "asTimeArray.h"
 
 TEST(TimeArray, BuildArraySimple) {

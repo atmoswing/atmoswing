@@ -28,6 +28,8 @@
 
 #include "asFileParametersCalibration.h"
 
+#include "asIncludes.h"
+
 asFileParametersCalibration::asFileParametersCalibration(const wxString& fileName, const FileMode& fileMode)
     : asFileParameters(fileName, fileMode) {}  // FindAndOpen() processed by asFileXml
 
@@ -47,7 +49,7 @@ bool asFileParametersCalibration::CheckRootElement() const {
     if ((!GetRoot()->GetAttribute("target").IsSameAs("optimizer", false)) &
         (!GetRoot()->GetAttribute("target").IsSameAs("calibrator", false))) {
         wxLogError(_("The file %s is not a parameters file for the Optimizer in calibration mode."),
-                   m_fileName.GetFullName());
+                   _fileName.GetFullName());
         return false;
     }
     return true;

@@ -30,7 +30,7 @@
 #define AS_FRAME_OPTIMIZER
 
 #include "AtmoSwingOptimizerGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asLogWindow.h"
 #include "asMethodCalibrator.h"
 
@@ -43,8 +43,8 @@ class asFrameOptimizer : public asFrameOptimizerVirtual {
     void OnInit();
 
   protected:
-    asLogWindow* m_logWindow;
-    asMethodCalibrator* m_methodCalibrator;
+    asLogWindow* _logWindow;
+    asMethodCalibrator* _methodCalibrator;
 
     void Update() override;
 

@@ -28,6 +28,8 @@
 
 #include "asFrameOptimizer.h"
 
+#include "asIncludes.h"
+
 #include "asBitmaps.h"
 #include "asFrameAbout.h"
 #include "asFramePredictandDB.h"
@@ -44,16 +46,16 @@
 
 asFrameOptimizer::asFrameOptimizer(wxWindow* parent)
     : asFrameOptimizerVirtual(parent),
-      m_logWindow(nullptr),
-      m_methodCalibrator(nullptr) {
+      _logWindow(nullptr),
+      _methodCalibrator(nullptr) {
     // Toolbar
-    m_toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap, wxITEM_NORMAL,
-                       _("Run optimizer"), _("Run optimizer now"), nullptr);
-    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::STOP), wxNullBitmap,
-                       wxITEM_NORMAL, _("Cancel optimization"), _("Cancel current optimization"), nullptr);
-    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
-                       wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
-    m_toolBar->Realize();
+    _toolBar->AddTool(asID_RUN, wxT("Run"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::RUN), wxNullBitmap, wxITEM_NORMAL,
+                      _("Run optimizer"), _("Run optimizer now"), nullptr);
+    _toolBar->AddTool(asID_CANCEL, wxT("Cancel"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::STOP), wxNullBitmap,
+                      wxITEM_NORMAL, _("Cancel optimization"), _("Cancel current optimization"), nullptr);
+    _toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), asBitmaps::Get(asBitmaps::ID_TOOLBAR::PREFERENCES),
+                      wxNullBitmap, wxITEM_NORMAL, _("Preferences"), _("Preferences"), nullptr);
+    _toolBar->Realize();
 
     // Connect events
     Bind(wxEVT_COMMAND_TOOL_CLICKED, &asFrameOptimizer::Launch, this, asID_RUN);
@@ -114,15 +116,15 @@ void asFrameOptimizer::OpenFrameAbout(wxCommandEvent& event) {
 void asFrameOptimizer::OnShowLog(wxCommandEvent& event) {
     wxBusyCursor wait;
 
-    wxASSERT(m_logWindow);
-    m_logWindow->DoShow(true);
+    wxASSERT(_logWindow);
+    _logWindow->DoShow(true);
 }
 
 void asFrameOptimizer::OnLogLevel1(wxCommandEvent& event) {
     Log()->SetLevel(1);
-    m_menuLogLevel->FindItemByPosition(0)->Check(true);
-    m_menuLogLevel->FindItemByPosition(1)->Check(false);
-    m_menuLogLevel->FindItemByPosition(2)->Check(false);
+    _menuLogLevel->FindItemByPosition(0)->Check(true);
+    _menuLogLevel->FindItemByPosition(1)->Check(false);
+    _menuLogLevel->FindItemByPosition(2)->Check(false);
     ThreadsManager().CritSectionConfig().Enter();
     wxFileConfig::Get()->Write("/General/LogLevel", 1l);
     ThreadsManager().CritSectionConfig().Leave();
@@ -132,9 +134,9 @@ void asFrameOptimizer::OnLogLevel1(wxCommandEvent& event) {
 
 void asFrameOptimizer::OnLogLevel2(wxCommandEvent& event) {
     Log()->SetLevel(2);
-    m_menuLogLevel->FindItemByPosition(0)->Check(false);
-    m_menuLogLevel->FindItemByPosition(1)->Check(true);
-    m_menuLogLevel->FindItemByPosition(2)->Check(false);
+    _menuLogLevel->FindItemByPosition(0)->Check(false);
+    _menuLogLevel->FindItemByPosition(1)->Check(true);
+    _menuLogLevel->FindItemByPosition(2)->Check(false);
     ThreadsManager().CritSectionConfig().Enter();
     wxFileConfig::Get()->Write("/General/LogLevel", 2l);
     ThreadsManager().CritSectionConfig().Leave();
@@ -144,9 +146,9 @@ void asFrameOptimizer::OnLogLevel2(wxCommandEvent& event) {
 
 void asFrameOptimizer::OnLogLevel3(wxCommandEvent& event) {
     Log()->SetLevel(3);
-    m_menuLogLevel->FindItemByPosition(0)->Check(false);
-    m_menuLogLevel->FindItemByPosition(1)->Check(false);
-    m_menuLogLevel->FindItemByPosition(2)->Check(true);
+    _menuLogLevel->FindItemByPosition(0)->Check(false);
+    _menuLogLevel->FindItemByPosition(1)->Check(false);
+    _menuLogLevel->FindItemByPosition(2)->Check(true);
     ThreadsManager().CritSectionConfig().Enter();
     wxFileConfig::Get()->Write("/General/LogLevel", 3l);
     ThreadsManager().CritSectionConfig().Leave();
@@ -159,31 +161,31 @@ void asFrameOptimizer::DisplayLogLevelMenu() {
     ThreadsManager().CritSectionConfig().Enter();
     int logLevel = (int)wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l);
     ThreadsManager().CritSectionConfig().Leave();
-    m_menuLogLevel->FindItemByPosition(0)->Check(false);
-    m_menuLogLevel->FindItemByPosition(1)->Check(false);
-    m_menuLogLevel->FindItemByPosition(2)->Check(false);
+    _menuLogLevel->FindItemByPosition(0)->Check(false);
+    _menuLogLevel->FindItemByPosition(1)->Check(false);
+    _menuLogLevel->FindItemByPosition(2)->Check(false);
     switch (logLevel) {
         case 1:
-            m_menuLogLevel->FindItemByPosition(0)->Check(true);
+            _menuLogLevel->FindItemByPosition(0)->Check(true);
             Log()->SetLevel(1);
             break;
         case 2:
-            m_menuLogLevel->FindItemByPosition(1)->Check(true);
+            _menuLogLevel->FindItemByPosition(1)->Check(true);
             Log()->SetLevel(2);
             break;
         case 3:
-            m_menuLogLevel->FindItemByPosition(2)->Check(true);
+            _menuLogLevel->FindItemByPosition(2)->Check(true);
             Log()->SetLevel(3);
             break;
         default:
-            m_menuLogLevel->FindItemByPosition(1)->Check(true);
+            _menuLogLevel->FindItemByPosition(1)->Check(true);
             Log()->SetLevel(2);
     }
 }
 
 void asFrameOptimizer::Cancel(wxCommandEvent& event) {
-    if (m_methodCalibrator) {
-        m_methodCalibrator->Cancel();
+    if (_methodCalibrator) {
+        _methodCalibrator->Cancel();
     }
 }
 
@@ -192,71 +194,70 @@ void asFrameOptimizer::LoadOptions() {
 
     // General stuff
     wxConfigBase* pConfig = wxFileConfig::Get();
-    m_choiceMethod->SetSelection(pConfig->ReadLong("/MethodSelection", 0l));
-    m_filePickerParameters->SetPath(pConfig->Read("/ParametersFilePath", wxEmptyString));
-    m_filePickerPredictand->SetPath(pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString));
-    m_dirPickerPredictor->SetPath(pConfig->Read("/Paths/PredictorDir", wxEmptyString));
-    m_dirPickerCalibrationResults->SetPath(
+    _choiceMethod->SetSelection(pConfig->ReadLong("/MethodSelection", 0l));
+    _filePickerParameters->SetPath(pConfig->Read("/ParametersFilePath", wxEmptyString));
+    _filePickerPredictand->SetPath(pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString));
+    _dirPickerPredictor->SetPath(pConfig->Read("/Paths/PredictorDir", wxEmptyString));
+    _dirPickerCalibrationResults->SetPath(
         pConfig->Read("/Paths/ResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer"));
 
     // Classic+ calibration
-    m_textCtrlClassicPlusResizingIterations->SetValue(pConfig->Read("/ClassicPlus/ResizingIterations", "1"));
-    m_textCtrlClassicPlusStepsLatPertinenceMap->SetValue(pConfig->Read("/ClassicPlus/StepsLatPertinenceMap", "2"));
-    m_textCtrlClassicPlusStepsLonPertinenceMap->SetValue(pConfig->Read("/ClassicPlus/StepsLonPertinenceMap", "2"));
-    m_checkBoxProceedSequentially->SetValue(pConfig->ReadBool("/ClassicPlus/ProceedSequentially", true));
+    _textCtrlClassicPlusResizingIterations->SetValue(pConfig->Read("/ClassicPlus/ResizingIterations", "1"));
+    _textCtrlClassicPlusStepsLatPertinenceMap->SetValue(pConfig->Read("/ClassicPlus/StepsLatPertinenceMap", "2"));
+    _textCtrlClassicPlusStepsLonPertinenceMap->SetValue(pConfig->Read("/ClassicPlus/StepsLonPertinenceMap", "2"));
+    _checkBoxProceedSequentially->SetValue(pConfig->ReadBool("/ClassicPlus/ProceedSequentially", true));
 
     // Variables exploration
-    m_textCtrlVarExploStepToExplore->SetValue(pConfig->Read("/VariablesExplo/Step"));
+    _textCtrlVarExploStepToExplore->SetValue(pConfig->Read("/VariablesExplo/Step"));
 
     // Monte Carlo
-    m_textCtrlMonteCarloRandomNb->SetValue(pConfig->Read("/MonteCarlo/RandomNb", "1000"));
+    _textCtrlMonteCarloRandomNb->SetValue(pConfig->Read("/MonteCarlo/RandomNb", "1000"));
 
     // Genetic algorithms
-    m_choiceGAsNaturalSelectionOperator->SetSelection(pConfig->ReadLong("/GAs/NaturalSelectionOperator", 1l));
-    m_choiceGAsCouplesSelectionOperator->SetSelection(pConfig->ReadLong("/GAs/CouplesSelectionOperator", 3l));
-    m_choiceGAsCrossoverOperator->SetSelection(pConfig->ReadLong("/GAs/CrossoverOperator", 1l));
-    m_choiceGAsMutationOperator->SetSelection(pConfig->ReadLong("/GAs/MutationOperator", 0l));
-    m_textCtrlGAsRunNumbers->SetValue(pConfig->Read("/GAs/NbRuns", "20"));
-    m_textCtrlGAsPopulationSize->SetValue(pConfig->Read("/GAs/PopulationSize", "500"));
-    m_textCtrlGAsConvergenceNb->SetValue(pConfig->Read("/GAs/ConvergenceStepsNb", "30"));
-    m_textCtrlGAsRatioIntermGen->SetValue(pConfig->Read("/GAs/RatioIntermediateGeneration", "0.5"));
-    m_checkBoxGAsAllowElitism->SetValue(pConfig->ReadBool("/GAs/AllowElitismForTheBest", true));
-    m_textCtrlGAsNaturalSlctTournamentProb->SetValue(
-        pConfig->Read("/GAs/NaturalSelectionTournamentProbability", "0.9"));
-    m_textCtrlGAsCouplesSlctTournamentNb->SetValue(pConfig->Read("/GAs/CouplesSelectionTournamentNb", "3"));
-    m_textCtrlGAsCrossoverMultipleNbPts->SetValue(pConfig->Read("/GAs/CrossoverMultiplePointsNb", "3"));
-    m_textCtrlGAsCrossoverBlendingNbPts->SetValue(pConfig->Read("/GAs/CrossoverBlendingPointsNb", "2"));
-    m_checkBoxGAsCrossoverBlendingShareBeta->SetValue(pConfig->ReadBool("/GAs/CrossoverBlendingShareBeta", true));
-    m_textCtrlGAsCrossoverLinearNbPts->SetValue(pConfig->Read("/GAs/CrossoverLinearPointsNb", "2"));
-    m_textCtrlGAsCrossoverHeuristicNbPts->SetValue(pConfig->Read("/GAs/CrossoverHeuristicPointsNb", "2"));
-    m_checkBoxGAsCrossoverHeuristicShareBeta->SetValue(pConfig->ReadBool("/GAs/CrossoverHeuristicShareBeta", true));
-    m_textCtrlGAsCrossoverBinLikeNbPts->SetValue(pConfig->Read("/GAs/CrossoverBinaryLikePointsNb", "2"));
-    m_checkBoxGAsCrossoverBinLikeShareBeta->SetValue(pConfig->ReadBool("/GAs/CrossoverBinaryLikeShareBeta", true));
-    m_textCtrlGAsMutationsUniformCstProb->SetValue(pConfig->Read("/GAs/MutationsUniformConstantProbability", "0.2"));
-    m_textCtrlGAsMutationsNormalCstProb->SetValue(pConfig->Read("/GAs/MutationsNormalConstantProbability", "0.2"));
-    m_textCtrlGAsMutationsNormalCstStdDev->SetValue(
+    _choiceGAsNaturalSelectionOperator->SetSelection(pConfig->ReadLong("/GAs/NaturalSelectionOperator", 1l));
+    _choiceGAsCouplesSelectionOperator->SetSelection(pConfig->ReadLong("/GAs/CouplesSelectionOperator", 3l));
+    _choiceGAsCrossoverOperator->SetSelection(pConfig->ReadLong("/GAs/CrossoverOperator", 1l));
+    _choiceGAsMutationOperator->SetSelection(pConfig->ReadLong("/GAs/MutationOperator", 0l));
+    _textCtrlGAsRunNumbers->SetValue(pConfig->Read("/GAs/NbRuns", "20"));
+    _textCtrlGAsPopulationSize->SetValue(pConfig->Read("/GAs/PopulationSize", "500"));
+    _textCtrlGAsConvergenceNb->SetValue(pConfig->Read("/GAs/ConvergenceStepsNb", "30"));
+    _textCtrlGAsRatioIntermGen->SetValue(pConfig->Read("/GAs/RatioIntermediateGeneration", "0.5"));
+    _checkBoxGAsAllowElitism->SetValue(pConfig->ReadBool("/GAs/AllowElitismForTheBest", true));
+    _textCtrlGAsNaturalSlctTournamentProb->SetValue(pConfig->Read("/GAs/NaturalSelectionTournamentProbability", "0.9"));
+    _textCtrlGAsCouplesSlctTournamentNb->SetValue(pConfig->Read("/GAs/CouplesSelectionTournamentNb", "3"));
+    _textCtrlGAsCrossoverMultipleNbPts->SetValue(pConfig->Read("/GAs/CrossoverMultiplePointsNb", "3"));
+    _textCtrlGAsCrossoverBlendingNbPts->SetValue(pConfig->Read("/GAs/CrossoverBlendingPointsNb", "2"));
+    _checkBoxGAsCrossoverBlendingShareBeta->SetValue(pConfig->ReadBool("/GAs/CrossoverBlendingShareBeta", true));
+    _textCtrlGAsCrossoverLinearNbPts->SetValue(pConfig->Read("/GAs/CrossoverLinearPointsNb", "2"));
+    _textCtrlGAsCrossoverHeuristicNbPts->SetValue(pConfig->Read("/GAs/CrossoverHeuristicPointsNb", "2"));
+    _checkBoxGAsCrossoverHeuristicShareBeta->SetValue(pConfig->ReadBool("/GAs/CrossoverHeuristicShareBeta", true));
+    _textCtrlGAsCrossoverBinLikeNbPts->SetValue(pConfig->Read("/GAs/CrossoverBinaryLikePointsNb", "2"));
+    _checkBoxGAsCrossoverBinLikeShareBeta->SetValue(pConfig->ReadBool("/GAs/CrossoverBinaryLikeShareBeta", true));
+    _textCtrlGAsMutationsUniformCstProb->SetValue(pConfig->Read("/GAs/MutationsUniformConstantProbability", "0.2"));
+    _textCtrlGAsMutationsNormalCstProb->SetValue(pConfig->Read("/GAs/MutationsNormalConstantProbability", "0.2"));
+    _textCtrlGAsMutationsNormalCstStdDev->SetValue(
         pConfig->Read("/GAs/MutationsNormalConstantStdDevRatioRange", "0.10"));
-    m_textCtrlGAsMutationsUniformVarMaxGensNb->SetValue(
+    _textCtrlGAsMutationsUniformVarMaxGensNb->SetValue(
         pConfig->Read("/GAs/MutationsUniformVariableMaxGensNbVar", "50"));
-    m_textCtrlGAsMutationsUniformVarProbStart->SetValue(
+    _textCtrlGAsMutationsUniformVarProbStart->SetValue(
         pConfig->Read("/GAs/MutationsUniformVariableProbabilityStart", "0.5"));
-    m_textCtrlGAsMutationsUniformVarProbEnd->SetValue(
+    _textCtrlGAsMutationsUniformVarProbEnd->SetValue(
         pConfig->Read("/GAs/MutationsUniformVariableProbabilityEnd", "0.01"));
-    m_textCtrlGAsMutationsNormalVarMaxGensNbProb->SetValue(
+    _textCtrlGAsMutationsNormalVarMaxGensNbProb->SetValue(
         pConfig->Read("/GAs/MutationsNormalVariableMaxGensNbVarProb", "50"));
-    m_textCtrlGAsMutationsNormalVarMaxGensNbStdDev->SetValue(
+    _textCtrlGAsMutationsNormalVarMaxGensNbStdDev->SetValue(
         pConfig->Read("/GAs/MutationsNormalVariableMaxGensNbVarStdDev", "50"));
-    m_textCtrlGAsMutationsNormalVarProbStart->SetValue(
+    _textCtrlGAsMutationsNormalVarProbStart->SetValue(
         pConfig->Read("/GAs/MutationsNormalVariableProbabilityStart", "0.5"));
-    m_textCtrlGAsMutationsNormalVarProbEnd->SetValue(
+    _textCtrlGAsMutationsNormalVarProbEnd->SetValue(
         pConfig->Read("/GAs/MutationsNormalVariableProbabilityEnd", "0.05"));
-    m_textCtrlGAsMutationsNormalVarStdDevStart->SetValue(
+    _textCtrlGAsMutationsNormalVarStdDevStart->SetValue(
         pConfig->Read("/GAs/MutationsNormalVariableStdDevStart", "0.5"));
-    m_textCtrlGAsMutationsNormalVarStdDevEnd->SetValue(pConfig->Read("/GAs/MutationsNormalVariableStdDevEnd", "0.01"));
-    m_textCtrlGAsMutationsNonUniformProb->SetValue(pConfig->Read("/GAs/MutationsNonUniformProbability", "0.2"));
-    m_textCtrlGAsMutationsNonUniformGensNb->SetValue(pConfig->Read("/GAs/MutationsNonUniformMaxGensNbVar", "50"));
-    m_textCtrlGAsMutationsNonUniformMinRate->SetValue(pConfig->Read("/GAs/MutationsNonUniformMinRate", "0.10"));
-    m_textCtrlGAsMutationsMultiScaleProb->SetValue(pConfig->Read("/GAs/MutationsMultiScaleProbability", "0.10"));
+    _textCtrlGAsMutationsNormalVarStdDevEnd->SetValue(pConfig->Read("/GAs/MutationsNormalVariableStdDevEnd", "0.01"));
+    _textCtrlGAsMutationsNonUniformProb->SetValue(pConfig->Read("/GAs/MutationsNonUniformProbability", "0.2"));
+    _textCtrlGAsMutationsNonUniformGensNb->SetValue(pConfig->Read("/GAs/MutationsNonUniformMaxGensNbVar", "50"));
+    _textCtrlGAsMutationsNonUniformMinRate->SetValue(pConfig->Read("/GAs/MutationsNonUniformMinRate", "0.10"));
+    _textCtrlGAsMutationsMultiScaleProb->SetValue(pConfig->Read("/GAs/MutationsMultiScaleProbability", "0.10"));
 }
 
 void asFrameOptimizer::OnSaveDefault(wxCommandEvent& event) {
@@ -268,105 +269,105 @@ void asFrameOptimizer::SaveOptions() const {
 
     // General stuff
     wxConfigBase* pConfig = wxFileConfig::Get();
-    auto methodSelection = (long)m_choiceMethod->GetSelection();
+    auto methodSelection = (long)_choiceMethod->GetSelection();
     pConfig->Write("/MethodSelection", methodSelection);
-    wxString parametersFilePath = m_filePickerParameters->GetPath();
+    wxString parametersFilePath = _filePickerParameters->GetPath();
     pConfig->Write("/ParametersFilePath", parametersFilePath);
-    wxString predictandDBFilePath = m_filePickerPredictand->GetPath();
+    wxString predictandDBFilePath = _filePickerPredictand->GetPath();
     pConfig->Write("/Paths/PredictandDBFilePath", predictandDBFilePath);
-    wxString predictorDir = m_dirPickerPredictor->GetPath();
+    wxString predictorDir = _dirPickerPredictor->GetPath();
     pConfig->Write("/Paths/PredictorDir", predictorDir);
-    wxString optimizerResultsDir = m_dirPickerCalibrationResults->GetPath();
+    wxString optimizerResultsDir = _dirPickerCalibrationResults->GetPath();
     pConfig->Write("/Paths/ResultsDir", optimizerResultsDir);
 
     // Classic+ calibration
-    wxString classicPlusResizingIterations = m_textCtrlClassicPlusResizingIterations->GetValue();
+    wxString classicPlusResizingIterations = _textCtrlClassicPlusResizingIterations->GetValue();
     pConfig->Write("/ClassicPlus/ResizingIterations", classicPlusResizingIterations);
-    wxString classicPlusStepsLatPertinenceMap = m_textCtrlClassicPlusStepsLatPertinenceMap->GetValue();
+    wxString classicPlusStepsLatPertinenceMap = _textCtrlClassicPlusStepsLatPertinenceMap->GetValue();
     pConfig->Write("/ClassicPlus/StepsLatPertinenceMap", classicPlusStepsLatPertinenceMap);
-    wxString classicPlusStepsLonPertinenceMap = m_textCtrlClassicPlusStepsLonPertinenceMap->GetValue();
+    wxString classicPlusStepsLonPertinenceMap = _textCtrlClassicPlusStepsLonPertinenceMap->GetValue();
     pConfig->Write("/ClassicPlus/StepsLonPertinenceMap", classicPlusStepsLonPertinenceMap);
-    bool proceedSequentially = m_checkBoxProceedSequentially->GetValue();
+    bool proceedSequentially = _checkBoxProceedSequentially->GetValue();
     pConfig->Write("/ClassicPlus/ProceedSequentially", proceedSequentially);
 
     // Variables exploration
-    wxString varExploStep = m_textCtrlVarExploStepToExplore->GetValue();
+    wxString varExploStep = _textCtrlVarExploStepToExplore->GetValue();
     pConfig->Write("/VariablesExplo/Step", varExploStep);
 
     // Monte Carlo
-    wxString monteCarloRandomNb = m_textCtrlMonteCarloRandomNb->GetValue();
+    wxString monteCarloRandomNb = _textCtrlMonteCarloRandomNb->GetValue();
     pConfig->Write("/MonteCarlo/RandomNb", monteCarloRandomNb);
 
     // Genetic algorithms
-    long naturalSelectionOperator = m_choiceGAsNaturalSelectionOperator->GetSelection();
+    long naturalSelectionOperator = _choiceGAsNaturalSelectionOperator->GetSelection();
     pConfig->Write("/GAs/NaturalSelectionOperator", naturalSelectionOperator);
-    long couplesSelectionOperator = m_choiceGAsCouplesSelectionOperator->GetSelection();
+    long couplesSelectionOperator = _choiceGAsCouplesSelectionOperator->GetSelection();
     pConfig->Write("/GAs/CouplesSelectionOperator", couplesSelectionOperator);
-    long crossoverOperator = m_choiceGAsCrossoverOperator->GetSelection();
+    long crossoverOperator = _choiceGAsCrossoverOperator->GetSelection();
     pConfig->Write("/GAs/CrossoverOperator", crossoverOperator);
-    long mutationOperator = m_choiceGAsMutationOperator->GetSelection();
+    long mutationOperator = _choiceGAsMutationOperator->GetSelection();
     pConfig->Write("/GAs/MutationOperator", mutationOperator);
-    wxString GAsRunNumbers = m_textCtrlGAsRunNumbers->GetValue();
+    wxString GAsRunNumbers = _textCtrlGAsRunNumbers->GetValue();
     pConfig->Write("/GAs/NbRuns", GAsRunNumbers);
-    wxString GAsPopulationSize = m_textCtrlGAsPopulationSize->GetValue();
+    wxString GAsPopulationSize = _textCtrlGAsPopulationSize->GetValue();
     pConfig->Write("/GAs/PopulationSize", GAsPopulationSize);
-    wxString GAsConvergenceStepsNb = m_textCtrlGAsConvergenceNb->GetValue();
+    wxString GAsConvergenceStepsNb = _textCtrlGAsConvergenceNb->GetValue();
     pConfig->Write("/GAs/ConvergenceStepsNb", GAsConvergenceStepsNb);
-    wxString GAsRatioIntermediateGeneration = m_textCtrlGAsRatioIntermGen->GetValue();
+    wxString GAsRatioIntermediateGeneration = _textCtrlGAsRatioIntermGen->GetValue();
     pConfig->Write("/GAs/RatioIntermediateGeneration", GAsRatioIntermediateGeneration);
-    bool GAsAllowElitismForTheBest = m_checkBoxGAsAllowElitism->GetValue();
+    bool GAsAllowElitismForTheBest = _checkBoxGAsAllowElitism->GetValue();
     pConfig->Write("/GAs/AllowElitismForTheBest", GAsAllowElitismForTheBest);
-    wxString GAsNaturalSelectionTournamentProbability = m_textCtrlGAsNaturalSlctTournamentProb->GetValue();
+    wxString GAsNaturalSelectionTournamentProbability = _textCtrlGAsNaturalSlctTournamentProb->GetValue();
     pConfig->Write("/GAs/NaturalSelectionTournamentProbability", GAsNaturalSelectionTournamentProbability);
-    wxString GAsCouplesSelectionTournamentNb = m_textCtrlGAsCouplesSlctTournamentNb->GetValue();
+    wxString GAsCouplesSelectionTournamentNb = _textCtrlGAsCouplesSlctTournamentNb->GetValue();
     pConfig->Write("/GAs/CouplesSelectionTournamentNb", GAsCouplesSelectionTournamentNb);
-    wxString GAsCrossoverMultiplePointsNb = m_textCtrlGAsCrossoverMultipleNbPts->GetValue();
+    wxString GAsCrossoverMultiplePointsNb = _textCtrlGAsCrossoverMultipleNbPts->GetValue();
     pConfig->Write("/GAs/CrossoverMultiplePointsNb", GAsCrossoverMultiplePointsNb);
-    wxString GAsCrossoverBlendingPointsNb = m_textCtrlGAsCrossoverBlendingNbPts->GetValue();
+    wxString GAsCrossoverBlendingPointsNb = _textCtrlGAsCrossoverBlendingNbPts->GetValue();
     pConfig->Write("/GAs/CrossoverBlendingPointsNb", GAsCrossoverBlendingPointsNb);
-    bool GAsCrossoverBlendingShareBeta = m_checkBoxGAsCrossoverBlendingShareBeta->GetValue();
+    bool GAsCrossoverBlendingShareBeta = _checkBoxGAsCrossoverBlendingShareBeta->GetValue();
     pConfig->Write("/GAs/CrossoverBlendingShareBeta", GAsCrossoverBlendingShareBeta);
-    wxString GAsCrossoverLinearPointsNb = m_textCtrlGAsCrossoverLinearNbPts->GetValue();
+    wxString GAsCrossoverLinearPointsNb = _textCtrlGAsCrossoverLinearNbPts->GetValue();
     pConfig->Write("/GAs/CrossoverLinearPointsNb", GAsCrossoverLinearPointsNb);
-    wxString GAsCrossoverHeuristicPointsNb = m_textCtrlGAsCrossoverHeuristicNbPts->GetValue();
+    wxString GAsCrossoverHeuristicPointsNb = _textCtrlGAsCrossoverHeuristicNbPts->GetValue();
     pConfig->Write("/GAs/CrossoverHeuristicPointsNb", GAsCrossoverHeuristicPointsNb);
-    bool GAsCrossoverHeuristicShareBeta = m_checkBoxGAsCrossoverHeuristicShareBeta->GetValue();
+    bool GAsCrossoverHeuristicShareBeta = _checkBoxGAsCrossoverHeuristicShareBeta->GetValue();
     pConfig->Write("/GAs/CrossoverHeuristicShareBeta", GAsCrossoverHeuristicShareBeta);
-    wxString GAsCrossoverBinaryLikePointsNb = m_textCtrlGAsCrossoverBinLikeNbPts->GetValue();
+    wxString GAsCrossoverBinaryLikePointsNb = _textCtrlGAsCrossoverBinLikeNbPts->GetValue();
     pConfig->Write("/GAs/CrossoverBinaryLikePointsNb", GAsCrossoverBinaryLikePointsNb);
-    bool GAsCrossoverBinaryLikeShareBeta = m_checkBoxGAsCrossoverBinLikeShareBeta->GetValue();
+    bool GAsCrossoverBinaryLikeShareBeta = _checkBoxGAsCrossoverBinLikeShareBeta->GetValue();
     pConfig->Write("/GAs/CrossoverBinaryLikeShareBeta", GAsCrossoverBinaryLikeShareBeta);
-    wxString GAsMutationsUniformConstantProbability = m_textCtrlGAsMutationsUniformCstProb->GetValue();
+    wxString GAsMutationsUniformConstantProbability = _textCtrlGAsMutationsUniformCstProb->GetValue();
     pConfig->Write("/GAs/MutationsUniformConstantProbability", GAsMutationsUniformConstantProbability);
-    wxString GAsMutationsNormalConstantProbability = m_textCtrlGAsMutationsNormalCstProb->GetValue();
+    wxString GAsMutationsNormalConstantProbability = _textCtrlGAsMutationsNormalCstProb->GetValue();
     pConfig->Write("/GAs/MutationsNormalConstantProbability", GAsMutationsNormalConstantProbability);
-    wxString GAsMutationsNormalConstantStdDevRatioRange = m_textCtrlGAsMutationsNormalCstStdDev->GetValue();
+    wxString GAsMutationsNormalConstantStdDevRatioRange = _textCtrlGAsMutationsNormalCstStdDev->GetValue();
     pConfig->Write("/GAs/MutationsNormalConstantStdDevRatioRange", GAsMutationsNormalConstantStdDevRatioRange);
-    wxString GAsMutationsUniformVariableMaxGensNbVar = m_textCtrlGAsMutationsUniformVarMaxGensNb->GetValue();
+    wxString GAsMutationsUniformVariableMaxGensNbVar = _textCtrlGAsMutationsUniformVarMaxGensNb->GetValue();
     pConfig->Write("/GAs/MutationsUniformVariableMaxGensNbVar", GAsMutationsUniformVariableMaxGensNbVar);
-    wxString GAsMutationsUniformVariableProbabilityStart = m_textCtrlGAsMutationsUniformVarProbStart->GetValue();
+    wxString GAsMutationsUniformVariableProbabilityStart = _textCtrlGAsMutationsUniformVarProbStart->GetValue();
     pConfig->Write("/GAs/MutationsUniformVariableProbabilityStart", GAsMutationsUniformVariableProbabilityStart);
-    wxString GAsMutationsUniformVariableProbabilityEnd = m_textCtrlGAsMutationsUniformVarProbEnd->GetValue();
+    wxString GAsMutationsUniformVariableProbabilityEnd = _textCtrlGAsMutationsUniformVarProbEnd->GetValue();
     pConfig->Write("/GAs/MutationsUniformVariableProbabilityEnd", GAsMutationsUniformVariableProbabilityEnd);
-    wxString GAsMutationsNormalVariableMaxGensNbVarProb = m_textCtrlGAsMutationsNormalVarMaxGensNbProb->GetValue();
+    wxString GAsMutationsNormalVariableMaxGensNbVarProb = _textCtrlGAsMutationsNormalVarMaxGensNbProb->GetValue();
     pConfig->Write("/GAs/MutationsNormalVariableMaxGensNbVarProb", GAsMutationsNormalVariableMaxGensNbVarProb);
-    wxString GAsMutationsNormalVariableMaxGensNbVarStdDev = m_textCtrlGAsMutationsNormalVarMaxGensNbStdDev->GetValue();
+    wxString GAsMutationsNormalVariableMaxGensNbVarStdDev = _textCtrlGAsMutationsNormalVarMaxGensNbStdDev->GetValue();
     pConfig->Write("/GAs/MutationsNormalVariableMaxGensNbVarStdDev", GAsMutationsNormalVariableMaxGensNbVarStdDev);
-    wxString GAsMutationsNormalVariableProbabilityStart = m_textCtrlGAsMutationsNormalVarProbStart->GetValue();
+    wxString GAsMutationsNormalVariableProbabilityStart = _textCtrlGAsMutationsNormalVarProbStart->GetValue();
     pConfig->Write("/GAs/MutationsNormalVariableProbabilityStart", GAsMutationsNormalVariableProbabilityStart);
-    wxString GAsMutationsNormalVariableProbabilityEnd = m_textCtrlGAsMutationsNormalVarProbEnd->GetValue();
+    wxString GAsMutationsNormalVariableProbabilityEnd = _textCtrlGAsMutationsNormalVarProbEnd->GetValue();
     pConfig->Write("/GAs/MutationsNormalVariableProbabilityEnd", GAsMutationsNormalVariableProbabilityEnd);
-    wxString GAsMutationsNormalVariableStdDevStart = m_textCtrlGAsMutationsNormalVarStdDevStart->GetValue();
+    wxString GAsMutationsNormalVariableStdDevStart = _textCtrlGAsMutationsNormalVarStdDevStart->GetValue();
     pConfig->Write("/GAs/MutationsNormalVariableStdDevStart", GAsMutationsNormalVariableStdDevStart);
-    wxString GAsMutationsNormalVariableStdDevEnd = m_textCtrlGAsMutationsNormalVarStdDevEnd->GetValue();
+    wxString GAsMutationsNormalVariableStdDevEnd = _textCtrlGAsMutationsNormalVarStdDevEnd->GetValue();
     pConfig->Write("/GAs/MutationsNormalVariableStdDevEnd", GAsMutationsNormalVariableStdDevEnd);
-    wxString GAsMutationsNonUniformProb = m_textCtrlGAsMutationsNonUniformProb->GetValue();
+    wxString GAsMutationsNonUniformProb = _textCtrlGAsMutationsNonUniformProb->GetValue();
     pConfig->Write("/GAs/MutationsNonUniformProbability", GAsMutationsNonUniformProb);
-    wxString GAsMutationsNonUniformMaxGensNbVar = m_textCtrlGAsMutationsNonUniformGensNb->GetValue();
+    wxString GAsMutationsNonUniformMaxGensNbVar = _textCtrlGAsMutationsNonUniformGensNb->GetValue();
     pConfig->Write("/GAs/MutationsNonUniformMaxGensNbVar", GAsMutationsNonUniformMaxGensNbVar);
-    wxString GAsMutationsNonUniformMinRate = m_textCtrlGAsMutationsNonUniformMinRate->GetValue();
+    wxString GAsMutationsNonUniformMinRate = _textCtrlGAsMutationsNonUniformMinRate->GetValue();
     pConfig->Write("/GAs/MutationsNonUniformMinRate", GAsMutationsNonUniformMinRate);
-    wxString GAsMutationsMultiScaleProb = m_textCtrlGAsMutationsMultiScaleProb->GetValue();
+    wxString GAsMutationsMultiScaleProb = _textCtrlGAsMutationsMultiScaleProb->GetValue();
     pConfig->Write("/GAs/MutationsMultiScaleProbability", GAsMutationsMultiScaleProb);
 
     pConfig->Flush();
@@ -376,7 +377,7 @@ void asFrameOptimizer::SaveOptions() const {
 void asFrameOptimizer::OnIdle( wxCommandEvent& event )
 {
     wxString state = asGetState();
-    m_staticTextState->SetLabel(state);
+    _staticTextState->SetLabel(state);
 }
 */
 void asFrameOptimizer::Launch(wxCommandEvent& event) {
@@ -385,77 +386,77 @@ void asFrameOptimizer::Launch(wxCommandEvent& event) {
     SaveOptions();
 
     try {
-        switch (m_choiceMethod->GetSelection()) {
+        switch (_choiceMethod->GetSelection()) {
             case wxNOT_FOUND: {
                 wxLogError(_("Wrong method selection."));
                 break;
             }
             case 0:  // Single
             {
-                m_methodCalibrator = new asMethodCalibratorSingle();
+                _methodCalibrator = new asMethodCalibratorSingle();
                 break;
             }
             case 1:  // Classic
             {
-                m_methodCalibrator = new asMethodCalibratorClassic();
+                _methodCalibrator = new asMethodCalibratorClassic();
                 break;
             }
             case 2:  // Classic+
             {
-                m_methodCalibrator = new asMethodCalibratorClassic();
+                _methodCalibrator = new asMethodCalibratorClassic();
                 break;
             }
             case 3:  // Variables exploration with classic+
             {
-                m_methodCalibrator = new asMethodCalibratorClassicVarExplo();
+                _methodCalibrator = new asMethodCalibratorClassicVarExplo();
                 break;
             }
             case 4:  // Random sets
             {
-                m_methodCalibrator = new asMethodOptimizerMC();
+                _methodCalibrator = new asMethodOptimizerMC();
                 break;
             }
             case 5:  // Genetic algorithms
             {
-                m_methodCalibrator = new asMethodOptimizerGAs();
+                _methodCalibrator = new asMethodOptimizerGAs();
                 break;
             }
             case 6:  // Scores evaluation
             {
-                m_methodCalibrator = new asMethodCalibratorEvaluateAllScores();
+                _methodCalibrator = new asMethodCalibratorEvaluateAllScores();
                 break;
             }
             case 7:  // Only predictand values
             {
-                m_methodCalibrator = new asMethodCalibratorSingleOnlyValues();
+                _methodCalibrator = new asMethodCalibratorSingleOnlyValues();
                 break;
             }
             case 8:  // Only analog dates
             {
-                m_methodCalibrator = new asMethodCalibratorSingleOnlyDates();
+                _methodCalibrator = new asMethodCalibratorSingleOnlyDates();
                 break;
             }
             default:
                 wxLogError(_("Chosen method not defined yet."));
         }
 
-        if (m_methodCalibrator) {
-            m_methodCalibrator->SetParamsFilePath(m_filePickerParameters->GetPath());
-            m_methodCalibrator->SetPredictandDBFilePath(m_filePickerPredictand->GetPath());
-            m_methodCalibrator->SetPredictorDataDir(m_dirPickerPredictor->GetPath());
-            m_methodCalibrator->Manager();
+        if (_methodCalibrator) {
+            _methodCalibrator->SetParamsFilePath(_filePickerParameters->GetPath());
+            _methodCalibrator->SetPredictandDBFilePath(_filePickerPredictand->GetPath());
+            _methodCalibrator->SetPredictorDataDir(_dirPickerPredictor->GetPath());
+            _methodCalibrator->Manager();
         }
     } catch (std::bad_alloc& ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught: %s"), msg);
         wxLogError(_("Failed to process the calibration."));
-    } catch (runtime_error& e) {
+    } catch (std::runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception caught: %s"), msg);
         wxLogError(_("Failed to process the optimization."));
     }
 
-    wxDELETE(m_methodCalibrator);
+    wxDELETE(_methodCalibrator);
 
     wxMessageBox(_("Optimizer over."));
 }

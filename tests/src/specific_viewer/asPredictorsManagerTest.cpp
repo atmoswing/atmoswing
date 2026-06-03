@@ -86,7 +86,7 @@ TEST_F(PredictorsManager, LoadDataAnalog) {
 
     asPredictorsManager predictorsManagerArch(workspace, false);
     predictorsManagerArch.SetForecastDate(forecast->GetLeadTimeOrigin());
-    predictorsManagerArch.SetDate(36934); // 1906-01-01
+    predictorsManagerArch.SetDate(36934);  // 1906-01-01
     predictorsManagerArch.SetForecastTimeStepHours(forecast->GetForecastTimeStepHours());
     predictorsManagerArch.SetDatasetIds(datasetIds);
     predictorsManagerArch.SetDataIds(dataIds);

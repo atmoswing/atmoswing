@@ -27,6 +27,7 @@
  */
 
 #include "asPredictandLightning.h"
+#include "asIncludes.h"
 
 #include "asCatalogPredictands.h"
 #include "asFileNetcdf.h"
@@ -35,8 +36,8 @@
 asPredictandLightning::asPredictandLightning(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                                              SpatialAggregation dataSpatialAggregation)
     : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation) {
-    m_hasNormalizedData = false;
-    m_hasReferenceValues = false;
+    _hasNormalizedData = false;
+    _hasReferenceValues = false;
 }
 
 bool asPredictandLightning::InitContainers() {
@@ -55,16 +56,19 @@ bool asPredictandLightning::Load(const wxString& filePath) {
     // Load common data
     LoadCommonData(ncFile);
 
-    if (m_hasNormalizedData) {
+    if (_hasNormalizedData) {
         // Get normalized data
         size_t indexStart[2] = {0, 0};
-        size_t indexCount[2] = {size_t(m_timeLength), size_t(m_stationsNb)};
-        m_dataNormalized.resize(m_timeLength, m_stationsNb);
-        ncFile.GetVarArray("data_normalized", indexStart, indexCount, &m_dataNormalized(0, 0));
+        size_t indexCount[2] = {size_t(_timeLength), size_t(_stationsNb)};
+        _dataNormalized.resize(_timeLength, _stationsNb);
+        ncFile.GetVarArray("data_normalized", indexStart, indexCount, &_dataNormalized(0, 0));
     }
 
     // Close the netCDF file
-    ncFile.Close();
+    if (!ncFile.Close()) {
+        wxLogError(_("Couldn't close file %s"), filePath);
+        return false;
+    }
 
     return true;
 }
@@ -80,7 +84,7 @@ bool asPredictandLightning::Save(const wxString& destinationDir) const {
     // Set common definitions
     SetCommonDefinitions(ncFile);
 
-    if (m_hasNormalizedData) {
+    if (_hasNormalizedData) {
         // Define dimensions
         vstds dimNames2D;
         dimNames2D.push_back("time");
@@ -101,17 +105,20 @@ bool asPredictandLightning::Save(const wxString& destinationDir) const {
     // Save common data
     SaveCommonData(ncFile);
 
-    if (m_hasNormalizedData) {
+    if (_hasNormalizedData) {
         // Provide sizes for variable
         size_t start2[] = {0, 0};
-        size_t count2[] = {size_t(m_timeLength), size_t(m_stationsNb)};
+        size_t count2[] = {size_t(_timeLength), size_t(_stationsNb)};
 
         // Write data
-        ncFile.PutVarArray("data_normalized", start2, count2, &m_dataNormalized(0, 0));
+        ncFile.PutVarArray("data_normalized", start2, count2, &_dataNormalized(0, 0));
     }
 
     // Close:save new netCDF dataset
-    ncFile.Close();
+    if (!ncFile.Close()) {
+        wxLogError(_("Couldn't close file %s"), predictandDBFilePath);
+        return false;
+    }
 
     return true;
 }
@@ -127,7 +134,7 @@ bool asPredictandLightning::BuildPredictandDB(const wxString& catalogFilePath, c
     // Load data from files
     if (!ParseData(catalogFilePath, dataDir, patternDir)) return false;
 
-    if (m_hasNormalizedData) {
+    if (_hasNormalizedData) {
         if (!BuildDataNormalized()) return false;
     }
 
@@ -147,9 +154,9 @@ bool asPredictandLightning::BuildPredictandDB(const wxString& catalogFilePath, c
 }
 
 bool asPredictandLightning::BuildDataNormalized() {
-    for (int iStat = 0; iStat < m_stationsNb; iStat++) {
-        for (int iTime = 0; iTime < m_timeLength; iTime++) {
-            m_dataNormalized(iTime, iStat) = log10(m_dataRaw(iTime, iStat) + 1);
+    for (int iStat = 0; iStat < _stationsNb; iStat++) {
+        for (int iTime = 0; iTime < _timeLength; iTime++) {
+            _dataNormalized(iTime, iStat) = log10(_dataRaw(iTime, iStat) + 1);
         }
     }
     return true;

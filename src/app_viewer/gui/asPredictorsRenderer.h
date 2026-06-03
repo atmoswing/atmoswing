@@ -28,7 +28,7 @@
 #ifndef AS_PREDICTORS_VIEWER_H
 #define AS_PREDICTORS_VIEWER_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asPanelPredictorsColorbar.h"
 #include "vroomgis.h"
 
@@ -122,14 +122,14 @@ class asPredictorsRenderer {
 
   protected:
   private:
-    wxWindow* m_parent; /**< The parent window. */
-    vrLayerManager* m_layerManager; /**< The layer manager. */
-    asPredictorsManager* m_predictorsManagerTarget; /**< The predictors manager for the target data. */
-    asPredictorsManager* m_predictorsManagerAnalog; /**< The predictors manager for the analog data. */
-    vrViewerLayerManager* m_viewerLayerManagerTarget; /**< The viewer layer manager for the target data. */
-    vrViewerLayerManager* m_viewerLayerManagerAnalog; /**< The viewer layer manager for the analog data. */
-    asPanelPredictorsColorbar* m_colorbarTarget; /**< The colorbar for the target data. */
-    asPanelPredictorsColorbar* m_colorbarAnalog; /**< The colorbar for the analog data. */
+    wxWindow* _parent;                               /**< The parent window. */
+    vrLayerManager* _layerManager;                   /**< The layer manager. */
+    asPredictorsManager* _predictorsManagerTarget;   /**< The predictors manager for the target data. */
+    asPredictorsManager* _predictorsManagerAnalog;   /**< The predictors manager for the analog data. */
+    vrViewerLayerManager* _viewerLayerManagerTarget; /**< The viewer layer manager for the target data. */
+    vrViewerLayerManager* _viewerLayerManagerAnalog; /**< The viewer layer manager for the analog data. */
+    asPanelPredictorsColorbar* _colorbarTarget;      /**< The colorbar for the target data. */
+    asPanelPredictorsColorbar* _colorbarAnalog;      /**< The colorbar for the analog data. */
 
     /**
      * Close the layer if present.

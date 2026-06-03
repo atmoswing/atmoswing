@@ -28,14 +28,15 @@
 #include "asPredictorProj.h"
 
 #include "asAreaGrid.h"
+#include "asIncludes.h"
 #include "asPredictorProjCmip5.h"
 #include "asPredictorProjCordex.h"
 #include "asTimeArray.h"
 
 asPredictorProj::asPredictorProj(const wxString& dataId, const wxString& model, const wxString& scenario)
     : asPredictor(dataId),
-      m_model(model),
-      m_scenario(scenario) {}
+      _model(model),
+      _scenario(scenario) {}
 
 asPredictorProj* asPredictorProj::GetInstance(const wxString& datasetId, const wxString& model,
                                               const wxString& scenario, const wxString& dataId,

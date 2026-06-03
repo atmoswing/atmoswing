@@ -29,7 +29,6 @@
 #ifndef AS_PREDICTOR_OPER_H
 #define AS_PREDICTOR_OPER_H
 
-#include "asIncludes.h"
 #include "asPredictor.h"
 
 class asPredictorOper : public asPredictor {
@@ -53,35 +52,35 @@ class asPredictorOper : public asPredictor {
     bool BuildFilenamesAndUrls(double predictorHour, double forecastTimeStepHours, int leadTimeNb);
 
     double GetRunDateInUse() const {
-        return m_runDateInUse;
+        return _runDateInUse;
     }
 
     vwxs GetUrls() const {
-        return m_urls;
+        return _urls;
     }
 
     vwxs GetFileNames() const {
-        return m_fileNames;
+        return _fileNames;
     }
 
     void SetFileNames(const vwxs& val) {
-        m_fileNames = val;
+        _fileNames = val;
     }
 
     vd GetDataDates() const {
-        return m_dataDates;
+        return _dataDates;
     }
 
     wxString GetPredictorsRealtimeDirectory() {
-        return m_predictorsRealtimeDir;
+        return _predictorsRealtimeDir;
     }
 
     void SetPredictorsRealtimeDirectory(const wxString& dir) {
-        m_predictorsRealtimeDir = dir;
+        _predictorsRealtimeDir = dir;
     }
 
     bool ShouldDownload() {
-        return m_shouldDownload;
+        return _shouldDownload;
     }
 
     virtual wxString GetDirStructure(const double date);
@@ -89,17 +88,17 @@ class asPredictorOper : public asPredictor {
     virtual wxString GetFileName(const double date, const int leadTime);
 
   protected:
-    wxString m_predictorsRealtimeDir;
-    int m_leadTimeStart;
-    int m_leadTimeStep;
-    int m_runHourStart;
-    int m_runUpdate;
-    double m_runDateInUse;
-    wxString m_commandDownload;
-    bool m_shouldDownload;
-    vwxs m_fileNames;
-    vwxs m_urls;
-    vd m_dataDates;
+    wxString _predictorsRealtimeDir;
+    int _leadTimeStart;
+    int _leadTimeStep;
+    int _runHourStart;
+    int _runUpdate;
+    double _runDateInUse;
+    wxString _commandDownload;
+    bool _shouldDownload;
+    vwxs _fileNames;
+    vwxs _urls;
+    vd _dataDates;
 
     void ListFiles(asTimeArray& timeArray) override;
 

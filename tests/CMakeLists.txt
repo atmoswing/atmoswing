@@ -9,7 +9,22 @@ if (USE_GUI)
     option(TEST_GUI "Should we test GUI ?" OFF)
 endif(USE_GUI)
 
+# GUI tests require the viewer (and its deps) to be present
+if (TEST_GUI AND NOT BUILD_VIEWER)
+    message(WARNING "TEST_GUI=ON requires BUILD_VIEWER=ON; disabling TEST_GUI.")
+    set(TEST_GUI OFF)
+endif ()
+
 option(TEST_CALIBRATION "Should we test calibration functions (long tests) ?" ON)
+
+
+##### DEPENDENCIES
+
+find_package(GTest CONFIG REQUIRED)
+if (TEST_GUI)
+    find_package(GDAL REQUIRED)
+endif (TEST_GUI)
+
 
 ##### SOURCE FILES
 
@@ -107,12 +122,8 @@ if (BUILD_VIEWER)
     endif (TEST_GUI)
 endif ()
 
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.h")
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.cpp")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/AtmoSwingAppForecaster.h")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/AtmoSwingAppForecaster.cpp")
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/asGlobVarsDownscaler.h")
-list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/asGlobVarsDownscaler.cpp")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/AtmoSwingAppViewer.h")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/AtmoSwingAppViewer.cpp")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/AtmoSwingAppOptimizer.h")
@@ -128,9 +139,6 @@ if (USE_CUDA)
     list(APPEND src_tests_cuda ${src_tests_cu})
     list(APPEND src_tests_cuda ${src_tests_cuh})
     list(APPEND tests ${src_tests_cuh})
-    if (TEST_CUDA)
-        add_definitions(-DTEST_CUDA)
-    endif (TEST_CUDA)
 endif (USE_CUDA)
 
 # Remove eventual duplicates
@@ -156,11 +164,15 @@ list(APPEND inc_dirs
         "${CMAKE_SOURCE_DIR}/src/app_viewer/libs/wxthings/include/"
         "${PROJECT_SOURCE_DIR}/test/src/"
         )
-include_directories(${inc_dirs})
-
 if (USE_GUI)
-    include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/gui/")
+    list(APPEND inc_dirs "${CMAKE_SOURCE_DIR}/src/shared_base/gui/")
 endif ()
+
+if (TEST_GUI)
+    list(APPEND inc_dirs
+            ${vroomgis_SOURCE_DIR}/vroomgis/src
+            ${vroomgis_SOURCE_DIR}/vroomgis/art)
+endif (TEST_GUI)
 
 
 ##### LIBRARIES
@@ -169,22 +181,17 @@ endif ()
 if (USE_CUDA)
     set(CUDA_SEPARABLE_COMPILATION ON)
     find_package(CUDA 9.0 REQUIRED)
-    include_directories(${CUDA_INCLUDE_DIRS})
     set(CUDA_NVCC_FLAGS_RELEASE ${CUDA_NVCC_FLAGS_RELEASE};-O3)
     set(CUDA_NVCC_FLAGS_DEBUG ${CUDA_NVCC_FLAGS_DEBUG};-G)
     set(CUDA_NVCC_FLAGS_RELWITHDEBINFO ${CUDA_NVCC_FLAGS_RELWITHDEBINFO};-lineinfo)
     cuda_add_library(astestscuda STATIC ${src_tests_cuda})
-    target_link_libraries(astestscuda ${CUDA_cudadevrt_LIBRARY})
-    target_link_libraries(astestscuda ${CUDA_cudart_static_LIBRARY})
-    add_definitions(-DUSE_CUDA)
+    target_include_directories(astestscuda PRIVATE ${CUDA_INCLUDE_DIRS})
+    target_link_libraries(astestscuda PRIVATE
+            ${CUDA_cudadevrt_LIBRARY}
+            ${CUDA_cudart_static_LIBRARY}
+            atmoswing_compile_options)
+    target_compile_definitions(astestscuda PRIVATE USE_CUDA)
 endif (USE_CUDA)
-
-if (TEST_GUI)
-    # vroomgis
-    FetchContent_MakeAvailable(vroomgis)
-    include_directories(${vroomgis_SOURCE_DIR}/vroomgis/src)
-    include_directories(${vroomgis_SOURCE_DIR}/vroomgis/art)
-endif (TEST_GUI)
 
 ##### DECLARE EXECUTABLE
 
@@ -208,17 +215,25 @@ endif ()
 
 if (WIN32)
     set_target_properties(atmoswing-tests PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
-    if (USE_GUI)
-        set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=1; _CONSOLE")
-    else (USE_GUI)
-        set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=0; _CONSOLE")
-    endif (USE_GUI)
-else ()
-    if (USE_GUI)
-        set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=1")
-    else (USE_GUI)
-        set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; USE_GUI=0")
-    endif (USE_GUI)
+endif ()
+
+
+target_include_directories(atmoswing-tests PRIVATE ${inc_dirs})
+
+# UNIT_TESTING and TEST_CUDA are target-specific. USE_GUI / USE_CUDA / version macros come
+# from atmoswing_compile_options via asbase/asprocessing PUBLIC link.
+target_compile_definitions(atmoswing-tests PRIVATE UNIT_TESTING)
+
+# Pin the eccodes definitions path to this build's mirror so tests don't depend
+# on the user's ECCODES_DEFINITION_PATH env var (which may point at a stale
+# install with mismatched definitions and crash codes_handle_new_from_file).
+target_compile_definitions(atmoswing-tests PRIVATE
+        ATMOSWING_TESTS_ECCODES_DEFS_PATH="${ECCODES_SHARE_DIR}/definitions")
+if (USE_CUDA AND TEST_CUDA)
+    target_compile_definitions(atmoswing-tests PRIVATE TEST_CUDA)
+endif ()
+if (WIN32)
+    target_compile_definitions(atmoswing-tests PRIVATE _CONSOLE)
 endif ()
 
 
@@ -226,30 +241,26 @@ endif ()
 
 add_dependencies(atmoswing-tests asbase)
 add_dependencies(atmoswing-tests asprocessing)
-target_link_libraries(atmoswing-tests asbase)
-target_link_libraries(atmoswing-tests asprocessing)
-target_link_libraries(atmoswing-tests CONAN_PKG::gtest)
+target_link_libraries(atmoswing-tests PRIVATE asbase asprocessing GTest::gtest GTest::gtest_main)
 if (UNIX)
-    target_link_libraries(atmoswing-tests pthread)
-endif ()
-if (USE_VLD)
-    target_link_libraries(atmoswing-tests ${VLD_LIBRARIES})
+    target_link_libraries(atmoswing-tests PRIVATE pthread)
 endif ()
 if (USE_CUDA)
     add_dependencies(atmoswing-tests ascuda)
     add_dependencies(atmoswing-tests astestscuda)
-    target_link_libraries(astestscuda ${CUDA_LIBRARIES})
-    target_link_libraries(atmoswing-tests ascuda)
-    target_link_libraries(atmoswing-tests astestscuda)
-    add_definitions(-DUSE_CUDA)
+    target_link_libraries(astestscuda PRIVATE ${CUDA_LIBRARIES})
+    target_link_libraries(atmoswing-tests PRIVATE ascuda astestscuda)
 endif ()
 if (TEST_GUI)
     add_dependencies(atmoswing-tests vroomgis)
     add_dependencies(atmoswing-tests wxplotctrl)
-    target_link_libraries(atmoswing-tests vroomgis)
-    target_link_libraries(atmoswing-tests wxplotctrl)
-    target_link_libraries(atmoswing-tests CONAN_PKG::gdal)
+    target_link_libraries(atmoswing-tests PRIVATE vroomgis wxplotctrl GDAL::GDAL)
 endif (TEST_GUI)
+
+##### RUNTIME DLL STAGING (Windows)
+
+atmoswing_stage_runtime_dlls(atmoswing-tests)
+
 
 ##### CTEST
 

@@ -29,7 +29,7 @@
 #ifndef AS_THREAD_INTERNET_DOWNLOAD_H
 #define AS_THREAD_INTERNET_DOWNLOAD_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asInternet.h"
 #include "asThread.h"
 
@@ -45,16 +45,16 @@ class asThreadInternetDownload : public asThread {
 
   protected:
   private:
-    vwxs m_urls;
-    vwxs m_fileNames;
-    wxString m_destinationDir;
-    bool m_usesProxy;
-    wxString m_proxyAddress;
-    long m_proxyPort;
-    wxString m_proxyUser;
-    wxString m_proxyPasswd;
-    int m_start;
-    int m_end;
+    vwxs _urls;
+    vwxs _fileNames;
+    wxString _destinationDir;
+    bool _usesProxy;
+    wxString _proxyAddress;
+    long _proxyPort;
+    wxString _proxyUser;
+    wxString _proxyPasswd;
+    int _start;
+    int _end;
 };
 
 #endif

@@ -27,16 +27,17 @@
  */
 
 #include "asParametersOptimization.h"
+#include "asIncludes.h"
 
 #include "asFileParametersOptimization.h"
 
 asParametersOptimization::asParametersOptimization()
     : asParametersScoring(),
-      m_variableParamsNb(0),
-      m_timeArrayAnalogsIntervalDaysIteration(1),
-      m_timeArrayAnalogsIntervalDaysUpperLimit(183),
-      m_timeArrayAnalogsIntervalDaysLowerLimit(10),
-      m_timeArrayAnalogsIntervalDaysLocks(true) {}
+      _variableParamsNb(0),
+      _timeArrayAnalogsIntervalDaysIteration(1),
+      _timeArrayAnalogsIntervalDaysUpperLimit(183),
+      _timeArrayAnalogsIntervalDaysLowerLimit(10),
+      _timeArrayAnalogsIntervalDaysLocks(true) {}
 
 asParametersOptimization::~asParametersOptimization() {}
 
@@ -55,11 +56,11 @@ void asParametersOptimization::AddStep() {
     stepLocks.analogsNumber = true;
     stepVect.analogsNumber.push_back(0);
 
-    m_stepsIteration.push_back(stepIteration);
-    m_stepsUpperLimit.push_back(stepUpperLimit);
-    m_stepsLowerLimit.push_back(stepLowerLimit);
-    m_stepsLocks.push_back(stepLocks);
-    m_stepsVect.push_back(stepVect);
+    _stepsIteration.push_back(stepIteration);
+    _stepsUpperLimit.push_back(stepUpperLimit);
+    _stepsLowerLimit.push_back(stepLowerLimit);
+    _stepsLocks.push_back(stepLocks);
+    _stepsVect.push_back(stepVect);
 }
 
 void asParametersOptimization::AddPredictorIteration(ParamsStep& step) {
@@ -311,11 +312,11 @@ bool asParametersOptimization::ParseAnalogDatesParams(asFileParametersOptimizati
             }
         } else if (nodeParamBlock->GetName() == "predictor") {
             AddPredictor(iStep);
-            AddPredictorVect(m_stepsVect[iStep]);
-            AddPredictorIteration(m_stepsIteration[iStep]);
-            AddPredictorUpperLimit(m_stepsUpperLimit[iStep]);
-            AddPredictorLowerLimit(m_stepsLowerLimit[iStep]);
-            AddPredictorLocks(m_stepsLocks[iStep]);
+            AddPredictorVect(_stepsVect[iStep]);
+            AddPredictorIteration(_stepsIteration[iStep]);
+            AddPredictorUpperLimit(_stepsUpperLimit[iStep]);
+            AddPredictorLowerLimit(_stepsLowerLimit[iStep]);
+            AddPredictorLocks(_stepsLocks[iStep]);
             SetPreprocess(iStep, iPtor, false);
             SetPreload(iStep, iPtor, true);
             if (!ParsePredictors(fileParams, iStep, iPtor, nodeParamBlock)) return false;
@@ -728,110 +729,110 @@ bool asParametersOptimization::SetPreloadingProperties() {
 }
 
 void asParametersOptimization::InitRandomValues() {
-    if (!m_timeArrayAnalogsIntervalDaysLocks) {
-        m_analogsIntervalDays = asRandom(m_timeArrayAnalogsIntervalDaysLowerLimit,
-                                         m_timeArrayAnalogsIntervalDaysUpperLimit,
-                                         m_timeArrayAnalogsIntervalDaysIteration);
+    if (!_timeArrayAnalogsIntervalDaysLocks) {
+        _analogsIntervalDays = asRandom(_timeArrayAnalogsIntervalDaysLowerLimit,
+                                        _timeArrayAnalogsIntervalDaysUpperLimit,
+                                        _timeArrayAnalogsIntervalDaysIteration);
     }
 
     for (int i = 0; i < GetStepsNb(); i++) {
-        if (!m_stepsLocks[i].analogsNumber) {
-            SetAnalogsNumber(i, asRandom(m_stepsLowerLimit[i].analogsNumber, m_stepsUpperLimit[i].analogsNumber,
-                                         m_stepsIteration[i].analogsNumber));
+        if (!_stepsLocks[i].analogsNumber) {
+            SetAnalogsNumber(i, asRandom(_stepsLowerLimit[i].analogsNumber, _stepsUpperLimit[i].analogsNumber,
+                                         _stepsIteration[i].analogsNumber));
         }
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    if (!m_stepsLocks[i].predictors[j].preprocessDataId[k]) {
-                        int length = m_stepsVect[i].predictors[j].preprocessDataId[k].size();
+                    if (!_stepsLocks[i].predictors[j].preprocessDataId[k]) {
+                        int length = _stepsVect[i].predictors[j].preprocessDataId[k].size();
                         int row = asRandom(0, length - 1);
-                        wxASSERT(m_stepsVect[i].predictors[j].preprocessDataId[k].size() > row);
+                        wxASSERT(_stepsVect[i].predictors[j].preprocessDataId[k].size() > row);
 
-                        SetPreprocessDataId(i, j, k, m_stepsVect[i].predictors[j].preprocessDataId[k][row]);
+                        SetPreprocessDataId(i, j, k, _stepsVect[i].predictors[j].preprocessDataId[k][row]);
                     }
 
-                    if (!m_stepsLocks[i].predictors[j].preprocessLevels[k]) {
-                        int length = m_stepsVect[i].predictors[j].preprocessLevels[k].size();
+                    if (!_stepsLocks[i].predictors[j].preprocessLevels[k]) {
+                        int length = _stepsVect[i].predictors[j].preprocessLevels[k].size();
                         int row = asRandom(0, length - 1);
-                        wxASSERT(m_stepsVect[i].predictors[j].preprocessLevels[k].size() > row);
+                        wxASSERT(_stepsVect[i].predictors[j].preprocessLevels[k].size() > row);
 
-                        SetPreprocessLevel(i, j, k, m_stepsVect[i].predictors[j].preprocessLevels[k][row]);
+                        SetPreprocessLevel(i, j, k, _stepsVect[i].predictors[j].preprocessLevels[k][row]);
                     }
 
-                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
+                    if (!_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         SetPreprocessHour(i, j, k,
-                                          asRandom(m_stepsLowerLimit[i].predictors[j].preprocessHours[k],
-                                                   m_stepsUpperLimit[i].predictors[j].preprocessHours[k],
-                                                   m_stepsIteration[i].predictors[j].preprocessHours[k]));
+                                          asRandom(_stepsLowerLimit[i].predictors[j].preprocessHours[k],
+                                                   _stepsUpperLimit[i].predictors[j].preprocessHours[k],
+                                                   _stepsIteration[i].predictors[j].preprocessHours[k]));
                     }
                 }
             } else {
-                if (!m_stepsLocks[i].predictors[j].dataId) {
-                    int length = m_stepsVect[i].predictors[j].dataId.size();
+                if (!_stepsLocks[i].predictors[j].dataId) {
+                    int length = _stepsVect[i].predictors[j].dataId.size();
                     int row = asRandom(0, length - 1);
-                    wxASSERT(m_stepsVect[i].predictors[j].dataId.size() > row);
+                    wxASSERT(_stepsVect[i].predictors[j].dataId.size() > row);
 
-                    SetPredictorDataId(i, j, m_stepsVect[i].predictors[j].dataId[row]);
+                    SetPredictorDataId(i, j, _stepsVect[i].predictors[j].dataId[row]);
                 }
 
-                if (!m_stepsLocks[i].predictors[j].level) {
-                    int length = m_stepsVect[i].predictors[j].level.size();
+                if (!_stepsLocks[i].predictors[j].level) {
+                    int length = _stepsVect[i].predictors[j].level.size();
                     int row = asRandom(0, length - 1);
-                    wxASSERT(m_stepsVect[i].predictors[j].level.size() > row);
+                    wxASSERT(_stepsVect[i].predictors[j].level.size() > row);
 
-                    SetPredictorLevel(i, j, m_stepsVect[i].predictors[j].level[row]);
+                    SetPredictorLevel(i, j, _stepsVect[i].predictors[j].level[row]);
                 }
 
-                if (!m_stepsLocks[i].predictors[j].hours) {
+                if (!_stepsLocks[i].predictors[j].hours) {
                     SetPredictorHour(
                         i, j,
-                        asRandom(m_stepsLowerLimit[i].predictors[j].hour, m_stepsUpperLimit[i].predictors[j].hour,
-                                 m_stepsIteration[i].predictors[j].hour));
+                        asRandom(_stepsLowerLimit[i].predictors[j].hour, _stepsUpperLimit[i].predictors[j].hour,
+                                 _stepsIteration[i].predictors[j].hour));
                 }
             }
 
-            if (!m_stepsLocks[i].predictors[j].xMin) {
+            if (!_stepsLocks[i].predictors[j].xMin) {
                 SetPredictorXmin(
                     i, j,
-                    asRandom(m_stepsLowerLimit[i].predictors[j].xMin, m_stepsUpperLimit[i].predictors[j].xMin,
-                             m_stepsIteration[i].predictors[j].xMin));
+                    asRandom(_stepsLowerLimit[i].predictors[j].xMin, _stepsUpperLimit[i].predictors[j].xMin,
+                             _stepsIteration[i].predictors[j].xMin));
             }
 
-            if (!m_stepsLocks[i].predictors[j].xPtsNb) {
+            if (!_stepsLocks[i].predictors[j].xPtsNb) {
                 SetPredictorXptsnb(
                     i, j,
-                    asRandom(m_stepsLowerLimit[i].predictors[j].xPtsNb, m_stepsUpperLimit[i].predictors[j].xPtsNb,
-                             m_stepsIteration[i].predictors[j].xPtsNb));
+                    asRandom(_stepsLowerLimit[i].predictors[j].xPtsNb, _stepsUpperLimit[i].predictors[j].xPtsNb,
+                             _stepsIteration[i].predictors[j].xPtsNb));
             }
 
-            if (!m_stepsLocks[i].predictors[j].yMin) {
+            if (!_stepsLocks[i].predictors[j].yMin) {
                 SetPredictorYmin(
                     i, j,
-                    asRandom(m_stepsLowerLimit[i].predictors[j].yMin, m_stepsUpperLimit[i].predictors[j].yMin,
-                             m_stepsIteration[i].predictors[j].yMin));
+                    asRandom(_stepsLowerLimit[i].predictors[j].yMin, _stepsUpperLimit[i].predictors[j].yMin,
+                             _stepsIteration[i].predictors[j].yMin));
             }
 
-            if (!m_stepsLocks[i].predictors[j].yPtsNb) {
+            if (!_stepsLocks[i].predictors[j].yPtsNb) {
                 SetPredictorYptsnb(
                     i, j,
-                    asRandom(m_stepsLowerLimit[i].predictors[j].yPtsNb, m_stepsUpperLimit[i].predictors[j].yPtsNb,
-                             m_stepsIteration[i].predictors[j].yPtsNb));
+                    asRandom(_stepsLowerLimit[i].predictors[j].yPtsNb, _stepsUpperLimit[i].predictors[j].yPtsNb,
+                             _stepsIteration[i].predictors[j].yPtsNb));
             }
 
-            if (!m_stepsLocks[i].predictors[j].weight) {
+            if (!_stepsLocks[i].predictors[j].weight) {
                 SetPredictorWeight(
                     i, j,
-                    asRandom(m_stepsLowerLimit[i].predictors[j].weight, m_stepsUpperLimit[i].predictors[j].weight,
-                             m_stepsIteration[i].predictors[j].weight));
+                    asRandom(_stepsLowerLimit[i].predictors[j].weight, _stepsUpperLimit[i].predictors[j].weight,
+                             _stepsIteration[i].predictors[j].weight));
             }
 
-            if (!m_stepsLocks[i].predictors[j].criteria) {
-                int length = m_stepsVect[i].predictors[j].criteria.size();
+            if (!_stepsLocks[i].predictors[j].criteria) {
+                int length = _stepsVect[i].predictors[j].criteria.size();
                 int row = asRandom(0, length - 1);
-                wxASSERT(m_stepsVect[i].predictors[j].criteria.size() > row);
+                wxASSERT(_stepsVect[i].predictors[j].criteria.size() > row);
 
-                SetPredictorCriteria(i, j, m_stepsVect[i].predictors[j].criteria[row]);
+                SetPredictorCriteria(i, j, _stepsVect[i].predictors[j].criteria[row]);
             }
 
             // Fix the criteria if S1
@@ -849,100 +850,100 @@ void asParametersOptimization::InitRandomValues() {
 
 void asParametersOptimization::CheckRange() {
     // Check that the actual parameters values are within ranges
-    if (!m_timeArrayAnalogsIntervalDaysLocks) {
-        m_analogsIntervalDays = wxMax(wxMin(m_analogsIntervalDays, m_timeArrayAnalogsIntervalDaysUpperLimit),
-                                      m_timeArrayAnalogsIntervalDaysLowerLimit);
+    if (!_timeArrayAnalogsIntervalDaysLocks) {
+        _analogsIntervalDays = std::max(std::min(_analogsIntervalDays, _timeArrayAnalogsIntervalDaysUpperLimit),
+                                     _timeArrayAnalogsIntervalDaysLowerLimit);
     }
-    wxASSERT(m_analogsIntervalDays > 0);
+    wxASSERT(_analogsIntervalDays > 0);
 
     for (int i = 0; i < GetStepsNb(); i++) {
-        if (!m_stepsLocks[i].analogsNumber) {
-            SetAnalogsNumber(i, wxMax(wxMin(GetAnalogsNumber(i), m_stepsUpperLimit[i].analogsNumber),
-                                      m_stepsLowerLimit[i].analogsNumber));
+        if (!_stepsLocks[i].analogsNumber) {
+            SetAnalogsNumber(i, std::max(std::min(GetAnalogsNumber(i), _stepsUpperLimit[i].analogsNumber),
+                                      _stepsLowerLimit[i].analogsNumber));
         }
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (!GetPredictorGridType(i, j).IsSameAs("Regular", false))
-                throw runtime_error(asStrF(_("asParametersOptimization::CheckRange is not ready to use on "
+                throw std::runtime_error(asStrF(_("asParametersOptimization::CheckRange is not ready to use on "
                                              "unregular grids (PredictorGridType = %s)"),
                                            GetPredictorGridType(i, j)));
 
             if (NeedsPreprocessing(i, j)) {
                 int preprocessSize = GetPreprocessSize(i, j);
                 for (int k = 0; k < preprocessSize; k++) {
-                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
+                    if (!_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         SetPreprocessHour(i, j, k,
-                                          wxMax(wxMin(GetPreprocessHour(i, j, k),
-                                                      m_stepsUpperLimit[i].predictors[j].preprocessHours[k]),
-                                                m_stepsLowerLimit[i].predictors[j].preprocessHours[k]));
+                                          std::max(std::min(GetPreprocessHour(i, j, k),
+                                                      _stepsUpperLimit[i].predictors[j].preprocessHours[k]),
+                                                _stepsLowerLimit[i].predictors[j].preprocessHours[k]));
                     }
                     SetPredictorHour(i, j, 0);
                 }
             } else {
-                if (!m_stepsLocks[i].predictors[j].hours) {
+                if (!_stepsLocks[i].predictors[j].hours) {
                     SetPredictorHour(i, j,
-                                     wxMax(wxMin(GetPredictorHour(i, j), m_stepsUpperLimit[i].predictors[j].hour),
-                                           m_stepsLowerLimit[i].predictors[j].hour));
+                                     std::max(std::min(GetPredictorHour(i, j), _stepsUpperLimit[i].predictors[j].hour),
+                                           _stepsLowerLimit[i].predictors[j].hour));
                 }
             }
 
             // Check ranges
-            if (!m_stepsLocks[i].predictors[j].xMin) {
+            if (!_stepsLocks[i].predictors[j].xMin) {
                 SetPredictorXmin(i, j,
-                                 wxMax(wxMin(GetPredictorXmin(i, j), m_stepsUpperLimit[i].predictors[j].xMin),
-                                       m_stepsLowerLimit[i].predictors[j].xMin));
+                                 std::max(std::min(GetPredictorXmin(i, j), _stepsUpperLimit[i].predictors[j].xMin),
+                                       _stepsLowerLimit[i].predictors[j].xMin));
             }
-            if (!m_stepsLocks[i].predictors[j].xPtsNb) {
+            if (!_stepsLocks[i].predictors[j].xPtsNb) {
                 SetPredictorXptsnb(i, j,
-                                   wxMax(wxMin(GetPredictorXptsnb(i, j), m_stepsUpperLimit[i].predictors[j].xPtsNb),
-                                         m_stepsLowerLimit[i].predictors[j].xPtsNb));
+                                   std::max(std::min(GetPredictorXptsnb(i, j), _stepsUpperLimit[i].predictors[j].xPtsNb),
+                                         _stepsLowerLimit[i].predictors[j].xPtsNb));
             }
 
-            if (!m_stepsLocks[i].predictors[j].yMin) {
+            if (!_stepsLocks[i].predictors[j].yMin) {
                 SetPredictorYmin(i, j,
-                                 wxMax(wxMin(GetPredictorYmin(i, j), m_stepsUpperLimit[i].predictors[j].yMin),
-                                       m_stepsLowerLimit[i].predictors[j].yMin));
+                                 std::max(std::min(GetPredictorYmin(i, j), _stepsUpperLimit[i].predictors[j].yMin),
+                                       _stepsLowerLimit[i].predictors[j].yMin));
             }
-            if (!m_stepsLocks[i].predictors[j].yPtsNb) {
+            if (!_stepsLocks[i].predictors[j].yPtsNb) {
                 SetPredictorYptsnb(i, j,
-                                   wxMax(wxMin(GetPredictorYptsnb(i, j), m_stepsUpperLimit[i].predictors[j].yPtsNb),
-                                         m_stepsLowerLimit[i].predictors[j].yPtsNb));
+                                   std::max(std::min(GetPredictorYptsnb(i, j), _stepsUpperLimit[i].predictors[j].yPtsNb),
+                                         _stepsLowerLimit[i].predictors[j].yPtsNb));
             }
-            if (!m_stepsLocks[i].predictors[j].weight) {
+            if (!_stepsLocks[i].predictors[j].weight) {
                 SetPredictorWeight(i, j,
-                                   wxMax(wxMin(GetPredictorWeight(i, j), m_stepsUpperLimit[i].predictors[j].weight),
-                                         m_stepsLowerLimit[i].predictors[j].weight));
+                                   std::max(std::min(GetPredictorWeight(i, j), _stepsUpperLimit[i].predictors[j].weight),
+                                         _stepsLowerLimit[i].predictors[j].weight));
             }
 
-            if (!m_stepsLocks[i].predictors[j].xMin || !m_stepsLocks[i].predictors[j].xPtsNb) {
+            if (!_stepsLocks[i].predictors[j].xMin || !_stepsLocks[i].predictors[j].xPtsNb) {
                 if (GetPredictorXmin(i, j) + (GetPredictorXptsnb(i, j) - 1) * GetPredictorXstep(i, j) >
-                    m_stepsUpperLimit[i].predictors[j].xMin +
-                        (m_stepsUpperLimit[i].predictors[j].xPtsNb - 1) * GetPredictorXstep(i, j)) {
-                    if (!m_stepsLocks[i].predictors[j].xPtsNb) {
+                    _stepsUpperLimit[i].predictors[j].xMin +
+                        (_stepsUpperLimit[i].predictors[j].xPtsNb - 1) * GetPredictorXstep(i, j)) {
+                    if (!_stepsLocks[i].predictors[j].xPtsNb) {
                         SetPredictorXptsnb(i, j,
-                                           (m_stepsUpperLimit[i].predictors[j].xMin - GetPredictorXmin(i, j)) /
+                                           (_stepsUpperLimit[i].predictors[j].xMin - GetPredictorXmin(i, j)) /
                                                    GetPredictorXstep(i, j) +
-                                               m_stepsUpperLimit[i].predictors[j].xPtsNb);  // Correct, no need of +1
+                                               _stepsUpperLimit[i].predictors[j].xPtsNb);  // Correct, no need of +1
                     } else {
                         SetPredictorXmin(i, j,
-                                         m_stepsUpperLimit[i].predictors[j].xMin -
+                                         _stepsUpperLimit[i].predictors[j].xMin -
                                              GetPredictorXptsnb(i, j) * GetPredictorXstep(i, j));
                     }
                 }
             }
 
-            if (!m_stepsLocks[i].predictors[j].yMin || !m_stepsLocks[i].predictors[j].yPtsNb) {
+            if (!_stepsLocks[i].predictors[j].yMin || !_stepsLocks[i].predictors[j].yPtsNb) {
                 if (GetPredictorYmin(i, j) + (GetPredictorYptsnb(i, j) - 1) * GetPredictorYstep(i, j) >
-                    m_stepsUpperLimit[i].predictors[j].yMin +
-                        (m_stepsUpperLimit[i].predictors[j].yPtsNb - 1) * GetPredictorYstep(i, j)) {
-                    if (!m_stepsLocks[i].predictors[j].yPtsNb) {
+                    _stepsUpperLimit[i].predictors[j].yMin +
+                        (_stepsUpperLimit[i].predictors[j].yPtsNb - 1) * GetPredictorYstep(i, j)) {
+                    if (!_stepsLocks[i].predictors[j].yPtsNb) {
                         SetPredictorYptsnb(i, j,
-                                           (m_stepsUpperLimit[i].predictors[j].yMin - GetPredictorYmin(i, j)) /
+                                           (_stepsUpperLimit[i].predictors[j].yMin - GetPredictorYmin(i, j)) /
                                                    GetPredictorYstep(i, j) +
-                                               m_stepsUpperLimit[i].predictors[j].yPtsNb);  // Correct, no need of +1
+                                               _stepsUpperLimit[i].predictors[j].yPtsNb);  // Correct, no need of +1
                     } else {
                         SetPredictorYmin(i, j,
-                                         m_stepsUpperLimit[i].predictors[j].yMin -
+                                         _stepsUpperLimit[i].predictors[j].yMin -
                                              GetPredictorYptsnb(i, j) * GetPredictorYstep(i, j));
                     }
                 }
@@ -958,69 +959,69 @@ void asParametersOptimization::CheckRange() {
 
 bool asParametersOptimization::IsInRange() {
     // Check that the actual parameters values are within ranges
-    if (!m_timeArrayAnalogsIntervalDaysLocks) {
-        if (m_analogsIntervalDays > m_timeArrayAnalogsIntervalDaysUpperLimit) return false;
-        if (m_analogsIntervalDays < m_timeArrayAnalogsIntervalDaysLowerLimit) return false;
+    if (!_timeArrayAnalogsIntervalDaysLocks) {
+        if (_analogsIntervalDays > _timeArrayAnalogsIntervalDaysUpperLimit) return false;
+        if (_analogsIntervalDays < _timeArrayAnalogsIntervalDaysLowerLimit) return false;
     }
 
     for (int i = 0; i < GetStepsNb(); i++) {
-        if (!m_stepsLocks[i].analogsNumber) {
-            if (GetAnalogsNumber(i) > m_stepsUpperLimit[i].analogsNumber) return false;
-            if (GetAnalogsNumber(i) < m_stepsLowerLimit[i].analogsNumber) return false;
+        if (!_stepsLocks[i].analogsNumber) {
+            if (GetAnalogsNumber(i) > _stepsUpperLimit[i].analogsNumber) return false;
+            if (GetAnalogsNumber(i) < _stepsLowerLimit[i].analogsNumber) return false;
         }
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
-                        if (GetPreprocessHour(i, j, k) < m_stepsLowerLimit[i].predictors[j].preprocessHours[k])
+                    if (!_stepsLocks[i].predictors[j].preprocessHours[k]) {
+                        if (GetPreprocessHour(i, j, k) < _stepsLowerLimit[i].predictors[j].preprocessHours[k])
                             return false;
-                        if (GetPreprocessHour(i, j, k) < m_stepsLowerLimit[i].predictors[j].preprocessHours[k])
+                        if (GetPreprocessHour(i, j, k) < _stepsLowerLimit[i].predictors[j].preprocessHours[k])
                             return false;
                     }
                 }
             } else {
-                if (!m_stepsLocks[i].predictors[j].hours) {
-                    if (GetPredictorHour(i, j) < m_stepsLowerLimit[i].predictors[j].hour) return false;
-                    if (GetPredictorHour(i, j) < m_stepsLowerLimit[i].predictors[j].hour) return false;
+                if (!_stepsLocks[i].predictors[j].hours) {
+                    if (GetPredictorHour(i, j) < _stepsLowerLimit[i].predictors[j].hour) return false;
+                    if (GetPredictorHour(i, j) < _stepsLowerLimit[i].predictors[j].hour) return false;
                 }
             }
 
             if (!GetPredictorGridType(i, j).IsSameAs("Regular", false))
-                throw runtime_error(asStrF(_("asParametersOptimization::CheckRange is not ready to use on "
+                throw std::runtime_error(asStrF(_("asParametersOptimization::CheckRange is not ready to use on "
                                              "unregular grids (PredictorGridType = %s)"),
                                            GetPredictorGridType(i, j)));
 
             // Check ranges
-            if (!m_stepsLocks[i].predictors[j].xMin) {
-                if (GetPredictorXmin(i, j) > m_stepsUpperLimit[i].predictors[j].xMin) return false;
-                if (GetPredictorXmin(i, j) < m_stepsLowerLimit[i].predictors[j].xMin) return false;
+            if (!_stepsLocks[i].predictors[j].xMin) {
+                if (GetPredictorXmin(i, j) > _stepsUpperLimit[i].predictors[j].xMin) return false;
+                if (GetPredictorXmin(i, j) < _stepsLowerLimit[i].predictors[j].xMin) return false;
             }
-            if (!m_stepsLocks[i].predictors[j].xPtsNb) {
-                if (GetPredictorXptsnb(i, j) < m_stepsLowerLimit[i].predictors[j].xPtsNb) return false;
-                if (GetPredictorXptsnb(i, j) < m_stepsLowerLimit[i].predictors[j].xPtsNb) return false;
+            if (!_stepsLocks[i].predictors[j].xPtsNb) {
+                if (GetPredictorXptsnb(i, j) < _stepsLowerLimit[i].predictors[j].xPtsNb) return false;
+                if (GetPredictorXptsnb(i, j) < _stepsLowerLimit[i].predictors[j].xPtsNb) return false;
             }
-            if (!m_stepsLocks[i].predictors[j].yMin) {
-                if (GetPredictorYmin(i, j) < m_stepsLowerLimit[i].predictors[j].yMin) return false;
-                if (GetPredictorYmin(i, j) < m_stepsLowerLimit[i].predictors[j].yMin) return false;
+            if (!_stepsLocks[i].predictors[j].yMin) {
+                if (GetPredictorYmin(i, j) < _stepsLowerLimit[i].predictors[j].yMin) return false;
+                if (GetPredictorYmin(i, j) < _stepsLowerLimit[i].predictors[j].yMin) return false;
             }
-            if (!m_stepsLocks[i].predictors[j].yPtsNb) {
-                if (GetPredictorYptsnb(i, j) < m_stepsLowerLimit[i].predictors[j].yPtsNb) return false;
-                if (GetPredictorYptsnb(i, j) < m_stepsLowerLimit[i].predictors[j].yPtsNb) return false;
+            if (!_stepsLocks[i].predictors[j].yPtsNb) {
+                if (GetPredictorYptsnb(i, j) < _stepsLowerLimit[i].predictors[j].yPtsNb) return false;
+                if (GetPredictorYptsnb(i, j) < _stepsLowerLimit[i].predictors[j].yPtsNb) return false;
             }
-            if (!m_stepsLocks[i].predictors[j].weight) {
-                if (GetPredictorWeight(i, j) < m_stepsLowerLimit[i].predictors[j].weight) return false;
-                if (GetPredictorWeight(i, j) < m_stepsLowerLimit[i].predictors[j].weight) return false;
+            if (!_stepsLocks[i].predictors[j].weight) {
+                if (GetPredictorWeight(i, j) < _stepsLowerLimit[i].predictors[j].weight) return false;
+                if (GetPredictorWeight(i, j) < _stepsLowerLimit[i].predictors[j].weight) return false;
             }
-            if (!m_stepsLocks[i].predictors[j].xMin || !m_stepsLocks[i].predictors[j].xPtsNb ||
-                !m_stepsLocks[i].predictors[j].yMin || !m_stepsLocks[i].predictors[j].yPtsNb) {
+            if (!_stepsLocks[i].predictors[j].xMin || !_stepsLocks[i].predictors[j].xPtsNb ||
+                !_stepsLocks[i].predictors[j].yMin || !_stepsLocks[i].predictors[j].yPtsNb) {
                 if (GetPredictorXmin(i, j) + GetPredictorXptsnb(i, j) * GetPredictorXstep(i, j) >
-                    m_stepsUpperLimit[i].predictors[j].xMin +
-                        m_stepsLowerLimit[i].predictors[j].xPtsNb * GetPredictorXstep(i, j))
+                    _stepsUpperLimit[i].predictors[j].xMin +
+                        _stepsLowerLimit[i].predictors[j].xPtsNb * GetPredictorXstep(i, j))
                     return false;
                 if (GetPredictorYmin(i, j) + GetPredictorYptsnb(i, j) * GetPredictorYstep(i, j) >
-                    m_stepsUpperLimit[i].predictors[j].yMin +
-                        m_stepsLowerLimit[i].predictors[j].yPtsNb * GetPredictorYstep(i, j))
+                    _stepsUpperLimit[i].predictors[j].yMin +
+                        _stepsLowerLimit[i].predictors[j].yPtsNb * GetPredictorYstep(i, j))
                     return false;
             }
         }
@@ -1035,18 +1036,18 @@ bool asParametersOptimization::FixTimeLimits() {
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    minHour = wxMin(GetPreprocessHoursLowerLimit(i, j, k), minHour);
-                    maxHour = wxMax(GetPreprocessHoursUpperLimit(i, j, k), maxHour);
+                    minHour = std::min(GetPreprocessHoursLowerLimit(i, j, k), minHour);
+                    maxHour = std::max(GetPreprocessHoursUpperLimit(i, j, k), maxHour);
                 }
             } else {
-                minHour = wxMin(GetPredictorHoursLowerLimit(i, j), minHour);
-                maxHour = wxMax(GetPredictorHoursUpperLimit(i, j), maxHour);
+                minHour = std::min(GetPredictorHoursLowerLimit(i, j), minHour);
+                maxHour = std::max(GetPredictorHoursUpperLimit(i, j), maxHour);
             }
         }
     }
 
-    m_timeMinHours = minHour;
-    m_timeMaxHours = maxHour;
+    _timeMinHours = minHour;
+    _timeMaxHours = maxHour;
 
     return true;
 }
@@ -1056,21 +1057,21 @@ void asParametersOptimization::FixHours() {
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
-                        if (m_stepsIteration[i].predictors[j].preprocessHours[k] != 0) {
+                    if (!_stepsLocks[i].predictors[j].preprocessHours[k]) {
+                        if (_stepsIteration[i].predictors[j].preprocessHours[k] != 0) {
                             float ratio = (float)GetPreprocessHour(i, j, k) /
-                                          (float)m_stepsIteration[i].predictors[j].preprocessHours[k];
+                                          (float)_stepsIteration[i].predictors[j].preprocessHours[k];
                             ratio = asRound(ratio);
-                            SetPreprocessHour(i, j, k, ratio * m_stepsIteration[i].predictors[j].preprocessHours[k]);
+                            SetPreprocessHour(i, j, k, ratio * _stepsIteration[i].predictors[j].preprocessHours[k]);
                         }
                     }
                 }
             } else {
-                if (!m_stepsLocks[i].predictors[j].hours) {
-                    if (m_stepsIteration[i].predictors[j].hour != 0) {
-                        float ratio = (float)GetPredictorHour(i, j) / (float)m_stepsIteration[i].predictors[j].hour;
+                if (!_stepsLocks[i].predictors[j].hours) {
+                    if (_stepsIteration[i].predictors[j].hour != 0) {
+                        float ratio = (float)GetPredictorHour(i, j) / (float)_stepsIteration[i].predictors[j].hour;
                         ratio = asRound(ratio);
-                        SetPredictorHour(i, j, ratio * m_stepsIteration[i].predictors[j].hour);
+                        SetPredictorHour(i, j, ratio * _stepsIteration[i].predictors[j].hour);
                     }
                 }
             }
@@ -1116,7 +1117,7 @@ bool asParametersOptimization::FixWeights() {
             if (totWeightLocked > 1) {
                 float precision = GetPredictorWeightIteration(i, j);
                 float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                newWeight = wxMax(precision * asRound(newWeight * (1.0 / precision)),
+                newWeight = std::max((float)(precision * asRound(newWeight * (1.0 / precision))),
                                   GetPredictorWeightLowerLimit(i, j));
                 newSum += newWeight;
 
@@ -1125,7 +1126,7 @@ bool asParametersOptimization::FixWeights() {
                 if (!IsPredictorWeightLocked(i, j)) {
                     float precision = GetPredictorWeightIteration(i, j);
                     float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                    newWeight = wxMax(precision * asRound(newWeight * (1.0 / precision)),
+                    newWeight = std::max((float)(precision * asRound(newWeight * (1.0 / precision))),
                                       GetPredictorWeightLowerLimit(i, j));
                     newSum += newWeight;
 
@@ -1135,7 +1136,7 @@ bool asParametersOptimization::FixWeights() {
         }
 
         // Last weight: difference to 0
-        float lastWeight = wxMax(1.0f - newSum - totWeightLocked,
+        float lastWeight = std::max(1.0f - newSum - totWeightLocked,
                                  GetPredictorWeightLowerLimit(i, GetPredictorsNb(i) - 1));
         SetPredictorWeight(i, GetPredictorsNb(i) - 1, lastWeight);
     }
@@ -1144,30 +1145,30 @@ bool asParametersOptimization::FixWeights() {
 }
 
 void asParametersOptimization::LockAll() {
-    m_timeArrayAnalogsIntervalDaysLocks = true;
+    _timeArrayAnalogsIntervalDaysLocks = true;
 
     for (int i = 0; i < GetStepsNb(); i++) {
-        m_stepsLocks[i].analogsNumber = true;
+        _stepsLocks[i].analogsNumber = true;
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    m_stepsLocks[i].predictors[j].preprocessDataId[k] = true;
-                    m_stepsLocks[i].predictors[j].preprocessLevels[k] = true;
-                    m_stepsLocks[i].predictors[j].preprocessHours[k] = true;
+                    _stepsLocks[i].predictors[j].preprocessDataId[k] = true;
+                    _stepsLocks[i].predictors[j].preprocessLevels[k] = true;
+                    _stepsLocks[i].predictors[j].preprocessHours[k] = true;
                 }
             } else {
-                m_stepsLocks[i].predictors[j].dataId = true;
-                m_stepsLocks[i].predictors[j].level = true;
-                m_stepsLocks[i].predictors[j].hours = true;
+                _stepsLocks[i].predictors[j].dataId = true;
+                _stepsLocks[i].predictors[j].level = true;
+                _stepsLocks[i].predictors[j].hours = true;
             }
 
-            m_stepsLocks[i].predictors[j].xMin = true;
-            m_stepsLocks[i].predictors[j].xPtsNb = true;
-            m_stepsLocks[i].predictors[j].yMin = true;
-            m_stepsLocks[i].predictors[j].yPtsNb = true;
-            m_stepsLocks[i].predictors[j].weight = true;
-            m_stepsLocks[i].predictors[j].criteria = true;
+            _stepsLocks[i].predictors[j].xMin = true;
+            _stepsLocks[i].predictors[j].xPtsNb = true;
+            _stepsLocks[i].predictors[j].yMin = true;
+            _stepsLocks[i].predictors[j].yPtsNb = true;
+            _stepsLocks[i].predictors[j].weight = true;
+            _stepsLocks[i].predictors[j].criteria = true;
         }
     }
 
@@ -1179,13 +1180,13 @@ void asParametersOptimization::Unlock(vi& indices) {
     int length = indices.size();
 
     if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-        m_timeArrayAnalogsIntervalDaysLocks = false;
+        _timeArrayAnalogsIntervalDaysLocks = false;
     }
     counter++;
 
     for (int i = 0; i < GetStepsNb(); i++) {
         if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-            m_stepsLocks[i].analogsNumber = false;
+            _stepsLocks[i].analogsNumber = false;
         }
         counter++;
 
@@ -1193,55 +1194,55 @@ void asParametersOptimization::Unlock(vi& indices) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
                     if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                        m_stepsLocks[i].predictors[j].preprocessDataId[k] = false;
+                        _stepsLocks[i].predictors[j].preprocessDataId[k] = false;
                     }
                     counter++;
                     if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                        m_stepsLocks[i].predictors[j].preprocessLevels[k] = false;
+                        _stepsLocks[i].predictors[j].preprocessLevels[k] = false;
                     }
                     counter++;
                     if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                        m_stepsLocks[i].predictors[j].preprocessHours[k] = false;
+                        _stepsLocks[i].predictors[j].preprocessHours[k] = false;
                     }
                     counter++;
                 }
             } else {
                 if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                    m_stepsLocks[i].predictors[j].dataId = false;
+                    _stepsLocks[i].predictors[j].dataId = false;
                 }
                 counter++;
                 if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                    m_stepsLocks[i].predictors[j].level = false;
+                    _stepsLocks[i].predictors[j].level = false;
                 }
                 counter++;
                 if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                    m_stepsLocks[i].predictors[j].hours = false;
+                    _stepsLocks[i].predictors[j].hours = false;
                 }
                 counter++;
             }
 
             if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                m_stepsLocks[i].predictors[j].xMin = false;
+                _stepsLocks[i].predictors[j].xMin = false;
             }
             counter++;
             if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                m_stepsLocks[i].predictors[j].xPtsNb = false;
+                _stepsLocks[i].predictors[j].xPtsNb = false;
             }
             counter++;
             if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                m_stepsLocks[i].predictors[j].yMin = false;
+                _stepsLocks[i].predictors[j].yMin = false;
             }
             counter++;
             if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                m_stepsLocks[i].predictors[j].yPtsNb = false;
+                _stepsLocks[i].predictors[j].yPtsNb = false;
             }
             counter++;
             if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                m_stepsLocks[i].predictors[j].weight = false;
+                _stepsLocks[i].predictors[j].weight = false;
             }
             counter++;
             if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                m_stepsLocks[i].predictors[j].criteria = false;
+                _stepsLocks[i].predictors[j].criteria = false;
             }
             counter++;
         }
@@ -1251,30 +1252,30 @@ void asParametersOptimization::Unlock(vi& indices) {
 int asParametersOptimization::GetVariablesNb() {
     int counter = 0;
 
-    if (!m_timeArrayAnalogsIntervalDaysLocks) counter++;
+    if (!_timeArrayAnalogsIntervalDaysLocks) counter++;
 
     for (int i = 0; i < GetStepsNb(); i++) {
-        if (!m_stepsLocks[i].analogsNumber) counter++;
+        if (!_stepsLocks[i].analogsNumber) counter++;
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    if (!m_stepsLocks[i].predictors[j].preprocessDataId[k]) counter++;
-                    if (!m_stepsLocks[i].predictors[j].preprocessLevels[k]) counter++;
-                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) counter++;
+                    if (!_stepsLocks[i].predictors[j].preprocessDataId[k]) counter++;
+                    if (!_stepsLocks[i].predictors[j].preprocessLevels[k]) counter++;
+                    if (!_stepsLocks[i].predictors[j].preprocessHours[k]) counter++;
                 }
             } else {
-                if (!m_stepsLocks[i].predictors[j].dataId) counter++;
-                if (!m_stepsLocks[i].predictors[j].level) counter++;
-                if (!m_stepsLocks[i].predictors[j].hours) counter++;
+                if (!_stepsLocks[i].predictors[j].dataId) counter++;
+                if (!_stepsLocks[i].predictors[j].level) counter++;
+                if (!_stepsLocks[i].predictors[j].hours) counter++;
             }
 
-            if (!m_stepsLocks[i].predictors[j].xMin) counter++;
-            if (!m_stepsLocks[i].predictors[j].xPtsNb) counter++;
-            if (!m_stepsLocks[i].predictors[j].yMin) counter++;
-            if (!m_stepsLocks[i].predictors[j].yPtsNb) counter++;
-            if (!m_stepsLocks[i].predictors[j].weight) counter++;
-            if (!m_stepsLocks[i].predictors[j].criteria) counter++;
+            if (!_stepsLocks[i].predictors[j].xMin) counter++;
+            if (!_stepsLocks[i].predictors[j].xPtsNb) counter++;
+            if (!_stepsLocks[i].predictors[j].yMin) counter++;
+            if (!_stepsLocks[i].predictors[j].yPtsNb) counter++;
+            if (!_stepsLocks[i].predictors[j].weight) counter++;
+            if (!_stepsLocks[i].predictors[j].criteria) counter++;
         }
     }
 

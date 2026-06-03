@@ -28,12 +28,14 @@
 
 #include "asFramePreferencesForecaster.h"
 
+#include "asIncludes.h"
+
 #include "asFileGrib.h"
 
 asFramePreferencesForecaster::asFramePreferencesForecaster(wxWindow* parent, asBatchForecasts* batchForecasts,
                                                            wxWindowID id)
     : asFramePreferencesForecasterVirtual(parent, id),
-      m_batchForecasts(batchForecasts) {
+      _batchForecasts(batchForecasts) {
     SetLabel(_("Preferences"));
 
     LoadPreferences();
@@ -58,14 +60,14 @@ void asFramePreferencesForecaster::LoadPreferences() {
     pConfig = wxFileConfig::Get();
 
     // Fix the color of the file/dir pickers
-    wxColour col = m_notebookBase->GetThemeBackgroundColour();
+    wxColour col = _notebookBase->GetThemeBackgroundColour();
     if (col.IsOk()) {
-        m_dirPickerPredictandDB->SetBackgroundColour(col);
-        m_dirPickerForecastResults->SetBackgroundColour(col);
-        m_dirPickerForecastResultsExports->SetBackgroundColour(col);
-        m_dirPickerParameters->SetBackgroundColour(col);
-        m_dirPickerArchivePredictors->SetBackgroundColour(col);
-        m_dirPickerRealtimePredictorSaving->SetBackgroundColour(col);
+        _dirPickerPredictandDB->SetBackgroundColour(col);
+        _dirPickerForecastResults->SetBackgroundColour(col);
+        _dirPickerForecastResultsExports->SetBackgroundColour(col);
+        _dirPickerParameters->SetBackgroundColour(col);
+        _dirPickerArchivePredictors->SetBackgroundColour(col);
+        _dirPickerRealtimePredictorSaving->SetBackgroundColour(col);
     }
 
     /*
@@ -73,29 +75,29 @@ void asFramePreferencesForecaster::LoadPreferences() {
      */
 
     // Paths
-    m_dirPickerPredictandDB->SetPath(m_batchForecasts->GetPredictandDBDirectory());
-    m_dirPickerForecastResults->SetPath(m_batchForecasts->GetForecastsOutputDirectory());
-    m_dirPickerForecastResultsExports->SetPath(m_batchForecasts->GetExportsOutputDirectory());
-    m_dirPickerRealtimePredictorSaving->SetPath(m_batchForecasts->GetPredictorsRealtimeDirectory());
-    m_dirPickerArchivePredictors->SetPath(m_batchForecasts->GetPredictorsArchiveDirectory());
-    m_dirPickerParameters->SetPath(m_batchForecasts->GetParametersFileDirectory());
+    _dirPickerPredictandDB->SetPath(_batchForecasts->GetPredictandDBDirectory());
+    _dirPickerForecastResults->SetPath(_batchForecasts->GetForecastsOutputDirectory());
+    _dirPickerForecastResultsExports->SetPath(_batchForecasts->GetExportsOutputDirectory());
+    _dirPickerRealtimePredictorSaving->SetPath(_batchForecasts->GetPredictorsRealtimeDirectory());
+    _dirPickerArchivePredictors->SetPath(_batchForecasts->GetPredictorsArchiveDirectory());
+    _dirPickerParameters->SetPath(_batchForecasts->GetParametersFileDirectory());
 
     // Exports
-    switch (m_batchForecasts->GetExport()) {
+    switch (_batchForecasts->GetExport()) {
         case asBatchForecasts::None:
-            m_choiceExports->SetSelection(0);
+            _choiceExports->SetSelection(0);
             break;
         case asBatchForecasts::FullXml:
-            m_choiceExports->SetSelection(1);
+            _choiceExports->SetSelection(1);
             break;
         case asBatchForecasts::SmallCsv:
-            m_choiceExports->SetSelection(2);
+            _choiceExports->SetSelection(2);
             break;
         case asBatchForecasts::CustomCsvFVG:
-            m_choiceExports->SetSelection(3);
+            _choiceExports->SetSelection(3);
             break;
         default:
-            m_choiceExports->SetSelection(0);
+            _choiceExports->SetSelection(0);
             break;
     }
 
@@ -107,37 +109,37 @@ void asFramePreferencesForecaster::LoadPreferences() {
     long locale = pConfig->ReadLong("/General/Locale", (long)wxLANGUAGE_ENGLISH);
     switch (locale) {
         case (long)wxLANGUAGE_ENGLISH:
-            m_choiceLocale->SetSelection(0);
+            _choiceLocale->SetSelection(0);
             break;
         case (long)wxLANGUAGE_FRENCH:
-            m_choiceLocale->SetSelection(1);
+            _choiceLocale->SetSelection(1);
             break;
         default:
-            m_choiceLocale->SetSelection(0);
+            _choiceLocale->SetSelection(0);
     }
 
     // Log
     long logLevelForecaster = pConfig->ReadLong("/General/LogLevel", 1);
     if (logLevelForecaster == 1) {
-        m_radioBtnLogLevel1->SetValue(true);
+        _radioBtnLogLevel1->SetValue(true);
     } else if (logLevelForecaster == 2) {
-        m_radioBtnLogLevel2->SetValue(true);
+        _radioBtnLogLevel2->SetValue(true);
     } else if (logLevelForecaster == 3) {
-        m_radioBtnLogLevel3->SetValue(true);
+        _radioBtnLogLevel3->SetValue(true);
     } else {
-        m_radioBtnLogLevel1->SetValue(true);
+        _radioBtnLogLevel1->SetValue(true);
     }
-    m_checkBoxDisplayLogWindow->SetValue(pConfig->ReadBool("/General/DisplayLogWindow", false));
+    _checkBoxDisplayLogWindow->SetValue(pConfig->ReadBool("/General/DisplayLogWindow", false));
 
     // Proxy
-    m_checkBoxProxy->SetValue(pConfig->ReadBool("/Internet/UsesProxy", false));
-    m_textCtrlProxyAddress->SetValue(pConfig->Read("/Internet/ProxyAddress", wxEmptyString));
-    m_textCtrlProxyPort->SetValue(pConfig->Read("/Internet/ProxyPort", wxEmptyString));
-    m_textCtrlProxyUser->SetValue(pConfig->Read("/Internet/ProxyUser", wxEmptyString));
-    m_textCtrlProxyPasswd->SetValue(pConfig->Read("/Internet/ProxyPasswd", wxEmptyString));
+    _checkBoxProxy->SetValue(pConfig->ReadBool("/Internet/UsesProxy", false));
+    _textCtrlProxyAddress->SetValue(pConfig->Read("/Internet/ProxyAddress", wxEmptyString));
+    _textCtrlProxyPort->SetValue(pConfig->Read("/Internet/ProxyPort", wxEmptyString));
+    _textCtrlProxyUser->SetValue(pConfig->Read("/Internet/ProxyUser", wxEmptyString));
+    _textCtrlProxyPasswd->SetValue(pConfig->Read("/Internet/ProxyPasswd", wxEmptyString));
 
     // Libraries
-    m_textCtrlEcCodesDefs->SetValue(pConfig->Read("/Libraries/EcCodesDefinitions", asFileGrib::GetDefinitionsPath()));
+    _textCtrlEcCodesDefs->SetValue(pConfig->Read("/Libraries/EcCodesDefinitions", asFileGrib::GetDefinitionsPath()));
 
     /*
      * Advanced
@@ -145,7 +147,7 @@ void asFramePreferencesForecaster::LoadPreferences() {
 
     // GUI options
     long guiOptions = pConfig->ReadLong("/General/GuiOptions", 1l);
-    m_radioBoxGui->SetSelection((int)guiOptions);
+    _radioBoxGui->SetSelection((int)guiOptions);
     if (guiOptions == 0) {
         g_silentMode = true;
     } else {
@@ -157,41 +159,41 @@ void asFramePreferencesForecaster::LoadPreferences() {
     }
 
     // Downloads
-    m_textCtrlMaxPrevStepsNb->SetValue(pConfig->Read("/Internet/MaxPreviousStepsNb", "5"));
-    m_checkBoxRestrictDownloads->SetValue(pConfig->ReadBool("/Internet/RestrictDownloads", true));
+    _textCtrlMaxPrevStepsNb->SetValue(pConfig->Read("/Internet/MaxPreviousStepsNb", "5"));
+    _checkBoxRestrictDownloads->SetValue(pConfig->ReadBool("/Internet/RestrictDownloads", true));
 
     // Advanced options
     g_responsive = pConfig->ReadBool("/General/Responsive", true);
-    m_checkBoxResponsiveness->SetValue(g_responsive);
-    m_checkBoxMultiInstancesForecaster->SetValue(pConfig->ReadBool("/General/MultiInstances", false));
+    _checkBoxResponsiveness->SetValue(g_responsive);
+    _checkBoxMultiInstancesForecaster->SetValue(pConfig->ReadBool("/General/MultiInstances", false));
 
     // Multithreading
     bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
-    m_checkBoxAllowMultithreading->SetValue(allowMultithreading);
+    _checkBoxAllowMultithreading->SetValue(allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads == -1) maxThreads = 2;
-    m_textCtrlThreadsNb->SetValue(pConfig->Read("/Processing/ThreadsNb", asStrF("%d", maxThreads)));
-    m_sliderThreadsPriority->SetValue(pConfig->ReadLong("/Processing/ThreadsPriority", 95l));
+    _textCtrlThreadsNb->SetValue(pConfig->Read("/Processing/ThreadsNb", asStrF("%d", maxThreads)));
+    _sliderThreadsPriority->SetValue(pConfig->ReadLong("/Processing/ThreadsPriority", 95l));
 
     // Processing
     long processingMethod = pConfig->ReadLong("/Processing/Method", (long)asMULTITHREADS);
     if (!allowMultithreading) {
-        m_radioBoxProcessingMethods->Enable(0, false);
+        _radioBoxProcessingMethods->Enable(0, false);
         if (processingMethod == (long)asMULTITHREADS) {
             processingMethod = (long)asSTANDARD;
         }
     } else {
-        m_radioBoxProcessingMethods->Enable(0, true);
+        _radioBoxProcessingMethods->Enable(0, true);
     }
-    m_radioBoxProcessingMethods->SetSelection((int)processingMethod);
+    _radioBoxProcessingMethods->SetSelection((int)processingMethod);
 
     // User directories
     wxString userpath = asConfig::GetUserDataDir();
-    m_staticTextUserDir->SetLabel(userpath);
+    _staticTextUserDir->SetLabel(userpath);
     wxString logpathForecaster = asConfig::GetLogDir();
     logpathForecaster.Append("AtmoSwingForecaster.log");
-    m_staticTextLogFile->SetLabel(logpathForecaster);
-    m_staticTextPrefFile->SetLabel(asConfig::GetConfigFilePath("AtmoSwingForecaster.ini"));
+    _staticTextLogFile->SetLabel(logpathForecaster);
+    _staticTextPrefFile->SetLabel(asConfig::GetConfigFilePath("AtmoSwingForecaster.ini"));
 }
 
 void asFramePreferencesForecaster::SavePreferences() {
@@ -205,29 +207,29 @@ void asFramePreferencesForecaster::SavePreferences() {
      */
 
     // Paths
-    m_batchForecasts->SetPredictandDBDirectory(m_dirPickerPredictandDB->GetPath());
-    m_batchForecasts->SetForecastsOutputDirectory(m_dirPickerForecastResults->GetPath());
-    m_batchForecasts->SetExportsOutputDirectory(m_dirPickerForecastResultsExports->GetPath());
-    m_batchForecasts->SetPredictorsRealtimeDirectory(m_dirPickerRealtimePredictorSaving->GetPath());
-    m_batchForecasts->SetPredictorsArchiveDirectory(m_dirPickerArchivePredictors->GetPath());
-    m_batchForecasts->SetParametersFileDirectory(m_dirPickerParameters->GetPath());
+    _batchForecasts->SetPredictandDBDirectory(_dirPickerPredictandDB->GetPath());
+    _batchForecasts->SetForecastsOutputDirectory(_dirPickerForecastResults->GetPath());
+    _batchForecasts->SetExportsOutputDirectory(_dirPickerForecastResultsExports->GetPath());
+    _batchForecasts->SetPredictorsRealtimeDirectory(_dirPickerRealtimePredictorSaving->GetPath());
+    _batchForecasts->SetPredictorsArchiveDirectory(_dirPickerArchivePredictors->GetPath());
+    _batchForecasts->SetParametersFileDirectory(_dirPickerParameters->GetPath());
 
     // Exports
-    switch (m_choiceExports->GetSelection()) {
+    switch (_choiceExports->GetSelection()) {
         case 0:
-            m_batchForecasts->SetExport(asBatchForecasts::None);
+            _batchForecasts->SetExport(asBatchForecasts::None);
             break;
         case 1:
-            m_batchForecasts->SetExport(asBatchForecasts::FullXml);
+            _batchForecasts->SetExport(asBatchForecasts::FullXml);
             break;
         case 2:
-            m_batchForecasts->SetExport(asBatchForecasts::SmallCsv);
+            _batchForecasts->SetExport(asBatchForecasts::SmallCsv);
             break;
         case 3:
-            m_batchForecasts->SetExport(asBatchForecasts::CustomCsvFVG);
+            _batchForecasts->SetExport(asBatchForecasts::CustomCsvFVG);
             break;
         default:
-            m_batchForecasts->SetExport(asBatchForecasts::None);
+            _batchForecasts->SetExport(asBatchForecasts::None);
     }
 
     /*
@@ -235,7 +237,7 @@ void asFramePreferencesForecaster::SavePreferences() {
      */
 
     // Locale
-    switch (m_choiceLocale->GetSelection()) {
+    switch (_choiceLocale->GetSelection()) {
         case 0:
             pConfig->Write("/General/Locale", (long)wxLANGUAGE_ENGLISH);
             break;
@@ -248,31 +250,31 @@ void asFramePreferencesForecaster::SavePreferences() {
 
     // Log
     long logLevelForecaster = 1;
-    if (m_radioBtnLogLevel1->GetValue()) {
+    if (_radioBtnLogLevel1->GetValue()) {
         logLevelForecaster = 1;
-    } else if (m_radioBtnLogLevel2->GetValue()) {
+    } else if (_radioBtnLogLevel2->GetValue()) {
         logLevelForecaster = 2;
-    } else if (m_radioBtnLogLevel3->GetValue()) {
+    } else if (_radioBtnLogLevel3->GetValue()) {
         logLevelForecaster = 3;
     }
     pConfig->Write("/General/LogLevel", logLevelForecaster);
-    bool displayLogWindowForecaster = m_checkBoxDisplayLogWindow->GetValue();
+    bool displayLogWindowForecaster = _checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindowForecaster);
 
     // Proxy
-    bool checkBoxProxy = m_checkBoxProxy->GetValue();
+    bool checkBoxProxy = _checkBoxProxy->GetValue();
     pConfig->Write("/Internet/UsesProxy", checkBoxProxy);
-    wxString proxyAddress = m_textCtrlProxyAddress->GetValue();
+    wxString proxyAddress = _textCtrlProxyAddress->GetValue();
     pConfig->Write("/Internet/ProxyAddress", proxyAddress);
-    wxString proxyPort = m_textCtrlProxyPort->GetValue();
+    wxString proxyPort = _textCtrlProxyPort->GetValue();
     pConfig->Write("/Internet/ProxyPort", proxyPort);
-    wxString proxyUser = m_textCtrlProxyUser->GetValue();
+    wxString proxyUser = _textCtrlProxyUser->GetValue();
     pConfig->Write("/Internet/ProxyUser", proxyUser);
-    wxString proxyPasswd = m_textCtrlProxyPasswd->GetValue();
+    wxString proxyPasswd = _textCtrlProxyPasswd->GetValue();
     pConfig->Write("/Internet/ProxyPasswd", proxyPasswd);
 
     // Libraries
-    wxString ecCodesDefs = m_textCtrlEcCodesDefs->GetValue();
+    wxString ecCodesDefs = _textCtrlEcCodesDefs->GetValue();
     pConfig->Write("/Libraries/EcCodesDefinitions", ecCodesDefs);
 
     /*
@@ -280,7 +282,7 @@ void asFramePreferencesForecaster::SavePreferences() {
      */
 
     // GUI options
-    auto guiOptions = (long)m_radioBoxGui->GetSelection();
+    auto guiOptions = (long)_radioBoxGui->GetSelection();
     pConfig->Write("/General/GuiOptions", guiOptions);
     if (guiOptions == 0) {
         g_silentMode = true;
@@ -293,31 +295,31 @@ void asFramePreferencesForecaster::SavePreferences() {
     }
 
     // Downloads
-    wxString internetMaxPrevStepsNb = m_textCtrlMaxPrevStepsNb->GetValue();
+    wxString internetMaxPrevStepsNb = _textCtrlMaxPrevStepsNb->GetValue();
     if (!internetMaxPrevStepsNb.IsNumber()) internetMaxPrevStepsNb = "5";
     pConfig->Write("/Internet/MaxPreviousStepsNb", internetMaxPrevStepsNb);
-    bool restrictDownloads = m_checkBoxRestrictDownloads->GetValue();
+    bool restrictDownloads = _checkBoxRestrictDownloads->GetValue();
     pConfig->Write("/Internet/RestrictDownloads", restrictDownloads);
 
     // Advanced options
-    bool responsive = m_checkBoxResponsiveness->GetValue();
+    bool responsive = _checkBoxResponsiveness->GetValue();
     pConfig->Write("/General/Responsive", responsive);
     g_responsive = responsive;
 
-    bool multiForecaster = m_checkBoxMultiInstancesForecaster->GetValue();
+    bool multiForecaster = _checkBoxMultiInstancesForecaster->GetValue();
     pConfig->Write("/General/MultiInstances", multiForecaster);
 
     // Multithreading
-    bool allowMultithreading = m_checkBoxAllowMultithreading->GetValue();
+    bool allowMultithreading = _checkBoxAllowMultithreading->GetValue();
     pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
-    wxString processingMaxThreadNb = m_textCtrlThreadsNb->GetValue();
+    wxString processingMaxThreadNb = _textCtrlThreadsNb->GetValue();
     if (!processingMaxThreadNb.IsNumber()) processingMaxThreadNb = "2";
     pConfig->Write("/Processing/ThreadsNb", processingMaxThreadNb);
-    auto processingThreadsPriority = (long)m_sliderThreadsPriority->GetValue();
+    auto processingThreadsPriority = (long)_sliderThreadsPriority->GetValue();
     pConfig->Write("/Processing/ThreadsPriority", processingThreadsPriority);
 
     // Processing
-    auto processingMethod = (long)m_radioBoxProcessingMethods->GetSelection();
+    auto processingMethod = (long)_radioBoxProcessingMethods->GetSelection();
     if (!allowMultithreading && processingMethod == (long)asMULTITHREADS) {
         processingMethod = (long)asSTANDARD;
     }
@@ -328,17 +330,17 @@ void asFramePreferencesForecaster::SavePreferences() {
     }
 
     pConfig->Flush();
-    m_batchForecasts->Save();
+    _batchForecasts->Save();
 }
 
 void asFramePreferencesForecaster::OnChangeMultithreadingCheckBox(wxCommandEvent& event) {
     if (event.GetInt() == 0) {
-        m_radioBoxProcessingMethods->Enable(asMULTITHREADS, false);
-        if (m_radioBoxProcessingMethods->GetSelection() == asMULTITHREADS) {
-            m_radioBoxProcessingMethods->SetSelection(asSTANDARD);
+        _radioBoxProcessingMethods->Enable(asMULTITHREADS, false);
+        if (_radioBoxProcessingMethods->GetSelection() == asMULTITHREADS) {
+            _radioBoxProcessingMethods->SetSelection(asSTANDARD);
         }
     } else {
-        m_radioBoxProcessingMethods->Enable(asMULTITHREADS, true);
+        _radioBoxProcessingMethods->Enable(asMULTITHREADS, true);
     }
 }
 

@@ -7,6 +7,8 @@ on:
 
 env:
   BUILD_TYPE: RelWithDebInfo
+  VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
+  VCPKG_DOWNLOADS: ${{ github.workspace }}/.vcpkg-downloads
 
 jobs:
   coverity-scan:
@@ -14,43 +16,57 @@ jobs:
 
     runs-on: ubuntu-22.04
 
+    env:
+      FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/linux-coverity-make-relwithdebinfo
+      FETCHCONTENT_CACHE_KEY: linux-coverity-make-relwithdebinfo
+
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-python@v6
+      - name: Cache FetchContent dependencies
+        uses: actions/cache@v4
         with:
-          python-version: '3.10'
+          path: ${{ env.FETCHCONTENT_BASE_DIR }}
+          key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
 
-      - name: Cache Conan libs
-        id: cache-conan
-        uses: pat-s/always-upload-cache@v3.0.11
+      - name: Cache vcpkg downloads (distfiles)
+        uses: actions/cache@v4
         with:
-          path: /home/runner/.conan
-          key: conan-linux-coverity
+          path: ${{ github.workspace }}/.vcpkg-downloads
+          key: ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-
+            ${{ runner.os }}-vcpkg-downloads-
 
-      - name: Setup Conan
+      - name: Install system build dependencies for vcpkg
         run: |
-          pip install conan==1.*
-          conan profile new default --detect --force
-          conan remote add gitlab https://gitlab.com/api/v4/packages/conan --force
-          conan profile update settings.compiler.libcxx=libstdc++11 default
-          conan profile update conf.tools.system.package_manager:mode=install default
-          conan profile update conf.tools.system.package_manager:sudo=True default
+          sudo apt-get update -y
+          sudo apt-get install -y autoconf automake libtool pkg-config
 
-      - name: Create Build Environment
-        run: cmake -E make_directory ${{github.workspace}}/bin
+      - name: Export GitHub Actions cache env (for vcpkg x-gha)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
-      - name: Get dependencies
-        working-directory: ${{github.workspace}}/bin
-        run: conan install .. -s build_type=Release -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing --build=openjpeg
+      - name: Set VCPKG_ROOT
+        run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
 
       - name: Configure
-        working-directory: ${{github.workspace}}/bin
-        run: cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=1 -DUSE_GUI=0 -DBUILD_VIEWER=0
+        run: cmake -B build -G "Unix Makefiles"
+             -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+             -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
+             -DBUILD_FORECASTER=ON
+             -DBUILD_OPTIMIZER=ON
+             -DBUILD_DOWNSCALER=ON
+             -DBUILD_VIEWER=OFF
+             -DUSE_GUI=OFF
+             -DBUILD_TESTS=ON
 
       - uses: vapier/coverity-scan-action@v1
         with:
           email: ${{secrets.COVERITY_SCAN_EMAIL}}
           token: ${{secrets.COVERITY_SCAN_TOKEN}}
-          working-directory: ${{github.workspace}}/bin
+          working-directory: ${{github.workspace}}/build
           command: make -j $(nproc)

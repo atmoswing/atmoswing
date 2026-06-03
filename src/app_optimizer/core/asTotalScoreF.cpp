@@ -27,6 +27,7 @@
  */
 
 #include "asTotalScoreF.h"
+#include "asIncludes.h"
 
 asTotalScoreF::asTotalScoreF(const wxString& periodString)
     : asTotalScore(periodString) {}
@@ -37,7 +38,7 @@ float asTotalScoreF::Assess(const a1f& targetDates, const a1f& scores, const asT
 
     int countB = 0, countD = 0, countTot = 0;
 
-    switch (m_period) {
+    switch (_period) {
         case (asTotalScore::Total): {
             for (int i = 0; i < scores.size(); i++) {
                 countTot++;
@@ -58,7 +59,7 @@ float asTotalScoreF::Assess(const a1f& targetDates, const a1f& scores, const asT
         }
 
         default: {
-            throw runtime_error(_("Period not yet implemented in asTotalScoreF."));
+            throw std::runtime_error(_("Period not yet implemented in asTotalScoreF."));
         }
     }
 

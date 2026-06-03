@@ -26,6 +26,7 @@
  */
 
 #include "asPredictorOperMfArpege.h"
+#include "asIncludes.h"
 
 #include "asAreaGrid.h"
 #include "asTimeArray.h"
@@ -33,65 +34,65 @@
 asPredictorOperMfArpege::asPredictorOperMfArpege(const wxString& dataId)
     : asPredictorOper(dataId) {
     // Set the basic properties.
-    m_datasetId = "MF_ARPEGE";
-    m_provider = "METEOFRANCE";
-    m_datasetName = "ARPEGE grib files";
-    m_fileType = asFile::Grib;
-    m_isEnsemble = false;
-    m_strideAllowed = false;
-    m_fStr.dimLatName = "lat";
-    m_fStr.dimLonName = "lon";
-    m_fStr.dimTimeName = "time";
-    m_fStr.dimLevelName = "isobaric";
-    m_fStr.hasLevelDim = false;
-    m_fStr.singleTimeStep = true;
-    m_parameter = ParameterUndefined;
-    m_fileExtension = "grb";
-    m_leadTimeStart = 0;
-    m_leadTimeStep = 6;
-    m_runHourStart = 0;
-    m_runUpdate = 12;
+    _datasetId = "MF_ARPEGE";
+    _provider = "METEOFRANCE";
+    _datasetName = "ARPEGE grib files";
+    _fileType = asFile::Grib;
+    _isEnsemble = false;
+    _strideAllowed = false;
+    _fStr.dimLatName = "lat";
+    _fStr.dimLonName = "lon";
+    _fStr.dimTimeName = "time";
+    _fStr.dimLevelName = "isobaric";
+    _fStr.hasLevelDim = false;
+    _fStr.singleTimeStep = true;
+    _parameter = ParameterUndefined;
+    _fileExtension = "grb";
+    _leadTimeStart = 0;
+    _leadTimeStep = 6;
+    _runHourStart = 0;
+    _runUpdate = 12;
 }
 
 bool asPredictorOperMfArpege::Init() {
     // Identify data ID and set the corresponding properties.
     if (IsGeopotential()) {
-        m_parameter = Geopotential;
-        m_gribCode = {0, 3, 4, 100};
-        m_unit = m2_s2;
-        m_fStr.hasLevelDim = true;
-        m_fileNamePattern = "ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_%d_%s_%s.grb";
+        _parameter = Geopotential;
+        _gribCode = {0, 3, 4, 100};
+        _unit = m2_s2;
+        _fStr.hasLevelDim = true;
+        _fileNamePattern = "ARP_GEOPOTENTIAL__ISOBARIC_SURFACE_%d_%s_%s.grb";
     } else if (IsRelativeHumidity()) {
-        m_parameter = RelativeHumidity;
-        m_gribCode = {0, 1, 1, 100};
-        m_unit = percent;
-        m_fStr.hasLevelDim = true;
-        m_fileNamePattern = "ARP_RELATIVE_HUMIDITY__ISOBARIC_SURFACE_%d_%s_%s.grb";
+        _parameter = RelativeHumidity;
+        _gribCode = {0, 1, 1, 100};
+        _unit = percent;
+        _fStr.hasLevelDim = true;
+        _fileNamePattern = "ARP_RELATIVE_HUMIDITY__ISOBARIC_SURFACE_%d_%s_%s.grb";
     } else if (IsTotalColumnWaterVapour()) {
-        m_parameter = PrecipitableWater;
-        m_gribCode = {0, 1, 64, 1};
-        m_unit = kg_m2;
-        m_fStr.hasLevelDim = false;
-        m_fileNamePattern = "ARP_TOTAL_COLUMN_INTEGRATED_WATER_VAPOUR__GROUND_OR_WATER_SURFACE_%d_%s_%s.grb";
+        _parameter = PrecipitableWater;
+        _gribCode = {0, 1, 64, 1};
+        _unit = kg_m2;
+        _fStr.hasLevelDim = false;
+        _fileNamePattern = "ARP_TOTAL_COLUMN_INTEGRATED_WATER_VAPOUR__GROUND_OR_WATER_SURFACE_%d_%s_%s.grb";
     } else if (IsAirTemperature()) {
-        m_parameter = AirTemperature;
-        m_gribCode = {0, 0, 0, 100};
-        m_unit = degK;
-        m_fStr.hasLevelDim = true;
-        m_fileNamePattern = "ARP_TEMPERATURE__ISOBARIC_SURFACE_%d_%s_%s.grb";
+        _parameter = AirTemperature;
+        _gribCode = {0, 0, 0, 100};
+        _unit = degK;
+        _fStr.hasLevelDim = true;
+        _fileNamePattern = "ARP_TEMPERATURE__ISOBARIC_SURFACE_%d_%s_%s.grb";
     } else if (IsVerticalVelocity()) {
-        m_parameter = VerticalVelocity;
-        m_gribCode = {0, 2, 8, 100};
-        m_unit = Pa_s;
-        m_fStr.hasLevelDim = true;
-        m_fileNamePattern = "ARP_VERTICAL_VELOCITY_PRESSURE__ISOBARIC_SURFACE_%d_%s_%s.grb";
+        _parameter = VerticalVelocity;
+        _gribCode = {0, 2, 8, 100};
+        _unit = Pa_s;
+        _fStr.hasLevelDim = true;
+        _fileNamePattern = "ARP_VERTICAL_VELOCITY_PRESSURE__ISOBARIC_SURFACE_%d_%s_%s.grb";
     } else {
-        wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+        wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), _dataId, _product);
         return false;
     }
 
     // Set to initialized
-    m_initialized = true;
+    _initialized = true;
 
     return true;
 }
@@ -105,5 +106,5 @@ wxString asPredictorOperMfArpege::GetFileName(const double date, const int leadT
     wxString dateTarget = asTime::GetStringTime(mjdTarget, "YYYYMMDDhhmm");
     wxString dateForecast = asTime::GetStringTime(date, "YYYYMMDDhhmm");
 
-    return asStrF(m_fileNamePattern, (int)m_level, dateTarget, dateForecast);
+    return asStrF(_fileNamePattern, (int)_level, dateTarget, dateForecast);
 }

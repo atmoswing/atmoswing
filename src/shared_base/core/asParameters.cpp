@@ -27,6 +27,7 @@
  */
 
 #include "asParameters.h"
+#include "asIncludes.h"
 
 #include <wx/tokenzr.h>
 
@@ -34,40 +35,56 @@
 #include "asFileText.h"
 
 asParameters::asParameters()
-    : m_archiveStart(NAN),
-      m_archiveEnd(NAN),
-      m_analogsIntervalDays(200),
-      m_predictandStationIds(),
-      m_timeMinHours(0),
-      m_timeMaxHours(0),
-      m_dateProcessed(asTime::GetStringTime(asTime::NowTimeStruct(asLOCAL))),
-      m_timeArrayTargetMode("simple"),
-      m_targetTimeStepHours(0),
-      m_timeArrayTargetPredictandMinThreshold(0),
-      m_timeArrayTargetPredictandMaxThreshold(0),
-      m_timeArrayAnalogsMode("days_interval"),
-      m_analogsTimeStepHours(0),
-      m_analogsExcludeDays(0),
-      m_predictandParameter(asPredictand::Precipitation),
-      m_predictandTemporalResolution(asPredictand::Daily),
-      m_predictandSpatialAggregation(asPredictand::Station),
-      m_predictandTimeHours(0) {}
+    : _archiveStart(NAN),
+      _archiveEnd(NAN),
+      _analogsIntervalDays(200),
+      _predictandStationIds(),
+      _timeMinHours(0),
+      _timeMaxHours(0),
+      _dateProcessed(asTime::GetStringTime(asTime::NowTimeStruct(asLOCAL))),
+      _timeArrayTargetMode("simple"),
+      _targetTimeStepHours(0),
+      _timeArrayTargetPredictandMinThreshold(0),
+      _timeArrayTargetPredictandMaxThreshold(0),
+      _timeArrayAnalogsMode("days_interval"),
+      _analogsTimeStepHours(0),
+      _analogsExcludeDays(0),
+      _predictandParameter(asPredictand::Precipitation),
+      _predictandTemporalResolution(asPredictand::Daily),
+      _predictandSpatialAggregation(asPredictand::Station),
+      _predictandTimeHours(0) {}
+
+void asParameters::SetArchiveYearStart(int val) {
+    _archiveStart = asTime::GetMJD(val, 1, 1);
+}
+
+void asParameters::SetArchiveYearEnd(int val) {
+    _archiveEnd = asTime::GetMJD(val, 12, 31);
+}
+
+void asParameters::SetArchiveStart(const wxString& val) {
+    _archiveStart = asTime::GetTimeFromString(val);
+}
+
+void asParameters::SetArchiveEnd(const wxString& val) {
+    _archiveEnd = asTime::GetTimeFromString(val);
+}
 
 void asParameters::AddStep() {
     ParamsStep step;
 
     step.analogsNumber = 0;
 
-    m_steps.push_back(step);
+    _steps.push_back(step);
 }
 
 void asParameters::RemoveStep(int iStep) {
-    wxASSERT(m_steps.size() > iStep);
-    m_steps.erase(m_steps.begin() + iStep);
+    wxASSERT(_steps.size() > iStep);
+    _steps.erase(_steps.begin() + iStep);
 }
 
 void asParameters::AddPredictor() {
-    AddPredictor(m_steps[m_steps.size() - 1]);
+    AddPredictor(_steps[_steps.size() - 1]);
 }
 
 void asParameters::AddPredictor(ParamsStep& step) {
@@ -77,13 +94,13 @@ void asParameters::AddPredictor(ParamsStep& step) {
 
 void asParameters::AddPredictor(int iStep) {
     ParamsPredictor predictor;
-    m_steps[iStep].predictors.push_back(predictor);
+    _steps[iStep].predictors.push_back(predictor);
 }
 
 void asParameters::RemovePredictor(int iStep, int iPtor) {
-    wxASSERT(m_steps.size() > iStep);
-    wxASSERT(m_steps[iStep].predictors.size() > iPtor);
-    m_steps[iStep].predictors.erase(m_steps[iStep].predictors.begin() + iPtor);
+    wxASSERT(_steps.size() > iStep);
+    wxASSERT(_steps[iStep].predictors.size() > iPtor);
+    _steps[iStep].predictors.erase(_steps[iStep].predictors.begin() + iPtor);
 }
 
 bool asParameters::LoadFromFile(const wxString& filePath) {
@@ -642,7 +659,7 @@ bool asParameters::PreprocessingPropertiesOk() const {
 bool asParameters::FixAnalogsNb() {
     // Check analogs number coherence
     int analogsNb = GetAnalogsNumber(0);
-    for (int iStep = 1; iStep < m_steps.size(); iStep++) {
+    for (int iStep = 1; iStep < _steps.size(); iStep++) {
         if (GetAnalogsNumber(iStep) > analogsNb) {
             SetAnalogsNumber(iStep, analogsNb);
         } else {
@@ -774,7 +791,7 @@ vi asParameters::GetFileStationIds(wxString stationIdsString) {
 }
 
 wxString asParameters::GetPredictandStationIdsString() const {
-    return PredictandStationIdsToString(m_predictandStationIds);
+    return PredictandStationIdsToString(_predictandStationIds);
 }
 
 wxString asParameters::PredictandStationIdsToString(const vi& predictandStationIds) {
@@ -807,21 +824,21 @@ bool asParameters::FixTimeLimits() {
                 double minHourPredictor = 1000.0, maxHourPredictor = -1000.0;
 
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    minHour = wxMin(m_steps[i].predictors[j].preprocessHours[k], minHour);
-                    maxHour = wxMax(m_steps[i].predictors[j].preprocessHours[k], maxHour);
-                    minHourPredictor = wxMin(m_steps[i].predictors[j].preprocessHours[k], minHourPredictor);
-                    maxHourPredictor = wxMax(m_steps[i].predictors[j].preprocessHours[k], maxHourPredictor);
-                    m_steps[i].predictors[j].hour = minHourPredictor;
+                    minHour = std::min(_steps[i].predictors[j].preprocessHours[k], minHour);
+                    maxHour = std::max(_steps[i].predictors[j].preprocessHours[k], maxHour);
+                    minHourPredictor = std::min(_steps[i].predictors[j].preprocessHours[k], minHourPredictor);
+                    maxHourPredictor = std::max(_steps[i].predictors[j].preprocessHours[k], maxHourPredictor);
+                    _steps[i].predictors[j].hour = minHourPredictor;
                 }
             } else {
-                minHour = wxMin(m_steps[i].predictors[j].hour, minHour);
-                maxHour = wxMax(m_steps[i].predictors[j].hour, maxHour);
+                minHour = std::min(_steps[i].predictors[j].hour, minHour);
+                maxHour = std::max(_steps[i].predictors[j].hour, maxHour);
             }
         }
     }
 
-    m_timeMinHours = minHour;
-    m_timeMaxHours = maxHour;
+    _timeMinHours = minHour;
+    _timeMaxHours = maxHour;
 
     return true;
 }
@@ -831,12 +848,12 @@ bool asParameters::FixWeights() {
         // Sum the weights
         float totWeight = 0;
         for (int j = 0; j < GetPredictorsNb(i); j++) {
-            totWeight += m_steps[i].predictors[j].weight;
+            totWeight += _steps[i].predictors[j].weight;
         }
 
         // Correct to set the total to 1
         for (int j = 0; j < GetPredictorsNb(i); j++) {
-            m_steps[i].predictors[j].weight /= totWeight;
+            _steps[i].predictors[j].weight /= totWeight;
         }
     }
 
@@ -848,42 +865,42 @@ bool asParameters::FixCoordinates() {
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (GetPredictorGridType(i, j).IsSameAs("regular", false)) {
                 // Check that the coordinates are a multiple of the steps
-                if (std::abs(std::fmod(m_steps[i].predictors[j].xMin - m_steps[i].predictors[j].xShift,
-                                       m_steps[i].predictors[j].xStep)) > 0) {
-                    double factor = (m_steps[i].predictors[j].xMin - m_steps[i].predictors[j].xShift) /
-                                    m_steps[i].predictors[j].xStep;
+                if (std::abs(std::fmod(_steps[i].predictors[j].xMin - _steps[i].predictors[j].xShift,
+                                       _steps[i].predictors[j].xStep)) > 0) {
+                    double factor = (_steps[i].predictors[j].xMin - _steps[i].predictors[j].xShift) /
+                                    _steps[i].predictors[j].xStep;
                     factor = asRound(factor);
-                    m_steps[i].predictors[j].xMin = factor * m_steps[i].predictors[j].xStep +
-                                                    m_steps[i].predictors[j].xShift;
+                    _steps[i].predictors[j].xMin = factor * _steps[i].predictors[j].xStep +
+                                                   _steps[i].predictors[j].xShift;
                 }
 
-                if (std::abs(std::fmod(m_steps[i].predictors[j].yMin - m_steps[i].predictors[j].yShift,
-                                       m_steps[i].predictors[j].yStep)) > 0) {
-                    double factor = (m_steps[i].predictors[j].yMin - m_steps[i].predictors[j].yShift) /
-                                    m_steps[i].predictors[j].yStep;
+                if (std::abs(std::fmod(_steps[i].predictors[j].yMin - _steps[i].predictors[j].yShift,
+                                       _steps[i].predictors[j].yStep)) > 0) {
+                    double factor = (_steps[i].predictors[j].yMin - _steps[i].predictors[j].yShift) /
+                                    _steps[i].predictors[j].yStep;
                     factor = asRound(factor);
-                    m_steps[i].predictors[j].yMin = factor * m_steps[i].predictors[j].yStep +
-                                                    m_steps[i].predictors[j].yShift;
+                    _steps[i].predictors[j].yMin = factor * _steps[i].predictors[j].yStep +
+                                                   _steps[i].predictors[j].yShift;
                 }
             }
 
-            if (m_steps[i].predictors[j].flatAllowed == asFLAT_FORBIDDEN) {
+            if (_steps[i].predictors[j].flatAllowed == asFLAT_FORBIDDEN) {
                 // Check that the size is larger than 1 point
-                if (m_steps[i].predictors[j].xPtsNb < 2) {
-                    m_steps[i].predictors[j].xPtsNb = 2;
+                if (_steps[i].predictors[j].xPtsNb < 2) {
+                    _steps[i].predictors[j].xPtsNb = 2;
                 }
 
-                if (m_steps[i].predictors[j].yPtsNb < 2) {
-                    m_steps[i].predictors[j].yPtsNb = 2;
+                if (_steps[i].predictors[j].yPtsNb < 2) {
+                    _steps[i].predictors[j].yPtsNb = 2;
                 }
             } else {
                 // Check that the size is larger than 0
-                if (m_steps[i].predictors[j].xPtsNb < 1) {
-                    m_steps[i].predictors[j].xPtsNb = 1;
+                if (_steps[i].predictors[j].xPtsNb < 1) {
+                    _steps[i].predictors[j].xPtsNb = 1;
                 }
 
-                if (m_steps[i].predictors[j].yPtsNb < 1) {
-                    m_steps[i].predictors[j].yPtsNb = 1;
+                if (_steps[i].predictors[j].yPtsNb < 1) {
+                    _steps[i].predictors[j].yPtsNb = 1;
                 }
             }
         }
@@ -1105,9 +1122,7 @@ bool asParameters::PrintAndSaveTemp(const wxString& filePath) const {
     header = _("AtmoSwing current parameters\n");
     fileRes.AddContent(header);
     fileRes.AddContent(content);
-    fileRes.Close();
-
-    return true;
+    return fileRes.Close();
 }
 
 bool asParameters::GetValuesFromString(wxString stringVals) {
@@ -1234,51 +1249,51 @@ bool asParameters::GetValuesFromString(wxString stringVals) {
 
 void asParameters::SetTargetTimeStepHours(double val) {
     wxASSERT(!isnan(val));
-    m_targetTimeStepHours = val;
+    _targetTimeStepHours = val;
 }
 
 void asParameters::SetAnalogsTimeStepHours(double val) {
     wxASSERT(!isnan(val));
-    m_analogsTimeStepHours = val;
+    _analogsTimeStepHours = val;
 }
 
 void asParameters::SetTimeArrayTargetMode(const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_timeArrayTargetMode = val;
+    _timeArrayTargetMode = val;
 }
 
 void asParameters::SetTimeArrayTargetPredictandSerieName(const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_timeArrayTargetPredictandSerieName = val;
+    _timeArrayTargetPredictandSerieName = val;
 }
 
 void asParameters::SetTimeArrayTargetPredictandMinThreshold(float val) {
     wxASSERT(!isnan(val));
-    m_timeArrayTargetPredictandMinThreshold = val;
+    _timeArrayTargetPredictandMinThreshold = val;
 }
 
 void asParameters::SetTimeArrayTargetPredictandMaxThreshold(float val) {
     wxASSERT(!isnan(val));
-    m_timeArrayTargetPredictandMaxThreshold = val;
+    _timeArrayTargetPredictandMaxThreshold = val;
 }
 
 void asParameters::SetTimeArrayAnalogsMode(const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_timeArrayAnalogsMode = val;
+    _timeArrayAnalogsMode = val;
 }
 
 void asParameters::SetAnalogsExcludeDays(int val) {
     wxASSERT(val >= 0);
-    m_analogsExcludeDays = val;
+    _analogsExcludeDays = val;
 }
 
 void asParameters::SetAnalogsIntervalDays(int val) {
     wxASSERT(val >= 0);
-    m_analogsIntervalDays = val;
+    _analogsIntervalDays = val;
 }
 
 void asParameters::SetPredictandStationIds(const vi& val) {
-    m_predictandStationIds = val;
+    _predictandStationIds = val;
 }
 
 void asParameters::SetPredictandStationIds(wxString val) {
@@ -1287,19 +1302,19 @@ void asParameters::SetPredictandStationIds(wxString val) {
         wxString token = tokenizer.GetNextToken();
         long stationId;
         if (token.ToLong(&stationId)) {
-            m_predictandStationIds.push_back(int(stationId));
+            _predictandStationIds.push_back(int(stationId));
         }
     }
 }
 
 void asParameters::SetPredictandTimeHours(double val) {
     wxASSERT(!isnan(val));
-    m_predictandTimeHours = val;
+    _predictandTimeHours = val;
 }
 
 void asParameters::SetAnalogsNumber(int iStep, int val) {
     wxASSERT(val > 0);
-    m_steps[iStep].analogsNumber = val;
+    _steps[iStep].analogsNumber = val;
 }
 
 bool asParameters::SetPreloadDataIds(int iStep, int iPtor, vwxs val) {
@@ -1315,9 +1330,9 @@ bool asParameters::SetPreloadDataIds(int iStep, int iPtor, vwxs val) {
         }
     }
 
-    m_steps[iStep].predictors[iPtor].preloadDataIds.clear();
+    _steps[iStep].predictors[iPtor].preloadDataIds.clear();
     for (auto& v : val) {
-        m_steps[iStep].predictors[iPtor].preloadDataIds.push_back(v.ToStdString());
+        _steps[iStep].predictors[iPtor].preloadDataIds.push_back(v.ToStdString());
     }
 
     return true;
@@ -1325,8 +1340,8 @@ bool asParameters::SetPreloadDataIds(int iStep, int iPtor, vwxs val) {
 
 void asParameters::SetPreloadDataIds(int iStep, int iPtor, wxString val) {
     wxASSERT(!val.IsEmpty());
-    m_steps[iStep].predictors[iPtor].preloadDataIds.clear();
-    m_steps[iStep].predictors[iPtor].preloadDataIds.push_back(val.ToStdString());
+    _steps[iStep].predictors[iPtor].preloadDataIds.clear();
+    _steps[iStep].predictors[iPtor].preloadDataIds.push_back(val.ToStdString());
 }
 
 bool asParameters::SetPreloadHours(int iStep, int iPtor, vd val) {
@@ -1342,15 +1357,15 @@ bool asParameters::SetPreloadHours(int iStep, int iPtor, vd val) {
         }
     }
 
-    m_steps[iStep].predictors[iPtor].preloadHours = val;
+    _steps[iStep].predictors[iPtor].preloadHours = val;
 
     return true;
 }
 
 void asParameters::SetPreloadHours(int iStep, int iPtor, double val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].preloadHours.clear();
-    m_steps[iStep].predictors[iPtor].preloadHours.push_back(val);
+    _steps[iStep].predictors[iPtor].preloadHours.clear();
+    _steps[iStep].predictors[iPtor].preloadHours.push_back(val);
 }
 
 bool asParameters::SetPreloadLevels(int iStep, int iPtor, vf val) {
@@ -1366,49 +1381,47 @@ bool asParameters::SetPreloadLevels(int iStep, int iPtor, vf val) {
         }
     }
 
-    m_steps[iStep].predictors[iPtor].preloadLevels = val;
+    _steps[iStep].predictors[iPtor].preloadLevels = val;
 
     return true;
 }
 
 void asParameters::SetPreloadLevels(int iStep, int iPtor, float val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].preloadLevels.clear();
-    m_steps[iStep].predictors[iPtor].preloadLevels.push_back(val);
+    _steps[iStep].predictors[iPtor].preloadLevels.clear();
+    _steps[iStep].predictors[iPtor].preloadLevels.push_back(val);
 }
 
 void asParameters::SetPreloadXmin(int iStep, int iPtor, double val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].preloadXmin = val;
+    _steps[iStep].predictors[iPtor].preloadXmin = val;
 }
 
 void asParameters::SetPreloadXptsnb(int iStep, int iPtor, int val) {
     wxASSERT(val > 0);
-    m_steps[iStep].predictors[iPtor].preloadXptsnb = val;
+    _steps[iStep].predictors[iPtor].preloadXptsnb = val;
 }
 
 void asParameters::SetPreloadYmin(int iStep, int iPtor, double val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].preloadYmin = val;
+    _steps[iStep].predictors[iPtor].preloadYmin = val;
 }
 
 void asParameters::SetPreloadYptsnb(int iStep, int iPtor, int val) {
     wxASSERT(val > 0);
-    m_steps[iStep].predictors[iPtor].preloadYptsnb = val;
+    _steps[iStep].predictors[iPtor].preloadYptsnb = val;
 }
 
 void asParameters::SetPreprocessMethod(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_steps[iStep].predictors[iPtor].preprocessMethod = val.ToStdString();
+    _steps[iStep].predictors[iPtor].preprocessMethod = val.ToStdString();
 }
 
 bool asParameters::NeedsGradientPreprocessing(int iStep, int iPtor) const {
-    wxString method = m_steps[iStep].predictors[iPtor].preprocessMethod;
+    wxString method = _steps[iStep].predictors[iPtor].preprocessMethod;
 
-    return method.IsSameAs("Gradients", false) ||
-           method.IsSameAs("SimpleGradients", false) ||
-           method.IsSameAs("RealGradients", false) ||
-           method.IsSameAs("SimpleGradientsWithGaussianWeights", false) ||
+    return method.IsSameAs("Gradients", false) || method.IsSameAs("SimpleGradients", false) ||
+           method.IsSameAs("RealGradients", false) || method.IsSameAs("SimpleGradientsWithGaussianWeights", false) ||
            method.IsSameAs("RealGradientsWithGaussianWeights", false);
 }
 
@@ -1423,10 +1436,8 @@ bool asParameters::IsCriteriaUsingGradients(int iStep, int iPtor) const {
 
 void asParameters::FixCriteriaIfGradientsPreprocessed(int iStep, int iPtor) {
     if (NeedsGradientPreprocessing(iStep, iPtor)) {
-        if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") ||
-            GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r") ||
-            GetPredictorCriteria(iStep, iPtor).IsSameAs("S1s") ||
-            GetPredictorCriteria(iStep, iPtor).IsSameAs("S1G") ||
+        if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r") ||
+            GetPredictorCriteria(iStep, iPtor).IsSameAs("S1s") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S1G") ||
             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1rG") ||
             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1sG")) {
             SetPredictorCriteria(iStep, iPtor, "S1grads");
@@ -1443,8 +1454,7 @@ void asParameters::FixCriteriaIfGradientsPreprocessed(int iStep, int iPtor) {
 
 void asParameters::ForceUsingGradientsPreprocessing(int iStep, int iPtor) {
     // Gradients - S1
-    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") ||
-        GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r")) {
+    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r")) {
         SetPredictorCriteria(iStep, iPtor, "S1grads");
         SetPreprocessMethod(iStep, iPtor, "RealGradients");
     } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1s")) {
@@ -1460,8 +1470,7 @@ void asParameters::ForceUsingGradientsPreprocessing(int iStep, int iPtor) {
     }
 
     // Curvature - S2
-    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2") ||
-        GetPredictorCriteria(iStep, iPtor).IsSameAs("S2r")) {
+    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S2r")) {
         SetPredictorCriteria(iStep, iPtor, "S2grads");
         SetPreprocessMethod(iStep, iPtor, "RealCurvature");
     } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2s")) {
@@ -1478,38 +1487,38 @@ void asParameters::ForceUsingGradientsPreprocessing(int iStep, int iPtor) {
 }
 
 wxString asParameters::GetPreprocessDatasetId(int iStep, int iPtor, int iPre) const {
-    wxASSERT(m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() > iPre);
-    return m_steps[iStep].predictors[iPtor].preprocessDatasetIds[iPre];
+    wxASSERT(_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() > iPre);
+    return _steps[iStep].predictors[iPtor].preprocessDatasetIds[iPre];
 }
 
 void asParameters::SetPreprocessDatasetId(int iStep, int iPtor, int iPre, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    if (m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
-        m_steps[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val.ToStdString();
+    if (_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
+        _steps[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val.ToStdString();
     } else {
-        wxASSERT((int)m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() == iPre);
-        m_steps[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val.ToStdString());
+        wxASSERT((int)_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() == iPre);
+        _steps[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val.ToStdString());
     }
 }
 
 wxString asParameters::GetPreprocessDataId(int iStep, int iPtor, int iPre) const {
-    wxASSERT(m_steps[iStep].predictors[iPtor].preprocessDataIds.size() > iPre);
-    return m_steps[iStep].predictors[iPtor].preprocessDataIds[iPre];
+    wxASSERT(_steps[iStep].predictors[iPtor].preprocessDataIds.size() > iPre);
+    return _steps[iStep].predictors[iPtor].preprocessDataIds[iPre];
 }
 
 void asParameters::SetPreprocessDataId(int iStep, int iPtor, int iPre, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    if (m_steps[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
-        m_steps[iStep].predictors[iPtor].preprocessDataIds[iPre] = val.ToStdString();
+    if (_steps[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
+        _steps[iStep].predictors[iPtor].preprocessDataIds[iPre] = val.ToStdString();
     } else {
-        wxASSERT((int)m_steps[iStep].predictors[iPtor].preprocessDataIds.size() == iPre);
-        m_steps[iStep].predictors[iPtor].preprocessDataIds.push_back(val.ToStdString());
+        wxASSERT((int)_steps[iStep].predictors[iPtor].preprocessDataIds.size() == iPre);
+        _steps[iStep].predictors[iPtor].preprocessDataIds.push_back(val.ToStdString());
     }
 }
 
 float asParameters::GetPreprocessLevel(int iStep, int iPtor, int iPre) const {
-    if (m_steps[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
-        return m_steps[iStep].predictors[iPtor].preprocessLevels[iPre];
+    if (_steps[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
+        return _steps[iStep].predictors[iPtor].preprocessLevels[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessLevels in the parameters object."));
         return NAN;
@@ -1518,17 +1527,17 @@ float asParameters::GetPreprocessLevel(int iStep, int iPtor, int iPre) const {
 
 void asParameters::SetPreprocessLevel(int iStep, int iPtor, int iPre, float val) {
     wxASSERT(!isnan(val));
-    if (m_steps[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
-        m_steps[iStep].predictors[iPtor].preprocessLevels[iPre] = val;
+    if (_steps[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
+        _steps[iStep].predictors[iPtor].preprocessLevels[iPre] = val;
     } else {
-        wxASSERT((int)m_steps[iStep].predictors[iPtor].preprocessLevels.size() == iPre);
-        m_steps[iStep].predictors[iPtor].preprocessLevels.push_back(val);
+        wxASSERT((int)_steps[iStep].predictors[iPtor].preprocessLevels.size() == iPre);
+        _steps[iStep].predictors[iPtor].preprocessLevels.push_back(val);
     }
 }
 
 double asParameters::GetPreprocessHour(int iStep, int iPtor, int iPre) const {
-    wxASSERT(m_steps[iStep].predictors[iPtor].preprocessHours.size() > iPre);
-    return m_steps[iStep].predictors[iPtor].preprocessHours[iPre];
+    wxASSERT(_steps[iStep].predictors[iPtor].preprocessHours.size() > iPre);
+    return _steps[iStep].predictors[iPtor].preprocessHours[iPre];
 }
 
 double asParameters::GetPreprocessTimeAsDays(int iStep, int iPtor, int iPre) const {
@@ -1537,109 +1546,109 @@ double asParameters::GetPreprocessTimeAsDays(int iStep, int iPtor, int iPre) con
 
 void asParameters::SetPreprocessHour(int iStep, int iPtor, int iPre, double val) {
     wxASSERT(!isnan(val));
-    if (m_steps[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
-        m_steps[iStep].predictors[iPtor].preprocessHours[iPre] = val;
+    if (_steps[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
+        _steps[iStep].predictors[iPtor].preprocessHours[iPre] = val;
     } else {
-        wxASSERT((int)m_steps[iStep].predictors[iPtor].preprocessHours.size() == iPre);
-        m_steps[iStep].predictors[iPtor].preprocessHours.push_back(val);
+        wxASSERT((int)_steps[iStep].predictors[iPtor].preprocessHours.size() == iPre);
+        _steps[iStep].predictors[iPtor].preprocessHours.push_back(val);
     }
 }
 
 int asParameters::GetPreprocessMembersNb(int iStep, int iPtor, int iPre) const {
-    wxASSERT(m_steps[iStep].predictors[iPtor].preprocessMembersNb.size() > iPre);
-    return m_steps[iStep].predictors[iPtor].preprocessMembersNb[iPre];
+    wxASSERT(_steps[iStep].predictors[iPtor].preprocessMembersNb.size() > iPre);
+    return _steps[iStep].predictors[iPtor].preprocessMembersNb[iPre];
 }
 
 void asParameters::SetPreprocessMembersNb(int iStep, int iPtor, int iPre, int val) {
     wxASSERT(val >= 0);
-    if (m_steps[iStep].predictors[iPtor].preprocessMembersNb.size() >= iPre + 1) {
-        m_steps[iStep].predictors[iPtor].preprocessMembersNb[iPre] = val;
+    if (_steps[iStep].predictors[iPtor].preprocessMembersNb.size() >= iPre + 1) {
+        _steps[iStep].predictors[iPtor].preprocessMembersNb[iPre] = val;
     } else {
-        wxASSERT((int)m_steps[iStep].predictors[iPtor].preprocessMembersNb.size() == iPre);
-        m_steps[iStep].predictors[iPtor].preprocessMembersNb.push_back(val);
+        wxASSERT((int)_steps[iStep].predictors[iPtor].preprocessMembersNb.size() == iPre);
+        _steps[iStep].predictors[iPtor].preprocessMembersNb.push_back(val);
     }
 }
 
 void asParameters::SetPredictorDatasetId(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_steps[iStep].predictors[iPtor].datasetId = val.ToStdString();
+    _steps[iStep].predictors[iPtor].datasetId = val.ToStdString();
 }
 
 void asParameters::SetPredictorDataId(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_steps[iStep].predictors[iPtor].dataId = val.ToStdString();
+    _steps[iStep].predictors[iPtor].dataId = val.ToStdString();
 }
 
 void asParameters::SetPredictorLevel(int iStep, int iPtor, float val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].level = val;
+    _steps[iStep].predictors[iPtor].level = val;
 }
 
 void asParameters::SetPredictorGridType(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_steps[iStep].predictors[iPtor].gridType = val.ToStdString();
+    _steps[iStep].predictors[iPtor].gridType = val.ToStdString();
 }
 
 void asParameters::SetPredictorXmin(int iStep, int iPtor, double val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].xMin = val;
+    _steps[iStep].predictors[iPtor].xMin = val;
 }
 
 void asParameters::SetPredictorXptsnb(int iStep, int iPtor, int val) {
     wxASSERT(val > 0);
-    m_steps[iStep].predictors[iPtor].xPtsNb = val;
+    _steps[iStep].predictors[iPtor].xPtsNb = val;
 }
 
 void asParameters::SetPredictorXstep(int iStep, int iPtor, double val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].xStep = val;
+    _steps[iStep].predictors[iPtor].xStep = val;
 }
 
 void asParameters::SetPredictorXshift(int iStep, int iPtor, double val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].xShift = val;
+    _steps[iStep].predictors[iPtor].xShift = val;
 }
 
 void asParameters::SetPredictorYmin(int iStep, int iPtor, double val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].yMin = val;
+    _steps[iStep].predictors[iPtor].yMin = val;
 }
 
 void asParameters::SetPredictorYptsnb(int iStep, int iPtor, int val) {
     wxASSERT(val > 0);
-    m_steps[iStep].predictors[iPtor].yPtsNb = val;
+    _steps[iStep].predictors[iPtor].yPtsNb = val;
 }
 
 void asParameters::SetPredictorYstep(int iStep, int iPtor, double val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].yStep = val;
+    _steps[iStep].predictors[iPtor].yStep = val;
 }
 
 void asParameters::SetPredictorYshift(int iStep, int iPtor, double val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].yShift = val;
+    _steps[iStep].predictors[iPtor].yShift = val;
 }
 
 void asParameters::SetPredictorFlatAllowed(int iStep, int iPtor, int val) {
-    m_steps[iStep].predictors[iPtor].flatAllowed = val;
+    _steps[iStep].predictors[iPtor].flatAllowed = val;
 }
 
 void asParameters::SetPredictorHour(int iStep, int iPtor, double val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].hour = val;
+    _steps[iStep].predictors[iPtor].hour = val;
 }
 
 void asParameters::SetPredictorMembersNb(int iStep, int iPtor, int val) {
     wxASSERT(val >= 0);
-    m_steps[iStep].predictors[iPtor].membersNb = val;
+    _steps[iStep].predictors[iPtor].membersNb = val;
 }
 
 void asParameters::SetPredictorCriteria(int iStep, int iPtor, const wxString& val) {
     wxASSERT(!val.IsEmpty());
-    m_steps[iStep].predictors[iPtor].criteria = val.ToStdString();
+    _steps[iStep].predictors[iPtor].criteria = val.ToStdString();
 }
 
 void asParameters::SetPredictorWeight(int iStep, int iPtor, float val) {
     wxASSERT(!isnan(val));
-    m_steps[iStep].predictors[iPtor].weight = wxMax(val, 0);
+    _steps[iStep].predictors[iPtor].weight = std::max(val, 0.0f);
 }

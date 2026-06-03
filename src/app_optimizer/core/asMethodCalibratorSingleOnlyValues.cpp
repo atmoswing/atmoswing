@@ -28,6 +28,8 @@
 
 #include "asMethodCalibratorSingleOnlyValues.h"
 
+#include "asIncludes.h"
+
 asMethodCalibratorSingleOnlyValues::asMethodCalibratorSingleOnlyValues()
     : asMethodCalibrator() {}
 

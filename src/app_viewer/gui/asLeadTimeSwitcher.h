@@ -33,7 +33,7 @@
 #include <wx/panel.h>
 
 #include "asForecastManager.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asWorkspace.h"
 
 class asLeadTimeSwitcher : public wxPanel {
@@ -51,19 +51,19 @@ class asLeadTimeSwitcher : public wxPanel {
     void SetLeadTime(int leadTime);
 
   private:
-    wxWindow* m_parent;
-    asWorkspace* m_workspace;
-    asForecastManager* m_forecastManager;
-    wxBitmap* m_bmp;
-    wxGraphicsContext* m_gdc;
-    wxOverlay m_overlay;
-    bool m_hasSubDaily;
-    bool m_subDailyMode;
-    double m_subDailyFraction;
-    int m_cellWidth;
-    int m_cellHeight;
-    int m_margin;
-    int m_leadTime;
+    wxWindow* _parent;
+    asWorkspace* _workspace;
+    asForecastManager* _forecastManager;
+    wxBitmap* _bmp;
+    wxGraphicsContext* _gdc;
+    wxOverlay _overlay;
+    bool _hasSubDaily;
+    bool _subDailyMode;
+    double _subDailyFraction;
+    int _cellWidth;
+    int _cellHeight;
+    int _margin;
+    int _leadTime;
 
     void OnLeadTimeSlctChange(wxMouseEvent& event);
 

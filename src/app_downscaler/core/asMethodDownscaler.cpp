@@ -61,18 +61,18 @@ bool asMethodDownscaler::Manager() {
 
     // Load parameters
     asParametersDownscaling params;
-    if (!params.LoadFromFile(m_paramsFilePath)) {
+    if (!params.LoadFromFile(_paramsFilePath)) {
         return false;
     }
-    if (!m_predictandStationIds.empty()) {
+    if (!_predictandStationIds.empty()) {
         vvi idsVect;
-        idsVect.push_back(m_predictandStationIds);
+        idsVect.push_back(_predictandStationIds);
         params.SetPredictandStationIdsVector(idsVect);
     }
     params.InitValues();
 
     // Load the Predictand DB
-    if (!LoadPredictandDB(m_predictandDBFilePath)) {
+    if (!LoadPredictandDB(_predictandDBFilePath)) {
         return false;
     }
 
@@ -97,7 +97,7 @@ bool asMethodDownscaler::Manager() {
 }
 
 void asMethodDownscaler::ClearAll() {
-    m_parameters.clear();
+    _parameters.clear();
 }
 
 double asMethodDownscaler::GetTimeStartDownscaling(asParametersDownscaling* params) const {
@@ -163,12 +163,11 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates& results, asParametersDo
         return false;
     }
 
-    // Create the criterion
+    // Create the criterion. The vector takes ownership; Cleanup() deletes the
+    // raw pointers below, so release the unique_ptr at the boundary.
     vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
-        // Instantiate a score object
-        asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
-        criteria.push_back(criterion);
+        criteria.push_back(asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor)).release());
     }
 
     // Check time sizes
@@ -233,11 +232,11 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates& results, asParameter
         return false;
     }
 
-    // Create the score objects
+    // Create the score objects. The vector takes ownership; Cleanup() deletes the
+    // raw pointers below, so release the unique_ptr at the boundary.
     vector<asCriteria*> criteria;
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
-        asCriteria* criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
-        criteria.push_back(criterion);
+        criteria.push_back(asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor)).release());
     }
 
     // Inline the data when possible
@@ -269,8 +268,8 @@ bool asMethodDownscaler::GetAnalogsValues(asResultsValues& results, asParameters
     results.Init(params);
 
     // Set the predictand values to the corresponding analog dates
-    wxASSERT(m_predictandDB);
-    if (!asProcessor::GetAnalogsValues(*m_predictandDB, anaDates, params, results)) {
+    wxASSERT(_predictandDB);
+    if (!asProcessor::GetAnalogsValues(*_predictandDB, anaDates, params, results)) {
         wxLogError(_("Failed setting the predictand values to the corresponding analog dates."));
         return false;
     }
@@ -333,7 +332,7 @@ bool asMethodDownscaler::LoadProjectionData(vector<asPredictor*>& predictors, as
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation during scenario data loading: %s"), msg);
         return false;
-    } catch (runtime_error& e) {
+    } catch (std::runtime_error& e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception during scenario data loading: %s"), msg);
         return false;
@@ -355,7 +354,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(vector<asPred
     // Loading the datasets information
     asPredictorProj* predictor = asPredictorProj::GetInstance(
         params->GetPredictorProjDatasetId(iStep, iPtor), params->GetModel(), params->GetScenario(),
-        params->GetPredictorProjDataId(iStep, iPtor), m_predictorProjectionDataDir);
+        params->GetPredictorProjDataId(iStep, iPtor), _predictorProjectionDataDir);
     if (!predictor) {
         return false;
     }
@@ -410,7 +409,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(vector<asPredict
         // Loading the dataset information
         asPredictorProj* predictorPreprocess = asPredictorProj::GetInstance(
             params->GetPreprocessProjDatasetId(iStep, iPtor, iPre), params->GetModel(), params->GetScenario(),
-            params->GetPreprocessProjDataId(iStep, iPtor, iPre), m_predictorProjectionDataDir);
+            params->GetPreprocessProjDataId(iStep, iPtor, iPre), _predictorProjectionDataDir);
         if (!predictorPreprocess) {
             Cleanup(predictorsPreprocess);
             return false;

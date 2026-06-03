@@ -28,6 +28,8 @@
 
 #include "vrLayerVectorFcstRing.h"
 
+#include "asIncludes.h"
+
 #include "vrlabel.h"
 #include "vrrender.h"
 
@@ -35,7 +37,7 @@ vrLayerVectorFcstRing::vrLayerVectorFcstRing() {
     wxASSERT(!m_dataset);
     wxASSERT(!m_layer);
     m_driverType = vrDRIVER_VECTOR_MEMORY;
-    m_valueMax = 1;
+    _valueMax = 1;
 }
 
 vrLayerVectorFcstRing::~vrLayerVectorFcstRing() = default;
@@ -256,17 +258,17 @@ void vrLayerVectorFcstRing::Paint(wxGraphicsContext* gdc, wxGraphicsPath& path, 
     } else if (value == 0)  // No rain -> white
     {
         colour.Set(255, 255, 255);
-    } else if (value / m_valueMax <= 0.5)  // light green to yellow
+    } else if (value / _valueMax <= 0.5)  // light green to yellow
     {
         int baseVal = 200;
-        int valColour = ((value / (0.5 * m_valueMax))) * baseVal;
-        int valColourCompl = ((value / (0.5 * m_valueMax))) * (255 - baseVal);
+        int valColour = ((value / (0.5 * _valueMax))) * baseVal;
+        int valColourCompl = ((value / (0.5 * _valueMax))) * (255 - baseVal);
         if (valColour > baseVal) valColour = baseVal;
         if (valColourCompl + baseVal > 255) valColourCompl = 255 - baseVal;
         colour.Set((baseVal + valColourCompl), 255, (baseVal - valColour));
     } else  // Yellow to red
     {
-        int valColour = ((value - 0.5 * m_valueMax) / (0.5 * m_valueMax)) * 255;
+        int valColour = ((value - 0.5 * _valueMax) / (0.5 * _valueMax)) * 255;
         if (valColour > 255) valColour = 255;
         colour.Set(255, (255 - valColour), 0);
     }

@@ -28,7 +28,6 @@
 #ifndef AS_PREDICTOR_OPER_ECMWF_IFS_H
 #define AS_PREDICTOR_OPER_ECMWF_IFS_H
 
-#include "asIncludes.h"
 #include "asPredictorEcmwfIfs.h"
 #include "asPredictorOper.h"
 

@@ -26,6 +26,7 @@
  */
 
 #include "asTotalScoreMeanWithClim.h"
+#include "asIncludes.h"
 
 asTotalScoreMeanWithClim::asTotalScoreMeanWithClim(const wxString& periodString)
     : asTotalScore(periodString) {}
@@ -34,7 +35,7 @@ float asTotalScoreMeanWithClim::Assess(const a1f& targetDates, const a1f& scores
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(scores.rows() > 1);
 
-    switch (m_period) {
+    switch (_period) {
         case (asTotalScore::Total): {
             int targetDatesLength = targetDates.rows();
 
@@ -52,11 +53,11 @@ float asTotalScoreMeanWithClim::Assess(const a1f& targetDates, const a1f& scores
         }
 
         case (asTotalScore::SpecificPeriod): {
-            throw runtime_error(_("You cannot process a score using the climatology on a binned period."));
+            throw std::runtime_error(_("You cannot process a score using the climatology on a binned period."));
         }
 
         default: {
-            throw runtime_error(_("Period not yet implemented in asTotalScoreMeanWithClim."));
+            throw std::runtime_error(_("Period not yet implemented in asTotalScoreMeanWithClim."));
         }
     }
 }

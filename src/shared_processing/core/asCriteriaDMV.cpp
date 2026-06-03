@@ -26,10 +26,11 @@
  */
 
 #include "asCriteriaDMV.h"
+#include "asIncludes.h"
 
 asCriteriaDMV::asCriteriaDMV()
     : asCriteria("DMV", _("Absolute difference in mean value (nonspatial)"), Asc) {
-    m_canUseInline = true;
+    _canUseInline = true;
 }
 
 asCriteriaDMV::~asCriteriaDMV() = default;
@@ -42,7 +43,7 @@ float asCriteriaDMV::Assess(const a2f& refData, const a2f& evalData, int rowsNb,
     wxASSERT(evalData.rows() == rowsNb);
     wxASSERT(evalData.cols() == colsNb);
 
-    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+    if (!_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
         return std::fabs(refData.mean() - evalData.mean());
 
     } else {

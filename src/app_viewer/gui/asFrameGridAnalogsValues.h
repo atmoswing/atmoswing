@@ -30,7 +30,7 @@
 #define AS_FRAME_GRID_ANALOGS_VALUES_H
 
 #include "AtmoSwingViewerGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asForecastManager;
 
@@ -51,13 +51,13 @@ class asFrameGridAnalogsValues : public asFrameGridAnalogsValuesVirtual {
     void SortGrid(wxGridEvent& event) override;
 
   private:
-    asForecastManager* m_forecastManager;
-    int m_selectedMethod;
-    int m_selectedForecast;
-    int m_selectedStation;
-    int m_selectedDate;
-    int m_sortAfterCol;
-    Order m_sortOrder;
+    asForecastManager* _forecastManager;
+    int _selectedMethod;
+    int _selectedForecast;
+    int _selectedStation;
+    int _selectedDate;
+    int _sortAfterCol;
+    Order _sortOrder;
 
     void RebuildChoiceForecast();
 

@@ -3,6 +3,11 @@
 project(forecaster)
 
 
+##### DEPENDENCIES
+
+find_package(OpenSSL REQUIRED)
+
+
 ##### SOURCE FILES
 
 # List source files
@@ -25,15 +30,14 @@ list(APPEND inc_dirs
         "${CMAKE_SOURCE_DIR}/src/shared_base/core/"
         "${CMAKE_SOURCE_DIR}/src/shared_processing/core/"
         "${PROJECT_SOURCE_DIR}/core/"
-        )
+)
 if (USE_GUI)
     list(APPEND inc_dirs
             "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
             "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
             "${PROJECT_SOURCE_DIR}/gui/"
-            )
+    )
 endif (USE_GUI)
-include_directories(${inc_dirs})
 
 
 ##### DECLARE EXECUTABLE
@@ -52,6 +56,8 @@ else (WIN32)
     add_executable(atmoswing-forecaster ${src_app_forecaster})
 endif (WIN32)
 
+target_include_directories(atmoswing-forecaster PRIVATE ${inc_dirs})
+
 # Cppcheck
 if (USE_CPPCHECK)
     add_cppcheck(atmoswing-forecaster STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
@@ -60,32 +66,26 @@ endif (USE_CPPCHECK)
 
 ##### DEFINITIONS
 
-# Global definitions
-if (USE_CUDA)
-    add_definitions(-DUSE_CUDA)
-endif (USE_CUDA)
-
-if (USE_GUI)
-    set_target_properties(atmoswing-forecaster PROPERTIES COMPILE_DEFINITIONS "APP_FORECASTER; USE_GUI=1")
-    set_target_properties(asprocessing PROPERTIES COMPILE_DEFINITIONS "USE_GUI=1")
-else (USE_GUI)
-    set_target_properties(atmoswing-forecaster PROPERTIES COMPILE_DEFINITIONS "APP_FORECASTER; USE_GUI=0")
-    set_target_properties(asprocessing PROPERTIES COMPILE_DEFINITIONS "USE_GUI=0")
-endif (USE_GUI)
+# APP_FORECASTER is the only target-specific define here. USE_GUI / USE_CUDA / version macros
+# are inherited from atmoswing_compile_options via the asbase/asprocessing PUBLIC link chain.
+target_compile_definitions(atmoswing-forecaster PRIVATE APP_FORECASTER)
 
 
 ##### LINKING
 
-target_link_libraries(atmoswing-forecaster asbase)
-target_link_libraries(atmoswing-forecaster asprocessing)
-target_link_libraries(atmoswing-forecaster CONAN_PKG::openssl)
-if (USE_VLD)
-    target_link_libraries(atmoswing-forecaster ${VLD_LIBRARIES})
-endif (USE_VLD)
+target_link_libraries(atmoswing-forecaster PRIVATE asbase asprocessing OpenSSL::SSL)
+if (USE_GUI)
+    target_link_libraries(atmoswing-forecaster PRIVATE wx::stc)
+endif ()
 if (USE_CUDA)
     add_dependencies(atmoswing-forecaster ascuda)
-    target_link_libraries(atmoswing-forecaster ascuda)
+    target_link_libraries(atmoswing-forecaster PRIVATE ascuda)
 endif (USE_CUDA)
+
+
+##### RUNTIME DLL STAGING (Windows)
+
+atmoswing_stage_runtime_dlls(atmoswing-forecaster)
 
 
 ##### INSTALLER

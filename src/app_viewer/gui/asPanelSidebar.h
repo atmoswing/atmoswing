@@ -30,7 +30,7 @@
 #define AS_PANEL_SIDEBAR_H
 
 #include "AtmoSwingViewerGui.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class asPanelSidebar : public asPanelSidebarVirtual {
   public:
@@ -40,7 +40,7 @@ class asPanelSidebar : public asPanelSidebarVirtual {
     void ReducePanel();
 
     bool IsReduced() const {
-        return !m_sizerMain->IsShown(m_sizerContent);
+        return !_sizerMain->IsShown(_sizerContent);
     }
 
   protected:

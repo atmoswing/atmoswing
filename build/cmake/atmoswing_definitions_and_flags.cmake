@@ -1,4 +1,5 @@
-# Compilation flags
+# Compilation flags (still applied globally via CMAKE_CXX_FLAGS so FetchContent sub-projects
+# inherit consistent wxDEBUG_LEVEL / NDEBUG settings — see top-level CMakeLists for context).
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${wxWidgets_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DwxDEBUG_LEVEL=1 -D__WXDEBUG__")
@@ -27,20 +28,25 @@ elseif (WIN32)
     endif ()
 endif ()
 
-# Global definitions
-set(CMAKE_CXX_STANDARD 17)
+# Keep CMAKE_CXX_STANDARD set globally for FetchContent dependencies (wxWidgets, eccodes,
+# vroomgis). AtmoSwing project targets are set separately to C++23 via atmoswing_compile_options.
+set(ATMOSWING_THIRD_PARTY_CXX_STANDARD "17" CACHE STRING
+        "Default C++ standard for third-party FetchContent dependencies")
+set_property(CACHE ATMOSWING_THIRD_PARTY_CXX_STANDARD PROPERTY STRINGS 17 20 23)
+set(CMAKE_CXX_STANDARD ${ATMOSWING_THIRD_PARTY_CXX_STANDARD})
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_definitions(-DUSE_JPEG2000)
-add_definitions(-DEIGEN_NO_DEBUG)
-add_definitions(${CONAN_DEFINES_WXWIDGETS})
+# Shared compile definitions are attached to atmoswing_compile_options (declared at top-level
+# CMakeLists.txt). Every project target links to this INTERFACE library, so it picks up these
+# definitions without leaking them into FetchContent sub-projects.
+target_compile_definitions(atmoswing_compile_options INTERFACE
+        USE_JPEG2000
+        EIGEN_NO_DEBUG)
 
 if (WIN32)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-    add_definitions(-D_CRTDBG_MAP_ALLOC)
-endif (WIN32)
-
-if (USE_VLD)
-    add_definitions(-DUSE_VLD)
-endif (USE_VLD)
+    target_compile_definitions(atmoswing_compile_options INTERFACE
+            _CRT_SECURE_NO_WARNINGS
+            _CRTDBG_MAP_ALLOC)
+endif ()
 

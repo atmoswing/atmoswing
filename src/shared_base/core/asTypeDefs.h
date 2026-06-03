@@ -44,55 +44,55 @@
 //---------------------------------
 
 // Coordinates
-typedef struct Coo {
+struct Coo {
     double x;  // East
     double y;  // North
-} Coo;
+};
 
 // A time structure
-typedef struct Time {
+struct Time {
     int year;
     int month;
     int day;
     int hour;
     int min;
     int sec;
-} Time;
+};
 
 //---------------------------------
 // std vector
 //---------------------------------
 
 using std::vector;
-typedef vector<bool> vb;
-typedef vector<short> vs;
-typedef vector<int> vi;
-typedef vector<long> vl;
-typedef vector<float> vf;
-typedef vector<double> vd;
-typedef vector<std::string> vstds;
-typedef vector<wxString> vwxs;
+using vb = vector<bool>;
+using vs = vector<short>;
+using vi = vector<int>;
+using vl = vector<long>;
+using vf = vector<float>;
+using vd = vector<double>;
+using vstds = vector<std::string>;
+using vwxs = vector<wxString>;
 
-typedef vector<vb> vvb;
-typedef vector<vi> vvi;
-typedef vector<vf> vvf;
-typedef vector<vd> vvd;
-typedef vector<vwxs> vvwxs;
+using vvb = vector<vb>;
+using vvi = vector<vi>;
+using vvf = vector<vf>;
+using vvd = vector<vd>;
+using vvwxs = vector<vwxs>;
 
 //---------------------------------
 // Eigen3 arrays
 //---------------------------------
 
 // Arrays are used for element-wise calculations. It is often the case here.
-typedef Eigen::Array<int, Eigen::Dynamic, 1> a1i;
-typedef Eigen::Array<float, Eigen::Dynamic, 1> a1f;
-typedef Eigen::Array<double, Eigen::Dynamic, 1> a1d;
-typedef Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> a2f;
-typedef vector<a1f, Eigen::aligned_allocator<a1f>> va1f;
-typedef vector<a1d, Eigen::aligned_allocator<a1d>> va1d;
-typedef vector<a2f, Eigen::aligned_allocator<a2f>> va2f;
-typedef vector<a2f*, Eigen::aligned_allocator<a2f*>> vpa2f;
-typedef vector<vector<a2f, Eigen::aligned_allocator<a2f>>> vva2f;
-typedef vector<vector<vector<a2f, Eigen::aligned_allocator<a2f>>>> vvva2f;
+using a1i = Eigen::Array<int, Eigen::Dynamic, 1>;
+using a1f = Eigen::Array<float, Eigen::Dynamic, 1>;
+using a1d = Eigen::Array<double, Eigen::Dynamic, 1>;
+using a2f = Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+using va1f = vector<a1f, Eigen::aligned_allocator<a1f>>;
+using va1d = vector<a1d, Eigen::aligned_allocator<a1d>>;
+using va2f = vector<a2f, Eigen::aligned_allocator<a2f>>;
+using vpa2f = vector<a2f*, Eigen::aligned_allocator<a2f*>>;
+using vva2f = vector<vector<a2f, Eigen::aligned_allocator<a2f>>>;
+using vvva2f = vector<vector<vector<a2f, Eigen::aligned_allocator<a2f>>>>;
 
 #endif

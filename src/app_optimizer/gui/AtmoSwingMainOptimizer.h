@@ -32,7 +32,7 @@
 // #include "version.h"
 #include "AtmoSwingAppOptimizer.h"
 #include "asFrameOptimizer.h"
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 
 class AtmoSwingFrameOptimizer : public asFrameOptimizer {
   public:

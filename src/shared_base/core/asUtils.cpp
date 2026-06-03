@@ -28,6 +28,8 @@
 
 #include "asUtils.h"
 
+#include "asIncludes.h"
+
 bool asRemoveDir(const wxString& path) {
     wxString f = wxFindFirstFile(path + DS + "*.*");
     while (!f.empty()) {
@@ -39,7 +41,7 @@ bool asRemoveDir(const wxString& path) {
 }
 
 void asInitRandom() {
-    srand(time(NULL));
+    srand(time(nullptr));
 }
 
 int asRandom(const int min, const int max, const int step) {
@@ -845,11 +847,12 @@ int asFindT(const T* pArrStart, const T* pArrEnd, const T targetValue, const T t
             }
         }
 
-        // Check the pointers
+        // Clamp pLast so that both *pLast and *(pLast + 1) are valid dereferences.
+        // Note: pArrEnd is inclusive (points to the last element). pLast is initialized to
+        // pArrEnd and only ever decreases in the binary-search loop, so pLast > pArrEnd is
+        // unreachable here.
         if (pLast - pArrStart < 0) {
             pLast = const_cast<T*>(pArrStart);
-        } else if (pLast - pArrEnd > 0) {
-            pLast = const_cast<T*>(pArrEnd) - 1;
         } else if (pLast - pArrEnd == 0) {
             pLast -= 1;
         }
@@ -903,10 +906,11 @@ int asFindT(const T* pArrStart, const T* pArrEnd, const T targetValue, const T t
             }
         }
 
-        // Check the pointers
-        if (pFirst - pArrStart < 0) {
-            pFirst = const_cast<T*>(pArrStart) + 1;
-        } else if (pFirst - pArrEnd > 0) {
+        // Clamp pFirst so that both *pFirst and *(pFirst - 1) are valid dereferences.
+        // Note: pArrEnd is inclusive (points to the last element). pFirst is initialized to
+        // pArrStart and only ever increases in the binary-search loop, so pFirst < pArrStart
+        // is unreachable here.
+        if (pFirst - pArrEnd > 0) {
             pFirst = const_cast<T*>(pArrEnd);
         } else if (pFirst - pArrStart == 0) {
             pFirst += 1;
@@ -1011,11 +1015,12 @@ int asFindClosestT(const T* pArrStart, const T* pArrEnd, const T targetValue, co
             }
         }
 
-        // Check the pointers
+        // Clamp pLast so that both *pLast and *(pLast + 1) are valid dereferences.
+        // Note: pArrEnd is inclusive (points to the last element). pLast is initialized to
+        // pArrEnd and only ever decreases in the binary-search loop, so pLast > pArrEnd is
+        // unreachable here.
         if (pLast - pArrStart < 0) {
             pLast = const_cast<T*>(pArrStart);
-        } else if (pLast - pArrEnd > 0) {
-            pLast = const_cast<T*>(pArrEnd) - 1;
         } else if (pLast - pArrEnd == 0) {
             pLast -= 1;
         }
@@ -1049,10 +1054,11 @@ int asFindClosestT(const T* pArrStart, const T* pArrEnd, const T targetValue, co
             }
         }
 
-        // Check the pointers
-        if (pFirst - pArrStart < 0) {
-            pFirst = const_cast<T*>(pArrStart) + 1;
-        } else if (pFirst - pArrEnd > 0) {
+        // Clamp pFirst so that both *pFirst and *(pFirst - 1) are valid dereferences.
+        // Note: pArrEnd is inclusive (points to the last element). pFirst is initialized to
+        // pArrStart and only ever increases in the binary-search loop, so pFirst < pArrStart
+        // is unreachable here.
+        if (pFirst - pArrEnd > 0) {
             pFirst = const_cast<T*>(pArrEnd);
         } else if (pFirst - pArrStart == 0) {
             pFirst += 1;

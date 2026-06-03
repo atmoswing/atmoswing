@@ -29,12 +29,11 @@
 #ifndef AS_GLOB_ENUMS_H
 #define AS_GLOB_ENUMS_H
 
-#include "wx/wxprec.h"
-
-#ifndef WX_PRECOMP
-
-#include "wx/wx.h"
-
+// Only the USE_GUI block below references a wxWidgets symbol (wxID_HIGHEST). Pulling in just
+// <wx/defs.h> avoids forcing the full wx/wx.h omnibus on every translation unit that includes
+// asGlobEnums.h (which is included by asHeadersBase.h, so the transitive cost was high).
+#if USE_GUI
+#include <wx/defs.h>
 #endif
 
 //---------------------------------

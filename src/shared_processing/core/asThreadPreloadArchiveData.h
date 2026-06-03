@@ -29,7 +29,7 @@
 #ifndef AS_THREAD_PRELOAD_DATA_H
 #define AS_THREAD_PRELOAD_DATA_H
 
-#include "asIncludes.h"
+#include "asHeadersBase.h"
 #include "asMethodStandard.h"
 #include "asThread.h"
 
@@ -43,11 +43,11 @@ class asThreadPreloadArchiveData : public asThread {
 
   protected:
   private:
-    asMethodStandard* m_method;
-    asParameters* m_params;
-    int m_iStep;
-    int m_iProt;
-    int m_iDat;
+    asMethodStandard* _method;
+    asParameters* _params;
+    int _iStep;
+    int _iProt;
+    int _iDat;
 };
 
 #endif
