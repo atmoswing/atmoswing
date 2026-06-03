@@ -11,7 +11,6 @@ if (NOT TARGET eccodes)
 endif ()
 find_package(netCDF CONFIG REQUIRED)
 find_package(Eigen3 CONFIG REQUIRED)
-find_package(PROJ CONFIG REQUIRED)
 
 
 ##### SOURCE FILES
@@ -71,7 +70,7 @@ endif (USE_CPPCHECK)
 # wxWidgets paths, USE_JPEG2000, EIGEN_NO_DEBUG, ...).
 target_link_libraries(asbase PUBLIC atmoswing_compile_options)
 
-target_link_libraries(asbase PUBLIC netCDF::netcdf PROJ::proj eccodes Eigen3::Eigen)
+target_link_libraries(asbase PUBLIC netCDF::netcdf eccodes Eigen3::Eigen)
 
 if (BUILD_FORECASTER OR BUILD_VIEWER)
     target_link_libraries(asbase PUBLIC CURL::libcurl ZLIB::ZLIB)

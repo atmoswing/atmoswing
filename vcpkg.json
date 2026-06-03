@@ -5,8 +5,6 @@
   "dependencies": [
     "vcpkg-tool-ninja",
     "eigen3",
-    "proj",
-    "sqlite3",
     "libaec",
     "curl",
     "zlib",
@@ -29,6 +27,8 @@
     "viewer": {
       "description": "Dependencies for AtmoSwing Viewer (BUILD_VIEWER=ON)",
       "dependencies": [
+        "proj",
+        "sqlite3",
         "libpng",
         "tiff",
         "libdeflate",

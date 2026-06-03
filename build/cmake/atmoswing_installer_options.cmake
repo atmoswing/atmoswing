@@ -112,7 +112,28 @@ if (WIN32)
     set(CPACK_WIX_UI_DIALOG "${CMAKE_CURRENT_LIST_DIR}/../cpack/windows/installer_bg.jpg")
     set(CPACK_WIX_UI_BANNER "${CMAKE_CURRENT_LIST_DIR}/../cpack/windows/installer_top.jpg")
     set(CPACK_WIX_CMAKE_PACKAGE_REGISTRY "AtmoSwing")
-    set(CPACK_WIX_PATCH_FILE "${CMAKE_CURRENT_LIST_DIR}/../cpack/windows/set-env-vars.xml")
+
+    # WIX environment-variable patch. Generate it so the PROJ fragment is only
+    # emitted when the Viewer is built. Without the Viewer, share/proj/proj.db is
+    # not installed, so CPack never creates the CM_CP_share.proj.proj.db
+    # component and WiX aborts with "patch fragments did not have matching IDs".
+    # The eccodes fragment is always emitted (the forecaster reads GRIB in every
+    # build).
+    set(_wix_patch_content "<CPackWiXPatch>\n")
+    string(APPEND _wix_patch_content
+            "  <CPackWiXFragment Id=\"CM_CP_share.eccodes.definitions.boot.def\">\n"
+            "    <Environment Id=\"ECCODES_DEFINITION_PATH\" Action=\"set\" Name=\"ECCODES_DEFINITION_PATH\" Value=\"[INSTALL_ROOT]share\\eccodes\\definitions\" System=\"no\"/>\n"
+            "  </CPackWiXFragment>\n")
+    if (BUILD_VIEWER)
+        string(APPEND _wix_patch_content
+                "  <CPackWiXFragment Id=\"CM_CP_share.proj.proj.db\">\n"
+                "    <Environment Id=\"PROJ_LIB\" Action=\"set\" Name=\"PROJ_LIB\" Value=\"[INSTALL_ROOT]share\\proj\" System=\"no\"/>\n"
+                "    <Environment Id=\"PROJ_DATA\" Action=\"set\" Name=\"PROJ_DATA\" Value=\"[INSTALL_ROOT]share\\proj\" System=\"no\"/>\n"
+                "  </CPackWiXFragment>\n")
+    endif (BUILD_VIEWER)
+    string(APPEND _wix_patch_content "</CPackWiXPatch>\n")
+    file(WRITE "${CMAKE_BINARY_DIR}/wix/set-env-vars.xml" "${_wix_patch_content}")
+    set(CPACK_WIX_PATCH_FILE "${CMAKE_BINARY_DIR}/wix/set-env-vars.xml")
 endif (WIN32)
 
 if (UNIX AND NOT APPLE)

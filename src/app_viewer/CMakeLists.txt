@@ -7,6 +7,10 @@ project(viewer)
 
 find_package(GDAL REQUIRED)
 find_package(PNG REQUIRED)
+# PROJ is used only by the Viewer (asFramePredictors.cpp: proj_create_crs_to_crs,
+# proj_trans, ...). It used to be linked via shared_base's PUBLIC link, which
+# dead-linked proj into every server binary; it now lives where it is consumed.
+find_package(PROJ CONFIG REQUIRED)
 
 ##### SOURCE FILES
 
@@ -109,7 +113,7 @@ target_compile_definitions(atmoswing-viewer PRIVATE APP_VIEWER)
 ##### LINKING
 
 add_dependencies(atmoswing-viewer vroomgis)
-target_link_libraries(atmoswing-viewer PRIVATE PNG::PNG GDAL::GDAL asbase vroomgis wxplotctrl)
+target_link_libraries(atmoswing-viewer PRIVATE PNG::PNG GDAL::GDAL PROJ::proj asbase vroomgis wxplotctrl)
 if (WIN32)
     target_link_libraries(atmoswing-viewer PRIVATE Psapi.lib)
 endif (WIN32)
