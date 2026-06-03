@@ -120,6 +120,13 @@ if (UNIX AND NOT APPLE)
     # builds (e.g. DEB packaging) place files under the right prefix instead of the hard-coded
     # /usr/share. CMAKE_INSTALL_DATADIR defaults to "share" → final paths are <prefix>/share/...
     install(FILES art/logo/atmoswing.png DESTINATION ${CMAKE_INSTALL_DATADIR}/icons)
+    # Translations: install the prebuilt .mo catalogs into the standard gettext
+    # layout (<prefix>/share/locale/fr/LC_MESSAGES) where wxLocale looks for them.
+    install(
+            DIRECTORY ${CMAKE_SOURCE_DIR}/locales/fr/
+            DESTINATION ${CMAKE_INSTALL_DATADIR}/locale/fr/LC_MESSAGES
+            FILES_MATCHING PATTERN "*.mo"
+    )
     if (BUILD_FORECASTER)
         install(FILES build/cpack/linux/atmoswing-forecaster.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     endif (BUILD_FORECASTER)
