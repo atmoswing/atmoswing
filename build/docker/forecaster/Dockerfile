@@ -4,7 +4,7 @@
 # Steps ordered from the less frequently changed to the more frequently
 # changed to ensure the build cache is reused.
 
-FROM ubuntu:22.04 AS builder
+FROM ubuntu:26.04 AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV VCPKG_ROOT=/opt/vcpkg
@@ -44,7 +44,7 @@ RUN cmake --install build --prefix /app/deploy \
 
 
 # Build final image
-FROM ubuntu:22.04 AS runner
+FROM ubuntu:26.04 AS runner
 
 WORKDIR /app
 ENV ECCODES_DEFINITION_PATH=/usr/share/eccodes/definitions

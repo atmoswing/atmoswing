@@ -15,7 +15,7 @@ env:
 
 jobs:
   code-coverage:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04
 
     env:
       ECCODES_DEFINITION_PATH: ${{github.workspace}}/build/share/eccodes/definitions

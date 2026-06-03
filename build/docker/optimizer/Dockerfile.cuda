@@ -4,7 +4,9 @@
 # Steps ordered from the less frequently changed to the more frequently
 # changed to ensure the build cache is reused.
 
-FROM nvidia/cuda:11.8.0-devel-ubuntu22.04 AS builder
+# NVIDIA has no Ubuntu 26.04 CUDA images yet; 24.04 is the newest base offered
+# for the current CUDA 13.x line, so the CUDA optimizer image stays on 24.04.
+FROM nvidia/cuda:13.2.1-devel-ubuntu24.04 AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV VCPKG_ROOT=/opt/vcpkg
@@ -45,7 +47,7 @@ RUN cmake --install build --prefix /app/deploy \
 
 
 # Build final image
-FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04 AS runner
+FROM nvidia/cuda:13.2.1-runtime-ubuntu24.04 AS runner
 
 WORKDIR /app
 ENV ECCODES_DEFINITION_PATH=/usr/share/eccodes/definitions
