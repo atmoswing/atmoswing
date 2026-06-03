@@ -1,6 +1,29 @@
 # Changelog AtmoSwing
 
 
+## UNRELEASED
+
+### Added
+
+*   Adding a clang-tidy configuration and a corresponding CI workflow.
+*   Making the use of SSL in cURL optional.
+
+### Changed
+
+*   Migrating the dependency management from Conan to vcpkg, with a refactored and modernized CMake
+    configuration.
+*   Upgrading the project to the C++23 standard and modernizing the codebase.
+*   Dropping Visual Leak Detector support and removing the obsolete asPostprocessor class.
+*   Updating GitHub Actions and third-party dependencies.
+
+### Fixed
+
+*   Fixing various build issues with eccodes, including the bash issue under Windows.
+*   Fixing missing DLLs under Windows.
+*   Fixing the locales in the installer.
+*   Hardening array and pointer access and improving thread management robustness.
+
+
 ## v3.0.11 - 04 Aug 2023
 
 ### Added
