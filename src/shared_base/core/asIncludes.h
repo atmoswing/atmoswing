@@ -64,39 +64,19 @@
 #include "asHeadersBase.h"
 
 //---------------------------------
-// Standard wxWidgets headers
+// wxWidgets headers
 //---------------------------------
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-// For all others, include the necessary headers
-#ifndef WX_PRECOMP
-
-#include "wx/wx.h"
-
-#endif
-
-//---------------------------------
-// wxWidgets library - frequently used classes
-//---------------------------------
-
-#ifndef WX_PRECOMP
-
-#include "wx/arrstr.h"
-#include "wx/log.h"
-#include "wx/string.h"
-#include "wx/utils.h"
-
-#endif
-#include "wx/fileconf.h"
+#include <wx/wxprec.h>
+#include <wx/wx.h>
+#include <wx/arrstr.h>
+#include <wx/log.h>
+#include <wx/string.h>
+#include <wx/utils.h>
+#include <wx/fileconf.h>
 
 #if defined(__WIN32__)
-#include "wx/msw/regconf.h"  // wxRegConfig class
+#include <wx/msw/regconf.h>  // wxRegConfig class
 #endif
 
 //---------------------------------

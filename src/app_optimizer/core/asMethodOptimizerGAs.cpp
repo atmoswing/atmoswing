@@ -227,7 +227,10 @@ bool asMethodOptimizerGAs::ManageOneRun() {
             wxLogError(_("Could not create the operators file."));
             return false;
         }
-        fileOperators.Close();
+        if (!fileOperators.Close()) {
+            wxLogError(_("Could not close the operators file."));
+            return false;
+        }
     }
 
     // Get a score object to extract the score order
@@ -662,7 +665,10 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
         wxLogError(_("Couldn't open the file %s."), filePath);
         return false;
     }
-    prevResults.SkipLines(1);
+    if (!prevResults.SkipLines(1)) {
+        wxLogError(_("Couldn't read the file %s."), filePath);
+        return false;
+    }
 
     // Check that the content match the current parameters
     wxString fileLine = prevResults.GetNextLine();
@@ -772,7 +778,10 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
         fileLine = prevResults.GetNextLine();
         iLine++;
     } while (!prevResults.EndOfFile());
-    prevResults.Close();
+    if (!prevResults.Close()) {
+        wxLogError(_("Failed to close the former results file."));
+        return false;
+    }
 
     wxLogMessage(_("%d former results have been reloaded."), _resGenerations.GetCount());
     asLog::PrintToConsole(asStrF(_("%d former results have been reloaded.\n"), _resGenerations.GetCount()));
@@ -841,7 +850,10 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
                 // Get next line
                 fileLine = logContent.GetNextLine();
             } while (!logContent.EndOfFile());
-            logContent.Close();
+            if (!logContent.Close()) {
+                wxLogError(_("Failed to close the log file."));
+                return false;
+            }
         }
 
         wxLogMessage(_("Starting again from epoch %d."), _epoch);
@@ -882,7 +894,10 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
     }
 
     // Extract file content for the last generation
-    prevOperators.SkipLines((genNb - 1) * _popSize);
+    if (!prevOperators.SkipLines((genNb - 1) * _popSize)) {
+        wxLogError(_("Couldn't read the file %s."), operFilePath);
+        return false;
+    }
     wxString fileLineOper = prevOperators.GetNextLine();
     iVar = 0;
     do {
@@ -957,7 +972,10 @@ bool asMethodOptimizerGAs::ResumePreviousRun(asParametersOptimizationGAs& params
         fileLineOper = prevOperators.GetNextLine();
         iVar++;
     } while (!prevOperators.EndOfFile());
-    prevOperators.Close();
+    if (!prevOperators.Close()) {
+        wxLogError(_("Failed to close the operators file."));
+        return false;
+    }
 
     return true;
 }
@@ -1046,7 +1064,10 @@ bool asMethodOptimizerGAs::SaveOperators(const wxString& filePath) {
 
     fileRes.AddContent(content);
 
-    fileRes.Close();
+    if (!fileRes.Close()) {
+        wxLogError(_("Failed to close the operators file."));
+        return false;
+    }
 
     return true;
 }

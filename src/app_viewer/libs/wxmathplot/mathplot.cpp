@@ -16,8 +16,7 @@
 #endif
 
 // For compilers that support precompilation, includes "wx.h".
-#include <wx/window.h>
-// #include <wx/wxprec.h>
+#include "wx/wxprec.h"
 
 // Comment out for release operation:
 // (Added by J.L.Blanco, Aug 2007)
@@ -28,8 +27,14 @@
 #endif
 
 #ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
 
-#include "wx/wx.h"  // wx 3.3 slimmed transitive includes; pull in the common GUI classes (wxWindow, wxBitmap, wxPen, wxDC) explicitly
+// wx 3.3 slimmed its transitive includes and wx/wxprec.h (PCH) no longer
+// guarantees the full definitions this translation unit needs (wxWindow,
+// wxColour, wxRegion, ...). Include the concrete headers unconditionally, and
+// after wx/wxprec.h has established the platform setup, so the build works with
+// or without precompiled headers.
 #include "wx/colour.h"
 #include "wx/cursor.h"
 #include "wx/dcclient.h"
@@ -39,8 +44,7 @@
 #include "wx/object.h"
 #include "wx/settings.h"
 #include "wx/sizer.h"
-
-#endif
+#include "wx/window.h"
 
 #include <wx/bmpbuttn.h>
 #include <wx/image.h>
