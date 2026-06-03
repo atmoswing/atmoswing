@@ -18,7 +18,7 @@ jobs:
       FETCHCONTENT_CACHE_KEY: windows-server-vs2022-release
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Cache FetchContent dependencies
         uses: actions/cache@v4
@@ -86,7 +86,7 @@ jobs:
       FETCHCONTENT_CACHE_KEY: windows-desktop-vs2022-release
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Cache FetchContent dependencies
         uses: actions/cache@v4

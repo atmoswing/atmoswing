@@ -25,7 +25,7 @@ jobs:
       FETCHCONTENT_CACHE_KEY: linux-code-coverage-ninja-relwithdebinfo
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Cache FetchContent dependencies
         uses: actions/cache@v4
@@ -104,7 +104,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: lcov --list coverage.info
 
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v6
         with:
           files: ${{github.workspace}}/build/coverage.info
           fail_ci_if_error: true
