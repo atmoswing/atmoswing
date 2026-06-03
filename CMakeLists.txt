@@ -214,6 +214,13 @@ FetchContent_Declare(wxWidgets
         UPDATE_DISCONNECTED TRUE)
 FetchContent_MakeAvailable(wxWidgets)
 
+# Suppress all warnings in wxWidgets — it is a third-party library.
+if (MSVC)
+    set_property(DIRECTORY "${wxwidgets_SOURCE_DIR}" APPEND PROPERTY COMPILE_OPTIONS /W0)
+else ()
+    set_property(DIRECTORY "${wxwidgets_SOURCE_DIR}" APPEND PROPERTY COMPILE_OPTIONS -w)
+endif ()
+
 target_include_directories(atmoswing_compile_options INTERFACE ${wxWidgets_SOURCE_DIR}/include)
 if (WIN32)
     target_include_directories(atmoswing_compile_options INTERFACE
@@ -261,6 +268,14 @@ if (BUILD_VIEWER)
             SOURCE_SUBDIR  vroomgis
             UPDATE_DISCONNECTED TRUE)
     FetchContent_MakeAvailable(vroomgis)
+    # Suppress all warnings in vroomgis — it is a third-party library.
+    if (TARGET vroomgis)
+        if (MSVC)
+            target_compile_options(vroomgis PRIVATE /W0)
+        else ()
+            target_compile_options(vroomgis PRIVATE -w)
+        endif ()
+    endif ()
 endif ()
 
 # eccodes
@@ -299,6 +314,15 @@ FetchContent_Declare(eccodes
                       -P ${CMAKE_SOURCE_DIR}/build/cmake/apply_git_patch_if_needed.cmake
 )
 FetchContent_MakeAvailable(eccodes)
+
+# Suppress all warnings in eccodes — it is a third-party library.
+if (TARGET eccodes)
+    if (MSVC)
+        target_compile_options(eccodes PRIVATE /W0)
+    else ()
+        target_compile_options(eccodes PRIVATE -w)
+    endif ()
+endif ()
 
 # Allow find_package(eccodes) to locate ecbuild's generated config in sub-builds
 # (needed when CMP0168 is not available, i.e. CMake < 3.30)

@@ -94,12 +94,10 @@ endif (USE_CPPCHECK)
 ##### DEFINITIONS
 
 # Compilation flags
-if (MINGW OR MSYS OR UNIX AND NOT APPLE)
-    target_compile_options(vroomgis PRIVATE -Wno-unused-but-set-variable)
-    target_compile_options(wxplotctrl PRIVATE -Wno-unused-but-set-variable -Wno-attributes)
-elseif (WIN32)
-    target_compile_options(vroomgis PRIVATE /W2)
-    target_compile_options(wxplotctrl PRIVATE /W2)
+if (MSVC)
+    target_compile_options(wxplotctrl PRIVATE /W0)
+else ()
+    target_compile_options(wxplotctrl PRIVATE -w)
 endif ()
 
 # APP_VIEWER is target-specific. USE_GUI / version macros come from atmoswing_compile_options

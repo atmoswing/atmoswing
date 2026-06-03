@@ -1,5 +1,7 @@
-# Compilation flags (still applied globally via CMAKE_CXX_FLAGS so FetchContent sub-projects
-# inherit consistent wxDEBUG_LEVEL / NDEBUG settings — see top-level CMakeLists for context).
+# wxWidgets_CXX_FLAGS must stay in CMAKE_CXX_FLAGS so that FetchContent sub-projects
+# (wxWidgets, eccodes, vroomgis) all see the same wxWidgets ABI flags. Per-project
+# warning flags are attached to atmoswing_compile_options instead, so they never
+# leak into third-party builds.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${wxWidgets_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DwxDEBUG_LEVEL=1 -D__WXDEBUG__")
@@ -8,23 +10,18 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DwxDEBUG_
 message(STATUS "CMAKE_SYSTEM_PROCESSOR = ${CMAKE_SYSTEM_PROCESSOR}")
 if (MINGW OR MSYS OR UNIX AND NOT APPLE)
     if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes")
+        target_compile_options(atmoswing_compile_options INTERFACE -Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes)
     elseif (${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes")
+        target_compile_options(atmoswing_compile_options INTERFACE -Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes)
     else ()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes -msse2")
+        target_compile_options(atmoswing_compile_options INTERFACE -Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes -msse2)
     endif ()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -fno-omit-frame-pointer ")
 elseif (WIN32)
     if (MSVC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-        # Force to always compile with W4
-        if (CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-            string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-        else ()
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-        endif ()
+        target_compile_options(atmoswing_compile_options INTERFACE /W4)
     endif ()
 endif ()
 
