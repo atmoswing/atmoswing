@@ -442,6 +442,24 @@ if (BUILD_DOWNSCALER)
 endif()
 if (BUILD_VIEWER)
     add_subdirectory(src/app_viewer)
+    # Stage PROJ data to the build tree so tests can find it via PROJ_DATA and
+    # the installer can include it. In vcpkg the CMake config and data files
+    # (proj.db, *.tif grid shifts) share the same directory, so PROJ_DIR (set by
+    # find_package(PROJ) in the viewer subdir) is the right source. Fall back to
+    # common system paths for non-vcpkg installs.
+    if (NOT EXISTS "${CMAKE_BINARY_DIR}/share/proj/proj.db")
+        foreach(_proj_data_candidate "${PROJ_DIR}" "/usr/share/proj" "/usr/local/share/proj")
+            if (EXISTS "${_proj_data_candidate}/proj.db")
+                file(GLOB _proj_data_files
+                        "${_proj_data_candidate}/proj.db"
+                        "${_proj_data_candidate}/*.tif")
+                file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/proj")
+                file(COPY ${_proj_data_files} DESTINATION "${CMAKE_BINARY_DIR}/share/proj")
+                message(STATUS "Staged PROJ data from ${_proj_data_candidate}")
+                break()
+            endif()
+        endforeach()
+    endif()
 endif()
 if (BUILD_TESTS)
     add_subdirectory(tests)
