@@ -30,6 +30,8 @@ jobs:
         with:
           path: ${{ env.FETCHCONTENT_BASE_DIR }}
           key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-
 
       - name: Install build deps + clang-tidy
         run: |
