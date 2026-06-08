@@ -28,13 +28,13 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Cache FetchContent dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.FETCHCONTENT_BASE_DIR }}
           key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
 
       - name: Cache vcpkg downloads (distfiles)
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.vcpkg-downloads
           key: ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
