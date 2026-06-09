@@ -104,7 +104,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: lcov --list coverage.info
 
-      - uses: codecov/codecov-action@v6
+      - uses: codecov/codecov-action@v7
         with:
           files: ${{github.workspace}}/build/coverage.info
           fail_ci_if_error: true
