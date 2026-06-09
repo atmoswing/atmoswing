@@ -14,7 +14,7 @@ on:
 
 jobs:
   build-forecaster-image:
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v6
@@ -45,7 +45,7 @@ jobs:
 
 
   build-downscaler-image:
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v6
@@ -76,7 +76,7 @@ jobs:
 
 
   build-optimizer-image:
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v6

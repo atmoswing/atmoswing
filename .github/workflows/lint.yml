@@ -15,7 +15,7 @@ env:
 
 jobs:
   clang-tidy:
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
     env:
       FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/linux-lint-ninja-release
       FETCHCONTENT_CACHE_KEY: linux-lint-ninja-release
