@@ -1602,7 +1602,7 @@ bool asMethodOptimizerGAs::Mating() {
                 // Add the new parameters if ther is enough room
                 _parameters.push_back(param1);
                 _scoresCalib.push_back(NAN);
-                if (_popSize - _parameters.size() > 0) {
+                if (_parameters.size() < _popSize) {
                     param2.CheckRange();
 
                     _parameters.push_back(param2);
@@ -1657,7 +1657,7 @@ bool asMethodOptimizerGAs::Mating() {
                 // Add the new parameters if ther is enough room
                 _parameters.push_back(param1);
                 _scoresCalib.push_back(NAN);
-                if (_popSize - _parameters.size() > 0) {
+                if (_parameters.size() < _popSize) {
                     param2.CheckRange();
 
                     _parameters.push_back(param2);
@@ -1714,7 +1714,7 @@ bool asMethodOptimizerGAs::Mating() {
                 // Add the new parameters if ther is enough room
                 _parameters.push_back(param1);
                 _scoresCalib.push_back(NAN);
-                if (_popSize - _parameters.size() > 0) {
+                if (_parameters.size() < _popSize) {
                     param2.CheckRange();
 
                     _parameters.push_back(param2);
@@ -1769,7 +1769,7 @@ bool asMethodOptimizerGAs::Mating() {
                 // Add the new parameters if there is enough room
                 _parameters.push_back(param1);
                 _scoresCalib.push_back(NAN);
-                if (_popSize - _parameters.size() > 0) {
+                if (_parameters.size() < _popSize) {
                     param2.CheckRange();
 
                     _parameters.push_back(param2);
@@ -1830,7 +1830,7 @@ bool asMethodOptimizerGAs::Mating() {
                 // Add the new parameters if ther is enough room
                 _parameters.push_back(param1);
                 _scoresCalib.push_back(NAN);
-                if (_popSize - _parameters.size() > 0) {
+                if (_parameters.size() < _popSize) {
                     param2.CheckRange();
 
                     _parameters.push_back(param2);
@@ -1892,7 +1892,7 @@ bool asMethodOptimizerGAs::Mating() {
                 }
 
                 // Add the other parameters if ther is enough room
-                if (_popSize - _parameters.size() > 0) {
+                if (_parameters.size() < _popSize) {
                     if (param2.IsInRange()) {
                         param2.CheckRange();
 
@@ -1900,7 +1900,7 @@ bool asMethodOptimizerGAs::Mating() {
                         _scoresCalib.push_back(NAN);
                     }
                 }
-                if (_popSize - _parameters.size() > 0) {
+                if (_parameters.size() < _popSize) {
                     if (param3.IsInRange()) {
                         param3.CheckRange();
 
@@ -1964,7 +1964,7 @@ bool asMethodOptimizerGAs::Mating() {
                 // Add the new parameters if ther is enough room
                 _parameters.push_back(param1);
                 _scoresCalib.push_back(NAN);
-                if (_popSize - _parameters.size() > 0) {
+                if (_parameters.size() < _popSize) {
                     param2.CheckRange();
 
                     _parameters.push_back(param2);
@@ -2025,7 +2025,7 @@ bool asMethodOptimizerGAs::Mating() {
                 // Add the new parameters if ther is enough room
                 _parameters.push_back(param1);
                 _scoresCalib.push_back(NAN);
-                if (_popSize - _parameters.size() > 0) {
+                if (_parameters.size() < _popSize) {
                     param2.CheckRange();
 
                     _parameters.push_back(param2);
@@ -2051,7 +2051,7 @@ bool asMethodOptimizerGAs::Mating() {
                 // Add the new parameters if ther is enough room
                 _parameters.push_back(param1);
                 _scoresCalib.push_back(NAN);
-                if (_popSize - _parameters.size() > 0) {
+                if (_parameters.size() < _popSize) {
                     param2.CheckRange();
 
                     _parameters.push_back(param2);
@@ -2077,7 +2077,7 @@ bool asMethodOptimizerGAs::Mating() {
                 // Add the new parameters if there is enough room
                 _parameters.push_back(param1);
                 _scoresCalib.push_back(NAN);
-                if (_popSize - _parameters.size() > 0) {
+                if (_parameters.size() < _popSize) {
                     param2.CheckRange();
 
                     _parameters.push_back(param2);
