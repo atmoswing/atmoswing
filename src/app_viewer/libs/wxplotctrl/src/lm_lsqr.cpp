@@ -12,20 +12,8 @@
 #pragma implementation "lm_lsqr.h"
 #endif
 
-// For compilers that support precompilation, includes "wx.h".
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
-
 #include "wx/dynarray.h"
 #include "wx/log.h"
-
-#endif  // WX_PRECOMP
-
 #include "wx/math.h"
 #include "wx/plotctrl/lm_lsqr.h"
 #include "wx/plotctrl/plotdata.h"

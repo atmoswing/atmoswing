@@ -12,21 +12,9 @@
 #pragma implementation "plotprnt.h"
 #endif
 
-// For compilers that support precompilation, includes "wx.h".
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
-
 #include "wx/wx.h"  // wx 3.3 slimmed transitive includes; pull in the common GUI classes (wxWindow, wxBitmap, wxPen, wxDC) explicitly
 #include "wx/dcmemory.h"
 #include "wx/msgdlg.h"
-
-#endif  // WX_PRECOMP
-
 #include "wx/module.h"
 #include "wx/plotctrl/plotctrl.h"
 #include "wx/plotctrl/plotprnt.h"

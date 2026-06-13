@@ -12,20 +12,10 @@
 #pragma implementation "plotctrl.h"
 #endif
 
-// For compilers that support precompilation, includes "wx.h".
-#include "wx/wxprec.h"
+#include <float.h>
+#include <limits.h>
+#include <math.h>
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
-#endif  // WX_PRECOMP
-
-// wx 3.3 slimmed transitive includes and wx/wxprec.h (PCH) no longer guarantees the
-// full definitions this translation unit needs. Include the concrete headers
-// unconditionally so the build works with or without precompiled headers.
 #include "wx/dcclient.h"
 #include "wx/dcmemory.h"
 #include "wx/dcscreen.h"
@@ -38,11 +28,7 @@
 #include "wx/textctrl.h"
 #include "wx/timer.h"
 #include "wx/window.h"
-
-#include <float.h>
-#include <limits.h>
-#include <math.h>
-
+#include "wx/scrolwin.h"
 #include "wx/graphics.h"
 #include "wx/image.h"
 #include "wx/math.h"
