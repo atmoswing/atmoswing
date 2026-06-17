@@ -65,7 +65,10 @@ target_include_directories(wxplotctrl PUBLIC
         "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/"
         "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/include/"
         "${PROJECT_SOURCE_DIR}/libs/wxthings/include/")
-target_link_libraries(wxplotctrl PRIVATE atmoswing_compile_options)
+# wx::core provides the toolkit compile definitions (e.g. __WXGTK__) that the
+# platform-specific wxWidgets headers require; on non-Windows these cannot be
+# auto-detected, so linking atmoswing_compile_options (headers only) is not enough.
+target_link_libraries(wxplotctrl PRIVATE atmoswing_compile_options wx::core)
 
 
 ##### DECLARE EXECUTABLE
