@@ -16,9 +16,10 @@
 #include "wx/dcmemory.h"
 #include "wx/msgdlg.h"
 #include "wx/module.h"
+#include "wx/printdlg.h"
+
 #include "wx/plotctrl/plotctrl.h"
 #include "wx/plotctrl/plotprnt.h"
-#include "wx/printdlg.h"
 
 //-----------------------------------------------------------------------------
 // wxPlotPrintout

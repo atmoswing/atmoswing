@@ -21,6 +21,7 @@
 #include "wx/graphics.h"
 #include "wx/log.h"
 #include "wx/math.h"
+
 #include "wx/plotctrl/plotctrl.h"
 #include "wx/plotctrl/plotcurv.h"
 #include "wx/plotctrl/plotdata.h"

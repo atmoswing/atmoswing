@@ -22,12 +22,13 @@
 #include "wx/file.h"
 #include "wx/graphics.h"
 #include "wx/math.h"
+#include "wx/textfile.h"
+#include "wx/wfstream.h"
+
 #include "wx/plotctrl/fourier.h"
 #include "wx/plotctrl/plotdata.h"
-#include "wx/textfile.h"
 #include "wx/things/medsort.h"
 #include "wx/things/range.h"
-#include "wx/wfstream.h"
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4125)  // C4125: decimal digit terminates octal escape sequence

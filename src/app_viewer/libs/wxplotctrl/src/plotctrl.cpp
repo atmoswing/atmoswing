@@ -32,9 +32,10 @@
 #include "wx/graphics.h"
 #include "wx/image.h"
 #include "wx/math.h"
+#include "wx/splitter.h"
+
 #include "wx/plotctrl/plotctrl.h"
 #include "wx/plotctrl/plotdraw.h"
-#include "wx/splitter.h"
 
 // MSVC hogs global namespace with these min/max macros - remove them
 #ifdef max

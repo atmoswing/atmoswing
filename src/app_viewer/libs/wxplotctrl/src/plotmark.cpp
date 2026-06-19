@@ -13,6 +13,7 @@
 #endif
 
 #include "wx/image.h"
+
 #include "wx/plotctrl/plotctrl.h"
 #include "wx/plotctrl/plotmark.h"
 

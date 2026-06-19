@@ -20,6 +20,7 @@
 #include "wx/dcmemory.h"
 #include "wx/msgdlg.h"
 #include "wx/textdlg.h"
+
 #include "wx/plotctrl/fparser.h"
 #include "wx/plotctrl/plotfunc.h"
 
