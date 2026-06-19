@@ -254,7 +254,7 @@ endif ()
 if (TEST_GUI)
     add_dependencies(atmoswing-tests vroomgis)
     add_dependencies(atmoswing-tests wxplotctrl)
-    target_link_libraries(atmoswing-tests PRIVATE vroomgis wxplotctrl GDAL::GDAL)
+    target_link_libraries(atmoswing-tests PRIVATE vroomgis wxplotctrl GDAL::GDAL wx::stc)
 endif (TEST_GUI)
 
 ##### RUNTIME DLL STAGING (Windows)
