@@ -20,7 +20,7 @@ jobs:
       FETCHCONTENT_CACHE_KEY: linux-server-ninja-release
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Cache FetchContent dependencies
         uses: actions/cache@v5
@@ -82,7 +82,7 @@ jobs:
       FETCHCONTENT_CACHE_KEY: linux-desktop-ninja-release
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Cache FetchContent dependencies
         uses: actions/cache@v5

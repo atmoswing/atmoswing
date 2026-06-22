@@ -25,7 +25,7 @@ jobs:
       FETCHCONTENT_CACHE_KEY: linux-code-coverage-ninja-relwithdebinfo
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Cache FetchContent dependencies
         uses: actions/cache@v5
