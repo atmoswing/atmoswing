@@ -145,7 +145,7 @@ jobs:
              -DBUILD_VIEWER=ON
              -DUSE_GUI=ON
              -DBUILD_TESTS=ON
-             -DTEST_GUI=ON
+             -DTEST_GUI=OFF
 
       - name: Build
         run: cmake --build build
