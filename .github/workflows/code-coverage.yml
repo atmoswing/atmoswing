@@ -91,7 +91,7 @@ jobs:
       - name: Build and run code coverage (using xvfb)
         uses: coactions/setup-xvfb@v1
         with:
-          run: cmake --build build --target atmoswing-coverage
+          run: cmake --build build --target atmoswing-coverage -- --verbose
           working-directory: ${{github.workspace}}
 
       - name: Preparing coverage data
