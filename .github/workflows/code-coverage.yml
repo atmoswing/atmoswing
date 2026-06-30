@@ -102,7 +102,7 @@ jobs:
 
       - name: Cleaning up coverage data
         working-directory: ${{github.workspace}}/build
-        run: lcov --remove coverage.info "/usr/*" "*/_deps/*" "*/tests/*" "*/vcpkg_installed/*" --output-file coverage.info
+        run: lcov --remove coverage.info "/usr/*" "*/_deps/*" "*/tests/*" "*/vcpkg_installed/*" --output-file coverage.info --ignore-errors unused
 
       - name: Display code coverage report
         working-directory: ${{github.workspace}}/build

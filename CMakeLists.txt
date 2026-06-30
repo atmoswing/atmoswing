@@ -412,7 +412,6 @@ if (USE_CODECOV)
     append_coverage_compiler_flags()
     set(COVERAGE_EXCLUDES '/usr/*'
         '**/tests/*'
-        '**/.conan/*'
         '**/_deps/*'
         '**/vcpkg_installed/*')
     setup_target_for_coverage(NAME atmoswing-coverage EXECUTABLE atmoswing-tests DEPENDENCIES atmoswing-tests)
