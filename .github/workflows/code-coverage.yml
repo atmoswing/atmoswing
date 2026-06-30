@@ -96,7 +96,7 @@ jobs:
 
       - name: Preparing coverage data
         working-directory: ${{github.workspace}}/build
-        run: lcov --directory . --capture --output-file coverage.info
+        run: lcov --directory . --capture --output-file coverage.info --ignore-errors mismatch
 
       - name: Cleaning up coverage data
         working-directory: ${{github.workspace}}/build
