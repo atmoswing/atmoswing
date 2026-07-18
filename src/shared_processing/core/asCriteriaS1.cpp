@@ -27,6 +27,7 @@
  */
 
 #include "asCriteriaS1.h"
+
 #include "asIncludes.h"
 
 asCriteriaS1::asCriteriaS1()
@@ -51,45 +52,67 @@ float asCriteriaS1::Assess(const a2f& refData, const a2f& evalData, int rowsNb, 
         return NAN;
     }
 
+    // Teweles-Wobus score computed in a single fused pass per gradient direction: each
+    // gradient is evaluated once and contributes to both the dividend and the divisor.
+    // The data is row-major and contiguous, so both passes run on packet-sized chunks.
+    using A4 = Eigen::Array4f;
+    using M4 = Eigen::Map<const Eigen::Array4f>;
+    const float* r = refData.data();
+    const float* e = evalData.data();
+    const auto n = (Eigen::Index)rowsNb * colsNb;
+
     float dividend = 0, divisor = 0;
 
-    dividend = (((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)) -
-                 (evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)))
-                    .abs())
-                   .sum() +
-               (((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)) -
-                 (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)))
-                    .abs())
-                   .sum();
+    // Column gradients: data[i+1] - data[i] over the flattened array (n-1 terms),
+    // then remove the spurious terms spanning a row boundary.
+    {
+        A4 dAcc = A4::Zero(), vAcc = A4::Zero();
+        Eigen::Index i = 0;
+        for (; i + 4 <= n - 1; i += 4) {
+            A4 refGrad = M4(r + i + 1) - M4(r + i);
+            A4 evalGrad = M4(e + i + 1) - M4(e + i);
+            dAcc += (refGrad - evalGrad).abs();
+            vAcc += refGrad.abs().max(evalGrad.abs());
+        }
+        float d = dAcc.sum(), v = vAcc.sum();
+        for (; i < n - 1; ++i) {
+            float refGrad = r[i + 1] - r[i];
+            float evalGrad = e[i + 1] - e[i];
+            d += std::fabs(refGrad - evalGrad);
+            v += std::max(std::fabs(refGrad), std::fabs(evalGrad));
+        }
+        for (int row = 1; row < rowsNb; ++row) {
+            Eigen::Index k = (Eigen::Index)row * colsNb - 1;
+            float refGrad = r[k + 1] - r[k];
+            float evalGrad = e[k + 1] - e[k];
+            d -= std::fabs(refGrad - evalGrad);
+            v -= std::max(std::fabs(refGrad), std::fabs(evalGrad));
+        }
+        dividend += d;
+        divisor += v;
+    }
 
-    divisor =
-        ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1))
-             .abs()
-             .max((evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)).abs()))
-            .sum() +
-        ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb))
-             .abs()
-             .max((evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)).abs()))
-            .sum();
-
-    /* More readable version
-    Array2DFloat RefGradCols(rowsNb, colsNb - 1);
-    Array2DFloat RefGradRows(rowsNb - 1, colsNb);
-    Array2DFloat EvalGradCols(evalData.rows(), evalData.cols() - 1);
-    Array2DFloat EvalGradRows(evalData.rows() - 1, evalData.cols());
-
-    RefGradCols = (refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1));
-    RefGradRows = (refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb));
-    EvalGradCols = (evalData.topRightCorner(evalData.rows(), evalData.cols() - 1) -
-                    evalData.topLeftCorner(evalData.rows(), evalData.cols() - 1));
-    EvalGradRows = (evalData.bottomLeftCorner(evalData.rows() - 1, evalData.cols()) -
-                    evalData.topLeftCorner(evalData.rows() - 1, evalData.cols()));
-
-    dividend = ((RefGradCols - EvalGradCols).abs()).sum() + ((RefGradRows - EvalGradRows).abs()).sum();
-    divisor = (RefGradCols.abs().max(EvalGradCols.abs())).sum() +
-              (RefGradRows.abs().max(EvalGradRows.abs())).sum();
-
-    */
+    // Row gradients: data[i+cols] - data[i], contiguous over (rows-1)*cols terms.
+    {
+        const Eigen::Index m = n - colsNb;
+        A4 dAcc = A4::Zero(), vAcc = A4::Zero();
+        Eigen::Index i = 0;
+        for (; i + 4 <= m; i += 4) {
+            A4 refGrad = M4(r + i + colsNb) - M4(r + i);
+            A4 evalGrad = M4(e + i + colsNb) - M4(e + i);
+            dAcc += (refGrad - evalGrad).abs();
+            vAcc += refGrad.abs().max(evalGrad.abs());
+        }
+        float d = dAcc.sum(), v = vAcc.sum();
+        for (; i < m; ++i) {
+            float refGrad = r[i + colsNb] - r[i];
+            float evalGrad = e[i + colsNb] - e[i];
+            d += std::fabs(refGrad - evalGrad);
+            v += std::max(std::fabs(refGrad), std::fabs(evalGrad));
+        }
+        dividend += d;
+        divisor += v;
+    }
 
     if (divisor > 0) {
         return 100.0f * (dividend / divisor);  // Can be NaN
