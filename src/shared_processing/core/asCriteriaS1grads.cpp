@@ -27,6 +27,7 @@
  */
 
 #include "asCriteriaS1grads.h"
+
 #include "asIncludes.h"
 
 asCriteriaS1grads::asCriteriaS1grads()
@@ -54,11 +55,15 @@ float asCriteriaS1grads::Assess(const a2f& refData, const a2f& evalData, int row
         divisor = (refData.abs().max(evalData.abs())).sum();
 
     } else {
-        a2f refDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(refData, 0);
-        a2f evalDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(evalData, 0);
-
-        dividend = ((refDataCorr - evalDataCorr).abs()).sum();
-        divisor = (refDataCorr.abs().max(evalDataCorr.abs())).sum();
+        // Single pass, skipping pairs with NaNs (equivalent to zeroing them in both sums)
+        const float* r = refData.data();
+        const float* e = evalData.data();
+        const auto n = refData.size();
+        for (Eigen::Index i = 0; i < n; ++i) {
+            if (std::isnan(r[i]) || std::isnan(e[i])) continue;
+            dividend += std::fabs(r[i] - e[i]);
+            divisor += std::max(std::fabs(r[i]), std::fabs(e[i]));
+        }
     }
 
     if (divisor > 0) {

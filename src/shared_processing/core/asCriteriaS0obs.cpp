@@ -26,6 +26,7 @@
  */
 
 #include "asCriteriaS0obs.h"
+
 #include "asIncludes.h"
 
 asCriteriaS0obs::asCriteriaS0obs()
@@ -50,11 +51,15 @@ float asCriteriaS0obs::Assess(const a2f& refData, const a2f& evalData, int rowsN
         divisor = (refData.abs()).sum();
 
     } else {
-        a2f refDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(refData, 0);
-        a2f evalDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(evalData, 0);
-
-        dividend = ((refDataCorr - evalDataCorr).abs()).sum();
-        divisor = (refDataCorr.abs()).sum();
+        // Single pass, skipping pairs with NaNs (equivalent to zeroing them in both sums)
+        const float* r = refData.data();
+        const float* e = evalData.data();
+        const auto n = refData.size();
+        for (Eigen::Index i = 0; i < n; ++i) {
+            if (std::isnan(r[i]) || std::isnan(e[i])) continue;
+            dividend += std::fabs(r[i] - e[i]);
+            divisor += std::fabs(r[i]);
+        }
     }
 
     if (divisor > 0) {
