@@ -28,10 +28,10 @@
 
 #include <gtest/gtest.h>
 
-#include "asIncludes.h"
 #include "asAreaGridRegular.h"
 #include "asCriteria.h"
 #include "asFileText.h"
+#include "asIncludes.h"
 #include "asPredictor.h"
 #include "asPreprocessor.h"
 #include "asTimeArray.h"
@@ -912,4 +912,64 @@ TEST(Criteria, Gauss2D) {
     ASSERT_EQ(4, surf5.cols());
     EXPECT_NEAR(0.48675, surf5(0, 0), 0.00001);
     EXPECT_NEAR(0.92312, surf5(0, 1), 0.00001);
+}
+
+// Independent reference implementation of the Gaussian-weighted Teweles-Wobus score:
+// column-gradient terms weighted by Gauss2D(rows, cols-1), row-gradient terms by
+// Gauss2D(rows-1, cols), in both the dividend and the divisor.
+static float ComputeS1GReference(const a2f& refData, const a2f& evalData) {
+    int rowsNb = refData.rows();
+    int colsNb = refData.cols();
+
+    a2f gaussCols = asCriteria::GetGauss2D(rowsNb, colsNb - 1);
+    a2f gaussRows = asCriteria::GetGauss2D(rowsNb - 1, colsNb);
+
+    a2f refGradCols = refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1);
+    a2f refGradRows = refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb);
+    a2f evalGradCols = evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1);
+    a2f evalGradRows = evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb);
+
+    float dividend = (gaussCols * (refGradCols - evalGradCols).abs()).sum() +
+                     (gaussRows * (refGradRows - evalGradRows).abs()).sum();
+    float divisor = (gaussCols * refGradCols.abs().max(evalGradCols.abs())).sum() +
+                    (gaussRows * refGradRows.abs().max(evalGradRows.abs())).sum();
+
+    return 100.0f * (dividend / divisor);
+}
+
+TEST(Criteria, S1G) {
+    // Create the containers
+    int lons = 4;
+    int lats = 4;
+    a2f refData(lats, lons), candData(lats, lons);
+
+    refData << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, 0.7172f, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f, 0.4553f,
+        0.2353f, 0.5602f, 0.2524f, 0.8011f;
+    candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
+        0.9309f, 0.3185f, 0.2835f, 0.5472f, 0.7519f;
+
+    auto criteria = asCriteria::GetInstance("S1G");
+
+    float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
+    EXPECT_NEAR(ComputeS1GReference(refData, candData), res, 0.001);
+
+    // Identical data must give a perfect score
+    float resSame = criteria->Assess(refData, refData, refData.rows(), refData.cols());
+    EXPECT_FLOAT_EQ(0, resSame);
+
+    // Other dimensions (exercises the weights cache invalidation)
+    int lons2 = 6;
+    int lats2 = 3;
+    a2f refData2(lats2, lons2), candData2(lats2, lons2);
+    refData2 << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, 0.7172f, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f,
+        0.4553f, 0.2353f, 0.5602f, 0.2524f, 0.8011f, 0.1234f, 0.6789f;
+    candData2 << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
+        0.9309f, 0.3185f, 0.2835f, 0.5472f, 0.7519f, 0.9876f, 0.5432f;
+
+    float res2 = criteria->Assess(refData2, candData2, refData2.rows(), refData2.cols());
+    EXPECT_NEAR(ComputeS1GReference(refData2, candData2), res2, 0.001);
+
+    // Back to the first dimensions: the result must be reproducible
+    float resAgain = criteria->Assess(refData, candData, refData.rows(), refData.cols());
+    EXPECT_FLOAT_EQ(res, resAgain);
 }
