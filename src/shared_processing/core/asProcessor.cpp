@@ -522,6 +522,12 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
             vpa2f vTargData = vpa2f(predictorsNb);
             vpa2f vArchData = vpa2f(predictorsNb);
 
+            // Predictor weights do not change within the loops
+            vf weights(predictorsNb);
+            for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                weights[iPtor] = params->GetPredictorWeight(step, iPtor);
+            }
+
             // Extract some data
             a1d timeArchiveData = timeArrayArchiveData.GetTimeArray();
             if (!CheckArchiveTimeArray(predictorsArchive, timeArchiveData)) return false;
@@ -610,7 +616,7 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
                                                                      vRowsNb[iPtor], vColsNb[iPtor]);
 
                             // Weight and add the score
-                            thisScore += tmpScore * params->GetPredictorWeight(step, iPtor);
+                            thisScore += tmpScore * weights[iPtor];
 
                             if (isnan(tmpScore)) {
                                 containsNaNs = true;
@@ -1163,6 +1169,12 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vec
             a1f scoreArrayOneDay(analogsNb);
             a1f dateArrayOneDay(analogsNb);
 
+            // Predictor weights do not change within the loops
+            vf weights(predictorsNb);
+            for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                weights[iPtor] = params->GetPredictorWeight(step, iPtor);
+            }
+
             // Loop through every timestep as target data
             for (int iAnalogDate = 0; iAnalogDate < timeTargetSelectionSize; iAnalogDate++) {
                 int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
@@ -1228,7 +1240,7 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vec
                                                                      vRowsNb[iPtor], vColsNb[iPtor]);
 
                             // Weight and add the score
-                            thisScore += tmpScore * params->GetPredictorWeight(step, iPtor);
+                            thisScore += tmpScore * weights[iPtor];
 
                             if (isnan(tmpScore)) {
                                 containsNaNs = true;

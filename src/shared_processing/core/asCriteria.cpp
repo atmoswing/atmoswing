@@ -27,7 +27,6 @@
  */
 
 #include "asCriteria.h"
-#include "asIncludes.h"
 
 #include <wx/fileconf.h>
 
@@ -45,6 +44,7 @@
 #include "asCriteriaS2.h"
 #include "asCriteriaS2grads.h"
 #include "asCriteriaSAD.h"
+#include "asIncludes.h"
 #include "asPredictor.h"
 
 asCriteria::asCriteria(const wxString& name, const wxString& fullname, Order order)
@@ -130,5 +130,5 @@ a2f asCriteria::GetGauss2D(int nY, int nX) {
     a2f X = Eigen::RowVectorXf::LinSpaced(nX, 1, nX).replicate(nY, 1);
     a2f Y = Eigen::VectorXf::LinSpaced(nY, 1, nY).replicate(1, nX);
 
-    return A * (-(a * (X - x0).pow(2) + c * (Y - y0).pow(2))).exp();
+    return A * (-(a * (X - x0).square() + c * (Y - y0).square())).exp();
 }

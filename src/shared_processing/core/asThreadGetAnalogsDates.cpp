@@ -85,6 +85,12 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
     int analogsNb = _params->GetAnalogsNumber(_step);
     bool isAsc = (_criteria[0]->GetOrder() == Asc);
 
+    // Predictor weights do not change within the loops
+    vf weights(predictorsNb);
+    for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+        weights[iPtor] = _params->GetPredictorWeight(_step, iPtor);
+    }
+
     wxASSERT(_end < timeTargetSelection.size());
     wxASSERT(timeArchiveData.size() == (_pPredictorsArchive)[0]->GetData().size());
     wxASSERT(timeTargetData.size() <= (_pPredictorsTarget)[0]->GetData().size());
@@ -160,7 +166,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
                                                                       _vRowsNb[iPtor], _vColsNb[iPtor]);
 
                             // Weight and add the score
-                            thisScore += tmpScore * _params->GetPredictorWeight(_step, iPtor);
+                            thisScore += tmpScore * weights[iPtor];
                         }
                         if (isnan(thisScore)) {
                             *_pContainsNaNs = true;
