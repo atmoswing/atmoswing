@@ -27,6 +27,7 @@
  */
 
 #include "asCriteriaRSE.h"
+
 #include "asIncludes.h"
 
 asCriteriaRSE::asCriteriaRSE()
@@ -43,18 +44,25 @@ float asCriteriaRSE::Assess(const a2f& refData, const a2f& evalData, int rowsNb,
     float se = 0;
 
     if (!_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
-        se = (evalData - refData).pow(2).sum();
+        se = (evalData - refData).square().sum();
 
     } else {
-        a2f diff = evalData - refData;
+        // Single pass: sum the squared differences and count the valid pairs at once
+        const float* r = refData.data();
+        const float* e = evalData.data();
+        const auto n = refData.size();
+        int size = 0;
+        for (Eigen::Index i = 0; i < n; ++i) {
+            float diff = e[i] - r[i];
+            if (std::isnan(diff)) continue;
+            se += diff * diff;
+            size++;
+        }
 
-        int size = (!diff.isNaN()).count();
         if (size == 0) {
             wxLogVerbose(_("Only NaNs in the RSE criteria calculation."));
             return NAN;
         }
-
-        se = ((diff.isNaN()).select(0, diff)).pow(2).sum();
     }
 
     return std::sqrt(se);
