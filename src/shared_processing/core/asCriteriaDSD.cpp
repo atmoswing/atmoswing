@@ -26,6 +26,7 @@
  */
 
 #include "asCriteriaDSD.h"
+
 #include "asIncludes.h"
 
 asCriteriaDSD::asCriteriaDSD()
@@ -51,20 +52,39 @@ float asCriteriaDSD::Assess(const a2f& refData, const a2f& evalData, int rowsNb,
         return std::fabs(refStdDev - evalStdDev);
 
     } else {
-        int size = (!evalData.isNaN() && !refData.isNaN()).count();
+        // Two passes: means and count first, then the centered square sums
+        // (keeping the numerically stable two-pass variance).
+        const float* r = refData.data();
+        const float* e = evalData.data();
+        const auto n = refData.size();
+        float refSum = 0, evalSum = 0;
+        int size = 0;
+        for (Eigen::Index i = 0; i < n; ++i) {
+            if (std::isnan(r[i]) || std::isnan(e[i])) continue;
+            refSum += r[i];
+            evalSum += e[i];
+            size++;
+        }
+
         if (size <= 1) {
             wxLogVerbose(_("Not enough data to process the DSD score."));
             return NAN;
         }
 
-        float refMean = ((!evalData.isNaN() && !refData.isNaN()).select(refData, 0)).sum() / float(size);
-        float evalMean = ((!evalData.isNaN() && !refData.isNaN()).select(evalData, 0)).sum() / float(size);
+        float refMean = refSum / float(size);
+        float evalMean = evalSum / float(size);
 
-        a2f refDataDiff = (!evalData.isNaN() && !refData.isNaN()).select(refData - refMean, 0);
-        a2f evalDataDiff = (!evalData.isNaN() && !refData.isNaN()).select(evalData - evalMean, 0);
+        float refSqSum = 0, evalSqSum = 0;
+        for (Eigen::Index i = 0; i < n; ++i) {
+            if (std::isnan(r[i]) || std::isnan(e[i])) continue;
+            float refDiff = r[i] - refMean;
+            float evalDiff = e[i] - evalMean;
+            refSqSum += refDiff * refDiff;
+            evalSqSum += evalDiff * evalDiff;
+        }
 
-        float refStdDev = std::sqrt((refDataDiff).square().sum() / (float)(size - 1));
-        float evalStdDev = std::sqrt((evalDataDiff).square().sum() / (float)(size - 1));
+        float refStdDev = std::sqrt(refSqSum / (float)(size - 1));
+        float evalStdDev = std::sqrt(evalSqSum / (float)(size - 1));
 
         return std::fabs(refStdDev - evalStdDev);
     }

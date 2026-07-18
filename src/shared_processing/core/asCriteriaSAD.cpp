@@ -27,6 +27,7 @@
  */
 
 #include "asCriteriaSAD.h"
+
 #include "asIncludes.h"
 
 asCriteriaSAD::asCriteriaSAD()
@@ -44,14 +45,24 @@ float asCriteriaSAD::Assess(const a2f& refData, const a2f& evalData, int rowsNb,
         return (evalData - refData).abs().sum();
 
     } else {
-        a2f diff = evalData - refData;
+        // Single pass: sum the absolute differences and count the valid pairs at once
+        const float* r = refData.data();
+        const float* e = evalData.data();
+        const auto n = refData.size();
+        float sad = 0;
+        int size = 0;
+        for (Eigen::Index i = 0; i < n; ++i) {
+            float diff = e[i] - r[i];
+            if (std::isnan(diff)) continue;
+            sad += std::fabs(diff);
+            size++;
+        }
 
-        int size = (!diff.isNaN()).count();
         if (size == 0) {
             wxLogVerbose(_("Only NaNs in the SAD criteria calculation."));
             return NAN;
         }
 
-        return ((diff.isNaN()).select(0, diff)).abs().sum();
+        return sad;
     }
 }

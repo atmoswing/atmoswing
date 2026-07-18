@@ -26,6 +26,7 @@
  */
 
 #include "asCriteriaDMV.h"
+
 #include "asIncludes.h"
 
 asCriteriaDMV::asCriteriaDMV()
@@ -47,15 +48,24 @@ float asCriteriaDMV::Assess(const a2f& refData, const a2f& evalData, int rowsNb,
         return std::fabs(refData.mean() - evalData.mean());
 
     } else {
-        int size = (!evalData.isNaN() && !refData.isNaN()).count();
+        // Single pass: sum both fields and count the valid pairs at once
+        const float* r = refData.data();
+        const float* e = evalData.data();
+        const auto n = refData.size();
+        float refSum = 0, evalSum = 0;
+        int size = 0;
+        for (Eigen::Index i = 0; i < n; ++i) {
+            if (std::isnan(r[i]) || std::isnan(e[i])) continue;
+            refSum += r[i];
+            evalSum += e[i];
+            size++;
+        }
+
         if (size == 0) {
             wxLogVerbose(_("Only NaNs in the DMV criteria calculation."));
             return NAN;
         }
 
-        float refMean = ((!evalData.isNaN() && !refData.isNaN()).select(refData, 0)).sum() / float(size);
-        float evalMean = ((!evalData.isNaN() && !refData.isNaN()).select(evalData, 0)).sum() / float(size);
-
-        return std::fabs(refMean - evalMean);
+        return std::fabs(refSum / float(size) - evalSum / float(size));
     }
 }
