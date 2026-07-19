@@ -36,7 +36,7 @@ asCriteriaDMV::asCriteriaDMV()
 
 asCriteriaDMV::~asCriteriaDMV() = default;
 
-float asCriteriaDMV::Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const {
+float asCriteriaDMV::Assess(const ra2f& refData, const ra2f& evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() == rowsNb);

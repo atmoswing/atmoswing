@@ -38,7 +38,7 @@ asCriteriaS1obs::asCriteriaS1obs()
 
 asCriteriaS1obs::~asCriteriaS1obs() = default;
 
-float asCriteriaS1obs::Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const {
+float asCriteriaS1obs::Assess(const ra2f& refData, const ra2f& evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() == rowsNb);

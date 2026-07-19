@@ -86,6 +86,45 @@ bool CheckArchiveTimeArray(const vector<asPredictor*>& predictorsArchive, const 
 
 }  // namespace
 
+std::vector<asProcessor::FlatPredictorData> asProcessor::FlattenPredictors(const vector<asPredictor*>& predictors,
+                                                                           bool copyData) {
+    std::vector<FlatPredictorData> flat(predictors.size());
+
+    for (size_t iPtor = 0; iPtor < predictors.size(); ++iPtor) {
+        wxASSERT(predictors[iPtor]);
+        const vva2f& data = predictors[iPtor]->GetData();
+        wxASSERT(!data.empty());
+        wxASSERT(!data[0].empty());
+
+        const auto timesNb = data.size();
+        const auto membersNb = data[0].size();
+        const auto gridSize = (size_t)data[0][0].size();
+
+        FlatPredictorData& f = flat[iPtor];
+        f.membersNb = (int)membersNb;
+        f.ptrs.resize(timesNb * membersNb);
+
+        if (copyData) {
+            f.storage.resize(timesNb * membersNb * gridSize);
+            for (size_t iTime = 0; iTime < timesNb; ++iTime) {
+                for (size_t iMem = 0; iMem < membersNb; ++iMem) {
+                    float* dest = f.storage.data() + (iTime * membersNb + iMem) * gridSize;
+                    memcpy(dest, data[iTime][iMem].data(), gridSize * sizeof(float));
+                    f.ptrs[iTime * membersNb + iMem] = dest;
+                }
+            }
+        } else {
+            for (size_t iTime = 0; iTime < timesNb; ++iTime) {
+                for (size_t iMem = 0; iMem < membersNb; ++iMem) {
+                    f.ptrs[iTime * membersNb + iMem] = data[iTime][iMem].data();
+                }
+            }
+        }
+    }
+
+    return flat;
+}
+
 bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
                                   asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayArchiveSelection,
                                   asTimeArray& timeArrayTargetData, asTimeArray& timeArrayTargetSelection,
@@ -97,6 +136,7 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
     int method = pConfig->Read("/Processing/Method", (long)asMULTITHREADS);
     bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
     bool allowDuplicateDates = pConfig->ReadBool("/Processing/AllowDuplicateDates", true);
+    bool flattenData = pConfig->ReadBool("/Processing/FlattenData", true);
 
     // Check options compatibility
     if (!allowMultithreading && method == asMULTITHREADS) {
@@ -461,6 +501,17 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
                 threadsNb = 1;
             }
 
+            // Prepare the predictor data for the scan (pointer tables, optionally flattened).
+            // Must outlive the threads (freed after Wait below).
+            auto flatArchive = FlattenPredictors(predictorsArchive, flattenData);
+            bool samePredictors = predictorsArchive.size() == predictorsTarget.size();
+            for (size_t i = 0; samePredictors && i < predictorsArchive.size(); ++i) {
+                samePredictors = predictorsArchive[i] == predictorsTarget[i];
+            }
+            auto flatTarget = samePredictors ? std::vector<FlatPredictorData>()
+                                             : FlattenPredictors(predictorsTarget, flattenData);
+            const std::vector<FlatPredictorData>& flatTargetRef = samePredictors ? flatArchive : flatTarget;
+
             // Create and give data
             int end = -1;
             int threadType = -1;
@@ -480,7 +531,8 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
                 auto thread = new asThreadGetAnalogsDates(
                     predictorsArchive, predictorsTarget, &timeArrayArchiveData, &timeArrayArchiveSelection,
                     &timeArrayTargetData, &timeArrayTargetSelection, criteria, params, step, vRowsNb, vColsNb, start,
-                    end, &finalAnalogsCriteria, &finalAnalogsDates, flag, allowDuplicateDates, success);
+                    end, &finalAnalogsCriteria, &finalAnalogsDates, flag, allowDuplicateDates, success, &flatArchive,
+                    &flatTargetRef);
 
                 threadType = thread->GetType();
 
@@ -519,14 +571,23 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
         }
 
         case (asSTANDARD): {
-            vpa2f vTargData = vpa2f(predictorsNb);
-            vpa2f vArchData = vpa2f(predictorsNb);
+            std::vector<const float*> vTargData(predictorsNb);
 
             // Predictor weights do not change within the loops
             vf weights(predictorsNb);
             for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                 weights[iPtor] = params->GetPredictorWeight(step, iPtor);
             }
+
+            // Prepare the predictor data for the scan (pointer tables, optionally flattened)
+            auto flatArchive = FlattenPredictors(predictorsArchive, flattenData);
+            bool samePredictors = predictorsArchive.size() == predictorsTarget.size();
+            for (size_t i = 0; samePredictors && i < predictorsArchive.size(); ++i) {
+                samePredictors = predictorsArchive[i] == predictorsTarget[i];
+            }
+            auto flatTarget = samePredictors ? std::vector<FlatPredictorData>()
+                                             : FlattenPredictors(predictorsTarget, flattenData);
+            const std::vector<FlatPredictorData>& flatTargetRef = samePredictors ? flatArchive : flatTarget;
 
             // Extract some data
             a1d timeArchiveData = timeArrayArchiveData.GetTimeArray();
@@ -577,7 +638,7 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
                 for (int iMem = 0; iMem < membersNb; ++iMem) {
                     // Extract target data
                     for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
-                        vTargData[iPtor] = &predictorsTarget[iPtor]->GetData()[iTimeTarg][iMem];
+                        vTargData[iPtor] = flatTargetRef[iPtor].ptrs[(size_t)iTimeTarg * membersNb + iMem];
                     }
 
                     // Reset the index start target
@@ -606,14 +667,15 @@ bool asProcessor::GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector
                         float thisScore = 0;
                         for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                             // Get data
-                            vArchData[iPtor] = &predictorsArchive[iPtor]->GetData()[iTimeArch][iMem];
+                            const float* archData = flatArchive[iPtor].ptrs[(size_t)iTimeArch * membersNb + iMem];
 
                             // Assess the criteria
                             wxASSERT(criteria.size() > iPtor);
                             wxASSERT(vTargData[iPtor]);
-                            wxASSERT(vArchData[iPtor]);
-                            float tmpScore = criteria[iPtor]->Assess(*vTargData[iPtor], *vArchData[iPtor],
-                                                                     vRowsNb[iPtor], vColsNb[iPtor]);
+                            wxASSERT(archData);
+                            float tmpScore = criteria[iPtor]->Assess(
+                                ma2f(vTargData[iPtor], vRowsNb[iPtor], vColsNb[iPtor]),
+                                ma2f(archData, vRowsNb[iPtor], vColsNb[iPtor]), vRowsNb[iPtor], vColsNb[iPtor]);
 
                             // Weight and add the score
                             thisScore += tmpScore * weights[iPtor];
@@ -784,6 +846,7 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vec
     wxConfigBase* pConfig = wxFileConfig::Get();
     int method = pConfig->Read("/Processing/Method", (long)asMULTITHREADS);
     bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
+    bool flattenData = pConfig->ReadBool("/Processing/FlattenData", true);
 
     // Check options compatibility
     if (!allowMultithreading && method == asMULTITHREADS) {
@@ -835,8 +898,6 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vec
     }
 
     // Matrices containers
-    vpa2f vTargData = vpa2f(predictorsNb);
-    vpa2f vArchData = vpa2f(predictorsNb);
     a1i vRowsNb(predictorsNb);
     a1i vColsNb(predictorsNb);
 
@@ -1107,6 +1168,17 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vec
                 threadsNb = 1;
             }
 
+            // Prepare the predictor data for the scan (pointer tables, optionally flattened).
+            // Must outlive the threads (freed after Wait below).
+            auto flatArchive = FlattenPredictors(predictorsArchive, flattenData);
+            bool samePredictors = predictorsArchive.size() == predictorsTarget.size();
+            for (size_t i = 0; samePredictors && i < predictorsArchive.size(); ++i) {
+                samePredictors = predictorsArchive[i] == predictorsTarget[i];
+            }
+            auto flatTarget = samePredictors ? std::vector<FlatPredictorData>()
+                                             : FlattenPredictors(predictorsTarget, flattenData);
+            const std::vector<FlatPredictorData>& flatTargetRef = samePredictors ? flatArchive : flatTarget;
+
             // Create and give data
             int end = -1;
             int threadType = -1;
@@ -1126,8 +1198,8 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vec
 
                 asThreadGetAnalogsSubDates* thread = new asThreadGetAnalogsSubDates(
                     predictorsArchive, predictorsTarget, &timeArrayArchiveData, &timeArrayTargetData,
-                    &timeTargetSelection, criteria, params, step, vTargData, vArchData, vRowsNb, vColsNb, start, end,
-                    &finalAnalogsCriteria, &finalAnalogsDates, &analogsDates, flag, success);
+                    &timeTargetSelection, criteria, params, step, vRowsNb, vColsNb, start, end, &finalAnalogsCriteria,
+                    &finalAnalogsDates, &analogsDates, flag, success, &flatArchive, &flatTargetRef);
                 threadType = thread->GetType();
 
                 ThreadsManager().AddThread(thread);
@@ -1175,6 +1247,17 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vec
                 weights[iPtor] = params->GetPredictorWeight(step, iPtor);
             }
 
+            // Prepare the predictor data for the scan (pointer tables, optionally flattened)
+            std::vector<const float*> vTargData(predictorsNb);
+            auto flatArchive = FlattenPredictors(predictorsArchive, flattenData);
+            bool samePredictors = predictorsArchive.size() == predictorsTarget.size();
+            for (size_t i = 0; samePredictors && i < predictorsArchive.size(); ++i) {
+                samePredictors = predictorsArchive[i] == predictorsTarget[i];
+            }
+            auto flatTarget = samePredictors ? std::vector<FlatPredictorData>()
+                                             : FlattenPredictors(predictorsTarget, flattenData);
+            const std::vector<FlatPredictorData>& flatTargetRef = samePredictors ? flatArchive : flatTarget;
+
             // Loop through every timestep as target data
             for (int iAnalogDate = 0; iAnalogDate < timeTargetSelectionSize; iAnalogDate++) {
                 int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
@@ -1203,7 +1286,7 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vec
                 for (int iMem = 0; iMem < membersNb; ++iMem) {
                     // Extract target data
                     for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
-                        vTargData[iPtor] = &predictorsTarget[iPtor]->GetData()[iTimeTarg][iMem];
+                        vTargData[iPtor] = flatTargetRef[iPtor].ptrs[(size_t)iTimeTarg * membersNb + iMem];
                     }
 
                     // Loop through the previous analogs for candidate data
@@ -1222,22 +1305,16 @@ bool asProcessor::GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vec
                         float thisScore = 0;
                         for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                             // Get data
-                            vArchData[iPtor] = &predictorsArchive[iPtor]->GetData()[iTimeArch][iMem];
+                            const float* archData = flatArchive[iPtor].ptrs[(size_t)iTimeArch * membersNb + iMem];
 
                             // Assess the criteria
                             wxASSERT(criteria.size() > iPtor);
                             wxASSERT(vTargData[iPtor]);
-                            wxASSERT(vArchData[iPtor]);
+                            wxASSERT(archData);
                             wxASSERT(timeArchiveData.size() > iTimeArch);
-                            wxASSERT_MSG(
-                                vArchData[iPtor]->size() == vTargData[iPtor]->size(),
-                                asStrF("%s (%d th element) in archive, %s (%d th element) in target: vArchData size = "
-                                       "%d, vTargData size = %d",
-                                       asTime::GetStringTime(timeArchiveData[iTimeArch], "DD.MM.YYYY hh:mm"), iTimeArch,
-                                       asTime::GetStringTime(timeTargetData[iTimeTarg], "DD.MM.YYYY hh:mm"), iTimeTarg,
-                                       (int)vArchData[iPtor]->size(), (int)vTargData[iPtor]->size()));
-                            float tmpScore = criteria[iPtor]->Assess(*vTargData[iPtor], *vArchData[iPtor],
-                                                                     vRowsNb[iPtor], vColsNb[iPtor]);
+                            float tmpScore = criteria[iPtor]->Assess(
+                                ma2f(vTargData[iPtor], vRowsNb[iPtor], vColsNb[iPtor]),
+                                ma2f(archData, vRowsNb[iPtor], vColsNb[iPtor]), vRowsNb[iPtor], vColsNb[iPtor]);
 
                             // Weight and add the score
                             thisScore += tmpScore * weights[iPtor];

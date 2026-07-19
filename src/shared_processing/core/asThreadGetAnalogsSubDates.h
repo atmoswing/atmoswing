@@ -31,6 +31,7 @@
 
 #include "asHeadersBase.h"
 #include "asParameters.h"
+#include "asProcessor.h"
 #include "asThread.h"
 
 class asPredictor;
@@ -44,9 +45,10 @@ class asThreadGetAnalogsSubDates : public asThread {
     asThreadGetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
                                asTimeArray* timeArrayArchiveData, asTimeArray* timeArrayTargetData,
                                a1f* timeTargetSelection, vector<asCriteria*> criteria, asParameters* params, int step,
-                               vpa2f& vRefData, vpa2f& vEvalData, a1i& vRowsNb, a1i& vColsNb, int start, int end,
-                               a2f* finalAnalogsCriteria, a2f* finalAnalogsDates, a2f* previousAnalogsDates,
-                               bool* containsNaNs, bool* success);
+                               a1i& vRowsNb, a1i& vColsNb, int start, int end, a2f* finalAnalogsCriteria,
+                               a2f* finalAnalogsDates, a2f* previousAnalogsDates, bool* containsNaNs, bool* success,
+                               const std::vector<asProcessor::FlatPredictorData>* flatArchive,
+                               const std::vector<asProcessor::FlatPredictorData>* flatTarget);
 
     virtual ~asThreadGetAnalogsSubDates();
 
@@ -62,8 +64,6 @@ class asThreadGetAnalogsSubDates : public asThread {
     vector<asCriteria*> _criteria;
     asParameters* _params;
     int _step;
-    vpa2f _vTargData;
-    vpa2f _vArchData;
     a1i _vRowsNb;
     a1i _vColsNb;
     int _start;
@@ -73,6 +73,8 @@ class asThreadGetAnalogsSubDates : public asThread {
     a2f* _pPreviousAnalogsDates;
     bool* _pContainsNaNs;
     bool* _success;
+    const std::vector<asProcessor::FlatPredictorData>* _flatArchive;
+    const std::vector<asProcessor::FlatPredictorData>* _flatTarget;
 };
 
 #endif

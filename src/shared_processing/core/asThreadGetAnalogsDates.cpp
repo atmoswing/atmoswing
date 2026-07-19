@@ -40,7 +40,9 @@ asThreadGetAnalogsDates::asThreadGetAnalogsDates(
     vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget, asTimeArray* timeArrayArchiveData,
     asTimeArray* timeArrayArchiveSelection, asTimeArray* timeArrayTargetData, asTimeArray* timeArrayTargetSelection,
     vector<asCriteria*> criteria, asParameters* params, int step, a1i& vRowsNb, a1i& vColsNb, int start, int end,
-    a2f* finalAnalogsCriteria, a2f* finalAnalogsDates, bool* containsNaNs, bool allowDuplicateDates, bool* success)
+    a2f* finalAnalogsCriteria, a2f* finalAnalogsDates, bool* containsNaNs, bool allowDuplicateDates, bool* success,
+    const std::vector<asProcessor::FlatPredictorData>* flatArchive,
+    const std::vector<asProcessor::FlatPredictorData>* flatTarget)
     : asThread(asThread::ProcessorGetAnalogsDates),
       _pPredictorsArchive(std::move(predictorsArchive)),
       _pPredictorsTarget(std::move(predictorsTarget)),
@@ -50,14 +52,14 @@ asThreadGetAnalogsDates::asThreadGetAnalogsDates(
       _pTimeArrayTargetSelection(timeArrayTargetSelection),
       _criteria(std::move(criteria)),
       _params(params),
-      _vTargData(vpa2f(vRowsNb.size())),
-      _vArchData(vpa2f(vRowsNb.size())),
       _vRowsNb(vRowsNb),
       _vColsNb(vColsNb),
       _pFinalAnalogsCriteria(finalAnalogsCriteria),
       _pFinalAnalogsDates(finalAnalogsDates),
       _allowDuplicateDates(allowDuplicateDates),
-      _success(success) {
+      _success(success),
+      _flatArchive(flatArchive),
+      _flatTarget(flatTarget) {
     _step = step;
     _start = start;
     _end = end;
@@ -90,6 +92,9 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
     for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
         weights[iPtor] = _params->GetPredictorWeight(_step, iPtor);
     }
+
+    // Per-predictor pointers to the current target grid
+    std::vector<const float*> vTargData(predictorsNb);
 
     wxASSERT(_end < timeTargetSelection.size());
     wxASSERT(timeArchiveData.size() == (_pPredictorsArchive)[0]->GetData().size());
@@ -137,7 +142,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
             for (int iMem = 0; iMem < membersNb; ++iMem) {
                 // Extract target data
                 for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
-                    _vTargData[iPtor] = &(_pPredictorsTarget)[iPtor]->GetData()[iTimeTarg][iMem];
+                    vTargData[iPtor] = (*_flatTarget)[iPtor].ptrs[(size_t)iTimeTarg * membersNb + iMem];
                 }
 
                 // Reset the index start target
@@ -158,12 +163,13 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
                         float thisScore = 0;
                         for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                             // Get data
-                            _vArchData[iPtor] = &(_pPredictorsArchive)[iPtor]->GetData()[iTimeArch][iMem];
+                            const float* archData = (*_flatArchive)[iPtor].ptrs[(size_t)iTimeArch * membersNb + iMem];
 
                             // Assess the criteria
                             wxASSERT(_criteria.size() > iPtor);
-                            float tmpScore = _criteria[iPtor]->Assess(*_vTargData[iPtor], *_vArchData[iPtor],
-                                                                      _vRowsNb[iPtor], _vColsNb[iPtor]);
+                            float tmpScore = _criteria[iPtor]->Assess(
+                                ma2f(vTargData[iPtor], _vRowsNb[iPtor], _vColsNb[iPtor]),
+                                ma2f(archData, _vRowsNb[iPtor], _vColsNb[iPtor]), _vRowsNb[iPtor], _vColsNb[iPtor]);
 
                             // Weight and add the score
                             thisScore += tmpScore * weights[iPtor];
