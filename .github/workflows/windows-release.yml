@@ -51,7 +51,12 @@ jobs:
         run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
 
       - name: Configure
-        run: cmake -B build -G "Visual Studio 17 2022" -A x64
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          retry_wait_seconds: 60
+          command: cmake -B build -G "Visual Studio 17 2022" -A x64
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
              -DFETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
@@ -123,7 +128,12 @@ jobs:
         run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
 
       - name: Configure
-        run: cmake -B build -G "Visual Studio 17 2022" -A x64
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          retry_wait_seconds: 60
+          command: cmake -B build -G "Visual Studio 17 2022" -A x64
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
              -DFETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON

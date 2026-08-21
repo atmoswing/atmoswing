@@ -64,7 +64,12 @@ jobs:
 
       - name: Configure with GUI testing
         if: ${{ github.ref == 'refs/heads/ci/coverage-gui' }}
-        run: cmake -B build -G Ninja
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          retry_wait_seconds: 60
+          command: cmake -B build -G Ninja
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
              -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
@@ -78,7 +83,12 @@ jobs:
 
       - name: Configure without GUI testing
         if: ${{ github.ref != 'refs/heads/ci/coverage-gui' }}
-        run: cmake -B build -G Ninja
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          retry_wait_seconds: 60
+          command: cmake -B build -G Ninja
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
              -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
