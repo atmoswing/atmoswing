@@ -19,6 +19,9 @@ set(CMAKE_TOOLCHAIN_FILE
         "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
         CACHE STRING "Vcpkg toolchain file")
 set(VCPKG_LIBRARY_LINKAGE "static")
+# Overlay ports: libaec is fetched from its GitHub mirror instead of the
+# upstream gitlab.dkrz.de host, which intermittently rate-limits CI (HTTP 429).
+set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/build/vcpkg-overlay-ports")
 
 # ---- Build target selection (declared before project() so VCPKG_MANIFEST_FEATURES can be derived) ----
 set(BUILD_FORECASTER ON  CACHE BOOL "Do you want to build AtmoSwing Forecaster ?")
