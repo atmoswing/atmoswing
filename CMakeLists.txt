@@ -297,6 +297,72 @@ else ()
     set(ENABLE_JPG_LIBJASPER OFF CACHE BOOL "ecCodes JPEG backend: JasPer" FORCE)
     set(ENABLE_JPG_LIBOPENJPEG OFF CACHE BOOL "ecCodes JPEG backend: OpenJPEG" FORCE)
 endif ()
+
+# ecbuild's __addDeps() strips the `debug` / `optimized` keywords out of the
+# library lists it forwards to target_link_libraries() (see its
+# ecbuild_add_library.cmake). With vcpkg that leaves *both* configurations'
+# import libraries on the eccodes link line, and the linker silently keeps
+# whichever resolves the symbols first — the release one. A Debug eccodes then
+# pulls in the release jasper/jpeg DLLs, putting two CRTs (and two heaps) in a
+# single process.
+#
+# find_package(Jasper) builds that pair via select_library_configurations(),
+# which emits a bare path with no keywords when both configurations resolve to
+# the same file. So resolve the pair here, before eccodes runs its own
+# find_package(Jasper), and leave ecbuild nothing to strip.
+function(_atmoswing_pin_library_to_config basename)
+    get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+    if (_isMultiConfig OR NOT CMAKE_BUILD_TYPE)
+        # The config is only known at build time; nothing to pin at configure time.
+        return()
+    endif ()
+
+    # Snapshot the values as first discovered. The pin below overwrites the two
+    # cache entries, so re-configuring — or switching CMAKE_BUILD_TYPE in an
+    # existing build dir — must not re-derive the pin from an already-pinned
+    # value, which would latch whichever config was pinned first.
+    foreach (_cfg RELEASE DEBUG)
+        if (NOT DEFINED _atmoswing_unpinned_${basename}_${_cfg})
+            set(_atmoswing_unpinned_${basename}_${_cfg} "${${basename}_LIBRARY_${_cfg}}"
+                    CACHE INTERNAL "Unpinned ${basename} ${_cfg} library")
+        endif ()
+    endforeach ()
+
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(_pinned "${_atmoswing_unpinned_${basename}_DEBUG}")
+    else ()
+        set(_pinned "${_atmoswing_unpinned_${basename}_RELEASE}")
+    endif ()
+
+    # Nothing to do when the package has no per-config split for this build type.
+    if (NOT _pinned OR _pinned MATCHES "NOTFOUND")
+        return()
+    endif ()
+
+    set(${basename}_LIBRARY_RELEASE "${_pinned}" CACHE FILEPATH "Path to a library." FORCE)
+    set(${basename}_LIBRARY_DEBUG "${_pinned}" CACHE FILEPATH "Path to a library." FORCE)
+
+    # The cache alone is not enough: FindJasper/FindJPEG only re-run
+    # select_library_configurations() when <NAME>_LIBRARIES is still unset, and
+    # eccodes is add_subdirectory'd, so it inherits whatever this scope holds.
+    # Set the plain variables too, so the pin holds either way.
+    set(${basename}_LIBRARY "${_pinned}" PARENT_SCOPE)
+    set(${basename}_LIBRARIES "${_pinned}" PARENT_SCOPE)
+
+    message(STATUS "Pinned ${basename} to its ${CMAKE_BUILD_TYPE} library: ${_pinned}")
+endfunction()
+
+if (ENABLE_JPG_LIBJASPER)
+    # Also runs find_package(JPEG); both populate <NAME>_LIBRARY_{RELEASE,DEBUG}.
+    find_package(Jasper QUIET)
+    _atmoswing_pin_library_to_config(JASPER)
+    _atmoswing_pin_library_to_config(JPEG)
+    # FindJasper composes JASPER_LIBRARIES out of both; rebuild it from the pins.
+    if (JASPER_LIBRARY AND JPEG_LIBRARIES)
+        set(JASPER_LIBRARIES ${JASPER_LIBRARY} ${JPEG_LIBRARIES})
+    endif ()
+endif ()
+
 set(ECBUILD_LOG_LEVEL "OFF")  # Disable all logging
 set(ECBUILD_LOG_FILE "${CMAKE_BINARY_DIR}/ecbuild.log")  # Set proper log file location
 if (WIN32)

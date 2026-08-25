@@ -17,8 +17,13 @@ if (WIN32)
     # vcpkg's applocal copies direct link-time deps next to the exe but cannot
     # see DLLs reached transitively through FetchContent libraries (e.g. eccodes
     # → jasper). Forward the vcpkg bin dir so the runner can stage those too.
+    # The debug DLLs live in a separate tree and share the release names. Mixing
+    # the two configs in one process is fatal (a release DLL built against
+    # msvcp140 sees a different std::string layout than a debug exe built
+    # against msvcp140d), so select the tree per config.
     if (DEFINED VCPKG_INSTALLED_DIR AND DEFINED VCPKG_TARGET_TRIPLET)
-        set(_atmoswing_vcpkg_bin_dir "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin")
+        set(_atmoswing_vcpkg_bin_dir
+                "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/$<$<CONFIG:Debug>:debug/>bin")
     else ()
         set(_atmoswing_vcpkg_bin_dir "")
     endif ()
