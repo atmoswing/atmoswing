@@ -493,6 +493,19 @@ endif (USE_CODECOV)
 # its executable so the DLL staging runs as POST_BUILD on the exe.
 include(atmoswing_stage_runtime_dlls)
 
+# Resources added to every Windows GUI executable: resource.rc holds the application
+# icon, dpi_aware.manifest marks the process as per-monitor DPI aware so that text and
+# lines are not bitmap-stretched (and thus blurry) on high-DPI screens. CMake forwards
+# .manifest sources to the manifest tool, which merges them into the manifest the MSVC
+# linker generates; other Windows compilers do not get that merging step, so the
+# manifest is only added for MSVC.
+if (WIN32)
+    set(win_resources ${CMAKE_SOURCE_DIR}/src/shared_base/gui/resource.rc)
+    if (MSVC)
+        list(APPEND win_resources ${CMAKE_SOURCE_DIR}/src/shared_base/gui/dpi_aware.manifest)
+    endif ()
+endif ()
+
 add_subdirectory(src/shared_base)
 if (BUILD_FORECASTER OR BUILD_OPTIMIZER OR BUILD_DOWNSCALER)
     add_subdirectory(src/shared_processing)

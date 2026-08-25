@@ -40,7 +40,7 @@ endif (USE_GUI)
 
 if (WIN32)
     if (USE_GUI)
-        add_executable(atmoswing-downscaler WIN32 ${src_app_downscaler} ${CMAKE_SOURCE_DIR}/src/shared_base/gui/resource.rc)
+        add_executable(atmoswing-downscaler WIN32 ${src_app_downscaler} ${win_resources})
     else (USE_GUI)
         add_executable(atmoswing-downscaler ${src_app_downscaler})
     endif (USE_GUI)

@@ -44,7 +44,7 @@ endif (USE_GUI)
 
 if (WIN32)
     if (USE_GUI)
-        add_executable(atmoswing-forecaster WIN32 ${src_app_forecaster} ${CMAKE_SOURCE_DIR}/src/shared_base/gui/resource.rc)
+        add_executable(atmoswing-forecaster WIN32 ${src_app_forecaster} ${win_resources})
     else (USE_GUI)
         add_executable(atmoswing-forecaster ${src_app_forecaster})
     endif (USE_GUI)

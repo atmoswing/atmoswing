@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Marks the application as per-monitor DPI aware (v2). Without this, Windows
+  considers the process DPI-unaware, renders it at 96 DPI and bitmap-stretches
+  the result, which makes text and thin lines look blurry on high-DPI screens.
+
+  This is merged by the manifest tool into the manifest the MSVC linker
+  generates itself (which only carries trustInfo and the ComCtl32 v6
+  dependency), so it deliberately contains nothing but the DPI settings.
+  The legacy dpiAware element is the fallback for Windows versions that do not
+  understand dpiAwareness.
+-->
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
+  <asmv3:application>
+    <asmv3:windowsSettings>
+      <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2, system</dpiAwareness>
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true</dpiAware>
+    </asmv3:windowsSettings>
+  </asmv3:application>
+</assembly>

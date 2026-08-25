@@ -74,7 +74,7 @@ target_link_libraries(wxplotctrl PRIVATE atmoswing_compile_options wx::core)
 ##### DECLARE EXECUTABLE
 
 if (WIN32)
-    add_executable(atmoswing-viewer WIN32 ${src_app_viewer} ${CMAKE_SOURCE_DIR}/src/shared_base/gui/resource.rc)
+    add_executable(atmoswing-viewer WIN32 ${src_app_viewer} ${win_resources})
 elseif (UNIX AND NOT APPLE)
     add_executable(atmoswing-viewer ${src_app_viewer})
 elseif (APPLE)
