@@ -449,6 +449,7 @@ class asPredictor : public wxObject {
     Parameter _parameter;
     wxString _parameterName;
     vi _gribCode;
+    vi _gribCode2;
     wxString _product;
     wxString _fileVarName;
     wxString _fileNamePattern;
@@ -505,6 +506,8 @@ class asPredictor : public wxObject {
     bool EnquireNetcdfFileStructure();
 
     bool ExtractFromNetcdfFile(const wxString& fileName, asAreaGrid*& dataArea, asTimeArray& timeArray);
+
+    const vi& GetGribCode(const asFileGrib& gbFile) const;
 
     bool EnquireGribFileStructure(asTimeArray& timeArray);
 

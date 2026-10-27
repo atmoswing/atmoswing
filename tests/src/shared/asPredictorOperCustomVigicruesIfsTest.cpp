@@ -394,6 +394,149 @@ TEST(PredictorOperCustomVigicruesIfs, LoadRelativeHumidity) {
     wxDELETE(predictor);
 }
 
+// GRIB2 files from the ECMWF open data (run of 22.10.2026 00h, lead times 0 and 6 h), cropped on the
+// area by AtmoSwing-Vigicrues (DownloadEcmwfData with grib_edition: 2). They keep the open data encoding
+// (CCSDS packing, longitudes starting at 354°).
+static vva2f LoadGrib2(const wxString& dataId, float level) {
+    vwxs filepaths;
+    for (int i = 0; i < 2; ++i) {
+        filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-vigicrues-ifs-grib2/2026/10/22/CEP_" +
+                            dataId.Upper() + "_202610220000.grb");
+    }
+
+    asTimeArray dates(asTime::GetMJD(2026, 10, 22, 00), asTime::GetMJD(2026, 10, 22, 6), 6, "Simple");
+    dates.Init();
+
+    asAreaGrid* area = asAreaGrid::GetInstance("Regular", -6, 5, 0.25, 47, 5, 0.25);
+
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS", dataId);
+    wxASSERT(predictor);
+
+    predictor->SetFileNames(filepaths);
+
+    vva2f data;
+    if (predictor->Load(area, dates, level)) {
+        data = predictor->GetData();
+    }
+
+    wxDELETE(area);
+    wxDELETE(predictor);
+
+    return data;
+}
+
+TEST(PredictorOperCustomVigicruesIfs, LoadGrib2Geopotential) {
+    vva2f hgt = LoadGrib2("z", 500);
+    ASSERT_EQ(hgt.size(), 2);
+    // hgt[time][mem](lat,lon)
+
+    /* Values time step 0 (horizontal=Lon, vertical=Lat)
+    Extracted:
+    54681.13   54673.63   54665.13   54654.88   54647.63
+    54755.38   54747.38   54741.63   54732.13   54719.63
+    54839.63   54828.63   54819.88   54810.38   54798.63
+    54933.63   54919.13   54906.13   54895.13   54884.13
+    55026.13   55013.38   54999.13   54987.63   54977.38
+    */
+    EXPECT_NEAR(54681.13 / 9.80665, hgt[0][0](0, 0), 0.05);
+    EXPECT_NEAR(54673.63 / 9.80665, hgt[0][0](0, 1), 0.05);
+    EXPECT_NEAR(54665.13 / 9.80665, hgt[0][0](0, 2), 0.05);
+    EXPECT_NEAR(54654.88 / 9.80665, hgt[0][0](0, 3), 0.05);
+    EXPECT_NEAR(54647.63 / 9.80665, hgt[0][0](0, 4), 0.05);
+    EXPECT_NEAR(54755.38 / 9.80665, hgt[0][0](1, 0), 0.05);
+    EXPECT_NEAR(54839.63 / 9.80665, hgt[0][0](2, 0), 0.05);
+    EXPECT_NEAR(54933.63 / 9.80665, hgt[0][0](3, 0), 0.05);
+    EXPECT_NEAR(54977.38 / 9.80665, hgt[0][0](4, 4), 0.05);
+
+    /* Values time step 1 (horizontal=Lon, vertical=Lat)
+    Extracted:
+    54721.13   54722.13   54723.13   54721.13   54717.63
+    54786.63   54785.38   54787.88   54788.13   54784.63
+    54848.38   54847.63   54853.13   54856.13   54853.63
+    54920.88   54920.63   54926.88   54929.63   54928.63
+    55005.13   55004.88   55007.38   55007.88   55008.13
+    */
+    EXPECT_NEAR(54721.13 / 9.80665, hgt[1][0](0, 0), 0.05);
+    EXPECT_NEAR(54722.13 / 9.80665, hgt[1][0](0, 1), 0.05);
+    EXPECT_NEAR(54786.63 / 9.80665, hgt[1][0](1, 0), 0.05);
+    EXPECT_NEAR(54848.38 / 9.80665, hgt[1][0](2, 0), 0.05);
+    EXPECT_NEAR(54920.88 / 9.80665, hgt[1][0](3, 0), 0.05);
+    EXPECT_NEAR(55008.13 / 9.80665, hgt[1][0](4, 4), 0.05);
+}
+
+TEST(PredictorOperCustomVigicruesIfs, LoadGrib2GeopotentialOtherLevel) {
+    vva2f hgt = LoadGrib2("z", 1000);
+    ASSERT_EQ(hgt.size(), 2);
+
+    /* Values time step 0 (horizontal=Lon, vertical=Lat)
+    Extracted:
+    1243.58   1250.58   1260.83   1280.58   1303.08
+    ...
+    1474.83   1478.08   1484.08   1490.33   1495.58
+    */
+    EXPECT_NEAR(1243.58 / 9.80665, hgt[0][0](0, 0), 0.05);
+    EXPECT_NEAR(1303.08 / 9.80665, hgt[0][0](0, 4), 0.05);
+    EXPECT_NEAR(1474.83 / 9.80665, hgt[0][0](4, 0), 0.05);
+    EXPECT_NEAR(1495.58 / 9.80665, hgt[0][0](4, 4), 0.05);
+}
+
+TEST(PredictorOperCustomVigicruesIfs, LoadGrib2RelativeHumidity) {
+    vva2f rh = LoadGrib2("r", 850);
+    ASSERT_EQ(rh.size(), 2);
+
+    /* Values time step 0 (horizontal=Lon, vertical=Lat)
+    Extracted:
+    80.46   81.46   79.46   81.46   85.46
+    81.46   79.46   79.46   81.46   82.46
+    79.46   80.46   80.46   81.46   83.46
+    81.46   84.46   81.46   79.46   82.46
+    82.46   82.46   81.46   80.46   79.46
+    */
+    EXPECT_NEAR(80.46, rh[0][0](0, 0), 0.05);
+    EXPECT_NEAR(81.46, rh[0][0](0, 1), 0.05);
+    EXPECT_NEAR(79.46, rh[0][0](0, 2), 0.05);
+    EXPECT_NEAR(85.46, rh[0][0](0, 4), 0.05);
+    EXPECT_NEAR(81.46, rh[0][0](1, 0), 0.05);
+    EXPECT_NEAR(79.46, rh[0][0](2, 0), 0.05);
+    EXPECT_NEAR(81.46, rh[0][0](3, 0), 0.05);
+    EXPECT_NEAR(79.46, rh[0][0](4, 4), 0.05);
+}
+
+TEST(PredictorOperCustomVigicruesIfs, LoadGrib2TotalColumnWaterVapor) {
+    vva2f tcwv = LoadGrib2("tcwv", 0);
+    ASSERT_EQ(tcwv.size(), 2);
+
+    /* Values time step 0 (horizontal=Lon, vertical=Lat)
+    Extracted:
+    21.91   21.66   21.41   21.66   21.91
+    21.91   21.16   21.41   21.91   21.66
+    21.41   21.41   21.41   21.66   21.66
+    21.91   21.66   21.41   21.41   21.41
+    21.91   21.66   21.41   21.16   21.41
+    */
+    EXPECT_NEAR(21.91, tcwv[0][0](0, 0), 0.05);
+    EXPECT_NEAR(21.66, tcwv[0][0](0, 1), 0.05);
+    EXPECT_NEAR(21.41, tcwv[0][0](0, 2), 0.05);
+    EXPECT_NEAR(21.91, tcwv[0][0](1, 0), 0.05);
+    EXPECT_NEAR(21.41, tcwv[0][0](2, 0), 0.05);
+    EXPECT_NEAR(21.91, tcwv[0][0](3, 0), 0.05);
+    EXPECT_NEAR(21.41, tcwv[0][0](4, 4), 0.05);
+
+    /* Values time step 1 (horizontal=Lon, vertical=Lat)
+    Extracted:
+    24.16   23.91   23.91   23.91   23.91
+    24.41   24.41   24.66   24.66   24.41
+    24.41   24.66   24.66   24.66   24.66
+    25.16   24.91   24.91   24.66   24.66
+    25.41   25.41   25.41   25.41   24.91
+    */
+    EXPECT_NEAR(24.16, tcwv[1][0](0, 0), 0.05);
+    EXPECT_NEAR(23.91, tcwv[1][0](0, 1), 0.05);
+    EXPECT_NEAR(24.41, tcwv[1][0](1, 0), 0.05);
+    EXPECT_NEAR(25.16, tcwv[1][0](3, 0), 0.05);
+    EXPECT_NEAR(24.91, tcwv[1][0](4, 4), 0.05);
+}
+
 TEST(PredictorOperCustomVigicruesIfs, CanFindFiles) {
     asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 12, 00), 6, "Simple");
     dates.Init();

@@ -7,6 +7,8 @@
 
 *   Adding a clang-tidy configuration and a corresponding CI workflow.
 *   Making the use of SSL in cURL optional.
+*   ECMWF IFS operational datasets (incl. Custom_Vigicrues_IFS) also read GRIB2 files, such as the
+    ECMWF open data.
 
 ### Changed
 

@@ -120,6 +120,13 @@ class asFileGrib : public asFile {
 
     [[nodiscard]] vd GetRealForecastTimeArray() const;
 
+    /**
+     * Get the GRIB edition of the file (1 or 2).
+     *
+     * @return The GRIB edition number.
+     */
+    [[nodiscard]] int GetEdition() const;
+
   protected:
   private:
     FILE* _filtPtr;
