@@ -57,38 +57,54 @@ You can download the releases under: https://github.com/atmoswing/atmoswing/rele
 
 ## How to build AtmoSwing ##
 
-In order to get AtmoSwing compiled, follow these steps:
+AtmoSwing uses **CMake (3.20+)** with **[vcpkg](https://github.com/microsoft/vcpkg)** for dependency
+management. Follow these steps:
 
 1. Install the requirements:
-   * a compiler,
-   * CMake,
-   * Conan v.1
+   * a C++23 compiler (recent GCC, Clang or MSVC),
+   * CMake 3.20 or newer,
+   * vcpkg (clone the repository and run its `bootstrap-vcpkg` script),
+   * the ``VCPKG_ROOT`` environment variable pointing to your vcpkg installation
+     (this is enforced by CMake).
+
+   On Linux, a few extra system tools are needed to build some dependencies:
+   ```
+   sudo apt-get install -y autoconf automake libtool pkg-config
+   ```
+
+2. Configure the build. The required libraries are fetched and built automatically by vcpkg on the
+   first configure (the vcpkg manifest features are derived from the ``BUILD_*`` options).
+   * Example for a headless server (no GUI / Viewer):
      ```
-     pip install conan==1.*
-     conan remote add gitlab https://gitlab.com/api/v4/packages/conan
+     cmake -B build -DCMAKE_BUILD_TYPE=Release \
+           -DBUILD_FORECASTER=ON -DBUILD_OPTIMIZER=ON -DBUILD_DOWNSCALER=ON \
+           -DBUILD_VIEWER=OFF -DUSE_GUI=OFF -DBUILD_TESTS=ON
      ```
-2. Install dependencies with conan (from a new directory):
-   * Example for a headless server:
+   * Example for the desktop version (with the Viewer):
      ```
-     conan install .. -s build_type=Release -o build_viewer=False -o with_gui=False -o enable_tests=True --build=missing
+     cmake -B build -DCMAKE_BUILD_TYPE=Release \
+           -DBUILD_FORECASTER=ON -DBUILD_OPTIMIZER=ON -DBUILD_DOWNSCALER=ON \
+           -DBUILD_VIEWER=ON -DCREATE_INSTALLER=ON
      ```
-   * Example for the desktop version:
-     ```
-     conan install .. -s build_type=Release -o enable_tests=False -o create_installer=True --build=missing
-     ```
-   * The options are:
-     * enable_tests: default: True
-     * enable_benchmark: default: False
-     * code_coverage: default: False
-     * with_gui: default: True
-     * test_gui: default: False
-     * use_cuda: default: False
-     * build_forecaster: default: True
-     * build_viewer: default: True
-     * build_optimizer: [default: True
-     * build_downscaler: default: True
-     * create_installer: default: False
-3. Build with conan: ``conan build ..``
+   * The main options are:
+     * ``BUILD_FORECASTER``: default: ON
+     * ``BUILD_VIEWER``: default: ON (forces ``USE_GUI=ON``)
+     * ``BUILD_OPTIMIZER``: default: ON
+     * ``BUILD_DOWNSCALER``: default: ON
+     * ``BUILD_TESTS``: default: ON (when any non-Viewer target is built)
+     * ``BUILD_BENCHMARK``: default: OFF
+     * ``USE_GUI``: default: OFF (set automatically by ``BUILD_VIEWER``)
+     * ``USE_CUDA``: default: OFF
+     * ``TEST_GUI``: default: OFF (requires ``BUILD_VIEWER=ON``)
+     * ``TEST_CALIBRATION``: default: ON (disabling skips the long calibration tests)
+     * ``CREATE_INSTALLER``: default: OFF
+
+   > Note: if you change a ``BUILD_*`` option, run CMake twice — the first run updates the cache and
+   > the second triggers vcpkg with the new feature set.
+
+3. Build: ``cmake --build build --config Release``
+
+4. (Optional) Run the tests: ``./build/tests/atmoswing-tests``
 
 ## How to contribute ##
 

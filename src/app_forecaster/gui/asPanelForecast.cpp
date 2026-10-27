@@ -107,7 +107,10 @@ void asPanelForecast::OnDetailsForecastFile(wxCommandEvent& event) {
     wxString dirPath = _batchForecasts->GetParametersFileDirectory();
     if (wxFileExists(dirPath + DS + fileName)) {
         asFileText file(dirPath + DS + fileName);
-        file.Open();
+        if (!file.Open()) {
+            wxLogError(_("Failed to open the file %s"), fileName);
+            return;
+        }
         wxString fileContent = file.GetContent();
         asFrameStyledTextCtrl* frameText = new asFrameStyledTextCtrl(this);
         frameText->SetTitle(fileName);

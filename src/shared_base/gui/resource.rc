@@ -1,5 +1,9 @@
 myicon ICON "../../../art/logo/icon.ico"
 
+// The MSVC linker generates the application manifest itself, so wxWidgets must not
+// embed a second RT_MANIFEST resource here. The DPI awareness settings that the wx
+// manifest would have carried are supplied by dpi_aware.manifest instead, which the
+// manifest tool merges into the generated one (see the root CMakeLists.txt).
 #define wxUSE_NO_MANIFEST 1
 
 #include "wx/msw/wx.rc"

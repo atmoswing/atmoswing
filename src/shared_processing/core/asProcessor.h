@@ -54,6 +54,20 @@ struct CudaCallbackParams;
 // namespace inside asProcessor.cpp rather than being declared here.
 namespace asProcessor {
 
+/**
+ * Predictor data prepared for the analog scan: a pointer table indexed by
+ * [iTime * membersNb + iMem] giving direct access to each contiguous grid,
+ * optionally backed by a flattened copy of the whole dataset for better cache
+ * locality (candidates close in time then sit close in memory).
+ */
+struct FlatPredictorData {
+    vf storage;                      // owns the flattened copy (empty when not copying)
+    std::vector<const float*> ptrs;  // [iTime * membersNb + iMem] -> grid data
+    int membersNb = 1;
+};
+
+std::vector<FlatPredictorData> FlattenPredictors(const vector<asPredictor*>& predictors, bool copyData);
+
 bool GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
                      asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayArchiveSelection,
                      asTimeArray& timeArrayTargetData, asTimeArray& timeArrayTargetSelection,
@@ -61,18 +75,18 @@ bool GetAnalogsDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*
                      bool& containsNaNs);
 
 bool GetAnalogsSubDates(vector<asPredictor*> predictorsArchive, vector<asPredictor*> predictorsTarget,
-                        asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayTargetData,
-                        asResultsDates& anaDates, vector<asCriteria*> criteria, asParameters* params,
-                        int step, asResultsDates& results, bool& containsNaNs);
+                        asTimeArray& timeArrayArchiveData, asTimeArray& timeArrayTargetData, asResultsDates& anaDates,
+                        vector<asCriteria*> criteria, asParameters* params, int step, asResultsDates& results,
+                        bool& containsNaNs);
 
 bool GetAnalogsValues(asPredictand& predictand, asResultsDates& anaDates, asParameters* params,
                       asResultsValues& results);
 
-void InsertInArrays(bool isAsc, int analogsNb, float analogDate, float score, int counter,
-                    a1f& scoreArrayOneDay, a1f& dateArrayOneDay);
+void InsertInArrays(bool isAsc, int analogsNb, float analogDate, float score, int counter, a1f& scoreArrayOneDay,
+                    a1f& dateArrayOneDay);
 
-void InsertInArraysNoDuplicate(bool isAsc, int analogsNb, float analogDate, float score,
-                               a1f& scoreArrayOneDay, a1f& dateArrayOneDay);
+void InsertInArraysNoDuplicate(bool isAsc, int analogsNb, float analogDate, float score, a1f& scoreArrayOneDay,
+                               a1f& dateArrayOneDay);
 
 int FindNextDate(asTimeArray& dateArray, a1d& timeData, int iTimeStart, int iDate);
 

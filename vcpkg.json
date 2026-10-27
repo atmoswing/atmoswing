@@ -5,11 +5,11 @@
   "dependencies": [
     "vcpkg-tool-ninja",
     "eigen3",
-    "proj",
-    "sqlite3",
     "libaec",
     "curl",
     "zlib",
+    "proj",
+    "sqlite3",
     {
       "name": "netcdf-c",
       "features": [

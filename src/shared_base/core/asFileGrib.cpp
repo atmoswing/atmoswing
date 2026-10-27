@@ -373,6 +373,12 @@ vd asFileGrib::GetRealTimeArray() const {
     return realTimeArray;
 }
 
+int asFileGrib::GetEdition() const {
+    wxASSERT(_opened);
+
+    return _version;
+}
+
 double asFileGrib::GetTimeStart() const {
     wxASSERT(_opened);
 

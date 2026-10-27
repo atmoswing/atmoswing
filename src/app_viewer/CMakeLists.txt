@@ -7,6 +7,7 @@ project(viewer)
 
 find_package(GDAL REQUIRED)
 find_package(PNG REQUIRED)
+find_package(PROJ CONFIG REQUIRED)
 
 ##### SOURCE FILES
 
@@ -64,13 +65,16 @@ target_include_directories(wxplotctrl PUBLIC
         "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/"
         "${PROJECT_SOURCE_DIR}/libs/wxplotctrl/include/"
         "${PROJECT_SOURCE_DIR}/libs/wxthings/include/")
-target_link_libraries(wxplotctrl PRIVATE atmoswing_compile_options)
+# wx::core provides the toolkit compile definitions (e.g. __WXGTK__) that the
+# platform-specific wxWidgets headers require; on non-Windows these cannot be
+# auto-detected, so linking atmoswing_compile_options (headers only) is not enough.
+target_link_libraries(wxplotctrl PRIVATE atmoswing_compile_options wx::core)
 
 
 ##### DECLARE EXECUTABLE
 
 if (WIN32)
-    add_executable(atmoswing-viewer WIN32 ${src_app_viewer} ${CMAKE_SOURCE_DIR}/src/shared_base/gui/resource.rc)
+    add_executable(atmoswing-viewer WIN32 ${src_app_viewer} ${win_resources})
 elseif (UNIX AND NOT APPLE)
     add_executable(atmoswing-viewer ${src_app_viewer})
 elseif (APPLE)
@@ -93,12 +97,10 @@ endif (USE_CPPCHECK)
 ##### DEFINITIONS
 
 # Compilation flags
-if (MINGW OR MSYS OR UNIX AND NOT APPLE)
-    target_compile_options(vroomgis PRIVATE -Wno-unused-but-set-variable)
-    target_compile_options(wxplotctrl PRIVATE -Wno-unused-but-set-variable -Wno-attributes)
-elseif (WIN32)
-    target_compile_options(vroomgis PRIVATE /W2)
-    target_compile_options(wxplotctrl PRIVATE /W2)
+if (MSVC)
+    target_compile_options(wxplotctrl PRIVATE /W0)
+else ()
+    target_compile_options(wxplotctrl PRIVATE -w)
 endif ()
 
 # APP_VIEWER is target-specific. USE_GUI / version macros come from atmoswing_compile_options
@@ -109,7 +111,7 @@ target_compile_definitions(atmoswing-viewer PRIVATE APP_VIEWER)
 ##### LINKING
 
 add_dependencies(atmoswing-viewer vroomgis)
-target_link_libraries(atmoswing-viewer PRIVATE PNG::PNG GDAL::GDAL asbase vroomgis wxplotctrl)
+target_link_libraries(atmoswing-viewer PRIVATE PNG::PNG GDAL::GDAL PROJ::proj asbase vroomgis wxplotctrl)
 if (WIN32)
     target_link_libraries(atmoswing-viewer PRIVATE Psapi.lib)
 endif (WIN32)

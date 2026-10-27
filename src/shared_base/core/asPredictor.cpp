@@ -71,6 +71,7 @@ asPredictor::asPredictor(const wxString& dataId)
       _dataId(dataId),
       _parameter(ParameterUndefined),
       _gribCode({asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND}),
+      _gribCode2({asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND}),
       _unit(UnitUndefined),
       _strideAllowed(false),
       _level(0),
@@ -707,6 +708,15 @@ bool asPredictor::ExtractFromNetcdfFile(const wxString& fileName, asAreaGrid*& d
     return true;
 }
 
+const vi& asPredictor::GetGribCode(const asFileGrib& gbFile) const {
+    // Datasets defined by GRIB1 codes can also define the codes of the same variables in GRIB2 files.
+    if (gbFile.GetEdition() == 2 && _gribCode2[0] != asNOT_FOUND) {
+        return _gribCode2;
+    }
+
+    return _gribCode;
+}
+
 bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
     wxASSERT(_files.size() > 0);
 
@@ -725,7 +735,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
 
     // Set index position
     wxLogVerbose(_("Setting index position in the grib file."));
-    if (!gbFile0.SetIndexPositionAnyLevel(_gribCode)) {
+    if (!gbFile0.SetIndexPositionAnyLevel(GetGribCode(gbFile0))) {
         if (!gbFile0.Close()) {
             wxLogVerbose(_("Failed to close grib file after indexing error."));
         }
@@ -751,7 +761,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray& timeArray) {
         }
 
         wxLogVerbose(_("Setting index position in the grib file (2nd file)."));
-        if (!gbFile1.SetIndexPositionAnyLevel(_gribCode)) {
+        if (!gbFile1.SetIndexPositionAnyLevel(GetGribCode(gbFile1))) {
             if (!gbFile0.Close()) {
                 wxLogVerbose(_("Failed to close first grib file after second indexing error."));
             }
@@ -827,7 +837,7 @@ bool asPredictor::ExtractFromGribFile(const wxString& fileName, asAreaGrid*& dat
 
     // Set index position
     wxLogVerbose(_("Setting index position in grib file."));
-    if (!gbFile.SetIndexPosition(_gribCode, _level, _warnMissingLevels)) {
+    if (!gbFile.SetIndexPosition(GetGribCode(gbFile), _level, _warnMissingLevels)) {
         if (!gbFile.Close()) {
             wxLogVerbose(_("Failed to close grib file after indexing error."));
         }

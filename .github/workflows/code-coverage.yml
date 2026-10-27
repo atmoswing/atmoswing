@@ -10,12 +10,12 @@ on:
 
 env:
   BUILD_TYPE: RelWithDebInfo
-  VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
+  VCPKG_BINARY_SOURCES: 'clear;files,${{ github.workspace }}/.vcpkg-binary-cache,readwrite'
   VCPKG_DOWNLOADS: ${{ github.workspace }}/.vcpkg-downloads
 
 jobs:
   code-coverage:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     env:
       ECCODES_DEFINITION_PATH: ${{github.workspace}}/build/share/eccodes/definitions
@@ -32,6 +32,8 @@ jobs:
         with:
           path: ${{ env.FETCHCONTENT_BASE_DIR }}
           key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-
 
       - name: Cache vcpkg downloads (distfiles)
         uses: actions/cache@v6
@@ -42,25 +44,32 @@ jobs:
             ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-
             ${{ runner.os }}-vcpkg-downloads-
 
+      - name: Cache vcpkg binary cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ github.workspace }}/.vcpkg-binary-cache
+          key: ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}-
+            ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-
+
       - name: Install system libraries
         run: |
           sudo apt-get update -y
           sudo apt-get install -y autoconf automake libtool pkg-config \
             lcov libgtk-3-0 libgtk-3-dev libx11-dev libx11-xcb-dev xvfb
 
-      - name: Export GitHub Actions cache env (for vcpkg x-gha)
-        uses: actions/github-script@v9
-        with:
-          script: |
-            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
-            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
-
       - name: Set VCPKG_ROOT
         run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
 
       - name: Configure with GUI testing
         if: ${{ github.ref == 'refs/heads/ci/coverage-gui' }}
-        run: cmake -B build -G Ninja
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          retry_wait_seconds: 60
+          command: cmake -B build -G Ninja
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
              -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
@@ -74,7 +83,12 @@ jobs:
 
       - name: Configure without GUI testing
         if: ${{ github.ref != 'refs/heads/ci/coverage-gui' }}
-        run: cmake -B build -G Ninja
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          retry_wait_seconds: 60
+          command: cmake -B build -G Ninja
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
              -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
@@ -89,16 +103,16 @@ jobs:
       - name: Build and run code coverage (using xvfb)
         uses: coactions/setup-xvfb@v1
         with:
-          run: cmake --build build --target atmoswing-coverage
+          run: cmake --build build --target atmoswing-coverage -- --verbose
           working-directory: ${{github.workspace}}
 
       - name: Preparing coverage data
         working-directory: ${{github.workspace}}/build
-        run: lcov --directory . --capture --output-file coverage.info
+        run: lcov --directory . --capture --output-file coverage.info --ignore-errors mismatch,negative
 
       - name: Cleaning up coverage data
         working-directory: ${{github.workspace}}/build
-        run: lcov --remove coverage.info "/usr/*" "*/_deps/*" "*/tests/*" "*/vcpkg_installed/*" --output-file coverage.info
+        run: lcov --remove coverage.info "/usr/*" "*/_deps/*" "*/tests/*" "*/vcpkg_installed/*" --output-file coverage.info --ignore-errors unused
 
       - name: Display code coverage report
         working-directory: ${{github.workspace}}/build
@@ -109,3 +123,4 @@ jobs:
           files: ${{github.workspace}}/build/coverage.info
           fail_ci_if_error: true
           verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }}

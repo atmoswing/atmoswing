@@ -12,34 +12,23 @@
 #pragma implementation "plotdata.h"
 #endif
 
-// For compilers that support precompilation, includes "wx.h".
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
+#include <math.h>
 
 #include "wx/wx.h"  // wx 3.3 slimmed transitive includes; pull in the common GUI classes (wxWindow, wxBitmap, wxPen, wxDC) explicitly
 #include "wx/bitmap.h"
 #include "wx/dcmemory.h"
 #include "wx/msgdlg.h"
 #include "wx/textdlg.h"
-
-#endif  // WX_PRECOMP
-
-#include <math.h>
-
 #include "wx/file.h"
 #include "wx/graphics.h"
 #include "wx/math.h"
+#include "wx/textfile.h"
+#include "wx/wfstream.h"
+
 #include "wx/plotctrl/fourier.h"
 #include "wx/plotctrl/plotdata.h"
-#include "wx/textfile.h"
 #include "wx/things/medsort.h"
 #include "wx/things/range.h"
-#include "wx/wfstream.h"
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4125)  // C4125: decimal digit terminates octal escape sequence

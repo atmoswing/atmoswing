@@ -599,12 +599,21 @@ int AtmoSwingAppForecaster::OnRun() {
         asFileText filePaths(tempFile, asFile::Replace);
         vwxs filePathsVect = forecaster.GetResultsFilePaths();
 
-        filePaths.Open();
+        if (!filePaths.Open()) {
+            wxLogError(_("Failed to create the temp file with the forecast file paths."));
+            asLog::PrintToConsole(_("Failed to create the temp file with the forecast file paths.\n"));
+            return 1;
+        }
 
         for (const auto& file : filePathsVect) {
             filePaths.AddContent(file);
         }
-        filePaths.Close();
+
+        if (!filePaths.Close()) {
+            wxLogError(_("Failed to close the temp file with the forecast file paths."));
+            asLog::PrintToConsole(_("Failed to close the temp file with the forecast file paths.\n"));
+            return 1;
+        }
     }
 
     if (_doForecastPast) {

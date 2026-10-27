@@ -7,14 +7,14 @@ on:
 
 env:
   BUILD_TYPE: RelWithDebInfo
-  VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
+  VCPKG_BINARY_SOURCES: 'clear;files,${{ github.workspace }}/.vcpkg-binary-cache,readwrite'
   VCPKG_DOWNLOADS: ${{ github.workspace }}/.vcpkg-downloads
 
 jobs:
   coverity-scan:
     name: Coverity scan
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     env:
       FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/linux-coverity-make-relwithdebinfo
@@ -28,6 +28,8 @@ jobs:
         with:
           path: ${{ env.FETCHCONTENT_BASE_DIR }}
           key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-
 
       - name: Cache vcpkg downloads (distfiles)
         uses: actions/cache@v6
@@ -38,23 +40,30 @@ jobs:
             ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-
             ${{ runner.os }}-vcpkg-downloads-
 
+      - name: Cache vcpkg binary cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ github.workspace }}/.vcpkg-binary-cache
+          key: ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}-
+            ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-
+
       - name: Install system build dependencies for vcpkg
         run: |
           sudo apt-get update -y
           sudo apt-get install -y autoconf automake libtool pkg-config
 
-      - name: Export GitHub Actions cache env (for vcpkg x-gha)
-        uses: actions/github-script@v9
-        with:
-          script: |
-            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
-            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
-
       - name: Set VCPKG_ROOT
         run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
 
       - name: Configure
-        run: cmake -B build -G "Unix Makefiles"
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          retry_wait_seconds: 60
+          command: cmake -B build -G "Unix Makefiles"
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
              -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON

@@ -197,9 +197,14 @@ bool asResultsScoresMap::Save(asParametersCalibration& params) {
     ncFile.PutVarArray("scores", start3, count3, &scores[0]);
 
     // Close:save new netCDF dataset
-    ncFile.Close();
+    bool closed = ncFile.Close();
 
     ThreadsManager().CritSectionNetCDF().Leave();
+
+    if (!closed) {
+        wxLogError(_("Failed to save and close the netCDF file."));
+        return false;
+    }
 
     return true;
 }

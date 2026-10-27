@@ -13,8 +13,6 @@
  block (except the #include "fpconfig.hh" line).
 */
 
-#include "wx/defs.h"  // get __VISUALC__ defined
-
 #if defined(__VISUALC__)
 #pragma warning(disable : 4127)  // conditional expression is constant (for EAT macro)
 #endif                           // defined(__VISUALC__)

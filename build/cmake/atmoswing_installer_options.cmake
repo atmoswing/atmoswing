@@ -11,9 +11,13 @@ if (WIN32)
             FILES_MATCHING
             PATTERN "*.dll"
     )
+    # Translations: the prebuilt .mo catalogs ship in the source tree, not the
+    # build dir, so install them straight from locales/ (works for GUI and
+    # headless server builds alike).
     install(
-            DIRECTORY ${CMAKE_BINARY_DIR}/bin/fr
+            DIRECTORY ${CMAKE_SOURCE_DIR}/locales/fr
             DESTINATION .
+            FILES_MATCHING PATTERN "*.mo"
     )
 endif()
 
@@ -104,11 +108,32 @@ if (WIN32)
     # WIX related parameters
     set(CPACK_GENERATOR "WIX")
     set(CPACK_WIX_UPGRADE_GUID "E65EB70B-065D-4330-B901-83548C718A74")
-    set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_LIST_DIR}/../../art/logo/atmoswing.png")
+    set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_LIST_DIR}/../../art/logo/icon.ico")
     set(CPACK_WIX_UI_DIALOG "${CMAKE_CURRENT_LIST_DIR}/../cpack/windows/installer_bg.jpg")
     set(CPACK_WIX_UI_BANNER "${CMAKE_CURRENT_LIST_DIR}/../cpack/windows/installer_top.jpg")
     set(CPACK_WIX_CMAKE_PACKAGE_REGISTRY "AtmoSwing")
-    set(CPACK_WIX_PATCH_FILE "${CMAKE_CURRENT_LIST_DIR}/../cpack/windows/set-env-vars.xml")
+
+    # WIX environment-variable patch. Generate it so the PROJ fragment is only
+    # emitted when the Viewer is built. Without the Viewer, share/proj/proj.db is
+    # not installed, so CPack never creates the CM_CP_share.proj.proj.db
+    # component and WiX aborts with "patch fragments did not have matching IDs".
+    # The eccodes fragment is always emitted (the forecaster reads GRIB in every
+    # build).
+    set(_wix_patch_content "<CPackWiXPatch>\n")
+    string(APPEND _wix_patch_content
+            "  <CPackWiXFragment Id=\"CM_CP_share.eccodes.definitions.boot.def\">\n"
+            "    <Environment Id=\"ECCODES_DEFINITION_PATH\" Action=\"set\" Name=\"ECCODES_DEFINITION_PATH\" Value=\"[INSTALL_ROOT]share\\eccodes\\definitions\" System=\"no\"/>\n"
+            "  </CPackWiXFragment>\n")
+    if (BUILD_VIEWER)
+        string(APPEND _wix_patch_content
+                "  <CPackWiXFragment Id=\"CM_CP_share.proj.proj.db\">\n"
+                "    <Environment Id=\"PROJ_LIB\" Action=\"set\" Name=\"PROJ_LIB\" Value=\"[INSTALL_ROOT]share\\proj\" System=\"no\"/>\n"
+                "    <Environment Id=\"PROJ_DATA\" Action=\"set\" Name=\"PROJ_DATA\" Value=\"[INSTALL_ROOT]share\\proj\" System=\"no\"/>\n"
+                "  </CPackWiXFragment>\n")
+    endif (BUILD_VIEWER)
+    string(APPEND _wix_patch_content "</CPackWiXPatch>\n")
+    file(WRITE "${CMAKE_BINARY_DIR}/wix/set-env-vars.xml" "${_wix_patch_content}")
+    set(CPACK_WIX_PATCH_FILE "${CMAKE_BINARY_DIR}/wix/set-env-vars.xml")
 endif (WIN32)
 
 if (UNIX AND NOT APPLE)
@@ -116,6 +141,13 @@ if (UNIX AND NOT APPLE)
     # builds (e.g. DEB packaging) place files under the right prefix instead of the hard-coded
     # /usr/share. CMAKE_INSTALL_DATADIR defaults to "share" → final paths are <prefix>/share/...
     install(FILES art/logo/atmoswing.png DESTINATION ${CMAKE_INSTALL_DATADIR}/icons)
+    # Translations: install the prebuilt .mo catalogs into the standard gettext
+    # layout (<prefix>/share/locale/fr/LC_MESSAGES) where wxLocale looks for them.
+    install(
+            DIRECTORY ${CMAKE_SOURCE_DIR}/locales/fr/
+            DESTINATION ${CMAKE_INSTALL_DATADIR}/locale/fr/LC_MESSAGES
+            FILES_MATCHING PATTERN "*.mo"
+    )
     if (BUILD_FORECASTER)
         install(FILES build/cpack/linux/atmoswing-forecaster.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     endif (BUILD_FORECASTER)

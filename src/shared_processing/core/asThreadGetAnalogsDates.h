@@ -31,6 +31,7 @@
 
 #include "asHeadersBase.h"
 #include "asParameters.h"
+#include "asProcessor.h"
 #include "asThread.h"
 
 class asPredictor;
@@ -46,7 +47,9 @@ class asThreadGetAnalogsDates : public asThread {
                             asTimeArray* timeArrayTargetData, asTimeArray* timeArrayTargetSelection,
                             vector<asCriteria*> criteria, asParameters* params, int step, a1i& vRowsNb, a1i& vColsNb,
                             int start, int end, a2f* finalAnalogsCriteria, a2f* finalAnalogsDates, bool* containsNaNs,
-                            bool allowDuplicateDates, bool* success);
+                            bool allowDuplicateDates, bool* success,
+                            const std::vector<asProcessor::FlatPredictorData>* flatArchive,
+                            const std::vector<asProcessor::FlatPredictorData>* flatTarget);
 
     virtual ~asThreadGetAnalogsDates();
 
@@ -63,8 +66,6 @@ class asThreadGetAnalogsDates : public asThread {
     vector<asCriteria*> _criteria;
     asParameters* _params;
     int _step;
-    vpa2f _vTargData;
-    vpa2f _vArchData;
     a1i _vRowsNb;
     a1i _vColsNb;
     int _start;
@@ -74,6 +75,8 @@ class asThreadGetAnalogsDates : public asThread {
     bool* _pContainsNaNs;
     bool _allowDuplicateDates;
     bool* _success;
+    const std::vector<asProcessor::FlatPredictorData>* _flatArchive;
+    const std::vector<asProcessor::FlatPredictorData>* _flatTarget;
 };
 
 #endif

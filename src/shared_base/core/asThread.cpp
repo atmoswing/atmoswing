@@ -39,16 +39,9 @@ wxThread::ExitCode asThread::Entry() {
 }
 
 void asThread::OnExit() {
-    // Set pointer to null.
-    wxThreadIdType id = GetId();
-    ThreadsManager().SetNull(id);
-
-    // Check if the list is empty
-    if (ThreadsManager().GetRunningThreadsNb() == 0) {
-        // Signal the threads manager that there are no more threads left
-        if (ThreadsManager().GetWaitingUntilAllDone()) {
-            ThreadsManager().SetWaitingUntilAllDone(false);
-            //            ThreadsManager().SemAllDone().Post();
-        }
-    }
+    // wxWidgets calls this once Entry() has returned and before it deletes this (detached)
+    // object, so it is the only point at which the work is known to be complete. Deregister
+    // by pointer: GetId() is a wxThreadIdType, which the OS recycles once a thread ends, so
+    // an id can match a different thread that is still running.
+    ThreadsManager().RemoveThread(this);
 }

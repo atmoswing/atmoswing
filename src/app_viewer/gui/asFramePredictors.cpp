@@ -685,7 +685,7 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
                                                                fittedRect);
             ThreadsManager().AddThread(thread);
 #else
-            msg->_parentManager->Zoom(fittedRect);
+            msg->m_parentManager->Zoom(fittedRect);
 #endif
         } else {
             if (_displayPanelLeft) {
@@ -723,7 +723,7 @@ void asFramePredictors::OnToolAction(wxCommandEvent& event) {
                                                                 fittedRect);
             ThreadsManager().AddThread(thread);
 #else
-            msg->_parentManager->ZoomOut(fittedRect);
+            msg->m_parentManager->ZoomOut(fittedRect);
 #endif
         } else {
             if (_displayPanelLeft) {

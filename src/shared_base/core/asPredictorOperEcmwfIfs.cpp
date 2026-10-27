@@ -59,41 +59,49 @@ bool asPredictorOperEcmwfIfs::Init() {
     if (_dataId.IsSameAs("z", false)) {
         _parameter = Geopotential;
         _gribCode = {0, 128, 129, 100};
+        _gribCode2 = {0, 3, 4, 100};
         _unit = m2_s2;
         _fStr.hasLevelDim = true;
     } else if (_dataId.IsSameAs("gh", false)) {
         _parameter = GeopotentialHeight;
         _gribCode = {0, 128, 156, 100};
+        _gribCode2 = {0, 3, 5, 100};
         _unit = m;
         _fStr.hasLevelDim = true;
     } else if (IsAirTemperature()) {
         _parameter = AirTemperature;
         _gribCode = {0, 128, 130, 100};
+        _gribCode2 = {0, 0, 0, 100};
         _unit = degK;
         _fStr.hasLevelDim = true;
     } else if (IsVerticalVelocity()) {
         _parameter = VerticalVelocity;
         _gribCode = {0, 128, 135, 100};
+        _gribCode2 = {0, 2, 8, 100};
         _unit = Pa_s;
         _fStr.hasLevelDim = true;
     } else if (IsRelativeHumidity()) {
         _parameter = RelativeHumidity;
         _gribCode = {0, 128, 157, 100};
+        _gribCode2 = {0, 1, 1, 100};
         _unit = percent;
         _fStr.hasLevelDim = true;
     } else if (IsUwindComponent()) {
         _parameter = Uwind;
         _gribCode = {0, 128, 131, 100};
+        _gribCode2 = {0, 2, 2, 100};
         _unit = _s;
         _fStr.hasLevelDim = true;
     } else if (IsVwindComponent()) {
         _parameter = Vwind;
         _gribCode = {0, 128, 132, 100};
+        _gribCode2 = {0, 2, 3, 100};
         _unit = _s;
         _fStr.hasLevelDim = true;
     } else if (IsTotalColumnWaterVapour()) {
         _parameter = PrecipitableWater;
         _gribCode = {0, 128, 137, 1};
+        _gribCode2 = {0, 1, 64, 1};
         _unit = mm;
     } else if (IsPrecipitableWater()) {
         _parameter = PrecipitableWater;

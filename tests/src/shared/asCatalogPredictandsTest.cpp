@@ -77,7 +77,7 @@ TEST(CatalogPredictand, LoadDataProp) {
     catalog.Load();
 
     EXPECT_EQ(1, catalog.GetStationId(0));
-    wxString stationName = wxString(L"G\u00FCtsch ob Andermatt", wxConvUTF8);
+    wxString stationName = wxString(L"G\u00FCtsch ob Andermatt");
     wxString stationNameFile = catalog.GetStationName(0);
     int samestr = stationNameFile.Cmp(stationName);
     EXPECT_EQ(0, samestr);

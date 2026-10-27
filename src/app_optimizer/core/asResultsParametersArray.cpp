@@ -195,7 +195,10 @@ bool asResultsParametersArray::Print(int fromIndex) const {
 
     fileRes.AddContent(content);
 
-    fileRes.Close();
+    if (!fileRes.Close()) {
+        wxLogError(_("Failed to close the results file."));
+        return false;
+    }
 
     return true;
 }

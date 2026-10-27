@@ -1,9 +1,8 @@
-# Base on Ubuntu 22.07
+# Base on Ubuntu 22.04
 
 # Manually run:
 sudo apt-get update
-sudo apt-get install -y git ca-certificates python3 python3-pip
-python3 -m pip install conan
+sudo apt-get install -y git ca-certificates
 
 sudo reboot
 

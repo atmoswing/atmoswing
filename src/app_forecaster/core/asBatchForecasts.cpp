@@ -120,9 +120,7 @@ bool asBatchForecasts::Save() const {
     }
     fileBatch.AddChild(nodeForecasts);
 
-    fileBatch.Save();
-
-    return true;
+    return fileBatch.Save();
 }
 
 int asBatchForecasts::GetForecastsNb() const {

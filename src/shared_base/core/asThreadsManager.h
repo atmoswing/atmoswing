@@ -32,6 +32,10 @@
 #include <wx/event.h>   // wxCloseEvent
 #include <wx/thread.h>  // wxCriticalSection, wxSemaphore, wxThreadIdType
 
+#include <condition_variable>
+#include <map>
+#include <mutex>
+
 #include "asHeadersBase.h"
 
 class asThread;
@@ -54,7 +58,13 @@ class asThreadsManager : public wxObject {
 
     void WaitForFreeThread(int type);
 
-    void SetNull(wxThreadIdType id);
+    /**
+     * Called by asThread::OnExit() once Entry() has returned, before wxWidgets deletes the
+     * (detached) thread object. Identifies the thread by pointer, not by wxThreadIdType:
+     * thread ids are recycled by the OS once a thread terminates, so an id can match a
+     * different, still-running thread.
+     */
+    void RemoveThread(asThread* thread);
 
     bool CleanArray();
 
@@ -110,8 +120,24 @@ class asThreadsManager : public wxObject {
 
   protected:
   private:
+    /**
+     * Number of threads of the given type (-1 for all) that have been registered but whose
+     * Entry() has not returned yet. Must be called with _pendingMutex held.
+     */
+    int GetPendingNbLocked(int type) const;
+
+    /** Drops one pending registration and wakes up Wait() / WaitForFreeThread(). */
+    void ReleasePending(int type);
+
     int _idCounter;
     vector<asThread*> _threads;
+    // Completion tracking. Deliberately independent of wxThread's own state: wxWidgets sets
+    // STATE_EXITED *before* running OnExit() and deleting a detached thread, so polling
+    // wxThread::IsRunning() reports a worker as finished while it is still tearing down.
+    mutable std::mutex _pendingMutex;
+    std::condition_variable _pendingCondition;
+    std::map<int, int> _pendingByType;
+    int _pendingTotal;
     wxCriticalSection _critSectionManager;
     wxCriticalSection _critSectionPreloadedData;
     wxCriticalSection _critSectionNetCDF;

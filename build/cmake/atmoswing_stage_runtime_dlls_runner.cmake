@@ -7,7 +7,9 @@
 #   WX_BUILD_DIR      — wxWidgets_BINARY_DIR
 #   ECCODES_BUILD_DIR — eccodes_BINARY_DIR
 #   BUILD_DIR         — CMAKE_BINARY_DIR
-#   VCPKG_BIN_DIR     — ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin (may be empty)
+#   VCPKG_BIN_DIR     — the vcpkg bin dir for the current config, i.e.
+#                       ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}[/debug]/bin
+#                       (may be empty)
 #   USE_GUI           — ON/OFF
 
 set(_dlls)
@@ -37,11 +39,14 @@ endif ()
 
 list(REMOVE_DUPLICATES _dlls)
 
-foreach (_dll IN LISTS _dlls)
-    get_filename_component(_dll_name "${_dll}" NAME)
-    if (NOT EXISTS "${DEST_DIR}/${_dll_name}"
-            OR NOT "${DEST_DIR}/${_dll_name}" IS_NEWER_THAN "${_dll}")
-        message(STATUS "Staging ${_dll_name} -> ${DEST_DIR}")
-        file(COPY "${_dll}" DESTINATION "${DEST_DIR}")
-    endif ()
-endforeach ()
+# copy_if_different compares content, not timestamps. That matters when the
+# build type of an existing build dir is switched: the debug and release DLLs
+# share their names, and the stale one is not necessarily older than its
+# replacement, so a timestamp check would leave the wrong config in place.
+execute_process(
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different ${_dlls} "${DEST_DIR}"
+        RESULT_VARIABLE _copy_result)
+
+if (NOT _copy_result EQUAL 0)
+    message(FATAL_ERROR "Failed staging runtime DLLs to ${DEST_DIR}")
+endif ()

@@ -52,7 +52,7 @@ endif (USE_GUI)
 
 if (WIN32)
     if (USE_GUI)
-        add_executable(atmoswing-optimizer WIN32 ${src_app_optimizer} ${CMAKE_SOURCE_DIR}/src/shared_base/gui/resource.rc)
+        add_executable(atmoswing-optimizer WIN32 ${src_app_optimizer} ${win_resources})
     else (USE_GUI)
         add_executable(atmoswing-optimizer ${src_app_optimizer})
     endif (USE_GUI)

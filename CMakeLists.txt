@@ -19,6 +19,9 @@ set(CMAKE_TOOLCHAIN_FILE
         "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
         CACHE STRING "Vcpkg toolchain file")
 set(VCPKG_LIBRARY_LINKAGE "static")
+# Overlay ports: libaec is fetched from its GitHub mirror instead of the
+# upstream gitlab.dkrz.de host, which intermittently rate-limits CI (HTTP 429).
+set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/build/vcpkg-overlay-ports")
 
 # ---- Build target selection (declared before project() so VCPKG_MANIFEST_FEATURES can be derived) ----
 set(BUILD_FORECASTER ON  CACHE BOOL "Do you want to build AtmoSwing Forecaster ?")
@@ -210,9 +213,15 @@ FetchContent_Declare(wxWidgets
         GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
         GIT_TAG        v3.3.2
         GIT_SHALLOW    TRUE
-        GIT_PROGRESS   TRUE
         UPDATE_DISCONNECTED TRUE)
 FetchContent_MakeAvailable(wxWidgets)
+
+# Suppress all warnings in wxWidgets — it is a third-party library.
+if (MSVC)
+    set_property(DIRECTORY "${wxwidgets_SOURCE_DIR}" APPEND PROPERTY COMPILE_OPTIONS /W0)
+else ()
+    set_property(DIRECTORY "${wxwidgets_SOURCE_DIR}" APPEND PROPERTY COMPILE_OPTIONS -w)
+endif ()
 
 target_include_directories(atmoswing_compile_options INTERFACE ${wxWidgets_SOURCE_DIR}/include)
 if (WIN32)
@@ -257,10 +266,17 @@ if (BUILD_VIEWER)
     FetchContent_Declare(vroomgis
             GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
             GIT_TAG        c87215c9d9fb086eefe75d6efbd10b98ac8b7290
-            GIT_PROGRESS   TRUE
             SOURCE_SUBDIR  vroomgis
             UPDATE_DISCONNECTED TRUE)
     FetchContent_MakeAvailable(vroomgis)
+    # Suppress all warnings in vroomgis — it is a third-party library.
+    if (TARGET vroomgis)
+        if (MSVC)
+            target_compile_options(vroomgis PRIVATE /W0)
+        else ()
+            target_compile_options(vroomgis PRIVATE -w)
+        endif ()
+    endif ()
 endif ()
 
 # eccodes
@@ -281,6 +297,72 @@ else ()
     set(ENABLE_JPG_LIBJASPER OFF CACHE BOOL "ecCodes JPEG backend: JasPer" FORCE)
     set(ENABLE_JPG_LIBOPENJPEG OFF CACHE BOOL "ecCodes JPEG backend: OpenJPEG" FORCE)
 endif ()
+
+# ecbuild's __addDeps() strips the `debug` / `optimized` keywords out of the
+# library lists it forwards to target_link_libraries() (see its
+# ecbuild_add_library.cmake). With vcpkg that leaves *both* configurations'
+# import libraries on the eccodes link line, and the linker silently keeps
+# whichever resolves the symbols first — the release one. A Debug eccodes then
+# pulls in the release jasper/jpeg DLLs, putting two CRTs (and two heaps) in a
+# single process.
+#
+# find_package(Jasper) builds that pair via select_library_configurations(),
+# which emits a bare path with no keywords when both configurations resolve to
+# the same file. So resolve the pair here, before eccodes runs its own
+# find_package(Jasper), and leave ecbuild nothing to strip.
+function(_atmoswing_pin_library_to_config basename)
+    get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+    if (_isMultiConfig OR NOT CMAKE_BUILD_TYPE)
+        # The config is only known at build time; nothing to pin at configure time.
+        return()
+    endif ()
+
+    # Snapshot the values as first discovered. The pin below overwrites the two
+    # cache entries, so re-configuring — or switching CMAKE_BUILD_TYPE in an
+    # existing build dir — must not re-derive the pin from an already-pinned
+    # value, which would latch whichever config was pinned first.
+    foreach (_cfg RELEASE DEBUG)
+        if (NOT DEFINED _atmoswing_unpinned_${basename}_${_cfg})
+            set(_atmoswing_unpinned_${basename}_${_cfg} "${${basename}_LIBRARY_${_cfg}}"
+                    CACHE INTERNAL "Unpinned ${basename} ${_cfg} library")
+        endif ()
+    endforeach ()
+
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(_pinned "${_atmoswing_unpinned_${basename}_DEBUG}")
+    else ()
+        set(_pinned "${_atmoswing_unpinned_${basename}_RELEASE}")
+    endif ()
+
+    # Nothing to do when the package has no per-config split for this build type.
+    if (NOT _pinned OR _pinned MATCHES "NOTFOUND")
+        return()
+    endif ()
+
+    set(${basename}_LIBRARY_RELEASE "${_pinned}" CACHE FILEPATH "Path to a library." FORCE)
+    set(${basename}_LIBRARY_DEBUG "${_pinned}" CACHE FILEPATH "Path to a library." FORCE)
+
+    # The cache alone is not enough: FindJasper/FindJPEG only re-run
+    # select_library_configurations() when <NAME>_LIBRARIES is still unset, and
+    # eccodes is add_subdirectory'd, so it inherits whatever this scope holds.
+    # Set the plain variables too, so the pin holds either way.
+    set(${basename}_LIBRARY "${_pinned}" PARENT_SCOPE)
+    set(${basename}_LIBRARIES "${_pinned}" PARENT_SCOPE)
+
+    message(STATUS "Pinned ${basename} to its ${CMAKE_BUILD_TYPE} library: ${_pinned}")
+endfunction()
+
+if (ENABLE_JPG_LIBJASPER)
+    # Also runs find_package(JPEG); both populate <NAME>_LIBRARY_{RELEASE,DEBUG}.
+    find_package(Jasper QUIET)
+    _atmoswing_pin_library_to_config(JASPER)
+    _atmoswing_pin_library_to_config(JPEG)
+    # FindJasper composes JASPER_LIBRARIES out of both; rebuild it from the pins.
+    if (JASPER_LIBRARY AND JPEG_LIBRARIES)
+        set(JASPER_LIBRARIES ${JASPER_LIBRARY} ${JPEG_LIBRARIES})
+    endif ()
+endif ()
+
 set(ECBUILD_LOG_LEVEL "OFF")  # Disable all logging
 set(ECBUILD_LOG_FILE "${CMAKE_BINARY_DIR}/ecbuild.log")  # Set proper log file location
 if (WIN32)
@@ -291,7 +373,6 @@ FetchContent_Declare(eccodes
         GIT_REPOSITORY https://github.com/ecmwf/eccodes.git
         GIT_TAG 2.46.0
         GIT_SHALLOW TRUE
-        GIT_PROGRESS TRUE
         UPDATE_DISCONNECTED TRUE
         PATCH_COMMAND ${CMAKE_COMMAND}
                       -DSOURCE_DIR=<SOURCE_DIR>
@@ -299,6 +380,15 @@ FetchContent_Declare(eccodes
                       -P ${CMAKE_SOURCE_DIR}/build/cmake/apply_git_patch_if_needed.cmake
 )
 FetchContent_MakeAvailable(eccodes)
+
+# Suppress all warnings in eccodes — it is a third-party library.
+if (TARGET eccodes)
+    if (MSVC)
+        target_compile_options(eccodes PRIVATE /W0)
+    else ()
+        target_compile_options(eccodes PRIVATE -w)
+    endif ()
+endif ()
 
 # Allow find_package(eccodes) to locate ecbuild's generated config in sub-builds
 # (needed when CMP0168 is not available, i.e. CMake < 3.30)
@@ -391,8 +481,8 @@ if (USE_CODECOV)
     append_coverage_compiler_flags()
     set(COVERAGE_EXCLUDES '/usr/*'
         '**/tests/*'
-        '**/.conan/*'
-        '**/_deps/*')
+        '**/_deps/*'
+        '**/vcpkg_installed/*')
     setup_target_for_coverage(NAME atmoswing-coverage EXECUTABLE atmoswing-tests DEPENDENCIES atmoswing-tests)
 endif (USE_CODECOV)
 
@@ -402,6 +492,19 @@ endif (USE_CODECOV)
 # Provides atmoswing_stage_runtime_dlls(<target>); each app subdir calls it on
 # its executable so the DLL staging runs as POST_BUILD on the exe.
 include(atmoswing_stage_runtime_dlls)
+
+# Resources added to every Windows GUI executable: resource.rc holds the application
+# icon, dpi_aware.manifest marks the process as per-monitor DPI aware so that text and
+# lines are not bitmap-stretched (and thus blurry) on high-DPI screens. CMake forwards
+# .manifest sources to the manifest tool, which merges them into the manifest the MSVC
+# linker generates; other Windows compilers do not get that merging step, so the
+# manifest is only added for MSVC.
+if (WIN32)
+    set(win_resources ${CMAKE_SOURCE_DIR}/src/shared_base/gui/resource.rc)
+    if (MSVC)
+        list(APPEND win_resources ${CMAKE_SOURCE_DIR}/src/shared_base/gui/dpi_aware.manifest)
+    endif ()
+endif ()
 
 add_subdirectory(src/shared_base)
 if (BUILD_FORECASTER OR BUILD_OPTIMIZER OR BUILD_DOWNSCALER)
@@ -418,6 +521,24 @@ if (BUILD_DOWNSCALER)
 endif()
 if (BUILD_VIEWER)
     add_subdirectory(src/app_viewer)
+    # Stage PROJ data to the build tree so tests can find it via PROJ_DATA and
+    # the installer can include it. In vcpkg the CMake config and data files
+    # (proj.db, *.tif grid shifts) share the same directory, so PROJ_DIR (set by
+    # find_package(PROJ) in the viewer subdir) is the right source. Fall back to
+    # common system paths for non-vcpkg installs.
+    if (NOT EXISTS "${CMAKE_BINARY_DIR}/share/proj/proj.db")
+        foreach(_proj_data_candidate "${PROJ_DIR}" "/usr/share/proj" "/usr/local/share/proj")
+            if (EXISTS "${_proj_data_candidate}/proj.db")
+                file(GLOB _proj_data_files
+                        "${_proj_data_candidate}/proj.db"
+                        "${_proj_data_candidate}/*.tif")
+                file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/proj")
+                file(COPY ${_proj_data_files} DESTINATION "${CMAKE_BINARY_DIR}/share/proj")
+                message(STATUS "Staged PROJ data from ${_proj_data_candidate}")
+                break()
+            endif()
+        endforeach()
+    endif()
 endif()
 if (BUILD_TESTS)
     add_subdirectory(tests)

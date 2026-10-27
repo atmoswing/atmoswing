@@ -44,7 +44,7 @@ class asCriteria : public wxObject {
 
     ~asCriteria() override;
 
-    virtual float Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const = 0;
+    virtual float Assess(const ra2f& refData, const ra2f& evalData, int rowsNb, int colsNb) const = 0;
 
     void SetDataRange(const asPredictor* data);
 

@@ -3,6 +3,11 @@
 project(processing)
 
 
+##### DEPENDENCIES
+
+find_package(PROJ CONFIG REQUIRED)
+
+
 ##### SOURCE FILES
 
 # List source files
@@ -70,4 +75,4 @@ endif (USE_CPPCHECK)
 # asbase PUBLIC-links to atmoswing_compile_options, so consumers of asprocessing inherit
 # the shared compile options transitively through this chain.
 add_dependencies(asprocessing asbase)
-target_link_libraries(asprocessing PUBLIC asbase)
+target_link_libraries(asprocessing PUBLIC asbase PROJ::proj)

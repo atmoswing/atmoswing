@@ -105,9 +105,14 @@ bool asResultsScores::Save() {
     ncFile.PutVarArray("scores", start1D, count1D, &_scores(0));
 
     // Close:save new netCDF dataset
-    ncFile.Close();
+    bool closed = ncFile.Close();
 
     ThreadsManager().CritSectionNetCDF().Leave();
+
+    if (!closed) {
+        wxLogError(_("Failed to save and close the netCDF file."));
+        return false;
+    }
 
     return true;
 }
@@ -137,9 +142,14 @@ bool asResultsScores::Load() {
     ncFile.GetVar("target_dates", &_targetDates[0]);
     ncFile.GetVar("scores", &_scores[0]);
 
-    ncFile.Close();
+    bool closed = ncFile.Close();
 
     ThreadsManager().CritSectionNetCDF().Leave();
+
+    if (!closed) {
+        wxLogError(_("Failed to close the netCDF file."));
+        return false;
+    }
 
     return true;
 }

@@ -12,19 +12,8 @@
 #pragma implementation "fparser.hh"
 #endif
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
-
 #include "wx/defs.h"
 #include "wx/string.h"
-
-#endif
 
 #if defined(__VISUALC__) && wxUSE_DEBUG_NEW_ALWAYS && defined(new)
 #undef new  // turn off wxWidgets debug code

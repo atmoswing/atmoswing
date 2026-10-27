@@ -1610,7 +1610,7 @@ TEST(Utils, RandomUniformDistributionToFile) {
 
     fileRes.AddContent(content);
 
-    fileRes.Close();
+    EXPECT_TRUE(fileRes.Close());
 }
 
 // View resulting file on Matlab:
@@ -1647,5 +1647,5 @@ TEST(Utils, RandomNormalDistributionToFile) {
 
     fileRes.AddContent(content);
 
-    fileRes.Close();
+    EXPECT_TRUE(fileRes.Close());
 }

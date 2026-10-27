@@ -36,7 +36,7 @@ class asCriteriaSAD : public asCriteria {
 
     ~asCriteriaSAD() override;
 
-    float Assess(const a2f& refData, const a2f& evalData, int rowsNb, int colsNb) const override;
+    float Assess(const ra2f& refData, const ra2f& evalData, int rowsNb, int colsNb) const override;
 
   protected:
   private:

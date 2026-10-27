@@ -36,14 +36,44 @@
 // Safe: Critical section defined within
 asThreadsManager::asThreadsManager()
     : _idCounter(-1),
+      _pendingTotal(0),
       _waitingUntilAllDone(true),
       _cancelled(false),
       _maxThreadsNb(-1),
       _priority(-1) {}
 
+int asThreadsManager::GetPendingNbLocked(int type) const {
+    if (type < 0) {
+        return _pendingTotal;
+    }
+
+    auto it = _pendingByType.find(type);
+
+    return it == _pendingByType.end() ? 0 : it->second;
+}
+
+void asThreadsManager::ReleasePending(int type) {
+    {
+        std::lock_guard<std::mutex> lock(_pendingMutex);
+        auto it = _pendingByType.find(type);
+        if (it != _pendingByType.end() && it->second > 0) {
+            --it->second;
+            --_pendingTotal;
+        } else {
+            wxLogError(_("Thread accounting underflow for type %d."), type);
+        }
+    }
+
+    _pendingCondition.notify_all();
+}
+
 asThreadsManager::~asThreadsManager() {
+    // Destroying the manager while workers are still running would leave them calling into
+    // freed members from OnExit(). Callers are expected to have waited already; flag it
+    // rather than crash obscurely later.
     if (GetRunningThreadsNb() > 0) {
-        CleanArray();
+        wxLogError(_("The threads manager is being destroyed while %d thread(s) are still running."),
+                   GetRunningThreadsNb());
     }
 }
 
@@ -65,34 +95,19 @@ void asThreadsManager::OnClose(wxCloseEvent&) {
     }
 }
 
-// Safety to manage by caller
+// Safe: Critical section defined within
 int asThreadsManager::GetTotalThreadsNb() {
+    wxCriticalSectionLocker lock(_critSectionManager);
+
     return (int)_threads.size();
 }
 
-// Safe: Critical section defined within
+// Number of threads whose Entry() has not returned yet. Counted from our own registrations
+// rather than from wxThread::IsRunning(), which turns false too early (see _pendingMutex).
 int asThreadsManager::GetRunningThreadsNb(int type) {
-    _critSectionManager.Enter();
+    std::lock_guard<std::mutex> lock(_pendingMutex);
 
-    int counter = 0;
-
-    for (auto& thread : _threads) {
-        if (thread != nullptr) {
-            if (thread->IsRunning()) {
-                if (type == -1) {
-                    counter++;
-                } else {
-                    if (thread->GetType() == type) {
-                        counter++;
-                    }
-                }
-            }
-        }
-    }
-
-    _critSectionManager.Leave();
-
-    return counter;
+    return GetPendingNbLocked(type);
 }
 
 // Safe: Critical section defined within
@@ -109,12 +124,8 @@ int asThreadsManager::GetFreeDevice(int devicesNb) {
     for (int device = 0; device < devicesNb; ++device) {
         int counter = 0;
         for (auto& thread : _threads) {
-            if (thread != nullptr) {
-                if (thread->IsRunning()) {
-                    if (thread->GetDevice() == device) {
-                        counter++;
-                    }
-                }
+            if (thread->GetDevice() == device) {
+                counter++;
             }
         }
         if (counter == 0) {
@@ -152,22 +163,24 @@ int asThreadsManager::GetAvailableThreadsNb() {
 
 // Safe: Critical section defined within
 bool asThreadsManager::AddThread(asThread* thread) {
-    // Check if needs to cleanup the threads array. Critical section locked within
-    int runningThreads = GetRunningThreadsNb();
-    if (runningThreads == 0) {
-        CleanArray();
+    const int type = thread->GetType();
+
+    // Register the thread as pending *before* it can possibly start, so that a Wait() issued
+    // immediately after this call cannot observe zero and return early.
+    {
+        std::lock_guard<std::mutex> lock(_pendingMutex);
+        ++_pendingByType[type];
+        ++_pendingTotal;
     }
 
     // Create. Failure here means the thread was never spawned — direct `delete` is safe
     // (no race with thread teardown; the thread is not yet in `_threads`).
     if (thread->Create() != wxTHREAD_NO_ERROR) {
         wxLogError(_("Cannot create the thread !"));
+        ReleasePending(type);
         delete thread;
         return false;
     }
-
-    // Set the thread Id
-    wxASSERT(thread->GetId() >= 1);
 
     // Check the number of threads currently running
     if (GetAvailableThreadsNb() < 1) {
@@ -178,83 +191,80 @@ bool asThreadsManager::AddThread(asThread* thread) {
     if (_priority < 0) Init();
     thread->SetPriority(_priority);
 
-    // Add to array
+    // Add to array before Run(): once running, the thread may finish and call RemoveThread()
+    // at any moment, and RemoveThread() has to find it there.
     _critSectionManager.Enter();
     _threads.push_back(thread);
-    wxASSERT(thread->GetId() >= 1);
     _critSectionManager.Leave();
 
-    // Run. If Run() fails after the thread was inserted into `_threads`, we need to clear
-    // the dangling pointer under the critical section *before* deleting it — otherwise
-    // SetNull/GetRunningThreadsNb/etc. could observe a freed pointer.
-    // asThread is detached (wxTHREAD_DETACHED); for the Run-failed case the OS-level thread
-    // typically did not start, so direct `delete` of the wxThread object is the cleanup.
+    // Run. If Run() fails the OS-level thread never started, so OnExit() will not run and we
+    // have to undo both the array entry and the pending registration ourselves.
     if (thread->Run() != wxTHREAD_NO_ERROR) {
         wxLogError(_("Can't run the thread!"));
         _critSectionManager.Enter();
-        for (auto& t : _threads) {
-            if (t == thread) {
-                t = nullptr;
+        for (auto it = _threads.begin(); it != _threads.end(); ++it) {
+            if (*it == thread) {
+                _threads.erase(it);
                 break;
             }
         }
         _critSectionManager.Leave();
+        ReleasePending(type);
         delete thread;
         return false;
     }
 
+    _critSectionManager.Enter();
     _cancelled = false;
     _waitingUntilAllDone = true;
+    _critSectionManager.Leave();
 
     return true;
 }
 
-void asThreadsManager::SetNull(wxThreadIdType id) {
+void asThreadsManager::RemoveThread(asThread* thread) {
+    const int type = thread->GetType();
+    bool found = false;
+
+    // Drop the entry before releasing the pending count: once the count reaches zero a
+    // waiter may return, and by then the manager must no longer hold a pointer to a thread
+    // object that wxWidgets is about to delete.
     _critSectionManager.Enter();
-
-    for (auto& thread : _threads) {
-        if (thread != nullptr) {
-            wxThreadIdType thisid = thread->GetId();
-
-            if (thisid == id) {
-                thread = nullptr;
-                _critSectionManager.Leave();
-                return;
-            }
+    for (auto it = _threads.begin(); it != _threads.end(); ++it) {
+        if (*it == thread) {
+            _threads.erase(it);
+            found = true;
+            break;
         }
     }
-
-    wxLogError(_("Thread %d couldn't be removed."), id);
-
     _critSectionManager.Leave();
+
+    if (!found) {
+        wxLogError(_("Thread %p couldn't be removed."), static_cast<void*>(thread));
+    }
+
+    ReleasePending(type);
 }
 
 // Safe: Critical section defined within
 bool asThreadsManager::CleanArray() {
     _critSectionManager.Enter();
 
-    if (GetTotalThreadsNb() > 0) {
-        for (auto& thread : _threads) {
-            if (thread != nullptr) {
-                _critSectionManager.Leave();
-                return true;
-            }
-        }
-
-        // If nothing is running, clear array.
-        _threads.clear();
+    // RemoveThread() erases each entry as its thread finishes, so the array only ever holds
+    // live threads. Anything left here is still running and must not be touched.
+    bool empty = _threads.empty();
+    if (empty) {
         _idCounter = 0;
     }
 
     _critSectionManager.Leave();
 
-    return true;
+    return empty;
 }
 
 void asThreadsManager::Wait(int type) {
-    while (GetRunningThreadsNb(type) > 0) {
-        wxMilliSleep(10);
-    }
+    std::unique_lock<std::mutex> lock(_pendingMutex);
+    _pendingCondition.wait(lock, [this, type] { return GetPendingNbLocked(type) == 0; });
 }
 
 bool asThreadsManager::HasFreeThread(int type) {
@@ -266,27 +276,31 @@ bool asThreadsManager::HasFreeThread(int type) {
 void asThreadsManager::WaitForFreeThread(int type) {
     if (_maxThreadsNb < 1) Init();
 
-    while (_maxThreadsNb - GetRunningThreadsNb(type) <= 0) {
-        wxMilliSleep(10);
-    }
+    // Snapshot under its own critical section: _maxThreadsNb is written by Init().
+    _critSectionManager.Enter();
+    const int maxThreadsNb = _maxThreadsNb;
+    _critSectionManager.Leave();
+
+    std::unique_lock<std::mutex> lock(_pendingMutex);
+    _pendingCondition.wait(lock, [this, type, maxThreadsNb] { return maxThreadsNb - GetPendingNbLocked(type) > 0; });
 }
 
 void asThreadsManager::PauseAll() {
-    for (int iThread = 0; iThread < GetTotalThreadsNb(); iThread++) {
-        if (_threads[iThread] != nullptr) {
-            if (_threads[iThread]->IsRunning()) {
-                //                _threads[iThread]->Pause();
-            }
+    wxCriticalSectionLocker lock(_critSectionManager);
+
+    for (auto& thread : _threads) {
+        if (thread->IsRunning()) {
+            //            thread->Pause();
         }
     }
 }
 
 void asThreadsManager::ResumeAll() {
-    for (int iThread = 0; iThread < GetTotalThreadsNb(); iThread++) {
-        if (_threads[iThread] != nullptr) {
-            if (_threads[iThread]->IsPaused()) {
-                _threads[iThread]->Resume();
-            }
+    wxCriticalSectionLocker lock(_critSectionManager);
+
+    for (auto& thread : _threads) {
+        if (thread->IsPaused()) {
+            thread->Resume();
         }
     }
 }

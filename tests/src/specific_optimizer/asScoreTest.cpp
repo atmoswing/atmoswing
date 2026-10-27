@@ -40,7 +40,7 @@ TEST(Score, ProcessCRPSapproxRectangle) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 17;
@@ -58,29 +58,29 @@ TEST(Score, ProcessCRPSapproxRectangle) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         float target = file.GetFloat();
 
         float precision = std::max(target / 1000, (float)0.00001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -90,7 +90,7 @@ TEST(Score, ProcessCRPSexactPrimitive) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 17;
@@ -108,29 +108,29 @@ TEST(Score, ProcessCRPSexactPrimitive) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         float target = file.GetFloat();
 
         float precision = std::max(target / 500, (float)0.00002);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -140,7 +140,7 @@ TEST(Score, ProcessCRPSapproxRectangle1983) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 30;
@@ -158,29 +158,29 @@ TEST(Score, ProcessCRPSapproxRectangle1983) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         float target = file.GetFloat();
 
         float precision = std::max(target / 1000, (float)0.00002);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -190,7 +190,7 @@ TEST(Score, ProcessCRPSexactPrimitive1983) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 30;
@@ -208,29 +208,29 @@ TEST(Score, ProcessCRPSexactPrimitive1983) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         float target = file.GetFloat();
 
         float precision = std::max(target / 100, (float)0.00005);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -240,7 +240,7 @@ TEST(Score, ProcessCRPSapproxRectangle30Analogs1983) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 30;
@@ -258,29 +258,29 @@ TEST(Score, ProcessCRPSapproxRectangle30Analogs1983) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         float target = file.GetFloat();
 
         float precision = std::max(target / 1000, (float)0.00002);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -290,7 +290,7 @@ TEST(Score, ProcessCRPSexactPrimitive30Analogs1983) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 30;
@@ -308,29 +308,29 @@ TEST(Score, ProcessCRPSexactPrimitive30Analogs1983) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         float target = file.GetFloat();
 
         float precision = std::max(target / 100, (float)0.0001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -340,7 +340,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 17;
@@ -358,21 +358,21 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
-        file.SkipElements(2);
+        ASSERT_TRUE(file.SkipLines(2));
+        ASSERT_TRUE(file.SkipElements(2));
         float target = file.GetFloat();
 
         float precision = std::max(target / 1000,
@@ -381,9 +381,9 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle) {
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -393,7 +393,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 17;
@@ -411,21 +411,21 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
-        file.SkipElements(2);
+        ASSERT_TRUE(file.SkipLines(2));
+        ASSERT_TRUE(file.SkipElements(2));
         float target = file.GetFloat();
 
         float precision = std::max(target / 500,
@@ -434,9 +434,9 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive) {
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -446,7 +446,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle1983) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 30;
@@ -464,21 +464,21 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle1983) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
-        file.SkipElements(2);
+        ASSERT_TRUE(file.SkipLines(2));
+        ASSERT_TRUE(file.SkipElements(2));
         float target = file.GetFloat();
 
         float precision = std::max(target / 1000,
@@ -487,9 +487,9 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle1983) {
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -499,7 +499,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive1983) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 30;
@@ -517,21 +517,21 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive1983) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
-        file.SkipElements(2);
+        ASSERT_TRUE(file.SkipLines(2));
+        ASSERT_TRUE(file.SkipElements(2));
         float target = file.GetFloat();
 
         float precision = std::max(target / 100,
@@ -540,9 +540,9 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive1983) {
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -552,7 +552,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 30;
@@ -570,21 +570,21 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
-        file.SkipElements(2);
+        ASSERT_TRUE(file.SkipLines(2));
+        ASSERT_TRUE(file.SkipElements(2));
         float target = file.GetFloat();
 
         float precision = std::max(target / 1000,
@@ -593,9 +593,9 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983) {
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -605,7 +605,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 30;
@@ -623,21 +623,21 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
-        file.SkipElements(2);
+        ASSERT_TRUE(file.SkipLines(2));
+        ASSERT_TRUE(file.SkipElements(2));
         float target = file.GetFloat();
 
         float precision = std::max(target / 100,
@@ -646,9 +646,9 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983) {
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -658,7 +658,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 17;
@@ -676,30 +676,30 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
-        file.SkipElements(1);
+        ASSERT_TRUE(file.SkipLines(2));
+        ASSERT_TRUE(file.SkipElements(1));
         float target = file.GetFloat();
 
         float precision = std::max(target / 1000, (float)0.0003);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -709,7 +709,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 17;
@@ -727,30 +727,30 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
-        file.SkipElements(1);
+        ASSERT_TRUE(file.SkipLines(2));
+        ASSERT_TRUE(file.SkipElements(1));
         float target = file.GetFloat();
 
         float precision = std::max(target / 500, (float)0.0003);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -760,7 +760,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle1983) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 30;
@@ -778,30 +778,30 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle1983) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
-        file.SkipElements(1);
+        ASSERT_TRUE(file.SkipLines(2));
+        ASSERT_TRUE(file.SkipElements(1));
         float target = file.GetFloat();
 
         float precision = std::max(target / 1000, (float)0.0001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -811,7 +811,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive1983) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 30;
@@ -829,30 +829,30 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive1983) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
-        file.SkipElements(1);
+        ASSERT_TRUE(file.SkipLines(2));
+        ASSERT_TRUE(file.SkipElements(1));
         float target = file.GetFloat();
 
         float precision = std::max(target / 100, (float)0.00005);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -862,7 +862,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle30Analogs1983) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 30;
@@ -880,30 +880,30 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle30Analogs1983) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
-        file.SkipElements(1);
+        ASSERT_TRUE(file.SkipLines(2));
+        ASSERT_TRUE(file.SkipElements(1));
         float target = file.GetFloat();
 
         float precision = std::max(target / 1000, (float)0.0005);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }
@@ -913,7 +913,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
     asFileText file(filepath, asFile::ReadOnly);
-    file.Open();
+    ASSERT_TRUE(file.Open());
 
     // Test numbers
     int nbTests = 30;
@@ -931,30 +931,30 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983) {
 
     for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
 
         // Load data
-        file.SkipElements(3);
+        ASSERT_TRUE(file.SkipElements(3));
         float obs = (float)sqrt(file.GetFloat() / P10);
-        file.SkipLines(2);
+        ASSERT_TRUE(file.SkipLines(2));
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            file.SkipElements(4);
+            ASSERT_TRUE(file.SkipElements(4));
             values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
-            file.SkipLines(1);
+            ASSERT_TRUE(file.SkipLines(1));
         }
 
         float result = score->Assess(obs, values, nAnalogs);
-        file.SkipLines(2);
-        file.SkipElements(1);
+        ASSERT_TRUE(file.SkipLines(2));
+        ASSERT_TRUE(file.SkipElements(1));
         float target = file.GetFloat();
 
         float precision = std::max(target / 100, (float)0.001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
-        file.SkipLines(1);
+        ASSERT_TRUE(file.SkipLines(1));
     }
-    file.Close();
+    ASSERT_TRUE(file.Close());
 
     wxDELETE(score);
 }

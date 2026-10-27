@@ -96,9 +96,14 @@ bool asResultsTotalScore::Save() {
     ncFile.PutVarArray("score", start1D, count1D, &_score);
 
     // Close:save new netCDF dataset
-    ncFile.Close();
+    bool closed = ncFile.Close();
 
     ThreadsManager().CritSectionNetCDF().Leave();
+
+    if (!closed) {
+        wxLogError(_("Failed to save and close the netCDF file."));
+        return false;
+    }
 
     return true;
 }

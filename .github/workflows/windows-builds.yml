@@ -7,7 +7,7 @@ on:
 
 env:
   BUILD_TYPE: Release
-  VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
+  VCPKG_BINARY_SOURCES: 'clear;files,${{ github.workspace }}/.vcpkg-binary-cache,readwrite'
   VCPKG_DOWNLOADS: ${{ github.workspace }}/.vcpkg-downloads
 
 jobs:
@@ -27,6 +27,8 @@ jobs:
         with:
           path: ${{ env.FETCHCONTENT_BASE_DIR }}
           key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-
 
       - name: Cache vcpkg downloads (distfiles)
         uses: actions/cache@v6
@@ -37,21 +39,28 @@ jobs:
             ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-
             ${{ runner.os }}-vcpkg-downloads-
 
-      - name: Export GitHub Actions cache env (for vcpkg x-gha)
-        uses: actions/github-script@v9
+      - name: Cache vcpkg binary cache
+        uses: actions/cache@v6
         with:
-          script: |
-            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
-            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+          path: ${{ github.workspace }}/.vcpkg-binary-cache
+          key: ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}-
+            ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-
 
       - name: Set VCPKG_ROOT
         shell: bash
         run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
 
       - name: Configure
-        run: cmake -B build -G "Visual Studio 17 2022" -A x64
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          retry_wait_seconds: 60
+          command: cmake -B build -G "Visual Studio 17 2022" -A x64
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-             -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
+             -DFETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
              -DBUILD_OPTIMIZER=ON
              -DBUILD_DOWNSCALER=ON
@@ -92,6 +101,8 @@ jobs:
         with:
           path: ${{ env.FETCHCONTENT_BASE_DIR }}
           key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-
 
       - name: Cache vcpkg downloads (distfiles)
         uses: actions/cache@v6
@@ -102,21 +113,28 @@ jobs:
             ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-
             ${{ runner.os }}-vcpkg-downloads-
 
-      - name: Export GitHub Actions cache env (for vcpkg x-gha)
-        uses: actions/github-script@v9
+      - name: Cache vcpkg binary cache
+        uses: actions/cache@v6
         with:
-          script: |
-            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
-            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+          path: ${{ github.workspace }}/.vcpkg-binary-cache
+          key: ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}-
+            ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-
 
       - name: Set VCPKG_ROOT
         shell: bash
         run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
 
       - name: Configure
-        run: cmake -B build -G "Visual Studio 17 2022" -A x64
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          retry_wait_seconds: 60
+          command: cmake -B build -G "Visual Studio 17 2022" -A x64
              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-             -DCMAKE_FETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
+             -DFETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
              -DBUILD_FORECASTER=ON
              -DBUILD_OPTIMIZER=ON
              -DBUILD_DOWNSCALER=ON
