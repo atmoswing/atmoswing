@@ -1,22 +1,23 @@
 # Changelog AtmoSwing
 
 
-## UNRELEASED
+## v3.1.0 - 27 Oct 2026
 
 ### Added
 
 *   Adding a clang-tidy configuration and a corresponding CI workflow.
 *   Making the use of SSL in cURL optional.
-*   ECMWF IFS operational datasets (incl. Custom_Vigicrues_IFS) also read GRIB2 files, such as the
-    ECMWF open data.
+*   ECMWF IFS operational datasets (incl. Custom_Vigicrues_IFS) also read GRIB2 files, such as the ECMWF open data.
+*   Enabling per-monitor DPI awareness for the Windows GUI applications.
 
 ### Changed
 
-*   Migrating the dependency management from Conan to vcpkg, with a refactored and modernized CMake
-    configuration.
+*   Migrating the dependency management from Conan to vcpkg, with a refactored and modernized CMake configuration.
 *   Upgrading the project to the C++23 standard and modernizing the codebase.
 *   Dropping Visual Leak Detector support and removing the obsolete asPostprocessor class.
 *   Updating GitHub Actions and third-party dependencies.
+*   Speeding up the analog criteria computation through fused single-pass loops and better data locality.
+*   The version number is now defined only once, in the CMake project() call.
 
 ### Fixed
 
@@ -24,6 +25,8 @@
 *   Fixing missing DLLs under Windows.
 *   Fixing the locales in the installer.
 *   Hardening array and pointer access and improving thread management robustness.
+*   Fixing a race condition in the threads manager.
+*   Fixing the Gaussian weights pairing in the S1G criterion.
 
 
 ## v3.0.11 - 04 Aug 2023

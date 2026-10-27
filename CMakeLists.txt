@@ -63,8 +63,8 @@ set(VCPKG_MANIFEST_FEATURES "${_vcpkg_features}" CACHE STRING
 message(STATUS "VCPKG_MANIFEST_FEATURES = ${VCPKG_MANIFEST_FEATURES}")
 message(STATUS "VCPKG_TARGET_TRIPLET    = ${VCPKG_TARGET_TRIPLET}")
 
-# Project name
-project(AtmoSwing)
+# Project name and version (single source of truth for the version number)
+project(AtmoSwing VERSION 3.1.0)
 
 
 # ---- Shared compile options ----
@@ -85,9 +85,9 @@ target_compile_features(atmoswing_compile_options INTERFACE cxx_std_23)
 ##### OPTIONS
 
 # Version number
-set(VERSION_MAJOR "3")
-set(VERSION_MINOR "0")
-set(VERSION_PATCH "11")
+set(VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
+set(VERSION_MINOR "${PROJECT_VERSION_MINOR}")
+set(VERSION_PATCH "${PROJECT_VERSION_PATCH}")
 target_compile_definitions(atmoswing_compile_options INTERFACE
         ATMOSWING_MAJOR_VERSION=${VERSION_MAJOR}
         ATMOSWING_MINOR_VERSION=${VERSION_MINOR}

@@ -17,8 +17,13 @@ RUN apt-get update \
         cmake ninja-build git curl zip unzip tar ca-certificates \
         build-essential pkg-config autoconf automake libtool
 
-# Install vcpkg
-RUN git clone --depth 1 https://github.com/microsoft/vcpkg.git ${VCPKG_ROOT} \
+# Install vcpkg, checked out at the builtin-baseline of vcpkg.json (a shallow clone of the
+# latest commit does not contain the baseline commit that vcpkg needs to resolve versions)
+COPY vcpkg.json /tmp/vcpkg.json
+RUN baseline=$(grep -oE '"builtin-baseline": *"[0-9a-f]{40}"' /tmp/vcpkg.json | grep -oE '[0-9a-f]{40}') \
+    && git init -q ${VCPKG_ROOT} \
+    && git -C ${VCPKG_ROOT} fetch -q --depth 1 https://github.com/microsoft/vcpkg.git ${baseline} \
+    && git -C ${VCPKG_ROOT} checkout -q FETCH_HEAD \
     && ${VCPKG_ROOT}/bootstrap-vcpkg.sh -disableMetrics
 
 # Copy source code
