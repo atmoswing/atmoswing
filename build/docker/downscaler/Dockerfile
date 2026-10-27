@@ -13,7 +13,7 @@ ENV VCPKG_ROOT=/opt/vcpkg
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         cmake ninja-build git curl zip unzip tar ca-certificates \
-        build-essential pkg-config autoconf automake libtool
+        build-essential pkg-config autoconf automake libtool python3
 
 # Install vcpkg, checked out at the builtin-baseline of vcpkg.json (a shallow clone of the
 # latest commit does not contain the baseline commit that vcpkg needs to resolve versions)
