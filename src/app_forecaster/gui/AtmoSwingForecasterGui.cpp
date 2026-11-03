@@ -253,7 +253,6 @@ asFrameForecasterVirtual::asFrameForecasterVirtual(wxWindow* parent, wxWindowID 
 
     _statusBar1 = this->CreateStatusBar(1, wxSTB_SIZEGRIP, wxID_ANY);
     _toolBar = this->CreateToolBar(wxTB_HORIZONTAL, wxID_ANY);
-    _toolBar->SetToolBitmapSize(wxSize(32, 32));
     _toolBar->Realize();
 
     this->Centre(wxBOTH);

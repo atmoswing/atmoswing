@@ -15,6 +15,8 @@
 
 #endif
 
+#include <wx/bmpbndl.h>
+
 enum awxLedState {
     awxLED_OFF = 0,
     awxLED_ON,
@@ -34,7 +36,7 @@ class awxLed : public wxWindow {
   protected:
     // bitmap for double buffering
     wxBitmap* _bitmap;
-    wxBitmap _icons[2];
+    wxBitmapBundle _icons[2];
     awxLedState _state;
     BlinkTimer* _timer;
     int _blink;
@@ -71,8 +73,9 @@ class awxLed : public wxWindow {
 
     void OnSizeEvent(wxSizeEvent& event) {
         wxSize size = event.GetSize();
-        _x = (size.GetX() - _icons[0].GetWidth()) >> 1;
-        _y = (size.GetY() - _icons[0].GetHeight()) >> 1;
+        wxSize iconSize = _icons[0].GetPreferredBitmapSizeFor(this);
+        _x = (size.GetX() - iconSize.GetWidth()) >> 1;
+        _y = (size.GetY() - iconSize.GetHeight()) >> 1;
         if (_x < 0) _x = 0;
         if (_y < 0) _y = 0;
         DrawOnBitmap();

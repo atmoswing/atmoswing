@@ -29,6 +29,22 @@
 
 #include "asIncludes.h"
 
+namespace {
+
+// Rasterizes the SVG at integer scales only (1x, 2x, 3x). wx then picks the closest one instead of
+// resampling to fractional DPI scales (125%, 150%), so icons keep their designed size there while
+// staying pixel-sharp.
+wxBitmapBundle BundleFromSvg(const wxString& svg, const wxSize& size) {
+    wxBitmapBundle svgBundle = wxBitmapBundle::FromSVG(svg.utf8_str(), size);
+    wxVector<wxBitmap> bitmaps;
+    for (int scale = 1; scale <= 3; ++scale) {
+        bitmaps.push_back(svgBundle.GetBitmap(size * scale));
+    }
+    return wxBitmapBundle::FromBitmaps(bitmaps);
+}
+
+}  // namespace
+
 wxString
     asBitmaps::SvgToolbar
         [] =
@@ -127,24 +143,24 @@ wxString asBitmaps::GetColor() {
     return asBitmaps::ColorBlack;
 };
 
-wxBitmap asBitmaps::Get(asBitmaps::ID_TOOLBAR id, const wxSize& size) {
+wxBitmapBundle asBitmaps::Get(asBitmaps::ID_TOOLBAR id, const wxSize& size) {
     wxString bmp = wxString::Format(asBitmaps::SvgToolbar[id], GetColor());
-    return wxBitmapBundle::FromSVG(bmp, size).GetBitmap(size);
+    return BundleFromSvg(bmp, size);
 }
 
-wxBitmap asBitmaps::Get(asBitmaps::ID_BULLETS id, const wxSize& size) {
-    return wxBitmapBundle::FromSVG(asBitmaps::SvgBullets[id], size).GetBitmap(size);
+wxBitmapBundle asBitmaps::Get(asBitmaps::ID_BULLETS id, const wxSize& size) {
+    return BundleFromSvg(asBitmaps::SvgBullets[id], size);
 }
 
-wxBitmap asBitmaps::Get(asBitmaps::ID_MISC id, const wxSize& size) {
+wxBitmapBundle asBitmaps::Get(asBitmaps::ID_MISC id, const wxSize& size) {
     wxString bmp = wxString::Format(asBitmaps::SvgMisc[id], GetColor());
-    return wxBitmapBundle::FromSVG(bmp, size).GetBitmap(size);
+    return BundleFromSvg(bmp, size);
 }
 
-wxBitmap asBitmaps::Get(asBitmaps::ID_TREECTRL id, const wxSize& size) {
-    return wxBitmapBundle::FromSVG(asBitmaps::SvgTreeCtrl[id], size).GetBitmap(size);
+wxBitmapBundle asBitmaps::Get(asBitmaps::ID_TREECTRL id, const wxSize& size) {
+    return BundleFromSvg(asBitmaps::SvgTreeCtrl[id], size);
 }
 
-wxBitmap asBitmaps::GetLogo(const wxSize& size) {
-    return wxBitmapBundle::FromSVG(asBitmaps::SvgLogo, size).GetBitmap(size);
+wxBitmapBundle asBitmaps::GetLogo(const wxSize& size) {
+    return BundleFromSvg(asBitmaps::SvgLogo, size);
 }

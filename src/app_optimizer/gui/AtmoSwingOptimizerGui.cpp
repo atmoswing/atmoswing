@@ -748,7 +748,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual(wxWindow* parent, wxWindowID id
     this->SetMenuBar(_menuBar);
 
     _toolBar = this->CreateToolBar(wxTB_HORIZONTAL, wxID_ANY);
-    _toolBar->SetToolBitmapSize(wxSize(32, 32));
     _toolBar->Realize();
 
     _statusBar1 = this->CreateStatusBar(1, wxSTB_SIZEGRIP, wxID_ANY);

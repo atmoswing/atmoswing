@@ -63,19 +63,15 @@ asListBoxForecasts::asListBoxForecasts(wxWindow* parent, asForecastManager* fore
 }
 
 void asListBoxForecasts::CreateImageList() {
-    int size = 16 * g_ppiScaleDc;
+    // Images must match the TreeCtrlIcon_* enum. Bundles let the control render crisp icons at the current DPI.
+    wxVector<wxBitmapBundle> images;
+    images.push_back(asBitmaps::Get(asBitmaps::ICON_PRECIP));
+    images.push_back(asBitmaps::Get(asBitmaps::ICON_TEMP));
+    images.push_back(asBitmaps::Get(asBitmaps::ICON_LIGHTNING));
+    images.push_back(asBitmaps::Get(asBitmaps::ICON_WIND));
+    images.push_back(asBitmaps::Get(asBitmaps::ICON_OTHER));
 
-    // Make an image list containing small icons
-    auto images = new wxImageList(size, size, true);
-
-    // Images must match the enum
-    images->Add(asBitmaps::Get(asBitmaps::ICON_PRECIP));
-    images->Add(asBitmaps::Get(asBitmaps::ICON_TEMP));
-    images->Add(asBitmaps::Get(asBitmaps::ICON_LIGHTNING));
-    images->Add(asBitmaps::Get(asBitmaps::ICON_WIND));
-    images->Add(asBitmaps::Get(asBitmaps::ICON_OTHER));
-
-    AssignImageList(images);
+    SetImages(images);
 }
 
 void asListBoxForecasts::Update() {

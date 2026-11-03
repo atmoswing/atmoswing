@@ -22,19 +22,20 @@ END_EVENT_TABLE()
 awxLed::awxLed(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, awxLedColour color, long style,
                int timerInterval)
     : wxWindow(parent, id, pos, size, wxNO_FULL_REPAINT_ON_RESIZE | style),
-      _bitmap(new wxBitmap(16 * g_ppiScaleDc, 16 * g_ppiScaleDc)),
       _state(awxLED_OFF),
       _blink(0),
       _x(0),
       _y(0),
       _timerInterval(timerInterval),
       _on(false) {
-    int imgSize = 16 * g_ppiScaleDc;
     _timer = new BlinkTimer(this);
     _icons[awxLED_OFF] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_WHITE);
     _icons[awxLED_ON] = asBitmaps::Get(asBitmaps::ID_BULLETS::BULLET_WHITE);
-    SetInitialSize(wxSize(imgSize, imgSize));
-    SetMinSize(wxSize(imgSize, imgSize));
+    // Size the window and the drawing buffer from the icon actually used at this window's DPI.
+    wxSize imgSize = _icons[awxLED_OFF].GetPreferredLogicalSizeFor(this);
+    _bitmap = new wxBitmap(imgSize);
+    SetInitialSize(imgSize);
+    SetMinSize(imgSize);
     SetColour(color);
 }
 
@@ -64,10 +65,11 @@ void awxLed::DrawOnBitmap() {
     dc.SetBackground(brush);
     dc.Clear();
 
+    // Render the SVG bundle at the window's DPI so the LED stays crisp.
     if (_state == awxLED_BLINK)
-        dc.DrawBitmap(_icons[_blink], _x, _y, true);
+        dc.DrawBitmap(_icons[_blink].GetBitmapFor(this), _x, _y, true);
     else
-        dc.DrawBitmap(_icons[_state & 1], _x, _y, true);
+        dc.DrawBitmap(_icons[_state & 1].GetBitmapFor(this), _x, _y, true);
 
     dc.SelectObject(wxNullBitmap);
 }
