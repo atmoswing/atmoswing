@@ -64,7 +64,7 @@ jobs:
 
       - name: Configure with GUI testing
         if: ${{ github.ref == 'refs/heads/ci/coverage-gui' }}
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@v4
         with:
           timeout_minutes: 60
           max_attempts: 3
@@ -83,7 +83,7 @@ jobs:
 
       - name: Configure without GUI testing
         if: ${{ github.ref != 'refs/heads/ci/coverage-gui' }}
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@v4
         with:
           timeout_minutes: 60
           max_attempts: 3
