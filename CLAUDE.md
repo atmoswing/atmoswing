@@ -8,7 +8,7 @@ AtmoSwing (Analog Techniques for Statistical Weather forecastING) is a C++23 app
 
 ## Build System
 
-The project uses **CMake 3.20+** with **vcpkg** for dependency management. The `VCPKG_ROOT` environment variable must be defined before running CMake (it is enforced via `FATAL_ERROR`).
+The project uses **CMake 3.21+** with **vcpkg** for dependency management. The `VCPKG_ROOT` environment variable must be defined before running CMake (it is enforced via `FATAL_ERROR`).
 
 ```bash
 # Configure (all targets, with tests)
@@ -22,7 +22,7 @@ cmake -B build -DBUILD_FORECASTER=ON -DBUILD_VIEWER=OFF -DBUILD_OPTIMIZER=ON \
 # Build
 cmake --build build --config Release
 
-# Create installer (Windows: ZIP + WIX; Linux: TGZ + DEB)
+# Create installer (Windows: ZIP + WIX; Linux: TGZ + DEB) — requires -DCREATE_INSTALLER=ON at configure
 cmake --build build --target package
 ```
 

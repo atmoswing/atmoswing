@@ -83,4 +83,4 @@ atmoswing_stage_runtime_dlls(atmoswing-downscaler)
 
 ##### INSTALLER
 
-install(TARGETS atmoswing-downscaler DESTINATION ${INSTALL_DIR_BIN})
+install(TARGETS atmoswing-downscaler ${ATMOSWING_RUNTIME_DEPS} DESTINATION ${INSTALL_DIR_BIN})

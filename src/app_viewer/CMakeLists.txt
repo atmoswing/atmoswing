@@ -124,5 +124,5 @@ atmoswing_stage_runtime_dlls(atmoswing-viewer)
 
 ##### INSTALLER
 
-install(TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
+install(TARGETS atmoswing-viewer ${ATMOSWING_RUNTIME_DEPS} DESTINATION ${INSTALL_DIR_BIN})
 
