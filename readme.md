@@ -57,12 +57,12 @@ You can download the releases under: https://github.com/atmoswing/atmoswing/rele
 
 ## How to build AtmoSwing ##
 
-AtmoSwing uses **CMake (3.20+)** with **[vcpkg](https://github.com/microsoft/vcpkg)** for dependency
+AtmoSwing uses **CMake (3.21+)** with **[vcpkg](https://github.com/microsoft/vcpkg)** for dependency
 management. Follow these steps:
 
 1. Install the requirements:
    * a C++23 compiler (recent GCC, Clang or MSVC),
-   * CMake 3.20 or newer,
+   * CMake 3.21 or newer,
    * vcpkg (clone the repository and run its `bootstrap-vcpkg` script),
    * the ``VCPKG_ROOT`` environment variable pointing to your vcpkg installation
      (this is enforced by CMake).

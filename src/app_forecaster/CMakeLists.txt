@@ -90,4 +90,4 @@ atmoswing_stage_runtime_dlls(atmoswing-forecaster)
 
 ##### INSTALLER
 
-install(TARGETS atmoswing-forecaster DESTINATION ${INSTALL_DIR_BIN})
+install(TARGETS atmoswing-forecaster ${ATMOSWING_RUNTIME_DEPS} DESTINATION ${INSTALL_DIR_BIN})

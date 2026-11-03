@@ -96,4 +96,4 @@ atmoswing_stage_runtime_dlls(atmoswing-optimizer)
 
 ##### INSTALLER
 
-install(TARGETS atmoswing-optimizer DESTINATION ${INSTALL_DIR_BIN})
+install(TARGETS atmoswing-optimizer ${ATMOSWING_RUNTIME_DEPS} DESTINATION ${INSTALL_DIR_BIN})

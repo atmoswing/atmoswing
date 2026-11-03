@@ -5,11 +5,22 @@ install(FILES ${CMAKE_SOURCE_DIR}/license.txt ${CMAKE_SOURCE_DIR}/notice.txt DES
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/ DESTINATION share/atmoswing)
 install(DIRECTORY ${CMAKE_BINARY_DIR}/share DESTINATION .)
 if (WIN32)
+    # Ship the DLLs the executables actually import (netCDF/HDF5, curl/OpenSSL,
+    # PROJ, GDAL, eccodes, ... and their transitive deps). Conan used to copy all
+    # DLLs into build/bin; with vcpkg they live in vcpkg_installed (or next to the
+    # exes via applocal), and the eccodes DLL sits in a per-config folder under
+    # multi-config generators, so resolve them by import table instead of globbing.
+    # Installers are Release-only, so only the release vcpkg DLLs are searched.
     install(
-            DIRECTORY ${CMAKE_BINARY_DIR}/bin/
-            DESTINATION .
-            FILES_MATCHING
-            PATTERN "*.dll"
+            RUNTIME_DEPENDENCY_SET atmoswing-runtime-deps
+            DESTINATION ${INSTALL_DIR_BIN}
+            DIRECTORIES
+            $<TARGET_FILE_DIR:eccodes>
+            ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin
+            PRE_EXCLUDE_REGEXES
+            "^api-ms-" "^ext-ms-"
+            POST_EXCLUDE_REGEXES
+            ".*[/\\][Ww][Ii][Nn][Dd][Oo][Ww][Ss][/\\].*"
     )
     # Translations: the prebuilt .mo catalogs ship in the source tree, not the
     # build dir, so install them straight from locales/ (works for GUI and

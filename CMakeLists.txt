@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20) # cxx_std_23 + FetchContent / FetchContent_MakeAvailable / SOURCE_SUBDIR
+cmake_minimum_required(VERSION 3.21) # install(RUNTIME_DEPENDENCY_SET) + cxx_std_23 + FetchContent / FetchContent_MakeAvailable / SOURCE_SUBDIR
 
 include(FetchContent)
 
@@ -176,6 +176,15 @@ if (WIN32)
 else (WIN32)
     set(INSTALL_DIR_BIN bin)
 endif (WIN32)
+
+# On Windows, the executables' shared-library dependencies (vcpkg DLLs and the
+# FetchContent-built eccodes) are collected into this runtime dependency set and
+# installed by atmoswing_installer_options. Expanded in each app's install(TARGETS).
+if (WIN32 AND CREATE_INSTALLER)
+    set(ATMOSWING_RUNTIME_DEPS RUNTIME_DEPENDENCY_SET atmoswing-runtime-deps)
+else ()
+    set(ATMOSWING_RUNTIME_DEPS "")
+endif ()
 
 
 ##### COMPILE FLAGS (must be set before FetchContent so sub-projects inherit the same flags)
@@ -380,6 +389,23 @@ FetchContent_Declare(eccodes
                       -P ${CMAKE_SOURCE_DIR}/build/cmake/apply_git_patch_if_needed.cmake
 )
 FetchContent_MakeAvailable(eccodes)
+
+# ecbuild_install_project() (called at the end of eccodes' CMakeLists) runs
+# include(CPack) with eccodes' own project version, writing the top-level CPack
+# configs. Left alone they provide a `package` target that builds a bogus
+# AtmoSwing-2.46.0-<system>.zip whenever CREATE_INSTALLER is off. Discard them:
+# with CREATE_INSTALLER on, atmoswing_installer_options writes ours afterwards;
+# with it off, there is simply no `package` target.
+file(REMOVE "${CMAKE_BINARY_DIR}/CPackConfig.cmake" "${CMAKE_BINARY_DIR}/CPackSourceConfig.cmake")
+
+# Windows: drop eccodes' own install rules (headers, import lib, CMake package
+# config, a bin/eccodes.dll duplicate): only its DLL is needed at runtime, and
+# the installer picks that up through the runtime dependency set. The eccodes
+# target still builds, as a link dependency of asbase. Elsewhere these rules
+# still ship the eccodes shared library, so they are kept.
+if (WIN32)
+    set_property(DIRECTORY "${eccodes_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
+endif ()
 
 # Suppress all warnings in eccodes — it is a third-party library.
 if (TARGET eccodes)
