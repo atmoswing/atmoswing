@@ -9,13 +9,30 @@ env:
   VCPKG_BINARY_SOURCES: 'clear;files,${{ github.workspace }}/.vcpkg-binary-cache,readwrite'
   VCPKG_DOWNLOADS: ${{ github.workspace }}/.vcpkg-downloads
 
+permissions:
+  actions: read     # SignPath downloads the unsigned artifact and checks the job origin
+  contents: write   # upload the packages to the GitHub release
+
 jobs:
-  build-server-version:
-    runs-on: windows-2022
+  build-and-sign:
+    runs-on: windows-2022  # SignPath Foundation requires GitHub-hosted runners
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: server
+            use_gui: OFF
+            build_viewer: OFF
+          - variant: desktop
+            use_gui: ON
+            build_viewer: ON
 
     env:
-      FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/windows-server-vs2022-release
-      FETCHCONTENT_CACHE_KEY: windows-server-vs2022-release
+      FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/windows-${{ matrix.variant }}-vs2022-release
+      FETCHCONTENT_CACHE_KEY: windows-${{ matrix.variant }}-vs2022-release
+      # Signing is skipped (unsigned packages are released) until the SignPath project is set up.
+      SIGNPATH_ENABLED: ${{ vars.SIGNPATH_ORGANIZATION_ID != '' }}
 
     steps:
       - uses: actions/checkout@v6
@@ -50,6 +67,14 @@ jobs:
         shell: bash
         run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
 
+      - name: Read project version
+        id: version
+        shell: bash
+        run: |
+          version=$(sed -nE 's/^project\(AtmoSwing VERSION ([0-9.]+)\).*/\1/p' CMakeLists.txt)
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
       - name: Configure
         uses: nick-fields/retry@v3
         with:
@@ -62,8 +87,8 @@ jobs:
              -DBUILD_FORECASTER=ON
              -DBUILD_OPTIMIZER=ON
              -DBUILD_DOWNSCALER=ON
-             -DBUILD_VIEWER=OFF
-             -DUSE_GUI=OFF
+             -DBUILD_VIEWER=${{ matrix.build_viewer }}
+             -DUSE_GUI=${{ matrix.use_gui }}
              -DBUILD_TESTS=OFF
              -DCREATE_INSTALLER=ON
 
@@ -76,89 +101,76 @@ jobs:
           cpack -C ${{env.BUILD_TYPE}} -G ZIP
           cpack -C ${{env.BUILD_TYPE}} -G WIX
 
+      # SignPath only accepts artifacts stored by the workflow itself (origin verification).
+      - name: Upload unsigned packages
+        id: upload-unsigned
+        if: env.SIGNPATH_ENABLED == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: unsigned-${{ matrix.variant }}
+          path: |
+            build/AtmoSwing-*-win64.zip
+            build/AtmoSwing-*-win64.msi
+          if-no-files-found: error
+          retention-days: 7
+
+      # Requires manual approval of the signing request in SignPath (SignPath Foundation rule).
+      - name: Sign packages
+        if: env.SIGNPATH_ENABLED == 'true'
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: atmoswing
+          signing-policy-slug: release-signing
+          artifact-configuration-slug: installers
+          github-artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 3600  # leaves time for the manual approval
+          output-artifact-directory: build/signed
+          parameters: |
+            version: ${{ toJSON(steps.version.outputs.version) }}
+
+      - name: Select packages to release
+        shell: bash
+        run: |
+          if [ "$SIGNPATH_ENABLED" = "true" ]; then
+            echo "RELEASE_DIR=build/signed" >> "$GITHUB_ENV"
+          else
+            echo "::warning::SignPath is not configured, releasing unsigned packages."
+            echo "RELEASE_DIR=build" >> "$GITHUB_ENV"
+          fi
+
       - name: Upload release
         uses: xresloader/upload-to-github-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "build/*.zip;build/*.msi"
+          file: "${{ env.RELEASE_DIR }}/*.zip;${{ env.RELEASE_DIR }}/*.msi"
           tags: true
           draft: true
           verbose: true
 
-
-  build-desktop-version:
-    runs-on: windows-2022
-
-    env:
-      FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/windows-desktop-vs2022-release
-      FETCHCONTENT_CACHE_KEY: windows-desktop-vs2022-release
+  # Append the SignPath attribution to the release notes, once the signed packages are uploaded.
+  release-notes:
+    needs: build-and-sign
+    if: vars.SIGNPATH_ORGANIZATION_ID != ''
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
-
-      - name: Cache FetchContent dependencies
-        uses: actions/cache@v6
-        with:
-          path: ${{ env.FETCHCONTENT_BASE_DIR }}
-          key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-
-
-      - name: Cache vcpkg downloads (distfiles)
-        uses: actions/cache@v6
-        with:
-          path: ${{ github.workspace }}/.vcpkg-downloads
-          key: ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-
-            ${{ runner.os }}-vcpkg-downloads-
-
-      - name: Cache vcpkg binary cache
-        uses: actions/cache@v6
-        with:
-          path: ${{ github.workspace }}/.vcpkg-binary-cache
-          key: ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}-
-            ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-
-
-      - name: Set VCPKG_ROOT
-        shell: bash
-        run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
-
-      - name: Configure
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 60
-          max_attempts: 3
-          retry_wait_seconds: 60
-          command: cmake -B build -G "Visual Studio 17 2022" -A x64
-             -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-             -DFETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
-             -DBUILD_FORECASTER=ON
-             -DBUILD_OPTIMIZER=ON
-             -DBUILD_DOWNSCALER=ON
-             -DBUILD_VIEWER=ON
-             -DUSE_GUI=ON
-             -DBUILD_TESTS=OFF
-             -DCREATE_INSTALLER=ON
-
-      - name: Build
-        run: cmake --build build --config ${{env.BUILD_TYPE}}
-
-      - name: Make installer
-        working-directory: ${{github.workspace}}/build
-        run: |
-          cpack -C ${{env.BUILD_TYPE}} -G ZIP
-          cpack -C ${{env.BUILD_TYPE}} -G WIX
-
-      - name: Upload release
-        uses: xresloader/upload-to-github-release@v1
+      - name: Add code signing note to the release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          file: "build/*.zip;build/*.msi"
-          tags: true
-          draft: true
-          verbose: true
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_API: repos/${{ github.repository }}/releases/${{ github.event.release.id }}
+        run: |
+          gh api "$RELEASE_API" --jq '.body // ""' > notes.md
+          if grep -q "SignPath Foundation" notes.md; then
+            echo "Release notes already contain the code signing note."
+            exit 0
+          fi
+          cat >> notes.md <<'EOF'
+
+          ---
+          Windows binaries are signed. Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org). See the [code signing policy](https://github.com/atmoswing/atmoswing#code-signing-policy).
+          EOF
+          gh api -X PATCH "$RELEASE_API" -F body=@notes.md > /dev/null

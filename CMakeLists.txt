@@ -566,6 +566,26 @@ if (BUILD_VIEWER)
         endforeach()
     endif()
 endif()
+# Embed a Windows version resource (product name/version, file description) in each
+# application. Code signing (SignPath) enforces these fields on every signed binary.
+if (WIN32)
+    set(_atmoswing_rc_descriptions
+            "atmoswing-forecaster|AtmoSwing Forecaster"
+            "atmoswing-optimizer|AtmoSwing Optimizer"
+            "atmoswing-downscaler|AtmoSwing Downscaler"
+            "atmoswing-viewer|AtmoSwing Viewer")
+    foreach (_atmoswing_rc_entry IN LISTS _atmoswing_rc_descriptions)
+        string(REPLACE "|" ";" _atmoswing_rc_entry "${_atmoswing_rc_entry}")
+        list(GET _atmoswing_rc_entry 0 ATMOSWING_RC_TARGET)
+        list(GET _atmoswing_rc_entry 1 ATMOSWING_RC_DESCRIPTION)
+        if (TARGET ${ATMOSWING_RC_TARGET})
+            set(_atmoswing_rc_file "${CMAKE_BINARY_DIR}/version/${ATMOSWING_RC_TARGET}.rc")
+            configure_file("${CMAKE_SOURCE_DIR}/build/cmake/version.rc.in" "${_atmoswing_rc_file}" @ONLY)
+            target_sources(${ATMOSWING_RC_TARGET} PRIVATE "${_atmoswing_rc_file}")
+        endif ()
+    endforeach ()
+endif ()
+
 if (BUILD_TESTS)
     add_subdirectory(tests)
 endif ()
