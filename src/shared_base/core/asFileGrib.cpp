@@ -351,18 +351,31 @@ bool asFileGrib::GetLevels(a1d& levels) const {
     return true;
 }
 
+vi asFileGrib::GetUniqueTimeIndices() const {
+    vi indices(_times.size());
+    for (int i = 0; i < indices.size(); ++i) {
+        indices[i] = i;
+    }
+
+    // Stable sort: the first message of each time is kept, as before
+    std::stable_sort(indices.begin(), indices.end(), [this](int a, int b) { return _times[a] < _times[b]; });
+
+    vi uniqueIndices;
+    for (int i : indices) {
+        if (uniqueIndices.empty() || _times[i] != _times[uniqueIndices.back()]) {
+            uniqueIndices.push_back(i);
+        }
+    }
+
+    return uniqueIndices;
+}
+
 vd asFileGrib::GetRealTimeArray() const {
     wxASSERT(_opened);
 
-    // Get independent time entries
     vd realTimeArray;
-    double lastTimeVal = 0;
-
-    for (double time : _times) {
-        if (time != lastTimeVal) {
-            realTimeArray.push_back(time);
-            lastTimeVal = time;
-        }
+    for (int i : GetUniqueTimeIndices()) {
+        realTimeArray.push_back(_times[i]);
     }
 
     return realTimeArray;
@@ -410,15 +423,9 @@ vd asFileGrib::GetRealReferenceDateArray() const {
     wxASSERT(_opened);
     wxASSERT(_forecastTimes.size() == _refDates.size());
 
-    // Get independent time entries
     vd refDateArray;
-    double lastTimeVal = -1;
-
-    for (int i = 0; i < _refDates.size(); ++i) {
-        if (_times[i] != lastTimeVal) {
-            refDateArray.push_back(_refDates[i]);
-            lastTimeVal = _times[i];
-        }
+    for (int i : GetUniqueTimeIndices()) {
+        refDateArray.push_back(_refDates[i]);
     }
 
     return refDateArray;
@@ -428,15 +435,9 @@ vd asFileGrib::GetRealReferenceTimeArray() const {
     wxASSERT(_opened);
     wxASSERT(_forecastTimes.size() == _refTimes.size());
 
-    // Get independent time entries
     vd refTimeArray;
-    double lastTimeVal = -1;
-
-    for (int i = 0; i < _refTimes.size(); ++i) {
-        if (_times[i] != lastTimeVal) {
-            refTimeArray.push_back(_refTimes[i]);
-            lastTimeVal = _times[i];
-        }
+    for (int i : GetUniqueTimeIndices()) {
+        refTimeArray.push_back(_refTimes[i]);
     }
 
     return refTimeArray;
@@ -445,15 +446,9 @@ vd asFileGrib::GetRealReferenceTimeArray() const {
 vd asFileGrib::GetRealForecastTimeArray() const {
     wxASSERT(_opened);
 
-    // Get independent time entries
     vd forecastTimeArray;
-    double lastTimeVal = -1;
-
-    for (int i = 0; i < _forecastTimes.size(); ++i) {
-        if (_times[i] != lastTimeVal) {
-            forecastTimeArray.push_back(_forecastTimes[i]);
-            lastTimeVal = _times[i];
-        }
+    for (int i : GetUniqueTimeIndices()) {
+        forecastTimeArray.push_back(_forecastTimes[i]);
     }
 
     return forecastTimeArray;
