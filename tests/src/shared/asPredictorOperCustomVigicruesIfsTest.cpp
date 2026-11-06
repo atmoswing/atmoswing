@@ -623,14 +623,15 @@ TEST(PredictorOperCustomVigicruesIfs, CanFindFiles) {
     wxDELETE(area);
     wxDELETE(predictor);
 }
-static vva2f LoadVigicruesIfsLevel(const wxString& dir, float level) {
+static vva2f LoadVigicruesIfsLevel(const wxString& dir, float level, double start = asTime::GetMJD(2023, 2, 2, 00),
+                                   double end = asTime::GetMJD(2023, 2, 2, 12)) {
+    asTimeArray dates(start, end, 6, "Simple");
+    dates.Init();
+
     vwxs filepaths;
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < dates.GetSize(); ++i) {
         filepaths.push_back(wxFileName::GetCwd() + "/files/" + dir + "/2023/02/02/CEP_Z_202302020000.grb");
     }
-
-    asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 2, 12), 6, "Simple");
-    dates.Init();
 
     asAreaGrid* area = asAreaGrid::GetInstance("Regular", -6, 5, 0.25, 47, 5, 0.25);
     asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS", "z");
@@ -659,6 +660,26 @@ TEST(PredictorOperCustomVigicruesIfs, LoadLevelsFromUnsortedMessages) {
         ASSERT_EQ(shuffled.size(), expected.size()) << "level " << level;
         for (int iTime = 0; iTime < expected.size(); ++iTime) {
             ASSERT_TRUE(shuffled[iTime][0].isApprox(expected[iTime][0])) << "level " << level << ", time " << iTime;
+        }
+    }
+}
+
+TEST(PredictorOperCustomVigicruesIfs, LoadTimeStepsFromUnsortedMessages) {
+    // Same file, but with all the messages in a random order (lead times and levels mixed). The time axis was
+    // previously built in the file order, and only consecutive duplicates were removed.
+    double ranges[2][2] = {{asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 2, 12)},
+                           {asTime::GetMJD(2023, 2, 11, 12), asTime::GetMJD(2023, 2, 12, 00)}};
+    for (auto& range : ranges) {
+        for (float level : {300, 700, 1000}) {
+            vva2f expected = LoadVigicruesIfsLevel("data-custom-vigicrues-ifs", level, range[0], range[1]);
+            vva2f unsorted = LoadVigicruesIfsLevel("data-custom-vigicrues-ifs-unsorted", level, range[0], range[1]);
+
+            ASSERT_EQ(expected.size(), 3) << "level " << level;
+            ASSERT_EQ(unsorted.size(), expected.size()) << "level " << level;
+            for (int iTime = 0; iTime < expected.size(); ++iTime) {
+                ASSERT_TRUE(unsorted[iTime][0].isApprox(expected[iTime][0]))
+                    << "level " << level << ", time " << iTime;
+            }
         }
     }
 }
