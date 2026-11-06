@@ -327,7 +327,7 @@ asWizardWorkspaceVirtual::asWizardWorkspaceVirtual(wxWindow* parent, wxWindowID 
                                      wxDefaultSize, 0);
     _staticText37->Wrap(-1);
     _staticText37->SetFont(
-        wxFont(13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
+        wxFont(11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
 
     bSizer48->Add(_staticText37, 0, wxALL | wxEXPAND, 5);
 
@@ -357,7 +357,7 @@ asWizardWorkspaceVirtual::asWizardWorkspaceVirtual(wxWindow* parent, wxWindowID 
                                      0);
     _staticText36->Wrap(-1);
     _staticText36->SetFont(
-        wxFont(13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
+        wxFont(11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
 
     bSizer49->Add(_staticText36, 0, wxALL | wxEXPAND, 5);
 
@@ -382,7 +382,7 @@ asWizardWorkspaceVirtual::asWizardWorkspaceVirtual(wxWindow* parent, wxWindowID 
     _staticText44 = new wxStaticText(_wizPage3, wxID_ANY, _("Workspace options"), wxDefaultPosition, wxDefaultSize, 0);
     _staticText44->Wrap(-1);
     _staticText44->SetFont(
-        wxFont(13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
+        wxFont(11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
 
     bSizer50->Add(_staticText44, 0, wxALL | wxEXPAND, 5);
 
@@ -413,7 +413,7 @@ asWizardWorkspaceVirtual::asWizardWorkspaceVirtual(wxWindow* parent, wxWindowID 
     _staticText45 = new wxStaticText(_wizPage4, wxID_ANY, _("Base map"), wxDefaultPosition, wxDefaultSize, 0);
     _staticText45->Wrap(-1);
     _staticText45->SetFont(
-        wxFont(13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
+        wxFont(11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
 
     bSizer51->Add(_staticText45, 0, wxALL | wxEXPAND, 5);
 

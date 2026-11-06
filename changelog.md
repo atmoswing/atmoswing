@@ -1,6 +1,22 @@
 # Changelog AtmoSwing
 
 
+## v3.1.1 - 06 Nov 2026
+
+### Added
+
+*   Embedding a version resource (product name, version, description) in the Windows executables.
+
+### Changed
+
+*   Using wxBitmapBundle for the GUI icons, for a crisp rendering on high-DPI displays.
+*   Reducing the font size of some elements of the Forecaster and Viewer GUIs.
+
+### Fixed
+
+*   GRIB files whose messages are not grouped by sorted level: some levels could not be found.
+
+
 ## v3.1.0 - 27 Oct 2026
 
 ### Added

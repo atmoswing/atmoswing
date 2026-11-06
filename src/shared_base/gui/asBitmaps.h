@@ -29,6 +29,7 @@
 #define AS_BITMAPS_H
 
 #include <wx/bitmap.h>
+#include <wx/bmpbndl.h>
 #include <wx/gdicmn.h>  // wxSize
 
 #include "asHeadersBase.h"
@@ -90,15 +91,16 @@ class asBitmaps {
 
     static wxString GetColor();
 
-    static wxBitmap Get(asBitmaps::ID_TOOLBAR id, const wxSize& size = wxSize(32, 32));
+    // The bundle-returning getters let controls render the SVG crisply at the current DPI. Sizes are in DIPs.
+    static wxBitmapBundle Get(asBitmaps::ID_TOOLBAR id, const wxSize& size = wxSize(32, 32));
 
-    static wxBitmap Get(asBitmaps::ID_BULLETS id, const wxSize& size = wxSize(16, 16));
+    static wxBitmapBundle Get(asBitmaps::ID_BULLETS id, const wxSize& size = wxSize(16, 16));
 
-    static wxBitmap Get(asBitmaps::ID_MISC id, const wxSize& size = wxSize(16, 16));
+    static wxBitmapBundle Get(asBitmaps::ID_MISC id, const wxSize& size = wxSize(16, 16));
 
-    static wxBitmap Get(asBitmaps::ID_TREECTRL id, const wxSize& size = wxSize(16, 16));
+    static wxBitmapBundle Get(asBitmaps::ID_TREECTRL id, const wxSize& size = wxSize(16, 16));
 
-    static wxBitmap GetLogo(const wxSize& size = wxSize(128, 128));
+    static wxBitmapBundle GetLogo(const wxSize& size = wxSize(128, 128));
 };
 
 #endif

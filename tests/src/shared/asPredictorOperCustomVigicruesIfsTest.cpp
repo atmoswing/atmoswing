@@ -623,3 +623,42 @@ TEST(PredictorOperCustomVigicruesIfs, CanFindFiles) {
     wxDELETE(area);
     wxDELETE(predictor);
 }
+static vva2f LoadVigicruesIfsLevel(const wxString& dir, float level) {
+    vwxs filepaths;
+    for (int i = 0; i < 3; ++i) {
+        filepaths.push_back(wxFileName::GetCwd() + "/files/" + dir + "/2023/02/02/CEP_Z_202302020000.grb");
+    }
+
+    asTimeArray dates(asTime::GetMJD(2023, 2, 2, 00), asTime::GetMJD(2023, 2, 2, 12), 6, "Simple");
+    dates.Init();
+
+    asAreaGrid* area = asAreaGrid::GetInstance("Regular", -6, 5, 0.25, 47, 5, 0.25);
+    asPredictorOper* predictor = asPredictorOper::GetInstance("Custom_Vigicrues_IFS", "z");
+    wxASSERT(predictor);
+    predictor->SetFileNames(filepaths);
+
+    vva2f data;
+    if (predictor->Load(area, dates, level)) {
+        data = predictor->GetData();
+    }
+
+    wxDELETE(area);
+    wxDELETE(predictor);
+
+    return data;
+}
+
+TEST(PredictorOperCustomVigicruesIfs, LoadLevelsFromUnsortedMessages) {
+    // Same file, but with the levels in a random order within each lead time (as in the ECMWF open data).
+    // The levels were previously searched by dichotomy in the file order, and some could not be found.
+    for (float level : {300, 400, 500, 600, 700, 850, 925, 1000}) {
+        vva2f expected = LoadVigicruesIfsLevel("data-custom-vigicrues-ifs", level);
+        vva2f shuffled = LoadVigicruesIfsLevel("data-custom-vigicrues-ifs-shuffled", level);
+
+        ASSERT_EQ(expected.size(), 3) << "level " << level;
+        ASSERT_EQ(shuffled.size(), expected.size()) << "level " << level;
+        for (int iTime = 0; iTime < expected.size(); ++iTime) {
+            ASSERT_TRUE(shuffled[iTime][0].isApprox(expected[iTime][0])) << "level " << level << ", time " << iTime;
+        }
+    }
+}

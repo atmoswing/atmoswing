@@ -338,20 +338,15 @@ bool asFileGrib::GetLevels(a1d& levels) const {
     wxASSERT(_opened);
     wxASSERT(_index != asNOT_FOUND);
 
-    vd realLevels;
-    double lastVal = -1;
-    for (double level : _levels) {
-        if (level != lastVal) {
-            realLevels.push_back(level);
-            lastVal = level;
-        }
+    // Sorted unique levels: the messages of a file are not necessarily grouped by level, nor sorted (e.g. the
+    // ECMWF open data, where the order of the levels changes from one lead time to another), whereas the levels
+    // are then searched by dichotomy.
+    if (_levels.empty()) {
+        levels.resize(0);
+        return true;
     }
 
-    levels.resize(realLevels.size());
-
-    for (int i = 0; i < realLevels.size(); ++i) {
-        levels[i] = realLevels[i];
-    }
+    levels = asExtractUniqueValues(&_levels[0], &_levels[_levels.size() - 1]);
 
     return true;
 }

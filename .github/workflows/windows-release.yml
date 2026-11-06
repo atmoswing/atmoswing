@@ -9,13 +9,27 @@ env:
   VCPKG_BINARY_SOURCES: 'clear;files,${{ github.workspace }}/.vcpkg-binary-cache,readwrite'
   VCPKG_DOWNLOADS: ${{ github.workspace }}/.vcpkg-downloads
 
+permissions:
+  contents: write   # upload the packages to the GitHub release
+
 jobs:
-  build-server-version:
+  build:
     runs-on: windows-2022
 
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: server
+            use_gui: OFF
+            build_viewer: OFF
+          - variant: desktop
+            use_gui: ON
+            build_viewer: ON
+
     env:
-      FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/windows-server-vs2022-release
-      FETCHCONTENT_CACHE_KEY: windows-server-vs2022-release
+      FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/windows-${{ matrix.variant }}-vs2022-release
+      FETCHCONTENT_CACHE_KEY: windows-${{ matrix.variant }}-vs2022-release
 
     steps:
       - uses: actions/checkout@v7
@@ -62,85 +76,8 @@ jobs:
              -DBUILD_FORECASTER=ON
              -DBUILD_OPTIMIZER=ON
              -DBUILD_DOWNSCALER=ON
-             -DBUILD_VIEWER=OFF
-             -DUSE_GUI=OFF
-             -DBUILD_TESTS=OFF
-             -DCREATE_INSTALLER=ON
-
-      - name: Build
-        run: cmake --build build --config ${{env.BUILD_TYPE}}
-
-      - name: Make installer
-        working-directory: ${{github.workspace}}/build
-        run: |
-          cpack -C ${{env.BUILD_TYPE}} -G ZIP
-          cpack -C ${{env.BUILD_TYPE}} -G WIX
-
-      - name: Upload release
-        uses: xresloader/upload-to-github-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          file: "build/*.zip;build/*.msi"
-          tags: true
-          draft: true
-          verbose: true
-
-
-  build-desktop-version:
-    runs-on: windows-2022
-
-    env:
-      FETCHCONTENT_BASE_DIR: ${{ github.workspace }}/.fetchcontent-cache/windows-desktop-vs2022-release
-      FETCHCONTENT_CACHE_KEY: windows-desktop-vs2022-release
-
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Cache FetchContent dependencies
-        uses: actions/cache@v6
-        with:
-          path: ${{ env.FETCHCONTENT_BASE_DIR }}
-          key: ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('CMakeLists.txt', 'src/**/CMakeLists.txt', 'build/cmake/**', 'build/patches/**') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ env.FETCHCONTENT_CACHE_KEY }}-
-
-      - name: Cache vcpkg downloads (distfiles)
-        uses: actions/cache@v6
-        with:
-          path: ${{ github.workspace }}/.vcpkg-downloads
-          key: ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-vcpkg-downloads-${{ hashFiles('vcpkg.json') }}-
-            ${{ runner.os }}-vcpkg-downloads-
-
-      - name: Cache vcpkg binary cache
-        uses: actions/cache@v6
-        with:
-          path: ${{ github.workspace }}/.vcpkg-binary-cache
-          key: ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-${{ hashFiles('vcpkg.json') }}-
-            ${{ runner.os }}-vcpkg-bincache-${{ env.FETCHCONTENT_CACHE_KEY }}-
-
-      - name: Set VCPKG_ROOT
-        shell: bash
-        run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
-
-      - name: Configure
-        uses: nick-fields/retry@v4
-        with:
-          timeout_minutes: 60
-          max_attempts: 3
-          retry_wait_seconds: 60
-          command: cmake -B build -G "Visual Studio 17 2022" -A x64
-             -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-             -DFETCHCONTENT_BASE_DIR=${{env.FETCHCONTENT_BASE_DIR}}
-             -DBUILD_FORECASTER=ON
-             -DBUILD_OPTIMIZER=ON
-             -DBUILD_DOWNSCALER=ON
-             -DBUILD_VIEWER=ON
-             -DUSE_GUI=ON
+             -DBUILD_VIEWER=${{ matrix.build_viewer }}
+             -DUSE_GUI=${{ matrix.use_gui }}
              -DBUILD_TESTS=OFF
              -DCREATE_INSTALLER=ON
 

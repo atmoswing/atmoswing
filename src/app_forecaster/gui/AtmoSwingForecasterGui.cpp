@@ -35,7 +35,7 @@ asFrameForecasterVirtual::asFrameForecasterVirtual(wxWindow* parent, wxWindowID 
                                      wxDefaultSize, 0);
     _staticText41->Wrap(-1);
     _staticText41->SetFont(
-        wxFont(13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
+        wxFont(11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
 
     bSizer18->Add(_staticText41, 0, wxALL | wxEXPAND, 10);
 
@@ -253,7 +253,6 @@ asFrameForecasterVirtual::asFrameForecasterVirtual(wxWindow* parent, wxWindowID 
 
     _statusBar1 = this->CreateStatusBar(1, wxSTB_SIZEGRIP, wxID_ANY);
     _toolBar = this->CreateToolBar(wxTB_HORIZONTAL, wxID_ANY);
-    _toolBar->SetToolBitmapSize(wxSize(32, 32));
     _toolBar->Realize();
 
     this->Centre(wxBOTH);
@@ -864,7 +863,7 @@ asWizardBatchForecastsVirtual::asWizardBatchForecastsVirtual(wxWindow* parent, w
                                      wxDefaultSize, 0);
     _staticText37->Wrap(-1);
     _staticText37->SetFont(
-        wxFont(13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
+        wxFont(11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
 
     bSizer48->Add(_staticText37, 0, wxALL | wxEXPAND, 5);
 
@@ -894,7 +893,7 @@ asWizardBatchForecastsVirtual::asWizardBatchForecastsVirtual(wxWindow* parent, w
                                      wxDefaultSize, 0);
     _staticText36->Wrap(-1);
     _staticText36->SetFont(
-        wxFont(13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
+        wxFont(11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
 
     bSizer49->Add(_staticText36, 0, wxALL | wxEXPAND, 5);
 
