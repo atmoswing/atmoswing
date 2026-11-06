@@ -55,21 +55,6 @@ AtmoSwing Downscaler image: https://hub.docker.com/r/atmoswing/downscaler
 
 You can download the releases under: https://github.com/atmoswing/atmoswing/releases
 
-## Code signing policy ##
-
-Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org).
-
-The Windows installers and the AtmoSwing executables they contain are built and signed automatically by the [Windows release workflow](.github/workflows/windows-release.yml) from the sources in this repository. Only binaries built from AtmoSwing's own sources are signed; third-party libraries are distributed as provided by their authors.
-
-Team roles:
-
-*   Committers and reviewers: [Members team](https://github.com/orgs/atmoswing/people)
-*   Approvers: [Owners](https://github.com/orgs/atmoswing/people?query=role%3Aowner)
-
-### Privacy policy ###
-
-This program will not transfer any information to other networked systems. The Forecaster downloads operational predictor data, and the Viewer may load map layers, only from the servers configured by the user.
-
 ## How to build AtmoSwing ##
 
 AtmoSwing uses **CMake (3.21+)** with **[vcpkg](https://github.com/microsoft/vcpkg)** for dependency

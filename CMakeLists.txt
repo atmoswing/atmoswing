@@ -64,7 +64,7 @@ message(STATUS "VCPKG_MANIFEST_FEATURES = ${VCPKG_MANIFEST_FEATURES}")
 message(STATUS "VCPKG_TARGET_TRIPLET    = ${VCPKG_TARGET_TRIPLET}")
 
 # Project name and version (single source of truth for the version number)
-project(AtmoSwing VERSION 3.1.0)
+project(AtmoSwing VERSION 3.1.1)
 
 
 # ---- Shared compile options ----
@@ -567,7 +567,7 @@ if (BUILD_VIEWER)
     endif()
 endif()
 # Embed a Windows version resource (product name/version, file description) in each
-# application. Code signing (SignPath) enforces these fields on every signed binary.
+# application (shown in the file properties and used by code-signing services).
 if (WIN32)
     set(_atmoswing_rc_descriptions
             "atmoswing-forecaster|AtmoSwing Forecaster"

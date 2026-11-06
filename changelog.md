@@ -1,11 +1,10 @@
 # Changelog AtmoSwing
 
 
-## Unreleased
+## v3.1.1 - 06 Nov 2026
 
 ### Added
 
-*   Automated code signing of the Windows binaries and installers with SignPath.
 *   Embedding a version resource (product name, version, description) in the Windows executables.
 
 ### Changed
