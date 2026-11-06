@@ -15,6 +15,7 @@
 ### Fixed
 
 *   GRIB files whose messages are not grouped by sorted level: some levels could not be found.
+*   GRIB files whose messages are not grouped by lead time: the time axis was wrong.
 
 
 ## v3.1.0 - 27 Oct 2026

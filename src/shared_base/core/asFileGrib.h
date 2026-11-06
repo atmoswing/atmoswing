@@ -158,6 +158,14 @@ class asFileGrib : public asFile {
     void ExtractGribCode(codes_handle* h);
 
     bool CheckGribErrorCode(int ierr) const;
+
+    /**
+     * Get the index of the first message of each distinct time, sorted by time. The messages of a file are not
+     * necessarily grouped by time, nor sorted (e.g. ordered by level, then by lead time).
+     *
+     * @return The indices of the messages.
+     */
+    [[nodiscard]] vi GetUniqueTimeIndices() const;
 };
 
 #endif
