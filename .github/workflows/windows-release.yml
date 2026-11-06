@@ -32,7 +32,7 @@ jobs:
       FETCHCONTENT_CACHE_KEY: windows-${{ matrix.variant }}-vs2022-release
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Cache FetchContent dependencies
         uses: actions/cache@v6
@@ -65,7 +65,7 @@ jobs:
         run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
 
       - name: Configure
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@v4
         with:
           timeout_minutes: 60
           max_attempts: 3

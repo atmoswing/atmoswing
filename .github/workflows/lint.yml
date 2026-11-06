@@ -21,7 +21,7 @@ jobs:
       FETCHCONTENT_CACHE_KEY: linux-lint-ninja-release
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0  # need history for diff against base branch
 
